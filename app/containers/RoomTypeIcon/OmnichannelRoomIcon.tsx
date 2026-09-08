@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Image, type ImageStyle } from 'expo-image';
 
-import { OmnichannelSourceType, type IOmnichannelSource, type TUserStatus } from '../../definitions';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { OmnichannelSourceType, type IOmnichannelSource, type TUserStatus } from '~/definitions';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { CustomIcon, type TIconsName } from '../CustomIcon';
-import { useUserStatusColor } from '../../lib/hooks/useUserStatusColor';
+import { useUserStatusColor } from '~/lib/hooks/useUserStatusColor';
 
 interface IIconMap {
 	[key: string]: TIconsName;

@@ -1,6 +1,6 @@
 import { act, render } from '@testing-library/react-native';
 
-import { type IShareAttachment } from '../../definitions';
+import { type IShareAttachment } from '~/definitions';
 import {
 	MessageComposerProvider,
 	useAlsoSendThreadToChannel,

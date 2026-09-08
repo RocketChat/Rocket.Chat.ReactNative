@@ -1,14 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import { memo, useContext } from 'react';
 
-import * as List from '../../../containers/List';
-import OmnichannelStatus from '../../../ee/omnichannel/containers/OmnichannelHeader';
-import { E2E_BANNER_TYPE } from '../../../lib/constants/keys';
-import { themes } from '../../../lib/constants/colors';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { events, logEvent } from '../../../lib/methods/helpers/log';
-import { useTheme } from '../../../theme';
+import * as List from '~/containers/List';
+import OmnichannelStatus from '~/ee/omnichannel/containers/OmnichannelHeader';
+import { E2E_BANNER_TYPE } from '~/lib/constants/keys';
+import { themes } from '~/lib/constants/colors';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { useTheme } from '~/theme';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
 
 export type TEncryptionBanner = 'REQUEST_PASSWORD' | 'SAVE_PASSWORD';

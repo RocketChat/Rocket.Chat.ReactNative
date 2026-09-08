@@ -12,16 +12,16 @@ import {
 } from 'react-native';
 
 import Touch from '../Touch';
-import sharedStyles from '../../views/Styles';
-import { useTheme } from '../../theme';
-import I18n from '../../i18n';
+import sharedStyles from '~/views/Styles';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
 import Icon from './ListIcon';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 import { CustomIcon } from '../CustomIcon';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import EventEmitter from '../../lib/methods/helpers/events';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import EventEmitter from '~/lib/methods/helpers/events';
 import { LISTENER } from '../Toast';
-import { isIOS } from '../../lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers';
 
 // Maestro fail to click on child component when we enable accessibility in parent component on iOS
 const shouldDisableAccessibility = process.env.RUNNING_E2E_TESTS === 'true' && isIOS;

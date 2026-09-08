@@ -5,14 +5,14 @@ jest.mock('react-native', () => ({
 	}
 }));
 
-jest.mock('../../notifications', () => ({
+jest.mock('~/lib/notifications', () => ({
 	removeNotificationsAndBadge: jest.fn(() => Promise.resolve())
 }));
 
 import { AppState } from 'react-native';
 
 import applyAppStateMiddleware from '../appStateMiddleware';
-import { APP_STATE } from '../../../actions/actionsTypes';
+import { APP_STATE } from '~/actions/actionsTypes';
 
 function bootMiddleware(): { dispatch: jest.Mock; notifyAppState: (state: string) => void } {
 	const dispatch = jest.fn();

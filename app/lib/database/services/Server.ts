@@ -1,4 +1,4 @@
-import { type TServerModel } from '../../../definitions';
+import { type TServerModel } from '~/definitions';
 import database from '..';
 import { type TServerDatabase } from '../interfaces';
 import { SERVERS_TABLE } from '../model';

@@ -1,13 +1,13 @@
 import { memo } from 'react';
 import { Text } from 'react-native';
 
-import { useTheme } from '../../../../theme';
-import { themes } from '../../../../lib/constants/colors';
-import { USER_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants/keys';
-import styles from '../../styles';
-import { events, logEvent } from '../../../../lib/methods/helpers/log';
-import { useUserPreferences } from '../../../../lib/methods/userPreferences';
-import { useMarkdownContext } from '../../contexts/MarkdownContext';
+import { useTheme } from '~/theme';
+import { themes } from '~/lib/constants/colors';
+import { USER_MENTIONS_PREFERENCES_KEY } from '~/lib/constants/keys';
+import styles from '~/containers/markdown/styles';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { useUserPreferences } from '~/lib/methods/userPreferences';
+import { useMarkdownContext } from '~/containers/markdown/contexts/MarkdownContext';
 
 interface IAtMention {
 	mention: string;

@@ -1,11 +1,11 @@
 import { Text, View } from 'react-native';
 
 import MessageActionTouchable from './Touchable/MessageActionTouchable';
-import { CustomIcon } from '../../CustomIcon';
+import { CustomIcon } from '~/containers/CustomIcon';
 import styles from '../styles';
 import { BUTTON_HIT_SLOP } from '../utils';
-import I18n from '../../../i18n';
-import { useTheme } from '../../../theme';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
 import { useIsOwnMessage, useMessageItem } from '../stores/MessageStore';
 import { useBroadcast, useReplyBroadcast } from '../stores/MessageRoomStore';
 

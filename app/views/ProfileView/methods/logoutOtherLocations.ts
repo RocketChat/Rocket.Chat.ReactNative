@@ -1,10 +1,10 @@
-import I18n from '../../../i18n';
-import { LISTENER } from '../../../containers/Toast';
-import EventEmitter from '../../../lib/methods/helpers/events';
-import { showConfirmationAlert } from '../../../lib/methods/helpers';
-import { events, logEvent } from '../../../lib/methods/helpers/log';
-import { logoutOtherLocations as logoutOtherLocationsService } from '../../../lib/services/restApi';
-import { isTwoFactorCancelled } from '../../../lib/services/twoFactor/twoFactorCancelled';
+import I18n from '~/i18n';
+import { LISTENER } from '~/containers/Toast';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { showConfirmationAlert } from '~/lib/methods/helpers';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { logoutOtherLocations as logoutOtherLocationsService } from '~/lib/services/restApi';
+import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
 
 const logoutOtherLocations = () => {
 	logEvent(events.PL_OTHER_LOCATIONS);

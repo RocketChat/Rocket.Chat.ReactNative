@@ -1,5 +1,5 @@
-import dayjs from '../../dayjs';
-import I18n from '../../../i18n';
+import dayjs from '~/lib/dayjs';
+import I18n from '~/i18n';
 
 export const formatStatusExpiry = (statusExpiresAt: string | undefined): string | undefined => {
 	if (!statusExpiresAt) {

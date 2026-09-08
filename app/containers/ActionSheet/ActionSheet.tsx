@@ -12,8 +12,8 @@ import {
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { useTheme } from '../../theme';
-import { isAndroid, isIOS } from '../../lib/methods/helpers';
+import { useTheme } from '~/theme';
+import { isAndroid, isIOS } from '~/lib/methods/helpers';
 import { Handle } from './Handle';
 import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';

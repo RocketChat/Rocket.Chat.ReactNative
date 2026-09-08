@@ -1,7 +1,7 @@
 import { memo } from 'react';
 
 import MessageTouchable from './components/Touchable/MessageTouchable';
-import { type TAnyMessageModel } from '../../definitions';
+import { type TAnyMessageModel } from '~/definitions';
 import MessageSeparator from '../MessageSeparator';
 import { MessageProvider } from './stores/MessageStore';
 

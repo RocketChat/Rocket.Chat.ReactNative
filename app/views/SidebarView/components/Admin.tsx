@@ -1,9 +1,9 @@
 import { memo, useMemo } from 'react';
 
-import * as List from '../../../containers/List';
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { usePermissions } from '../../../lib/hooks/usePermissions';
-import { useTheme } from '../../../theme';
+import * as List from '~/containers/List';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { usePermissions } from '~/lib/hooks/usePermissions';
+import { useTheme } from '~/theme';
 import { sidebarNavigate } from '../methods/sidebarNavigate';
 
 const Admin = ({ currentScreen }: { currentScreen: string | null }) => {

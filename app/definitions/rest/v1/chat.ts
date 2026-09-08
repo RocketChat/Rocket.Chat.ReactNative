@@ -1,5 +1,5 @@
-import type { EncryptedContent, IMessage, IMessageFromServer, IReadReceipts } from '../../IMessage';
-import type { IServerRoom } from '../../IRoom';
+import type { EncryptedContent, IMessage, IMessageFromServer, IReadReceipts } from '~/definitions/IMessage';
+import type { IServerRoom } from '~/definitions/IRoom';
 import { type PaginatedResult } from '../helpers/PaginatedResult';
 
 export type ChatEndpoints = {

@@ -1,5 +1,5 @@
-import { LISTENER } from '../../../containers/Toast';
-import i18n from '../../../i18n';
+import { LISTENER } from '~/containers/Toast';
+import i18n from '~/i18n';
 import EventEmitter from './events';
 import log from './log';
 

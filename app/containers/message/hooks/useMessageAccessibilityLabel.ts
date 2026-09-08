@@ -1,8 +1,8 @@
-import i18n from '../../../i18n';
-import translationLanguages from '../../../lib/constants/translationLanguages';
+import i18n from '~/i18n';
+import translationLanguages from '~/lib/constants/translationLanguages';
 import { useImageDescriptionLabel } from './useImageDescriptionLabel';
 import { getInfoMessage } from '../utils';
-import { type IUserChannel, type IUserMention } from '../../../definitions';
+import { type IUserChannel, type IUserMention } from '~/definitions';
 import {
 	useContentData,
 	useIsEncrypted,
@@ -14,7 +14,7 @@ import {
 	useThreadPosition
 } from '../stores/MessageStore';
 import { useAutoTranslate, useIsReadReceiptEnabled } from '../stores/MessageRoomStore';
-import { useSetting } from '../../../lib/hooks/useSetting';
+import { useSetting } from '~/lib/hooks/useSetting';
 
 const stripMentions = (label: string, mentions: IUserMention[] = [], channels: IUserChannel[] = []) => {
 	let result = label;

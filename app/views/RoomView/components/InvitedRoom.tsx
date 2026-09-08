@@ -1,13 +1,13 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { useTheme } from '../../../theme';
-import { CustomIcon } from '../../../containers/CustomIcon';
-import Button from '../../../containers/Button';
-import sharedStyles from '../../Styles';
-import I18n from '../../../i18n';
-import type { IInviteSubscription } from '../../../definitions';
-import Chip from '../../../containers/Chip';
+import { useTheme } from '~/theme';
+import { CustomIcon } from '~/containers/CustomIcon';
+import Button from '~/containers/Button';
+import sharedStyles from '~/views/Styles';
+import I18n from '~/i18n';
+import type { IInviteSubscription } from '~/definitions';
+import Chip from '~/containers/Chip';
 
 const GAP = 32;
 

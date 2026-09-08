@@ -2,9 +2,9 @@ import * as Notifications from 'expo-notifications';
 import EJSON from 'ejson';
 import { DeviceEventEmitter, Platform } from 'react-native';
 
-import { deepLinkingClickCallPush } from '../../../actions/deepLinking';
-import { store } from '../../store/auxStore';
-import NativeVideoConfModule from '../../native/NativeVideoConfAndroid';
+import { deepLinkingClickCallPush } from '~/actions/deepLinking';
+import { store } from '~/lib/store/auxStore';
+import NativeVideoConfModule from '~/lib/native/NativeVideoConfAndroid';
 
 /**
  * Sets up listener for video conference actions from native side.

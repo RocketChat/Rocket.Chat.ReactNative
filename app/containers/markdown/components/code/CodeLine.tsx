@@ -2,8 +2,8 @@ import { type CodeLine as CodeLineProps } from '@rocket.chat/message-parser';
 import { type ReactElement } from 'react';
 import { Text } from 'react-native';
 
-import { useTheme } from '../../../../theme';
-import styles from '../../styles';
+import { useTheme } from '~/theme';
+import styles from '~/containers/markdown/styles';
 
 interface ICodeLineProps {
 	value: CodeLineProps['value'];

@@ -25,7 +25,7 @@ import {
 	type TSubscriptionModel,
 	type TThreadMessageModel,
 	type TThreadModel
-} from '../../definitions';
+} from '~/definitions';
 import {
 	E2E_BANNER_TYPE,
 	E2E_MESSAGE_TYPE,

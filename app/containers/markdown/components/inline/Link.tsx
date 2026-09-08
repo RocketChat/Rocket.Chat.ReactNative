@@ -3,13 +3,13 @@ import { Alert, Text } from 'react-native';
 import { type Link as LinkProps } from '@rocket.chat/message-parser';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import I18n from '../../../../i18n';
-import { LISTENER } from '../../../Toast';
-import { useTheme } from '../../../../theme';
-import openLink from '../../../../lib/methods/helpers/openLink';
-import EventEmitter from '../../../../lib/methods/helpers/events';
-import MarkdownContext, { useMarkdownContext } from '../../contexts/MarkdownContext';
-import styles from '../../styles';
+import I18n from '~/i18n';
+import { LISTENER } from '~/containers/Toast';
+import { useTheme } from '~/theme';
+import openLink from '~/lib/methods/helpers/openLink';
+import EventEmitter from '~/lib/methods/helpers/events';
+import MarkdownContext, { useMarkdownContext } from '~/containers/markdown/contexts/MarkdownContext';
+import styles from '~/containers/markdown/styles';
 
 interface ILinkProps {
 	value: LinkProps['value'];

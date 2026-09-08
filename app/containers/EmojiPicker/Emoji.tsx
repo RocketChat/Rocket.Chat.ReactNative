@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import { Text } from 'react-native';
 
-import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
+import useShortnameToUnicode from '~/lib/hooks/useShortnameToUnicode';
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
 import { type IEmojiProps } from './interfaces';

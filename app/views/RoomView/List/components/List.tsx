@@ -3,16 +3,16 @@ import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import { useIsScreenReaderEnabled } from '../../../../lib/hooks/useIsScreenReaderEnabled';
-import { isIOS } from '../../../../lib/methods/helpers';
-import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
-import { isExternalKeyboardConnected } from '../../../../lib/methods/helpers/externalInput';
-import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../../lib/constants/accessibility';
+import { useIsScreenReaderEnabled } from '~/lib/hooks/useIsScreenReaderEnabled';
+import { isIOS } from '~/lib/methods/helpers';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
+import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
+import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '~/lib/constants/accessibility';
 import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
 import { type IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
-import { useRoomContext } from '../../context';
+import { useRoomContext } from '~/views/RoomView/context';
 
 const styles = StyleSheet.create({
 	list: {

@@ -1,14 +1,14 @@
 import { type SharedValue } from 'react-native-reanimated';
 import { type ReactElement } from 'react';
 
-import { type TSupportedThemes } from '../../theme';
+import { type TSupportedThemes } from '~/theme';
 import {
 	type TUserStatus,
 	type ILastMessage,
 	type SubscriptionType,
 	type IOmnichannelSource,
 	type ISubscription
-} from '../../definitions';
+} from '~/definitions';
 
 export interface ILeftActionsProps {
 	transX: SharedValue<number>;

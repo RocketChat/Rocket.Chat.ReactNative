@@ -12,7 +12,7 @@ import {
 	type OperationParams,
 	type PathFor,
 	type ResultFor
-} from '../../definitions/rest/helpers';
+} from '~/definitions/rest/helpers';
 import { compareServerVersion, random } from '../methods/helpers';
 
 export interface ISocketDriver {

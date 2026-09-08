@@ -1,4 +1,4 @@
-import { ActionTypes, ModalActions } from '../../containers/UIKit/interfaces';
+import { ActionTypes, ModalActions } from '~/containers/UIKit/interfaces';
 import { generateTriggerId, handlePayloadUserInteraction, triggerAction } from './actions';
 import EventEmitter from './helpers/events';
 import fetch from './helpers/fetch';

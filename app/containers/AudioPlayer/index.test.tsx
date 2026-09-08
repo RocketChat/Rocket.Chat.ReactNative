@@ -5,10 +5,10 @@ import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useNavigation } from '@react-navigation/native';
 
 import AudioPlayer from '.';
-import AudioManager from '../../lib/methods/AudioManager';
-import { emitter } from '../../lib/methods/helpers/emitter';
+import AudioManager from '~/lib/methods/AudioManager';
+import { emitter } from '~/lib/methods/helpers/emitter';
 
-jest.mock('../../lib/methods/AudioManager', () => ({
+jest.mock('~/lib/methods/AudioManager', () => ({
 	__esModule: true,
 	default: {
 		loadAudio: jest.fn(),
@@ -22,7 +22,7 @@ jest.mock('../../lib/methods/AudioManager', () => ({
 	}
 }));
 
-jest.mock('../../lib/methods/userPreferences', () => ({
+jest.mock('~/lib/methods/userPreferences', () => ({
 	useUserPreferences: () => [1.0]
 }));
 
@@ -31,11 +31,11 @@ jest.mock('expo-keep-awake', () => ({
 	deactivateKeepAwake: jest.fn()
 }));
 
-jest.mock('../../lib/methods/helpers/emitter', () => ({
+jest.mock('~/lib/methods/helpers/emitter', () => ({
 	emitter: { on: jest.fn(), off: jest.fn(), emit: jest.fn() }
 }));
 
-jest.mock('../../theme', () => ({
+jest.mock('~/theme', () => ({
 	useTheme: () => ({ theme: 'light', colors: { surfaceLight: '#ffffff', strokeExtraLight: '#eeeeee' } })
 }));
 

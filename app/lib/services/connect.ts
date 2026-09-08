@@ -4,28 +4,28 @@ import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
 import log from '../methods/helpers/log';
-import { setActiveUsers } from '../../actions/activeUsers';
+import { setActiveUsers } from '~/actions/activeUsers';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import database from '../database';
 import { twoFactor } from './twoFactor/twoFactor';
 import { store } from '../store/auxStore';
-import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
+import { loginRequest, logout, setLoginServices, setUser } from '~/actions/login';
 import { waitForLoginReady } from './waitForLoginReady';
 import sdk, { type IStreamDataListener } from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
-import I18n from '../../i18n';
+import I18n from '~/i18n';
 import {
 	type ILoginCredentials,
 	type ICredentialsPasswordAPI,
 	type ILoggedUser,
 	STATUSES,
 	type TUserStatus
-} from '../../definitions';
-import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
-import { updatePermission } from '../../actions/permissions';
+} from '~/definitions';
+import { connectRequest, connectSuccess, disconnect as disconnectAction } from '~/actions/connect';
+import { updatePermission } from '~/actions/permissions';
 import EventEmitter from '../methods/helpers/events';
-import { updateSettings } from '../../actions/settings';
+import { updateSettings } from '~/actions/settings';
 import { defaultSettings } from '../constants/defaultSettings';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { getSettings } from '../methods/getSettings';

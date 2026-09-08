@@ -1,7 +1,7 @@
 import { createRef } from 'react';
 import { render } from '@testing-library/react-native';
 
-import { generateSnapshots } from '../../../../.rnstorybook/generateSnapshots';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 import Base, { type IBase } from '.';
 import { TYPE } from '../constants';
 import * as stories from './Base.stories';

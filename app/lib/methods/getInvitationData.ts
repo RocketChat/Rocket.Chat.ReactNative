@@ -1,5 +1,5 @@
-import { type IInviteSubscription } from '../../definitions';
-import I18n from '../../i18n';
+import { type IInviteSubscription } from '~/definitions';
+import I18n from '~/i18n';
 import { getRoomTitle } from './helpers';
 import { replyRoomInvite } from './replyRoomInvite';
 

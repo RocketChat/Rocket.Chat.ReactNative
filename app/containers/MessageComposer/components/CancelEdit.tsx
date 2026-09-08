@@ -1,6 +1,6 @@
 import { BaseButton } from './Buttons';
-import { useRoomContext } from '../../../views/RoomView/context';
-import { useMessageAction } from '../../message/stores/MessageActionStore';
+import { useRoomContext } from '~/views/RoomView/context';
+import { useMessageAction } from '~/containers/message/stores/MessageActionStore';
 import { Gap } from './Gap';
 
 export const CancelEdit = () => {

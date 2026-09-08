@@ -4,18 +4,18 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { type ReactElement } from 'react';
 
-import i18n from '../../../../i18n';
-import sharedStyles from '../../../Styles';
+import i18n from '~/i18n';
+import sharedStyles from '~/views/Styles';
 import FooterButtons from './FooterButtons';
 import ConfirmDeleteAccountContent from './ConfirmDeleteAccountContent';
-import { deleteOwnAccount } from '../../../../lib/services/restApi';
-import { isTwoFactorCancelled } from '../../../../lib/services/twoFactor/twoFactorCancelled';
-import { deleteAccount } from '../../../../actions/login';
-import { CustomIcon } from '../../../../containers/CustomIcon';
-import { useTheme } from '../../../../theme';
-import { ControlledFormTextInput } from '../../../../containers/TextInput';
-import { useActionSheet } from '../../../../containers/ActionSheet/Provider';
-import { events, logEvent } from '../../../../lib/methods/helpers/log';
+import { deleteOwnAccount } from '~/lib/services/restApi';
+import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
+import { deleteAccount } from '~/actions/login';
+import { CustomIcon } from '~/containers/CustomIcon';
+import { useTheme } from '~/theme';
+import { ControlledFormTextInput } from '~/containers/TextInput';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
+import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getTranslations } from './getTranslations';
 
 const styles = StyleSheet.create({

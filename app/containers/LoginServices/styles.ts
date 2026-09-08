@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 
 export const SERVICE_HEIGHT = 58;
 export const BORDER_RADIUS = 4;

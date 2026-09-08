@@ -2,7 +2,7 @@ import { type ComponentType, forwardRef } from 'react';
 import { Dimensions, useWindowDimensions } from 'react-native';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
-import { type TNavigationOptions } from '../../definitions/navigationTypes';
+import { type TNavigationOptions } from '~/definitions/navigationTypes';
 import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from '../constants/tablet';
 import { isTablet } from '../methods/helpers/deviceInfo';
 

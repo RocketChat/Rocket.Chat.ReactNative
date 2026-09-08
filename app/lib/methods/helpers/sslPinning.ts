@@ -3,11 +3,11 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system/legacy';
 
 import UserPreferences from '../userPreferences';
-import I18n from '../../../i18n';
+import I18n from '~/i18n';
 import { extractHostname } from './server';
-import { type ICertificate } from '../../../definitions';
-import { CERTIFICATE_KEY } from '../../constants/keys';
-import NativeSSLPinningAndroid from '../../native/NativeSSLPinningAndroid';
+import { type ICertificate } from '~/definitions';
+import { CERTIFICATE_KEY } from '~/lib/constants/keys';
+import NativeSSLPinningAndroid from '~/lib/native/NativeSSLPinningAndroid';
 
 const SSLPinning = Platform.select({
 	android: NativeSSLPinningAndroid,

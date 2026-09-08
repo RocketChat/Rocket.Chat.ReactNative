@@ -3,9 +3,9 @@ import { Image as ExpoImage } from 'expo-image';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import ImageContainer from '../message/components/Attachments/Image';
-import Navigation from '../../lib/navigation/appNavigation';
+import Navigation from '~/lib/navigation/appNavigation';
 import { type IThumb, type IImage } from './interfaces';
-import { type IAttachment } from '../../definitions';
+import { type IAttachment } from '~/definitions';
 
 const styles = StyleSheet.create({
 	image: {

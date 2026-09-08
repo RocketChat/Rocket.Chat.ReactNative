@@ -1,11 +1,11 @@
 import { type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 
-import { createMockedStore } from '../../../../../reducers/mockedStore';
-import { type TAnyMessageModel } from '../../../../../definitions';
-import { MessageRoomProvider, type MessageRoomState } from '../../../stores/MessageRoomStore';
-import { MessageProvider } from '../../../stores/MessageStore';
-import TranslatedLeaf from '../../RightIcons/Translated';
+import { createMockedStore } from '~/reducers/mockedStore';
+import { type TAnyMessageModel } from '~/definitions';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import TranslatedLeaf from '~/containers/message/components/RightIcons/Translated';
 
 const store = createMockedStore();
 

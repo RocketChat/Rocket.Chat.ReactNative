@@ -2,10 +2,10 @@ import { type ReactNode } from 'react';
 import { View } from 'react-native';
 import { Provider } from 'react-redux';
 
-import { createMockedStore } from '../../../../reducers/mockedStore';
-import { type TAnyMessageModel } from '../../../../definitions';
-import { MessageRoomProvider } from '../../stores/MessageRoomStore';
-import { MessageProvider } from '../../stores/MessageStore';
+import { createMockedStore } from '~/reducers/mockedStore';
+import { type TAnyMessageModel } from '~/definitions';
+import { MessageRoomProvider } from '~/containers/message/stores/MessageRoomStore';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
 import CollapsibleQuote from '../Attachments/CollapsibleQuote';
 
 const store = createMockedStore();

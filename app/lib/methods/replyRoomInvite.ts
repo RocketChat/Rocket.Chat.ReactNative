@@ -1,4 +1,4 @@
-import i18n from '../../i18n';
+import i18n from '~/i18n';
 import { sendInvitationReply } from '../services/restApi';
 import { showErrorAlert } from './helpers';
 import log from './helpers/log';

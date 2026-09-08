@@ -1,9 +1,9 @@
 import { memo } from 'react';
 import { type StyleProp, StyleSheet, Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
 
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 import { getUnreadStyle } from './getUnreadStyle';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 
 const styles = StyleSheet.create({
 	unreadNumberContainerNormal: {

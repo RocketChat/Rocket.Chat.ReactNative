@@ -1,6 +1,6 @@
 import { sha256 } from 'js-sha256';
 
-import { type IUser } from '../../../definitions';
+import { type IUser } from '~/definitions';
 import buildProfileParams from './buildProfileParams';
 
 const baseUser = {

@@ -1,8 +1,8 @@
-import { LISTENER } from '../../../containers/Toast';
-import I18n from '../../../i18n';
+import { LISTENER } from '~/containers/Toast';
+import I18n from '~/i18n';
 import EventEmitter from './events';
 import log from './log';
-import { ignoreUser } from '../../services/restApi';
+import { ignoreUser } from '~/lib/services/restApi';
 
 export const handleIgnore = async (userId: string, ignore: boolean, rid: string): Promise<boolean> => {
 	try {

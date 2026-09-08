@@ -3,10 +3,10 @@ import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
 import CallerInfo from './CallerInfo';
-import { useCallStore } from '../../../lib/services/voip/useCallStore';
-import { mockedStore } from '../../../reducers/mockedStore';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
+import { mockedStore } from '~/reducers/mockedStore';
 import * as stories from './CallerInfo.stories';
-import { generateSnapshots } from '../../../../.rnstorybook/generateSnapshots';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 
 const mockCallStartTime = 1713340800000;
 

@@ -2,23 +2,23 @@ import { type ComponentType } from 'react';
 import { ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
-import MessageContainer from '../../index';
-import { type TAnyMessageModel } from '../../../../definitions';
-import { E2E_MESSAGE_TYPE } from '../../../../lib/constants/keys';
-import { messagesStatus } from '../../../../lib/constants/messagesStatus';
-import { themes } from '../../../../lib/constants/colors';
-import MessageSeparator from '../../../MessageSeparator';
+import MessageContainer from '~/containers/message/index';
+import { type TAnyMessageModel } from '~/definitions';
+import { E2E_MESSAGE_TYPE } from '~/lib/constants/keys';
+import { messagesStatus } from '~/lib/constants/messagesStatus';
+import { themes } from '~/lib/constants/colors';
+import MessageSeparator from '~/containers/MessageSeparator';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,
 	FONT_SCALE_LIMIT,
 	ResponsiveLayoutContext
-} from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { mockedStore as store } from '../../../../reducers/mockedStore';
-import { updateSettings } from '../../../../actions/settings';
-import { setCustomEmojis } from '../../../../actions/customEmojis';
-import { createMessageActionStore, MessageActionStoreContext } from '../../stores/MessageActionStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
+} from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { mockedStore as store } from '~/reducers/mockedStore';
+import { updateSettings } from '~/actions/settings';
+import { setCustomEmojis } from '~/actions/customEmojis';
+import { createMessageActionStore, MessageActionStoreContext } from '~/containers/message/stores/MessageActionStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
 
 const _theme = 'light';
 

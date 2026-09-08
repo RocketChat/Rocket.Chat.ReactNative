@@ -7,24 +7,24 @@ import { type ISubscription } from '@rocket.chat/sdk/interfaces';
 import log from '../helpers/log';
 import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
-import database from '../../database';
-import { getMessageById } from '../../database/services/Message';
-import { getThreadById } from '../../database/services/Thread';
-import { getThreadMessageById } from '../../database/services/ThreadMessage';
-import { store as reduxStore } from '../../store/auxStore';
-import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../actions/usersTyping';
+import database from '~/lib/database';
+import { getMessageById } from '~/lib/database/services/Message';
+import { getThreadById } from '~/lib/database/services/Thread';
+import { getThreadMessageById } from '~/lib/database/services/ThreadMessage';
+import { store as reduxStore } from '~/lib/store/auxStore';
+import { addUserTyping, clearUserTyping, removeUserTyping } from '~/actions/usersTyping';
 import { debounce } from '../helpers';
-import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
-import { Encryption } from '../../encryption';
+import { subscribeRoom, unsubscribeRoom } from '~/actions/room';
+import { Encryption } from '~/lib/encryption';
 import {
 	type IMessage,
 	type TMessageModel,
 	type TThreadMessageModel,
 	type TThreadModel,
 	type IDeleteMessageBulkParams
-} from '../../../definitions';
-import { type IDDPMessage } from '../../../definitions/IDDPMessage';
-import sdk from '../../services/sdk';
+} from '~/definitions';
+import { type IDDPMessage } from '~/definitions/IDDPMessage';
+import sdk from '~/lib/services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
 import markMessagesRead from '../helpers/markMessagesRead';

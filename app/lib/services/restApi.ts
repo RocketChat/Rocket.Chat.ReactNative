@@ -14,13 +14,13 @@ import {
 	type IServerRoom,
 	type RoomType,
 	type SubscriptionType
-} from '../../definitions';
-import { type TParams } from '../../definitions/ILivechatEditView';
-import { type ILivechatTag } from '../../definitions/ILivechatTag';
-import { type ISpotlight } from '../../definitions/ISpotlight';
-import { TEAM_TYPE } from '../../definitions/ITeam';
-import { type OperationParams, type ResultFor } from '../../definitions/rest/helpers';
-import { type SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
+} from '~/definitions';
+import { type TParams } from '~/definitions/ILivechatEditView';
+import { type ILivechatTag } from '~/definitions/ILivechatTag';
+import { type ISpotlight } from '~/definitions/ISpotlight';
+import { TEAM_TYPE } from '~/definitions/ITeam';
+import { type OperationParams, type ResultFor } from '~/definitions/rest/helpers';
+import { type SubscriptionsEndpoints } from '~/definitions/rest/v1/subscriptions';
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
 import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';

@@ -4,8 +4,8 @@ import { Text } from 'react-native';
 import { Provider } from 'react-redux';
 
 import { MessageRoomProvider, useAutoTranslate, useIsArchived, useTimeFormat } from '../MessageRoomStore';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { updateSettings } from '../../../../actions/settings';
+import { mockedStore } from '~/reducers/mockedStore';
+import { updateSettings } from '~/actions/settings';
 
 describe('MessageRoomStore', () => {
 	describe('outside a MessageRoomProvider', () => {

@@ -1,8 +1,8 @@
 import { useRef, memo, type ReactElement } from 'react';
 import { Text } from 'react-native';
 
-import { useTheme } from '../../theme';
-import I18n from '../../i18n';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
 import { type TIconsName } from '../CustomIcon';
 import { type IItemService, type IOauthProvider } from './interfaces';
 import styles from './styles';

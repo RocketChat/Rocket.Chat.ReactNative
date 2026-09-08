@@ -1,4 +1,4 @@
-import { type ISupportedVersionsData } from '../../definitions';
+import { type ISupportedVersionsData } from '~/definitions';
 import { checkSupportedVersions, getMessage } from './checkSupportedVersions';
 
 const MOCK_I18N = {
@@ -72,7 +72,7 @@ const MOCK_BUILTIN_I18N = {
 		builtin_i18n: 'Your server is about to be deprecated. Please update to the latest version.'
 	}
 };
-jest.mock('../../../app-supportedversions.json', () => ({
+jest.mock('~/supportedversions', () => ({
 	timestamp: '2023-04-01T00:00:00.000Z',
 	enforcementStartDate: '2023-04-02T00:00:00.000Z',
 	i18n: {

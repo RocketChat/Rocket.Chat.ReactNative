@@ -1,4 +1,4 @@
-import { type TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
+import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
 import { Upload } from './Upload';
 import { type IFormData, type TUploadHeaders } from './definitions';
 

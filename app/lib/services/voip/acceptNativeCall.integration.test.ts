@@ -3,13 +3,13 @@ import type { Store } from 'redux';
 import { acceptNativeCallWithReadiness } from './acceptNativeCall';
 import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
-import { initStore } from '../../store/auxStore';
+import { initStore } from '~/lib/store/auxStore';
 import { recoverSocket } from '../socketHealth';
 import sdk from '../sdk';
-import { addMediaSubs, buildConnectedDriver } from '../../testUtils/sdkIntegration';
-import type { IMockSdk, IMockSdkDriver, MockConnection } from '../../testUtils/sdkIntegration';
-import type * as SdkIntegration from '../../testUtils/sdkIntegration';
-import type { IApplicationState } from '../../../definitions';
+import { addMediaSubs, buildConnectedDriver } from '~/lib/testUtils/sdkIntegration';
+import type { IMockSdk, IMockSdkDriver, MockConnection } from '~/lib/testUtils/sdkIntegration';
+import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
+import type { IApplicationState } from '~/definitions';
 
 jest.mock('./terminateNativeCall', () => ({
 	terminateNativeCall: jest.fn()
@@ -26,7 +26,7 @@ jest.mock('../socketHealth', () => ({
 }));
 
 jest.mock('../sdk', () => {
-	const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+	const sdkIntegration = jest.requireActual<typeof SdkIntegration>('~/lib/testUtils/sdkIntegration');
 	return { __esModule: true, default: sdkIntegration.makeSdkMock() };
 });
 
@@ -34,12 +34,12 @@ const mockConnections: MockConnection[] = [];
 
 jest.mock('universal-websocket-client', () =>
 	jest.fn().mockImplementation(() => {
-		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('~/lib/testUtils/sdkIntegration');
 		return new sdkIntegration.MockConnection(mockConnections);
 	})
 );
 
-jest.mock('../../methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));

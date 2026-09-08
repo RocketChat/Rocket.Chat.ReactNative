@@ -3,14 +3,14 @@ import { type ReactElement } from 'react';
 
 import { UiKitMessage } from '.';
 import Markdown from '../markdown';
-import { colors } from '../../lib/constants/colors';
-import { longText } from '../../../.rnstorybook/utils';
+import { colors } from '~/lib/constants/colors';
+import { longText } from '~/.rnstorybook/utils';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,
 	ResponsiveLayoutContext
-} from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { ThemeContext, type TSupportedThemes } from '../../theme';
+} from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { ThemeContext, type TSupportedThemes } from '~/theme';
 
 export default {
 	title: 'UIKit/UiKitMessage',

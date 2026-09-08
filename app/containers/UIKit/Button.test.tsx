@@ -2,7 +2,7 @@ import { fireEvent, render } from '@testing-library/react-native';
 
 import UIKitButton from './Button';
 import * as stories from './Button.stories';
-import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 
 const onPressMock = jest.fn();
 

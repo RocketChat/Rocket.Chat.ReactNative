@@ -6,10 +6,10 @@ import Video from './Video';
 import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
 import Reply from './Reply';
-import { type IAttachment } from '../../../../definitions';
-import { useShowAttachment } from '../../stores/MessageRoomStore';
-import { useMessageField, useTranslateLanguage } from '../../stores/MessageStore';
-import { getMessageFromAttachment } from '../../utils';
+import { type IAttachment } from '~/definitions';
+import { useShowAttachment } from '~/containers/message/stores/MessageRoomStore';
+import { useMessageField, useTranslateLanguage } from '~/containers/message/stores/MessageStore';
+import { getMessageFromAttachment } from '~/containers/message/utils';
 import { getAttachmentKey, isContentAttachment, isQuoteAttachment } from './utils';
 
 const styles = StyleSheet.create({

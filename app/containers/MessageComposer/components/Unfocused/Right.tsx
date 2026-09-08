@@ -1,10 +1,10 @@
 import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
-import { useFocused } from '../../context';
-import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
+import { useFocused } from '~/containers/MessageComposer/context';
+import { useEmojiKeyboard } from '~/containers/MessageComposer/hooks/useEmojiKeyboard';
 import { MicOrSendButton } from '../Buttons';
-import { MIN_HEIGHT } from '../../constants';
+import { MIN_HEIGHT } from '~/containers/MessageComposer/constants';
 import { CancelEdit } from '../CancelEdit';
 
 export const Right = (): ReactElement | null => {
