@@ -1,4 +1,6 @@
 import { closeLivechat as closeLivechatService } from '../../../../lib/methods/helpers/closeLivechat';
+import { showErrorAlert } from '../../../../lib/methods/helpers/info';
+import log from '../../../../lib/methods/helpers/log';
 import { getDepartmentInfo, getTagsList } from '../../../../lib/services/restApi';
 import { navigateToScreen, type TRoomStackNavigation } from '../../hooks/navigateToScreen';
 import { closeLivechat } from '../closeLivechat';
@@ -9,6 +11,8 @@ jest.mock('../../../../lib/services/restApi', () => ({
 	getTagsList: jest.fn()
 }));
 jest.mock('../../hooks/navigateToScreen', () => ({ navigateToScreen: jest.fn() }));
+jest.mock('../../../../lib/methods/helpers/info', () => ({ showErrorAlert: jest.fn() }));
+jest.mock('../../../../lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
 const mockCloseLivechatService = closeLivechatService as jest.Mock;
 const mockGetDepartmentInfo = getDepartmentInfo as jest.Mock;
@@ -82,13 +86,41 @@ describe('closeLivechat', () => {
 		expect(mockNavigateToScreen).not.toHaveBeenCalled();
 	});
 
-	it('swallows request failures without navigating', async () => {
-		mockGetDepartmentInfo.mockRejectedValueOnce(new Error('offline'));
+	it.each(['department', 'tags'])('reports failed %s requests without closing or navigating', async request => {
+		const error = new Error('offline');
+		if (request === 'department') {
+			mockGetDepartmentInfo.mockRejectedValueOnce(error);
+		} else {
+			mockGetDepartmentInfo.mockResolvedValueOnce({ success: true, department: { requestTagBeforeClosingChat: true } });
+			mockGetTagsList.mockRejectedValueOnce(error);
+		}
 
 		await expect(
 			closeLivechat({ rid: 'rid-1', departmentId: 'dep-1', isMasterDetail: false, livechatRequestComment: false, navigation })
 		).resolves.toBeUndefined();
 
+		expect(showErrorAlert).toHaveBeenCalledWith('offline', 'Oops!');
+		expect(log).toHaveBeenCalledWith(error);
+		expect(mockCloseLivechatService).not.toHaveBeenCalled();
+		expect(mockNavigateToScreen).not.toHaveBeenCalled();
+	});
+
+	it.each([
+		[{ error: 'error-not-allowed', reason: 'server reason' }, 'Not allowed'],
+		[{ error: 'untranslated-error', reason: 'server reason' }, 'server reason']
+	])('reports REST errors using translated codes or the server reason', async (error, message) => {
+		mockGetDepartmentInfo.mockRejectedValueOnce(error);
+
+		await closeLivechat({
+			rid: 'rid-1',
+			departmentId: 'dep-1',
+			isMasterDetail: false,
+			livechatRequestComment: false,
+			navigation
+		});
+
+		expect(showErrorAlert).toHaveBeenCalledWith(message, 'Oops!');
+		expect(log).toHaveBeenCalledWith(error);
 		expect(mockCloseLivechatService).not.toHaveBeenCalled();
 		expect(mockNavigateToScreen).not.toHaveBeenCalled();
 	});

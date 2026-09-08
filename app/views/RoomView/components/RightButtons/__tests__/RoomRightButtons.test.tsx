@@ -1,9 +1,14 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
+import { events, logEvent } from '../../../../../lib/methods/helpers/log';
 import { type RoomStore } from '../../../definitions';
 import { RoomRightButtons } from '../RoomRightButtons';
 
 const mockNavigation = { navigate: jest.fn(), push: jest.fn() };
+jest.mock('../../../../../lib/methods/helpers/log', () => ({
+	...jest.requireActual('../../../../../lib/methods/helpers/log'),
+	logEvent: jest.fn()
+}));
 jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => mockNavigation
 }));
@@ -293,6 +298,8 @@ describe('RoomRightButtons', () => {
 		expect(screen.getByTestId('room-view-header-encryption')).toHaveProp('disabled', false);
 
 		fireEvent.press(screen.getByTestId('room-view-header-encryption'));
+		expect(logEvent).toHaveBeenCalledTimes(1);
+		expect(logEvent).toHaveBeenCalledWith(events.ROOM_GO_E2EE);
 		expect(mockNavigation.navigate).toHaveBeenCalledWith(
 			...(isMasterDetail
 				? ['ModalStackNavigator', { screen: 'E2EEToggleRoomView', params: { rid: 'rid-1' } }]

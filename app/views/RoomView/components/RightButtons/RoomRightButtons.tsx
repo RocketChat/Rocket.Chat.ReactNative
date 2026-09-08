@@ -73,7 +73,7 @@ export const RoomRightButtons = ({ rid, roomStore }: IRoomRightButtonsProps): Re
 	};
 
 	const goE2EEToggleRoomView = () => {
-		logEvent(events.ROOM_GO_SEARCH);
+		logEvent(events.ROOM_GO_E2EE);
 		navigateToScreen({ navigation, isMasterDetail, screen: 'E2EEToggleRoomView', params: { rid } });
 	};
 

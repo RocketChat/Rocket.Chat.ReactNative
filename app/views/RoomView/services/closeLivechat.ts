@@ -2,6 +2,8 @@ import { type ILivechatDepartment } from '../../../definitions/ILivechatDepartme
 import { type ILivechatTag } from '../../../definitions/ILivechatTag';
 import i18n from '../../../i18n';
 import { closeLivechat as closeLivechatService } from '../../../lib/methods/helpers/closeLivechat';
+import { showErrorAlert } from '../../../lib/methods/helpers/info';
+import log from '../../../lib/methods/helpers/log';
 import { getDepartmentInfo, getTagsList } from '../../../lib/services/restApi';
 import { navigateToScreen, type TRoomStackNavigation } from '../hooks/navigateToScreen';
 
@@ -43,5 +45,8 @@ export const closeLivechat = async ({
 			screen: 'CloseLivechatView',
 			params: { rid, departmentId, departmentInfo, tagsList }
 		});
-	} catch {}
+	} catch (e: any) {
+		showErrorAlert(i18n.isTranslated(e.error) ? i18n.t(e.error) : e.reason || e.message, i18n.t('Oops'));
+		log(e);
+	}
 };
