@@ -67,7 +67,7 @@ export const ComposerInput = memo(
 		const isMasterDetail = useMasterDetail();
 		const altTextSupported = useAltTextSupported();
 		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
-		if (room && !tmid) {
+		if (!tmid) {
 			placeholder = I18n.t('Message_roomname', { roomName: (room.t === 'd' ? '@' : '#') + getRoomTitle(room) });
 			if (!isTablet && placeholder.length > COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH) {
 				placeholder = `${placeholder.slice(0, COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH)}...`;

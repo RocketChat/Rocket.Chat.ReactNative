@@ -1,6 +1,6 @@
 import { joinRoom as joinRoomService } from '../../../../lib/services/restApi';
 import { takeInquiry, takeResume } from '../../../../ee/omnichannel/lib';
-import { type IRoomViewState } from '../../definitions';
+import { type TRoomOrPreview } from '../../../../definitions/TRoom';
 import { createRoomStore } from '../../stores/RoomStore';
 
 jest.mock('../../../../lib/database', () => ({
@@ -45,7 +45,7 @@ const mockJoinRoomService = joinRoomService as jest.Mock;
 const mockTakeInquiry = takeInquiry as jest.Mock;
 const mockTakeResume = takeResume as jest.Mock;
 
-const makeStore = (room: IRoomViewState['room']) => {
+const makeStore = (room: TRoomOrPreview) => {
 	const store = createRoomStore({ initialRoom: room });
 	store.setState({ join: jest.fn() });
 	return store;

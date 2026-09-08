@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-native';
 
-import { type IRoomViewState } from '../../definitions';
+import { type TRoomOrPreview } from '../../../../definitions/TRoom';
 import { useCloseBanner } from '../useCloseBanner';
 
 const mockWrite = jest.fn((fn: () => Promise<void>) => fn());
@@ -20,7 +20,7 @@ describe('useCloseBanner', () => {
 			mutator(draft);
 			return draft;
 		});
-		const room = { id: 'room-1', update } as unknown as IRoomViewState['room'];
+		const room = { id: 'room-1', update } as unknown as TRoomOrPreview;
 		const { result } = renderHook(() => useCloseBanner(room));
 
 		await result.current();
@@ -30,7 +30,7 @@ describe('useCloseBanner', () => {
 	});
 
 	it('is a no-op for a room without a database identity', async () => {
-		const room = { rid: 'rid-1', t: 'c' } as IRoomViewState['room'];
+		const room = { rid: 'rid-1', t: 'c' } as TRoomOrPreview;
 		const { result } = renderHook(() => useCloseBanner(room));
 
 		await result.current();
@@ -40,7 +40,7 @@ describe('useCloseBanner', () => {
 
 	it('swallows write errors', async () => {
 		mockWrite.mockRejectedValueOnce(new Error('boom'));
-		const room = { id: 'room-1', update: jest.fn() } as unknown as IRoomViewState['room'];
+		const room = { id: 'room-1', update: jest.fn() } as unknown as TRoomOrPreview;
 		const { result } = renderHook(() => useCloseBanner(room));
 
 		await expect(result.current()).resolves.toBeUndefined();

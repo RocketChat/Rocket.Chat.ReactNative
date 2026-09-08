@@ -5,7 +5,7 @@ import I18n from '../../../../i18n';
 import EventEmitterReal from '../../../../lib/methods/helpers/events';
 import Navigation from '../../../../lib/navigation/appNavigation';
 import { showErrorAlert } from '../../../../lib/methods/helpers/info';
-import { type IRoomViewState } from '../../definitions';
+import { type TRoomOrPreview } from '../../../../definitions/TRoom';
 import { useRoomRemoved } from '../useRoomRemoved';
 
 jest.mock('../../../../lib/methods/helpers', () => ({ getRoomTitle: jest.fn(() => 'Room') }));
@@ -15,7 +15,7 @@ jest.mock('../../../../lib/methods/helpers/info', () => ({ showErrorAlert: jest.
 const mockPopToTop = Navigation.popToTop as jest.Mock;
 const mockShowErrorAlert = showErrorAlert as jest.Mock;
 
-const renderRoomRemoved = (rid: string | undefined, isMasterDetail: boolean, room: IRoomViewState['room']) => {
+const renderRoomRemoved = (rid: string | undefined, isMasterDetail: boolean, room: TRoomOrPreview) => {
 	return renderHook(() => useRoomRemoved(rid, isMasterDetail, createStore(() => ({ room })) as any));
 };
 
