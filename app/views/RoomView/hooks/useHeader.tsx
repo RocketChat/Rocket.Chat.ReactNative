@@ -45,9 +45,10 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 		roomStore,
 		useShallow((s): IHeaderFields => {
 			const room = s.room;
-			const subscription = room as ISubscription;
 			const title = tmid ? (roomName ?? '') : getRoomTitle(room);
 			const parentTitle = tmid ? getRoomTitle(room) : '';
+
+			const subscription = 'id' in room ? room : undefined;
 
 			let subtitle: string | undefined;
 			let visitor: IVisitor | undefined;
@@ -69,10 +70,10 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 				subtitle,
 				type: room?.t,
 				visitor,
-				isGroupChat: isGroupChat(subscription),
+				isGroupChat: subscription ? isGroupChat(subscription) : false,
 				sourceType,
-				abacAttributes: subscription.abacAttributes,
-				disabled: isInviteSubscription(subscription)
+				abacAttributes: subscription?.abacAttributes,
+				disabled: subscription ? isInviteSubscription(subscription) : false
 			};
 		})
 	);
