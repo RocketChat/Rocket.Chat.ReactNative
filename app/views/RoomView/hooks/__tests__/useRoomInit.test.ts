@@ -26,7 +26,6 @@ const makeRoomStore = (): RoomStore =>
 		canAutoTranslate: false,
 		canForwardGuest: false,
 		canViewCannedResponse: false,
-		lastMessageFromAgent: false,
 		init: jest.fn(() => Promise.resolve<TRoomInitResult>({ status: 'loaded', lastSeen: null })),
 		join: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),

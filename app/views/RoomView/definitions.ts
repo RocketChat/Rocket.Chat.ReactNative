@@ -126,7 +126,6 @@ export interface RoomState {
 	canAutoTranslate: boolean;
 	canForwardGuest: boolean;
 	canViewCannedResponse: boolean;
-	lastMessageFromAgent: boolean;
 	init: (params?: IRoomStoreInitParams) => Promise<TRoomInitResult>;
 	join: () => void;
 	joinRoom: (requestJoinCode?: () => void) => Promise<void>;

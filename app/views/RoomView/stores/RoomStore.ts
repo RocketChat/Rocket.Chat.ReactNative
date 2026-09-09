@@ -127,7 +127,6 @@ const createRoomState =
 		canAutoTranslate: false,
 		canForwardGuest: false,
 		canViewCannedResponse: false,
-		lastMessageFromAgent: false,
 
 		init: async ({ tmid, onThreadMessagesLoaded, signal }: IRoomStoreInitParams = {}): Promise<TRoomInitResult> => {
 			if (!rid) {
@@ -172,7 +171,6 @@ const publishRoom = (store: RoomStore, next: TSubscriptionModel): void => {
 	store.setState({
 		room: next,
 		joined: true,
-		lastMessageFromAgent: next.t === 'l' && !!(next.lastMessage && !next.lastMessage.token && next.lastMessage.u),
 		roomUpdate: Object.fromEntries(roomObservedFields.map(attr => [attr, next[attr]])) as IRoomViewState['roomUpdate']
 	});
 };

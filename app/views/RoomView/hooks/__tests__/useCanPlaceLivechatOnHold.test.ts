@@ -6,17 +6,18 @@ import { useCanPlaceLivechatOnHold } from '../useCanPlaceLivechatOnHold';
 let mockSetting = true;
 jest.mock('../../../../lib/hooks/useSetting', () => ({ useSetting: () => mockSetting }));
 
-let mockState = {
-	room: { rid: 'rid-1', t: 'l' },
-	roomUpdate: { onHold: false } as { onHold?: boolean },
-	lastMessageFromAgent: true
-};
+type TMockRoom = { rid: string; t: string; onHold?: boolean; lastMessage?: { u?: unknown; token?: string } };
+
+let mockState: { room: TMockRoom };
+
+const store = () => createStore(() => mockState) as any;
 
 describe('useCanPlaceLivechatOnHold', () => {
-	const store = () => createStore(() => mockState) as any;
 	beforeEach(() => {
 		mockSetting = true;
-		mockState = { room: { rid: 'rid-1', t: 'l' }, roomUpdate: { onHold: false }, lastMessageFromAgent: true };
+		mockState = {
+			room: { rid: 'rid-1', t: 'l', onHold: false, lastMessage: { u: { _id: 'agent-1' } } }
+		};
 	});
 
 	it('allows on-hold when the setting is on, the agent spoke last and the room is not on hold', () => {
@@ -24,12 +25,17 @@ describe('useCanPlaceLivechatOnHold', () => {
 	});
 
 	it('denies on-hold when the room is already on hold', () => {
-		mockState = { ...mockState, roomUpdate: { onHold: true } };
+		mockState = { room: { ...mockState.room, onHold: true } };
 		expect(renderHook(() => useCanPlaceLivechatOnHold(store())).result.current).toBe(false);
 	});
 
 	it('denies on-hold when the visitor spoke last', () => {
-		mockState = { ...mockState, lastMessageFromAgent: false };
+		mockState = { room: { ...mockState.room, lastMessage: { u: { _id: 'visitor-1' }, token: 'visitor-token' } } };
+		expect(renderHook(() => useCanPlaceLivechatOnHold(store())).result.current).toBe(false);
+	});
+
+	it('denies on-hold when there is no last message', () => {
+		mockState = { room: { ...mockState.room, lastMessage: undefined } };
 		expect(renderHook(() => useCanPlaceLivechatOnHold(store())).result.current).toBe(false);
 	});
 
@@ -39,7 +45,7 @@ describe('useCanPlaceLivechatOnHold', () => {
 	});
 
 	it('denies on-hold outside livechat rooms', () => {
-		mockState = { ...mockState, room: { rid: 'rid-1', t: 'c' } };
+		mockState = { room: { ...mockState.room, t: 'c' } };
 		expect(renderHook(() => useCanPlaceLivechatOnHold(store())).result.current).toBe(false);
 	});
 });

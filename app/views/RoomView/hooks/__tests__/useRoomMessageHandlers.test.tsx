@@ -74,7 +74,6 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		canAutoTranslate: false,
 		canForwardGuest: false,
 		canViewCannedResponse: false,
-		lastMessageFromAgent: false,
 		init: jest.fn(),
 		join: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
