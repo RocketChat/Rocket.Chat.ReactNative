@@ -10,6 +10,7 @@ const externalState = {
 	rid: 'rid-1',
 	t: 'c',
 	tmid: undefined,
+	roomTitle: 'Room 1',
 	room: { rid: 'rid-1', t: 'c' },
 	sharing: false,
 	editCancel: jest.fn(),

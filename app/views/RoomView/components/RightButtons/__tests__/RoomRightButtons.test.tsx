@@ -57,8 +57,7 @@ let mockUnreads = {
 	tunread: [] as string[],
 	tunreadUser: [] as string[],
 	tunreadGroup: [] as string[],
-	isSelfDm: false,
-	subscription: undefined as unknown
+	isSelfDm: false
 };
 jest.mock('../../../hooks/useSubscriptionUnreads', () => ({
 	useSubscriptionUnreads: () => mockUnreads
@@ -107,7 +106,7 @@ jest.mock('../HeaderCallButton', () => {
 	};
 });
 
-const roomStore = {} as RoomStore;
+const roomStore = { getState: () => mockRoomState } as unknown as RoomStore;
 
 const renderRoomRightButtons = () => render(<RoomRightButtons rid='rid-1' roomStore={roomStore} />);
 
@@ -122,7 +121,7 @@ describe('RoomRightButtons', () => {
 		};
 		mockRoomState = { room: { rid: 'rid-1', t: 'c', name: 'general' } };
 		mockHasE2EEWarning = false;
-		mockUnreads = { tunread: [], tunreadUser: [], tunreadGroup: [], isSelfDm: false, subscription: undefined };
+		mockUnreads = { tunread: [], tunreadUser: [], tunreadGroup: [], isSelfDm: false };
 		mockCanToggleEncryption = false;
 	});
 
@@ -176,7 +175,7 @@ describe('RoomRightButtons', () => {
 	it.each([false, true])('routes notification issues to push troubleshooting (master-detail: %s)', isMasterDetail => {
 		mockIsMasterDetail = isMasterDetail;
 		mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
-		mockUnreads = { ...mockUnreads, subscription: { id: 'rid-1' } };
+		mockRoomState = { room: { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general' } };
 
 		renderRoomRightButtons();
 
@@ -191,14 +190,13 @@ describe('RoomRightButtons', () => {
 
 	it.each([false, true])('routes disabled Room notifications to preferences (master-detail: %s)', isMasterDetail => {
 		mockIsMasterDetail = isMasterDetail;
-		mockRoomState = { room: { rid: 'rid-1', t: 'c', name: 'general', disableNotifications: true } };
-		mockUnreads = { ...mockUnreads, subscription: { id: 'rid-1' } };
+		mockRoomState = { room: { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general', disableNotifications: true } };
 
 		renderRoomRightButtons();
 
 		expect(screen.getByTestId('room-view-push-troubleshoot')).toHaveProp('color', '');
 		fireEvent.press(screen.getByTestId('room-view-push-troubleshoot'));
-		const params = { rid: 'rid-1', room: { id: 'rid-1' } };
+		const params = { rid: 'rid-1', room: mockRoomState.room };
 		expect(mockNavigation.navigate).toHaveBeenCalledWith(
 			...(isMasterDetail ? ['ModalStackNavigator', { screen: 'NotificationPrefView', params }] : ['NotificationPrefView', params])
 		);
@@ -289,7 +287,7 @@ describe('RoomRightButtons', () => {
 		mockHasE2EEWarning = true;
 		mockCanToggleEncryption = true;
 		mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
-		mockUnreads = { ...mockUnreads, subscription: { id: 'rid-1' } };
+		mockRoomState = { room: { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general' } };
 		renderRoomRightButtons();
 
 		expect(screen.getByTestId('room-view-header-threads')).toHaveProp('disabled', true);

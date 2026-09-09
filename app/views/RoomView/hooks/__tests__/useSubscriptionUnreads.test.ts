@@ -67,7 +67,6 @@ describe('useSubscriptionUnreads', () => {
 		const row = { id: 'sub-1', rid: 'rid-1', t: 'd', tunread: ['a', 'b'], tunreadUser: ['a'], tunreadGroup: ['b'] };
 		emitRow(row);
 
-		expect(result.current.subscription).toBe(row);
 		expect(result.current.tunread).toEqual(['a', 'b']);
 		expect(result.current.tunreadUser).toEqual(['a']);
 		expect(result.current.tunreadGroup).toEqual(['b']);
@@ -80,13 +79,11 @@ describe('useSubscriptionUnreads', () => {
 
 		expect(result.current.tunread).toEqual([]);
 		expect(result.current.isSelfDm).toBe(false);
-		expect(result.current.subscription).toBeUndefined();
 	});
 
 	it('falls back to empty unreads without a rid', () => {
 		const { result } = renderHook(() => useSubscriptionUnreads(createRoomStore({ initialRoom: { rid: '', t: '' } }), 'user-1'));
 
 		expect(result.current.tunread).toEqual([]);
-		expect(result.current.subscription).toBeUndefined();
 	});
 });

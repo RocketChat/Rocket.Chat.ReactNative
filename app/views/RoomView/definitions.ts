@@ -14,7 +14,6 @@ import {
 	type IUseRoomMessageHandlersResult
 } from '../../definitions';
 import { type TRoomOrPreview } from '../../definitions/TRoom';
-import { type TSubscriptionModel } from '../../definitions/ISubscription';
 import { type TActionSheetOptions } from '../../containers/ActionSheet';
 import { type IMessageComposerRef } from '../../containers/MessageComposer/interfaces';
 import { type IMessageActions, type IMessageActionsProps } from '../../containers/MessageActions';
@@ -248,7 +247,6 @@ export interface IUseSubscriptionUnreadsResult {
 	tunreadUser: string[];
 	tunreadGroup: string[];
 	isSelfDm: boolean;
-	subscription?: TSubscriptionModel;
 }
 
 export interface IUseRoomNavigationParams {

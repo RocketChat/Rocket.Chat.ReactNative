@@ -80,11 +80,23 @@ describe('ComposerStore', () => {
 			spy(roomTitle);
 			return null;
 		};
-		const Parent = ({ roomTitle }: { roomTitle: string }) => (
-			<ComposerProvider {...fullProps()} roomTitle={roomTitle}>
-				<Probe />
-			</ComposerProvider>
-		);
+		const Parent = ({ roomTitle }: { roomTitle: string }) => {
+			const props = fullProps();
+			return (
+				<ComposerProvider
+					rid={props.rid}
+					t={props.t}
+					tmid={props.tmid}
+					roomTitle={roomTitle}
+					sharing={props.sharing}
+					editCancel={props.editCancel}
+					editRequest={props.editRequest}
+					onRemoveQuoteMessage={props.onRemoveQuoteMessage}
+					onSendMessage={props.onSendMessage}>
+					<Probe />
+				</ComposerProvider>
+			);
+		};
 
 		const { rerender } = render(<Parent roomTitle='old' />);
 		expect(spy).toHaveBeenLastCalledWith('old');

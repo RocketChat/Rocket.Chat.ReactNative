@@ -50,14 +50,13 @@ let mockHeaderHooks = {
 	tunreadUser: [] as string[],
 	tunreadGroup: [] as string[],
 	isSelfDm: false,
-	canToggleEncryption: false,
-	subscription: undefined as any
+	canToggleEncryption: false
 };
 jest.mock('../../hooks/useThreadFollowing', () => ({ useThreadFollowing: () => mockHeaderHooks.isFollowingThread }));
 jest.mock('../../hooks/useSubscriptionUnreads', () => ({
 	useSubscriptionUnreads: () => {
-		const { tunread, tunreadUser, tunreadGroup, isSelfDm, subscription } = mockHeaderHooks;
-		return { tunread, tunreadUser, tunreadGroup, isSelfDm, subscription };
+		const { tunread, tunreadUser, tunreadGroup, isSelfDm } = mockHeaderHooks;
+		return { tunread, tunreadUser, tunreadGroup, isSelfDm };
 	}
 }));
 jest.mock('../../../../lib/hooks/usePermissions', () => ({
@@ -92,7 +91,7 @@ const allTestIDs = [
 ];
 
 describe('RightButtons', () => {
-	const roomStore = {} as any;
+	const roomStore = { getState: () => mockRoomState } as any;
 
 	const expectOnly = (queryByTestId: (id: string) => unknown, present: string[]) => {
 		present.forEach(id => expect(queryByTestId(id)).toBeTruthy());
@@ -118,8 +117,7 @@ describe('RightButtons', () => {
 			tunreadUser: [],
 			tunreadGroup: [],
 			isSelfDm: false,
-			canToggleEncryption: false,
-			subscription: undefined
+			canToggleEncryption: false
 		};
 	});
 

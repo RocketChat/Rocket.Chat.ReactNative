@@ -184,15 +184,21 @@ const observeRecord = (store: RoomStore, record: TSubscriptionModel): (() => voi
 
 const observeQueryUntilPresent = (rid: string, store: RoomStore): (() => void) => {
 	let recordCleanup: (() => void) | undefined;
+	// `var` (not `let`) so a synchronous emission below sees `subscription` as hoisted-but-undefined
+	// instead of throwing on the temporal-dead-zone read.
+	var subscription: { unsubscribe: () => void } | undefined;
 	const observable = database.active.get('subscriptions').query(Q.where('rid', rid)).observe();
-	const subscription = observable.subscribe((rows: TSubscriptionModel[]) => {
+	subscription = observable.subscribe((rows: TSubscriptionModel[]) => {
 		const record = rows[0];
 		if (record) {
-			subscription.unsubscribe();
 			recordCleanup = observeRecord(store, record);
+			subscription?.unsubscribe();
 		}
 	});
-	return () => (recordCleanup ? recordCleanup() : subscription.unsubscribe());
+	if (recordCleanup) {
+		subscription.unsubscribe();
+	}
+	return () => (recordCleanup ? recordCleanup() : subscription?.unsubscribe());
 };
 
 export function observeRoom(rid: string | undefined, store: RoomStore, onReady?: () => void): () => void {
