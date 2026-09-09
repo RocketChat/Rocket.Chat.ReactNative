@@ -11,6 +11,8 @@ import sdk from '../services/sdk';
 import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants/keys';
 import UserPreferences from './userPreferences';
 import { removePushToken } from '../services/restApi';
+import { useConferenceCallStore } from '../services/conference/useConferenceCallStore';
+import { clearServerCookies } from './helpers/setServerCookies';
 import { roomsSubscription } from './subscriptions/rooms';
 import { _activeUsersSubTimeout } from './getUsersPresence';
 
@@ -95,6 +97,15 @@ export async function removeServer({ server }: { server: string }): Promise<void
 }
 
 export async function logout({ server }: { server: string }): Promise<void> {
+	// The conference overlay is mounted outside the navigator, so nothing else unmounts it, and
+	// its webview was seeded with rc_uid/rc_token that would outlive the session.
+	useConferenceCallStore.getState().close();
+	try {
+		await clearServerCookies(server);
+	} catch (e) {
+		log(e);
+	}
+
 	if (roomsSubscription?.stop) {
 		roomsSubscription.stop();
 	}

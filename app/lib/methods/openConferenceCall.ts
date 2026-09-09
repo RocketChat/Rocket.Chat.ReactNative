@@ -1,16 +1,16 @@
 import { Camera } from 'expo-camera';
 
 import Navigation from '../navigation/appNavigation';
-import { useConferenceCallStore } from '../services/conference/useConferenceCallStore';
+import { preflightCallId, useConferenceCallStore } from '../services/conference/useConferenceCallStore';
 import { store } from '../store/auxStore';
 import { buildConferenceUrl } from './helpers/buildConferenceUrl';
 import log from './helpers/log';
 import { handleAndroidBltPermission } from './handleAndroidBltPermission';
 import { requestVoipCallPermissions } from './voipCallPermissions';
 
-type TConferenceTarget = { callId: string } | { rid: string };
+type TConferenceTarget = { callId: string; rid?: string } | { rid: string };
 
-const targetId = (target: TConferenceTarget): string => ('callId' in target ? target.callId : `new:${target.rid}`);
+const targetId = (target: TConferenceTarget): string => ('callId' in target ? target.callId : preflightCallId(target.rid));
 
 const requestCallPermissions = async (): Promise<void> => {
 	try {
@@ -35,6 +35,6 @@ export const openConferenceCall = async (target: TConferenceTarget): Promise<voi
 
 	await requestCallPermissions();
 
-	useConferenceCallStore.getState().open({ callId: targetId(target), url });
+	useConferenceCallStore.getState().open({ callId: targetId(target), url, rid: target.rid });
 	Navigation.navigate('ConferenceView');
 };

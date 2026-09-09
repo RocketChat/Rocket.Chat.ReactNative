@@ -1,17 +1,23 @@
 import i18n from '../../i18n';
-import { isConferenceWindowEnabled } from '../hooks/useConferenceWindow';
 import navigation from '../navigation/appNavigation';
 import { videoConferenceJoin } from '../services/restApi';
 import { showErrorAlert } from './helpers';
+import { isConferenceWindowEnabled } from './helpers/isConferenceWindowEnabled';
 import log from './helpers/log';
 import openLink from './helpers/openLink';
 import { handleAndroidBltPermission } from './handleAndroidBltPermission';
 import { openConferenceCall } from './openConferenceCall';
 
-export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean, fromPush?: boolean): Promise<void> => {
+// `rid` lets the conference window keep a preflight page already open for that room.
+export const videoConfJoin = async (
+	callId: string,
+	cam?: boolean,
+	mic?: boolean,
+	{ fromPush, rid }: { fromPush?: boolean; rid?: string } = {}
+): Promise<void> => {
 	try {
 		if (isConferenceWindowEnabled()) {
-			await openConferenceCall({ callId });
+			await openConferenceCall({ callId, rid });
 			return;
 		}
 

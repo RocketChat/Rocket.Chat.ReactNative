@@ -1,8 +1,11 @@
 import CookieManager from '@react-native-cookies/cookies';
 
-import { setServerCookies } from './setServerCookies';
+import { clearServerCookies, setServerCookies } from './setServerCookies';
 
-jest.mock('@react-native-cookies/cookies', () => ({ setFromResponse: jest.fn(() => Promise.resolve(true)) }));
+jest.mock('@react-native-cookies/cookies', () => ({
+	setFromResponse: jest.fn(() => Promise.resolve(true)),
+	flush: jest.fn(() => Promise.resolve())
+}));
 
 const mockedSetFromResponse = CookieManager.setFromResponse as jest.Mock;
 
@@ -65,5 +68,37 @@ describe('setServerCookies', () => {
 
 		const expires = cookieStringFor('rc_uid').match(/Expires=([^;]+)/i)?.[1] as string;
 		expect(new Date(expires).getTime()).toBeGreaterThan(Date.now());
+	});
+});
+
+describe('clearServerCookies', () => {
+	beforeEach(() => {
+		mockedSetFromResponse.mockClear();
+	});
+
+	test('expires both credential cookies', async () => {
+		await clearServerCookies('https://open.rocket.chat');
+
+		expect(cookieStringFor('rc_uid')).toContain('rc_uid=;');
+		expect(cookieStringFor('rc_token')).toContain('rc_token=;');
+	});
+
+	test('dates the cookies to the past so the store drops them', async () => {
+		await clearServerCookies('https://open.rocket.chat');
+
+		const expires = cookieStringFor('rc_token').match(/Expires=([^;]+)/i)?.[1] as string;
+		expect(new Date(expires).getTime()).toBeLessThan(Date.now());
+	});
+
+	test('only touches the given server', async () => {
+		await clearServerCookies('https://open.rocket.chat');
+
+		mockedSetFromResponse.mock.calls.forEach(([url]) => expect(url).toEqual('https://open.rocket.chat'));
+	});
+
+	test('does nothing without a server', async () => {
+		await clearServerCookies('');
+
+		expect(mockedSetFromResponse).not.toHaveBeenCalled();
 	});
 });

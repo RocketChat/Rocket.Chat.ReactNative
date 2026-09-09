@@ -1,3 +1,4 @@
+import { selectServerRequest } from '../../actions/server';
 import { clearSettings, updateSettings } from '../../actions/settings';
 import { mockedStore } from '../../reducers/mockedStore';
 import navigation from '../navigation/appNavigation';
@@ -26,6 +27,7 @@ describe('videoConfJoin', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockedStore.dispatch(clearSettings());
+		mockedStore.dispatch(selectServerRequest('https://open.rocket.chat', '8.0.0'));
 		mockedJoin.mockResolvedValue({ success: true, url: 'https://meet.jit.si/room1', providerName: 'jitsi' });
 	});
 
@@ -93,7 +95,22 @@ describe('videoConfJoin', () => {
 		test('opens the conference page for the call', async () => {
 			await videoConfJoin('call1', true, true);
 
-			expect(openConferenceCall).toHaveBeenCalledWith({ callId: 'call1' });
+			expect(openConferenceCall).toHaveBeenCalledWith({ callId: 'call1', rid: undefined });
+		});
+
+		test('passes the room on so a preflight page already open for it is kept', async () => {
+			await videoConfJoin('call1', true, true, { rid: 'GENERAL' });
+
+			expect(openConferenceCall).toHaveBeenCalledWith({ callId: 'call1', rid: 'GENERAL' });
+		});
+
+		test('falls back to the regular join flow on a cleartext server', async () => {
+			mockedStore.dispatch(selectServerRequest('http://open.rocket.chat', '8.0.0'));
+
+			await videoConfJoin('call1', true, true);
+
+			expect(openConferenceCall).not.toHaveBeenCalled();
+			expect(mockedJoin).toHaveBeenCalledWith('call1', true, true);
 		});
 
 		test('does not post the join — the page does that after its preflight', async () => {

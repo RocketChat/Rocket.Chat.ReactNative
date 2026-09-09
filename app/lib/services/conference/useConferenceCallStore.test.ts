@@ -62,11 +62,29 @@ describe('useConferenceCallStore', () => {
 	test('joining the assigned call keeps the room preflight page instead of reloading it', () => {
 		state().open({ callId: 'new:GENERAL', url: 'https://open.rocket.chat/conference/new?rid=GENERAL' });
 
-		state().open({ callId: 'call1', url: 'https://open.rocket.chat/conference/call1' });
+		state().open({ callId: 'call1', url: 'https://open.rocket.chat/conference/call1', rid: 'GENERAL' });
 
 		expect(state().callId).toEqual('call1');
 		expect(state().url).toEqual('https://open.rocket.chat/conference/new?rid=GENERAL');
 		expect(state().expanded).toBe(true);
+	});
+
+	test('a call from another room does not inherit the preflight page', () => {
+		state().open({ callId: 'new:GENERAL', url: 'https://open.rocket.chat/conference/new?rid=GENERAL' });
+
+		state().open({ callId: 'call1', url: 'https://open.rocket.chat/conference/call1', rid: 'other-room' });
+
+		expect(state().callId).toEqual('call1');
+		expect(state().url).toEqual('https://open.rocket.chat/conference/call1');
+	});
+
+	test('a call with no room to correlate does not inherit the preflight page', () => {
+		state().open({ callId: 'new:GENERAL', url: 'https://open.rocket.chat/conference/new?rid=GENERAL' });
+
+		state().open({ callId: 'call1', url: 'https://open.rocket.chat/conference/call1' });
+
+		expect(state().callId).toEqual('call1');
+		expect(state().url).toEqual('https://open.rocket.chat/conference/call1');
 	});
 
 	test('starting another room still replaces the preflight', () => {

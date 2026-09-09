@@ -3,18 +3,23 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import i18n from '../../i18n';
 import { useTheme } from '../../theme';
+import { MIN_HEIGHT as COMPOSER_MIN_HEIGHT } from '../MessageComposer/constants';
 import { CustomIcon } from '../CustomIcon';
 
 type IMinimizedCallBar = {
 	onPress: () => void;
 };
 
+// Mounted at the root, so it cannot take part in any screen's layout: keep it a pill clear of
+// RoomView's composer, on the left so it misses the list's jump-to-bottom FAB.
+const COMPOSER_CLEARANCE = COMPOSER_MIN_HEIGHT + 12;
+
 const MinimizedCallBar = ({ onPress }: IMinimizedCallBar) => {
 	const { colors } = useTheme();
 	const { bottom } = useSafeAreaInsets();
 
 	return (
-		<View style={[styles.container, { bottom }]} pointerEvents='box-none'>
+		<View style={[styles.container, { bottom: bottom + COMPOSER_CLEARANCE }]} pointerEvents='box-none'>
 			<TouchableOpacity
 				style={[styles.bar, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]}
 				onPress={onPress}
@@ -34,20 +39,18 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		left: 0,
 		right: 0,
-		alignItems: 'center',
-		paddingHorizontal: 16,
-		paddingBottom: 8
+		alignItems: 'flex-start',
+		paddingHorizontal: 16
 	},
 	bar: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		alignSelf: 'stretch',
-		borderRadius: 4,
+		maxWidth: '100%',
+		borderRadius: 20,
 		paddingHorizontal: 16,
-		paddingVertical: 12
+		paddingVertical: 10
 	},
 	label: {
-		flex: 1,
 		marginLeft: 8,
 		fontSize: 14,
 		fontWeight: '600'

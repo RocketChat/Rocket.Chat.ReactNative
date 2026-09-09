@@ -1,9 +1,11 @@
 import CookieManager from '@react-native-cookies/cookies';
 import { URL } from 'react-native-url-polyfill';
 
+import { isAndroid } from './deviceInfo';
 import { isSecureHttpUrl } from './isConferenceUrl';
 
 const COOKIE_LIFETIME_DAYS = 1;
+const SERVER_COOKIE_NAMES = ['rc_uid', 'rc_token'];
 
 export const setServerCookies = async (server: string, user: { id: string; token: string }): Promise<void> => {
 	if (!isSecureHttpUrl(server)) {
@@ -22,4 +24,20 @@ export const setServerCookies = async (server: string, user: { id: string; token
 
 	await CookieManager.setFromResponse(server, `rc_uid=${user.id}; ${suffix}`);
 	await CookieManager.setFromResponse(server, `rc_token=${user.token}; ${suffix}`);
+};
+
+// `clearByName` is iOS only, so expire the cookies in place rather than clearing the whole jar,
+// which would also drop other servers' and the login webview's SSO cookies.
+export const clearServerCookies = async (server: string): Promise<void> => {
+	if (!server) {
+		return;
+	}
+
+	for (const name of SERVER_COOKIE_NAMES) {
+		await CookieManager.setFromResponse(server, `${name}=; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Path=/`);
+	}
+
+	if (isAndroid) {
+		await CookieManager.flush();
+	}
 };

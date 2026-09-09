@@ -11,7 +11,7 @@ import { handleAndroidBltPermission } from '../../methods/handleAndroidBltPermis
 import { openConferenceCall } from '../../methods/openConferenceCall';
 import { videoConferenceGetCapabilities } from '../../services/restApi';
 import { useAppSelector } from '../useAppSelector';
-import { isConferenceWindowEnabled } from '../useConferenceWindow';
+import { isConferenceWindowEnabled } from '../../methods/helpers/isConferenceWindowEnabled';
 import StartACallActionSheet from './StartACallActionSheet';
 import { useVideoConfCall } from './useVideoConfCall';
 

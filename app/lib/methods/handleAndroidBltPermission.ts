@@ -8,12 +8,18 @@ const handleBltPermission = async (): Promise<Permission[]> => {
 	if (apiLevel >= 31) {
 		return [PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT, PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN];
 	}
-	return [PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION];
+	// Only API 29/30 gated Bluetooth discovery behind location.
+	if (apiLevel >= 29) {
+		return [PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION];
+	}
+	return [];
 };
 
 export const handleAndroidBltPermission = async (): Promise<void> => {
 	if (isAndroid) {
 		const bltPermission = await handleBltPermission();
-		await PermissionsAndroid.requestMultiple(bltPermission);
+		if (bltPermission.length) {
+			await PermissionsAndroid.requestMultiple(bltPermission);
+		}
 	}
 };

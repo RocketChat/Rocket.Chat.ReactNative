@@ -47,5 +47,7 @@ describe('isConferenceUrl', () => {
 
 	test('allows loopback http for local dev', () => {
 		expect(isConferenceUrl('http://localhost:3000/conference/abc123', 'http://localhost:3000')).toBe(true);
+		expect(isConferenceUrl('http://127.0.0.1:3000/conference/abc123', 'http://127.0.0.1:3000')).toBe(true);
+		expect(isConferenceUrl('http://[::1]:3000/conference/abc123', 'http://[::1]:3000')).toBe(true);
 	});
 });

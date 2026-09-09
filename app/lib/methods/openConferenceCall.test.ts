@@ -70,11 +70,19 @@ describe('openConferenceCall', () => {
 	test('joining the assigned call after starting it keeps the preflight page', async () => {
 		await openConferenceCall({ rid: 'GENERAL' });
 
-		await openConferenceCall({ callId: 'call1' });
+		await openConferenceCall({ callId: 'call1', rid: 'GENERAL' });
 
 		expect(state().callId).toEqual('call1');
 		expect(state().url).toEqual('https://open.rocket.chat/conference/new?rid=GENERAL');
 		expect(state().expanded).toBe(true);
+	});
+
+	test('joining a call from another room loads that call instead of the preflight', async () => {
+		await openConferenceCall({ rid: 'GENERAL' });
+
+		await openConferenceCall({ callId: 'call1', rid: 'other-room' });
+
+		expect(state().url).toEqual('https://open.rocket.chat/conference/call1');
 	});
 
 	test('does nothing when there is no server to build a url from', async () => {

@@ -1,7 +1,8 @@
 import { URL } from 'react-native-url-polyfill';
 
+// WHATWG URL keeps IPv6 hosts bracketed, so `http://[::1]:3000` reports `[::1]` as its hostname.
 export const isLoopbackHostname = (hostname: string): boolean =>
-	hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
+	hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]';
 
 export const isSecureHttpUrl = (value: string): boolean => {
 	try {

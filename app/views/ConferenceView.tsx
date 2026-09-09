@@ -2,6 +2,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useCallback, type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import Navigation from '../lib/navigation/appNavigation';
 import { useConferenceCallStore } from '../lib/services/conference/useConferenceCallStore';
 
 const ConferenceView = (): ReactElement => {
@@ -9,6 +10,12 @@ const ConferenceView = (): ReactElement => {
 
 	useFocusEffect(
 		useCallback(() => {
+			// The call may have ended while this route was buried under another screen.
+			if (!useConferenceCallStore.getState().callId) {
+				Navigation.back();
+				return;
+			}
+
 			expand();
 			return () => minimize();
 		}, [expand, minimize])

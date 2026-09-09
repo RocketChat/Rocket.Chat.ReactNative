@@ -18,7 +18,9 @@ export const buildConferenceBridgeScript = ({ userId, token, server }: TConferen
 		window.localStorage.setItem('Meteor.userId', ${uid});
 		window.localStorage.setItem('Meteor.loginToken', ${loginToken});
 		window.localStorage.setItem('Meteor.loginTokenExpires', ${expires});
-	} catch {
+	} catch (e) {
+		// Keep this script ES5: an optional catch binding is a SyntaxError on older Android
+		// WebViews, which would drop the whole bridge.
 	}
 
 	var post = function (message) {
