@@ -5,8 +5,6 @@ import { getUserInfo } from '../../../../lib/services/restApi';
 import { isGroupChat } from '../../../../lib/methods/helpers';
 import { isInviteSubscription } from '../../../../lib/methods/isInviteSubscription';
 import log from '../../../../lib/methods/helpers/log';
-import { roomObservedFields } from '../../../../definitions/TRoom';
-import { roomObservedColumns } from '../../constants';
 import getMessages from '../../services/getMessages';
 import { createRoomStore, observeRoom } from '../RoomStore';
 
@@ -47,30 +45,56 @@ const mockIsInviteSubscription = isInviteSubscription as unknown as jest.Mock;
 const mockLog = log as jest.Mock;
 
 const stubRoom = { rid: 'rid-1', t: 'c' };
-const subRoom = { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general' };
+const subRoom = { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general' };
 
-const createObservedStore = ({ rid = 'rid-1', initialRoom }: { rid?: string; initialRoom: any }) => {
-	const store = createRoomStore({ rid, initialRoom });
-	observeRoom(rid, store);
-	return store;
+const flush = () => Promise.resolve().then(() => Promise.resolve());
+
+const makeRecord = (row: Record<string, unknown>) => {
+	let emit: ((row: unknown) => void) | undefined;
+	let complete: (() => void) | undefined;
+	const unsubscribe = jest.fn();
+	const record = {
+		...row,
+		observe: jest.fn(() => ({
+			subscribe: (observer: { next: (row: unknown) => void; complete?: () => void }) => {
+				emit = observer.next;
+				complete = observer.complete;
+				observer.next(record);
+				return { unsubscribe };
+			}
+		}))
+	};
+	return {
+		record,
+		unsubscribe,
+		emit: (next: Record<string, unknown>) => emit?.(next),
+		destroy: () => complete?.()
+	};
 };
 
-const setupObserve = () => {
-	let emit: ((rows: any[]) => void) | undefined;
-	const unsubscribe = jest.fn();
-	const observeWithColumns = jest.fn(() => ({
-		subscribe: (cb: (rows: any[]) => void) => {
-			emit = cb;
-			return { unsubscribe };
+const setupPresentRow = (row: Record<string, unknown> = subRoom) => {
+	const { record, emit, destroy, unsubscribe } = makeRecord(row);
+	const find = jest.fn(() => Promise.resolve(record));
+	mockGet.mockReturnValue({ find });
+	return { emit, destroy, unsubscribe, find };
+};
+
+const setupAbsentThenPresentRow = () => {
+	const find = jest.fn(() => Promise.reject(new Error('not found')));
+	let emitRows: ((rows: unknown[]) => void) | undefined;
+	const queryUnsubscribe = jest.fn();
+	const observe = jest.fn(() => ({
+		subscribe: (next: (rows: unknown[]) => void) => {
+			emitRows = next;
+			return { unsubscribe: queryUnsubscribe };
 		}
 	}));
-	const query = jest.fn(() => ({ observeWithColumns }));
-	mockGet.mockReturnValue({ query });
+	const query = jest.fn(() => ({ observe }));
+	mockGet.mockReturnValue({ find, query });
 	return {
-		observeWithColumns,
-		query,
-		unsubscribe,
-		emit: (rows: any[]) => emit?.(rows)
+		find,
+		queryUnsubscribe,
+		emitRows: (rows: unknown[]) => emitRows?.(rows)
 	};
 };
 
@@ -84,132 +108,97 @@ describe('RoomStore', () => {
 	});
 
 	it('exposes the initial room synchronously on creation', () => {
-		setupObserve();
-		const store = createObservedStore({ initialRoom: stubRoom });
+		setupPresentRow();
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 
 		expect(store.getState().room).toBe(stubRoom);
 		expect(store.getState().joined).toBe(true);
-		expect(store.getState().subscribed).toBe(false);
 		expect(store.getState().member).toEqual({});
 	});
 
-	it('flips to preview mode (not subscribed, not joined) when a non-DM has no subscription', () => {
-		const { emit } = setupObserve();
-		const store = createObservedStore({ initialRoom: stubRoom });
+	it('publishes the found record and keeps observing it, with no early return on repeated emissions', async () => {
+		const { emit } = setupPresentRow();
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+		observeRoom('rid-1', store);
+		await flush();
 
-		emit([]);
-
-		expect(store.getState().subscribed).toBe(false);
-		expect(store.getState().joined).toBe(false);
-		expect(store.getState().room).toBe(stubRoom);
-	});
-
-	it('keeps a DM joined even with no subscription yet', () => {
-		const { emit } = setupObserve();
-		const store = createObservedStore({ initialRoom: { ...stubRoom, t: 'd' } });
-
-		emit([]);
-
-		expect(store.getState().subscribed).toBe(false);
+		emit(subRoom);
+		expect(store.getState().room).toBe(subRoom);
 		expect(store.getState().joined).toBe(true);
-	});
 
-	it('flips joined back to true once the subscription appears later', () => {
-		const { emit } = setupObserve();
-		const store = createObservedStore({ initialRoom: stubRoom });
-
-		emit([]);
-		expect(store.getState().joined).toBe(false);
-
-		emit([subRoom]);
-		expect(store.getState().joined).toBe(true);
-		expect(store.getState().subscribed).toBe(true);
-	});
-
-	it('rebuilds a fresh roomUpdate snapshot when the same model instance re-emits a mutated column', () => {
-		const { emit } = setupObserve();
-		const mutable = { ...subRoom, topic: 'old' };
-		const store = createObservedStore({ initialRoom: stubRoom });
-
-		emit([mutable]);
-		const first = store.getState().roomUpdate;
-		expect(first.topic).toBe('old');
-
-		// observeWithColumns re-emits the same cached instance, mutated in place
-		mutable.topic = 'new';
-		emit([mutable]);
-
-		expect(store.getState().room).toBe(mutable);
+		const mutated = { ...subRoom, topic: 'new' };
+		emit(mutated);
+		expect(store.getState().room).toBe(mutated);
 		expect(store.getState().roomUpdate.topic).toBe('new');
-		expect(store.getState().roomUpdate).not.toBe(first);
 	});
 
-	it('keeps room pointing at the live model instance when only lastMessage changes on a Livechat row', () => {
-		const { emit } = setupObserve();
-		const mutable: Record<string, unknown> = {
-			id: 'sub-1',
-			rid: 'rid-1',
-			t: 'l',
-			lastMessage: { u: { _id: 'visitor-1' }, token: 'v' }
-		};
-		const store = createObservedStore({ initialRoom: stubRoom });
+	it('sets joined false for a non-DM room when the record is destroyed', async () => {
+		const { emit, destroy } = setupPresentRow();
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+		observeRoom('rid-1', store);
+		await flush();
 
-		emit([mutable]);
-		expect(store.getState().lastMessageFromAgent).toBe(false);
+		emit(subRoom);
+		expect(store.getState().joined).toBe(true);
 
-		mutable.lastMessage = { u: { _id: 'agent-1' } };
-		emit([mutable]);
-
-		expect(store.getState().lastMessageFromAgent).toBe(true);
-		expect(store.getState().room).toBe(mutable);
+		destroy();
+		expect(store.getState().joined).toBe(false);
 	});
 
-	it('replaces room when the subscription row is recreated with identical attributes', () => {
-		const { emit } = setupObserve();
-		const store = createObservedStore({ initialRoom: stubRoom });
+	it('leaves a DM room untouched when its record is destroyed', async () => {
+		const dmRow = { ...subRoom, t: 'd' };
+		const { emit, destroy } = setupPresentRow(dmRow);
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: { ...stubRoom, t: 'd' } });
+		observeRoom('rid-1', store);
+		await flush();
 
-		emit([subRoom]);
-		emit([]);
-		const recreated = { ...subRoom, id: 'sub-2' };
-		emit([recreated]);
+		emit(dmRow);
+		expect(store.getState().joined).toBe(true);
 
-		expect(store.getState().subscribed).toBe(true);
-		expect(store.getState().room).toBe(recreated);
+		destroy();
+		expect(store.getState().joined).toBe(true);
+		expect(store.getState().room).toBe(dmRow);
 	});
 
-	it('derives the agent-authored flag from a Livechat row', () => {
-		const { emit } = setupObserve();
-		const store = createObservedStore({ initialRoom: stubRoom });
+	it('flips joined false for a non-DM room whose subscription is not yet found', async () => {
+		setupAbsentThenPresentRow();
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+		observeRoom('rid-1', store);
+		await flush();
 
-		emit([{ id: 'sub-1', rid: 'rid-1', t: 'l', lastMessage: { u: { _id: 'agent-1' } } }]);
-
-		expect(store.getState().lastMessageFromAgent).toBe(true);
+		expect(store.getState().joined).toBe(false);
 	});
 
-	it('does not update the agent-authored flag for a Channel last Message', () => {
-		const { emit } = setupObserve();
-		const store = createObservedStore({ initialRoom: stubRoom });
+	it('leaves a DM room joined while its subscription is not yet found', async () => {
+		setupAbsentThenPresentRow();
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: { ...stubRoom, t: 'd' } });
+		observeRoom('rid-1', store);
+		await flush();
 
-		emit([{ ...subRoom, lastMessage: { u: { _id: 'agent-1' } } }]);
-
-		expect(store.getState().lastMessageFromAgent).toBe(false);
+		expect(store.getState().joined).toBe(true);
 	});
 
-	it('clears the agent-authored flag when the row stops being a Livechat room', () => {
-		const { emit } = setupObserve();
-		const store = createObservedStore({ initialRoom: stubRoom });
+	it('switches from the query observable to the record observable once a row appears, and unsubscribes the query', async () => {
+		const { emitRows, queryUnsubscribe } = setupAbsentThenPresentRow();
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+		observeRoom('rid-1', store);
+		await flush();
 
-		emit([{ id: 'sub-1', rid: 'rid-1', t: 'l', lastMessage: { u: { _id: 'agent-1' } } }]);
-		expect(store.getState().lastMessageFromAgent).toBe(true);
+		const { record, emit } = makeRecord(subRoom);
+		emitRows([record]);
 
-		emit([{ id: 'sub-1', rid: 'rid-1', t: 'c', lastMessage: { u: { _id: 'agent-1' } } }]);
+		expect(queryUnsubscribe).toHaveBeenCalledTimes(1);
+		expect(store.getState().room).toBe(record);
+		expect(store.getState().joined).toBe(true);
 
-		expect(store.getState().lastMessageFromAgent).toBe(false);
+		const mutated = { ...subRoom, name: 'renamed', observe: record.observe };
+		emit(mutated);
+		expect(store.getState().room).toBe(mutated);
 	});
 
 	it('runs the main init path: fetches messages and sets member and canAutoTranslate', async () => {
-		setupObserve();
-		const store = createObservedStore({ initialRoom: subRoom });
+		setupPresentRow();
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 
 		await store.getState().init();
 
@@ -219,8 +208,8 @@ describe('RoomStore', () => {
 	});
 
 	it('loads messages without a read receipt for a route-param room that lacks a subscription row', async () => {
-		setupObserve();
-		const store = createObservedStore({ initialRoom: stubRoom });
+		setupPresentRow();
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 
 		await store.getState().init();
 
@@ -229,8 +218,8 @@ describe('RoomStore', () => {
 	});
 
 	it('routes a cursor-less subscribed room to the room-history loader directly', async () => {
-		setupObserve();
-		const store = createObservedStore({ initialRoom: subRoom });
+		setupPresentRow();
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 
 		await store.getState().init();
 
@@ -240,9 +229,9 @@ describe('RoomStore', () => {
 	});
 
 	it('routes a subscribed room with a cursor to the missed-messages loader', async () => {
-		setupObserve();
+		setupPresentRow();
 		const roomWithCursor = { ...subRoom, lastOpen: new Date('2026-01-01T00:00:00.000Z') };
-		const store = createObservedStore({ initialRoom: roomWithCursor });
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: roomWithCursor });
 
 		await store.getState().init();
 
@@ -251,9 +240,9 @@ describe('RoomStore', () => {
 	});
 
 	it('runs the thread init path when tmid is set: loads thread messages and fires the callback', async () => {
-		setupObserve();
+		setupPresentRow();
 		const onThreadMessagesLoaded = jest.fn();
-		const store = createObservedStore({ initialRoom: subRoom });
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 
 		await store.getState().init({ tmid: 'tmid-1', onThreadMessagesLoaded });
 
@@ -263,9 +252,9 @@ describe('RoomStore', () => {
 	});
 
 	it('early-returns without fetching messages when the room is an invite subscription', async () => {
-		setupObserve();
+		setupPresentRow();
 		mockIsInviteSubscription.mockReturnValue(true);
-		const store = createObservedStore({ initialRoom: subRoom });
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 
 		await expect(store.getState().init()).resolves.toEqual({ status: 'skipped' });
 
@@ -273,10 +262,10 @@ describe('RoomStore', () => {
 	});
 
 	it('fetches the DM member and sets roomUserId on success', async () => {
-		setupObserve();
+		setupPresentRow();
 		mockGetUserInfo.mockResolvedValue({ success: true, user: { _id: 'uid-1', username: 'alice' } });
 		const dmRoom = { ...subRoom, t: 'd' };
-		const store = createObservedStore({ initialRoom: dmRoom });
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: dmRoom });
 
 		await store.getState().init();
 
@@ -286,7 +275,7 @@ describe('RoomStore', () => {
 	});
 
 	it('leaves roomUserId untouched until getUserInfo resolves', async () => {
-		setupObserve();
+		setupPresentRow();
 		let resolveUserInfo: (value: unknown) => void = () => {};
 		mockGetUserInfo.mockReturnValue(
 			new Promise(resolve => {
@@ -294,7 +283,7 @@ describe('RoomStore', () => {
 			})
 		);
 		const dmRoom = { ...subRoom, t: 'd' };
-		const store = createObservedStore({ initialRoom: dmRoom });
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: dmRoom });
 
 		const initPromise = store.getState().init();
 		await Promise.resolve();
@@ -310,13 +299,13 @@ describe('RoomStore', () => {
 	});
 
 	it('applies nothing to the store when the run is aborted during a successful attempt', async () => {
-		setupObserve();
+		setupPresentRow();
 		const controller = new AbortController();
 		mockGetMessages.mockImplementation(() => {
 			controller.abort();
 			return Promise.resolve();
 		});
-		const store = createObservedStore({ initialRoom: subRoom });
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 
 		await expect(store.getState().init({ signal: controller.signal })).resolves.toEqual({ status: 'skipped' });
 
@@ -334,10 +323,10 @@ describe('RoomStore', () => {
 		});
 
 		it('logs the error when an attempt throws', async () => {
-			setupObserve();
+			setupPresentRow();
 			const error = new Error('boom');
 			mockGetMessages.mockRejectedValueOnce(error);
-			const store = createObservedStore({ initialRoom: subRoom });
+			const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 
 			const initPromise = store.getState().init();
 			await jest.advanceTimersByTimeAsync(1000);
@@ -347,10 +336,10 @@ describe('RoomStore', () => {
 		});
 
 		it('retries after a failed attempt and resolves with the lastSeen of the successful one', async () => {
-			setupObserve();
+			setupPresentRow();
 			const unreadRoom = { ...subRoom, alert: true, ls: new Date('2026-01-01T00:00:00.000Z') };
 			mockGetMessages.mockRejectedValueOnce(new Error('boom'));
-			const store = createObservedStore({ initialRoom: unreadRoom });
+			const store = createRoomStore({ rid: 'rid-1', initialRoom: unreadRoom });
 
 			const initPromise = store.getState().init();
 			await jest.advanceTimersByTimeAsync(1000);
@@ -360,9 +349,9 @@ describe('RoomStore', () => {
 		});
 
 		it('gives up after three attempts and resolves as failed', async () => {
-			setupObserve();
+			setupPresentRow();
 			mockGetMessages.mockRejectedValue(new Error('boom'));
-			const store = createObservedStore({ initialRoom: subRoom });
+			const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 
 			const initPromise = store.getState().init();
 			await jest.advanceTimersByTimeAsync(10000);
@@ -372,13 +361,15 @@ describe('RoomStore', () => {
 		});
 
 		it('retries against the room the observer delivered after the first attempt failed on an empty store', async () => {
-			const { emit } = setupObserve();
+			const { emit } = setupPresentRow();
 			mockGetMessages.mockRejectedValueOnce(new Error('boom'));
-			const store = createObservedStore({ initialRoom: { rid: '', t: '' } });
+			const store = createRoomStore({ rid: 'rid-1', initialRoom: { rid: '', t: '' } });
+			observeRoom('rid-1', store);
+			await flush();
 
 			const initPromise = store.getState().init();
 			await jest.advanceTimersByTimeAsync(0);
-			emit([subRoom]);
+			emit(subRoom);
 			await jest.advanceTimersByTimeAsync(10000);
 
 			await expect(initPromise).resolves.toEqual({ status: 'loaded', lastSeen: null });
@@ -388,23 +379,25 @@ describe('RoomStore', () => {
 		});
 
 		it('anchors the unread divider on the room read at the retry, not the one the run started with', async () => {
-			const { emit } = setupObserve();
+			const { emit } = setupPresentRow();
 			const unreadRoom = { ...subRoom, alert: true, ls: new Date('2026-02-02T00:00:00.000Z') };
 			mockGetMessages.mockRejectedValueOnce(new Error('boom'));
-			const store = createObservedStore({ initialRoom: subRoom });
+			const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
+			observeRoom('rid-1', store);
+			await flush();
 
 			const initPromise = store.getState().init();
 			await jest.advanceTimersByTimeAsync(0);
-			emit([unreadRoom]);
+			emit(unreadRoom);
 			await jest.advanceTimersByTimeAsync(10000);
 
 			await expect(initPromise).resolves.toEqual({ status: 'loaded', lastSeen: unreadRoom.ls });
 		});
 
 		it('does not retry an invite subscription', async () => {
-			setupObserve();
+			setupPresentRow();
 			mockIsInviteSubscription.mockReturnValue(true);
-			const store = createObservedStore({ initialRoom: subRoom });
+			const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 
 			const initPromise = store.getState().init();
 			await jest.advanceTimersByTimeAsync(10000);
@@ -414,10 +407,10 @@ describe('RoomStore', () => {
 		});
 
 		it('stops retrying and reports skipped once the run signal aborts', async () => {
-			setupObserve();
+			setupPresentRow();
 			mockGetMessages.mockRejectedValue(new Error('boom'));
 			const controller = new AbortController();
-			const store = createObservedStore({ initialRoom: subRoom });
+			const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 
 			const initPromise = store.getState().init({ signal: controller.signal });
 			await jest.advanceTimersByTimeAsync(0);
@@ -437,19 +430,16 @@ describe('RoomStore', () => {
 		expect(mockGetMessages).not.toHaveBeenCalled();
 	});
 
-	it('join() sets joined true', () => {
-		const { emit } = setupObserve();
-		const store = createObservedStore({ initialRoom: stubRoom });
+	it('join() sets joined true', async () => {
+		setupAbsentThenPresentRow();
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+		observeRoom('rid-1', store);
+		await flush();
 
-		emit([]);
 		expect(store.getState().joined).toBe(false);
 
 		store.getState().join();
 
 		expect(store.getState().joined).toBe(true);
-	});
-
-	it('roomObservedColumns has exactly one entry per roomObservedFields key', () => {
-		expect(Object.keys(roomObservedColumns).sort()).toEqual([...roomObservedFields].sort());
 	});
 });

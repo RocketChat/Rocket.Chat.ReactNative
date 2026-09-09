@@ -21,7 +21,6 @@ const makeRoomStore = (): RoomStore =>
 		room: { rid: 'rid-1', t: 'c' },
 		roomUpdate: {},
 		joined: true,
-		subscribed: true,
 		member: {},
 		roomUserId: null,
 		canAutoTranslate: false,

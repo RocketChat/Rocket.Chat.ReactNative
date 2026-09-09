@@ -17,11 +17,8 @@ import {
 	type RoomStore,
 	type TRoomInitResult
 } from '../definitions';
-import { roomObservedColumns } from '../constants';
 import getMessages from '../services/getMessages';
 import { joinRoom, resumeRoom } from '../services/joinRoom';
-
-const OBSERVED_COLUMNS = Object.values(roomObservedColumns);
 
 const EMPTY_ROOM: TRoomOrPreview = { rid: '', t: '' };
 const EMPTY_MEMBER: IRoomViewState['member'] = {};
@@ -125,7 +122,6 @@ const createRoomState =
 		room: initialRoom,
 		roomUpdate: {},
 		joined: true,
-		subscribed: 'id' in initialRoom,
 		member: EMPTY_MEMBER,
 		roomUserId,
 		canAutoTranslate: false,
@@ -172,43 +168,73 @@ const createRoomState =
 		resumeRoom: (): Promise<void> => resumeRoom(get().room, get().join)
 	});
 
+const publishRoom = (store: RoomStore, next: TSubscriptionModel): void => {
+	store.setState({
+		room: next,
+		joined: true,
+		lastMessageFromAgent: next.t === 'l' && !!(next.lastMessage && !next.lastMessage.token && next.lastMessage.u),
+		roomUpdate: Object.fromEntries(roomObservedFields.map(attr => [attr, next[attr]])) as IRoomViewState['roomUpdate']
+	});
+};
+
+const observeRecord = (store: RoomStore, record: TSubscriptionModel): (() => void) => {
+	const subscription = record.observe().subscribe({
+		next: (next: TSubscriptionModel) => publishRoom(store, next),
+		complete: () => {
+			if (store.getState().room.t !== 'd') {
+				store.setState({ joined: false });
+			}
+		}
+	});
+	return () => subscription.unsubscribe();
+};
+
+const observeQueryUntilPresent = (rid: string, store: RoomStore): (() => void) => {
+	let recordCleanup: (() => void) | undefined;
+	const observable = database.active.get('subscriptions').query(Q.where('rid', rid)).observe();
+	const subscription = observable.subscribe((rows: TSubscriptionModel[]) => {
+		const record = rows[0];
+		if (record) {
+			subscription.unsubscribe();
+			recordCleanup = observeRecord(store, record);
+		}
+	});
+	return () => (recordCleanup ? recordCleanup() : subscription.unsubscribe());
+};
+
 export function observeRoom(rid: string | undefined, store: RoomStore, onReady?: () => void): () => void {
 	if (!rid) {
 		return () => {};
 	}
-	const observable = database.active
+
+	let cancelled = false;
+	let cleanup: () => void = () => {};
+
+	database.active
 		.get('subscriptions')
-		.query(Q.where('rid', rid))
-		.observeWithColumns([...OBSERVED_COLUMNS, 'last_message']);
-	const subscription = observable.subscribe((rows: TRoomOrPreview[]) => {
-		const next = rows[0];
-		const previous = store.getState();
-		if (!next) {
-			store.setState({ subscribed: false, ...(previous.room.t !== 'd' ? { joined: false } : {}) });
-			return;
-		}
-		const roomChanged =
-			next !== previous.room || roomObservedFields.some(attr => previous.roomUpdate[attr] !== (next as TSubscriptionModel)[attr]);
-		const lastMessageFromAgent = next.t === 'l' && !!(next.lastMessage && !next.lastMessage.token && next.lastMessage.u);
-		if (!roomChanged && previous.subscribed && lastMessageFromAgent === previous.lastMessageFromAgent) {
-			return;
-		}
-		store.setState({
-			subscribed: true,
-			joined: true,
-			lastMessageFromAgent,
-			...(roomChanged
-				? {
-						room: next,
-						roomUpdate: Object.fromEntries(
-							roomObservedFields.map(attr => [attr, (next as TSubscriptionModel)[attr]])
-						) as IRoomViewState['roomUpdate']
-					}
-				: {})
+		.find(rid)
+		.then((record: TSubscriptionModel) => {
+			if (cancelled) {
+				return;
+			}
+			cleanup = observeRecord(store, record);
+			onReady?.();
+		})
+		.catch(() => {
+			if (cancelled) {
+				return;
+			}
+			if (store.getState().room.t !== 'd') {
+				store.setState({ joined: false });
+			}
+			cleanup = observeQueryUntilPresent(rid, store);
+			onReady?.();
 		});
-	});
-	onReady?.();
-	return () => subscription.unsubscribe();
+
+	return () => {
+		cancelled = true;
+		cleanup();
+	};
 }
 
 export const createRoomStore = ({

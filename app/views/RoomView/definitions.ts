@@ -121,7 +121,6 @@ export interface RoomState {
 	room: TRoomOrPreview;
 	roomUpdate: TRoomObservedFields;
 	joined: boolean;
-	subscribed: boolean;
 	member: IRoomViewState['member'];
 	roomUserId?: string | null;
 	canAutoTranslate: boolean;
