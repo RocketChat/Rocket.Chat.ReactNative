@@ -119,13 +119,27 @@ jest.mock('../../../lib/store/auxStore', () => ({
 // `joined` to false and puts both screens in the preview (Join) footer state.
 const mockSubscriptionRows: { current: unknown[] } = { current: [] };
 
+const mockWithObserve = (row: Record<string, unknown>) => ({
+	...row,
+	observe: () => ({
+		subscribe: ({ next }: { next: (row: unknown) => void }) => {
+			next(row);
+			return { unsubscribe: jest.fn() };
+		}
+	})
+});
+
 jest.mock('../../../lib/database', () => ({
 	__esModule: true,
 	default: {
 		active: {
 			get: () => ({
+				find: () => {
+					const row = mockSubscriptionRows.current[0] as Record<string, unknown> | undefined;
+					return row ? Promise.resolve(mockWithObserve(row)) : Promise.reject(new Error('not found'));
+				},
 				query: () => ({
-					observeWithColumns: () => ({
+					observe: () => ({
 						subscribe: (next: (rows: unknown[]) => void) => {
 							next(mockSubscriptionRows.current);
 							return { unsubscribe: jest.fn() };
@@ -205,6 +219,7 @@ describe('RoomView room and thread screens on the same rid', () => {
 
 		openThread();
 
+		await waitFor(() => expect(screen.getAllByTestId('room-view-join-button')).toHaveLength(2));
 		const [threadButton, roomButton] = screen.getAllByTestId('room-view-join-button');
 		expect(roomButton).toBeEnabled();
 		expect(threadButton).toBeDisabled();

@@ -30,7 +30,6 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		room: { rid: 'rid-1', t: 'c', name: 'general' },
 		roomUpdate: {},
 		joined: true,
-		subscribed: true,
 		member: {},
 		roomUserId: null,
 		canAutoTranslate: false,

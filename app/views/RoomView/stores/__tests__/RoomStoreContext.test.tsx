@@ -36,28 +36,34 @@ const mockGet = database.active.get as jest.Mock;
 const subRoom = { id: 'sub-1', rid: 'rid-1', t: 'c', topic: 'old' };
 
 const setupObserve = () => {
-	let emit: ((rows: any[]) => void) | undefined;
+	let emit: ((row: any) => void) | undefined;
 	const unsubscribe = jest.fn();
-	const observeWithColumns = jest.fn(() => ({
-		subscribe: (cb: (rows: any[]) => void) => {
-			emit = cb;
-			return { unsubscribe };
-		}
-	}));
-	const query = jest.fn(() => ({ observeWithColumns }));
-	mockGet.mockReturnValue({ query });
-	return { emit: (rows: any[]) => emit?.(rows) };
+	const find = jest.fn(() =>
+		Promise.resolve({
+			observe: () => ({
+				subscribe: ({ next }: { next: (row: any) => void }) => {
+					emit = next;
+					return { unsubscribe };
+				}
+			})
+		})
+	);
+	mockGet.mockReturnValue({ find });
+	return { emit: (row: any) => emit?.(row) };
 };
+
+const flush = () => act(async () => {});
 
 describe('useRoomWithUpdate', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
 
-	it('re-renders with the fresh field when the same room instance re-emits a mutated tracked column', () => {
+	it('re-renders with the fresh field when the same room instance re-emits a mutated tracked column', async () => {
 		const { emit } = setupObserve();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 		observeRoom('rid-1', store);
+		await flush();
 		const spy = jest.fn();
 
 		const Probe = () => {
@@ -74,20 +80,21 @@ describe('useRoomWithUpdate', () => {
 		expect(spy).toHaveBeenLastCalledWith('old');
 
 		const mutable = { ...subRoom };
-		act(() => emit([mutable]));
+		act(() => emit(mutable));
 		expect(spy).toHaveBeenLastCalledWith('old');
 
-		// observeWithColumns re-emits the same cached instance, mutated in place
+		// The record observable re-emits the same cached instance, mutated in place
 		mutable.topic = 'new';
-		act(() => emit([mutable]));
+		act(() => emit(mutable));
 
 		expect(spy).toHaveBeenLastCalledWith('new');
 	});
 
-	it('does NOT re-render a plain `s.room` selector on the same mutated-in-place emit (documents why the hook exists)', () => {
+	it('does NOT re-render a plain `s.room` selector on the same mutated-in-place emit (documents why the hook exists)', async () => {
 		const { emit } = setupObserve();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 		observeRoom('rid-1', store);
+		await flush();
 		const spy = jest.fn();
 
 		const PlainProbe = () => {
@@ -103,12 +110,12 @@ describe('useRoomWithUpdate', () => {
 		);
 
 		const mutable = { ...subRoom };
-		act(() => emit([mutable]));
+		act(() => emit(mutable));
 		const callsAfterFirstEmit = spy.mock.calls.length;
 
 		// Same reference, mutated in place — the plain `room` selector sees no reference change and skips the re-render.
 		mutable.topic = 'new';
-		act(() => emit([mutable]));
+		act(() => emit(mutable));
 
 		expect(spy.mock.calls.length).toBe(callsAfterFirstEmit);
 		expect(spy).toHaveBeenLastCalledWith('old');

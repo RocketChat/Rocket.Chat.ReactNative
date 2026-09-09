@@ -50,17 +50,20 @@ jest.mock('../LoadMore', () => ({ __esModule: true, default: () => null }));
 const mockGet = database.active.get as jest.Mock;
 
 const setupObserve = () => {
-	let emit: ((rows: any[]) => void) | undefined;
+	let emit: ((row: any) => void) | undefined;
 	const unsubscribe = jest.fn();
-	const observeWithColumns = jest.fn(() => ({
-		subscribe: (cb: (rows: any[]) => void) => {
-			emit = cb;
-			return { unsubscribe };
-		}
-	}));
-	const query = jest.fn(() => ({ observeWithColumns }));
-	mockGet.mockReturnValue({ query });
-	return { emit: (rows: any[]) => emit?.(rows) };
+	const find = jest.fn(() =>
+		Promise.resolve({
+			observe: () => ({
+				subscribe: ({ next }: { next: (row: any) => void }) => {
+					emit = next;
+					return { unsubscribe };
+				}
+			})
+		})
+	);
+	mockGet.mockReturnValue({ find });
+	return { emit: (row: any) => emit?.(row) };
 };
 
 describe('MessageRow', () => {
@@ -68,12 +71,13 @@ describe('MessageRow', () => {
 		jest.clearAllMocks();
 	});
 
-	it('re-renders with fresh isIgnored when the same room instance re-emits a mutated ignored list', () => {
+	it('re-renders with fresh isIgnored when the same room instance re-emits a mutated ignored list', async () => {
 		const { emit } = setupObserve();
 		const sub: any = { id: 'sub-1', rid: 'rid-1', t: 'c', ignored: [] };
 		const item: any = { id: 'msg-1', ts: new Date('2024-01-01T10:00:00Z'), u: { _id: 'author-1' } };
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: sub });
 		observeRoom('rid-1', store);
+		await act(async () => {});
 
 		render(
 			<RoomStoreContext.Provider value={store}>
@@ -84,12 +88,12 @@ describe('MessageRow', () => {
 			</RoomStoreContext.Provider>
 		);
 
-		act(() => emit([sub]));
+		act(() => emit(sub));
 		expect(mockMessage).toHaveBeenLastCalledWith(expect.objectContaining({ isIgnored: false }));
 
 		// Same instance, same ref — mirrors WatermelonDB's mutate-in-place re-emit.
 		sub.ignored = ['author-1'];
-		act(() => emit([sub]));
+		act(() => emit(sub));
 
 		expect(mockMessage).toHaveBeenLastCalledWith(expect.objectContaining({ isIgnored: true }));
 	});

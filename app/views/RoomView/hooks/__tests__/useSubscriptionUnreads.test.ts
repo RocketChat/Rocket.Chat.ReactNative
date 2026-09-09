@@ -25,18 +25,30 @@ const stubRoom = { rid: 'rid-1', t: 'c' };
 
 // Emits subscription rows through the rid-keyed RoomStore's observer, which is the only source
 // the hook reads from.
-const setupObservedRoom = (rid: string) => {
+const setupObservedRoom = async (rid: string) => {
 	let emit: ((rows: any[]) => void) | undefined;
-	const observeWithColumns = jest.fn(() => ({
+	const observe = jest.fn(() => ({
 		subscribe: (cb: (rows: any[]) => void) => {
 			emit = cb;
 			return { unsubscribe: jest.fn() };
 		}
 	}));
-	mockGet.mockReturnValue({ query: jest.fn(() => ({ observeWithColumns })) });
+	mockGet.mockReturnValue({ find: jest.fn(() => Promise.reject(new Error('not found'))), query: jest.fn(() => ({ observe })) });
 	observedStore = createRoomStore({ rid, initialRoom: stubRoom });
 	observeRoom(rid, observedStore);
-	return { emitRow: (row: any) => act(() => emit?.([row])) };
+	await act(async () => {});
+	return {
+		emitRow: (row: any) =>
+			act(() => {
+				row.observe = () => ({
+					subscribe: ({ next }: { next: (row: unknown) => void }) => {
+						next(row);
+						return { unsubscribe: jest.fn() };
+					}
+				});
+				emit?.([row]);
+			})
+	};
 };
 
 describe('useSubscriptionUnreads', () => {
@@ -47,9 +59,9 @@ describe('useSubscriptionUnreads', () => {
 
 	afterEach(() => {});
 
-	it('maps the observed subscription to the tunread trio and isSelfDm', () => {
+	it('maps the observed subscription to the tunread trio and isSelfDm', async () => {
 		mockGetUidDirectMessage.mockReturnValue('user-1');
-		const { emitRow } = setupObservedRoom('rid-1');
+		const { emitRow } = await setupObservedRoom('rid-1');
 		const { result } = renderHook(() => useSubscriptionUnreads(observedStore, 'user-1'));
 
 		const row = { id: 'sub-1', rid: 'rid-1', t: 'd', tunread: ['a', 'b'], tunreadUser: ['a'], tunreadGroup: ['b'] };
@@ -62,8 +74,8 @@ describe('useSubscriptionUnreads', () => {
 		expect(result.current.isSelfDm).toBe(true);
 	});
 
-	it('reports empty unreads while the room has no subscription row yet', () => {
-		setupObservedRoom('rid-1');
+	it('reports empty unreads while the room has no subscription row yet', async () => {
+		await setupObservedRoom('rid-1');
 		const { result } = renderHook(() => useSubscriptionUnreads(observedStore, 'user-1'));
 
 		expect(result.current.tunread).toEqual([]);
