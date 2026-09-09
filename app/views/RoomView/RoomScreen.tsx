@@ -27,9 +27,10 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 	const { colors } = useTheme();
 	const isMasterDetail = useMasterDetail();
 
-	const room = useStore(roomStore, s => s.room);
 	const roomTitle = useStore(roomStore, s => getRoomTitle(s.room));
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
+	const roomRid = useStore(roomStore, s => s.room.rid);
+	const roomType = useStore(roomStore, s => s.room.t);
 
 	const {
 		messageActionStore,
@@ -82,8 +83,8 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 			<RoomScreenContext.Provider value={roomScreen}>
 				<RoomProviders
 					store={messageActionStore}
-					rid={room.rid}
-					t={room.t}
+					rid={roomRid}
+					t={roomType}
 					roomTitle={roomTitle}
 					tmid={tmid}
 					sharing={false}
@@ -119,7 +120,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 							jumpToMessage={jumpToMessage}
 						/>
 						<RoomUploadProgress />
-						<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={room.rid} t={room.t} />
+						<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={roomRid} t={roomType} />
 					</SafeAreaView>
 				</RoomProviders>
 			</RoomScreenContext.Provider>

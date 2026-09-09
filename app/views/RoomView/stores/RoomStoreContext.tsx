@@ -2,8 +2,6 @@ import { createContext, useContext } from 'react';
 import { useStore } from 'zustand';
 
 import { type RoomState, type RoomStore } from '../definitions';
-import { useRoomWithUpdateFromStore } from '../../../lib/hooks/useRoomWithUpdateFromStore';
-import { type TRoomOrPreview } from '../../../definitions/TRoom';
 
 export const RoomStoreContext = createContext<RoomStore | null>(null);
 
@@ -16,5 +14,3 @@ export const useRoomStoreApi = (): RoomStore => {
 };
 
 export const useRoomStore = <T,>(selector: (state: RoomState) => T): T => useStore(useRoomStoreApi(), selector);
-
-export const useRoomWithUpdate = (): TRoomOrPreview => useRoomWithUpdateFromStore(useRoomStoreApi());

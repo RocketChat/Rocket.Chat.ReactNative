@@ -28,7 +28,6 @@ jest.mock('@react-navigation/native', () => ({
 const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 	createStore<RoomState>(() => ({
 		room: { rid: 'rid-1', t: 'c', name: 'general' },
-		roomUpdate: {},
 		joined: true,
 		member: {},
 		roomUserId: null,

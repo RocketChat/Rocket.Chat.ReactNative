@@ -9,7 +9,7 @@ import { isGroupChat, getUidDirectMessage, canAutoTranslate as canAutoTranslateM
 import log from '../../../lib/methods/helpers/log';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
 import { type RoomType, type TSubscriptionModel } from '../../../definitions';
-import { roomObservedFields, type TRoomOrPreview } from '../../../definitions/TRoom';
+import { type TRoomOrPreview } from '../../../definitions/TRoom';
 import {
 	type IRoomStoreInitParams,
 	type IRoomViewState,
@@ -120,7 +120,6 @@ const createRoomState =
 	): StateCreator<RoomState> =>
 	(set, get) => ({
 		room: initialRoom,
-		roomUpdate: {},
 		joined: true,
 		member: EMPTY_MEMBER,
 		roomUserId,
@@ -168,11 +167,7 @@ const createRoomState =
 	});
 
 const publishRoom = (store: RoomStore, next: TSubscriptionModel): void => {
-	store.setState({
-		room: next,
-		joined: true,
-		roomUpdate: Object.fromEntries(roomObservedFields.map(attr => [attr, next[attr]])) as IRoomViewState['roomUpdate']
-	});
+	store.setState({ room: next, joined: true });
 };
 
 const observeRecord = (store: RoomStore, record: TSubscriptionModel): (() => void) => {

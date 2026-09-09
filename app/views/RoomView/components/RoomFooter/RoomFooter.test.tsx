@@ -55,7 +55,6 @@ const makeReduxStore = ({ settings = {}, permissions = {}, enterpriseModules = [
 const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 	createZustandStore<RoomState>(() => ({
 		room: { rid: 'rid-1', t: 'c' },
-		roomUpdate: {},
 		joined: true,
 		member: {},
 		roomUserId: null,

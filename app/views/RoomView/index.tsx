@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useStore } from 'zustand';
 
 import { getRoomTitle } from '../../lib/methods/helpers';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
@@ -11,7 +12,6 @@ import RoomScreen from './RoomScreen';
 import { parseRoomRoute } from './services/parseRoomRoute';
 import { createRoomStore, observeRoom } from './stores/RoomStore';
 import { type RoomStore } from './definitions';
-import { useRoomWithUpdateFromStore } from '../../lib/hooks/useRoomWithUpdateFromStore';
 import { useE2EEStatus } from './hooks/useE2EEStatus';
 import { useHeader } from './hooks/useHeader';
 
@@ -25,23 +25,30 @@ const RoomGate = ({ route, navigation, input }: IRoomGateProps) => {
 	const [roomStore] = useState<RoomStore>(() => createRoomStore({ rid, initialRoom, roomUserId }));
 	const [ready, setReady] = useState(false);
 	useEffect(() => observeRoom(rid, roomStore, () => setReady(true)), [rid, roomStore]);
-	const room = useRoomWithUpdateFromStore(roomStore);
+	const isInvited = useStore(roomStore, s => 'id' in s.room && isInviteSubscription(s.room));
+	const isEncryptable = useStore(roomStore, s => 'encrypted' in s.room);
 
 	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(roomStore);
 
 	useHeader({ rid, tmid, name, roomStore });
 
-	if ('id' in room && isInviteSubscription(room)) {
-		return <InvitedRoomScreen room={room} />;
+	if (isInvited) {
+		const room = roomStore.getState().room;
+		if ('id' in room && isInviteSubscription(room)) {
+			return <InvitedRoomScreen room={room} />;
+		}
 	}
 
-	if ('encrypted' in room) {
-		if (showMissingE2EEKey) {
-			return <MissingRoomE2EEKey />;
-		}
+	if (isEncryptable) {
+		const room = roomStore.getState().room;
+		if ('encrypted' in room) {
+			if (showMissingE2EEKey) {
+				return <MissingRoomE2EEKey />;
+			}
 
-		if (showE2EEDisabledRoom) {
-			return <EncryptedRoom navigation={navigation} roomName={getRoomTitle(room)} />;
+			if (showE2EEDisabledRoom) {
+				return <EncryptedRoom navigation={navigation} roomName={getRoomTitle(room)} />;
+			}
 		}
 	}
 

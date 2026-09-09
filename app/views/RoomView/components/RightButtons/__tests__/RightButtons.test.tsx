@@ -160,7 +160,7 @@ describe('RightButtons routing', () => {
 
 		act(() => {
 			Object.assign(room, { t: nextType, status: nextStatus });
-			roomStore.setState({ roomUpdate: { t: nextType, status: nextStatus } } as Partial<ReturnType<RoomStore['getState']>>);
+			roomStore.setState({ room });
 		});
 
 		expectOnlyStub(expected);
