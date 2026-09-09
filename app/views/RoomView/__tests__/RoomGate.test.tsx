@@ -45,10 +45,10 @@ const room: { current: TRoomOrPreview } = { current: { rid: 'rid-1', t: 'c' } };
 
 jest.mock('../stores/RoomStore', () => {
 	const { createStore } = require('zustand');
-	const store = createStore(() => ({ room: {}, roomUpdate: {} }));
+	const store = createStore(() => ({ room: {} }));
 	return {
 		createRoomStore: () => {
-			store.setState({ room: room.current, roomUpdate: {} }, true);
+			store.setState({ room: room.current }, true);
 			return store;
 		},
 		observeRoom: (_rid: string, _store: unknown, onReady: () => void) => {

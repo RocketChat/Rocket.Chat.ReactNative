@@ -129,7 +129,6 @@ describe('RoomStore', () => {
 		const mutated = { ...subRoom, topic: 'new' };
 		emit(mutated);
 		expect(store.getState().room).toBe(mutated);
-		expect(store.getState().roomUpdate.topic).toBe('new');
 	});
 
 	it('sets joined false for a non-DM room when the record is destroyed', async () => {
