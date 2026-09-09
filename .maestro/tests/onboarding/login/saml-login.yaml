@@ -21,7 +21,9 @@ tags:
       visible: '.*Add account to device.*'
       platform: Android
     commands:
-      - tapOn: 'Stay signed out'
+      - tapOn:
+          text: 'Stay signed out'
+          optional: true
 - runFlow:
     when:
       visible: '.*Chrome notifications make things easier.*'
