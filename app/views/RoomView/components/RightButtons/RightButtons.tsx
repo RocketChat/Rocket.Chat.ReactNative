@@ -1,7 +1,8 @@
 import { type ReactElement } from 'react';
+import { useStore } from 'zustand';
+import { useShallow } from 'zustand/react/shallow';
 
 import { type RoomStore } from '../../definitions';
-import { useRoomWithUpdateFromStore } from '../../../../lib/hooks/useRoomWithUpdateFromStore';
 import { OmnichannelRightButtons } from './OmnichannelRightButtons';
 import { RoomRightButtons } from './RoomRightButtons';
 import { ThreadRightButtons } from './ThreadRightButtons';
@@ -13,18 +14,21 @@ interface IRightButtonsProps {
 }
 
 const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElement | null => {
-	const room = useRoomWithUpdateFromStore(roomStore);
+	const { t, status } = useStore(
+		roomStore,
+		useShallow(s => ({ t: s.room.t, status: s.room.status }))
+	);
 
 	if (!rid) {
 		return null;
 	}
 
-	if (room.status === 'INVITED') {
+	if (status === 'INVITED') {
 		return null;
 	}
 
-	if (room.t === 'l') {
-		if (room.status === 'queued') {
+	if (t === 'l') {
+		if (status === 'queued') {
 			return null;
 		}
 		return <OmnichannelRightButtons rid={rid} roomStore={roomStore} />;

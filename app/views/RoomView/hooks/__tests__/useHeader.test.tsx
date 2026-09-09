@@ -58,17 +58,20 @@ describe('useHeader', () => {
 		expect(options).not.toHaveProperty('headerRight');
 	});
 
-	it('re-fires the title effect when a rendered field changes even though the room reference is stable', () => {
-		mockTestStore = makeRoomStore({ roomUpdate: { topic: 'old' } });
+	it('re-fires the title effect when a selected field changes on a re-emitted room', () => {
+		mockTestStore = makeRoomStore({
+			room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general', topic: 'old' } as RoomState['room']
+		});
 
 		renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
 		expect(mockSetOptions).toHaveBeenCalledTimes(2);
 
 		act(() => {
-			mockTestStore.setState({ roomUpdate: { topic: 'new' } });
+			mockTestStore.setState({ room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general', topic: 'new' } as RoomState['room'] });
 		});
 		expect(mockSetOptions).toHaveBeenCalledTimes(3);
 		expect(mockSetOptions.mock.calls[2][0]).toHaveProperty('headerTitle');
+		expect(mockSetOptions.mock.calls[2][0].headerTitle().props.subtitle).toBe('new');
 	});
 
 	it('keeps the thread title from the passed name when the observed room name changes', () => {
@@ -78,7 +81,7 @@ describe('useHeader', () => {
 		expect(titleOptions.headerTitle().props.title).toBe('Thread name');
 
 		act(() => {
-			mockTestStore.setState({ room: { rid: 'rid-1', t: 'c', name: 'parent-channel' }, roomUpdate: { topic: 'new' } });
+			mockTestStore.setState({ room: { rid: 'rid-1', t: 'c', name: 'parent-channel' } });
 		});
 		const nextTitleOptions = mockSetOptions.mock.calls[mockSetOptions.mock.calls.length - 1][0];
 		expect(nextTitleOptions.headerTitle().props.title).toBe('Thread name');

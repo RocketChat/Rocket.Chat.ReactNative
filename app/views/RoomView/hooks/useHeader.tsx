@@ -1,4 +1,4 @@
-import { type ComponentProps, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { PixelRatio, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useShallow } from 'zustand/react/shallow';
@@ -11,7 +11,6 @@ import { type IOmnichannelSource, type ISubscription, type IVisitor } from '../.
 import LeftButtons from '../components/LeftButtons';
 import RightButtons from '../components/RightButtons/RightButtons';
 import { type IRoomViewProps } from '../definitions';
-import { type TRoomOrPreview } from '../../../definitions/TRoom';
 import { type RoomStore } from '../definitions';
 import { useGoRoomActionsView } from './useGoRoomActionsView';
 
@@ -23,65 +22,59 @@ interface IUseHeaderParams {
 	roomStore: RoomStore;
 }
 
-interface IGetRoomHeaderPropsParams {
-	room: TRoomOrPreview;
-	tmid?: string;
-	roomName?: string;
-	roomUserId?: string | null;
-	onPress: () => void;
+interface IHeaderFields {
+	prid?: string;
+	title: string;
+	parentTitle: string;
+	teamMain: boolean;
+	subtitle?: string;
+	type: string;
+	visitor?: IVisitor;
+	isGroupChat: boolean;
+	sourceType?: IOmnichannelSource;
+	abacAttributes: ISubscription['abacAttributes'];
+	disabled: boolean;
 }
-
-const getRoomHeaderProps = ({
-	room,
-	tmid,
-	roomName,
-	roomUserId,
-	onPress
-}: IGetRoomHeaderPropsParams): ComponentProps<typeof RoomHeader> => {
-	const title = tmid ? roomName : getRoomTitle(room);
-	const parentTitle = tmid ? getRoomTitle(room) : '';
-
-	let subtitle: string | undefined;
-	let visitor: IVisitor | undefined;
-	let sourceType: IOmnichannelSource | undefined;
-	if ('id' in room) {
-		subtitle = room.topic;
-		visitor = room.visitor;
-	}
-	if ('source' in room) {
-		sourceType = room.source;
-		visitor = room.visitor;
-	}
-
-	const subscription = room as ISubscription;
-	return {
-		prid: room?.prid,
-		tmid,
-		title,
-		teamMain: 'teamMain' in room ? room?.teamMain : false,
-		parentTitle,
-		subtitle,
-		type: room?.t,
-		roomUserId,
-		visitor,
-		isGroupChat: isGroupChat(subscription),
-		onPress,
-		testID: `room-view-title-${title}`,
-		sourceType,
-		abacAttributes: subscription.abacAttributes,
-		disabled: isInviteSubscription(subscription)
-	};
-};
 
 // rid/tmid/name come from the screen's mount-time snapshot: route.params can be wiped to undefined
 // while this RoomView is retained below the stack top, which would break the header permanently.
 export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderParams): void => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 
-	const room = useStore(roomStore, s => s.room);
-	const roomUpdate = useStore(
+	const headerFields = useStore(
 		roomStore,
-		useShallow(s => s.roomUpdate)
+		useShallow((s): IHeaderFields => {
+			const room = s.room;
+			const subscription = room as ISubscription;
+			const title = tmid ? (roomName ?? '') : getRoomTitle(room);
+			const parentTitle = tmid ? getRoomTitle(room) : '';
+
+			let subtitle: string | undefined;
+			let visitor: IVisitor | undefined;
+			let sourceType: IOmnichannelSource | undefined;
+			if ('id' in room) {
+				subtitle = room.topic;
+				visitor = room.visitor;
+			}
+			if ('source' in room) {
+				sourceType = room.source;
+				visitor = room.visitor;
+			}
+
+			return {
+				prid: room?.prid,
+				title,
+				teamMain: 'teamMain' in room ? !!room?.teamMain : false,
+				parentTitle,
+				subtitle,
+				type: room?.t,
+				visitor,
+				isGroupChat: isGroupChat(subscription),
+				sourceType,
+				abacAttributes: subscription.abacAttributes,
+				disabled: isInviteSubscription(subscription)
+			};
+		})
 	);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const goRoomActionsView = useGoRoomActionsView(roomStore);
@@ -103,27 +96,26 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 			return;
 		}
 
-		const headerProps = getRoomHeaderProps({ room, tmid, roomName, roomUserId, onPress: goRoomActionsView });
 		navigation.setOptions({
 			headerTitle: () => (
 				<RoomHeader
-					prid={headerProps.prid}
-					tmid={headerProps.tmid}
-					title={headerProps.title}
-					teamMain={headerProps.teamMain}
-					parentTitle={headerProps.parentTitle}
-					subtitle={headerProps.subtitle}
-					type={headerProps.type}
-					roomUserId={headerProps.roomUserId}
-					visitor={headerProps.visitor}
-					isGroupChat={headerProps.isGroupChat}
-					onPress={headerProps.onPress}
-					testID={headerProps.testID}
-					sourceType={headerProps.sourceType}
-					abacAttributes={headerProps.abacAttributes}
-					disabled={headerProps.disabled}
+					prid={headerFields.prid}
+					tmid={tmid}
+					title={headerFields.title}
+					teamMain={headerFields.teamMain}
+					parentTitle={headerFields.parentTitle}
+					subtitle={headerFields.subtitle}
+					type={headerFields.type}
+					roomUserId={roomUserId}
+					visitor={headerFields.visitor}
+					isGroupChat={headerFields.isGroupChat}
+					onPress={goRoomActionsView}
+					testID={`room-view-title-${headerFields.title}`}
+					sourceType={headerFields.sourceType}
+					abacAttributes={headerFields.abacAttributes}
+					disabled={headerFields.disabled}
 				/>
 			)
 		});
-	}, [rid, tmid, roomName, room, roomUpdate, roomUserId, navigation, goRoomActionsView]);
+	}, [rid, tmid, headerFields, roomUserId, navigation, goRoomActionsView]);
 };
