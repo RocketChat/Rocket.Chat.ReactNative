@@ -204,6 +204,7 @@
 		"jest-expo": "~54.0.16",
 		"oxfmt": "^0.60.0",
 		"oxlint": "^1.75.0",
+		"oxlint-plugin-complexity": "^2.1.8",
 		"patch-package": "~8.0.1",
 		"react-dom": "19.1.0",
 		"react-native-dotenv": "3.4.8",
