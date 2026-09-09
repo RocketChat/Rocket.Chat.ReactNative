@@ -14,6 +14,7 @@ import { RoomMessageActions } from './components/RoomMessageActions';
 import { RoomMessageList } from './components/RoomMessageList';
 import { RoomUploadProgress } from './components/RoomUploadProgress';
 import { RoomStoreContext } from './stores/RoomStoreContext';
+import { getRoomTitle } from '../../lib/methods/helpers/helpers';
 import { RoomScreenContext } from './stores/RoomScreenContext';
 import { useRoomMessaging } from './hooks/useRoomMessaging';
 import { useRoomSubscription } from './hooks/useRoomSubscription';
@@ -27,7 +28,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 	const isMasterDetail = useMasterDetail();
 
 	const room = useStore(roomStore, s => s.room);
-	const roomUpdate = useStore(roomStore, s => s.roomUpdate);
+	const roomTitle = useStore(roomStore, s => getRoomTitle(s.room));
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 
 	const {
@@ -83,8 +84,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 					store={messageActionStore}
 					rid={room.rid}
 					t={room.t}
-					room={room}
-					roomUpdate={roomUpdate}
+					roomTitle={roomTitle}
 					tmid={tmid}
 					sharing={false}
 					onRemoveQuoteMessage={onRemoveQuoteMessage}

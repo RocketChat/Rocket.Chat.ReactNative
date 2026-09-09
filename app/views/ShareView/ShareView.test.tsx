@@ -68,7 +68,7 @@ const renderOriginChooseMedia = (originStore: TMessageActionStore, originCompose
 	renderHook(() => useChooseMedia({ rid: 'room-id', tmid: undefined, permissionToUpload: true }), {
 		wrapper: ({ children }: { children: ReactElement }) => (
 			<Provider store={mockedStore}>
-				<RoomProviders store={originStore} rid='room-id' t='c' room={{ rid: 'room-id', t: 'c' } as any}>
+				<RoomProviders store={originStore} rid='room-id' t='c' roomTitle='room-id'>
 					<MessageComposerContainer ref={originComposerRef}>{children}</MessageComposerContainer>
 				</RoomProviders>
 			</Provider>

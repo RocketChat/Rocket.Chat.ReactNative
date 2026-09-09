@@ -3,11 +3,9 @@ import { createStore, useStore } from 'zustand';
 import { type StoreApi } from 'zustand';
 
 import { type IMessage, type IMessageEditAttachment } from '../../definitions';
-import { type IRoomWithUpdateState, useRoomWithUpdateFromStore } from '../../lib/hooks/useRoomWithUpdateFromStore';
-import { type TRoomOrPreview } from '../../definitions/TRoom';
 
-export type ComposerState = IRoomWithUpdateState & {
-	room: TRoomOrPreview;
+export type ComposerState = {
+	roomTitle?: string;
 	rid?: string;
 	t?: string;
 	tmid?: string;
@@ -61,7 +59,7 @@ export const ComposerProvider = ({ children, ...state }: { children: ReactNode }
 export const useComposerRid = (): ComposerState['rid'] => useComposerStore(s => s.rid);
 export const useComposerType = (): ComposerState['t'] => useComposerStore(s => s.t);
 export const useComposerTmid = (): ComposerState['tmid'] => useComposerStore(s => s.tmid);
-export const useComposerRoom = (): ComposerState['room'] => useRoomWithUpdateFromStore(useComposerStoreApi());
+export const useComposerRoomTitle = (): ComposerState['roomTitle'] => useComposerStore(s => s.roomTitle);
 export const useComposerSharing = (): ComposerState['sharing'] => useComposerStore(s => s.sharing);
 export const useIsAutocompleteVisible = (): ComposerState['isAutocompleteVisible'] =>
 	useComposerStore(s => s.isAutocompleteVisible);

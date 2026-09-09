@@ -38,7 +38,6 @@ jest.mock('@react-navigation/native', () => ({
 }));
 jest.mock('../../../lib/hooks/useAltTextSupported', () => ({ useAltTextSupported: jest.fn(() => false) }));
 jest.mock('../../../lib/hooks/useMasterDetail', () => ({ useMasterDetail: jest.fn(() => false) }));
-jest.mock('../../../lib/methods/helpers/helpers', () => ({ getRoomTitle: jest.fn(() => 'Room') }));
 jest.mock('../../../lib/methods/helpers/externalInput', () => ({ isExternalKeyboardConnected: jest.fn(() => false) }));
 jest.mock('../hooks/useIOSBackSwipeHandler', () => ({
 	__esModule: true,
@@ -58,7 +57,7 @@ const composerState = {
 	rid: 'room-1',
 	t: 'c',
 	tmid: undefined,
-	room: { rid: 'room-1', t: 'c' },
+	roomTitle: 'Room',
 	sharing: false,
 	onRemoveQuoteMessage: jest.fn()
 };
