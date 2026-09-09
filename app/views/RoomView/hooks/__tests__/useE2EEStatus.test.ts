@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { type IRoomViewState, type RoomStore } from '../../definitions';
+import { type RoomState, type RoomStore } from '../../definitions';
 import { useE2EEStatus } from '../useE2EEStatus';
 
 let mockState = {
@@ -15,8 +15,7 @@ jest.mock('../../../../lib/hooks/useAppSelector', () => ({
 jest.mock('../../../../lib/store/auxStore', () => ({ store: { getState: () => mockState } }));
 jest.mock('@rocket.chat/mobile-crypto', () => ({}));
 
-const createRoomStore = (room: IRoomViewState['room']) =>
-	createStore(() => ({ room, roomUpdate: {} as IRoomViewState['roomUpdate'] })) as RoomStore;
+const createRoomStore = (room: RoomState['room']) => createStore(() => ({ room })) as RoomStore;
 
 describe('useE2EEStatus', () => {
 	beforeEach(() => {
@@ -61,8 +60,8 @@ describe('useE2EEStatus', () => {
 		expect(result.current.hasE2EEWarning).toBe(true);
 
 		act(() => {
-			room.E2EKey = 'key';
-			store.setState({ roomUpdate: { E2EKey: 'key' } });
+			const updatedRoom = { ...room, E2EKey: 'key' };
+			store.setState({ room: updatedRoom });
 		});
 
 		expect(result.current).toEqual({ showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false });

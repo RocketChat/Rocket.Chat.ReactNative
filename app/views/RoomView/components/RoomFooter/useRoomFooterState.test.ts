@@ -1,17 +1,16 @@
 import { renderHook } from '@testing-library/react-native';
 
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
-import { useRoomStore, useRoomWithUpdate } from '../../stores/RoomStoreContext';
+import { useRoomStore } from '../../stores/RoomStoreContext';
 import { useFooterMessage } from './useFooterMessage';
 import { useRoomFooterState } from './useRoomFooterState';
 
 jest.mock('../../../../lib/hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }));
-jest.mock('../../stores/RoomStoreContext', () => ({ useRoomStore: jest.fn(), useRoomWithUpdate: jest.fn() }));
+jest.mock('../../stores/RoomStoreContext', () => ({ useRoomStore: jest.fn() }));
 jest.mock('./useFooterMessage', () => ({ useFooterMessage: jest.fn() }));
 
 const mockUseAppSelector = useAppSelector as jest.Mock;
 const mockUseRoomStore = useRoomStore as jest.Mock;
-const mockUseRoomWithUpdate = useRoomWithUpdate as jest.Mock;
 const mockUseFooterMessage = useFooterMessage as jest.Mock;
 
 const setup = (opts: {
@@ -20,8 +19,8 @@ const setup = (opts: {
 	airGappedRemainingDays?: number | undefined;
 	footerMessage?: string;
 }) => {
-	mockUseRoomWithUpdate.mockReturnValue(opts.room ?? {});
-	mockUseRoomStore.mockReturnValue(opts.joined ?? true);
+	const state = { room: opts.room ?? {}, joined: opts.joined ?? true };
+	mockUseRoomStore.mockImplementation((selector: (s: typeof state) => unknown) => selector(state));
 	mockUseAppSelector.mockReturnValue(opts.airGappedRemainingDays);
 	mockUseFooterMessage.mockReturnValue(opts.footerMessage ?? '');
 	return renderHook(() => useRoomFooterState());
