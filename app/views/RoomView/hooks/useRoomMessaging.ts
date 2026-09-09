@@ -8,9 +8,11 @@ import { createMessageActionStore } from '../../../containers/message/stores/Mes
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useLiveRef } from '../../../lib/hooks/useLiveRef';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
+import log, { events, logEvent } from '../../../lib/methods/helpers/log';
+import { Review } from '../../../lib/methods/helpers/review';
+import { sendMessage as sendMessageRequest } from '../../../lib/methods/sendMessage';
 import { getUserSelector } from '../../../selectors/login';
 import { type IListContainerRef, type IUseRoomMessagingParams, type TListRef } from '../definitions';
-import { sendRoomMessage } from '../services/sendRoomMessage';
 import { useMessageActions } from './useMessageActions';
 import { useRoomInit } from './useRoomInit';
 import { useRoomNavigation } from './useRoomNavigation';
@@ -70,16 +72,19 @@ export function useRoomMessaging({ rid, t, tmid, roomStore, ready, roomUserId, q
 
 	const roomScreen = useRoomInit({ rid, tmid, isAuthenticated, roomStore, onThreadMessagesLoaded, ready });
 
-	const sendMessage = (message?: string, tshow?: boolean) =>
-		sendRoomMessage({
-			rid,
-			message,
-			tmid,
-			user: userRef.current,
-			tshow,
-			onMessageSent: roomScreen.clearLastSeen,
-			resetAction
-		});
+	const sendMessage = (message?: string, tshow?: boolean) => {
+		if (message === undefined) {
+			return;
+		}
+		logEvent(events.ROOM_SEND_MESSAGE);
+		sendMessageRequest(rid as string, message, tmid, userRef.current, tshow)
+			.then(() => {
+				roomScreen.clearLastSeen();
+				Review.pushPositiveEvent();
+			})
+			.catch(log);
+		resetAction();
+	};
 
 	return {
 		messageActionStore,
