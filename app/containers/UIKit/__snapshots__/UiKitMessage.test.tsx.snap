@@ -743,7 +743,7 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
     ]
   }
 >
-  <Text
+  <View
     style={
       [
         {
@@ -752,9 +752,6 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
         },
         {
           "marginVertical": 6,
-        },
-        {
-          "color": "#2F343D",
         },
       ]
     }
@@ -782,8 +779,8 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
     >
       *this is plain_text text*
     </Text>
-  </Text>
-  <Text
+  </View>
+  <View
     style={
       [
         {
@@ -792,9 +789,6 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
         },
         {
           "marginVertical": 6,
-        },
-        {
-          "color": "#2F343D",
         },
       ]
     }
@@ -822,8 +816,8 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
     >
       *this is plain_text text*
     </Text>
-  </Text>
-  <Text
+  </View>
+  <View
     style={
       [
         {
@@ -832,9 +826,6 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
         },
         {
           "marginVertical": 6,
-        },
-        {
-          "color": "#2F343D",
         },
       ]
     }
@@ -862,8 +853,8 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
     >
       *this is plain_text text*
     </Text>
-  </Text>
-  <Text
+  </View>
+  <View
     style={
       [
         {
@@ -872,9 +863,6 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
         },
         {
           "marginVertical": 6,
-        },
-        {
-          "color": "#2F343D",
         },
       ]
     }
@@ -902,8 +890,8 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
     >
       *this is plain_text text*
     </Text>
-  </Text>
-  <Text
+  </View>
+  <View
     style={
       [
         {
@@ -912,9 +900,6 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
         },
         {
           "marginVertical": 6,
-        },
-        {
-          "color": "#2F343D",
         },
       ]
     }
@@ -942,7 +927,7 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
     >
       *this is plain_text text*
     </Text>
-  </Text>
+  </View>
 </View>
 `;
 
