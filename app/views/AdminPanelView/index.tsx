@@ -12,6 +12,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { type AdminPanelStackParamList } from '../../stacks/types';
 import { type IApplicationState } from '../../definitions';
 import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
+import { buildLoginScript } from './buildLoginScript';
 
 const AdminPanelView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<AdminPanelStackParamList, 'AdminPanelView'>>();
@@ -31,7 +32,7 @@ const AdminPanelView = () => {
 		return null;
 	}
 
-	const str = `Meteor.loginWithToken('${token}', function() { })`;
+	const str = buildLoginScript(token);
 
 	return (
 		<SafeAreaView>
