@@ -1,6 +1,6 @@
 import { Camera } from 'expo-camera';
 
-import Navigation from '../navigation/appNavigation';
+import { expandConferenceCall } from '../services/conference/conferenceCallNavigation';
 import { preflightCallId, useConferenceCallStore } from '../services/conference/useConferenceCallStore';
 import { store } from '../store/auxStore';
 import { buildConferenceUrl } from './helpers/buildConferenceUrl';
@@ -36,5 +36,5 @@ export const openConferenceCall = async (target: TConferenceTarget): Promise<voi
 	await requestCallPermissions();
 
 	useConferenceCallStore.getState().open({ callId: targetId(target), url, rid: target.rid });
-	Navigation.navigate('ConferenceView');
+	expandConferenceCall();
 };

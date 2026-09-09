@@ -6,7 +6,11 @@ import { useConferenceCallStore } from '../services/conference/useConferenceCall
 import { initStore } from '../store/auxStore';
 import { openConferenceCall } from './openConferenceCall';
 
-jest.mock('../navigation/appNavigation', () => ({ navigate: jest.fn() }));
+jest.mock('../navigation/appNavigation', () => ({
+	navigate: jest.fn(),
+	back: jest.fn(),
+	getCurrentRoute: jest.fn(() => undefined)
+}));
 jest.mock('./handleAndroidBltPermission', () => ({ handleAndroidBltPermission: jest.fn(() => Promise.resolve()) }));
 jest.mock('expo-camera', () => ({
 	Camera: {
