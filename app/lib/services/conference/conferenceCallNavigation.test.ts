@@ -1,5 +1,5 @@
 import Navigation from '../../navigation/appNavigation';
-import { CONFERENCE_ROUTE, closeConferenceCall, expandConferenceCall, minimizeConferenceCall } from './conferenceCallNavigation';
+import { CONFERENCE_ROUTE, closeConferenceCall, expandConferenceCall } from './conferenceCallNavigation';
 import { useConferenceCallStore } from './useConferenceCallStore';
 
 jest.mock('../../navigation/appNavigation', () => ({
@@ -39,33 +39,6 @@ describe('expandConferenceCall', () => {
 		expandConferenceCall();
 
 		expect(Navigation.navigate).not.toHaveBeenCalled();
-	});
-});
-
-describe('minimizeConferenceCall', () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-		state().close();
-	});
-
-	test('pops the conference route, which is what reports the minimize', () => {
-		showingConference();
-		openCall();
-
-		minimizeConferenceCall();
-
-		expect(Navigation.back).toHaveBeenCalled();
-	});
-
-	test('minimizes directly when the conference route is not showing', () => {
-		showingAnotherScreen();
-		openCall();
-
-		minimizeConferenceCall();
-
-		expect(Navigation.back).not.toHaveBeenCalled();
-		expect(state().expanded).toBe(false);
-		expect(state().callId).toEqual('call1');
 	});
 });
 

@@ -12,15 +12,6 @@ export const expandConferenceCall = (): void => {
 	}
 };
 
-// Popping the route is what minimizes the call: ConferenceView reports it on blur.
-export const minimizeConferenceCall = (): void => {
-	if (isShowingConference()) {
-		Navigation.back();
-		return;
-	}
-	useConferenceCallStore.getState().minimize();
-};
-
 export const closeConferenceCall = (): void => {
 	useConferenceCallStore.getState().close();
 	if (isShowingConference()) {
