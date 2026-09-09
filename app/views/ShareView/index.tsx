@@ -7,6 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 import { type Dispatch } from 'redux';
 
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
+import { getRoomTitle } from '../../lib/methods/helpers/helpers';
 import { type IMessageComposerRef, ComposerProvider, MessageComposerContainer } from '../../containers/MessageComposer';
 import { type InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../lib/constants/colors';
@@ -395,7 +396,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					<ComposerProvider
 						rid={room.rid}
 						t={room.t}
-						room={room}
+						roomTitle={getRoomTitle(room)}
 						tmid={this.getThreadId(thread)}
 						sharing
 						onSendMessage={this.send}
