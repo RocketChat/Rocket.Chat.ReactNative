@@ -1,10 +1,11 @@
 import MessageActions, { type IMessageActions } from '../../../containers/MessageActions';
 import MessageErrorActions, { type IMessageErrorActions } from '../../../containers/MessageErrorActions';
 import { type IRoomMessageActionsProps } from '../definitions';
+import { type TSubscriptionModel } from '../../../definitions';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../../selectors/login';
 import { useReadOnly } from '../hooks/useReadOnly';
-import { useRoomStore } from '../stores/RoomStoreContext';
+import { useRoomStore, useRoomStoreApi } from '../stores/RoomStoreContext';
 
 export const RoomMessageActions = ({
 	tmid,
@@ -17,13 +18,17 @@ export const RoomMessageActions = ({
 	onReactionPress,
 	jumpToMessage
 }: IRoomMessageActionsProps) => {
-	const room = useRoomStore(s => s.room);
+	const roomStore = useRoomStoreApi();
+	const isSubscribed = useRoomStore(s => 'id' in s.room);
 	const user = useAppSelector(getUserSelector);
 	const readOnly = useReadOnly();
 
-	if (!('id' in room)) {
+	if (!isSubscribed) {
 		return null;
 	}
+
+	const room = roomStore.getState().room as TSubscriptionModel;
+
 	return (
 		<>
 			<MessageActions

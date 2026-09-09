@@ -33,7 +33,8 @@ const getMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageM
 };
 
 export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress }: TMessageRowProps) => {
-	const room = useRoomStore(s => s.room);
+	const rid = useRoomStore(s => s.room.rid);
+	const t = useRoomStore(s => s.room.t) as RoomType;
 	const isIgnored = useIsIgnored(item?.u?._id);
 	const threadBadgeColor = useThreadBadgeColor(item.id);
 	const { lastSeen } = useRoomScreen();
@@ -43,8 +44,8 @@ export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress
 		const runOnRender = item.t === MessageTypeLoad.MORE && (!previousItem || !!previousItem.tmid);
 		return (
 			<LoadMore
-				rid={room.rid}
-				t={room.t as RoomType}
+				rid={rid}
+				t={t}
 				loaderId={item.id}
 				type={item.t}
 				runOnRender={runOnRender}

@@ -7,7 +7,7 @@ import { type TRoomOrPreview } from '../../../definitions/TRoom';
 
 export const RoomStoreContext = createContext<RoomStore | null>(null);
 
-const useRoomStoreApi = (): RoomStore => {
+export const useRoomStoreApi = (): RoomStore => {
 	const store = useContext(RoomStoreContext);
 	if (!store) {
 		throw new Error('Room store hooks must be used within a RoomStoreContext.Provider');
