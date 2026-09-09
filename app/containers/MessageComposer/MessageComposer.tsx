@@ -23,7 +23,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import { generateTriggerId } from '../../lib/methods/actions';
 import { runSlashCommand } from '../../lib/services/restApi';
 import log from '../../lib/methods/helpers/log';
-import { prepareQuoteMessage, insertEmojiAtCursor } from './helpers';
+import { prepareQuoteMessage, insertEmojiAtCursor, lastGlyphLength } from './helpers';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
 import { useCloseKeyboardWhenOrientationChanges } from './hooks/useCloseKeyboardWhenOrientationChanges';
 import { useEmojiKeyboard } from './hooks/useEmojiKeyboard';
@@ -186,14 +186,10 @@ export const MessageComposer = ({
 
 		switch (eventType) {
 			case EventTypes.BACKSPACE_PRESSED:
-				const emojiRegex = /\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/;
-				let charsToRemove = 1;
-				const lastEmoji = text.substr(cursor > 0 ? cursor - 2 : text.length - 2, cursor > 0 ? cursor : text.length);
-				// Check if last character is an emoji
-				if (emojiRegex.test(lastEmoji)) charsToRemove = 2;
-				newText =
-					text.substr(0, (cursor > 0 ? cursor : text.length) - charsToRemove) + text.substr(cursor > 0 ? cursor : text.length);
-				newCursor = cursor - charsToRemove;
+				const deleteAt = cursor > 0 ? cursor : text.length;
+				const charsToRemove = lastGlyphLength(text, deleteAt);
+				newText = text.substr(0, deleteAt - charsToRemove) + text.substr(deleteAt);
+				newCursor = deleteAt - charsToRemove;
 				composerInputComponentRef.current.setInput(newText, { start: newCursor, end: newCursor });
 				break;
 			case EventTypes.EMOJI_PRESSED:
