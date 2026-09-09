@@ -14,6 +14,14 @@ export type TSVMessage = {
 	subtitle?: string;
 	description?: string;
 	type: 'info' | 'alert' | 'error';
+	/**
+	 * Roles allowed to see this message. When omitted (or empty), the message is
+	 * shown to every user. When present, the message is only shown to users whose
+	 * roles intersect this list (e.g. `['admin']` targets workspace admins only).
+	 * Clients that predate this field ignore it and keep showing the message to
+	 * everyone, so the field is backward compatible.
+	 */
+	roles?: string[];
 	params?: Record<string, unknown>;
 	link: string;
 };
