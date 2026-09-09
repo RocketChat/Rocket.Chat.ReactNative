@@ -31,7 +31,7 @@ tags:
       - tapOn:
           text: 'Username'
           index: 1
-- inputText: ${output.data.cas.username}
+- inputText: ${output.account.cas.username}
 - runFlow:
     when:
       platform: Android
@@ -45,7 +45,7 @@ tags:
       - tapOn:
           text: 'Password'
           index: 1
-- inputText: ${output.data.cas.password}
+- inputText: ${output.account.cas.password}
 - runFlow: '../../../helpers/hide-keyboard.yaml'
 - tapOn: 'Sign in'
 - runFlow:

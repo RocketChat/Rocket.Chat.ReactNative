@@ -49,10 +49,10 @@ tags:
     timeout: 10000
 - tapOn:
     text: 'Username'
-- inputText: ${output.data.saml.username}
+- inputText: ${output.account.saml.username}
 - tapOn:
     text: 'Password'
-- inputText: ${output.data.saml.password}
+- inputText: ${output.account.saml.password}
 - tapOn: 'Login'
 
 # Both Android and iOS have a prompt to save the password to the device's password manager
