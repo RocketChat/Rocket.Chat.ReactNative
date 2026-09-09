@@ -7,7 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 import { type Dispatch } from 'redux';
 
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
-import { type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
+import { type IMessageComposerRef, ComposerProvider, MessageComposerContainer } from '../../containers/MessageComposer';
 import { type InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../lib/constants/colors';
 import I18n from '../../i18n';
@@ -34,11 +34,14 @@ import {
 	type TThreadModel
 } from '../../definitions';
 import { createRoomSnapshot, getRoom, type RoomSnapshot } from '../../lib/roomObservation';
-import { RoomProviders } from '../RoomView/components/RoomProviders';
 import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
-import { createMessageActionStore, type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
+import {
+	createMessageActionStore,
+	MessageActionProvider,
+	type TMessageActionStore
+} from '../../containers/message/stores/MessageActionStore';
 import { appStart } from '../../actions/app';
 
 interface IShareViewState {
@@ -391,28 +394,29 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		if (attachments.length) {
 			return (
-				<RoomProviders
-					store={this.messageActionStore}
-					rid={room.rid}
-					t={room.t}
-					roomSnapshot={roomSnapshot}
-					tmid={this.getThreadId(thread)}
-					sharing
-					onSendMessage={this.send}
-					onRemoveQuoteMessage={this.onRemoveQuoteMessage}>
-					<View style={styles.container}>
-						<Preview
-							// using key just to reset zoom/move after change selected
-							key={selected?.path}
-							item={selected}
-							length={attachments.length}
-							theme={theme}
-						/>
-						<MessageComposerContainer ref={this.messageComposerRef}>
-							<Thumbs attachments={attachments} onPress={this.selectFile} onRemove={this.removeFile} />
-						</MessageComposerContainer>
-					</View>
-				</RoomProviders>
+				<MessageActionProvider store={this.messageActionStore}>
+					<ComposerProvider
+						rid={room.rid}
+						t={room.t}
+						roomSnapshot={roomSnapshot}
+						tmid={this.getThreadId(thread)}
+						sharing
+						onSendMessage={this.send}
+						onRemoveQuoteMessage={this.onRemoveQuoteMessage}>
+						<View style={styles.container}>
+							<Preview
+								// using key just to reset zoom/move after change selected
+								key={selected?.path}
+								item={selected}
+								length={attachments.length}
+								theme={theme}
+							/>
+							<MessageComposerContainer ref={this.messageComposerRef}>
+								<Thumbs attachments={attachments} onPress={this.selectFile} onRemove={this.removeFile} />
+							</MessageComposerContainer>
+						</View>
+					</ComposerProvider>
+				</MessageActionProvider>
 			);
 		}
 
