@@ -499,6 +499,9 @@ importers:
       oxlint:
         specifier: ^1.75.0
         version: 1.75.0
+      oxlint-plugin-complexity:
+        specifier: ^2.1.8
+        version: 2.1.8
       patch-package:
         specifier: ~8.0.1
         version: 8.0.1
@@ -2297,6 +2300,10 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@oxlint/plugins@1.82.0':
+    resolution: {integrity: sha512-IDF4UXBNOaCeLoEpVxf5Bg85KOWdeuBEkbo1rGzS2vXcbD+GT1asBSeeTC+5BgW6NFTHVByd6N5giHsFPGtwAA==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
@@ -2640,7 +2647,7 @@ packages:
       react-native: '*'
 
   '@rocket.chat/sdk@https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/ecf4fedcf8ab6121e62a6b95bb48823afd805afd':
-    resolution: {gitHosted: true, integrity: sha512-+W+SeN/RcKRANWw8xjfl4916ldSrgEgVHTvabJwYNoxxLaOyrHs2rjeNk/0gxKO4fjMo0kd+lU0wck3QH4A6OA==, tarball: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/ecf4fedcf8ab6121e62a6b95bb48823afd805afd}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/ecf4fedcf8ab6121e62a6b95bb48823afd805afd}
     version: 2.0.0-mobile
 
   '@rocket.chat/ui-kit@0.39.0':
@@ -6077,6 +6084,21 @@ packages:
       svelte:
         optional: true
       vite-plus:
+        optional: true
+
+  oxlint-plugin-complexity@2.1.8:
+    resolution: {integrity: sha512-4BnfNeQkeuEwUti+QAOBaCUuEWZaubk7L94dNl60RXzrs/pjzNOXhWx4rAmK8g/HoBrkIyJ8kqyto5nU0vDG9g==}
+    engines: {node: '>=20.0.0'}
+    peerDependencies:
+      diff: '>=5.0.0'
+      estree-walker: '>=3.0.0'
+      oxc-parser: '>=0.60.0'
+    peerDependenciesMeta:
+      diff:
+        optional: true
+      estree-walker:
+        optional: true
+      oxc-parser:
         optional: true
 
   oxlint@1.75.0:
@@ -10015,6 +10037,8 @@ snapshots:
 
   '@oxlint/binding-win32-x64-msvc@1.75.0':
     optional: true
+
+  '@oxlint/plugins@1.82.0': {}
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
@@ -14517,6 +14541,10 @@ snapshots:
       '@oxfmt/binding-win32-arm64-msvc': 0.60.0
       '@oxfmt/binding-win32-ia32-msvc': 0.60.0
       '@oxfmt/binding-win32-x64-msvc': 0.60.0
+
+  oxlint-plugin-complexity@2.1.8:
+    dependencies:
+      '@oxlint/plugins': 1.82.0
 
   oxlint@1.75.0:
     optionalDependencies:
