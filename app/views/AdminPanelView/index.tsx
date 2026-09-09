@@ -35,7 +35,7 @@ const AdminPanelView = () => {
 	const str = buildLoginScript(token);
 
 	return (
-		<SafeAreaView>
+		<SafeAreaView testID='admin-panel-view'>
 			<WebView
 				// https://github.com/react-native-community/react-native-webview/issues/1311
 				onMessage={() => {}}
