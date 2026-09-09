@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
 import { useStore } from 'zustand';
+import { useShallow } from 'zustand/react/shallow';
 import { useNavigation } from '@react-navigation/native';
 
 import * as HeaderButton from '../../../../containers/Header/components/HeaderButton';
@@ -18,7 +19,6 @@ import { type RoomStore } from '../../definitions';
 import { useE2EEStatus } from '../../hooks/useE2EEStatus';
 import { useSubscriptionUnreads } from '../../hooks/useSubscriptionUnreads';
 import { navigateToScreen, type TRoomStackNavigation } from '../../services/navigateToScreen';
-import { getRoomHeaderFields } from '../../services/getRoomHeaderFields';
 import { HeaderCallButton } from './HeaderCallButton';
 
 interface IRoomRightButtonsProps {
@@ -35,16 +35,24 @@ export const RoomRightButtons = ({ rid, roomStore }: IRoomRightButtonsProps): Re
 	const threadsEnabled = useSetting('Threads_enabled') as boolean;
 	const issuesWithNotifications = useAppSelector(state => state.troubleshootingNotification.issuesWithNotifications);
 
-	const room = useStore(roomStore, s => s.room);
+	const { t, status, roomName, roomIsGroupChat, teamMain, encrypted, disableNotifications } = useStore(
+		roomStore,
+		useShallow(s => {
+			const room = s.room;
+			return {
+				t: room.t as SubscriptionType,
+				status: room.status,
+				roomName: getRoomTitle(room),
+				roomIsGroupChat: isGroupChat(room as ISubscription),
+				teamMain: 'teamMain' in room ? !!room.teamMain : false,
+				encrypted: 'encrypted' in room ? room.encrypted : undefined,
+				disableNotifications: (room as ISubscription).disableNotifications
+			};
+		})
+	);
 	const { hasE2EEWarning } = useE2EEStatus(roomStore);
 	const { tunread, tunreadUser, tunreadGroup, isSelfDm, subscription } = useSubscriptionUnreads(roomStore, userId);
 	const [canToggleEncryption] = usePermissions(['toggle-room-e2e-encryption'], rid);
-
-	const t = room.t as SubscriptionType;
-	const { status } = room;
-	const roomName = getRoomTitle(room);
-	const roomIsGroupChat = isGroupChat(room as ISubscription);
-	const { teamMain, encrypted } = getRoomHeaderFields(room);
 
 	const goThreadsView = () => {
 		logEvent(events.ROOM_GO_THREADS);
@@ -105,7 +113,7 @@ export const RoomRightButtons = ({ rid, roomStore }: IRoomRightButtonsProps): Re
 					testID='room-view-header-encryption'
 				/>
 			) : null}
-			{issuesWithNotifications || (room as ISubscription).disableNotifications ? (
+			{issuesWithNotifications || disableNotifications ? (
 				<HeaderButton.Item
 					color={issuesWithNotifications ? colors.fontDanger : ''}
 					iconName='notification-disabled'
