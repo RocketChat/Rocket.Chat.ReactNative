@@ -13,14 +13,13 @@ export const setServerCookies = async (server: string, user: { id: string; token
 	const date = new Date();
 	date.setDate(date.getDate() + COOKIE_LIFETIME_DAYS);
 
-	const serverUrl = new URL(server);
-	const shared = {
-		domain: serverUrl.hostname,
-		version: '1',
-		expires: date.toISOString(),
-		...(serverUrl.protocol === 'https:' ? { secure: true } : {})
-	};
+	// Set-Cookie strings omit Domain so the cookies stay host-only instead of leaking to subdomains.
+	const attributes = [`Expires=${date.toUTCString()}`, 'Path=/'];
+	if (new URL(server).protocol === 'https:') {
+		attributes.push('Secure');
+	}
+	const suffix = attributes.join('; ');
 
-	await CookieManager.set(server, { name: 'rc_uid', value: user.id, ...shared });
-	await CookieManager.set(server, { name: 'rc_token', value: user.token, ...shared });
+	await CookieManager.setFromResponse(server, `rc_uid=${user.id}; ${suffix}`);
+	await CookieManager.setFromResponse(server, `rc_token=${user.token}; ${suffix}`);
 };
