@@ -5,6 +5,7 @@ import { videoConferenceJoin } from '../services/restApi';
 import { showErrorAlert } from './helpers';
 import log from './helpers/log';
 import openLink from './helpers/openLink';
+import { handleAndroidBltPermission } from './handleAndroidBltPermission';
 import { openConferenceCall } from './openConferenceCall';
 
 export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean, fromPush?: boolean): Promise<void> => {
@@ -18,6 +19,7 @@ export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean
 		if (result.success) {
 			const { url, providerName } = result;
 			if (providerName === 'jitsi' && url) {
+				await handleAndroidBltPermission();
 				navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });
 			} else if (url) {
 				openLink(url);

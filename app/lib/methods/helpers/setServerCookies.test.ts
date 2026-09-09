@@ -32,10 +32,25 @@ describe('setServerCookies', () => {
 		expect(cookieFor('rc_uid').domain).toEqual('open.rocket.chat');
 	});
 
-	test('strips the port from the domain', async () => {
+	test('marks cookies secure on https', async () => {
+		await setServerCookies('https://open.rocket.chat', { id: 'uid1', token: 'tok1' });
+
+		expect(cookieFor('rc_uid')).toEqual(expect.objectContaining({ secure: true }));
+		expect(cookieFor('rc_token')).toEqual(expect.objectContaining({ secure: true }));
+	});
+
+	test('refuses cleartext servers without writing cookies', async () => {
+		await expect(setServerCookies('http://open.rocket.chat', { id: 'uid1', token: 'tok1' })).rejects.toThrow();
+
+		expect(mockedSet).not.toHaveBeenCalled();
+	});
+
+	test('allows loopback http for local dev without the secure flag', async () => {
 		await setServerCookies('http://localhost:3000', { id: 'uid1', token: 'tok1' });
 
+		expect(cookieFor('rc_uid')).toEqual(expect.objectContaining({ value: 'uid1' }));
 		expect(cookieFor('rc_uid').domain).toEqual('localhost');
+		expect(cookieFor('rc_uid').secure).toBeUndefined();
 	});
 
 	test('strips a subpath from the domain', async () => {

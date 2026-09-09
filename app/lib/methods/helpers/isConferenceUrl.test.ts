@@ -39,4 +39,13 @@ describe('isConferenceUrl', () => {
 	test('rejects everything when the server is unknown', () => {
 		expect(isConferenceUrl('https://open.rocket.chat/conference/abc123', '')).toBe(false);
 	});
+
+	test('rejects cleartext conference urls on non-loopback hosts', () => {
+		expect(isConferenceUrl('http://open.rocket.chat/conference/abc123', 'http://open.rocket.chat')).toBe(false);
+		expect(isConferenceUrl('http://open.rocket.chat/conference/abc123', 'https://open.rocket.chat')).toBe(false);
+	});
+
+	test('allows loopback http for local dev', () => {
+		expect(isConferenceUrl('http://localhost:3000/conference/abc123', 'http://localhost:3000')).toBe(true);
+	});
 });

@@ -1,7 +1,19 @@
 import { URL } from 'react-native-url-polyfill';
 
+export const isLoopbackHostname = (hostname: string): boolean =>
+	hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
+
+export const isSecureHttpUrl = (value: string): boolean => {
+	try {
+		const url = new URL(value);
+		return url.protocol === 'https:' || (url.protocol === 'http:' && isLoopbackHostname(url.hostname));
+	} catch {
+		return false;
+	}
+};
+
 export const isConferenceUrl = (url: string, server: string): boolean => {
-	if (!server) {
+	if (!server || !isSecureHttpUrl(server)) {
 		return false;
 	}
 
@@ -9,7 +21,7 @@ export const isConferenceUrl = (url: string, server: string): boolean => {
 		const base = new URL(`${server.replace(/\/+$/, '')}/`);
 		const target = new URL(url);
 
-		if (target.protocol !== 'https:' && target.protocol !== 'http:') {
+		if (!isSecureHttpUrl(url)) {
 			return false;
 		}
 

@@ -67,6 +67,16 @@ describe('openConferenceCall', () => {
 		expect(state().expanded).toBe(true);
 	});
 
+	test('joining the assigned call after starting it keeps the preflight page', async () => {
+		await openConferenceCall({ rid: 'GENERAL' });
+
+		await openConferenceCall({ callId: 'call1' });
+
+		expect(state().callId).toEqual('call1');
+		expect(state().url).toEqual('https://open.rocket.chat/conference/new?rid=GENERAL');
+		expect(state().expanded).toBe(true);
+	});
+
 	test('does nothing when there is no server to build a url from', async () => {
 		mockedStore.dispatch(selectServerRequest('', '8.0.0'));
 

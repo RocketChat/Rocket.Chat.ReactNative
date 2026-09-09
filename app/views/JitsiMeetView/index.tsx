@@ -9,7 +9,7 @@ import { userAgent } from '../../lib/constants/userAgent';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { isIOS } from '../../lib/methods/helpers';
 import { getRoomIdFromJitsiCallUrl } from '../../lib/methods/helpers/getRoomIdFromJitsiCall';
-import { events, logEvent } from '../../lib/methods/helpers/log';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { setServerCookies } from '../../lib/methods/helpers/setServerCookies';
 import { endVideoConfTimer, initVideoConfTimer } from '../../lib/methods/videoConfTimer';
 import { getUserSelector } from '../../selectors/login';
@@ -30,8 +30,13 @@ const JitsiMeetView = (): ReactElement => {
 	const [cookiesSet, setCookiesSet] = useState(false);
 
 	const setCookies = async () => {
-		await setServerCookies(serverUrl, user);
-		setCookiesSet(true);
+		try {
+			await setServerCookies(serverUrl, user);
+		} catch (e) {
+			log(e);
+		} finally {
+			setCookiesSet(true);
+		}
 	};
 
 	const handleJitsiApp = useCallback(async () => {

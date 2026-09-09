@@ -59,6 +59,25 @@ describe('useConferenceCallStore', () => {
 		expect(state().url).toEqual('https://open.rocket.chat/conference/call2');
 	});
 
+	test('joining the assigned call keeps the room preflight page instead of reloading it', () => {
+		state().open({ callId: 'new:GENERAL', url: 'https://open.rocket.chat/conference/new?rid=GENERAL' });
+
+		state().open({ callId: 'call1', url: 'https://open.rocket.chat/conference/call1' });
+
+		expect(state().callId).toEqual('call1');
+		expect(state().url).toEqual('https://open.rocket.chat/conference/new?rid=GENERAL');
+		expect(state().expanded).toBe(true);
+	});
+
+	test('starting another room still replaces the preflight', () => {
+		state().open({ callId: 'new:room1', url: 'https://open.rocket.chat/conference/new?rid=room1' });
+
+		state().open({ callId: 'new:room2', url: 'https://open.rocket.chat/conference/new?rid=room2' });
+
+		expect(state().callId).toEqual('new:room2');
+		expect(state().url).toEqual('https://open.rocket.chat/conference/new?rid=room2');
+	});
+
 	test('closing clears the call', () => {
 		state().open({ callId: 'call1', url: 'https://open.rocket.chat/conference/call1' });
 

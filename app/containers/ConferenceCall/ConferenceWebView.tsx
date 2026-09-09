@@ -7,7 +7,7 @@ import { type WebViewMessageEvent, type WebViewOpenWindowEvent } from 'react-nat
 import { userAgent } from '../../lib/constants/userAgent';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { isIOS } from '../../lib/methods/helpers';
-import { isConferenceUrl } from '../../lib/methods/helpers/isConferenceUrl';
+import { isConferenceUrl, isSecureHttpUrl } from '../../lib/methods/helpers/isConferenceUrl';
 import log from '../../lib/methods/helpers/log';
 import openLink from '../../lib/methods/helpers/openLink';
 import { setServerCookies } from '../../lib/methods/helpers/setServerCookies';
@@ -24,9 +24,14 @@ const ConferenceWebView = ({ url, onClose, onOpenLink }: IConferenceWebView) => 
 	const { id: userId, token } = useAppSelector(state => getUserSelector(state));
 	const server = useAppSelector(state => state.server.server);
 
-	const [cookiesSet, setCookiesSet] = useState(false);
+	const credentialsAllowed = isSecureHttpUrl(server) && isSecureHttpUrl(url);
+	const [cookiesSet, setCookiesSet] = useState(!credentialsAllowed);
 
 	useEffect(() => {
+		if (!credentialsAllowed) {
+			return;
+		}
+
 		let cancelled = false;
 
 		setServerCookies(server, { id: userId, token })
@@ -40,7 +45,7 @@ const ConferenceWebView = ({ url, onClose, onOpenLink }: IConferenceWebView) => 
 		return () => {
 			cancelled = true;
 		};
-	}, [server, userId, token]);
+	}, [server, userId, token, credentialsAllowed]);
 
 	useEffect(() => {
 		activateKeepAwake();
@@ -50,8 +55,8 @@ const ConferenceWebView = ({ url, onClose, onOpenLink }: IConferenceWebView) => 
 	}, []);
 
 	const injectedJavaScriptBeforeContentLoaded = useMemo(
-		() => buildConferenceBridgeScript({ userId, token, server }),
-		[userId, token, server]
+		() => (credentialsAllowed ? buildConferenceBridgeScript({ userId, token, server }) : 'true;'),
+		[userId, token, server, credentialsAllowed]
 	);
 
 	const onMessage = useCallback(
@@ -96,7 +101,7 @@ const ConferenceWebView = ({ url, onClose, onOpenLink }: IConferenceWebView) => 
 
 	return (
 		<WebView
-			source={{ uri: url, headers: { Cookie: `rc_uid=${userId}; rc_token=${token}` } }}
+			source={credentialsAllowed ? { uri: url, headers: { Cookie: `rc_uid=${userId}; rc_token=${token}` } } : { uri: url }}
 			injectedJavaScriptBeforeContentLoaded={injectedJavaScriptBeforeContentLoaded}
 			onMessage={onMessage}
 			onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}

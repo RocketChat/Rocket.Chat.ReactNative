@@ -21,6 +21,10 @@ export const useConferenceCallStore = create<TConferenceCall>(set => ({
 				return { expanded: true };
 			}
 
+			if (current.callId?.startsWith('new:') && !callId.startsWith('new:')) {
+				return { callId, url: current.url ?? url, expanded: true };
+			}
+
 			return { callId, url, expanded: true };
 		}),
 
