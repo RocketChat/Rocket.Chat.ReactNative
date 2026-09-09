@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import { sendMessage as sendMessageRequest } from '../../../../lib/methods/sendMessage';
 import { Review } from '../../../../lib/methods/helpers/review';
-import { events, logEvent } from '../../../../lib/methods/helpers/log';
+import log, { events, logEvent } from '../../../../lib/methods/helpers/log';
 import { MessageActionProvider, useMessageAction } from '../../../../containers/message/stores/MessageActionStore';
 import { useRoomMessaging } from '../useRoomMessaging';
 
@@ -48,6 +48,7 @@ jest.mock('../useRoomInit', () => ({
 const mockSendMessageRequest = sendMessageRequest as jest.Mock;
 const mockReview = Review.pushPositiveEvent as jest.Mock;
 const mockLogEvent = logEvent as jest.Mock;
+const mockLog = log as unknown as jest.Mock;
 
 const createDeferred = () => {
 	let resolve!: () => void;
@@ -143,13 +144,28 @@ describe('useRoomMessaging', () => {
 		const { result } = renderRoomMessaging();
 		const clearLastSeen = require('../useRoomInit').useRoomInit.mock.results[0].value.clearLastSeen as jest.Mock;
 
+		const error = new Error('offline');
+
 		act(() => result.current.sendMessage('hello'));
 		await act(async () => {
-			deferred.reject(new Error('offline'));
+			deferred.reject(error);
 			await Promise.resolve();
 		});
 
 		expect(clearLastSeen).not.toHaveBeenCalled();
 		expect(mockReview).not.toHaveBeenCalled();
+		expect(mockLog).toHaveBeenCalledWith(error);
+	});
+
+	it('does nothing when there is no message to send', () => {
+		const { result } = renderRoomMessaging();
+
+		act(() => result.current.messageActionStore.getState().actions.setQuoteMessageIds(['quoted-message']));
+
+		act(() => result.current.sendMessage(undefined, true));
+
+		expect(mockSendMessageRequest).not.toHaveBeenCalled();
+		expect(mockLogEvent).not.toHaveBeenCalled();
+		expect(result.current.messageActionStore.getState().action).toEqual({ kind: 'quote', messageIds: ['quoted-message'] });
 	});
 });
