@@ -47,7 +47,8 @@ jest.mock('../List', () => {
 		default: () => {
 			const { lastSeen } = useRoomScreen();
 			const lastMessageFromAgent = require('../stores/RoomStoreContext').useRoomStore(
-				(s: { lastMessageFromAgent: boolean }) => s.lastMessageFromAgent
+				(s: { room: { lastMessage?: { u?: unknown; token?: string } } }) =>
+					!!(s.room.lastMessage && !s.room.lastMessage.token && s.room.lastMessage.u)
 			);
 			const tmid = useComposerTmid();
 			const onSendMessage = useOnSendMessage();
