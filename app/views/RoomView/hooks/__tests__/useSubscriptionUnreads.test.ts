@@ -1,4 +1,5 @@
 import { act, renderHook } from '@testing-library/react-native';
+import { of, Subject } from 'rxjs';
 
 import database from '../../../../lib/database';
 import { getUidDirectMessage } from '../../../../lib/methods/helpers/helpers';
@@ -26,13 +27,8 @@ const stubRoom = { rid: 'rid-1', t: 'c' };
 // Emits subscription rows through the rid-keyed RoomStore's observer, which is the only source
 // the hook reads from.
 const setupObservedRoom = async (rid: string) => {
-	let emit: ((rows: any[]) => void) | undefined;
-	const observe = jest.fn(() => ({
-		subscribe: (cb: (rows: any[]) => void) => {
-			emit = cb;
-			return { unsubscribe: jest.fn() };
-		}
-	}));
+	const rows = new Subject<any[]>();
+	const observe = jest.fn(() => rows);
 	mockGet.mockReturnValue({ find: jest.fn(() => Promise.reject(new Error('not found'))), query: jest.fn(() => ({ observe })) });
 	observedStore = createRoomStore({ rid, initialRoom: stubRoom });
 	observeRoom(rid, observedStore);
@@ -40,13 +36,8 @@ const setupObservedRoom = async (rid: string) => {
 	return {
 		emitRow: (row: any) =>
 			act(() => {
-				row.observe = () => ({
-					subscribe: ({ next }: { next: (row: unknown) => void }) => {
-						next(row);
-						return { unsubscribe: jest.fn() };
-					}
-				});
-				emit?.([row]);
+				row.observe = () => of(row);
+				rows.next([row]);
 			})
 	};
 };

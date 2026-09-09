@@ -1,3 +1,5 @@
+import { Observable, Subject } from 'rxjs';
+
 import database from '../../../../lib/database';
 import { loadThreadMessages } from '../../../../lib/methods/loadThreadMessages';
 import { readMessages } from '../../../../lib/methods/readMessages';
@@ -50,25 +52,27 @@ const subRoom = { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general' };
 const flush = () => Promise.resolve().then(() => Promise.resolve());
 
 const makeRecord = (row: Record<string, unknown>) => {
-	let emit: ((row: unknown) => void) | undefined;
-	let complete: (() => void) | undefined;
+	const updates = new Subject<Record<string, unknown>>();
 	const unsubscribe = jest.fn();
 	const record = {
 		...row,
-		observe: jest.fn(() => ({
-			subscribe: (observer: { next: (row: unknown) => void; complete?: () => void }) => {
-				emit = observer.next;
-				complete = observer.complete;
-				observer.next(record);
-				return { unsubscribe };
-			}
-		}))
+		observe: jest.fn(
+			() =>
+				new Observable<Record<string, unknown>>(observer => {
+					observer.next(record);
+					const subscription = updates.subscribe(observer);
+					return () => {
+						subscription.unsubscribe();
+						unsubscribe();
+					};
+				})
+		)
 	};
 	return {
 		record,
 		unsubscribe,
-		emit: (next: Record<string, unknown>) => emit?.(next),
-		destroy: () => complete?.()
+		emit: (next: Record<string, unknown>) => updates.next(next),
+		destroy: () => updates.complete()
 	};
 };
 
@@ -81,20 +85,25 @@ const setupPresentRow = (row: Record<string, unknown> = subRoom) => {
 
 const setupAbsentThenPresentRow = () => {
 	const find = jest.fn(() => Promise.reject(new Error('not found')));
-	let emitRows: ((rows: unknown[]) => void) | undefined;
+	const rows = new Subject<unknown[]>();
 	const queryUnsubscribe = jest.fn();
-	const observe = jest.fn(() => ({
-		subscribe: (next: (rows: unknown[]) => void) => {
-			emitRows = next;
-			return { unsubscribe: queryUnsubscribe };
-		}
-	}));
+	const observe = jest.fn(
+		() =>
+			new Observable<unknown[]>(observer => {
+				const subscription = rows.subscribe(observer);
+				return () => {
+					subscription.unsubscribe();
+					queryUnsubscribe();
+				};
+			})
+	);
 	const query = jest.fn(() => ({ observe }));
 	mockGet.mockReturnValue({ find, query });
 	return {
 		find,
 		queryUnsubscribe,
-		emitRows: (rows: unknown[]) => emitRows?.(rows)
+		emitRows: (next: unknown[]) => rows.next(next),
+		completeQuery: () => rows.complete()
 	};
 };
 
@@ -199,12 +208,14 @@ describe('RoomStore', () => {
 		const find = jest.fn(() => Promise.reject(new Error('not found')));
 		const { record, emit } = makeRecord(subRoom);
 		const queryUnsubscribe = jest.fn();
-		const observe = jest.fn(() => ({
-			subscribe: (next: (rows: unknown[]) => void) => {
-				next([record]);
-				return { unsubscribe: queryUnsubscribe };
-			}
-		}));
+		const observe = jest.fn(
+			() =>
+				new Observable(observer => {
+					observer.next([record]);
+					observer.next([record]);
+					return queryUnsubscribe;
+				})
+		);
 		const query = jest.fn(() => ({ observe }));
 		mockGet.mockReturnValue({ find, query });
 
@@ -214,10 +225,62 @@ describe('RoomStore', () => {
 
 		expect(queryUnsubscribe).toHaveBeenCalledTimes(1);
 		expect(store.getState().room).toBe(record);
+		expect(record.observe).toHaveBeenCalledTimes(1);
 
 		const mutated = { ...subRoom, name: 'renamed', observe: record.observe };
 		emit(mutated);
 		expect(store.getState().room).toBe(mutated);
+	});
+
+	it('cleans up the query while waiting and ignores records arriving after teardown', async () => {
+		const { emitRows, queryUnsubscribe } = setupAbsentThenPresentRow();
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+		const cleanup = observeRoom('rid-1', store);
+		await flush();
+		emitRows([]);
+		cleanup();
+		const { record } = makeRecord(subRoom);
+		emitRows([record]);
+		expect(queryUnsubscribe).toHaveBeenCalledTimes(1);
+		expect(record.observe).not.toHaveBeenCalled();
+	});
+
+	it('cleans up the attached record without marking the room unjoined', async () => {
+		const { emitRows, queryUnsubscribe } = setupAbsentThenPresentRow();
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+		const cleanup = observeRoom('rid-1', store);
+		await flush();
+		const { record, unsubscribe, emit, destroy } = makeRecord(subRoom);
+		emitRows([record]);
+		cleanup();
+		emit({ ...subRoom, name: 'ignored' });
+		destroy();
+		expect(queryUnsubscribe).toHaveBeenCalledTimes(1);
+		expect(unsubscribe).toHaveBeenCalledTimes(1);
+		expect(store.getState().room).toBe(record);
+		expect(store.getState().joined).toBe(true);
+	});
+
+	it.each(['c', 'd'])('preserves record completion after query handoff for room type %s', async t => {
+		const { emitRows } = setupAbsentThenPresentRow();
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: { ...stubRoom, t } });
+		observeRoom('rid-1', store);
+		await flush();
+		const { record, destroy } = makeRecord({ ...subRoom, t });
+		emitRows([record]);
+		expect(store.getState().joined).toBe(true);
+		destroy();
+		expect(store.getState().joined).toBe(t === 'd');
+	});
+
+	it('does not treat query completion without a record as record deletion', async () => {
+		const { completeQuery } = setupAbsentThenPresentRow();
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+		observeRoom('rid-1', store);
+		await flush();
+		store.getState().join();
+		completeQuery();
+		expect(store.getState().joined).toBe(true);
 	});
 
 	it('runs the main init path: fetches messages and sets member and canAutoTranslate', async () => {

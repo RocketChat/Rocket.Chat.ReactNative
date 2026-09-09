@@ -1,4 +1,5 @@
 import { Q } from '@nozbe/watermelondb';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { createStore, type StateCreator } from 'zustand';
 
 import database from '../../../lib/database';
@@ -170,38 +171,33 @@ const publishRoom = (store: RoomStore, next: TSubscriptionModel): void => {
 	store.setState({ room: next, joined: true });
 };
 
-const observeRecord = (store: RoomStore, record: TSubscriptionModel): (() => void) => {
-	const subscription = record.observe().subscribe({
-		next: (next: TSubscriptionModel) => publishRoom(store, next),
-		complete: () => {
-			if (store.getState().room.t !== 'd') {
-				store.setState({ joined: false });
-			}
+const roomObserver = (store: RoomStore) => ({
+	next: (next: TSubscriptionModel) => publishRoom(store, next),
+	complete: () => {
+		if (store.getState().room.t !== 'd') {
+			store.setState({ joined: false });
 		}
-	});
+	}
+});
+
+const observeRecord = (store: RoomStore, record: TSubscriptionModel): (() => void) => {
+	const subscription = record.observe().subscribe(roomObserver(store));
 	return () => subscription.unsubscribe();
 };
 
 const observeQueryUntilPresent = (rid: string, store: RoomStore): (() => void) => {
-	let recordCleanup: (() => void) | undefined;
-	let switched = false;
-	let subscribed = false;
-	const observable = database.active.get('subscriptions').query(Q.where('rid', rid)).observe();
-	const subscription = observable.subscribe((rows: TSubscriptionModel[]) => {
-		const record = rows[0];
-		if (record) {
-			switched = true;
-			recordCleanup = observeRecord(store, record);
-			if (subscribed) {
-				subscription.unsubscribe();
-			}
-		}
-	});
-	subscribed = true;
-	if (switched) {
-		subscription.unsubscribe();
-	}
-	return () => (recordCleanup ? recordCleanup() : subscription.unsubscribe());
+	const subscription = database.active
+		.get('subscriptions')
+		.query(Q.where('rid', rid))
+		.observe()
+		.pipe(
+			map((rows: TSubscriptionModel[]) => rows[0]),
+			filter((record): record is TSubscriptionModel => !!record),
+			take(1),
+			switchMap(record => record.observe().pipe(tap(roomObserver(store))))
+		)
+		.subscribe();
+	return () => subscription.unsubscribe();
 };
 
 export function observeRoom(rid: string | undefined, store: RoomStore, onReady?: () => void): () => void {
