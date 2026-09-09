@@ -145,7 +145,6 @@ const fallbackNavigation = function* fallbackNavigation() {
 };
 
 const declineDeepLinkLogin = function* declineDeepLinkLogin() {
-	// Only worth a toast while the app is up; on cold start there is no Toast mounted to show it.
 	const currentRoot = yield select(state => state.app.root);
 	if (currentRoot) {
 		showToast(I18n.t('Deep_link_login_declined'));
@@ -153,8 +152,6 @@ const declineDeepLinkLogin = function* declineDeepLinkLogin() {
 	yield fallbackNavigation();
 };
 
-// Consent before touching anything on the deep link's server: a resume token means this link can
-// sign the user in, so every entry point asks through here while declining is still a no-op.
 const ensureDeepLinkLoginConsent = function* ensureDeepLinkLoginConsent(host, params) {
 	if (!params.token) {
 		return true;
@@ -235,6 +232,65 @@ const handleShareExtension = function* handleOpen({ params }) {
 	}
 };
 
+const loginWithDeepLinkToken = function* loginWithDeepLinkToken({ params, hostAlreadyConnected }) {
+	if (!hostAlreadyConnected) {
+		yield take(types.SERVER.SELECT_SUCCESS);
+		const connected = yield select(state => state.meteor.connected);
+		if (!connected) {
+			yield take(types.METEOR.SUCCESS);
+		}
+	}
+	yield put(loginRequest({ resume: params.token }, true));
+	yield take(types.LOGIN.SUCCESS);
+	yield put(appReady({}));
+
+	const currentRoot = yield select(state => state.app.root);
+	if (currentRoot !== RootEnum.ROOT_INSIDE) {
+		yield take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE);
+	}
+	yield completeDeepLinkNavigation(params);
+};
+
+const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, user, serverRecord }) {
+	const { host } = params;
+	try {
+		if (user && serverRecord) {
+			yield localAuthenticate(host);
+			yield put(selectServerRequest(host, serverRecord.version, true, true));
+			yield take(types.LOGIN.SUCCESS);
+			yield completeDeepLinkNavigation(params);
+			return;
+		}
+	} catch (e) {
+		// do nothing
+	}
+	if (!(yield ensureDeepLinkLoginConsent(host, params))) {
+		return;
+	}
+	const result = yield getServerInfo(host);
+	if (!result.success) {
+		if (params.voipAcceptFailed) {
+			yield call(handleVoipAcceptFailed, params);
+			return;
+		}
+		yield fallbackNavigation();
+		return;
+	}
+	const hostAlreadyConnected = sdk.host === host;
+	if (!hostAlreadyConnected) {
+		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		yield put(serverInitAdd(server));
+		yield delay(1000);
+		EventEmitter.emit('NewServer', { server: host });
+	}
+
+	if (params.token) {
+		yield loginWithDeepLinkToken({ params, hostAlreadyConnected });
+	} else {
+		yield handleInviteLink({ params, requireLogin: true });
+	}
+};
+
 const handleOpen = function* handleOpen({ params }) {
 	if (params.type === 'shareextension') {
 		yield handleShareExtension({ params });
@@ -282,63 +338,7 @@ const handleOpen = function* handleOpen({ params }) {
 		}
 		yield completeDeepLinkNavigation(params);
 	} else {
-		// search if deep link's server already exists
-		try {
-			if (user && serverRecord) {
-				yield localAuthenticate(host);
-				yield put(selectServerRequest(host, serverRecord.version, true, true));
-				yield take(types.LOGIN.SUCCESS);
-				yield completeDeepLinkNavigation(params);
-				return;
-			}
-		} catch (e) {
-			// do nothing?
-		}
-		if (!(yield ensureDeepLinkLoginConsent(host, params))) {
-			return;
-		}
-		// if deep link is from a different server
-		const result = yield getServerInfo(host);
-		if (!result.success) {
-			if (params.voipAcceptFailed) {
-				yield call(handleVoipAcceptFailed, params);
-				return;
-			}
-			// Fallback to prevent the app from being stuck on splash screen
-			yield fallbackNavigation();
-			return;
-		}
-		// if the host is different from the current one, we need to connect to it before navigating
-		const hostAlreadyConnected = sdk.host === host;
-		if (!hostAlreadyConnected) {
-			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-			yield put(serverInitAdd(server));
-			yield delay(1000);
-			EventEmitter.emit('NewServer', { server: host });
-		}
-
-		if (params.token) {
-			if (!hostAlreadyConnected) {
-				yield take(types.SERVER.SELECT_SUCCESS);
-				// SERVER.SELECT_SUCCESS can land after the socket is already connected.
-				const connected = yield select(state => state.meteor.connected);
-				if (!connected) {
-					yield take(types.METEOR.SUCCESS);
-				}
-			}
-			yield put(loginRequest({ resume: params.token }, true));
-			yield take(types.LOGIN.SUCCESS);
-			yield put(appReady({}));
-			// Wait for the login saga's appStart(ROOT_INSIDE) before navigating, so
-			// InsideStack is mounted and goRoom dispatches into the correct stack.
-			const currentRoot = yield select(state => state.app.root);
-			if (currentRoot !== RootEnum.ROOT_INSIDE) {
-				yield take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE);
-			}
-			yield completeDeepLinkNavigation(params);
-		} else {
-			yield handleInviteLink({ params, requireLogin: true });
-		}
+		yield handleOpenDifferentServer({ params, server, user, serverRecord });
 	}
 };
 
