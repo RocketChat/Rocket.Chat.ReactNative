@@ -17,17 +17,16 @@ export const useGoRoomActionsView = (roomStore: RoomStore): ((screen?: keyof Mod
 	const isMasterDetail = useMasterDetail();
 	// `t` comes from the store (seeded at mount) rather than route.params, which navigation can wipe.
 	const rid = useStore(roomStore, s => s.room.rid);
-	const { room, member, joined, canForwardGuest, canViewCannedResponse } = useStore(
+	const t = useStore(roomStore, s => s.room.t);
+	const { member, joined, canForwardGuest, canViewCannedResponse } = useStore(
 		roomStore,
 		useShallow(s => ({
-			room: s.room,
 			member: s.member,
 			joined: s.joined,
 			canForwardGuest: s.canForwardGuest,
 			canViewCannedResponse: s.canViewCannedResponse
 		}))
 	);
-	const t = room.t;
 	const canReturnQueue = useCanReturnQueue(t === 'l');
 	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(roomStore);
 
@@ -35,6 +34,7 @@ export const useGoRoomActionsView = (roomStore: RoomStore): ((screen?: keyof Mod
 
 	return (screen?: keyof ModalStackParamList) => {
 		logEvent(events.ROOM_GO_RA);
+		const room = roomStore.getState().room;
 		const params = {
 			rid: rid as string,
 			t: t as SubscriptionType,

@@ -4,7 +4,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { useNavigation } from '@react-navigation/native';
 
 import * as HeaderButton from '../../../../containers/Header/components/HeaderButton';
-import { type ISubscription, type SubscriptionType, type TUserStatus } from '../../../../definitions';
+import { type ISubscription, type SubscriptionType, type TSubscriptionModel, type TUserStatus } from '../../../../definitions';
 import i18n from '../../../../i18n';
 import { getRoomTitle, isGroupChat } from '../../../../lib/methods/helpers';
 import { events, logEvent } from '../../../../lib/methods/helpers/log';
@@ -51,7 +51,7 @@ export const RoomRightButtons = ({ rid, roomStore }: IRoomRightButtonsProps): Re
 		})
 	);
 	const { hasE2EEWarning } = useE2EEStatus(roomStore);
-	const { tunread, tunreadUser, tunreadGroup, isSelfDm, subscription } = useSubscriptionUnreads(roomStore, userId);
+	const { tunread, tunreadUser, tunreadGroup, isSelfDm } = useSubscriptionUnreads(roomStore, userId);
 	const [canToggleEncryption] = usePermissions(['toggle-room-e2e-encryption'], rid);
 
 	const goThreadsView = () => {
@@ -60,11 +60,17 @@ export const RoomRightButtons = ({ rid, roomStore }: IRoomRightButtonsProps): Re
 	};
 
 	const navigateToNotificationOrPushTroubleshoot = () => {
-		if (!subscription) {
+		const room = roomStore.getState().room;
+		if (!('id' in room)) {
 			return;
 		}
 		if (!issuesWithNotifications) {
-			navigateToScreen({ navigation, isMasterDetail, screen: 'NotificationPrefView', params: { rid, room: subscription } });
+			navigateToScreen({
+				navigation,
+				isMasterDetail,
+				screen: 'NotificationPrefView',
+				params: { rid, room: room as TSubscriptionModel }
+			});
 		} else {
 			navigateToScreen({ navigation, isMasterDetail, screen: 'PushTroubleshootView' });
 		}

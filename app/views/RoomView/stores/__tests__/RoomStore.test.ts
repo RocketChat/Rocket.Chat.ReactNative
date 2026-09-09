@@ -195,6 +195,31 @@ describe('RoomStore', () => {
 		expect(store.getState().room).toBe(mutated);
 	});
 
+	it('does not throw when the query observable emits a row synchronously on subscribe', async () => {
+		const find = jest.fn(() => Promise.reject(new Error('not found')));
+		const { record, emit } = makeRecord(subRoom);
+		const queryUnsubscribe = jest.fn();
+		const observe = jest.fn(() => ({
+			subscribe: (next: (rows: unknown[]) => void) => {
+				next([record]);
+				return { unsubscribe: queryUnsubscribe };
+			}
+		}));
+		const query = jest.fn(() => ({ observe }));
+		mockGet.mockReturnValue({ find, query });
+
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+		expect(() => observeRoom('rid-1', store)).not.toThrow();
+		await flush();
+
+		expect(queryUnsubscribe).toHaveBeenCalledTimes(1);
+		expect(store.getState().room).toBe(record);
+
+		const mutated = { ...subRoom, name: 'renamed', observe: record.observe };
+		emit(mutated);
+		expect(store.getState().room).toBe(mutated);
+	});
+
 	it('runs the main init path: fetches messages and sets member and canAutoTranslate', async () => {
 		setupPresentRow();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });

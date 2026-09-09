@@ -5,7 +5,7 @@ import { type StoreApi } from 'zustand';
 import { type IMessage, type IMessageEditAttachment } from '../../definitions';
 
 export type ComposerState = {
-	roomTitle?: string;
+	roomTitle: string;
 	rid?: string;
 	t?: string;
 	tmid?: string;

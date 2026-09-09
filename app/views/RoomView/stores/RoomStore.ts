@@ -184,14 +184,23 @@ const observeRecord = (store: RoomStore, record: TSubscriptionModel): (() => voi
 
 const observeQueryUntilPresent = (rid: string, store: RoomStore): (() => void) => {
 	let recordCleanup: (() => void) | undefined;
+	let switched = false;
+	let subscribed = false;
 	const observable = database.active.get('subscriptions').query(Q.where('rid', rid)).observe();
 	const subscription = observable.subscribe((rows: TSubscriptionModel[]) => {
 		const record = rows[0];
 		if (record) {
-			subscription.unsubscribe();
+			switched = true;
 			recordCleanup = observeRecord(store, record);
+			if (subscribed) {
+				subscription.unsubscribe();
+			}
 		}
 	});
+	subscribed = true;
+	if (switched) {
+		subscription.unsubscribe();
+	}
 	return () => (recordCleanup ? recordCleanup() : subscription.unsubscribe());
 };
 

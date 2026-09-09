@@ -40,7 +40,7 @@ describe('useGoRoomActionsView', () => {
 	});
 
 	it('pushes RoomActionsView with omnichannel permissions outside master-detail', () => {
-		const { result } = renderHook(() => useGoRoomActionsView({} as any));
+		const { result } = renderHook(() => useGoRoomActionsView({ getState: () => mockState } as any));
 
 		result.current();
 
@@ -61,7 +61,7 @@ describe('useGoRoomActionsView', () => {
 
 	it('navigates through ModalStackNavigator on master-detail', () => {
 		mockIsMasterDetail = true;
-		const { result } = renderHook(() => useGoRoomActionsView({} as any));
+		const { result } = renderHook(() => useGoRoomActionsView({ getState: () => mockState } as any));
 
 		result.current();
 
