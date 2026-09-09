@@ -9,7 +9,6 @@ tags:
 - runFlow: ../../../helpers/launch-app.yaml
 - runFlow: ../../../helpers/navigate-to-candidate-login.yaml
 
-- startRecording: recording
 - extendedWaitUntil:
     visible:
       text: 'Login on web'
@@ -23,7 +22,7 @@ tags:
       platform: Android
     commands:
       - tapOn:
-          text: 'Stay signed out'
+          text: 'Use without an account'
           optional: true
 - runFlow:
     when:
@@ -50,7 +49,6 @@ tags:
 - extendedWaitUntil:
     visible: 'Enter your username and password'
     timeout: 10000
-- stopRecording
 - tapOn:
     text: 'Username'
 - inputText: ${output.account.saml.username}
