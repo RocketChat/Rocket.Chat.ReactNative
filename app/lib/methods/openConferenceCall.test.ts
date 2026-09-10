@@ -24,6 +24,25 @@ jest.mock('./voipCallPermissions', () => ({ requestVoipCallPermissions: jest.fn(
 
 const state = () => useConferenceCallStore.getState();
 
+/**
+ * Parks the next permission request so a test can act while the open is mid-flight. `requested`
+ * settles once the request is actually in — openConferenceCall awaits the camera check first, so
+ * the request has not been made yet on the line after the call.
+ */
+const holdPermissions = () => {
+	let resolvePermissions!: () => void;
+	const requested = new Promise<void>(onRequested => {
+		(requestVoipCallPermissions as jest.Mock).mockImplementationOnce(
+			() =>
+				new Promise<boolean>(resolve => {
+					resolvePermissions = () => resolve(true);
+					onRequested();
+				})
+		);
+	});
+	return { requested, resolvePermissions: () => resolvePermissions() };
+};
+
 describe('openConferenceCall', () => {
 	beforeAll(() => {
 		initStore(mockedStore);
@@ -93,45 +112,49 @@ describe('openConferenceCall', () => {
 		expect(state().url).toEqual('https://open.rocket.chat/conference/call1');
 	});
 
-	test('does nothing when there is no server to build a url from', async () => {
+	test('reports rather than silently swallowing a join it cannot serve', async () => {
 		mockedStore.dispatch(selectServerRequest('', '8.0.0'));
 
-		await openConferenceCall({ callId: 'call1' });
+		await expect(openConferenceCall({ callId: 'call1' })).rejects.toThrow();
 
 		expect(state().callId).toBeUndefined();
 		expect(Navigation.navigate).not.toHaveBeenCalled();
 	});
 
-	test('does nothing when the conference window is disabled', async () => {
+	test('reports a join attempted while the conference window is disabled', async () => {
 		mockedStore.dispatch(updateSettings('VideoConf_Conference_Window_Enabled', false));
 
-		await openConferenceCall({ callId: 'call1' });
+		await expect(openConferenceCall({ callId: 'call1' })).rejects.toThrow();
 
 		expect(state().callId).toBeUndefined();
 		expect(Navigation.navigate).not.toHaveBeenCalled();
 	});
 
-	test('does nothing on a cleartext server, which cannot be handed the login token', async () => {
+	test('reports a join on a cleartext server, which cannot be handed the login token', async () => {
 		mockedStore.dispatch(selectServerRequest('http://open.rocket.chat', '8.0.0'));
 
-		await openConferenceCall({ callId: 'call1' });
+		await expect(openConferenceCall({ callId: 'call1' })).rejects.toThrow();
 
 		expect(state().callId).toBeUndefined();
 		expect(Navigation.navigate).not.toHaveBeenCalled();
+	});
+
+	test('stays quiet when the user themselves supersedes the call', async () => {
+		(requestVoipCallPermissions as jest.Mock).mockImplementationOnce(() => {
+			closeConferenceCall();
+			return Promise.resolve(true);
+		});
+
+		await expect(openConferenceCall({ callId: 'call1' })).resolves.toBeUndefined();
 	});
 
 	test('drops a pending open when the call is closed while permissions resolve', async () => {
-		let resolvePermissions!: (value: boolean) => void;
-		(requestVoipCallPermissions as jest.Mock).mockImplementationOnce(
-			() =>
-				new Promise<boolean>(resolve => {
-					resolvePermissions = resolve;
-				})
-		);
+		const { requested, resolvePermissions } = holdPermissions();
 
 		const openPromise = openConferenceCall({ callId: 'call1' });
+		await requested;
 		closeConferenceCall();
-		resolvePermissions(true);
+		resolvePermissions();
 		await openPromise;
 
 		expect(state().callId).toBeUndefined();
@@ -139,17 +162,12 @@ describe('openConferenceCall', () => {
 	});
 
 	test('drops a pending open when the server changes while permissions resolve', async () => {
-		let resolvePermissions!: (value: boolean) => void;
-		(requestVoipCallPermissions as jest.Mock).mockImplementationOnce(
-			() =>
-				new Promise<boolean>(resolve => {
-					resolvePermissions = resolve;
-				})
-		);
+		const { requested, resolvePermissions } = holdPermissions();
 
 		const openPromise = openConferenceCall({ callId: 'call1' });
+		await requested;
 		mockedStore.dispatch(selectServerRequest('https://other.rocket.chat', '8.0.0'));
-		resolvePermissions(true);
+		resolvePermissions();
 		await openPromise;
 
 		expect(state().callId).toBeUndefined();

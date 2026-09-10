@@ -83,6 +83,7 @@ export const useVideoConf = (
 				log(error);
 			}
 		} catch (error) {
+			showErrorAlert(i18n.t('error-init-video-conf'));
 			log(error);
 		}
 	};

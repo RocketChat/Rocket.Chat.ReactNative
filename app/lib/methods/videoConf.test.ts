@@ -1,5 +1,6 @@
 import { selectServerRequest } from '../../actions/server';
 import { clearSettings, updateSettings } from '../../actions/settings';
+import i18n from '../../i18n';
 import { mockedStore } from '../../reducers/mockedStore';
 import navigation from '../navigation/appNavigation';
 import { videoConferenceJoin } from '../services/restApi';
@@ -116,6 +117,22 @@ describe('videoConfJoin', () => {
 
 			expect(navigation.navigate).not.toHaveBeenCalledWith('JitsiMeetView', expect.anything());
 			expect(openLink).not.toHaveBeenCalled();
+		});
+
+		test('tells the user when the conference page cannot be opened', async () => {
+			(openConferenceCall as jest.Mock).mockRejectedValueOnce(new Error('nope'));
+
+			await videoConfJoin('call1', true, true);
+
+			expect(showErrorAlert).toHaveBeenCalledWith(i18n.t('error-init-video-conf'));
+		});
+
+		test('reports a failed push-accepted join as a missed call', async () => {
+			(openConferenceCall as jest.Mock).mockRejectedValueOnce(new Error('nope'));
+
+			await videoConfJoin('call1', true, false, { fromPush: true, rid: 'GENERAL' });
+
+			expect(showErrorAlert).toHaveBeenCalledWith(i18n.t('Missed_call'));
 		});
 	});
 });

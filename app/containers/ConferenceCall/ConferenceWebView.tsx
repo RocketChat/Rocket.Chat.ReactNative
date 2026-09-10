@@ -59,7 +59,8 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 
 		let cancelled = false;
 
-		setCookiesSet(false);
+		// Deliberately not resetting cookiesSet: it gates mounting the WebView, so flipping it
+		// back would tear down a live call to re-run a cookie write the running page never reads.
 		setServerCookies(server, { id: userId, token })
 			.catch(log)
 			.finally(() => {
@@ -109,7 +110,10 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 
 	const onShouldStartLoadWithRequest = useCallback(
 		({ url: target, isTopFrame }: ShouldStartLoadRequest) => {
-			if (!isTopFrame || isConferenceUrl(target, server)) {
+			// Android omits isTopFrame on the synchronous path even though the type says otherwise, and it
+			// never raises this for inner frames anyway. Only an explicit false is a subframe: treating the
+			// missing value as one would skip the origin check and hand the bridge and cookies to any site.
+			if (isTopFrame === false || isConferenceUrl(target, server)) {
 				return true;
 			}
 

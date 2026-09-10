@@ -7,8 +7,21 @@ import { isSecureHttpUrl } from './isConferenceUrl';
 const COOKIE_LIFETIME_DAYS = 1;
 const SERVER_COOKIE_NAMES = ['rc_uid', 'rc_token'];
 
-export const setServerCookies = async (server: string, user: { id: string; token: string }): Promise<void> => {
-	if (!isSecureHttpUrl(server)) {
+type TSetServerCookiesOptions = {
+	/**
+	 * Write the credential cookies even when the server is plain http. Only for callers that
+	 * predate the check and would otherwise lose authentication on cleartext deployments — the
+	 * login token is sent unencrypted on every request to such a server.
+	 */
+	allowInsecureServer?: boolean;
+};
+
+export const setServerCookies = async (
+	server: string,
+	user: { id: string; token: string },
+	{ allowInsecureServer = false }: TSetServerCookiesOptions = {}
+): Promise<void> => {
+	if (!allowInsecureServer && !isSecureHttpUrl(server)) {
 		throw new Error('Refusing to set server cookies for an insecure server url');
 	}
 

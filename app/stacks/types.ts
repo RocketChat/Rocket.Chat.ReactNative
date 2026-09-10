@@ -176,7 +176,6 @@ export type ChatsStackParamList = {
 		onlyAudio?: boolean;
 		videoConf?: boolean;
 	};
-	ConferenceView: undefined;
 	ChangeAvatarView: {
 		context: TChangeAvatarViewContext;
 		titleHeader?: string;
@@ -302,6 +301,7 @@ export type InsideStackParamList = {
 		data: any;
 	};
 	CallView: undefined;
+	ConferenceView: undefined;
 };
 
 export type { OutsideParamList, OutsideModalParamList } from './OutsideStack';

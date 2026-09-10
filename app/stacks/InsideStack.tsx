@@ -202,10 +202,6 @@ const ChatsStack = createNativeStackNavigator({
 		JitsiMeetView: createNativeStackScreen({
 			screen: JitsiMeetViewScreen,
 			options: { headerShown: false, animation: isIOS ? 'default' : 'none' }
-		}),
-		ConferenceView: createNativeStackScreen({
-			screen: ConferenceViewScreen,
-			options: { headerShown: false, animation: isIOS ? 'default' : 'none' }
 		})
 	}
 }).with(({ Navigator }) => {
@@ -363,6 +359,12 @@ const InsideStack = createNativeStackNavigator({
 		CallView: createNativeStackScreen({
 			screen: CallViewScreen,
 			options: { headerShown: false }
+		}),
+		// Lives at the root, not in ChatsStack: the conference header is mounted app-wide, so
+		// "return to call" has to resolve from Settings, Profile and Admin too.
+		ConferenceView: createNativeStackScreen({
+			screen: ConferenceViewScreen,
+			options: { headerShown: false, animation: isIOS ? 'default' : 'none' }
 		})
 	}
 }).with(({ Navigator }) => {

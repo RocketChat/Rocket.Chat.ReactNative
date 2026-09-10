@@ -31,7 +31,10 @@ const JitsiMeetView = (): ReactElement => {
 
 	const setCookies = async () => {
 		try {
-			await setServerCookies(serverUrl, user);
+			// Jitsi has always authenticated this way, cleartext self-hosted servers included. Refusing
+			// http here would silently drop those users into an unauthenticated call, so keep the old
+			// reach; the conference window opts out of cleartext upstream instead.
+			await setServerCookies(serverUrl, user, { allowInsecureServer: true });
 		} catch (e) {
 			log(e);
 		} finally {

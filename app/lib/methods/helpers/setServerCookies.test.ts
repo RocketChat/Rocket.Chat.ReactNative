@@ -50,6 +50,14 @@ describe('setServerCookies', () => {
 		expect(mockedSetFromResponse).not.toHaveBeenCalled();
 	});
 
+	test('writes to a cleartext server when the caller opts in, still without the secure flag', async () => {
+		await setServerCookies('http://chat.internal', { id: 'uid1', token: 'tok1' }, { allowInsecureServer: true });
+
+		expect(cookieStringFor('rc_uid')).toContain('rc_uid=uid1');
+		expect(cookieStringFor('rc_token')).toContain('rc_token=tok1');
+		expect(cookieStringFor('rc_uid')).not.toMatch(/;\s*Secure/i);
+	});
+
 	test('allows loopback http for local dev without the secure flag', async () => {
 		await setServerCookies('http://localhost:3000', { id: 'uid1', token: 'tok1' });
 
