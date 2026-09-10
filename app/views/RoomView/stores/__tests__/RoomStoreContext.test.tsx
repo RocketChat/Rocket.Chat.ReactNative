@@ -9,7 +9,7 @@ const subRoom = { id: 'sub-1', rid: 'rid-1', t: 'c', topic: 'old', name: 'genera
 const makeRoomStore = (): RoomStore =>
 	createStore<RoomState>(() => ({
 		room: subRoom,
-		joined: true,
+		membership: 'subscribed',
 		member: {},
 		roomUserId: null,
 		canAutoTranslate: false,

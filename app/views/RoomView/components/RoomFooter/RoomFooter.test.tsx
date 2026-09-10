@@ -55,7 +55,7 @@ const makeReduxStore = ({ settings = {}, permissions = {}, enterpriseModules = [
 const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 	createZustandStore<RoomState>(() => ({
 		room: { rid: 'rid-1', t: 'c' },
-		joined: true,
+		membership: 'subscribed',
 		member: {},
 		roomUserId: null,
 		canAutoTranslate: false,
@@ -68,13 +68,13 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		...overrides
 	}));
 
-const renderFooter = (roomStore: RoomStore, reduxStore = makeReduxStore(), loading = false) =>
+const renderFooter = (roomStore: RoomStore, reduxStore = makeReduxStore(), loading = false, ready = true) =>
 	render(
 		<Provider store={reduxStore}>
 			<RoomStoreContext.Provider value={roomStore}>
 				<RoomScreenContext.Provider
 					value={{ loading, failed: false, retry: jest.fn(), lastSeen: null, clearLastSeen: jest.fn() }}>
-					<RoomFooter messageComposerRef={{ current: null }} joinCodeRef={{ current: null }} />
+					<RoomFooter messageComposerRef={{ current: null }} joinCodeRef={{ current: null }} ready={ready} />
 				</RoomScreenContext.Provider>
 			</RoomStoreContext.Provider>
 		</Provider>
@@ -96,7 +96,7 @@ describe('RoomFooter', () => {
 	});
 
 	it('renders the Join state when the user has not joined a channel', () => {
-		renderFooter(makeRoomStore({ joined: false, room: { rid: 'rid-1', t: 'c' } }));
+		renderFooter(makeRoomStore({ membership: 'preview', room: { rid: 'rid-1', t: 'c' } }));
 
 		expect(screen.getByTestId('room-view-join')).toBeOnTheScreen();
 		expect(screen.getByTestId('room-view-join-button')).toHaveTextContent('Join');
@@ -104,13 +104,13 @@ describe('RoomFooter', () => {
 	});
 
 	it('renders the Take it state for an unjoined livechat room', () => {
-		renderFooter(makeRoomStore({ joined: false, room: { rid: 'rid-1', t: 'l' } }));
+		renderFooter(makeRoomStore({ membership: 'preview', room: { rid: 'rid-1', t: 'l' } }));
 
 		expect(screen.getByTestId('room-view-join-button')).toHaveTextContent('Take_it');
 	});
 
 	it('disables the join button while a request is in flight', () => {
-		renderFooter(makeRoomStore({ joined: false, room: { rid: 'rid-1', t: 'c' } }), makeReduxStore(), true);
+		renderFooter(makeRoomStore({ membership: 'preview', room: { rid: 'rid-1', t: 'c' } }), makeReduxStore(), true);
 
 		expect(screen.getByTestId('room-view-join-button')).toBeDisabled();
 	});
@@ -167,5 +167,12 @@ describe('RoomFooter', () => {
 		renderFooter(makeRoomStore());
 
 		expect(screen.getByTestId('message-composer')).toBeOnTheScreen();
+	});
+
+	it('renders nothing before the room lookup settles, even for a room that will preview', () => {
+		renderFooter(makeRoomStore({ membership: 'preview', room: { rid: 'rid-1', t: 'c' } }), makeReduxStore(), false, false);
+
+		expect(screen.queryByTestId('room-view-join')).toBeNull();
+		expect(screen.queryByTestId('message-composer')).toBeNull();
 	});
 });

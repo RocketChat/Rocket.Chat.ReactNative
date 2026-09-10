@@ -1,5 +1,3 @@
-import { Observable, Subject } from 'rxjs';
-
 import database from '../../../../lib/database';
 import { loadThreadMessages } from '../../../../lib/methods/loadThreadMessages';
 import { readMessages } from '../../../../lib/methods/readMessages';
@@ -8,6 +6,7 @@ import { isGroupChat } from '../../../../lib/methods/helpers';
 import { isInviteSubscription } from '../../../../lib/methods/isInviteSubscription';
 import log from '../../../../lib/methods/helpers/log';
 import getMessages from '../../services/getMessages';
+import { createObservableQuery, createObservableRecord } from '../../__tests__/observableDatabase';
 import { createRoomStore, observeRoom } from '../RoomStore';
 
 jest.mock('../../../../lib/database', () => ({
@@ -51,59 +50,22 @@ const subRoom = { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general' };
 
 const flush = () => Promise.resolve().then(() => Promise.resolve());
 
-const makeRecord = (row: Record<string, unknown>) => {
-	const updates = new Subject<Record<string, unknown>>();
-	const unsubscribe = jest.fn();
-	const record = {
-		...row,
-		observe: jest.fn(
-			() =>
-				new Observable<Record<string, unknown>>(observer => {
-					observer.next(record);
-					const subscription = updates.subscribe(observer);
-					return () => {
-						subscription.unsubscribe();
-						unsubscribe();
-					};
-				})
-		)
-	};
-	return {
-		record,
-		unsubscribe,
-		emit: (next: Record<string, unknown>) => updates.next(next),
-		destroy: () => updates.complete()
-	};
-};
-
 const setupPresentRow = (row: Record<string, unknown> = subRoom) => {
-	const { record, emit, destroy, unsubscribe } = makeRecord(row);
+	const { record, emit, complete, unsubscribe } = createObservableRecord(row);
 	const find = jest.fn(() => Promise.resolve(record));
 	mockGet.mockReturnValue({ find });
-	return { emit, destroy, unsubscribe, find };
+	return { record, emit, destroy: complete, unsubscribe, find };
 };
 
-const setupAbsentThenPresentRow = () => {
-	const find = jest.fn(() => Promise.reject(new Error('not found')));
-	const rows = new Subject<unknown[]>();
-	const queryUnsubscribe = jest.fn();
-	const observe = jest.fn(
-		() =>
-			new Observable<unknown[]>(observer => {
-				const subscription = rows.subscribe(observer);
-				return () => {
-					subscription.unsubscribe();
-					queryUnsubscribe();
-				};
-			})
-	);
-	const query = jest.fn(() => ({ observe }));
-	mockGet.mockReturnValue({ find, query });
+const setupAbsentThenPresentRow = (findError: Error = new Error('Record subscriptions#rid-1 not found')) => {
+	const find = jest.fn(() => Promise.reject(findError));
+	const { query, emit, complete, unsubscribe } = createObservableQuery<unknown>();
+	mockGet.mockReturnValue({ find, query: jest.fn(() => query) });
 	return {
 		find,
-		queryUnsubscribe,
-		emitRows: (next: unknown[]) => rows.next(next),
-		completeQuery: () => rows.complete()
+		queryUnsubscribe: unsubscribe,
+		emitRows: emit,
+		completeQuery: complete
 	};
 };
 
@@ -121,69 +83,68 @@ describe('RoomStore', () => {
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 
 		expect(store.getState().room).toBe(stubRoom);
-		expect(store.getState().joined).toBe(true);
+		expect(store.getState().membership).toBe('preview');
 		expect(store.getState().member).toEqual({});
 	});
 
 	it('publishes the found record and keeps observing it, with no early return on repeated emissions', async () => {
-		const { emit } = setupPresentRow();
+		const { record, emit } = setupPresentRow();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 		observeRoom('rid-1', store);
 		await flush();
 
-		emit(subRoom);
-		expect(store.getState().room).toBe(subRoom);
-		expect(store.getState().joined).toBe(true);
+		expect(store.getState().room).toBe(record);
+		expect(store.getState().membership).toBe('subscribed');
 
-		const mutated = { ...subRoom, topic: 'new' };
-		emit(mutated);
-		expect(store.getState().room).toBe(mutated);
+		emit({ topic: 'new' });
+		expect(store.getState().room).toBe(record);
+		expect(store.getState().room).toMatchObject({ topic: 'new' });
 	});
 
-	it('sets joined false for a non-DM room when the record is destroyed', async () => {
+	it('sets membership to preview for a non-DM room when the record is destroyed', async () => {
 		const { emit, destroy } = setupPresentRow();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 		observeRoom('rid-1', store);
 		await flush();
 
 		emit(subRoom);
-		expect(store.getState().joined).toBe(true);
+		expect(store.getState().membership).toBe('subscribed');
 
 		destroy();
-		expect(store.getState().joined).toBe(false);
+		expect(store.getState().membership).toBe('preview');
 	});
 
 	it('leaves a DM room untouched when its record is destroyed', async () => {
 		const dmRow = { ...subRoom, t: 'd' };
-		const { emit, destroy } = setupPresentRow(dmRow);
+		const { record, emit, destroy } = setupPresentRow(dmRow);
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: { ...stubRoom, t: 'd' } });
 		observeRoom('rid-1', store);
 		await flush();
 
 		emit(dmRow);
-		expect(store.getState().joined).toBe(true);
+		expect(store.getState().membership).toBe('subscribed');
 
 		destroy();
-		expect(store.getState().joined).toBe(true);
-		expect(store.getState().room).toBe(dmRow);
+		expect(store.getState().membership).toBe('subscribed');
+		expect(store.getState().room).toBe(record);
 	});
 
-	it('flips joined false for a non-DM room whose subscription is not yet found', async () => {
+	it('sets membership to preview for a non-DM room whose subscription is not yet found', async () => {
 		setupAbsentThenPresentRow();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 		observeRoom('rid-1', store);
 		await flush();
 
-		expect(store.getState().joined).toBe(false);
+		expect(store.getState().membership).toBe('preview');
 	});
 
-	it('leaves a DM room joined while its subscription is not yet found', async () => {
+	it('leaves a DM room subscribed while its subscription is not yet found', async () => {
 		setupAbsentThenPresentRow();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: { ...stubRoom, t: 'd' } });
 		observeRoom('rid-1', store);
 		await flush();
 
-		expect(store.getState().joined).toBe(true);
+		expect(store.getState().membership).toBe('subscribed');
 	});
 
 	it('switches from the query observable to the record observable once a row appears, and unsubscribes the query', async () => {
@@ -192,44 +153,31 @@ describe('RoomStore', () => {
 		observeRoom('rid-1', store);
 		await flush();
 
-		const { record, emit } = makeRecord(subRoom);
+		const { record, emit } = createObservableRecord(subRoom);
 		emitRows([record]);
 
 		expect(queryUnsubscribe).toHaveBeenCalledTimes(1);
 		expect(store.getState().room).toBe(record);
-		expect(store.getState().joined).toBe(true);
+		expect(store.getState().membership).toBe('subscribed');
 
-		const mutated = { ...subRoom, name: 'renamed', observe: record.observe };
-		emit(mutated);
-		expect(store.getState().room).toBe(mutated);
+		emit({ name: 'renamed' });
+		expect(store.getState().room).toBe(record);
+		expect(store.getState().room).toMatchObject({ name: 'renamed' });
 	});
 
-	it('does not throw when the query observable emits a row synchronously on subscribe', async () => {
-		const find = jest.fn(() => Promise.reject(new Error('not found')));
-		const { record, emit } = makeRecord(subRoom);
-		const queryUnsubscribe = jest.fn();
-		const observe = jest.fn(
-			() =>
-				new Observable(observer => {
-					observer.next([record]);
-					observer.next([record]);
-					return queryUnsubscribe;
-				})
-		);
-		const query = jest.fn(() => ({ observe }));
-		mockGet.mockReturnValue({ find, query });
-
+	it('does not throw when the query emits the same row twice in a row and only observes it once', async () => {
+		const { emitRows, queryUnsubscribe } = setupAbsentThenPresentRow();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 		expect(() => observeRoom('rid-1', store)).not.toThrow();
 		await flush();
 
+		const { record } = createObservableRecord(subRoom);
+		emitRows([record]);
+		emitRows([record]);
+
 		expect(queryUnsubscribe).toHaveBeenCalledTimes(1);
 		expect(store.getState().room).toBe(record);
 		expect(record.observe).toHaveBeenCalledTimes(1);
-
-		const mutated = { ...subRoom, name: 'renamed', observe: record.observe };
-		emit(mutated);
-		expect(store.getState().room).toBe(mutated);
 	});
 
 	it('cleans up the query while waiting and ignores records arriving after teardown', async () => {
@@ -239,26 +187,26 @@ describe('RoomStore', () => {
 		await flush();
 		emitRows([]);
 		cleanup();
-		const { record } = makeRecord(subRoom);
+		const { record } = createObservableRecord(subRoom);
 		emitRows([record]);
 		expect(queryUnsubscribe).toHaveBeenCalledTimes(1);
 		expect(record.observe).not.toHaveBeenCalled();
 	});
 
-	it('cleans up the attached record without marking the room unjoined', async () => {
+	it('cleans up the attached record without changing membership', async () => {
 		const { emitRows, queryUnsubscribe } = setupAbsentThenPresentRow();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 		const cleanup = observeRoom('rid-1', store);
 		await flush();
-		const { record, unsubscribe, emit, destroy } = makeRecord(subRoom);
+		const { record, unsubscribe, emit, complete } = createObservableRecord(subRoom);
 		emitRows([record]);
 		cleanup();
 		emit({ ...subRoom, name: 'ignored' });
-		destroy();
+		complete();
 		expect(queryUnsubscribe).toHaveBeenCalledTimes(1);
 		expect(unsubscribe).toHaveBeenCalledTimes(1);
 		expect(store.getState().room).toBe(record);
-		expect(store.getState().joined).toBe(true);
+		expect(store.getState().membership).toBe('subscribed');
 	});
 
 	it.each(['c', 'd'])('preserves record completion after query handoff for room type %s', async t => {
@@ -266,11 +214,11 @@ describe('RoomStore', () => {
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: { ...stubRoom, t } });
 		observeRoom('rid-1', store);
 		await flush();
-		const { record, destroy } = makeRecord({ ...subRoom, t });
+		const { record, complete } = createObservableRecord({ ...subRoom, t });
 		emitRows([record]);
-		expect(store.getState().joined).toBe(true);
-		destroy();
-		expect(store.getState().joined).toBe(t === 'd');
+		expect(store.getState().membership).toBe('subscribed');
+		complete();
+		expect(store.getState().membership).toBe(t === 'd' ? 'subscribed' : 'preview');
 	});
 
 	it('does not treat query completion without a record as record deletion', async () => {
@@ -280,7 +228,7 @@ describe('RoomStore', () => {
 		await flush();
 		store.getState().join();
 		completeQuery();
-		expect(store.getState().joined).toBe(true);
+		expect(store.getState().membership).toBe('subscribed');
 	});
 
 	it('runs the main init path: fetches messages and sets member and canAutoTranslate', async () => {
@@ -517,16 +465,81 @@ describe('RoomStore', () => {
 		expect(mockGetMessages).not.toHaveBeenCalled();
 	});
 
-	it('join() sets joined true', async () => {
+	it('join() sets membership to subscribed', async () => {
 		setupAbsentThenPresentRow();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 		observeRoom('rid-1', store);
 		await flush();
 
-		expect(store.getState().joined).toBe(false);
+		expect(store.getState().membership).toBe('preview');
 
 		store.getState().join();
 
-		expect(store.getState().joined).toBe(true);
+		expect(store.getState().membership).toBe('subscribed');
+	});
+
+	it('falls to Preview Mode without logging when the row is not found', async () => {
+		setupAbsentThenPresentRow(new Error('Record subscriptions#rid-1 not found'));
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+		observeRoom('rid-1', store);
+		await flush();
+
+		expect(store.getState().membership).toBe('preview');
+		expect(mockLog).not.toHaveBeenCalled();
+	});
+
+	it('falls to Preview Mode and logs any other lookup error', async () => {
+		const error = new Error('database unavailable');
+		setupAbsentThenPresentRow(error);
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+		observeRoom('rid-1', store);
+		await flush();
+
+		expect(store.getState().membership).toBe('preview');
+		expect(mockLog).toHaveBeenCalledTimes(1);
+		expect(mockLog).toHaveBeenCalledWith(error);
+	});
+
+	describe('Room Membership tri-state', () => {
+		it('exposes Preview Mode when no subscription row is found', async () => {
+			setupAbsentThenPresentRow();
+			const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+			observeRoom('rid-1', store);
+			await flush();
+
+			await store.getState().init();
+
+			expect(store.getState().membership).toBe('preview');
+		});
+
+		it('exposes Invited membership for an invite subscription row', async () => {
+			setupPresentRow();
+			mockIsInviteSubscription.mockReturnValue(true);
+			const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+			observeRoom('rid-1', store);
+			await flush();
+
+			expect(store.getState().membership).toBe('invited');
+		});
+
+		it('exposes Subscribed Room membership for a joined subscription row', async () => {
+			setupPresentRow();
+			const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+			observeRoom('rid-1', store);
+			await flush();
+
+			expect(store.getState().membership).toBe('subscribed');
+		});
+
+		it('lands on Preview Mode when a non-DM record observer completes', async () => {
+			const { destroy } = setupPresentRow();
+			const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+			observeRoom('rid-1', store);
+			await flush();
+
+			destroy();
+
+			expect(store.getState().membership).toBe('preview');
+		});
 	});
 });

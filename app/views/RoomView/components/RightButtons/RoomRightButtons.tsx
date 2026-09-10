@@ -16,6 +16,7 @@ import { useSetting } from '../../../../lib/hooks/useSetting';
 import { getUserSelector } from '../../../../selectors/login';
 import { useTheme } from '../../../../theme';
 import { type RoomStore } from '../../definitions';
+import { isSubscriptionModel } from '../../../../definitions/TRoom';
 import { useE2EEStatus } from '../../hooks/useE2EEStatus';
 import { useSubscriptionUnreads } from '../../hooks/useSubscriptionUnreads';
 import { navigateToScreen, type TRoomStackNavigation } from '../../services/navigateToScreen';
@@ -41,11 +42,11 @@ export const RoomRightButtons = ({ rid, roomStore }: IRoomRightButtonsProps): Re
 			const room = s.room;
 			return {
 				t: room.t as SubscriptionType,
-				status: room.status,
+				status: isSubscriptionModel(room) ? room.status : undefined,
 				roomName: getRoomTitle(room),
 				roomIsGroupChat: isGroupChat(room as ISubscription),
-				teamMain: 'teamMain' in room ? !!room.teamMain : false,
-				encrypted: 'encrypted' in room ? room.encrypted : undefined,
+				teamMain: isSubscriptionModel(room) ? !!room.teamMain : false,
+				encrypted: isSubscriptionModel(room) ? room.encrypted : undefined,
 				disableNotifications: (room as ISubscription).disableNotifications
 			};
 		})
@@ -61,7 +62,7 @@ export const RoomRightButtons = ({ rid, roomStore }: IRoomRightButtonsProps): Re
 
 	const navigateToNotificationOrPushTroubleshoot = () => {
 		const room = roomStore.getState().room;
-		if (!('id' in room)) {
+		if (!isSubscriptionModel(room)) {
 			return;
 		}
 		if (!issuesWithNotifications) {

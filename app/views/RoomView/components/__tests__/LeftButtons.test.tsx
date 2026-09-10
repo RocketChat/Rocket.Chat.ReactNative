@@ -33,7 +33,7 @@ jest.mock('../../../../containers/Avatar', () => {
 	};
 });
 
-let mockRoomState: { room: Record<string, unknown> } = { room: { rid: 'rid-1', t: 'c', name: 'general' } };
+let mockRoomState: { room: Record<string, unknown> } = { room: { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general' } };
 jest.mock('zustand', () => ({
 	useStore: (_store: unknown, selector: (state: typeof mockRoomState) => unknown) => selector(mockRoomState)
 }));
@@ -42,7 +42,7 @@ const roomStore = {} as RoomStore;
 
 describe('LeftButtons', () => {
 	beforeEach(() => {
-		mockRoomState = { room: { rid: 'rid-1', t: 'c', name: 'general' } };
+		mockRoomState = { room: { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general' } };
 	});
 
 	it('reflects the current room name from the store', () => {
@@ -55,9 +55,16 @@ describe('LeftButtons', () => {
 		const { rerender } = render(<LeftButtons rid='rid-1' roomStore={roomStore} />);
 		expect(screen.getByTestId('left-buttons-avatar')).toHaveProp('text', 'general');
 
-		mockRoomState = { room: { rid: 'rid-1', t: 'c', name: 'renamed' } };
+		mockRoomState = { room: { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'renamed' } };
 		rerender(<LeftButtons rid='rid-1' roomStore={roomStore} />);
 
 		expect(screen.getByTestId('left-buttons-avatar')).toHaveProp('text', 'renamed');
+	});
+
+	it('reflects the room name for a Preview Mode room', () => {
+		mockRoomState = { room: { rid: 'rid-1', t: 'c', name: 'preview-room' } };
+		render(<LeftButtons rid='rid-1' roomStore={roomStore} />);
+
+		expect(screen.getByTestId('left-buttons-avatar')).toHaveProp('text', 'preview-room');
 	});
 });

@@ -31,7 +31,7 @@ const LeftButtons = ({ rid, tmid, roomStore }: ILeftButtonsProps): ReactElement 
 	const baseUrl = useAppSelector(state => state.server.server);
 	const { id: userId, token } = useAppSelector(getUserSelector);
 	const t = useStore(roomStore, s => s.room.t);
-	const title = useStore(roomStore, s => ('name' in s.room ? s.room.name : undefined));
+	const title = useStore(roomStore, s => s.room.name);
 
 	const onPress = () => goRoomActionsView();
 	const { fontScale } = useWindowDimensions();

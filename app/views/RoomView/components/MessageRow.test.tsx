@@ -1,6 +1,7 @@
 import { act, render } from '@testing-library/react-native';
 
 import database from '../../../lib/database';
+import { createObservableRecord } from '../__tests__/observableDatabase';
 import { createRoomStore, observeRoom } from '../stores/RoomStore';
 import { RoomScreenContext } from '../stores/RoomScreenContext';
 import { RoomStoreContext } from '../stores/RoomStoreContext';
@@ -50,20 +51,10 @@ jest.mock('../LoadMore', () => ({ __esModule: true, default: () => null }));
 const mockGet = database.active.get as jest.Mock;
 
 const setupObserve = () => {
-	let emit: ((row: any) => void) | undefined;
-	const unsubscribe = jest.fn();
-	const find = jest.fn(() =>
-		Promise.resolve({
-			observe: () => ({
-				subscribe: ({ next }: { next: (row: any) => void }) => {
-					emit = next;
-					return { unsubscribe };
-				}
-			})
-		})
-	);
+	const { record, emit } = createObservableRecord({});
+	const find = jest.fn(() => Promise.resolve(record));
 	mockGet.mockReturnValue({ find });
-	return { emit: (row: any) => emit?.(row) };
+	return { emit };
 };
 
 describe('MessageRow', () => {

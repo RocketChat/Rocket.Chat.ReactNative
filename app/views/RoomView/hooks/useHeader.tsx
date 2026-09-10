@@ -12,6 +12,7 @@ import LeftButtons from '../components/LeftButtons';
 import RightButtons from '../components/RightButtons/RightButtons';
 import { type IRoomViewProps } from '../definitions';
 import { type RoomStore } from '../definitions';
+import { isSubscriptionModel } from '../../../definitions/TRoom';
 import { useGoRoomActionsView } from './useGoRoomActionsView';
 
 interface IUseHeaderParams {
@@ -48,24 +49,21 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 			const title = tmid ? (roomName ?? '') : getRoomTitle(room);
 			const parentTitle = tmid ? getRoomTitle(room) : '';
 
-			const subscription = 'id' in room ? room : undefined;
+			const subscription = isSubscriptionModel(room) ? room : undefined;
 
 			let subtitle: string | undefined;
 			let visitor: IVisitor | undefined;
 			let sourceType: IOmnichannelSource | undefined;
-			if ('id' in room) {
+			if (isSubscriptionModel(room)) {
 				subtitle = room.topic;
 				visitor = room.visitor;
-			}
-			if ('source' in room) {
 				sourceType = room.source;
-				visitor = room.visitor;
 			}
 
 			return {
 				prid: room?.prid,
 				title,
-				teamMain: 'teamMain' in room ? !!room?.teamMain : false,
+				teamMain: isSubscriptionModel(room) ? !!room?.teamMain : false,
 				parentTitle,
 				subtitle,
 				type: room?.t,

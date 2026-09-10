@@ -1,10 +1,11 @@
 import database from '../../../lib/database';
 import { type RoomStore } from '../definitions';
+import { isSubscriptionModel } from '../../../definitions/TRoom';
 
 export function useCloseBanner(roomStore: RoomStore): () => Promise<void> {
 	return async () => {
 		const { room } = roomStore.getState();
-		if (!('id' in room)) {
+		if (!isSubscriptionModel(room)) {
 			return;
 		}
 		try {

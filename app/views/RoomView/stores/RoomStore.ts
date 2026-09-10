@@ -3,6 +3,7 @@ import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { createStore, type StateCreator } from 'zustand';
 
 import database from '../../../lib/database';
+import { SUBSCRIPTIONS_TABLE } from '../../../lib/database/model/Subscription';
 import { loadThreadMessages } from '../../../lib/methods/loadThreadMessages';
 import { readMessages } from '../../../lib/methods/readMessages';
 import { getUserInfo } from '../../../lib/services/restApi';
@@ -10,10 +11,11 @@ import { isGroupChat, getUidDirectMessage, canAutoTranslate as canAutoTranslateM
 import log from '../../../lib/methods/helpers/log';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
 import { type RoomType, type TSubscriptionModel } from '../../../definitions';
-import { type TRoomOrPreview } from '../../../definitions/TRoom';
+import { type TRoomOrPreview, isSubscriptionModel } from '../../../definitions/TRoom';
 import {
 	type IRoomStoreInitParams,
 	type IRoomViewState,
+	type RoomMembership,
 	type RoomState,
 	type RoomStore,
 	type TRoomInitResult
@@ -33,7 +35,7 @@ interface IDirectMessageMember {
 }
 
 const getRoomMember = async (room: TRoomOrPreview): Promise<IDirectMessageMember> => {
-	if ('id' in room && room.t === 'd' && !isGroupChat(room)) {
+	if (isSubscriptionModel(room) && room.t === 'd' && !isGroupChat(room)) {
 		const roomUserId = getUidDirectMessage(room);
 		try {
 			const result = await getUserInfo(roomUserId);
@@ -61,12 +63,12 @@ type TLoadRoomResult =
 const loadRoom = async (
 	rid: string,
 	room: TRoomOrPreview,
-	joined: boolean,
+	membership: RoomMembership,
 	{ tmid, onThreadMessagesLoaded, signal }: IRoomStoreInitParams
 ): Promise<TLoadRoomResult> => {
 	const isAborted = () => signal?.aborted === true;
 	try {
-		if (isAborted() || ('id' in room && isInviteSubscription(room))) {
+		if (isAborted() || (isSubscriptionModel(room) && isInviteSubscription(room))) {
 			return { status: 'skipped' };
 		}
 
@@ -83,13 +85,13 @@ const loadRoom = async (
 		} else {
 			await getMessages({
 				rid: room.rid,
-				...('lastOpen' in room && room.lastOpen ? {} : { t: room.t as RoomType })
+				...(isSubscriptionModel(room) && room.lastOpen ? {} : { t: room.t as RoomType })
 			});
 			if (isAborted()) {
 				return { status: 'skipped' };
 			}
 
-			if (joined && 'id' in room) {
+			if (membership === 'subscribed' && isSubscriptionModel(room)) {
 				lastSeen = room.alert || room.unread || room.userMentions ? room.ls : null;
 				shouldMarkRead = true;
 			}
@@ -113,6 +115,13 @@ const loadRoom = async (
 	}
 };
 
+const deriveMembership = (room: TRoomOrPreview): RoomMembership => {
+	if (isSubscriptionModel(room)) {
+		return isInviteSubscription(room) ? 'invited' : 'subscribed';
+	}
+	return room.t === 'd' ? 'subscribed' : 'preview';
+};
+
 const createRoomState =
 	(
 		rid: string | undefined,
@@ -121,7 +130,7 @@ const createRoomState =
 	): StateCreator<RoomState> =>
 	(set, get) => ({
 		room: initialRoom,
-		joined: true,
+		membership: deriveMembership(initialRoom),
 		member: EMPTY_MEMBER,
 		roomUserId,
 		canAutoTranslate: false,
@@ -133,8 +142,8 @@ const createRoomState =
 				return { status: 'skipped' };
 			}
 			for (let attempt = 1; attempt <= INIT_MAX_ATTEMPTS; attempt += 1) {
-				const { room, joined } = get();
-				const result = await loadRoom(rid, room, joined, { tmid, onThreadMessagesLoaded, signal });
+				const { room, membership } = get();
+				const result = await loadRoom(rid, room, membership, { tmid, onThreadMessagesLoaded, signal });
 				if (signal?.aborted || result.status === 'skipped') {
 					return { status: 'skipped' };
 				}
@@ -157,7 +166,7 @@ const createRoomState =
 			return { status: 'failed' };
 		},
 
-		join: () => set({ joined: true }),
+		join: () => set({ membership: 'subscribed' }),
 
 		joinRoom: (requestJoinCode?: () => void): Promise<void> =>
 			joinRoom(get().room, {
@@ -168,14 +177,14 @@ const createRoomState =
 	});
 
 const publishRoom = (store: RoomStore, next: TSubscriptionModel): void => {
-	store.setState({ room: next, joined: true });
+	store.setState({ room: next, membership: deriveMembership(next) });
 };
 
 const roomObserver = (store: RoomStore) => ({
 	next: (next: TSubscriptionModel) => publishRoom(store, next),
 	complete: () => {
 		if (store.getState().room.t !== 'd') {
-			store.setState({ joined: false });
+			store.setState({ membership: 'preview' });
 		}
 	}
 });
@@ -218,12 +227,15 @@ export function observeRoom(rid: string | undefined, store: RoomStore, onReady?:
 			cleanup = observeRecord(store, record);
 			onReady?.();
 		})
-		.catch(() => {
+		.catch((error: unknown) => {
 			if (cancelled) {
 				return;
 			}
+			if (!(error instanceof Error) || !error.message.startsWith(`Record ${SUBSCRIPTIONS_TABLE}#`)) {
+				log(error);
+			}
 			if (store.getState().room.t !== 'd') {
-				store.setState({ joined: false });
+				store.setState({ membership: 'preview' });
 			}
 			cleanup = observeQueryUntilPresent(rid, store);
 			onReady?.();

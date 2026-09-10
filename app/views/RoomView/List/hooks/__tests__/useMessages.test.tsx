@@ -13,6 +13,7 @@ import { readThreads } from '../../../../../lib/services/restApi';
 import { mockedStore } from '../../../../../reducers/mockedStore';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../../constants';
 import { buildVisibleSystemTypesClause } from '../../visibleSystemMessages';
+import { createObservableQuery } from '../../../__tests__/observableDatabase';
 import { useMessages } from '../useMessages';
 
 jest.mock('../../../../../lib/database', () => ({
@@ -96,16 +97,11 @@ describe('useMessages', () => {
 		mockDbGet.mockImplementation(() => ({
 			query: jest.fn((...args: unknown[]) => {
 				queryCalls.push(args);
+				const { query, unsubscribe, emit } = createObservableQuery<TAnyMessageModel>(() => emittedRows);
+				unsubscribeSpies.push(unsubscribe);
+				emitVisibleRows = emit;
 				return {
-					observe: () => ({
-						subscribe: (onNext: (rows: TAnyMessageModel[]) => void) => {
-							emitVisibleRows = onNext;
-							onNext(emittedRows);
-							const unsubscribe = jest.fn();
-							unsubscribeSpies.push(unsubscribe);
-							return { unsubscribe };
-						}
-					}),
+					...query,
 					// Targeted one-shot read for the rejoin raise (region above the current bound).
 					fetch: jest.fn(() => {
 						fetchCalls.push(args);

@@ -252,7 +252,7 @@ describe('RoomRightButtons', () => {
 	});
 
 	it('navigates to the threads and search screens on stack mode', () => {
-		mockRoomState = { room: { rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
+		mockRoomState = { room: { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
 
 		renderRoomRightButtons();
 
@@ -265,7 +265,7 @@ describe('RoomRightButtons', () => {
 
 	it('navigates through the modal stack on master-detail mode', () => {
 		mockIsMasterDetail = true;
-		mockRoomState = { room: { rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
+		mockRoomState = { room: { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
 
 		renderRoomRightButtons();
 

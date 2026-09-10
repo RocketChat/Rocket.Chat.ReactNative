@@ -20,6 +20,7 @@ import {
 import { useActionSheet } from '../../../containers/ActionSheet';
 import ReactionsList from '../../../containers/ReactionsList';
 import { type IRoomMessageHandlersInput, type IRoomViewProps } from '../definitions';
+import { isSubscriptionModel } from '../../../definitions/TRoom';
 import { useRoomStore, useRoomStoreApi } from '../stores/RoomStoreContext';
 import { blockAction as blockActionService } from '../services/blockAction';
 import { fetchThreadName as fetchThreadNameService } from '../services/fetchThreadName';
@@ -64,7 +65,7 @@ export function useRoomMessageHandlers({
 	const handleEnterCall = () => {
 		if (isInActiveVoipCall()) return;
 		const room = roomStore.getState().room;
-		if ('id' in room) {
+		if (isSubscriptionModel(room)) {
 			const { jitsiTimeout } = room;
 			if (jitsiTimeout && jitsiTimeout < new Date()) {
 				showErrorAlert(I18n.t('Call_already_ended'));

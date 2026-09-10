@@ -11,7 +11,7 @@ export type TRoomFooterState =
 
 export const useRoomFooterState = (): TRoomFooterState => {
 	const onHold = useRoomStore(s => !!s.room.onHold);
-	const joined = useRoomStore(s => s.joined);
+	const isSubscribed = useRoomStore(s => s.membership === 'subscribed');
 	const airGappedRestrictionRemainingDays = useSetting('Cloud_Workspace_AirGapped_Restrictions_Remaining_Days') as
 		| number
 		| undefined;
@@ -20,7 +20,7 @@ export const useRoomFooterState = (): TRoomFooterState => {
 	if (onHold) {
 		return { kind: 'onHold' };
 	}
-	if (!joined) {
+	if (!isSubscribed) {
 		return { kind: 'takeOrJoin' };
 	}
 	if (airGappedRestrictionRemainingDays === 0) {

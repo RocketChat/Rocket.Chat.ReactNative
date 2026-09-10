@@ -18,11 +18,11 @@ export const useGoRoomActionsView = (roomStore: RoomStore): ((screen?: keyof Mod
 	// `t` comes from the store (seeded at mount) rather than route.params, which navigation can wipe.
 	const rid = useStore(roomStore, s => s.room.rid);
 	const t = useStore(roomStore, s => s.room.t);
-	const { member, joined, canForwardGuest, canViewCannedResponse } = useStore(
+	const { member, membership, canForwardGuest, canViewCannedResponse } = useStore(
 		roomStore,
 		useShallow(s => ({
 			member: s.member,
-			joined: s.joined,
+			membership: s.membership,
 			canForwardGuest: s.canForwardGuest,
 			canViewCannedResponse: s.canViewCannedResponse
 		}))
@@ -39,7 +39,7 @@ export const useGoRoomActionsView = (roomStore: RoomStore): ((screen?: keyof Mod
 			rid: rid as string,
 			t: t as SubscriptionType,
 			member,
-			joined,
+			joined: membership === 'subscribed',
 			omnichannelPermissions
 		};
 		if (isMasterDetail) {

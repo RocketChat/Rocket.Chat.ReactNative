@@ -42,6 +42,7 @@ export interface IRoomScreenProps extends Pick<IRoomViewProps, 'route'>, Pick<IR
 export interface IRoomFooterProps {
 	messageComposerRef: RefObject<IMessageComposerRef | null>;
 	joinCodeRef: RefObject<IJoinCode | null>;
+	ready: boolean;
 }
 
 export type ITakeOrJoinProps = Pick<IRoomFooterProps, 'joinCodeRef'>;
@@ -115,9 +116,11 @@ export type TRoomInitResult =
 	| { status: 'skipped' }
 	| { status: 'failed' };
 
+export type RoomMembership = 'preview' | 'invited' | 'subscribed';
+
 export interface RoomState {
 	room: TRoomOrPreview;
-	joined: boolean;
+	membership: RoomMembership;
 	member: IRoomViewState['member'];
 	roomUserId?: string | null;
 	canAutoTranslate: boolean;

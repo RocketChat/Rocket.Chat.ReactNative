@@ -107,7 +107,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 							reactionInit={onReactionInit}
 							errorActionsShow={errorActionsShow}
 						/>
-						<RoomFooter messageComposerRef={messageComposerRef} joinCodeRef={joinCodeRef} />
+						<RoomFooter messageComposerRef={messageComposerRef} joinCodeRef={joinCodeRef} ready={ready} />
 						<RoomMessageActions
 							tmid={tmid}
 							messageActionsRef={messageActionsRef}

@@ -7,9 +7,10 @@ import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../lib/constants/m
 import { type RoomType, type TAnyMessageModel } from '../../../definitions';
 import { useThreadBadgeColor } from '../hooks/useThreadBadgeColor';
 import { type IRoomViewState, type TMessageRowProps } from '../definitions';
+import { isSubscriptionModel } from '../../../definitions/TRoom';
 
 const useIsIgnored = (authorId?: string): boolean =>
-	useRoomStore(s => (authorId && 'id' in s.room ? (s.room.ignored?.includes(authorId) ?? false) : false));
+	useRoomStore(s => (authorId && isSubscriptionModel(s.room) ? (s.room.ignored?.includes(authorId) ?? false) : false));
 
 const getMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageModel, lastSeen: IRoomViewState['lastSeen']) => {
 	let dateSeparator: TAnyMessageModel['ts'] | null = null;

@@ -2,6 +2,7 @@ import MessageActions, { type IMessageActions } from '../../../containers/Messag
 import MessageErrorActions, { type IMessageErrorActions } from '../../../containers/MessageErrorActions';
 import { type IRoomMessageActionsProps } from '../definitions';
 import { type TSubscriptionModel } from '../../../definitions';
+import { isSubscriptionModel } from '../../../definitions/TRoom';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../../selectors/login';
 import { useReadOnly } from '../hooks/useReadOnly';
@@ -19,7 +20,7 @@ export const RoomMessageActions = ({
 	jumpToMessage
 }: IRoomMessageActionsProps) => {
 	const roomStore = useRoomStoreApi();
-	const isSubscribed = useRoomStore(s => 'id' in s.room);
+	const isSubscribed = useRoomStore(s => isSubscriptionModel(s.room));
 	const user = useAppSelector(getUserSelector);
 	const readOnly = useReadOnly();
 

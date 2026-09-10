@@ -3,6 +3,7 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
 import { type RoomStore } from '../../definitions';
+import { isSubscriptionModel } from '../../../../definitions/TRoom';
 import { OmnichannelRightButtons } from './OmnichannelRightButtons';
 import { RoomRightButtons } from './RoomRightButtons';
 import { ThreadRightButtons } from './ThreadRightButtons';
@@ -14,21 +15,25 @@ interface IRightButtonsProps {
 }
 
 const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElement | null => {
-	const { t, status } = useStore(
+	const { t, status, membership } = useStore(
 		roomStore,
-		useShallow(s => ({ t: s.room.t, status: s.room.status }))
+		useShallow(s => ({
+			t: s.room.t,
+			status: isSubscriptionModel(s.room) ? s.room.status : undefined,
+			membership: s.membership
+		}))
 	);
 
 	if (!rid) {
 		return null;
 	}
 
-	if (status === 'INVITED') {
+	if (membership === 'invited') {
 		return null;
 	}
 
 	if (t === 'l') {
-		if (status === 'queued') {
+		if (status === 'queued' || membership !== 'subscribed') {
 			return null;
 		}
 		return <OmnichannelRightButtons rid={rid} roomStore={roomStore} />;

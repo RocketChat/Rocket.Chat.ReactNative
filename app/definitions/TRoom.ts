@@ -9,10 +9,13 @@ export type TPreviewRoom = {
 	prid?: string;
 	visitor?: IVisitor;
 	joinCodeRequired?: boolean;
-	status?: string;
 	lastMessage?: ILastMessage;
 	sysMes?: boolean;
 	onHold?: boolean;
 };
 
 export type TRoomOrPreview = TSubscriptionModel | TPreviewRoom;
+
+export const isSubscriptionModel = (room: TRoomOrPreview): room is TSubscriptionModel => 'id' in room;
+
+export const isPreviewRoom = (room: TRoomOrPreview): room is TPreviewRoom => !('id' in room);

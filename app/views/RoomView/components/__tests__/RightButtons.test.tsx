@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react-native';
 
+import { type RoomMembership } from '../../definitions';
 import RightButtons from '../RightButtons/RightButtons';
 
 const mockNavigation = { navigate: jest.fn(), push: jest.fn() };
@@ -32,7 +33,8 @@ jest.mock('../../../../lib/hooks/useAppSelector', () => ({
 }));
 
 let mockRoomState = {
-	room: { rid: 'rid-1', t: 'c', name: 'general' } as any,
+	room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general' } as any,
+	membership: 'subscribed' as RoomMembership,
 	canForwardGuest: false
 };
 jest.mock('zustand', () => ({
@@ -107,7 +109,8 @@ describe('RightButtons', () => {
 			permissions: { 'toggle-room-e2e-encryption': ['perm'] }
 		};
 		mockRoomState = {
-			room: { rid: 'rid-1', t: 'c', name: 'general' },
+			room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general' },
+			membership: 'subscribed',
 			canForwardGuest: false
 		};
 		mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false };
@@ -129,7 +132,7 @@ describe('RightButtons', () => {
 	});
 
 	it('renders nothing for an invited room', () => {
-		mockRoomState = { ...mockRoomState, room: { rid: 'rid-1', t: 'c', name: 'general', status: 'INVITED' } };
+		mockRoomState = { ...mockRoomState, room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general' }, membership: 'invited' };
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expect(toJSON()).toBeNull();
 		expectOnly(queryByTestId, []);
@@ -137,7 +140,7 @@ describe('RightButtons', () => {
 	});
 
 	it('renders nothing for a queued omnichannel room', () => {
-		mockRoomState = { ...mockRoomState, room: { rid: 'rid-1', t: 'l', name: 'chat', status: 'queued' } };
+		mockRoomState = { ...mockRoomState, room: { id: 'sub-1', rid: 'rid-1', t: 'l', name: 'chat', status: 'queued' } };
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expect(toJSON()).toBeNull();
 		expectOnly(queryByTestId, []);
@@ -145,7 +148,7 @@ describe('RightButtons', () => {
 	});
 
 	it('renders only the kebab for an active omnichannel room', () => {
-		mockRoomState = { ...mockRoomState, room: { rid: 'rid-1', t: 'l', name: 'chat' } };
+		mockRoomState = { ...mockRoomState, room: { id: 'sub-1', rid: 'rid-1', t: 'l', name: 'chat' } };
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expectOnly(queryByTestId, ['room-view-header-omnichannel-kebab']);
 		expect(toJSON()).toMatchSnapshot();
@@ -173,7 +176,7 @@ describe('RightButtons', () => {
 	});
 
 	it('enables the encryption button when the user can toggle encryption', () => {
-		mockRoomState = { ...mockRoomState, room: { rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
+		mockRoomState = { ...mockRoomState, room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
 		mockE2EEStatus = { showMissingE2EEKey: true, showE2EEDisabledRoom: false, hasE2EEWarning: true };
 		mockHeaderHooks = { ...mockHeaderHooks, canToggleEncryption: true };
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
@@ -189,7 +192,7 @@ describe('RightButtons', () => {
 	});
 
 	it('disables the encryption button when the user cannot toggle encryption', () => {
-		mockRoomState = { ...mockRoomState, room: { rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
+		mockRoomState = { ...mockRoomState, room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
 		mockE2EEStatus = { showMissingE2EEKey: true, showE2EEDisabledRoom: false, hasE2EEWarning: true };
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expectOnly(queryByTestId, [
@@ -203,7 +206,7 @@ describe('RightButtons', () => {
 	});
 
 	it('renders the encryption button when the room has e2ee disabled', () => {
-		mockRoomState = { ...mockRoomState, room: { rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
+		mockRoomState = { ...mockRoomState, room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
 		mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: true, hasE2EEWarning: true };
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expectOnly(queryByTestId, [
@@ -230,7 +233,10 @@ describe('RightButtons', () => {
 	});
 
 	it('renders the push troubleshoot button when notifications are disabled for the room', () => {
-		mockRoomState = { ...mockRoomState, room: { rid: 'rid-1', t: 'c', name: 'general', disableNotifications: true } };
+		mockRoomState = {
+			...mockRoomState,
+			room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general', disableNotifications: true }
+		};
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expectOnly(queryByTestId, [
 			'room-view-push-troubleshoot',
@@ -271,7 +277,7 @@ describe('RightButtons', () => {
 	});
 
 	it('hides the call button on a self DM', () => {
-		mockRoomState = { ...mockRoomState, room: { rid: 'rid-1', t: 'd', name: 'user' } };
+		mockRoomState = { ...mockRoomState, room: { id: 'sub-1', rid: 'rid-1', t: 'd', name: 'user' } };
 		mockHeaderHooks = { ...mockHeaderHooks, isSelfDm: true };
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expectOnly(queryByTestId, ['room-view-header-threads', 'room-view-search']);

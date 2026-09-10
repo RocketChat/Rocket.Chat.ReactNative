@@ -42,7 +42,7 @@ describe('useE2EEStatus', () => {
 		'derives warnings with session encryption %s, Room encryption %s and key %s',
 		(enabled, encrypted, E2EKey, missing, disabled) => {
 			mockState.encryption.enabled = enabled;
-			const room = { rid: 'rid-1', t: 'c', encrypted, E2EKey };
+			const room = { id: 'rid-1', rid: 'rid-1', t: 'c', encrypted, E2EKey };
 			const store = createRoomStore(room);
 
 			expect(renderHook(() => useE2EEStatus(store)).result.current).toEqual({
@@ -54,7 +54,7 @@ describe('useE2EEStatus', () => {
 	);
 
 	it('clears the missing-key warning when the same Room receives its key', () => {
-		const room = { rid: 'rid-1', t: 'c', encrypted: true, E2EKey: undefined as string | undefined };
+		const room = { id: 'rid-1', rid: 'rid-1', t: 'c', encrypted: true, E2EKey: undefined as string | undefined };
 		const store = createRoomStore(room);
 		const { result } = renderHook(() => useE2EEStatus(store));
 		expect(result.current.hasE2EEWarning).toBe(true);

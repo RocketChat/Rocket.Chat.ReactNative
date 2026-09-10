@@ -4,6 +4,7 @@ import { useStore } from 'zustand';
 import { getUidDirectMessage } from '../../../lib/methods/helpers/helpers';
 import { type IUseSubscriptionUnreadsResult } from '../definitions';
 import { type RoomStore } from '../definitions';
+import { isSubscriptionModel } from '../../../definitions/TRoom';
 
 const EMPTY_UNREADS: string[] = [];
 
@@ -11,7 +12,7 @@ export function useSubscriptionUnreads(roomStore: RoomStore, userId?: string): I
 	return useStore(
 		roomStore,
 		useShallow(({ room }): IUseSubscriptionUnreadsResult => {
-			if (!('id' in room)) {
+			if (!isSubscriptionModel(room)) {
 				return {
 					tunread: EMPTY_UNREADS,
 					tunreadUser: EMPTY_UNREADS,
