@@ -4,12 +4,13 @@ const SESSION_HORIZON_MS = 24 * 60 * 60 * 1000;
 
 export type TConferenceBridgeMessage = { type: 'close' } | { type: 'openInMainWindow'; path: string };
 
-type TConferenceCredentials = { userId: string; token: string; server: string };
+type TConferenceCredentials = { userId: string; token: string; server: string; bridgeToken: string };
 
-export const buildConferenceBridgeScript = ({ userId, token, server }: TConferenceCredentials): string => {
+export const buildConferenceBridgeScript = ({ userId, token, server, bridgeToken }: TConferenceCredentials): string => {
 	const uid = JSON.stringify(userId);
 	const loginToken = JSON.stringify(token);
 	const serverUrl = JSON.stringify(server);
+	const bridge = JSON.stringify(bridgeToken);
 	const expires = JSON.stringify(new Date(Date.now() + SESSION_HORIZON_MS).toISOString());
 	const source = JSON.stringify(SOURCE);
 
@@ -31,10 +32,10 @@ export const buildConferenceBridgeScript = ({ userId, token, server }: TConferen
 
 	window.videoCallWindow = {
 		close: function () {
-			post({ source: ${source}, type: 'close' });
+			post({ source: ${source}, bridge: ${bridge}, type: 'close' });
 		},
 		openInMainWindow: function (path) {
-			post({ source: ${source}, type: 'openInMainWindow', path: path });
+			post({ source: ${source}, bridge: ${bridge}, type: 'openInMainWindow', path: path });
 		},
 		requestScreenSharing: function () {
 			return Promise.resolve(null);
@@ -47,7 +48,7 @@ export const buildConferenceBridgeScript = ({ userId, token, server }: TConferen
 true;`;
 };
 
-export const parseConferenceBridgeMessage = (raw: string): TConferenceBridgeMessage | undefined => {
+export const parseConferenceBridgeMessage = (raw: string, expectedBridgeToken: string): TConferenceBridgeMessage | undefined => {
 	let message: unknown;
 
 	try {
@@ -60,9 +61,9 @@ export const parseConferenceBridgeMessage = (raw: string): TConferenceBridgeMess
 		return undefined;
 	}
 
-	const { source, type, path } = message as { source?: unknown; type?: unknown; path?: unknown };
+	const { source, bridge, type, path } = message as { source?: unknown; bridge?: unknown; type?: unknown; path?: unknown };
 
-	if (source !== SOURCE) {
+	if (source !== SOURCE || bridge !== expectedBridgeToken) {
 		return undefined;
 	}
 

@@ -11,7 +11,7 @@ type TFakeWindow = Record<string, unknown> & {
 	};
 };
 
-const credentials = { userId: 'uid1', token: 'tok1', server: 'https://open.rocket.chat' };
+const credentials = { userId: 'uid1', token: 'tok1', server: 'https://open.rocket.chat', bridgeToken: 'bridge1' };
 
 const run = (script: string, { throwOnWrite = false } = {}) => {
 	const stored: Record<string, string> = {};
@@ -81,7 +81,7 @@ describe('buildConferenceBridgeScript', () => {
 
 		fakeWindow.videoCallWindow?.close();
 
-		expect(posted.map(parseConferenceBridgeMessage)).toEqual([{ type: 'close' }]);
+		expect(posted.map(m => parseConferenceBridgeMessage(m, 'bridge1'))).toEqual([{ type: 'close' }]);
 	});
 
 	test('openInMainWindow posts the path it was given', () => {
@@ -89,7 +89,9 @@ describe('buildConferenceBridgeScript', () => {
 
 		fakeWindow.videoCallWindow?.openInMainWindow('/channel/general');
 
-		expect(posted.map(parseConferenceBridgeMessage)).toEqual([{ type: 'openInMainWindow', path: '/channel/general' }]);
+		expect(posted.map(m => parseConferenceBridgeMessage(m, 'bridge1'))).toEqual([
+			{ type: 'openInMainWindow', path: '/channel/general' }
+		]);
 	});
 
 	test('screen sharing resolves to nothing, because there is none', async () => {
@@ -117,34 +119,57 @@ describe('buildConferenceBridgeScript', () => {
 
 describe('parseConferenceBridgeMessage', () => {
 	test('reads a close message', () => {
-		expect(parseConferenceBridgeMessage(JSON.stringify({ source: 'rc-conference', type: 'close' }))).toEqual({ type: 'close' });
+		expect(
+			parseConferenceBridgeMessage(JSON.stringify({ source: 'rc-conference', bridge: 'bridge1', type: 'close' }), 'bridge1')
+		).toEqual({ type: 'close' });
 	});
 
 	test('reads an openInMainWindow message', () => {
 		expect(
 			parseConferenceBridgeMessage(
-				JSON.stringify({ source: 'rc-conference', type: 'openInMainWindow', path: '/channel/general' })
+				JSON.stringify({ source: 'rc-conference', bridge: 'bridge1', type: 'openInMainWindow', path: '/channel/general' }),
+				'bridge1'
 			)
 		).toEqual({ type: 'openInMainWindow', path: '/channel/general' });
 	});
 
 	test('ignores a message from something other than the bridge', () => {
-		expect(parseConferenceBridgeMessage(JSON.stringify({ type: 'close' }))).toBeUndefined();
+		expect(parseConferenceBridgeMessage(JSON.stringify({ type: 'close' }), 'bridge1')).toBeUndefined();
+	});
+
+	test('ignores a message with the wrong bridge token', () => {
+		expect(
+			parseConferenceBridgeMessage(JSON.stringify({ source: 'rc-conference', bridge: 'forged', type: 'close' }), 'bridge1')
+		).toBeUndefined();
+	});
+
+	test('ignores a message missing the bridge token', () => {
+		expect(parseConferenceBridgeMessage(JSON.stringify({ source: 'rc-conference', type: 'close' }), 'bridge1')).toBeUndefined();
 	});
 
 	test('ignores an unknown message type', () => {
-		expect(parseConferenceBridgeMessage(JSON.stringify({ source: 'rc-conference', type: 'launchMissiles' }))).toBeUndefined();
+		expect(
+			parseConferenceBridgeMessage(
+				JSON.stringify({ source: 'rc-conference', bridge: 'bridge1', type: 'launchMissiles' }),
+				'bridge1'
+			)
+		).toBeUndefined();
 	});
 
 	test('ignores openInMainWindow without a path', () => {
-		expect(parseConferenceBridgeMessage(JSON.stringify({ source: 'rc-conference', type: 'openInMainWindow' }))).toBeUndefined();
+		expect(
+			parseConferenceBridgeMessage(
+				JSON.stringify({ source: 'rc-conference', bridge: 'bridge1', type: 'openInMainWindow' }),
+				'bridge1'
+			)
+		).toBeUndefined();
 	});
 
 	test('ignores anything that is not json', () => {
-		expect(parseConferenceBridgeMessage('not json')).toBeUndefined();
+		expect(parseConferenceBridgeMessage('not json', 'bridge1')).toBeUndefined();
 	});
 
 	test('ignores json that is not an object', () => {
-		expect(parseConferenceBridgeMessage('"rc-conference"')).toBeUndefined();
+		expect(parseConferenceBridgeMessage('"rc-conference"', 'bridge1')).toBeUndefined();
 	});
 });

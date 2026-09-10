@@ -10,7 +10,7 @@ import { useTheme } from '../../theme';
 import ConferenceWebView from './ConferenceWebView';
 
 const ConferenceCall = () => {
-	const { callId, url, expanded, close } = useConferenceCallStore();
+	const { callId, url, expanded } = useConferenceCallStore();
 	const server = useAppSelector(state => state.server.server);
 	const { theme } = useTheme();
 	const { top, bottom } = useSafeAreaInsets();
@@ -19,10 +19,10 @@ const ConferenceCall = () => {
 	// The overlay lives outside the navigator, so switching servers never unmounts it.
 	useEffect(() => {
 		if (callId && callServer.current !== server) {
-			close();
+			closeConferenceCall();
 		}
 		callServer.current = server;
-	}, [server, callId, close]);
+	}, [server, callId]);
 
 	const onOpenLink = useCallback(
 		(path: string) => {

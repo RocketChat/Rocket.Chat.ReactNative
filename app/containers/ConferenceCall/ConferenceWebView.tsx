@@ -17,6 +17,7 @@ import { isIOS } from '../../lib/methods/helpers';
 import { isConferenceUrl, isSecureHttpUrl } from '../../lib/methods/helpers/isConferenceUrl';
 import log from '../../lib/methods/helpers/log';
 import openLink from '../../lib/methods/helpers/openLink';
+import { random } from '../../lib/methods/helpers/random';
 import { setServerCookies } from '../../lib/methods/helpers/setServerCookies';
 import { getUserSelector } from '../../selectors/login';
 import { useTheme } from '../../theme';
@@ -39,6 +40,10 @@ const ConferenceWebView = ({ url, onClose, onOpenLink }: IConferenceWebView) => 
 
 	const credentialsAllowed = isSecureHttpUrl(server) && isSecureHttpUrl(url);
 	const [cookiesSet, setCookiesSet] = useState(!credentialsAllowed);
+	// Android exposes the bridge to child frames, so a cross-origin provider frame could forge
+	// the source. The token lives only in the main frame's closure, which cross-origin frames
+	// cannot read, so they cannot mint a message that parses.
+	const bridgeToken = useMemo(() => random(32), []);
 
 	useEffect(() => {
 		if (!credentialsAllowed) {
@@ -68,13 +73,13 @@ const ConferenceWebView = ({ url, onClose, onOpenLink }: IConferenceWebView) => 
 	}, []);
 
 	const injectedJavaScriptBeforeContentLoaded = useMemo(
-		() => (credentialsAllowed ? buildConferenceBridgeScript({ userId, token, server }) : 'true;'),
-		[userId, token, server, credentialsAllowed]
+		() => (credentialsAllowed ? buildConferenceBridgeScript({ userId, token, server, bridgeToken }) : 'true;'),
+		[userId, token, server, bridgeToken, credentialsAllowed]
 	);
 
 	const onMessage = useCallback(
 		({ nativeEvent }: WebViewMessageEvent) => {
-			const message = parseConferenceBridgeMessage(nativeEvent.data);
+			const message = parseConferenceBridgeMessage(nativeEvent.data, bridgeToken);
 
 			switch (message?.type) {
 				case 'close':
@@ -87,7 +92,7 @@ const ConferenceWebView = ({ url, onClose, onOpenLink }: IConferenceWebView) => 
 					break;
 			}
 		},
-		[onClose, onOpenLink]
+		[onClose, onOpenLink, bridgeToken]
 	);
 
 	const onShouldStartLoadWithRequest = useCallback(
