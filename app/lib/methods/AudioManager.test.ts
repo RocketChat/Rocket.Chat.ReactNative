@@ -6,7 +6,15 @@ jest.mock('./getFilePathAudio', () => ({
 	getFilePathAudio: jest.fn(() => 'file://x')
 }));
 
-const setup = () => {
+import type AudioManagerInstance from './AudioManager';
+import type { AudioStatus } from 'expo-audio';
+
+interface IAudioManagerSetup {
+	AudioManager: typeof AudioManagerInstance;
+	players: any[];
+}
+
+const setup = (): IAudioManagerSetup => {
 	jest.resetModules();
 	const players: any[] = [];
 	const createAudioPlayer = require('expo-audio').createAudioPlayer as jest.Mock;
@@ -98,7 +106,7 @@ describe('AudioManager', () => {
 		const key = await AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
 		AudioManager.addAudioRendered(key);
 
-		await AudioManager.onEnd(key, { isLoaded: true, didJustFinish: true, currentTime: 5, duration: 5 });
+		await AudioManager.onEnd(key, { isLoaded: true, didJustFinish: true, currentTime: 5, duration: 5 } as AudioStatus);
 
 		expect(players[0].release).toHaveBeenCalled();
 	});
@@ -162,7 +170,7 @@ describe('AudioManager', () => {
 		const key = await AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
 		AudioManager.setRateAsync(key, 1.5);
 		await AudioManager.setPositionAsync(key, 7);
-		await AudioManager.onEnd(key, { isLoaded: true, didJustFinish: true, currentTime: 5, duration: 5 });
+		await AudioManager.onEnd(key, { isLoaded: true, didJustFinish: true, currentTime: 5, duration: 5 } as AudioStatus);
 
 		await AudioManager.playAudio(key);
 

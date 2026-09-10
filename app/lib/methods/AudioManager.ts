@@ -91,7 +91,7 @@ class AudioManagerClass {
 		}
 	}
 
-	pauseAudio() {
+	pauseAudio(): void {
 		if (this.audioPlaying) {
 			this.audioQueue[this.audioPlaying]?.pause();
 			this.audioPlaying = '';
@@ -107,7 +107,7 @@ class AudioManagerClass {
 		}
 	}
 
-	setRateAsync(audioKey: string, value = 1.0) {
+	setRateAsync(audioKey: string, value = 1.0): void {
 		this.audioRates[audioKey] = value;
 		if (!audioKey || this.audioPlaying !== audioKey) {
 			return;
@@ -120,14 +120,14 @@ class AudioManagerClass {
 		}
 	}
 
-	onPlaybackStatusUpdate(audioKey: string, status: AudioStatus, callback: (status: AudioStatus) => void) {
+	onPlaybackStatusUpdate(audioKey: string, status: AudioStatus, callback: (status: AudioStatus) => void): void {
 		if (status) {
 			callback(status);
 			this.onEnd(audioKey, status);
 		}
 	}
 
-	setOnPlaybackStatusUpdate(audioKey: string, callback: (status: AudioStatus) => void) {
+	setOnPlaybackStatusUpdate(audioKey: string, callback: (status: AudioStatus) => void): void {
 		this.audioCallbacks[audioKey] = callback;
 		this.audioSubscriptions[audioKey]?.();
 		const sub = this.audioQueue[audioKey]?.addListener('playbackStatusUpdate', status => {
@@ -140,7 +140,7 @@ class AudioManagerClass {
 		return this.audioQueue[audioKey]?.currentStatus ?? null;
 	}
 
-	async onEnd(audioKey: string, status: AudioStatus) {
+	async onEnd(audioKey: string, status: AudioStatus): Promise<void> {
 		if (!this.audioQueue[audioKey]) {
 			return;
 		}
