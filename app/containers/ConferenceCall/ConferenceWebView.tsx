@@ -14,7 +14,7 @@ import i18n from '../../i18n';
 import { userAgent } from '../../lib/constants/userAgent';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { isIOS } from '../../lib/methods/helpers';
-import { isConferenceUrl, isSecureHttpUrl } from '../../lib/methods/helpers/isConferenceUrl';
+import { isConferenceUrl } from '../../lib/methods/helpers/isConferenceUrl';
 import log from '../../lib/methods/helpers/log';
 import openLink from '../../lib/methods/helpers/openLink';
 import { random } from '../../lib/methods/helpers/random';
@@ -39,7 +39,7 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 	const loaded = useRef(false);
 	const [failed, setFailed] = useState(false);
 
-	const credentialsAllowed = isSecureHttpUrl(server) && isSecureHttpUrl(url);
+	const credentialsAllowed = isConferenceUrl(url, server);
 	const [cookiesSet, setCookiesSet] = useState(!credentialsAllowed);
 	// Android exposes the bridge to child frames, so a cross-origin provider frame could forge
 	// the source. The token lives only in the main frame's closure, which cross-origin frames

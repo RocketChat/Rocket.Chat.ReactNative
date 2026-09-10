@@ -3,6 +3,14 @@ import { useConferenceCallStore } from './useConferenceCallStore';
 
 export const CONFERENCE_ROUTE = 'ConferenceView';
 
+let openGeneration = 0;
+
+export const currentConferenceCallOpen = (): number => openGeneration;
+
+const invalidatePendingConferenceCallOpen = (): void => {
+	openGeneration += 1;
+};
+
 const isShowingConference = () => Navigation.getCurrentRoute()?.name === CONFERENCE_ROUTE;
 
 export const expandConferenceCall = (): void => {
@@ -16,6 +24,7 @@ export const expandConferenceCall = (): void => {
 };
 
 export const closeConferenceCall = (): void => {
+	invalidatePendingConferenceCallOpen();
 	useConferenceCallStore.getState().close();
 	if (isShowingConference()) {
 		Navigation.back();

@@ -3,9 +3,11 @@ import { selectServerRequest } from '../../actions/server';
 import { clearSettings, updateSettings } from '../../actions/settings';
 import { mockedStore } from '../../reducers/mockedStore';
 import Navigation from '../navigation/appNavigation';
+import { closeConferenceCall } from '../services/conference/conferenceCallNavigation';
 import { useConferenceCallStore } from '../services/conference/useConferenceCallStore';
 import { initStore } from '../store/auxStore';
 import { openConferenceCall } from './openConferenceCall';
+import { requestVoipCallPermissions } from './voipCallPermissions';
 
 jest.mock('../navigation/appNavigation', () => ({
 	navigate: jest.fn(),
@@ -113,6 +115,42 @@ describe('openConferenceCall', () => {
 		mockedStore.dispatch(selectServerRequest('http://open.rocket.chat', '8.0.0'));
 
 		await openConferenceCall({ callId: 'call1' });
+
+		expect(state().callId).toBeUndefined();
+		expect(Navigation.navigate).not.toHaveBeenCalled();
+	});
+
+	test('drops a pending open when the call is closed while permissions resolve', async () => {
+		let resolvePermissions!: (value: boolean) => void;
+		(requestVoipCallPermissions as jest.Mock).mockImplementationOnce(
+			() =>
+				new Promise<boolean>(resolve => {
+					resolvePermissions = resolve;
+				})
+		);
+
+		const openPromise = openConferenceCall({ callId: 'call1' });
+		closeConferenceCall();
+		resolvePermissions(true);
+		await openPromise;
+
+		expect(state().callId).toBeUndefined();
+		expect(Navigation.navigate).not.toHaveBeenCalled();
+	});
+
+	test('drops a pending open when the server changes while permissions resolve', async () => {
+		let resolvePermissions!: (value: boolean) => void;
+		(requestVoipCallPermissions as jest.Mock).mockImplementationOnce(
+			() =>
+				new Promise<boolean>(resolve => {
+					resolvePermissions = resolve;
+				})
+		);
+
+		const openPromise = openConferenceCall({ callId: 'call1' });
+		mockedStore.dispatch(selectServerRequest('https://other.rocket.chat', '8.0.0'));
+		resolvePermissions(true);
+		await openPromise;
 
 		expect(state().callId).toBeUndefined();
 		expect(Navigation.navigate).not.toHaveBeenCalled();
