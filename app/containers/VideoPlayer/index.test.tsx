@@ -3,6 +3,8 @@ import { Alert } from 'react-native';
 
 import VideoPlayer from '.';
 import { useAppNavigation } from '../../lib/hooks/navigation';
+import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import * as stories from './index.stories';
 
 jest.mock('expo', () => ({
 	useEventListener: jest.fn()
@@ -84,3 +86,5 @@ describe('VideoPlayer', () => {
 		alertSpy.mockRestore();
 	});
 });
+
+generateSnapshots(stories);
