@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import dayjs from '../../../lib/dayjs';
 import { useRoomStore } from '../stores/RoomStoreContext';
 import { useRoomScreen } from '../stores/RoomScreenContext';
@@ -33,7 +35,7 @@ const getMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageM
 	return { dateSeparator, showUnreadSeparator };
 };
 
-export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress }: TMessageRowProps) => {
+export const MessageRow = memo(function MessageRow({ item, previousItem, highlightedMessage, onLongPress }: TMessageRowProps) {
 	const rid = useRoomStore(s => s.room.rid);
 	const t = useRoomStore(s => s.room.t) as RoomType;
 	const isIgnored = useIsIgnored(item?.u?._id);
@@ -68,4 +70,4 @@ export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress
 			showUnreadSeparator={showUnreadSeparator}
 		/>
 	);
-};
+});
