@@ -8,6 +8,11 @@ export type ChatEndpoints = {
 			message: IMessage;
 		};
 	};
+	'chat.getMessageByFileId': {
+		GET: (params: { fileId: string }) => {
+			message: IMessage;
+		};
+	};
 	'chat.followMessage': {
 		POST: (params: { mid: IMessage['_id'] }) => void;
 	};
