@@ -338,9 +338,10 @@ tags:
     commands:
       - tapOn:
           text: 'Cancel'
+# declining leaves the deep link's server untouched, so the cold start falls back to normal init
 - extendedWaitUntil:
     visible:
-      id: 'workspace-view'
+      id: 'new-server-view'
     timeout: 60000
 - assertNotVisible:
     id: 'room-view-title-${output.room.name}'
@@ -358,8 +359,7 @@ tags:
       text: '.*Sign in to this workspace.*'
     timeout: 60000
 # confirm the prompt — the app must sign in and navigate to the room.
-# android:id/button1 is the positive (confirm) button, disambiguating it from the "Login" button
-# rendered on the workspace screen behind the alert.
+# android:id/button1 is the alert's positive (confirm) button
 - runFlow:
     when:
       platform: android
@@ -376,8 +376,6 @@ tags:
     commands:
       - tapOn:
           text: 'Login'
-          rightOf:
-            text: 'Cancel'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
