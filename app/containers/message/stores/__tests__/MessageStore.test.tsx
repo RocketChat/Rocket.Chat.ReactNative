@@ -26,6 +26,7 @@ import {
 	useMessageItem,
 	useMessageLongPress,
 	useMessagePress,
+	useMessageSeparators,
 	useMessageStatus,
 	useMessageText,
 	useMessageTouchable,
@@ -138,7 +139,11 @@ const MsgValueReporter = ({ spy }: { spy: jest.Mock }) => {
 const renderDerived = (
 	item: TAnyMessageModel,
 	useHook: () => unknown,
-	{ previousItem, config }: { previousItem?: TAnyMessageModel; config?: Partial<MessageRoomState> } = {}
+	{
+		previousItem,
+		lastSeen,
+		config
+	}: { previousItem?: TAnyMessageModel; lastSeen?: Date | null; config?: Partial<MessageRoomState> } = {}
 ) => {
 	const spy = jest.fn();
 	const Probe = () => {
@@ -148,7 +153,7 @@ const renderDerived = (
 	render(
 		<Provider store={mockedStore}>
 			<MessageRoomProvider {...(config ?? {})}>
-				<MessageProvider item={item} previousItem={previousItem}>
+				<MessageProvider item={item} previousItem={previousItem} lastSeen={lastSeen}>
 					<Probe />
 				</MessageProvider>
 			</MessageRoomProvider>
@@ -608,6 +613,95 @@ describe('MessageStore', () => {
 			const model = buildFakeModel({ ts, unread: true, pinned: true, t: 'room_changed_topic' });
 			const { latest } = renderDerived(model, useMessageHeaderMeta);
 			expect(latest()).toEqual({ ts: model.ts, unread: model.unread, pinned: model.pinned, t: model.t });
+		});
+
+		it('useMessageSeparators returns a date separator and no unread separator for the first message with no lastSeen', () => {
+			const ts = new Date('2024-01-01T10:00:00Z');
+			const model = buildFakeModel({ ts });
+			const { latest } = renderDerived(model, useMessageSeparators);
+			expect(latest()).toEqual({ dateSeparator: ts, showUnreadSeparator: false });
+		});
+
+		it('useMessageSeparators returns no date separator when prev is on the same day', () => {
+			const ts = new Date('2024-01-01T10:00:00Z');
+			const prevTs = new Date('2024-01-01T09:00:00Z');
+			const model = buildFakeModel({ ts });
+			const { latest } = renderDerived(model, useMessageSeparators, { previousItem: buildFakeModel({ id: 'p0', ts: prevTs }) });
+			expect(latest()).toEqual({ dateSeparator: null, showUnreadSeparator: false });
+		});
+
+		it('useMessageSeparators shows the unread separator on the first message at or after lastSeen', () => {
+			const ts = new Date('2024-01-01T10:00:00Z');
+			const prevTs = new Date('2024-01-01T09:00:00Z');
+			const lastSeen = new Date('2024-01-01T09:30:00Z');
+			const model = buildFakeModel({ ts });
+			const { latest } = renderDerived(model, useMessageSeparators, {
+				previousItem: buildFakeModel({ id: 'p0', ts: prevTs }),
+				lastSeen
+			});
+			expect(latest()).toEqual({ dateSeparator: null, showUnreadSeparator: true });
+		});
+
+		it('useMessageSeparators re-derives when lastSeen changes after the record mounts', () => {
+			const ts = new Date('2024-01-01T10:00:00Z');
+			const prevTs = new Date('2024-01-01T09:00:00Z');
+			const model = buildFakeModel({ ts });
+			const previousItem = buildFakeModel({ id: 'p0', ts: prevTs });
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useMessageSeparators());
+				return null;
+			};
+			const wrap = (lastSeen: Date | null) => (
+				<Provider store={mockedStore}>
+					<MessageRoomProvider>
+						<MessageProvider item={model} previousItem={previousItem} lastSeen={lastSeen}>
+							<Probe />
+						</MessageProvider>
+					</MessageRoomProvider>
+				</Provider>
+			);
+			const latest = () => {
+				const { calls } = spy.mock;
+				return calls[calls.length - 1]?.[0];
+			};
+
+			const { rerender } = render(wrap(null));
+			expect(latest()).toEqual({ dateSeparator: null, showUnreadSeparator: false });
+
+			act(() => rerender(wrap(new Date('2024-01-01T09:30:00Z'))));
+			expect(latest()).toEqual({ dateSeparator: null, showUnreadSeparator: true });
+		});
+
+		it('useMessageSeparators re-derives when ts is mutated in place across a day boundary', () => {
+			const previousItem = buildFakeModel({ id: 'p0', ts: new Date('2024-01-01T23:59:00Z') });
+			const model = buildFakeModel({ ts: new Date('2024-01-01T23:59:30Z') });
+			const { latest } = renderDerived(model, useMessageSeparators, { previousItem });
+
+			expect(latest()).toEqual({ dateSeparator: null, showUnreadSeparator: false });
+
+			const confirmedTs = new Date('2024-01-02T00:00:10Z');
+			act(() => {
+				(model as any).ts = confirmedTs;
+				(model as FakeModel)._emit();
+			});
+
+			expect(latest()).toEqual({ dateSeparator: confirmedTs, showUnreadSeparator: false });
+		});
+
+		it('useMessageSeparators re-derives when the previous message ts is mutated in place', () => {
+			const previousItem = buildFakeModel({ id: 'p0', ts: new Date('2024-01-01T23:59:00Z') });
+			const model = buildFakeModel({ ts: new Date('2024-01-02T00:00:10Z') });
+			const { latest } = renderDerived(model, useMessageSeparators, { previousItem });
+
+			expect(latest()).toEqual({ dateSeparator: model.ts, showUnreadSeparator: false });
+
+			act(() => {
+				(previousItem as any).ts = new Date('2024-01-02T00:00:00Z');
+				(previousItem as FakeModel)._emit();
+			});
+
+			expect(latest()).toEqual({ dateSeparator: null, showUnreadSeparator: false });
 		});
 	});
 
