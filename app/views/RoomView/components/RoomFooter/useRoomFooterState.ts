@@ -1,5 +1,5 @@
 import { useSetting } from '../../../../lib/hooks/useSetting';
-import { useRoomStore, useRoomWithUpdate } from '../../stores/RoomStoreContext';
+import { useRoomStore } from '../../stores/RoomStoreContext';
 import { useFooterMessage } from './useFooterMessage';
 
 export type TRoomFooterState =
@@ -10,17 +10,17 @@ export type TRoomFooterState =
 	| { kind: 'composer' };
 
 export const useRoomFooterState = (): TRoomFooterState => {
-	const room = useRoomWithUpdate();
-	const joined = useRoomStore(s => s.joined);
+	const onHold = useRoomStore(s => !!s.room.onHold);
+	const isSubscribed = useRoomStore(s => s.membership === 'subscribed');
 	const airGappedRestrictionRemainingDays = useSetting('Cloud_Workspace_AirGapped_Restrictions_Remaining_Days') as
 		| number
 		| undefined;
 	const footerMessage = useFooterMessage();
 
-	if ('onHold' in room && room.onHold) {
+	if (onHold) {
 		return { kind: 'onHold' };
 	}
-	if (!joined) {
+	if (!isSubscribed) {
 		return { kind: 'takeOrJoin' };
 	}
 	if (airGappedRestrictionRemainingDays === 0) {

@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useStore } from 'zustand';
+import { useShallow } from 'zustand/react/shallow';
 
 import { getRoomTitle } from '../../lib/methods/helpers';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
+import { getInvitationActions, getInvitationText } from '../../lib/methods/getInvitationData';
+import { type IInviteSubscription } from '../../definitions';
+import { isSubscriptionModel } from '../../definitions/TRoom';
 import { type IRoomScreenInput, type IRoomViewProps } from './definitions';
 import { EncryptedRoom } from './components/EncryptedRoom';
 import { InvitedRoomScreen } from './components/InvitedRoomScreen';
@@ -11,7 +16,6 @@ import RoomScreen from './RoomScreen';
 import { parseRoomRoute } from './services/parseRoomRoute';
 import { createRoomStore, observeRoom } from './stores/RoomStore';
 import { type RoomStore } from './definitions';
-import { useRoomWithUpdateFromStore } from '../../lib/hooks/useRoomWithUpdateFromStore';
 import { useE2EEStatus } from './hooks/useE2EEStatus';
 import { useHeader } from './hooks/useHeader';
 
@@ -25,23 +29,36 @@ const RoomGate = ({ route, navigation, input }: IRoomGateProps) => {
 	const [roomStore] = useState<RoomStore>(() => createRoomStore({ rid, initialRoom, roomUserId }));
 	const [ready, setReady] = useState(false);
 	useEffect(() => observeRoom(rid, roomStore, () => setReady(true)), [rid, roomStore]);
-	const room = useRoomWithUpdateFromStore(roomStore);
+	const isEncryptable = useStore(roomStore, s => isSubscriptionModel(s.room));
+	const invitation = useStore(
+		roomStore,
+		useShallow(s => (isSubscriptionModel(s.room) && isInviteSubscription(s.room) ? getInvitationText(s.room) : null))
+	);
+	const roomTitle = useStore(roomStore, s => getRoomTitle(s.room));
 
 	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(roomStore);
 
 	useHeader({ rid, tmid, name, roomStore });
 
-	if ('id' in room && isInviteSubscription(room)) {
-		return <InvitedRoomScreen room={room} />;
+	if (invitation) {
+		return (
+			<InvitedRoomScreen
+				title={invitation.title}
+				description={invitation.description}
+				inviter={invitation.inviter as IInviteSubscription['inviter']}
+				onAccept={() => getInvitationActions(roomStore.getState().room as IInviteSubscription).accept()}
+				onReject={() => getInvitationActions(roomStore.getState().room as IInviteSubscription).reject()}
+			/>
+		);
 	}
 
-	if ('encrypted' in room) {
+	if (isEncryptable) {
 		if (showMissingE2EEKey) {
 			return <MissingRoomE2EEKey />;
 		}
 
 		if (showE2EEDisabledRoom) {
-			return <EncryptedRoom navigation={navigation} roomName={getRoomTitle(room)} />;
+			return <EncryptedRoom navigation={navigation} roomName={roomTitle} />;
 		}
 	}
 

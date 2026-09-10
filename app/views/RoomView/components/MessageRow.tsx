@@ -7,9 +7,10 @@ import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../lib/constants/m
 import { type RoomType, type TAnyMessageModel } from '../../../definitions';
 import { useThreadBadgeColor } from '../hooks/useThreadBadgeColor';
 import { type IRoomViewState, type TMessageRowProps } from '../definitions';
+import { isSubscriptionModel } from '../../../definitions/TRoom';
 
 const useIsIgnored = (authorId?: string): boolean =>
-	useRoomStore(s => (authorId && 'id' in s.room ? (s.room.ignored?.includes(authorId) ?? false) : false));
+	useRoomStore(s => (authorId && isSubscriptionModel(s.room) ? (s.room.ignored?.includes(authorId) ?? false) : false));
 
 const getMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageModel, lastSeen: IRoomViewState['lastSeen']) => {
 	let dateSeparator: TAnyMessageModel['ts'] | null = null;
@@ -33,7 +34,8 @@ const getMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageM
 };
 
 export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress }: TMessageRowProps) => {
-	const room = useRoomStore(s => s.room);
+	const rid = useRoomStore(s => s.room.rid);
+	const t = useRoomStore(s => s.room.t) as RoomType;
 	const isIgnored = useIsIgnored(item?.u?._id);
 	const threadBadgeColor = useThreadBadgeColor(item.id);
 	const { lastSeen } = useRoomScreen();
@@ -43,8 +45,8 @@ export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress
 		const runOnRender = item.t === MessageTypeLoad.MORE && (!previousItem || !!previousItem.tmid);
 		return (
 			<LoadMore
-				rid={room.rid}
-				t={room.t as RoomType}
+				rid={rid}
+				t={t}
 				loaderId={item.id}
 				type={item.t}
 				runOnRender={runOnRender}

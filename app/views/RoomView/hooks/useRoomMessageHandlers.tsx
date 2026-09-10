@@ -20,7 +20,8 @@ import {
 import { useActionSheet } from '../../../containers/ActionSheet';
 import ReactionsList from '../../../containers/ReactionsList';
 import { type IRoomMessageHandlersInput, type IRoomViewProps } from '../definitions';
-import { useRoomStore } from '../stores/RoomStoreContext';
+import { isSubscriptionModel } from '../../../definitions/TRoom';
+import { useRoomStore, useRoomStoreApi } from '../stores/RoomStoreContext';
 import { blockAction as blockActionService } from '../services/blockAction';
 import { fetchThreadName as fetchThreadNameService } from '../services/fetchThreadName';
 import { toggleFollowThread as toggleFollowThreadService } from '../../../lib/methods/toggleFollowThread';
@@ -36,8 +37,8 @@ export function useRoomMessageHandlers({
 	const isMasterDetail = useMasterDetail();
 	const { showActionSheet } = useActionSheet();
 
-	const room = useRoomStore(s => s.room);
-	const rid = room.rid;
+	const roomStore = useRoomStoreApi();
+	const rid = useRoomStore(s => s.room.rid);
 
 	const onDiscussionPress = async (drid: TAnyMessageModel['drid']) => {
 		if (!drid) return;
@@ -63,7 +64,8 @@ export function useRoomMessageHandlers({
 	// OLD METHOD - support versions before 5.0.0
 	const handleEnterCall = () => {
 		if (isInActiveVoipCall()) return;
-		if ('id' in room) {
+		const room = roomStore.getState().room;
+		if (isSubscriptionModel(room)) {
 			const { jitsiTimeout } = room;
 			if (jitsiTimeout && jitsiTimeout < new Date()) {
 				showErrorAlert(I18n.t('Call_already_ended'));

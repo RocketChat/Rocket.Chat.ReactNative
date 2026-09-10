@@ -13,8 +13,7 @@ import {
 	type TAnyMessageModel,
 	type IUseRoomMessageHandlersResult
 } from '../../definitions';
-import { type TRoomOrPreview, type TRoomObservedFields } from '../../definitions/TRoom';
-import { type TSubscriptionModel } from '../../definitions/ISubscription';
+import { type TRoomOrPreview } from '../../definitions/TRoom';
 import { type TActionSheetOptions } from '../../containers/ActionSheet';
 import { type IMessageComposerRef } from '../../containers/MessageComposer/interfaces';
 import { type IMessageActions, type IMessageActionsProps } from '../../containers/MessageActions';
@@ -43,6 +42,7 @@ export interface IRoomScreenProps extends Pick<IRoomViewProps, 'route'>, Pick<IR
 export interface IRoomFooterProps {
 	messageComposerRef: RefObject<IMessageComposerRef | null>;
 	joinCodeRef: RefObject<IJoinCode | null>;
+	ready: boolean;
 }
 
 export type ITakeOrJoinProps = Pick<IRoomFooterProps, 'joinCodeRef'>;
@@ -53,7 +53,6 @@ export interface IFooterPreviewProps {
 
 export interface IRoomViewState {
 	room: TRoomOrPreview;
-	roomUpdate: TRoomObservedFields;
 	member: any;
 	lastSeen: Date | null;
 }
@@ -117,17 +116,16 @@ export type TRoomInitResult =
 	| { status: 'skipped' }
 	| { status: 'failed' };
 
+export type RoomMembership = 'preview' | 'invited' | 'subscribed';
+
 export interface RoomState {
 	room: TRoomOrPreview;
-	roomUpdate: TRoomObservedFields;
-	joined: boolean;
-	subscribed: boolean;
+	membership: RoomMembership;
 	member: IRoomViewState['member'];
 	roomUserId?: string | null;
 	canAutoTranslate: boolean;
 	canForwardGuest: boolean;
 	canViewCannedResponse: boolean;
-	lastMessageFromAgent: boolean;
 	init: (params?: IRoomStoreInitParams) => Promise<TRoomInitResult>;
 	join: () => void;
 	joinRoom: (requestJoinCode?: () => void) => Promise<void>;
@@ -252,7 +250,6 @@ export interface IUseSubscriptionUnreadsResult {
 	tunreadUser: string[];
 	tunreadGroup: string[];
 	isSelfDm: boolean;
-	subscription?: TSubscriptionModel;
 }
 
 export interface IUseRoomNavigationParams {

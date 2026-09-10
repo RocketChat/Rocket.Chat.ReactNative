@@ -12,10 +12,10 @@ import { useMasterDetail } from '../../../../lib/hooks/useMasterDetail';
 import { useSetting } from '../../../../lib/hooks/useSetting';
 import { returnLivechat } from '../../../../lib/services/restApi';
 import { type RoomStore } from '../../definitions';
+import { isSubscriptionModel } from '../../../../definitions/TRoom';
 import { useCanPlaceLivechatOnHold } from '../../hooks/useCanPlaceLivechatOnHold';
 import { navigateToScreen, type TRoomStackNavigation } from '../../services/navigateToScreen';
 import { closeLivechat } from '../../services/closeLivechat';
-import { getRoomHeaderFields } from '../../services/getRoomHeaderFields';
 import { placeLivechatOnHold } from '../../services/placeLivechatOnHold';
 
 interface IOmnichannelRightButtonsProps {
@@ -30,12 +30,10 @@ export const OmnichannelRightButtons = ({ rid, roomStore }: IOmnichannelRightBut
 
 	const livechatRequestComment = useSetting('Livechat_request_comment_when_closing_conversation') as boolean;
 
-	const room = useStore(roomStore, s => s.room);
+	const departmentId = useStore(roomStore, s => (isSubscriptionModel(s.room) ? s.room.departmentId : undefined));
 	const canForwardGuest = useStore(roomStore, s => s.canForwardGuest);
 	const canReturnQueue = useCanReturnQueue(true);
 	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(roomStore);
-
-	const { departmentId } = getRoomHeaderFields(room);
 
 	const handleReturnLivechat = () => {
 		showConfirmationAlert({

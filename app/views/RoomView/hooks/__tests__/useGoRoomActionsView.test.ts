@@ -21,7 +21,7 @@ jest.mock('../../../../lib/methods/helpers/log', () => ({
 const mockState = {
 	room: { rid: 'rid-1', t: 'l' } as { rid: string; t: string },
 	member: { _id: 'm1' },
-	joined: true,
+	membership: 'subscribed' as 'subscribed' | 'invited' | 'preview',
 	canForwardGuest: true,
 	canViewCannedResponse: true
 };
@@ -37,10 +37,11 @@ describe('useGoRoomActionsView', () => {
 		jest.clearAllMocks();
 		mockIsMasterDetail = false;
 		mockState.room = { rid: 'rid-1', t: 'l' };
+		mockState.membership = 'subscribed';
 	});
 
 	it('pushes RoomActionsView with omnichannel permissions outside master-detail', () => {
-		const { result } = renderHook(() => useGoRoomActionsView({} as any));
+		const { result } = renderHook(() => useGoRoomActionsView({ getState: () => mockState } as any));
 
 		result.current();
 
@@ -61,10 +62,19 @@ describe('useGoRoomActionsView', () => {
 
 	it('navigates through ModalStackNavigator on master-detail', () => {
 		mockIsMasterDetail = true;
-		const { result } = renderHook(() => useGoRoomActionsView({} as any));
+		const { result } = renderHook(() => useGoRoomActionsView({ getState: () => mockState } as any));
 
 		result.current();
 
 		expect(mockNavigate).toHaveBeenCalledWith('ModalStackNavigator', expect.objectContaining({ screen: 'RoomActionsView' }));
+	});
+
+	it('passes joined: false for an invited membership', () => {
+		mockState.membership = 'invited';
+		const { result } = renderHook(() => useGoRoomActionsView({ getState: () => mockState } as any));
+
+		result.current();
+
+		expect(mockPush).toHaveBeenCalledWith('RoomActionsView', expect.objectContaining({ joined: false }));
 	});
 });

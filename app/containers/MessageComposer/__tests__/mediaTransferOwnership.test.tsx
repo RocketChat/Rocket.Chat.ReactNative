@@ -72,6 +72,7 @@ initStore(mockedStore);
 
 const composerContext = {
 	rid: 'rid',
+	roomTitle: 'Rocket Chat',
 	room: { rid: 'rid', t: 'd', name: 'Rocket Chat', fname: 'Rocket Chat', usernames: ['user1', 'user2'], federated: false },
 	sharing: false,
 	editCancel: jest.fn(),

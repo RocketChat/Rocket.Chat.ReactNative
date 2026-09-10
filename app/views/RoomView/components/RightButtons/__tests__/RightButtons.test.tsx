@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { type RoomStore } from '../../../definitions';
+import { type RoomMembership, type RoomStore } from '../../../definitions';
 import RightButtons from '../RightButtons';
 
 jest.mock('../OmnichannelRightButtons', () => {
@@ -62,8 +62,8 @@ const expectOnlyStub = (present?: string) => {
 	});
 };
 
-const createRoomStore = (room: Record<string, unknown>) => {
-	const store = createStore(() => ({ room }));
+const createRoomStore = (room: Record<string, unknown>, membership: RoomMembership = 'subscribed') => {
+	const store = createStore(() => ({ room: { id: 'sub-1', ...room }, membership }));
 	return store as typeof store & RoomStore;
 };
 
@@ -81,7 +81,7 @@ describe('RightButtons routing', () => {
 	});
 
 	it('renders nothing for an invited room', () => {
-		render(<RightButtons rid='rid-1' roomStore={createRoomStore({ rid: 'rid-1', t: 'c', status: 'INVITED' })} />);
+		render(<RightButtons rid='rid-1' roomStore={createRoomStore({ rid: 'rid-1', t: 'c' }, 'invited')} />);
 
 		expectOnlyStub();
 	});
@@ -92,8 +92,16 @@ describe('RightButtons routing', () => {
 		expectOnlyStub();
 	});
 
+	it('renders nothing for an omnichannel room still in the preview window', () => {
+		const store = createStore(() => ({ room: { rid: 'rid-1', t: 'l' }, membership: 'preview' as RoomMembership }));
+
+		render(<RightButtons rid='rid-1' roomStore={store as unknown as RoomStore} />);
+
+		expectOnlyStub();
+	});
+
 	it('renders nothing for an invited omnichannel room before the queued check', () => {
-		render(<RightButtons rid='rid-1' roomStore={createRoomStore({ rid: 'rid-1', t: 'l', status: 'INVITED' })} />);
+		render(<RightButtons rid='rid-1' roomStore={createRoomStore({ rid: 'rid-1', t: 'l' }, 'invited')} />);
 
 		expectOnlyStub();
 	});
@@ -154,13 +162,13 @@ describe('RightButtons routing', () => {
 		['l', 'queued', 'l', undefined, 'omnichannel-right-buttons-stub'],
 		['c', undefined, 'l', undefined, 'omnichannel-right-buttons-stub']
 	])('updates buttons when the same Room changes from %s/%s to %s/%s', (t, status, nextType, nextStatus, expected) => {
-		const room = { rid: 'rid-1', t, status };
-		const roomStore = createRoomStore(room);
+		const room = { id: 'sub-1', rid: 'rid-1', t, status };
+		const roomStore = createRoomStore(room, status === 'INVITED' ? 'invited' : 'subscribed');
 		render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 
 		act(() => {
 			Object.assign(room, { t: nextType, status: nextStatus });
-			roomStore.setState({ roomUpdate: { t: nextType, status: nextStatus } } as Partial<ReturnType<RoomStore['getState']>>);
+			roomStore.setState({ room, membership: nextStatus === 'INVITED' ? 'invited' : 'subscribed' });
 		});
 
 		expectOnlyStub(expected);

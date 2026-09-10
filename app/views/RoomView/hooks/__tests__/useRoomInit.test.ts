@@ -19,15 +19,12 @@ interface IRenderRoomInitParams {
 const makeRoomStore = (): RoomStore =>
 	createStore<RoomState>(() => ({
 		room: { rid: 'rid-1', t: 'c' },
-		roomUpdate: {},
-		joined: true,
-		subscribed: true,
+		membership: 'subscribed',
 		member: {},
 		roomUserId: null,
 		canAutoTranslate: false,
 		canForwardGuest: false,
 		canViewCannedResponse: false,
-		lastMessageFromAgent: false,
 		init: jest.fn(() => Promise.resolve<TRoomInitResult>({ status: 'loaded', lastSeen: null })),
 		join: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),

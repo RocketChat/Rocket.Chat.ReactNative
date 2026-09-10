@@ -45,10 +45,10 @@ const room: { current: TRoomOrPreview } = { current: { rid: 'rid-1', t: 'c' } };
 
 jest.mock('../stores/RoomStore', () => {
 	const { createStore } = require('zustand');
-	const store = createStore(() => ({ room: {}, roomUpdate: {} }));
+	const store = createStore(() => ({ room: {} }));
 	return {
 		createRoomStore: () => {
-			store.setState({ room: room.current, roomUpdate: {} }, true);
+			store.setState({ room: room.current }, true);
 			return store;
 		},
 		observeRoom: (_rid: string, _store: unknown, onReady: () => void) => {
@@ -110,7 +110,7 @@ describe('RoomGate', () => {
 	});
 
 	it('keeps the room screen unmounted while the E2EE key is missing', () => {
-		room.current = { rid: 'rid-1', t: 'c', encrypted: true } as TRoomOrPreview;
+		room.current = { id: 'sub-1', rid: 'rid-1', t: 'c', encrypted: true } as TRoomOrPreview;
 		jest.mocked(useE2EEStatus).mockReturnValue({ showMissingE2EEKey: true, showE2EEDisabledRoom: false, hasE2EEWarning: true });
 
 		renderGate();
@@ -120,7 +120,7 @@ describe('RoomGate', () => {
 	});
 
 	it('keeps the room screen unmounted while the session has E2EE disabled', () => {
-		room.current = { rid: 'rid-1', t: 'c', encrypted: true } as TRoomOrPreview;
+		room.current = { id: 'sub-1', rid: 'rid-1', t: 'c', encrypted: true } as TRoomOrPreview;
 		jest.mocked(useE2EEStatus).mockReturnValue({ showMissingE2EEKey: false, showE2EEDisabledRoom: true, hasE2EEWarning: true });
 
 		renderGate();

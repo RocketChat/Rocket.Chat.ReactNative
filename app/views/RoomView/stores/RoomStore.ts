@@ -1,7 +1,9 @@
 import { Q } from '@nozbe/watermelondb';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { createStore, type StateCreator } from 'zustand';
 
 import database from '../../../lib/database';
+import { SUBSCRIPTIONS_TABLE } from '../../../lib/database/model/Subscription';
 import { loadThreadMessages } from '../../../lib/methods/loadThreadMessages';
 import { readMessages } from '../../../lib/methods/readMessages';
 import { getUserInfo } from '../../../lib/services/restApi';
@@ -9,19 +11,17 @@ import { isGroupChat, getUidDirectMessage, canAutoTranslate as canAutoTranslateM
 import log from '../../../lib/methods/helpers/log';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
 import { type RoomType, type TSubscriptionModel } from '../../../definitions';
-import { roomObservedFields, type TRoomOrPreview } from '../../../definitions/TRoom';
+import { type TRoomOrPreview, isSubscriptionModel } from '../../../definitions/TRoom';
 import {
 	type IRoomStoreInitParams,
 	type IRoomViewState,
+	type RoomMembership,
 	type RoomState,
 	type RoomStore,
 	type TRoomInitResult
 } from '../definitions';
-import { roomObservedColumns } from '../constants';
 import getMessages from '../services/getMessages';
 import { joinRoom, resumeRoom } from '../services/joinRoom';
-
-const OBSERVED_COLUMNS = Object.values(roomObservedColumns);
 
 const EMPTY_ROOM: TRoomOrPreview = { rid: '', t: '' };
 const EMPTY_MEMBER: IRoomViewState['member'] = {};
@@ -35,7 +35,7 @@ interface IDirectMessageMember {
 }
 
 const getRoomMember = async (room: TRoomOrPreview): Promise<IDirectMessageMember> => {
-	if ('id' in room && room.t === 'd' && !isGroupChat(room)) {
+	if (isSubscriptionModel(room) && room.t === 'd' && !isGroupChat(room)) {
 		const roomUserId = getUidDirectMessage(room);
 		try {
 			const result = await getUserInfo(roomUserId);
@@ -63,12 +63,12 @@ type TLoadRoomResult =
 const loadRoom = async (
 	rid: string,
 	room: TRoomOrPreview,
-	joined: boolean,
+	membership: RoomMembership,
 	{ tmid, onThreadMessagesLoaded, signal }: IRoomStoreInitParams
 ): Promise<TLoadRoomResult> => {
 	const isAborted = () => signal?.aborted === true;
 	try {
-		if (isAborted() || ('id' in room && isInviteSubscription(room))) {
+		if (isAborted() || (isSubscriptionModel(room) && isInviteSubscription(room))) {
 			return { status: 'skipped' };
 		}
 
@@ -85,13 +85,13 @@ const loadRoom = async (
 		} else {
 			await getMessages({
 				rid: room.rid,
-				...('lastOpen' in room && room.lastOpen ? {} : { t: room.t as RoomType })
+				...(isSubscriptionModel(room) && room.lastOpen ? {} : { t: room.t as RoomType })
 			});
 			if (isAborted()) {
 				return { status: 'skipped' };
 			}
 
-			if (joined && 'id' in room) {
+			if (membership === 'subscribed' && isSubscriptionModel(room)) {
 				lastSeen = room.alert || room.unread || room.userMentions ? room.ls : null;
 				shouldMarkRead = true;
 			}
@@ -115,6 +115,13 @@ const loadRoom = async (
 	}
 };
 
+const deriveMembership = (room: TRoomOrPreview): RoomMembership => {
+	if (isSubscriptionModel(room)) {
+		return isInviteSubscription(room) ? 'invited' : 'subscribed';
+	}
+	return room.t === 'd' ? 'subscribed' : 'preview';
+};
+
 const createRoomState =
 	(
 		rid: string | undefined,
@@ -123,23 +130,20 @@ const createRoomState =
 	): StateCreator<RoomState> =>
 	(set, get) => ({
 		room: initialRoom,
-		roomUpdate: {},
-		joined: true,
-		subscribed: 'id' in initialRoom,
+		membership: deriveMembership(initialRoom),
 		member: EMPTY_MEMBER,
 		roomUserId,
 		canAutoTranslate: false,
 		canForwardGuest: false,
 		canViewCannedResponse: false,
-		lastMessageFromAgent: false,
 
 		init: async ({ tmid, onThreadMessagesLoaded, signal }: IRoomStoreInitParams = {}): Promise<TRoomInitResult> => {
 			if (!rid) {
 				return { status: 'skipped' };
 			}
 			for (let attempt = 1; attempt <= INIT_MAX_ATTEMPTS; attempt += 1) {
-				const { room, joined } = get();
-				const result = await loadRoom(rid, room, joined, { tmid, onThreadMessagesLoaded, signal });
+				const { room, membership } = get();
+				const result = await loadRoom(rid, room, membership, { tmid, onThreadMessagesLoaded, signal });
 				if (signal?.aborted || result.status === 'skipped') {
 					return { status: 'skipped' };
 				}
@@ -162,7 +166,7 @@ const createRoomState =
 			return { status: 'failed' };
 		},
 
-		join: () => set({ joined: true }),
+		join: () => set({ membership: 'subscribed' }),
 
 		joinRoom: (requestJoinCode?: () => void): Promise<void> =>
 			joinRoom(get().room, {
@@ -172,43 +176,75 @@ const createRoomState =
 		resumeRoom: (): Promise<void> => resumeRoom(get().room, get().join)
 	});
 
+const publishRoom = (store: RoomStore, next: TSubscriptionModel): void => {
+	store.setState({ room: next, membership: deriveMembership(next) });
+};
+
+const roomObserver = (store: RoomStore) => ({
+	next: (next: TSubscriptionModel) => publishRoom(store, next),
+	complete: () => {
+		if (store.getState().room.t !== 'd') {
+			store.setState({ membership: 'preview' });
+		}
+	}
+});
+
+const observeRecord = (store: RoomStore, record: TSubscriptionModel): (() => void) => {
+	const subscription = record.observe().subscribe(roomObserver(store));
+	return () => subscription.unsubscribe();
+};
+
+const observeQueryUntilPresent = (rid: string, store: RoomStore): (() => void) => {
+	const subscription = database.active
+		.get('subscriptions')
+		.query(Q.where('rid', rid))
+		.observe()
+		.pipe(
+			map((rows: TSubscriptionModel[]) => rows[0]),
+			filter((record): record is TSubscriptionModel => !!record),
+			take(1),
+			switchMap(record => record.observe().pipe(tap(roomObserver(store))))
+		)
+		.subscribe();
+	return () => subscription.unsubscribe();
+};
+
 export function observeRoom(rid: string | undefined, store: RoomStore, onReady?: () => void): () => void {
 	if (!rid) {
 		return () => {};
 	}
-	const observable = database.active
+
+	let cancelled = false;
+	let cleanup: () => void = () => {};
+
+	database.active
 		.get('subscriptions')
-		.query(Q.where('rid', rid))
-		.observeWithColumns([...OBSERVED_COLUMNS, 'last_message']);
-	const subscription = observable.subscribe((rows: TRoomOrPreview[]) => {
-		const next = rows[0];
-		const previous = store.getState();
-		if (!next) {
-			store.setState({ subscribed: false, ...(previous.room.t !== 'd' ? { joined: false } : {}) });
-			return;
-		}
-		const roomChanged =
-			next !== previous.room || roomObservedFields.some(attr => previous.roomUpdate[attr] !== (next as TSubscriptionModel)[attr]);
-		const lastMessageFromAgent = next.t === 'l' && !!(next.lastMessage && !next.lastMessage.token && next.lastMessage.u);
-		if (!roomChanged && previous.subscribed && lastMessageFromAgent === previous.lastMessageFromAgent) {
-			return;
-		}
-		store.setState({
-			subscribed: true,
-			joined: true,
-			lastMessageFromAgent,
-			...(roomChanged
-				? {
-						room: next,
-						roomUpdate: Object.fromEntries(
-							roomObservedFields.map(attr => [attr, (next as TSubscriptionModel)[attr]])
-						) as IRoomViewState['roomUpdate']
-					}
-				: {})
+		.find(rid)
+		.then((record: TSubscriptionModel) => {
+			if (cancelled) {
+				return;
+			}
+			cleanup = observeRecord(store, record);
+			onReady?.();
+		})
+		.catch((error: unknown) => {
+			if (cancelled) {
+				return;
+			}
+			if (!(error instanceof Error) || !error.message.startsWith(`Record ${SUBSCRIPTIONS_TABLE}#`)) {
+				log(error);
+			}
+			if (store.getState().room.t !== 'd') {
+				store.setState({ membership: 'preview' });
+			}
+			cleanup = observeQueryUntilPresent(rid, store);
+			onReady?.();
 		});
-	});
-	onReady?.();
-	return () => subscription.unsubscribe();
+
+	return () => {
+		cancelled = true;
+		cleanup();
+	};
 }
 
 export const createRoomStore = ({

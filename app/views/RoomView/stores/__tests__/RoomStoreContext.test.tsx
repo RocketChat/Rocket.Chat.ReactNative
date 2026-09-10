@@ -1,68 +1,34 @@
 import { act, render } from '@testing-library/react-native';
+import { createStore } from 'zustand';
 
-import database from '../../../../lib/database';
-import { createRoomStore, observeRoom } from '../RoomStore';
-import { RoomStoreContext, useRoomStore, useRoomWithUpdate } from '../RoomStoreContext';
+import { type RoomState, type RoomStore } from '../../definitions';
+import { RoomStoreContext, useRoomStore } from '../RoomStoreContext';
 
-jest.mock('../../../../lib/database', () => ({
-	__esModule: true,
-	default: { active: { get: jest.fn() } }
-}));
-jest.mock('../../services/getMessages', () => ({
-	__esModule: true,
-	default: jest.fn(() => Promise.resolve())
-}));
-jest.mock('../../../../lib/methods/loadThreadMessages', () => ({
-	loadThreadMessages: jest.fn(() => Promise.resolve())
-}));
-jest.mock('../../../../lib/methods/readMessages', () => ({
-	readMessages: jest.fn(() => Promise.resolve())
-}));
-jest.mock('../../../../lib/services/restApi', () => ({
-	getUserInfo: jest.fn()
-}));
-jest.mock('../../../../lib/methods/helpers', () => ({
-	getUidDirectMessage: jest.fn(() => 'uid-1'),
-	isGroupChat: jest.fn(() => false),
-	canAutoTranslate: jest.fn(() => true)
-}));
-jest.mock('../../../../lib/methods/isInviteSubscription', () => ({
-	isInviteSubscription: jest.fn(() => false)
-}));
-jest.mock('../../../../lib/methods/helpers/log', () => jest.fn());
+const subRoom = { id: 'sub-1', rid: 'rid-1', t: 'c', topic: 'old', name: 'general' };
 
-const mockGet = database.active.get as jest.Mock;
-
-const subRoom = { id: 'sub-1', rid: 'rid-1', t: 'c', topic: 'old' };
-
-const setupObserve = () => {
-	let emit: ((rows: any[]) => void) | undefined;
-	const unsubscribe = jest.fn();
-	const observeWithColumns = jest.fn(() => ({
-		subscribe: (cb: (rows: any[]) => void) => {
-			emit = cb;
-			return { unsubscribe };
-		}
+const makeRoomStore = (): RoomStore =>
+	createStore<RoomState>(() => ({
+		room: subRoom,
+		membership: 'subscribed',
+		member: {},
+		roomUserId: null,
+		canAutoTranslate: false,
+		canForwardGuest: false,
+		canViewCannedResponse: false,
+		init: jest.fn(),
+		join: jest.fn(),
+		joinRoom: jest.fn(),
+		resumeRoom: jest.fn()
 	}));
-	const query = jest.fn(() => ({ observeWithColumns }));
-	mockGet.mockReturnValue({ query });
-	return { emit: (rows: any[]) => emit?.(rows) };
-};
 
-describe('useRoomWithUpdate', () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-	});
-
-	it('re-renders with the fresh field when the same room instance re-emits a mutated tracked column', () => {
-		const { emit } = setupObserve();
-		const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
-		observeRoom('rid-1', store);
+describe('field selector invariant', () => {
+	it('re-renders when the selected field is mutated in place and re-emitted', () => {
+		const store = makeRoomStore();
 		const spy = jest.fn();
 
 		const Probe = () => {
-			const room = useRoomWithUpdate();
-			spy('topic' in room ? room.topic : undefined);
+			const topic = useRoomStore(s => ('topic' in s.room ? s.room.topic : undefined));
+			spy(topic);
 			return null;
 		};
 
@@ -73,44 +39,37 @@ describe('useRoomWithUpdate', () => {
 		);
 		expect(spy).toHaveBeenLastCalledWith('old');
 
-		const mutable = { ...subRoom };
-		act(() => emit([mutable]));
-		expect(spy).toHaveBeenLastCalledWith('old');
-
-		// observeWithColumns re-emits the same cached instance, mutated in place
-		mutable.topic = 'new';
-		act(() => emit([mutable]));
+		act(() => {
+			(store.getState().room as typeof subRoom).topic = 'new';
+			store.setState({ room: store.getState().room });
+		});
 
 		expect(spy).toHaveBeenLastCalledWith('new');
+		expect(spy).toHaveBeenCalledTimes(2);
 	});
 
-	it('does NOT re-render a plain `s.room` selector on the same mutated-in-place emit (documents why the hook exists)', () => {
-		const { emit } = setupObserve();
-		const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
-		observeRoom('rid-1', store);
+	it('does not re-render when an unrelated field changes', () => {
+		const store = makeRoomStore();
 		const spy = jest.fn();
 
-		const PlainProbe = () => {
-			const room = useRoomStore(s => s.room);
-			spy('topic' in room ? room.topic : undefined);
+		const Probe = () => {
+			const topic = useRoomStore(s => ('topic' in s.room ? s.room.topic : undefined));
+			spy(topic);
 			return null;
 		};
 
 		render(
 			<RoomStoreContext.Provider value={store}>
-				<PlainProbe />
+				<Probe />
 			</RoomStoreContext.Provider>
 		);
+		expect(spy).toHaveBeenCalledTimes(1);
 
-		const mutable = { ...subRoom };
-		act(() => emit([mutable]));
-		const callsAfterFirstEmit = spy.mock.calls.length;
+		act(() => {
+			(store.getState().room as typeof subRoom).name = 'renamed';
+			store.setState({ room: store.getState().room });
+		});
 
-		// Same reference, mutated in place — the plain `room` selector sees no reference change and skips the re-render.
-		mutable.topic = 'new';
-		act(() => emit([mutable]));
-
-		expect(spy.mock.calls.length).toBe(callsAfterFirstEmit);
-		expect(spy).toHaveBeenLastCalledWith('old');
+		expect(spy).toHaveBeenCalledTimes(1);
 	});
 });

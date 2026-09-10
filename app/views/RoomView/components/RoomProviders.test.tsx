@@ -19,15 +19,12 @@ describe('RoomProviders', () => {
 		};
 
 		// Kept as a single stable element reference so React can bail out of re-rendering it
-		// when only a sibling slice (room) changes — recreating it per render would force a
+		// when only a sibling slice (roomTitle) changes — recreating it per render would force a
 		// re-render regardless of zustand's selector isolation, defeating the point of this test.
 		const children = <SharingProbe />;
-		const rooms = [
-			{ rid: 'rid-1', t: 'c' },
-			{ rid: 'rid-2', t: 'c' }
-		];
+		const roomTitles = ['Room 1', 'Room 2'];
 		const Parent = ({ roomIndex }: { roomIndex: number }) => (
-			<RoomProviders store={store} rid='rid-1' t='c' room={rooms[roomIndex]} sharing={false}>
+			<RoomProviders store={store} rid='rid-1' t='c' roomTitle={roomTitles[roomIndex]} sharing={false}>
 				{children}
 			</RoomProviders>
 		);
@@ -64,13 +61,13 @@ describe('RoomProviders', () => {
 
 		render(
 			<>
-				<RoomProviders store={store} rid='rid-1' t='c' room={{ rid: 'rid-1', t: 'c' }}>
+				<RoomProviders store={store} rid='rid-1' t='c' roomTitle='Room 1'>
 					<>
 						<RowProbe />
 						<ComposerProbe />
 					</>
 				</RoomProviders>
-				<RoomProviders store={otherStore} rid='rid-1' t='c' room={{ rid: 'rid-1', t: 'c' }}>
+				<RoomProviders store={otherStore} rid='rid-1' t='c' roomTitle='Room 1'>
 					<OtherProbe />
 				</RoomProviders>
 			</>

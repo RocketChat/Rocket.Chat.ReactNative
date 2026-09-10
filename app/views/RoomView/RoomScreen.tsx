@@ -14,6 +14,7 @@ import { RoomMessageActions } from './components/RoomMessageActions';
 import { RoomMessageList } from './components/RoomMessageList';
 import { RoomUploadProgress } from './components/RoomUploadProgress';
 import { RoomStoreContext } from './stores/RoomStoreContext';
+import { getRoomTitle } from '../../lib/methods/helpers/helpers';
 import { RoomScreenContext } from './stores/RoomScreenContext';
 import { useRoomMessaging } from './hooks/useRoomMessaging';
 import { useRoomSubscription } from './hooks/useRoomSubscription';
@@ -26,9 +27,10 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 	const { colors } = useTheme();
 	const isMasterDetail = useMasterDetail();
 
-	const room = useStore(roomStore, s => s.room);
-	const roomUpdate = useStore(roomStore, s => s.roomUpdate);
+	const roomTitle = useStore(roomStore, s => getRoomTitle(s.room));
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
+	const roomRid = useStore(roomStore, s => s.room.rid);
+	const roomType = useStore(roomStore, s => s.room.t);
 
 	const {
 		messageActionStore,
@@ -81,10 +83,9 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 			<RoomScreenContext.Provider value={roomScreen}>
 				<RoomProviders
 					store={messageActionStore}
-					rid={room.rid}
-					t={room.t}
-					room={room}
-					roomUpdate={roomUpdate}
+					rid={roomRid}
+					t={roomType}
+					roomTitle={roomTitle}
 					tmid={tmid}
 					sharing={false}
 					onRemoveQuoteMessage={onRemoveQuoteMessage}
@@ -106,7 +107,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 							reactionInit={onReactionInit}
 							errorActionsShow={errorActionsShow}
 						/>
-						<RoomFooter messageComposerRef={messageComposerRef} joinCodeRef={joinCodeRef} />
+						<RoomFooter messageComposerRef={messageComposerRef} joinCodeRef={joinCodeRef} ready={ready} />
 						<RoomMessageActions
 							tmid={tmid}
 							messageActionsRef={messageActionsRef}
@@ -119,7 +120,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 							jumpToMessage={jumpToMessage}
 						/>
 						<RoomUploadProgress />
-						<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={room.rid} t={room.t} />
+						<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={roomRid} t={roomType} />
 					</SafeAreaView>
 				</RoomProviders>
 			</RoomScreenContext.Provider>

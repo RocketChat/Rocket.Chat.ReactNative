@@ -1,17 +1,20 @@
 import database from '../../../lib/database';
-import { type TRoomOrPreview } from '../../../definitions/TRoom';
+import { type RoomStore } from '../definitions';
+import { isSubscriptionModel } from '../../../definitions/TRoom';
 
-export function useCloseBanner(room: TRoomOrPreview): () => Promise<void> {
+export function useCloseBanner(roomStore: RoomStore): () => Promise<void> {
 	return async () => {
-		if ('id' in room) {
-			try {
-				const db = database.active;
-				await db.write(async () => {
-					await room.update(r => {
-						r.bannerClosed = true;
-					});
-				});
-			} catch {}
+		const { room } = roomStore.getState();
+		if (!isSubscriptionModel(room)) {
+			return;
 		}
+		try {
+			const db = database.active;
+			await db.write(async () => {
+				await room.update(r => {
+					r.bannerClosed = true;
+				});
+			});
+		} catch {}
 	};
 }
