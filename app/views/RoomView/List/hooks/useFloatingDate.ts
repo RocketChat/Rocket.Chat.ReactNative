@@ -1,6 +1,7 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { type FlatListProps, type ViewToken } from 'react-native';
-import { type SharedValue, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
+import { type SharedValue, useSharedValue, withTiming } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 
 import dayjs from '../../../../lib/dayjs';
 import { type TAnyMessageModel } from '../../../../definitions';
@@ -37,6 +38,8 @@ export const useFloatingDate = (): IUseFloatingDate => {
 	const [ts, setTs] = useState<Date | string | null>(null);
 	const dayKey = useRef<string | null>(null);
 	const opacity = useSharedValue(0);
+	const isShown = useRef(false);
+	const hideTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	const [viewabilityConfigCallbackPairs] = useState<TViewabilityConfigCallbackPairs>(() => [
 		{
@@ -58,22 +61,45 @@ export const useFloatingDate = (): IUseFloatingDate => {
 		}
 	]);
 
+	const cancelHide = useCallback((): void => {
+		if (hideTimeout.current) {
+			clearTimeout(hideTimeout.current);
+			hideTimeout.current = null;
+		}
+	}, []);
+
+	const showNow = useCallback((): void => {
+		cancelHide();
+		if (isShown.current) {
+			return;
+		}
+		isShown.current = true;
+		opacity.value = withTiming(1, { duration: FADE_IN_DURATION });
+	}, [cancelHide, opacity]);
+
+	const hideAfterDelay = useCallback((): void => {
+		cancelHide();
+		hideTimeout.current = setTimeout(() => {
+			hideTimeout.current = null;
+			isShown.current = false;
+			opacity.value = withTiming(0, { duration: FADE_OUT_DURATION });
+		}, HIDE_DELAY);
+	}, [cancelHide, opacity]);
+
+	useEffect(() => cancelHide, [cancelHide]);
+
 	const show = useCallback((): void => {
 		'worklet';
 
-		opacity.value = withTiming(1, { duration: FADE_IN_DURATION });
-	}, [opacity]);
+		scheduleOnRN(showNow);
+	}, [showNow]);
 
 	const hide = useCallback((): void => {
 		'worklet';
 
-		opacity.value = withDelay(HIDE_DELAY, withTiming(0, { duration: FADE_OUT_DURATION }));
-	}, [opacity]);
+		scheduleOnRN(hideAfterDelay);
+	}, [hideAfterDelay]);
 
-	// The pill tracks the gesture, not the offset: onScroll also fires for programmatic scrolls (jump to
-	// bottom/message) and for maintainVisibleContentPosition autoscroll at the live tail.
-	// Re-setting the shared value cancels the pending animation first, so a drag released into a fling
-	// (onEndDrag then onMomentumBegin) cancels the armed fade-out instead of blinking.
 	const scrollEvents = useMemo<IFloatingDateScrollEvents>(
 		() => ({ onBeginDrag: show, onMomentumBegin: show, onEndDrag: hide, onMomentumEnd: hide }),
 		[show, hide]
