@@ -10,9 +10,11 @@ import { isExternalKeyboardConnected } from '../../../../lib/methods/helpers/ext
 import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../../lib/constants/accessibility';
 import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
+import FloatingDateSeparator from '../../../../containers/Separator/FloatingDateSeparator';
 import { type IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
 import { useRoomContext } from '../../context';
+import { useFloatingDate } from '../hooks';
 
 const styles = StyleSheet.create({
 	list: {
@@ -26,7 +28,19 @@ const styles = StyleSheet.create({
 const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
+	const {
+		ts,
+		opacity: floatingDateOpacity,
+		scrollEvents: { onBeginDrag, onMomentumBegin, onEndDrag, onMomentumEnd },
+		viewabilityConfigCallbackPairs
+	} = useFloatingDate();
+
+	// Spelled out rather than spread: the worklets babel plugin has to see an object hook's properties statically.
 	const scrollHandler = useAnimatedScrollHandler({
+		onBeginDrag,
+		onMomentumBegin,
+		onEndDrag,
+		onMomentumEnd,
 		onScroll: event => {
 			if (event.contentOffset.y > SCROLL_LIMIT) {
 				scheduleOnRN(setScrolledPastLimit, true);
@@ -68,7 +82,9 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 				onScroll={scrollHandler}
 				{...props}
 				{...scrollPersistTaps}
+				viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs}
 			/>
+			<FloatingDateSeparator ts={ts} opacity={floatingDateOpacity} />
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
 		</View>
 	);
