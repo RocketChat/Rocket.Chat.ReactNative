@@ -127,7 +127,7 @@ const classifyPresenceError = (error?: LocalAuthentication.LocalAuthenticationEr
 	}
 };
 
-// Single source for the sentinel-then-key-check order; the platform split is in PLATFORMS.md.
+// Single source for the sentinel-then-key-check order.
 type EnrollmentCheck = { state: 'valid' | 'absent' | 'invalid' } | { state: 'error'; cause: unknown };
 
 const checkBiometricEnrollment = async (): Promise<EnrollmentCheck> => {
@@ -141,7 +141,7 @@ const checkBiometricEnrollment = async (): Promise<EnrollmentCheck> => {
 	}
 };
 
-// Proves presence, not just an unchanged enrollment. See PLATFORMS.md, "Why the sentinel read can't prove presence".
+// Proves presence, not just an unchanged enrollment: on iOS the sentinel read is the prompt, on Android it is not.
 export const biometryAuth = async (force?: boolean): Promise<TrustResult> => {
 	const promptCopy = buildPromptCopy(force);
 
@@ -163,7 +163,7 @@ export const biometryAuth = async (force?: boolean): Promise<TrustResult> => {
 	try {
 		const presence = await LocalAuthentication.authenticateAsync({
 			disableDeviceFallback: true,
-			// Class 3 only; expo defaults to 'weak'. See PLATFORMS.md, "Weak (Class 2) biometrics".
+			// Class 3 only; expo defaults to 'weak'.
 			biometricsSecurityLevel: 'strong',
 			cancelLabel: promptCopy.cancel,
 			promptMessage: promptCopy.title
@@ -174,7 +174,7 @@ export const biometryAuth = async (force?: boolean): Promise<TrustResult> => {
 	}
 };
 
-// Class 3 only. See PLATFORMS.md, "Weak (Class 2) biometrics".
+// Class 3 (strong) biometrics only; a weak enroll cannot back the sentinel.
 export const hasSupportedBiometry = async (): Promise<boolean> => {
 	try {
 		if (!(await LocalAuthentication.isEnrolledAsync())) {
@@ -190,7 +190,7 @@ export const hasSupportedBiometry = async (): Promise<boolean> => {
 /*
  * Binds the trust sentinel and captures the user's consent for biometric unlock. Every enable path
  * (first passcode, settings toggle) must go through here: the sentinel write is silent, so it can't
- * double as consent. See ARCHITECTURE.md, "Why writing the sentinel is not consent".
+ * double as consent.
  */
 export const enableBiometry = async (): Promise<TrustResult> => {
 	// Without a strong biometric enroll() can only produce a downgraded sentinel, so don't offer the
@@ -241,7 +241,7 @@ const hideSplashScreen = async () => {
 /*
  * Non-prompting. Lets an enrollment change force the passcode even inside the auto-lock window.
  * `checkFailed` is a separate state on purpose: a trust check that could not complete must fail
- * closed without failing destructive. See ARCHITECTURE.md, "A failed check is not a change".
+ * closed without failing destructive.
  */
 export type TRelockReason = 'none' | 'checkFailed' | BiometricInvalidationReason;
 

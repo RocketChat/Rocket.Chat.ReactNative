@@ -17,7 +17,6 @@ import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 
-/** Silent biometric enrollment-change detection for Android. See docs/PLATFORMS.md. */
 class BiometricEnrollmentModule(reactContext: ReactApplicationContext) :
     NativeBiometricEnrollmentSpec(reactContext) {
 

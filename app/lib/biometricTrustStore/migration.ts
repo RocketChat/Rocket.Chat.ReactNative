@@ -3,8 +3,6 @@ import log from '../methods/helpers/log';
 import { BIOMETRIC_TRUST_MIGRATION_V1_DONE } from '../constants/localAuthentication';
 import { biometricTrustStore } from './index';
 
-// One-shot upgrade for users who had biometry enabled before the sentinel existed. Runs at app init.
-// Truth table and rationale in docs/ARCHITECTURE.md.
 export const runBiometricTrustMigration = async (): Promise<void> => {
 	try {
 		const biometryEnabled = biometricTrustStore.isEnabled();

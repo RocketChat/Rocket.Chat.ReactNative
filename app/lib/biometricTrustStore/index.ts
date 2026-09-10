@@ -30,7 +30,6 @@ const readOptions = (promptCopy: BiometricPromptCopy): Keychain.GetOptions => ({
 	}
 });
 
-// See PLATFORMS.md, "Weak (Class 2) biometrics".
 const AUTH_BACKED_ANDROID_STORAGES: string[] = [Keychain.STORAGE_TYPE.AES_GCM, Keychain.STORAGE_TYPE.RSA];
 
 const isAuthBackedStorage = (storage: string | undefined): boolean =>
