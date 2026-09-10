@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
@@ -40,7 +40,7 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 	const { getItem: getAttempts, setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
-	const biometry = async () => {
+	const biometry = useCallback(async () => {
 		if (!hasBiometry || status !== TYPE.ENTER) {
 			return;
 		}
@@ -53,7 +53,7 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 		const { modal } = outcome;
 		setHasBiometry(modal.hasBiometry);
 		setReason(modal.reason);
-	};
+	}, [hasBiometry, status, finishProcess]);
 
 	const readStorage = async () => {
 		// Seed from storage so a remount mid-session doesn't grant a fresh attempt budget.
@@ -86,7 +86,7 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 		}
 		autoPrompted.current = true;
 		biometry();
-	}, [status]);
+	}, [status, biometry]);
 
 	const onEndProcess = (p: string) => {
 		setTimeout(async () => {

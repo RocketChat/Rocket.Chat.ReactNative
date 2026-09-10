@@ -1,4 +1,4 @@
-import { useEffect, useState, memo } from 'react';
+import { useCallback, useEffect, useState, memo } from 'react';
 import { StyleSheet } from 'react-native';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import isEmpty from 'lodash/isEmpty';
@@ -47,11 +47,14 @@ const ChangePasscodeView = memo(() => {
 		}
 	}, [data]);
 
-	const showChangePasscode = (args: IArgs) => {
-		onShow(args);
-		setRequestId(current => current + 1);
-		setData(args);
-	};
+	const showChangePasscode = useCallback(
+		(args: IArgs) => {
+			onShow(args);
+			setRequestId(current => current + 1);
+			setData(args);
+		},
+		[onShow]
+	);
 
 	const onSubmit = (passcode: string) => {
 		const { submit } = data;
@@ -69,7 +72,7 @@ const ChangePasscodeView = memo(() => {
 		return () => {
 			EventEmitter.removeListener(CHANGE_PASSCODE_EMITTER, listener);
 		};
-	}, []);
+	}, [showChangePasscode]);
 
 	return (
 		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating style={styles.modal} onModalHide={onModalHide}>

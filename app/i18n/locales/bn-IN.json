@@ -452,6 +452,8 @@
   "Local_authentication_auto_lock_60": "1 মিনিট পরে",
   "Local_authentication_auto_lock_900": "15 মিনিট পরে",
   "Local_authentication_biometric_enrollment_changed": "বায়োমেট্রিক নিবন্ধন পরিবর্তিত হয়েছে,\nঅনুগ্রহ করে আপনার পাসকোড ব্যবহার করুন",
+  "Local_authentication_biometric_relock_required": "চালিয়ে যেতে আপনার পাসকোড নিশ্চিত করুন",
+  "Local_authentication_biometric_trust_lost": "বায়োমেট্রিক আনলক বন্ধ করা হয়েছে,\nঅনুগ্রহ করে আপনার পাসকোড ব্যবহার করুন",
   "Local_authentication_biometry_enable_failed": "বায়োমেট্রিক আনলক সক্রিয় করা যায়নি।",
   "Local_authentication_biometry_fallback": "পাসকোড ব্যবহার করুন",
   "Local_authentication_biometry_title": "প্রমাণীকরণ",

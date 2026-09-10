@@ -392,6 +392,8 @@
   "Local_authentication_auto_lock_60": "Na 1 minuut",
   "Local_authentication_auto_lock_900": "Na 15 minuten",
   "Local_authentication_biometric_enrollment_changed": "Biometrische gegevens zijn gewijzigd,\ngebruik je toegangscode",
+  "Local_authentication_biometric_relock_required": "Bevestig je toegangscode\nom door te gaan",
+  "Local_authentication_biometric_trust_lost": "Biometrisch ontgrendelen is uitgeschakeld,\ngebruik je toegangscode",
   "Local_authentication_biometry_enable_failed": "Biometrisch ontgrendelen kon niet worden ingeschakeld.",
   "Local_authentication_biometry_fallback": "Gebruik toegangscode",
   "Local_authentication_biometry_title": "Authenticeren",

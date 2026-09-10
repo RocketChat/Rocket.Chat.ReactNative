@@ -1,5 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
@@ -48,21 +48,22 @@ const ScreenLockedView = () => {
 		}
 	}, [data]);
 
-	const showScreenLock = (args: IData) => {
-		onShow(args);
-		currentRequestId.current += 1;
-		setRequestId(currentRequestId.current);
-		setData(args);
-	};
+	const showScreenLock = useCallback(
+		(args: IData) => {
+			onShow(args);
+			currentRequestId.current += 1;
+			setRequestId(currentRequestId.current);
+			setData(args);
+		},
+		[onShow]
+	);
 
-	// Empty deps, so this closes over the first render's showScreenLock: safe only because
-	// useDeferredModalSettle is entirely ref-backed. Adding state there wedges it on a stale closure.
 	useEffect(() => {
 		const listener = EventEmitter.addEventListener(LOCAL_AUTHENTICATE_EMITTER, showScreenLock);
 		return () => {
 			EventEmitter.removeListener(LOCAL_AUTHENTICATE_EMITTER, listener);
 		};
-	}, []);
+	}, [showScreenLock]);
 
 	const settle = (id: number, callback?: () => void) => {
 		if (id !== currentRequestId.current) {

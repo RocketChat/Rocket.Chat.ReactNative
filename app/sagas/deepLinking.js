@@ -206,6 +206,32 @@ const handleShareExtension = function* handleOpen({ params }) {
 	}
 };
 
+// Unlocks, then reconnects to `host` and waits for the login to land. Returns false when the unlock
+// was canceled or superseded, so the caller can bail instead of navigating.
+const authenticateAndSelectServer = function* authenticateAndSelectServer(host, version, changeServer = false) {
+	try {
+		yield localAuthenticate(host);
+	} catch (e) {
+		logUnlessUserCanceled(e);
+		return false;
+	}
+	yield put(selectServerRequest(host, version, true, changeServer));
+	yield take(types.LOGIN.SUCCESS);
+	return true;
+};
+
+const handleKnownServerDeepLink = function* handleKnownServerDeepLink({ params, host, version }) {
+	try {
+		yield localAuthenticate(host);
+		yield put(selectServerRequest(host, version, true, true));
+		yield take(types.LOGIN.SUCCESS);
+		yield completeDeepLinkNavigation(params);
+	} catch (e) {
+		logUnlessUserCanceled(e);
+		yield fallbackNavigation();
+	}
+};
+
 const handleOpen = function* handleOpen({ params }) {
 	if (params.type === 'shareextension') {
 		yield handleShareExtension({ params });
@@ -246,30 +272,14 @@ const handleOpen = function* handleOpen({ params }) {
 	// if deep link is from same server
 	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
-		if (!connected) {
-			try {
-				yield localAuthenticate(host);
-			} catch (e) {
-				logUnlessUserCanceled(e);
-				return;
-			}
-			yield put(selectServerRequest(host, serverRecord.version, true));
-			yield take(types.LOGIN.SUCCESS);
+		if (!connected && !(yield* authenticateAndSelectServer(host, serverRecord.version))) {
+			return;
 		}
 		yield completeDeepLinkNavigation(params);
 	} else {
 		// search if deep link's server already exists
-		try {
-			if (user && serverRecord) {
-				yield localAuthenticate(host);
-				yield put(selectServerRequest(host, serverRecord.version, true, true));
-				yield take(types.LOGIN.SUCCESS);
-				yield completeDeepLinkNavigation(params);
-				return;
-			}
-		} catch (e) {
-			logUnlessUserCanceled(e);
-			yield fallbackNavigation();
+		if (user && serverRecord) {
+			yield* handleKnownServerDeepLink({ params, host, version: serverRecord.version });
 			return;
 		}
 		// if deep link is from a different server
@@ -363,47 +373,36 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 
 	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
-		if (!connected) {
-			try {
-				yield localAuthenticate(host);
-			} catch (e) {
-				logUnlessUserCanceled(e);
-				return;
-			}
-			yield put(selectServerRequest(host, serverRecord.version, true));
-			yield take(types.LOGIN.SUCCESS);
+		if (!connected && !(yield* authenticateAndSelectServer(host, serverRecord.version))) {
+			return;
 		}
 		yield handleNavigateCallRoom({ params });
-	} else {
-		if (user && serverRecord) {
-			try {
-				yield localAuthenticate(host);
-			} catch (e) {
-				logUnlessUserCanceled(e);
-				return;
-			}
-			yield put(selectServerRequest(host, serverRecord.version, true, true));
-			yield take(types.LOGIN.SUCCESS);
-			yield handleNavigateCallRoom({ params });
-			return;
-		}
-		// if deep link is from a different server
-		const result = yield getServerInfo(host);
-		if (!result.success) {
-			// Fallback to prevent the app from being stuck on splash screen
-			yield fallbackNavigation();
-			return;
-		}
-		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		yield put(serverInitAdd(server));
-		yield delay(1000);
-		EventEmitter.emit('NewServer', { server: host });
-		if (params.token) {
-			yield take(types.SERVER.SELECT_SUCCESS);
-			yield put(loginRequest({ resume: params.token }, true));
-			yield take(types.LOGIN.SUCCESS);
+		return;
+	}
+
+	if (user && serverRecord) {
+		if (yield* authenticateAndSelectServer(host, serverRecord.version, true)) {
 			yield handleNavigateCallRoom({ params });
 		}
+		return;
+	}
+
+	// if deep link is from a different server
+	const result = yield getServerInfo(host);
+	if (!result.success) {
+		// Fallback to prevent the app from being stuck on splash screen
+		yield fallbackNavigation();
+		return;
+	}
+	yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+	yield put(serverInitAdd(server));
+	yield delay(1000);
+	EventEmitter.emit('NewServer', { server: host });
+	if (params.token) {
+		yield take(types.SERVER.SELECT_SUCCESS);
+		yield put(loginRequest({ resume: params.token }, true));
+		yield take(types.LOGIN.SUCCESS);
+		yield handleNavigateCallRoom({ params });
 	}
 };
 

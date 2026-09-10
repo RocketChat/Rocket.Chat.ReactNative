@@ -453,6 +453,8 @@
   "Local_authentication_auto_lock_60": "1 perc elteltével",
   "Local_authentication_auto_lock_900": "15 perc elteltével",
   "Local_authentication_biometric_enrollment_changed": "A biometrikus adatok megváltoztak,\nhasználja a jelkódját",
+  "Local_authentication_biometric_relock_required": "A folytatáshoz erősítse meg a jelkódját",
+  "Local_authentication_biometric_trust_lost": "A biometrikus feloldást kikapcsolták,\nhasználja a jelkódját",
   "Local_authentication_biometry_enable_failed": "Nem sikerült engedélyezni a biometrikus feloldást.",
   "Local_authentication_biometry_fallback": "Jelkód használata",
   "Local_authentication_biometry_title": "Hitelesítés",

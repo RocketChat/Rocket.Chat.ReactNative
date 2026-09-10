@@ -426,6 +426,8 @@
   "Local_authentication_auto_lock_60": "Efter 1 minut",
   "Local_authentication_auto_lock_900": "Efter 15 minuter",
   "Local_authentication_biometric_enrollment_changed": "Biometriska uppgifter har ändrats,\nanvänd din lösenkod",
+  "Local_authentication_biometric_relock_required": "Bekräfta din lösenkod\nför att fortsätta",
+  "Local_authentication_biometric_trust_lost": "Biometrisk upplåsning har stängts av,\nanvänd din lösenkod",
   "Local_authentication_biometry_enable_failed": "Det gick inte att aktivera biometrisk upplåsning.",
   "Local_authentication_biometry_fallback": "Använd lösenkod",
   "Local_authentication_biometry_title": "Autentisering",

@@ -87,6 +87,18 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 	}
 };
 
+// Login already succeeded by the time this runs, so a superseded unlock must not fall through to
+// loginFailure; any other failure still propagates.
+const authenticateIgnoringCancel = function* authenticateIgnoringCancel(server) {
+	try {
+		yield localAuthenticate(server);
+	} catch (e) {
+		if (!(e instanceof UserCanceledError)) {
+			throw e;
+		}
+	}
+};
+
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, registerCustomFields }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
 	try {
@@ -102,14 +114,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			yield put(appStart({ root: RootEnum.ROOT_SET_USERNAME }));
 		} else {
 			const server = yield select(getServer);
-			try {
-				yield localAuthenticate(server);
-			} catch (e) {
-				// Login already succeeded, so a superseded unlock shouldn't fall through to loginFailure.
-				if (!(e instanceof UserCanceledError)) {
-					throw e;
-				}
-			}
+			yield* authenticateIgnoringCancel(server);
 
 			// Saves username on server history
 			const serversDB = database.servers;

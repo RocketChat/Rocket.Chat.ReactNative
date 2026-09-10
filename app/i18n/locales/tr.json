@@ -339,6 +339,8 @@
   "Local_authentication_auto_lock_60": "1 dakika sonra",
   "Local_authentication_auto_lock_900": "15 dakika sonra",
   "Local_authentication_biometric_enrollment_changed": "Biyometrik kayıt değişti,\nlütfen parolanızı kullanın",
+  "Local_authentication_biometric_relock_required": "Devam etmek için parolanızı\nonaylayın",
+  "Local_authentication_biometric_trust_lost": "Biyometrik kilit açma kapatıldı,\nlütfen parolanızı kullanın",
   "Local_authentication_biometry_enable_failed": "Biyometrik kilit açma etkinleştirilemedi.",
   "Local_authentication_biometry_fallback": "Parola kullan",
   "Local_authentication_biometry_title": "Doğrula",

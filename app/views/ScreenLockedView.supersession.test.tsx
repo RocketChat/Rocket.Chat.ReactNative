@@ -21,7 +21,9 @@ jest.mock('../containers/Passcode', () => ({
 	}
 }));
 
-const emit = (payload: object) => act(() => EventEmitter.emit(LOCAL_AUTHENTICATE_EMITTER, payload));
+type TLockRequest = { submit: jest.Mock; cancel: jest.Mock; hasBiometry: boolean };
+
+const emit = (payload: TLockRequest) => act(() => EventEmitter.emit(LOCAL_AUTHENTICATE_EMITTER, payload));
 
 describe('ScreenLockedView supersession', () => {
 	beforeEach(() => {

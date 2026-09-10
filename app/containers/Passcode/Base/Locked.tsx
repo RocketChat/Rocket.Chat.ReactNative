@@ -21,17 +21,21 @@ interface IPasscodeLocked {
 	setStatus: Function;
 }
 
-const Timer = memo(({ time, setStatus }: IPasscodeTimer) => {
-	const calcTimeLeft = () => {
-		const diff = getDiff(time || 0);
-		if (diff > 0) {
-			return Math.floor((diff / 1000) % 60);
-		}
-	};
+const calcTimeLeft = (time: Date | null) => {
+	const diff = getDiff(time || 0);
+	if (diff > 0) {
+		return Math.floor((diff / 1000) % 60);
+	}
+};
 
-	const [timeLeft, setTimeLeft] = useState(calcTimeLeft());
+const Timer = memo(({ time, setStatus }: IPasscodeTimer) => {
+	const [timeLeft, setTimeLeft] = useState(() => calcTimeLeft(time));
 
 	useEffect(() => {
+		if (!time) {
+			return;
+		}
+
 		const unlock = async () => {
 			try {
 				// Clear before flipping status, or PasscodeEnter's readStorage re-seeds the old attempts count.
@@ -43,13 +47,8 @@ const Timer = memo(({ time, setStatus }: IPasscodeTimer) => {
 			}
 		};
 
-		if (!time) {
-			setTimeLeft(undefined);
-			return;
-		}
-
 		const syncTimeLeft = () => {
-			const nextTimeLeft = calcTimeLeft();
+			const nextTimeLeft = calcTimeLeft(time);
 			setTimeLeft(nextTimeLeft);
 
 			if (nextTimeLeft !== undefined) {
@@ -75,7 +74,7 @@ const Timer = memo(({ time, setStatus }: IPasscodeTimer) => {
 		return () => clearInterval(intervalId);
 	}, [time, setStatus]);
 
-	if (!timeLeft) {
+	if (!time || !timeLeft) {
 		return null;
 	}
 
