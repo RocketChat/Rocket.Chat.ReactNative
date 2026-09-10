@@ -8,6 +8,10 @@
 		"dependsOn": ["app/views/AccessibilityAndAppearanceView/**"]
 	},
 	{
+		"test": ".maestro/tests/assorted/admin-panel.yaml",
+		"dependsOn": ["app/views/AdminPanelView/**", "app/views/SidebarView/**"]
+	},
+	{
 		"test": ".maestro/tests/assorted/broadcast.yaml",
 		"dependsOn": [
 			"app/views/NewMessageView/**",
