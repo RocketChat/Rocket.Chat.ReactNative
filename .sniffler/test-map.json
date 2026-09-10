@@ -166,7 +166,15 @@
 	},
 	{
 		"test": ".maestro/tests/onboarding/login/cas-login.yaml",
-		"dependsOn": ["app/views/LoginView/**", "app/containers/LoginServices/**", "app/sagas/login.js"]
+		"dependsOn": [
+			"app/views/LoginView/**",
+			"app/views/AuthenticationWebView.tsx",
+			"app/containers/LoginServices/**",
+			"app/sagas/login.js",
+			"app/sagas/deepLinking.js",
+			"app/lib/methods/helpers/parseSamlOrCasRedirect.ts",
+			"app/lib/methods/helpers/parseDeepLinking.ts"
+		]
 	},
 	{
 		"test": ".maestro/tests/onboarding/login/invalid-credentials.yaml",
@@ -178,7 +186,15 @@
 	},
 	{
 		"test": ".maestro/tests/onboarding/login/saml-login.yaml",
-		"dependsOn": ["app/views/LoginView/**", "app/containers/LoginServices/**", "app/sagas/login.js"]
+		"dependsOn": [
+			"app/views/LoginView/**",
+			"app/views/AuthenticationWebView.tsx",
+			"app/containers/LoginServices/**",
+			"app/sagas/login.js",
+			"app/sagas/deepLinking.js",
+			"app/lib/methods/helpers/parseSamlOrCasRedirect.ts",
+			"app/lib/methods/helpers/parseDeepLinking.ts"
+		]
 	},
 	{
 		"test": ".maestro/tests/onboarding/register/create-account.yaml",
