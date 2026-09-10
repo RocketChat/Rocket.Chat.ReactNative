@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 
 const FloatingDateSeparator = memo(
 	({ ts, opacity }: { ts?: Date | string | null; opacity: SharedValue<number> }): ReactElement | null => {
-		const style = useAnimatedStyle(() => ({ opacity: opacity.get() }));
+		const style = useAnimatedStyle(() => ({ opacity: opacity.value }));
 
 		if (!ts) {
 			return null;

@@ -31,12 +31,16 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 	const {
 		ts,
 		opacity: floatingDateOpacity,
-		scrollEvents: floatingDateScrollEvents,
+		scrollEvents: { onBeginDrag, onMomentumBegin, onEndDrag, onMomentumEnd },
 		viewabilityConfigCallbackPairs
 	} = useFloatingDate();
 
+	// Spelled out rather than spread: the worklets babel plugin has to see an object hook's properties statically.
 	const scrollHandler = useAnimatedScrollHandler({
-		...floatingDateScrollEvents,
+		onBeginDrag,
+		onMomentumBegin,
+		onEndDrag,
+		onMomentumEnd,
 		onScroll: event => {
 			if (event.contentOffset.y > SCROLL_LIMIT) {
 				scheduleOnRN(setScrolledPastLimit, true);

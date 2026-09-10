@@ -16,15 +16,18 @@ jest.mock('react-native-reanimated', () => {
 				return ref.current;
 			}
 			let current = initial;
+			const animations: any[] = [];
 			const shared = {
-				animations: [] as any[],
-				get: () => current,
-				set: (next: any) => {
+				animations,
+				get value() {
+					return current;
+				},
+				set value(next: any) {
 					if (typeof next === 'number') {
 						current = next;
 						return;
 					}
-					shared.animations.push(next);
+					animations.push(next);
 					if (next.type === 'timing') {
 						current = next.toValue;
 					}
@@ -122,7 +125,7 @@ describe('useFloatingDate', () => {
 
 	it('starts hidden', () => {
 		const { result } = renderHook(() => useFloatingDate());
-		expect(result.current.opacity.get()).toBe(0);
+		expect(result.current.opacity.value).toBe(0);
 		expect(animationsOf(result)).toEqual([]);
 	});
 
@@ -130,7 +133,7 @@ describe('useFloatingDate', () => {
 		const { result } = renderHook(() => useFloatingDate());
 		act(() => result.current.scrollEvents.onBeginDrag());
 		expect(animationsOf(result)).toEqual([fadeIn]);
-		expect(result.current.opacity.get()).toBe(1);
+		expect(result.current.opacity.value).toBe(1);
 	});
 
 	it('arms the delayed fade out when the drag ends', () => {

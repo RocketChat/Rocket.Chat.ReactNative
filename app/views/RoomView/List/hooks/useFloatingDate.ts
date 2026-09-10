@@ -61,13 +61,13 @@ export const useFloatingDate = (): IUseFloatingDate => {
 	const show = useCallback((): void => {
 		'worklet';
 
-		opacity.set(withTiming(1, { duration: FADE_IN_DURATION }));
+		opacity.value = withTiming(1, { duration: FADE_IN_DURATION });
 	}, [opacity]);
 
 	const hide = useCallback((): void => {
 		'worklet';
 
-		opacity.set(withDelay(HIDE_DELAY, withTiming(0, { duration: FADE_OUT_DURATION })));
+		opacity.value = withDelay(HIDE_DELAY, withTiming(0, { duration: FADE_OUT_DURATION }));
 	}, [opacity]);
 
 	// The pill tracks the gesture, not the offset: onScroll also fires for programmatic scrolls (jump to
