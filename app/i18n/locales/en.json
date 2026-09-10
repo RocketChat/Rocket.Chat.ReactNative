@@ -350,7 +350,6 @@
   "Error": "Error",
   "Error_Download_file": "Error while downloading file",
   "Error_incorrect_password": "Incorrect password",
-  "Error_play_video": "There was an error while playing this video",
   "Error_prefix": "Error: {{message}}",
   "Error_uploading": "Error uploading",
   "error-action-not-allowed": "{{action}} is not allowed",

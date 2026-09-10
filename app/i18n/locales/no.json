@@ -335,7 +335,6 @@
   "Enter_username_or_number": "Skriv inn brukernavn eller nummer",
   "Error": "Feil",
   "Error_Download_file": "Feil under nedlasting av fil",
-  "Error_play_video": "Det oppsto en feil under avspilling av denne videoen",
   "Error_uploading": "Feil ved opplasting",
   "error-action-not-allowed": "{{action}} er ikke tillat",
   "error-avatar-invalid-url": "Ugyldig avatar URL: {{url}}",
