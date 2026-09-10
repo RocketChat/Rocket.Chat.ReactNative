@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { InteractionManager, View } from 'react-native';
 import { type AVPlaybackStatus } from 'expo-av';
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 
@@ -131,11 +131,18 @@ const AudioPlayer = ({
 	}, [fileUri, isDownloaded]);
 
 	useEffect(() => {
-		if (paused) {
-			deactivateKeepAwake();
-		} else {
-			activateKeepAwake();
-		}
+		const handleAwakeState = async () => {
+			try {
+				if (paused) {
+					deactivateKeepAwake();
+				} else {
+					await activateKeepAwakeAsync();
+				}
+			} catch (e) {
+				// Do nothing
+			}
+		};
+		handleAwakeState();
 	}, [paused]);
 
 	useEffect(() => {
