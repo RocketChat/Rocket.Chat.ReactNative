@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { normalizeServer } from '../../lib/methods/helpers/isConferenceUrl';
 import openLink from '../../lib/methods/helpers/openLink';
 import { closeConferenceCall } from '../../lib/services/conference/conferenceCallNavigation';
 import { useConferenceCallStore } from '../../lib/services/conference/useConferenceCallStore';
@@ -16,7 +17,6 @@ const ConferenceCall = () => {
 	const { top, bottom } = useSafeAreaInsets();
 	const callServer = useRef(server);
 
-	// The overlay lives outside the navigator, so switching servers never unmounts it.
 	useEffect(() => {
 		if (callId && callServer.current !== server) {
 			closeConferenceCall();
@@ -29,7 +29,7 @@ const ConferenceCall = () => {
 			if (!path.startsWith('/')) {
 				return;
 			}
-			openLink(`${server.replace(/\/+$/, '')}${path}`, theme);
+			openLink(`${normalizeServer(server)}${path}`, theme);
 		},
 		[server, theme]
 	);
@@ -42,7 +42,7 @@ const ConferenceCall = () => {
 		<View
 			style={[styles.host, { paddingTop: top, paddingBottom: bottom }, expanded ? styles.expanded : styles.offscreen]}
 			pointerEvents={expanded ? 'auto' : 'none'}>
-			<ConferenceWebView url={url} onClose={closeConferenceCall} onOpenLink={onOpenLink} />
+			<ConferenceWebView url={url} expanded={expanded} onClose={closeConferenceCall} onOpenLink={onOpenLink} />
 		</View>
 	);
 };

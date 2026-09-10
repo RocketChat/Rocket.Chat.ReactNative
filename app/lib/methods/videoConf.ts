@@ -5,10 +5,8 @@ import { showErrorAlert } from './helpers';
 import { isConferenceWindowEnabled } from './helpers/isConferenceWindowEnabled';
 import log from './helpers/log';
 import openLink from './helpers/openLink';
-import { handleAndroidBltPermission } from './handleAndroidBltPermission';
 import { openConferenceCall } from './openConferenceCall';
 
-// `rid` lets the conference window keep a preflight page already open for that room.
 export const videoConfJoin = async (
 	callId: string,
 	cam?: boolean,
@@ -25,7 +23,6 @@ export const videoConfJoin = async (
 		if (result.success) {
 			const { url, providerName } = result;
 			if (providerName === 'jitsi' && url) {
-				await handleAndroidBltPermission();
 				navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });
 			} else if (url) {
 				openLink(url);

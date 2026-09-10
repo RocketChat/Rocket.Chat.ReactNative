@@ -26,11 +26,12 @@ import { buildConferenceBridgeScript, parseConferenceBridgeMessage } from './bri
 
 type IConferenceWebView = {
 	url: string;
+	expanded: boolean;
 	onClose: () => void;
 	onOpenLink: (path: string) => void;
 };
 
-const ConferenceWebView = ({ url, onClose, onOpenLink }: IConferenceWebView) => {
+const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWebView) => {
 	const { id: userId, token } = useAppSelector(state => getUserSelector(state));
 	const server = useAppSelector(state => state.server.server);
 	const { theme, colors } = useTheme();
@@ -44,6 +45,11 @@ const ConferenceWebView = ({ url, onClose, onOpenLink }: IConferenceWebView) => 
 	// the source. The token lives only in the main frame's closure, which cross-origin frames
 	// cannot read, so they cannot mint a message that parses.
 	const bridgeToken = useMemo(() => random(32), []);
+
+	useEffect(() => {
+		loaded.current = false;
+		setFailed(false);
+	}, [url]);
 
 	useEffect(() => {
 		if (!credentialsAllowed) {
@@ -68,11 +74,15 @@ const ConferenceWebView = ({ url, onClose, onOpenLink }: IConferenceWebView) => 
 	}, [server, userId, token, credentialsAllowed]);
 
 	useEffect(() => {
-		activateKeepAwake();
+		if (expanded) {
+			activateKeepAwake();
+		} else {
+			deactivateKeepAwake();
+		}
 		return () => {
 			deactivateKeepAwake();
 		};
-	}, []);
+	}, [expanded]);
 
 	const injectedJavaScriptBeforeContentLoaded = useMemo(
 		() => (credentialsAllowed ? buildConferenceBridgeScript({ userId, token, server, bridgeToken }) : 'true;'),
@@ -99,8 +109,6 @@ const ConferenceWebView = ({ url, onClose, onOpenLink }: IConferenceWebView) => 
 
 	const onShouldStartLoadWithRequest = useCallback(
 		({ url: target, isTopFrame }: ShouldStartLoadRequest) => {
-			// iOS reports subframe navigations here too; cancelling one would tear a cross-origin
-			// provider embed out of the page.
 			if (!isTopFrame || isConferenceUrl(target, server)) {
 				return true;
 			}
@@ -120,8 +128,6 @@ const ConferenceWebView = ({ url, onClose, onOpenLink }: IConferenceWebView) => 
 
 	const onHttpError = useCallback(
 		({ nativeEvent }: WebViewHttpErrorEvent) => {
-			// Android reports subresources here too, and a request failing mid-call is the page's
-			// problem to handle. Only a conference page that never loaded is ours.
 			if (loaded.current || !isConferenceUrl(nativeEvent.url, server)) {
 				return;
 			}

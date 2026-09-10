@@ -23,8 +23,6 @@ export const useConferenceCallStore = create<TConferenceCall>(set => ({
 				return { expanded: true };
 			}
 
-			// Starting a call from a room loads a preflight page keyed by that room; once the server
-			// assigns the real callId, only that room may claim the page instead of reloading it.
 			if (rid && current.url && current.callId === preflightCallId(rid)) {
 				return { callId, url: current.url, expanded: true };
 			}

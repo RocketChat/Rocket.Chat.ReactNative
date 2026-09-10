@@ -15,7 +15,6 @@ export const setServerCookies = async (server: string, user: { id: string; token
 	const date = new Date();
 	date.setDate(date.getDate() + COOKIE_LIFETIME_DAYS);
 
-	// Set-Cookie strings omit Domain so the cookies stay host-only instead of leaking to subdomains.
 	const attributes = [`Expires=${date.toUTCString()}`, 'Path=/'];
 	if (new URL(server).protocol === 'https:') {
 		attributes.push('Secure');
@@ -26,8 +25,6 @@ export const setServerCookies = async (server: string, user: { id: string; token
 	await CookieManager.setFromResponse(server, `rc_token=${user.token}; ${suffix}`);
 };
 
-// `clearByName` is iOS only, so expire the cookies in place rather than clearing the whole jar,
-// which would also drop other servers' and the login webview's SSO cookies.
 export const clearServerCookies = async (server: string): Promise<void> => {
 	if (!server) {
 		return;

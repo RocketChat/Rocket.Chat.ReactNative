@@ -6,7 +6,6 @@ import { useTheme } from '../../../theme';
 import sharedStyles from '../../../views/Styles';
 import * as HeaderButton from '../../Header/components/HeaderButton';
 
-// Mirrors the VoIP Title/Subtitle type scale so both calls read as the same header.
 const styles = StyleSheet.create({
 	button: {
 		flex: 1,

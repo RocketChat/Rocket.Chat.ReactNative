@@ -54,9 +54,6 @@ const MediaCallHeader = () => {
 	const rowStyle = { ...defaultHeaderStyle, borderBottomColor: colors.strokeLight, paddingTop: insets.top + 12 };
 
 	if (!call) {
-		// A conference call gets the same header, so returning to one works the way returning to a
-		// VoIP call does. It never auto-hides: the conference webview covers this header when
-		// expanded, so the header is only on screen while the call is minimized.
 		if (conferenceCallId) {
 			return (
 				<View style={[styles.header, rowStyle]} testID='conference-call-header'>

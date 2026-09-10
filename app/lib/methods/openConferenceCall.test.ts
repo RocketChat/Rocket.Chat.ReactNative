@@ -1,5 +1,6 @@
 import { setUser } from '../../actions/login';
 import { selectServerRequest } from '../../actions/server';
+import { clearSettings, updateSettings } from '../../actions/settings';
 import { mockedStore } from '../../reducers/mockedStore';
 import Navigation from '../navigation/appNavigation';
 import { useConferenceCallStore } from '../services/conference/useConferenceCallStore';
@@ -11,7 +12,6 @@ jest.mock('../navigation/appNavigation', () => ({
 	back: jest.fn(),
 	getCurrentRoute: jest.fn(() => undefined)
 }));
-jest.mock('./handleAndroidBltPermission', () => ({ handleAndroidBltPermission: jest.fn(() => Promise.resolve()) }));
 jest.mock('expo-camera', () => ({
 	Camera: {
 		getCameraPermissionsAsync: jest.fn(() => Promise.resolve({ granted: true })),
@@ -30,7 +30,9 @@ describe('openConferenceCall', () => {
 	beforeEach(() => {
 		state().close();
 		(Navigation.navigate as jest.Mock).mockClear();
+		mockedStore.dispatch(clearSettings());
 		mockedStore.dispatch(selectServerRequest('https://open.rocket.chat', '8.0.0'));
+		mockedStore.dispatch(updateSettings('VideoConf_Conference_Window_Enabled', true));
 		mockedStore.dispatch(setUser({ id: 'uid1', token: 'tok1' }));
 	});
 
@@ -91,6 +93,24 @@ describe('openConferenceCall', () => {
 
 	test('does nothing when there is no server to build a url from', async () => {
 		mockedStore.dispatch(selectServerRequest('', '8.0.0'));
+
+		await openConferenceCall({ callId: 'call1' });
+
+		expect(state().callId).toBeUndefined();
+		expect(Navigation.navigate).not.toHaveBeenCalled();
+	});
+
+	test('does nothing when the conference window is disabled', async () => {
+		mockedStore.dispatch(updateSettings('VideoConf_Conference_Window_Enabled', false));
+
+		await openConferenceCall({ callId: 'call1' });
+
+		expect(state().callId).toBeUndefined();
+		expect(Navigation.navigate).not.toHaveBeenCalled();
+	});
+
+	test('does nothing on a cleartext server, which cannot be handed the login token', async () => {
+		mockedStore.dispatch(selectServerRequest('http://open.rocket.chat', '8.0.0'));
 
 		await openConferenceCall({ callId: 'call1' });
 

@@ -97,8 +97,6 @@ export async function removeServer({ server }: { server: string }): Promise<void
 }
 
 export async function logout({ server }: { server: string }): Promise<void> {
-	// The conference overlay is mounted outside the navigator, so nothing else unmounts it, and
-	// its webview was seeded with rc_uid/rc_token that would outlive the session.
 	useConferenceCallStore.getState().close();
 	try {
 		await clearServerCookies(server);

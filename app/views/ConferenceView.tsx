@@ -10,7 +10,6 @@ const ConferenceView = (): ReactElement => {
 
 	useFocusEffect(
 		useCallback(() => {
-			// The call may have ended while this route was buried under another screen.
 			if (!useConferenceCallStore.getState().callId) {
 				Navigation.back();
 				return;

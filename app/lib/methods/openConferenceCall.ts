@@ -4,8 +4,8 @@ import { expandConferenceCall } from '../services/conference/conferenceCallNavig
 import { preflightCallId, useConferenceCallStore } from '../services/conference/useConferenceCallStore';
 import { store } from '../store/auxStore';
 import { buildConferenceUrl } from './helpers/buildConferenceUrl';
+import { isConferenceWindowEnabled } from './helpers/isConferenceWindowEnabled';
 import log from './helpers/log';
-import { handleAndroidBltPermission } from './handleAndroidBltPermission';
 import { requestVoipCallPermissions } from './voipCallPermissions';
 
 type TConferenceTarget = { callId: string; rid?: string } | { rid: string };
@@ -19,13 +19,16 @@ const requestCallPermissions = async (): Promise<void> => {
 			await Camera.requestCameraPermissionsAsync();
 		}
 		await requestVoipCallPermissions();
-		await handleAndroidBltPermission();
 	} catch (e) {
 		log(e);
 	}
 };
 
 export const openConferenceCall = async (target: TConferenceTarget): Promise<void> => {
+	if (!isConferenceWindowEnabled()) {
+		return;
+	}
+
 	const { server } = store.getState().server;
 	const url = buildConferenceUrl(server, target);
 

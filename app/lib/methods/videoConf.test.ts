@@ -6,7 +6,6 @@ import { videoConferenceJoin } from '../services/restApi';
 import { initStore } from '../store/auxStore';
 import { showErrorAlert } from './helpers/info';
 import openLink from './helpers/openLink';
-import { handleAndroidBltPermission } from './handleAndroidBltPermission';
 import { openConferenceCall } from './openConferenceCall';
 import { videoConfJoin } from './videoConf';
 
@@ -15,7 +14,6 @@ jest.mock('./helpers/openLink', () => jest.fn());
 jest.mock('./openConferenceCall', () => ({ openConferenceCall: jest.fn(() => Promise.resolve()) }));
 jest.mock('../services/restApi', () => ({ videoConferenceJoin: jest.fn() }));
 jest.mock('./helpers/info', () => ({ showErrorAlert: jest.fn() }));
-jest.mock('./handleAndroidBltPermission', () => ({ handleAndroidBltPermission: jest.fn(() => Promise.resolve()) }));
 
 const mockedJoin = videoConferenceJoin as jest.Mock;
 
@@ -40,12 +38,6 @@ describe('videoConfJoin', () => {
 				onlyAudio: false,
 				videoConf: true
 			});
-		});
-
-		test('requests bluetooth permission before opening a jitsi call', async () => {
-			await videoConfJoin('call1', true, true);
-
-			expect(handleAndroidBltPermission).toHaveBeenCalled();
 		});
 
 		test('opens any other provider as a link', async () => {
