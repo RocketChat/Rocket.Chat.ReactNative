@@ -13,6 +13,8 @@ class ShareActivity : AppCompatActivity() {
 
     private val appScheme = "rocketchat"
 
+    private val maxTextLength = 32000
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         handleIntent(intent)
@@ -27,7 +29,6 @@ class ShareActivity : AppCompatActivity() {
                 intent.type?.startsWith("video/") == true -> handleMedia(intent, "data")
                 intent.type?.startsWith("application/") == true -> handleMedia(intent, "data")
                 intent.type == "*/*" -> handleMedia(intent, "data")
-                intent.type == "text/plain" -> handleText(intent)
                 else -> completeRequest() // No matching type, complete the request
             }
         } else {
@@ -45,6 +46,15 @@ class ShareActivity : AppCompatActivity() {
         // Handle sharing text
         val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
         if (sharedText != null) {
+            if (sharedText.length > maxTextLength) {
+                val ext = if (intent.type == "text/html") ".html" else ".txt"
+                val fileUri = saveDataToCacheDir(sharedText.toByteArray(), "shared-${UUID.randomUUID()}$ext")
+                if (fileUri != null) {
+                    openURL(Uri.parse("$appScheme://shareextension?mediaUris=${Uri.encode(fileUri.toString())}"))
+                    completeRequest()
+                    return
+                }
+            }
             val encoded = Uri.encode(sharedText)
             val url = Uri.parse("$appScheme://shareextension?text=$encoded")
             openURL(url)
@@ -113,6 +123,8 @@ class ShareActivity : AppCompatActivity() {
             mimeType?.startsWith("image/") == true -> ".jpeg"
             mimeType?.startsWith("video/") == true -> ".mp4"
             mimeType == "text/x-vcard" || mimeType == "text/vcard" -> ".vcf"
+            mimeType == "text/html" -> ".html"
+            mimeType?.startsWith("text/") == true -> ".txt"
             else -> "" // Ignore the file if the type is not recognized
         }
     }
