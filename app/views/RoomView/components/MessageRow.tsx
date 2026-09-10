@@ -1,5 +1,5 @@
 import dayjs from '../../../lib/dayjs';
-import { useRoomStore } from '../stores/RoomStoreContext';
+import { fromSubscription, useRoomStore } from '../stores/RoomStoreContext';
 import { useRoomScreen } from '../stores/RoomScreenContext';
 import Message from '../../../containers/message';
 import LoadMore from '../LoadMore';
@@ -7,10 +7,9 @@ import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../lib/constants/m
 import { type RoomType, type TAnyMessageModel } from '../../../definitions';
 import { useThreadBadgeColor } from '../hooks/useThreadBadgeColor';
 import { type IRoomViewState, type TMessageRowProps } from '../definitions';
-import { isSubscriptionModel } from '../../../definitions/TRoom';
 
 const useIsIgnored = (authorId?: string): boolean =>
-	useRoomStore(s => (authorId && isSubscriptionModel(s.room) ? (s.room.ignored?.includes(authorId) ?? false) : false));
+	useRoomStore(fromSubscription(room => (authorId ? (room.ignored?.includes(authorId) ?? false) : false), false));
 
 const getMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageModel, lastSeen: IRoomViewState['lastSeen']) => {
 	let dateSeparator: TAnyMessageModel['ts'] | null = null;

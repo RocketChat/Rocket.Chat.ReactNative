@@ -3,9 +3,8 @@ import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { useSetting } from '../../../../lib/hooks/useSetting';
 import { isBlocked } from '../../../../lib/methods/helpers/room';
 import { isRoomFederated, isRoomNativeFederated } from '../../../../lib/methods/isRoomFederated';
-import { isSubscriptionModel } from '../../../../definitions/TRoom';
 import { useReadOnly } from '../../hooks/useReadOnly';
-import { useRoomStore } from '../../stores/RoomStoreContext';
+import { fromSubscription, useRoomStore } from '../../stores/RoomStoreContext';
 
 const getFederatedFooterDescription = (
 	isNativeFederated: boolean,
@@ -27,8 +26,8 @@ const getFederatedFooterDescription = (
 export const useFooterMessage = (): string | null => {
 	const readOnly = useReadOnly();
 	const isRoomBlocked = useRoomStore(s => isBlocked(s.room));
-	const isFederated = useRoomStore(s => isSubscriptionModel(s.room) && isRoomFederated(s.room));
-	const isNativeFederated = useRoomStore(s => isSubscriptionModel(s.room) && isRoomNativeFederated(s.room));
+	const isFederated = useRoomStore(fromSubscription(room => isRoomFederated(room), false));
+	const isNativeFederated = useRoomStore(fromSubscription(room => isRoomNativeFederated(room), false));
 	const federationMatrixEnabled = useSetting('Federation_Matrix_enabled');
 	const federationServiceEnabled = useSetting('Federation_Service_Enabled');
 	const isFederationEnabled = !!(federationMatrixEnabled || federationServiceEnabled);
