@@ -1,3 +1,4 @@
+import { memo, type ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, { type SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 
@@ -15,22 +16,24 @@ const styles = StyleSheet.create({
 	}
 });
 
-const FloatingDateSeparator = ({ ts, opacity }: { ts?: Date | string | null; opacity: SharedValue<number> }) => {
-	const style = useAnimatedStyle(() => ({ opacity: opacity.get() }));
+const FloatingDateSeparator = memo(
+	({ ts, opacity }: { ts?: Date | string | null; opacity: SharedValue<number> }): ReactElement | null => {
+		const style = useAnimatedStyle(() => ({ opacity: opacity.get() }));
 
-	if (!ts) {
-		return null;
+		if (!ts) {
+			return null;
+		}
+
+		return (
+			<Animated.View
+				pointerEvents='none'
+				accessibilityElementsHidden
+				importantForAccessibility='no-hide-descendants'
+				style={[styles.container, style]}>
+				<DateSeparatorLabel ts={ts} />
+			</Animated.View>
+		);
 	}
-
-	return (
-		<Animated.View
-			pointerEvents='none'
-			accessibilityElementsHidden
-			importantForAccessibility='no-hide-descendants'
-			style={[styles.container, style]}>
-			<DateSeparatorLabel ts={ts} />
-		</Animated.View>
-	);
-};
+);
 
 export default FloatingDateSeparator;

@@ -14,7 +14,7 @@ import FloatingDateSeparator from '../../../../containers/Separator/FloatingDate
 import { type IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
 import { useRoomContext } from '../../context';
-import { useFloatingDate } from '../hooks/useFloatingDate';
+import { useFloatingDate } from '../hooks';
 
 const styles = StyleSheet.create({
 	list: {
