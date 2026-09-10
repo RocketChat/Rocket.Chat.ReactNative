@@ -24,15 +24,13 @@ import { type MessageRoomState } from '../../containers/message/stores/MessageRo
 export type IRoomViewProps = Pick<IBaseScreen<ChatsStackParamList, 'RoomView'>, 'navigation' | 'route'>;
 
 export interface IRoomScreenInput {
-	rid: string;
-	t: string;
+	rid?: string;
+	t?: string;
 	tmid?: string;
 	name?: string;
 	initialRoom: TRoomOrPreview;
 	roomUserId?: string | null;
 }
-
-export type TRoomRouteParse = { status: 'valid'; input: IRoomScreenInput } | { status: 'invalid' };
 
 export interface IRoomScreenProps extends Pick<IRoomViewProps, 'route'>, Pick<IRoomScreenInput, 'rid' | 't' | 'tmid'> {
 	roomStore: RoomStore;
