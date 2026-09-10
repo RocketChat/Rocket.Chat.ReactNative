@@ -26,7 +26,7 @@ Type contract and shared vocabulary live in [`../../../definitions/IBiometricTru
 
 ### Consumers
 
-- [`../../methods/helpers/localAuthentication.ts`](../../methods/helpers/localAuthentication.ts) — `enableBiometry` (shared enroll-then-consent path), `checkBiometry` (first-passcode opt-in), `biometryAuth` (verify wrapper), `handleLocalAuthentication` (opens the passcode modal).
+- [`../../methods/helpers/localAuthentication.ts`](../../methods/helpers/localAuthentication.ts) — `enableBiometry` (shared enroll-then-consent path, used by the first-passcode opt-in and the settings toggle), `biometryAuth` (verify wrapper), `handleLocalAuthentication` (opens the passcode modal).
 - [`../../../containers/Passcode/PasscodeEnter.tsx`](../../../containers/Passcode/PasscodeEnter.tsx) — runs the biometry prompt *behind* the passcode modal and reacts to the outcome.
 - [`../../../views/ScreenLockConfigView.tsx`](../../../views/ScreenLockConfigView.tsx) — the Screen Lock settings screen with the biometry toggle.
 - [`../../../sagas/init.js`](../../../sagas/init.js) — runs `runBiometricTrustMigration` once during app restore, before server/user restoration.

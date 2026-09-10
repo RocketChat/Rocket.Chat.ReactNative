@@ -1,5 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
@@ -37,6 +37,7 @@ const ScreenLockedView = () => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<IData>({});
 	const [requestId, setRequestId] = useState(0);
+	const currentRequestId = useRef(0);
 	const { onShow, defer, onModalHide } = useDeferredModalSettle<IData>();
 
 	useDeepCompareEffect(() => {
@@ -49,7 +50,8 @@ const ScreenLockedView = () => {
 
 	const showScreenLock = (args: IData) => {
 		onShow(args);
-		setRequestId(current => current + 1);
+		currentRequestId.current += 1;
+		setRequestId(currentRequestId.current);
 		setData(args);
 	};
 
@@ -62,15 +64,17 @@ const ScreenLockedView = () => {
 		};
 	}, []);
 
-	const onSubmit = () => {
-		defer(data.submit || null);
+	const settle = (id: number, callback?: () => void) => {
+		if (id !== currentRequestId.current) {
+			return;
+		}
+		defer(callback || null);
 		setData({});
 	};
 
-	const onCancel = () => {
-		defer(data.cancel || null);
-		setData({});
-	};
+	const onSubmit = () => settle(requestId, data.submit);
+
+	const onCancel = () => settle(requestId, data.cancel);
 
 	return (
 		<Modal

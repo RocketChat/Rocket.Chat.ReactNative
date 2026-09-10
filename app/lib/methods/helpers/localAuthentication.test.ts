@@ -14,7 +14,12 @@ import {
 	localAuthenticate
 } from './localAuthentication';
 import { biometricTrustStore } from '../../biometricTrustStore';
-import { CHANGE_PASSCODE_EMITTER, LOCAL_AUTHENTICATE_EMITTER } from '../../constants/localAuthentication';
+import {
+	ATTEMPTS_KEY,
+	CHANGE_PASSCODE_EMITTER,
+	LOCAL_AUTHENTICATE_EMITTER,
+	LOCKED_OUT_TIMER_KEY
+} from '../../constants/localAuthentication';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
 	multiRemove: jest.fn(() => Promise.resolve())
@@ -305,6 +310,37 @@ describe('handleLocalAuthentication', () => {
 		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false });
 		expect(mockedVerify).not.toHaveBeenCalled();
 	});
+
+	it('successful unlock → clears the persisted failure counter and lockout timer', async () => {
+		mockedIsEnabled.mockReturnValue(false);
+
+		await handleLocalAuthentication();
+
+		expect(mockedMultiRemove).toHaveBeenCalledWith([LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY]);
+	});
+
+	it('forced-passcode unlock → clears the persisted failure counter', async () => {
+		mockedIsEnabled.mockReturnValue(true);
+		mockedIsEnrollmentValid.mockResolvedValueOnce(false);
+
+		await handleLocalAuthentication();
+
+		expect(lastEmitPayload()).toMatchObject({ reason: 'enrollmentChanged' });
+		expect(mockedMultiRemove).toHaveBeenCalledWith([LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY]);
+	});
+
+	it('canceled unlock → keeps the persisted failure counter', async () => {
+		mockedIsEnabled.mockReturnValue(false);
+		mockedEmit.mockImplementation((event, payload) => {
+			if (event === LOCAL_AUTHENTICATE_EMITTER && payload?.cancel) {
+				setImmediate(() => payload.cancel());
+			}
+		});
+
+		await expect(handleLocalAuthentication({ canCloseModal: true })).rejects.toThrow();
+
+		expect(mockedMultiRemove).not.toHaveBeenCalled();
+	});
 });
 
 describe('localAuthenticate', () => {
@@ -381,7 +417,7 @@ describe('checkHasPasscode → biometry consent on first passcode', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockedDisenroll.mockResolvedValue(undefined);
-		// No stored passcode → checkHasPasscode runs changePasscode then checkBiometry. clearAllMocks()
+		// No stored passcode → checkHasPasscode runs changePasscode then enableBiometry. clearAllMocks()
 		// does not reset implementations, so explicitly clear the 'stored-passcode' return leaked from the
 		// localAuthenticate block above (otherwise checkHasPasscode early-returns and never enrolls).
 		mockedGetString.mockReturnValue(undefined);

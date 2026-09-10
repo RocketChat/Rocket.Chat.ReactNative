@@ -100,7 +100,7 @@ On iOS these helpers are no-ops that resolve `true` (the sentinel already covers
 
 ### Why writing the sentinel is not consent
 
-`enroll()` writes the sentinel silently — no biometric prompt — so it **cannot** double as proof the user agreed to biometric unlock. Every enable path must therefore follow `enroll()` with a `biometryAuth(true)` prompt and tear the sentinel back down if the user declines. That sequence lives in one place — `enableBiometry` in `localAuthentication.ts` — used by both the first-passcode opt-in (`checkBiometry`) and the settings toggle. This is why `enroll` and the consent prompt are separate steps rather than one call. See `FLOWS.md` §2.
+`enroll()` writes the sentinel silently — no biometric prompt — so it **cannot** double as proof the user agreed to biometric unlock. Every enable path must therefore follow `enroll()` with a `biometryAuth(true)` prompt and tear the sentinel back down if the user declines. That sequence lives in one place — `enableBiometry` in `localAuthentication.ts` — used by both the first-passcode opt-in (`checkHasPasscode`) and the settings toggle. This is why `enroll` and the consent prompt are separate steps rather than one call. See `FLOWS.md` §2.
 
 The consent step goes through `biometryAuth`, not `verify()` directly, for the Android reason above: a `verify()` that resolves inside the keystore's auth window shows no prompt, which would silently enable biometric unlock the user was never asked about.
 

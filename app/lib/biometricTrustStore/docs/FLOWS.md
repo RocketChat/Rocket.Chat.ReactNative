@@ -58,7 +58,7 @@ Note the enable path **does** prompt: writing the sentinel is silent, so it cann
 
 ---
 
-## 2. First-passcode opt-in (`checkBiometry` → `enableBiometry`)
+## 2. First-passcode opt-in (`checkHasPasscode` → `enableBiometry`)
 
 When the user sets their first passcode, screen lock asks whether to also enable biometric unlock. Because `enroll()` is silent, consent is captured with a **second** call — a `biometryAuth(true)` prompt — and the sentinel is torn down if the user declines.
 
@@ -70,7 +70,7 @@ sequenceDiagram
     participant OS
     participant User
 
-    Note over LocalAuth: checkHasPasscode set a new passcode → checkBiometry()
+    Note over LocalAuth: checkHasPasscode set a new passcode → enableBiometry()
     LocalAuth->>Store: enroll() — write sentinel (silent)
     alt enroll fails
         Store-->>LocalAuth: failure

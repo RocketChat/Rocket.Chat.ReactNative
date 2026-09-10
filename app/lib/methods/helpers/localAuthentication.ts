@@ -83,6 +83,11 @@ const openModal = (hasBiometry: boolean, canClose?: boolean, reason?: BiometricI
 		});
 	});
 
+const authenticate = async (hasBiometry: boolean, canClose?: boolean, reason?: BiometricInvalidationReason) => {
+	await openModal(hasBiometry, canClose, reason);
+	await resetAttempts();
+};
+
 const openChangePasscodeModal = ({ force }: { force: boolean }) =>
 	new Promise<string>((resolve, reject) => {
 		EventEmitter.emit(CHANGE_PASSCODE_EMITTER, {
@@ -215,14 +220,11 @@ export const enableBiometry = async (): Promise<TrustResult> => {
 	return { kind: 'success' };
 };
 
-// Captures the biometry opt-in when the user sets their first passcode.
-const checkBiometry = async () => (await enableBiometry()).kind === 'success';
-
 export const checkHasPasscode = async ({ force = true }: { force?: boolean }): Promise<{ newPasscode?: boolean } | void> => {
 	const storedPasscode = UserPreferences.getString(PASSCODE_KEY);
 	if (!storedPasscode) {
 		await changePasscode({ force });
-		await checkBiometry();
+		await enableBiometry();
 		return Promise.resolve({ newPasscode: true });
 	}
 	return Promise.resolve();
@@ -279,7 +281,7 @@ export const handleLocalAuthentication = async ({ canCloseModal = false, relockR
 		if (biometryEnabled) {
 			await biometricTrustStore.invalidate();
 		}
-		await openModal(false, canCloseModal, reason);
+		await authenticate(false, canCloseModal, reason);
 		biometricTrustStore.setRelockPending(false);
 		return;
 	}
@@ -291,14 +293,14 @@ export const handleLocalAuthentication = async ({ canCloseModal = false, relockR
 	 * marker is deliberately left as it is, so a persistent failure keeps forcing the passcode.
 	 */
 	if (reason === 'checkFailed') {
-		await openModal(false, canCloseModal);
+		await authenticate(false, canCloseModal);
 		return;
 	}
 
 	const hasBiometry = biometryEnabled && (await hasSupportedBiometry());
 
 	// Modal first so it covers the app; PasscodeEnter prompts biometry from behind it.
-	await openModal(hasBiometry, canCloseModal);
+	await authenticate(hasBiometry, canCloseModal);
 	biometricTrustStore.setRelockPending(false);
 };
 
