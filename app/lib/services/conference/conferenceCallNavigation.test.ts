@@ -40,6 +40,14 @@ describe('expandConferenceCall', () => {
 
 		expect(Navigation.navigate).not.toHaveBeenCalled();
 	});
+
+	test('does nothing when there is no call to show', () => {
+		showingAnotherScreen();
+
+		expandConferenceCall();
+
+		expect(Navigation.navigate).not.toHaveBeenCalled();
+	});
 });
 
 describe('closeConferenceCall', () => {

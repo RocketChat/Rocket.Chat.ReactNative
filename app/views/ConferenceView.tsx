@@ -6,12 +6,15 @@ import Navigation from '../lib/navigation/appNavigation';
 import { useConferenceCallStore } from '../lib/services/conference/useConferenceCallStore';
 
 const ConferenceView = (): ReactElement => {
-	const { expand, minimize } = useConferenceCallStore();
+	const expand = useConferenceCallStore(state => state.expand);
+	const minimize = useConferenceCallStore(state => state.minimize);
 
 	useFocusEffect(
 		useCallback(() => {
 			if (!useConferenceCallStore.getState().callId) {
-				Navigation.back();
+				if (Navigation.getCurrentRoute()?.name === 'ConferenceView') {
+					Navigation.back();
+				}
 				return;
 			}
 
