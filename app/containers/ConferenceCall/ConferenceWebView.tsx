@@ -47,11 +47,13 @@ const ConferenceWebView = ({ url, onClose, onOpenLink }: IConferenceWebView) => 
 
 	useEffect(() => {
 		if (!credentialsAllowed) {
+			setCookiesSet(true);
 			return;
 		}
 
 		let cancelled = false;
 
+		setCookiesSet(false);
 		setServerCookies(server, { id: userId, token })
 			.catch(log)
 			.finally(() => {

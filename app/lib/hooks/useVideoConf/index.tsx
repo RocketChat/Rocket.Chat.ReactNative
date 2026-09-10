@@ -76,13 +76,13 @@ export const useVideoConf = (
 			});
 
 			const permission = await Camera.getCameraPermissionsAsync();
-			if (!permission?.granted) {
-				try {
+			try {
+				if (!permission?.granted) {
 					await Camera.requestCameraPermissionsAsync();
-					await handleAndroidBltPermission();
-				} catch (error) {
-					log(error);
 				}
+				await handleAndroidBltPermission();
+			} catch (error) {
+				log(error);
 			}
 		} catch (error) {
 			log(error);
