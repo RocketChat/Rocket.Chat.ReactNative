@@ -24,7 +24,6 @@ async function load({ tmid }: { tmid: string }) {
 	}
 }
 
-// The only refresh the threads record gets on open, so updates missed by the room stream reach the UI.
 async function prepareThreadUpsert(threadParent: TThreadModel | undefined, rid: string): Promise<Model | null> {
 	if (!threadParent) {
 		return null;
