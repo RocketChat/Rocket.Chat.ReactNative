@@ -27,6 +27,7 @@ class ShareActivity : AppCompatActivity() {
                 intent.type?.startsWith("text/") == true -> handleText(intent)
                 intent.type?.startsWith("image/") == true -> handleMedia(intent, "data")
                 intent.type?.startsWith("video/") == true -> handleMedia(intent, "data")
+                intent.type?.startsWith("audio/") == true -> handleMedia(intent, "data")
                 intent.type?.startsWith("application/") == true -> handleMedia(intent, "data")
                 intent.type == "*/*" -> handleMedia(intent, "data")
                 else -> completeRequest() // No matching type, complete the request
