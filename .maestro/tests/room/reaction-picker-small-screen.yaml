@@ -62,7 +62,7 @@ tags:
 - repeat:
     while:
       notVisible:
-        id: emoji-pregnant_woman
+        id: emoji-footprints
     commands:
       - swipe:
           from:
@@ -71,8 +71,8 @@ tags:
       - waitForAnimationToEnd:
           timeout: 500
 - tapOn:
-    id: emoji-pregnant_woman
+    id: emoji-footprints
 - extendedWaitUntil:
     visible:
-      id: 'message-reaction-:pregnant_woman:'
+      id: 'message-reaction-:footprints:'
     timeout: 60000
