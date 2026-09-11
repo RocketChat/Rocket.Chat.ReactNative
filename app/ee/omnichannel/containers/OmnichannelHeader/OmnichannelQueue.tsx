@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native';
 
-import { useTheme } from '../../../../theme';
-import { themes } from '../../../../lib/constants/colors';
-import { CustomIcon } from '../../../../containers/CustomIcon';
-import * as List from '../../../../containers/List';
+import { useTheme } from '~/theme';
+import { themes } from '~/lib/constants/colors';
+import { CustomIcon } from '~/containers/CustomIcon';
+import * as List from '~/containers/List';
 import styles from './styles';
-import UnreadBadge from '../../../../containers/UnreadBadge';
-import i18n from '../../../../i18n';
+import UnreadBadge from '~/containers/UnreadBadge';
+import i18n from '~/i18n';
 
 interface IOmnichannelQueue {
 	queueSize?: number;

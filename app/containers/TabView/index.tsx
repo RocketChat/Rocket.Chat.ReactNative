@@ -4,7 +4,7 @@ import { TabView as ReanimatedTabView, type Route, type NavigationState } from '
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import styles from './styles';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 
 interface TabViewProps {
 	routes: Route[];

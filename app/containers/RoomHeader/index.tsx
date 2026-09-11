@@ -1,11 +1,11 @@
 import { memo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
-import type { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor, ISubscription } from '../../definitions';
-import { STATUS_I18N_KEYS } from '../../definitions';
-import I18n from '../../i18n';
+import type { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor, ISubscription } from '~/definitions';
+import { STATUS_I18N_KEYS } from '~/definitions';
+import I18n from '~/i18n';
 import RoomHeader from './RoomHeader';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IRoomHeaderContainerProps {
 	title?: string;

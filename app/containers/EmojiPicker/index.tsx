@@ -6,13 +6,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import EmojiCategory from './EmojiCategory';
 import Footer from './Footer';
 import styles from './styles';
-import { categories } from '../../lib/constants/emojis/categories';
-import { type IEmoji } from '../../definitions';
-import { addFrequentlyUsed } from '../../lib/methods/emojis';
+import { categories } from '~/lib/constants/emojis/categories';
+import { type IEmoji } from '~/definitions';
+import { addFrequentlyUsed } from '~/lib/methods/emojis';
 import { type IEmojiPickerProps, EventTypes } from './interfaces';
 import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { TabView } from '../TabView';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 
 const routes = categories.tabs.map(tab => ({
 	key: tab.category,
@@ -62,7 +62,7 @@ const EmojiPicker = ({
 
 	return (
 		<View
-			style={[styles.emojiPickerContainer, { marginBottom: bottom, backgroundColor: colors.surfaceLight }]}
+			style={[styles.emojiPickerContainer, { marginBottom: bottomSheet ? 0 : bottom, backgroundColor: colors.surfaceLight }]}
 			onLayout={e => setParentWidth(e.nativeEvent.layout.width)}>
 			{searching ? (
 				<EmojiCategory

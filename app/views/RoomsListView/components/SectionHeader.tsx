@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import { Text, View } from 'react-native';
 
-import i18n from '../../../i18n';
-import { useTheme } from '../../../theme';
+import i18n from '~/i18n';
+import { useTheme } from '~/theme';
 import styles from '../styles';
 
 const SectionHeader = ({ header }: { header: string }) => {

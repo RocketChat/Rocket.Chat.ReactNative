@@ -5,17 +5,17 @@ import { Image } from 'expo-image';
 import axios from 'axios';
 
 import MessageActionTouchable from './Touchable/MessageActionTouchable';
-import openLink from '../../../lib/methods/helpers/openLink';
-import sharedStyles from '../../../views/Styles';
-import { useTheme } from '../../../theme';
-import { LISTENER } from '../../Toast';
-import EventEmitter from '../../../lib/methods/helpers/events';
-import I18n from '../../../i18n';
-import { type IUrl } from '../../../definitions';
+import openLink from '~/lib/methods/helpers/openLink';
+import sharedStyles from '~/views/Styles';
+import { useTheme } from '~/theme';
+import { LISTENER } from '~/containers/Toast';
+import EventEmitter from '~/lib/methods/helpers/events';
+import I18n from '~/i18n';
+import { type IUrl } from '~/definitions';
 import { WidthAwareContext } from './WidthAwareView';
 import { useUrls } from '../stores/MessageStore';
 import { useBaseUrl, useMessageUser } from '../stores/MessageRoomStore';
-import { useSetting } from '../../../lib/hooks/useSetting';
+import { useSetting } from '~/lib/hooks/useSetting';
 
 const styles = StyleSheet.create({
 	container: {

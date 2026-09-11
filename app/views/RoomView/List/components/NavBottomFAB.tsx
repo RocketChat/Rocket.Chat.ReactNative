@@ -1,11 +1,11 @@
 import { memo, type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { CustomIcon } from '../../../../containers/CustomIcon';
-import { useTheme } from '../../../../theme';
-import Touch from '../../../../containers/Touch';
+import { CustomIcon } from '~/containers/CustomIcon';
+import { useTheme } from '~/theme';
+import Touch from '~/containers/Touch';
 import { EDGE_DISTANCE } from '../constants';
-import i18n from '../../../../i18n';
+import i18n from '~/i18n';
 
 const styles = StyleSheet.create({
 	container: {

@@ -4,7 +4,7 @@ import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
-import { useRoomContext } from '../../views/RoomView/context';
+import { useRoomContext } from '~/views/RoomView/context';
 import { useMessageAction } from '../message/stores/MessageActionStore';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
@@ -17,23 +17,23 @@ import {
 } from './context';
 import { type IComposerInput, type IMessageComposerRef } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
-import { type IEmoji } from '../../definitions';
-import database from '../../lib/database';
-import { sanitizeLikeString } from '../../lib/database/utils';
-import { generateTriggerId } from '../../lib/methods/actions';
-import { runSlashCommand } from '../../lib/services/restApi';
-import log from '../../lib/methods/helpers/log';
+import { type IEmoji } from '~/definitions';
+import database from '~/lib/database';
+import { sanitizeLikeString } from '~/lib/database/utils';
+import { generateTriggerId } from '~/lib/methods/actions';
+import { runSlashCommand } from '~/lib/services/restApi';
+import log from '~/lib/methods/helpers/log';
 import { prepareQuoteMessage, insertEmojiAtCursor, lastGlyphLength } from './helpers';
-import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
+import useShortnameToUnicode from '~/lib/hooks/useShortnameToUnicode';
 import { useCloseKeyboardWhenOrientationChanges } from './hooks/useCloseKeyboardWhenOrientationChanges';
 import { useEmojiKeyboard } from './hooks/useEmojiKeyboard';
 import EmojiPicker from '../EmojiPicker';
 import { MessageComposerContent } from './components/MessageComposerContent';
-import { useTheme } from '../../theme';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { getUserSelector } from '../../selectors/login';
-import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
-import { useAltTextSupported } from '../../lib/hooks/useAltTextSupported';
+import { useTheme } from '~/theme';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { getUserSelector } from '~/selectors/login';
+import { sendAttachments } from '~/lib/methods/sendFileMessage/sendAttachments';
+import { useAltTextSupported } from '~/lib/hooks/useAltTextSupported';
 
 export const MessageComposer = ({
 	forwardedRef,

@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 
-jest.mock('../../lib/database', () => ({
+jest.mock('~/lib/database', () => ({
 	servers: {
 		get: jest.fn(() => ({
 			find: jest.fn(() => Promise.resolve({}))
@@ -8,7 +8,7 @@ jest.mock('../../lib/database', () => ({
 	}
 }));
 
-jest.mock('../../containers/MessageComposer', () => {
+jest.mock('~/containers/MessageComposer', () => {
 	const { forwardRef } = require('react');
 
 	const MessageComposerContainer = forwardRef(({ children }: { children: ReactNode }, _ref: unknown) => children);
@@ -20,19 +20,19 @@ jest.mock('../../containers/MessageComposer', () => {
 });
 
 jest.mock('./Preview', () => () => null);
-jest.mock('../../containers/Thumbs', () => () => null);
-jest.mock('../../containers/ActionSheet', () => ({
+jest.mock('~/containers/Thumbs', () => () => null);
+jest.mock('~/containers/ActionSheet', () => ({
 	showActionSheetRef: jest.fn()
 }));
-jest.mock('../../containers/MessageComposer/components/Attachments/AttachmentActionSheet', () => ({
+jest.mock('~/containers/MessageComposer/components/Attachments/AttachmentActionSheet', () => ({
 	AttachmentActionSheet: () => null
 }));
-jest.mock('../../lib/methods/sendMessage', () => ({
+jest.mock('~/lib/methods/sendMessage', () => ({
 	sendMessage: jest.fn()
 }));
 
-const { showActionSheetRef } = require('../../containers/ActionSheet');
-const { AttachmentActionSheet } = require('../../containers/MessageComposer/components/Attachments/AttachmentActionSheet');
+const { showActionSheetRef } = require('~/containers/ActionSheet');
+const { AttachmentActionSheet } = require('~/containers/MessageComposer/components/Attachments/AttachmentActionSheet');
 const { ShareView } = require('./index');
 
 const makeInstance = ({
@@ -165,7 +165,7 @@ describe('ShareView', () => {
 		// the composer ref isn't mounted here; don't let the caption flush clobber the fixture
 		shareView.saveSelectedDescription = jest.fn() as any;
 
-		const sendFileMessageMod = require('../../lib/methods/sendFileMessage');
+		const sendFileMessageMod = require('~/lib/methods/sendFileMessage');
 		const spy = jest.spyOn(sendFileMessageMod, 'sendFileMessage').mockResolvedValue(undefined);
 
 		await shareView.send();
@@ -193,10 +193,10 @@ describe('ShareView', () => {
 
 		shareView.messageActionStore.getState().actions.setQuoteMessageIds(['msg-1']);
 
-		const prepareQuoteMessageMod = require('../../containers/MessageComposer/helpers/prepareQuoteMessage');
+		const prepareQuoteMessageMod = require('~/containers/MessageComposer/helpers/prepareQuoteMessage');
 		const prepareSpy = jest.spyOn(prepareQuoteMessageMod, 'prepareQuoteMessage').mockResolvedValue('quoted-text');
 
-		const sendFileMessageMod = require('../../lib/methods/sendFileMessage');
+		const sendFileMessageMod = require('~/lib/methods/sendFileMessage');
 		const spy = jest.spyOn(sendFileMessageMod, 'sendFileMessage').mockResolvedValue(undefined);
 
 		await shareView.send();

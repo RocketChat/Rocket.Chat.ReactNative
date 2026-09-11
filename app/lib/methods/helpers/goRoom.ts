@@ -1,14 +1,14 @@
 import { CommonActions } from '@react-navigation/native';
 
-import { getSubscriptionByRoomId } from '../../database/services/Subscription';
-import Navigation from '../../navigation/appNavigation';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import Navigation from '~/lib/navigation/appNavigation';
 import {
 	type IOmnichannelRoom,
 	SubscriptionType,
 	type IVisitor,
 	type TSubscriptionModel,
 	type ISubscription
-} from '../../../definitions';
+} from '~/definitions';
 import { getRoomTitle, getUidDirectMessage } from './helpers';
 import { createDirectMessage } from '../createDirectMessage';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';

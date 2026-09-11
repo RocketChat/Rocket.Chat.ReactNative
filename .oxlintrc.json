@@ -28,6 +28,12 @@
 		"no-restricted-imports": [
 			"error",
 			{
+				"patterns": [
+					{
+						"group": ["../../**"],
+						"message": "Use a ~/ alias for imports two or more directories up."
+					}
+				],
 				"paths": [
 					{
 						"name": "react",
@@ -58,6 +64,12 @@
 				"no-restricted-imports": [
 					"error",
 					{
+						"patterns": [
+							{
+								"group": ["../../**"],
+								"message": "Use a ~/ alias for imports two or more directories up."
+							}
+						],
 						"paths": [
 							{
 								"name": "react",

@@ -1,5 +1,5 @@
-import type { IServerRoom } from '../../IRoom';
-import type { IUser } from '../../IUser';
+import type { IServerRoom } from '~/definitions/IRoom';
+import type { IUser } from '~/definitions/IUser';
 
 export type DmEndpoints = {
 	'dm.create': {

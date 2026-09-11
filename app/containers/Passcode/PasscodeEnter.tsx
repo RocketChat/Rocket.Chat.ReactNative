@@ -7,11 +7,11 @@ import { sha256 } from 'js-sha256';
 import Base, { type IBase } from './Base';
 import Locked from './Base/Locked';
 import { TYPE } from './constants';
-import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_KEY } from '../../lib/constants/localAuthentication';
-import { biometryAuth, resetAttempts } from '../../lib/methods/helpers/localAuthentication';
+import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_KEY } from '~/lib/constants/localAuthentication';
+import { biometryAuth, resetAttempts } from '~/lib/methods/helpers/localAuthentication';
 import { getDiff, getLockedUntil } from './utils';
-import { useUserPreferences } from '../../lib/methods/userPreferences';
-import I18n from '../../i18n';
+import { useUserPreferences } from '~/lib/methods/userPreferences';
+import I18n from '~/i18n';
 
 interface IPasscodePasscodeEnter {
 	hasBiometry: boolean;

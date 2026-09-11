@@ -2,13 +2,16 @@ import { type RefObject } from 'react';
 import { type FlatListProps } from 'react-native';
 import { type FlatList } from 'react-native-gesture-handler';
 
-import { type RoomType, type TAnyMessageModel } from '../../../definitions';
+import { type RoomType, type TAnyMessageModel } from '~/definitions';
 
 export type TListRef = RefObject<FlatList<TAnyMessageModel> | null>;
 
 export type TMessagesIdsRef = RefObject<string[]>;
 
-export interface IListProps extends FlatListProps<TAnyMessageModel> {
+export interface IListProps extends Omit<
+	FlatListProps<TAnyMessageModel>,
+	'onScroll' | 'viewabilityConfigCallbackPairs' | 'onViewableItemsChanged' | 'viewabilityConfig'
+> {
 	listRef: TListRef;
 	jumpToBottom: () => void;
 	// Anchored Window: loaded rows' bottom isn't the Live Tail, so the scroll-offset

@@ -2,11 +2,11 @@ import { render, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import RepliedThread from '../RepliedThread';
-import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { type TAnyMessageModel } from '../../../../definitions';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../../lib/constants/keys';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { type TAnyMessageModel } from '~/definitions';
+import { mockedStore } from '~/reducers/mockedStore';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
 
 const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel =>
 	({ id: 'msg1', tmid: 'thread1', tmsg: 'original reply', ...overrides }) as unknown as TAnyMessageModel;

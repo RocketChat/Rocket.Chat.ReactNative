@@ -1,9 +1,9 @@
 import ascii, { asciiRegexp } from './ascii';
 import { useAppSelector } from '../useAppSelector';
 import { useCustomEmoji } from '../useCustomEmoji';
-import { getUserSelector } from '../../../selectors/login';
-import { shortnameToUnicodeMap } from '../../constants/emojis/data';
-import { legacyShortnameToUnicodeMap } from '../../constants/emojis/legacyShortnamesMap';
+import { getUserSelector } from '~/selectors/login';
+import { shortnameToUnicodeMap } from '~/lib/constants/emojis/data';
+import { legacyShortnameToUnicodeMap } from '~/lib/constants/emojis/legacyShortnamesMap';
 
 const shortnamePattern = new RegExp(/:[-+_a-z0-9]+:/, 'gi');
 const regAscii = new RegExp(`((\\s|^)${asciiRegexp}(?=\\s|$|[!,.?]))`, 'gi');

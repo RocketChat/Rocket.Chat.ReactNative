@@ -1,7 +1,7 @@
-import { getPermalinkMessage } from '../../../lib/methods/getPermalinks';
-import { getMessageById } from '../../../lib/database/services/Message';
-import { store } from '../../../lib/store/auxStore';
-import { compareServerVersion } from '../../../lib/methods/helpers';
+import { getPermalinkMessage } from '~/lib/methods/getPermalinks';
+import { getMessageById } from '~/lib/database/services/Message';
+import { store } from '~/lib/store/auxStore';
+import { compareServerVersion } from '~/lib/methods/helpers';
 
 export const prepareQuoteMessage = async (textFromInput: string, selectedMessages: string[], tmid?: string): Promise<string> => {
 	let quoteText = '';

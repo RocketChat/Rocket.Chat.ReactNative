@@ -4,7 +4,7 @@ import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import Base, { type IBase } from './Base';
 import { TYPE } from './constants';
-import I18n from '../../i18n';
+import I18n from '~/i18n';
 
 interface IPasscodeChoose {
 	force?: boolean;

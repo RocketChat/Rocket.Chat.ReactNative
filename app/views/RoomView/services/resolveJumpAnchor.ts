@@ -1,5 +1,5 @@
-import { type IMessage } from '../../../definitions';
-import { tsToMs } from '../../../lib/dayjs';
+import { type IMessage } from '~/definitions';
+import { tsToMs } from '~/lib/dayjs';
 import { anchorForServerChunk, type AnchorMessage } from './anchorResolver';
 
 export interface IJumpTarget {

@@ -3,12 +3,12 @@ import { Platform } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 
-import NativeVoipModule from '../../native/NativeVoip';
+import NativeVoipModule from '~/lib/native/NativeVoip';
 import { pendingHangups } from './pendingHangups';
 import { useCallStore } from './useCallStore';
 
 const mockLog = jest.fn();
-jest.mock('../../methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: (...args: unknown[]) => mockLog(...args)
 }));
@@ -18,12 +18,12 @@ jest.mock('./playCallEndedSound', () => ({
 	playCallEndedSound: () => mockPlayCallEndedSound()
 }));
 
-jest.mock('../../navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	__esModule: true,
 	default: { navigate: jest.fn(), back: jest.fn() }
 }));
 
-jest.mock('../../../containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet', () => ({
 	hideActionSheetRef: jest.fn()
 }));
 
@@ -41,7 +41,7 @@ jest.mock('react-native-callkeep', () => ({
 const mockStartAudioRouteSync = jest.fn(() => Promise.resolve());
 const mockStopAudioRouteSync = jest.fn(() => Promise.resolve());
 
-jest.mock('../../native/NativeVoip', () => ({
+jest.mock('~/lib/native/NativeVoip', () => ({
 	__esModule: true,
 	default: {
 		setSpeakerOn: jest.fn(() => Promise.resolve(true)),
@@ -60,8 +60,8 @@ jest.mock('../../native/NativeVoip', () => ({
 
 // Re-evaluate `isIOS` per-test (the helper module computes it once at import time from Platform.OS,
 // so we replace it with a getter that reflects the current Platform.OS in the test).
-jest.mock('../../methods/helpers', () => {
-	const actual = jest.requireActual('../../methods/helpers');
+jest.mock('~/lib/methods/helpers', () => {
+	const actual = jest.requireActual('~/lib/methods/helpers');
 	const { Platform } = jest.requireActual('react-native');
 	const proxy: Record<string, unknown> = { ...actual };
 	Object.defineProperty(proxy, 'isIOS', {

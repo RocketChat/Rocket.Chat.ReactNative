@@ -5,12 +5,12 @@ import { createStore } from 'redux';
 import { Image as ExpoImage } from 'expo-image';
 
 import ReactionsList from './index';
-import { type IReaction } from '../../definitions';
-import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import { type IReaction } from '~/definitions';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 import * as stories from './ReactionsList.stories';
 
 // Mock i18n
-jest.mock('../../i18n', () => ({
+jest.mock('~/i18n', () => ({
 	t: (key: string, options?: { count?: number; n?: number }) => {
 		switch (key) {
 			case 'All':

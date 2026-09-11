@@ -2,7 +2,7 @@ import { type ComponentType, forwardRef } from 'react';
 import { useWindowDimensions, type ScaledSize } from 'react-native';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
-import { type TNavigationOptions } from '../../definitions/navigationTypes';
+import { type TNavigationOptions } from '~/definitions/navigationTypes';
 
 /**
  * Bridges RN's useWindowDimensions into class components, injecting

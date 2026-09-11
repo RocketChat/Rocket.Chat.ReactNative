@@ -1,61 +1,61 @@
-jest.mock('../../lib/methods/helpers/sslPinning', () => ({
+jest.mock('~/lib/methods/helpers/sslPinning', () => ({
 	__esModule: true,
 	default: undefined
 }));
 
-jest.mock('../../lib/database/services/LoggedUser', () => ({
+jest.mock('~/lib/database/services/LoggedUser', () => ({
 	getLoggedUserById: jest.fn()
 }));
 
-jest.mock('../../lib/database/services/Server', () => ({
+jest.mock('~/lib/database/services/Server', () => ({
 	getServerById: jest.fn()
 }));
 
-jest.mock('../../lib/methods/getServerInfo', () => ({
+jest.mock('~/lib/methods/getServerInfo', () => ({
 	getServerInfo: jest.fn()
 }));
 
-jest.mock('../../lib/methods/getSettings', () => ({
+jest.mock('~/lib/methods/getSettings', () => ({
 	getLoginSettings: jest.fn(),
 	setSettings: jest.fn()
 }));
 
-jest.mock('../../lib/methods/getCustomEmojis', () => ({
+jest.mock('~/lib/methods/getCustomEmojis', () => ({
 	setCustomEmojis: jest.fn()
 }));
 
-jest.mock('../../lib/methods/getPermissions', () => ({
+jest.mock('~/lib/methods/getPermissions', () => ({
 	setPermissions: jest.fn()
 }));
 
-jest.mock('../../lib/methods/getRoles', () => ({
+jest.mock('~/lib/methods/getRoles', () => ({
 	setRoles: jest.fn()
 }));
 
-jest.mock('../../lib/methods/enterpriseModules', () => ({
+jest.mock('~/lib/methods/enterpriseModules', () => ({
 	setEnterpriseModules: jest.fn()
 }));
 
-jest.mock('../../lib/methods/checkSupportedVersions', () => ({
+jest.mock('~/lib/methods/checkSupportedVersions', () => ({
 	checkSupportedVersions: jest.fn(() => Promise.resolve({ status: 'supported' }))
 }));
 
-jest.mock('../../lib/services/connect', () => ({
+jest.mock('~/lib/services/connect', () => ({
 	connect: jest.fn(() => Promise.resolve()),
 	disconnect: jest.fn(),
 	getLoginServices: jest.fn(),
 	getWebsocketInfo: jest.fn(() => Promise.resolve({ success: true }))
 }));
 
-jest.mock('../../lib/services/sdk', () => ({
+jest.mock('~/lib/services/sdk', () => ({
 	__esModule: true,
 	default: {
 		current: { client: { host: '' } }
 	}
 }));
 
-jest.mock('../../lib/methods/helpers/log', () => ({
-	...jest.requireActual('../../lib/methods/helpers/log'),
+jest.mock('~/lib/methods/helpers/log', () => ({
+	...jest.requireActual('~/lib/methods/helpers/log'),
 	__esModule: true,
 	default: jest.fn(),
 	logServerVersion: jest.fn()
@@ -64,19 +64,19 @@ jest.mock('../../lib/methods/helpers/log', () => ({
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import selectServerRoot from '../selectServer';
-import { selectServerRequest } from '../../actions/server';
-import { appStart } from '../../actions/app';
-import { RootEnum } from '../../definitions';
-import { SERVER } from '../../actions/actionsTypes';
-import UserPreferences from '../../lib/methods/userPreferences';
-import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
-import { CURRENT_SERVER, TOKEN_KEY, getUserTokenKey } from '../../lib/constants/keys';
-import { getLoggedUserById } from '../../lib/database/services/LoggedUser';
-import { getServerInfo } from '../../lib/methods/getServerInfo';
-import { connect } from '../../lib/services/connect';
-import { getServerById } from '../../lib/database/services/Server';
-import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
-import type { RecordingStore } from '../../lib/testUtils/sagaStore';
+import { selectServerRequest } from '~/actions/server';
+import { appStart } from '~/actions/app';
+import { RootEnum } from '~/definitions';
+import { SERVER } from '~/actions/actionsTypes';
+import UserPreferences from '~/lib/methods/userPreferences';
+import { BASIC_AUTH_KEY, setBasicAuth } from '~/lib/methods/helpers/fetch';
+import { CURRENT_SERVER, TOKEN_KEY, getUserTokenKey } from '~/lib/constants/keys';
+import { getLoggedUserById } from '~/lib/database/services/LoggedUser';
+import { getServerInfo } from '~/lib/methods/getServerInfo';
+import { connect } from '~/lib/services/connect';
+import { getServerById } from '~/lib/database/services/Server';
+import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
+import type { RecordingStore } from '~/lib/testUtils/sagaStore';
 
 const OLD_SERVER = 'https://old.rocket.chat';
 const SERVER_URL = 'https://new.rocket.chat';

@@ -1,30 +1,30 @@
 import RoomSubscription from './room';
-import sdk from '../../services/sdk';
+import sdk from '~/lib/services/sdk';
 import updateMessages from '../updateMessages';
-import { getSubscriptionByRoomId } from '../../database/services/Subscription';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { loadMessagesForRoom } from '../loadMessagesForRoom';
 
-jest.mock('../../services/sdk', () => ({
+jest.mock('~/lib/services/sdk', () => ({
 	__esModule: true,
 	default: {
 		get: jest.fn()
 	}
 }));
 
-jest.mock('../../database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn(), write: jest.fn() } }
 }));
 
-jest.mock('../../database/services/Subscription', () => ({
+jest.mock('~/lib/database/services/Subscription', () => ({
 	getSubscriptionByRoomId: jest.fn()
 }));
 
-jest.mock('../../database/services/Message', () => ({
+jest.mock('~/lib/database/services/Message', () => ({
 	getMessageById: jest.fn(() => Promise.resolve(null))
 }));
 
-jest.mock('../../store/auxStore', () => ({
+jest.mock('~/lib/store/auxStore', () => ({
 	store: {
 		getState: jest.fn(() => ({ server: { version: '7.4.0' }, settings: {}, login: { user: {} }, room: {} })),
 		dispatch: jest.fn()
@@ -34,7 +34,7 @@ jest.mock('../../store/auxStore', () => ({
 jest.mock('../updateMessages', () => jest.fn());
 jest.mock('../readMessages', () => ({ readMessages: jest.fn() }));
 jest.mock('../loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn() }));
-jest.mock('../../encryption', () => ({ Encryption: { decryptMessage: jest.fn(m => m) } }));
+jest.mock('~/lib/encryption', () => ({ Encryption: { decryptMessage: jest.fn(m => m) } }));
 
 const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;
 const mockedUpdateMessages = updateMessages as jest.MockedFunction<typeof updateMessages>;

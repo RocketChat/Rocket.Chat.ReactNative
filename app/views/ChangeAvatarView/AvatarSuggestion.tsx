@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 
-import { type IAvatar } from '../../definitions';
-import { getAvatarSuggestion } from '../../lib/services/restApi';
-import I18n from '../../i18n';
+import { type IAvatar } from '~/definitions';
+import { getAvatarSuggestion } from '~/lib/services/restApi';
+import I18n from '~/i18n';
 import styles from './styles';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import AvatarSuggestionItem from './AvatarSuggestionItem';
 
 const AvatarSuggestion = ({

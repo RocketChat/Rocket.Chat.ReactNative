@@ -1,23 +1,23 @@
-jest.mock('../../lib/methods/helpers/localAuthentication', () => ({
+jest.mock('~/lib/methods/helpers/localAuthentication', () => ({
 	localAuthenticate: jest.fn(),
 	saveLastLocalAuthenticationSession: jest.fn()
 }));
 
-jest.mock('../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	setUserPresenceOnline: jest.fn(),
 	setUserPresenceAway: jest.fn()
 }));
 
-jest.mock('../../lib/notifications', () => ({
+jest.mock('~/lib/notifications', () => ({
 	checkPendingNotification: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('../../lib/services/socketHealth', () => ({
+jest.mock('~/lib/services/socketHealth', () => ({
 	recoverSocket: jest.fn(() => Promise.resolve('confirmed-alive'))
 }));
 
-jest.mock('../../lib/methods/helpers/log', () => ({
-	...jest.requireActual('../../lib/methods/helpers/log'),
+jest.mock('~/lib/methods/helpers/log', () => ({
+	...jest.requireActual('~/lib/methods/helpers/log'),
 	__esModule: true,
 	default: jest.fn()
 }));
@@ -25,18 +25,18 @@ jest.mock('../../lib/methods/helpers/log', () => ({
 import { applyMiddleware, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-import { APP_STATE } from '../../actions/actionsTypes';
-import { appStart } from '../../actions/app';
-import { loginSuccess } from '../../actions/login';
-import { connectSuccess } from '../../actions/connect';
-import { selectServerSuccess } from '../../actions/server';
-import { RootEnum } from '../../definitions';
-import reducers from '../../reducers';
+import { APP_STATE } from '~/actions/actionsTypes';
+import { appStart } from '~/actions/app';
+import { loginSuccess } from '~/actions/login';
+import { connectSuccess } from '~/actions/connect';
+import { selectServerSuccess } from '~/actions/server';
+import { RootEnum } from '~/definitions';
+import reducers from '~/reducers';
 import stateRoot from '../state';
-import { localAuthenticate } from '../../lib/methods/helpers/localAuthentication';
-import { setUserPresenceOnline, setUserPresenceAway } from '../../lib/services/restApi';
-import { recoverSocket } from '../../lib/services/socketHealth';
-import log from '../../lib/methods/helpers/log';
+import { localAuthenticate } from '~/lib/methods/helpers/localAuthentication';
+import { setUserPresenceOnline, setUserPresenceAway } from '~/lib/services/restApi';
+import { recoverSocket } from '~/lib/services/socketHealth';
+import log from '~/lib/methods/helpers/log';
 
 async function flushSagaMicrotasks(): Promise<void> {
 	await Promise.resolve();

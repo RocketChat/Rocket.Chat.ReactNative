@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native';
 
-import { type IAutocompleteUserRoom } from '../../interfaces';
-import Avatar from '../../../Avatar';
-import RoomTypeIcon from '../../../RoomTypeIcon';
-import { fetchIsAllOrHere } from '../../helpers';
-import I18n from '../../../../i18n';
+import { type IAutocompleteUserRoom } from '~/containers/MessageComposer/interfaces';
+import Avatar from '~/containers/Avatar';
+import RoomTypeIcon from '~/containers/RoomTypeIcon';
+import { fetchIsAllOrHere } from '~/containers/MessageComposer/helpers';
+import I18n from '~/i18n';
 import { useStyle } from './styles';
 
 export const AutocompleteUserRoom = ({ item }: { item: IAutocompleteUserRoom }) => {

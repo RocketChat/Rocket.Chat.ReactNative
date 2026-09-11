@@ -1,8 +1,8 @@
 import { Base64 } from 'js-base64';
 import parse from 'url-parse';
 
-import { BASIC_AUTH_KEY, setBasicAuth } from '../../../lib/methods/helpers/fetch';
-import UserPreferences from '../../../lib/methods/userPreferences';
+import { BASIC_AUTH_KEY, setBasicAuth } from '~/lib/methods/helpers/fetch';
+import UserPreferences from '~/lib/methods/userPreferences';
 
 const basicAuth = (server: string, text: string) => {
 	try {

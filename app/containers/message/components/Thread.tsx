@@ -1,9 +1,9 @@
 import { Text, View } from 'react-native';
 
 import styles from '../styles';
-import ThreadDetails from '../../ThreadDetails';
-import I18n from '../../../i18n';
-import { useTheme } from '../../../theme';
+import ThreadDetails from '~/containers/ThreadDetails';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
 import MessageActionTouchable from './Touchable/MessageActionTouchable';
 import { useMessageItem, useMessageText, useReplies, useThreadBadgeColor, useThreadData } from '../stores/MessageStore';
 import { useIsThreadRoom, useMessageUser, useOnThreadPress, useToggleFollowThread } from '../stores/MessageRoomStore';

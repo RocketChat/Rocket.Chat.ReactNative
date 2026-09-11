@@ -1,13 +1,13 @@
 import { A11y } from 'react-native-a11y-order';
 
-import { useTheme } from '../../../../theme';
+import { useTheme } from '~/theme';
 import Touch from './Touch';
 import Message, { type TMessageProps } from '../Message/Message';
-import { useLastFocusedMessageRef } from '../../../../lib/a11y/useLastFocusedMessageRef';
-import { useMessageAccessibilityLabel } from '../../hooks/useMessageAccessibilityLabel';
-import { useMessageAccessibilityActions } from '../../hooks/useMessageAccessibilityActions';
-import { useMessageAccessibilityHint } from '../../hooks/useMessageAccessibilityHint';
-import { useIsBeingEdited } from '../../stores/MessageActionStore';
+import { useLastFocusedMessageRef } from '~/lib/a11y/useLastFocusedMessageRef';
+import { useMessageAccessibilityLabel } from '~/containers/message/hooks/useMessageAccessibilityLabel';
+import { useMessageAccessibilityActions } from '~/containers/message/hooks/useMessageAccessibilityActions';
+import { useMessageAccessibilityHint } from '~/containers/message/hooks/useMessageAccessibilityHint';
+import { useIsBeingEdited } from '~/containers/message/stores/MessageActionStore';
 import {
 	useIsInfoMessage,
 	useMessageField,
@@ -15,7 +15,7 @@ import {
 	useMessagePress,
 	useMessageStatus,
 	useMessageTouchable
-} from '../../stores/MessageStore';
+} from '~/containers/message/stores/MessageStore';
 
 const MessageTouchable = (props: TMessageProps) => {
 	const { colors } = useTheme();

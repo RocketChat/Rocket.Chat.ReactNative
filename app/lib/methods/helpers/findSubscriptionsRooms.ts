@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 
-import { type IServerSubscription, type IServerRoom } from '../../../definitions';
-import database from '../../database';
+import { type IServerSubscription, type IServerRoom } from '~/definitions';
+import database from '~/lib/database';
 
 export default async function findSubscriptionsRooms(subscriptions: IServerSubscription[], rooms: IServerRoom[]) {
 	let sub = subscriptions;

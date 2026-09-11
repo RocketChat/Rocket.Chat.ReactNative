@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { type IMessage } from '../../../definitions';
-import { getMessageById } from '../../../lib/database/services/Message';
+import { type IMessage } from '~/definitions';
+import { getMessageById } from '~/lib/database/services/Message';
 
 // TODO: Not reactive. Should we work on an official version?
 export const useMessage = (messageId: string, tmid?: string): IMessage | undefined => {

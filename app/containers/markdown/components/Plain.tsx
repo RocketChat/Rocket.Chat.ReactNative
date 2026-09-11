@@ -2,7 +2,7 @@ import { type ReactElement } from 'react';
 import { Text } from 'react-native';
 import { type Plain as PlainProps } from '@rocket.chat/message-parser';
 
-import { useTheme } from '../../../theme';
+import { useTheme } from '~/theme';
 import styles from '../styles';
 import { useMarkdownContext } from '../contexts/MarkdownContext';
 

@@ -1,11 +1,11 @@
 import { type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 
-import { createMockedStore } from '../../../../reducers/mockedStore';
-import { updateSettings } from '../../../../actions/settings';
-import { type TAnyMessageModel } from '../../../../definitions';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { MessageProvider } from '../../stores/MessageStore';
+import { createMockedStore } from '~/reducers/mockedStore';
+import { updateSettings } from '~/actions/settings';
+import { type TAnyMessageModel } from '~/definitions';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
 import UrlsLeaf from '../Urls';
 
 const store = createMockedStore();

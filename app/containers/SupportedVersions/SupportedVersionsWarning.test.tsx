@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
-import { mockedStore } from '../../reducers/mockedStore';
+import { mockedStore } from '~/reducers/mockedStore';
 import { SupportedVersionsWarning } from './SupportedVersionsWarning';
-import { setUser } from '../../actions/login';
-import { setSupportedVersions } from '../../actions/supportedVersions';
-import { selectServerSuccess } from '../../actions/server';
+import { setUser } from '~/actions/login';
+import { setSupportedVersions } from '~/actions/supportedVersions';
+import { selectServerSuccess } from '~/actions/server';
 
 const Render = () => (
 	<Provider store={mockedStore}>

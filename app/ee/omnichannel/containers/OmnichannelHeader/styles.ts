@@ -1,6 +1,6 @@
 import { I18nManager, StyleSheet } from 'react-native';
 
-import sharedStyles from '../../../../views/Styles';
+import sharedStyles from '~/views/Styles';
 
 export default StyleSheet.create({
 	queueIcon: {

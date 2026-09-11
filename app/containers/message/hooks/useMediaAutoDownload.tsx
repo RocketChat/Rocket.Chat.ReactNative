@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useReducer, useState } from 'react';
 
-import { type IAttachment, type IUserMessage } from '../../../definitions';
-import { isImageBase64 } from '../../../lib/methods/isImageBase64';
-import { fetchAutoDownloadEnabled } from '../../../lib/methods/autoDownloadPreference';
+import { type IAttachment, type IUserMessage } from '~/definitions';
+import { isImageBase64 } from '~/lib/methods/isImageBase64';
+import { fetchAutoDownloadEnabled } from '~/lib/methods/autoDownloadPreference';
 import {
 	cancelDownload,
 	downloadMediaFile,
@@ -10,9 +10,9 @@ import {
 	isDownloadActive,
 	type MediaTypes,
 	type TDownloadState
-} from '../../../lib/methods/handleMediaDownload';
-import { emitter } from '../../../lib/methods/helpers/emitter';
-import { formatAttachmentUrl } from '../../../lib/methods/helpers/formatAttachmentUrl';
+} from '~/lib/methods/handleMediaDownload';
+import { emitter } from '~/lib/methods/helpers/emitter';
+import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import { useBaseUrl, useMessageUser } from '../stores/MessageRoomStore';
 import { useMessageId } from '../stores/MessageStore';
 

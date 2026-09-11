@@ -2,33 +2,33 @@ import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import { useDispatch } from 'react-redux';
 
 import ChangePasswordView from './index';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { saveUserProfile } from '../../lib/services/restApi';
-import { twoFactor } from '../../lib/services/twoFactor/twoFactor';
-import { TwoFactorCancelledError } from '../../lib/services/twoFactor/twoFactorCancelled';
-import handleSaveUserProfileError from '../../lib/methods/helpers/handleSaveUserProfileError';
-import { TwoFactorMethods } from '../../definitions/ITotp';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { saveUserProfile } from '~/lib/services/restApi';
+import { twoFactor } from '~/lib/services/twoFactor/twoFactor';
+import { TwoFactorCancelledError } from '~/lib/services/twoFactor/twoFactorCancelled';
+import handleSaveUserProfileError from '~/lib/methods/helpers/handleSaveUserProfileError';
+import { TwoFactorMethods } from '~/definitions/ITotp';
 
 jest.mock('react-redux', () => ({
 	useDispatch: jest.fn()
 }));
 
-jest.mock('../../lib/hooks/useAppSelector', () => ({
+jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: jest.fn()
 }));
 
-jest.mock('../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	saveUserProfile: jest.fn(),
 	setPassword: jest.fn()
 }));
 
-jest.mock('../../lib/services/twoFactor/twoFactor', () => ({
+jest.mock('~/lib/services/twoFactor/twoFactor', () => ({
 	twoFactor: jest.fn()
 }));
 
-jest.mock('../../lib/methods/helpers/handleSaveUserProfileError', () => jest.fn());
+jest.mock('~/lib/methods/helpers/handleSaveUserProfileError', () => jest.fn());
 
-jest.mock('../../lib/hooks/useVerifyPassword', () => () => ({ isPasswordValid: true, passwordPolicies: null }));
+jest.mock('~/lib/hooks/useVerifyPassword', () => () => ({ isPasswordValid: true, passwordPolicies: null }));
 
 jest.mock('react-native-keyboard-controller', () => {
 	const { View } = require('react-native');

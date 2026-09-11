@@ -4,17 +4,17 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
-import * as List from '../../containers/List';
-import I18n from '../../i18n';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { useTheme } from '../../theme';
-import SafeAreaView from '../../containers/SafeAreaView';
-import Button from '../../containers/Button';
-import { logout } from '../../actions/login';
-import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
-import { e2eResetOwnKey } from '../../lib/services/restApi';
-import { isTwoFactorCancelled } from '../../lib/services/twoFactor/twoFactorCancelled';
-import { type SettingsStackParamList } from '../../stacks/types';
+import * as List from '~/containers/List';
+import I18n from '~/i18n';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { useTheme } from '~/theme';
+import SafeAreaView from '~/containers/SafeAreaView';
+import Button from '~/containers/Button';
+import { logout } from '~/actions/login';
+import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/info';
+import { e2eResetOwnKey } from '~/lib/services/restApi';
+import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
+import { type SettingsStackParamList } from '~/stacks/types';
 import ChangePassword from './ChangePassword';
 import { styles } from './styles';
 

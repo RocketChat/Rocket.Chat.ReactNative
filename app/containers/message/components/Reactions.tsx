@@ -1,12 +1,12 @@
 import { Text, useWindowDimensions, View } from 'react-native';
 
-import I18n from '../../../i18n';
+import I18n from '~/i18n';
 import MessageActionTouchable from './Touchable/MessageActionTouchable';
-import { CustomIcon } from '../../CustomIcon';
+import { CustomIcon } from '~/containers/CustomIcon';
 import styles from '../styles';
 import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from '../utils';
-import { useTheme } from '../../../theme';
+import { useTheme } from '~/theme';
 import { useMessageId, useMessageItem, useReactions } from '../stores/MessageStore';
 import { useMessageUser, useOnReactionLongPress, useOnReactionPress, useReactionInit } from '../stores/MessageRoomStore';
 

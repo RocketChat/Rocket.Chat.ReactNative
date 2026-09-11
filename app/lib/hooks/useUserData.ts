@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { getRoomAvatar, getUidDirectMessage } from '../methods/helpers/helpers';
-import { SubscriptionType } from '../../definitions';
+import { SubscriptionType } from '~/definitions';
 import { getUserInfo } from '../services/restApi';
 import { useAppSelector } from './useAppSelector';
 

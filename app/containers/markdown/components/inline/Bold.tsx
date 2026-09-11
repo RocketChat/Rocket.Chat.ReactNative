@@ -1,8 +1,8 @@
 import { type ReactNode } from 'react';
 import { Text } from 'react-native';
 
-import sharedStyles from '../../../../views/Styles';
-import MarkdownContext, { useMarkdownContext } from '../../contexts/MarkdownContext';
+import sharedStyles from '~/views/Styles';
+import MarkdownContext, { useMarkdownContext } from '~/containers/markdown/contexts/MarkdownContext';
 
 interface IBoldProps {
 	children: ReactNode;

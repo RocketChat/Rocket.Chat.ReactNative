@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet } from 'react-native';
 
-import { useTheme } from '../../theme';
-import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
+import { useTheme } from '~/theme';
+import type { TPeerItem } from '~/lib/services/voip/getPeerAutocompleteOptions';
 import { CustomIcon } from '../CustomIcon';
 import Avatar from '../Avatar';
 import Status from '../Status';
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 
 export const PeerItemInner = ({ item }: { item: TPeerItem }) => {
 	const { colors } = useTheme();

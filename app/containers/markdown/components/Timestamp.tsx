@@ -1,11 +1,11 @@
 import { useMemo, useCallback, type ReactElement } from 'react';
 import { Text } from 'react-native';
 
-import dayjs from '../../../lib/dayjs';
-import { useTheme } from '../../../theme';
-import { LISTENER } from '../../Toast';
-import EventEmitter from '../../../lib/methods/helpers/events';
-import sharedStyles from '../../../views/Styles';
+import dayjs from '~/lib/dayjs';
+import { useTheme } from '~/theme';
+import { LISTENER } from '~/containers/Toast';
+import EventEmitter from '~/lib/methods/helpers/events';
+import sharedStyles from '~/views/Styles';
 
 interface ITimestampProps {
 	value: { timestamp: string; format: 't' | 'T' | 'd' | 'D' | 'f' | 'F' | 'R' };
