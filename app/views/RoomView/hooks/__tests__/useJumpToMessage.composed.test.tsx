@@ -8,8 +8,8 @@ import { showErrorAlert } from '../../../../lib/methods/helpers/info';
 import getMessageInfo from '../../services/getMessageInfo';
 import { fetchThreadName } from '../../services/fetchThreadName';
 import { resolveJumpAnchor } from '../../services/resolveJumpAnchor';
-import { useRoomNavigation } from '../useRoomNavigation';
-import type { IUseRoomNavigationParams } from '../../definitions';
+import { useJumpToMessage } from '../useJumpToMessage';
+import type { IUseJumpToMessageParams } from '../../definitions';
 
 const mockNavigation = { push: jest.fn(), setParams: jest.fn() };
 let mockRouteParams: { jumpToMessageId?: string; jumpToThreadId?: string } = {};
@@ -44,10 +44,10 @@ const makeListRef = () => ({
 	}
 });
 
-const renderNavigation = (overrides: Partial<IUseRoomNavigationParams> = {}) =>
+const renderNavigation = (overrides: Partial<IUseJumpToMessageParams> = {}) =>
 	renderHook(
-		(props: Partial<IUseRoomNavigationParams>) =>
-			useRoomNavigation({
+		(props: Partial<IUseJumpToMessageParams>) =>
+			useJumpToMessage({
 				rid: 'rid-1',
 				t: 'c',
 				isMasterDetail: false,
@@ -66,7 +66,7 @@ const flush = async () => {
 	});
 };
 
-describe('useRoomNavigation composed entry points', () => {
+describe('useJumpToMessage composed entry points', () => {
 	let runAfterInteractionsSpy: jest.SpyInstance;
 
 	beforeEach(() => {

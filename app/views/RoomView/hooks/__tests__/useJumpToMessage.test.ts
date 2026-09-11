@@ -5,8 +5,8 @@ import getRoomInfo from '../../../../lib/methods/getRoomInfo';
 import { goRoom } from '../../../../lib/methods/helpers/goRoom';
 import { sendLoadingEvent } from '../../../../containers/Loading';
 import getMessageInfo from '../../services/getMessageInfo';
-import { useRoomNavigation } from '../useRoomNavigation';
-import { type IUseRoomNavigationParams } from '../../definitions';
+import { useJumpToMessage } from '../useJumpToMessage';
+import { type IUseJumpToMessageParams } from '../../definitions';
 
 const mockNavigation = { navigate: jest.fn(), push: jest.fn(), setParams: jest.fn(), addListener: jest.fn() };
 let mockRouteParams: { jumpToMessageId?: string; jumpToThreadId?: string } = {};
@@ -40,9 +40,9 @@ const mockGetRoomInfo = getRoomInfo as jest.Mock;
 const mockGoRoom = goRoom as jest.Mock;
 const mockGetMessageInfo = getMessageInfo as jest.Mock;
 
-const renderRoomNavigation = (overrides: Partial<IUseRoomNavigationParams> = {}) => {
+const renderRoomNavigation = (overrides: Partial<IUseJumpToMessageParams> = {}) => {
 	const { result } = renderHook(() =>
-		useRoomNavigation({
+		useJumpToMessage({
 			rid: 'rid-1',
 			tmid: undefined,
 			t: 'c',
@@ -56,7 +56,7 @@ const renderRoomNavigation = (overrides: Partial<IUseRoomNavigationParams> = {})
 	return { result, navigation: mockNavigation };
 };
 
-describe('useRoomNavigation', () => {
+describe('useJumpToMessage', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockRouteParams = {};

@@ -247,7 +247,7 @@ export interface IUseSubscriptionUnreadsResult {
 	isSelfDm: boolean;
 }
 
-export interface IUseRoomNavigationParams {
+export interface IUseJumpToMessageParams {
 	rid?: string;
 	tmid?: string;
 	t?: string;
@@ -256,7 +256,7 @@ export interface IUseRoomNavigationParams {
 	roomUserIdRef: RefObject<string | null | undefined>;
 }
 
-export interface IUseRoomNavigationResult {
+export interface IUseJumpToMessageResult {
 	onThreadMessagesLoaded: () => void;
 	onThreadPress: (item: TAnyMessageModel) => void;
 	jumpToMessageByUrl: (messageUrl?: string, isFromReply?: boolean) => Promise<void>;

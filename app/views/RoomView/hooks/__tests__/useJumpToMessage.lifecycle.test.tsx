@@ -11,8 +11,8 @@ import { loadSurroundingMessages } from '../../../../lib/methods/loadSurrounding
 import { MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
 import getLocalAnchorTs from '../../services/getLocalAnchor';
 import getMessageInfo from '../../services/getMessageInfo';
-import { type IUseRoomNavigationParams } from '../../definitions';
-import { useRoomNavigation } from '../useRoomNavigation';
+import { type IUseJumpToMessageParams } from '../../definitions';
+import { useJumpToMessage } from '../useJumpToMessage';
 
 let mockCurrentNavigation: { push: jest.Mock; setParams: jest.Mock };
 let mockCurrentParams: { jumpToMessageId?: string; jumpToThreadId?: string };
@@ -57,7 +57,7 @@ const advance = (ms: number) => act(async () => await jest.advanceTimersByTimeAs
 let interactions: Array<() => void>;
 const releaseInteractions = () => act(() => interactions.splice(0).forEach(run => run()));
 
-function screen(overrides: Partial<IUseRoomNavigationParams> = {}, params: typeof mockCurrentParams = {}) {
+function screen(overrides: Partial<IUseJumpToMessageParams> = {}, params: typeof mockCurrentParams = {}) {
 	const list = {
 		isMessageInWindow: jest.fn(() => true),
 		jumpToMessage: jest.fn<Promise<void>, [string, (number | null)?]>().mockResolvedValue(undefined),
@@ -69,7 +69,7 @@ function screen(overrides: Partial<IUseRoomNavigationParams> = {}, params: typeo
 		({ options, params }: typeof initialProps) => {
 			mockCurrentNavigation = navigation;
 			mockCurrentParams = params;
-			return useRoomNavigation({
+			return useJumpToMessage({
 				rid: 'room',
 				t: 'c',
 				isMasterDetail: false,
