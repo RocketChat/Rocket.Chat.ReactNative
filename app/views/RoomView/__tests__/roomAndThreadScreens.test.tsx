@@ -9,7 +9,7 @@ import { loadThreadMessages } from '../../../lib/methods/loadThreadMessages';
 import {
 	createObservableQuery as mockCreateObservableQuery,
 	createObservableRecord as mockCreateObservableRecord
-} from './observableDatabase';
+} from '../testUtils/observableDatabase';
 
 jest.mock('../../../i18n', () => ({
 	__esModule: true,

@@ -6,7 +6,7 @@ import { isGroupChat } from '../../../../lib/methods/helpers';
 import { isInviteSubscription } from '../../../../lib/methods/isInviteSubscription';
 import log from '../../../../lib/methods/helpers/log';
 import getMessages from '../../services/getMessages';
-import { createObservableQuery, createObservableRecord } from '../../__tests__/observableDatabase';
+import { createObservableQuery, createObservableRecord } from '../../testUtils/observableDatabase';
 import { createRoomStore, observeRoom } from '../RoomStore';
 
 jest.mock('../../../../lib/database', () => ({

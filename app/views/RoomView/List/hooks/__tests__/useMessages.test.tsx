@@ -13,7 +13,7 @@ import { readThreads } from '../../../../../lib/services/restApi';
 import { mockedStore } from '../../../../../reducers/mockedStore';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../../constants';
 import { buildVisibleSystemTypesClause } from '../../visibleSystemMessages';
-import { createObservableQuery } from '../../../__tests__/observableDatabase';
+import { createObservableQuery } from '../../../testUtils/observableDatabase';
 import { useMessages } from '../useMessages';
 
 jest.mock('../../../../../lib/database', () => ({
