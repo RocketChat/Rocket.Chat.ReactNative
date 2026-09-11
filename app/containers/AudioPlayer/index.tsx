@@ -102,7 +102,7 @@ const AudioPlayer = ({
 	};
 
 	useEffect(() => {
-		AudioManager.setRateAsync(audioUri.current, playbackSpeed);
+		AudioManager.setRate(audioUri.current, playbackSpeed);
 	}, [playbackSpeed]);
 
 	const onPress = () => {
@@ -121,7 +121,7 @@ const AudioPlayer = ({
 				try {
 					audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
 					AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
-					AudioManager.setRateAsync(audioUri.current, playbackSpeed);
+					AudioManager.setRate(audioUri.current, playbackSpeed);
 				} catch {
 					// do nothing
 				}

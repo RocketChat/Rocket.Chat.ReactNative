@@ -121,11 +121,11 @@ describe('AudioManager', () => {
 	});
 
 	// On iOS setPlaybackRate maps to AVPlayer.rate, and a non-zero rate starts playback
-	it('setRateAsync does not touch an idle player, so loading never starts playback', async () => {
+	it('setRate does not touch an idle player, so loading never starts playback', async () => {
 		const { AudioManager, players } = setup();
 		const key = await AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
 
-		AudioManager.setRateAsync(key, 1);
+		AudioManager.setRate(key, 1);
 
 		expect(players[0].setPlaybackRate).not.toHaveBeenCalled();
 		expect(players[0].play).not.toHaveBeenCalled();
@@ -134,7 +134,7 @@ describe('AudioManager', () => {
 	it('playAudio applies the rate stored while the player was idle', async () => {
 		const { AudioManager, players } = setup();
 		const key = await AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
-		AudioManager.setRateAsync(key, 1.5);
+		AudioManager.setRate(key, 1.5);
 
 		await AudioManager.playAudio(key);
 
@@ -142,24 +142,24 @@ describe('AudioManager', () => {
 		expect(players[0].play).toHaveBeenCalled();
 	});
 
-	it('setRateAsync applies immediately to the audio currently playing', async () => {
+	it('setRate applies immediately to the audio currently playing', async () => {
 		const { AudioManager, players } = setup();
 		const key = await AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
 		await AudioManager.playAudio(key);
 		players[0].setPlaybackRate.mockClear();
 
-		AudioManager.setRateAsync(key, 2);
+		AudioManager.setRate(key, 2);
 
 		expect(players[0].setPlaybackRate).toHaveBeenCalledWith(2);
 	});
 
-	it('setRateAsync leaves other loaded audios untouched while one is playing', async () => {
+	it('setRate leaves other loaded audios untouched while one is playing', async () => {
 		const { AudioManager, players } = setup();
 		const playingKey = await AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
 		const idleKey = await AudioManager.loadAudio({ rid: 'room-1', uri: 'file://b.mp3' });
 		await AudioManager.playAudio(playingKey);
 
-		AudioManager.setRateAsync(idleKey, 2);
+		AudioManager.setRate(idleKey, 2);
 
 		expect(players[1].setPlaybackRate).not.toHaveBeenCalled();
 		expect(players[1].play).not.toHaveBeenCalled();
@@ -168,7 +168,7 @@ describe('AudioManager', () => {
 	it('a recreated player seeks to the saved position before the rate is applied', async () => {
 		const { AudioManager, players } = setup();
 		const key = await AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
-		AudioManager.setRateAsync(key, 1.5);
+		AudioManager.setRate(key, 1.5);
 		await AudioManager.setPositionAsync(key, 7);
 		await AudioManager.onEnd(key, { isLoaded: true, didJustFinish: true, currentTime: 5, duration: 5 } as AudioStatus);
 

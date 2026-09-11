@@ -13,7 +13,7 @@ jest.mock('../../lib/methods/AudioManager', () => ({
 	default: {
 		loadAudio: jest.fn(),
 		setOnPlaybackStatusUpdate: jest.fn(),
-		setRateAsync: jest.fn(),
+		setRate: jest.fn(),
 		addAudioRendered: jest.fn(),
 		removeAudioRendered: jest.fn(),
 		pauseAudio: jest.fn(),
@@ -102,7 +102,7 @@ describe('AudioPlayer', () => {
 
 			await waitFor(() => {
 				expect(AudioManager.setOnPlaybackStatusUpdate).toHaveBeenCalledWith('mock-audio-key', expect.any(Function));
-				expect(AudioManager.setRateAsync).toHaveBeenCalledWith('mock-audio-key', 1.0);
+				expect(AudioManager.setRate).toHaveBeenCalledWith('mock-audio-key', 1.0);
 			});
 		});
 
@@ -168,7 +168,7 @@ describe('AudioPlayer', () => {
 			expect(() => getByTestId('play-button')).not.toThrow();
 		});
 
-		it('skips setOnPlaybackStatusUpdate and setRateAsync (with loaded key) when loadAudio throws', async () => {
+		it('skips setOnPlaybackStatusUpdate and setRate (with loaded key) when loadAudio throws', async () => {
 			(AudioManager.loadAudio as jest.Mock).mockRejectedValue(new Error('load failed'));
 
 			render(<AudioPlayer {...defaultProps} />);
@@ -176,7 +176,7 @@ describe('AudioPlayer', () => {
 			await act(async () => {});
 
 			expect(AudioManager.setOnPlaybackStatusUpdate).not.toHaveBeenCalled();
-			expect(AudioManager.setRateAsync).not.toHaveBeenCalledWith('mock-audio-key', expect.any(Number));
+			expect(AudioManager.setRate).not.toHaveBeenCalledWith('mock-audio-key', expect.any(Number));
 		});
 	});
 

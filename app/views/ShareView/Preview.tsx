@@ -2,7 +2,7 @@ import { memo, useRef, useState } from 'react';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { useEventListener } from 'expo';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Alert, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import prettyBytes from 'pretty-bytes';
 import { useHeaderHeight } from '@react-navigation/elements';
 
@@ -14,6 +14,7 @@ import { THUMBS_HEIGHT } from '../../containers/Thumbs';
 import { type TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import { type IShareAttachment } from '../../definitions';
+import { showErrorAlert } from '../../lib/methods/helpers/info';
 
 const MESSAGE_COMPOSER_HEIGHT = 56;
 
@@ -26,7 +27,7 @@ const VideoPreview = memo(({ uri, width, height }: { uri: string; width?: number
 	useEventListener(player, 'statusChange', ({ status }) => {
 		if (status === 'error' && !hasHandledErrorRef.current) {
 			hasHandledErrorRef.current = true;
-			Alert.alert(I18n.t('Error'), I18n.t('There_was_an_error_while_playing_video'));
+			showErrorAlert(I18n.t('There_was_an_error_while_playing_video'), I18n.t('Error'));
 		}
 	});
 

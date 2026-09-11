@@ -1,14 +1,15 @@
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { useEffect, useRef, type Dispatch, type SetStateAction, type ReactElement } from 'react';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 import { useEventListener } from 'expo';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { styles } from './styles';
 import { useAppNavigation } from '../../lib/hooks/navigation';
 import I18n from '../../i18n';
 import { type IAttachment } from '../../definitions';
 import { formatAttachmentUrl, encodeAttachmentUrl } from '../../lib/methods/helpers';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { showErrorAlert } from '../../lib/methods/helpers/info';
 
 interface IVideoPlayerProps {
 	attachment: IAttachment;
@@ -35,7 +36,7 @@ const VideoPlayer = ({ attachment, user, baseUrl, setLoading }: IVideoPlayerProp
 		} else if (status === 'error' && !hasHandledErrorRef.current) {
 			hasHandledErrorRef.current = true;
 			setLoading(false);
-			Alert.alert(I18n.t('Error'), I18n.t('There_was_an_error_while_playing_video'));
+			showErrorAlert(I18n.t('There_was_an_error_while_playing_video'), I18n.t('Error'));
 			navigation.goBack();
 		}
 	});

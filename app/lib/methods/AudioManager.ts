@@ -83,11 +83,11 @@ class AudioManagerClass {
 		try {
 			await setAudioModeAsync(AUDIO_MODE);
 			this.audioPlaying = audioKey;
-			this.setRateAsync(audioKey, this.audioRates[audioKey]);
+			this.setRate(audioKey, this.audioRates[audioKey]);
 			this.audioQueue[audioKey]?.play();
 			emitter.emit('audioFocused', audioKey);
-		} catch {
-			// Ignore playback start errors
+		} catch (error) {
+			log(error);
 		}
 	}
 
@@ -102,12 +102,12 @@ class AudioManagerClass {
 		this.audioPositions[audioKey] = time;
 		try {
 			await this.audioQueue[audioKey]?.seekTo(time);
-		} catch {
-			// Do nothing
+		} catch (error) {
+			log(error);
 		}
 	}
 
-	setRateAsync(audioKey: string, value = 1.0): void {
+	setRate(audioKey: string, value = 1.0): void {
 		this.audioRates[audioKey] = value;
 		if (!audioKey || this.audioPlaying !== audioKey) {
 			return;
@@ -115,8 +115,8 @@ class AudioManagerClass {
 
 		try {
 			this.audioQueue[audioKey]?.setPlaybackRate(value);
-		} catch {
-			// Do nothing
+		} catch (error) {
+			log(error);
 		}
 	}
 
@@ -136,10 +136,6 @@ class AudioManagerClass {
 		if (sub) this.audioSubscriptions[audioKey] = () => sub.remove?.();
 	}
 
-	getCurrentStatus(audioKey: string): AudioStatus | null {
-		return this.audioQueue[audioKey]?.currentStatus ?? null;
-	}
-
 	async onEnd(audioKey: string, status: AudioStatus): Promise<void> {
 		if (!this.audioQueue[audioKey]) {
 			return;
@@ -155,8 +151,8 @@ class AudioManagerClass {
 				this.audioPlaying = '';
 				emitter.emit('audioFocused', '');
 				await this.playNextAudioInSequence(audioKey);
-			} catch {
-				// do nothing
+			} catch (error) {
+				log(error);
 			}
 		}
 	}
