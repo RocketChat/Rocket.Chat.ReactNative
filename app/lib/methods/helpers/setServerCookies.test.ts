@@ -65,10 +65,26 @@ describe('setServerCookies', () => {
 		expect(cookieStringFor('rc_uid')).not.toMatch(/;\s*Secure/i);
 	});
 
-	test('sends the cookies on every path', async () => {
+	test('keeps Path=/ for a root server', async () => {
+		await setServerCookies('https://open.rocket.chat', { id: 'uid1', token: 'tok1' });
+
+		expect(cookieStringFor('rc_uid')).toMatch(/;\s*Path=\/(;|$)/);
+	});
+
+	test('scopes the cookie path to a subpath workspace', async () => {
 		await setServerCookies('https://example.com/chat', { id: 'uid1', token: 'tok1' });
 
-		expect(cookieStringFor('rc_uid')).toMatch(/;\s*Path=\//i);
+		expect(cookieStringFor('rc_uid')).toMatch(/;\s*Path=\/chat(;|$)/);
+		expect(cookieStringFor('rc_token')).toMatch(/;\s*Path=\/chat(;|$)/);
+	});
+
+	test('isolates two workspaces sharing a host', async () => {
+		await setServerCookies('https://example.com/chat-a', { id: 'uid1', token: 'tok1' });
+		await setServerCookies('https://example.com/chat-b', { id: 'uid2', token: 'tok2' });
+
+		const paths = mockedSetFromResponse.mock.calls.map(([, cookie]) => (cookie as string).match(/Path=([^;]+)/i)?.[1]);
+		expect(paths.slice(0, 2)).toEqual(['/chat-a', '/chat-a']);
+		expect(paths.slice(2, 4)).toEqual(['/chat-b', '/chat-b']);
 	});
 
 	test('expires the cookies in the future', async () => {
@@ -102,6 +118,20 @@ describe('clearServerCookies', () => {
 		await clearServerCookies('https://open.rocket.chat');
 
 		mockedSetFromResponse.mock.calls.forEach(([url]) => expect(url).toEqual('https://open.rocket.chat'));
+	});
+
+	test('clears a root server with a single path', async () => {
+		await clearServerCookies('https://open.rocket.chat');
+
+		expect(mockedSetFromResponse).toHaveBeenCalledTimes(2);
+	});
+
+	test('clears a subpath workspace and the legacy root path', async () => {
+		await clearServerCookies('https://example.com/chat');
+
+		const paths = mockedSetFromResponse.mock.calls.map(([, cookie]) => (cookie as string).match(/Path=([^;]+)/i)?.[1]);
+		expect(paths).toEqual(expect.arrayContaining(['/chat', '/']));
+		expect(mockedSetFromResponse).toHaveBeenCalledTimes(4);
 	});
 
 	test('does nothing without a server', async () => {

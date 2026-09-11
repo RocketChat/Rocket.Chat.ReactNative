@@ -7,6 +7,15 @@ import { isSecureHttpUrl } from './isConferenceUrl';
 const COOKIE_LIFETIME_DAYS = 1;
 const SERVER_COOKIE_NAMES = ['rc_uid', 'rc_token'];
 
+const workspaceCookiePath = (server: string): string | null => {
+	try {
+		const scoped = new URL(server).pathname.replace(/\/+$/, '');
+		return scoped && scoped !== '/' ? scoped : null;
+	} catch {
+		return null;
+	}
+};
+
 type TSetServerCookiesOptions = {
 	/**
 	 * Write the credential cookies even when the server is plain http. Only for callers that
@@ -28,8 +37,11 @@ export const setServerCookies = async (
 	const date = new Date();
 	date.setDate(date.getDate() + COOKIE_LIFETIME_DAYS);
 
-	const attributes = [`Expires=${date.toUTCString()}`, 'Path=/'];
-	if (new URL(server).protocol === 'https:') {
+	const { protocol } = new URL(server);
+	const cookiePath = workspaceCookiePath(server) ?? '/';
+
+	const attributes = [`Expires=${date.toUTCString()}`, `Path=${cookiePath}`];
+	if (protocol === 'https:') {
 		attributes.push('Secure');
 	}
 	const suffix = attributes.join('; ');
@@ -43,8 +55,13 @@ export const clearServerCookies = async (server: string): Promise<void> => {
 		return;
 	}
 
+	const scoped = workspaceCookiePath(server);
+	const paths = scoped ? [scoped, '/'] : ['/'];
+
 	for (const name of SERVER_COOKIE_NAMES) {
-		await CookieManager.setFromResponse(server, `${name}=; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Path=/`);
+		for (const path of paths) {
+			await CookieManager.setFromResponse(server, `${name}=; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Path=${path}`);
+		}
 	}
 
 	if (isAndroid) {
