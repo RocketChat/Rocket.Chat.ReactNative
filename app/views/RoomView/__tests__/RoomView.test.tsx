@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { createStore as createReduxStore } from 'redux';
 
-import RoomGate from '../index';
+import RoomView from '../index';
 import { type IRoomViewProps } from '../definitions';
 import { type TRoomOrPreview } from '../../../definitions/TRoom';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
@@ -29,11 +29,6 @@ jest.mock('../components/EncryptedRoom', () => {
 	const { View: RNView } = require('react-native');
 	return { EncryptedRoom: () => createElement(RNView, { testID: 'encrypted-screen' }) };
 });
-jest.mock('../components/RoomRouteInvalid', () => {
-	const { createElement } = require('react');
-	const { View: RNView } = require('react-native');
-	return { RoomRouteInvalid: () => createElement(RNView, { testID: 'route-invalid-screen' }) };
-});
 jest.mock('../hooks/useHeader', () => ({ useHeader: jest.fn() }));
 jest.mock('../hooks/useE2EEStatus', () => ({
 	useE2EEStatus: jest.fn(() => ({ showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false }))
@@ -58,20 +53,20 @@ jest.mock('../stores/RoomStore', () => {
 	};
 });
 
-const renderGate = (params: Record<string, unknown> | null = { rid: 'rid-1', t: 'c' }) => {
+const renderRoomView = (params: Record<string, unknown> | null = { rid: 'rid-1', t: 'c' }) => {
 	const reduxStore = createReduxStore(() => ({ server: { version: '6.1.0' } }));
 	const route = { params: params ?? undefined } as unknown as IRoomViewProps['route'];
 	const navigation = { setOptions: jest.fn() } as unknown as IRoomViewProps['navigation'];
 	return render(
 		<Provider store={reduxStore}>
 			<View>
-				<RoomGate route={route} navigation={navigation} />
+				<RoomView route={route} navigation={navigation} />
 			</View>
 		</Provider>
 	);
 };
 
-describe('RoomGate', () => {
+describe('RoomView', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		room.current = { rid: 'rid-1', t: 'c' };
@@ -80,22 +75,22 @@ describe('RoomGate', () => {
 	});
 
 	it('mounts the room screen when the room is not blocked', () => {
-		renderGate();
+		renderRoomView();
 
 		expect(screen.getByTestId('room-screen')).toBeOnTheScreen();
 	});
 
-	it('renders the invalid-route state instead of a room when the route has no identity', () => {
-		renderGate(null);
+	it('renders the empty-room background instead of a room when the route has no identity', () => {
+		renderRoomView(null);
 
-		expect(screen.getByTestId('route-invalid-screen')).toBeOnTheScreen();
+		expect(screen.getByTestId('room-view-empty')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-screen')).toBeNull();
 	});
 
-	it('renders the invalid-route state when the route has a rid but no type', () => {
-		renderGate({ rid: 'rid-1' });
+	it('renders the empty-room background when the route has a rid but no type', () => {
+		renderRoomView({ rid: 'rid-1' });
 
-		expect(screen.getByTestId('route-invalid-screen')).toBeOnTheScreen();
+		expect(screen.getByTestId('room-view-empty')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-screen')).toBeNull();
 	});
 
@@ -103,7 +98,7 @@ describe('RoomGate', () => {
 		room.current = { id: 'sub-1', rid: 'rid-1', t: 'c' } as TRoomOrPreview;
 		jest.mocked(isInviteSubscription).mockReturnValue(true);
 
-		renderGate();
+		renderRoomView();
 
 		expect(screen.getByTestId('invited-screen')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-screen')).toBeNull();
@@ -113,7 +108,7 @@ describe('RoomGate', () => {
 		room.current = { id: 'sub-1', rid: 'rid-1', t: 'c', encrypted: true } as TRoomOrPreview;
 		jest.mocked(useE2EEStatus).mockReturnValue({ showMissingE2EEKey: true, showE2EEDisabledRoom: false, hasE2EEWarning: true });
 
-		renderGate();
+		renderRoomView();
 
 		expect(screen.getByTestId('missing-key-screen')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-screen')).toBeNull();
@@ -123,7 +118,7 @@ describe('RoomGate', () => {
 		room.current = { id: 'sub-1', rid: 'rid-1', t: 'c', encrypted: true } as TRoomOrPreview;
 		jest.mocked(useE2EEStatus).mockReturnValue({ showMissingE2EEKey: false, showE2EEDisabledRoom: true, hasE2EEWarning: true });
 
-		renderGate();
+		renderRoomView();
 
 		expect(screen.getByTestId('encrypted-screen')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-screen')).toBeNull();
