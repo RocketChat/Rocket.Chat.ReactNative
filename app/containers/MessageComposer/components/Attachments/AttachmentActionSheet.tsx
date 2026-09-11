@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Button from '../../../Button';
 import { CustomIcon } from '../../../CustomIcon';
@@ -11,11 +10,8 @@ import { useActionSheet } from '../../../ActionSheet';
 import { useTheme } from '../../../../theme';
 import { useAltTextSupported } from '../../../../lib/hooks/useAltTextSupported';
 import sharedStyles from '../../../../views/Styles';
-import { isAndroid } from '../../../../lib/methods/helpers';
 
 const PREVIEW_HEIGHT = 240;
-// Height of the action sheet's handle/grabber row.
-const ANDROID_SHEET_HANDLE_HEIGHT = 48;
 
 const styles = StyleSheet.create({
 	container: {
@@ -99,18 +95,10 @@ export const AttachmentActionSheet = ({ attachment, onSave }: AttachmentActionSh
 	const [altText, setAltText] = useState(attachment.altText || '');
 	const isImage = attachment.mime?.startsWith('image/');
 	const showAltTextInput = altTextSupported && isImage;
-	const { bottom, top } = useSafeAreaInsets();
-	// Android: TrueSheet renders edge-to-edge and doesn't subtract system insets from the
-	// content area, so the scroll content needs to reserve space at the bottom for:
-	//   - `bottom`: the gesture navigation / home bar safe area
-	//   - `top`:    the status bar inset, which TrueSheet adds to the sheet's total height
-	//   - handle:   the sheet's drag handle/grabber row above the content
-	// Without this padding the Save button ends up clipped behind the sheet's edges.
-	const paddingBottom = isAndroid ? bottom + top + ANDROID_SHEET_HANDLE_HEIGHT : undefined;
 	return (
 		<KeyboardAwareScrollView
 			style={styles.container}
-			contentContainerStyle={[styles.contentContainer, { paddingBottom }]}
+			contentContainerStyle={styles.contentContainer}
 			keyboardShouldPersistTaps='handled'
 			showsVerticalScrollIndicator={false}>
 			<Text numberOfLines={1} style={[styles.title, { color: colors.fontDefault }]}>
