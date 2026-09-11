@@ -1,32 +1,24 @@
-import { forwardRef, useImperativeHandle, useState } from 'react';
+import { useState } from 'react';
 import { type FontVariant, Text } from 'react-native';
-import { type Audio } from 'expo-av';
+import { useAudioRecorderState, type AudioRecorder } from 'expo-audio';
 
 import sharedStyles from '../../../../views/Styles';
 import { useTheme } from '../../../../theme';
 import { formatTime } from './utils';
 
-export interface IDurationRef {
-	onRecordingStatusUpdate: (status: Audio.RecordingStatus) => void;
-}
-
-export const Duration = forwardRef<IDurationRef>((_, ref) => {
+export const Duration = ({ audioRecorder }: { audioRecorder: AudioRecorder }) => {
 	const [styles] = useStyle();
+	const recorderState = useAudioRecorderState(audioRecorder);
 	const [duration, setDuration] = useState('00:00');
 
-	useImperativeHandle(ref, () => ({
-		onRecordingStatusUpdate
-	}));
-
-	const onRecordingStatusUpdate = (status: Audio.RecordingStatus) => {
-		if (!status.isRecording) {
-			return;
-		}
-		setDuration(formatTime(Math.floor(status.durationMillis / 1000)));
-	};
+	// Adjust state during render (instead of an effect) to sync the timer with the recorder state
+	const nextDuration = recorderState.isRecording ? formatTime(Math.floor(recorderState.durationMillis / 1000)) : duration;
+	if (nextDuration !== duration) {
+		setDuration(nextDuration);
+	}
 
 	return <Text style={styles.text}>{duration}</Text>;
-});
+};
 
 function useStyle() {
 	const { colors } = useTheme();

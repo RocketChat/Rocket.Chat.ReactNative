@@ -74,7 +74,7 @@ export interface Spec extends TurboModule {
 	/**
 	 * Plays the outgoing-call ringback (dialtone) on the voice-communication audio path so it
 	 * follows the active comm device (earpiece/speaker/BT) instead of the music stream.
-	 * Idempotent: a second call while playing is a no-op. iOS no-op (CallKit + AVAudioSession handle routing for expo-av).
+	 * Idempotent: a second call while playing is a no-op. iOS no-op (CallKit + AVAudioSession handle routing for expo-audio).
 	 */
 	startRingback(): Promise<void>;
 

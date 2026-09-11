@@ -1,11 +1,11 @@
-import { Audio } from 'expo-av';
+import { requestRecordingPermissionsAsync, getRecordingPermissionsAsync, PermissionStatus } from 'expo-audio';
 import { useContext, type ReactElement } from 'react';
 import { Alert } from 'react-native';
-import { PermissionStatus } from 'expo-camera';
 
 import i18n from '../../../../i18n';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { openAppSettings } from '../../../../lib/methods/helpers/openAppSettings';
+import log from '../../../../lib/methods/helpers/log';
 import { useTheme } from '../../../../theme';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { MessageInnerContext, useComposerAttachments, useMessageComposerApi, useMicOrSend } from '../../context';
@@ -22,16 +22,27 @@ export const MicOrSendButton = (): ReactElement | null => {
 	const { colors } = useTheme();
 	const { setRecordingAudio } = useMessageComposerApi();
 
-	const requestPermissionAndStartToRecordAudio = () =>
-		Audio.requestPermissionsAsync()
-			.then(({ granted }) => setRecordingAudio(granted))
-			.catch(() => {});
+	const requestPermissionAndStartToRecordAudio = async () => {
+		try {
+			const { granted } = await requestRecordingPermissionsAsync();
+			setRecordingAudio(granted);
+		} catch (error) {
+			log(error);
+			setRecordingAudio(false);
+		}
+	};
 
 	const startRecording = async () => {
-		const { status, granted, canAskAgain } = await Audio.getPermissionsAsync();
-		if (granted) return setRecordingAudio(true);
-		if (status === PermissionStatus.UNDETERMINED) return requestPermissionAndStartToRecordAudio();
-		if (canAskAgain) return requestPermissionAndStartToRecordAudio();
+		try {
+			const { status, granted, canAskAgain } = await getRecordingPermissionsAsync();
+			if (granted) return setRecordingAudio(true);
+			if (status === PermissionStatus.UNDETERMINED) return requestPermissionAndStartToRecordAudio();
+			if (canAskAgain) return requestPermissionAndStartToRecordAudio();
+		} catch (error) {
+			log(error);
+			setRecordingAudio(false);
+			return;
+		}
 
 		Alert.alert(
 			i18n.t('Microphone_access_needed_to_record_audio'),

@@ -1,5 +1,5 @@
 import { createContext, type ReactNode, useContext, useEffect, useRef } from 'react';
-import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
+import { createAudioPlayer, setAudioModeAsync } from 'expo-audio';
 
 const DTMF_ASSETS: Record<string, ReturnType<typeof require>> = {
 	'0': require('../../../../containers/Ringer/dtmf/digit-0.mp3'),
@@ -23,35 +23,36 @@ interface DialpadContextValue {
 const DialpadContext = createContext<DialpadContextValue>({ playTone: () => {} });
 
 export const DialpadProvider = ({ children }: { children: ReactNode }) => {
-	const soundsRef = useRef<Record<string, Audio.Sound>>({});
+	const soundsRef = useRef<Record<string, ReturnType<typeof createAudioPlayer>>>({});
 
 	useEffect(() => {
 		let cancelled = false;
 		const loadAll = async () => {
 			try {
-				await Audio.setAudioModeAsync({
-					allowsRecordingIOS: true,
-					playsInSilentModeIOS: true,
-					playThroughEarpieceAndroid: true,
-					interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-					interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
+				await setAudioModeAsync({
+					allowsRecording: true,
+					playsInSilentMode: true,
+					shouldRouteThroughEarpiece: true,
+					interruptionMode: 'doNotMix',
+					interruptionModeAndroid: 'doNotMix'
 				});
 			} catch (error) {
 				console.warn('[DialpadContext] Failed to set audio mode:', error);
 			}
 			await Promise.all(
-				Object.entries(DTMF_ASSETS).map(async ([digit, asset]) => {
+				Object.keys(DTMF_ASSETS).map(digit => {
+					const asset = DTMF_ASSETS[digit];
 					try {
-						const sound = new Audio.Sound();
-						await sound.loadAsync(asset);
+						const player = createAudioPlayer(asset);
 						if (cancelled) {
-							await sound.unloadAsync();
+							player.release();
 							return;
 						}
-						soundsRef.current[digit] = sound;
+						soundsRef.current[digit] = player;
 					} catch (error) {
 						console.warn(`[DialpadContext] Failed to load DTMF sound for "${digit}":`, error);
 					}
+					return null;
 				})
 			);
 		};
@@ -59,7 +60,7 @@ export const DialpadProvider = ({ children }: { children: ReactNode }) => {
 
 		return () => {
 			cancelled = true;
-			Object.values(soundsRef.current).forEach(s => s.unloadAsync().catch(() => {}));
+			Object.values(soundsRef.current).forEach(p => p.release());
 			soundsRef.current = {};
 		};
 	}, []);
@@ -70,8 +71,8 @@ export const DialpadProvider = ({ children }: { children: ReactNode }) => {
 			return;
 		}
 		try {
-			await sound.setPositionAsync(0);
-			await sound.playAsync();
+			await sound.seekTo(0);
+			sound.play();
 		} catch (error) {
 			console.warn(`[DialpadContext] Failed to play DTMF tone for "${digit}":`, error);
 		}

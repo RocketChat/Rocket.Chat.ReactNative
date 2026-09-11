@@ -1,5 +1,5 @@
 import { type ReactElement, useEffect } from 'react';
-import { Audio, InterruptionModeIOS } from 'expo-av';
+import { setAudioModeAsync } from 'expo-audio';
 
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import CallerInfo from './components/CallerInfo';
@@ -20,12 +20,11 @@ const CallView = (): ReactElement | null => {
 	useEffect(() => {
 		const configureAudio = async () => {
 			try {
-				await Audio.setAudioModeAsync({
-					playsInSilentModeIOS: true,
-					allowsRecordingIOS: true,
-					interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-					staysActiveInBackground: false,
-					shouldDuckAndroid: false
+				await setAudioModeAsync({
+					playsInSilentMode: true,
+					allowsRecording: true,
+					interruptionMode: 'doNotMix',
+					shouldPlayInBackground: false
 				});
 			} catch (error) {
 				console.error('[VoIP] Failed to configure audio mode for CallView:', error);
@@ -34,12 +33,11 @@ const CallView = (): ReactElement | null => {
 		configureAudio();
 
 		return () => {
-			Audio.setAudioModeAsync({
-				playsInSilentModeIOS: false,
-				allowsRecordingIOS: false,
-				interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-				staysActiveInBackground: false,
-				shouldDuckAndroid: false
+			setAudioModeAsync({
+				playsInSilentMode: false,
+				allowsRecording: false,
+				interruptionMode: 'doNotMix',
+				shouldPlayInBackground: false
 			}).catch(() => {
 				// Ignore errors on teardown
 			});
@@ -49,7 +47,7 @@ const CallView = (): ReactElement | null => {
 	const showRingback = callState === 'ringing' && direction === 'outgoing';
 
 	// Android plays ringback natively (USAGE_VOICE_COMMUNICATION) so it follows the active comm
-	// device and toggleSpeaker actually reroutes it. iOS keeps expo-av Ringer (CallKit-managed).
+	// device and toggleSpeaker actually reroutes it. iOS keeps expo-audio Ringer (CallKit-managed).
 	useEffect(() => {
 		if (isIOS || !showRingback) return;
 		NativeVoipModule.startRingback().catch(error => {

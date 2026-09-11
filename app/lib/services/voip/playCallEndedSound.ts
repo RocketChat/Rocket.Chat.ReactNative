@@ -1,10 +1,11 @@
-import { Audio } from 'expo-av';
+import { createAudioPlayer } from 'expo-audio';
 
 import log from '../../methods/helpers/log';
 
 // Module-scoped state so it survives React tree unmounts and is safe to call
 // fire-and-forget from any termination path.
 let isPlaying = false;
+let currentPlayer: ReturnType<typeof createAudioPlayer> | null = null;
 let watchdogTimer: ReturnType<typeof setTimeout> | null = null;
 
 // Cue is ~1.5s; 5s is generous slack before we assume the player is wedged.
@@ -12,6 +13,7 @@ const WATCHDOG_MS = 5000;
 
 function releaseLock(): void {
 	isPlaying = false;
+	currentPlayer = null;
 	if (watchdogTimer != null) {
 		clearTimeout(watchdogTimer);
 		watchdogTimer = null;
@@ -28,7 +30,7 @@ function releaseLock(): void {
  *   the player or the audio session is interrupted indefinitely), so future
  *   cues aren't permanently blocked.
  */
-export async function playCallEndedSound(): Promise<void> {
+export function playCallEndedSound(): void {
 	if (isPlaying) {
 		return;
 	}
@@ -36,26 +38,22 @@ export async function playCallEndedSound(): Promise<void> {
 	isPlaying = true;
 
 	try {
-		const sound = new Audio.Sound();
+		currentPlayer = createAudioPlayer(require('../../../containers/Ringer/call-ended.mp3'));
 
-		sound.setOnPlaybackStatusUpdate(status => {
+		currentPlayer.addListener('playbackStatusUpdate', status => {
 			if (status.isLoaded && status.didJustFinish) {
+				const player = currentPlayer;
 				releaseLock();
-				sound.unloadAsync().catch(() => {
-					// best-effort unload
-				});
+				player?.release();
 			}
 		});
 
-		// eslint-disable-next-line @typescript-eslint/no-require-imports
-		await sound.loadAsync(require('../../../containers/Ringer/call-ended.mp3'));
-		await sound.playAsync();
+		currentPlayer.play();
 
 		watchdogTimer = setTimeout(() => {
+			const player = currentPlayer;
 			releaseLock();
-			sound.unloadAsync().catch(() => {
-				// best-effort unload
-			});
+			player?.release();
 		}, WATCHDOG_MS);
 	} catch (error) {
 		// Never throw — this is fire-and-forget
