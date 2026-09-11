@@ -23,7 +23,7 @@ interface IRunInitSetters {
 // Marks the screen unsettled for the duration of one init() run. init() resolves on the invite
 // early-return and on failure alike, so the finally is the only place that settles it; awaiting it is
 // what keeps the footer from flickering. Lives outside the hook because the React Compiler cannot
-// lower a try/finally inside a hook body (see reactCompilerContract.test.ts).
+// lower a try/finally inside a hook body.
 //
 // `controller` belongs to this run alone and is never reset by a later one: once a newer run aborts
 // it, this run stops writing for a screen that has already moved on.
