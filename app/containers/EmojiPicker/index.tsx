@@ -62,7 +62,7 @@ const EmojiPicker = ({
 
 	return (
 		<View
-			style={[styles.emojiPickerContainer, { marginBottom: bottom, backgroundColor: colors.surfaceLight }]}
+			style={[styles.emojiPickerContainer, { marginBottom: bottomSheet ? 0 : bottom, backgroundColor: colors.surfaceLight }]}
 			onLayout={e => setParentWidth(e.nativeEvent.layout.width)}>
 			{searching ? (
 				<EmojiCategory

@@ -11,13 +11,14 @@ import {
 } from 'react-native';
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '~/theme';
 import { isAndroid, isIOS } from '~/lib/methods/helpers';
 import { Handle } from './Handle';
 import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
-import { HANDLE_HEIGHT, useActionSheetDetents } from './useActionSheetDetents';
+import { HANDLE_HEIGHT, getSheetContentPaddingBottom, useActionSheetDetents } from './useActionSheetDetents';
 import { useActionSheetItemHeight } from './useActionSheetItemHeight';
 import styles from './styles';
 
@@ -32,13 +33,10 @@ const ActionSheet = memo(
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setIsVisible] = useState(false);
 		const [contentHeight, setContentHeight] = useState(0);
+		const { bottom } = useSafeAreaInsets();
 		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
 
 		const itemHeight = useActionSheetItemHeight();
-
-		const handleContentLayout = ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
-			setContentHeight(layout.height);
-		};
 
 		const hide = () => {
 			if (!isVisible) return;
@@ -116,6 +114,17 @@ const ActionSheet = memo(
 		const hasSnaps = !!effectiveSnaps?.length;
 		const disableContentPanning = data?.enableContentPanningGesture === false;
 		const isScrollable = hasOptions || (hasSnaps && !disableContentPanning);
+		const contentScrollEnabled = hasOptions ? scrollEnabled : isScrollable;
+
+		const handleContentLayout = ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
+			const padding = getSheetContentPaddingBottom({
+				bottom,
+				fullContainer: data.fullContainer,
+				hugContent: data.hugContent,
+				scrollEnabled: contentScrollEnabled
+			});
+			setContentHeight(Math.max(0, layout.height - padding));
+		};
 
 		const contentMinHeight =
 			data.fullContainer && effectiveSnaps?.length
@@ -152,7 +161,7 @@ const ActionSheet = memo(
 							fullContainer={data.fullContainer}
 							hugContent={data.hugContent}
 							contentMinHeight={isIOS ? contentMinHeight : undefined}
-							scrollEnabled={scrollEnabled}>
+							scrollEnabled={contentScrollEnabled}>
 							{data?.children}
 						</BottomSheetContent>
 					</GestureHandlerRootView>
