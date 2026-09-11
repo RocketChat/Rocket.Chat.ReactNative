@@ -101,6 +101,7 @@ import { localAuthenticate } from '../../lib/methods/helpers/localAuthentication
 import { canOpenRoom } from '../../lib/methods/canOpenRoom';
 import { getServerInfo } from '../../lib/methods/getServerInfo';
 import { goRoom, navigateToRoom } from '../../lib/methods/helpers/goRoom';
+import { videoConfJoin } from '../../lib/methods/videoConf';
 import { waitForNavigationReady } from '../../lib/navigation/appNavigation';
 import { loginOAuthOrSso } from '../../lib/services/connect';
 import sdk from '../../lib/services/sdk';
@@ -482,6 +483,23 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(navigateToRoom)).toHaveBeenCalledTimes(1);
+	});
+
+	it('joins an accepted call with the push context, so a failure reads as a missed call', async () => {
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingClickCallPush(makeCallParams({ event: 'accept', callId: 'call-1', caller: { _id: 'caller-1' } })));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		await flushSagaMicrotasks();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(videoConfJoin)).toHaveBeenCalledWith('call-1', true, false, { fromPush: true, rid: 'room-1' });
 	});
 });
 

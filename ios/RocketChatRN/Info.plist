@@ -66,7 +66,7 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Take photos to share with other users</string>
+	<string>$(PRODUCT_NAME) uses your camera for video calls and to take photos to share with other users</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Unlock the app with FaceID</string>
 	<key>NSMicrophoneUsageDescription</key>

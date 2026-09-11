@@ -270,6 +270,9 @@ export const defaultSettings = {
 	VideoConf_Enable_Teams: {
 		type: 'valueAsBoolean'
 	},
+	VideoConf_Conference_Window_Enabled: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_AllowDeleteOwnAccount: {
 		type: 'valueAsBoolean'
 	},

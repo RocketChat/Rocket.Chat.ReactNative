@@ -3,6 +3,8 @@ import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
 import MediaCallHeader from './MediaCallHeader';
+import { closeConferenceCall, expandConferenceCall } from '../../lib/services/conference/conferenceCallNavigation';
+import { useConferenceCallStore } from '../../lib/services/conference/useConferenceCallStore';
 import { navigateToCallRoom } from '../../lib/services/voip/navigateToCallRoom';
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import { mockedStore } from '../../reducers/mockedStore';
@@ -13,6 +15,11 @@ const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
 
 jest.mock('../../lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
+}));
+
+jest.mock('../../lib/services/conference/conferenceCallNavigation', () => ({
+	expandConferenceCall: jest.fn(),
+	closeConferenceCall: jest.fn()
 }));
 
 const mockCallStartTime = 1713340800000;
@@ -76,6 +83,7 @@ afterAll(() => {
 describe('MediaCallHeader', () => {
 	beforeEach(() => {
 		useCallStore.getState().reset();
+		useConferenceCallStore.getState().close();
 		jest.clearAllMocks();
 	});
 
@@ -256,6 +264,95 @@ describe('MediaCallHeader', () => {
 
 		fireEvent.press(getByTestId('media-call-header-content'));
 		expect(mockNavigateToCallRoom).not.toHaveBeenCalled();
+	});
+});
+
+describe('MediaCallHeader with a conference call', () => {
+	const openConference = () =>
+		useConferenceCallStore.getState().open({ callId: 'call1', url: 'https://open.rocket.chat/conference/call1' });
+
+	beforeEach(() => {
+		useCallStore.getState().reset();
+		useConferenceCallStore.getState().close();
+		jest.clearAllMocks();
+	});
+
+	it('should render the call header for a conference call', () => {
+		useCallStore.setState({ call: null });
+		openConference();
+
+		const { getByTestId, queryByTestId } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		expect(getByTestId('conference-call-header')).toBeTruthy();
+		expect(getByTestId('conference-call-header-expand')).toBeTruthy();
+		expect(getByTestId('conference-call-header-end')).toBeTruthy();
+		expect(queryByTestId('media-call-header-empty')).toBeNull();
+	});
+
+	it('should return to the call when the header is pressed', () => {
+		useCallStore.setState({ call: null });
+		openConference();
+
+		const { getByTestId } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+		fireEvent.press(getByTestId('conference-call-header-content'));
+
+		expect(expandConferenceCall).toHaveBeenCalled();
+	});
+
+	it('should end the conference call from the header', () => {
+		useCallStore.setState({ call: null });
+		openConference();
+
+		const { getByTestId } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+		fireEvent.press(getByTestId('conference-call-header-end'));
+
+		expect(closeConferenceCall).toHaveBeenCalled();
+	});
+
+	it('should keep showing the voip header when both calls somehow exist', () => {
+		setStoreState();
+		openConference();
+
+		const { getByTestId, queryByTestId } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		expect(getByTestId('media-call-header')).toBeTruthy();
+		expect(queryByTestId('conference-call-header')).toBeNull();
+	});
+
+	it('should render the empty placeholder once the conference call ends', () => {
+		useCallStore.setState({ call: null });
+		openConference();
+
+		const { getByTestId, queryByTestId, rerender } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+		useConferenceCallStore.getState().close();
+		rerender(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		expect(getByTestId('media-call-header-empty')).toBeTruthy();
+		expect(queryByTestId('conference-call-header')).toBeNull();
 	});
 });
 

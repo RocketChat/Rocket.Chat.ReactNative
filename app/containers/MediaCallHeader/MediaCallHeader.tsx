@@ -5,7 +5,9 @@ import { useShallow } from 'zustand/react/shallow';
 
 import { useTheme } from '../../theme';
 import Collapse from './components/Collapse';
+import ConferenceCallRow from './components/ConferenceCallRow';
 import EndCall from './components/EndCall';
+import { useConferenceCallStore } from '../../lib/services/conference/useConferenceCallStore';
 import { useCallStore, useControlsVisible } from '../../lib/services/voip/useCallStore';
 import { Content } from './components/Content';
 import { CONTROLS_ANIMATION_DURATION } from '../../views/CallView/styles';
@@ -25,6 +27,7 @@ const MediaCallHeader = () => {
 	const { colors } = useTheme();
 	const insets = useSafeAreaInsets();
 	const call = useCallStore(useShallow(state => state.call));
+	const conferenceCallId = useConferenceCallStore(state => state.callId);
 	const focused = useCallStore(state => state.focused);
 	const controlsVisible = useControlsVisible();
 
@@ -48,17 +51,23 @@ const MediaCallHeader = () => {
 		paddingTop: insets.top
 	};
 
+	const rowStyle = { ...defaultHeaderStyle, borderBottomColor: colors.strokeLight, paddingTop: insets.top + 12 };
+
 	if (!call) {
+		if (conferenceCallId) {
+			return (
+				<View style={[styles.header, rowStyle]} testID='conference-call-header'>
+					<ConferenceCallRow />
+				</View>
+			);
+		}
+
 		return <View style={defaultHeaderStyle} testID='media-call-header-empty' />;
 	}
 
 	return (
 		<Animated.View
-			style={[
-				styles.header,
-				{ ...defaultHeaderStyle, borderBottomColor: colors.strokeLight, paddingTop: insets.top + 12 },
-				animatedStyle
-			]}
+			style={[styles.header, rowStyle, animatedStyle]}
 			pointerEvents={shouldHide ? 'none' : 'auto'}
 			testID='media-call-header'>
 			<Collapse />

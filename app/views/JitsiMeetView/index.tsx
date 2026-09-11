@@ -1,4 +1,3 @@
-import CookieManager from '@react-native-cookies/cookies';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useCallback, useEffect, useState, type ReactElement } from 'react';
@@ -10,7 +9,8 @@ import { userAgent } from '../../lib/constants/userAgent';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { isIOS } from '../../lib/methods/helpers';
 import { getRoomIdFromJitsiCallUrl } from '../../lib/methods/helpers/getRoomIdFromJitsiCall';
-import { events, logEvent } from '../../lib/methods/helpers/log';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import { setServerCookies } from '../../lib/methods/helpers/setServerCookies';
 import { endVideoConfTimer, initVideoConfTimer } from '../../lib/methods/videoConfTimer';
 import { getUserSelector } from '../../selectors/login';
 import { type ChatsStackParamList } from '../../stacks/types';
@@ -30,23 +30,16 @@ const JitsiMeetView = (): ReactElement => {
 	const [cookiesSet, setCookiesSet] = useState(false);
 
 	const setCookies = async () => {
-		const date = new Date();
-		date.setDate(date.getDate() + 1);
-		const expires = date.toISOString();
-		const domain = serverUrl.replace(/^https?:\/\//, '').split(':')[0]; // remove the ":<port>"
-		const ck = { domain, version: '1', expires };
-
-		await CookieManager.set(serverUrl, {
-			name: 'rc_uid',
-			value: user.id,
-			...ck
-		});
-		await CookieManager.set(serverUrl, {
-			name: 'rc_token',
-			value: user.token,
-			...ck
-		});
-		setCookiesSet(true);
+		try {
+			// Jitsi has always authenticated this way, cleartext self-hosted servers included. Refusing
+			// http here would silently drop those users into an unauthenticated call, so keep the old
+			// reach; the conference window opts out of cleartext upstream instead.
+			await setServerCookies(serverUrl, user, { allowInsecureServer: true });
+		} catch (e) {
+			log(e);
+		} finally {
+			setCookiesSet(true);
+		}
 	};
 
 	const handleJitsiApp = useCallback(async () => {
