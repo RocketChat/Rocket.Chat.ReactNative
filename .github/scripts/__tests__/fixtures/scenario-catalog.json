@@ -102,7 +102,7 @@
       "name": "shared view fans wide: RoomView -> nine flows",
       "category": "real-domain",
       "input": { "diff": ["app/views/RoomView/index.tsx"] },
-      "expectedShards": [3, 7, 9, 11, 12, 13, 14],
+      "expectedShards": [3, 5, 7, 9, 12, 13, 14],
       "expectedShouldRun": true,
       "assertableIn": ["map", "ci"]
     },
