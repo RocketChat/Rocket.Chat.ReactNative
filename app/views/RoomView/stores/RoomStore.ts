@@ -14,7 +14,6 @@ import { type RoomType, type TSubscriptionModel } from '../../../definitions';
 import { type TRoomOrPreview, isSubscriptionModel } from '../../../definitions/TRoom';
 import {
 	type IRoomStoreInitParams,
-	type IRoomViewState,
 	type RoomMembership,
 	type RoomState,
 	type RoomStore,
@@ -24,14 +23,14 @@ import getMessages from '../services/getMessages';
 import { joinRoom, resumeRoom } from '../services/joinRoom';
 
 const EMPTY_ROOM: TRoomOrPreview = { rid: '', t: '' };
-const EMPTY_MEMBER: IRoomViewState['member'] = {};
+const EMPTY_MEMBER: RoomState['member'] = {};
 
 const INIT_MAX_ATTEMPTS = 3;
 const INIT_RETRY_DELAY = 1000;
 
 interface IDirectMessageMember {
 	roomUserId?: string;
-	member: IRoomViewState['member'];
+	member: RoomState['member'];
 }
 
 const getRoomMember = async (room: TRoomOrPreview): Promise<IDirectMessageMember> => {
@@ -53,7 +52,7 @@ const getRoomMember = async (room: TRoomOrPreview): Promise<IDirectMessageMember
 type TLoadRoomResult =
 	| {
 			status: 'loaded';
-			lastSeen: IRoomViewState['lastSeen'];
+			lastSeen: Date | null;
 			shouldMarkRead: boolean;
 			pendingRoomState: Partial<RoomState>;
 	  }
@@ -74,7 +73,7 @@ const loadRoom = async (
 
 		const pendingRoomMember = getRoomMember(room);
 
-		let lastSeen: IRoomViewState['lastSeen'] = null;
+		let lastSeen: Date | null = null;
 		let shouldMarkRead = false;
 		if (tmid) {
 			await loadThreadMessages({ tmid, rid });

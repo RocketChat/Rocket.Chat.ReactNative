@@ -51,12 +51,6 @@ export interface IFooterPreviewProps {
 	message: string;
 }
 
-export interface IRoomViewState {
-	room: TRoomOrPreview;
-	member: any;
-	lastSeen: Date | null;
-}
-
 export interface IUseE2EEStatusResult {
 	showMissingE2EEKey: boolean;
 	showE2EEDisabledRoom: boolean;
@@ -101,7 +95,7 @@ export interface IRoomScreenContextValue {
 	loading: boolean;
 	failed: boolean;
 	retry: () => void;
-	lastSeen: IRoomViewState['lastSeen'];
+	lastSeen: Date | null;
 	clearLastSeen: () => void;
 }
 
@@ -111,17 +105,14 @@ export interface IRoomStoreInitParams {
 	signal?: AbortSignal;
 }
 
-export type TRoomInitResult =
-	| { status: 'loaded'; lastSeen: IRoomViewState['lastSeen'] }
-	| { status: 'skipped' }
-	| { status: 'failed' };
+export type TRoomInitResult = { status: 'loaded'; lastSeen: Date | null } | { status: 'skipped' } | { status: 'failed' };
 
 export type RoomMembership = 'preview' | 'invited' | 'subscribed';
 
 export interface RoomState {
 	room: TRoomOrPreview;
 	membership: RoomMembership;
-	member: IRoomViewState['member'];
+	member: any;
 	roomUserId?: string | null;
 	canAutoTranslate: boolean;
 	canForwardGuest: boolean;

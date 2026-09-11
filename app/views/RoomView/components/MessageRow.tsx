@@ -6,12 +6,12 @@ import LoadMore from '../LoadMore';
 import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
 import { type RoomType, type TAnyMessageModel } from '../../../definitions';
 import { useThreadBadgeColor } from '../hooks/useThreadBadgeColor';
-import { type IRoomViewState, type TMessageRowProps } from '../definitions';
+import { type TMessageRowProps } from '../definitions';
 
 const useIsIgnored = (authorId?: string): boolean =>
 	useRoomStore(fromSubscription(room => (authorId ? (room.ignored?.includes(authorId) ?? false) : false), false));
 
-const getMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageModel, lastSeen: IRoomViewState['lastSeen']) => {
+const getMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageModel, lastSeen: Date | null) => {
 	let dateSeparator: TAnyMessageModel['ts'] | null = null;
 	let showUnreadSeparator = false;
 
