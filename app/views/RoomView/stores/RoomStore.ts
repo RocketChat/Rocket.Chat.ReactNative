@@ -1,6 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
-import { createStore, type StateCreator } from 'zustand';
+import { createStore } from 'zustand';
 
 import database from '../../../lib/database';
 import { SUBSCRIPTIONS_TABLE } from '../../../lib/database/model/Subscription';
@@ -121,60 +121,6 @@ const deriveMembership = (room: TRoomOrPreview): RoomMembership => {
 	return room.t === 'd' ? 'subscribed' : 'preview';
 };
 
-const createRoomState =
-	(
-		rid: string | undefined,
-		initialRoom: TRoomOrPreview = EMPTY_ROOM,
-		roomUserId: string | null | undefined = null
-	): StateCreator<RoomState> =>
-	(set, get) => ({
-		room: initialRoom,
-		membership: deriveMembership(initialRoom),
-		member: EMPTY_MEMBER,
-		roomUserId,
-		canAutoTranslate: false,
-		canForwardGuest: false,
-		canViewCannedResponse: false,
-
-		init: async ({ tmid, onThreadMessagesLoaded, signal }: IRoomStoreInitParams = {}): Promise<TRoomInitResult> => {
-			if (!rid) {
-				return { status: 'skipped' };
-			}
-			for (let attempt = 1; attempt <= INIT_MAX_ATTEMPTS; attempt += 1) {
-				const { room, membership } = get();
-				const result = await loadRoom(rid, room, membership, { tmid, onThreadMessagesLoaded, signal });
-				if (signal?.aborted || result.status === 'skipped') {
-					return { status: 'skipped' };
-				}
-				if (result.status === 'loaded') {
-					set(result.pendingRoomState);
-					if (result.shouldMarkRead) {
-						readMessages(room.rid).catch(e => log(e));
-					}
-					return { status: 'loaded', lastSeen: result.lastSeen };
-				}
-				if (attempt < INIT_MAX_ATTEMPTS) {
-					await new Promise(resolve => {
-						setTimeout(resolve, INIT_RETRY_DELAY);
-					});
-					if (signal?.aborted) {
-						return { status: 'skipped' };
-					}
-				}
-			}
-			return { status: 'failed' };
-		},
-
-		join: () => set({ membership: 'subscribed' }),
-
-		joinRoom: (requestJoinCode?: () => void): Promise<void> =>
-			joinRoom(get().room, {
-				requestJoinCode,
-				onJoin: get().join
-			}),
-		resumeRoom: (): Promise<void> => resumeRoom(get().room, get().join)
-	});
-
 const publishRoom = (store: RoomStore, next: TSubscriptionModel): void => {
 	store.setState({ room: next, membership: deriveMembership(next) });
 };
@@ -248,10 +194,57 @@ export function observeRoom(rid: string | undefined, store: RoomStore, onReady?:
 
 export const createRoomStore = ({
 	rid,
-	initialRoom,
-	roomUserId
+	initialRoom = EMPTY_ROOM,
+	roomUserId = null
 }: {
 	rid?: string;
 	initialRoom: TRoomOrPreview;
 	roomUserId?: string | null;
-}): RoomStore => createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
+}): RoomStore =>
+	createStore<RoomState>((set, get) => ({
+		room: initialRoom,
+		membership: deriveMembership(initialRoom),
+		member: EMPTY_MEMBER,
+		roomUserId,
+		canAutoTranslate: false,
+		canForwardGuest: false,
+		canViewCannedResponse: false,
+
+		init: async ({ tmid, onThreadMessagesLoaded, signal }: IRoomStoreInitParams = {}): Promise<TRoomInitResult> => {
+			if (!rid) {
+				return { status: 'skipped' };
+			}
+			for (let attempt = 1; attempt <= INIT_MAX_ATTEMPTS; attempt += 1) {
+				const { room, membership } = get();
+				const result = await loadRoom(rid, room, membership, { tmid, onThreadMessagesLoaded, signal });
+				if (signal?.aborted || result.status === 'skipped') {
+					return { status: 'skipped' };
+				}
+				if (result.status === 'loaded') {
+					set(result.pendingRoomState);
+					if (result.shouldMarkRead) {
+						readMessages(room.rid).catch(e => log(e));
+					}
+					return { status: 'loaded', lastSeen: result.lastSeen };
+				}
+				if (attempt < INIT_MAX_ATTEMPTS) {
+					await new Promise(resolve => {
+						setTimeout(resolve, INIT_RETRY_DELAY);
+					});
+					if (signal?.aborted) {
+						return { status: 'skipped' };
+					}
+				}
+			}
+			return { status: 'failed' };
+		},
+
+		join: () => set({ membership: 'subscribed' }),
+
+		joinRoom: (requestJoinCode?: () => void): Promise<void> =>
+			joinRoom(get().room, {
+				requestJoinCode,
+				onJoin: get().join
+			}),
+		resumeRoom: (): Promise<void> => resumeRoom(get().room, get().join)
+	}));
