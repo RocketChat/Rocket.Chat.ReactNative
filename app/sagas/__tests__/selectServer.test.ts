@@ -104,6 +104,7 @@ beforeEach(() => {
 describe('selectServer saga — resolving the target workspace user', () => {
 	it('sets the full user from the logged-user record and stamps CURRENT_SERVER', async () => {
 		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
+		UserPreferences.setString(getUserTokenKey(SERVER_URL, USER_ID), TOKEN);
 		jest.mocked(getLoggedUserById).mockResolvedValue({ id: USER_ID, token: TOKEN, username: 'new' } as any);
 
 		const { store, dispatchedActions } = setupStore();
@@ -128,6 +129,31 @@ describe('selectServer saga — resolving the target workspace user', () => {
 		expect(UserPreferences.getString(CURRENT_SERVER)).toBe(SERVER_URL);
 	});
 
+	it('uses the workspace-scoped token when the cached record holds another workspace token', async () => {
+		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
+		UserPreferences.setString(getUserTokenKey(SERVER_URL, USER_ID), TOKEN);
+		jest.mocked(getLoggedUserById).mockResolvedValue({ id: USER_ID, token: 'token-other-workspace', username: 'new' } as any);
+
+		const { store } = setupStore();
+		store.dispatch(selectServerRequest(SERVER_URL, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().login.user.token).toBe(TOKEN);
+	});
+
+	it('does not restore the cached record token when the target workspace has no scoped token', async () => {
+		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
+		jest.mocked(getLoggedUserById).mockResolvedValue({ id: USER_ID, token: 'token-other-workspace' } as any);
+
+		const { store } = setupStore();
+		store.dispatch(selectServerRequest(SERVER_URL, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect(getLoggedUserById).not.toHaveBeenCalled();
+		expect(store.getState().login.user).toEqual({});
+		expect(UserPreferences.getString(CURRENT_SERVER)).toBe(OLD_SERVER);
+	});
+
 	it('does not stamp CURRENT_SERVER when the target workspace has no credentials', async () => {
 		const { store } = setupStore();
 		store.dispatch(selectServerRequest(SERVER_URL, '7.0.0', false));
@@ -140,6 +166,7 @@ describe('selectServer saga — resolving the target workspace user', () => {
 
 	it('leaves CURRENT_SERVER on the previous workspace when the switch fails', async () => {
 		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
+		UserPreferences.setString(getUserTokenKey(SERVER_URL, USER_ID), TOKEN);
 		jest.mocked(getLoggedUserById).mockRejectedValue(new Error('database unavailable'));
 
 		const { store, dispatchedActions } = setupStore();
@@ -156,6 +183,7 @@ describe('selectServer saga — resolving the target workspace user', () => {
 		expect(RocketChatSettings.customHeaders).toHaveProperty('Authorization');
 
 		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
+		UserPreferences.setString(getUserTokenKey(SERVER_URL, USER_ID), TOKEN);
 		jest.mocked(getLoggedUserById).mockResolvedValue({ id: USER_ID, token: TOKEN } as any);
 
 		const { store } = setupStore();
@@ -169,6 +197,7 @@ describe('selectServer saga — resolving the target workspace user', () => {
 describe('selectServer saga — version and name fallback', () => {
 	beforeEach(() => {
 		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
+		UserPreferences.setString(getUserTokenKey(SERVER_URL, USER_ID), TOKEN);
 		jest.mocked(getLoggedUserById).mockResolvedValue({ id: USER_ID, token: TOKEN } as any);
 	});
 
@@ -213,6 +242,7 @@ describe('selectServer saga — version and name fallback', () => {
 describe('selectServer saga — user-facing root after a failed switch', () => {
 	beforeEach(() => {
 		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
+		UserPreferences.setString(getUserTokenKey(SERVER_URL, USER_ID), TOKEN);
 		jest.mocked(getLoggedUserById).mockRejectedValue(new Error('database unavailable'));
 	});
 

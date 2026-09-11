@@ -153,31 +153,27 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(clearActiveUsers());
 		yield* call(migrateTokenKeysToServerScoped);
 		const userId = UserPreferences.getString(getServerUserIdKey(server));
+		const token = userId ? UserPreferences.getString(getUserTokenKey(server, userId)) : null;
 		let user = null;
-		if (userId) {
+		if (userId && token) {
 			// search credentials on database
 			const userRecord = yield* call(getLoggedUserById, userId);
-			if (userRecord) {
-				user = {
-					id: userRecord.id,
-					token: userRecord.token,
-					username: userRecord.username,
-					name: userRecord.name,
-					language: userRecord.language,
-					status: userRecord.status,
-					statusText: userRecord.statusText,
-					roles: userRecord.roles,
-					avatarETag: userRecord.avatarETag,
-					bio: userRecord.bio,
-					nickname: userRecord.nickname,
-					requirePasswordChange: userRecord.requirePasswordChange
-				};
-			} else {
-				const token = UserPreferences.getString(getUserTokenKey(server, userId));
-				if (token) {
-					user = { token };
-				}
-			}
+			user = userRecord
+				? {
+						id: userRecord.id,
+						token,
+						username: userRecord.username,
+						name: userRecord.name,
+						language: userRecord.language,
+						status: userRecord.status,
+						statusText: userRecord.statusText,
+						roles: userRecord.roles,
+						avatarETag: userRecord.avatarETag,
+						bio: userRecord.bio,
+						nickname: userRecord.nickname,
+						requirePasswordChange: userRecord.requirePasswordChange
+					}
+				: { token };
 		}
 
 		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
