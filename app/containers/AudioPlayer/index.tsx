@@ -16,6 +16,7 @@ import { type TDownloadState } from '../../lib/methods/handleMediaDownload';
 import { emitter } from '../../lib/methods/helpers/emitter';
 import { type TAudioState } from './types';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
+import log from '../../lib/methods/helpers/log';
 
 interface IAudioPlayerProps {
 	fileUri: string;
@@ -78,9 +79,9 @@ const AudioPlayer = ({
 			try {
 				setPaused(true);
 				currentTime.value = 0;
-				AudioManager.setPositionAsync(audioUri.current, 0);
-			} catch {
-				// do nothing
+				AudioManager.setPositionAsync(audioUri.current, 0).catch(log);
+			} catch (error) {
+				log(error);
 			}
 		}
 	};
