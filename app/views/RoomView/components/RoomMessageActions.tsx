@@ -1,5 +1,5 @@
-import MessageActions, { type IMessageActions } from '../../../containers/MessageActions';
-import MessageErrorActions, { type IMessageErrorActions } from '../../../containers/MessageErrorActions';
+import MessageActions from '../../../containers/MessageActions';
+import MessageErrorActions from '../../../containers/MessageErrorActions';
 import { type IRoomMessageActionsProps } from '../definitions';
 import { type TSubscriptionModel } from '../../../definitions';
 import { isSubscriptionModel } from '../../../definitions/TRoom';
@@ -33,9 +33,7 @@ export const RoomMessageActions = ({
 	return (
 		<>
 			<MessageActions
-				ref={(ref: IMessageActions | null) => {
-					messageActionsRef.current = ref;
-				}}
+				ref={messageActionsRef}
 				tmid={tmid}
 				room={room}
 				user={user}
@@ -47,12 +45,7 @@ export const RoomMessageActions = ({
 				jumpToMessage={jumpToMessage}
 				isReadOnly={readOnly}
 			/>
-			<MessageErrorActions
-				ref={(ref: IMessageErrorActions | null) => {
-					messageErrorActionsRef.current = ref;
-				}}
-				tmid={tmid}
-			/>
+			<MessageErrorActions ref={messageErrorActionsRef} tmid={tmid} />
 		</>
 	);
 };
