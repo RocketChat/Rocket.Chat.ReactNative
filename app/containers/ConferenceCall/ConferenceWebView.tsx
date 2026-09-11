@@ -40,7 +40,8 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 	const [failed, setFailed] = useState(false);
 
 	const credentialsAllowed = isConferenceUrl(url, server);
-	const [cookiesSet, setCookiesSet] = useState(!credentialsAllowed);
+	const [readyServer, setReadyServer] = useState<string | null>(null);
+	const ready = !credentialsAllowed || readyServer === server;
 	// Android exposes the bridge to child frames, so a cross-origin provider frame could forge
 	// the source. The token lives only in the main frame's closure, which cross-origin frames
 	// cannot read, so they cannot mint a message that parses.
@@ -53,19 +54,20 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 
 	useEffect(() => {
 		if (!credentialsAllowed) {
-			setCookiesSet(true);
 			return;
 		}
 
 		let cancelled = false;
 
-		// Deliberately not resetting cookiesSet: it gates mounting the WebView, so flipping it
-		// back would tear down a live call to re-run a cookie write the running page never reads.
+		// Deliberately not resetting readyServer: it gates mounting the WebView, so clearing it on
+		// every token refresh would tear down a live call to re-run a cookie write the running
+		// page never reads. Readiness is keyed by server, so a new server (or untrusted->trusted
+		// transition, where nothing was written yet) still gates until its write completes.
 		setServerCookies(server, { id: userId, token })
 			.catch(log)
 			.finally(() => {
 				if (!cancelled) {
-					setCookiesSet(true);
+					setReadyServer(server);
 				}
 			});
 
@@ -161,7 +163,7 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 		);
 	}
 
-	if (!cookiesSet) {
+	if (!ready) {
 		return (
 			<View style={[styles.webview, styles.loading]}>
 				<ActivityIndicator />
