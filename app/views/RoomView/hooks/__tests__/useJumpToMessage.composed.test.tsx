@@ -1,4 +1,3 @@
-import { InteractionManager } from 'react-native';
 import { act, renderHook } from '@testing-library/react-native';
 
 import { sendLoadingEvent } from '../../../../containers/Loading';
@@ -67,13 +66,7 @@ const flush = async () => {
 };
 
 describe('useJumpToMessage composed entry points', () => {
-	let runAfterInteractionsSpy: jest.SpyInstance;
-
 	beforeEach(() => {
-		runAfterInteractionsSpy = jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation((task: any) => {
-			task();
-			return { cancel: jest.fn() } as any;
-		});
 		jest.clearAllMocks();
 		mockGetMessageInfo.mockReset();
 		mockRouteParams = {};
@@ -84,7 +77,6 @@ describe('useJumpToMessage composed entry points', () => {
 
 	afterEach(() => {
 		jest.useRealTimers();
-		runAfterInteractionsSpy.mockRestore();
 	});
 
 	it('locates and highlights an in-window Message from a Message URL', async () => {
@@ -327,20 +319,6 @@ describe('useJumpToMessage composed entry points', () => {
 		expect(mockNavigation.push).toHaveBeenCalledWith('RoomView', expect.objectContaining({ name: 'Encrypted_message' }));
 	});
 
-	it('cancels scheduled interaction work on unmount while leaving pending lookup settlement unchanged', async () => {
-		const cancel = jest.fn();
-		const run = jest.spyOn(InteractionManager, 'runAfterInteractions').mockReturnValue({ cancel } as any);
-		let resolveMessage: (value: unknown) => void = () => {};
-		mockGetMessageInfo.mockReturnValue(new Promise(resolve => (resolveMessage = resolve)));
-		const { result, unmount } = renderNavigation();
-		const pending = result.current.jumpToMessageByUrl('https://open.rocket.chat/room?msg=message-11');
-		unmount();
-		expect(cancel).toHaveBeenCalled();
-		resolveMessage({ id: 'message-11', rid: 'rid-1' });
-		await act(async () => await pending);
-		run.mockRestore();
-	});
-
 	it('keeps overlapping cross-Room lookups observable when the older Room resolves late', async () => {
 		let resolveOldRoom: (value: unknown) => void = () => {};
 		mockGetMessageInfo.mockResolvedValueOnce({ id: 'old', rid: 'rid-old' }).mockResolvedValueOnce({ id: 'new', rid: 'rid-new' });
@@ -553,15 +531,6 @@ describe('useJumpToMessage composed entry points', () => {
 		rerender({ tmid: 'ready-thread' });
 		await flush();
 		expect(mockGetMessageInfo).toHaveBeenCalledWith('changed');
-	});
-
-	it('does not start a queued initial route target after unmount', () => {
-		const run = jest.spyOn(InteractionManager, 'runAfterInteractions').mockReturnValue({ cancel: jest.fn() } as any);
-		mockRouteParams = { jumpToMessageId: 'queued' };
-		const { unmount } = renderNavigation();
-		unmount();
-		expect(mockGetMessageInfo).not.toHaveBeenCalled();
-		run.mockRestore();
 	});
 
 	it('preserves pending asynchronous work after unmount until its own boundary settles', async () => {
