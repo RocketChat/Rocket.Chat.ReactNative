@@ -169,12 +169,36 @@
 		"dependsOn": ["app/views/LegalView.tsx", "app/views/LoginView/**", "app/views/RegisterView/**", "app/sagas/login.js"]
 	},
 	{
+		"test": ".maestro/tests/onboarding/login/cas-login.yaml",
+		"dependsOn": [
+			"app/views/LoginView/**",
+			"app/views/AuthenticationWebView.tsx",
+			"app/containers/LoginServices/**",
+			"app/sagas/login.js",
+			"app/sagas/deepLinking.js",
+			"app/lib/methods/helpers/parseSamlOrCasRedirect.ts",
+			"app/lib/methods/helpers/parseDeepLinking.ts"
+		]
+	},
+	{
 		"test": ".maestro/tests/onboarding/login/invalid-credentials.yaml",
 		"dependsOn": ["app/views/LoginView/**", "app/sagas/login.js"]
 	},
 	{
 		"test": ".maestro/tests/onboarding/login/login.yaml",
 		"dependsOn": ["app/views/LoginView/**", "app/sagas/login.js"]
+	},
+	{
+		"test": ".maestro/tests/onboarding/login/saml-login.yaml",
+		"dependsOn": [
+			"app/views/LoginView/**",
+			"app/views/AuthenticationWebView.tsx",
+			"app/containers/LoginServices/**",
+			"app/sagas/login.js",
+			"app/sagas/deepLinking.js",
+			"app/lib/methods/helpers/parseSamlOrCasRedirect.ts",
+			"app/lib/methods/helpers/parseDeepLinking.ts"
+		]
 	},
 	{
 		"test": ".maestro/tests/onboarding/register/create-account.yaml",
@@ -272,6 +296,10 @@
 	{
 		"test": ".maestro/tests/room/message-markdown-click.yaml",
 		"dependsOn": ["app/views/RoomView/**", "app/containers/markdown/**", "app/sagas/room.js"]
+	},
+	{
+		"test": ".maestro/tests/room/reaction-list-scroll-to-last-user.yaml",
+		"dependsOn": ["app/containers/ReactionsList/**", "app/containers/ActionSheet/**"]
 	},
 	{
 		"test": ".maestro/tests/room/quote-thread-message.yaml",

@@ -64,14 +64,14 @@ const ReactionsList = ({ reactions }: IReactionsListProps) => {
 	const renderTabItem = (tab: IRoute, color: string) => {
 		if (tab.key === 'all') {
 			return (
-				<View style={styles.tabBarItem}>
+				<View style={styles.tabBarItem} testID='reactions-tab-all'>
 					<Text style={[styles.allTabItem, { color }]}>{I18n.t('All')}</Text>
 				</View>
 			);
 		}
 		if (tab.emoji) {
 			return (
-				<View style={styles.tabBarItem}>
+				<View style={styles.tabBarItem} testID={`reactions-tab-${tab.emoji}`}>
 					<Emoji content={tab.emoji} standardEmojiStyle={styles.standardEmojiStyle} customEmojiStyle={styles.customEmojiStyle} />
 					<Text style={[styles.reactionCount, { color }]}>{tab.usernames?.length}</Text>
 				</View>
