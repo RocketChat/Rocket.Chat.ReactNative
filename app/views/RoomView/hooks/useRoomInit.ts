@@ -3,7 +3,7 @@ import { InteractionManager } from 'react-native';
 
 import { useLiveRef } from '../../../lib/hooks/useLiveRef';
 import log from '../../../lib/methods/helpers/log';
-import { type IRoomScreenContextValue, type IRoomViewState, type RoomStore } from '../definitions';
+import { type IRoomScreenContextValue, type RoomStore } from '../definitions';
 
 interface IUseRoomInitParams {
 	rid?: string;
@@ -16,7 +16,7 @@ interface IUseRoomInitParams {
 
 interface IRunInitSetters {
 	setSettled: (settled: boolean) => void;
-	setLastSeen: (lastSeen: IRoomViewState['lastSeen']) => void;
+	setLastSeen: (lastSeen: Date | null) => void;
 	setFailed: (failed: boolean) => void;
 }
 
@@ -72,7 +72,7 @@ export function useRoomInit({
 	const onLoadedRef = useLiveRef(onThreadMessagesLoaded);
 
 	// The unread divider anchor belongs to this screen, not to the room — see stores/RoomScreenContext.
-	const [lastSeen, setLastSeen] = useState<IRoomViewState['lastSeen']>(null);
+	const [lastSeen, setLastSeen] = useState<Date | null>(null);
 	// `settled` tracks the init run, and only the init run. A screen that has no rid or no auth never
 	// starts one, so `loading` is derived from both: no work pending means idle, never a stuck flag.
 	const [settled, setSettled] = useState(false);
