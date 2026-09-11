@@ -146,6 +146,8 @@
   "Custom": "自定义",
   "Dark": "深色",
   "Dark_level": "深色程度",
+  "Deep_link_login_description": "有一个链接正尝试让你登录到 {{server}}。只有在你亲自打开此链接并且信任它的情况下才继续。",
+  "Deep_link_login_title": "登录到此工作区？",
   "Default": "默認",
   "Default_browser": "预设浏览器",
   "DELETE": "删除",

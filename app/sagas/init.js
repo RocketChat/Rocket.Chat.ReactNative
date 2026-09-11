@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { CURRENT_SERVER } from '../lib/constants/keys';
 import UserPreferences from '../lib/methods/userPreferences';
+import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
 import { findLoggedInServer, isLoggedInServer } from '../lib/methods/loggedInServer';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
@@ -36,6 +37,7 @@ const restoreServer = async () => {
 
 const getServerToRestore = function* getServerToRestore() {
 	try {
+		yield call(migrateTokenKeysToServerScoped);
 		return (yield call(restoreServer)) || null;
 	} catch (e) {
 		log(e);

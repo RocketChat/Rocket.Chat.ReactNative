@@ -23,5 +23,9 @@ export const ALERT_DISPLAY_TYPE_PREFERENCES_KEY = 'RC_ALERT_DISPLAY_TYPE_PREFERE
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
 export const TOKEN_KEY = 'reactnativemeteor_usertoken';
+export const getServerUserIdKey = (server: string): string => `${TOKEN_KEY}-${server}`;
+export const getLegacyUserTokenKey = (userId: string): string => `${TOKEN_KEY}-${userId}`;
+export const getUserTokenKey = (server: string, userId: string): string => `${TOKEN_KEY}-${server}-${userId}`;
+export const TOKEN_KEY_SERVER_SCOPED_MIGRATED = 'RC_TOKEN_KEY_SERVER_SCOPED_MIGRATED';
 export const CURRENT_SERVER = 'currentServer';
 export const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';

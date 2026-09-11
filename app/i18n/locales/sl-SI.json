@@ -178,6 +178,8 @@
   "Custom": "Po meri",
   "Dark": "Temno",
   "Dark_level": "Temna raven",
+  "Deep_link_login_description": "Povezava vas poskuša prijaviti v {{server}}. Nadaljujte le, če ste to povezavo odprli sami in ji zaupate.",
+  "Deep_link_login_title": "Se želite prijaviti v ta delovni prostor?",
   "Default": "Privzeto",
   "Default_browser": "Privzeti brskalnik",
   "DELETE": "Izbrisati",

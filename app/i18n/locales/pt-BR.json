@@ -226,6 +226,8 @@
   "Dark": "Escuro",
   "Dark_level": "Nível escuro",
   "decline": "Recusar",
+  "Deep_link_login_description": "Um link está tentando fazer seu login em {{server}}. Continue apenas se você abriu esse link por conta própria e confia nele.",
+  "Deep_link_login_title": "Fazer login neste workspace?",
   "Default": "Padrão",
   "Default_browser": "Navegador padrão",
   "Defined_user_as_role": "definiu {{user}} como {{role}}",
