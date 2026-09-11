@@ -2,7 +2,7 @@ import { type ComponentType } from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import { withSafeAreaInsets as withSafeAreaInsetsLib, type WithSafeAreaInsetsProps } from 'react-native-safe-area-context';
 
-import { type TNavigationOptions } from '../../definitions/navigationTypes';
+import { type TNavigationOptions } from '~/definitions/navigationTypes';
 
 export type { WithSafeAreaInsetsProps };
 

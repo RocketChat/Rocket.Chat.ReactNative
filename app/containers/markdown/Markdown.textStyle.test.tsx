@@ -1,12 +1,13 @@
+import { StyleSheet } from 'react-native';
 import { fireEvent, render } from '@testing-library/react-native';
 
 import Markdown from '.';
 
-jest.mock('../../lib/hooks/useAppSelector', () => ({
+jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: jest.fn(() => false)
 }));
 
-jest.mock('../../lib/methods/userPreferences', () => ({
+jest.mock('~/lib/methods/userPreferences', () => ({
 	useUserPreferences: jest.fn(() => [true])
 }));
 
@@ -31,10 +32,10 @@ describe('Markdown textStyle integration', () => {
 		const mentionNode = getByText('@rocket.cat');
 		const hashtagNode = getByText('#general');
 
-		expect(plainTextNode.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ fontSize: 17 })]));
-		expect(linkNode.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ fontSize: 17 })]));
-		expect(mentionNode.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ fontSize: 17 })]));
-		expect(hashtagNode.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ fontSize: 17 })]));
+		expect(StyleSheet.flatten(plainTextNode.props.style)).toEqual(expect.objectContaining({ fontSize: 17 }));
+		expect(StyleSheet.flatten(linkNode.props.style)).toEqual(expect.objectContaining({ fontSize: 17 }));
+		expect(StyleSheet.flatten(mentionNode.props.style)).toEqual(expect.objectContaining({ fontSize: 17 }));
+		expect(StyleSheet.flatten(hashtagNode.props.style)).toEqual(expect.objectContaining({ fontSize: 17 }));
 
 		fireEvent.press(linkNode);
 

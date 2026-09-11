@@ -2,14 +2,14 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import * as WebBrowser from 'expo-web-browser';
 import { Base64 } from 'js-base64';
 
-import Navigation from '../../lib/navigation/appNavigation';
+import Navigation from '~/lib/navigation/appNavigation';
 import { type IItemService, type IOpenSSOWebView, type IServiceLogin } from './interfaces';
-import { random } from '../../lib/methods/helpers';
-import { loginOAuthOrSso } from '../../lib/services/connect';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { store } from '../../lib/store/auxStore';
-import { deepLinkingOpen } from '../../actions/deepLinking';
-import parseDeepLinking from '../../lib/methods/helpers/parseDeepLinking';
+import { random } from '~/lib/methods/helpers';
+import { loginOAuthOrSso } from '~/lib/services/connect';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { store } from '~/lib/store/auxStore';
+import { deepLinkingOpen } from '~/actions/deepLinking';
+import parseDeepLinking from '~/lib/methods/helpers/parseDeepLinking';
 
 type TLoginStyle = 'popup' | 'redirect';
 
@@ -137,7 +137,11 @@ export const onPressAppleLogin = async () => {
 				AppleAuthentication.AppleAuthenticationScope.EMAIL
 			]
 		});
-		await loginOAuthOrSso({ fullName, email, identityToken });
+		if (!identityToken) {
+			logEvent(events.ENTER_WITH_APPLE_F);
+			return;
+		}
+		await loginOAuthOrSso({ fullName: fullName ?? {}, email, identityToken });
 	} catch {
 		logEvent(events.ENTER_WITH_APPLE_F);
 	}

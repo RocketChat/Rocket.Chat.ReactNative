@@ -3,18 +3,18 @@ import { Q } from '@nozbe/watermelondb';
 import { type Subscription } from 'rxjs';
 import { useDispatch, useStore } from 'react-redux';
 
-import { type IApplicationState, type RoomType, type TAnyMessageModel } from '../../../../definitions';
-import database from '../../../../lib/database';
-import { getMessageById } from '../../../../lib/database/services/Message';
-import { getThreadById } from '../../../../lib/database/services/Thread';
-import { tsToMs } from '../../../../lib/dayjs';
-import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
-import { readThreads } from '../../../../lib/services/restApi';
-import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
+import { type IApplicationState, type RoomType, type TAnyMessageModel } from '~/definitions';
+import database from '~/lib/database';
+import { getMessageById } from '~/lib/database/services/Message';
+import { getThreadById } from '~/lib/database/services/Thread';
+import { tsToMs } from '~/lib/dayjs';
+import { compareServerVersion, useDebounce } from '~/lib/methods/helpers';
+import { readThreads } from '~/lib/services/restApi';
+import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
 import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
-import { roomHistoryRequest } from '../../../../actions/room';
-import { isNewerLoader, raiseOrRelease, type AnchorMessage } from '../../services/anchorResolver';
+import { roomHistoryRequest } from '~/actions/room';
+import { isNewerLoader, raiseOrRelease, type AnchorMessage } from '~/views/RoomView/services/anchorResolver';
 
 const findFirstLoaderId = (messages: TAnyMessageModel[]): string | null =>
 	messages.find(m => m.t && MESSAGE_TYPE_ANY_LOAD.includes(m.t as MessageTypeLoad))?.id ?? null;

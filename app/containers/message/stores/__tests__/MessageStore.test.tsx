@@ -3,11 +3,11 @@ import { type ReactNode } from 'react';
 import { Keyboard, Text } from 'react-native';
 import { Provider } from 'react-redux';
 
-import { type IAttachment, type TAnyMessageModel } from '../../../../definitions';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../../lib/constants/keys';
-import { messagesStatus } from '../../../../lib/constants/messagesStatus';
-import openLink from '../../../../lib/methods/helpers/openLink';
+import { type IAttachment, type TAnyMessageModel } from '~/definitions';
+import { mockedStore } from '~/reducers/mockedStore';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
+import { messagesStatus } from '~/lib/constants/messagesStatus';
+import openLink from '~/lib/methods/helpers/openLink';
 import { MessageRoomProvider, type MessageRoomState } from '../MessageRoomStore';
 import {
 	MessageProvider,
@@ -39,7 +39,7 @@ import {
 	useUrls
 } from '../MessageStore';
 
-jest.mock('../../../../lib/methods/helpers/openLink', () => ({
+jest.mock('~/lib/methods/helpers/openLink', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { StyleSheet, type TextInputProps, View } from 'react-native';
 
-import { useTheme } from '../../theme';
-import I18n from '../../i18n';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
 import { FormTextInput } from '../TextInput';
 
 const styles = StyleSheet.create({

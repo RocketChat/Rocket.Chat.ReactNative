@@ -8,25 +8,25 @@ import { type RouteProp, useNavigation, useRoute } from '@react-navigation/nativ
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { addUser, removeUser, reset } from '../../actions/selectedUsers';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import * as List from '../../containers/List';
-import { sendLoadingEvent } from '../../containers/Loading';
-import SafeAreaView from '../../containers/SafeAreaView';
-import I18n from '../../i18n';
-import database from '../../lib/database';
-import UserItem from '../../containers/UserItem';
-import { type ISelectedUser } from '../../reducers/selectedUsers';
-import { getUserSelector } from '../../selectors/login';
-import { type ChatsStackParamList, type NewMessageStackParamList } from '../../stacks/types';
-import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
-import { useTheme } from '../../theme';
-import { showErrorAlert } from '../../lib/methods/helpers/info';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { search as runSearch, type TSearch } from '../../lib/methods/search';
-import { isGroupChat as isGroupChatMethod } from '../../lib/methods/helpers';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { addUser, removeUser, reset } from '~/actions/selectedUsers';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import * as List from '~/containers/List';
+import { sendLoadingEvent } from '~/containers/Loading';
+import SafeAreaView from '~/containers/SafeAreaView';
+import I18n from '~/i18n';
+import database from '~/lib/database';
+import UserItem from '~/containers/UserItem';
+import { type ISelectedUser } from '~/reducers/selectedUsers';
+import { getUserSelector } from '~/selectors/login';
+import { type ChatsStackParamList, type NewMessageStackParamList } from '~/stacks/types';
+import { type ModalStackParamList } from '~/stacks/MasterDetailStack/types';
+import { useTheme } from '~/theme';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { search as runSearch, type TSearch } from '~/lib/methods/search';
+import { isGroupChat as isGroupChatMethod } from '~/lib/methods/helpers';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import Header from './Header';
 
 type TRoute = RouteProp<ChatsStackParamList & NewMessageStackParamList & ModalStackParamList, 'SelectedUsersView'>;
@@ -94,7 +94,7 @@ const SelectedUsersView = () => {
 	}, [navigation, users.length, maxUsers, buttonText, nextAction]);
 
 	useEffect(() => {
-		if (isGroupChat()) {
+		if (isGroupChat() && user.username) {
 			dispatch(addUser({ _id: user.id, name: user.username, fname: user.name as string }));
 		}
 	}, []);

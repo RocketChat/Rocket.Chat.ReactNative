@@ -1,10 +1,10 @@
 import { Alert, type AlertButton, type AlertOptions } from 'react-native';
 
-import database from '../../database';
-import { saveRoomSettings } from '../../services/restApi';
+import database from '~/lib/database';
+import { saveRoomSettings } from '~/lib/services/restApi';
 import { toggleRoomE2EE } from './toggleRoomE2EE';
 
-jest.mock('../../database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: {
 		active: {
@@ -14,16 +14,16 @@ jest.mock('../../database', () => ({
 	}
 }));
 
-jest.mock('../../services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	saveRoomSettings: jest.fn()
 }));
 
-jest.mock('../../../i18n', () => ({
+jest.mock('~/i18n', () => ({
 	__esModule: true,
 	default: { t: (key: string) => key }
 }));
 
-jest.mock('../../methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));

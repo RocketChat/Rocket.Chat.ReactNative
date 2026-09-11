@@ -6,22 +6,22 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
-import log from '../../lib/methods/helpers/log';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import I18n from '../../i18n';
+import useA11yErrorAnnouncement from '~/lib/hooks/useA11yErrorAnnouncement';
+import log from '~/lib/methods/helpers/log';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
+import I18n from '~/i18n';
 import UserInfo from './UserInfo';
 import styles from './styles';
-import { ControlledFormTextInput } from '../../containers/TextInput';
-import Button from '../../containers/Button';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { LISTENER } from '../../containers/Toast';
-import { reportUser } from '../../lib/services/restApi';
-import KeyboardView from '../../containers/KeyboardView';
-import Navigation from '../../lib/navigation/appNavigation';
+import { ControlledFormTextInput } from '~/containers/TextInput';
+import Button from '~/containers/Button';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { LISTENER } from '~/containers/Toast';
+import { reportUser } from '~/lib/services/restApi';
+import KeyboardView from '~/containers/KeyboardView';
+import Navigation from '~/lib/navigation/appNavigation';
 
 type TReportUserViewNavigationProp = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'ReportUserView'>,

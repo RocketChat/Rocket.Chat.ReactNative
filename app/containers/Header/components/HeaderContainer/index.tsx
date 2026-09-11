@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { View, type ViewProps, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useTheme } from '../../../../theme';
+import { useTheme } from '~/theme';
 
 interface IHeaderContainer extends ViewProps {
 	addExtraNotchPadding?: boolean;

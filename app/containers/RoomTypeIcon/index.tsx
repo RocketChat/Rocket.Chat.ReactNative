@@ -4,10 +4,10 @@ import { type ImageStyle } from 'expo-image';
 
 import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
 import { CustomIcon, type TIconsName } from '../CustomIcon';
-import { themes } from '../../lib/constants/colors';
+import { themes } from '~/lib/constants/colors';
 import Status from '../Status';
-import { useTheme } from '../../theme';
-import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '../../definitions';
+import { useTheme } from '~/theme';
+import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '~/definitions';
 
 const styles = StyleSheet.create({
 	icon: {

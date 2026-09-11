@@ -1,22 +1,23 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { type IUserMessage } from '../../../../definitions';
-import { type IAttachment } from '../../../../definitions/IAttachment';
-import I18n from '../../../../i18n';
-import { fileDownload, isIOS } from '../../../../lib/methods/helpers';
-import EventEmitter from '../../../../lib/methods/helpers/events';
-import { useTheme } from '../../../../theme';
-import sharedStyles from '../../../../views/Styles';
-import { type TIconsName } from '../../../CustomIcon';
-import { LISTENER } from '../../../Toast';
-import Markdown from '../../../markdown';
+import { type IUserMessage } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
+import I18n from '~/i18n';
+import { isIOS } from '~/lib/methods/helpers';
+import { fileDownload } from '~/lib/methods/helpers/fileDownload';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
+import { type TIconsName } from '~/containers/CustomIcon';
+import { LISTENER } from '~/containers/Toast';
+import Markdown from '~/containers/markdown';
 import MessageActionTouchable from '../Touchable/MessageActionTouchable';
-import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
-import { useMessageUser } from '../../stores/MessageRoomStore';
+import { useMediaAutoDownload } from '~/containers/message/hooks/useMediaAutoDownload';
+import { useMessageUser } from '~/containers/message/stores/MessageRoomStore';
 import BlurComponent from '../OverlayComponent';
-import { type TDownloadState } from '../../../../lib/methods/handleMediaDownload';
-import messageStyles from '../../styles';
+import { type TDownloadState } from '~/lib/methods/handleMediaDownload';
+import messageStyles from '~/containers/message/styles';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;

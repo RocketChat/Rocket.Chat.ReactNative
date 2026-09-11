@@ -2,8 +2,8 @@ import { Q } from '@nozbe/watermelondb';
 import { useEffect, useState } from 'react';
 import { type Observable, type Subscription } from 'rxjs';
 
-import { type TLoggedUserModel, type TSubscriptionModel, type TUserModel } from '../../definitions';
-import database from '../../lib/database';
+import { type TLoggedUserModel, type TSubscriptionModel, type TUserModel } from '~/definitions';
+import database from '~/lib/database';
 
 export const useAvatarETag = ({
 	username,
@@ -13,7 +13,7 @@ export const useAvatarETag = ({
 	id
 }: {
 	type?: string;
-	username: string;
+	username?: string;
 	text: string;
 	rid?: string;
 	id: string;
@@ -61,7 +61,7 @@ export const useAvatarETag = ({
 				}
 			};
 		}
-	}, [text]);
+	}, [text, username, type, rid, id]);
 
 	return { avatarETag };
 };

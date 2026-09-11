@@ -6,14 +6,14 @@ import CallView from '.';
 import CallerInfo from './components/CallerInfo';
 import { CallButtons } from './components/CallButtons';
 import { styles as callViewStyles } from './styles';
-import { useTheme } from '../../theme';
-import { useCallStore } from '../../lib/services/voip/useCallStore';
-import { ActionSheetProvider } from '../../containers/ActionSheet';
+import { useTheme } from '~/theme';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
+import { ActionSheetProvider } from '~/containers/ActionSheet';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,
 	ResponsiveLayoutContext
-} from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+} from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {

@@ -1,9 +1,9 @@
-import { type ITeam } from '../../ITeam';
-import type { IMessageFromServer } from '../../IMessage';
-import type { IServerRoom } from '../../IRoom';
-import type { IUser } from '../../IUser';
-import { type IGetRoomRoles } from '../../IRole';
-import { type IServerAttachment } from '../../IAttachment';
+import { type ITeam } from '~/definitions/ITeam';
+import type { IMessageFromServer } from '~/definitions/IMessage';
+import type { IServerRoom } from '~/definitions/IRoom';
+import type { IUser } from '~/definitions/IUser';
+import { type IGetRoomRoles } from '~/definitions/IRole';
+import { type IServerAttachment } from '~/definitions/IAttachment';
 import { type PaginatedRequest } from '../helpers/PaginatedRequest';
 
 export type ChannelsEndpoints = {

@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
-import { useTheme } from '../../../../theme';
+import { useTheme } from '~/theme';
 
 export default function VideoConferenceSkeletonLoading(): ReactElement {
 	const { colors } = useTheme();

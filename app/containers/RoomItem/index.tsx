@@ -3,14 +3,14 @@ import { type Subscription } from 'rxjs';
 import { AccessibilityInfo } from 'react-native';
 
 import { useActionSheet } from '../ActionSheet';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { isGroupChat } from '../../lib/methods/helpers';
-import { formatDate, formatDateAccessibility } from '../../lib/methods/helpers/room';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { isGroupChat } from '~/lib/methods/helpers';
+import { formatDate, formatDateAccessibility } from '~/lib/methods/helpers/room';
 import { type IRoomItemContainerProps } from './interfaces';
 import RoomItem from './RoomItem';
 import { getRoomActionsOptions } from './getRoomActionsOptions';
-import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
-import { isExternalKeyboardConnected } from '../../lib/methods/helpers/externalInput';
+import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
+import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
 
 const attrs = ['width', 'isFocused', 'showLastMessage', 'autoJoin', 'showAvatar', 'displayMode'];
 

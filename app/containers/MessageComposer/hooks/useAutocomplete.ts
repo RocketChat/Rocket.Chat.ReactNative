@@ -7,16 +7,16 @@ import {
 	type TAutocompleteItem,
 	type TAutocompleteType
 } from '../interfaces';
-import { searchLocal, searchRemote, type TSearch } from '../../../lib/methods/search';
-import { sanitizeLikeString } from '../../../lib/database/utils';
-import database from '../../../lib/database';
-import { emojis } from '../../../lib/constants/emojis';
-import { type ICustomEmoji } from '../../../definitions';
-import { getCommandPreview, getListCannedResponse } from '../../../lib/services/restApi';
-import log from '../../../lib/methods/helpers/log';
-import I18n from '../../../i18n';
+import { searchLocal, searchRemote, type TSearch } from '~/lib/methods/search';
+import { searchEmojiNames } from '~/lib/methods/emojis';
+import { sanitizeLikeString } from '~/lib/database/utils';
+import database from '~/lib/database';
+import { type ICustomEmoji } from '~/definitions';
+import { getCommandPreview, getListCannedResponse } from '~/lib/services/restApi';
+import log from '~/lib/methods/helpers/log';
+import I18n from '~/i18n';
 import { NO_CANNED_RESPONSES } from '../constants';
-import { usePermissions } from '../../../lib/hooks/usePermissions';
+import { usePermissions } from '~/lib/hooks/usePermissions';
 
 const MENTIONS_COUNT_TO_DISPLAY = 4;
 
@@ -144,7 +144,7 @@ export const useAutocomplete = ({
 				if (type === ':') {
 					const customEmojis = await getCustomEmojis(text);
 					if (ignore) return;
-					const filteredStandardEmojis = emojis.filter(emoji => emoji.indexOf(text) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
+					const filteredStandardEmojis = searchEmojiNames(text).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 					let mergedEmojis: IAutocompleteEmoji[] = customEmojis.map(emoji => ({
 						id: emoji.name,
 						emoji,

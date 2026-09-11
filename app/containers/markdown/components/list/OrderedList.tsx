@@ -3,8 +3,8 @@ import { View, Text } from 'react-native';
 import { type OrderedList as OrderedListProps } from '@rocket.chat/message-parser';
 
 import Inline from '../Inline';
-import styles from '../../styles';
-import { useTheme } from '../../../../theme';
+import styles from '~/containers/markdown/styles';
+import { useTheme } from '~/theme';
 
 interface IOrderedListProps {
 	value: OrderedListProps['value'];

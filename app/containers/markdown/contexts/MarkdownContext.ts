@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import { type StyleProp, type TextStyle } from 'react-native';
 
 import { type IUserMention, type IUserChannel } from '../interfaces';
@@ -24,22 +24,21 @@ const defaultState = {
 
 const MarkdownContext = createContext<IMarkdownContext>(defaultState);
 
-export const useMarkdownContext = (overrides?: Partial<IMarkdownContext>): IMarkdownContext => {
+export const useMarkdownContext = (textStyle?: StyleProp<TextStyle>): IMarkdownContext => {
 	const context = useContext(MarkdownContext);
-	if (!overrides) return context;
 
-	// Merge the context and overrides
-	const newContext = { ...context, ...overrides };
+	return useMemo(() => {
+		if (!textStyle) return context;
+		if (!context.textStyle) return { ...context, textStyle };
 
-	// Deep merge textStyle if both exist
-	if (context.textStyle && overrides.textStyle) {
-		newContext.textStyle = [
-			...(Array.isArray(context.textStyle) ? context.textStyle : [context.textStyle]),
-			...(Array.isArray(overrides.textStyle) ? overrides.textStyle : [overrides.textStyle])
-		];
-	}
-
-	return newContext;
+		return {
+			...context,
+			textStyle: [
+				...(Array.isArray(context.textStyle) ? context.textStyle : [context.textStyle]),
+				...(Array.isArray(textStyle) ? textStyle : [textStyle])
+			]
+		};
+	}, [context, textStyle]);
 };
 
 export default MarkdownContext;

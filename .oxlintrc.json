@@ -1,7 +1,7 @@
 {
 	"$schema": "./node_modules/oxlint/configuration_schema.json",
 	"plugins": ["import", "react", "jest"],
-	"jsPlugins": ["eslint-plugin-react-native"],
+	"jsPlugins": ["eslint-plugin-react-native", "oxlint-plugin-complexity"],
 	"categories": {
 		"correctness": "off"
 	},
@@ -21,13 +21,19 @@
 	],
 	"rules": {
 		"import/extensions": "off",
-		"import/no-cycle": "warn",
+		"import/no-cycle": "error",
 		"react/jsx-fragments": ["error", "syntax"],
 		"react-native/no-single-element-style-arrays": "error",
 		"react-native/no-unused-styles": "error",
 		"no-restricted-imports": [
 			"error",
 			{
+				"patterns": [
+					{
+						"group": ["../../**"],
+						"message": "Use a ~/ alias for imports two or more directories up."
+					}
+				],
 				"paths": [
 					{
 						"name": "react",
@@ -37,12 +43,17 @@
 				]
 			}
 		],
+		"complexity": ["warn", { "max": 20 }],
+		"max-depth": ["error", { "max": 4 }],
+		"max-nested-callbacks": ["error", { "max": 10 }],
+		"max-params": ["warn", { "max": 4 }],
 		"no-void": "error",
 		"new-cap": "error",
 		"require-await": "error",
 		"react/exhaustive-deps": "warn",
 		"react/rules-of-hooks": "error",
-		"react/react-compiler": "warn"
+		"react/react-compiler": "warn",
+		"complexity/complexity": ["warn", { "cyclomatic": 1000, "cognitive": 15 }]
 	},
 	"overrides": [
 		{
@@ -53,6 +64,12 @@
 				"no-restricted-imports": [
 					"error",
 					{
+						"patterns": [
+							{
+								"group": ["../../**"],
+								"message": "Use a ~/ alias for imports two or more directories up."
+							}
+						],
 						"paths": [
 							{
 								"name": "react",
@@ -92,6 +109,11 @@
 		{
 			"files": ["jest.setup.js", "__mocks__/**/*.js", "**/*.test.{js,ts,tsx}"],
 			"rules": {
+				"complexity": "off",
+				"complexity/complexity": "off",
+				"max-depth": "off",
+				"max-nested-callbacks": "off",
+				"max-params": "off",
 				"jest/no-commented-out-tests": "warn",
 				"jest/no-identical-title": "error",
 				"jest/no-focused-tests": "error",

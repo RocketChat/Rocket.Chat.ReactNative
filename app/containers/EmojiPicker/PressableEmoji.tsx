@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 
 import styles from './styles';
-import { type IEmoji } from '../../definitions/IEmoji';
+import { type IEmoji } from '~/definitions/IEmoji';
 import { Emoji } from './Emoji';
 import Touch from '../Touch';
 

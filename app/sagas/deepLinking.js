@@ -1,7 +1,7 @@
 import { InteractionManager } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import I18n from 'i18n-js';
-import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
+import { all, call, delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
@@ -143,6 +143,21 @@ const handleOAuth = function* handleOAuth({ params }) {
 	}
 };
 
+let consumedSamlToken;
+
+const handleSaml = function* handleSaml({ params }) {
+	const { credentialToken } = params;
+	if (!credentialToken || credentialToken === consumedSamlToken) {
+		return;
+	}
+	consumedSamlToken = credentialToken;
+	try {
+		yield loginOAuthOrSso({ saml: true, credentialToken });
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleShareExtension = function* handleOpen({ params }) {
 	const server = UserPreferences.getString(CURRENT_SERVER);
 	const user = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
@@ -153,17 +168,32 @@ const handleShareExtension = function* handleOpen({ params }) {
 	}
 
 	yield put(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
-	yield localAuthenticate(server);
-	const serverRecord = yield getServerById(server);
-	if (!serverRecord) {
-		return;
+	try {
+		yield localAuthenticate(server);
+		const serverRecord = yield getServerById(server);
+		if (!serverRecord) {
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+			return;
+		}
+		yield put(selectServerRequest(server, serverRecord.version));
+		if (sdk.host !== server) {
+			const { loginSuccess } = yield race({
+				loginSuccess: take(types.LOGIN.SUCCESS),
+				loginFailure: take(types.LOGIN.FAILURE),
+				selectServerFailure: take(types.SERVER.SELECT_FAILURE),
+				logout: take(types.LOGOUT)
+			});
+			if (!loginSuccess) {
+				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+				return;
+			}
+		}
+		yield put(shareSetParams(params));
+		yield put(appStart({ root: RootEnum.ROOT_SHARE_EXTENSION }));
+	} catch (e) {
+		log(e);
+		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 	}
-	yield put(selectServerRequest(server, serverRecord.version));
-	if (sdk.current?.client?.host !== server) {
-		yield take(types.LOGIN.SUCCESS);
-	}
-	yield put(shareSetParams(params));
-	yield put(appStart({ root: RootEnum.ROOT_SHARE_EXTENSION }));
 };
 
 const handleOpen = function* handleOpen({ params }) {
@@ -173,6 +203,10 @@ const handleOpen = function* handleOpen({ params }) {
 	}
 	if (params.type === 'oauth') {
 		yield handleOAuth({ params });
+		return;
+	}
+	if (params.type === 'saml') {
+		yield handleSaml({ params });
 		return;
 	}
 
@@ -233,7 +267,7 @@ const handleOpen = function* handleOpen({ params }) {
 			return;
 		}
 		// if the host is different from the current one, we need to connect to it before navigating
-		const hostAlreadyConnected = sdk.current?.client?.host === host;
+		const hostAlreadyConnected = sdk.host === host;
 		if (!hostAlreadyConnected) {
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			yield put(serverInitAdd(server));

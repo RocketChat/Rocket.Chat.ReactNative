@@ -1,6 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 
-import { MESSAGE_TYPE_ANY_LOAD } from '../../../../lib/constants/messageTypeLoad';
+import { MESSAGE_TYPE_ANY_LOAD } from '~/lib/constants/messageTypeLoad';
 
 /**
  * When the user hides system message types, applying `take(N)` before filtering would return

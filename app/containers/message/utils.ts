@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
-import { type IAttachment, type IMessageTranslations } from '../../definitions';
-import { type MessageTypesValues, type TAnyMessageModel, type TMessageModel } from '../../definitions/IMessage';
-import I18n from '../../i18n';
+import { type IAttachment, type IMessageTranslations } from '~/definitions';
+import { type MessageTypesValues, type TAnyMessageModel, type TMessageModel } from '~/definitions/IMessage';
+import I18n from '~/i18n';
 import { DISCUSSION } from './constants';
 
 export const DEFAULT_MESSAGE_HEIGHT = 150;

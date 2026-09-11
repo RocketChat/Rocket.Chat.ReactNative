@@ -1,19 +1,19 @@
-import { useContext, memo } from 'react';
+import { memo } from 'react';
 import { Text } from 'react-native';
 
-import i18n from '../../../../i18n';
-import { themes } from '../../../../lib/constants/colors';
-import { ROOM_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants/keys';
-import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
-import { useMasterDetail } from '../../../../lib/hooks/useMasterDetail';
-import { useUserPreferences } from '../../../../lib/methods/userPreferences';
-import { showErrorAlert } from '../../../../lib/methods/helpers/info';
-import { goRoom } from '../../../../lib/methods/helpers/goRoom';
-import { getRoomInfo } from '../../../../lib/services/restApi';
-import { useTheme } from '../../../../theme';
-import { sendLoadingEvent } from '../../../Loading';
-import styles from '../../styles';
-import MarkdownContext from '../../contexts/MarkdownContext';
+import i18n from '~/i18n';
+import { themes } from '~/lib/constants/colors';
+import { ROOM_MENTIONS_PREFERENCES_KEY } from '~/lib/constants/keys';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { useUserPreferences } from '~/lib/methods/userPreferences';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
+import { getRoomInfo } from '~/lib/services/restApi';
+import { useTheme } from '~/theme';
+import { sendLoadingEvent } from '~/containers/Loading';
+import styles from '~/containers/markdown/styles';
+import { useMarkdownContext } from '~/containers/markdown/contexts/MarkdownContext';
 
 interface IHashtag {
 	hashtag: string;
@@ -21,7 +21,7 @@ interface IHashtag {
 
 const Hashtag = memo(({ hashtag }: IHashtag) => {
 	const { theme } = useTheme();
-	const { textStyle, channels, navToRoomInfo } = useContext(MarkdownContext);
+	const { textStyle, channels, navToRoomInfo } = useMarkdownContext();
 	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
 	const isMasterDetail = useMasterDetail();
 	const preffix = roomsWithHashTagSymbol ? '#' : '';

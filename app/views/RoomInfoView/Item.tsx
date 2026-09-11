@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { type ReactElement } from 'react';
 
-import Markdown from '../../containers/markdown';
+import Markdown from '~/containers/markdown';
 import styles from './styles';
 import { ItemLabel } from './components/ItemLabel';
 

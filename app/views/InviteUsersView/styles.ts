@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { PADDING_HORIZONTAL } from '../../containers/List/constants';
+import { PADDING_HORIZONTAL } from '~/containers/List/constants';
 
 export default StyleSheet.create({
 	innerContainer: {

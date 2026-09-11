@@ -25,7 +25,7 @@ import {
 	type TSubscriptionModel,
 	type TThreadMessageModel,
 	type TThreadModel
-} from '../../definitions';
+} from '~/definitions';
 import {
 	E2E_BANNER_TYPE,
 	E2E_MESSAGE_TYPE,
@@ -293,7 +293,7 @@ class Encryption {
 				await this.roomInstances[rid].handshake();
 				return this.roomInstances[rid];
 			}
-			this.roomInstances[rid] = new EncryptionRoom(rid, this.userId as string);
+			this.roomInstances[rid] = new EncryptionRoom(rid, this.userId as string, this);
 
 			const roomE2E = this.roomInstances[rid];
 

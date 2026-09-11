@@ -1,9 +1,9 @@
 import { type ReactElement } from 'react';
 import { Text, View } from 'react-native';
 
-import i18n from '../../../../i18n';
+import i18n from '~/i18n';
 import useStyle from './styles';
-import AvatarContainer from '../../../Avatar';
+import AvatarContainer from '~/containers/Avatar';
 
 const MAX_USERS = 3;
 

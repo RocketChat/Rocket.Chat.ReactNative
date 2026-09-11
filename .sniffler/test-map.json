@@ -8,6 +8,10 @@
 		"dependsOn": ["app/views/AccessibilityAndAppearanceView/**"]
 	},
 	{
+		"test": ".maestro/tests/assorted/admin-panel.yaml",
+		"dependsOn": ["app/views/AdminPanelView/**", "app/views/SidebarView/**"]
+	},
+	{
 		"test": ".maestro/tests/assorted/broadcast.yaml",
 		"dependsOn": [
 			"app/views/NewMessageView/**",
@@ -15,6 +19,17 @@
 			"app/views/CreateChannelView/**",
 			"app/views/RoomInfoView/**",
 			"app/sagas/createChannel.js"
+		]
+	},
+	{
+		"test": ".maestro/tests/assorted/channel-deeplink.yaml",
+		"dependsOn": [
+			"app/views/RoomView/**",
+			"app/views/RoomsListView/**",
+			"app/sagas/deepLinking.js",
+			"app/sagas/room.js",
+			"app/sagas/login.js",
+			"app/sagas/rooms.js"
 		]
 	},
 	{
@@ -29,7 +44,9 @@
 			"app/views/RegisterView/**",
 			"app/views/RoomsListView/**",
 			"app/sagas/login.js",
-			"app/sagas/rooms.js"
+			"app/sagas/rooms.js",
+			"app/sagas/selectServer.ts",
+			"app/lib/services/connect.ts"
 		]
 	},
 	{
@@ -55,7 +72,9 @@
 			"app/views/RegisterView/**",
 			"app/views/RoomsListView/**",
 			"app/sagas/login.js",
-			"app/sagas/rooms.js"
+			"app/sagas/rooms.js",
+			"app/sagas/selectServer.ts",
+			"app/lib/services/connect.ts"
 		]
 	},
 	{
@@ -150,12 +169,36 @@
 		"dependsOn": ["app/views/LegalView.tsx", "app/views/LoginView/**", "app/views/RegisterView/**", "app/sagas/login.js"]
 	},
 	{
+		"test": ".maestro/tests/onboarding/login/cas-login.yaml",
+		"dependsOn": [
+			"app/views/LoginView/**",
+			"app/views/AuthenticationWebView.tsx",
+			"app/containers/LoginServices/**",
+			"app/sagas/login.js",
+			"app/sagas/deepLinking.js",
+			"app/lib/methods/helpers/parseSamlOrCasRedirect.ts",
+			"app/lib/methods/helpers/parseDeepLinking.ts"
+		]
+	},
+	{
 		"test": ".maestro/tests/onboarding/login/invalid-credentials.yaml",
 		"dependsOn": ["app/views/LoginView/**", "app/sagas/login.js"]
 	},
 	{
 		"test": ".maestro/tests/onboarding/login/login.yaml",
 		"dependsOn": ["app/views/LoginView/**", "app/sagas/login.js"]
+	},
+	{
+		"test": ".maestro/tests/onboarding/login/saml-login.yaml",
+		"dependsOn": [
+			"app/views/LoginView/**",
+			"app/views/AuthenticationWebView.tsx",
+			"app/containers/LoginServices/**",
+			"app/sagas/login.js",
+			"app/sagas/deepLinking.js",
+			"app/lib/methods/helpers/parseSamlOrCasRedirect.ts",
+			"app/lib/methods/helpers/parseDeepLinking.ts"
+		]
 	},
 	{
 		"test": ".maestro/tests/onboarding/register/create-account.yaml",
@@ -239,8 +282,24 @@
 		"dependsOn": ["app/views/RoomsListView/**", "app/containers/MessageActions/**", "app/sagas/rooms.js"]
 	},
 	{
+		"test": ".maestro/tests/room/messages-received-while-offline.yaml",
+		"dependsOn": [
+			"app/lib/services/sdk.ts",
+			"app/lib/services/socketHealth.ts",
+			"app/lib/methods/loadMissedMessages.ts",
+			"app/lib/methods/subscriptions/room.ts",
+			"app/lib/methods/subscribeRooms.ts",
+			"app/sagas/rooms.js",
+			"app/views/RoomView/**"
+		]
+	},
+	{
 		"test": ".maestro/tests/room/message-markdown-click.yaml",
 		"dependsOn": ["app/views/RoomView/**", "app/containers/markdown/**", "app/sagas/room.js"]
+	},
+	{
+		"test": ".maestro/tests/room/reaction-list-scroll-to-last-user.yaml",
+		"dependsOn": ["app/containers/ReactionsList/**", "app/containers/ActionSheet/**"]
 	},
 	{
 		"test": ".maestro/tests/room/quote-thread-message.yaml",

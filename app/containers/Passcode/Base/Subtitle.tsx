@@ -3,8 +3,8 @@ import { Text, View } from 'react-native';
 import { Row } from 'react-native-easy-grid';
 
 import styles from './styles';
-import { themes } from '../../../lib/constants/colors';
-import { useTheme } from '../../../theme';
+import { themes } from '~/lib/constants/colors';
+import { useTheme } from '~/theme';
 
 interface IPasscodeSubtitle {
 	text: string;

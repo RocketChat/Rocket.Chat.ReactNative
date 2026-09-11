@@ -2,13 +2,13 @@ import { useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
-import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants/colors';
+import sharedStyles from '~/views/Styles';
+import { themes } from '~/lib/constants/colors';
 import { CustomIcon } from '../CustomIcon';
 import { textParser } from './utils';
-import { isAndroid, isIOS } from '../../lib/methods/helpers';
+import { isAndroid, isIOS } from '~/lib/methods/helpers';
 import ActivityIndicator from '../ActivityIndicator';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import { type IText, type Option } from './interfaces';
 
 const styles = StyleSheet.create({

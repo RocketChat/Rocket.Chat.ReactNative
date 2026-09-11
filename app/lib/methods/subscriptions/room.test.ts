@@ -1,9 +1,10 @@
 import { InteractionManager } from 'react-native';
 
 import RoomSubscription from './room';
-import { getMessageById } from '../../database/services/Message';
-import { getThreadById } from '../../database/services/Thread';
-import database from '../../database';
+import { getMessageById } from '~/lib/database/services/Message';
+import { getThreadById } from '~/lib/database/services/Thread';
+import { getThreadMessageById } from '~/lib/database/services/ThreadMessage';
+import database from '~/lib/database';
 import log from '../helpers/log';
 import {
 	commitPreparedRecords,
@@ -11,13 +12,13 @@ import {
 	flush,
 	loggedPendingChanges,
 	makeFakeRecord
-} from '../../database/__tests__/mockedWatermelonDB';
+} from '~/lib/database/__tests__/mockedWatermelonDB';
 
 const mockSubscribeRoom = jest.fn<Promise<unknown[]>, [string]>(() => Promise.resolve([]));
 const mockOnStreamData = jest.fn<Promise<{ stop: jest.Mock }>, [string, (...args: unknown[]) => void]>(() =>
 	Promise.resolve({ stop: jest.fn() })
 );
-jest.mock('../../services/sdk', () => ({
+jest.mock('~/lib/services/sdk', () => ({
 	__esModule: true,
 	default: {
 		subscribeRoom: (rid: string) => mockSubscribeRoom(rid),
@@ -25,7 +26,7 @@ jest.mock('../../services/sdk', () => ({
 	}
 }));
 
-jest.mock('../../store/auxStore', () => ({
+jest.mock('~/lib/store/auxStore', () => ({
 	store: {
 		getState: jest.fn(() => ({})),
 		dispatch: jest.fn()
@@ -69,18 +70,18 @@ jest.mock('../updateLastOpen', () => ({
 	updateLastOpen: jest.fn()
 }));
 
-jest.mock('../../../actions/usersTyping', () => ({
+jest.mock('~/actions/usersTyping', () => ({
 	addUserTyping: jest.fn(),
 	clearUserTyping: jest.fn().mockReturnValue({ type: 'CLEAR_USER_TYPING' }),
 	removeUserTyping: jest.fn()
 }));
 
-jest.mock('../../../actions/room', () => ({
+jest.mock('~/actions/room', () => ({
 	subscribeRoom: jest.fn().mockReturnValue({ type: 'SUBSCRIBE_ROOM' }),
 	unsubscribeRoom: jest.fn().mockReturnValue({ type: 'UNSUBSCRIBE_ROOM' })
 }));
 
-jest.mock('../../encryption', () => ({
+jest.mock('~/lib/encryption', () => ({
 	Encryption: {
 		decryptMessage: jest.fn((msg: unknown) => Promise.resolve(msg))
 	}
@@ -88,8 +89,8 @@ jest.mock('../../encryption', () => ({
 
 const mockDbBatch = jest.fn().mockResolvedValue(undefined);
 const mockDbGet = jest.fn();
-jest.mock('../../database', () => {
-	const { createWriterLock } = require('../../database/__tests__/mockedWatermelonDB');
+jest.mock('~/lib/database', () => {
+	const { createWriterLock } = require('~/lib/database/__tests__/mockedWatermelonDB');
 	const write = createWriterLock();
 	const mockModel = {
 		prepareCreate: jest.fn(() => ({})),
@@ -109,15 +110,15 @@ jest.mock('../../database', () => {
 	};
 });
 
-jest.mock('../../database/services/Message', () => ({
+jest.mock('~/lib/database/services/Message', () => ({
 	getMessageById: jest.fn()
 }));
 
-jest.mock('../../database/services/Thread', () => ({
+jest.mock('~/lib/database/services/Thread', () => ({
 	getThreadById: jest.fn()
 }));
 
-jest.mock('../../database/services/ThreadMessage', () => ({
+jest.mock('~/lib/database/services/ThreadMessage', () => ({
 	getThreadMessageById: jest.fn()
 }));
 
@@ -158,6 +159,52 @@ describe('RoomSubscription', () => {
 			await Promise.all([sub.updateMessage({ ...message }), sub.updateMessage({ ...message })]);
 
 			expect(loggedPendingChanges(log)).toBe(false);
+		});
+	});
+
+	describe('updateMessage urls preservation', () => {
+		it('keeps the existing resolved link preview when a partial sync payload carries no urls', async () => {
+			const _id = 'KXse45i7gGYE8j4Xb';
+			const existingUrls = [{ url: 'https://example.com', title: 'Example' }];
+			const messageRecord = makeFakeRecord(`messages#${_id}`, { urls: existingUrls });
+			(getMessageById as jest.Mock).mockResolvedValue(messageRecord);
+			(getThreadById as jest.Mock).mockResolvedValue(null);
+			mockDbBatch.mockImplementation(commitPreparedRecords);
+
+			// Simulates a later partial-sync event for the same message that carries no url metadata
+			// (already normalized to [] upstream) — it must not wipe out the previously resolved preview.
+			await sub.updateMessage({ _id, rid, msg: 'hi', urls: [] } as any);
+
+			expect(messageRecord.urls).toEqual(existingUrls);
+		});
+
+		it('keeps the existing resolved link preview on the thread record when a partial sync payload carries no urls', async (): Promise<void> => {
+			const _id = 'KXse45i7gGYE8j4Xb';
+			const existingUrls = [{ url: 'https://example.com', title: 'Example' }];
+			const messageRecord = makeFakeRecord(`messages#${_id}`);
+			const threadRecord = makeFakeRecord(`threads#${_id}`, { urls: existingUrls });
+			(getMessageById as jest.Mock).mockResolvedValue(messageRecord);
+			(getThreadById as jest.Mock).mockResolvedValue(threadRecord);
+			mockDbBatch.mockImplementation(commitPreparedRecords);
+
+			await sub.updateMessage({ _id, rid, msg: 'hi', tlm: { $date: 1 }, urls: [] } as any);
+
+			expect(threadRecord.urls).toEqual(existingUrls);
+		});
+
+		it('keeps the existing resolved link preview on the thread message record when a partial sync payload carries no urls', async (): Promise<void> => {
+			const _id = 'KXse45i7gGYE8j4Xb';
+			const existingUrls = [{ url: 'https://example.com', title: 'Example' }];
+			const messageRecord = makeFakeRecord(`messages#${_id}`);
+			const threadMessageRecord = makeFakeRecord(`thread_messages#${_id}`, { urls: existingUrls });
+			(getMessageById as jest.Mock).mockResolvedValue(messageRecord);
+			(getThreadById as jest.Mock).mockResolvedValue(null);
+			(getThreadMessageById as jest.Mock).mockResolvedValue(threadMessageRecord);
+			mockDbBatch.mockImplementation(commitPreparedRecords);
+
+			await sub.updateMessage({ _id, rid, msg: 'hi', tmid: 'parent-thread-id', urls: [] } as any);
+
+			expect(threadMessageRecord.urls).toEqual(existingUrls);
 		});
 	});
 
