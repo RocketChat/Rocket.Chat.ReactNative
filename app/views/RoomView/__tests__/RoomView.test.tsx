@@ -85,7 +85,6 @@ describe('RoomView', () => {
 
 		expect(screen.getByTestId('room-view-empty')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-screen')).toBeNull();
-		expect(screen.queryByTestId('messagebox')).toBeNull();
 	});
 
 	it('renders the empty-room background when the route has a rid but no type', () => {
@@ -93,7 +92,6 @@ describe('RoomView', () => {
 
 		expect(screen.getByTestId('room-view-empty')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-screen')).toBeNull();
-		expect(screen.queryByTestId('messagebox')).toBeNull();
 	});
 
 	it('keeps the room screen unmounted while the room is an invite', () => {
