@@ -6,7 +6,7 @@ import DeviceInfo from 'react-native-device-info';
 
 import { name as appName } from './app.json';
 
-if (process.env.USE_STORYBOOK) {
+if (process.env.USE_STORYBOOK === 'true') {
 	AppRegistry.registerComponent(appName, () => require('./.rnstorybook/index').default);
 } else {
 	if (!__DEV__) {
