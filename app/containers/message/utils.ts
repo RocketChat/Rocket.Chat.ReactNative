@@ -2,7 +2,35 @@
 import { type IAttachment, type IMessageTranslations } from '../../definitions';
 import { type MessageTypesValues, type TAnyMessageModel, type TMessageModel } from '../../definitions/IMessage';
 import I18n from '../../i18n';
+import dayjs from '../../lib/dayjs';
 import { DISCUSSION } from './constants';
+
+export type TMessageSeparators = { dateSeparator: TAnyMessageModel['ts'] | null; showUnreadSeparator: boolean };
+
+export const getMessageSeparators = (
+	prev: TAnyMessageModel | undefined,
+	item: TAnyMessageModel,
+	lastSeen: Date | null
+): TMessageSeparators => {
+	let dateSeparator: TAnyMessageModel['ts'] | null = null;
+	let showUnreadSeparator = false;
+
+	const itemDate = dayjs(item.ts);
+
+	if (!prev) {
+		dateSeparator = item.ts;
+		showUnreadSeparator = lastSeen ? itemDate.isAfter(lastSeen) : false;
+	} else {
+		const prevDate = dayjs(prev.ts);
+		showUnreadSeparator =
+			(lastSeen && (itemDate.isSame(lastSeen) || itemDate.isAfter(lastSeen)) && prevDate.isBefore(lastSeen)) ?? false;
+		if (!itemDate.isSame(prev.ts, 'day')) {
+			dateSeparator = item.ts;
+		}
+	}
+
+	return { dateSeparator, showUnreadSeparator };
+};
 
 export const DEFAULT_MESSAGE_HEIGHT = 150;
 
