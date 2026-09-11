@@ -6,7 +6,7 @@ import {
 	getUserTokenKey
 } from '../constants/keys';
 import UserPreferences from './userPreferences';
-import database from '../database';
+import { getAllServers } from '../database/services/Server';
 import log from './helpers/log';
 
 // A bare alphanumeric suffix is a userId: server ids always carry a dot, a scheme or a path separator.
@@ -17,8 +17,7 @@ export const migrateTokenKeysToServerScoped = async (): Promise<void> => {
 		if (UserPreferences.getBool(TOKEN_KEY_SERVER_SCOPED_MIGRATED)) {
 			return;
 		}
-		const serversDB = database.servers;
-		const servers = await serversDB.get('servers').query().fetch();
+		const servers = await getAllServers();
 
 		const serversByUserId = new Map<string, string[]>();
 		for (let i = 0; i < servers.length; i += 1) {
