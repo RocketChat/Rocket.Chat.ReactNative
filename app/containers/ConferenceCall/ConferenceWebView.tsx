@@ -59,10 +59,6 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 
 		let cancelled = false;
 
-		// Deliberately not resetting readyServer: it gates mounting the WebView, so clearing it on
-		// every token refresh would tear down a live call to re-run a cookie write the running
-		// page never reads. Readiness is keyed by server, so a new server (or untrusted->trusted
-		// transition, where nothing was written yet) still gates until its write completes.
 		setServerCookies(server, { id: userId, token })
 			.catch(log)
 			.finally(() => {
@@ -125,7 +121,14 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 		[server, theme]
 	);
 
-	const onOpenWindow = useCallback(({ nativeEvent }: WebViewOpenWindowEvent) => openLink(nativeEvent.targetUrl, theme), [theme]);
+	const onOpenWindow = useCallback(
+		({ nativeEvent }: WebViewOpenWindowEvent) => {
+			if (/^https?:\/\//i.test(nativeEvent.targetUrl)) {
+				openLink(nativeEvent.targetUrl, theme);
+			}
+		},
+		[theme]
+	);
 
 	const onError = useCallback(({ nativeEvent }: WebViewErrorEvent) => {
 		log(new Error(`ConferenceWebView failed to load: ${nativeEvent.description}`));

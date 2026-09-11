@@ -107,6 +107,24 @@ describe('ConferenceWebView', () => {
 			expect(allowed).toBe(true);
 			expect(openLink).not.toHaveBeenCalled();
 		});
+
+		test('opens window.open() http(s) urls externally', async () => {
+			await mountAndSettle();
+			jest.mocked(openLink).mockClear();
+
+			mockWebViewProps.onOpenWindow({ nativeEvent: { targetUrl: 'https://docs.example.com/help' } });
+
+			expect(openLink).toHaveBeenCalledWith('https://docs.example.com/help', expect.anything());
+		});
+
+		test('ignores window.open() custom schemes', async () => {
+			await mountAndSettle();
+			jest.mocked(openLink).mockClear();
+
+			mockWebViewProps.onOpenWindow({ nativeEvent: { targetUrl: 'myapp://do-something' } });
+
+			expect(openLink).not.toHaveBeenCalled();
+		});
 	});
 
 	describe('credential cookies', () => {
