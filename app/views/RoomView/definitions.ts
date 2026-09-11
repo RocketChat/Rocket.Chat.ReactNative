@@ -62,7 +62,10 @@ export type TListRef = RefObject<FlatList<TAnyMessageModel> | null>;
 
 export type TMessagesIdsRef = RefObject<string[]>;
 
-export interface IListProps extends FlatListProps<TAnyMessageModel> {
+export interface IListProps extends Omit<
+	FlatListProps<TAnyMessageModel>,
+	'onScroll' | 'viewabilityConfigCallbackPairs' | 'onViewableItemsChanged' | 'viewabilityConfig'
+> {
 	flatListRef: TListRef;
 	jumpToBottom: () => void;
 	isAnchored?: boolean;

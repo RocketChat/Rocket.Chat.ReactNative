@@ -24116,11 +24116,16 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
     </ExternalKeyboardView>
     <View
       style={
-        {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "margin": 12,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "margin": 12,
+          },
+          {
+            "gap": 12,
+          },
+        ]
       }
     >
       <View
@@ -24131,35 +24136,47 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               "height": 1,
             },
             {
-              "backgroundColor": "#CBCED1",
+              "backgroundColor": "#EBECEF",
             },
           ]
         }
       />
-      <Text
+      <View
         style={
           [
             {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 14,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "textAlign": "left",
+              "borderRadius": 16,
+              "paddingHorizontal": 8,
+              "paddingVertical": 2,
             },
             {
-              "color": "#6C727A",
-            },
-            {
-              "marginHorizontal": 14,
+              "backgroundColor": "#E4E7EA",
             },
           ]
         }
       >
-        November 10, 2017
-      </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "700",
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          November 10, 2017
+        </Text>
+      </View>
       <View
         style={
           [
@@ -24168,7 +24185,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               "height": 1,
             },
             {
-              "backgroundColor": "#CBCED1",
+              "backgroundColor": "#EBECEF",
             },
           ]
         }
@@ -26316,11 +26333,16 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
     </ExternalKeyboardView>
     <View
       style={
-        {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "margin": 12,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "margin": 12,
+          },
+          {
+            "gap": 12,
+          },
+        ]
       }
     >
       <View
@@ -26331,35 +26353,47 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               "height": 1,
             },
             {
-              "backgroundColor": "#CBCED1",
+              "backgroundColor": "#EBECEF",
             },
           ]
         }
       />
-      <Text
+      <View
         style={
           [
             {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 14,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "textAlign": "left",
+              "borderRadius": 16,
+              "paddingHorizontal": 8,
+              "paddingVertical": 2,
             },
             {
-              "color": "#6C727A",
-            },
-            {
-              "marginHorizontal": 14,
+              "backgroundColor": "#E4E7EA",
             },
           ]
         }
       >
-        November 10, 2017
-      </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "700",
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          November 10, 2017
+        </Text>
+      </View>
       <View
         style={
           [
@@ -26368,7 +26402,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               "height": 1,
             },
             {
-              "backgroundColor": "#CBCED1",
+              "backgroundColor": "#EBECEF",
             },
           ]
         }

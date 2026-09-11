@@ -14,6 +14,8 @@ import { type TAnyMessageModel } from '../../../../definitions';
 import { type IListProps } from '../../definitions';
 import { SCROLL_LIMIT } from '../constants';
 import { useIsAutocompleteVisible } from '../../../../containers/MessageComposer/ComposerStore';
+import FloatingDateSeparator from '../../../../containers/Separator/FloatingDateSeparator';
+import { useFloatingDate } from '../hooks/useFloatingDate';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList<TAnyMessageModel>);
 
@@ -30,7 +32,19 @@ const List = ({ flatListRef, jumpToBottom, isAnchored, ...props }: IListProps) =
 	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
 	const isAutocompleteVisible = useIsAutocompleteVisible();
 	const wasScrolledPastLimit = useSharedValue(false);
+	const {
+		ts,
+		opacity: floatingDateOpacity,
+		scrollEvents: { onBeginDrag, onMomentumBegin, onEndDrag, onMomentumEnd },
+		viewabilityConfigCallbackPairs
+	} = useFloatingDate();
+
+	// Spelled out rather than spread: the worklets babel plugin has to see an object hook's properties statically.
 	const scrollHandler = useAnimatedScrollHandler({
+		onBeginDrag,
+		onMomentumBegin,
+		onEndDrag,
+		onMomentumEnd,
 		onScroll: event => {
 			const isPastLimit = event.contentOffset.y > SCROLL_LIMIT;
 			if (isPastLimit !== wasScrolledPastLimit.value) {
@@ -71,7 +85,9 @@ const List = ({ flatListRef, jumpToBottom, isAnchored, ...props }: IListProps) =
 				onScroll={scrollHandler}
 				{...props}
 				{...scrollPersistTaps}
+				viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs}
 			/>
+			<FloatingDateSeparator ts={ts} opacity={floatingDateOpacity} />
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
 		</View>
 	);
