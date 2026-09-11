@@ -4,28 +4,20 @@ import { useStore } from 'zustand';
 import { getUidDirectMessage } from '../../../lib/methods/helpers/helpers';
 import { type IUseSubscriptionUnreadsResult } from '../definitions';
 import { type RoomStore } from '../definitions';
-import { isSubscriptionModel } from '../../../definitions/TRoom';
+import { fromSubscription } from '../stores/RoomStoreContext';
 
 const EMPTY_UNREADS: string[] = [];
 
 export function useSubscriptionUnreads(roomStore: RoomStore, userId?: string): IUseSubscriptionUnreadsResult {
 	return useStore(
 		roomStore,
-		useShallow(({ room }): IUseSubscriptionUnreadsResult => {
-			if (!isSubscriptionModel(room)) {
-				return {
-					tunread: EMPTY_UNREADS,
-					tunreadUser: EMPTY_UNREADS,
-					tunreadGroup: EMPTY_UNREADS,
-					isSelfDm: false
-				};
-			}
-			return {
-				tunread: room.tunread ?? EMPTY_UNREADS,
-				tunreadUser: room.tunreadUser ?? EMPTY_UNREADS,
-				tunreadGroup: room.tunreadGroup ?? EMPTY_UNREADS,
-				isSelfDm: room.t === 'd' && !!userId && getUidDirectMessage(room) === userId
-			};
-		})
+		useShallow(
+			(s): IUseSubscriptionUnreadsResult => ({
+				tunread: fromSubscription(room => room.tunread ?? EMPTY_UNREADS, EMPTY_UNREADS)(s),
+				tunreadUser: fromSubscription(room => room.tunreadUser ?? EMPTY_UNREADS, EMPTY_UNREADS)(s),
+				tunreadGroup: fromSubscription(room => room.tunreadGroup ?? EMPTY_UNREADS, EMPTY_UNREADS)(s),
+				isSelfDm: fromSubscription(room => room.t === 'd' && !!userId && getUidDirectMessage(room) === userId, false)(s)
+			})
+		)
 	);
 }

@@ -3,7 +3,7 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
 import { type RoomStore } from '../../definitions';
-import { isSubscriptionModel } from '../../../../definitions/TRoom';
+import { fromSubscription } from '../../stores/RoomStoreContext';
 import { OmnichannelRightButtons } from './OmnichannelRightButtons';
 import { RoomRightButtons } from './RoomRightButtons';
 import { ThreadRightButtons } from './ThreadRightButtons';
@@ -19,7 +19,7 @@ const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElemen
 		roomStore,
 		useShallow(s => ({
 			t: s.room.t,
-			status: isSubscriptionModel(s.room) ? s.room.status : undefined,
+			status: fromSubscription(room => room.status, undefined)(s),
 			membership: s.membership
 		}))
 	);

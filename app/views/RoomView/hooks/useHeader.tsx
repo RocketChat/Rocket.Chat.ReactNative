@@ -12,7 +12,7 @@ import LeftButtons from '../components/LeftButtons';
 import RightButtons from '../components/RightButtons/RightButtons';
 import { type IRoomViewProps } from '../definitions';
 import { type RoomStore } from '../definitions';
-import { isSubscriptionModel } from '../../../definitions/TRoom';
+import { fromSubscription } from '../stores/RoomStoreContext';
 import { useGoRoomActionsView } from './useGoRoomActionsView';
 
 interface IUseHeaderParams {
@@ -49,29 +49,18 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 			const title = tmid ? (roomName ?? '') : getRoomTitle(room);
 			const parentTitle = tmid ? getRoomTitle(room) : '';
 
-			const subscription = isSubscriptionModel(room) ? room : undefined;
-
-			let subtitle: string | undefined;
-			let visitor: IVisitor | undefined;
-			let sourceType: IOmnichannelSource | undefined;
-			if (isSubscriptionModel(room)) {
-				subtitle = room.topic;
-				visitor = room.visitor;
-				sourceType = room.source;
-			}
-
 			return {
 				prid: room?.prid,
 				title,
-				teamMain: isSubscriptionModel(room) ? !!room?.teamMain : false,
+				teamMain: fromSubscription(r => !!r.teamMain, false)(s),
 				parentTitle,
-				subtitle,
+				subtitle: fromSubscription(r => r.topic, undefined)(s),
 				type: room?.t,
-				visitor,
-				isGroupChat: subscription ? isGroupChat(subscription) : false,
-				sourceType,
-				abacAttributes: subscription?.abacAttributes,
-				disabled: subscription ? isInviteSubscription(subscription) : false
+				visitor: fromSubscription(r => r.visitor, undefined)(s),
+				isGroupChat: fromSubscription(r => isGroupChat(r), false)(s),
+				sourceType: fromSubscription(r => r.source, undefined)(s),
+				abacAttributes: fromSubscription(r => r.abacAttributes, undefined)(s),
+				disabled: fromSubscription(r => isInviteSubscription(r), false)(s)
 			};
 		})
 	);

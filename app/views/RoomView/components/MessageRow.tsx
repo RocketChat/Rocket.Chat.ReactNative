@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import { useRoomStore } from '../stores/RoomStoreContext';
+import { fromSubscription, useRoomStore } from '../stores/RoomStoreContext';
 import { useRoomScreen } from '../stores/RoomScreenContext';
 import Message from '../../../containers/message';
 import { getMessageSeparators } from '../../../containers/message/utils';
@@ -9,10 +9,9 @@ import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../lib/constants/m
 import { type RoomType } from '../../../definitions';
 import { useThreadBadgeColor } from '../hooks/useThreadBadgeColor';
 import { type TMessageRowProps } from '../definitions';
-import { isSubscriptionModel } from '../../../definitions/TRoom';
 
 const useIsIgnored = (authorId?: string): boolean =>
-	useRoomStore(s => (authorId && isSubscriptionModel(s.room) ? (s.room.ignored?.includes(authorId) ?? false) : false));
+	useRoomStore(fromSubscription(room => (authorId ? (room.ignored?.includes(authorId) ?? false) : false), false));
 
 export const MessageRow = memo(function MessageRow({ item, previousItem, highlightedMessage, onLongPress }: TMessageRowProps) {
 	const rid = useRoomStore(s => s.room.rid);

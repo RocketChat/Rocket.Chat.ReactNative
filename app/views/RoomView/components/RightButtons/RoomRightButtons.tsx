@@ -17,6 +17,7 @@ import { getUserSelector } from '../../../../selectors/login';
 import { useTheme } from '../../../../theme';
 import { type RoomStore } from '../../definitions';
 import { isSubscriptionModel } from '../../../../definitions/TRoom';
+import { fromSubscription } from '../../stores/RoomStoreContext';
 import { useE2EEStatus } from '../../hooks/useE2EEStatus';
 import { useSubscriptionUnreads } from '../../hooks/useSubscriptionUnreads';
 import { navigateToScreen, type TRoomStackNavigation } from '../../services/navigateToScreen';
@@ -42,11 +43,11 @@ export const RoomRightButtons = ({ rid, roomStore }: IRoomRightButtonsProps): Re
 			const room = s.room;
 			return {
 				t: room.t as SubscriptionType,
-				status: isSubscriptionModel(room) ? room.status : undefined,
+				status: fromSubscription(r => r.status, undefined)(s),
 				roomName: getRoomTitle(room),
 				roomIsGroupChat: isGroupChat(room as ISubscription),
-				teamMain: isSubscriptionModel(room) ? !!room.teamMain : false,
-				encrypted: isSubscriptionModel(room) ? room.encrypted : undefined,
+				teamMain: fromSubscription(r => !!r.teamMain, false)(s),
+				encrypted: fromSubscription(r => r.encrypted, undefined)(s),
 				disableNotifications: (room as ISubscription).disableNotifications
 			};
 		})
