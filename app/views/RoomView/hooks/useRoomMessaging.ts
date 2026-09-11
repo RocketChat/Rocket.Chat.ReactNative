@@ -15,7 +15,7 @@ import { getUserSelector } from '../../../selectors/login';
 import { type IListContainerRef, type IUseRoomMessagingParams, type TListRef } from '../definitions';
 import { useMessageActions } from './useMessageActions';
 import { useRoomInit } from './useRoomInit';
-import { useRoomNavigation } from './useRoomNavigation';
+import { useJumpToMessage } from './useJumpToMessage';
 
 export function useRoomMessaging({ rid, t, tmid, roomStore, ready, roomUserId, quoteMessageId }: IUseRoomMessagingParams) {
 	const isAuthenticated = useAppSelector(state => state.login.isAuthenticated);
@@ -36,7 +36,7 @@ export function useRoomMessaging({ rid, t, tmid, roomStore, ready, roomUserId, q
 	const userRef = useLiveRef(user);
 	const roomUserIdRef = useLiveRef(roomUserId);
 
-	const { onThreadMessagesLoaded, onThreadPress, jumpToMessageByUrl } = useRoomNavigation({
+	const { onThreadMessagesLoaded, onThreadPress, jumpToMessageByUrl } = useJumpToMessage({
 		rid,
 		tmid,
 		t,

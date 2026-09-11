@@ -82,7 +82,7 @@ jest.mock('../hooks/useInAppFeedback', () => ({ useInAppFeedback: jest.fn() }));
 jest.mock('../hooks/useOmnichannelPermissions', () => ({ useOmnichannelPermissions: jest.fn() }));
 jest.mock('../hooks/useE2EEStatus', () => ({ useE2EEStatus: jest.fn(() => ({})) }));
 jest.mock('../hooks/useMessageActions', () => ({ useMessageActions: jest.fn(() => ({ resetAction: jest.fn() })) }));
-jest.mock('../hooks/useRoomNavigation', () => ({ useRoomNavigation: jest.fn(() => ({})) }));
+jest.mock('../hooks/useJumpToMessage', () => ({ useJumpToMessage: jest.fn(() => ({})) }));
 jest.mock('../../../containers/ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: jest.fn(), hideActionSheet: jest.fn() })
 }));

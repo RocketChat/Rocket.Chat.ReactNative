@@ -28,8 +28,8 @@ jest.mock('../../../../lib/hooks/useMasterDetail', () => ({ useMasterDetail: jes
 jest.mock('../../../../containers/ActionSheet', () => ({
 	useActionSheet: jest.fn(() => ({ showActionSheet: jest.fn(), hideActionSheet: jest.fn() }))
 }));
-jest.mock('../useRoomNavigation', () => ({
-	useRoomNavigation: jest.fn(() => ({
+jest.mock('../useJumpToMessage', () => ({
+	useJumpToMessage: jest.fn(() => ({
 		onThreadMessagesLoaded: jest.fn(),
 		onThreadPress: jest.fn(),
 		jumpToMessageByUrl: jest.fn()
