@@ -65,6 +65,17 @@
 		]
 	},
 	{
+		"test": ".maestro/tests/share-extension/share-extension-deeplink.yaml",
+		"dependsOn": [
+			"app/views/ShareListView/**",
+			"app/views/ShareView/**",
+			"app/views/SelectServerView.tsx",
+			"app/views/NewServerView/**",
+			"app/views/RoomsListView/**",
+			"app/sagas/deepLinking.js"
+		]
+	},
+	{
 		"test": ".maestro/tests/assorted/delete-server.yaml",
 		"dependsOn": [
 			"app/views/NewServerView/**",
