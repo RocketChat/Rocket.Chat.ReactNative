@@ -1,9 +1,9 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { formatLongDate } from '../../lib/dayjs';
-import sharedStyles from '../../views/Styles';
-import { useTheme } from '../../theme';
+import { formatLongDate } from '~/lib/dayjs';
+import sharedStyles from '~/views/Styles';
+import { useTheme } from '~/theme';
 import { separatorStyles } from './styles';
 
 const styles = StyleSheet.create({

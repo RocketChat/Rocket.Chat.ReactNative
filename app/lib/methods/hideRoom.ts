@@ -1,4 +1,4 @@
-import { type SubscriptionType } from '../../definitions';
+import { type SubscriptionType } from '~/definitions';
 import database from '../database';
 import log, { events, logEvent } from './helpers/log';
 import { hideRoom as hideRoomService } from '../services/restApi';

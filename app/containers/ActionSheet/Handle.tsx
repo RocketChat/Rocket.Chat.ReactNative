@@ -3,9 +3,9 @@ import { View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
 import styles from './styles';
-import { themes } from '../../lib/constants/colors';
-import { useTheme } from '../../theme';
-import i18n from '../../i18n';
+import { themes } from '~/lib/constants/colors';
+import { useTheme } from '~/theme';
+import i18n from '~/i18n';
 
 export const Handle = forwardRef<View, { onPress: () => void }>(({ onPress }, ref) => {
 	const { theme } = useTheme();

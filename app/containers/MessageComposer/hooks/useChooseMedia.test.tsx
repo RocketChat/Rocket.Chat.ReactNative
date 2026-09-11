@@ -6,7 +6,7 @@ jest.mock('expo-document-picker', () => ({
 	getDocumentAsync: jest.fn()
 }));
 
-jest.mock('../../../lib/hooks/useAppSelector', () => ({
+jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: jest.fn()
 }));
 
@@ -14,31 +14,31 @@ jest.mock('../context', () => ({
 	useMessageComposerApi: jest.fn()
 }));
 
-jest.mock('../../../views/RoomView/context', () => ({
+jest.mock('~/views/RoomView/context', () => ({
 	useRoomContext: jest.fn()
 }));
 
-jest.mock('../../message/stores/MessageActionStore', () => ({
+jest.mock('~/containers/message/stores/MessageActionStore', () => ({
 	useMessageAction: jest.fn()
 }));
 
-jest.mock('../../../lib/hooks/useAltTextSupported', () => ({
+jest.mock('~/lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: jest.fn()
 }));
 
-jest.mock('../../../lib/database/services/Subscription', () => ({
+jest.mock('~/lib/database/services/Subscription', () => ({
 	getSubscriptionByRoomId: jest.fn()
 }));
 
-jest.mock('../../../lib/database/services/Thread', () => ({
+jest.mock('~/lib/database/services/Thread', () => ({
 	getThreadById: jest.fn()
 }));
 
-jest.mock('../../../lib/navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	navigate: jest.fn()
 }));
 
-jest.mock('../../../lib/methods/helpers/ImagePicker/ImagePicker', () => ({
+jest.mock('~/lib/methods/helpers/ImagePicker/ImagePicker', () => ({
 	__esModule: true,
 	default: {
 		openCamera: jest.fn(),
@@ -47,14 +47,14 @@ jest.mock('../../../lib/methods/helpers/ImagePicker/ImagePicker', () => ({
 }));
 
 const mockGetDocumentAsync = require('expo-document-picker').getDocumentAsync as jest.Mock;
-const mockUseAppSelector = require('../../../lib/hooks/useAppSelector').useAppSelector as jest.Mock;
+const mockUseAppSelector = require('~/lib/hooks/useAppSelector').useAppSelector as jest.Mock;
 const mockUseMessageComposerApi = require('../context').useMessageComposerApi as jest.Mock;
-const mockUseRoomContext = require('../../../views/RoomView/context').useRoomContext as jest.Mock;
-const mockUseMessageAction = require('../../message/stores/MessageActionStore').useMessageAction as jest.Mock;
-const mockUseAltTextSupported = require('../../../lib/hooks/useAltTextSupported').useAltTextSupported as jest.Mock;
-const mockGetSubscriptionByRoomId = require('../../../lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
-const mockGetThreadById = require('../../../lib/database/services/Thread').getThreadById as jest.Mock;
-const mockNavigate = require('../../../lib/navigation/appNavigation').navigate as jest.Mock;
+const mockUseRoomContext = require('~/views/RoomView/context').useRoomContext as jest.Mock;
+const mockUseMessageAction = require('~/containers/message/stores/MessageActionStore').useMessageAction as jest.Mock;
+const mockUseAltTextSupported = require('~/lib/hooks/useAltTextSupported').useAltTextSupported as jest.Mock;
+const mockGetSubscriptionByRoomId = require('~/lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
+const mockGetThreadById = require('~/lib/database/services/Thread').getThreadById as jest.Mock;
+const mockNavigate = require('~/lib/navigation/appNavigation').navigate as jest.Mock;
 
 describe('useChooseMedia', () => {
 	const addAttachments = jest.fn();

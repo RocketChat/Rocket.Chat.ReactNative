@@ -3,17 +3,17 @@ import { InteractionManager } from 'react-native';
 import EJSON from 'ejson';
 import type Model from '@nozbe/watermelondb/Model';
 
-import database from '../../database';
+import database from '~/lib/database';
 import protectedFunction from '../helpers/protectedFunction';
 import log from '../helpers/log';
-import { store } from '../../store/auxStore';
+import { store } from '~/lib/store/auxStore';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
 import EventEmitter from '../helpers/events';
-import { removedRoom } from '../../../actions/room';
-import { setUser } from '../../../actions/login';
-import { INAPP_NOTIFICATION_EMITTER } from '../../constants/notifications';
-import { Encryption } from '../../encryption';
+import { removedRoom } from '~/actions/room';
+import { setUser } from '~/actions/login';
+import { INAPP_NOTIFICATION_EMITTER } from '~/lib/constants/notifications';
+import { Encryption } from '~/lib/encryption';
 import updateMessages from '../updateMessages';
 import {
 	type IMessage,
@@ -25,16 +25,16 @@ import {
 	type TThreadMessageModel,
 	type TThreadModel,
 	SubscriptionType
-} from '../../../definitions';
-import sdk from '../../services/sdk';
-import { type IDDPMessage } from '../../../definitions/IDDPMessage';
-import { getSubscriptionByRoomId } from '../../database/services/Subscription';
-import { getMessageById } from '../../database/services/Message';
-import { E2E_MESSAGE_TYPE } from '../../constants/keys';
+} from '~/definitions';
+import sdk from '~/lib/services/sdk';
+import { type IDDPMessage } from '~/definitions/IDDPMessage';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import { getMessageById } from '~/lib/database/services/Message';
+import { E2E_MESSAGE_TYPE } from '~/lib/constants/keys';
 import { getRoom } from '../getRoom';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import { getRoomAvatar, getRoomTitle, getSenderName, random } from '../helpers';
-import { handleVideoConfIncomingWebsocketMessages } from '../../../actions/videoConf';
+import { handleVideoConfIncomingWebsocketMessages } from '~/actions/videoConf';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 

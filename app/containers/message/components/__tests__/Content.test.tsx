@@ -2,12 +2,12 @@ import { Provider } from 'react-redux';
 import { render } from '@testing-library/react-native';
 
 import Content from '../Content';
-import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { setUser } from '../../../../actions/login';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { type IAttachment, type TAnyMessageModel } from '../../../../definitions';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../../lib/constants/keys';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { setUser } from '~/actions/login';
+import { mockedStore } from '~/reducers/mockedStore';
+import { type IAttachment, type TAnyMessageModel } from '~/definitions';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
 
 mockedStore.dispatch(
 	setUser({

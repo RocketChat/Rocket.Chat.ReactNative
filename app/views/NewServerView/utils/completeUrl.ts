@@ -1,6 +1,6 @@
 import parse from 'url-parse';
 
-import { serializeAsciiUrl } from '../../../lib/methods/serializeAsciiUrl';
+import { serializeAsciiUrl } from '~/lib/methods/serializeAsciiUrl';
 
 const completeUrl = (url: string) => {
 	const parsedUrl = parse(url, true);

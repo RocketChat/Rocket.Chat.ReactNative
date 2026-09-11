@@ -3,19 +3,19 @@ import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { KeyboardFocusView } from 'react-native-external-keyboard';
 
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { useIsAccessibilityNavigationEnabled } from '../../lib/hooks/useIsAccessibilityNavigationEnabled';
-import I18n from '../../i18n';
-import sharedStyles from '../../views/Styles';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
+import I18n from '~/i18n';
+import sharedStyles from '~/views/Styles';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
 import { CustomIcon } from '../CustomIcon';
-import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '../../definitions';
-import { formatStatusExpiry } from '../../lib/methods/helpers/formatStatusExpiry';
-import { useTheme } from '../../theme';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
-import { type IUsersTyping } from '../../reducers/usersTyping';
+import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '~/definitions';
+import { formatStatusExpiry } from '~/lib/methods/helpers/formatStatusExpiry';
+import { useTheme } from '~/theme';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import useStatusAccessibilityLabel from '~/lib/hooks/useStatusAccessibilityLabel';
+import { type IUsersTyping } from '~/reducers/usersTyping';
 
 const HIT_SLOP = {
 	top: 5,

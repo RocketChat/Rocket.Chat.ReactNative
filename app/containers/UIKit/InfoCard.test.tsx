@@ -3,7 +3,7 @@ import { render } from '@testing-library/react-native';
 
 import { InfoCard } from './InfoCard';
 
-jest.mock('../../theme', () => ({
+jest.mock('~/theme', () => ({
 	useTheme: () => ({
 		colors: {
 			surfaceTint: '#f7f7f7',

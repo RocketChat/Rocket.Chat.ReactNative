@@ -2,9 +2,9 @@ import { FlatList, Text, View, type ViewProps } from 'react-native';
 import { memo, type ReactElement } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import I18n from '../../i18n';
-import { useTheme } from '../../theme';
-import { isAndroid } from '../../lib/methods/helpers';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
+import { isAndroid } from '~/lib/methods/helpers';
 import { type IActionSheetItem, Item } from './Item';
 import { type TActionSheetOptionsItem } from './Provider';
 import styles from './styles';

@@ -2,17 +2,17 @@ import { useState } from 'react';
 import { View, Text, Linking } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import I18n from '../../i18n';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { getServerById } from '../../lib/database/services/Server';
-import log from '../../lib/methods/helpers/log';
-import database from '../../lib/database';
-import { useTheme } from '../../theme';
+import I18n from '~/i18n';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { getServerById } from '~/lib/database/services/Server';
+import log from '~/lib/methods/helpers/log';
+import database from '~/lib/database';
+import { useTheme } from '~/theme';
 import { CustomIcon } from '../CustomIcon';
 import Button from '../Button';
 import { styles } from './styles';
 import { LEARN_MORE_URL } from './constants';
-import { selectServerRequest } from '../../actions/server';
+import { selectServerRequest } from '~/actions/server';
 
 const checkAgainTimeout = 3000;
 

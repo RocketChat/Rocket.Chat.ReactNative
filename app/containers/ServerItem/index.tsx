@@ -4,10 +4,10 @@ import { Image } from 'expo-image';
 
 import * as List from '../List';
 import styles, { ROW_HEIGHT } from './styles';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import Touchable from './Touchable';
-import I18n from '../../i18n';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import I18n from '~/i18n';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export { ROW_HEIGHT };
 export { default as ServerItemTouchable } from './Touchable';
@@ -25,7 +25,7 @@ export interface IServerItem {
 	hasCheck?: boolean;
 }
 
-const defaultLogo = require('../../static/images/logo.png');
+const defaultLogo = require('~/static/images/logo.png');
 
 const ServerItem = memo(({ item, onPress, onDeletePress, hasCheck }: IServerItem) => {
 	const { colors } = useTheme();

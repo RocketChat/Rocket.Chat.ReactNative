@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Text } from 'react-native';
 
-import i18n from '../../../../i18n';
+import i18n from '~/i18n';
 import useStyle from './styles';
 import { VideoConferenceBaseContainer } from './VideoConferenceBaseContainer';
 

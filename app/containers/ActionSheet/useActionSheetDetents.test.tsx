@@ -4,7 +4,7 @@ import { HANDLE_HEIGHT, getSheetContentPaddingBottom, useActionSheetDetents } fr
 
 let mockIsAndroid = false;
 
-jest.mock('../../lib/methods/helpers/deviceInfo', () => ({
+jest.mock('~/lib/methods/helpers/deviceInfo', () => ({
 	get isAndroid() {
 		return mockIsAndroid;
 	}

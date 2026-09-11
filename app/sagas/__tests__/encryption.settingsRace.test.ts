@@ -1,24 +1,24 @@
-jest.mock('../../lib/methods/userPreferences', () => ({
+jest.mock('~/lib/methods/userPreferences', () => ({
 	__esModule: true,
 	default: {
 		getString: jest.fn()
 	}
 }));
 
-jest.mock('../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	e2eFetchMyKeys: jest.fn()
 }));
 
-jest.mock('../../lib/methods/readMessages', () => ({
+jest.mock('~/lib/methods/readMessages', () => ({
 	readMessages: jest.fn()
 }));
 
-jest.mock('../../lib/methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));
 
-jest.mock('../../lib/encryption', () => ({
+jest.mock('~/lib/encryption', () => ({
 	Encryption: {
 		initialize: jest.fn(),
 		persistKeys: jest.fn(),
@@ -30,7 +30,7 @@ jest.mock('../../lib/encryption', () => ({
 
 const mockServersFind = jest.fn();
 
-jest.mock('../../lib/database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: {
 		servers: {
@@ -42,16 +42,16 @@ jest.mock('../../lib/database', () => ({
 }));
 
 import encryptionRoot from '../encryption';
-import { encryptionInit } from '../../actions/encryption';
-import { addSettings } from '../../actions/settings';
-import { setUser, logout } from '../../actions/login';
-import { selectServerSuccess, selectServerRequest } from '../../actions/server';
-import UserPreferences from '../../lib/methods/userPreferences';
-import { e2eFetchMyKeys } from '../../lib/services/restApi';
-import { Encryption } from '../../lib/encryption';
-import { E2E_BANNER_TYPE } from '../../lib/constants/keys';
-import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
-import type { RecordingStore } from '../../lib/testUtils/sagaStore';
+import { encryptionInit } from '~/actions/encryption';
+import { addSettings } from '~/actions/settings';
+import { setUser, logout } from '~/actions/login';
+import { selectServerSuccess, selectServerRequest } from '~/actions/server';
+import UserPreferences from '~/lib/methods/userPreferences';
+import { e2eFetchMyKeys } from '~/lib/services/restApi';
+import { Encryption } from '~/lib/encryption';
+import { E2E_BANNER_TYPE } from '~/lib/constants/keys';
+import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
+import type { RecordingStore } from '~/lib/testUtils/sagaStore';
 
 const setupStore = (): RecordingStore => createRecordingStore(encryptionRoot);
 

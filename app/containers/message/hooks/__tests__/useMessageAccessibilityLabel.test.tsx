@@ -2,14 +2,14 @@ import { Provider } from 'react-redux';
 import { render } from '@testing-library/react-native';
 
 import { useMessageAccessibilityLabel } from '../useMessageAccessibilityLabel';
-import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { updateSettings } from '../../../../actions/settings';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { type TAnyMessageModel } from '../../../../definitions';
-import { E2E_MESSAGE_TYPE } from '../../../../lib/constants/keys';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { updateSettings } from '~/actions/settings';
+import { mockedStore } from '~/reducers/mockedStore';
+import { type TAnyMessageModel } from '~/definitions';
+import { E2E_MESSAGE_TYPE } from '~/lib/constants/keys';
 
-jest.mock('../../../../lib/hooks/useAltTextSupported', () => ({
+jest.mock('~/lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: () => false
 }));
 

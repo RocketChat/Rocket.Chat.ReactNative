@@ -2,20 +2,20 @@ import { type ReactNode, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import { type IAttachment } from '../../../../definitions';
-import { fileDownloadAndPreview } from '../../../../lib/methods/helpers/fileDownload';
-import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
-import openLink from '../../../../lib/methods/helpers/openLink';
-import { useTheme } from '../../../../theme';
-import sharedStyles from '../../../../views/Styles';
-import RCActivityIndicator from '../../../ActivityIndicator';
-import Markdown, { MarkdownPreview } from '../../../markdown';
-import { useBaseUrl, useMessageUser, useTimeFormat } from '../../stores/MessageRoomStore';
-import { useIsEncrypted, useMessageId, useTranslateLanguage } from '../../stores/MessageStore';
+import { type IAttachment } from '~/definitions';
+import { fileDownloadAndPreview } from '~/lib/methods/helpers/fileDownload';
+import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
+import openLink from '~/lib/methods/helpers/openLink';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
+import RCActivityIndicator from '~/containers/ActivityIndicator';
+import Markdown, { MarkdownPreview } from '~/containers/markdown';
+import { useBaseUrl, useMessageUser, useTimeFormat } from '~/containers/message/stores/MessageRoomStore';
+import { useIsEncrypted, useMessageId, useTranslateLanguage } from '~/containers/message/stores/MessageStore';
 import MessageActionTouchable from '../Touchable/MessageActionTouchable';
-import messageStyles from '../../styles';
-import { getMessageFromAttachment } from '../../utils';
-import dayjs from '../../../../lib/dayjs';
+import messageStyles from '~/containers/message/styles';
+import { getMessageFromAttachment } from '~/containers/message/utils';
+import dayjs from '~/lib/dayjs';
 
 const styles = StyleSheet.create({
 	container: {

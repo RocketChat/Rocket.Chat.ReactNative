@@ -1,4 +1,4 @@
-import { store as reduxStore } from '../../store/auxStore';
+import { store as reduxStore } from '~/lib/store/auxStore';
 
 /**
  * Returns true when `userId` equals the currently logged-in user's `_id`.

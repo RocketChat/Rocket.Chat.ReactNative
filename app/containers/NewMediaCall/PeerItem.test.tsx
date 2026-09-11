@@ -3,10 +3,10 @@ import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
 import { PeerItem } from './PeerItem';
-import { mockedStore } from '../../reducers/mockedStore';
-import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
+import { mockedStore } from '~/reducers/mockedStore';
+import type { TPeerItem } from '~/lib/services/voip/getPeerAutocompleteOptions';
 import * as stories from './PeerItem.stories';
-import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 
 const onSelectOptionMock = jest.fn();
 

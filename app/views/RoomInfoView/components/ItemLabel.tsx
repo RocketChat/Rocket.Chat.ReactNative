@@ -1,6 +1,6 @@
 import { Text } from 'react-native';
 
-import { useTheme } from '../../../theme';
+import { useTheme } from '~/theme';
 import styles from '../styles';
 
 interface IItemLabel {

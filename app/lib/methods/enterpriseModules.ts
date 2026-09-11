@@ -2,7 +2,7 @@ import sdk from '../services/sdk';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import log from './helpers/log';
-import { clearEnterpriseModules, setEnterpriseModules as setEnterpriseModulesAction } from '../../actions/enterpriseModules';
+import { clearEnterpriseModules, setEnterpriseModules as setEnterpriseModulesAction } from '~/actions/enterpriseModules';
 import { compareServerVersion } from './helpers';
 
 const LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE = 'omnichannel-mobile-enterprise';

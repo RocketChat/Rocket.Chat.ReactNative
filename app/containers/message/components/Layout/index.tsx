@@ -1,11 +1,11 @@
 import { WidthAwareView } from '../WidthAwareView';
-import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import BlocksLayout from './BlocksLayout';
 import JitsiLayout from './JitsiLayout';
 import DiscussionLayout from './DiscussionLayout';
 import PreviewLayout from './PreviewLayout';
 import StandardLayout from './StandardLayout';
-import { useBlocks, useMessageField } from '../../stores/MessageStore';
+import { useBlocks, useMessageField } from '~/containers/message/stores/MessageStore';
 
 export const Layout = ({ isPreview, isHeader }: { isPreview?: boolean; isHeader: boolean }) => {
 	const { isLargeFontScale } = useResponsiveLayout();

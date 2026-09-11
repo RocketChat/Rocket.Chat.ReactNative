@@ -1,6 +1,6 @@
-import I18n from '../../../i18n';
+import I18n from '~/i18n';
 import { showErrorAlert } from '.';
-import { isTwoFactorCancelled } from '../../services/twoFactor/twoFactorCancelled';
+import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
 
 const handleSaveUserProfileError = (e: any, action: string) => {
 	if (isTwoFactorCancelled(e)) {

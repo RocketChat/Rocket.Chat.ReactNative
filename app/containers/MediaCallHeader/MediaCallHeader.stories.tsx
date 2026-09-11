@@ -2,7 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import { type ComponentType, type ReactNode } from 'react';
 
 import MediaCallHeader from './MediaCallHeader';
-import { useCallStore } from '../../lib/services/voip/useCallStore';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
 
 const styles = StyleSheet.create({
 	container: {

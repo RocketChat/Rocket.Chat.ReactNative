@@ -1,7 +1,7 @@
 import { playCallEndedSound, resetPlayCallEndedSoundForTesting } from './playCallEndedSound';
 
 const mockLog = jest.fn();
-jest.mock('../../methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: (...args: unknown[]) => mockLog(...args)
 }));

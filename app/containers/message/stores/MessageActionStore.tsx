@@ -1,7 +1,7 @@
 import { createContext, type ReactNode, useContext, useState } from 'react';
 import { createStore, useStore } from 'zustand';
 
-import { type TMessageActionState } from '../../../definitions';
+import { type TMessageActionState } from '~/definitions';
 
 type TMessageActionActions = {
 	startEditing(messageId: string): void;

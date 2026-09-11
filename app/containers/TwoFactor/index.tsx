@@ -10,19 +10,19 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { ControlledFormTextInput } from '../TextInput';
-import I18n from '../../i18n';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { useTheme } from '../../theme';
+import I18n from '~/i18n';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { useTheme } from '~/theme';
 import Button from '../Button';
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 import styles from './styles';
-import { type ILoginCredentials } from '../../definitions';
-import { sendEmailCode } from '../../lib/services/restApi';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
+import { type ILoginCredentials } from '~/definitions';
+import { sendEmailCode } from '~/lib/services/restApi';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import Toast from '../Toast';
-import { showToast } from '../../lib/methods/helpers/showToast';
-import log from '../../lib/methods/helpers/log';
-import { TWO_FACTOR } from '../../lib/constants/twoFactor';
+import { showToast } from '~/lib/methods/helpers/showToast';
+import log from '~/lib/methods/helpers/log';
+import { TWO_FACTOR } from '~/lib/constants/twoFactor';
 
 interface IMethodsProp {
 	text: string;

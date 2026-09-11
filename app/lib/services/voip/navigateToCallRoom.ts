@@ -1,6 +1,6 @@
-import { SubscriptionType } from '../../../definitions';
-import { goRoom } from '../../methods/helpers/goRoom';
-import Navigation from '../../navigation/appNavigation';
+import { SubscriptionType } from '~/definitions';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
+import Navigation from '~/lib/navigation/appNavigation';
 import { useCallStore } from './useCallStore';
 
 /**

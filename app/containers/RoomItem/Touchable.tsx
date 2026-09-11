@@ -12,12 +12,12 @@ import Touch from '../Touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
 import { LeftActions, RightActions } from './Actions';
 import { type ITouchableProps } from './interfaces';
-import { useTheme } from '../../theme';
-import I18n from '../../i18n';
-import { toggleFav } from '../../lib/methods/toggleFav';
-import { toggleRead } from '../../lib/methods/toggleRead';
-import { hideRoom } from '../../lib/methods/hideRoom';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
+import { toggleFav } from '~/lib/methods/toggleFav';
+import { toggleRead } from '~/lib/methods/toggleRead';
+import { hideRoom } from '~/lib/methods/hideRoom';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
 
 const Touchable = ({
 	children,

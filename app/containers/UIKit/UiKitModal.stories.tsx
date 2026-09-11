@@ -5,7 +5,7 @@ import { UiKitComponent, UiKitModal } from '.';
 import { KitContext, defaultContext } from './utils';
 import { MessageRoomProvider } from '../message/stores/MessageRoomStore';
 import { MessageProvider } from '../message/stores/MessageStore';
-import { type TAnyMessageModel } from '../../definitions';
+import { type TAnyMessageModel } from '~/definitions';
 
 export default {
 	title: 'UIKit/UiKitModal',

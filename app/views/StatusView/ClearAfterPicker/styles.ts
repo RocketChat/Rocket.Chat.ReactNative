@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import sharedStyles from '../../Styles';
+import sharedStyles from '~/views/Styles';
 
 export default StyleSheet.create({
 	pickerText: {

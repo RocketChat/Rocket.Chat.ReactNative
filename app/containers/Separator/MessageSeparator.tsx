@@ -1,10 +1,10 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import I18n from '../../i18n';
-import { formatLongDate } from '../../lib/dayjs';
-import sharedStyles from '../../views/Styles';
-import { useTheme } from '../../theme';
+import I18n from '~/i18n';
+import { formatLongDate } from '~/lib/dayjs';
+import sharedStyles from '~/views/Styles';
+import { useTheme } from '~/theme';
 import DateSeparator from './DateSeparator';
 import { separatorStyles } from './styles';
 

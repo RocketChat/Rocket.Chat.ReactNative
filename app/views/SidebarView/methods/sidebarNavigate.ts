@@ -1,5 +1,5 @@
-import Navigation from '../../../lib/navigation/appNavigation';
-import { events, logEvent } from '../../../lib/methods/helpers/log';
+import Navigation from '~/lib/navigation/appNavigation';
+import { events, logEvent } from '~/lib/methods/helpers/log';
 
 export const sidebarNavigate = (route: string) => {
 	// @ts-ignore

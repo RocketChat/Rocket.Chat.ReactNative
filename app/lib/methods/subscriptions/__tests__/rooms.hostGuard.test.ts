@@ -1,8 +1,8 @@
 const mockOnStreamData = jest.fn(async (_event: string, _callback: (message: IDDPMessage) => void) => ({ stop: jest.fn() }));
 const mockSubscribeNotifyUser = jest.fn(async () => []);
 
-jest.mock('../../../services/sdk', () => {
-	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../../../testUtils/sdkIntegration');
+jest.mock('~/lib/services/sdk', () => {
+	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('~/lib/testUtils/sdkIntegration');
 	return {
 		__esModule: true,
 		default: makeSdkMock({
@@ -12,22 +12,22 @@ jest.mock('../../../services/sdk', () => {
 	};
 });
 
-jest.mock('../../../database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn(), write: jest.fn(), batch: jest.fn() } }
 }));
 
-jest.mock('../../../store/auxStore', () => ({
+jest.mock('~/lib/store/auxStore', () => ({
 	store: { dispatch: jest.fn(), getState: jest.fn(() => ({ settings: {}, login: { user: {} } })) }
 }));
 
-jest.mock('../../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
 import subscribeRooms, { roomsSubscription } from '../rooms';
-import sdk from '../../../services/sdk';
-import database from '../../../database';
-import type { IDDPMessage } from '../../../../definitions/IDDPMessage';
-import type * as SdkIntegration from '../../../testUtils/sdkIntegration';
+import sdk from '~/lib/services/sdk';
+import database from '~/lib/database';
+import type { IDDPMessage } from '~/definitions/IDDPMessage';
+import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
 
 const mockedSdk = sdk as unknown as SdkIntegration.IMockSdk;
 const mockedDatabase = database as unknown as { active: { get: jest.Mock } };

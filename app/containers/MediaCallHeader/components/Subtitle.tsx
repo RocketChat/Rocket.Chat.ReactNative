@@ -1,9 +1,9 @@
 import { StyleSheet, Text } from 'react-native';
 
-import { useTheme } from '../../../theme';
-import { useCallStore } from '../../../lib/services/voip/useCallStore';
-import I18n from '../../../i18n';
-import sharedStyles from '../../../views/Styles';
+import { useTheme } from '~/theme';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
+import I18n from '~/i18n';
+import sharedStyles from '~/views/Styles';
 
 const styles = StyleSheet.create({
 	headerSubtitle: {

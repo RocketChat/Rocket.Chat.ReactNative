@@ -1,6 +1,6 @@
 import NetInfo, { type NetInfoState, type NetInfoStateType } from '@react-native-community/netinfo';
 
-import { setNetInfoState } from '../../actions/app';
+import { setNetInfoState } from '~/actions/app';
 
 export default () =>
 	(createStore: any) =>

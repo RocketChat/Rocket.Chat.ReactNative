@@ -1,10 +1,10 @@
 import { InteractionManager } from 'react-native';
 
 import RoomSubscription from './room';
-import { getMessageById } from '../../database/services/Message';
-import { getThreadById } from '../../database/services/Thread';
-import { getThreadMessageById } from '../../database/services/ThreadMessage';
-import database from '../../database';
+import { getMessageById } from '~/lib/database/services/Message';
+import { getThreadById } from '~/lib/database/services/Thread';
+import { getThreadMessageById } from '~/lib/database/services/ThreadMessage';
+import database from '~/lib/database';
 import log from '../helpers/log';
 import {
 	commitPreparedRecords,
@@ -12,13 +12,13 @@ import {
 	flush,
 	loggedPendingChanges,
 	makeFakeRecord
-} from '../../database/__tests__/mockedWatermelonDB';
+} from '~/lib/database/__tests__/mockedWatermelonDB';
 
 const mockSubscribeRoom = jest.fn<Promise<unknown[]>, [string]>(() => Promise.resolve([]));
 const mockOnStreamData = jest.fn<Promise<{ stop: jest.Mock }>, [string, (...args: unknown[]) => void]>(() =>
 	Promise.resolve({ stop: jest.fn() })
 );
-jest.mock('../../services/sdk', () => ({
+jest.mock('~/lib/services/sdk', () => ({
 	__esModule: true,
 	default: {
 		subscribeRoom: (rid: string) => mockSubscribeRoom(rid),
@@ -26,7 +26,7 @@ jest.mock('../../services/sdk', () => ({
 	}
 }));
 
-jest.mock('../../store/auxStore', () => ({
+jest.mock('~/lib/store/auxStore', () => ({
 	store: {
 		getState: jest.fn(() => ({})),
 		dispatch: jest.fn()
@@ -70,18 +70,18 @@ jest.mock('../updateLastOpen', () => ({
 	updateLastOpen: jest.fn()
 }));
 
-jest.mock('../../../actions/usersTyping', () => ({
+jest.mock('~/actions/usersTyping', () => ({
 	addUserTyping: jest.fn(),
 	clearUserTyping: jest.fn().mockReturnValue({ type: 'CLEAR_USER_TYPING' }),
 	removeUserTyping: jest.fn()
 }));
 
-jest.mock('../../../actions/room', () => ({
+jest.mock('~/actions/room', () => ({
 	subscribeRoom: jest.fn().mockReturnValue({ type: 'SUBSCRIBE_ROOM' }),
 	unsubscribeRoom: jest.fn().mockReturnValue({ type: 'UNSUBSCRIBE_ROOM' })
 }));
 
-jest.mock('../../encryption', () => ({
+jest.mock('~/lib/encryption', () => ({
 	Encryption: {
 		decryptMessage: jest.fn((msg: unknown) => Promise.resolve(msg))
 	}
@@ -89,8 +89,8 @@ jest.mock('../../encryption', () => ({
 
 const mockDbBatch = jest.fn().mockResolvedValue(undefined);
 const mockDbGet = jest.fn();
-jest.mock('../../database', () => {
-	const { createWriterLock } = require('../../database/__tests__/mockedWatermelonDB');
+jest.mock('~/lib/database', () => {
+	const { createWriterLock } = require('~/lib/database/__tests__/mockedWatermelonDB');
 	const write = createWriterLock();
 	const mockModel = {
 		prepareCreate: jest.fn(() => ({})),
@@ -110,15 +110,15 @@ jest.mock('../../database', () => {
 	};
 });
 
-jest.mock('../../database/services/Message', () => ({
+jest.mock('~/lib/database/services/Message', () => ({
 	getMessageById: jest.fn()
 }));
 
-jest.mock('../../database/services/Thread', () => ({
+jest.mock('~/lib/database/services/Thread', () => ({
 	getThreadById: jest.fn()
 }));
 
-jest.mock('../../database/services/ThreadMessage', () => ({
+jest.mock('~/lib/database/services/ThreadMessage', () => ({
 	getThreadMessageById: jest.fn()
 }));
 

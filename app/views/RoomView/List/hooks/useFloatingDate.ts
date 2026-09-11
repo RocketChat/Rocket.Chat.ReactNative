@@ -3,8 +3,8 @@ import { type FlatListProps, type ViewToken } from 'react-native';
 import { type SharedValue, useSharedValue, withTiming } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import dayjs from '../../../../lib/dayjs';
-import { type TAnyMessageModel } from '../../../../definitions';
+import dayjs from '~/lib/dayjs';
+import { type TAnyMessageModel } from '~/definitions';
 
 const HIDE_DELAY = 1000;
 const FADE_IN_DURATION = 150;

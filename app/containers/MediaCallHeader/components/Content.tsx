@@ -1,8 +1,8 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { navigateToCallRoom } from '../../../lib/services/voip/navigateToCallRoom';
-import { useCallStore } from '../../../lib/services/voip/useCallStore';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { navigateToCallRoom } from '~/lib/services/voip/navigateToCallRoom';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
 import Title from './Title';
 import Subtitle from './Subtitle';
 

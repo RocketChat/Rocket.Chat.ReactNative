@@ -1,4 +1,4 @@
-import { ERoomTypes } from '../../definitions';
+import { ERoomTypes } from '~/definitions';
 import database from '../database';
 import sdk from '../services/sdk';
 import { createDirectMessage } from './createDirectMessage';

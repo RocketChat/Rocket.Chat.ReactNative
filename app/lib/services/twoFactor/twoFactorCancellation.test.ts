@@ -1,12 +1,12 @@
 import { Alert } from 'react-native';
 import bugsnag from '@bugsnag/react-native';
 
-import log from '../../methods/helpers/log';
-import { showErrorAlertWithEMessage } from '../../methods/helpers/info';
-import handleSaveUserProfileError from '../../methods/helpers/handleSaveUserProfileError';
+import log from '~/lib/methods/helpers/log';
+import { showErrorAlertWithEMessage } from '~/lib/methods/helpers/info';
+import handleSaveUserProfileError from '~/lib/methods/helpers/handleSaveUserProfileError';
 import { TwoFactorCancelledError } from './twoFactorCancelled';
 
-jest.mock('../../../i18n', () => ({
+jest.mock('~/i18n', () => ({
 	t: (key: string) => key,
 	isTranslated: () => true
 }));

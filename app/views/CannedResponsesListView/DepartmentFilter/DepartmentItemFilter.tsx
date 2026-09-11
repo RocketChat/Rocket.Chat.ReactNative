@@ -1,11 +1,11 @@
 import { PixelRatio, StyleSheet, Text, View } from 'react-native';
 
-import { type ILivechatDepartment } from '../../../definitions/ILivechatDepartment';
-import { useTheme } from '../../../theme';
-import Touch from '../../../containers/Touch';
-import { CustomIcon } from '../../../containers/CustomIcon';
-import sharedStyles from '../../Styles';
-import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
+import { useTheme } from '~/theme';
+import Touch from '~/containers/Touch';
+import { CustomIcon } from '~/containers/CustomIcon';
+import sharedStyles from '~/views/Styles';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IDepartmentItemFilter {
 	currentDepartment: ILivechatDepartment;

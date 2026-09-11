@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
-import Button from '../../../Button';
-import { CustomIcon } from '../../../CustomIcon';
-import I18n from '../../../../i18n';
-import { type IShareAttachment } from '../../../../definitions';
-import { useActionSheet } from '../../../ActionSheet';
-import { useTheme } from '../../../../theme';
-import { useAltTextSupported } from '../../../../lib/hooks/useAltTextSupported';
-import sharedStyles from '../../../../views/Styles';
+import Button from '~/containers/Button';
+import { CustomIcon } from '~/containers/CustomIcon';
+import I18n from '~/i18n';
+import { type IShareAttachment } from '~/definitions';
+import { useActionSheet } from '~/containers/ActionSheet';
+import { useTheme } from '~/theme';
+import { useAltTextSupported } from '~/lib/hooks/useAltTextSupported';
+import sharedStyles from '~/views/Styles';
 
 const PREVIEW_HEIGHT = 240;
 

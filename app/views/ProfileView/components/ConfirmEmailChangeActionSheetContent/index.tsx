@@ -2,12 +2,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { type ReactElement } from 'react';
 
-import I18n from '../../../../i18n';
-import { useTheme } from '../../../../theme';
-import sharedStyles from '../../../Styles';
-import Button from '../../../../containers/Button';
-import { ControlledFormTextInput } from '../../../../containers/TextInput';
-import { useActionSheet } from '../../../../containers/ActionSheet';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
+import Button from '~/containers/Button';
+import { ControlledFormTextInput } from '~/containers/TextInput';
+import { useActionSheet } from '~/containers/ActionSheet';
 
 const styles = StyleSheet.create({
 	subtitleText: {

@@ -1,9 +1,9 @@
 import { Text, View } from 'react-native';
 
-import { type IPasswordPolicy } from '../../lib/hooks/useVerifyPassword';
+import { type IPasswordPolicy } from '~/lib/hooks/useVerifyPassword';
 import Tip from './components/Tip';
-import i18n from '../../i18n';
-import { useTheme } from '../../theme';
+import i18n from '~/i18n';
+import { useTheme } from '~/theme';
 import { styles } from './styles';
 
 interface IPasswordTips {

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
-import { type IServerRoom } from '../../../definitions';
-import { announceSearchResultsForAccessibility } from '../../../lib/methods/helpers/announceSearchResultsForAccessibility';
-import { useDebounce } from '../../../lib/methods/helpers/debounce';
-import log, { events, logEvent } from '../../../lib/methods/helpers/log';
-import { getDirectory } from '../../../lib/services/restApi';
+import { type IServerRoom } from '~/definitions';
+import { announceSearchResultsForAccessibility } from '~/lib/methods/helpers/announceSearchResultsForAccessibility';
+import { useDebounce } from '~/lib/methods/helpers/debounce';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { getDirectory } from '~/lib/services/restApi';
 
 export const useDirectorySearch = (directoryDefaultView: string) => {
 	const [data, setData] = useState<IServerRoom[]>([]);
