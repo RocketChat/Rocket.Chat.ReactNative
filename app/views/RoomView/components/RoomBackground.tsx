@@ -1,3 +1,4 @@
+import { type ReactElement } from 'react';
 import { ImageBackground, StyleSheet } from 'react-native';
 
 import { useTheme } from '../../../theme';
@@ -10,7 +11,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const RoomBackground = () => {
+export const RoomBackground = (): ReactElement => {
 	const { theme } = useTheme();
 	return (
 		<ImageBackground
@@ -20,5 +21,3 @@ const RoomBackground = () => {
 		/>
 	);
 };
-
-export default RoomBackground;

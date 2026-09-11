@@ -11,7 +11,7 @@ import { type IRoomViewProps } from './definitions';
 import { EncryptedRoom } from './components/EncryptedRoom';
 import { InvitedRoomScreen } from './components/InvitedRoomScreen';
 import { MissingRoomE2EEKey } from './components/MissingRoomE2EEKey';
-import RoomBackground from './components/RoomBackground';
+import { RoomBackground } from './components/RoomBackground';
 import RoomScreen from './RoomScreen';
 import { parseRoomRoute } from './services/parseRoomRoute';
 import { createRoomStore, observeRoom } from './stores/RoomStore';

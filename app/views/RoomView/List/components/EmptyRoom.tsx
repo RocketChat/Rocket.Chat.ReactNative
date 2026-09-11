@@ -1,4 +1,4 @@
-import RoomBackground from '../../components/RoomBackground';
+import { RoomBackground } from '../../components/RoomBackground';
 
 const EmptyRoom = ({ length, rid }: { length: number; rid: string }) => {
 	if (length === 0 || !rid) {

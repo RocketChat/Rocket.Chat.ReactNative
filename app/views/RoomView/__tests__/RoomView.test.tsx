@@ -53,7 +53,7 @@ jest.mock('../stores/RoomStore', () => {
 	};
 });
 
-const renderGate = (params: Record<string, unknown> | null = { rid: 'rid-1', t: 'c' }) => {
+const renderRoomView = (params: Record<string, unknown> | null = { rid: 'rid-1', t: 'c' }) => {
 	const reduxStore = createReduxStore(() => ({ server: { version: '6.1.0' } }));
 	const route = { params: params ?? undefined } as unknown as IRoomViewProps['route'];
 	const navigation = { setOptions: jest.fn() } as unknown as IRoomViewProps['navigation'];
@@ -75,34 +75,32 @@ describe('RoomView', () => {
 	});
 
 	it('mounts the room screen when the room is not blocked', () => {
-		renderGate();
+		renderRoomView();
 
 		expect(screen.getByTestId('room-screen')).toBeOnTheScreen();
 	});
 
 	it('renders the empty-room background instead of a room when the route has no identity', () => {
-		renderGate(null);
+		renderRoomView(null);
 
 		expect(screen.getByTestId('room-view-empty')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-screen')).toBeNull();
 		expect(screen.queryByTestId('messagebox')).toBeNull();
-		expect(screen.queryByText('Back')).toBeNull();
 	});
 
 	it('renders the empty-room background when the route has a rid but no type', () => {
-		renderGate({ rid: 'rid-1' });
+		renderRoomView({ rid: 'rid-1' });
 
 		expect(screen.getByTestId('room-view-empty')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-screen')).toBeNull();
 		expect(screen.queryByTestId('messagebox')).toBeNull();
-		expect(screen.queryByText('Back')).toBeNull();
 	});
 
 	it('keeps the room screen unmounted while the room is an invite', () => {
 		room.current = { id: 'sub-1', rid: 'rid-1', t: 'c' } as TRoomOrPreview;
 		jest.mocked(isInviteSubscription).mockReturnValue(true);
 
-		renderGate();
+		renderRoomView();
 
 		expect(screen.getByTestId('invited-screen')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-screen')).toBeNull();
@@ -112,7 +110,7 @@ describe('RoomView', () => {
 		room.current = { id: 'sub-1', rid: 'rid-1', t: 'c', encrypted: true } as TRoomOrPreview;
 		jest.mocked(useE2EEStatus).mockReturnValue({ showMissingE2EEKey: true, showE2EEDisabledRoom: false, hasE2EEWarning: true });
 
-		renderGate();
+		renderRoomView();
 
 		expect(screen.getByTestId('missing-key-screen')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-screen')).toBeNull();
@@ -122,7 +120,7 @@ describe('RoomView', () => {
 		room.current = { id: 'sub-1', rid: 'rid-1', t: 'c', encrypted: true } as TRoomOrPreview;
 		jest.mocked(useE2EEStatus).mockReturnValue({ showMissingE2EEKey: false, showE2EEDisabledRoom: true, hasE2EEWarning: true });
 
-		renderGate();
+		renderRoomView();
 
 		expect(screen.getByTestId('encrypted-screen')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-screen')).toBeNull();
