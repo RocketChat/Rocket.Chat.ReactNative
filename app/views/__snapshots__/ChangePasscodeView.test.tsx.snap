@@ -2164,7 +2164,6 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
               <View
                 style={
                   {
-                    "height": 32,
                     "justifyContent": "center",
                   }
                 }

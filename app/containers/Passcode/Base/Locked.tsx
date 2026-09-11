@@ -2,6 +2,7 @@ import { useEffect, useState, memo } from 'react';
 import { Grid } from 'react-native-easy-grid';
 
 import { resetAttempts } from '../../../lib/methods/helpers/localAuthentication';
+import log from '../../../lib/methods/helpers/log';
 import { TYPE } from '../constants';
 import { getDiff, getLockedUntil } from '../utils';
 import I18n from '../../../i18n';
@@ -20,27 +21,60 @@ interface IPasscodeLocked {
 	setStatus: Function;
 }
 
-const Timer = memo(({ time, setStatus }: IPasscodeTimer) => {
-	const calcTimeLeft = () => {
-		const diff = getDiff(time || 0);
-		if (diff > 0) {
-			return Math.floor((diff / 1000) % 60);
-		}
-	};
+const calcTimeLeft = (time: Date | null) => {
+	const diff = getDiff(time || 0);
+	if (diff > 0) {
+		return Math.floor((diff / 1000) % 60);
+	}
+};
 
-	const [timeLeft, setTimeLeft] = useState(calcTimeLeft());
+const Timer = memo(({ time, setStatus }: IPasscodeTimer) => {
+	const [timeLeft, setTimeLeft] = useState(() => calcTimeLeft(time));
 
 	useEffect(() => {
-		setTimeout(() => {
-			setTimeLeft(calcTimeLeft());
-			if (timeLeft && timeLeft <= 1) {
-				resetAttempts();
+		if (!time) {
+			return;
+		}
+
+		const unlock = async () => {
+			try {
+				// Clear before flipping status, or PasscodeEnter's readStorage re-seeds the old attempts count.
+				await resetAttempts();
+			} catch (e) {
+				log(e);
+			} finally {
 				setStatus(TYPE.ENTER);
 			}
-		}, 1000);
-	});
+		};
 
-	if (!timeLeft) {
+		const syncTimeLeft = () => {
+			const nextTimeLeft = calcTimeLeft(time);
+			setTimeLeft(nextTimeLeft);
+
+			if (nextTimeLeft !== undefined) {
+				return false;
+			}
+
+			unlock().catch(e => {
+				log(e);
+			});
+			return true;
+		};
+
+		if (syncTimeLeft()) {
+			return;
+		}
+
+		const intervalId = setInterval(() => {
+			if (syncTimeLeft()) {
+				clearInterval(intervalId);
+			}
+		}, 1000);
+
+		return () => clearInterval(intervalId);
+	}, [time, setStatus]);
+
+	if (!time || !timeLeft) {
 		return null;
 	}
 
