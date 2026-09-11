@@ -90,7 +90,8 @@ describe('useRoomNavigation composed entry points', () => {
 	it('locates and highlights an in-window Message from a Message URL', async () => {
 		const listRef = makeListRef();
 		listRef.current.isMessageInWindow.mockReturnValue(true);
-		mockGetMessageInfo.mockResolvedValue({ id: 'message-1', rid: 'rid-1', ts: 100 });
+		const messageInfo = { id: 'message-1', rid: 'rid-1', ts: 100 };
+		mockGetMessageInfo.mockResolvedValue(messageInfo);
 		mockResolveJumpAnchor.mockResolvedValue(123);
 		const { result } = renderNavigation({ listContainerRef: listRef });
 
@@ -100,7 +101,7 @@ describe('useRoomNavigation composed entry points', () => {
 
 		expect(mockResolveJumpAnchor).toHaveBeenCalledWith(
 			'rid-1',
-			{ id: 'message-1', tmid: undefined, ts: 100, fromServer: undefined },
+			messageInfo,
 			true,
 			expect.objectContaining({ loadSurroundingMessages: expect.any(Function) })
 		);
@@ -111,7 +112,8 @@ describe('useRoomNavigation composed entry points', () => {
 	it('resolves an out-of-window anchor before requesting the List jump', async () => {
 		const listRef = makeListRef();
 		listRef.current.isMessageInWindow.mockReturnValue(false);
-		mockGetMessageInfo.mockResolvedValue({ id: 'message-2', rid: 'rid-1', ts: 200, fromServer: true });
+		const messageInfo = { id: 'message-2', rid: 'rid-1', ts: 200, fromServer: true };
+		mockGetMessageInfo.mockResolvedValue(messageInfo);
 		mockResolveJumpAnchor.mockResolvedValue(456);
 		const { result } = renderNavigation({ listContainerRef: listRef });
 
@@ -119,12 +121,7 @@ describe('useRoomNavigation composed entry points', () => {
 			await result.current.jumpToMessageByUrl('https://open.rocket.chat/room?msg=message-2');
 		});
 
-		expect(mockResolveJumpAnchor).toHaveBeenCalledWith(
-			'rid-1',
-			expect.objectContaining({ id: 'message-2', fromServer: true }),
-			false,
-			expect.any(Object)
-		);
+		expect(mockResolveJumpAnchor).toHaveBeenCalledWith('rid-1', messageInfo, false, expect.any(Object));
 		expect(listRef.current.jumpToMessage).toHaveBeenCalledWith('message-2', 456);
 	});
 

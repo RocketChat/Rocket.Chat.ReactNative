@@ -145,12 +145,7 @@ export function useRoomNavigation({
 			return false;
 		}
 		const inWindow = listContainerRef.current?.isMessageInWindow(message.id) ?? false;
-		const highTsMs = await resolveJumpAnchor(
-			rid,
-			{ id: message.id, tmid: message.tmid, ts: message.ts, fromServer: message.fromServer },
-			inWindow,
-			{ loadSurroundingMessages, getLocalAnchorTs }
-		);
+		const highTsMs = await resolveJumpAnchor(rid, message, inWindow, { loadSurroundingMessages, getLocalAnchorTs });
 		if (!isCurrentJump(generation)) return false;
 		await waitForFabricCommit();
 		if (!isCurrentJump(generation)) return false;
