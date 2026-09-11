@@ -567,6 +567,7 @@
   "Settings_succesfully_changed": "تم تعديل الإعدادات بنجاح!",
   "Share": "مشاركة",
   "Share_Link": "مشاركة رابط",
+  "Share_no_valid_attachments": "تعذر العثور على الملف الذي تمت مشاركته",
   "Share_this_app": "مشاركة هذا البرنامج",
   "Show_message_actions": "إظهار إجراءات الرسالة",
   "Show_more": "إظهار أكثر",

@@ -11,6 +11,47 @@ import MobileCoreServices
 
 class ShareRocketChatRN: UIViewController {
     let appScheme = "rocketchat"
+    // ponytail: 32k cap ported from ShareActivity.kt, else openURL/decode blows up
+    let maxTextLength = 32000
+
+    private func shareExtensionURL(params: [String: String]) -> URL? {
+        var components = URLComponents()
+        components.scheme = appScheme
+        components.host = "shareextension"
+        components.queryItems = params.map { URLQueryItem(name: $0.key, value: $0.value) }
+        return components.url
+    }
+
+    private func sanitizeFileName(_ name: String) -> String {
+        var base = (name as NSString).lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines)
+        base = base.replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: "\\", with: "_")
+        return base.isEmpty || base == "." || base == ".." ? UUID().uuidString : base
+    }
+
+    private func uniqueFileURL(in groupURL: URL, filename: String) -> URL {
+        var dest = groupURL.appendingPathComponent(sanitizeFileName(filename))
+        while FileManager.default.fileExists(atPath: dest.path) {
+            dest = groupURL.appendingPathComponent("\(UUID().uuidString)-\(sanitizeFileName(filename))")
+        }
+        return dest
+    }
+
+    // ponytail: copy, don't Data(contentsOf:) — extension limit ~120MB is RAM, not file size
+    private func copyFileToSharedContainer(fileUrl: URL, filename: String) -> URL? {
+        guard let appGroup = Bundle.main.object(forInfoDictionaryKey: "AppGroupIdentifier") as? String,
+              let groupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
+            return nil
+        }
+        let needsScoped = fileUrl.startAccessingSecurityScopedResource()
+        defer { if needsScoped { fileUrl.stopAccessingSecurityScopedResource() } }
+        do {
+            let dest = uniqueFileURL(in: groupURL, filename: filename.isEmpty ? fileUrl.lastPathComponent : filename)
+            try FileManager.default.copyItem(at: fileUrl, to: dest)
+            return dest
+        } catch {
+            return nil
+        }
+    }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -49,8 +90,13 @@ class ShareRocketChatRN: UIViewController {
     private func handleText(item: NSItemProvider) {
         item.loadItem(forTypeIdentifier: "public.text", options: nil) { (data, error) in
             if let text = data as? String {
-                if let encoded = text.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed),
-                   let url = URL(string: "\(self.appScheme)://shareextension?text=\(encoded)") {
+                if text.count > self.maxTextLength {
+                    let filename = "shared-\(UUID().uuidString).txt"
+                    if let savedUrl = self.saveDataToSharedContainer(data: Data(text.utf8), filename: filename),
+                       let url = self.shareExtensionURL(params: ["mediaUris": savedUrl.absoluteString]) {
+                        _ = self.openURL(url)
+                    }
+                } else if let url = self.shareExtensionURL(params: ["text": text]) {
                     _ = self.openURL(url)
                 }
             }
@@ -60,11 +106,9 @@ class ShareRocketChatRN: UIViewController {
 
     private func handleUrl(item: NSItemProvider) {
         item.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, error) in
-            if let url = data as? URL {
-                if let encoded = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed),
-                   let finalUrl = URL(string: "\(self.appScheme)://shareextension?url=\(encoded)") {
-                    _ = self.openURL(finalUrl)
-                }
+            if let url = data as? URL,
+               let finalUrl = self.shareExtensionURL(params: ["url": url.absoluteString]) {
+                _ = self.openURL(finalUrl)
             }
             self.completeRequest()
         }
@@ -72,21 +116,17 @@ class ShareRocketChatRN: UIViewController {
 
     private func handleAllFileURLs(items: [NSItemProvider]) {
         var fileUris = [String]()
+        let lock = NSLock()
         let dispatchGroup = DispatchGroup()
 
         for item in items {
             dispatchGroup.enter()
             item.loadItem(forTypeIdentifier: "public.data", options: nil) { (data, error) in
                 if let fileUrl = data as? URL, fileUrl.isFileURL {
-                    do {
-                        let fileData = try Data(contentsOf: fileUrl)
-                        let originalFilename = fileUrl.lastPathComponent
-                        let savedUrl = self.saveDataToSharedContainer(data: fileData, filename: originalFilename)
-                        if let finalUrl = savedUrl?.absoluteString {
-                            fileUris.append(finalUrl)
-                        }
-                    } catch {
-                        // Handle error
+                    if let savedUrl = self.copyFileToSharedContainer(fileUrl: fileUrl, filename: fileUrl.lastPathComponent) {
+                        lock.lock()
+                        fileUris.append(savedUrl.absoluteString)
+                        lock.unlock()
                     }
                 }
                 dispatchGroup.leave()
@@ -94,9 +134,7 @@ class ShareRocketChatRN: UIViewController {
         }
 
         dispatchGroup.notify(queue: .main) {
-            let combinedFileUris = fileUris.joined(separator: ",")
-            if let encoded = combinedFileUris.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed),
-            let url = URL(string: "\(self.appScheme)://shareextension?mediaUris=\(encoded)") {
+            if !fileUris.isEmpty, let url = self.shareExtensionURL(params: ["mediaUris": fileUris.joined(separator: ",")]) {
                 _ = self.openURL(url)
             }
             self.completeRequest()
@@ -106,6 +144,7 @@ class ShareRocketChatRN: UIViewController {
 
     private func handleMultipleMediaAndData(items: [NSItemProvider]) {
         var mediaUris = [String]()
+        let lock = NSLock()
         let dispatchGroup = DispatchGroup()
 
         for (_, item) in items.enumerated() {
@@ -114,19 +153,25 @@ class ShareRocketChatRN: UIViewController {
             if item.hasItemConformingToTypeIdentifier("public.image") {
                 self.loadAndSaveItem(item: item, type: "public.image", dispatchGroup: dispatchGroup) { mediaUriInfo in
                     if let mediaUriInfo = mediaUriInfo {
+                        lock.lock()
                         mediaUris.append(mediaUriInfo)
+                        lock.unlock()
                     }
                 }
             } else if item.hasItemConformingToTypeIdentifier("public.movie") {
                 self.loadAndSaveItem(item: item, type: "public.movie", dispatchGroup: dispatchGroup) { mediaUriInfo in
                     if let mediaUriInfo = mediaUriInfo {
+                        lock.lock()
                         mediaUris.append(mediaUriInfo)
+                        lock.unlock()
                     }
                 }
             } else if item.hasItemConformingToTypeIdentifier("public.data") {
                 self.loadAndSaveItem(item: item, type: "public.data", dispatchGroup: dispatchGroup) { mediaUriInfo in
                     if let mediaUriInfo = mediaUriInfo {
+                        lock.lock()
                         mediaUris.append(mediaUriInfo)
+                        lock.unlock()
                     }
                 }
             } else {
@@ -135,9 +180,7 @@ class ShareRocketChatRN: UIViewController {
         }
 
         dispatchGroup.notify(queue: .main) {
-            let combinedMediaUris = mediaUris.joined(separator: ",")
-            if let encoded = combinedMediaUris.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed),
-               let url = URL(string: "\(self.appScheme)://shareextension?mediaUris=\(encoded)") {
+            if !mediaUris.isEmpty, let url = self.shareExtensionURL(params: ["mediaUris": mediaUris.joined(separator: ",")]) {
                 _ = self.openURL(url)
             }
             self.completeRequest()
@@ -149,13 +192,13 @@ class ShareRocketChatRN: UIViewController {
             var mediaUriInfo: String?
 
             if let dataUri = data as? URL {
-                do {
-                    let data = try Data(contentsOf: dataUri)
-                    let originalFilename = dataUri.lastPathComponent
-                    let savedUrl = self.saveDataToSharedContainer(data: data, filename: originalFilename)
-                    mediaUriInfo = savedUrl?.absoluteString
-                } catch {
-                    mediaUriInfo = nil
+                if dataUri.isFileURL {
+                    mediaUriInfo = self.copyFileToSharedContainer(fileUrl: dataUri, filename: dataUri.lastPathComponent)?.absoluteString
+                } else if let data = try? Data(contentsOf: dataUri) {
+                    if let fileExtension = self.inferFileExtension(from: item) {
+                        let filename = UUID().uuidString + "." + fileExtension
+                        mediaUriInfo = self.saveDataToSharedContainer(data: data, filename: filename)?.absoluteString
+                    }
                 }
             } else if let data = data as? Data {
                 if let fileExtension = self.inferFileExtension(from: item) {
@@ -183,7 +226,7 @@ class ShareRocketChatRN: UIViewController {
         guard let groupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
             return nil
         }
-        let fileURL = groupURL.appendingPathComponent(filename)
+        let fileURL = uniqueFileURL(in: groupURL, filename: filename)
         do {
             try data.write(to: fileURL)
             return fileURL

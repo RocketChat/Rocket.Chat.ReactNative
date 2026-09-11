@@ -736,6 +736,7 @@
   "Settings_succesfully_changed": "Inställningarna har ändrats.",
   "Share": "Dela",
   "Share_Link": "Dela länk",
+  "Share_no_valid_attachments": "Den delade filen kunde inte hittas",
   "Share_this_app": "Dela den här appen",
   "Sharing": "Delar",
   "Shortcut": "Genväg",

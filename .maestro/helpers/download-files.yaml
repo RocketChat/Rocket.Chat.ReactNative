@@ -1,0 +1,17 @@
+appId: ${APP_ID}
+name: Download File
+tags:
+  - 'util'
+
+---
+
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - clearState: com.android.chrome
+      - launchApp: com.android.chrome
+      - extendedWaitUntil:
+          visible:
+            text: 'Add account to device'
+          timeout: 60000

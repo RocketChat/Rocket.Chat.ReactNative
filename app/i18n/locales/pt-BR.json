@@ -834,6 +834,7 @@
   "Settings_succesfully_changed": "Configurações salvas com sucesso!",
   "Share": "Compartilhar",
   "Share_Link": "Compartilhar convite",
+  "Share_no_valid_attachments": "Não foi possível encontrar o arquivo compartilhado",
   "Share_this_app": "Compartilhar esse app",
   "Sharing": "Compartilhando",
   "Shortcut": "Atalho",

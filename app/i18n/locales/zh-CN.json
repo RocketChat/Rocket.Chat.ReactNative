@@ -566,6 +566,7 @@
   "Settings_succesfully_changed": "设置更改成功！",
   "Share": "分享",
   "Share_Link": "分享链接",
+  "Share_no_valid_attachments": "找不到共享的文件",
   "Share_this_app": "分享此 app",
   "Show_message_actions": "显示消息操作",
   "Show_more": "显示更多",

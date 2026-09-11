@@ -762,6 +762,7 @@
   "Settings_succesfully_changed": "Einstellungen erfolgreich geändert!",
   "Share": "Teilen",
   "Share_Link": "Link teilen",
+  "Share_no_valid_attachments": "Die geteilte Datei konnte nicht gefunden werden",
   "Share_this_app": "App teilen",
   "Sharing": "Wird geteilt",
   "Shortcut": "Verknüpfung",

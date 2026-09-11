@@ -64,7 +64,7 @@ interface IPreview {
 }
 
 const Preview = memo(({ item, theme, length }: IPreview) => {
-	const type = item?.mime;
+	const type = typeof item?.mime === 'string' ? item.mime : undefined;
 	const { width, height } = useWindowDimensions();
 	const insets = useSafeAreaInsets();
 	const headerHeight = useHeaderHeight();

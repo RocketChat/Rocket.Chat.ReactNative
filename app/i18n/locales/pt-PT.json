@@ -499,6 +499,7 @@
   "Settings": "Definições",
   "Settings_succesfully_changed": "Definições guardadas com sucesso!",
   "Share": "Partilhar",
+  "Share_no_valid_attachments": "Não foi possível encontrar o ficheiro partilhado",
   "Show_message_actions": "Mostrar ações da mensagem",
   "Show_Password": "Mostrar palavra-passe",
   "Show_the_keyboard_shortcut_list": "Exibe a lista de atalhos do teclado",

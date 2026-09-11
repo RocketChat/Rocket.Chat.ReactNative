@@ -680,6 +680,7 @@
   "Settings_succesfully_changed": "Paramètres modifiés avec succès !",
   "Share": "Partager",
   "Share_Link": "Partager le lien",
+  "Share_no_valid_attachments": "Le fichier partagé est introuvable",
   "Share_this_app": "Partager cette application",
   "Sharing": "Partager",
   "Shortcut": "Raccourci",
