@@ -4,7 +4,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { Keyboard } from 'react-native';
 
 import { type IAttachment, type TAnyMessageModel } from '../../../definitions';
-import { getMessageTranslation } from '../utils';
+import { getMessageSeparators, getMessageTranslation, type TMessageSeparators } from '../utils';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../lib/constants/keys';
 import { messagesStatus } from '../../../lib/constants/messagesStatus';
 import { useDebounce } from '../../../lib/methods/helpers/debounce';
@@ -19,14 +19,15 @@ import {
 	useJumpToMessage,
 	useMessageGroupingPeriod,
 	useMessageUser,
-	useOnDiscussionPress,
-	useOnThreadPress
+	useOnThreadPress,
+	useOnDiscussionPress
 } from './MessageRoomStore';
 
 type MessageStoreState = {
 	tick: number;
 	item: TAnyMessageModel;
 	previousItem?: TAnyMessageModel;
+	lastSeen: Date | null;
 	isIgnored: boolean;
 	manualUnignored: boolean;
 	reveal: () => void;
@@ -36,7 +37,10 @@ type MessageStoreState = {
 };
 
 const createMessageStore = (
-	initial: Pick<MessageStoreState, 'item' | 'previousItem' | 'isIgnored' | 'onPress' | 'onLongPress' | 'threadBadgeColor'>
+	initial: Pick<
+		MessageStoreState,
+		'item' | 'previousItem' | 'lastSeen' | 'isIgnored' | 'onPress' | 'onLongPress' | 'threadBadgeColor'
+	>
 ) =>
 	createStore<MessageStoreState>(set => ({
 		tick: 0,
@@ -119,6 +123,7 @@ const subscribeModel = (m: TAnyMessageModel, store: MessageStore) => {
 export const MessageProvider = ({
 	item,
 	previousItem,
+	lastSeen = null,
 	onPress,
 	onLongPress,
 	threadBadgeColor,
@@ -127,6 +132,7 @@ export const MessageProvider = ({
 }: {
 	item: TAnyMessageModel;
 	previousItem?: TAnyMessageModel;
+	lastSeen?: Date | null;
 	onPress?: () => void;
 	onLongPress?: (item: TAnyMessageModel) => void;
 	threadBadgeColor?: string;
@@ -134,7 +140,7 @@ export const MessageProvider = ({
 	children: ReactNode;
 }): ReactElement => {
 	const [store] = useState(() =>
-		createMessageStore({ item, previousItem, isIgnored: isIgnored ?? false, onPress, onLongPress, threadBadgeColor })
+		createMessageStore({ item, previousItem, lastSeen, isIgnored: isIgnored ?? false, onPress, onLongPress, threadBadgeColor })
 	);
 
 	// Push item/previousItem into the store and (re)subscribe both records to the same tick.
@@ -148,6 +154,10 @@ export const MessageProvider = ({
 			unsubscribePrevious?.();
 		};
 	}, [item, previousItem, store]);
+
+	useEffect(() => {
+		store.setState({ lastSeen });
+	}, [lastSeen, store]);
 
 	// Mirror per-message row handlers so field-level selectors subscribe without churning the context value.
 	useEffect(() => {
@@ -212,6 +222,9 @@ export const useAttachments = (): TAnyMessageModel['attachments'] => useMessageF
 
 export const useMessageHeaderMeta = (): Pick<TAnyMessageModel, 'ts' | 'unread' | 'pinned' | 't'> =>
 	useMessageStore(useShallow(s => ({ ts: s.item.ts, unread: s.item.unread, pinned: s.item.pinned, t: s.item.t })));
+
+export const useMessageSeparators = (): TMessageSeparators =>
+	useMessageStore(useShallow(s => getMessageSeparators(s.previousItem, s.item, s.lastSeen)));
 
 const computeIsHeader = (
 	prev: TAnyMessageModel | undefined,
@@ -291,14 +304,20 @@ export const useMessageId = (): TAnyMessageModel['id'] => useMessageField(item =
 
 export const useReplies = (): TAnyMessageModel['replies'] => useMessageField(item => item.replies);
 
+const autoTranslateLanguageFor = (
+	item: TAnyMessageModel,
+	username: string | undefined,
+	autoTranslateRoom: boolean | undefined,
+	autoTranslateLanguage: string | undefined
+): string | undefined =>
+	autoTranslateRoom && autoTranslateLanguage && item.autoTranslate && item.u?.username !== username
+		? autoTranslateLanguage
+		: undefined;
+
 export const useTranslateLanguage = (): string | undefined => {
 	const { autoTranslateRoom, autoTranslateLanguage } = useAutoTranslate();
 	const user = useMessageUser();
-	return useMessageStore(s => {
-		const otherUserMessage = s.item.u?.username !== user?.username;
-		const canTranslate = autoTranslateRoom && autoTranslateLanguage && s.item.autoTranslate && otherUserMessage;
-		return canTranslate ? autoTranslateLanguage : undefined;
-	});
+	return useMessageStore(s => autoTranslateLanguageFor(s.item, user?.username, autoTranslateRoom, autoTranslateLanguage));
 };
 
 export const useMessageText = (): { messageText: TAnyMessageModel['msg']; isTranslated: boolean } => {
@@ -308,9 +327,9 @@ export const useMessageText = (): { messageText: TAnyMessageModel['msg']; isTran
 		useShallow(s => {
 			let messageText = s.item.msg;
 			let isTranslated = false;
-			const otherUserMessage = s.item.u?.username !== user?.username;
-			if (autoTranslateRoom && s.item.autoTranslate && autoTranslateLanguage && otherUserMessage) {
-				const translated = getMessageTranslation(s.item, autoTranslateLanguage);
+			const language = autoTranslateLanguageFor(s.item, user?.username, autoTranslateRoom, autoTranslateLanguage);
+			if (language) {
+				const translated = getMessageTranslation(s.item, language);
 				isTranslated = !!translated;
 				messageText = translated || messageText;
 			}

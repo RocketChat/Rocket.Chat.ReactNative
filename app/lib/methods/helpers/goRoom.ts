@@ -21,18 +21,29 @@ interface IGoRoomItem {
 	name?: string;
 	prid?: string;
 	visitor?: IVisitor;
+	joinCodeRequired?: boolean;
 }
 
 export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription | IOmnichannelRoomVisitor;
 
+interface RoomRouteParams {
+	rid?: string;
+	name: string;
+	t?: SubscriptionType;
+	prid?: string;
+	visitor?: IVisitor;
+	joinCodeRequired?: boolean;
+	roomUserId?: string;
+}
+
 const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMasterDetail: boolean }) => {
-	const routeParams = {
+	const routeParams: RoomRouteParams = {
 		rid: item.rid,
 		name: getRoomTitle(item),
 		t: item.t,
 		prid: item.prid,
-		room: item,
 		visitor: item.visitor,
+		joinCodeRequired: item.joinCodeRequired,
 		roomUserId: getUidDirectMessage(item),
 		...props
 	};
@@ -113,11 +124,7 @@ export const goRoom = async ({
 		}
 	}
 
-	/**
-	 * Fetches subscription from database to use goRoom with a more complete room object.
-	 * We might want to review this logic in the future, since react-navigation complains about non-serializable data
-	 * https://reactnavigation.org/docs/troubleshooting/#i-get-the-warning-non-serializable-values-were-found-in-the-navigation-state
-	 */
+	// Re-fetch the subscription so scalar route params (name, prid, visitor, roomUserId) are as complete as possible.
 	let _item = item;
 	if (item.rid) {
 		const sub = await getSubscriptionByRoomId(item.rid);

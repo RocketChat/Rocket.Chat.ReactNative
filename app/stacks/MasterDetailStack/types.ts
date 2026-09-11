@@ -42,11 +42,13 @@ export type ModalStackParamList = {
 		};
 	};
 	RoomInfoView: {
-		room: ISubscription;
-		member: any;
+		room?: ISubscription;
+		member?: any;
 		rid: string;
 		t: SubscriptionType;
 		showCloseModal?: boolean;
+		fromRid?: string;
+		itsMe?: boolean;
 	};
 	SelectListView: {
 		data: any;

@@ -3,6 +3,8 @@ import { Provider } from 'react-redux';
 
 import { createMockedStore } from '../../../../reducers/mockedStore';
 import { updateSettings } from '../../../../actions/settings';
+import { setUser } from '../../../../actions/login';
+import { selectServerSuccess } from '../../../../actions/server';
 import { type TAnyMessageModel } from '../../../../definitions';
 import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { MessageProvider } from '../../stores/MessageStore';
@@ -10,6 +12,8 @@ import UrlsLeaf from '../Urls';
 
 const store = createMockedStore();
 store.dispatch(updateSettings('API_Embed', true));
+store.dispatch(setUser({ id: 'reader-id', username: 'reader', token: 'token' }));
+store.dispatch(selectServerSuccess({ server: 'https://open.rocket.chat', version: '', name: '' }));
 
 const item = {
 	id: 'msg-id',
@@ -26,10 +30,7 @@ const item = {
 	]
 } as unknown as TAnyMessageModel;
 
-const room: Partial<MessageRoomState> = {
-	user: { id: 'reader-id', username: 'reader', token: 'token' },
-	baseUrl: 'https://open.rocket.chat'
-};
+const room: Partial<MessageRoomState> = {};
 
 const StoryWrapper = ({ children }: { children: ReactNode }) => (
 	<Provider store={store}>

@@ -24,8 +24,8 @@ function replace(name: string, params: any) {
 }
 
 // Pops to the first occurrence of the given route name, usually RoomView
-function popTo(name: string) {
-	navigationRef.current?.dispatch(StackActions.popTo(name));
+function popTo(name: string, params?: any, options?: { merge?: boolean }) {
+	navigationRef.current?.dispatch(StackActions.popTo(name, params, options));
 }
 
 // Removes RoomView from the stack and leaves only RoomsListView open
@@ -47,7 +47,8 @@ function popToRoom(isMasterDetail: boolean) {
 	if (isMasterDetail) {
 		popTo('DrawerNavigator');
 	} else {
-		popTo('RoomView');
+		// merge keeps the retained RoomView's existing params instead of replacing them with undefined
+		popTo('RoomView', undefined, { merge: true });
 	}
 }
 

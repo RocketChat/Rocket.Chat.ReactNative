@@ -74,7 +74,7 @@ export const useFloatingDate = (): IUseFloatingDate => {
 			return;
 		}
 		isShown.current = true;
-		opacity.value = withTiming(1, { duration: FADE_IN_DURATION });
+		opacity.set(withTiming(1, { duration: FADE_IN_DURATION }));
 	}, [cancelHide, opacity]);
 
 	const hideAfterDelay = useCallback((): void => {
@@ -82,7 +82,7 @@ export const useFloatingDate = (): IUseFloatingDate => {
 		hideTimeout.current = setTimeout(() => {
 			hideTimeout.current = null;
 			isShown.current = false;
-			opacity.value = withTiming(0, { duration: FADE_OUT_DURATION });
+			opacity.set(withTiming(0, { duration: FADE_OUT_DURATION }));
 		}, HIDE_DELAY);
 	}, [cancelHide, opacity]);
 

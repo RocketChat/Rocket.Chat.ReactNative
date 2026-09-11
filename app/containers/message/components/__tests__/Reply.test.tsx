@@ -5,6 +5,8 @@ import Reply from '../Attachments/Reply';
 import { MessageProvider } from '../../stores/MessageStore';
 import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { mockedStore } from '../../../../reducers/mockedStore';
+import { setUser } from '../../../../actions/login';
+import { selectServerSuccess } from '../../../../actions/server';
 import { type IAttachment, type TAnyMessageModel } from '../../../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../../lib/constants/keys';
 import { fileDownloadAndPreview } from '../../../../lib/methods/helpers/fileDownload';
@@ -62,8 +64,6 @@ const renderReply = ({
 	ctx?: Partial<MessageRoomState>;
 }) => {
 	const contextValue: Partial<MessageRoomState> = {
-		user: { id: 'user-1', username: 'john', token: 'token' },
-		baseUrl: 'https://open.rocket.chat',
 		timeFormat: 'HH:mm',
 		...ctx
 	};
@@ -77,6 +77,9 @@ const renderReply = ({
 		</Provider>
 	);
 };
+
+mockedStore.dispatch(setUser({ id: 'user-1', username: 'john', token: 'token' }));
+mockedStore.dispatch(selectServerSuccess({ server: 'https://open.rocket.chat', version: '', name: '' }));
 
 describe('Reply', () => {
 	beforeEach(() => {

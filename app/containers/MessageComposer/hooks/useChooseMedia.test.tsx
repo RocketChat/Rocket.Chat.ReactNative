@@ -11,15 +11,14 @@ jest.mock('../../../lib/hooks/useAppSelector', () => ({
 }));
 
 jest.mock('../context', () => ({
-	useMessageComposerApi: jest.fn()
-}));
-
-jest.mock('../../../views/RoomView/context', () => ({
-	useRoomContext: jest.fn()
+	useMessageComposerApi: jest.fn(),
+	MessageInnerContext: require('react').createContext({ getText: jest.fn(() => 'draft'), setInput: jest.fn() })
 }));
 
 jest.mock('../../message/stores/MessageActionStore', () => ({
-	useMessageAction: jest.fn()
+	useMessageActionKind: jest.fn(),
+	useQuotedMessageIds: jest.fn(() => []),
+	useMessageActionStoreApi: jest.fn(() => ({ getState: () => ({ actions: { setQuoteMessageIds: jest.fn() } }) }))
 }));
 
 jest.mock('../../../lib/hooks/useAltTextSupported', () => ({
@@ -49,8 +48,8 @@ jest.mock('../../../lib/methods/helpers/ImagePicker/ImagePicker', () => ({
 const mockGetDocumentAsync = require('expo-document-picker').getDocumentAsync as jest.Mock;
 const mockUseAppSelector = require('../../../lib/hooks/useAppSelector').useAppSelector as jest.Mock;
 const mockUseMessageComposerApi = require('../context').useMessageComposerApi as jest.Mock;
-const mockUseRoomContext = require('../../../views/RoomView/context').useRoomContext as jest.Mock;
-const mockUseMessageAction = require('../../message/stores/MessageActionStore').useMessageAction as jest.Mock;
+const mockUseMessageActionKind = require('../../message/stores/MessageActionStore').useMessageActionKind as jest.Mock;
+const mockUseQuotedMessageIds = require('../../message/stores/MessageActionStore').useQuotedMessageIds as jest.Mock;
 const mockUseAltTextSupported = require('../../../lib/hooks/useAltTextSupported').useAltTextSupported as jest.Mock;
 const mockGetSubscriptionByRoomId = require('../../../lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
 const mockGetThreadById = require('../../../lib/database/services/Thread').getThreadById as jest.Mock;
@@ -71,11 +70,7 @@ describe('useChooseMedia', () => {
 			})
 		);
 		mockUseMessageComposerApi.mockReturnValue({ addAttachments });
-		mockUseRoomContext.mockReturnValue({
-			setQuotesAndText: jest.fn(),
-			getText: jest.fn(() => 'draft')
-		});
-		mockUseMessageAction.mockReturnValue(null);
+		mockUseMessageActionKind.mockReturnValue(null);
 		mockGetSubscriptionByRoomId.mockResolvedValue({ rid: 'room-id', t: 'c' });
 		mockGetThreadById.mockResolvedValue({ id: 'thread-id' });
 	});
@@ -134,7 +129,8 @@ describe('useChooseMedia', () => {
 
 	it('forwards quoted message ids to ShareView as selectedMessages', async () => {
 		mockUseAltTextSupported.mockReturnValue(false);
-		mockUseMessageAction.mockReturnValue({ kind: 'quote', messageIds: ['msg-1', 'msg-2'] });
+		mockUseMessageActionKind.mockReturnValue('quote');
+		mockUseQuotedMessageIds.mockReturnValue(['msg-1', 'msg-2']);
 		mockGetDocumentAsync.mockResolvedValue({
 			canceled: false,
 			assets: [{ name: 'legacy.pdf', size: 12, mimeType: 'application/pdf', uri: 'file:///tmp/legacy.pdf' }]
@@ -152,7 +148,8 @@ describe('useChooseMedia', () => {
 
 	it('does not quote the message when the action is edit', async () => {
 		mockUseAltTextSupported.mockReturnValue(false);
-		mockUseMessageAction.mockReturnValue({ kind: 'edit', messageId: 'msg-1' });
+		mockUseMessageActionKind.mockReturnValue('edit');
+		mockUseQuotedMessageIds.mockReturnValue([]);
 		mockGetDocumentAsync.mockResolvedValue({
 			canceled: false,
 			assets: [{ name: 'legacy.pdf', size: 12, mimeType: 'application/pdf', uri: 'file:///tmp/legacy.pdf' }]

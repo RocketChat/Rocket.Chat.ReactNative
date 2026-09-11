@@ -1,6 +1,7 @@
 import { all } from 'redux-saga/effects';
 
 import inquiry from '../ee/omnichannel/sagas/inquiry';
+import routingConfig from '../ee/omnichannel/sagas/routingConfig';
 import login from './login';
 import rooms from './rooms';
 import room from './room';
@@ -30,6 +31,7 @@ const root = function* root() {
 		inviteLinks(),
 		createDiscussion(),
 		inquiry(),
+		routingConfig(),
 		encryption(),
 		videoConf(),
 		troubleshootingNotification()

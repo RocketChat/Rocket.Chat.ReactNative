@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '../definitions';
+import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '../../definitions';
 import { type TAnyMessageModel } from '../../../../definitions';
 
 // Abort a jump whose target never re-observes within this window: release the anchor, drop to the Live
@@ -21,7 +21,11 @@ const MAX_SCROLL_TO_INDEX_RETRIES = 20;
 
 // animated:false snaps straight to the target instead of smooth-scrolling through every row between here
 // and a deep index — the latter reads as the list "hunting" for the message across several visible scrolls.
-const JUMP_SCROLL_POSITION = { viewPosition: 0.5, viewOffset: 100, animated: false } as const;
+const JUMP_SCROLL_POSITION = {
+	viewPosition: 0.5,
+	viewOffset: 100,
+	animated: false
+} as const;
 
 // A Jump to Message in flight: re-anchor the window, wait for the target to re-emit, scroll once.
 interface IPendingJump {
@@ -33,14 +37,14 @@ interface IPendingJump {
 }
 
 export const useScroll = ({
-	listRef,
+	flatListRef,
 	messages,
 	messagesIds,
 	highTs,
 	setHighTs,
 	fetchMessages
 }: {
-	listRef: TListRef;
+	flatListRef: TListRef;
 	messages: TAnyMessageModel[];
 	messagesIds: TMessagesIdsRef;
 	highTs: number | null;
@@ -82,121 +86,113 @@ export const useScroll = ({
 	// so the shorter tail cannot strand it, and scrolling the already-settled anchored content sidesteps
 	// the post-shrink layout race a deferred correction loses to. Suppress MVCP across the swap so its
 	// offset adjustment for the disjoint key set cannot drag the viewport back off-content.
-	const jumpToBottom = useCallback(() => {
+	const jumpToBottom = () => {
 		if (highTs != null) {
-			listRef.current?.scrollToOffset({ offset: 0, animated: false });
+			flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
 			pendingBottom.current = true;
 			setIsReleasing(true);
 			setHighTs(null);
 			return;
 		}
-		listRef.current?.scrollToOffset({ offset: -100 });
-	}, [listRef, highTs, setHighTs]);
+		flatListRef.current?.scrollToOffset({ offset: -100 });
+	};
 
-	const setHighlightTimeout = useCallback(() => {
+	const setHighlightTimeout = () => {
 		if (highlightTimeout.current) {
 			clearTimeout(highlightTimeout.current);
 		}
 		highlightTimeout.current = setTimeout(() => {
 			setHighlightedMessageId(null);
 		}, HIGHLIGHT_TIMEOUT);
-	}, []);
+	};
 
 	// Finish a jump: highlight the target, resolve. The Anchored Window stays put.
-	const completeJump = useCallback(
-		(jump: IPendingJump) => {
-			if (jump.safety) {
-				clearTimeout(jump.safety);
-			}
-			pendingJump.current = null;
-			setHighlightedMessageId(jump.messageId);
-			setHighlightTimeout();
-			jump.resolve();
-		},
-		[setHighlightTimeout]
-	);
+	const completeJump = (jump: IPendingJump) => {
+		if (jump.safety) {
+			clearTimeout(jump.safety);
+		}
+		pendingJump.current = null;
+		setHighlightedMessageId(jump.messageId);
+		setHighlightTimeout();
+		jump.resolve();
+	};
 
 	// Abort a jump that never resolved (target deleted / filtered / never re-observed): release any
 	// Anchored Window and resolve so the caller is never stuck.
-	const abortJump = useCallback(
-		(jump: IPendingJump) => {
-			if (jump.safety) {
-				clearTimeout(jump.safety);
-			}
-			pendingJump.current = null;
-			if (jump.anchored) {
-				setHighTs(null);
-			}
-			jump.resolve();
-		},
-		[setHighTs]
-	);
+	const abortJump = (jump: IPendingJump) => {
+		if (jump.safety) {
+			clearTimeout(jump.safety);
+		}
+		pendingJump.current = null;
+		if (jump.anchored) {
+			setHighTs(null);
+		}
+		jump.resolve();
+	};
 
 	// Arm/refresh the abort safety net. Refreshed on each productive growth so a deep, still-loading
 	// target is not aborted mid-load; MAX_JUMP_GROWTH_RETRIES still guarantees termination.
-	const armJumpSafety = useCallback(
-		(jump: IPendingJump) => {
-			if (jump.safety) {
-				clearTimeout(jump.safety);
+	const armJumpSafety = (jump: IPendingJump) => {
+		if (jump.safety) {
+			clearTimeout(jump.safety);
+		}
+		jump.safety = setTimeout(() => {
+			if (pendingJump.current === jump && !jump.scrolled) {
+				abortJump(jump);
 			}
-			jump.safety = setTimeout(() => {
-				if (pendingJump.current === jump && !jump.scrolled) {
-					abortJump(jump);
-				}
-			}, JUMP_SAFETY_TIMEOUT);
-		},
-		[abortJump]
-	);
+		}, JUMP_SAFETY_TIMEOUT);
+	};
+
+	const indexOfMessage = (messageId: string | null | undefined) =>
+		messageId ? (messagesIds.current?.findIndex(id => id === messageId) ?? -1) : -1;
 
 	// Re-scroll once the target's row has settled into the measured window. No-op until it has.
-	const reScrollWhenSettled = useCallback(
-		(targetId: string | null | undefined) => {
-			const settled = targetId ? (messagesIds.current?.findIndex(id => id === targetId) ?? -1) : -1;
-			if (settled !== -1) {
-				listRef.current?.scrollToIndex({ index: settled, ...JUMP_SCROLL_POSITION });
-			}
-		},
-		[listRef, messagesIds]
-	);
+	const reScrollWhenSettled = (targetId: string | null | undefined) => {
+		const index = indexOfMessage(targetId);
+		if (index !== -1) {
+			flatListRef.current?.scrollToIndex({
+				index,
+				...JUMP_SCROLL_POSITION
+			});
+		}
+	};
 
 	// No getItemLayout for these variable-height rows, so the first scroll uses an estimated offset and
 	// can undershoot while the target is unmeasured. It renders the row; a second scroll lands precisely.
 	// Re-read the index in case the window shifted a row between.
-	const scrollToTarget = useCallback(
-		(messageId: string, index: number) => {
-			listRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
-			setTimeout(() => {
-				// A newer jump may now own the scroll; re-reading this old target would yank the list off it.
-				if (lastJumpTargetId.current !== messageId) {
-					return;
-				}
-				reScrollWhenSettled(messageId);
-			}, SCROLL_TO_INDEX_RETRY_DELAY);
-		},
-		[listRef, reScrollWhenSettled]
-	);
+	const scrollToTarget = (messageId: string, index: number) => {
+		flatListRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
+		setTimeout(() => {
+			// A newer jump may now own the scroll; re-reading this old target would yank the list off it.
+			if (lastJumpTargetId.current !== messageId) {
+				return;
+			}
+			reScrollWhenSettled(messageId);
+		}, SCROLL_TO_INDEX_RETRY_DELAY);
+	};
 
-	// Release settled: the live tail has emitted and the viewport is already pinned at offset 0 from the
-	// pre-swap scroll. Re-pin in case the swap nudged it, then restore maintainVisibleContentPosition for
-	// normal live-tail following (safe at offset 0 — minIndexForVisible:0 keeps the newest row stable).
+	// Release settled: the live tail has emitted (keyed on messages so this runs on the first live emit)
+	// and the viewport is already pinned at offset 0 from the pre-swap scroll. Re-pin in case the swap
+	// nudged it, then restore maintainVisibleContentPosition for normal live-tail following (safe at
+	// offset 0 — minIndexForVisible:0 keeps the newest row stable).
 	useLayoutEffect(() => {
 		if (!pendingBottom.current) {
 			return;
 		}
 		pendingBottom.current = false;
-		listRef.current?.scrollToOffset({ offset: 0, animated: false });
+		flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
+		// eslint-disable-next-line react-hooks/set-state-in-effect -- the cascade is the fix: the swap render must paint with MVCP suppressed, the follow-up render restores it
 		setIsReleasing(false);
-		// eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on messages so it runs on the first live emit; listRef is a stable ref
-	}, [messages]);
+	}, [messages, flatListRef]);
 
 	// On every re-observe, check whether the pending target has appeared; the first time it has, scroll
 	// once and complete.
-	useLayoutEffect(() => {
+	const onReObserve = () => {
 		const jump = pendingJump.current;
 		if (!jump || jump.scrolled) {
 			return;
 		}
-		const index = messagesIds.current?.findIndex(id => id === jump.messageId) ?? -1;
+		const index = indexOfMessage(jump.messageId);
 		if (index === -1) {
 			// Anchored target deeper than the window: grow it by QUERY_SIZE (bounded) to pull it in; the safety
 			// net aborts if it never materialises.
@@ -211,7 +207,18 @@ export const useScroll = ({
 		jump.scrolled = true;
 		scrollToTarget(jump.messageId, index);
 		completeJump(jump);
-		// eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on messages so it re-runs on every re-observe; messagesIds is a ref read at run time; fetchMessages is a stable trigger, not a dependency
+	};
+
+	// Latest-closure ref so the trigger effect can key on messages alone (one run per re-observe) with
+	// honest deps: fetchMessages re-keys on highTs, so listing the handler would also fire this mid-jump.
+	const onReObserveRef = useRef(onReObserve);
+	// Refreshed in a layout effect declared first — layout effects run in declaration order, so the
+	// trigger below always reads this commit's closure.
+	useLayoutEffect(() => {
+		onReObserveRef.current = onReObserve;
+	});
+	useLayoutEffect(() => {
+		onReObserveRef.current();
 	}, [messages]);
 
 	// The list could not measure the target's frame yet. VirtualizedList re-fires this synchronously with
@@ -226,7 +233,7 @@ export const useScroll = ({
 		setTimeout(() => {
 			// Re-read at fire time so a retry queued by a previous jump can't scroll to a stale index.
 			const targetId = pendingJump.current?.messageId ?? lastJumpTargetId.current;
-			const targetIndex = targetId ? (messagesIds.current?.findIndex(id => id === targetId) ?? -1) : -1;
+			const targetIndex = indexOfMessage(targetId);
 			if (targetIndex === -1) {
 				return;
 			}
@@ -234,17 +241,23 @@ export const useScroll = ({
 			// short. Step to the measured frontier first (that renders the next batch, advancing
 			// highestMeasuredFrameIndex), then re-attempt — it lands once measured, or re-fires to climb on.
 			if (targetIndex > params.highestMeasuredFrameIndex) {
-				listRef.current?.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
+				flatListRef.current?.scrollToIndex({
+					index: params.highestMeasuredFrameIndex,
+					animated: false
+				});
 				setTimeout(() => {
 					reScrollWhenSettled(pendingJump.current?.messageId ?? lastJumpTargetId.current);
 				}, SCROLL_TO_INDEX_RETRY_DELAY);
 				return;
 			}
-			listRef.current?.scrollToIndex({ index: targetIndex, ...JUMP_SCROLL_POSITION });
+			flatListRef.current?.scrollToIndex({
+				index: targetIndex,
+				...JUMP_SCROLL_POSITION
+			});
 		}, SCROLL_TO_INDEX_RETRY_DELAY);
 	};
 
-	const jumpToMessage: IListContainerRef['jumpToMessage'] = (messageId, highTs) =>
+	const jumpToMessage: IListContainerRef['jumpToMessage'] = (messageId, highTsMs) =>
 		new Promise<void>(resolve => {
 			// Cancel any previous in-flight jump before starting a new one.
 			if (pendingJump.current) {
@@ -259,7 +272,7 @@ export const useScroll = ({
 			lastJumpTargetId.current = messageId;
 			scrollFailRetries.current = 0;
 			jumpGrowthRetries.current = 0;
-			const anchored = typeof highTs === 'number' && Number.isFinite(highTs);
+			const anchored = typeof highTsMs === 'number' && Number.isFinite(highTsMs);
 			const jump: IPendingJump = {
 				messageId,
 				anchored,
@@ -276,11 +289,11 @@ export const useScroll = ({
 			// Non-contiguous target → set the Anchored Window (re-seeds a QUERY_SIZE window onto the target's Chunk).
 			// Contiguous / thread / local targets keep their current window.
 			if (anchored) {
-				setHighTs(highTs as number);
+				setHighTs(highTsMs as number);
 			}
 
 			// Target may already be present (contiguous / local): resolve synchronously, still one scroll.
-			const index = messagesIds.current?.findIndex(id => id === messageId) ?? -1;
+			const index = indexOfMessage(messageId);
 			if (index !== -1 && !anchored) {
 				jump.scrolled = true;
 				scrollToTarget(messageId, index);

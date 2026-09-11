@@ -20,7 +20,6 @@ import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
 import { parseJson } from '../../../lib/methods/helpers/parseJson';
-import { getRoomTitle } from '../../../lib/methods/helpers/helpers';
 import { isTablet } from '../../../lib/methods/helpers/deviceInfo';
 import {
 	MAX_HEIGHT,
@@ -32,8 +31,8 @@ import {
 import database from '../../../lib/database';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { emitter } from '../../../lib/methods/helpers/emitter';
-import { useRoomContext } from '../../../views/RoomView/context';
-import { useMessageAction } from '../../message/stores/MessageActionStore';
+import { useComposerRid, useComposerRoomTitle, useComposerSharing, useComposerTmid, useComposerType } from '../ComposerStore';
+import { useMessageAction, useMessageActionStoreApi } from '../../message/stores/MessageActionStore';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods/actions';
 import { executeCommandPreview } from '../../../lib/services/restApi';
@@ -51,7 +50,12 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 		const { colors, theme } = useTheme();
-		const { rid, tmid, sharing, setQuotesAndText, room } = useRoomContext();
+		const rid = useComposerRid();
+		const tmid = useComposerTmid();
+		const sharing = useComposerSharing();
+		const messageActionStore = useMessageActionStoreApi();
+		const roomTitle = useComposerRoomTitle();
+		const t = useComposerType();
 		const action = useMessageAction();
 		const focused = useFocused();
 		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
@@ -63,8 +67,8 @@ export const ComposerInput = memo(
 		const isMasterDetail = useMasterDetail();
 		const altTextSupported = useAltTextSupported();
 		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
-		if (room && !tmid) {
-			placeholder = I18n.t('Message_roomname', { roomName: (room.t === 'd' ? '@' : '#') + getRoomTitle(room) });
+		if (!tmid) {
+			placeholder = I18n.t('Message_roomname', { roomName: (t === 'd' ? '@' : '#') + roomTitle });
 			if (!isTablet && placeholder.length > COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH) {
 				placeholder = `${placeholder.slice(0, COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH)}...`;
 			}
@@ -87,7 +91,9 @@ export const ComposerInput = memo(
 				if (draftMessage) {
 					const parsedDraft = parseJson(draftMessage);
 					if (parsedDraft?.msg || parsedDraft?.quotes) {
-						setQuotesAndText?.(parsedDraft.msg, parsedDraft.quotes);
+						if (sharing) return;
+						messageActionStore.getState().actions.setQuoteMessageIds(parsedDraft.quotes || []);
+						setInput(parsedDraft.msg || '');
 					} else {
 						setInput(draftMessage);
 					}
@@ -266,11 +272,11 @@ export const ComposerInput = memo(
 			const { start, end } = selectionRef.current;
 			const cursor = Math.max(start, end);
 			const regexp = getMentionRegexp();
-			let result = text.substr(0, cursor).replace(regexp, '');
+			let textBeforeMention = text.substr(0, cursor).replace(regexp, '');
 			// Remove the ! after select the canned response
 			if (item.type === '!') {
 				const lastIndexOfExclamation = text.lastIndexOf('!', cursor);
-				result = text.substr(0, lastIndexOfExclamation).replace(regexp, '');
+				textBeforeMention = text.substr(0, lastIndexOfExclamation).replace(regexp, '');
 			}
 			let mention = '';
 			switch (item.type) {
@@ -292,9 +298,9 @@ export const ComposerInput = memo(
 				default:
 					mention = '';
 			}
-			const newText = `${result}${mention} ${text.slice(cursor)}`;
+			const newText = `${textBeforeMention}${mention} ${text.slice(cursor)}`;
 
-			const newCursor = result.length + mention.length + 1;
+			const newCursor = textBeforeMention.length + mention.length + 1;
 			setInput(newText, { start: newCursor, end: newCursor });
 			focus();
 			requestAnimationFrame(() => {
@@ -356,7 +362,7 @@ export const ComposerInput = memo(
 				setAutocompleteParams({ text: autocompleteText, type: ':' });
 				return;
 			}
-			if (lastWord.match(/^!/) && room?.t === 'l') {
+			if (lastWord.match(/^!/) && t === 'l') {
 				setAutocompleteParams({ text: autocompleteText, type: '!' });
 				return;
 			}

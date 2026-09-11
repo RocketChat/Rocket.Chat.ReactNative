@@ -1,0 +1,54 @@
+import { type NavigatorScreenParams, useNavigation } from '@react-navigation/native';
+import { useShallow } from 'zustand/react/shallow';
+
+import { events, logEvent } from '../../../lib/methods/helpers/log';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
+import { useCanReturnQueue } from '../../../ee/omnichannel/hooks/useCanReturnQueue';
+import type { ISubscription, SubscriptionType, TSubscriptionModel } from '../../../definitions';
+import { type TNavigation } from '../../../stacks/stackType';
+import { type ModalStackParamList } from '../../../stacks/MasterDetailStack/types';
+import { type IRoomViewProps } from '../definitions';
+import { useStore } from 'zustand';
+import { type RoomStore } from '../definitions';
+import { useCanPlaceLivechatOnHold } from './useCanPlaceLivechatOnHold';
+
+export const useGoRoomActionsView = (roomStore: RoomStore): ((screen?: keyof ModalStackParamList) => void) => {
+	const navigation = useNavigation<IRoomViewProps['navigation']>();
+	const isMasterDetail = useMasterDetail();
+	// `t` comes from the store (seeded at mount) rather than route.params, which navigation can wipe.
+	const rid = useStore(roomStore, s => s.room.rid);
+	const t = useStore(roomStore, s => s.room.t);
+	const { member, membership, canForwardGuest, canViewCannedResponse } = useStore(
+		roomStore,
+		useShallow(s => ({
+			member: s.member,
+			membership: s.membership,
+			canForwardGuest: s.canForwardGuest,
+			canViewCannedResponse: s.canViewCannedResponse
+		}))
+	);
+	const canReturnQueue = useCanReturnQueue(t === 'l');
+	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(roomStore);
+
+	const omnichannelPermissions = { canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold };
+
+	return (screen?: keyof ModalStackParamList) => {
+		logEvent(events.ROOM_GO_RA);
+		const room = roomStore.getState().room;
+		const params = {
+			rid: rid as string,
+			t: t as SubscriptionType,
+			member,
+			joined: membership === 'subscribed',
+			omnichannelPermissions
+		};
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', {
+				screen: screen ?? 'RoomActionsView',
+				params: { ...params, room: room as ISubscription, showCloseModal: !!screen }
+			} as NavigatorScreenParams<ModalStackParamList & TNavigation>);
+		} else if (rid && t) {
+			navigation.push('RoomActionsView', { ...params, room: room as TSubscriptionModel });
+		}
+	};
+};

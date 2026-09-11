@@ -294,6 +294,14 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'header-back'
+- extendedWaitUntil:
+    notVisible:
+      id: 'room-view-title-thread'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
 
 # should create thread delete the message and the thread show the correct number of messages
 - runFlow:

@@ -2,12 +2,14 @@ import { type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 
 import { createMockedStore } from '../../../../reducers/mockedStore';
+import { setUser } from '../../../../actions/login';
 import { type TAnyMessageModel } from '../../../../definitions';
 import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { MessageProvider } from '../../stores/MessageStore';
 import ThreadLeaf from '../Thread';
 
 const store = createMockedStore();
+store.dispatch(setUser({ id: 'reader-id', username: 'reader' }));
 
 const item = {
 	id: 'msg-id',
@@ -20,8 +22,6 @@ const item = {
 } as unknown as TAnyMessageModel;
 
 const room: Partial<MessageRoomState> = {
-	user: { id: 'reader-id', username: 'reader' },
-	onThreadPress: () => {},
 	isThreadRoom: false
 };
 

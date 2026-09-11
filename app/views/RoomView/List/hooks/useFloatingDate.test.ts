@@ -19,6 +19,9 @@ jest.mock('react-native-reanimated', () => {
 			const animations: any[] = [];
 			const shared = {
 				animations,
+				set(next: any) {
+					shared.value = next;
+				},
 				get value() {
 					return current;
 				},

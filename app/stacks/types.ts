@@ -14,7 +14,8 @@ import {
 	type TDataSelect,
 	type TMessageAction,
 	type TSubscriptionModel,
-	type TThreadModel
+	type TThreadModel,
+	type IVisitor
 } from '../definitions';
 import { type ModalStackParamList } from './MasterDetailStack/types';
 import { type TNavigation } from './stackType';
@@ -38,7 +39,8 @@ export type ChatsStackParamList = {
 				name?: string;
 				fname?: string;
 				prid?: string;
-				room?: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string };
+				visitor?: IVisitor;
+				joinCodeRequired?: boolean;
 				jumpToMessageId?: string;
 				jumpToThreadId?: string;
 				roomUserId?: string | null;

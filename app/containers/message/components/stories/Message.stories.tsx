@@ -17,6 +17,8 @@ import {
 import { mockedStore as store } from '../../../../reducers/mockedStore';
 import { updateSettings } from '../../../../actions/settings';
 import { setCustomEmojis } from '../../../../actions/customEmojis';
+import { setUser } from '../../../../actions/login';
+import { selectServerSuccess } from '../../../../actions/server';
 import { createMessageActionStore, MessageActionStoreContext } from '../../stores/MessageActionStore';
 import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 
@@ -55,6 +57,8 @@ const date = new Date(2017, 10, 10, 10);
 const longText =
 	'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 
+store.dispatch(setUser(user));
+store.dispatch(selectServerSuccess({ server: baseUrl, version: '', name: '' }));
 store.dispatch(updateSettings('API_Embed', true));
 store.dispatch(
 	setCustomEmojis({
@@ -81,22 +85,9 @@ const containerHandlers = {
 };
 
 const roomHandlers: Partial<MessageRoomState> = {
-	user,
-	baseUrl,
 	reactionInit: () => {},
-	replyBroadcast: () => {},
-	onReactionPress: () => {},
-	onEncryptedPress: () => {},
-	onDiscussionPress: () => {},
-	onThreadPress: () => {},
-	onReactionLongPress: () => {},
-	onAnswerButtonPress: () => {},
 	jumpToMessage: () => {},
-	navToRoomInfo: () => {},
-	showAttachment: undefined,
-	blockAction: undefined,
-	handleEnterCall: undefined,
-	fetchThreadName: undefined
+	handlers: { navToRoomInfo: () => {}, showAttachment: undefined }
 };
 
 export default {

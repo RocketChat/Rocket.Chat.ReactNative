@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { type Subscription } from 'rxjs';
 import { useDispatch, useStore } from 'react-redux';
@@ -10,14 +10,13 @@ import { getThreadById } from '../../../../lib/database/services/Thread';
 import { tsToMs } from '../../../../lib/dayjs';
 import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
 import { readThreads } from '../../../../lib/services/restApi';
-import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
-import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
+import { buildVisibleSystemTypesClause, isHiddenSystemMessage, isLoaderMessage } from '../visibleSystemMessages';
 import { roomHistoryRequest } from '../../../../actions/room';
-import { isNewerLoader, raiseOrRelease, type AnchorMessage } from '../../services/anchorResolver';
+import { isNewerLoader, raiseOrRelease } from '../../services/anchorResolver';
+import { findNewerLoaderAbove } from '../../services/getLocalAnchor';
 
-const findFirstLoaderId = (messages: TAnyMessageModel[]): string | null =>
-	messages.find(m => m.t && MESSAGE_TYPE_ANY_LOAD.includes(m.t as MessageTypeLoad))?.id ?? null;
+const findFirstLoaderId = (messages: TAnyMessageModel[]): string | null => messages.find(isLoaderMessage)?.id ?? null;
 
 export const useMessages = ({
 	rid,
@@ -34,7 +33,7 @@ export const useMessages = ({
 	hideSystemMessages: string[];
 	t: RoomType;
 }) => {
-	const [rawMessages, setRawMessages] = useState<TAnyMessageModel[]>([]);
+	const [messages, setMessages] = useState<TAnyMessageModel[]>([]);
 	// Optional UPPER ts bound for the Message Window. null => Live Window (newest-first, follows the
 	// Live Tail). A finite number (ms since epoch) => Anchored Window pinned below the Live Tail.
 	const [highTs, setHighTsState] = useState<number | null>(null);
@@ -65,6 +64,8 @@ export const useMessages = ({
 		}
 	}, 1000);
 
+	useEffect(() => readThread.cancel, [readThread]);
+
 	// Rejoin the Live Tail from an Anchored Window. Called on each emit while anchored: when the
 	// boundary Newer Loader (ts === highTs) flips present → absent, loadNextMessages has consumed it
 	// and written the next batch + a new loader ABOVE the current bound — which the bounded
@@ -73,7 +74,7 @@ export const useMessages = ({
 	const raiseOrReleaseAnchor = useCallback(
 		async (observed: TAnyMessageModel[], currentHighTs: number) => {
 			const wasPresent = boundaryLoaderPresent.current;
-			const isPresent = (observed as unknown as AnchorMessage[]).some(m => isNewerLoader(m) && tsToMs(m.ts) === currentHighTs);
+			const isPresent = observed.some(m => isNewerLoader(m) && tsToMs(m.ts) === currentHighTs);
 			boundaryLoaderPresent.current = isPresent;
 
 			// Only a present → absent transition is a consume. Anything else (still present, or never
@@ -87,23 +88,13 @@ export const useMessages = ({
 			// invocation is stale and must not mutate count / highTs for the new window.
 			const sub = subscription.current;
 
-			// Read the Newer Loader closest to the Live Tail directly (highest ts above the bound) so non-loader rows can't crowd the boundary loader out of the fetched set.
-			const rows = (await database.active
-				.get('messages')
-				.query(
-					Q.where('rid', rid),
-					Q.where('t', MessageTypeLoad.NEXT_CHUNK),
-					Q.where('ts', Q.gt(currentHighTs)),
-					Q.sortBy('ts', Q.desc),
-					Q.take(1)
-				)
-				.fetch()) as TAnyMessageModel[];
+			const loader = await findNewerLoaderAbove(rid, currentHighTs, 'closestToLiveTail');
 
 			if (subscription.current !== sub) {
 				return;
 			}
 
-			const next = raiseOrRelease(rows as unknown as AnchorMessage[], currentHighTs);
+			const next = raiseOrRelease(loader ? [loader] : [], currentHighTs);
 
 			if (next === null) {
 				// Gap closed → release to a Live Window. First grow count by the number of messages now
@@ -148,7 +139,6 @@ export const useMessages = ({
 		// hideSystemMessages applied here so Q.take() counts only visible rows
 		const visibleSystemClause = buildVisibleSystemTypesClause(hideSystemMessages);
 
-		let observable;
 		if (tmid) {
 			// Prefer threads table; fall back to messages while thread record isn't available yet
 			if (!thread.current || thread.current.collection.table !== 'threads') {
@@ -157,51 +147,37 @@ export const useMessages = ({
 					thread.current = await getMessageById(tmid);
 				}
 			}
-			observable = db
-				.get('thread_messages')
-				.query(
-					Q.where('rid', tmid),
-					...(visibleSystemClause ? [visibleSystemClause] : []),
-					// Anchored Window upper bound (ts-only ordering: equal-ts rows can straddle the bound).
-					...(highTs != null ? [Q.where('ts', Q.lte(highTs))] : []),
-					Q.sortBy('ts', Q.desc),
-					Q.skip(0),
-					Q.take(count.current)
-				)
-				.observe();
-		} else {
-			const whereClause: Q.Clause[] = [
-				Q.where('rid', rid),
-				...(visibleSystemClause ? [visibleSystemClause] : []),
-				// Anchored Window upper bound (ts-only ordering: equal-ts rows can straddle the bound).
-				...(highTs != null ? [Q.where('ts', Q.lte(highTs))] : []),
-				Q.sortBy('ts', Q.desc),
-				Q.skip(0),
-				Q.take(count.current)
-			];
-			if (!showMessageInMainThread) {
-				whereClause.push(Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true))));
-			}
-			observable = db
-				.get('messages')
-				.query(...whereClause)
-				.observe();
 		}
 
-		subscription.current = observable.subscribe(result => {
-			const newMessages: TAnyMessageModel[] = [...result];
+		const clauses: Q.Clause[] = [
+			Q.where('rid', tmid ?? rid),
+			...(visibleSystemClause ? [visibleSystemClause] : []),
+			// Anchored Window upper bound (ts-only ordering: equal-ts rows can straddle the bound).
+			...(highTs != null ? [Q.where('ts', Q.lte(highTs))] : []),
+			...(!tmid && !showMessageInMainThread ? [Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true)))] : []),
+			Q.sortBy('ts', Q.desc),
+			Q.take(count.current)
+		];
 
-			if (tmid && thread.current) {
-				newMessages.push(thread.current);
-			}
+		const observable = db
+			.get(tmid ? 'thread_messages' : 'messages')
+			.query(...clauses)
+			.observe();
+
+		subscription.current = observable.subscribe(result => {
+			const visibleThreadParent =
+				tmid && thread.current && !isHiddenSystemMessage(thread.current, hideSystemMessages) ? thread.current : null;
+			const newMessages: TAnyMessageModel[] = visibleThreadParent ? [...result, visibleThreadParent] : result;
 
 			// Thread / local windows are never anchored, so rejoin only applies to the bounded main room.
 			if (!tmid && highTs != null) {
 				raiseOrReleaseAnchor(result as TAnyMessageModel[], highTs).catch(() => {});
 			}
 
-			readThread();
-			setRawMessages(newMessages);
+			if (tmid) {
+				readThread();
+			}
+			setMessages(newMessages);
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps -- readThread is omitted intentionally: useDebouncedCallback stores func in a ref so changes propagate without recreating fetchMessages; hideSystemMessages must stay so the DB re-queries for proper pagination
 	}, [rid, tmid, showMessageInMainThread, hideSystemMessages, highTs, unsubscribe, raiseOrReleaseAnchor]);
@@ -223,30 +199,16 @@ export const useMessages = ({
 		return unsubscribe;
 	}, [fetchMessages, unsubscribe]);
 
-	const visibleMessages = useMemo(
-		() =>
-			!hideSystemMessages || hideSystemMessages.length === 0
-				? rawMessages
-				: rawMessages.filter(m => !m.t || !hideSystemMessages.includes(m.t)),
-		[rawMessages, hideSystemMessages]
-	);
-
-	// Sync the IDs ref after render, outside the memo, to satisfy the react-hooks/refs rule
-	// while still keeping the ref up to date before any paint (useLayoutEffect timing).
 	useLayoutEffect(() => {
-		messagesIds.current = visibleMessages.map(m => m.id);
-	}, [visibleMessages]);
+		messagesIds.current = messages.map(m => m.id);
+	}, [messages]);
 
 	useEffect(
 		() => {
-			// Snapshot the currently-visible loader into lastDispatchedLoaderId so the
-			// auto-dispatch effect treats it as already-seen when it re-fires after the rid
-			// change — rawMessages may still reflect the previous room until the new
-			// subscription emits, and we must not dispatch with a stale loader.
-			lastDispatchedLoaderId.current = findFirstLoaderId(visibleMessages);
+			lastDispatchedLoaderId.current = findFirstLoaderId(messages);
 			autoLoadCount.current = 0;
 		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps -- visibleMessages intentionally omitted: stale read at rid-change is the desired behaviour
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- messages intentionally omitted: stale read at rid-change is the desired behaviour
 		[rid]
 	);
 
@@ -268,7 +230,7 @@ export const useMessages = ({
 			return;
 		}
 
-		const loaderId = findFirstLoaderId(visibleMessages);
+		const loaderId = findFirstLoaderId(messages);
 
 		if (loaderId && loaderId !== lastDispatchedLoaderId.current) {
 			// Skip if a fetch for this loader is already in flight (push happens before the DB subscription emits)
@@ -279,7 +241,7 @@ export const useMessages = ({
 			autoLoadCount.current += 1;
 			dispatch(roomHistoryRequest({ rid, t, loaderId }));
 		}
-	}, [highTs, serverVersion, rid, t, hideSystemMessages, visibleMessages, dispatch, store]);
+	}, [highTs, serverVersion, rid, t, hideSystemMessages, messages, dispatch, store]);
 
-	return [visibleMessages, messagesIds, fetchMessages, { highTs, setHighTs }] as const;
+	return [messages, messagesIds, fetchMessages, { highTs, setHighTs }] as const;
 };

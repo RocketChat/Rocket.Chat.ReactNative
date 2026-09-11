@@ -11,7 +11,7 @@ export default {
 	title: 'UIKit/UiKitModal',
 	decorators: [
 		(Story: any) => (
-			<MessageRoomProvider user={{ id: 'u1', username: 'user', token: 't' }} baseUrl='https://open.rocket.chat'>
+			<MessageRoomProvider>
 				<MessageProvider item={{} as TAnyMessageModel}>
 					<Story />
 				</MessageProvider>

@@ -1,0 +1,23 @@
+import { type ReactElement } from 'react';
+import { ImageBackground, StyleSheet } from 'react-native';
+
+import { useTheme } from '../../../theme';
+
+const styles = StyleSheet.create({
+	image: {
+		width: '100%',
+		height: '100%',
+		position: 'absolute'
+	}
+});
+
+export const RoomBackground = (): ReactElement => {
+	const { theme } = useTheme();
+	return (
+		<ImageBackground
+			source={{ uri: `message_empty_${theme === 'dark' ? 'black' : theme}` }}
+			style={styles.image}
+			testID='room-view-empty'
+		/>
+	);
+};

@@ -16,9 +16,7 @@ const item = {
 	autoTranslate: false
 } as unknown as TAnyMessageModel;
 
-const room: Partial<MessageRoomState> = {
-	handleEnterCall: () => {}
-};
+const room: Partial<MessageRoomState> = {};
 
 const StoryWrapper = ({ children }: { children: ReactNode }) => (
 	<Provider store={store}>

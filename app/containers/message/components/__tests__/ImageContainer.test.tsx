@@ -36,10 +36,7 @@ jest.mock('../../../../lib/hooks/useAltTextSupported', () => ({
 
 const renderImageContainer = (props?: Partial<ComponentProps<typeof ImageContainer>>) => {
 	const id = 'message-id';
-	const contextValue: Partial<MessageRoomState> = {
-		baseUrl: 'https://open.rocket.chat',
-		user: { id: 'user-id', username: 'rocket.cat', token: 'token' }
-	};
+	const contextValue: Partial<MessageRoomState> = {};
 	const item = { id } as unknown as TAnyMessageModel;
 	return render(
 		<Provider store={mockedStore}>

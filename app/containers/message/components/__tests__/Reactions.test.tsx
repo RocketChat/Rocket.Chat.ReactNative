@@ -4,7 +4,7 @@ import Reactions from '../Reactions';
 import { MessageProviders } from '../../__tests__/testHelpers';
 import { setUser } from '../../../../actions/login';
 import { mockedStore } from '../../../../reducers/mockedStore';
-import { type IReaction, type TAnyMessageModel } from '../../../../definitions';
+import { type IReaction, type IUseRoomMessageHandlersResult, type TAnyMessageModel } from '../../../../definitions';
 
 const initialMockedStoreState = () => {
 	mockedStore.dispatch(
@@ -53,10 +53,11 @@ const TestWrapper = ({ item, onReactionPress }: { item: FakeItem; onReactionPres
 	<MessageProviders
 		item={item}
 		room={{
-			user: { username: 'john' },
 			reactionInit: jest.fn(),
-			onReactionPress,
-			onReactionLongPress: jest.fn()
+			handlers: {
+				onReactionPress: onReactionPress as unknown as IUseRoomMessageHandlersResult['onReactionPress'],
+				onReactionLongPress: jest.fn()
+			}
 		}}>
 		<Reactions />
 	</MessageProviders>

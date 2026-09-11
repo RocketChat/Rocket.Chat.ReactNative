@@ -4,15 +4,14 @@ import { Provider } from 'react-redux';
 
 import { createMockedStore } from '../../../../reducers/mockedStore';
 import { selectServerSuccess } from '../../../../actions/server';
+import { setUser } from '../../../../actions/login';
 import { type TAnyMessageModel } from '../../../../definitions';
 import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { MessageProvider } from '../../stores/MessageStore';
 import Attachments from '../Attachments/Attachments';
 
 const mockMessageContext: Partial<MessageRoomState> = {
-	baseUrl: 'https://open.rocket.chat',
-	user: { id: 'user-id', username: 'rocket.cat', token: 'token' },
-	showAttachment: undefined
+	handlers: { showAttachment: undefined }
 };
 
 const mockItem = { id: 'msg-id', msg: '', u: { username: 'rocket.cat' }, autoTranslate: false } as unknown as TAnyMessageModel;
@@ -50,6 +49,7 @@ const MOCK_MULTIPLE_IMAGES = [
 const createServerStore = (version: string) => {
 	const store = createMockedStore();
 	store.dispatch(selectServerSuccess({ server: 'https://open.rocket.chat', version, name: 'Test' }));
+	store.dispatch(setUser({ id: 'user-id', username: 'rocket.cat', token: 'token' }));
 	return store;
 };
 

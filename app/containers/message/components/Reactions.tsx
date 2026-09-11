@@ -8,7 +8,7 @@ import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from '../utils';
 import { useTheme } from '../../../theme';
 import { useMessageId, useMessageItem, useReactions } from '../stores/MessageStore';
-import { useMessageUser, useOnReactionLongPress, useOnReactionPress, useReactionInit } from '../stores/MessageRoomStore';
+import { useMessageUser, useReactionInit, useOnReactionPress, useOnReactionLongPress } from '../stores/MessageRoomStore';
 
 interface IReaction {
 	_id: string;

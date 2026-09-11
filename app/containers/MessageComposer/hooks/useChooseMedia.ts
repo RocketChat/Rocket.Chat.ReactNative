@@ -1,4 +1,5 @@
 import * as DocumentPicker from 'expo-document-picker';
+import { useContext } from 'react';
 
 import { IMAGE_PICKER_CONFIG, LIBRARY_PICKER_CONFIG, VIDEO_PICKER_CONFIG } from '../constants';
 import { forceJpgExtension } from '../helpers';
@@ -9,11 +10,10 @@ import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscrip
 import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { useRoomContext } from '../../../views/RoomView/context';
-import { useMessageAction } from '../../message/stores/MessageActionStore';
+import { useMessageActionKind, useMessageActionStoreApi, useQuotedMessageIds } from '../../message/stores/MessageActionStore';
 import { type IShareAttachment } from '../../../definitions';
 import ImagePicker, { type ImageOrVideo } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
-import { useMessageComposerApi } from '../context';
+import { MessageInnerContext, useMessageComposerApi } from '../context';
 import { useAltTextSupported } from '../../../lib/hooks/useAltTextSupported';
 
 const normalizeAttachment = (item: IShareAttachment) =>
@@ -30,8 +30,10 @@ export const useChooseMedia = ({
 }) => {
 	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
 	const { addAttachments } = useMessageComposerApi();
-	const { setQuotesAndText, getText } = useRoomContext();
-	const action = useMessageAction();
+	const { getText, setInput } = useContext(MessageInnerContext);
+	const actionKind = useMessageActionKind();
+	const messageActionStore = useMessageActionStoreApi();
+	const quotedMessageIds = useQuotedMessageIds();
 	const altTextSupported = useAltTextSupported();
 	const allowList = FileUpload_MediaTypeWhiteList as string;
 	const maxFileSize = FileUpload_MaxFileSize as number;
@@ -93,15 +95,17 @@ export const useChooseMedia = ({
 	};
 
 	const startShareView = () => {
-		const text = getText?.() || '';
-		const selectedMessages = action?.kind === 'quote' ? action.messageIds : [];
+		const text = getText() || '';
 		return {
-			selectedMessages,
+			selectedMessages: quotedMessageIds,
 			text
 		};
 	};
 
-	const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
+	const finishShareView = (text = '', quotes: string[] = []) => {
+		messageActionStore.getState().actions.setQuoteMessageIds(quotes);
+		setInput(text);
+	};
 
 	const openShareView = async (attachments: any) => {
 		if (!rid) return;
@@ -116,7 +120,7 @@ export const useChooseMedia = ({
 				room,
 				thread: thread || tmid,
 				attachments,
-				action: action?.kind ?? null,
+				action: actionKind,
 				finishShareView,
 				startShareView
 			});

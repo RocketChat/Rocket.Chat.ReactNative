@@ -123,8 +123,7 @@ describe('useMessageAccessibilityLabel', () => {
 		expect(
 			renderLabel(buildItem({ autoTranslate: true, translations: [{ _id: 't1', language: 'en', value: 'translated text' }] }), {
 				autoTranslateRoom: true,
-				autoTranslateLanguage: 'en',
-				user: { username: 'bob' }
+				autoTranslateLanguage: 'en'
 			})
 		).toBe(`alice ${HOUR} Message translated into English.`);
 	});
@@ -139,7 +138,7 @@ describe('useMessageAccessibilityLabel', () => {
 					unread: true,
 					attachments: [{ image_url: 'https://example.com/img.png', altText: 'A wavy pattern' }]
 				}),
-				{ isReadReceiptEnabled: true, autoTranslateRoom: true, autoTranslateLanguage: 'en', user: { username: 'bob' } }
+				{ isReadReceiptEnabled: true, autoTranslateRoom: true, autoTranslateLanguage: 'en' }
 			)
 		).toBe(`alice ${HOUR} Message translated into English. Image description: A wavy pattern Message was not read`);
 	});

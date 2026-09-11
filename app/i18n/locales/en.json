@@ -784,6 +784,7 @@
   "room_changed_topic_to": "changed room topic to: {{topic}}",
   "room_changed_type": "changed room to {{type}}",
   "room_disallowed_reactions": "disallowed reactions",
+  "Room_failed_to_load": "This room could not be loaded. Check your connection and try again.",
   "Room_Info": "Room info",
   "Room_Info_Edit": "Room info edit",
   "Room_name_changed_to": "changed room name to: {{name}}",
