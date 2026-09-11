@@ -75,20 +75,25 @@ describe('RightButtons routing', () => {
 	});
 
 	it('renders nothing without a rid', () => {
-		render(<RightButtons roomStore={createRoomStore({ rid: 'rid-1', t: 'c' })} />);
+		const { toJSON } = render(<RightButtons roomStore={createRoomStore({ rid: 'rid-1', t: 'c' })} />);
 
+		expect(toJSON()).toBeNull();
 		expectOnlyStub();
 	});
 
 	it('renders nothing for an invited room', () => {
-		render(<RightButtons rid='rid-1' roomStore={createRoomStore({ rid: 'rid-1', t: 'c' }, 'invited')} />);
+		const { toJSON } = render(<RightButtons rid='rid-1' roomStore={createRoomStore({ rid: 'rid-1', t: 'c' }, 'invited')} />);
 
+		expect(toJSON()).toBeNull();
 		expectOnlyStub();
 	});
 
 	it('renders nothing for a queued omnichannel room', () => {
-		render(<RightButtons rid='rid-1' roomStore={createRoomStore({ rid: 'rid-1', t: 'l', status: 'queued' })} />);
+		const { toJSON } = render(
+			<RightButtons rid='rid-1' roomStore={createRoomStore({ rid: 'rid-1', t: 'l', status: 'queued' })} />
+		);
 
+		expect(toJSON()).toBeNull();
 		expectOnlyStub();
 	});
 
