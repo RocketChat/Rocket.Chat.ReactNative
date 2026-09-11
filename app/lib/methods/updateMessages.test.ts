@@ -47,7 +47,6 @@ class FakeCollection {
 	}
 
 	prepareCreate(fn: (m: any) => void) {
-		// `subscription` stands in for the model relation the mutators assign an id to.
 		const m: any = { _preparedState: 'create', subscription: {} };
 		fn(m);
 		this.created.push(m);
@@ -75,7 +74,6 @@ describe('updateMessages', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockDbBatch.mockImplementation((records: any[]) => {
-			// WatermelonDB's batch ignores falsy entries; updateMessages can hand it a null.
 			records.filter(Boolean).forEach((r: any) => {
 				r._preparedState = null;
 			});
@@ -137,7 +135,6 @@ describe('updateMessages', () => {
 		return collections[table];
 	};
 
-	// The single array `db.batch` was called with.
 	const batched = (): any[] => mockDbBatch.mock.calls[0]?.[0] ?? [];
 
 	describe('guard and subscription', () => {
@@ -372,7 +369,6 @@ describe('updateMessages', () => {
 			setRecords('threads', []);
 			setRecords('thread_messages', []);
 
-			// One payload that seeds a message, a thread (tlm) and a thread message (tmid).
 			const result = await updateMessages({
 				rid,
 				update: [{ _id: 'm1', rid, msg: 'hi', tlm: { $date: 1 }, tmid: 'parent', _updatedAt: 2 } as any]
