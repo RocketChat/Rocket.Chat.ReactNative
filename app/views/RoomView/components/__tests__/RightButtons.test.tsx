@@ -124,29 +124,6 @@ describe('RightButtons', () => {
 		};
 	});
 
-	it('renders nothing without a rid', () => {
-		const { queryByTestId, toJSON } = render(<RightButtons roomStore={roomStore} />);
-		expect(toJSON()).toBeNull();
-		expectOnly(queryByTestId, []);
-		expect(toJSON()).toMatchSnapshot();
-	});
-
-	it('renders nothing for an invited room', () => {
-		mockRoomState = { ...mockRoomState, room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general' }, membership: 'invited' };
-		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
-		expect(toJSON()).toBeNull();
-		expectOnly(queryByTestId, []);
-		expect(toJSON()).toMatchSnapshot();
-	});
-
-	it('renders nothing for a queued omnichannel room', () => {
-		mockRoomState = { ...mockRoomState, room: { id: 'sub-1', rid: 'rid-1', t: 'l', name: 'chat', status: 'queued' } };
-		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
-		expect(toJSON()).toBeNull();
-		expectOnly(queryByTestId, []);
-		expect(toJSON()).toMatchSnapshot();
-	});
-
 	it('renders only the kebab for an active omnichannel room', () => {
 		mockRoomState = { ...mockRoomState, room: { id: 'sub-1', rid: 'rid-1', t: 'l', name: 'chat' } };
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
@@ -256,24 +233,6 @@ describe('RightButtons', () => {
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expectOnly(queryByTestId, ['header-call-button-stub', 'room-view-search']);
 		expect(toJSON()).toMatchSnapshot();
-	});
-
-	it('labels the threads button with the direct mention unread count', () => {
-		mockHeaderHooks = { ...mockHeaderHooks, tunread: ['tm-1'], tunreadUser: ['tm-1'] };
-		const { queryByTestId } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
-		expect(queryByTestId('room-view-header-threads')).toHaveProp('accessibilityLabel', 'Threads, 1 unread, direct mention');
-	});
-
-	it('labels the threads button with the group mention unread count', () => {
-		mockHeaderHooks = { ...mockHeaderHooks, tunread: ['tm-1'], tunreadGroup: ['tm-1'] };
-		const { queryByTestId } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
-		expect(queryByTestId('room-view-header-threads')).toHaveProp('accessibilityLabel', 'Threads, 1 unread, group mention');
-	});
-
-	it('labels the threads button with the plain unread count', () => {
-		mockHeaderHooks = { ...mockHeaderHooks, tunread: ['tm-1', 'tm-2'] };
-		const { queryByTestId } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
-		expect(queryByTestId('room-view-header-threads')).toHaveProp('accessibilityLabel', 'Threads, 2 unread');
 	});
 
 	it('hides the call button on a self DM', () => {

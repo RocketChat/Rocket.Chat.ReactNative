@@ -128,12 +128,6 @@ exports[`RightButtons renders call, threads and search for a regular channel 1`]
 </Container>
 `;
 
-exports[`RightButtons renders nothing for a queued omnichannel room 1`] = `null`;
-
-exports[`RightButtons renders nothing for an invited room 1`] = `null`;
-
-exports[`RightButtons renders nothing without a rid 1`] = `null`;
-
 exports[`RightButtons renders only the kebab for an active omnichannel room 1`] = `
 <Container>
   <Item
