@@ -32,7 +32,9 @@ export interface IRoomScreenInput {
 	roomUserId?: string | null;
 }
 
-export interface IRoomScreenProps extends Pick<IRoomViewProps, 'route'>, Pick<IRoomScreenInput, 'rid' | 't' | 'tmid'> {
+export interface IRoomScreenProps extends Pick<IRoomViewProps, 'route'>, Pick<IRoomScreenInput, 'tmid'> {
+	rid: string;
+	t: string;
 	roomStore: RoomStore;
 	ready: boolean;
 }
