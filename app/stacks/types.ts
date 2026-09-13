@@ -297,6 +297,9 @@ export type InsideStackParamList = {
 		finishShareView: (text?: string, selectedMessages?: string[]) => void | undefined;
 		startShareView: () => { text: string; selectedMessages: string[] };
 	};
+	AttachmentView: {
+		attachment: IAttachment;
+	};
 	ModalBlockView: {
 		data: any;
 	};

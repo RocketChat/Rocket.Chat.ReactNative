@@ -924,7 +924,6 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 	showAttachment = (attachment: IAttachment) => {
 		const { navigation } = this.props;
-		// @ts-ignore
 		navigation.navigate('AttachmentView', { attachment });
 	};
 
