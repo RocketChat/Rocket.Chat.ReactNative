@@ -270,7 +270,7 @@ export const useThreadPosition = (): { isThreadReply: boolean; isThreadSequentia
 export const useMessageStatus = (): { hasError: boolean; isTemp: boolean } =>
 	useMessageStore(
 		useShallow(s => ({
-			hasError: s.item.status === messagesStatus.ERROR,
+			hasError: s.item.status === messagesStatus.ERROR || s.item.status === messagesStatus.TEMP,
 			isTemp: s.item.status === messagesStatus.TEMP || s.item.status === messagesStatus.ERROR
 		}))
 	);
