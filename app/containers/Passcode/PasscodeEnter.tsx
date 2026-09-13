@@ -20,11 +20,12 @@ interface IPasscodePasscodeEnter {
 
 const PasscodeEnter = ({ hasBiometry, finishProcess }: IPasscodePasscodeEnter) => {
 	const ref = useRef<IBase>(null);
-	let attempts = 0;
+
+	const attemptsRef = useRef(0);
 	let lockedUntil: any = false;
 	const [passcode] = useUserPreferences(PASSCODE_KEY);
 	const [status, setStatus] = useState<TYPE | null>(null);
-	const { setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
+	const { getItem: getAttempts, setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
 	const biometry = async () => {
@@ -37,6 +38,9 @@ const PasscodeEnter = ({ hasBiometry, finishProcess }: IPasscodePasscodeEnter) =
 	};
 
 	const readStorage = async () => {
+		const stored = await getAttempts();
+		attemptsRef.current = parseInt(stored || '0', 10);
+
 		lockedUntil = await getLockedUntil();
 		if (lockedUntil) {
 			const diff = getDiff(lockedUntil);
@@ -61,14 +65,16 @@ const PasscodeEnter = ({ hasBiometry, finishProcess }: IPasscodePasscodeEnter) =
 			if (sha256(p) === passcode) {
 				finishProcess();
 			} else {
-				attempts += 1;
-				if (attempts >= MAX_ATTEMPTS) {
+				attemptsRef.current += 1;
+				// Always persist the updated count BEFORE checking threshold,
+				// so AsyncStorage is accurate even when lockout triggers.
+				setAttempts(attemptsRef.current.toString());
+				if (attemptsRef.current >= MAX_ATTEMPTS) {
 					setStatus(TYPE.LOCKED);
 					setLockedUntil(new Date().toISOString());
 					Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 				} else {
 					ref?.current?.wrongPasscode();
-					setAttempts(attempts?.toString());
 					Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
 				}
 			}
