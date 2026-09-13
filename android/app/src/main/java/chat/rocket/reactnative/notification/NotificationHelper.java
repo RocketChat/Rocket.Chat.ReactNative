@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import chat.rocket.reactnative.BuildConfig;
+import chat.rocket.reactnative.networking.UserAgent;
 
 /**
  * Shared utility methods for notification handling
@@ -46,10 +47,7 @@ public class NotificationHelper {
      * @return User-Agent string
      */
     public static String getUserAgent() {
-        String systemVersion = android.os.Build.VERSION.RELEASE;
-        String appVersion = BuildConfig.VERSION_NAME;
-        int buildNumber = BuildConfig.VERSION_CODE;
-        return String.format("RC Mobile; android %s; v%s (%d)", systemVersion, appVersion, buildNumber);
+        return UserAgent.get();
     }
     
     /**
@@ -109,4 +107,3 @@ public class NotificationHelper {
         }
     }
 }
-
