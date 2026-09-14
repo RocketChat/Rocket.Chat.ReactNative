@@ -196,6 +196,8 @@
   "Custom": "Mukautettu",
   "Dark": "Tumma",
   "Dark_level": "Tumman taso",
+  "Deep_link_login_description": "Linkki yrittää kirjata sinut työtilaan {{server}}. Jatka vain, jos avasit tämän linkin itse ja luotat siihen.",
+  "Deep_link_login_title": "Kirjaudutaanko tähän työtilaan?",
   "Default": "Oletus",
   "Default_browser": "Oletusselain",
   "Defined_user_as_role": "määritti käyttäjän {{user}} rooliin {{role}}",

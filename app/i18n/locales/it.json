@@ -155,6 +155,8 @@
   "Custom": "Personalizzato",
   "Dark": "Scuro",
   "Dark_level": "Contrasto",
+  "Deep_link_login_description": "Un link sta tentando di farti accedere a {{server}}. Continua solo se hai aperto tu questo link e ti fidi.",
+  "Deep_link_login_title": "Accedere a questo spazio di lavoro?",
   "Default": "Predefinito",
   "Default_browser": "Browser predefinito",
   "DELETE": "ELIMINA",

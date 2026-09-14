@@ -143,6 +143,8 @@
   "Custom": "Personalizado",
   "Dark": "Escuro",
   "Dark_level": "Nível Escuro",
+  "Deep_link_login_description": "Um link está a tentar iniciar a sua sessão em {{server}}. Continue apenas se abriu este link por si próprio e confia nele.",
+  "Deep_link_login_title": "Iniciar sessão neste espaço de trabalho?",
   "Default": "Predefinição",
   "Default_browser": "Navegador predefinido",
   "DELETE": "APAGAR",
