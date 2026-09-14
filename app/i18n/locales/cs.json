@@ -767,6 +767,7 @@
   "room_changed_topic_to": "změnil téma místnosti na: {{topic}}",
   "room_changed_type": "změnil pokoj na {{type}}",
   "room_disallowed_reactions": "nepovolené reakce",
+  "Room_failed_to_load": "Tuto místnost se nepodařilo načíst. Zkontrolujte připojení a zkuste to znovu.",
   "Room_Info": "Informace o pokoji",
   "Room_Info_Edit": "Úprava informací o místnosti",
   "Room_name_changed_to": "změnil název místnosti na: {{name}}",

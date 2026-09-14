@@ -632,6 +632,7 @@
   "Review_this_app": "Donnez votre avis sur cette application",
   "Rocket_Chat_Documentation": "Documentation Rocket.Chat",
   "Roles": "Rôles",
+  "Room_failed_to_load": "Ce salon n'a pas pu être chargé. Vérifiez votre connexion et réessayez.",
   "Room_Info": "Info sur le salon",
   "Room_Info_Edit": "Modifier les informations du salon",
   "Room_Password": "Mot de passe de la salle",

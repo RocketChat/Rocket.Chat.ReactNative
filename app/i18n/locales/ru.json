@@ -663,6 +663,7 @@
   "Review_this_app": "Оценить это приложение",
   "Rocket_Chat_Documentation": "Документация Rocket.Chat",
   "Roles": "Роли",
+  "Room_failed_to_load": "Не удалось загрузить эту комнату. Проверьте подключение и попробуйте снова.",
   "Room_Info": "Информация о канале",
   "Room_Info_Edit": "Изменить информацию о чате",
   "Room_Password": "Пароль комнаты",

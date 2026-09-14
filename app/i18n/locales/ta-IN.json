@@ -719,6 +719,7 @@
   "room_changed_topic_to": "அறை தலைப்பு மாற்றினது: {{topic}}",
   "room_changed_type": "அறை வகை மாற்றினது: {{type}}",
   "room_disallowed_reactions": "பிரதிகிதங்களை அனுமதிக்கப்படவில்லை",
+  "Room_failed_to_load": "இந்த அறையை ஏற்ற முடியவில்லை. உங்கள் இணைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.",
   "Room_Info": "அறை தகவல்",
   "Room_Info_Edit": "அறை தகவல் திருத்து",
   "Room_name_changed_to": "அறை பெயர் மாற்றினது: {{name}}",

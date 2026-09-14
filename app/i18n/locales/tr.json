@@ -545,6 +545,7 @@
   "Review_this_app": "Bu uygulamayı değerlendirin",
   "Rocket_Chat_Documentation": "Rocket.Chat dokümantasyonu",
   "Roles": "Roller",
+  "Room_failed_to_load": "Bu oda yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.",
   "Room_Info": "Oda Bilgisi",
   "Room_Info_Edit": "Oda Bilgilerini Düzenle",
   "Room_Password": "Oda şifresi",

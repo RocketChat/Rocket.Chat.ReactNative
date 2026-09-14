@@ -719,6 +719,7 @@
   "room_changed_topic_to": "রুম বিষয়বস্তু পরিবর্তন করেছে: {{topic}}",
   "room_changed_type": "রুম পরিবর্তন করেছে: {{type}}",
   "room_disallowed_reactions": "রিয়েকশন অনুমতি দেওয়া হয়নি",
+  "Room_failed_to_load": "এই রুমটি লোড করা যায়নি। আপনার সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।",
   "Room_Info": "রুম তথ্য",
   "Room_Info_Edit": "রুম তথ্য সম্পাদনা",
   "Room_name_changed_to": "রুম নাম পরিবর্তন করেছে: {{name}}",

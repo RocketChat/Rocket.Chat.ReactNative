@@ -527,6 +527,7 @@
   "Review_this_app": "تقييم هذا التطبيق",
   "Rocket_Chat_Documentation": "توثيق Rocket.Chat",
   "Roles": "أدوار",
+  "Room_failed_to_load": "تعذر تحميل هذه الغرفة. تحقق من اتصالك وحاول مرة أخرى.",
   "Room_Info": "معلومات الغرفة",
   "Room_Info_Edit": "تعديل معلومات الغرفة",
   "Room_Password": "كلمة مرور الغرفة",

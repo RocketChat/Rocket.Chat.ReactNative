@@ -22,6 +22,7 @@ export * from './IPreferences';
 export * from './IProfile';
 export * from './IReaction';
 export * from './IRole';
+export * from './IRoomMessageHandlers';
 export * from './IRoom';
 export * from './ISearch';
 export * from './IServer';

@@ -544,6 +544,7 @@
   "Review_this_app": "評分此 App",
   "Rocket_Chat_Documentation": "Rocket.Chat 文件",
   "Roles": "角色",
+  "Room_failed_to_load": "無法載入此聊天室。請檢查你的連線後再試一次。",
   "Room_Info": "聊天室資訊",
   "Room_Info_Edit": "修改聊天室資訊",
   "Room_Password": "房間密碼",

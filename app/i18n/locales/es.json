@@ -393,6 +393,7 @@
   "Review_message": "Revisar mensaje",
   "Rocket_Chat_Documentation": "Documentación de Rocket.Chat",
   "Roles": "Roles",
+  "Room_failed_to_load": "No se pudo cargar esta sala. Comprueba tu conexión e inténtalo de nuevo.",
   "Room_Info": "Información de la sala",
   "Room_Info_Edit": "Editar información de la sala",
   "Room_Password": "Contraseña de habitación",
