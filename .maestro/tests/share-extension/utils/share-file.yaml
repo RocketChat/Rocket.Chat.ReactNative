@@ -44,12 +44,26 @@ tags:
           timeout: 10000
       - inputText: ${fileName}
       - evalScript: ${output.iosfilename = fileName.split('.').join(', ')}
-      - extendedWaitUntil:
-          visible:
-            id: ${output.iosfilename}
-          timeout: 10000
-      - longPressOn:
-          id: ${output.iosfilename}
+      - runFlow:
+          when:
+            true: ${fileName.split('.')[1] === 'zip'}
+          commands:
+            - extendedWaitUntil:
+                visible:
+                    id: 'test.zip, zip'
+                timeout: 10000
+            - longPressOn:
+                id: 'test.zip, zip'
+      - runFlow:
+          when:
+            true: ${fileName.split('.')[1] !== 'zip'}
+          commands:
+            - extendedWaitUntil:
+                visible:
+                  id: ${output.iosfilename}
+                timeout: 10000
+            - longPressOn:
+                id: ${output.iosfilename}
       - extendedWaitUntil:
           visible: 'Share'
           timeout: 10000
