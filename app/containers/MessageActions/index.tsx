@@ -45,7 +45,7 @@ const REFOCUS_BUFFER = 50;
 const isVideoConf = (message: TAnyMessageModel) => message.t === 'videoconf';
 
 export interface IMessageActionsProps {
-	room: TSubscriptionModel;
+	getRoom: () => TSubscriptionModel;
 	tmid?: string;
 	user: Pick<ILoggedUser, 'id'>;
 	editInit: (messageId: string) => void;
@@ -81,7 +81,7 @@ const MessageActions = memo(
 	forwardRef<IMessageActions, IMessageActionsProps>(
 		(
 			{
-				room,
+				getRoom,
 				tmid,
 				user,
 				editInit,
@@ -133,7 +133,7 @@ const MessageActions = memo(
 						createDirectMessagePermission,
 						createDiscussionOtherUserPermission
 					];
-					const result = await hasPermission(permission, room.rid);
+					const result = await hasPermission(permission, getRoom().rid);
 					permissions = {
 						hasEditPermission: result[0],
 						hasDeletePermission: result[1],
@@ -219,7 +219,7 @@ const MessageActions = memo(
 
 			const handleCreateDiscussion = (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_DISCUSSION);
-				const params = { message, channel: room, showCloseModal: true };
+				const params = { message, channel: getRoom(), showCloseModal: true };
 				if (isMasterDetail) {
 					Navigation.navigate('ModalStackNavigator', { screen: 'CreateDiscussionView', params });
 				} else {
@@ -239,7 +239,7 @@ const MessageActions = memo(
 			const handleUnread = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_UNREAD);
 				const { id: messageId, ts } = message;
-				const { rid } = room;
+				const { rid } = getRoom();
 				try {
 					const db = database.active;
 					const result = await markAsUnread({ messageId });
@@ -355,6 +355,7 @@ const MessageActions = memo(
 			};
 
 			const handleToggleTranslation = async (message: TAnyMessageModel) => {
+				const room = getRoom();
 				try {
 					if (!room.autoTranslateLanguage) {
 						return;
@@ -403,6 +404,7 @@ const MessageActions = memo(
 			};
 
 			const getConversationOptions = (message: TAnyMessageModel) => {
+				const room = getRoom();
 				const options: TActionSheetOptionsItem[] = [];
 				const videoConfBlock = isVideoConf(message);
 
@@ -474,6 +476,7 @@ const MessageActions = memo(
 			};
 
 			const getSharingOptions = (message: TAnyMessageModel) => {
+				const room = getRoom();
 				const options: TActionSheetOptionsItem[] = [];
 				const videoConfBlock = isVideoConf(message);
 
@@ -567,7 +570,7 @@ const MessageActions = memo(
 				}
 
 				// Toggle Auto-translate
-				if (room.autoTranslate && isFromAnotherUser) {
+				if (getRoom().autoTranslate && isFromAnotherUser) {
 					options.push({
 						title: I18n.t(message.autoTranslate !== false ? 'View_Original' : 'Translate'),
 						icon: 'language',
@@ -624,7 +627,7 @@ const MessageActions = memo(
 					headerHeight: HEADER_HEIGHT,
 					customHeader: (
 						<>
-							{!isReadOnly || room.reactWhenReadOnly ? (
+							{!isReadOnly || getRoom().reactWhenReadOnly ? (
 								<Header handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />
 							) : null}
 						</>

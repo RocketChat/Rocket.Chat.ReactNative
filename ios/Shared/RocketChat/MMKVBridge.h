@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable NSString *)stringForKey:(NSString *)key;
 - (BOOL)setString:(NSString *)value forKey:(NSString *)key;
+- (BOOL)boolForKey:(NSString *)key;
 - (nullable NSData *)dataForKey:(NSString *)key;
 - (BOOL)setData:(NSData *)value forKey:(NSString *)key;
 - (void)removeValueForKey:(NSString *)key;
