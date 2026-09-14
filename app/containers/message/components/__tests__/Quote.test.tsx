@@ -2,13 +2,13 @@ import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import Attachments from '../Attachments/Attachments';
-import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { type IAttachment, type TAnyMessageModel } from '../../../../definitions';
-import { fileDownloadAndPreview } from '../../../../lib/methods/helpers/fileDownload';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { mockedStore } from '~/reducers/mockedStore';
+import { type IAttachment, type TAnyMessageModel } from '~/definitions';
+import { fileDownloadAndPreview } from '~/lib/methods/helpers/fileDownload';
 
-jest.mock('../../../markdown', () => {
+jest.mock('~/containers/markdown', () => {
 	const React = require('react');
 	const { Text } = require('react-native');
 	return {
@@ -19,16 +19,16 @@ jest.mock('../../../markdown', () => {
 });
 
 // Never resolves, so a click leaves the reply's loading state stuck at `true`.
-jest.mock('../../../../lib/methods/helpers/fileDownload', () => ({
+jest.mock('~/lib/methods/helpers/fileDownload', () => ({
 	fileDownloadAndPreview: jest.fn(() => new Promise(() => {}))
 }));
 
-jest.mock('../../../../lib/methods/helpers/openLink', () => ({
+jest.mock('~/lib/methods/helpers/openLink', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));
 
-jest.mock('../../../../lib/methods/helpers/formatAttachmentUrl', () => ({
+jest.mock('~/lib/methods/helpers/formatAttachmentUrl', () => ({
 	formatAttachmentUrl: jest.fn((url: string) => `formatted:${url}`)
 }));
 

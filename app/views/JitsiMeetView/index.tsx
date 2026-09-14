@@ -6,16 +6,16 @@ import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
 import WebView, { type WebViewNavigation } from 'react-native-webview';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { userAgent } from '../../lib/constants/userAgent';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { isIOS } from '../../lib/methods/helpers';
-import { getRoomIdFromJitsiCallUrl } from '../../lib/methods/helpers/getRoomIdFromJitsiCall';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import { endVideoConfTimer, initVideoConfTimer } from '../../lib/methods/videoConfTimer';
-import { getUserSelector } from '../../selectors/login';
-import { type ChatsStackParamList } from '../../stacks/types';
+import { userAgent } from '~/lib/constants/userAgent';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { isIOS } from '~/lib/methods/helpers';
+import { getRoomIdFromJitsiCallUrl } from '~/lib/methods/helpers/getRoomIdFromJitsiCall';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { endVideoConfTimer, initVideoConfTimer } from '~/lib/methods/videoConfTimer';
+import { getUserSelector } from '~/selectors/login';
+import { type ChatsStackParamList } from '~/stacks/types';
 import JitsiAuthModal from './JitsiAuthModal';
-import SafeAreaView from '../../containers/SafeAreaView';
+import SafeAreaView from '~/containers/SafeAreaView';
 
 const JitsiMeetView = (): ReactElement => {
 	const {

@@ -1,17 +1,17 @@
 import { memo } from 'react';
 import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
-import { type TSupportedThemes, useTheme } from '../../theme';
-import { themes } from '../../lib/constants/colors';
+import { type TSupportedThemes, useTheme } from '~/theme';
+import { themes } from '~/lib/constants/colors';
 import { CustomIcon } from '../CustomIcon';
-import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
-import { addFrequentlyUsed } from '../../lib/methods/emojis';
-import { useFrequentlyUsedEmoji } from '../../lib/hooks/useFrequentlyUsedEmoji';
+import useShortnameToUnicode from '~/lib/hooks/useShortnameToUnicode';
+import { addFrequentlyUsed } from '~/lib/methods/emojis';
+import { useFrequentlyUsedEmoji } from '~/lib/hooks/useFrequentlyUsedEmoji';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
-import sharedStyles from '../../views/Styles';
-import { type IEmoji, type TAnyMessageModel } from '../../definitions';
+import sharedStyles from '~/views/Styles';
+import { type IEmoji, type TAnyMessageModel } from '~/definitions';
 import Touch from '../Touch';
-import I18n from '../../i18n';
+import I18n from '~/i18n';
 
 export interface IHeader {
 	handleReaction: (emoji: IEmoji | null, message: TAnyMessageModel) => void;

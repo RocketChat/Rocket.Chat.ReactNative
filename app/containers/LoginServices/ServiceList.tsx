@@ -3,7 +3,7 @@ import { Linking } from 'react-native';
 import Service from './Service';
 import Button from '../Button';
 import { type IServiceList, type IItemService } from './interfaces';
-import I18n from '../../i18n';
+import I18n from '~/i18n';
 
 const ServiceList = ({
 	services,

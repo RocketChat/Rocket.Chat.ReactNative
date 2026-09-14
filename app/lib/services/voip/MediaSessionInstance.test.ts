@@ -2,17 +2,17 @@ import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 import RNCallKeep from 'react-native-callkeep';
 import { waitFor } from '@testing-library/react-native';
 
-import type { IDDPMessage } from '../../../definitions/IDDPMessage';
-import type * as SdkIntegration from '../../testUtils/sdkIntegration';
+import type { IDDPMessage } from '~/definitions/IDDPMessage';
+import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
 import sdk from '../sdk';
-import Navigation from '../../navigation/appNavigation';
-import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
-import { getUidDirectMessage } from '../../methods/helpers/helpers';
+import Navigation from '~/lib/navigation/appNavigation';
+import { getDMSubscriptionByUsername } from '~/lib/database/services/Subscription';
+import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
 import { mediaSessionStore } from './MediaSessionStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
 
 const mockLog = jest.fn();
-jest.mock('../../methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: (...args: unknown[]) => mockLog(...args)
 }));
@@ -26,11 +26,11 @@ jest.mock('./terminateNativeCall', () => ({
 	terminateNativeCall: (...args: unknown[]) => mockTerminateNativeCall(...args)
 }));
 
-jest.mock('../../database/services/Subscription', () => ({
+jest.mock('~/lib/database/services/Subscription', () => ({
 	getDMSubscriptionByUsername: jest.fn()
 }));
 
-jest.mock('../../methods/helpers/helpers', () => ({
+jest.mock('~/lib/methods/helpers/helpers', () => ({
 	getUidDirectMessage: jest.fn(() => 'other-user-id')
 }));
 
@@ -67,7 +67,7 @@ const mockOnStreamData = jest.fn((_event: string, _callback: (message: IDDPMessa
 );
 const mockMethodCall = jest.fn();
 jest.mock('../sdk', () => {
-	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('~/lib/testUtils/sdkIntegration');
 	return {
 		__esModule: true,
 		default: makeSdkMock({
@@ -94,7 +94,7 @@ const mockAuxStoreState = {
 	login: { user: { id: 'user-1' } }
 };
 
-jest.mock('../../store/auxStore', () => ({
+jest.mock('~/lib/store/auxStore', () => ({
 	store: {
 		getState: jest.fn(() => mockAuxStoreState),
 		subscribe: jest.fn(() => jest.fn())
@@ -130,7 +130,7 @@ jest.mock('react-native-device-info', () => ({
 
 const mockStartVoipCallService = jest.fn().mockResolvedValue(undefined);
 const mockStopVoipCallService = jest.fn();
-jest.mock('../../native/NativeVoip', () => ({
+jest.mock('~/lib/native/NativeVoip', () => ({
 	__esModule: true,
 	default: {
 		stopNativeDDPClient: jest.fn(),
@@ -139,14 +139,14 @@ jest.mock('../../native/NativeVoip', () => ({
 	}
 }));
 
-jest.mock('../../navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	__esModule: true,
 	default: { navigate: jest.fn() },
 	waitForNavigationReady: jest.fn().mockResolvedValue(undefined)
 }));
 
 const mockRequestVoipCallPermissions = jest.fn().mockResolvedValue(true);
-jest.mock('../../methods/voipCallPermissions', () => ({
+jest.mock('~/lib/methods/voipCallPermissions', () => ({
 	requestVoipCallPermissions: () => mockRequestVoipCallPermissions()
 }));
 
@@ -159,13 +159,13 @@ jest.mock('./isInActiveVoipCall', () => ({
 	isInActiveVoipCall: () => mockIsInActiveVoipCall()
 }));
 
-jest.mock('../../../i18n', () => ({
+jest.mock('~/i18n', () => ({
 	__esModule: true,
 	default: { t: (key: string) => key }
 }));
 
 const mockShowErrorAlert = jest.fn();
-jest.mock('../../methods/helpers/info', () => ({
+jest.mock('~/lib/methods/helpers/info', () => ({
 	showErrorAlert: (...args: unknown[]) => mockShowErrorAlert(...args)
 }));
 

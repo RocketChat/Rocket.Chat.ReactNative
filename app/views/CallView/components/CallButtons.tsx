@@ -1,18 +1,18 @@
 import { View } from 'react-native';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
-import I18n from '../../../i18n';
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { navigateToCallRoom } from '../../../lib/services/voip/navigateToCallRoom';
-import { useCallStore, useControlsVisible } from '../../../lib/services/voip/useCallStore';
+import I18n from '~/i18n';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { navigateToCallRoom } from '~/lib/services/voip/navigateToCallRoom';
+import { useCallStore, useControlsVisible } from '~/lib/services/voip/useCallStore';
 import CallActionButton from './CallActionButton';
 import { CONTROLS_ANIMATION_DURATION, styles } from '../styles';
-import { useTheme } from '../../../theme';
-import { showActionSheetRef } from '../../../containers/ActionSheet';
+import { useTheme } from '~/theme';
+import { showActionSheetRef } from '~/containers/ActionSheet';
 import Dialpad from './Dialpad/Dialpad';
 import { useCallLayoutMode } from '../useCallLayoutMode';
-import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { type TIconsName } from '../../../containers/CustomIcon';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { type TIconsName } from '~/containers/CustomIcon';
 
 interface ICallButtonConfig {
 	testID: string;

@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 
-import NativeVoipModule from '../../native/NativeVoip';
+import NativeVoipModule from '~/lib/native/NativeVoip';
 
 export function terminateNativeCall(callId: string): void {
 	try {

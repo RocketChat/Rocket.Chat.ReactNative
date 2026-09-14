@@ -6,7 +6,7 @@ jest.mock('expo-web-browser', () => ({
 	openAuthSessionAsync: jest.fn(() => Promise.resolve({ type: 'dismiss' }))
 }));
 
-jest.mock('../../../lib/services/connect', () => ({
+jest.mock('~/lib/services/connect', () => ({
 	loginOAuthOrSso: jest.fn()
 }));
 

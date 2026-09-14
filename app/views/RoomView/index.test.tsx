@@ -5,49 +5,49 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { RoomView } from './index';
 import { type IRoomViewProps } from './definitions';
 import RoomServices from './services';
-import { readMessages } from '../../lib/methods/readMessages';
-import { mockedStore } from '../../reducers/mockedStore';
-import { initStore } from '../../lib/store/auxStore';
-import { setUser } from '../../actions/login';
+import { readMessages } from '~/lib/methods/readMessages';
+import { mockedStore } from '~/reducers/mockedStore';
+import { initStore } from '~/lib/store/auxStore';
+import { setUser } from '~/actions/login';
 
 jest.mock('./List', () => 'List');
 jest.mock('./LoadMore', () => 'LoadMore');
 jest.mock('./UploadProgress', () => 'UploadProgress');
 jest.mock('./JoinCode', () => 'JoinCode');
 jest.mock('./Banner', () => 'Banner');
-jest.mock('../../containers/MessageComposer', () => ({
+jest.mock('~/containers/MessageComposer', () => ({
 	MessageComposerContainer: 'MessageComposerContainer',
 	ComposerAttachments: 'ComposerAttachments'
 }));
-jest.mock('../../containers/MessageActions', () => 'MessageActions');
-jest.mock('../../containers/MessageErrorActions', () => 'MessageErrorActions');
-jest.mock('../../containers/message', () => 'Message');
-jest.mock('../../lib/methods/subscriptions/room', () =>
+jest.mock('~/containers/MessageActions', () => 'MessageActions');
+jest.mock('~/containers/MessageErrorActions', () => 'MessageErrorActions');
+jest.mock('~/containers/message', () => 'Message');
+jest.mock('~/lib/methods/subscriptions/room', () =>
 	jest.fn().mockImplementation(() => ({
 		subscribe: jest.fn(),
 		unsubscribe: jest.fn()
 	}))
 );
 
-jest.mock('../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	getRoutingConfig: jest.fn().mockResolvedValue({ returnQueue: false }),
 	getUserInfo: jest.fn().mockResolvedValue({ success: false }),
 	setReaction: jest.fn(),
 	joinRoom: jest.fn(),
 	toggleFollowMessage: jest.fn()
 }));
-jest.mock('../../lib/methods/editMessage', () => ({
+jest.mock('~/lib/methods/editMessage', () => ({
 	editMessage: jest.fn()
 }));
-jest.mock('../../lib/encryption/utils', () => ({
+jest.mock('~/lib/encryption/utils', () => ({
 	isE2EEDisabledEncryptedRoom: () => false,
 	isMissingRoomE2EEKey: () => false
 }));
 
-jest.mock('../../lib/hooks/useNewMediaCall', () => ({
+jest.mock('~/lib/hooks/useNewMediaCall', () => ({
 	useNewMediaCall: () => ({ openNewMediaCall: jest.fn(), hasMediaCallPermission: false, isInActiveCall: false })
 }));
-jest.mock('../../lib/services/voip/isInActiveVoipCall', () => ({
+jest.mock('~/lib/services/voip/isInActiveVoipCall', () => ({
 	isInActiveVoipCall: () => false,
 	useIsInActiveVoipCall: () => false
 }));
@@ -56,10 +56,10 @@ jest.mock('./services', () => ({
 	__esModule: true,
 	default: { getMessages: jest.fn().mockResolvedValue(undefined) }
 }));
-jest.mock('../../lib/methods/readMessages', () => ({ readMessages: jest.fn().mockResolvedValue(undefined) }));
-jest.mock('../../lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn().mockResolvedValue(undefined) }));
-jest.mock('../../lib/methods/helpers/isReadOnly', () => ({ isReadOnly: jest.fn().mockResolvedValue(false) }));
-jest.mock('../../lib/methods/AudioManager', () => ({
+jest.mock('~/lib/methods/readMessages', () => ({ readMessages: jest.fn().mockResolvedValue(undefined) }));
+jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn().mockResolvedValue(undefined) }));
+jest.mock('~/lib/methods/helpers/isReadOnly', () => ({ isReadOnly: jest.fn().mockResolvedValue(false) }));
+jest.mock('~/lib/methods/AudioManager', () => ({
 	__esModule: true,
 	default: { pauseAudio: jest.fn(), unloadRoomAudios: jest.fn().mockResolvedValue(undefined) }
 }));
@@ -73,7 +73,7 @@ const mockSubscriptionsCollection = {
 	find: jest.fn()
 };
 
-jest.mock('../../lib/database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: {
 		get active() {
