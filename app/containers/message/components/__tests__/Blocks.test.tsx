@@ -56,7 +56,7 @@ describe('Blocks', () => {
 
 	it("calls blockAction with the wired params and rid defaulted to '' when absent", async () => {
 		const blockAction = jest.fn();
-		renderBlocks([{ appId: 'app-1' }] as TAnyMessageModel['blocks'], { blockAction });
+		renderBlocks([{ appId: 'app-1' }] as TAnyMessageModel['blocks'], { handlers: { blockAction } });
 
 		const { action } = messageBlockWithContext.mock.calls[0][0];
 		await action({ actionId: 'submit', value: 'v', blockId: 'block-1' });
