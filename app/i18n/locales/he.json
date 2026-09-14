@@ -1,1 +1,4 @@
-{}
+{
+  "__count__empty_room_will_be_removed_automatically": "{{count}} חדר ריק יימחק.",
+  "error-action-not-allowed": "{{action}} אסור"
+}
