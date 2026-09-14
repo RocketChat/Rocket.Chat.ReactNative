@@ -2,8 +2,8 @@ import { Text } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { type ReactElement } from 'react';
 
-import { CustomIcon, type TIconsName } from '../../../containers/CustomIcon';
-import { useTheme } from '../../../theme';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import { useTheme } from '~/theme';
 import styles from '../styles';
 
 export function BaseButton({

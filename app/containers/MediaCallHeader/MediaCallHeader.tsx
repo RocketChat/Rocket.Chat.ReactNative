@@ -3,14 +3,14 @@ import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useShallow } from 'zustand/react/shallow';
 
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import Collapse from './components/Collapse';
 import ConferenceCallRow from './components/ConferenceCallRow';
 import EndCall from './components/EndCall';
-import { useConferenceCallStore } from '../../lib/services/conference/useConferenceCallStore';
-import { useCallStore, useControlsVisible } from '../../lib/services/voip/useCallStore';
+import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
+import { useCallStore, useControlsVisible } from '~/lib/services/voip/useCallStore';
 import { Content } from './components/Content';
-import { CONTROLS_ANIMATION_DURATION } from '../../views/CallView/styles';
+import { CONTROLS_ANIMATION_DURATION } from '~/views/CallView/styles';
 
 const styles = StyleSheet.create({
 	header: {

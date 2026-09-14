@@ -1,16 +1,17 @@
 import { Camera } from 'expo-camera';
 import { useMemo } from 'react';
 
-import { useActionSheet } from '../../../containers/ActionSheet';
-import i18n from '../../../i18n';
-import { getUserSelector } from '../../../selectors/login';
-import { compareServerVersion } from '../../methods/helpers/compareServerVersion';
-import { showErrorAlert } from '../../methods/helpers/info';
-import log from '../../methods/helpers/log';
-import { openConferenceCall } from '../../methods/openConferenceCall';
-import { videoConferenceGetCapabilities } from '../../services/restApi';
+import { useActionSheet } from '~/containers/ActionSheet';
+import i18n from '~/i18n';
+import { getUserSelector } from '~/selectors/login';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import log from '~/lib/methods/helpers/log';
+import { openConferenceCall } from '~/lib/methods/openConferenceCall';
+import { handleAndroidBltPermission } from '~/lib/methods/videoConf';
+import { videoConferenceGetCapabilities } from '~/lib/services/restApi';
 import { useAppSelector } from '../useAppSelector';
-import { isConferenceWindowEnabled } from '../../methods/helpers/isConferenceWindowEnabled';
+import { isConferenceWindowEnabled } from '~/lib/methods/helpers/isConferenceWindowEnabled';
 import StartACallActionSheet from './StartACallActionSheet';
 import { useVideoConfCall } from './useVideoConfCall';
 
@@ -78,6 +79,7 @@ export const useVideoConf = (
 			try {
 				if (!permission?.granted) {
 					await Camera.requestCameraPermissionsAsync();
+					handleAndroidBltPermission();
 				}
 			} catch (error) {
 				log(error);

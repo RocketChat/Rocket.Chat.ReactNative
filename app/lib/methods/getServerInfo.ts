@@ -8,15 +8,15 @@ import {
 	type ISupportedVersions,
 	type ISupportedVersionsData,
 	type IApiServerInfo
-} from '../../definitions';
-import { selectServerFailure } from '../../actions/server';
+} from '~/definitions';
+import { selectServerFailure } from '~/actions/server';
 import { store } from '../store/auxStore';
-import I18n from '../../i18n';
+import I18n from '~/i18n';
 import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants/supportedVersions';
 import { getServerById } from '../database/services/Server';
 import { compareServerVersion } from './helpers';
 import log from './helpers/log';
-import { getUserSelector } from '../../selectors/login';
+import { getUserSelector } from '~/selectors/login';
 import fetch from './helpers/fetch';
 
 interface IServerInfoFailure {

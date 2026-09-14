@@ -1,6 +1,6 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 
-import { type TAnyMessageModel } from '../../../../definitions';
+import { type TAnyMessageModel } from '~/definitions';
 import { type TListRef, type TMessagesIdsRef } from '../definitions';
 import { useScroll } from './useScroll';
 

@@ -3,21 +3,21 @@ import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
 import MediaCallHeader from './MediaCallHeader';
-import { closeConferenceCall, expandConferenceCall } from '../../lib/services/conference/conferenceCallNavigation';
-import { useConferenceCallStore } from '../../lib/services/conference/useConferenceCallStore';
-import { navigateToCallRoom } from '../../lib/services/voip/navigateToCallRoom';
-import { useCallStore } from '../../lib/services/voip/useCallStore';
-import { mockedStore } from '../../reducers/mockedStore';
+import { closeConferenceCall, expandConferenceCall } from '~/lib/services/conference/conferenceCallNavigation';
+import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
+import { navigateToCallRoom } from '~/lib/services/voip/navigateToCallRoom';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
+import { mockedStore } from '~/reducers/mockedStore';
 import * as stories from './MediaCallHeader.stories';
-import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 
 const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
 
-jest.mock('../../lib/services/voip/navigateToCallRoom', () => ({
+jest.mock('~/lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
 }));
 
-jest.mock('../../lib/services/conference/conferenceCallNavigation', () => ({
+jest.mock('~/lib/services/conference/conferenceCallNavigation', () => ({
 	expandConferenceCall: jest.fn(),
 	closeConferenceCall: jest.fn()
 }));

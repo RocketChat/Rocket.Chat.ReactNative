@@ -1,9 +1,9 @@
 import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
-import { themes } from '../../lib/constants/colors';
+import { themes } from '~/lib/constants/colors';
 import UnreadBadge from '.';
-import { ThemeContext, type TSupportedThemes } from '../../theme';
+import { ThemeContext, type TSupportedThemes } from '~/theme';
 
 export default {
 	title: 'Unread Badge'

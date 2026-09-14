@@ -2,22 +2,22 @@ jest.unmock('@rocket.chat/sdk');
 
 import { connect, login, loginWithPassword } from '../connect';
 import sdk from '../sdk';
-import { initStore } from '../../store/auxStore';
-import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../../actions/connect';
-import { loginRequest, logout, setUser } from '../../../actions/login';
-import { setActiveUsers } from '../../../actions/activeUsers';
-import { updateSettings } from '../../../actions/settings';
-import { updatePermission } from '../../../actions/permissions';
-import { _activeUsers, _setUserTimer } from '../../methods/setUser';
-import { flushMicrotasksAndTimers, framesOn, makeCollection, makeReduxStore, receiveFrame } from '../../testUtils/sdkIntegration';
-import type { MockConnection } from '../../testUtils/sdkIntegration';
-import type * as SdkIntegration from '../../testUtils/sdkIntegration';
+import { initStore } from '~/lib/store/auxStore';
+import { connectRequest, connectSuccess, disconnect as disconnectAction } from '~/actions/connect';
+import { loginRequest, logout, setUser } from '~/actions/login';
+import { setActiveUsers } from '~/actions/activeUsers';
+import { updateSettings } from '~/actions/settings';
+import { updatePermission } from '~/actions/permissions';
+import { _activeUsers, _setUserTimer } from '~/lib/methods/setUser';
+import { flushMicrotasksAndTimers, framesOn, makeCollection, makeReduxStore, receiveFrame } from '~/lib/testUtils/sdkIntegration';
+import type { MockConnection } from '~/lib/testUtils/sdkIntegration';
+import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
 
 const mockConnections: MockConnection[] = [];
 
 jest.mock('universal-websocket-client', () =>
 	jest.fn().mockImplementation(() => {
-		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('~/lib/testUtils/sdkIntegration');
 		return new sdkIntegration.MockConnection(mockConnections);
 	})
 );
@@ -33,22 +33,22 @@ jest.mock('../twoFactor/twoFactor', () => ({
 	twoFactor: jest.fn()
 }));
 
-jest.mock('../../../i18n', () => ({
+jest.mock('~/i18n', () => ({
 	__esModule: true,
 	default: { t: jest.fn((key: string) => key) }
 }));
 
-jest.mock('../../methods/subscribeRooms', () => ({
+jest.mock('~/lib/methods/subscribeRooms', () => ({
 	subscribeRooms: jest.fn(),
 	unsubscribeRooms: jest.fn()
 }));
 
-jest.mock('../../methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));
 
-jest.mock('../../database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: {
 		setActiveDB: jest.fn(),
@@ -61,7 +61,7 @@ jest.mock('../../database', () => ({
 	}
 }));
 
-const database = require('../../database').default as {
+const database = require('~/lib/database').default as {
 	setActiveDB: jest.Mock;
 	active: { get: jest.Mock; write: jest.Mock; batch: jest.Mock };
 };

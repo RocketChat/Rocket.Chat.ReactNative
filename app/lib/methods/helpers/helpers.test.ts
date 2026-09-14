@@ -1,13 +1,13 @@
 import { getUidDirectMessage } from './helpers';
-import { store as reduxStore } from '../../store/auxStore';
+import { store as reduxStore } from '~/lib/store/auxStore';
 
-jest.mock('../../store/auxStore', () => ({
+jest.mock('~/lib/store/auxStore', () => ({
 	store: {
 		getState: jest.fn()
 	}
 }));
 
-jest.mock('../../database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn() } }
 }));

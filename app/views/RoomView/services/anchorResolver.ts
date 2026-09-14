@@ -1,5 +1,5 @@
-import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
-import { tsToMs } from '../../../lib/dayjs';
+import { MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
+import { tsToMs } from '~/lib/dayjs';
 
 // Pure anchor math for the bounded Message Window — no React, no DB (unit-tested with plain objects).
 // Returns an upper ts bound (ms): null = Live Window, finite = Anchored Window. See docs/ARCHITECTURE.md.

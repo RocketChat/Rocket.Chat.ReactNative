@@ -1,13 +1,13 @@
-import { type ICannedResponse } from '../../ICannedResponse';
-import { type ILivechatAgent } from '../../ILivechatAgent';
-import { type ILivechatDepartment } from '../../ILivechatDepartment';
-import { type ILivechatDepartmentAgents } from '../../ILivechatDepartmentAgents';
-import { type ILivechatMonitor } from '../../ILivechatMonitor';
-import { type ILivechatTag } from '../../ILivechatTag';
-import { type ILivechatVisitor, type ILivechatVisitorDTO } from '../../ILivechatVisitor';
-import { type IMessage } from '../../IMessage';
-import { type IOmnichannelRoom, type IServerRoom } from '../../IRoom';
-import { type ISetting } from '../../ISetting';
+import { type ICannedResponse } from '~/definitions/ICannedResponse';
+import { type ILivechatAgent } from '~/definitions/ILivechatAgent';
+import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
+import { type ILivechatDepartmentAgents } from '~/definitions/ILivechatDepartmentAgents';
+import { type ILivechatMonitor } from '~/definitions/ILivechatMonitor';
+import { type ILivechatTag } from '~/definitions/ILivechatTag';
+import { type ILivechatVisitor, type ILivechatVisitorDTO } from '~/definitions/ILivechatVisitor';
+import { type IMessage } from '~/definitions/IMessage';
+import { type IOmnichannelRoom, type IServerRoom } from '~/definitions/IRoom';
+import { type ISetting } from '~/definitions/ISetting';
 import { type PaginatedRequest } from '../helpers/PaginatedRequest';
 import { type PaginatedResult } from '../helpers/PaginatedResult';
 

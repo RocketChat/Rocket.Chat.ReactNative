@@ -1,11 +1,11 @@
 import { Alert } from 'react-native';
 
-import I18n from '../../i18n';
-import { Encryption } from '../../lib/encryption';
-import log from '../../lib/methods/helpers/log';
-import { showToast } from '../../lib/methods/helpers/showToast';
-import { e2eResetRoomKey } from '../../lib/services/restApi';
-import { isTwoFactorCancelled } from '../../lib/services/twoFactor/twoFactorCancelled';
+import I18n from '~/i18n';
+import { Encryption } from '~/lib/encryption';
+import log from '~/lib/methods/helpers/log';
+import { showToast } from '~/lib/methods/helpers/showToast';
+import { e2eResetRoomKey } from '~/lib/services/restApi';
+import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
 
 export const resetRoomKey = (rid: string) => {
 	Alert.alert(

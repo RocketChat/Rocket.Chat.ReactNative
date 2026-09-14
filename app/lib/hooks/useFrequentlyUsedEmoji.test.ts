@@ -2,7 +2,7 @@ import { act, renderHook, waitFor } from '@testing-library/react-native';
 
 import { useFrequentlyUsedEmoji } from './useFrequentlyUsedEmoji';
 import { getFrequentlyUsedEmojis } from '../methods/emojis';
-import { type IEmoji } from '../../definitions';
+import { type IEmoji } from '~/definitions';
 
 // jest.setup.js stubs this hook globally for component tests; use the real one here.
 jest.mock('./useFrequentlyUsedEmoji', () => jest.requireActual('./useFrequentlyUsedEmoji'));

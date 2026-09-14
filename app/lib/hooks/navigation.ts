@@ -1,7 +1,7 @@
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { type TNavigation } from '../../stacks/stackType';
+import { type TNavigation } from '~/stacks/stackType';
 import {
 	type AdminPanelStackParamList,
 	type ChatsStackParamList,
@@ -15,7 +15,7 @@ import {
 	type OutsideParamList,
 	type ProfileStackParamList,
 	type SettingsStackParamList
-} from '../../stacks/types';
+} from '~/stacks/types';
 
 type TRoutes =
 	| ChatsStackParamList

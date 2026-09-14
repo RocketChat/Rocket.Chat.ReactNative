@@ -1,6 +1,6 @@
-import dayjs from '../../dayjs';
+import dayjs from '~/lib/dayjs';
 import parseUrls from './parseUrls';
-import type { IAttachment, IMessage, IThreadResult } from '../../../definitions';
+import type { IAttachment, IMessage, IThreadResult } from '~/definitions';
 
 type TMsg = IMessage & IAttachment;
 

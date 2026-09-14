@@ -1,8 +1,8 @@
 import { type ReactNode } from 'react';
 import { Text } from 'react-native';
 
-import styles from '../../styles';
-import MarkdownContext, { useMarkdownContext } from '../../contexts/MarkdownContext';
+import styles from '~/containers/markdown/styles';
+import MarkdownContext, { useMarkdownContext } from '~/containers/markdown/contexts/MarkdownContext';
 
 interface IStrikeProps {
 	children: ReactNode;
