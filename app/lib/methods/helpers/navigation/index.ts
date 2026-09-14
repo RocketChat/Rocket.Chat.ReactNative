@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
@@ -20,11 +19,7 @@ export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOpti
 	headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 }
 });
 
-export const nativeHeader = (theme: TSupportedThemes): NativeStackNavigationOptions => ({
-	...(Platform.OS === 'android' ? themedHeader(theme) : {}),
-	headerTintColor: themes[theme].fontDefault,
-	headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 }
-});
+export const nativeHeader = themedHeader;
 
 export const navigationTheme = (theme: TSupportedThemes) => {
 	const defaultNavTheme = theme === 'light' ? DefaultTheme : DarkTheme;
