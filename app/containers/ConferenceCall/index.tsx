@@ -40,7 +40,7 @@ const ConferenceCall = () => {
 
 	return (
 		<View
-			style={[styles.host, { paddingTop: top, paddingBottom: bottom }, expanded ? styles.expanded : styles.offscreen]}
+			style={[styles.host, { paddingTop: top, paddingBottom: bottom }, !expanded && styles.offscreen]}
 			pointerEvents={expanded ? 'auto' : 'none'}>
 			<ConferenceWebView url={url} expanded={expanded} onClose={closeConferenceCall} onOpenLink={onOpenLink} />
 		</View>
@@ -48,9 +48,17 @@ const ConferenceCall = () => {
 };
 
 const styles = StyleSheet.create({
-	host: { position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, backgroundColor: 'rgb(31,33,38)' },
-	expanded: {},
-	offscreen: { transform: [{ translateX: -100000 }] }
+	host: {
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		top: 0,
+		bottom: 0,
+		backgroundColor: 'rgb(31,33,38)'
+	},
+	offscreen: {
+		transform: [{ translateX: -100000 }]
+	}
 });
 
 export default ConferenceCall;

@@ -27,7 +27,10 @@ const ConferenceView = (): ReactElement => {
 };
 
 const styles = StyleSheet.create({
-	container: { flex: 1, backgroundColor: 'rgb(31,33,38)' }
+	container: {
+		flex: 1,
+		backgroundColor: 'rgb(31,33,38)'
+	}
 });
 
 export default ConferenceView;

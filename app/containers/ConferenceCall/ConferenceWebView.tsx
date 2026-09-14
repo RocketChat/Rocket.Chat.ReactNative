@@ -198,10 +198,23 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 };
 
 const styles = StyleSheet.create({
-	webview: { flex: 1, backgroundColor: 'rgb(31,33,38)' },
-	loading: { alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 },
-	errorText: { fontSize: 16, textAlign: 'center', marginBottom: 24 },
-	errorButton: { alignSelf: 'stretch' }
+	webview: {
+		flex: 1,
+		backgroundColor: 'rgb(31,33,38)'
+	},
+	loading: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		paddingHorizontal: 24
+	},
+	errorText: {
+		fontSize: 16,
+		textAlign: 'center',
+		marginBottom: 24
+	},
+	errorButton: {
+		alignSelf: 'stretch'
+	}
 });
 
 export default ConferenceWebView;
