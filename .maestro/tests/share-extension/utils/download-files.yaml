@@ -15,6 +15,10 @@ tags:
           visible: 'Add account to device'
           timeout: 60000
       - tapOn: 'Use without an account'
+      - extendedWaitUntil:
+          visible: 'Chrome notifications make things easier'
+          timeout: 60000
+      - tapOn: 'Continue'
 
 - runFlow:
     when:
