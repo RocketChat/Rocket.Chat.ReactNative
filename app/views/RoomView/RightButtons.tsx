@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { type Dispatch } from 'redux';
 import { type Observable, type Subscription } from 'rxjs';
 
-import { type TActionSheetOptionsItem } from '../../containers/ActionSheet';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
+import { type TActionSheetOptionsItem } from '~/containers/ActionSheet';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import {
 	type IApplicationState,
 	type ISubscription,
@@ -14,23 +14,23 @@ import {
 	type TMessageModel,
 	type TSubscriptionModel,
 	type TUserStatus
-} from '../../definitions';
-import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { type ILivechatTag } from '../../definitions/ILivechatTag';
-import i18n from '../../i18n';
-import database from '../../lib/database';
-import { hasPermission, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
-import { getUidDirectMessage } from '../../lib/methods/helpers/helpers';
-import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import { getDepartmentInfo, getTagsList, onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
-import { getUserSelector } from '../../selectors/login';
-import { type TNavigation } from '../../stacks/stackType';
-import { type ChatsStackParamList } from '../../stacks/types';
+} from '~/definitions';
+import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
+import { type ILivechatTag } from '~/definitions/ILivechatTag';
+import i18n from '~/i18n';
+import database from '~/lib/database';
+import { hasPermission, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
+import { closeLivechat as closeLivechatService } from '~/lib/methods/helpers/closeLivechat';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { getDepartmentInfo, getTagsList, onHoldLivechat, returnLivechat } from '~/lib/services/restApi';
+import { getUserSelector } from '~/selectors/login';
+import { type TNavigation } from '~/stacks/stackType';
+import { type ChatsStackParamList } from '~/stacks/types';
 import { HeaderCallButton } from './components';
-import { type TColors, type TSupportedThemes, withTheme } from '../../theme';
-import getRoomAccessibilityLabel from '../../lib/helpers/getRoomAccessibilityLabel';
-import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
+import { type TColors, type TSupportedThemes, withTheme } from '~/theme';
+import getRoomAccessibilityLabel from '~/lib/helpers/getRoomAccessibilityLabel';
+import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
 
 interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	userId?: string;

@@ -3,8 +3,8 @@ import { act, render, waitFor } from '@testing-library/react-native';
 import Locked from './Locked';
 import { TYPE } from '../constants';
 import { getLockedUntil } from '../utils';
-import { resetAttempts } from '../../../lib/methods/helpers/localAuthentication';
-import log from '../../../lib/methods/helpers/log';
+import { resetAttempts } from '~/lib/methods/helpers/localAuthentication';
+import log from '~/lib/methods/helpers/log';
 
 jest.mock('../../../theme', () => ({
 	useTheme: () => ({
@@ -30,11 +30,11 @@ jest.mock('../utils', () => {
 	};
 });
 
-jest.mock('../../../lib/methods/helpers/localAuthentication', () => ({
+jest.mock('~/lib/methods/helpers/localAuthentication', () => ({
 	resetAttempts: jest.fn()
 }));
 
-jest.mock('../../../lib/methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));

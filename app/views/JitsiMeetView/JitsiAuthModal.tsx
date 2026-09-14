@@ -5,11 +5,11 @@ import Modal from 'react-native-modal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import sharedStyles from '../Styles';
-import Button from '../../containers/Button';
-import { useTheme } from '../../theme';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { getUserSelector } from '../../selectors/login';
-import i18n from '../../i18n';
+import Button from '~/containers/Button';
+import { useTheme } from '~/theme';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { getUserSelector } from '~/selectors/login';
+import i18n from '~/i18n';
 
 const styles = StyleSheet.create({
 	title: {

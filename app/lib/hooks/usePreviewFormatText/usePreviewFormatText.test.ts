@@ -1,9 +1,9 @@
 import { renderHook } from '@testing-library/react-native';
 
-import { mockedStore } from '../../../reducers/mockedStore';
-import { setUser } from '../../../actions/login';
-import { setCustomEmojis } from '../../../actions/customEmojis';
-import { initStore } from '../../store/auxStore';
+import { mockedStore } from '~/reducers/mockedStore';
+import { setUser } from '~/actions/login';
+import { setCustomEmojis } from '~/actions/customEmojis';
+import { initStore } from '~/lib/store/auxStore';
 import usePreviewFormatText from './index';
 
 jest.mock('../useAppSelector', () => ({

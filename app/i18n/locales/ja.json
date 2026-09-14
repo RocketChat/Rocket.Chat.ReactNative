@@ -147,6 +147,8 @@
   "Custom": "カスタム",
   "Dark": "ダーク",
   "Dark_level": "ダークレベル",
+  "Deep_link_login_description": "リンクが {{server}} へのサインインを求めています。このリンクを自分で開き、信頼できる場合にのみ続行してください。",
+  "Deep_link_login_title": "このワークスペースにサインインしますか？",
   "Default": "デフォルト",
   "Default_browser": "デフォルトのブラウザ",
   "DELETE": "削除",

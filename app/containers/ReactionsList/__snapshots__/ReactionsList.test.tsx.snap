@@ -72,6 +72,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                 "paddingBottom": 4,
               }
             }
+            testID="reactions-tab-all"
           >
             <Text
               style={
@@ -141,6 +142,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                 "paddingBottom": 4,
               }
             }
+            testID="reactions-tab-:marioparty:"
           >
             <ViewManagerAdapter_ExpoImage
               containerViewRef={{"current":"Object"}}
@@ -242,6 +244,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                 "paddingBottom": 4,
               }
             }
+            testID="reactions-tab-:react_rocket:"
           >
             <ViewManagerAdapter_ExpoImage
               containerViewRef={{"current":"Object"}}
@@ -343,6 +346,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                 "paddingBottom": 4,
               }
             }
+            testID="reactions-tab-:nyan_rocket:"
           >
             <ViewManagerAdapter_ExpoImage
               containerViewRef={{"current":"Object"}}
@@ -444,6 +448,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                 "paddingBottom": 4,
               }
             }
+            testID="reactions-tab-:grinning:"
           >
             <Text
               style={
@@ -526,6 +531,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                 "paddingBottom": 4,
               }
             }
+            testID="reactions-tab-:tada:"
           >
             <Text
               style={
@@ -1195,6 +1201,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                 "paddingBottom": 4,
               }
             }
+            testID="reactions-tab-all"
           >
             <Text
               style={
@@ -1264,6 +1271,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                 "paddingBottom": 4,
               }
             }
+            testID="reactions-tab-:marioparty:"
           >
             <ViewManagerAdapter_ExpoImage
               containerViewRef={{"current":"Object"}}
@@ -1365,6 +1373,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                 "paddingBottom": 4,
               }
             }
+            testID="reactions-tab-:react_rocket:"
           >
             <ViewManagerAdapter_ExpoImage
               containerViewRef={{"current":"Object"}}
@@ -1466,6 +1475,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                 "paddingBottom": 4,
               }
             }
+            testID="reactions-tab-:nyan_rocket:"
           >
             <ViewManagerAdapter_ExpoImage
               containerViewRef={{"current":"Object"}}
@@ -1567,6 +1577,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                 "paddingBottom": 4,
               }
             }
+            testID="reactions-tab-:grinning:"
           >
             <Text
               style={
@@ -1649,6 +1660,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                 "paddingBottom": 4,
               }
             }
+            testID="reactions-tab-:tada:"
           >
             <Text
               style={

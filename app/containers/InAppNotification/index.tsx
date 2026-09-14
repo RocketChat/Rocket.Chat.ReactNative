@@ -4,13 +4,13 @@ import { useDispatch } from 'react-redux';
 import { AccessibilityInfo } from 'react-native';
 
 import NotifierComponent, { type INotifierComponent } from './NotifierComponent';
-import EventEmitter from '../../lib/methods/helpers/events';
-import Navigation from '../../lib/navigation/appNavigation';
-import { getActiveRoute } from '../../lib/methods/helpers/navigation';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { setInAppFeedback } from '../../actions/inAppFeedback';
-import I18n from '../../i18n';
-import { INAPP_NOTIFICATION_EMITTER } from '../../lib/constants/notifications';
+import EventEmitter from '~/lib/methods/helpers/events';
+import Navigation from '~/lib/navigation/appNavigation';
+import { getActiveRoute } from '~/lib/methods/helpers/navigation';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { setInAppFeedback } from '~/actions/inAppFeedback';
+import I18n from '~/i18n';
+import { INAPP_NOTIFICATION_EMITTER } from '~/lib/constants/notifications';
 
 type INotifierNotification = INotifierComponent['notification'] & {
 	customComponent?: ElementType;

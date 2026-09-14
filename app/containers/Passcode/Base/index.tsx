@@ -9,12 +9,12 @@ import styles from './styles';
 import Button from './Button';
 import Dots from './Dots';
 import { TYPE } from '../constants';
-import { PASSCODE_LENGTH } from '../../../lib/constants/localAuthentication';
-import { useTheme } from '../../../theme';
+import { PASSCODE_LENGTH } from '~/lib/constants/localAuthentication';
+import { useTheme } from '~/theme';
 import LockIcon from './LockIcon';
 import Title from './Title';
 import Subtitle from './Subtitle';
-import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IPasscodeBase {
 	type: string;

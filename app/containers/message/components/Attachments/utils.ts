@@ -1,4 +1,4 @@
-import { type IAttachment } from '../../../../definitions';
+import { type IAttachment } from '~/definitions';
 
 // Prefer a stable server-provided link as the React key; fall back to a prefixed index.
 export const getAttachmentKey = (file: IAttachment, prefix: string, index: number): string =>

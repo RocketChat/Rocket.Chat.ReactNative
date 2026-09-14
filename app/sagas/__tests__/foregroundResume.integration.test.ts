@@ -3,8 +3,8 @@ jest.unmock('@rocket.chat/sdk');
 import { applyMiddleware, createStore, type AnyAction, type Store } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-import type * as SdkIntegration from '../../lib/testUtils/sdkIntegration';
-import type { MockConnection } from '../../lib/testUtils/sdkIntegration';
+import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
+import type { MockConnection } from '~/lib/testUtils/sdkIntegration';
 
 const USER_ID = 'user-id';
 const RESUME_TOKEN = 'auth-token';
@@ -13,74 +13,74 @@ const mockConnections: MockConnection[] = [];
 
 jest.mock('universal-websocket-client', () =>
 	jest.fn().mockImplementation(() => {
-		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../lib/testUtils/sdkIntegration');
+		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('~/lib/testUtils/sdkIntegration');
 		return new sdkIntegration.MockConnection(mockConnections);
 	})
 );
 
-jest.mock('../../lib/methods/helpers/localAuthentication', () => ({
+jest.mock('~/lib/methods/helpers/localAuthentication', () => ({
 	localAuthenticate: jest.fn(),
 	saveLastLocalAuthenticationSession: jest.fn()
 }));
 
-jest.mock('../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	setUserPresenceOnline: jest.fn(),
 	setUserPresenceAway: jest.fn()
 }));
 
-jest.mock('../../lib/notifications', () => ({
+jest.mock('~/lib/notifications', () => ({
 	checkPendingNotification: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('../../lib/services/voip/MediaSessionInstance', () => ({
+jest.mock('~/lib/services/voip/MediaSessionInstance', () => ({
 	mediaSessionInstance: {
 		reset: jest.fn(),
 		drainPendingHangups: jest.fn()
 	}
 }));
 
-jest.mock('../../lib/services/voip/MediaSessionStore', () => ({
+jest.mock('~/lib/services/voip/MediaSessionStore', () => ({
 	mediaSessionStore: { getCurrentInstance: jest.fn(() => null) }
 }));
 
-jest.mock('../../lib/services/twoFactor/twoFactor', () => ({
+jest.mock('~/lib/services/twoFactor/twoFactor', () => ({
 	twoFactor: jest.fn()
 }));
 
-jest.mock('../../lib/methods/subscribeRooms', () => ({
+jest.mock('~/lib/methods/subscribeRooms', () => ({
 	subscribeRooms: jest.fn(),
 	unsubscribeRooms: jest.fn()
 }));
 
-jest.mock('../../lib/methods/loadMissedMessages', () => ({
+jest.mock('~/lib/methods/loadMissedMessages', () => ({
 	loadMissedMessages: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('../../lib/methods/readMessages', () => ({
+jest.mock('~/lib/methods/readMessages', () => ({
 	readMessages: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('../../lib/methods/helpers/markMessagesRead', () => ({
+jest.mock('~/lib/methods/helpers/markMessagesRead', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));
 
-jest.mock('../../lib/methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn(),
 	events: {},
 	logEvent: jest.fn()
 }));
 
-jest.mock('../../lib/encryption', () => ({
+jest.mock('~/lib/encryption', () => ({
 	Encryption: { decryptMessage: jest.fn(async (message: unknown) => message) }
 }));
 
-jest.mock('../../lib/database/services/Message', () => ({
+jest.mock('~/lib/database/services/Message', () => ({
 	getMessageById: jest.fn(() => Promise.resolve(null))
 }));
 
-jest.mock('../../lib/database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: {
 		setActiveDB: jest.fn(),
@@ -93,19 +93,19 @@ jest.mock('../../lib/database', () => ({
 	}
 }));
 
-import RoomSubscription from '../../lib/methods/subscriptions/room';
-import databaseModule from '../../lib/database';
-import { connect } from '../../lib/services/connect';
-import sdk from '../../lib/services/sdk';
-import { loadMissedMessages } from '../../lib/methods/loadMissedMessages';
-import { initStore } from '../../lib/store/auxStore';
-import { APP_STATE } from '../../actions/actionsTypes';
-import { appStart } from '../../actions/app';
-import { loginRequest, loginSuccess } from '../../actions/login';
-import { connectSuccess, disconnect } from '../../actions/connect';
-import { selectServerSuccess } from '../../actions/server';
-import { RootEnum } from '../../definitions';
-import reducers from '../../reducers';
+import RoomSubscription from '~/lib/methods/subscriptions/room';
+import databaseModule from '~/lib/database';
+import { connect } from '~/lib/services/connect';
+import sdk from '~/lib/services/sdk';
+import { loadMissedMessages } from '~/lib/methods/loadMissedMessages';
+import { initStore } from '~/lib/store/auxStore';
+import { APP_STATE } from '~/actions/actionsTypes';
+import { appStart } from '~/actions/app';
+import { loginRequest, loginSuccess } from '~/actions/login';
+import { connectSuccess, disconnect } from '~/actions/connect';
+import { selectServerSuccess } from '~/actions/server';
+import { RootEnum } from '~/definitions';
+import reducers from '~/reducers';
 import loginRoot from '../login';
 import stateRoot from '../state';
 import {
@@ -115,9 +115,9 @@ import {
 	makeCollection,
 	settleUntil,
 	stopAnsweringFrames
-} from '../../lib/testUtils/sdkIntegration';
-import { saveLastLocalAuthenticationSession } from '../../lib/methods/helpers/localAuthentication';
-import { setUserPresenceAway } from '../../lib/services/restApi';
+} from '~/lib/testUtils/sdkIntegration';
+import { saveLastLocalAuthenticationSession } from '~/lib/methods/helpers/localAuthentication';
+import { setUserPresenceAway } from '~/lib/services/restApi';
 
 const SERVER = 'https://open.rocket.chat';
 const ROOM_ID = 'room-rid';

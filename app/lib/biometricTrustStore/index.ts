@@ -1,6 +1,6 @@
 import * as Keychain from 'react-native-keychain';
 
-import { type BiometricPromptCopy, type IBiometricTrustStore, type TrustResult } from '../../definitions';
+import { type BiometricPromptCopy, type IBiometricTrustStore, type TrustResult } from '~/definitions';
 import UserPreferences from '../methods/userPreferences';
 import { isAndroid } from '../methods/helpers/deviceInfo';
 import { clearEnrollmentKey, bindEnrollmentKey, isEnrollmentValid } from './nativeEnrollmentCheck';

@@ -1,6 +1,6 @@
 import database from '../index';
 import { MESSAGES_TABLE } from '../model/Message';
-import { type TMessageModel, type TThreadMessageModel } from '../../../definitions';
+import { type TMessageModel, type TThreadMessageModel } from '~/definitions';
 import { getMessageById } from './Message';
 import { getThreadMessageById } from './ThreadMessage';
 

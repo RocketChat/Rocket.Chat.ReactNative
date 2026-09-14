@@ -1,4 +1,4 @@
-import { type BiometricInvalidationReason, type TrustResult } from '../../definitions';
+import { type BiometricInvalidationReason, type TrustResult } from '~/definitions';
 import { biometricTrustStore } from './index';
 
 export type BiometricModalRequest = {

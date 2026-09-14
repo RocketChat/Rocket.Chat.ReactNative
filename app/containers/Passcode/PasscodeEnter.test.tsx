@@ -2,16 +2,16 @@ import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import PasscodeEnter from './PasscodeEnter';
-import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_LENGTH } from '../../lib/constants/localAuthentication';
-import { biometryAuth } from '../../lib/methods/helpers/localAuthentication';
-import { biometricTrustStore } from '../../lib/biometricTrustStore';
+import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_LENGTH } from '~/lib/constants/localAuthentication';
+import { biometryAuth } from '~/lib/methods/helpers/localAuthentication';
+import { biometricTrustStore } from '~/lib/biometricTrustStore';
 
-jest.mock('../../lib/methods/helpers/localAuthentication', () => ({
+jest.mock('~/lib/methods/helpers/localAuthentication', () => ({
 	biometryAuth: jest.fn(),
 	resetAttempts: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('../../lib/biometricTrustStore', () => ({
+jest.mock('~/lib/biometricTrustStore', () => ({
 	biometricTrustStore: {
 		enroll: jest.fn(),
 		disenroll: jest.fn(() => Promise.resolve()),

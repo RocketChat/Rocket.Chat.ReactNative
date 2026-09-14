@@ -1,10 +1,10 @@
 import MessageActionTouchable from '../Touchable/MessageActionTouchable';
-import { CustomIcon } from '../../../CustomIcon';
-import styles from '../../styles';
-import { BUTTON_HIT_SLOP } from '../../utils';
-import { useTheme } from '../../../../theme';
-import { useMessageItem, useMessageStatus } from '../../stores/MessageStore';
-import { useErrorActionsShow } from '../../stores/MessageRoomStore';
+import { CustomIcon } from '~/containers/CustomIcon';
+import styles from '~/containers/message/styles';
+import { BUTTON_HIT_SLOP } from '~/containers/message/utils';
+import { useTheme } from '~/theme';
+import { useMessageItem, useMessageStatus } from '~/containers/message/stores/MessageStore';
+import { useErrorActionsShow } from '~/containers/message/stores/MessageRoomStore';
 
 const MessageError = () => {
 	const { colors } = useTheme();

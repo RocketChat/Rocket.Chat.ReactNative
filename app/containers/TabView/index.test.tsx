@@ -36,7 +36,7 @@ jest.mock('reanimated-tab-view', () => ({
 }));
 
 // Mock the theme hook
-jest.mock('../../theme', () => ({
+jest.mock('~/theme', () => ({
 	useTheme: () => ({
 		colors: {
 			strokeHighlight: '#FF0000',

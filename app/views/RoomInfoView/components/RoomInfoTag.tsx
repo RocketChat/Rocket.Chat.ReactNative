@@ -1,10 +1,10 @@
 import { Text, View } from 'react-native';
 import type { ReactNode } from 'react';
 
-import { useTheme } from '../../../theme';
+import { useTheme } from '~/theme';
 import styles from '../styles';
-import { CustomIcon } from '../../../containers/CustomIcon';
-import type { TIconsName } from '../../../containers/CustomIcon';
+import { CustomIcon } from '~/containers/CustomIcon';
+import type { TIconsName } from '~/containers/CustomIcon';
 
 export const RoomInfoTag = ({ name, icon, testID }: { name: string; icon?: TIconsName; testID?: string }) => {
 	const { colors } = useTheme();

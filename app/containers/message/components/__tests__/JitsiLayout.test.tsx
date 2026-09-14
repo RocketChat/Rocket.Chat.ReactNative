@@ -2,11 +2,11 @@ import { Provider } from 'react-redux';
 import { render } from '@testing-library/react-native';
 
 import JitsiLayout from '../Layout/JitsiLayout';
-import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { type TAnyMessageModel } from '../../../../definitions';
-import I18n from '../../../../i18n';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { mockedStore } from '~/reducers/mockedStore';
+import { type TAnyMessageModel } from '~/definitions';
+import I18n from '~/i18n';
 
 const item = {
 	id: 'msg-1',

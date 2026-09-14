@@ -1,6 +1,6 @@
 import { createElement } from 'react';
 
-import { messageBlockWithContext } from '../../UIKit/MessageBlock';
+import { messageBlockWithContext } from '~/containers/UIKit/MessageBlock';
 import { useBlockAction, useRid } from '../stores/MessageRoomStore';
 import { useBlocks } from '../stores/MessageStore';
 

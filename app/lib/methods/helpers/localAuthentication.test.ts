@@ -3,9 +3,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import EventEmitter from './events';
 import UserPreferences from '../userPreferences';
-import database from '../../database';
-import { getServerTimeSync } from '../../services/getServerTimeSync';
-import { store as reduxStore } from '../../store/auxStore';
+import database from '~/lib/database';
+import { getServerTimeSync } from '~/lib/services/getServerTimeSync';
+import { store as reduxStore } from '~/lib/store/auxStore';
 import {
 	biometryAuth,
 	checkHasPasscode,
@@ -13,13 +13,13 @@ import {
 	handleLocalAuthentication,
 	localAuthenticate
 } from './localAuthentication';
-import { biometricTrustStore } from '../../biometricTrustStore';
+import { biometricTrustStore } from '~/lib/biometricTrustStore';
 import {
 	ATTEMPTS_KEY,
 	CHANGE_PASSCODE_EMITTER,
 	LOCAL_AUTHENTICATE_EMITTER,
 	LOCKED_OUT_TIMER_KEY
-} from '../../constants/localAuthentication';
+} from '~/lib/constants/localAuthentication';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
 	multiRemove: jest.fn(() => Promise.resolve())
@@ -46,7 +46,7 @@ jest.mock('../userPreferences', () => ({
 	}
 }));
 
-jest.mock('../../database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: {
 		servers: {
@@ -56,11 +56,11 @@ jest.mock('../../database', () => ({
 	}
 }));
 
-jest.mock('../../store/auxStore', () => ({ store: { dispatch: jest.fn() } }));
-jest.mock('../../services/getServerTimeSync', () => ({ getServerTimeSync: jest.fn(() => Promise.resolve(Date.now())) }));
+jest.mock('~/lib/store/auxStore', () => ({ store: { dispatch: jest.fn() } }));
+jest.mock('~/lib/services/getServerTimeSync', () => ({ getServerTimeSync: jest.fn(() => Promise.resolve(Date.now())) }));
 jest.mock('../../../i18n', () => ({ t: (key: string) => key }));
 
-jest.mock('../../biometricTrustStore', () => ({
+jest.mock('~/lib/biometricTrustStore', () => ({
 	biometricTrustStore: {
 		verify: jest.fn(),
 		enroll: jest.fn(),
