@@ -8,7 +8,6 @@ import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion
 import { showErrorAlert } from '~/lib/methods/helpers/info';
 import log from '~/lib/methods/helpers/log';
 import { openConferenceCall } from '~/lib/methods/openConferenceCall';
-import { handleAndroidBltPermission } from '~/lib/methods/videoConf';
 import { videoConferenceGetCapabilities } from '~/lib/services/restApi';
 import { useAppSelector } from '../useAppSelector';
 import { isConferenceWindowEnabled } from '~/lib/methods/helpers/isConferenceWindowEnabled';
@@ -79,7 +78,6 @@ export const useVideoConf = (
 			try {
 				if (!permission?.granted) {
 					await Camera.requestCameraPermissionsAsync();
-					handleAndroidBltPermission();
 				}
 			} catch (error) {
 				log(error);

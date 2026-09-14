@@ -1,7 +1,7 @@
-import { setUser } from '../../actions/login';
-import { selectServerRequest } from '../../actions/server';
-import { clearSettings, updateSettings } from '../../actions/settings';
-import { mockedStore } from '../../reducers/mockedStore';
+import { setUser } from '~/actions/login';
+import { selectServerRequest } from '~/actions/server';
+import { clearSettings, updateSettings } from '~/actions/settings';
+import { mockedStore } from '~/reducers/mockedStore';
 import Navigation from '../navigation/appNavigation';
 import { closeConferenceCall } from '../services/conference/conferenceCallNavigation';
 import { useConferenceCallStore } from '../services/conference/useConferenceCallStore';

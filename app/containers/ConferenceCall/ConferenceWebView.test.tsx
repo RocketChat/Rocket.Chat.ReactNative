@@ -2,11 +2,11 @@ import { act, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
-import { setUser } from '../../actions/login';
-import { selectServerRequest } from '../../actions/server';
-import { mockedStore } from '../../reducers/mockedStore';
-import openLink from '../../lib/methods/helpers/openLink';
-import { setServerCookies } from '../../lib/methods/helpers/setServerCookies';
+import { setUser } from '~/actions/login';
+import { selectServerRequest } from '~/actions/server';
+import { mockedStore } from '~/reducers/mockedStore';
+import openLink from '~/lib/methods/helpers/openLink';
+import { setServerCookies } from '~/lib/methods/helpers/setServerCookies';
 import ConferenceWebView from './ConferenceWebView';
 
 const SERVER = 'https://open.rocket.chat';
@@ -35,8 +35,8 @@ jest.mock('react-native-webview', () => {
 });
 
 jest.mock('expo-keep-awake', () => ({ activateKeepAwake: jest.fn(), deactivateKeepAwake: jest.fn() }));
-jest.mock('../../lib/methods/helpers/openLink', () => jest.fn());
-jest.mock('../../lib/methods/helpers/setServerCookies', () => ({ setServerCookies: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/methods/helpers/openLink', () => jest.fn());
+jest.mock('~/lib/methods/helpers/setServerCookies', () => ({ setServerCookies: jest.fn(() => Promise.resolve()) }));
 
 const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 

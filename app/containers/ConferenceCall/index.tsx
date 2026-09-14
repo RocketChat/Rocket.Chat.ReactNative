@@ -2,12 +2,12 @@ import { useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { normalizeServer } from '../../lib/methods/helpers/isConferenceUrl';
-import openLink from '../../lib/methods/helpers/openLink';
-import { closeConferenceCall } from '../../lib/services/conference/conferenceCallNavigation';
-import { useConferenceCallStore } from '../../lib/services/conference/useConferenceCallStore';
-import { useTheme } from '../../theme';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { normalizeServer } from '~/lib/methods/helpers/isConferenceUrl';
+import openLink from '~/lib/methods/helpers/openLink';
+import { closeConferenceCall } from '~/lib/services/conference/conferenceCallNavigation';
+import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
+import { useTheme } from '~/theme';
 import ConferenceWebView from './ConferenceWebView';
 
 const ConferenceCall = () => {

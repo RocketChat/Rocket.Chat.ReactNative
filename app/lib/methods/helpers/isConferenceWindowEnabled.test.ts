@@ -1,7 +1,7 @@
-import { selectServerRequest } from '../../../actions/server';
-import { clearSettings, updateSettings } from '../../../actions/settings';
-import { mockedStore } from '../../../reducers/mockedStore';
-import { initStore } from '../../store/auxStore';
+import { selectServerRequest } from '~/actions/server';
+import { clearSettings, updateSettings } from '~/actions/settings';
+import { mockedStore } from '~/reducers/mockedStore';
+import { initStore } from '~/lib/store/auxStore';
 import { isConferenceWindowEnabled } from './isConferenceWindowEnabled';
 
 describe('isConferenceWindowEnabled', () => {

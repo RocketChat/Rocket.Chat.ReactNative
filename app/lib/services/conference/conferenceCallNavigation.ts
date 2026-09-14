@@ -1,4 +1,4 @@
-import Navigation from '../../navigation/appNavigation';
+import Navigation from '~/lib/navigation/appNavigation';
 import { useConferenceCallStore } from './useConferenceCallStore';
 
 export const CONFERENCE_ROUTE = 'ConferenceView';

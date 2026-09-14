@@ -10,17 +10,17 @@ import {
 	type WebViewOpenWindowEvent
 } from 'react-native-webview/lib/WebViewTypes';
 
-import i18n from '../../i18n';
-import { userAgent } from '../../lib/constants/userAgent';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { isIOS } from '../../lib/methods/helpers';
-import { isConferenceUrl } from '../../lib/methods/helpers/isConferenceUrl';
-import log from '../../lib/methods/helpers/log';
-import openLink from '../../lib/methods/helpers/openLink';
-import { random } from '../../lib/methods/helpers/random';
-import { setServerCookies } from '../../lib/methods/helpers/setServerCookies';
-import { getUserSelector } from '../../selectors/login';
-import { useTheme } from '../../theme';
+import i18n from '~/i18n';
+import { userAgent } from '~/lib/constants/userAgent';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { isIOS } from '~/lib/methods/helpers';
+import { isConferenceUrl } from '~/lib/methods/helpers/isConferenceUrl';
+import log from '~/lib/methods/helpers/log';
+import openLink from '~/lib/methods/helpers/openLink';
+import { random } from '~/lib/methods/helpers/random';
+import { setServerCookies } from '~/lib/methods/helpers/setServerCookies';
+import { getUserSelector } from '~/selectors/login';
+import { useTheme } from '~/theme';
 import Button from '../Button';
 import { buildConferenceBridgeScript, parseConferenceBridgeMessage } from './bridge';
 

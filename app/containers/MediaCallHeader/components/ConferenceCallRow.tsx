@@ -1,10 +1,10 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import I18n from '../../../i18n';
-import { closeConferenceCall, expandConferenceCall } from '../../../lib/services/conference/conferenceCallNavigation';
-import { useTheme } from '../../../theme';
-import sharedStyles from '../../../views/Styles';
-import * as HeaderButton from '../../Header/components/HeaderButton';
+import I18n from '~/i18n';
+import { closeConferenceCall, expandConferenceCall } from '~/lib/services/conference/conferenceCallNavigation';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 
 const styles = StyleSheet.create({
 	button: {

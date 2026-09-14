@@ -1,7 +1,7 @@
-import { selectServerRequest } from '../../actions/server';
-import { clearSettings, updateSettings } from '../../actions/settings';
-import i18n from '../../i18n';
-import { mockedStore } from '../../reducers/mockedStore';
+import { selectServerRequest } from '~/actions/server';
+import { clearSettings, updateSettings } from '~/actions/settings';
+import i18n from '~/i18n';
+import { mockedStore } from '~/reducers/mockedStore';
 import navigation from '../navigation/appNavigation';
 import { videoConferenceJoin } from '../services/restApi';
 import { initStore } from '../store/auxStore';

@@ -1,4 +1,4 @@
-import { store } from '../../store/auxStore';
+import { store } from '~/lib/store/auxStore';
 import { isSecureHttpUrl } from './isConferenceUrl';
 
 export const isConferenceWindowEnabled = (): boolean => {

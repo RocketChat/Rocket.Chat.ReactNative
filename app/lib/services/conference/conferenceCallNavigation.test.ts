@@ -1,8 +1,8 @@
-import Navigation from '../../navigation/appNavigation';
+import Navigation from '~/lib/navigation/appNavigation';
 import { CONFERENCE_ROUTE, closeConferenceCall, expandConferenceCall } from './conferenceCallNavigation';
 import { useConferenceCallStore } from './useConferenceCallStore';
 
-jest.mock('../../navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	navigate: jest.fn(),
 	back: jest.fn(),
 	getCurrentRoute: jest.fn(() => undefined)

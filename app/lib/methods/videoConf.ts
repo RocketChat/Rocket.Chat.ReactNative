@@ -1,32 +1,11 @@
-import { PermissionsAndroid, type Permission } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
-
 import i18n from '~/i18n';
 import navigation from '../navigation/appNavigation';
 import { videoConferenceJoin } from '../services/restApi';
-import { isAndroid, showErrorAlert } from './helpers';
+import { showErrorAlert } from './helpers';
 import { isConferenceWindowEnabled } from './helpers/isConferenceWindowEnabled';
 import log from './helpers/log';
 import openLink from './helpers/openLink';
 import { openConferenceCall } from './openConferenceCall';
-
-const handleBltPermission = async (): Promise<Permission[]> => {
-	const systemVersion = await DeviceInfo.getApiLevel();
-	if (systemVersion <= 28) {
-		return [PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT, PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN];
-	}
-	if (systemVersion === 29) {
-		return [PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION];
-	}
-	return [PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION];
-};
-
-export const handleAndroidBltPermission = async (): Promise<void> => {
-	if (isAndroid) {
-		const bltPermission = await handleBltPermission();
-		await PermissionsAndroid.requestMultiple(bltPermission);
-	}
-};
 
 export const videoConfJoin = async (
 	callId: string,
