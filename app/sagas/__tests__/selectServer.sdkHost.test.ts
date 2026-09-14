@@ -4,43 +4,43 @@ const mockConnections: MockConnection[] = [];
 
 jest.mock('universal-websocket-client', () =>
 	jest.fn().mockImplementation(() => {
-		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../lib/testUtils/sdkIntegration');
+		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('~/lib/testUtils/sdkIntegration');
 		return new sdkIntegration.MockConnection(mockConnections);
 	})
 );
 
-jest.mock('../../lib/methods/helpers/sslPinning', () => ({
+jest.mock('~/lib/methods/helpers/sslPinning', () => ({
 	__esModule: true,
 	default: undefined
 }));
 
-jest.mock('../../lib/services/connect', () => ({
+jest.mock('~/lib/services/connect', () => ({
 	connect: jest.fn(() => Promise.resolve()),
 	disconnect: jest.fn(),
 	getLoginServices: jest.fn(),
 	getWebsocketInfo: jest.fn(() => Promise.resolve({ success: true }))
 }));
 
-jest.mock('../../lib/methods/helpers/log', () => ({
-	...jest.requireActual('../../lib/methods/helpers/log'),
+jest.mock('~/lib/methods/helpers/log', () => ({
+	...jest.requireActual('~/lib/methods/helpers/log'),
 	__esModule: true,
 	default: jest.fn(),
 	logServerVersion: jest.fn()
 }));
 
-jest.mock('../../lib/services/twoFactor/twoFactor', () => ({
+jest.mock('~/lib/services/twoFactor/twoFactor', () => ({
 	twoFactor: jest.fn()
 }));
 
 import selectServerRoot from '../selectServer';
-import { selectServerRequest } from '../../actions/server';
-import { APP, SERVER } from '../../actions/actionsTypes';
-import { RootEnum } from '../../definitions';
-import sdk from '../../lib/services/sdk';
-import { connect } from '../../lib/services/connect';
-import type { MockConnection } from '../../lib/testUtils/sdkIntegration';
-import type * as SdkIntegration from '../../lib/testUtils/sdkIntegration';
-import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
+import { selectServerRequest } from '~/actions/server';
+import { APP, SERVER } from '~/actions/actionsTypes';
+import { RootEnum } from '~/definitions';
+import sdk from '~/lib/services/sdk';
+import { connect } from '~/lib/services/connect';
+import type { MockConnection } from '~/lib/testUtils/sdkIntegration';
+import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
+import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
 
 const HOST = 'https://open.rocket.chat';
 

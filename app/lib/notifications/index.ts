@@ -1,9 +1,9 @@
 import EJSON from 'ejson';
 import { Platform } from 'react-native';
 
-import { appInit } from '../../actions/app';
-import { deepLinkingClickCallPush, deepLinkingOpen } from '../../actions/deepLinking';
-import { type INotification, SubscriptionType } from '../../definitions';
+import { appInit } from '~/actions/app';
+import { deepLinkingClickCallPush, deepLinkingOpen } from '~/actions/deepLinking';
+import { type INotification, SubscriptionType } from '~/definitions';
 import { store } from '../store/auxStore';
 import { pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';
 

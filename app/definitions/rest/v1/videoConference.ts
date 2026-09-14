@@ -8,7 +8,7 @@ import {
 	type VideoConfJoinProps,
 	type VideoConfListProps,
 	type VideoConfStartProps
-} from '../../IVideoConference';
+} from '~/definitions/IVideoConference';
 import { type PaginatedResult } from '../helpers/PaginatedResult';
 
 export type VideoConferenceEndpoints = {

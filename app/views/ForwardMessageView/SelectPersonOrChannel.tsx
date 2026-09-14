@@ -2,15 +2,15 @@ import { useEffect, useState, type ReactElement } from 'react';
 import { Text, View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
-import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
-import I18n from '../../i18n';
-import { MultiSelect } from '../../containers/UIKit/MultiSelect';
+import { getAvatarURL } from '~/lib/methods/helpers/getAvatarUrl';
+import I18n from '~/i18n';
+import { MultiSelect } from '~/containers/UIKit/MultiSelect';
 import styles from './styles';
 import { type IForwardMessageViewSelectRoom } from './interfaces';
-import { type ISearchLocal } from '../../definitions';
-import { localSearchSubscription } from '../../lib/methods/search';
-import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
-import { useTheme } from '../../theme';
+import { type ISearchLocal } from '~/definitions';
+import { localSearchSubscription } from '~/lib/methods/search';
+import { getRoomAvatar, getRoomTitle } from '~/lib/methods/helpers';
+import { useTheme } from '~/theme';
 
 const SelectPersonOrChannel = ({
 	server,

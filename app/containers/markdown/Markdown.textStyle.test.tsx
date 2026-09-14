@@ -3,11 +3,11 @@ import { fireEvent, render } from '@testing-library/react-native';
 
 import Markdown from '.';
 
-jest.mock('../../lib/hooks/useAppSelector', () => ({
+jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: jest.fn(() => false)
 }));
 
-jest.mock('../../lib/methods/userPreferences', () => ({
+jest.mock('~/lib/methods/userPreferences', () => ({
 	useUserPreferences: jest.fn(() => [true])
 }));
 

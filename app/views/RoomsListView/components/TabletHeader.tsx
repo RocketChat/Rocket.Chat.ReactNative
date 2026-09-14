@@ -1,8 +1,8 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { memo } from 'react';
 
-import Header from '../../../containers/Header';
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
+import Header from '~/containers/Header';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useHeader } from '../hooks/useHeader';
 
 const TabletHeader = () => {

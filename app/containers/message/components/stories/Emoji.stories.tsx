@@ -1,8 +1,8 @@
 import { Provider } from 'react-redux';
 
-import { createMockedStore } from '../../../../reducers/mockedStore';
-import { selectServerRequest } from '../../../../actions/server';
-import { setCustomEmojis } from '../../../../actions/customEmojis';
+import { createMockedStore } from '~/reducers/mockedStore';
+import { selectServerRequest } from '~/actions/server';
+import { setCustomEmojis } from '~/actions/customEmojis';
 import EmojiLeaf from '../Emoji';
 
 const store = createMockedStore();

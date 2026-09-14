@@ -2,17 +2,17 @@ import { Provider } from 'react-redux';
 import { render } from '@testing-library/react-native';
 
 import Blocks from '../Blocks';
-import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { type TAnyMessageModel } from '../../../../definitions';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { mockedStore } from '~/reducers/mockedStore';
+import { type TAnyMessageModel } from '~/definitions';
 
-jest.mock('../../../UIKit/MessageBlock', () => ({
+jest.mock('~/containers/UIKit/MessageBlock', () => ({
 	messageBlockWithContext: jest.fn(() => () => null)
 }));
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { messageBlockWithContext } = jest.requireMock('../../../UIKit/MessageBlock');
+const { messageBlockWithContext } = jest.requireMock('~/containers/UIKit/MessageBlock');
 
 const buildItem = (blocks: TAnyMessageModel['blocks']) => ({ id: 'msg-1', blocks }) as unknown as TAnyMessageModel;
 

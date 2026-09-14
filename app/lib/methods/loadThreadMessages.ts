@@ -7,7 +7,7 @@ import log from './helpers/log';
 import { Encryption } from '../encryption';
 import protectedFunction from './helpers/protectedFunction';
 import buildMessage from './helpers/buildMessage';
-import { type TThreadMessageModel, type TThreadModel } from '../../definitions';
+import { type TThreadMessageModel, type TThreadModel } from '~/definitions';
 import { getThreadById } from '../database/services/Thread';
 import sdk from '../services/sdk';
 

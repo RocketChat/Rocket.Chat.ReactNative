@@ -3,7 +3,7 @@ import type { AnyAction, Store } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import type { Saga, Task } from 'redux-saga';
 
-import reducers from '../../reducers';
+import reducers from '~/reducers';
 
 const MICROTASK_DRAIN_PASSES = 20;
 
@@ -19,16 +19,19 @@ export function cancelSagaTasks(): void {
 	runningTasks.splice(0).forEach(task => task.cancel());
 }
 
+export type PreloadedState = Parameters<typeof createStore>[1];
+
 export interface RecordingStore {
 	store: Store;
 	dispatchedActions: AnyAction[];
 }
 
-export function createRecordingStore(rootSaga: Saga): RecordingStore {
+export function createRecordingStore(rootSaga: Saga, preloadedState?: PreloadedState): RecordingStore {
 	const dispatchedActions: AnyAction[] = [];
 	const sagaMiddleware = createSagaMiddleware();
 	const store = createStore(
 		reducers,
+		preloadedState,
 		applyMiddleware(
 			() => next => action => {
 				dispatchedActions.push(action);

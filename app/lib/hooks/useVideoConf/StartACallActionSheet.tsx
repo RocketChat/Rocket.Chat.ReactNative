@@ -5,15 +5,15 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 
 import { useAppSelector } from '../useAppSelector';
-import { cancelCall, initVideoCall } from '../../../actions/videoConf';
-import AvatarContainer from '../../../containers/Avatar';
-import Button from '../../../containers/Button';
-import { CallHeader } from '../../../containers/CallHeader';
-import Ringer, { ERingerSounds } from '../../../containers/Ringer';
-import { SubscriptionType } from '../../../definitions';
-import i18n from '../../../i18n';
-import { getUserSelector } from '../../../selectors/login';
-import { useTheme } from '../../../theme';
+import { cancelCall, initVideoCall } from '~/actions/videoConf';
+import AvatarContainer from '~/containers/Avatar';
+import Button from '~/containers/Button';
+import { CallHeader } from '~/containers/CallHeader';
+import Ringer, { ERingerSounds } from '~/containers/Ringer';
+import { SubscriptionType } from '~/definitions';
+import i18n from '~/i18n';
+import { getUserSelector } from '~/selectors/login';
+import { useTheme } from '~/theme';
 import useUserData from '../useUserData';
 
 export default function StartACallActionSheet({ rid, roomType }: { rid: string; roomType?: SubscriptionType }): ReactElement {

@@ -1,8 +1,8 @@
 import { type ReactElement } from 'react';
 
-import { CustomIcon } from '../../../CustomIcon';
-import styles from '../../styles';
-import { useMessageField, useMessageText } from '../../stores/MessageStore';
+import { CustomIcon } from '~/containers/CustomIcon';
+import styles from '~/containers/message/styles';
+import { useMessageField, useMessageText } from '~/containers/message/stores/MessageStore';
 
 const Pinned = (): ReactElement | null => {
 	const pinned = useMessageField(item => item.pinned);

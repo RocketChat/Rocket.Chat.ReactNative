@@ -1,9 +1,9 @@
 import { type ReactElement } from 'react';
 import { View, Text } from 'react-native';
 
-import i18n from '../../../../i18n';
-import { useTheme } from '../../../../theme';
-import { CustomIcon, type TIconsName } from '../../../CustomIcon';
+import i18n from '~/i18n';
+import { useTheme } from '~/theme';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import useStyle from './styles';
 
 type VideoConfMessageIconProps = {

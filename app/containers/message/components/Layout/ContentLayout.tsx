@@ -1,7 +1,7 @@
 import Content from '../Content';
 import Attachments from '../Attachments';
 import Urls from '../Urls';
-import { useAttachments } from '../../stores/MessageStore';
+import { useAttachments } from '~/containers/message/stores/MessageStore';
 
 export const ContentLayout = () => {
 	const attachments = useAttachments();

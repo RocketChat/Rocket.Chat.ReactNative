@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import { type Heading as HeadingProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
-import { useTheme } from '../../../theme';
+import { useTheme } from '~/theme';
 import Inline from './Inline';
 import MarkdownContext, { useMarkdownContext } from '../contexts/MarkdownContext';
 

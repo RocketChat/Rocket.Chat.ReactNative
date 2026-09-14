@@ -1,11 +1,11 @@
 import * as FileSystem from 'expo-file-system/legacy';
 import FileViewer from 'react-native-file-viewer';
 
-import { LISTENER } from '../../../containers/Toast';
-import { type IAttachment } from '../../../definitions';
-import i18n from '../../../i18n';
+import { LISTENER } from '~/containers/Toast';
+import { type IAttachment } from '~/definitions';
+import i18n from '~/i18n';
 import EventEmitter from './events';
-import { Encryption } from '../../encryption';
+import { Encryption } from '~/lib/encryption';
 import { sanitizeFileName } from '../handleMediaDownload';
 import { headers } from './fetch';
 

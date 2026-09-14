@@ -1,5 +1,5 @@
 import { formatUrl, getAvatarURL } from './getAvatarUrl';
-import { SubscriptionType } from '../../../definitions';
+import { SubscriptionType } from '~/definitions';
 
 jest.mock('react-native', () => ({ PixelRatio: { get: () => 1 } }));
 

@@ -1,5 +1,5 @@
-import { type ILoginCredentials } from '../../../definitions';
-import { type IEmitUserInteraction } from '../../../containers/UIKit/interfaces';
+import { type ILoginCredentials } from '~/definitions';
+import { type IEmitUserInteraction } from '~/containers/UIKit/interfaces';
 import log from './log';
 
 type TEventEmitterEmmitArgs =
