@@ -24,18 +24,18 @@ export const RoomMessageActions = ({
 	const user = useAppSelector(getUserSelector);
 	const readOnly = useReadOnly();
 
+	const getRoom = () => roomStore.getState().room as TSubscriptionModel;
+
 	if (!isSubscribed) {
 		return null;
 	}
-
-	const room = roomStore.getState().room as TSubscriptionModel;
 
 	return (
 		<>
 			<MessageActions
 				ref={messageActionsRef}
 				tmid={tmid}
-				room={room}
+				getRoom={getRoom}
 				user={user}
 				editInit={editInit}
 				replyInit={replyInit}

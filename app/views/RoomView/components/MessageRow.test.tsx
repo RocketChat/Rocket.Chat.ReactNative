@@ -1,7 +1,7 @@
 import { act, render } from '@testing-library/react-native';
 
 import database from '../../../lib/database';
-import { createObservableRecord } from '../__tests__/observableDatabase';
+import { createObservableRecord } from '../testUtils/observableDatabase';
 import { createRoomStore, observeRoom } from '../stores/RoomStore';
 import { RoomScreenContext } from '../stores/RoomScreenContext';
 import { RoomStoreContext } from '../stores/RoomStoreContext';
