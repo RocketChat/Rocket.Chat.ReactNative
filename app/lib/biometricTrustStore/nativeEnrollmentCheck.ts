@@ -17,9 +17,4 @@ export const clearEnrollmentKey = async (): Promise<void> => {
 	} catch {}
 };
 
-/*
- * The module never rejects, so a throw means a broken bridge — which says nothing about the key's
- * validity. Let it propagate: the caller turns it into `checkFailed` (passcode, enrollment kept)
- * rather than `invalid` (permanent teardown).
- */
 export const isEnrollmentValid = (): Promise<boolean> => NativeBiometricEnrollment.isEnrollmentValid();

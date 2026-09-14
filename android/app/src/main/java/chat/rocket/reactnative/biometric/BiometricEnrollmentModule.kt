@@ -27,6 +27,7 @@ class BiometricEnrollmentModule(reactContext: ReactApplicationContext) :
         // on the missing alias — one spurious passcode for every Android user with biometry on.
         private const val KEY_ALIAS = "rc_biometric_enrollment_probe"
         private const val TRANSFORMATION = "AES/GCM/NoPadding"
+        private const val ERR_KEYSTORE_UNAVAILABLE = "E_KEYSTORE_UNAVAILABLE"
     }
 
     private fun loadKeyStore(): KeyStore = KeyStore.getInstance(KEYSTORE_PROVIDER).apply { load(null) }
@@ -83,9 +84,7 @@ class BiometricEnrollmentModule(reactContext: ReactApplicationContext) :
         try {
             keyStore = loadKeyStore()
         } catch (e: Exception) {
-            // Provider unavailable says nothing about the key's validity, so fail open here only.
-            Log.w(TAG, "isEnrollmentValid: keystore unavailable", e)
-            promise.resolve(true)
+            promise.reject(ERR_KEYSTORE_UNAVAILABLE, "Keystore unavailable", e)
             return
         }
 

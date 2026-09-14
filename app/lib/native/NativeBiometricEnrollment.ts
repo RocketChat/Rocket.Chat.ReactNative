@@ -10,7 +10,6 @@ export interface Spec extends TurboModule {
 	/** Deletes the enrollment key, kept in lockstep with the JS trust sentinel teardown. @platform android */
 	clearEnrollmentKey(): Promise<boolean>;
 
-	/** Silent check (never prompts): false only when an enrollment change invalidated the key. @platform android */
 	isEnrollmentValid(): Promise<boolean>;
 }
 
