@@ -28,9 +28,9 @@ tags:
       platform: android
     commands:
       - runFlow:
-        file: 'download-file.yaml'
-        env:
-          file: 'XJR2sjYfSAMz5eyT2/test.pdf'
+          file: 'download-file.yaml'
+          env:
+            file: 'XJR2sjYfSAMz5eyT2/test.pdf'
 
 - runFlow:
     file: 'download-file.yaml'
@@ -68,3 +68,21 @@ tags:
     file: 'download-file.yaml'
     env:
       file: 'MXMdYzmz9fSxeoF7H/image.png'
+
+# some ios related files
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'CrmXg9mNbomgzC7iw/test.heic'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'dKdmmLYEqbujkkJzn/test.mov'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'jJNm36QhGhh4eJ9QS/test.m4a'
