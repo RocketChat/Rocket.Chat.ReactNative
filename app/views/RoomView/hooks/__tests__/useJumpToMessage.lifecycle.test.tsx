@@ -1,4 +1,3 @@
-import { InteractionManager } from 'react-native';
 import { act, renderHook } from '@testing-library/react-native';
 
 import { sendLoadingEvent } from '../../../../containers/Loading';
@@ -54,8 +53,6 @@ const cancelLoading = () => {
 const message = (id: string, extra = {}) => ({ id, rid: 'room', ts: 1000, fromServer: false, ...extra });
 const flush = () => act(async () => {});
 const advance = (ms: number) => act(async () => await jest.advanceTimersByTimeAsync(ms));
-let interactions: Array<() => void>;
-const releaseInteractions = () => act(() => interactions.splice(0).forEach(run => run()));
 
 function screen(overrides: Partial<IUseJumpToMessageParams> = {}, params: typeof mockCurrentParams = {}) {
 	const list = {
@@ -91,18 +88,6 @@ function screen(overrides: Partial<IUseJumpToMessageParams> = {}, params: typeof
 beforeEach(() => {
 	jest.resetAllMocks();
 	jest.useFakeTimers();
-	interactions = [];
-	jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation((task: any) => {
-		let cancelled = false;
-		interactions.push(() => {
-			if (!cancelled) task();
-		});
-		return {
-			cancel: () => {
-				cancelled = true;
-			}
-		} as any;
-	});
 	lookup.mockImplementation(async id => message(id) as any);
 	jest.mocked(getLocalAnchorTs).mockResolvedValue(2000);
 	jest.mocked(loadSurroundingMessages).mockResolvedValue([]);
@@ -287,7 +272,6 @@ it('hands loading to a destination Thread, waits for readiness and settles only 
 	const destination = screen({ rid: params.rid, tmid: params.tmid, t: params.t }, { jumpToMessageId: params.jumpToMessageId });
 	const completion = deferred<void>();
 	destination.list.jumpToMessage.mockReturnValueOnce(completion.promise);
-	releaseInteractions();
 	await advance(300);
 	expect(destination.list.jumpToMessage).not.toHaveBeenCalled();
 	expect(visibility()).toEqual([true, true]);
@@ -302,7 +286,7 @@ it('hands loading to a destination Thread, waits for readiness and settles only 
 	expect(source.list.jumpToMessage).not.toHaveBeenCalled();
 });
 
-it('hands loading to a destination Room after interactions until its List completes', async () => {
+it('hands loading to a destination Room until its List completes', async () => {
 	lookup.mockResolvedValue(message('target', { rid: 'other-room' }) as any);
 	const source = screen();
 	await source.jump('target');
@@ -311,10 +295,6 @@ it('hands loading to a destination Room after interactions until its List comple
 	const destination = screen({ rid: 'other-room' }, { jumpToMessageId: target });
 	const completion = deferred<void>();
 	destination.list.jumpToMessage.mockReturnValueOnce(completion.promise);
-	await advance(300);
-	expect(destination.list.jumpToMessage).not.toHaveBeenCalled();
-	expect(visibility()).toEqual([true]);
-	releaseInteractions();
 	await advance(100);
 	expect(destination.list.jumpToMessage.mock.calls).toEqual([['target', null]]);
 	expect(visibility()).toEqual([true, true]);
@@ -323,30 +303,15 @@ it('hands loading to a destination Room after interactions until its List comple
 	expect(visibility()).toEqual([true, true, false]);
 });
 
-it('starts an initial Message target only when scheduled interactions run, then consumes it', async () => {
+it('consumes the initial Message target on mount', async () => {
 	const view = screen({}, { jumpToMessageId: 'target' });
-	await advance(500);
-	expect(lookup).not.toHaveBeenCalled();
-	expect(visibility()).toEqual([]);
-	releaseInteractions();
 	expect(view.navigation.setParams).toHaveBeenCalledWith({ jumpToMessageId: undefined });
 	await advance(100);
 	expect(view.list.jumpToMessage.mock.calls).toEqual([['target', null]]);
 });
 
-it('does not run either scheduled initial target after unmount', async () => {
+it('preserves Message then Thread execution when both initial targets are present in a main Room', async () => {
 	const view = screen({}, { jumpToMessageId: 'target', jumpToThreadId: 'thread' });
-	view.unmount();
-	releaseInteractions();
-	await advance(500);
-	expect(lookup).not.toHaveBeenCalled();
-	expect(view.navigation.push).not.toHaveBeenCalled();
-	expect(visibility()).toEqual([]);
-});
-
-it('preserves Message then Thread execution when both initial targets are scheduled in a main Room', async () => {
-	const view = screen({}, { jumpToMessageId: 'target', jumpToThreadId: 'thread' });
-	releaseInteractions();
 	await flush();
 	expect(visibility()).toEqual([true, true]);
 	expect(view.navigation.push).toHaveBeenCalledWith('RoomView', expect.objectContaining({ tmid: 'thread', jumpToMessageId: '' }));
@@ -360,7 +325,6 @@ it('preserves Message then Thread execution when both initial targets are schedu
 it('keeps the initial Thread destination blocked when a Thread Message target still awaits readiness', async () => {
 	lookup.mockResolvedValue(message('reply', { tmid: 'current' }) as any);
 	const view = screen({ tmid: 'current', t: 'thread' }, { jumpToMessageId: 'reply', jumpToThreadId: 'other' });
-	releaseInteractions();
 	expect(lookup).not.toHaveBeenCalled();
 	expect(view.navigation.push).not.toHaveBeenCalled();
 	act(() => view.result.current.onThreadMessagesLoaded());
@@ -369,7 +333,7 @@ it('keeps the initial Thread destination blocked when a Thread Message target st
 	expect(view.navigation.push).not.toHaveBeenCalled();
 });
 
-it('opens updated Thread route targets immediately without waiting for interactions or Thread readiness', async () => {
+it('opens updated Thread route targets immediately without waiting for Thread readiness', async () => {
 	const view = screen({ tmid: 'unloaded', t: 'thread' });
 	view.rerender({ options: { tmid: 'unloaded', t: 'thread' }, params: { jumpToThreadId: 'other' } });
 	await flush();
