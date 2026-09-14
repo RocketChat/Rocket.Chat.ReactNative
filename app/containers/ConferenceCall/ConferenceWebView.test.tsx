@@ -187,5 +187,31 @@ describe('ConferenceWebView', () => {
 			expect(setServerCookies).toHaveBeenCalledWith(SERVER, { id: 'uid1', token: 'tok1' });
 			expect(queryByTestId('conference-webview')).toBeTruthy();
 		});
+		test('gates a trusted->trusted url switch on the cookie write', async () => {
+			const { queryByTestId, rerender } = await mountAndSettle();
+
+			expect(queryByTestId('conference-webview')).toBeTruthy();
+
+			let resolveCookies!: () => void;
+			(setServerCookies as jest.Mock).mockImplementationOnce(() => new Promise<void>(r => (resolveCookies = r)));
+
+			const NEXT_URL = `${SERVER}/conference/call2`;
+			rerender(
+				<Wrapper>
+					<ConferenceWebView url={NEXT_URL} expanded onClose={jest.fn()} onOpenLink={jest.fn()} />
+				</Wrapper>
+			);
+
+			expect(queryByTestId('conference-webview')).toBeNull();
+
+			await act(async () => {
+				resolveCookies();
+				await Promise.resolve();
+			});
+			await settle();
+
+			expect(setServerCookies).toHaveBeenLastCalledWith(SERVER, { id: 'uid1', token: 'tok1' });
+			expect(queryByTestId('conference-webview')).toBeTruthy();
+		});
 	});
 });

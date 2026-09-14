@@ -40,8 +40,8 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 	const [failed, setFailed] = useState(false);
 
 	const credentialsAllowed = isConferenceUrl(url, server);
-	const [readyServer, setReadyServer] = useState<string | null>(null);
-	const ready = !credentialsAllowed || readyServer === server;
+	const [readyUrl, setReadyUrl] = useState<string | null>(null);
+	const ready = !credentialsAllowed || readyUrl === url;
 	// Android exposes the bridge to child frames, so a cross-origin provider frame could forge
 	// the source. The token lives only in the main frame's closure, which cross-origin frames
 	// cannot read, so they cannot mint a message that parses.
@@ -63,14 +63,14 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 			.catch(log)
 			.finally(() => {
 				if (!cancelled) {
-					setReadyServer(server);
+					setReadyUrl(url);
 				}
 			});
 
 		return () => {
 			cancelled = true;
 		};
-	}, [server, userId, token, credentialsAllowed]);
+	}, [server, url, userId, token, credentialsAllowed]);
 
 	useEffect(() => {
 		if (expanded) {
