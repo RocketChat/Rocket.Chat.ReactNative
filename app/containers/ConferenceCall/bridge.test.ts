@@ -6,7 +6,6 @@ type TFakeWindow = Record<string, unknown> & {
 	videoCallWindow?: {
 		close: () => void;
 		openInMainWindow: (path: string) => void;
-		requestScreenSharing: () => Promise<string | null>;
 		getAuthCredentials: () => Promise<{ userId: string; authToken: string; serverUrl: string } | null>;
 	};
 };
@@ -72,7 +71,6 @@ describe('buildConferenceBridgeScript', () => {
 
 		expect(typeof fakeWindow.videoCallWindow?.close).toEqual('function');
 		expect(typeof fakeWindow.videoCallWindow?.openInMainWindow).toEqual('function');
-		expect(typeof fakeWindow.videoCallWindow?.requestScreenSharing).toEqual('function');
 		expect(typeof fakeWindow.videoCallWindow?.getAuthCredentials).toEqual('function');
 	});
 
@@ -92,12 +90,6 @@ describe('buildConferenceBridgeScript', () => {
 		expect(posted.map(m => parseConferenceBridgeMessage(m, 'bridge1'))).toEqual([
 			{ type: 'openInMainWindow', path: '/channel/general' }
 		]);
-	});
-
-	test('screen sharing resolves to nothing, because there is none', async () => {
-		const { fakeWindow } = run(buildConferenceBridgeScript(credentials));
-
-		await expect(fakeWindow.videoCallWindow?.requestScreenSharing()).resolves.toBeNull();
 	});
 
 	test('getAuthCredentials answers with the credentials it was built from', async () => {

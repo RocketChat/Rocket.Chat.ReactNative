@@ -35,9 +35,6 @@ export const buildConferenceBridgeScript = ({ userId, token, server, bridgeToken
 		openInMainWindow: function (path) {
 			post({ source: ${source}, bridge: ${bridge}, type: 'openInMainWindow', path: path });
 		},
-		requestScreenSharing: function () {
-			return Promise.resolve(null);
-		},
 		getAuthCredentials: function () {
 			return Promise.resolve({ userId: ${uid}, authToken: ${loginToken}, serverUrl: ${serverUrl} });
 		}
