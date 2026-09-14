@@ -1,5 +1,5 @@
+import { StackActions, type CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { useEffect, useRef, memo } from 'react';
-import { type CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, type ListRenderItem } from 'react-native';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -10,7 +10,7 @@ import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
 import { type IOmnichannelRoom, type IApplicationState } from '~/definitions';
@@ -63,7 +63,20 @@ const QueueListView = memo(() => {
 			title: I18n.t('Queued_chats')
 		};
 		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;
+			Object.assign(
+				options,
+				headerItems({
+					left: [
+						{
+							type: 'button',
+							label: I18n.t('Close'),
+							iconName: 'close',
+							onPress: () => navigation.dispatch(StackActions.pop()),
+							testID: 'directory-view-close'
+						}
+					]
+				})
+			);
 		}
 		navigation.setOptions(options);
 	}, [isMasterDetail, navigation]);

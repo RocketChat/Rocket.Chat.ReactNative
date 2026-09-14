@@ -4,6 +4,7 @@ import { type NativeStackNavigationOptions, type NativeStackNavigationProp } fro
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
 import { type IMessageFromServer, type TThreadModel } from '~/definitions';
 import { type ChatsStackParamList } from '~/stacks/types';
@@ -12,7 +13,6 @@ import I18n from '~/i18n';
 import log from '~/lib/methods/helpers/log';
 import { isIOS, useDebounce } from '~/lib/methods/helpers';
 import SafeAreaView from '~/containers/SafeAreaView';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import * as List from '~/containers/List';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { useTheme } from '~/theme';
@@ -101,37 +101,27 @@ const DiscussionsView = () => {
 		setIsSearching(true);
 	};
 
-	const setHeader = () => {
-		let options: Partial<NativeStackNavigationOptions>;
+	const setHeader = (): NativeStackNavigationOptions => {
 		if (isSearching) {
-			options = {
-				headerLeft: () => (
-					<HeaderButton.Container style={{ marginLeft: 1 }} left>
-						<HeaderButton.Item iconName='close' onPress={onCancelSearchPress} />
-					</HeaderButton.Container>
-				),
+			return {
+				...headerItems({
+					left: [{ type: 'button', label: I18n.t('Close'), iconName: 'close', onPress: onCancelSearchPress }],
+					right: []
+				}),
 				headerTitle: () => (
 					<SearchHeader onSearchChangeText={onSearchChangeText} testID='discussion-messages-view-search-header' />
-				),
-				headerRight: () => null
+				)
 			};
-			return options;
 		}
-
-		options = {
-			headerLeft: undefined,
-			headerTitle: I18n.t('Discussions'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item iconName='search' onPress={onSearchPress} />
-				</HeaderButton.Container>
-			)
+		return {
+			...headerItems({
+				left: isMasterDetail
+					? [{ type: 'button', label: I18n.t('Close'), iconName: 'close', onPress: () => navigation.pop() }]
+					: undefined,
+				right: [{ type: 'button', label: I18n.t('Search'), iconName: 'search', onPress: onSearchPress }]
+			}),
+			headerTitle: I18n.t('Discussions')
 		};
-
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		}
-		return options;
 	};
 
 	useEffect(() => {

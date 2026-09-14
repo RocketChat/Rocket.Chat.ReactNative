@@ -1,6 +1,7 @@
+import { StackActions, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,7 +12,6 @@ import database from '~/lib/database';
 import I18n from '~/i18n';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import SearchBox from '~/containers/SearchBox';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import { useTheme } from '~/theme';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { sendLoadingEvent } from '~/containers/Loading';
@@ -62,15 +62,25 @@ const AddExistingChannelView = () => {
 		};
 
 		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+			Object.assign(
+				options,
+				headerItems({
+					left: [
+						{ type: 'button', label: I18n.t('Close'), iconName: 'close', onPress: () => navigation.dispatch(StackActions.pop()) }
+					]
+				})
+			);
 		}
 
-		options.headerRight = () =>
-			selected.length > 0 && (
-				<HeaderButton.Container>
-					<HeaderButton.Item title={I18n.t('Next')} onPress={submit} testID='add-existing-channel-view-submit' />
-				</HeaderButton.Container>
-			);
+		Object.assign(
+			options,
+			headerItems({
+				right:
+					selected.length > 0
+						? [{ type: 'button', label: I18n.t('Next'), onPress: submit, testID: 'add-existing-channel-view-submit' }]
+						: []
+			})
+		);
 
 		navigation.setOptions(options);
 	};

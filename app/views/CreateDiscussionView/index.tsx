@@ -1,3 +1,4 @@
+import { StackActions } from '@react-navigation/native';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -8,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import KeyboardView from '~/containers/KeyboardView';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 import I18n from '~/i18n';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { getUserSelector } from '~/selectors/login';
 import { ControlledFormTextInput } from '~/containers/TextInput';
 import { createDiscussionRequest, type ICreateDiscussionRequestData } from '~/actions/createDiscussion';
@@ -137,7 +138,18 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		const showCloseModal = route.params?.showCloseModal;
 		navigation.setOptions({
 			title: I18n.t('Create_Discussion'),
-			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
+			...headerItems({
+				left: showCloseModal
+					? [
+							{
+								type: 'button',
+								label: I18n.t('Close'),
+								iconName: 'close',
+								onPress: () => navigation.dispatch(StackActions.pop())
+							}
+						]
+					: undefined
+			})
 		});
 	}, [navigation, route]);
 

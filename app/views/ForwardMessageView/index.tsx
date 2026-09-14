@@ -2,11 +2,11 @@ import { useLayoutEffect, useState } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 import { type RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { getPermalinkMessage } from '~/lib/methods/getPermalinks';
 import KeyboardView from '~/containers/KeyboardView';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 import I18n from '~/i18n';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import { useTheme } from '~/theme';
 import { getUserSelector } from '~/selectors/login';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -40,18 +40,21 @@ const ForwardMessageView = () => {
 		const isSendButtonEnabled = rooms.length && !sending;
 		navigation.setOptions({
 			title: I18n.t('Forward_message'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item
-						title={I18n.t('Send')}
-						color={isSendButtonEnabled ? colors.fontHint : colors.fontSecondaryInfo}
-						disabled={!isSendButtonEnabled}
-						onPress={handlePostMessage}
-						testID='forward-message-view-send'
-					/>
-				</HeaderButton.Container>
-			),
-			headerLeft: () => <HeaderButton.CloseModal />
+			...headerItems({
+				right: [
+					{
+						type: 'button',
+						label: I18n.t('Send'),
+						tintColor: isSendButtonEnabled ? colors.fontHint : colors.fontSecondaryInfo,
+						disabled: !isSendButtonEnabled,
+						onPress: handlePostMessage,
+						testID: 'forward-message-view-send'
+					}
+				],
+				left: [
+					{ type: 'button', label: I18n.t('Close'), iconName: 'close', onPress: () => navigation.dispatch(StackActions.pop()) }
+				]
+			})
 		});
 	}, [rooms.length, navigation, sending]);
 

@@ -8,10 +8,10 @@ import { useDispatch } from 'react-redux';
 import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { loginRequest } from '~/actions/login';
 import Button from '~/containers/Button';
 import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import LoginServices from '~/containers/LoginServices';
 import { ControlledFormTextInput } from '~/containers/TextInput';
 import I18n from '~/i18n';
@@ -168,9 +168,17 @@ const RegisterView = ({ route }: RegisterViewProps) => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: route?.params?.title,
-			headerRight: () => (
-				<HeaderButton.Legal accessibilityLabel={I18n.t('Legal')} testID='register-view-more' navigation={navigation} />
-			)
+			...headerItems({
+				right: [
+					{
+						type: 'button',
+						label: I18n.t('Legal'),
+						iconName: 'kebab',
+						onPress: () => navigation.navigate('LegalView'),
+						testID: 'register-view-more'
+					}
+				]
+			})
 		});
 	}, []);
 

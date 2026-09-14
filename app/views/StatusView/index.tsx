@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import useA11yErrorAnnouncement from '~/lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '~/actions/login';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import * as List from '~/containers/List';
 import { sendLoadingEvent } from '~/containers/Loading';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -154,7 +154,9 @@ const StatusView = (): ReactElement => {
 		const setHeader = () => {
 			setOptions({
 				title: I18n.t('Edit_Status'),
-				headerLeft: isMasterDetail ? undefined : () => <HeaderButton.CloseModal onPress={goBack} />
+				...headerItems({
+					left: isMasterDetail ? undefined : [{ type: 'button', label: I18n.t('Close'), iconName: 'close', onPress: goBack }]
+				})
 			});
 		};
 		setHeader();

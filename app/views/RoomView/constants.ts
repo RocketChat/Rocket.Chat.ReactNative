@@ -9,6 +9,7 @@ export const stateAttrsUpdate = [
 	'member',
 	'canForwardGuest',
 	'canReturnQueue',
+	'canPlaceLivechatOnHold',
 	'canViewCannedResponse'
 ] as TStateAttrsUpdate[];
 

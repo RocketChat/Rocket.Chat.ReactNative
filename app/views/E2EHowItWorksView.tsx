@@ -1,8 +1,8 @@
+import { StackActions, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useEffect, type ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
-import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import Markdown from '../containers/markdown';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
@@ -17,14 +17,26 @@ const styles = StyleSheet.create({
 });
 
 const E2EHowItWorksView = (): ReactElement => {
-	const { setOptions } = useNavigation();
+	const navigation = useNavigation();
+	const { setOptions } = navigation;
 	const { colors } = useTheme();
 	const { params } = useRoute<RouteProp<E2ESaveYourPasswordStackParamList, 'E2EHowItWorksView'>>();
 
 	useEffect(() => {
 		setOptions({
 			title: I18n.t('How_It_Works'),
-			headerLeft: params?.showCloseModal ? () => <HeaderButton.CloseModal /> : undefined
+			...headerItems({
+				left: params?.showCloseModal
+					? [
+							{
+								type: 'button',
+								label: I18n.t('Close'),
+								iconName: 'close',
+								onPress: () => navigation.dispatch(StackActions.pop())
+							}
+						]
+					: undefined
+			})
 		});
 	}, []);
 

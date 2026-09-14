@@ -1,5 +1,5 @@
 import { Component, createRef, type RefObject } from 'react';
-import { AccessibilityInfo, InteractionManager, PixelRatio, Text, View } from 'react-native';
+import { AccessibilityInfo, InteractionManager, Platform, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 import { Q } from '@nozbe/watermelondb';
@@ -47,6 +47,7 @@ import LoadMore from './LoadMore';
 import Banner from './Banner';
 import RightButtons from './RightButtons';
 import LeftButtons from './LeftButtons';
+import { headerItems, type HeaderAction } from '~/lib/methods/helpers/navigation';
 import styles from './styles';
 import JoinCode, { type IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
@@ -480,24 +481,12 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	setHeader = () => {
-		const {
-			room,
-			unreadsCount,
-			roomUserId,
-			joined,
-			canForwardGuest,
-			canReturnQueue,
-			canPlaceLivechatOnHold,
-			showMissingE2EEKey,
-			showE2EEDisabledRoom
-		} = this.state;
+		const { room, unreadsCount, roomUserId } = this.state;
 		const { navigation, isMasterDetail, baseUrl, user, route } = this.props;
 		const { rid, tmid } = this;
 
 		if (!rid) {
-			// Adding an empty View to prevent rendering the back button while maintaining the same header height.
-			const height = 37 * PixelRatio.getFontScale();
-			navigation.setOptions({ headerLeft: () => <View style={{ height }} /> });
+			navigation.setOptions(headerItems({ left: [], right: [] }));
 			return;
 		}
 		if (!room.rid) {
@@ -516,22 +505,16 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			parentTitle = getRoomTitle(room);
 		}
 		let subtitle: string | undefined;
-		let teamId: string | undefined;
-		let encrypted: boolean | undefined;
 		let userId: string | undefined;
 		let token: string | undefined;
 		let avatar: string | undefined;
 		let visitor: IVisitor | undefined;
 		let sourceType: IOmnichannelSource | undefined;
-		let departmentId: string | undefined;
 		if ('id' in room) {
 			subtitle = room.topic;
-			teamId = room.teamId;
-			encrypted = room.encrypted;
 			({ id: userId, token } = user);
 			avatar = room.name;
 			visitor = room.visitor;
-			departmentId = room.departmentId;
 		}
 
 		if ('source' in room) {
@@ -541,24 +524,37 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 		const t = room?.t;
 		const teamMain = 'teamMain' in room ? room?.teamMain : false;
-		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
 		const iSubRoom = room as ISubscription;
-		const e2eeWarning = !!('encrypted' in room && (showMissingE2EEKey || showE2EEDisabledRoom));
+		const leftElement = (
+			<LeftButtons
+				rid={rid}
+				tmid={tmid}
+				unreadsCount={unreadsCount}
+				baseUrl={baseUrl}
+				userId={userId}
+				token={token}
+				title={avatar}
+				t={t}
+				goRoomActionsView={this.goRoomActionsView}
+				isMasterDetail={isMasterDetail}
+			/>
+		);
+		const leftActions: HeaderAction[] =
+			(!isMasterDetail || tmid) && !(isIOS && Number.parseInt(String(Platform.Version), 10) < 26 && unreadsCount)
+				? [
+						{
+							type: 'button',
+							label: I18n.t('Back'),
+							iconName: 'chevron-left',
+							onPress: () => navigation.goBack(),
+							badge: unreadsCount ? { value: unreadsCount > 99 ? '+99' : unreadsCount } : undefined,
+							androidElement: leftElement
+						}
+					]
+				: [{ type: 'custom', element: leftElement }];
+
 		navigation.setOptions({
-			headerLeft: () => (
-				<LeftButtons
-					rid={rid}
-					tmid={tmid}
-					unreadsCount={unreadsCount}
-					baseUrl={baseUrl}
-					userId={userId}
-					token={token}
-					title={avatar}
-					t={t}
-					goRoomActionsView={this.goRoomActionsView}
-					isMasterDetail={isMasterDetail}
-				/>
-			),
+			...headerItems({ left: leftActions }),
 			headerTitle: () => (
 				<RoomHeader
 					prid={prid}
@@ -576,27 +572,6 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					sourceType={sourceType}
 					abacAttributes={iSubRoom.abacAttributes}
 					disabled={isInviteSubscription(iSubRoom)}
-				/>
-			),
-			headerRight: () => (
-				<RightButtons
-					roomName={title}
-					rid={rid}
-					tmid={tmid}
-					teamId={teamId}
-					joined={joined}
-					status={room.status}
-					omnichannelPermissions={omnichannelPermissions}
-					t={(this.t || t) as SubscriptionType}
-					encrypted={encrypted}
-					navigation={navigation}
-					toggleFollowThread={this.toggleFollowThread}
-					showActionSheet={this.showActionSheet}
-					departmentId={departmentId}
-					notificationsDisabled={iSubRoom?.disableNotifications}
-					hasE2EEWarning={e2eeWarning}
-					teamMain={teamMain}
-					isGroupChat={isGroupChatConst}
 				/>
 			)
 		});
@@ -1609,7 +1584,49 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
+	renderHeaderActions = () => {
+		const { room, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold, showMissingE2EEKey, showE2EEDisabledRoom } =
+			this.state;
+		const { navigation, route } = this.props;
+		const { rid, tmid } = this;
+		if (!rid || !room.rid) {
+			return null;
+		}
+		const subscription = room as ISubscription;
+		return (
+			<RightButtons
+				key={`${rid}-${tmid ?? ''}`}
+				roomName={tmid ? route.params?.name : getRoomTitle(room)}
+				rid={rid}
+				tmid={tmid}
+				teamId={'id' in room ? room.teamId : undefined}
+				joined={joined}
+				status={room.status}
+				omnichannelPermissions={{ canForwardGuest, canReturnQueue, canPlaceLivechatOnHold }}
+				t={(this.t || room.t) as SubscriptionType}
+				encrypted={'id' in room ? room.encrypted : undefined}
+				navigation={navigation}
+				toggleFollowThread={this.toggleFollowThread}
+				showActionSheet={this.showActionSheet}
+				departmentId={'id' in room ? room.departmentId : undefined}
+				notificationsDisabled={subscription?.disableNotifications}
+				hasE2EEWarning={!!('encrypted' in room && (showMissingE2EEKey || showE2EEDisabledRoom))}
+				teamMain={'teamMain' in room ? room.teamMain : false}
+				isGroupChat={isGroupChat(room as ISubscription)}
+			/>
+		);
+	};
+
 	render() {
+		return (
+			<>
+				{this.renderHeaderActions()}
+				{this.renderContent()}
+			</>
+		);
+	}
+
+	renderContent() {
 		const { room, isAutocompleteVisible, showMissingE2EEKey, showE2EEDisabledRoom, canAutoTranslate } = this.state;
 		const { user, baseUrl, theme, width, serverVersion, navigation, Message_GroupingPeriod, Message_Read_Receipt_Enabled } =
 			this.props;

@@ -4,11 +4,11 @@ import { FlatList, Text, View } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import { sendLoadingEvent } from '~/containers/Loading';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import * as List from '~/containers/List';
 import SafeAreaView from '~/containers/SafeAreaView';
 import SearchBox from '~/containers/SearchBox';
@@ -252,11 +252,14 @@ const RoomMembersView = (): ReactElement => {
 	const setHeader = (allUsers: boolean) => {
 		navigation.setOptions({
 			title: I18n.t('Members'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item
-						iconName='filter'
-						onPress={() =>
+			...headerItems({
+				right: [
+					{
+						type: 'button',
+						label: I18n.t('Filter'),
+						iconName: 'filter',
+						testID: 'room-members-view-filter',
+						onPress: () =>
 							showActionSheet({
 								options: [
 									{
@@ -274,11 +277,9 @@ const RoomMembersView = (): ReactElement => {
 								],
 								enableContentPanningGesture: false
 							})
-						}
-						testID='room-members-view-filter'
-					/>
-				</HeaderButton.Container>
-			)
+					}
+				]
+			})
 		});
 	};
 

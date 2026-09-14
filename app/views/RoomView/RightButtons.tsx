@@ -1,7 +1,7 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { dequal } from 'dequal';
-import { Component } from 'react';
-import { connect } from 'react-redux';
+import { Component, useLayoutEffect, useMemo } from 'react';
+import { connect, shallowEqual } from 'react-redux';
 import { type Dispatch } from 'redux';
 import { type Observable, type Subscription } from 'rxjs';
 
@@ -27,7 +27,9 @@ import { getDepartmentInfo, getTagsList, onHoldLivechat, returnLivechat } from '
 import { getUserSelector } from '~/selectors/login';
 import { type TNavigation } from '~/stacks/stackType';
 import { type ChatsStackParamList } from '~/stacks/types';
-import { HeaderCallButton } from './components';
+import { useHeaderCallAction } from './components/useHeaderCallAction';
+import { headerItems, type HeaderAction } from '~/lib/methods/helpers/navigation';
+import { getUnreadStyle } from '~/containers/UnreadBadge/getUnreadStyle';
 import { type TColors, type TSupportedThemes, withTheme } from '~/theme';
 import getRoomAccessibilityLabel from '~/lib/helpers/getRoomAccessibilityLabel';
 import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -116,69 +118,26 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	}
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
-		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption, isSelfDm } = this.state;
+		const { omnichannelPermissions, toggleRoomE2EEncryptionPermission, ...props } = this.props;
 		const {
-			teamId,
-			status,
-			joined,
-			omnichannelPermissions,
-			theme,
-			hasE2EEWarning,
-			issuesWithNotifications,
-			notificationsDisabled,
-			toggleRoomE2EEncryptionPermission
-		} = this.props;
-		if (nextProps.teamId !== teamId) {
-			return true;
-		}
-		if (nextProps.status !== status) {
-			return true;
-		}
-		if (nextProps.joined !== joined) {
-			return true;
-		}
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		if (nextState.canToggleEncryption !== canToggleEncryption) {
-			return true;
-		}
-		if (nextState.isSelfDm !== isSelfDm) {
-			return true;
-		}
-		if (nextState.isFollowingThread !== isFollowingThread) {
-			return true;
-		}
-		if (nextProps.issuesWithNotifications !== issuesWithNotifications) {
-			return true;
-		}
-		if (nextProps.notificationsDisabled !== notificationsDisabled) {
-			return true;
-		}
-		if (nextProps.hasE2EEWarning !== hasE2EEWarning) {
-			return true;
-		}
-		if (!dequal(nextProps.omnichannelPermissions, omnichannelPermissions)) {
-			return true;
-		}
-		if (!dequal(nextState.tunread, tunread)) {
-			return true;
-		}
-		if (!dequal(nextState.tunreadUser, tunreadUser)) {
-			return true;
-		}
-		if (!dequal(nextState.tunreadGroup, tunreadGroup)) {
-			return true;
-		}
-		if (!dequal(nextProps.toggleRoomE2EEncryptionPermission, toggleRoomE2EEncryptionPermission)) {
-			return true;
-		}
-		return false;
+			omnichannelPermissions: nextOmnichannelPermissions,
+			toggleRoomE2EEncryptionPermission: nextToggleRoomE2EEncryptionPermission,
+			...otherNextProps
+		} = nextProps;
+		return (
+			!shallowEqual(props, otherNextProps) ||
+			!dequal(omnichannelPermissions, nextOmnichannelPermissions) ||
+			!dequal(toggleRoomE2EEncryptionPermission, nextToggleRoomE2EEncryptionPermission) ||
+			!dequal(this.state, nextState)
+		);
 	}
 
 	componentDidUpdate(prevProps: Readonly<IRightButtonsProps>): void {
-		const { toggleRoomE2EEncryptionPermission } = this.props;
-		if (!dequal(prevProps.toggleRoomE2EEncryptionPermission, toggleRoomE2EEncryptionPermission)) {
+		const { toggleRoomE2EEncryptionPermission, hasE2EEWarning } = this.props;
+		if (
+			(!prevProps.hasE2EEWarning && hasE2EEWarning) ||
+			!dequal(prevProps.toggleRoomE2EEncryptionPermission, toggleRoomE2EEncryptionPermission)
+		) {
 			this.setCanToggleEncryption();
 		}
 	}
@@ -315,9 +274,8 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 	};
 
-	showMoreActions = () => {
-		logEvent(events.ROOM_SHOW_MORE_ACTIONS);
-		const { showActionSheet, rid, navigation, omnichannelPermissions, isMasterDetail } = this.props;
+	getMoreActions = () => {
+		const { rid, navigation, omnichannelPermissions, isMasterDetail } = this.props;
 
 		const options = [] as TActionSheetOptionsItem[];
 		if (omnichannelPermissions.canPlaceLivechatOnHold) {
@@ -362,7 +320,12 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			danger: true
 		});
 
-		showActionSheet({ options });
+		return options;
+	};
+
+	showMoreActions = () => {
+		logEvent(events.ROOM_SHOW_MORE_ACTIONS);
+		this.props.showActionSheet({ options: this.getMoreActions() });
 	};
 
 	setCanToggleEncryption = async () => {
@@ -471,6 +434,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			threadsEnabled,
 			rid,
 			colors,
+			theme,
 			issuesWithNotifications,
 			notificationsDisabled,
 			hasE2EEWarning,
@@ -478,90 +442,143 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			userId,
 			isGroupChat,
 			status,
-			teamMain
+			teamMain,
+			navigation
 		} = this.props;
+		const beforeCall: HeaderAction[] = [];
+		const afterCall: HeaderAction[] = [];
 
+		if (!rid || status === 'INVITED' || (t === 'l' && this.isOmnichannelPreview())) {
+			return <ApplyRoomHeaderItems navigation={navigation} actions={beforeCall} />;
+		}
+		if (t === 'l') {
+			beforeCall.push({
+				type: 'menu',
+				label: i18n.t('More'),
+				accessibilityLabel: i18n.t('More'),
+				icon: { type: 'sfSymbol', name: 'ellipsis' },
+				menu: {
+					items: this.getMoreActions().map(action => ({
+						type: 'action',
+						label: action.title,
+						onPress: action.onPress,
+						destructive: action.danger
+					}))
+				},
+				androidElement: (
+					<HeaderButton.Item iconName='kebab' onPress={this.showMoreActions} testID='room-view-header-omnichannel-kebab' />
+				)
+			});
+			return <ApplyRoomHeaderItems navigation={navigation} actions={beforeCall} />;
+		}
+		if (tmid) {
+			beforeCall.push({
+				type: 'button',
+				label: i18n.t(isFollowingThread ? 'Unfollow_thread' : 'Follow_thread'),
+				iconName: isFollowingThread ? 'notification' : 'notification-disabled',
+				onPress: this.toggleFollowThread,
+				testID: isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow'
+			});
+			return <ApplyRoomHeaderItems navigation={navigation} actions={beforeCall} />;
+		}
+		if (hasE2EEWarning) {
+			beforeCall.push({
+				type: 'button',
+				label: i18n.t('E2E_Encryption'),
+				iconName: 'encrypted',
+				onPress: this.goE2EEToggleRoomView,
+				disabled: !canToggleEncryption,
+				testID: 'room-view-header-encryption'
+			});
+		}
+		if (issuesWithNotifications || notificationsDisabled) {
+			beforeCall.push({
+				type: 'button',
+				label: i18n.t('Notifications'),
+				iconName: 'notification-disabled',
+				tintColor: issuesWithNotifications ? colors!.fontDanger : undefined,
+				onPress: this.navigateToNotificationOrPushTroubleshoot,
+				disabled: hasE2EEWarning,
+				testID: 'room-view-push-troubleshoot'
+			});
+		}
+		if (threadsEnabled) {
+			const badge = () => <HeaderButton.BadgeUnread tunread={tunread} tunreadUser={tunreadUser} tunreadGroup={tunreadGroup} />;
+			afterCall.push({
+				type: 'button',
+				label: this.threadsAccessibilityLabel(),
+				iconName: 'threads',
+				onPress: this.goThreadsView,
+				disabled: hasE2EEWarning,
+				testID: 'room-view-header-threads',
+				androidBadge: badge,
+				badge: tunread.length
+					? {
+							value: tunread.length >= 100 ? '+99' : tunread.length,
+							style: getUnreadStyle({ theme: theme!, tunread, tunreadUser, tunreadGroup })
+						}
+					: undefined
+			});
+		}
+		afterCall.push({
+			type: 'button',
+			label: i18n.t('Search_Messages'),
+			iconName: 'search',
+			onPress: this.goSearchView,
+			testID: 'room-view-search',
+			disabled: hasE2EEWarning
+		});
+		if (isSelfDm) {
+			return <ApplyRoomHeaderItems navigation={navigation} actions={[...beforeCall, ...afterCall]} />;
+		}
 		const accessibilityRoomName =
 			!isGroupChat && t === 'd' && !!userId
 				? roomName
 				: getRoomAccessibilityLabel({ type: t, userId, isGroupChat, status: status as TUserStatus, teamMain });
-		if (!rid) {
-			return null;
-		}
-
-		if (status === 'INVITED') {
-			return null;
-		}
-
-		if (t === 'l') {
-			if (!this.isOmnichannelPreview()) {
-				return (
-					<HeaderButton.Container>
-						<HeaderButton.Item iconName='kebab' onPress={this.showMoreActions} testID='room-view-header-omnichannel-kebab' />
-					</HeaderButton.Container>
-				);
-			}
-			return null;
-		}
-		if (tmid) {
-			return (
-				<HeaderButton.Container>
-					<HeaderButton.Item
-						accessibilityLabel={i18n.t(isFollowingThread ? 'Unfollow_thread' : 'Follow_thread')}
-						iconName={isFollowingThread ? 'notification' : 'notification-disabled'}
-						onPress={this.toggleFollowThread}
-						testID={isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow'}
-					/>
-				</HeaderButton.Container>
-			);
-		}
 		return (
-			<HeaderButton.Container>
-				{hasE2EEWarning ? (
-					<HeaderButton.Item
-						iconName='encrypted'
-						onPress={this.goE2EEToggleRoomView}
-						disabled={!canToggleEncryption}
-						testID='room-view-header-encryption'
-					/>
-				) : null}
-				{issuesWithNotifications || notificationsDisabled ? (
-					<HeaderButton.Item
-						color={issuesWithNotifications ? colors!.fontDanger : ''}
-						iconName='notification-disabled'
-						onPress={this.navigateToNotificationOrPushTroubleshoot}
-						testID='room-view-push-troubleshoot'
-						disabled={hasE2EEWarning}
-					/>
-				) : null}
-				{!isSelfDm ? (
-					<HeaderCallButton
-						accessibilityLabel={i18n.t('Call_room_name', { roomName: accessibilityRoomName })}
-						rid={rid}
-						disabled={hasE2EEWarning}
-					/>
-				) : null}
-				{threadsEnabled ? (
-					<HeaderButton.Item
-						accessibilityLabel={this.threadsAccessibilityLabel()}
-						iconName='threads'
-						onPress={this.goThreadsView}
-						testID='room-view-header-threads'
-						badge={() => <HeaderButton.BadgeUnread tunread={tunread} tunreadUser={tunreadUser} tunreadGroup={tunreadGroup} />}
-						disabled={hasE2EEWarning}
-					/>
-				) : null}
-				<HeaderButton.Item
-					accessibilityLabel={i18n.t('Search_Messages')}
-					iconName='search'
-					onPress={this.goSearchView}
-					testID='room-view-search'
-					disabled={hasE2EEWarning}
-				/>
-			</HeaderButton.Container>
+			<RoomHeaderItemsWithCall
+				navigation={navigation}
+				beforeCall={beforeCall}
+				afterCall={afterCall}
+				rid={rid}
+				disabled={hasE2EEWarning}
+				accessibilityLabel={i18n.t('Call_room_name', { roomName: accessibilityRoomName })}
+			/>
 		);
 	}
 }
+
+interface IApplyRoomHeaderItems {
+	navigation: IRightButtonsProps['navigation'];
+	actions: HeaderAction[];
+}
+
+const ApplyRoomHeaderItems = ({ navigation, actions }: IApplyRoomHeaderItems) => {
+	useLayoutEffect(() => {
+		navigation.setOptions(headerItems({ right: actions }));
+	}, [navigation, actions]);
+	return null;
+};
+
+const RoomHeaderItemsWithCall = ({
+	navigation,
+	beforeCall,
+	afterCall,
+	rid,
+	disabled,
+	accessibilityLabel
+}: {
+	navigation: IRightButtonsProps['navigation'];
+	beforeCall: HeaderAction[];
+	afterCall: HeaderAction[];
+	rid: string;
+	disabled: boolean;
+	accessibilityLabel: string;
+}) => {
+	const call = useHeaderCallAction({ rid, disabled, accessibilityLabel });
+	const actions = useMemo(() => [...beforeCall, ...(call ? [call] : []), ...afterCall], [beforeCall, call, afterCall]);
+	return <ApplyRoomHeaderItems navigation={navigation} actions={actions} />;
+};
 
 const mapStateToProps = (state: IApplicationState) => ({
 	userId: getUserSelector(state).id,

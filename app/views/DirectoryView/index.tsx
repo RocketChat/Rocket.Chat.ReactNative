@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp } from '@react-navigation/native';
 
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { useActionSheet } from '~/containers/ActionSheet';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
@@ -14,7 +15,6 @@ import sharedStyles from '../Styles';
 import I18n from '~/i18n';
 import SearchBox from '~/containers/SearchBox';
 import ActivityIndicator from '~/containers/ActivityIndicator';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import { useTheme } from '~/theme';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { goRoom as goRoomMethod, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
@@ -73,15 +73,23 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 
 		const options: NativeStackNavigationOptions = {
 			title: I18n.t('Directory'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item iconName='filter' onPress={showFilters} testID='directory-view-filter' />
-				</HeaderButton.Container>
-			)
+			...headerItems({
+				left: isMasterDetail
+					? [
+							{
+								type: 'button',
+								label: I18n.t('Close'),
+								iconName: 'close',
+								onPress: () => navigation.pop(),
+								testID: 'directory-view-close'
+							}
+						]
+					: undefined,
+				right: [
+					{ type: 'button', label: I18n.t('Filter'), iconName: 'filter', onPress: showFilters, testID: 'directory-view-filter' }
+				]
+			})
 		};
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;
-		}
 
 		navigation.setOptions(options);
 	}, [

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { type Dispatch } from 'redux';
 
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { type IMessageComposerRef, MessageComposerContainer } from '~/containers/MessageComposer';
 import { type InsideStackParamList } from '~/stacks/types';
@@ -13,7 +14,6 @@ import { themes } from '~/lib/constants/colors';
 import I18n from '~/i18n';
 import { prepareQuoteMessage } from '~/containers/MessageComposer/helpers';
 import { sendLoadingEvent } from '~/containers/Loading';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import { type TSupportedThemes, withTheme } from '~/theme';
 import { FormTextInput } from '~/containers/TextInput';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -137,23 +137,26 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const { navigation, theme } = this.props;
 
 		const options: NativeStackNavigationOptions = {
-			headerTitle: () => <Header room={room} thread={thread} />
+			headerTitle: () => <Header room={room} thread={thread} />,
+			...headerItems({
+				left: this.isShareExtension
+					? undefined
+					: [
+							{
+								type: 'button',
+								label: I18n.t('Close'),
+								iconName: 'close',
+								onPress: () => navigation.pop(),
+								tintColor: themes[theme].fontDefault,
+								testID: 'share-view-close'
+							}
+						],
+				right:
+					!attachments.length && !readOnly
+						? [{ type: 'button', label: I18n.t('Send'), onPress: this.send, tintColor: themes[theme].fontDefault }]
+						: []
+			})
 		};
-
-		// if is share extension show default back button
-		if (!this.isShareExtension) {
-			options.headerLeft = () => (
-				<HeaderButton.CloseModal navigation={navigation} color={themes[theme].fontDefault} testID='share-view-close' />
-			);
-		}
-
-		if (!attachments.length && !readOnly) {
-			options.headerRight = () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} color={themes[theme].fontDefault} />
-				</HeaderButton.Container>
-			);
-		}
 
 		navigation.setOptions(options);
 	};

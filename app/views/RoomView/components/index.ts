@@ -1,3 +1,3 @@
 export * from './EncryptedRoom';
-export * from './HeaderCallButton';
+export * from './useHeaderCallAction';
 export * from './MissingRoomE2EEKey';

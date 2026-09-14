@@ -1,15 +1,12 @@
-import { createElement, type ReactElement } from 'react';
+import { Platform } from 'react-native';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
-import { type NativeStackHeaderProps, type NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
 import { themes } from '~/lib/constants/colors';
 import { type TSupportedThemes } from '~/theme';
 import sharedStyles from '~/views/Styles';
-import Header from '~/containers/Header';
 
-export const defaultHeader: NativeStackNavigationOptions = {
-	header: (props: NativeStackHeaderProps): ReactElement => createElement(Header, props)
-};
+export { headerItems, type HeaderAction } from './headerItems';
 
 export const drawerStyle = {
 	width: 320
@@ -19,6 +16,12 @@ export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOpti
 	headerStyle: {
 		backgroundColor: themes[theme].surfaceNeutral
 	},
+	headerTintColor: themes[theme].fontDefault,
+	headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 }
+});
+
+export const nativeHeader = (theme: TSupportedThemes): NativeStackNavigationOptions => ({
+	...(Platform.OS === 'android' ? themedHeader(theme) : {}),
 	headerTintColor: themes[theme].fontDefault,
 	headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 }
 });

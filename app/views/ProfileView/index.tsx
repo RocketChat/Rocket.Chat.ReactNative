@@ -1,3 +1,5 @@
+import { DrawerActions, useFocusEffect } from '@react-navigation/native';
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type ReactElement, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Keyboard, ScrollView, View, type TextInput } from 'react-native';
@@ -6,14 +8,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { useFocusEffect } from '@react-navigation/native';
 
+import { withKeyboardFocus } from 'react-native-external-keyboard';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import useA11yErrorAnnouncement from '~/lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '~/actions/login';
 import { useActionSheet } from '~/containers/ActionSheet';
 import { AvatarWithEdit } from '~/containers/Avatar';
 import Button from '~/containers/Button';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import KeyboardView from '~/containers/KeyboardView';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { ControlledFormTextInput } from '~/containers/TextInput';
@@ -43,6 +45,8 @@ import handleSaveUserProfileError from '~/lib/methods/helpers/handleSaveUserProf
 import logoutOtherLocations from './methods/logoutOtherLocations';
 import buildProfileParams from './methods/buildProfileParams';
 import ConfirmEmailChangeActionSheetContent from './components/ConfirmEmailChangeActionSheetContent';
+
+const DrawerItem = withKeyboardFocus(HeaderButton.Item);
 
 // https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
 const MAX_BIO_LENGTH = 260;
@@ -271,20 +275,43 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 			title: I18n.t('Profile')
 		};
 		if (!isMasterDetail) {
-			options.headerLeft = () => (
-				<HeaderButton.Drawer
-					testID='profile-view-open-sidebar'
-					accessibilityLabel={I18n.t('Open_sidebar')}
-					navigation={navigation}
-				/>
+			Object.assign(
+				options,
+				headerItems({
+					left: [
+						{
+							type: 'button',
+							label: I18n.t('Open_sidebar'),
+							iconName: 'hamburguer',
+							androidElement: (
+								<DrawerItem
+									autoFocus
+									iconName='hamburguer'
+									accessibilityLabel={I18n.t('Open_sidebar')}
+									onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+									testID='profile-view-open-sidebar'
+								/>
+							),
+							onPress: () => navigation.dispatch(DrawerActions.toggleDrawer()),
+							testID: 'profile-view-open-sidebar'
+						}
+					]
+				})
 			);
 		}
-		options.headerRight = () => (
-			<HeaderButton.Preferences
-				accessibilityLabel={I18n.t('Preferences')}
-				onPress={() => navigation?.navigate('UserPreferencesView')}
-				testID='preferences-view-open'
-			/>
+		Object.assign(
+			options,
+			headerItems({
+				right: [
+					{
+						type: 'button',
+						label: I18n.t('Preferences'),
+						iconName: 'settings',
+						onPress: () => navigation.navigate('UserPreferencesView'),
+						testID: 'preferences-view-open'
+					}
+				]
+			})
 		);
 
 		navigation.setOptions(options);

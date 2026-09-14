@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native';
+import { StackActions, useFocusEffect } from '@react-navigation/native';
 import { useCallback, useEffect, useLayoutEffect, useRef, type ReactElement } from 'react';
 import { ScrollView, StyleSheet, Text, AccessibilityInfo, View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -8,7 +8,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type E2EEnterYourPasswordStackParamList, type InsideStackParamList } from '../stacks/types';
 import { encryptionDecodeKey } from '../actions/encryption';
 import Button from '../containers/Button';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import KeyboardView from '../containers/KeyboardView';
 import SafeAreaView from '../containers/SafeAreaView';
 import { ControlledFormTextInput } from '../containers/TextInput';
@@ -94,7 +94,17 @@ const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): Re
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			headerLeft: () => <HeaderButton.CloseModal testID='e2e-enter-your-password-view-close' />,
+			...headerItems({
+				left: [
+					{
+						type: 'button',
+						label: I18n.t('Close'),
+						iconName: 'close',
+						onPress: () => navigation.dispatch(StackActions.pop()),
+						testID: 'e2e-enter-your-password-view-close'
+					}
+				]
+			}),
 			title: I18n.t('Enter_E2EE_Password')
 		});
 	}, [navigation]);

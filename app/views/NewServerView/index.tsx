@@ -6,11 +6,11 @@ import { useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { inviteLinksClear } from '~/actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '~/actions/server';
 import Button from '~/containers/Button';
 import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import { type TServerHistoryModel } from '~/definitions';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
@@ -99,8 +99,11 @@ const NewServerView = () => {
 		if (previousServer) {
 			return navigation.setOptions({
 				headerTitle: I18n.t('Add_Server'),
-				headerLeft: () =>
-					!connecting ? <HeaderButton.CloseModal navigation={navigation} onPress={close} testID='new-server-view-close' /> : null
+				...headerItems({
+					left: connecting
+						? []
+						: [{ type: 'button', label: I18n.t('Close'), iconName: 'close', onPress: close, testID: 'new-server-view-close' }]
+				})
 			});
 		}
 		return navigation.setOptions({

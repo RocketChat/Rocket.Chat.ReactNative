@@ -1,7 +1,7 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useCallback, useContext, useLayoutEffect, useRef, useState } from 'react';
-import { InteractionManager } from 'react-native';
-import { type KeyboardFocus } from 'react-native-external-keyboard';
+import { InteractionManager, Platform } from 'react-native';
+import { type KeyboardFocus, withKeyboardFocus } from 'react-native-external-keyboard';
 
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import i18n from '~/i18n';
@@ -9,12 +9,15 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
+import { headerItems, type HeaderAction } from '~/lib/methods/helpers/navigation';
 import { isTablet } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';
 import RoomsListHeaderView from '../components/Header';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
+
+const DrawerItem = withKeyboardFocus(HeaderButton.Item);
 
 export const useHeader = () => {
 	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsSearchContext);
@@ -83,6 +86,13 @@ export const useHeader = () => {
 		}
 	}, [isMasterDetail, navigation]);
 
+	const badgeColor =
+		supportedVersionsStatus === 'warn'
+			? colors.buttonBackgroundDangerDefault
+			: notificationPresenceCap
+				? colors.userPresenceDisabled
+				: undefined;
+
 	useLayoutEffect(() => {
 		if (searchEnabled) {
 			const searchOptions = {
@@ -94,7 +104,15 @@ export const useHeader = () => {
 				headerTitle: () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />,
 				headerRight: () => null
 			};
-			navigation.setOptions(searchOptions);
+			navigation.setOptions({
+				...searchOptions,
+				...(!isMasterDetail
+					? headerItems({
+							left: [{ type: 'button', label: i18n.t('Close'), iconName: 'close', onPress: stopSearch }],
+							right: []
+						})
+					: {})
+			});
 			if (isTablet) {
 				setOptions(searchOptions);
 			}
@@ -154,15 +172,86 @@ export const useHeader = () => {
 			)
 		};
 
-		navigation.setOptions(options);
+		const drawerItem = (
+			<DrawerItem
+				ref={drawerButtonRef}
+				autoFocus
+				accessibilityLabel={i18n.t('Menu')}
+				iconName='hamburguer'
+				onPress={() => navigation.toggleDrawer()}
+				testID='rooms-list-view-sidebar'
+				color={colors.fontDefault}
+				badge={getBadge}
+				disabled={disabled}
+			/>
+		);
+		const needsCustomDrawer =
+			isAccessibilityNavigationEnabled ||
+			(Platform.OS === 'ios' && Number.parseInt(String(Platform.Version), 10) < 26 && !!badgeColor);
+		const left: HeaderAction[] = needsCustomDrawer
+			? [{ type: 'custom', element: drawerItem }]
+			: [
+					{
+						type: 'button',
+						label: i18n.t('Menu'),
+						iconName: 'hamburguer',
+						onPress: () => navigation.toggleDrawer(),
+						disabled,
+						testID: 'rooms-list-view-sidebar',
+						badge: badgeColor ? { value: '', style: { backgroundColor: badgeColor } } : undefined,
+						androidElement: drawerItem
+					}
+				];
+		const right: HeaderAction[] = [];
+		if (issuesWithNotifications) {
+			right.push({
+				type: 'button',
+				label: i18n.t('Notifications'),
+				iconName: 'notification-disabled',
+				onPress: navigateToPushTroubleshootView,
+				testID: 'rooms-list-view-push-troubleshoot',
+				tintColor: colors.fontDanger
+			});
+		}
+		if (canCreateRoom) {
+			right.push({
+				type: 'button',
+				label: i18n.t('Create_new_channel_team_dm_discussion'),
+				iconName: 'add',
+				onPress: goToNewMessage,
+				testID: 'rooms-list-view-create-channel',
+				disabled
+			});
+		}
+		right.push(
+			{
+				type: 'button',
+				label: i18n.t('Search'),
+				iconName: 'search',
+				onPress: startSearch,
+				testID: 'rooms-list-view-search',
+				disabled
+			},
+			{
+				type: 'button',
+				label: i18n.t('Directory'),
+				iconName: 'directory',
+				onPress: goDirectory,
+				testID: 'rooms-list-view-directory',
+				disabled
+			}
+		);
+		navigation.setOptions({ ...options, ...(!isMasterDetail ? headerItems({ left, right }) : {}) });
 		if (isTablet) {
 			setOptions(options);
 		}
 	}, [
 		disabled,
+		badgeColor,
 		issuesWithNotifications,
 		navigation,
 		isMasterDetail,
+		isAccessibilityNavigationEnabled,
 		colors,
 		canCreateRoom,
 		searchEnabled,

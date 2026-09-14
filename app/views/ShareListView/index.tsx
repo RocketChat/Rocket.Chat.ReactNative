@@ -9,11 +9,11 @@ import { Q } from '@nozbe/watermelondb';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
 
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import database from '~/lib/database';
 import I18n from '~/i18n';
 import DirectoryItem, { ROW_HEIGHT } from '~/containers/DirectoryItem';
 import ServerItem from '~/containers/ServerItem';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import * as List from '~/containers/List';
 import SearchHeader from '~/containers/SearchHeader';
@@ -195,30 +195,30 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 
 		if (searching) {
 			navigation.setOptions({
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
-					</HeaderButton.Container>
-				),
-				headerTitle: () => <SearchHeader onSearchChangeText={this.search} />,
-				headerRight: () => null
+				...headerItems({
+					left: [{ type: 'button', label: I18n.t('Close'), iconName: 'close', onPress: this.cancelSearch }],
+					right: []
+				}),
+				headerTitle: () => <SearchHeader onSearchChangeText={this.search} />
 			});
 			return;
 		}
-
 		navigation.setOptions({
-			headerLeft: () => (
-				<HeaderButton.Container left>
-					<HeaderButton.Item iconName='close' onPress={this.closeShareExtension} testID='share-extension-close' />
-				</HeaderButton.Container>
-			),
-			headerTitle: I18n.t('Send_to'),
-			headerRight: () =>
-				this.airGappedReadOnly ? null : (
-					<HeaderButton.Container>
-						<HeaderButton.Item iconName='search' onPress={this.initSearch} />
-					</HeaderButton.Container>
-				)
+			...headerItems({
+				left: [
+					{
+						type: 'button',
+						label: I18n.t('Close'),
+						iconName: 'close',
+						onPress: this.closeShareExtension,
+						testID: 'share-extension-close'
+					}
+				],
+				right: this.airGappedReadOnly
+					? []
+					: [{ type: 'button', label: I18n.t('Search'), iconName: 'search', onPress: this.initSearch }]
+			}),
+			headerTitle: I18n.t('Send_to')
 		});
 	};
 
