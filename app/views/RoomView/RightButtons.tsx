@@ -5,7 +5,7 @@ import { connect, shallowEqual } from 'react-redux';
 import { type Dispatch } from 'redux';
 import { type Observable, type Subscription } from 'rxjs';
 
-import { type TActionSheetOptionsItem } from '~/containers/ActionSheet';
+import { useActionSheet, type TActionSheetOptionsItem } from '~/containers/ActionSheet';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import {
 	type IApplicationState,
@@ -19,7 +19,7 @@ import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
 import { type ILivechatTag } from '~/definitions/ILivechatTag';
 import i18n from '~/i18n';
 import database from '~/lib/database';
-import { hasPermission, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { hasPermission, isIOS, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
 import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
 import { closeLivechat as closeLivechatService } from '~/lib/methods/helpers/closeLivechat';
 import { events, logEvent } from '~/lib/methods/helpers/log';
@@ -29,6 +29,7 @@ import { type TNavigation } from '~/stacks/stackType';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { useHeaderCallAction } from './components/useHeaderCallAction';
 import { headerItems, type HeaderAction } from '~/lib/methods/helpers/navigation';
+import { headerMenuAction } from '~/lib/methods/helpers/navigation/headerItems';
 import { getUnreadStyle } from '~/containers/UnreadBadge/getUnreadStyle';
 import { type TColors, type TSupportedThemes, withTheme } from '~/theme';
 import getRoomAccessibilityLabel from '~/lib/helpers/getRoomAccessibilityLabel';
@@ -44,6 +45,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	isGroupChat?: boolean;
 	isMasterDetail: boolean;
 	toggleFollowThread: Function;
+	onRoomInfoPress: () => void;
 	joined: boolean;
 	status?: string;
 	dispatch: Dispatch;
@@ -451,6 +453,12 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		if (!rid || status === 'INVITED' || (t === 'l' && this.isOmnichannelPreview())) {
 			return <ApplyRoomHeaderItems navigation={navigation} actions={beforeCall} />;
 		}
+		const roomInfo: Extract<HeaderAction, { type: 'button' }> = {
+			type: 'button',
+			label: i18n.t('Room_Info'),
+			iconName: 'info',
+			onPress: this.props.onRoomInfoPress
+		};
 		if (t === 'l') {
 			beforeCall.push({
 				type: 'menu',
@@ -458,18 +466,24 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 				accessibilityLabel: i18n.t('More'),
 				icon: { type: 'sfSymbol', name: 'ellipsis' },
 				menu: {
-					items: this.getMoreActions().map(action => ({
-						type: 'action',
-						label: action.title,
-						onPress: action.onPress,
-						destructive: action.danger
-					}))
+					items: [
+						...(isIOS ? [headerMenuAction(roomInfo)] : []),
+						...this.getMoreActions().map(action => ({
+							type: 'action' as const,
+							label: action.title,
+							onPress: action.onPress,
+							destructive: action.danger
+						}))
+					]
 				},
 				androidElement: (
 					<HeaderButton.Item iconName='kebab' onPress={this.showMoreActions} testID='room-view-header-omnichannel-kebab' />
 				)
 			});
 			return <ApplyRoomHeaderItems navigation={navigation} actions={beforeCall} />;
+		}
+		if (isIOS) {
+			beforeCall.push(roomInfo);
 		}
 		if (tmid) {
 			beforeCall.push({
@@ -554,9 +568,47 @@ interface IApplyRoomHeaderItems {
 }
 
 const ApplyRoomHeaderItems = ({ navigation, actions }: IApplyRoomHeaderItems) => {
+	const { showActionSheet } = useActionSheet();
 	useLayoutEffect(() => {
+		if (actions.length > 1 && actions.every(action => action.type === 'button')) {
+			const unreadAction = actions.find(action => action.badge);
+			navigation.setOptions(
+				headerItems({
+					right: [
+						{
+							type: 'menu',
+							label: i18n.t('More'),
+							accessibilityLabel: i18n.t('More'),
+							icon: { type: 'sfSymbol', name: 'ellipsis' },
+							badge: unreadAction?.badge,
+							menu: { items: actions.map(headerMenuAction) },
+							androidElement: (
+								<HeaderButton.Item
+									iconName='kebab'
+									accessibilityLabel={i18n.t('More')}
+									testID='room-view-header-more'
+									badge={unreadAction?.androidBadge}
+									onPress={() =>
+										showActionSheet({
+											options: actions.map(action => ({
+												title: action.label,
+												icon: action.iconName,
+												onPress: action.onPress,
+												enabled: !action.disabled,
+												testID: action.testID
+											}))
+										})
+									}
+								/>
+							)
+						}
+					]
+				})
+			);
+			return;
+		}
 		navigation.setOptions(headerItems({ right: actions }));
-	}, [navigation, actions]);
+	}, [navigation, actions, showActionSheet]);
 	return null;
 };
 

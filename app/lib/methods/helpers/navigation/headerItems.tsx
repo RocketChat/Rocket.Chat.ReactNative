@@ -5,6 +5,7 @@ import {
 	type NativeStackHeaderItemButton,
 	type NativeStackHeaderItemCustom,
 	type NativeStackHeaderItemMenu,
+	type NativeStackHeaderItemMenuAction,
 	type NativeStackNavigationOptions
 } from '@react-navigation/native-stack';
 
@@ -34,12 +35,22 @@ const symbols = {
 	filter: 'line.3.horizontal.decrease',
 	hamburguer: 'line.3.horizontal',
 	kebab: 'ellipsis',
+	info: 'info.circle',
 	notification: 'bell',
 	'notification-disabled': 'bell.slash',
 	search: 'magnifyingglass',
 	settings: 'gearshape',
 	threads: 'bubble.left.and.bubble.right'
 } satisfies Partial<Record<TIconsName, Extract<NonNullable<NativeStackHeaderItemButton['icon']>, { type: 'sfSymbol' }>['name']>>;
+
+export const headerMenuAction = (action: Extract<HeaderAction, { type: 'button' }>): NativeStackHeaderItemMenuAction => ({
+	type: 'action',
+	label: action.label,
+	icon: action.icon ?? (action.iconName ? { type: 'sfSymbol', name: symbols[action.iconName] } : undefined),
+	onPress: action.onPress,
+	disabled: action.disabled,
+	discoverabilityLabel: action.accessibilityLabel
+});
 
 const nativeItem = (action: HeaderAction): NativeStackHeaderItem => {
 	if (action.type === 'custom') {

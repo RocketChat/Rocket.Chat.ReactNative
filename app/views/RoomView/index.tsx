@@ -555,25 +555,28 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 		navigation.setOptions({
 			...headerItems({ left: leftActions }),
-			headerTitle: () => (
-				<RoomHeader
-					prid={prid}
-					tmid={tmid}
-					title={title}
-					teamMain={teamMain}
-					parentTitle={parentTitle}
-					subtitle={subtitle}
-					type={t}
-					roomUserId={roomUserId}
-					visitor={visitor}
-					isGroupChat={isGroupChatConst}
-					onPress={this.goRoomActionsView}
-					testID={`room-view-title-${title}`}
-					sourceType={sourceType}
-					abacAttributes={iSubRoom.abacAttributes}
-					disabled={isInviteSubscription(iSubRoom)}
-				/>
-			)
+			title,
+			headerTitle: isIOS
+				? title
+				: () => (
+						<RoomHeader
+							prid={prid}
+							tmid={tmid}
+							title={title}
+							teamMain={teamMain}
+							parentTitle={parentTitle}
+							subtitle={subtitle}
+							type={t}
+							roomUserId={roomUserId}
+							visitor={visitor}
+							isGroupChat={isGroupChatConst}
+							onPress={this.goRoomActionsView}
+							testID={`room-view-title-${title}`}
+							sourceType={sourceType}
+							abacAttributes={iSubRoom.abacAttributes}
+							disabled={isInviteSubscription(iSubRoom)}
+						/>
+					)
 		});
 	};
 
@@ -1607,6 +1610,7 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				encrypted={'id' in room ? room.encrypted : undefined}
 				navigation={navigation}
 				toggleFollowThread={this.toggleFollowThread}
+				onRoomInfoPress={this.goRoomActionsView}
 				showActionSheet={this.showActionSheet}
 				departmentId={'id' in room ? room.departmentId : undefined}
 				notificationsDisabled={subscription?.disableNotifications}
