@@ -556,27 +556,27 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		navigation.setOptions({
 			...headerItems({ left: leftActions }),
 			title,
-			headerTitle: isIOS
-				? title
-				: () => (
-						<RoomHeader
-							prid={prid}
-							tmid={tmid}
-							title={title}
-							teamMain={teamMain}
-							parentTitle={parentTitle}
-							subtitle={subtitle}
-							type={t}
-							roomUserId={roomUserId}
-							visitor={visitor}
-							isGroupChat={isGroupChatConst}
-							onPress={this.goRoomActionsView}
-							testID={`room-view-title-${title}`}
-							sourceType={sourceType}
-							abacAttributes={iSubRoom.abacAttributes}
-							disabled={isInviteSubscription(iSubRoom)}
-						/>
-					)
+			headerTitle: () => (
+				<View style={isIOS ? { width: '100%', overflow: 'hidden' } : { flex: 1 }}>
+					<RoomHeader
+						prid={prid}
+						tmid={tmid}
+						title={title}
+						teamMain={teamMain}
+						parentTitle={parentTitle}
+						subtitle={subtitle}
+						type={t}
+						roomUserId={roomUserId}
+						visitor={visitor}
+						isGroupChat={isGroupChatConst}
+						onPress={this.goRoomActionsView}
+						testID={`room-view-title-${title}`}
+						sourceType={sourceType}
+						abacAttributes={iSubRoom.abacAttributes}
+						disabled={isInviteSubscription(iSubRoom)}
+					/>
+				</View>
+			)
 		});
 	};
 
@@ -971,13 +971,15 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		const observable = await db
 			.get('subscriptions')
 			.query(Q.where('archived', false), Q.where('open', true), Q.where('rid', Q.notEq(this.rid)))
-			.observeWithColumns(['unread']);
+			.observeWithColumns(['unread', 'tunread', 'hide_unread_status']);
 
 		this.queryUnreads = observable.subscribe(rooms => {
-			const unreadsCount = rooms.reduce(
-				(unreadCount, room) => (room.unread > 0 && !room.hideUnreadStatus ? unreadCount + room.unread : unreadCount),
-				0
-			);
+			const unreadsCount = rooms.reduce((unreadCount, room) => {
+				if (room.hideUnreadStatus) {
+					return unreadCount;
+				}
+				return unreadCount + (room.unread || room.tunread?.length || 0);
+			}, 0);
 			if (this.state.unreadsCount !== unreadsCount) {
 				this.setState({ unreadsCount }, this.setHeader);
 			}

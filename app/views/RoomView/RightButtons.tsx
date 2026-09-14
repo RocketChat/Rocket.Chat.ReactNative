@@ -571,17 +571,20 @@ const ApplyRoomHeaderItems = ({ navigation, actions }: IApplyRoomHeaderItems) =>
 	const { showActionSheet } = useActionSheet();
 	useLayoutEffect(() => {
 		if (actions.length > 1 && actions.every(action => action.type === 'button')) {
+			const searchActions = isIOS ? actions.filter(action => action.iconName === 'search') : [];
+			const menuActions = actions.filter(action => !searchActions.includes(action));
 			const unreadAction = actions.find(action => action.badge);
 			navigation.setOptions(
 				headerItems({
 					right: [
+						...searchActions,
 						{
 							type: 'menu',
 							label: i18n.t('More'),
 							accessibilityLabel: i18n.t('More'),
 							icon: { type: 'sfSymbol', name: 'ellipsis' },
 							badge: unreadAction?.badge,
-							menu: { items: actions.map(headerMenuAction) },
+							menu: { items: menuActions.map(headerMenuAction) },
 							androidElement: (
 								<HeaderButton.Item
 									iconName='kebab'
@@ -590,7 +593,7 @@ const ApplyRoomHeaderItems = ({ navigation, actions }: IApplyRoomHeaderItems) =>
 									badge={unreadAction?.androidBadge}
 									onPress={() =>
 										showActionSheet({
-											options: actions.map(action => ({
+											options: menuActions.map(action => ({
 												title: action.label,
 												icon: action.iconName,
 												onPress: action.onPress,

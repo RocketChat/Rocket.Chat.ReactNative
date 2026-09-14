@@ -3,6 +3,7 @@ import { useCallback, useContext, useLayoutEffect, useRef, useState } from 'reac
 import { InteractionManager, Platform } from 'react-native';
 import { type KeyboardFocus, withKeyboardFocus } from 'react-native-external-keyboard';
 
+import { useActionSheet } from '~/containers/ActionSheet';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -10,6 +11,7 @@ import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibil
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { headerItems, type HeaderAction } from '~/lib/methods/helpers/navigation';
+import { headerMenuAction } from '~/lib/methods/helpers/navigation/headerItems';
 import { isTablet } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
@@ -20,6 +22,7 @@ import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
 const DrawerItem = withKeyboardFocus(HeaderButton.Item);
 
 export const useHeader = () => {
+	const { showActionSheet } = useActionSheet();
 	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsSearchContext);
 	const [options, setOptions] = useState<any>(null);
 	const isAccessibilityNavigationEnabled = useIsAccessibilityNavigationEnabled();
@@ -86,6 +89,7 @@ export const useHeader = () => {
 		}
 	}, [isMasterDetail, navigation]);
 
+	const moreColor = issuesWithNotifications ? colors.fontDanger : undefined;
 	const badgeColor =
 		supportedVersionsStatus === 'warn'
 			? colors.buttonBackgroundDangerDefault
@@ -119,59 +123,6 @@ export const useHeader = () => {
 			return;
 		}
 
-		const options = {
-			headerLeft: () => (
-				<HeaderButton.Drawer
-					ref={drawerButtonRef}
-					navigation={navigation}
-					testID='rooms-list-view-sidebar'
-					onPress={
-						isMasterDetail
-							? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
-							: () => navigation.toggleDrawer()
-					}
-					badge={getBadge}
-					disabled={disabled}
-				/>
-			),
-			headerTitle: () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />,
-			headerRight: () => (
-				<HeaderButton.Container>
-					{issuesWithNotifications ? (
-						<HeaderButton.Item
-							iconName='notification-disabled'
-							onPress={navigateToPushTroubleshootView}
-							testID='rooms-list-view-push-troubleshoot'
-							color={colors.fontDanger}
-						/>
-					) : null}
-					{canCreateRoom ? (
-						<HeaderButton.Item
-							iconName='add'
-							accessibilityLabel={i18n.t('Create_new_channel_team_dm_discussion')}
-							onPress={goToNewMessage}
-							testID='rooms-list-view-create-channel'
-							disabled={disabled}
-						/>
-					) : null}
-					<HeaderButton.Item
-						iconName='search'
-						accessibilityLabel={i18n.t('Search')}
-						onPress={startSearch}
-						testID='rooms-list-view-search'
-						disabled={disabled}
-					/>
-					<HeaderButton.Item
-						iconName='directory'
-						accessibilityLabel={i18n.t('Directory')}
-						onPress={goDirectory}
-						testID='rooms-list-view-directory'
-						disabled={disabled}
-					/>
-				</HeaderButton.Container>
-			)
-		};
-
 		const drawerItem = (
 			<DrawerItem
 				ref={drawerButtonRef}
@@ -202,7 +153,7 @@ export const useHeader = () => {
 						androidElement: drawerItem
 					}
 				];
-		const right: HeaderAction[] = [];
+		const right: Extract<HeaderAction, { type: 'button' }>[] = [];
 		if (issuesWithNotifications) {
 			right.push({
 				type: 'button',
@@ -241,13 +192,64 @@ export const useHeader = () => {
 				disabled
 			}
 		);
-		navigation.setOptions({ ...options, ...(!isMasterDetail ? headerItems({ left, right }) : {}) });
+		const searchActions = right.filter(action => action.iconName === 'search');
+		const menuActions = right.filter(action => action.iconName !== 'search');
+		const moreButton = (
+			<HeaderButton.Item
+				iconName='kebab'
+				accessibilityLabel={i18n.t('More')}
+				testID='rooms-list-view-header-more'
+				color={moreColor}
+				onPress={() =>
+					showActionSheet({
+						options: menuActions.map(action => ({
+							title: action.label,
+							icon: action.iconName,
+							onPress: action.onPress,
+							enabled: !action.disabled,
+							testID: action.testID
+						}))
+					})
+				}
+			/>
+		);
+		const menu: HeaderAction = {
+			type: 'menu',
+			label: i18n.t('More'),
+			accessibilityLabel: i18n.t('More'),
+			icon: { type: 'sfSymbol', name: 'ellipsis' },
+			tintColor: moreColor,
+			menu: { items: menuActions.map(headerMenuAction) },
+			androidElement: moreButton
+		};
+
+		const rightItems = headerItems({ right: Platform.OS === 'ios' ? [...searchActions, menu] : right });
+		const options = {
+			headerLeft: () => (
+				<HeaderButton.Drawer
+					ref={drawerButtonRef}
+					navigation={navigation}
+					testID='rooms-list-view-sidebar'
+					onPress={
+						isMasterDetail
+							? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
+							: () => navigation.toggleDrawer()
+					}
+					badge={getBadge}
+					disabled={disabled}
+				/>
+			),
+			headerTitle: () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />,
+			headerRight: rightItems.headerRight
+		};
+		navigation.setOptions({ ...options, ...(!isMasterDetail ? { ...headerItems({ left }), ...rightItems } : {}) });
 		if (isTablet) {
 			setOptions(options);
 		}
 	}, [
 		disabled,
 		badgeColor,
+		moreColor,
 		issuesWithNotifications,
 		navigation,
 		isMasterDetail,
@@ -261,6 +263,7 @@ export const useHeader = () => {
 		goToNewMessage,
 		startSearch,
 		stopSearch,
+		showActionSheet,
 		search
 	]);
 
