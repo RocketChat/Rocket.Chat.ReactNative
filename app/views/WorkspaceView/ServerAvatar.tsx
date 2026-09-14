@@ -2,8 +2,8 @@ import { StyleSheet, View } from 'react-native';
 import { Image } from 'expo-image';
 import { memo } from 'react';
 
-import { isTablet } from '../../lib/methods/helpers';
-import { useTheme } from '../../theme';
+import { isTablet } from '~/lib/methods/helpers';
+import { useTheme } from '~/theme';
 
 const SIZE = 96;
 const MARGIN_TOP = isTablet ? 0 : 64;

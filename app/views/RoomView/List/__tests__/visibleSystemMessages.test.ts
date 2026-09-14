@@ -1,5 +1,5 @@
 import { buildVisibleSystemTypesClause, isHiddenSystemMessage, isLoaderMessage } from '../visibleSystemMessages';
-import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
+import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
 
 describe('buildVisibleSystemTypesClause', () => {
 	it('returns null when nothing is hidden', () => {

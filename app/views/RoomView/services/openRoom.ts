@@ -1,5 +1,5 @@
-import getRoomInfo from '../../../lib/methods/getRoomInfo';
-import { goRoom, type TGoRoomItem } from '../../../lib/methods/helpers/goRoom';
+import getRoomInfo from '~/lib/methods/getRoomInfo';
+import { goRoom, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
 import { type TGetMessageInfoResult } from '../definitions';
 
 interface IOpenRoomDeps {

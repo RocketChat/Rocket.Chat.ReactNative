@@ -1,30 +1,30 @@
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
-import I18n from '../../../i18n';
-import { replyBroadcast as replyBroadcastAction } from '../../../actions/messages';
-import getRoomInfo from '../../../lib/methods/getRoomInfo';
-import { callJitsi } from '../../../lib/methods/callJitsi';
-import { goRoom, type TGoRoomItem } from '../../../lib/methods/helpers/goRoom';
-import { showErrorAlert } from '../../../lib/methods/helpers/info';
-import { events, logEvent } from '../../../lib/methods/helpers/log';
-import { isInActiveVoipCall } from '../../../lib/services/voip/isInActiveVoipCall';
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
+import I18n from '~/i18n';
+import { replyBroadcast as replyBroadcastAction } from '~/actions/messages';
+import getRoomInfo from '~/lib/methods/getRoomInfo';
+import { callJitsi } from '~/lib/methods/callJitsi';
+import { goRoom, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { isInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import {
 	type IMessage,
 	type IRoomInfoParam,
 	type IUseRoomMessageHandlersResult,
 	SubscriptionType,
 	type TAnyMessageModel
-} from '../../../definitions';
-import { useActionSheet } from '../../../containers/ActionSheet';
-import ReactionsList from '../../../containers/ReactionsList';
+} from '~/definitions';
+import { useActionSheet } from '~/containers/ActionSheet';
+import ReactionsList from '~/containers/ReactionsList';
 import { type IRoomMessageHandlersInput, type IRoomViewProps } from '../definitions';
-import { isSubscriptionModel } from '../../../definitions/TRoom';
+import { isSubscriptionModel } from '~/definitions/TRoom';
 import { useRoomStore, useRoomStoreApi } from '../stores/RoomStoreContext';
 import { blockAction as blockActionService } from '../services/blockAction';
 import { fetchThreadName as fetchThreadNameService } from '../services/fetchThreadName';
-import { toggleFollowThread as toggleFollowThreadService } from '../../../lib/methods/toggleFollowThread';
+import { toggleFollowThread as toggleFollowThreadService } from '~/lib/methods/toggleFollowThread';
 
 export function useRoomMessageHandlers({
 	tmid,

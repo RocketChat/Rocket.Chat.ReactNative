@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { InteractionManager } from 'react-native';
 
-import log from '../../../lib/methods/helpers/log';
-import RoomClass from '../../../lib/methods/subscriptions/room';
+import log from '~/lib/methods/helpers/log';
+import RoomClass from '~/lib/methods/subscriptions/room';
 
 const safeSubscribe = (sub: RoomClass) => {
 	try {

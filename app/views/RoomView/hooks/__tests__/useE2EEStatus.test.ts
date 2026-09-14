@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { type RoomState, type RoomStore } from '../../definitions';
+import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
 import { useE2EEStatus } from '../useE2EEStatus';
 
 let mockState = {
@@ -9,10 +9,10 @@ let mockState = {
 	settings: { E2E_Enable: true },
 	encryption: { enabled: true }
 };
-jest.mock('../../../../lib/hooks/useAppSelector', () => ({
+jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: (selector: (state: typeof mockState) => unknown) => selector(mockState)
 }));
-jest.mock('../../../../lib/store/auxStore', () => ({ store: { getState: () => mockState } }));
+jest.mock('~/lib/store/auxStore', () => ({ store: { getState: () => mockState } }));
 jest.mock('@rocket.chat/mobile-crypto', () => ({}));
 
 const createRoomStore = (room: RoomState['room']) => createStore(() => ({ room })) as RoomStore;

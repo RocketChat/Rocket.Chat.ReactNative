@@ -6,21 +6,21 @@ import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 import { useCallStore } from './useCallStore';
 
 const mockLog = jest.fn();
-jest.mock('../../methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: (...args: unknown[]) => mockLog(...args)
 }));
 
-jest.mock('../../methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers', () => ({
 	isIOS: true
 }));
 
-jest.mock('../../navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	__esModule: true,
 	default: { navigate: jest.fn(), back: jest.fn() }
 }));
 
-jest.mock('../../../containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet', () => ({
 	hideActionSheetRef: jest.fn()
 }));
 
@@ -37,7 +37,7 @@ jest.mock('react-native-callkeep', () => ({
 const mockStartAudioRouteSync = jest.fn(() => Promise.resolve());
 const mockStopAudioRouteSync = jest.fn(() => Promise.resolve());
 
-jest.mock('../../native/NativeVoip', () => ({
+jest.mock('~/lib/native/NativeVoip', () => ({
 	__esModule: true,
 	default: {
 		startAudioRouteSync: () => mockStartAudioRouteSync(),

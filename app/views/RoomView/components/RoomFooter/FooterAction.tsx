@@ -2,9 +2,9 @@ import { type ReactElement } from 'react';
 import { Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import Touch from '../../../../containers/Touch';
-import { useTheme } from '../../../../theme';
-import { useRoomScreen } from '../../stores/RoomScreenContext';
+import Touch from '~/containers/Touch';
+import { useTheme } from '~/theme';
+import { useRoomScreen } from '~/views/RoomView/stores/RoomScreenContext';
 import styles from './styles';
 
 export const FooterAction = ({

@@ -1,7 +1,7 @@
 import { act, render } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { type RoomState, type RoomStore } from '../../definitions';
+import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
 import { RoomStoreContext, useRoomStore } from '../RoomStoreContext';
 
 const subRoom = { id: 'sub-1', rid: 'rid-1', t: 'c', topic: 'old', name: 'general' };

@@ -3,13 +3,13 @@ import { InteractionManager, StyleSheet, Text, type TextInput, View } from 'reac
 import Modal from 'react-native-modal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import I18n from '../../../i18n';
-import Button from '../../../containers/Button';
-import { FormTextInput } from '../../../containers/TextInput';
-import sharedStyles from '../../Styles';
-import { useTheme } from '../../../theme';
-import { joinRoom } from '../../../lib/services/restApi';
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
+import I18n from '~/i18n';
+import Button from '~/containers/Button';
+import { FormTextInput } from '~/containers/TextInput';
+import sharedStyles from '~/views/Styles';
+import { useTheme } from '~/theme';
+import { joinRoom } from '~/lib/services/restApi';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { type IJoinCodeProps } from '../definitions';
 
 const styles = StyleSheet.create({

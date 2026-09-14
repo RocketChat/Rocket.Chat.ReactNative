@@ -2,16 +2,16 @@ import { Q } from '@nozbe/watermelondb';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { createStore } from 'zustand';
 
-import database from '../../../lib/database';
-import { SUBSCRIPTIONS_TABLE } from '../../../lib/database/model/Subscription';
-import { loadThreadMessages } from '../../../lib/methods/loadThreadMessages';
-import { readMessages } from '../../../lib/methods/readMessages';
-import { getUserInfo } from '../../../lib/services/restApi';
-import { isGroupChat, getUidDirectMessage, canAutoTranslate as canAutoTranslateMethod } from '../../../lib/methods/helpers';
-import log from '../../../lib/methods/helpers/log';
-import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
-import { type RoomType, type TSubscriptionModel } from '../../../definitions';
-import { type TRoomOrPreview, isSubscriptionModel } from '../../../definitions/TRoom';
+import database from '~/lib/database';
+import { SUBSCRIPTIONS_TABLE } from '~/lib/database/model/Subscription';
+import { loadThreadMessages } from '~/lib/methods/loadThreadMessages';
+import { readMessages } from '~/lib/methods/readMessages';
+import { getUserInfo } from '~/lib/services/restApi';
+import { isGroupChat, getUidDirectMessage, canAutoTranslate as canAutoTranslateMethod } from '~/lib/methods/helpers';
+import log from '~/lib/methods/helpers/log';
+import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
+import { type RoomType, type TSubscriptionModel } from '~/definitions';
+import { type TRoomOrPreview, isSubscriptionModel } from '~/definitions/TRoom';
 import {
 	type IRoomStoreInitParams,
 	type RoomMembership,

@@ -1,10 +1,10 @@
 import { type ReactElement } from 'react';
 
-import { useTheme } from '../../../theme';
-import Button from '../../../containers/Button';
-import I18n from '../../../i18n';
-import type { IInviteSubscription } from '../../../definitions';
-import Chip from '../../../containers/Chip';
+import { useTheme } from '~/theme';
+import Button from '~/containers/Button';
+import I18n from '~/i18n';
+import type { IInviteSubscription } from '~/definitions';
+import Chip from '~/containers/Chip';
 import { RoomPlaceholder } from './RoomPlaceholder';
 
 type InvitedRoomProps = {

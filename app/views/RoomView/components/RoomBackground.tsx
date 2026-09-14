@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import { ImageBackground, StyleSheet } from 'react-native';
 
-import { useTheme } from '../../../theme';
+import { useTheme } from '~/theme';
 
 const styles = StyleSheet.create({
 	image: {

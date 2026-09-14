@@ -1,11 +1,11 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
-import { type TActionSheetOptionsItem } from '../../../../../containers/ActionSheet';
-import { showConfirmationAlert } from '../../../../../lib/methods/helpers';
-import { returnLivechat } from '../../../../../lib/services/restApi';
-import { type RoomStore } from '../../../definitions';
-import { closeLivechat } from '../../../services/closeLivechat';
-import { placeLivechatOnHold } from '../../../services/placeLivechatOnHold';
+import { type TActionSheetOptionsItem } from '~/containers/ActionSheet';
+import { showConfirmationAlert } from '~/lib/methods/helpers';
+import { returnLivechat } from '~/lib/services/restApi';
+import { type RoomStore } from '~/views/RoomView/definitions';
+import { closeLivechat } from '~/views/RoomView/services/closeLivechat';
+import { placeLivechatOnHold } from '~/views/RoomView/services/placeLivechatOnHold';
 import { OmnichannelRightButtons } from '../OmnichannelRightButtons';
 
 const mockNavigation = { navigate: jest.fn(), push: jest.fn() };
@@ -14,17 +14,17 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 const mockShowActionSheet = jest.fn();
-jest.mock('../../../../../containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet })
 }));
 
 let mockIsMasterDetail = false;
-jest.mock('../../../../../lib/hooks/useMasterDetail', () => ({
+jest.mock('~/lib/hooks/useMasterDetail', () => ({
 	useMasterDetail: () => mockIsMasterDetail
 }));
 
 let mockLivechatRequestComment = false;
-jest.mock('../../../../../lib/hooks/useSetting', () => ({
+jest.mock('~/lib/hooks/useSetting', () => ({
 	useSetting: () => mockLivechatRequestComment
 }));
 
@@ -37,25 +37,25 @@ jest.mock('zustand', () => ({
 }));
 
 let mockCanReturnQueue = false;
-jest.mock('../../../../../ee/omnichannel/hooks/useCanReturnQueue', () => ({
+jest.mock('~/ee/omnichannel/hooks/useCanReturnQueue', () => ({
 	useCanReturnQueue: () => mockCanReturnQueue
 }));
 
 let mockCanPlaceLivechatOnHold = false;
-jest.mock('../../../hooks/useCanPlaceLivechatOnHold', () => ({
+jest.mock('~/views/RoomView/hooks/useCanPlaceLivechatOnHold', () => ({
 	useCanPlaceLivechatOnHold: () => mockCanPlaceLivechatOnHold
 }));
 
-jest.mock('../../../services/closeLivechat', () => ({ closeLivechat: jest.fn() }));
-jest.mock('../../../services/placeLivechatOnHold', () => ({ placeLivechatOnHold: jest.fn() }));
-jest.mock('../../../../../lib/services/restApi', () => ({ returnLivechat: jest.fn() }));
-jest.mock('../../../../../lib/methods/helpers', () => ({
-	...jest.requireActual('../../../../../lib/methods/helpers'),
+jest.mock('~/views/RoomView/services/closeLivechat', () => ({ closeLivechat: jest.fn() }));
+jest.mock('~/views/RoomView/services/placeLivechatOnHold', () => ({ placeLivechatOnHold: jest.fn() }));
+jest.mock('~/lib/services/restApi', () => ({ returnLivechat: jest.fn() }));
+jest.mock('~/lib/methods/helpers', () => ({
+	...jest.requireActual('~/lib/methods/helpers'),
 	showConfirmationAlert: jest.fn(),
 	showErrorAlert: jest.fn()
 }));
 
-jest.mock('../../../../../containers/Header/components/HeaderButton', () => {
+jest.mock('~/containers/Header/components/HeaderButton', () => {
 	const ReactActual = jest.requireActual('react');
 	return {
 		Container: ({ children }: { children: unknown }) => ReactActual.createElement('Container', null, children),

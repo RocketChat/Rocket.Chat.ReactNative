@@ -1,11 +1,11 @@
 import { Alert } from 'react-native';
 
-import { saveRoomSettings } from '../../services/restApi';
-import database from '../../database';
-import { getSubscriptionByRoomId } from '../../database/services/Subscription';
-import log from '../../methods/helpers/log';
-import I18n from '../../../i18n';
-import { type TSubscriptionModel } from '../../../definitions';
+import { saveRoomSettings } from '~/lib/services/restApi';
+import database from '~/lib/database';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import log from '~/lib/methods/helpers/log';
+import I18n from '~/i18n';
+import { type TSubscriptionModel } from '~/definitions';
 
 const optimisticUpdate = async (rid: string, value: TSubscriptionModel['encrypted']): Promise<void> => {
 	try {

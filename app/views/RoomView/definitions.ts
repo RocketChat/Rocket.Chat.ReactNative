@@ -3,7 +3,7 @@ import { type FlatListProps } from 'react-native';
 import { type FlatList } from 'react-native-gesture-handler';
 import { type StoreApi } from 'zustand';
 
-import { type ChatsStackParamList } from '../../stacks/types';
+import { type ChatsStackParamList } from '~/stacks/types';
 import {
 	type IBaseScreen,
 	type IEmoji,
@@ -12,14 +12,14 @@ import {
 	type RoomType,
 	type TAnyMessageModel,
 	type IUseRoomMessageHandlersResult
-} from '../../definitions';
-import { type TRoomOrPreview } from '../../definitions/TRoom';
-import { type TActionSheetOptions } from '../../containers/ActionSheet';
-import { type IMessageComposerRef } from '../../containers/MessageComposer/interfaces';
-import { type IMessageActions, type IMessageActionsProps } from '../../containers/MessageActions';
-import { type IMessageErrorActions } from '../../containers/MessageErrorActions';
-import { type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
-import { type MessageRoomState } from '../../containers/message/stores/MessageRoomStore';
+} from '~/definitions';
+import { type TRoomOrPreview } from '~/definitions/TRoom';
+import { type TActionSheetOptions } from '~/containers/ActionSheet';
+import { type IMessageComposerRef } from '~/containers/MessageComposer/interfaces';
+import { type IMessageActions, type IMessageActionsProps } from '~/containers/MessageActions';
+import { type IMessageErrorActions } from '~/containers/MessageErrorActions';
+import { type TMessageActionStore } from '~/containers/message/stores/MessageActionStore';
+import { type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
 
 export type IRoomViewProps = Pick<IBaseScreen<ChatsStackParamList, 'RoomView'>, 'navigation' | 'route'>;
 

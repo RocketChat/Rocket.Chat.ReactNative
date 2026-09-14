@@ -4,7 +4,7 @@ import { createStore } from 'zustand';
 import { useCanPlaceLivechatOnHold } from '../useCanPlaceLivechatOnHold';
 
 let mockSetting = true;
-jest.mock('../../../../lib/hooks/useSetting', () => ({ useSetting: () => mockSetting }));
+jest.mock('~/lib/hooks/useSetting', () => ({ useSetting: () => mockSetting }));
 
 type TMockRoom = { rid: string; t: string; onHold?: boolean; lastMessage?: { u?: unknown; token?: string } };
 

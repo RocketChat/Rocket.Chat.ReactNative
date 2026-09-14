@@ -1,7 +1,7 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { type TNavigation } from '../../../stacks/stackType';
-import { type ChatsStackParamList } from '../../../stacks/types';
+import { type TNavigation } from '~/stacks/stackType';
+import { type ChatsStackParamList } from '~/stacks/types';
 
 export type TRoomStackParamList = ChatsStackParamList & TNavigation;
 

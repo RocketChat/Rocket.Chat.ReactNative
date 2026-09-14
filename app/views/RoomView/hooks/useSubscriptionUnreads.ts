@@ -1,7 +1,7 @@
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from 'zustand';
 
-import { getUidDirectMessage } from '../../../lib/methods/helpers/helpers';
+import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
 import { type IUseSubscriptionUnreadsResult } from '../definitions';
 import { type RoomStore } from '../definitions';
 import { fromSubscription } from '../stores/RoomStoreContext';

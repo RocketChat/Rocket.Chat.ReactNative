@@ -4,35 +4,35 @@ import { Provider } from 'react-redux';
 
 import { MessageComposerContainer } from './MessageComposerContainer';
 import { ComposerAttachments } from './components/Attachments/ComposerAttachments';
-import { setPermissions } from '../../actions/permissions';
-import { addSettings } from '../../actions/settings';
-import { selectServerRequest } from '../../actions/server';
-import { setUser } from '../../actions/login';
-import { mockedStore } from '../../reducers/mockedStore';
-import { type IPermissionsState } from '../../reducers/permissions';
-import { type IMessage, type IShareAttachment, type TMessageActionState } from '../../definitions';
-import { colors } from '../../lib/constants/colors';
+import { setPermissions } from '~/actions/permissions';
+import { addSettings } from '~/actions/settings';
+import { selectServerRequest } from '~/actions/server';
+import { setUser } from '~/actions/login';
+import { mockedStore } from '~/reducers/mockedStore';
+import { type IPermissionsState } from '~/reducers/permissions';
+import { type IMessage, type IShareAttachment, type TMessageActionState } from '~/definitions';
+import { colors } from '~/lib/constants/colors';
 import { type ComposerState } from './ComposerStore';
 import { ComposerProvider } from './ComposerStore';
 import { MessageActionProvider } from '../message/stores/MessageActionStore';
 import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
-import { initStore } from '../../lib/store/auxStore';
-import { searchRemote } from '../../lib/methods/search';
-import database from '../../lib/database';
+import { initStore } from '~/lib/store/auxStore';
+import { searchRemote } from '~/lib/methods/search';
+import database from '~/lib/database';
 import { useMessageComposerApi } from './context';
 import { type IMessageComposerRef } from './interfaces';
-import { sendFileMessage } from '../../lib/methods/sendFileMessage';
-import { runSlashCommand } from '../../lib/services/restApi';
+import { sendFileMessage } from '~/lib/methods/sendFileMessage';
+import { runSlashCommand } from '~/lib/services/restApi';
 
 jest.useFakeTimers();
 
 // Ensure search returns at least one item so autocomplete renders
-jest.mock('../../lib/methods/search', () => ({
+jest.mock('~/lib/methods/search', () => ({
 	searchLocal: jest.fn(() => []),
 	searchRemote: jest.fn(() => [{ _id: 'u1', username: 'john', name: 'John' }])
 }));
 
-jest.mock('../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	getListCannedResponse: jest.fn(() => ({
 		success: true,
 		cannedResponses: [{ _id: '1', shortcut: 'brb', text: 'Be right back' }]
@@ -40,7 +40,7 @@ jest.mock('../../lib/services/restApi', () => ({
 	runSlashCommand: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('../../lib/methods/sendFileMessage', () => ({
+jest.mock('~/lib/methods/sendFileMessage', () => ({
 	sendFileMessage: jest.fn(() => Promise.resolve())
 }));
 
@@ -83,7 +83,7 @@ const initialStoreState = () => {
 };
 initialStoreState();
 
-jest.mock('../../lib/database/services/Message', () => ({
+jest.mock('~/lib/database/services/Message', () => ({
 	getMessageById: (messageId: any) => ({
 		id: messageId,
 		rid: 'rid',
@@ -700,7 +700,7 @@ describe('MessageComposer', () => {
 		}
 	}));
 
-	jest.mock('../../lib/store/auxStore', () => ({
+	jest.mock('~/lib/store/auxStore', () => ({
 		store: {
 			getState: () => mockedStore.getState()
 		}

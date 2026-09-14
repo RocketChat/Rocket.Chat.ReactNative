@@ -1,6 +1,6 @@
-import { type IInviteSubscription } from '../../../definitions';
-import SafeAreaView from '../../../containers/SafeAreaView';
-import { useTheme } from '../../../theme';
+import { type IInviteSubscription } from '~/definitions';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { useTheme } from '~/theme';
 import { InvitedRoom } from './InvitedRoom';
 
 interface IInvitedRoomScreenProps {

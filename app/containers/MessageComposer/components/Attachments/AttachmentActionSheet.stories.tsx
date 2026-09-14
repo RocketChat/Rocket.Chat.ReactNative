@@ -2,9 +2,9 @@ import { type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AttachmentActionSheet } from './AttachmentActionSheet';
-import { selectServerRequest } from '../../../../actions/server';
-import { mockedStore as store } from '../../../../reducers/mockedStore';
-import { type IShareAttachment } from '../../../../definitions';
+import { selectServerRequest } from '~/actions/server';
+import { mockedStore as store } from '~/reducers/mockedStore';
+import { type IShareAttachment } from '~/definitions';
 
 const styles = StyleSheet.create({
 	container: {

@@ -1,8 +1,8 @@
 import { Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import I18n from '../../../../i18n';
-import { useTheme } from '../../../../theme';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
 import styles from './styles';
 
 export const AirgappedWs = () => {

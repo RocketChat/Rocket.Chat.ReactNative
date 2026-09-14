@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../database';
-import { type ICustomEmoji, type IEmoji, type TFrequentlyUsedEmojiModel } from '../../definitions';
+import { type ICustomEmoji, type IEmoji, type TFrequentlyUsedEmojiModel } from '~/definitions';
 import log from './helpers/log';
 import { sanitizeLikeString } from '../database/utils';
 import { aliasesByEmojiName } from '../constants/emojis/data';

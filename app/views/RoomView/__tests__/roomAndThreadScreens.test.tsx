@@ -5,18 +5,18 @@ import { createStore } from 'redux';
 
 import RoomView from '../index';
 import { type IRoomViewProps } from '../definitions';
-import { loadThreadMessages } from '../../../lib/methods/loadThreadMessages';
+import { loadThreadMessages } from '~/lib/methods/loadThreadMessages';
 import {
 	createObservableQuery as mockCreateObservableQuery,
 	createObservableRecord as mockCreateObservableRecord
 } from '../testUtils/observableDatabase';
 
-jest.mock('../../../i18n', () => ({
+jest.mock('~/i18n', () => ({
 	__esModule: true,
 	default: { t: (key: string) => key }
 }));
 
-jest.mock('../../../containers/Touch', () => {
+jest.mock('~/containers/Touch', () => {
 	const { createElement } = require('react');
 	const { Pressable } = require('react-native');
 	return {
@@ -45,7 +45,7 @@ jest.mock('../List', () => {
 	const { createElement } = require('react');
 	const { Pressable, View } = require('react-native');
 	const { useRoomScreen } = require('../stores/RoomScreenContext');
-	const { useComposerTmid, useOnSendMessage } = require('../../../containers/MessageComposer/ComposerStore');
+	const { useComposerTmid, useOnSendMessage } = require('~/containers/MessageComposer/ComposerStore');
 	return {
 		__esModule: true,
 		default: () => {
@@ -70,7 +70,7 @@ jest.mock('../List', () => {
 	};
 });
 // The composer itself is out of scope here; the List probe is what sends through the screen's store.
-jest.mock('../../../containers/MessageComposer', () => ({ MessageComposerContainer: 'MessageComposerContainer' }));
+jest.mock('~/containers/MessageComposer', () => ({ MessageComposerContainer: 'MessageComposerContainer' }));
 jest.mock('../components/RoomMessageActions', () => ({ RoomMessageActions: 'RoomMessageActions' }));
 jest.mock('../components/UploadProgress', () => ({ __esModule: true, default: 'UploadProgress' }));
 jest.mock('../hooks/useRoomMessageHandlers', () => ({ useRoomMessageHandlers: () => ({}) }));
@@ -83,34 +83,34 @@ jest.mock('../hooks/useOmnichannelPermissions', () => ({ useOmnichannelPermissio
 jest.mock('../hooks/useE2EEStatus', () => ({ useE2EEStatus: jest.fn(() => ({})) }));
 jest.mock('../hooks/useMessageActions', () => ({ useMessageActions: jest.fn(() => ({ resetAction: jest.fn() })) }));
 jest.mock('../hooks/useJumpToMessage', () => ({ useJumpToMessage: jest.fn(() => ({})) }));
-jest.mock('../../../containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: jest.fn(), hideActionSheet: jest.fn() })
 }));
-jest.mock('../../../lib/methods/subscriptions/room', () => ({ __esModule: true, default: class RoomClass {} }));
-jest.mock('../../../lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/subscriptions/room', () => ({ __esModule: true, default: class RoomClass {} }));
+jest.mock('~/lib/methods/helpers', () => ({
 	getUidDirectMessage: jest.fn(),
 	getRoomTitle: jest.fn(() => 'Room Title'),
 	isGroupChat: jest.fn(() => false),
 	canAutoTranslate: jest.fn(() => false)
 }));
-jest.mock('../../../lib/methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn(),
 	logEvent: jest.fn(),
 	events: {}
 }));
-jest.mock('../../../lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
+jest.mock('~/lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
 jest.mock('../services/getMessages', () => ({ __esModule: true, default: jest.fn(() => Promise.resolve()) }));
-jest.mock('../../../lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn(() => Promise.resolve()) }));
-jest.mock('../../../lib/methods/readMessages', () => ({ readMessages: jest.fn(() => Promise.resolve()) }));
-jest.mock('../../../lib/methods/sendMessage', () => ({ sendMessage: jest.fn(() => Promise.resolve()) }));
-jest.mock('../../../lib/methods/helpers/review', () => ({ Review: { pushPositiveEvent: jest.fn() } }));
-jest.mock('../../../lib/services/restApi', () => ({ joinRoom: jest.fn(() => Promise.resolve()), getUserInfo: jest.fn() }));
-jest.mock('../../../ee/omnichannel/lib', () => ({
+jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/methods/readMessages', () => ({ readMessages: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/methods/sendMessage', () => ({ sendMessage: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/methods/helpers/review', () => ({ Review: { pushPositiveEvent: jest.fn() } }));
+jest.mock('~/lib/services/restApi', () => ({ joinRoom: jest.fn(() => Promise.resolve()), getUserInfo: jest.fn() }));
+jest.mock('~/ee/omnichannel/lib', () => ({
 	takeInquiry: jest.fn(() => Promise.resolve()),
 	takeResume: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../lib/store/auxStore', () => ({
+jest.mock('~/lib/store/auxStore', () => ({
 	store: {
 		getState: () => ({
 			server: { version: '6.1.0' },
@@ -124,7 +124,7 @@ const mockSubscriptionRows: { current: unknown[] } = { current: [] };
 
 let mockCachedRecord: { row: unknown; record: ReturnType<typeof mockCreateObservableRecord>['record'] } | undefined;
 
-jest.mock('../../../lib/database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: {
 		active: {

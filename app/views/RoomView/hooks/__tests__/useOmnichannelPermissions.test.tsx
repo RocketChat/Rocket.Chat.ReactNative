@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { usePermissions } from '../../../../lib/hooks/usePermissions';
-import { type RoomState, type RoomStore } from '../../definitions';
+import { usePermissions } from '~/lib/hooks/usePermissions';
+import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
 import { useOmnichannelPermissions } from '../useOmnichannelPermissions';
 
-jest.mock('../../../../lib/hooks/usePermissions', () => ({
+jest.mock('~/lib/hooks/usePermissions', () => ({
 	usePermissions: jest.fn()
 }));
 

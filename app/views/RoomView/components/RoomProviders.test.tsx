@@ -1,12 +1,8 @@
 import { act, render } from '@testing-library/react-native';
 
 import { RoomProviders } from './RoomProviders';
-import { useComposerRid, useComposerSharing } from '../../../containers/MessageComposer/ComposerStore';
-import {
-	createMessageActionStore,
-	useIsBeingEdited,
-	useMessageAction
-} from '../../../containers/message/stores/MessageActionStore';
+import { useComposerRid, useComposerSharing } from '~/containers/MessageComposer/ComposerStore';
+import { createMessageActionStore, useIsBeingEdited, useMessageAction } from '~/containers/message/stores/MessageActionStore';
 
 describe('RoomProviders', () => {
 	it('does not re-render a consumer selecting a different slice when an unselected prop changes', () => {

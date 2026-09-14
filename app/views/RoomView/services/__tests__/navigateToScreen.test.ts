@@ -1,4 +1,4 @@
-import { SubscriptionType } from '../../../../definitions';
+import { SubscriptionType } from '~/definitions';
 import { navigateToScreen, type TRoomStackNavigation, type TRoomStackParamList } from '../navigateToScreen';
 
 describe('navigateToScreen', () => {

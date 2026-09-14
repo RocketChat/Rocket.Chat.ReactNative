@@ -2,10 +2,10 @@ import { InteractionManager } from 'react-native';
 import { createStore } from 'zustand';
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 
-import { type RoomState, type RoomStore, type TRoomInitResult } from '../../definitions';
+import { type RoomState, type RoomStore, type TRoomInitResult } from '~/views/RoomView/definitions';
 import { useRoomInit } from '../useRoomInit';
 
-jest.mock('../../../../lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
 interface IRenderRoomInitParams {
 	rid?: string;

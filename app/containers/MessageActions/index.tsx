@@ -3,30 +3,30 @@ import { Alert, Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
 
-import dayjs from '../../lib/dayjs';
-import database from '../../lib/database';
-import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
-import I18n from '../../i18n';
-import log, { logEvent } from '../../lib/methods/helpers/log';
-import Navigation from '../../lib/navigation/appNavigation';
+import dayjs from '~/lib/dayjs';
+import database from '~/lib/database';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import I18n from '~/i18n';
+import log, { logEvent } from '~/lib/methods/helpers/log';
+import Navigation from '~/lib/navigation/appNavigation';
 import { getMessageTranslation } from '../message/utils';
 import { LISTENER } from '../Toast';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { showConfirmationAlert } from '../../lib/methods/helpers/info';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import { type TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
-import { useLastFocusedMessageRef } from '../../lib/a11y/useLastFocusedMessageRef';
+import { useLastFocusedMessageRef } from '~/lib/a11y/useLastFocusedMessageRef';
 import Header, { HEADER_HEIGHT, type IHeader } from './Header';
-import events from '../../lib/methods/helpers/log/events';
+import events from '~/lib/methods/helpers/log/events';
 import {
 	type IApplicationState,
 	type IEmoji,
 	type ILoggedUser,
 	type TAnyMessageModel,
 	type TSubscriptionModel
-} from '../../definitions';
-import { getPermalinkMessage } from '../../lib/methods/getPermalinks';
-import { getQuoteMessageLink } from '../../lib/methods/getQuoteMessageLink';
-import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
+} from '~/definitions';
+import { getPermalinkMessage } from '~/lib/methods/getPermalinks';
+import { getQuoteMessageLink } from '~/lib/methods/getQuoteMessageLink';
+import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '~/lib/methods/helpers';
 import {
 	deleteMessage,
 	markAsUnread,
@@ -34,9 +34,9 @@ import {
 	togglePinMessage,
 	translateMessage,
 	reportMessage
-} from '../../lib/services/restApi';
-import { createDirectMessage } from '../../lib/methods/createDirectMessage';
-import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
+} from '~/lib/services/restApi';
+import { createDirectMessage } from '~/lib/methods/createDirectMessage';
+import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
 
 // Extra delay on top of the action sheet animation so accessibility focus is restored
 // only after the sheet is fully dismissed.

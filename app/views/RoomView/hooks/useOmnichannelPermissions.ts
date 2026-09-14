@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { usePermissions } from '../../../lib/hooks/usePermissions';
+import { usePermissions } from '~/lib/hooks/usePermissions';
 import { type IUseOmnichannelPermissionsParams } from '../definitions';
 
 export function useOmnichannelPermissions({ rid, t, roomStore }: IUseOmnichannelPermissionsParams): void {

@@ -1,6 +1,6 @@
 import { type ReactElement, type ReactNode } from 'react';
 
-import { MessageRoomProvider, type MessageRoomState } from '../../../containers/message/stores/MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
 import { type IRoomMessageHandlersInput } from '../definitions';
 import { useRoomMessageHandlers } from '../hooks/useRoomMessageHandlers';
 

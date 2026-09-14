@@ -1,11 +1,11 @@
 import { renderHook, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
-jest.mock('../../../../lib/services/restApi', () => ({ getRoutingConfig: jest.fn() }));
+jest.mock('~/lib/services/restApi', () => ({ getRoutingConfig: jest.fn() }));
 
-import { getRoutingConfig } from '../../../../lib/services/restApi';
-import routingConfigSaga from '../../sagas/routingConfig';
-import { createRecordingStore, cancelSagaTasks } from '../../../../lib/testUtils/sagaStore';
+import { getRoutingConfig } from '~/lib/services/restApi';
+import routingConfigSaga from '~/ee/omnichannel/sagas/routingConfig';
+import { createRecordingStore, cancelSagaTasks } from '~/lib/testUtils/sagaStore';
 import { useCanReturnQueue } from '../useCanReturnQueue';
 import type { ReactNode } from 'react';
 

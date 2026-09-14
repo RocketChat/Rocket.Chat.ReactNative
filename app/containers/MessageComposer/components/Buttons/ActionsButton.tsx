@@ -1,15 +1,15 @@
 import { useContext } from 'react';
 
-import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { BaseButton } from './BaseButton';
-import { type TActionSheetOptionsItem, useActionSheet } from '../../../ActionSheet';
-import { MessageInnerContext } from '../../context';
-import I18n from '../../../../i18n';
-import Navigation from '../../../../lib/navigation/appNavigation';
-import { useMasterDetail } from '../../../../lib/hooks/useMasterDetail';
-import { usePermissions } from '../../../../lib/hooks/usePermissions';
-import { useCanUploadFile, useChooseMedia } from '../../hooks';
-import { useComposerRid, useComposerTmid, useComposerType } from '../../ComposerStore';
+import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
+import { MessageInnerContext } from '~/containers/MessageComposer/context';
+import I18n from '~/i18n';
+import Navigation from '~/lib/navigation/appNavigation';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { usePermissions } from '~/lib/hooks/usePermissions';
+import { useCanUploadFile, useChooseMedia } from '~/containers/MessageComposer/hooks';
+import { useComposerRid, useComposerTmid, useComposerType } from '~/containers/MessageComposer/ComposerStore';
 
 export const ActionsButton = () => {
 	const rid = useComposerRid();

@@ -9,10 +9,10 @@ let mockIsMasterDetail = false;
 jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => ({ navigate: mockNavigate, push: mockPush })
 }));
-jest.mock('../../../../lib/hooks/useMasterDetail', () => ({
+jest.mock('~/lib/hooks/useMasterDetail', () => ({
 	useMasterDetail: () => mockIsMasterDetail
 }));
-jest.mock('../../../../lib/methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	events: { ROOM_GO_RA: 'ROOM_GO_RA' },
 	logEvent: jest.fn()
@@ -25,7 +25,7 @@ const mockState = {
 	canForwardGuest: true,
 	canViewCannedResponse: true
 };
-jest.mock('../../../../ee/omnichannel/hooks/useCanReturnQueue', () => ({ useCanReturnQueue: () => true }));
+jest.mock('~/ee/omnichannel/hooks/useCanReturnQueue', () => ({ useCanReturnQueue: () => true }));
 jest.mock('../useCanPlaceLivechatOnHold', () => ({ useCanPlaceLivechatOnHold: () => true }));
 
 jest.mock('zustand', () => ({

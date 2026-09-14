@@ -1,9 +1,9 @@
 import { act, renderHook } from '@testing-library/react-native';
 
-import database from '../../../../lib/database';
+import database from '~/lib/database';
 import { useThreadFollowing } from '../useThreadFollowing';
 
-jest.mock('../../../../lib/database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn() } }
 }));

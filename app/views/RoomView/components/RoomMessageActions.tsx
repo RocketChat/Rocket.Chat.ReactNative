@@ -1,10 +1,10 @@
-import MessageActions from '../../../containers/MessageActions';
-import MessageErrorActions from '../../../containers/MessageErrorActions';
+import MessageActions from '~/containers/MessageActions';
+import MessageErrorActions from '~/containers/MessageErrorActions';
 import { type IRoomMessageActionsProps } from '../definitions';
-import { type TSubscriptionModel } from '../../../definitions';
-import { isSubscriptionModel } from '../../../definitions/TRoom';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { getUserSelector } from '../../../selectors/login';
+import { type TSubscriptionModel } from '~/definitions';
+import { isSubscriptionModel } from '~/definitions/TRoom';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { getUserSelector } from '~/selectors/login';
 import { useReadOnly } from '../hooks/useReadOnly';
 import { useRoomStore, useRoomStoreApi } from '../stores/RoomStoreContext';
 

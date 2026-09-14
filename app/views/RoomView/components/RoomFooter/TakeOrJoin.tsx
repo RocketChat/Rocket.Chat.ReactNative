@@ -1,8 +1,8 @@
 import { type ReactElement } from 'react';
 
-import I18n from '../../../../i18n';
-import { type ITakeOrJoinProps } from '../../definitions';
-import { useRoomStore } from '../../stores/RoomStoreContext';
+import I18n from '~/i18n';
+import { type ITakeOrJoinProps } from '~/views/RoomView/definitions';
+import { useRoomStore } from '~/views/RoomView/stores/RoomStoreContext';
 import { FooterAction } from './FooterAction';
 
 export const TakeOrJoin = ({ joinCodeRef }: ITakeOrJoinProps): ReactElement => {

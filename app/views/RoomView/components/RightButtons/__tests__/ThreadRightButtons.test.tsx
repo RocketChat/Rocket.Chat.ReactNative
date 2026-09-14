@@ -1,21 +1,21 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
-import { toggleFollowThread } from '../../../../../lib/methods/toggleFollowThread';
+import { toggleFollowThread } from '~/lib/methods/toggleFollowThread';
 import { ThreadRightButtons } from '../ThreadRightButtons';
 
 let mockAppState = { login: { user: { id: 'u1', username: 'user', token: 'tok' } } };
-jest.mock('../../../../../lib/hooks/useAppSelector', () => ({
+jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: (selector: (state: typeof mockAppState) => unknown) => selector(mockAppState)
 }));
 
 let mockFollowersByThread: Record<string, string[]> = {};
-jest.mock('../../../hooks/useThreadFollowing', () => ({
+jest.mock('~/views/RoomView/hooks/useThreadFollowing', () => ({
 	useThreadFollowing: (tmid: string, userId: string) => mockFollowersByThread[tmid]?.includes(userId) ?? false
 }));
 
-jest.mock('../../../../../lib/methods/toggleFollowThread', () => ({ toggleFollowThread: jest.fn() }));
+jest.mock('~/lib/methods/toggleFollowThread', () => ({ toggleFollowThread: jest.fn() }));
 
-jest.mock('../../../../../containers/Header/components/HeaderButton', () => {
+jest.mock('~/containers/Header/components/HeaderButton', () => {
 	const ReactActual = jest.requireActual('react');
 	return {
 		Container: ({ children }: { children: unknown }) => ReactActual.createElement('Container', null, children),

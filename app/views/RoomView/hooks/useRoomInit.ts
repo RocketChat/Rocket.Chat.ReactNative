@@ -1,8 +1,8 @@
 import { type RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { InteractionManager } from 'react-native';
 
-import { useLiveRef } from '../../../lib/hooks/useLiveRef';
-import log from '../../../lib/methods/helpers/log';
+import { useLiveRef } from '~/lib/hooks/useLiveRef';
+import log from '~/lib/methods/helpers/log';
 import { type IRoomScreenContextValue, type RoomStore } from '../definitions';
 
 interface IUseRoomInitParams {

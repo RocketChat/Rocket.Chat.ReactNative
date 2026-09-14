@@ -1,13 +1,13 @@
 import { View, Text } from 'react-native';
 
-import dayjs from '../../../../lib/dayjs';
-import { useTheme } from '../../../../theme';
-import sharedStyles from '../../../../views/Styles';
-import { useComposerTmid, useOnRemoveQuoteMessage } from '../../ComposerStore';
+import dayjs from '~/lib/dayjs';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
+import { useComposerTmid, useOnRemoveQuoteMessage } from '~/containers/MessageComposer/ComposerStore';
 import { BaseButton } from '../Buttons';
-import { useMessage } from '../../hooks';
-import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
-import { MarkdownPreview } from '../../../markdown';
+import { useMessage } from '~/containers/MessageComposer/hooks';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { MarkdownPreview } from '~/containers/markdown';
 
 export const Quote = ({ messageId }: { messageId: string }) => {
 	const [styles, colors] = useStyle();

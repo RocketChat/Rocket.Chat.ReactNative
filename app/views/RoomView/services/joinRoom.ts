@@ -1,8 +1,8 @@
-import { takeInquiry, takeResume } from '../../../ee/omnichannel/lib';
-import log, { events, logEvent } from '../../../lib/methods/helpers/log';
-import { joinRoom as joinRoomService } from '../../../lib/services/restApi';
+import { takeInquiry, takeResume } from '~/ee/omnichannel/lib';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { joinRoom as joinRoomService } from '~/lib/services/restApi';
 import { type IJoinRoomContext } from '../definitions';
-import { type TRoomOrPreview } from '../../../definitions/TRoom';
+import { type TRoomOrPreview } from '~/definitions/TRoom';
 
 export const joinRoom = async (room: TRoomOrPreview, { requestJoinCode, onJoin }: IJoinRoomContext): Promise<void> => {
 	logEvent(events.ROOM_JOIN);

@@ -2,11 +2,11 @@ import { memo } from 'react';
 
 import { fromSubscription, useRoomStore } from '../stores/RoomStoreContext';
 import { useRoomScreen } from '../stores/RoomScreenContext';
-import Message from '../../../containers/message';
-import { getMessageSeparators } from '../../../containers/message/utils';
+import Message from '~/containers/message';
+import { getMessageSeparators } from '~/containers/message/utils';
 import LoadMore from '../LoadMore';
-import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
-import { type RoomType } from '../../../definitions';
+import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
+import { type RoomType } from '~/definitions';
 import { useThreadBadgeColor } from '../hooks/useThreadBadgeColor';
 import { type TMessageRowProps } from '../definitions';
 

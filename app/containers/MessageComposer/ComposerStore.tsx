@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactElement, type
 import { createStore, useStore } from 'zustand';
 import { type StoreApi } from 'zustand';
 
-import { type IMessage, type IMessageEditAttachment } from '../../definitions';
+import { type IMessage, type IMessageEditAttachment } from '~/definitions';
 
 export type ComposerState = {
 	roomTitle: string;

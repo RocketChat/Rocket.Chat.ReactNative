@@ -5,8 +5,8 @@ import { createStore as createReduxStore } from 'redux';
 
 import RoomView from '../index';
 import { type IRoomViewProps } from '../definitions';
-import { type TRoomOrPreview } from '../../../definitions/TRoom';
-import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
+import { type TRoomOrPreview } from '~/definitions/TRoom';
+import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { useE2EEStatus } from '../hooks/useE2EEStatus';
 
 jest.mock('../RoomScreen', () => {
@@ -33,8 +33,8 @@ jest.mock('../hooks/useHeader', () => ({ useHeader: jest.fn() }));
 jest.mock('../hooks/useE2EEStatus', () => ({
 	useE2EEStatus: jest.fn(() => ({ showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false }))
 }));
-jest.mock('../../../lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
-jest.mock('../../../lib/methods/helpers', () => ({ getUidDirectMessage: jest.fn(), getRoomTitle: jest.fn(() => 'Room Title') }));
+jest.mock('~/lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
+jest.mock('~/lib/methods/helpers', () => ({ getUidDirectMessage: jest.fn(), getRoomTitle: jest.fn(() => 'Room Title') }));
 
 const room: { current: TRoomOrPreview } = { current: { rid: 'rid-1', t: 'c' } };
 

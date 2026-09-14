@@ -1,16 +1,16 @@
 import { memo, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import I18n from '../../i18n';
-import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
-import { themes } from '../../lib/constants/colors';
-import { useTheme } from '../../theme';
+import I18n from '~/i18n';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import { themes } from '~/lib/constants/colors';
+import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
-import { makeThreadName } from '../../lib/methods/helpers/room';
-import { type TThreadModel } from '../../definitions';
-import { type TRoomOrPreview } from '../../definitions/TRoom';
-import { getRoomTitle, isGroupChat, isAndroid, isTablet } from '../../lib/methods/helpers';
-import { getMessageById } from '../../lib/database/services/Message';
+import { makeThreadName } from '~/lib/methods/helpers/room';
+import { type TThreadModel } from '~/definitions';
+import { type TRoomOrPreview } from '~/definitions/TRoom';
+import { getRoomTitle, isGroupChat, isAndroid, isTablet } from '~/lib/methods/helpers';
+import { getMessageById } from '~/lib/database/services/Message';
 
 const androidMarginLeft = isTablet ? 0 : 4;
 

@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 
-import Button from '../../../containers/Button';
-import I18n from '../../../i18n';
+import Button from '~/containers/Button';
+import I18n from '~/i18n';
 import { RoomPlaceholder } from './RoomPlaceholder';
 
 export const RoomLoadFailed = ({ onRetry }: { onRetry: () => void }): ReactElement => (

@@ -3,18 +3,18 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import { useIsScreenReaderEnabled } from '../../../../lib/hooks/useIsScreenReaderEnabled';
-import { isIOS } from '../../../../lib/methods/helpers';
-import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
-import { isExternalKeyboardConnected } from '../../../../lib/methods/helpers/externalInput';
-import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../../lib/constants/accessibility';
+import { useIsScreenReaderEnabled } from '~/lib/hooks/useIsScreenReaderEnabled';
+import { isIOS } from '~/lib/methods/helpers';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
+import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
+import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '~/lib/constants/accessibility';
 import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
-import { type TAnyMessageModel } from '../../../../definitions';
-import { type IListProps } from '../../definitions';
+import { type TAnyMessageModel } from '~/definitions';
+import { type IListProps } from '~/views/RoomView/definitions';
 import { SCROLL_LIMIT } from '../constants';
-import { useIsAutocompleteVisible } from '../../../../containers/MessageComposer/ComposerStore';
-import FloatingDateSeparator from '../../../../containers/Separator/FloatingDateSeparator';
+import { useIsAutocompleteVisible } from '~/containers/MessageComposer/ComposerStore';
+import FloatingDateSeparator from '~/containers/Separator/FloatingDateSeparator';
 import { useFloatingDate } from '../hooks/useFloatingDate';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList<TAnyMessageModel>);

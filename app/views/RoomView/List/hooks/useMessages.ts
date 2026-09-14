@@ -3,18 +3,18 @@ import { Q } from '@nozbe/watermelondb';
 import { type Subscription } from 'rxjs';
 import { useDispatch, useStore } from 'react-redux';
 
-import { type IApplicationState, type RoomType, type TAnyMessageModel } from '../../../../definitions';
-import database from '../../../../lib/database';
-import { getMessageById } from '../../../../lib/database/services/Message';
-import { getThreadById } from '../../../../lib/database/services/Thread';
-import { tsToMs } from '../../../../lib/dayjs';
-import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
-import { readThreads } from '../../../../lib/services/restApi';
+import { type IApplicationState, type RoomType, type TAnyMessageModel } from '~/definitions';
+import database from '~/lib/database';
+import { getMessageById } from '~/lib/database/services/Message';
+import { getThreadById } from '~/lib/database/services/Thread';
+import { tsToMs } from '~/lib/dayjs';
+import { compareServerVersion, useDebounce } from '~/lib/methods/helpers';
+import { readThreads } from '~/lib/services/restApi';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
 import { buildVisibleSystemTypesClause, isHiddenSystemMessage, isLoaderMessage } from '../visibleSystemMessages';
-import { roomHistoryRequest } from '../../../../actions/room';
-import { isNewerLoader, raiseOrRelease } from '../../services/anchorResolver';
-import { findNewerLoaderAbove } from '../../services/getLocalAnchor';
+import { roomHistoryRequest } from '~/actions/room';
+import { isNewerLoader, raiseOrRelease } from '~/views/RoomView/services/anchorResolver';
+import { findNewerLoaderAbove } from '~/views/RoomView/services/getLocalAnchor';
 
 const findFirstLoaderId = (messages: TAnyMessageModel[]): string | null => messages.find(isLoaderMessage)?.id ?? null;
 

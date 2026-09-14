@@ -2,11 +2,11 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactElem
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { type IUseRoomMessageHandlersResult, type IUser, type TAnyMessageModel } from '../../../definitions';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { useLiveRef } from '../../../lib/hooks/useLiveRef';
-import { useSetting } from '../../../lib/hooks/useSetting';
-import { getUserSelector } from '../../../selectors/login';
+import { type IUseRoomMessageHandlersResult, type IUser, type TAnyMessageModel } from '~/definitions';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useLiveRef } from '~/lib/hooks/useLiveRef';
+import { useSetting } from '~/lib/hooks/useSetting';
+import { getUserSelector } from '~/selectors/login';
 
 type LiveCallbacks = {
 	jumpToMessage?: (link: string) => void;

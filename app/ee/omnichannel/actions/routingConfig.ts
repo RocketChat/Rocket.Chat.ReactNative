@@ -1,6 +1,6 @@
 import { type Action } from 'redux';
 
-import { ROUTING_CONFIG } from '../../../actions/actionsTypes';
+import { ROUTING_CONFIG } from '~/actions/actionsTypes';
 
 interface IRoutingConfigSuccess extends Action {
 	returnQueue: boolean;

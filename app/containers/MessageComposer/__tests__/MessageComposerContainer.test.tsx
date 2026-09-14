@@ -6,20 +6,20 @@ import { getDocumentAsync } from 'expo-document-picker';
 import { MessageComposerContainer } from '../MessageComposerContainer';
 import { ComposerAttachments } from '../components/Attachments/ComposerAttachments';
 import { ComposerProvider } from '../ComposerStore';
-import { MessageActionProvider, useMessageActionStoreApi } from '../../message/stores/MessageActionStore';
+import { MessageActionProvider, useMessageActionStoreApi } from '~/containers/message/stores/MessageActionStore';
 import { useChooseMedia } from '../hooks/useChooseMedia';
 import { type IMessageComposerRef } from '../interfaces';
-import { setPermissions } from '../../../actions/permissions';
-import { selectServerRequest } from '../../../actions/server';
-import { setUser } from '../../../actions/login';
-import { mockedStore } from '../../../reducers/mockedStore';
-import { type TMessageActionState } from '../../../definitions';
-import { initStore } from '../../../lib/store/auxStore';
-import ImagePicker from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
-import Navigation from '../../../lib/navigation/appNavigation';
-import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
-import { getThreadById } from '../../../lib/database/services/Thread';
-import { useAltTextSupported } from '../../../lib/hooks/useAltTextSupported';
+import { setPermissions } from '~/actions/permissions';
+import { selectServerRequest } from '~/actions/server';
+import { setUser } from '~/actions/login';
+import { mockedStore } from '~/reducers/mockedStore';
+import { type TMessageActionState } from '~/definitions';
+import { initStore } from '~/lib/store/auxStore';
+import ImagePicker from '~/lib/methods/helpers/ImagePicker/ImagePicker';
+import Navigation from '~/lib/navigation/appNavigation';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import { getThreadById } from '~/lib/database/services/Thread';
+import { useAltTextSupported } from '~/lib/hooks/useAltTextSupported';
 
 jest.useFakeTimers();
 
@@ -27,7 +27,7 @@ jest.mock('expo-document-picker', () => ({
 	getDocumentAsync: jest.fn()
 }));
 
-jest.mock('../../../lib/methods/helpers/ImagePicker/ImagePicker', () => ({
+jest.mock('~/lib/methods/helpers/ImagePicker/ImagePicker', () => ({
 	__esModule: true,
 	default: {
 		openCamera: jest.fn(),
@@ -35,29 +35,29 @@ jest.mock('../../../lib/methods/helpers/ImagePicker/ImagePicker', () => ({
 	}
 }));
 
-jest.mock('../../../lib/database/services/Subscription', () => ({
+jest.mock('~/lib/database/services/Subscription', () => ({
 	getSubscriptionByRoomId: jest.fn()
 }));
 
-jest.mock('../../../lib/database/services/Thread', () => ({
+jest.mock('~/lib/database/services/Thread', () => ({
 	getThreadById: jest.fn()
 }));
 
-jest.mock('../../../lib/navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	__esModule: true,
 	default: { navigate: jest.fn() }
 }));
 
-jest.mock('../../../lib/methods/draftMessage', () => ({
+jest.mock('~/lib/methods/draftMessage', () => ({
 	loadDraftMessage: jest.fn(() => Promise.resolve('')),
 	saveDraftMessage: jest.fn()
 }));
 
-jest.mock('../../../lib/hooks/useAltTextSupported', () => ({
+jest.mock('~/lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: jest.fn()
 }));
 
-jest.mock('../../../lib/database/services/Message', () => ({
+jest.mock('~/lib/database/services/Message', () => ({
 	getMessageById: (messageId: string) => ({ id: messageId, rid: 'rid', msg: `Message ${messageId}`, attachments: [] })
 }));
 

@@ -1,5 +1,5 @@
-import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
-import { tsToMs } from '../../../lib/dayjs';
+import { MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
+import { tsToMs } from '~/lib/dayjs';
 import { type AnchorMessage } from '../definitions';
 
 export const isNewerLoader = (message: AnchorMessage): boolean => message.t === MessageTypeLoad.NEXT_CHUNK;

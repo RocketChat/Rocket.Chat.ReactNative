@@ -1,6 +1,6 @@
-import I18n from '../../../i18n';
-import { getThreadById } from '../../../lib/database/services/Thread';
-import getThreadName from '../../../lib/methods/getThreadName';
+import I18n from '~/i18n';
+import { getThreadById } from '~/lib/database/services/Thread';
+import getThreadName from '~/lib/methods/getThreadName';
 
 export const fetchThreadName = async (
 	rid: string,

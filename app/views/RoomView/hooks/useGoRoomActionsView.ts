@@ -1,12 +1,12 @@
 import { type NavigatorScreenParams, useNavigation } from '@react-navigation/native';
 import { useShallow } from 'zustand/react/shallow';
 
-import { events, logEvent } from '../../../lib/methods/helpers/log';
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { useCanReturnQueue } from '../../../ee/omnichannel/hooks/useCanReturnQueue';
-import type { ISubscription, SubscriptionType, TSubscriptionModel } from '../../../definitions';
-import { type TNavigation } from '../../../stacks/stackType';
-import { type ModalStackParamList } from '../../../stacks/MasterDetailStack/types';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { useCanReturnQueue } from '~/ee/omnichannel/hooks/useCanReturnQueue';
+import type { ISubscription, SubscriptionType, TSubscriptionModel } from '~/definitions';
+import { type TNavigation } from '~/stacks/stackType';
+import { type ModalStackParamList } from '~/stacks/MasterDetailStack/types';
 import { type IRoomViewProps } from '../definitions';
 import { useStore } from 'zustand';
 import { type RoomStore } from '../definitions';

@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 
-import I18n from '../../../i18n';
-import { getRoomTitle } from '../../../lib/methods/helpers';
-import EventEmitter from '../../../lib/methods/helpers/events';
-import { showErrorAlert } from '../../../lib/methods/helpers/info';
-import Navigation from '../../../lib/navigation/appNavigation';
+import I18n from '~/i18n';
+import { getRoomTitle } from '~/lib/methods/helpers';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import Navigation from '~/lib/navigation/appNavigation';
 import { type RoomStore } from '../definitions';
 
 const handleRoomRemoved = (removedRid: string, rid: string | undefined, isMasterDetail: boolean, roomStore: RoomStore) => {

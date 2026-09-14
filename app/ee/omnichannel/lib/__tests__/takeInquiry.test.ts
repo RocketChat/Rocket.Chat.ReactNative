@@ -1,14 +1,14 @@
-import sdk from '../../../../lib/services/sdk';
-import { store as reduxStore } from '../../../../lib/store/auxStore';
+import sdk from '~/lib/services/sdk';
+import { store as reduxStore } from '~/lib/store/auxStore';
 import { takeInquiry } from '..';
 
-jest.mock('../../../../lib/services/sdk', () => ({
+jest.mock('~/lib/services/sdk', () => ({
 	__esModule: true,
 	default: { post: jest.fn(() => Promise.resolve()), get: jest.fn(), methodCallWrapper: jest.fn(() => Promise.resolve()) }
 }));
-jest.mock('../../../../lib/store/auxStore', () => ({ store: { getState: jest.fn() } }));
+jest.mock('~/lib/store/auxStore', () => ({ store: { getState: jest.fn() } }));
 jest.mock('../subscriptions/inquiry', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('../../../../lib/methods/helpers/events', () => ({
+jest.mock('~/lib/methods/helpers/events', () => ({
 	__esModule: true,
 	default: { addEventListener: jest.fn(), removeListener: jest.fn() }
 }));

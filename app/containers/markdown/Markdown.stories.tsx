@@ -2,9 +2,9 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import Markdown, { MarkdownPreview } from '.';
-import { setCustomEmojis } from '../../actions/customEmojis';
-import { mockedStore } from '../../reducers/mockedStore';
-import { themes } from '../../lib/constants/colors';
+import { setCustomEmojis } from '~/actions/customEmojis';
+import { mockedStore } from '~/reducers/mockedStore';
+import { themes } from '~/lib/constants/colors';
 
 const theme = 'light';
 

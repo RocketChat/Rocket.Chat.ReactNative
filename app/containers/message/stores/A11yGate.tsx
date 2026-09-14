@@ -1,6 +1,6 @@
 import { createContext, use, type ReactElement, type ReactNode } from 'react';
 
-import { useIsAccessibilityNavigationEnabled } from '../../../lib/hooks/useIsAccessibilityNavigationEnabled';
+import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
 
 // One boolean per room: is accessibility navigation (screen reader OR external keyboard) active?
 // Message rows read it to skip the react-native-a11y-order wrappers when nobody needs them.

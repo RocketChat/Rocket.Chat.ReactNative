@@ -1,11 +1,11 @@
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { useSetting } from '../../../lib/hooks/useSetting';
-import { isRoomFederated } from '../../../lib/methods/isRoomFederated';
-import { getUserSelector } from '../../../selectors/login';
-import { type RoomType } from '../../../definitions';
-import { A11yGateProvider } from '../../../containers/message/stores/A11yGate';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useSetting } from '~/lib/hooks/useSetting';
+import { isRoomFederated } from '~/lib/methods/isRoomFederated';
+import { getUserSelector } from '~/selectors/login';
+import { type RoomType } from '~/definitions';
+import { A11yGateProvider } from '~/containers/message/stores/A11yGate';
 import { type IRoomMessageListProps } from '../definitions';
-import { type TRoomOrPreview } from '../../../definitions/TRoom';
+import { type TRoomOrPreview } from '~/definitions/TRoom';
 import { fromSubscription, useRoomStore } from '../stores/RoomStoreContext';
 import List from '../List';
 import { RoomMessageProvider } from './RoomMessageProvider';

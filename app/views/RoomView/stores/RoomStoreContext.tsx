@@ -2,8 +2,8 @@ import { createContext, useContext } from 'react';
 import { useStore } from 'zustand';
 
 import { type RoomState, type RoomStore } from '../definitions';
-import { type TSubscriptionModel } from '../../../definitions/ISubscription';
-import { isSubscriptionModel } from '../../../definitions/TRoom';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
+import { isSubscriptionModel } from '~/definitions/TRoom';
 
 export const RoomStoreContext = createContext<RoomStore | null>(null);
 

@@ -1,6 +1,6 @@
-import { inquiryReset } from '../../actions/inquiry';
-import { routingConfigSuccess } from '../../actions/routingConfig';
-import { selectServerRequest } from '../../../../actions/server';
+import { inquiryReset } from '~/ee/omnichannel/actions/inquiry';
+import { routingConfigSuccess } from '~/ee/omnichannel/actions/routingConfig';
+import { selectServerRequest } from '~/actions/server';
 import routingConfig, { initialState } from '../routingConfig';
 
 describe('routingConfig reducer', () => {

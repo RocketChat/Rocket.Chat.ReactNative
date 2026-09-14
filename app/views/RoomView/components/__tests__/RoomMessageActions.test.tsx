@@ -3,13 +3,13 @@ import { render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'zustand';
 
-import { ActionSheetProvider } from '../../../../containers/ActionSheet';
-import { type IMessageActions } from '../../../../containers/MessageActions';
-import { type IMessageErrorActions } from '../../../../containers/MessageErrorActions';
-import { setUser } from '../../../../actions/login';
-import { createMockedStore } from '../../../../reducers/mockedStore';
-import { type RoomState } from '../../definitions';
-import { RoomStoreContext } from '../../stores/RoomStoreContext';
+import { ActionSheetProvider } from '~/containers/ActionSheet';
+import { type IMessageActions } from '~/containers/MessageActions';
+import { type IMessageErrorActions } from '~/containers/MessageErrorActions';
+import { setUser } from '~/actions/login';
+import { createMockedStore } from '~/reducers/mockedStore';
+import { type RoomState } from '~/views/RoomView/definitions';
+import { RoomStoreContext } from '~/views/RoomView/stores/RoomStoreContext';
 import { RoomMessageActions } from '../RoomMessageActions';
 
 const subRoom = { id: 'sub-1', rid: 'rid-1', t: 'c' };

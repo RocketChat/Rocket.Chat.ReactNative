@@ -1,5 +1,5 @@
-import { store as reduxStore } from '../../store/auxStore';
-import { type ISubscription } from '../../../definitions';
+import { store as reduxStore } from '~/lib/store/auxStore';
+import { type ISubscription } from '~/definitions';
 import { hasPermission } from './helpers';
 
 type ReadOnlyRoom = Pick<Partial<ISubscription>, 'rid' | 'archived' | 'muted' | 'ro' | 'unmuted'>;

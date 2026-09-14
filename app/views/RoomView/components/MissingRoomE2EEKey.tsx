@@ -1,10 +1,10 @@
 import { type ReactElement } from 'react';
 import { Linking } from 'react-native';
 
-import { useTheme } from '../../../theme';
-import Button from '../../../containers/Button';
-import I18n from '../../../i18n';
-import { LEARN_MORE_E2EE_URL } from '../../../lib/encryption/constants';
+import { useTheme } from '~/theme';
+import Button from '~/containers/Button';
+import I18n from '~/i18n';
+import { LEARN_MORE_E2EE_URL } from '~/lib/encryption/constants';
 import { RoomPlaceholder } from './RoomPlaceholder';
 
 export const MissingRoomE2EEKey = (): ReactElement => {

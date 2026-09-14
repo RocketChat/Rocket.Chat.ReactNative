@@ -1,7 +1,7 @@
 import { useWindowDimensions } from 'react-native';
 
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { getUserSelector } from '../../../selectors/login';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { getUserSelector } from '~/selectors/login';
 import { useRoomStore } from '../stores/RoomStoreContext';
 import UploadProgress from './UploadProgress';
 

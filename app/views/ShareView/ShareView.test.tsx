@@ -2,32 +2,32 @@ import { createRef, type ReactElement, type RefObject } from 'react';
 import { act, fireEvent, render, renderHook, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
-import { initStore } from '../../lib/store/auxStore';
-import { mockedStore } from '../../reducers/mockedStore';
-import { appStart } from '../../actions/app';
-import { RootEnum } from '../../definitions';
+import { initStore } from '~/lib/store/auxStore';
+import { mockedStore } from '~/reducers/mockedStore';
+import { appStart } from '~/actions/app';
+import { RootEnum } from '~/definitions';
 import { RoomProviders } from '../RoomView/components/RoomProviders';
-import { MessageComposerContainer, type IMessageComposerRef } from '../../containers/MessageComposer';
-import { createMessageActionStore, type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
-import { useChooseMedia } from '../../containers/MessageComposer/hooks/useChooseMedia';
+import { MessageComposerContainer, type IMessageComposerRef } from '~/containers/MessageComposer';
+import { createMessageActionStore, type TMessageActionStore } from '~/containers/message/stores/MessageActionStore';
+import { useChooseMedia } from '~/containers/MessageComposer/hooks/useChooseMedia';
 
 jest.mock('expo-document-picker', () => ({
 	getDocumentAsync: jest.fn()
 }));
-jest.mock('../../lib/navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	navigate: jest.fn()
 }));
-jest.mock('../../lib/database/services/Subscription', () => ({
+jest.mock('~/lib/database/services/Subscription', () => ({
 	getSubscriptionByRoomId: jest.fn()
 }));
-jest.mock('../../lib/database/services/Thread', () => ({
+jest.mock('~/lib/database/services/Thread', () => ({
 	getThreadById: jest.fn()
 }));
-jest.mock('../../lib/hooks/useAltTextSupported', () => ({
+jest.mock('~/lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: jest.fn(() => false)
 }));
 
-jest.mock('../../lib/database', () => ({
+jest.mock('~/lib/database', () => ({
 	active: {
 		get: jest.fn(() => ({
 			query: jest.fn(() => ({
@@ -45,22 +45,22 @@ jest.mock('../../lib/database', () => ({
 }));
 
 jest.mock('./Preview', () => () => null);
-jest.mock('../../containers/Thumbs', () => () => null);
-jest.mock('../../containers/ActionSheet', () => ({
+jest.mock('~/containers/Thumbs', () => () => null);
+jest.mock('~/containers/ActionSheet', () => ({
 	showActionSheetRef: jest.fn(),
 	useActionSheet: () => ({ showActionSheet: jest.fn() })
 }));
-jest.mock('../../containers/MessageComposer/components/Attachments/AttachmentActionSheet', () => ({
+jest.mock('~/containers/MessageComposer/components/Attachments/AttachmentActionSheet', () => ({
 	AttachmentActionSheet: () => null
 }));
-jest.mock('../../lib/methods/sendMessage', () => ({
+jest.mock('~/lib/methods/sendMessage', () => ({
 	sendMessage: jest.fn()
 }));
 
-const { showActionSheetRef } = require('../../containers/ActionSheet');
-const { AttachmentActionSheet } = require('../../containers/MessageComposer/components/Attachments/AttachmentActionSheet');
+const { showActionSheetRef } = require('~/containers/ActionSheet');
+const { AttachmentActionSheet } = require('~/containers/MessageComposer/components/Attachments/AttachmentActionSheet');
 const { ShareView } = require('./index');
-const mockGetSubscriptionByRoomId = require('../../lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
+const mockGetSubscriptionByRoomId = require('~/lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
 
 initStore(mockedStore);
 
@@ -216,7 +216,7 @@ describe('ShareView', () => {
 		// the composer ref isn't mounted here; don't let the caption flush clobber the fixture
 		shareView.saveSelectedDescription = jest.fn() as any;
 
-		const sendFileMessageMod = require('../../lib/methods/sendFileMessage');
+		const sendFileMessageMod = require('~/lib/methods/sendFileMessage');
 		const spy = jest.spyOn(sendFileMessageMod, 'sendFileMessage').mockResolvedValue(undefined);
 
 		await shareView.send();
@@ -244,10 +244,10 @@ describe('ShareView', () => {
 
 		shareView.messageActionStore.getState().actions.setQuoteMessageIds(['msg-1']);
 
-		const prepareQuoteMessageMod = require('../../containers/MessageComposer/helpers/prepareQuoteMessage');
+		const prepareQuoteMessageMod = require('~/containers/MessageComposer/helpers/prepareQuoteMessage');
 		const prepareSpy = jest.spyOn(prepareQuoteMessageMod, 'prepareQuoteMessage').mockResolvedValue('quoted-text');
 
-		const sendFileMessageMod = require('../../lib/methods/sendFileMessage');
+		const sendFileMessageMod = require('~/lib/methods/sendFileMessage');
 		const spy = jest.spyOn(sendFileMessageMod, 'sendFileMessage').mockResolvedValue(undefined);
 
 		await shareView.send();
@@ -265,7 +265,7 @@ describe('ShareView', () => {
 		shareView.state.attachments[0].canUpload = true;
 		shareView.saveSelectedDescription = jest.fn() as any;
 		const finishShareView = jest.fn();
-		const sendFileMessageMod = require('../../lib/methods/sendFileMessage');
+		const sendFileMessageMod = require('~/lib/methods/sendFileMessage');
 		let resolveUpload!: () => void;
 		const uploadSpy = jest
 			.spyOn(sendFileMessageMod, 'sendFileMessage')
@@ -294,7 +294,7 @@ describe('ShareView', () => {
 		(shareView as any).finishShareView = finishShareView;
 		(shareView as any).messageComposerRef = { current: { getText: () => 'typed after start' } };
 		shareView.messageActionStore.getState().actions.setQuoteMessageIds(['quote-after-send']);
-		const sendFileMessageMod = require('../../lib/methods/sendFileMessage');
+		const sendFileMessageMod = require('~/lib/methods/sendFileMessage');
 		let rejectUpload!: (error: Error) => void;
 		const uploadSpy = jest
 			.spyOn(sendFileMessageMod, 'sendFileMessage')
@@ -389,7 +389,7 @@ describe('ShareView', () => {
 		const shareView = makeInstance({ mime: 'text/plain', serverVersion: '8.5.0', isShareExtension: true });
 		shareView.state.attachments = [];
 		shareView.state.text = 'shared extension text';
-		const sendMessage = require('../../lib/methods/sendMessage').sendMessage as jest.Mock;
+		const sendMessage = require('~/lib/methods/sendMessage').sendMessage as jest.Mock;
 		let resolveSend!: () => void;
 		sendMessage.mockImplementationOnce(() => new Promise<void>(resolve => (resolveSend = resolve)));
 		const sendPromise = shareView.send();
@@ -409,7 +409,7 @@ describe('ShareView', () => {
 		shareView.state.text = 'ordinary shared text';
 		const finishShareView = jest.fn();
 		(shareView as any).finishShareView = finishShareView;
-		const sendMessage = require('../../lib/methods/sendMessage').sendMessage as jest.Mock;
+		const sendMessage = require('~/lib/methods/sendMessage').sendMessage as jest.Mock;
 
 		await shareView.send();
 
@@ -421,8 +421,8 @@ describe('ShareView', () => {
 	it('bridges real origin media callbacks into ShareView and restores current text and Quotes', async () => {
 		jest.useFakeTimers();
 		const documentPicker = require('expo-document-picker').getDocumentAsync as jest.Mock;
-		const navigate = require('../../lib/navigation/appNavigation').navigate as jest.Mock;
-		const getSubscriptionByRoomId = require('../../lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
+		const navigate = require('~/lib/navigation/appNavigation').navigate as jest.Mock;
+		const getSubscriptionByRoomId = require('~/lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
 		documentPicker.mockResolvedValue({
 			canceled: false,
 			assets: [{ name: 'legacy.pdf', size: 12, mimeType: 'application/pdf', uri: 'file:///tmp/legacy.pdf' }]
@@ -478,7 +478,7 @@ describe('ShareView', () => {
 	it.each(['success', 'failure'] as const)('bridges real callbacks through ShareView send %s', async outcome => {
 		jest.useFakeTimers();
 		const documentPicker = require('expo-document-picker').getDocumentAsync as jest.Mock;
-		const navigate = require('../../lib/navigation/appNavigation').navigate as jest.Mock;
+		const navigate = require('~/lib/navigation/appNavigation').navigate as jest.Mock;
 		documentPicker.mockResolvedValue({
 			canceled: false,
 			assets: [{ name: 'legacy.pdf', size: 12, mimeType: 'application/pdf', uri: 'file:///tmp/legacy.pdf' }]
@@ -510,7 +510,7 @@ describe('ShareView', () => {
 
 		let completeUpload!: () => void;
 		let failUpload!: (error: Error) => void;
-		const sendFileMessageMod = require('../../lib/methods/sendFileMessage');
+		const sendFileMessageMod = require('~/lib/methods/sendFileMessage');
 		const uploadSpy = jest.spyOn(sendFileMessageMod, 'sendFileMessage').mockImplementationOnce(
 			() =>
 				new Promise<void>((resolve, reject) => {
@@ -583,9 +583,9 @@ describe('ShareView', () => {
 		const input = screen.getByTestId('message-composer-input-share');
 		act(() => fireEvent.changeText(input, 'caption before send'));
 
-		const sendFileMessageMod = require('../../lib/methods/sendFileMessage');
+		const sendFileMessageMod = require('~/lib/methods/sendFileMessage');
 		const uploadSpy = jest.spyOn(sendFileMessageMod, 'sendFileMessage').mockResolvedValueOnce(undefined);
-		const prepareQuoteMessageMod = require('../../containers/MessageComposer/helpers/prepareQuoteMessage');
+		const prepareQuoteMessageMod = require('~/containers/MessageComposer/helpers/prepareQuoteMessage');
 		const prepareSpy = jest.spyOn(prepareQuoteMessageMod, 'prepareQuoteMessage').mockResolvedValueOnce('quoted text');
 		await act(async () => {
 			fireEvent.press(screen.getByTestId('message-composer-send'));

@@ -1,6 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 
-import { MESSAGE_TYPE_ANY_LOAD, type MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
+import { MESSAGE_TYPE_ANY_LOAD, type MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
 
 export const isLoaderMessage = (message: { t?: string }): boolean =>
 	!!message.t && MESSAGE_TYPE_ANY_LOAD.includes(message.t as MessageTypeLoad);

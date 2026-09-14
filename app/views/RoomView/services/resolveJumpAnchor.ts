@@ -1,5 +1,5 @@
-import { type IMessage } from '../../../definitions';
-import { tsToMs } from '../../../lib/dayjs';
+import { type IMessage } from '~/definitions';
+import { tsToMs } from '~/lib/dayjs';
 import { anchorForServerChunk } from './anchorResolver';
 import { type AnchorMessage, type IJumpAnchorDeps, type IJumpTarget } from '../definitions';
 

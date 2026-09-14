@@ -1,7 +1,7 @@
 import { put, select, takeLeading } from 'redux-saga/effects';
 
-import { ROUTING_CONFIG } from '../../../actions/actionsTypes';
-import { getRoutingConfig } from '../../../lib/services/restApi';
+import { ROUTING_CONFIG } from '~/actions/actionsTypes';
+import { getRoutingConfig } from '~/lib/services/restApi';
 import { routingConfigFailure, routingConfigSuccess } from '../actions/routingConfig';
 
 const handleRequest = function* handleRequest(): Generator<any, void, any> {

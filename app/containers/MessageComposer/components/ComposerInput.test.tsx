@@ -5,9 +5,9 @@ import { Text } from 'react-native';
 import { ComposerInput } from './ComposerInput';
 import { MessageComposerProvider, useAutocompleteParams } from '../context';
 import { ComposerProvider } from '../ComposerStore';
-import { createMessageActionStore, MessageActionProvider } from '../../message/stores/MessageActionStore';
+import { createMessageActionStore, MessageActionProvider } from '~/containers/message/stores/MessageActionStore';
 import { type IComposerInput } from '../interfaces';
-import { loadDraftMessage } from '../../../lib/methods/draftMessage';
+import { loadDraftMessage } from '~/lib/methods/draftMessage';
 
 jest.mock('react-native', () => {
 	const actual = jest.requireActual('react-native');
@@ -36,15 +36,15 @@ jest.mock('@react-navigation/native', () => ({
 	useRoute: jest.fn(() => ({ params: {} })),
 	useFocusEffect: jest.fn()
 }));
-jest.mock('../../../lib/hooks/useAltTextSupported', () => ({ useAltTextSupported: jest.fn(() => false) }));
-jest.mock('../../../lib/hooks/useMasterDetail', () => ({ useMasterDetail: jest.fn(() => false) }));
-jest.mock('../../../lib/methods/helpers/externalInput', () => ({ isExternalKeyboardConnected: jest.fn(() => false) }));
+jest.mock('~/lib/hooks/useAltTextSupported', () => ({ useAltTextSupported: jest.fn(() => false) }));
+jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: jest.fn(() => false) }));
+jest.mock('~/lib/methods/helpers/externalInput', () => ({ isExternalKeyboardConnected: jest.fn(() => false) }));
 jest.mock('../hooks/useIOSBackSwipeHandler', () => ({
 	__esModule: true,
 	default: jest.fn(() => ({ iOSBackSwipe: { current: false } }))
 }));
 jest.mock('../hooks/useAutoSaveDraft', () => ({ useAutoSaveDraft: jest.fn(() => ({ saveMessageDraft: jest.fn() })) }));
-jest.mock('../../../lib/methods/draftMessage', () => ({ loadDraftMessage: jest.fn(() => Promise.resolve(undefined)) }));
+jest.mock('~/lib/methods/draftMessage', () => ({ loadDraftMessage: jest.fn(() => Promise.resolve(undefined)) }));
 
 const mockLoadDraftMessage = loadDraftMessage as jest.Mock;
 

@@ -1,30 +1,30 @@
 import { render, screen } from '@testing-library/react-native';
 
 import LeftButtons from '../LeftButtons';
-import { type RoomStore } from '../../definitions';
+import { type RoomStore } from '~/views/RoomView/definitions';
 
 jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => ({ navigate: jest.fn() })
 }));
-jest.mock('../../../../lib/hooks/navigation', () => ({
+jest.mock('~/lib/hooks/navigation', () => ({
 	useAppNavigation: () => ({ goBack: jest.fn() })
 }));
-jest.mock('../../../../lib/hooks/useMasterDetail', () => ({
+jest.mock('~/lib/hooks/useMasterDetail', () => ({
 	useMasterDetail: () => true
 }));
-jest.mock('../../hooks/useUnreadsCount', () => ({
+jest.mock('~/views/RoomView/hooks/useUnreadsCount', () => ({
 	useUnreadsCount: () => null
 }));
-jest.mock('../../hooks/useGoRoomActionsView', () => ({
+jest.mock('~/views/RoomView/hooks/useGoRoomActionsView', () => ({
 	useGoRoomActionsView: () => jest.fn()
 }));
-jest.mock('../../../../lib/hooks/useAppSelector', () => ({
+jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: (selector: (state: unknown) => unknown) => selector({ server: { server: 'https://open.rocket.chat' } })
 }));
-jest.mock('../../../../selectors/login', () => ({
+jest.mock('~/selectors/login', () => ({
 	getUserSelector: () => ({ id: 'user-1', token: 'token-1' })
 }));
-jest.mock('../../../../containers/Avatar', () => {
+jest.mock('~/containers/Avatar', () => {
 	const ReactActual = jest.requireActual('react');
 	return {
 		__esModule: true,

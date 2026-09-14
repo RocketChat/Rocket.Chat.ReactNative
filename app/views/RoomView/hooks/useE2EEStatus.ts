@@ -1,7 +1,7 @@
 import { useStore } from 'zustand';
 
-import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../../lib/encryption/utils';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '~/lib/encryption/utils';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { type IUseE2EEStatusResult, type RoomStore } from '../definitions';
 import { fromSubscription } from '../stores/RoomStoreContext';
 

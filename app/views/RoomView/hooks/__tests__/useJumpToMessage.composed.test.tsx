@@ -1,15 +1,15 @@
 import { InteractionManager } from 'react-native';
 import { act, renderHook } from '@testing-library/react-native';
 
-import { sendLoadingEvent } from '../../../../containers/Loading';
-import getRoomInfo from '../../../../lib/methods/getRoomInfo';
-import { goRoom } from '../../../../lib/methods/helpers/goRoom';
-import { showErrorAlert } from '../../../../lib/methods/helpers/info';
-import getMessageInfo from '../../services/getMessageInfo';
-import { fetchThreadName } from '../../services/fetchThreadName';
-import { resolveJumpAnchor } from '../../services/resolveJumpAnchor';
+import { sendLoadingEvent } from '~/containers/Loading';
+import getRoomInfo from '~/lib/methods/getRoomInfo';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import getMessageInfo from '~/views/RoomView/services/getMessageInfo';
+import { fetchThreadName } from '~/views/RoomView/services/fetchThreadName';
+import { resolveJumpAnchor } from '~/views/RoomView/services/resolveJumpAnchor';
 import { useJumpToMessage } from '../useJumpToMessage';
-import type { IUseJumpToMessageParams } from '../../definitions';
+import type { IUseJumpToMessageParams } from '~/views/RoomView/definitions';
 
 const mockNavigation = { push: jest.fn(), setParams: jest.fn() };
 let mockRouteParams: { jumpToMessageId?: string; jumpToThreadId?: string } = {};
@@ -18,16 +18,16 @@ jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => mockNavigation,
 	useRoute: () => ({ params: mockRouteParams })
 }));
-jest.mock('../../../../lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('../../../../lib/methods/helpers/info', () => ({ showErrorAlert: jest.fn() }));
-jest.mock('../../../../containers/Loading', () => ({ sendLoadingEvent: jest.fn() }));
-jest.mock('../../../../lib/methods/getRoomInfo', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('../../../../lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
-jest.mock('../../services/getMessageInfo', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('../../services/fetchThreadName', () => ({ fetchThreadName: jest.fn() }));
-jest.mock('../../services/resolveJumpAnchor', () => ({ resolveJumpAnchor: jest.fn() }));
-jest.mock('../../../../lib/methods/helpers/room', () => ({ makeThreadName: jest.fn(() => 'Parent thread') }));
-jest.mock('../../../../i18n', () => ({ __esModule: true, default: { t: (key: string) => key } }));
+jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('~/lib/methods/helpers/info', () => ({ showErrorAlert: jest.fn() }));
+jest.mock('~/containers/Loading', () => ({ sendLoadingEvent: jest.fn() }));
+jest.mock('~/lib/methods/getRoomInfo', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('~/lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
+jest.mock('~/views/RoomView/services/getMessageInfo', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('~/views/RoomView/services/fetchThreadName', () => ({ fetchThreadName: jest.fn() }));
+jest.mock('~/views/RoomView/services/resolveJumpAnchor', () => ({ resolveJumpAnchor: jest.fn() }));
+jest.mock('~/lib/methods/helpers/room', () => ({ makeThreadName: jest.fn(() => 'Parent thread') }));
+jest.mock('~/i18n', () => ({ __esModule: true, default: { t: (key: string) => key } }));
 
 const mockGetMessageInfo = getMessageInfo as jest.Mock;
 const mockGetRoomInfo = getRoomInfo as jest.Mock;

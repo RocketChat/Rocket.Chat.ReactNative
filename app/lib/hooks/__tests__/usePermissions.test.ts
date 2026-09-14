@@ -1,8 +1,8 @@
 import { act, renderHook } from '@testing-library/react-native';
 
-import database from '../../database';
-import { store as reduxStore } from '../../store/auxStore';
-import { getSubscriptionByRoomId } from '../../database/services/Subscription';
+import database from '~/lib/database';
+import { store as reduxStore } from '~/lib/store/auxStore';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { usePermissions } from '../usePermissions';
 
 let mockState: any;
@@ -10,9 +10,9 @@ jest.mock('../useAppSelector', () => ({
 	useAppSelector: (selector: (state: any) => unknown) => selector(mockState)
 }));
 
-jest.mock('../../database', () => ({ __esModule: true, default: { active: { get: jest.fn() } } }));
-jest.mock('../../store/auxStore', () => ({ store: { getState: jest.fn() } }));
-jest.mock('../../database/services/Subscription', () => ({ getSubscriptionByRoomId: jest.fn() }));
+jest.mock('~/lib/database', () => ({ __esModule: true, default: { active: { get: jest.fn() } } }));
+jest.mock('~/lib/store/auxStore', () => ({ store: { getState: jest.fn() } }));
+jest.mock('~/lib/database/services/Subscription', () => ({ getSubscriptionByRoomId: jest.fn() }));
 
 const mockGet = database.active.get as jest.Mock;
 const mockGetState = reduxStore.getState as jest.Mock;

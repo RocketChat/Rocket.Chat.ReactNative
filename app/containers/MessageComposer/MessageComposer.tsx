@@ -17,23 +17,23 @@ import {
 } from './context';
 import { type IComposerInput, type IMessageComposerRef } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
-import { type IEmoji } from '../../definitions';
-import database from '../../lib/database';
-import { sanitizeLikeString } from '../../lib/database/utils';
-import { generateTriggerId } from '../../lib/methods/actions';
-import { runSlashCommand } from '../../lib/services/restApi';
-import log from '../../lib/methods/helpers/log';
+import { type IEmoji } from '~/definitions';
+import database from '~/lib/database';
+import { sanitizeLikeString } from '~/lib/database/utils';
+import { generateTriggerId } from '~/lib/methods/actions';
+import { runSlashCommand } from '~/lib/services/restApi';
+import log from '~/lib/methods/helpers/log';
 import { prepareQuoteMessage, insertEmojiAtCursor, lastGlyphLength } from './helpers';
-import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
+import useShortnameToUnicode from '~/lib/hooks/useShortnameToUnicode';
 import { useCloseKeyboardWhenOrientationChanges } from './hooks/useCloseKeyboardWhenOrientationChanges';
 import { useEmojiKeyboard } from './hooks/useEmojiKeyboard';
 import EmojiPicker from '../EmojiPicker';
 import { MessageComposerContent } from './components/MessageComposerContent';
-import { useTheme } from '../../theme';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { getUserSelector } from '../../selectors/login';
-import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
-import { useAltTextSupported } from '../../lib/hooks/useAltTextSupported';
+import { useTheme } from '~/theme';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { getUserSelector } from '~/selectors/login';
+import { sendAttachments } from '~/lib/methods/sendFileMessage/sendAttachments';
+import { useAltTextSupported } from '~/lib/hooks/useAltTextSupported';
 
 export const MessageComposer = ({
 	forwardedRef,

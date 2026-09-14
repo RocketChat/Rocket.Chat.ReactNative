@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { type RoomStore } from '../../definitions';
+import { type RoomStore } from '~/views/RoomView/definitions';
 import { useCloseBanner } from '../useCloseBanner';
 
 const mockWrite = jest.fn((fn: () => Promise<void>) => fn());
-jest.mock('../../../../lib/database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: { active: { write: (fn: () => Promise<void>) => mockWrite(fn) } }
 }));

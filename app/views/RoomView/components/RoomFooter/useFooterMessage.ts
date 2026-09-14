@@ -1,10 +1,10 @@
-import I18n from '../../../../i18n';
-import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
-import { useSetting } from '../../../../lib/hooks/useSetting';
-import { isBlocked } from '../../../../lib/methods/helpers/room';
-import { isRoomFederated, isRoomNativeFederated } from '../../../../lib/methods/isRoomFederated';
-import { useReadOnly } from '../../hooks/useReadOnly';
-import { fromSubscription, useRoomStore } from '../../stores/RoomStoreContext';
+import I18n from '~/i18n';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useSetting } from '~/lib/hooks/useSetting';
+import { isBlocked } from '~/lib/methods/helpers/room';
+import { isRoomFederated, isRoomNativeFederated } from '~/lib/methods/isRoomFederated';
+import { useReadOnly } from '~/views/RoomView/hooks/useReadOnly';
+import { fromSubscription, useRoomStore } from '~/views/RoomView/stores/RoomStoreContext';
 
 const getFederatedFooterDescription = (
 	isNativeFederated: boolean,

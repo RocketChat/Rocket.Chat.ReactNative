@@ -1,6 +1,6 @@
 import { BaseButton } from './Buttons';
 import { useEditCancel } from '../ComposerStore';
-import { useMessageActionKind } from '../../message/stores/MessageActionStore';
+import { useMessageActionKind } from '~/containers/message/stores/MessageActionStore';
 import { Gap } from './Gap';
 
 export const CancelEdit = () => {

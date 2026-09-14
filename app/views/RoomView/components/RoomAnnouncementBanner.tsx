@@ -1,4 +1,4 @@
-import I18n from '../../../i18n';
+import I18n from '~/i18n';
 import { useCloseBanner } from '../hooks/useCloseBanner';
 import { fromSubscription, useRoomStore, useRoomStoreApi } from '../stores/RoomStoreContext';
 import Banner from './Banner';

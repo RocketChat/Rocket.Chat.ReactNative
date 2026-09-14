@@ -6,13 +6,13 @@ import { Q } from '@nozbe/watermelondb';
 
 import { useComposerTmid } from '../ComposerStore';
 import { useAlsoSendThreadToChannel, useMessageComposerApi } from '../context';
-import { CustomIcon } from '../../CustomIcon';
-import { useTheme } from '../../../theme';
-import sharedStyles from '../../../views/Styles';
-import I18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import database from '../../../lib/database';
-import { compareServerVersion } from '../../../lib/methods/helpers';
+import { CustomIcon } from '~/containers/CustomIcon';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
+import I18n from '~/i18n';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import database from '~/lib/database';
+import { compareServerVersion } from '~/lib/methods/helpers';
 import { useEmojiKeyboard } from '../hooks/useEmojiKeyboard';
 
 export const SendThreadToChannel = (): ReactElement | null => {

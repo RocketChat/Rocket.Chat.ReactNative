@@ -1,17 +1,17 @@
 import { InteractionManager } from 'react-native';
 import { act, renderHook } from '@testing-library/react-native';
 
-import { sendLoadingEvent } from '../../../../containers/Loading';
-import getRoomInfo from '../../../../lib/methods/getRoomInfo';
-import { goRoom } from '../../../../lib/methods/helpers/goRoom';
-import log from '../../../../lib/methods/helpers/log';
-import { getThreadById } from '../../../../lib/database/services/Thread';
-import getThreadName from '../../../../lib/methods/getThreadName';
-import { loadSurroundingMessages } from '../../../../lib/methods/loadSurroundingMessages';
-import { MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
-import getLocalAnchorTs from '../../services/getLocalAnchor';
-import getMessageInfo from '../../services/getMessageInfo';
-import { type IUseJumpToMessageParams } from '../../definitions';
+import { sendLoadingEvent } from '~/containers/Loading';
+import getRoomInfo from '~/lib/methods/getRoomInfo';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
+import log from '~/lib/methods/helpers/log';
+import { getThreadById } from '~/lib/database/services/Thread';
+import getThreadName from '~/lib/methods/getThreadName';
+import { loadSurroundingMessages } from '~/lib/methods/loadSurroundingMessages';
+import { MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
+import getLocalAnchorTs from '~/views/RoomView/services/getLocalAnchor';
+import getMessageInfo from '~/views/RoomView/services/getMessageInfo';
+import { type IUseJumpToMessageParams } from '~/views/RoomView/definitions';
 import { useJumpToMessage } from '../useJumpToMessage';
 
 let mockCurrentNavigation: { push: jest.Mock; setParams: jest.Mock };
@@ -20,19 +20,19 @@ jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => mockCurrentNavigation,
 	useRoute: () => ({ params: mockCurrentParams })
 }));
-jest.mock('../../../../lib/methods/helpers', () => ({
-	useDebounce: jest.requireActual('../../../../lib/methods/helpers/debounce').useDebounce
+jest.mock('~/lib/methods/helpers', () => ({
+	useDebounce: jest.requireActual('~/lib/methods/helpers/debounce').useDebounce
 }));
-jest.mock('../../../../containers/Loading', () => ({ sendLoadingEvent: jest.fn() }));
-jest.mock('../../../../lib/methods/getRoomInfo', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('../../../../lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
-jest.mock('../../../../lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('../../../../lib/methods/helpers/info', () => ({ showErrorAlert: jest.fn() }));
-jest.mock('../../../../lib/database/services/Thread', () => ({ getThreadById: jest.fn() }));
-jest.mock('../../../../lib/methods/getThreadName', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('../../../../lib/methods/loadSurroundingMessages', () => ({ loadSurroundingMessages: jest.fn() }));
-jest.mock('../../services/getLocalAnchor', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('../../services/getMessageInfo', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('~/containers/Loading', () => ({ sendLoadingEvent: jest.fn() }));
+jest.mock('~/lib/methods/getRoomInfo', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('~/lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
+jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('~/lib/methods/helpers/info', () => ({ showErrorAlert: jest.fn() }));
+jest.mock('~/lib/database/services/Thread', () => ({ getThreadById: jest.fn() }));
+jest.mock('~/lib/methods/getThreadName', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('~/lib/methods/loadSurroundingMessages', () => ({ loadSurroundingMessages: jest.fn() }));
+jest.mock('~/views/RoomView/services/getLocalAnchor', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('~/views/RoomView/services/getMessageInfo', () => ({ __esModule: true, default: jest.fn() }));
 
 function deferred<T>() {
 	let resolve!: (value: T) => void;

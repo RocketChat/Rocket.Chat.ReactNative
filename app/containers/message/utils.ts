@@ -1,8 +1,8 @@
 /* eslint-disable complexity */
-import { type IAttachment, type IMessageTranslations } from '../../definitions';
-import { type MessageTypesValues, type TAnyMessageModel, type TMessageModel } from '../../definitions/IMessage';
-import I18n from '../../i18n';
-import dayjs from '../../lib/dayjs';
+import { type IAttachment, type IMessageTranslations } from '~/definitions';
+import { type MessageTypesValues, type TAnyMessageModel, type TMessageModel } from '~/definitions/IMessage';
+import I18n from '~/i18n';
+import dayjs from '~/lib/dayjs';
 import { DISCUSSION } from './constants';
 
 export type TMessageSeparators = { dateSeparator: TAnyMessageModel['ts'] | null; showUnreadSeparator: boolean };

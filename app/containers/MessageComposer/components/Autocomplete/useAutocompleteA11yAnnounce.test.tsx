@@ -3,8 +3,8 @@ import { AccessibilityInfo } from 'react-native';
 import { type ReactNode } from 'react';
 
 import { useAutocompleteA11yAnnounce } from './useAutocompleteA11yAnnounce';
-import { createComposerStore, ComposerStoreContext } from '../../ComposerStore';
-import { type ComposerStore } from '../../ComposerStore';
+import { createComposerStore, ComposerStoreContext } from '~/containers/MessageComposer/ComposerStore';
+import { type ComposerStore } from '~/containers/MessageComposer/ComposerStore';
 
 const externalState = {
 	rid: 'rid-1',

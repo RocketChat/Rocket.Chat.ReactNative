@@ -7,7 +7,7 @@ const mockVideoConf = {
 	callEnabled: false,
 	disabledTooltip: false
 };
-jest.mock('../../../../../lib/hooks/useVideoConf', () => ({
+jest.mock('~/lib/hooks/useVideoConf', () => ({
 	useVideoConf: () => mockVideoConf
 }));
 
@@ -17,11 +17,11 @@ const mockMediaCall = {
 	hasMediaCallPermission: false,
 	isInActiveCall: false
 };
-jest.mock('../../../../../lib/hooks/useNewMediaCall', () => ({
+jest.mock('~/lib/hooks/useNewMediaCall', () => ({
 	useNewMediaCall: () => mockMediaCall
 }));
 
-jest.mock('../../../../../containers/Header/components/HeaderButton', () => {
+jest.mock('~/containers/Header/components/HeaderButton', () => {
 	const ReactActual = jest.requireActual('react');
 	return {
 		Item: ({

@@ -1,30 +1,30 @@
 import { act, renderHook } from '@testing-library/react-native';
 
-import { editMessage } from '../../../../lib/methods/editMessage';
-import { setReaction } from '../../../../lib/services/restApi';
-import log from '../../../../lib/methods/helpers/log';
-import { Review } from '../../../../lib/methods/helpers/review';
-import { getMessageById } from '../../../../lib/database/services/Message';
-import { createMessageActionStore } from '../../../../containers/message/stores/MessageActionStore';
-import ReactionPicker from '../../components/ReactionPicker';
+import { editMessage } from '~/lib/methods/editMessage';
+import { setReaction } from '~/lib/services/restApi';
+import log from '~/lib/methods/helpers/log';
+import { Review } from '~/lib/methods/helpers/review';
+import { getMessageById } from '~/lib/database/services/Message';
+import { createMessageActionStore } from '~/containers/message/stores/MessageActionStore';
+import ReactionPicker from '~/views/RoomView/components/ReactionPicker';
 import { useMessageActions } from '../useMessageActions';
-import { type IUseMessageActionsParams } from '../../definitions';
+import { type IUseMessageActionsParams } from '~/views/RoomView/definitions';
 
 const mockNavigation = { navigate: jest.fn(), push: jest.fn() };
 jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => mockNavigation
 }));
-jest.mock('../../../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	setReaction: jest.fn()
 }));
-jest.mock('../../../../lib/methods/editMessage', () => ({
+jest.mock('~/lib/methods/editMessage', () => ({
 	editMessage: jest.fn()
 }));
-jest.mock('../../../../lib/methods/helpers/log', () => jest.fn());
-jest.mock('../../../../lib/methods/helpers/review', () => ({
+jest.mock('~/lib/methods/helpers/log', () => jest.fn());
+jest.mock('~/lib/methods/helpers/review', () => ({
 	Review: { pushPositiveEvent: jest.fn() }
 }));
-jest.mock('../../../../lib/database/services/Message', () => ({
+jest.mock('~/lib/database/services/Message', () => ({
 	getMessageById: jest.fn()
 }));
 

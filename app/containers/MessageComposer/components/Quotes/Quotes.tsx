@@ -2,7 +2,7 @@ import { useEffect, useRef, type ReactElement } from 'react';
 import { FlatList } from 'react-native';
 
 import { Quote } from './Quote';
-import { useQuotedMessageIds } from '../../../message/stores/MessageActionStore';
+import { useQuotedMessageIds } from '~/containers/message/stores/MessageActionStore';
 
 export const Quotes = (): ReactElement | null => {
 	const selectedMessages = useQuotedMessageIds();

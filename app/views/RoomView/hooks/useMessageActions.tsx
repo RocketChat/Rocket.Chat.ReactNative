@@ -1,7 +1,7 @@
-import { editMessage } from '../../../lib/methods/editMessage';
-import log from '../../../lib/methods/helpers/log';
-import { getMessageById } from '../../../lib/database/services/Message';
-import { type IMessage, type IMessageEditAttachment, type TAnyMessageModel } from '../../../definitions';
+import { editMessage } from '~/lib/methods/editMessage';
+import log from '~/lib/methods/helpers/log';
+import { getMessageById } from '~/lib/database/services/Message';
+import { type IMessage, type IMessageEditAttachment, type TAnyMessageModel } from '~/definitions';
 import { type IUseMessageActionsParams, type IUseMessageActionsResult } from '../definitions';
 import ReactionPicker from '../components/ReactionPicker';
 import { useReactionActions } from './useReactionActions';

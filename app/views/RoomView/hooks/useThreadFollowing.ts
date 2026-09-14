@@ -1,9 +1,9 @@
 import { Q } from '@nozbe/watermelondb';
 import { useMemo } from 'react';
 
-import { type TMessageModel } from '../../../definitions';
-import database from '../../../lib/database';
-import { useObservable } from '../../../lib/hooks/useObservable';
+import { type TMessageModel } from '~/definitions';
+import database from '~/lib/database';
+import { useObservable } from '~/lib/hooks/useObservable';
 
 export function useThreadFollowing(tmid?: string, userId?: string): boolean {
 	const threadObservable = useMemo(

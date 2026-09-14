@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle } from 'react';
 
-import { useDebounce } from '../../../lib/methods/helpers';
+import { useDebounce } from '~/lib/methods/helpers';
 import EmptyRoom from './components/EmptyRoom';
 import List from './components/List';
 import { MessageRow } from '../components/MessageRow';

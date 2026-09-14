@@ -1,12 +1,12 @@
 import { type ReactElement } from 'react';
 
-import * as HeaderButton from '../../../../containers/Header/components/HeaderButton';
-import i18n from '../../../../i18n';
-import { events, logEvent } from '../../../../lib/methods/helpers/log';
-import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
-import { toggleFollowThread } from '../../../../lib/methods/toggleFollowThread';
-import { getUserSelector } from '../../../../selectors/login';
-import { useThreadFollowing } from '../../hooks/useThreadFollowing';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import i18n from '~/i18n';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { toggleFollowThread } from '~/lib/methods/toggleFollowThread';
+import { getUserSelector } from '~/selectors/login';
+import { useThreadFollowing } from '~/views/RoomView/hooks/useThreadFollowing';
 
 interface IThreadRightButtonsProps {
 	tmid: string;

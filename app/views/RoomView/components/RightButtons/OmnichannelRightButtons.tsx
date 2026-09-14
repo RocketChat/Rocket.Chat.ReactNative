@@ -2,21 +2,21 @@ import { type ReactElement } from 'react';
 import { useStore } from 'zustand';
 import { useNavigation } from '@react-navigation/native';
 
-import { type TActionSheetOptionsItem, useActionSheet } from '../../../../containers/ActionSheet';
-import * as HeaderButton from '../../../../containers/Header/components/HeaderButton';
-import i18n from '../../../../i18n';
-import { showConfirmationAlert, showErrorAlert } from '../../../../lib/methods/helpers';
-import { events, logEvent } from '../../../../lib/methods/helpers/log';
-import { useCanReturnQueue } from '../../../../ee/omnichannel/hooks/useCanReturnQueue';
-import { useMasterDetail } from '../../../../lib/hooks/useMasterDetail';
-import { useSetting } from '../../../../lib/hooks/useSetting';
-import { returnLivechat } from '../../../../lib/services/restApi';
-import { type RoomStore } from '../../definitions';
-import { fromSubscription } from '../../stores/RoomStoreContext';
-import { useCanPlaceLivechatOnHold } from '../../hooks/useCanPlaceLivechatOnHold';
-import { navigateToScreen, type TRoomStackNavigation } from '../../services/navigateToScreen';
-import { closeLivechat } from '../../services/closeLivechat';
-import { placeLivechatOnHold } from '../../services/placeLivechatOnHold';
+import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import i18n from '~/i18n';
+import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { useCanReturnQueue } from '~/ee/omnichannel/hooks/useCanReturnQueue';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { useSetting } from '~/lib/hooks/useSetting';
+import { returnLivechat } from '~/lib/services/restApi';
+import { type RoomStore } from '~/views/RoomView/definitions';
+import { fromSubscription } from '~/views/RoomView/stores/RoomStoreContext';
+import { useCanPlaceLivechatOnHold } from '~/views/RoomView/hooks/useCanPlaceLivechatOnHold';
+import { navigateToScreen, type TRoomStackNavigation } from '~/views/RoomView/services/navigateToScreen';
+import { closeLivechat } from '~/views/RoomView/services/closeLivechat';
+import { placeLivechatOnHold } from '~/views/RoomView/services/placeLivechatOnHold';
 
 interface IOmnichannelRightButtonsProps {
 	rid: string;

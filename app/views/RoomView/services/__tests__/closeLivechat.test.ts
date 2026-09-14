@@ -1,18 +1,18 @@
-import { closeLivechat as closeLivechatService } from '../../../../lib/methods/helpers/closeLivechat';
-import { showErrorAlert } from '../../../../lib/methods/helpers/info';
-import log from '../../../../lib/methods/helpers/log';
-import { getDepartmentInfo, getTagsList } from '../../../../lib/services/restApi';
+import { closeLivechat as closeLivechatService } from '~/lib/methods/helpers/closeLivechat';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import log from '~/lib/methods/helpers/log';
+import { getDepartmentInfo, getTagsList } from '~/lib/services/restApi';
 import { navigateToScreen, type TRoomStackNavigation } from '../navigateToScreen';
 import { closeLivechat } from '../closeLivechat';
 
-jest.mock('../../../../lib/methods/helpers/closeLivechat', () => ({ closeLivechat: jest.fn(() => Promise.resolve()) }));
-jest.mock('../../../../lib/services/restApi', () => ({
+jest.mock('~/lib/methods/helpers/closeLivechat', () => ({ closeLivechat: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/services/restApi', () => ({
 	getDepartmentInfo: jest.fn(),
 	getTagsList: jest.fn()
 }));
 jest.mock('../navigateToScreen', () => ({ navigateToScreen: jest.fn() }));
-jest.mock('../../../../lib/methods/helpers/info', () => ({ showErrorAlert: jest.fn() }));
-jest.mock('../../../../lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('~/lib/methods/helpers/info', () => ({ showErrorAlert: jest.fn() }));
+jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
 const mockCloseLivechatService = closeLivechatService as jest.Mock;
 const mockGetDepartmentInfo = getDepartmentInfo as jest.Mock;

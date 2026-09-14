@@ -1,7 +1,7 @@
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from 'zustand';
 
-import { useSetting } from '../../../lib/hooks/useSetting';
+import { useSetting } from '~/lib/hooks/useSetting';
 import { type RoomStore } from '../definitions';
 
 export function useCanPlaceLivechatOnHold(roomStore: RoomStore): boolean {

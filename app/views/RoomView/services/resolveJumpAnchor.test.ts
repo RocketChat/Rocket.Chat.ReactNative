@@ -1,4 +1,4 @@
-import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
+import { MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
 import { resolveJumpAnchor } from './resolveJumpAnchor';
 import { type IJumpAnchorDeps, type IJumpTarget } from '../definitions';
 

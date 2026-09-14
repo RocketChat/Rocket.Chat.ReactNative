@@ -1,51 +1,51 @@
 // ─── Boundary mocks — must appear before any import that triggers the module ───
 
-jest.mock('../../lib/methods/userPreferences', () => ({
+jest.mock('~/lib/methods/userPreferences', () => ({
 	__esModule: true,
 	default: {
 		getString: jest.fn()
 	}
 }));
 
-jest.mock('../../lib/database/services/Server', () => ({
+jest.mock('~/lib/database/services/Server', () => ({
 	getServerById: jest.fn()
 }));
 
-jest.mock('../../lib/methods/canOpenRoom', () => ({
+jest.mock('~/lib/methods/canOpenRoom', () => ({
 	canOpenRoom: jest.fn()
 }));
 
-jest.mock('../../lib/methods/getServerInfo', () => ({
+jest.mock('~/lib/methods/getServerInfo', () => ({
 	getServerInfo: jest.fn()
 }));
 
-jest.mock('../../lib/methods/helpers/goRoom', () => ({
+jest.mock('~/lib/methods/helpers/goRoom', () => ({
 	goRoom: jest.fn(),
 	navigateToRoom: jest.fn()
 }));
 
-jest.mock('../../lib/methods/helpers/localAuthentication', () => ({
+jest.mock('~/lib/methods/helpers/localAuthentication', () => ({
 	localAuthenticate: jest.fn()
 }));
 
-jest.mock('../../lib/services/connect', () => ({
+jest.mock('~/lib/services/connect', () => ({
 	loginOAuthOrSso: jest.fn()
 }));
 
-jest.mock('../../lib/services/sdk', () => ({
+jest.mock('~/lib/services/sdk', () => ({
 	__esModule: true,
 	default: {
 		host: null
 	}
 }));
 
-jest.mock('../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	notifyUser: jest.fn()
 }));
 
 // handleNavigateCallRoom reads database.active.get('subscriptions').find(rid).
 // Configured per test via jest.mocked(database.active.get) in beforeEach.
-jest.mock('../../lib/database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: {
 		active: {
@@ -54,15 +54,15 @@ jest.mock('../../lib/database', () => ({
 	}
 }));
 
-jest.mock('../../lib/methods/videoConf', () => ({
+jest.mock('~/lib/methods/videoConf', () => ({
 	videoConfJoin: jest.fn()
 }));
 
-jest.mock('../../lib/services/voip/resetVoipState', () => ({
+jest.mock('~/lib/services/voip/resetVoipState', () => ({
 	resetVoipState: jest.fn()
 }));
 
-jest.mock('../../lib/navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	__esModule: true,
 	default: {
 		navigate: jest.fn(),
@@ -79,7 +79,7 @@ jest.mock('i18n-js', () => ({
 }));
 
 // Mock helpers to avoid auxStore (getUidDirectMessage / getRoomTitle call reduxStore.getState())
-jest.mock('../../lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers', () => ({
 	getUidDirectMessage: jest.fn(() => null),
 	normalizeDeepLinkingServerHost: jest.fn((host: string) => host)
 }));
@@ -88,26 +88,26 @@ jest.mock('../../lib/methods/helpers', () => ({
 
 // ─── Real imports (after mocks) ───────────────────────────────────────────────
 
-import { deepLinkingOpen, deepLinkingClickCallPush } from '../../actions/deepLinking';
-import { loginFailure, loginSuccess } from '../../actions/login';
-import { selectServerFailure, selectServerSuccess } from '../../actions/server';
-import { appStart } from '../../actions/app';
-import { APP, LOGOUT, SERVER } from '../../actions/actionsTypes';
-import { RootEnum } from '../../definitions';
+import { deepLinkingOpen, deepLinkingClickCallPush } from '~/actions/deepLinking';
+import { loginFailure, loginSuccess } from '~/actions/login';
+import { selectServerFailure, selectServerSuccess } from '~/actions/server';
+import { appStart } from '~/actions/app';
+import { APP, LOGOUT, SERVER } from '~/actions/actionsTypes';
+import { RootEnum } from '~/definitions';
 import deepLinkingRoot from '../deepLinking';
-import UserPreferences from '../../lib/methods/userPreferences';
-import { getServerById } from '../../lib/database/services/Server';
-import { localAuthenticate } from '../../lib/methods/helpers/localAuthentication';
-import { canOpenRoom } from '../../lib/methods/canOpenRoom';
-import { getServerInfo } from '../../lib/methods/getServerInfo';
-import { goRoom, navigateToRoom } from '../../lib/methods/helpers/goRoom';
-import { waitForNavigationReady } from '../../lib/navigation/appNavigation';
-import { loginOAuthOrSso } from '../../lib/services/connect';
-import sdk from '../../lib/services/sdk';
-import database from '../../lib/database';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
-import type { RecordingStore } from '../../lib/testUtils/sagaStore';
+import UserPreferences from '~/lib/methods/userPreferences';
+import { getServerById } from '~/lib/database/services/Server';
+import { localAuthenticate } from '~/lib/methods/helpers/localAuthentication';
+import { canOpenRoom } from '~/lib/methods/canOpenRoom';
+import { getServerInfo } from '~/lib/methods/getServerInfo';
+import { goRoom, navigateToRoom } from '~/lib/methods/helpers/goRoom';
+import { waitForNavigationReady } from '~/lib/navigation/appNavigation';
+import { loginOAuthOrSso } from '~/lib/services/connect';
+import sdk from '~/lib/services/sdk';
+import database from '~/lib/database';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
+import type { RecordingStore } from '~/lib/testUtils/sagaStore';
 
 const setupStore = (): RecordingStore => createRecordingStore(deepLinkingRoot);
 

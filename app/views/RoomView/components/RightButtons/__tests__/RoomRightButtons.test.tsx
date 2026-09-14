@@ -1,12 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
-import { events, logEvent } from '../../../../../lib/methods/helpers/log';
-import { type RoomStore } from '../../../definitions';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { type RoomStore } from '~/views/RoomView/definitions';
 import { RoomRightButtons } from '../RoomRightButtons';
 
 const mockNavigation = { navigate: jest.fn(), push: jest.fn() };
-jest.mock('../../../../../lib/methods/helpers/log', () => ({
-	...jest.requireActual('../../../../../lib/methods/helpers/log'),
+jest.mock('~/lib/methods/helpers/log', () => ({
+	...jest.requireActual('~/lib/methods/helpers/log'),
 	logEvent: jest.fn()
 }));
 jest.mock('@react-navigation/native', () => ({
@@ -14,20 +14,20 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 let mockIsMasterDetail = false;
-jest.mock('../../../../../lib/hooks/useMasterDetail', () => ({
+jest.mock('~/lib/hooks/useMasterDetail', () => ({
 	useMasterDetail: () => mockIsMasterDetail
 }));
 
-jest.mock('../../../../../theme', () => ({ useTheme: () => ({ colors: { fontDanger: '#f00' } }) }));
-jest.mock('../../../../../lib/helpers/getRoomAccessibilityLabel', () => ({ __esModule: true, default: () => 'channel label' }));
-jest.mock('../../../../../lib/methods/helpers', () => ({
-	...jest.requireActual('../../../../../lib/methods/helpers'),
+jest.mock('~/theme', () => ({ useTheme: () => ({ colors: { fontDanger: '#f00' } }) }));
+jest.mock('~/lib/helpers/getRoomAccessibilityLabel', () => ({ __esModule: true, default: () => 'channel label' }));
+jest.mock('~/lib/methods/helpers', () => ({
+	...jest.requireActual('~/lib/methods/helpers'),
 	getRoomTitle: () => 'Room Title',
 	isGroupChat: () => false
 }));
 
 let mockThreadsEnabled = true;
-jest.mock('../../../../../lib/hooks/useSetting', () => ({
+jest.mock('~/lib/hooks/useSetting', () => ({
 	useSetting: () => mockThreadsEnabled
 }));
 
@@ -35,7 +35,7 @@ let mockAppState = {
 	login: { user: { id: 'u1', username: 'user', token: 'tok' } },
 	troubleshootingNotification: { issuesWithNotifications: false }
 };
-jest.mock('../../../../../lib/hooks/useAppSelector', () => ({
+jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: (selector: (state: typeof mockAppState) => unknown) => selector(mockAppState)
 }));
 
@@ -45,7 +45,7 @@ jest.mock('zustand', () => ({
 }));
 
 let mockHasE2EEWarning = false;
-jest.mock('../../../hooks/useE2EEStatus', () => ({
+jest.mock('~/views/RoomView/hooks/useE2EEStatus', () => ({
 	useE2EEStatus: () => ({
 		showMissingE2EEKey: mockHasE2EEWarning,
 		showE2EEDisabledRoom: false,
@@ -59,16 +59,16 @@ let mockUnreads = {
 	tunreadGroup: [] as string[],
 	isSelfDm: false
 };
-jest.mock('../../../hooks/useSubscriptionUnreads', () => ({
+jest.mock('~/views/RoomView/hooks/useSubscriptionUnreads', () => ({
 	useSubscriptionUnreads: () => mockUnreads
 }));
 
 let mockCanToggleEncryption = false;
-jest.mock('../../../../../lib/hooks/usePermissions', () => ({
+jest.mock('~/lib/hooks/usePermissions', () => ({
 	usePermissions: () => [mockCanToggleEncryption]
 }));
 
-jest.mock('../../../../../containers/Header/components/HeaderButton', () => {
+jest.mock('~/containers/Header/components/HeaderButton', () => {
 	const ReactActual = jest.requireActual('react');
 	return {
 		Container: ({ children }: { children: unknown }) => ReactActual.createElement('Container', null, children),

@@ -1,5 +1,5 @@
-import sharedStyles from '../../../../views/Styles';
-import { useTheme } from '../../../../theme';
+import sharedStyles from '~/views/Styles';
+import { useTheme } from '~/theme';
 
 const MAX_HEIGHT = 216;
 

@@ -1,8 +1,8 @@
-import I18n from '../../i18n';
+import I18n from '~/i18n';
 import EventEmitter from './helpers/events';
 import log from './helpers/log';
 import { toggleFollowMessage } from '../services/restApi';
-import { LISTENER } from '../../containers/Toast';
+import { LISTENER } from '~/containers/Toast';
 
 export const toggleFollowThread = async (threadMessageId: string, isFollowingThread: boolean): Promise<void> => {
 	try {

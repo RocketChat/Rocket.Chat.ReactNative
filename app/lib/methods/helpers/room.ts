@@ -1,8 +1,8 @@
-import dayjs from '../../dayjs';
-import { themes } from '../../constants/colors';
-import I18n from '../../../i18n';
-import { type IAttachment, SubscriptionType } from '../../../definitions';
-import { type TSupportedThemes } from '../../../theme';
+import dayjs from '~/lib/dayjs';
+import { themes } from '~/lib/constants/colors';
+import I18n from '~/i18n';
+import { type IAttachment, SubscriptionType } from '~/definitions';
+import { type TSupportedThemes } from '~/theme';
 
 export const isBlocked = (room: { t?: string; blocked?: boolean; blocker?: boolean }): boolean => {
 	if (room) {

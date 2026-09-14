@@ -3,7 +3,7 @@ import type { AnyAction, Store } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import type { Saga, Task } from 'redux-saga';
 
-import reducers from '../../reducers';
+import reducers from '~/reducers';
 
 const MICROTASK_DRAIN_PASSES = 20;
 

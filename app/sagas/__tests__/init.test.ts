@@ -1,20 +1,20 @@
-jest.mock('../../lib/methods/userPreferences', () => ({
+jest.mock('~/lib/methods/userPreferences', () => ({
 	__esModule: true,
 	default: {
 		getString: jest.fn()
 	}
 }));
 
-jest.mock('../../lib/database/services/Server', () => ({
+jest.mock('~/lib/database/services/Server', () => ({
 	getServerById: jest.fn(),
 	getAllServers: jest.fn()
 }));
 
-jest.mock('../../lib/methods/helpers/localAuthentication', () => ({
+jest.mock('~/lib/methods/helpers/localAuthentication', () => ({
 	localAuthenticate: jest.fn()
 }));
 
-jest.mock('../../lib/methods/userPreferencesMethods', () => ({
+jest.mock('~/lib/methods/userPreferencesMethods', () => ({
 	getSortPreferences: jest.fn(() => ({}))
 }));
 
@@ -33,16 +33,16 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 
 import RNBootSplash from 'react-native-bootsplash';
 
-import { appInit, appStart } from '../../actions/app';
-import { RootEnum } from '../../definitions';
+import { appInit, appStart } from '~/actions/app';
+import { RootEnum } from '~/definitions';
 import initRoot from '../init';
-import UserPreferences from '../../lib/methods/userPreferences';
-import { getAllServers, getServerById } from '../../lib/database/services/Server';
+import UserPreferences from '~/lib/methods/userPreferences';
+import { getAllServers, getServerById } from '~/lib/database/services/Server';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { DEEP_LINKING } from '../../actions/actionsTypes';
-import { TOKEN_KEY } from '../../lib/constants/keys';
-import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
-import type { RecordingStore } from '../../lib/testUtils/sagaStore';
+import { DEEP_LINKING } from '~/actions/actionsTypes';
+import { TOKEN_KEY } from '~/lib/constants/keys';
+import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
+import type { RecordingStore } from '~/lib/testUtils/sagaStore';
 
 const setupStore = (): RecordingStore => createRecordingStore(initRoot);
 

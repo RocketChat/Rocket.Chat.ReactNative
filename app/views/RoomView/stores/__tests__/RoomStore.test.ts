@@ -1,40 +1,40 @@
-import database from '../../../../lib/database';
-import { loadThreadMessages } from '../../../../lib/methods/loadThreadMessages';
-import { readMessages } from '../../../../lib/methods/readMessages';
-import { getUserInfo } from '../../../../lib/services/restApi';
-import { isGroupChat } from '../../../../lib/methods/helpers';
-import { isInviteSubscription } from '../../../../lib/methods/isInviteSubscription';
-import log from '../../../../lib/methods/helpers/log';
-import getMessages from '../../services/getMessages';
-import { createObservableQuery, createObservableRecord } from '../../testUtils/observableDatabase';
+import database from '~/lib/database';
+import { loadThreadMessages } from '~/lib/methods/loadThreadMessages';
+import { readMessages } from '~/lib/methods/readMessages';
+import { getUserInfo } from '~/lib/services/restApi';
+import { isGroupChat } from '~/lib/methods/helpers';
+import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
+import log from '~/lib/methods/helpers/log';
+import getMessages from '~/views/RoomView/services/getMessages';
+import { createObservableQuery, createObservableRecord } from '~/views/RoomView/testUtils/observableDatabase';
 import { createRoomStore, observeRoom } from '../RoomStore';
 
-jest.mock('../../../../lib/database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn() } }
 }));
-jest.mock('../../services/getMessages', () => ({
+jest.mock('~/views/RoomView/services/getMessages', () => ({
 	__esModule: true,
 	default: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../../lib/methods/loadThreadMessages', () => ({
+jest.mock('~/lib/methods/loadThreadMessages', () => ({
 	loadThreadMessages: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../../lib/methods/readMessages', () => ({
+jest.mock('~/lib/methods/readMessages', () => ({
 	readMessages: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	getUserInfo: jest.fn()
 }));
-jest.mock('../../../../lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers', () => ({
 	getUidDirectMessage: jest.fn(() => 'uid-1'),
 	isGroupChat: jest.fn(() => false),
 	canAutoTranslate: jest.fn(() => true)
 }));
-jest.mock('../../../../lib/methods/isInviteSubscription', () => ({
+jest.mock('~/lib/methods/isInviteSubscription', () => ({
 	isInviteSubscription: jest.fn(() => false)
 }));
-jest.mock('../../../../lib/methods/helpers/log', () => jest.fn());
+jest.mock('~/lib/methods/helpers/log', () => jest.fn());
 
 const mockGet = database.active.get as jest.Mock;
 const mockGetMessages = getMessages as unknown as jest.Mock;

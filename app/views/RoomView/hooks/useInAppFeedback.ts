@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 
-import { clearInAppFeedback, removeInAppFeedback } from '../../../actions/inAppFeedback';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import UserPreferences from '../../../lib/methods/userPreferences';
-import { NOTIFICATION_IN_APP_VIBRATION } from '../../../lib/constants/notifications';
+import { clearInAppFeedback, removeInAppFeedback } from '~/actions/inAppFeedback';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import UserPreferences from '~/lib/methods/userPreferences';
+import { NOTIFICATION_IN_APP_VIBRATION } from '~/lib/constants/notifications';
 
 const fireHapticFeedback = () => {
 	const notificationInAppVibration = UserPreferences.getBool(NOTIFICATION_IN_APP_VIBRATION);

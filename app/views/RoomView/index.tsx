@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { getRoomTitle } from '../../lib/methods/helpers';
-import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
-import { getInvitationActions, getInvitationText } from '../../lib/methods/getInvitationData';
-import { type IInviteSubscription } from '../../definitions';
-import { isSubscriptionModel } from '../../definitions/TRoom';
+import { getRoomTitle } from '~/lib/methods/helpers';
+import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
+import { getInvitationActions, getInvitationText } from '~/lib/methods/getInvitationData';
+import { type IInviteSubscription } from '~/definitions';
+import { isSubscriptionModel } from '~/definitions/TRoom';
 import { type IRoomViewProps } from './definitions';
 import { EncryptedRoom } from './components/EncryptedRoom';
 import { InvitedRoomScreen } from './components/InvitedRoomScreen';

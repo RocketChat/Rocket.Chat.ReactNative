@@ -1,12 +1,12 @@
 import { Text } from 'react-native';
 import { render } from '@testing-library/react-native';
 
-import { type TAnyMessageModel } from '../../../../definitions';
-import { A11yGateContext } from '../../stores/A11yGate';
-import { type MessageRoomState } from '../../stores/MessageRoomStore';
+import { type TAnyMessageModel } from '~/definitions';
+import { A11yGateContext } from '~/containers/message/stores/A11yGate';
+import { type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
 import MessageTouchable from '../Touchable/MessageTouchable';
 import MessageAccessibleIndex from '../MessageAccessibleIndex';
-import { MessageProviders } from '../../__tests__/testHelpers';
+import { MessageProviders } from '~/containers/message/__tests__/testHelpers';
 
 // Render the react-native-a11y-order Fabric views as plain testID-bearing Views so the gating
 // seam is observable from the tree. This is the only thing mocked; the gate value is driven purely

@@ -1,13 +1,13 @@
-import { showConfirmationAlert, showErrorAlert } from '../../../../lib/methods/helpers';
-import { onHoldLivechat } from '../../../../lib/services/restApi';
+import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { onHoldLivechat } from '~/lib/services/restApi';
 import { placeLivechatOnHold } from '../placeLivechatOnHold';
 import { type TRoomStackNavigation } from '../navigateToScreen';
 
-jest.mock('../../../../lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers', () => ({
 	showConfirmationAlert: jest.fn(),
 	showErrorAlert: jest.fn()
 }));
-jest.mock('../../../../lib/services/restApi', () => ({ onHoldLivechat: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/services/restApi', () => ({ onHoldLivechat: jest.fn(() => Promise.resolve()) }));
 
 const mockShowConfirmationAlert = showConfirmationAlert as jest.Mock;
 const mockShowErrorAlert = showErrorAlert as jest.Mock;

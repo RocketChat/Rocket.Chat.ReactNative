@@ -2,8 +2,8 @@ import { type ReactElement } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { type RoomStore } from '../../definitions';
-import { fromSubscription } from '../../stores/RoomStoreContext';
+import { type RoomStore } from '~/views/RoomView/definitions';
+import { fromSubscription } from '~/views/RoomView/stores/RoomStoreContext';
 import { OmnichannelRightButtons } from './OmnichannelRightButtons';
 import { RoomRightButtons } from './RoomRightButtons';
 import { ThreadRightButtons } from './ThreadRightButtons';

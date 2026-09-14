@@ -1,18 +1,18 @@
 import { act, renderHook } from '@testing-library/react-native';
 import { of, Subject } from 'rxjs';
 
-import database from '../../../../lib/database';
-import { getUidDirectMessage } from '../../../../lib/methods/helpers/helpers';
-import { createRoomStore, observeRoom } from '../../stores/RoomStore';
+import database from '~/lib/database';
+import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
+import { createRoomStore, observeRoom } from '~/views/RoomView/stores/RoomStore';
 import { useSubscriptionUnreads } from '../useSubscriptionUnreads';
 
-jest.mock('../../../../lib/database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn() } }
 }));
-jest.mock('../../../../lib/methods/readMessages', () => ({ readMessages: jest.fn() }));
-jest.mock('../../../../lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn() }));
-jest.mock('../../../../lib/methods/helpers/helpers', () => ({
+jest.mock('~/lib/methods/readMessages', () => ({ readMessages: jest.fn() }));
+jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn() }));
+jest.mock('~/lib/methods/helpers/helpers', () => ({
 	getUidDirectMessage: jest.fn(),
 	isGroupChat: jest.fn(() => false),
 	canAutoTranslate: jest.fn(() => false)

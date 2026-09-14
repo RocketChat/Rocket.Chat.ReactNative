@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { routingConfigRequest } from '../actions/routingConfig';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
 
 export function useCanReturnQueue(enabled: boolean): boolean {
 	const dispatch = useDispatch();

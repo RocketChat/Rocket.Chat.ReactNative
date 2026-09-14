@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import AudioManager from '../../../lib/methods/AudioManager';
+import AudioManager from '~/lib/methods/AudioManager';
 import { type IRoomViewProps } from '../definitions';
 
 export function useRoomAudioLifecycle(rid: string | undefined, tmid: string | undefined): void {

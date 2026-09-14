@@ -1,9 +1,9 @@
 import { useRoute } from '@react-navigation/native';
 import { useCallback, useEffect, useRef } from 'react';
 
-import { saveDraftMessage } from '../../../lib/methods/draftMessage';
+import { saveDraftMessage } from '~/lib/methods/draftMessage';
 import { useComposerRid, useComposerTmid } from '../ComposerStore';
-import { useMessageAction } from '../../message/stores/MessageActionStore';
+import { useMessageAction } from '~/containers/message/stores/MessageActionStore';
 import { useFocused } from '../context';
 
 export const useAutoSaveDraft = (text = '') => {

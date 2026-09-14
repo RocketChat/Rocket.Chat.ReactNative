@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { type RoomMembership, type RoomStore } from '../../../definitions';
+import { type RoomMembership, type RoomStore } from '~/views/RoomView/definitions';
 import RightButtons from '../RightButtons';
 
 jest.mock('../OmnichannelRightButtons', () => {

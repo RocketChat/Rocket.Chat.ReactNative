@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 
-import I18n from '../../../../i18n';
-import { useRoomStore } from '../../stores/RoomStoreContext';
+import I18n from '~/i18n';
+import { useRoomStore } from '~/views/RoomView/stores/RoomStoreContext';
 import { FooterAction } from './FooterAction';
 
 export const OnHold = (): ReactElement => {

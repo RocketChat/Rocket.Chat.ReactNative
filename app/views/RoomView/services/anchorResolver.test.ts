@@ -1,4 +1,4 @@
-import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
+import { MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
 import { anchorForServerChunk, anchorForTarget, raiseOrRelease } from './anchorResolver';
 import { type AnchorMessage } from '../definitions';
 

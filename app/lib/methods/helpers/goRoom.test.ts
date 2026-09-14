@@ -1,6 +1,6 @@
 import { goRoom } from './goRoom';
 
-jest.mock('../../navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	__esModule: true,
 	default: {
 		getCurrentRoute: jest.fn(() => ({ name: 'RoomsListView' })),
@@ -9,7 +9,7 @@ jest.mock('../../navigation/appNavigation', () => ({
 		dispatch: jest.fn()
 	}
 }));
-jest.mock('../../database/services/Subscription', () => ({ getSubscriptionByRoomId: jest.fn(() => Promise.resolve(null)) }));
+jest.mock('~/lib/database/services/Subscription', () => ({ getSubscriptionByRoomId: jest.fn(() => Promise.resolve(null)) }));
 jest.mock('./helpers', () => ({ getRoomTitle: jest.fn(() => 'Room'), getUidDirectMessage: jest.fn() }));
 
 describe('goRoom navigation', () => {

@@ -1,11 +1,11 @@
 import { act, renderHook } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { toggleFollowMessage } from '../../../../lib/services/restApi';
-import { replyBroadcast as replyBroadcastAction } from '../../../../actions/messages';
-import { getUserSelector } from '../../../../selectors/login';
-import { type RoomState, type RoomStore } from '../../definitions';
-import { RoomStoreContext } from '../../stores/RoomStoreContext';
+import { toggleFollowMessage } from '~/lib/services/restApi';
+import { replyBroadcast as replyBroadcastAction } from '~/actions/messages';
+import { getUserSelector } from '~/selectors/login';
+import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
+import { RoomStoreContext } from '~/views/RoomView/stores/RoomStoreContext';
 import { useRoomMessageHandlers } from '../useRoomMessageHandlers';
 
 jest.mock('@react-navigation/native', () => ({
@@ -14,37 +14,37 @@ jest.mock('@react-navigation/native', () => ({
 jest.mock('react-redux', () => ({
 	useDispatch: () => mockDispatch
 }));
-jest.mock('../../../../lib/hooks/useMasterDetail', () => ({
+jest.mock('~/lib/hooks/useMasterDetail', () => ({
 	useMasterDetail: jest.fn(() => false)
 }));
-jest.mock('../../../../lib/hooks/useAppSelector', () => ({
+jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: jest.fn()
 }));
-jest.mock('../../../../containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet, hideActionSheet: mockHideActionSheet })
 }));
-jest.mock('../../../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	toggleFollowMessage: jest.fn()
 }));
-jest.mock('../../../../actions/messages', () => ({
+jest.mock('~/actions/messages', () => ({
 	replyBroadcast: jest.fn(message => ({ type: 'REPLY_BROADCAST', payload: message }))
 }));
-jest.mock('../../../../lib/methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
-	...jest.requireActual('../../../../lib/methods/helpers/log'),
+	...jest.requireActual('~/lib/methods/helpers/log'),
 	default: jest.fn(),
 	logEvent: jest.fn()
 }));
-jest.mock('../../../../lib/methods/helpers/review', () => ({
+jest.mock('~/lib/methods/helpers/review', () => ({
 	Review: { pushPositiveEvent: jest.fn() }
 }));
-jest.mock('../../../../lib/methods/sendMessage', () => ({
+jest.mock('~/lib/methods/sendMessage', () => ({
 	sendMessage: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../../lib/database/services/Thread', () => ({
+jest.mock('~/lib/database/services/Thread', () => ({
 	getThreadById: jest.fn(() => Promise.resolve(null))
 }));
-jest.mock('../../../../lib/methods/getThreadName', () => ({
+jest.mock('~/lib/methods/getThreadName', () => ({
 	__esModule: true,
 	default: jest.fn(() => Promise.resolve('Thread Title'))
 }));
@@ -62,7 +62,7 @@ const mockReplyBroadcastAction = replyBroadcastAction as jest.Mock;
 
 const mockUser = { id: 'u1', username: 'user', token: 'tok', showMessageInMainThread: false };
 
-const { useAppSelector } = jest.requireMock('../../../../lib/hooks/useAppSelector');
+const { useAppSelector } = jest.requireMock('~/lib/hooks/useAppSelector');
 
 const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 	createStore<RoomState>(() => ({

@@ -1,5 +1,5 @@
-import { useSetting } from '../../../../lib/hooks/useSetting';
-import { useRoomStore } from '../../stores/RoomStoreContext';
+import { useSetting } from '~/lib/hooks/useSetting';
+import { useRoomStore } from '~/views/RoomView/stores/RoomStoreContext';
 import { useFooterMessage } from './useFooterMessage';
 
 export type TRoomFooterState =

@@ -1,8 +1,8 @@
-import { sendLoadingEvent } from '../../../containers/Loading';
-import I18n from '../../../i18n';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../lib/constants/keys';
-import { makeThreadName } from '../../../lib/methods/helpers/room';
-import { SubscriptionType, type TAnyMessageModel } from '../../../definitions';
+import { sendLoadingEvent } from '~/containers/Loading';
+import I18n from '~/i18n';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
+import { makeThreadName } from '~/lib/methods/helpers/room';
+import { SubscriptionType, type TAnyMessageModel } from '~/definitions';
 import { type IRoomViewProps, type TGetMessageInfoResult } from '../definitions';
 import { fetchThreadName } from './fetchThreadName';
 

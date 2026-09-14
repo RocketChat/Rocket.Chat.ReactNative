@@ -1,31 +1,31 @@
 import { act, render, renderHook } from '@testing-library/react-native';
 import { Text } from 'react-native';
 
-import { sendMessage as sendMessageRequest } from '../../../../lib/methods/sendMessage';
-import { Review } from '../../../../lib/methods/helpers/review';
-import log, { events, logEvent } from '../../../../lib/methods/helpers/log';
-import { MessageActionProvider, useMessageAction } from '../../../../containers/message/stores/MessageActionStore';
+import { sendMessage as sendMessageRequest } from '~/lib/methods/sendMessage';
+import { Review } from '~/lib/methods/helpers/review';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { MessageActionProvider, useMessageAction } from '~/containers/message/stores/MessageActionStore';
 import { useRoomMessaging } from '../useRoomMessaging';
 
-jest.mock('../../../../lib/methods/sendMessage', () => ({
+jest.mock('~/lib/methods/sendMessage', () => ({
 	sendMessage: jest.fn()
 }));
-jest.mock('../../../../lib/methods/helpers/review', () => ({
+jest.mock('~/lib/methods/helpers/review', () => ({
 	Review: { pushPositiveEvent: jest.fn() }
 }));
-jest.mock('../../../../lib/methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn(),
 	logEvent: jest.fn(),
 	events: { ROOM_SEND_MESSAGE: 'ROOM_SEND_MESSAGE' }
 }));
-jest.mock('../../../../lib/hooks/useAppSelector', () => ({
+jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: jest.fn((selector: (state: unknown) => unknown) =>
 		selector({ login: { isAuthenticated: true, user: { id: 'user-1', username: 'alice', token: 'token-1' } } })
 	)
 }));
-jest.mock('../../../../lib/hooks/useMasterDetail', () => ({ useMasterDetail: jest.fn(() => false) }));
-jest.mock('../../../../containers/ActionSheet', () => ({
+jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: jest.fn(() => false) }));
+jest.mock('~/containers/ActionSheet', () => ({
 	useActionSheet: jest.fn(() => ({ showActionSheet: jest.fn(), hideActionSheet: jest.fn() }))
 }));
 jest.mock('../useJumpToMessage', () => ({

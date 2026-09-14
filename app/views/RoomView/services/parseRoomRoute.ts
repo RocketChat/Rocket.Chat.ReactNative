@@ -1,6 +1,6 @@
-import { getUidDirectMessage } from '../../../lib/methods/helpers';
+import { getUidDirectMessage } from '~/lib/methods/helpers';
 import { type IRoomScreenInput, type IRoomViewProps } from '../definitions';
-import { type TRoomOrPreview } from '../../../definitions/TRoom';
+import { type TRoomOrPreview } from '~/definitions/TRoom';
 
 export const parseRoomRoute = (params: IRoomViewProps['route']['params']): IRoomScreenInput => {
 	const { rid, t, tmid, name, fname, prid, visitor, joinCodeRequired, roomUserId } = params ?? {};

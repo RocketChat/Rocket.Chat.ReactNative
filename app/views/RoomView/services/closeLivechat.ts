@@ -1,10 +1,10 @@
-import { type ILivechatDepartment } from '../../../definitions/ILivechatDepartment';
-import { type ILivechatTag } from '../../../definitions/ILivechatTag';
-import i18n from '../../../i18n';
-import { closeLivechat as closeLivechatService } from '../../../lib/methods/helpers/closeLivechat';
-import { showErrorAlert } from '../../../lib/methods/helpers/info';
-import log from '../../../lib/methods/helpers/log';
-import { getDepartmentInfo, getTagsList } from '../../../lib/services/restApi';
+import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
+import { type ILivechatTag } from '~/definitions/ILivechatTag';
+import i18n from '~/i18n';
+import { closeLivechat as closeLivechatService } from '~/lib/methods/helpers/closeLivechat';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import log from '~/lib/methods/helpers/log';
+import { getDepartmentInfo, getTagsList } from '~/lib/services/restApi';
 import { navigateToScreen, type TRoomStackNavigation } from './navigateToScreen';
 
 export const closeLivechat = async ({

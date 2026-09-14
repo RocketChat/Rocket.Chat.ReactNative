@@ -1,6 +1,6 @@
-import { isReadOnlySync } from '../../../lib/methods/helpers/isReadOnly';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { getUserSelector } from '../../../selectors/login';
+import { isReadOnlySync } from '~/lib/methods/helpers/isReadOnly';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { getUserSelector } from '~/selectors/login';
 import { fromSubscription, useRoomStore } from '../stores/RoomStoreContext';
 
 export const useReadOnly = (): boolean => {
