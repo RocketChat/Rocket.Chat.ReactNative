@@ -1,17 +1,18 @@
 import { memo } from 'react';
 import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
-import { type TSupportedThemes, useTheme } from '../../theme';
-import { themes } from '../../lib/constants/colors';
+import { type TSupportedThemes, useTheme } from '~/theme';
+import { themes } from '~/lib/constants/colors';
 import { CustomIcon } from '../CustomIcon';
-import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
-import { addFrequentlyUsed } from '../../lib/methods/emojis';
-import { useFrequentlyUsedEmoji } from '../../lib/hooks/useFrequentlyUsedEmoji';
+import useShortnameToUnicode from '~/lib/hooks/useShortnameToUnicode';
+import { useCustomEmoji } from '~/lib/hooks/useCustomEmoji';
+import { addFrequentlyUsed } from '~/lib/methods/emojis';
+import { useFrequentlyUsedEmoji } from '~/lib/hooks/useFrequentlyUsedEmoji';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
-import sharedStyles from '../../views/Styles';
-import { type IEmoji, type TAnyMessageModel } from '../../definitions';
+import sharedStyles from '~/views/Styles';
+import { type IEmoji, type TAnyMessageModel } from '~/definitions';
 import Touch from '../Touch';
-import I18n from '../../i18n';
+import I18n from '~/i18n';
 
 export interface IHeader {
 	handleReaction: (emoji: IEmoji | null, message: TAnyMessageModel) => void;
@@ -66,18 +67,20 @@ const styles = StyleSheet.create({
 
 const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => {
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
-	const unicodeEmoji = formatShortnameToUnicode(`:${item}:`);
+	const getCustomEmoji = useCustomEmoji();
+	const emojiName = typeof item === 'string' ? item : item.name;
+	const customEmoji = typeof item === 'string' ? getCustomEmoji(item) : item;
 	return (
 		<Touch
-			testID={`message-actions-emoji-${item}`}
+			testID={`message-actions-emoji-${emojiName}`}
 			accessible
-			accessibilityLabel={I18n.t('React_with_emojjname', { emojiName: item })}
+			accessibilityLabel={I18n.t('React_with_emojjname', { emojiName })}
 			onPress={() => onReaction({ emoji: item })}
 			style={[styles.headerItem, { backgroundColor: themes[theme].surfaceHover }]}>
-			{typeof item === 'string' ? (
-				<Text style={styles.headerIcon}>{unicodeEmoji}</Text>
+			{customEmoji ? (
+				<CustomEmoji style={styles.customEmoji} emoji={customEmoji} />
 			) : (
-				<CustomEmoji style={styles.customEmoji} emoji={item} />
+				<Text style={styles.headerIcon}>{formatShortnameToUnicode(`:${emojiName}:`)}</Text>
 			)}
 		</Touch>
 	);

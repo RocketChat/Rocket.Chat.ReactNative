@@ -1,6 +1,6 @@
 import { Audio } from 'expo-av';
 
-import log from '../../methods/helpers/log';
+import log from '~/lib/methods/helpers/log';
 
 // Module-scoped state so it survives React tree unmounts and is safe to call
 // fire-and-forget from any termination path.
@@ -48,7 +48,7 @@ export async function playCallEndedSound(): Promise<void> {
 		});
 
 		// eslint-disable-next-line @typescript-eslint/no-require-imports
-		await sound.loadAsync(require('../../../containers/Ringer/call-ended.mp3'));
+		await sound.loadAsync(require('~/containers/Ringer/call-ended.mp3'));
 		await sound.playAsync();
 
 		watchdogTimer = setTimeout(() => {

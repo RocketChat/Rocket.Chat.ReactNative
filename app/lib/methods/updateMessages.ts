@@ -8,7 +8,7 @@ import {
 	type TSubscriptionModel,
 	type TThreadMessageModel,
 	type TThreadModel
-} from '../../definitions';
+} from '~/definitions';
 import database from '../database';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { Encryption } from '../encryption';

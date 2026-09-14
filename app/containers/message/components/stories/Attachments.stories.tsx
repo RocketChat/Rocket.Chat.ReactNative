@@ -2,11 +2,11 @@ import { type ReactNode } from 'react';
 import { View } from 'react-native';
 import { Provider } from 'react-redux';
 
-import { createMockedStore } from '../../../../reducers/mockedStore';
-import { selectServerSuccess } from '../../../../actions/server';
-import { type TAnyMessageModel } from '../../../../definitions';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { MessageProvider } from '../../stores/MessageStore';
+import { createMockedStore } from '~/reducers/mockedStore';
+import { selectServerSuccess } from '~/actions/server';
+import { type TAnyMessageModel } from '~/definitions';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
 import Attachments from '../Attachments/Attachments';
 
 const mockMessageContext: Partial<MessageRoomState> = {

@@ -2,60 +2,60 @@ jest.unmock('@rocket.chat/sdk');
 
 jest.mock('universal-websocket-client', () =>
 	jest.fn().mockImplementation(() => {
-		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../../testUtils/sdkIntegration');
+		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('~/lib/testUtils/sdkIntegration');
 		return new sdkIntegration.MockConnection(mockConnections);
 	})
 );
 
-jest.mock('../../../encryption', () => ({
+jest.mock('~/lib/encryption', () => ({
 	Encryption: { decryptMessage: jest.fn(async (message: unknown) => message) }
 }));
 
-jest.mock('../../helpers/buildMessage', () => ({
+jest.mock('~/lib/methods/helpers/buildMessage', () => ({
 	__esModule: true,
 	default: jest.fn((message: unknown) => message)
 }));
 
-jest.mock('../../helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));
 
-jest.mock('../../../services/twoFactor/twoFactor', () => ({
+jest.mock('~/lib/services/twoFactor/twoFactor', () => ({
 	twoFactor: jest.fn()
 }));
 
-jest.mock('../../subscribeRooms', () => ({
+jest.mock('~/lib/methods/subscribeRooms', () => ({
 	subscribeRooms: jest.fn(),
 	unsubscribeRooms: jest.fn()
 }));
 
-jest.mock('../../../database/services/Message', () => ({
+jest.mock('~/lib/database/services/Message', () => ({
 	getMessageById: jest.fn()
 }));
 
-jest.mock('../../../database/services/Thread', () => ({
+jest.mock('~/lib/database/services/Thread', () => ({
 	getThreadById: jest.fn()
 }));
 
-jest.mock('../../../database/services/ThreadMessage', () => ({
+jest.mock('~/lib/database/services/ThreadMessage', () => ({
 	getThreadMessageById: jest.fn()
 }));
 
-jest.mock('../../readMessages', () => ({
+jest.mock('~/lib/methods/readMessages', () => ({
 	readMessages: jest.fn()
 }));
 
-jest.mock('../../loadMissedMessages', () => ({
+jest.mock('~/lib/methods/loadMissedMessages', () => ({
 	loadMissedMessages: jest.fn()
 }));
 
-jest.mock('../../helpers/markMessagesRead', () => ({
+jest.mock('~/lib/methods/helpers/markMessagesRead', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));
 
-jest.mock('../../../database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: {
 		active: {
@@ -67,23 +67,23 @@ jest.mock('../../../database', () => ({
 }));
 
 import RoomSubscription from '../room';
-import sdk from '../../../services/sdk';
-import { initStore } from '../../../store/auxStore';
-import { getMessageById } from '../../../database/services/Message';
-import buildMessage from '../../helpers/buildMessage';
-import { subscribeRoom, unsubscribeRoom } from '../../../../actions/room';
-import { clearUserTyping } from '../../../../actions/usersTyping';
+import sdk from '~/lib/services/sdk';
+import { initStore } from '~/lib/store/auxStore';
+import { getMessageById } from '~/lib/database/services/Message';
+import buildMessage from '~/lib/methods/helpers/buildMessage';
+import { subscribeRoom, unsubscribeRoom } from '~/actions/room';
+import { clearUserTyping } from '~/actions/usersTyping';
 import {
 	flushMicrotasksAndTimers,
 	framesOn,
 	makeCollection as makeBaseCollection,
 	makeReduxStore,
 	receiveFrame
-} from '../../../testUtils/sdkIntegration';
-import type { IMockCollection, MockConnection } from '../../../testUtils/sdkIntegration';
-import type * as SdkIntegration from '../../../testUtils/sdkIntegration';
+} from '~/lib/testUtils/sdkIntegration';
+import type { IMockCollection, MockConnection } from '~/lib/testUtils/sdkIntegration';
+import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
 
-const database = require('../../../database').default as {
+const database = require('~/lib/database').default as {
 	active: { get: jest.Mock; write: jest.Mock; batch: jest.Mock };
 };
 

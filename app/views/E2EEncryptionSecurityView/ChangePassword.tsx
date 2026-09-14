@@ -2,21 +2,21 @@ import { useRef, useState } from 'react';
 import { Text, type TextInput, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { useTheme } from '../../theme';
-import I18n from '../../i18n';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { FormTextInput } from '../../containers/TextInput';
-import Button from '../../containers/Button';
-import { Encryption } from '../../lib/encryption';
-import { isTwoFactorCancelled } from '../../lib/services/twoFactor/twoFactorCancelled';
-import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { LISTENER } from '../../containers/Toast';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { FormTextInput } from '~/containers/TextInput';
+import Button from '~/containers/Button';
+import { Encryption } from '~/lib/encryption';
+import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
+import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/info';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { LISTENER } from '~/containers/Toast';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { styles } from './styles';
-import { generatePassphrase } from '../../lib/encryption/utils';
-import * as List from '../../containers/List';
-import PasswordPolicies from '../../containers/PasswordPolicies';
+import { generatePassphrase } from '~/lib/encryption/utils';
+import * as List from '~/containers/List';
+import PasswordPolicies from '~/containers/PasswordPolicies';
 import { E2E_PASSWORD_POLICIES, validateE2EPassword } from './utils';
 
 const ChangePassword = () => {

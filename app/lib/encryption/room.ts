@@ -23,7 +23,7 @@ import type {
 	IServerAttachment,
 	TSubscriptionModel,
 	ISubscription
-} from '../../definitions';
+} from '~/definitions';
 import Deferred from './helpers/deferred';
 import { compareServerVersion, debounce } from '../methods/helpers';
 import log from '../methods/helpers/log';

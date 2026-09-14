@@ -6,20 +6,20 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import Message from '../../containers/message';
-import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import I18n from '../../i18n';
+import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
+import Message from '~/containers/message';
+import { MessageRoomProvider } from '~/containers/message/stores/MessageRoomStore';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import I18n from '~/i18n';
 import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
-import { themes } from '../../lib/constants/colors';
-import { type TSupportedThemes, withTheme } from '../../theme';
-import { getUserSelector } from '../../selectors/login';
-import { withActionSheet } from '../../containers/ActionSheet';
-import SafeAreaView from '../../containers/SafeAreaView';
-import getThreadName from '../../lib/methods/getThreadName';
+import { themes } from '~/lib/constants/colors';
+import { type TSupportedThemes, withTheme } from '~/theme';
+import { getUserSelector } from '~/selectors/login';
+import { withActionSheet } from '~/containers/ActionSheet';
+import SafeAreaView from '~/containers/SafeAreaView';
+import getThreadName from '~/lib/methods/getThreadName';
 import styles from './styles';
-import { type ChatsStackParamList } from '../../stacks/types';
+import { type ChatsStackParamList } from '~/stacks/types';
 import {
 	type IApplicationState,
 	type IRoomInfoParam,
@@ -30,13 +30,13 @@ import {
 	type IMessage,
 	type TAnyMessageModel,
 	type IUrl
-} from '../../definitions';
-import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '../../lib/services/restApi';
-import { type TNavigation } from '../../stacks/stackType';
-import AudioManager from '../../lib/methods/AudioManager';
-import { Encryption } from '../../lib/encryption';
-import Navigation from '../../lib/navigation/appNavigation';
-import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
+} from '~/definitions';
+import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '~/lib/services/restApi';
+import { type TNavigation } from '~/stacks/stackType';
+import AudioManager from '~/lib/methods/AudioManager';
+import { Encryption } from '~/lib/encryption';
+import Navigation from '~/lib/navigation/appNavigation';
+import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
 
 interface IMessagesViewProps {
 	user: {

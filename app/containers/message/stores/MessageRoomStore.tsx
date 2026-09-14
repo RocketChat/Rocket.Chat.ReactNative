@@ -2,8 +2,8 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactEleme
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { type IAttachment, type IRoomInfoParam, type TAnyMessageModel } from '../../../definitions';
-import { useSetting } from '../../../lib/hooks/useSetting';
+import { type IAttachment, type IRoomInfoParam, type TAnyMessageModel } from '~/definitions';
+import { useSetting } from '~/lib/hooks/useSetting';
 
 export type MessageRoomState = {
 	// stable handlers

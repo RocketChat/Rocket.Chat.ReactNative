@@ -6,20 +6,20 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import ListRadio from '../../containers/List/ListRadio';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { appStart } from '../../actions/app';
-import { setUser } from '../../actions/login';
-import * as List from '../../containers/List';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { RootEnum } from '../../definitions';
-import I18n, { isRTL, LANGUAGES } from '../../i18n';
-import database from '../../lib/database';
-import { getUserSelector } from '../../selectors/login';
-import { type SettingsStackParamList } from '../../stacks/types';
-import { showErrorAlert } from '../../lib/methods/helpers/info';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { saveUserPreferences } from '../../lib/services/restApi';
+import ListRadio from '~/containers/List/ListRadio';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { appStart } from '~/actions/app';
+import { setUser } from '~/actions/login';
+import * as List from '~/containers/List';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { RootEnum } from '~/definitions';
+import I18n, { isRTL, LANGUAGES } from '~/i18n';
+import database from '~/lib/database';
+import { getUserSelector } from '~/selectors/login';
+import { type SettingsStackParamList } from '~/stacks/types';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { saveUserPreferences } from '~/lib/services/restApi';
 
 const LanguageView = () => {
 	const { languageDefault, id } = useAppSelector(state => ({

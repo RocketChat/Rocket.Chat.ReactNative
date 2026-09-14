@@ -5,8 +5,8 @@ import database from '../database';
 import { getRoleById } from '../database/services/Role';
 import log from './helpers/log';
 import { store as reduxStore } from '../store/auxStore';
-import { removeRoles, setRoles as setRolesAction, updateRoles } from '../../actions/roles';
-import { type TRoleModel } from '../../definitions';
+import { removeRoles, setRoles as setRolesAction, updateRoles } from '~/actions/roles';
+import { type TRoleModel } from '~/definitions';
 import sdk from '../services/sdk';
 import protectedFunction from './helpers/protectedFunction';
 

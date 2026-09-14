@@ -3,13 +3,13 @@ import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { Keyboard } from 'react-native';
 
-import { type IAttachment, type TAnyMessageModel } from '../../../definitions';
+import { type IAttachment, type TAnyMessageModel } from '~/definitions';
 import { getMessageTranslation } from '../utils';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../lib/constants/keys';
-import { messagesStatus } from '../../../lib/constants/messagesStatus';
-import { useDebounce } from '../../../lib/methods/helpers/debounce';
-import openLink from '../../../lib/methods/helpers/openLink';
-import { useTheme } from '../../../theme';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
+import { messagesStatus } from '~/lib/constants/messagesStatus';
+import { useDebounce } from '~/lib/methods/helpers/debounce';
+import openLink from '~/lib/methods/helpers/openLink';
+import { useTheme } from '~/theme';
 import {
 	useIsArchived,
 	useAutoTranslate,

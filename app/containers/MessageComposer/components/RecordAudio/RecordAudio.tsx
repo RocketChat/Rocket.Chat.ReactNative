@@ -5,23 +5,23 @@ import { getInfoAsync } from 'expo-file-system/legacy';
 import { useKeepAwake } from 'expo-keep-awake';
 import { shallowEqual } from 'react-redux';
 
-import { useTheme } from '../../../../theme';
+import { useTheme } from '~/theme';
 import { BaseButton } from '../Buttons';
-import { CustomIcon } from '../../../CustomIcon';
-import sharedStyles from '../../../../views/Styles';
+import { CustomIcon } from '~/containers/CustomIcon';
+import sharedStyles from '~/views/Styles';
 import { ReviewButton } from './ReviewButton';
-import { useMessageComposerApi } from '../../context';
-import { sendFileMessage } from '../../../../lib/methods/sendFileMessage';
-import { RECORDING_EXTENSION, RECORDING_MODE, RECORDING_SETTINGS } from '../../../../lib/constants/audio';
-import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
-import log from '../../../../lib/methods/helpers/log';
-import { type IUpload } from '../../../../definitions';
-import { useRoomContext } from '../../../../views/RoomView/context';
-import { useCanUploadFile } from '../../hooks';
+import { useMessageComposerApi } from '~/containers/MessageComposer/context';
+import { sendFileMessage } from '~/lib/methods/sendFileMessage';
+import { RECORDING_EXTENSION, RECORDING_MODE, RECORDING_SETTINGS } from '~/lib/constants/audio';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import log from '~/lib/methods/helpers/log';
+import { type IUpload } from '~/definitions';
+import { useRoomContext } from '~/views/RoomView/context';
+import { useCanUploadFile } from '~/containers/MessageComposer/hooks';
 import { Duration, type IDurationRef } from './Duration';
-import AudioPlayer from '../../../AudioPlayer';
+import AudioPlayer from '~/containers/AudioPlayer';
 import { CancelButton } from './CancelButton';
-import i18n from '../../../../i18n';
+import i18n from '~/i18n';
 
 export const RecordAudio = (): ReactElement | null => {
 	const [styles, colors] = useStyle();
