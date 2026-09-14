@@ -23,7 +23,7 @@ tags:
                   text: 'Continue'
                   index: 1
 
-- inputText: https://mobile.qa.rocket.chat/file-upload/${file}/image.png?rc_uid=${output.login.userId}&rc_token=${output.login.authToken}&download=1
+- inputText: https://mobile.qa.rocket.chat/file-upload/${file}?rc_uid=${output.login.userId}&rc_token=${output.login.authToken}&download=1
 - pressKey: enter
 
 - runFlow:
