@@ -31,7 +31,7 @@ tags:
       platform: 'iOS'
     commands:
       - extendedWaitUntil:
-          visible: 'Do you want to download “image.png”?'
+          visible: '.*Do you want to download.*'
           timeout: 10000
       - tapOn: 'Download'
 - runFlow:
