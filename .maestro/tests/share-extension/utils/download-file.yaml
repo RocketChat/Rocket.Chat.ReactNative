@@ -1,0 +1,43 @@
+appId: ${APP_ID}
+name: Download File
+tags:
+  - 'util'
+
+---
+- runFlow:
+    when:
+      platform: 'android'
+    commands:
+      - tapOn: 'Search Google or type URL'
+- runFlow:
+    when:
+      platform: 'iOS'
+    commands:
+      - tapOn: 'Search or enter website'
+      - runFlow:
+          when:
+            visible:
+              text: '.*Type English and Hindi'
+          commands:
+              - tapOn:
+                  text: 'Continue'
+                  index: 1
+
+- inputText: https://mobile.qa.rocket.chat/file-upload/${file}/image.png?rc_uid=${output.login.userId}&rc_token=${output.login.authToken}&download=1
+- pressKey: enter
+
+- runFlow:
+    when:
+      platform: 'iOS'
+    commands:
+      - extendedWaitUntil:
+          visible: 'Do you want to download “image.png”?'
+          timeout: 10000
+      - tapOn: 'Download'
+- runFlow:
+    when:
+      platform: 'android'
+    commands:
+      - extendedWaitUntil:
+          visible: 'File downloaded'
+          timeout: 60000

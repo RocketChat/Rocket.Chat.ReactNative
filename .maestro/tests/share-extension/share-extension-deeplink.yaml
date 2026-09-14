@@ -10,5 +10,59 @@ tags:
 ---
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.login = output.utils.login(output.user.username, output.user.password)}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password, output.user.username)}
+- evalScript: ${output.messageCount = 0}
 
-- runFlow: '../../helpers/download-files.yaml'
+# download all the files which are need for test
+- runFlow: './utils/download-files.yaml'
+
+# start app
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- killApp
+
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'image.png'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.mp4'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.mp3'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.ogg'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.wav'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.docx'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.zip'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.txt'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.pdf'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.html'
+
+- evalScript: ${console.log(output.messageCount)}

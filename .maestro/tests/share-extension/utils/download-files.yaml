@@ -1,0 +1,103 @@
+appId: ${APP_ID}
+name: Download File
+tags:
+  - 'util'
+
+---
+
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - clearState: com.android.chrome
+      - launchApp: com.android.chrome
+      - extendedWaitUntil:
+          visible: 'Add account to device'
+          timeout: 60000
+      - tapOn: 'Stay signed out'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: '8hbJ3HH6tBGxQk6QY/test.docx'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'juC7BJroRjHHostn5/test.html'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'XJR2sjYfSAMz5eyT2/test.pdf'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'Q8HDSij22PBJtZDgc/test.txt'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'H44YcW5DTDj6fASnN/test.zip'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'EgmkWnFjnGoktb7f4/test.wav'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'ccoC8yQxmqT9fdAMs/test.ogg'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'MPp42KbYLaAZzNqis/test.mp3'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'ZumNhPm24WBvWzEJu/test.mp4'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'MXMdYzmz9fSxeoF7H/image.png'
+
+- runFlow:
+    when:
+      platform: ios
+    commands:
+      - launchApp: com.apple.mobilesafari
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: '8hbJ3HH6tBGxQk6QY/test.docx'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'juC7BJroRjHHostn5/test.html'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'XJR2sjYfSAMz5eyT2/test.pdf'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'Q8HDSij22PBJtZDgc/test.txt'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'H44YcW5DTDj6fASnN/test.zip'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'EgmkWnFjnGoktb7f4/test.wav'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'ccoC8yQxmqT9fdAMs/test.ogg'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'MPp42KbYLaAZzNqis/test.mp3'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'ZumNhPm24WBvWzEJu/test.mp4'
+      - runFlow:
+          file: 'download-file.yaml'
+          env:
+            file: 'MXMdYzmz9fSxeoF7H/image.png'
