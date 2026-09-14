@@ -8,28 +8,28 @@ import { type EdgeInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
 import parse from 'url-parse';
 
-import { withSafeAreaInsets } from '../../lib/hooks/withSafeAreaInsets';
-import { FormTextInput } from '../../containers/TextInput';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import Markdown from '../../containers/markdown';
-import Message from '../../containers/message';
-import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import I18n from '../../i18n';
-import log from '../../lib/methods/helpers/log';
-import { themes } from '../../lib/constants/colors';
-import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
-import { type TSupportedThemes, withTheme } from '../../theme';
-import { getUserSelector } from '../../selectors/login';
-import SafeAreaView from '../../containers/SafeAreaView';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import database from '../../lib/database';
-import { sanitizeLikeString } from '../../lib/database/utils';
-import getThreadName from '../../lib/methods/getThreadName';
-import getRoomInfo, { type IRoomInfoResult } from '../../lib/methods/getRoomInfo';
+import { withSafeAreaInsets } from '~/lib/hooks/withSafeAreaInsets';
+import { FormTextInput } from '~/containers/TextInput';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import Markdown from '~/containers/markdown';
+import Message from '~/containers/message';
+import { MessageRoomProvider } from '~/containers/message/stores/MessageRoomStore';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
+import I18n from '~/i18n';
+import log from '~/lib/methods/helpers/log';
+import { themes } from '~/lib/constants/colors';
+import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
+import { type TSupportedThemes, withTheme } from '~/theme';
+import { getUserSelector } from '~/selectors/login';
+import SafeAreaView from '~/containers/SafeAreaView';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import database from '~/lib/database';
+import { sanitizeLikeString } from '~/lib/database/utils';
+import getThreadName from '~/lib/methods/getThreadName';
+import getRoomInfo, { type IRoomInfoResult } from '~/lib/methods/getRoomInfo';
 import styles from './styles';
-import { type InsideStackParamList, type ChatsStackParamList } from '../../stacks/types';
-import { compareServerVersion, debounce, isIOS } from '../../lib/methods/helpers';
+import { type InsideStackParamList, type ChatsStackParamList } from '~/stacks/types';
+import { compareServerVersion, debounce, isIOS } from '~/lib/methods/helpers';
 import {
 	type IMessageFromServer,
 	type IUser,
@@ -39,11 +39,11 @@ import {
 	type IRoomInfoParam,
 	SubscriptionType,
 	type TSubscriptionModel
-} from '../../definitions';
-import { searchMessages } from '../../lib/services/restApi';
-import { type TNavigation } from '../../stacks/stackType';
-import Navigation from '../../lib/navigation/appNavigation';
-import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
+} from '~/definitions';
+import { searchMessages } from '~/lib/services/restApi';
+import { type TNavigation } from '~/stacks/stackType';
+import Navigation from '~/lib/navigation/appNavigation';
+import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
 
 const QUERY_SIZE = 50;
 

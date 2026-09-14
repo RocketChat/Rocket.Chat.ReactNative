@@ -6,15 +6,15 @@ import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-n
 import prettyBytes from 'pretty-bytes';
 import { useHeaderHeight } from '@react-navigation/elements';
 
-import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
-import { ImageViewer } from '../../containers/ImageViewer';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import { ImageViewer } from '~/containers/ImageViewer';
 import sharedStyles from '../Styles';
-import I18n from '../../i18n';
-import { THUMBS_HEIGHT } from '../../containers/Thumbs';
-import { type TSupportedThemes } from '../../theme';
-import { themes } from '../../lib/constants/colors';
-import { type IShareAttachment } from '../../definitions';
-import { showErrorAlert } from '../../lib/methods/helpers/info';
+import I18n from '~/i18n';
+import { THUMBS_HEIGHT } from '~/containers/Thumbs';
+import { type TSupportedThemes } from '~/theme';
+import { themes } from '~/lib/constants/colors';
+import { type IShareAttachment } from '~/definitions';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
 
 const MESSAGE_COMPOSER_HEIGHT = 56;
 

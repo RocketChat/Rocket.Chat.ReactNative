@@ -2,9 +2,9 @@ import { Text, View } from 'react-native';
 import { type Tasks as TasksProps } from '@rocket.chat/message-parser';
 
 import Inline from '../Inline';
-import styles from '../../styles';
-import { useTheme } from '../../../../theme';
-import { CustomIcon } from '../../../CustomIcon';
+import styles from '~/containers/markdown/styles';
+import { useTheme } from '~/theme';
+import { CustomIcon } from '~/containers/CustomIcon';
 
 interface ITasksProps {
 	value: TasksProps['value'];

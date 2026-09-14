@@ -3,15 +3,15 @@ import { Alert } from 'react-native';
 import { createUploadRecord, getUploadPath, uploadQueue } from './utils';
 
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
-jest.mock('../../../i18n', () => ({ t: (k: string) => k }));
+jest.mock('~/i18n', () => ({ t: (k: string) => k }));
 jest.mock('../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('../../database/services/Upload', () => ({ getUploadByPath: jest.fn() }));
+jest.mock('~/lib/database/services/Upload', () => ({ getUploadByPath: jest.fn() }));
 jest.mock('@nozbe/watermelondb/RawRecord', () => ({ sanitizedRaw: (raw: unknown) => raw }));
 
 const mockFind = jest.fn();
 const mockCreate = jest.fn();
 
-jest.mock('../../database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: {
 		active: {

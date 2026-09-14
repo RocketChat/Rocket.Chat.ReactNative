@@ -1,7 +1,7 @@
 import { connect, determineAuthType, disconnect, login, loginTOTP } from './connect';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
-import { setUser } from '../../actions/login';
+import { setUser } from '~/actions/login';
 import database from '../database';
 
 jest.mock('./voip/MediaSessionInstance', () => ({

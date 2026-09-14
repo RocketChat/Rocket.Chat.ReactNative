@@ -2,8 +2,8 @@ import coerce from 'semver/functions/coerce';
 import satisfies from 'semver/functions/satisfies';
 
 import dayjs from '../dayjs';
-import { type ISupportedVersionsData, type TSVDictionary, type TSVMessage, type TSVStatus } from '../../definitions';
-import builtInSupportedVersions from '../../../app-supportedversions.json';
+import { type ISupportedVersionsData, type TSVDictionary, type TSVMessage, type TSVStatus } from '~/definitions';
+import builtInSupportedVersions from '~/supportedversions';
 
 export const getMessage = ({
 	messages,

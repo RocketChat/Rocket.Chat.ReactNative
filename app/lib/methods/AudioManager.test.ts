@@ -8,7 +8,7 @@ jest.mock('./getFilePathAudio', () => ({
 
 import type AudioManagerInstance from './AudioManager';
 import type { AudioStatus } from 'expo-audio';
-import type { TMessageModel } from '../../definitions';
+import type { TMessageModel } from '~/definitions';
 
 interface IAudioManagerSetup {
 	AudioManager: typeof AudioManagerInstance;

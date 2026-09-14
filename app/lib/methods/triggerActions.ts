@@ -4,7 +4,7 @@ import {
 	type ITriggerCancel,
 	type ITriggerSubmitView,
 	ModalActions
-} from '../../containers/UIKit/interfaces';
+} from '~/containers/UIKit/interfaces';
 import Navigation from '../navigation/appNavigation';
 import { triggerAction } from './actions';
 

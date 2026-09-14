@@ -1,7 +1,7 @@
 import { createAudioPlayer } from 'expo-audio';
 import { useEffect, memo } from 'react';
 
-import log from '../../lib/methods/helpers/log';
+import log from '~/lib/methods/helpers/log';
 
 export enum ERingerSounds {
 	DIALTONE = 'dialtone',

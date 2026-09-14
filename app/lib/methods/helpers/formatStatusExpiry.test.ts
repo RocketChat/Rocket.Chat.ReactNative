@@ -1,7 +1,7 @@
 import { formatStatusExpiry } from './formatStatusExpiry';
 
-jest.mock('../../../i18n', () => {
-	const en = require('../../../i18n/locales/en.json');
+jest.mock('~/i18n', () => {
+	const en = require('~/i18n/locales/en.json');
 	return {
 		t: (key: string, options?: Record<string, string>) => {
 			let value: string = en[key];

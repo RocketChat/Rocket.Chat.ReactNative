@@ -5,18 +5,18 @@ import { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import type { AudioStatus } from 'expo-audio';
 
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import styles from './styles';
 import Seek from './Seek';
 import PlaybackSpeed from './PlaybackSpeed';
 import PlayButton from './PlayButton';
-import AudioManager from '../../lib/methods/AudioManager';
+import AudioManager from '~/lib/methods/AudioManager';
 import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from './constants';
-import { type TDownloadState } from '../../lib/methods/handleMediaDownload';
-import { emitter } from '../../lib/methods/helpers/emitter';
+import { type TDownloadState } from '~/lib/methods/handleMediaDownload';
+import { emitter } from '~/lib/methods/helpers/emitter';
 import { type TAudioState } from './types';
-import { useUserPreferences } from '../../lib/methods/userPreferences';
-import log from '../../lib/methods/helpers/log';
+import { useUserPreferences } from '~/lib/methods/userPreferences';
+import log from '~/lib/methods/helpers/log';
 
 interface IAudioPlayerProps {
 	fileUri: string;

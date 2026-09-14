@@ -1,6 +1,6 @@
 import { createAudioPlayer } from 'expo-audio';
 
-import log from '../../methods/helpers/log';
+import log from '~/lib/methods/helpers/log';
 
 // Module-scoped state so it survives React tree unmounts and is safe to call
 // fire-and-forget from any termination path.
@@ -38,7 +38,7 @@ export function playCallEndedSound(): void {
 	isPlaying = true;
 
 	try {
-		currentPlayer = createAudioPlayer(require('../../../containers/Ringer/call-ended.mp3'));
+		currentPlayer = createAudioPlayer(require('~/containers/Ringer/call-ended.mp3'));
 
 		currentPlayer.addListener('playbackStatusUpdate', status => {
 			if (status.isLoaded && status.didJustFinish) {

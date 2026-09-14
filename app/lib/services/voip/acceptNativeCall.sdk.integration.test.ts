@@ -3,12 +3,12 @@ import { acceptNativeCallWithReadiness } from './acceptNativeCall';
 import { useCallStore } from './useCallStore';
 import { terminateNativeCall } from './terminateNativeCall';
 import { waitForLoginReady } from '../waitForLoginReady';
-import { addMediaSubs, backdateLastPing, buildConnectedDriver, stopAnsweringFrames } from '../../testUtils/sdkIntegration';
-import type { IMockSdk, MockConnection, IMockSdkDriver } from '../../testUtils/sdkIntegration';
-import type * as SdkIntegration from '../../testUtils/sdkIntegration';
+import { addMediaSubs, backdateLastPing, buildConnectedDriver, stopAnsweringFrames } from '~/lib/testUtils/sdkIntegration';
+import type { IMockSdk, MockConnection, IMockSdkDriver } from '~/lib/testUtils/sdkIntegration';
+import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
 
 jest.mock('../sdk', () => {
-	const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+	const sdkIntegration = jest.requireActual<typeof SdkIntegration>('~/lib/testUtils/sdkIntegration');
 	return { __esModule: true, default: sdkIntegration.makeSdkMock() };
 });
 
@@ -24,7 +24,7 @@ jest.mock('../waitForLoginReady', () => ({
 	waitForLoginReady: jest.fn()
 }));
 
-jest.mock('../../methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));
@@ -33,7 +33,7 @@ const mockConnections: MockConnection[] = [];
 
 jest.mock('universal-websocket-client', () =>
 	jest.fn().mockImplementation(() => {
-		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('~/lib/testUtils/sdkIntegration');
 		return new sdkIntegration.MockConnection(mockConnections);
 	})
 );

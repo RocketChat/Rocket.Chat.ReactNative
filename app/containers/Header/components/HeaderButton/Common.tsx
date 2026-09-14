@@ -3,11 +3,11 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { type StyleProp, type ViewStyle } from 'react-native';
 import { type KeyboardFocus, withKeyboardFocus } from 'react-native-external-keyboard';
 
-import I18n from '../../../../i18n';
-import { isIOS } from '../../../../lib/methods/helpers/deviceInfo';
+import I18n from '~/i18n';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import Container from './HeaderButtonContainer';
 import Item, { type IHeaderButtonItem } from './HeaderButtonItem';
-import { useTheme } from '../../../../theme';
+import { useTheme } from '~/theme';
 
 const ItemChildren = withKeyboardFocus(Item);
 

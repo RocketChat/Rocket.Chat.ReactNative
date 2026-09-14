@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 
 import database from '..';
-import { type TSubscriptionModel } from '../../../definitions';
+import { type TSubscriptionModel } from '~/definitions';
 import { type TAppDatabase } from '../interfaces';
 import { SUBSCRIPTIONS_TABLE } from '../model/Subscription';
 

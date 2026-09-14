@@ -1,5 +1,5 @@
-import log from '../../methods/helpers/log';
-import { onAbort } from '../../methods/helpers/onAbort';
+import log from '~/lib/methods/helpers/log';
+import { onAbort } from '~/lib/methods/helpers/onAbort';
 import sdk, { type ISocketDriver } from '../sdk';
 import { waitForLoginReady } from '../waitForLoginReady';
 import { recoverSocket } from '../socketHealth';

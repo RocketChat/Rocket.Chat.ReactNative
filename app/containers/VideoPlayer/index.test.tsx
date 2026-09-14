@@ -2,27 +2,27 @@ import { render } from '@testing-library/react-native';
 import { Alert } from 'react-native';
 
 import VideoPlayer from '.';
-import { useAppNavigation } from '../../lib/hooks/navigation';
-import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import { useAppNavigation } from '~/lib/hooks/navigation';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 import * as stories from './index.stories';
 
 jest.mock('expo', () => ({
 	useEventListener: jest.fn()
 }));
 
-jest.mock('../../i18n', () => ({
+jest.mock('~/i18n', () => ({
 	__esModule: true,
 	default: {
 		t: (key: string) => key
 	}
 }));
 
-jest.mock('../../lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers', () => ({
 	formatAttachmentUrl: (url: string) => url,
 	encodeAttachmentUrl: (url: string) => url
 }));
 
-jest.mock('../../lib/hooks/navigation', () => ({
+jest.mock('~/lib/hooks/navigation', () => ({
 	useAppNavigation: jest.fn(() => ({
 		addListener: jest.fn(() => jest.fn()),
 		goBack: jest.fn()

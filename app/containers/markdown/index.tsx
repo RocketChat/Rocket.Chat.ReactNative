@@ -16,7 +16,7 @@ import Quote from './components/Quote';
 import Paragraph from './components/Paragraph';
 import { Code } from './components/code';
 import Heading from './components/Heading';
-import log from '../../lib/methods/helpers/log';
+import log from '~/lib/methods/helpers/log';
 import styles from './styles';
 
 export { default as MarkdownPreview } from './components/Preview';

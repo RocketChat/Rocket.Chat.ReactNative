@@ -5,7 +5,7 @@ import dayjs from '../dayjs';
 import { getMessageById } from '../database/services/Message';
 import database from '../database';
 import { getFilePathAudio } from './getFilePathAudio';
-import { type TMessageModel } from '../../definitions';
+import { type TMessageModel } from '~/definitions';
 import { emitter } from './helpers';
 import log from './helpers/log';
 import { AUDIO_MODE } from '../constants/audio';

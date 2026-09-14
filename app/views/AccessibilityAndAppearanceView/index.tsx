@@ -2,20 +2,20 @@ import { useLayoutEffect } from 'react';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
-import Switch from '../../containers/Switch';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import * as List from '../../containers/List';
-import SafeAreaView from '../../containers/SafeAreaView';
-import I18n from '../../i18n';
-import { type AccessibilityStackParamList } from '../../stacks/types';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { useUserPreferences } from '../../lib/methods/userPreferences';
+import Switch from '~/containers/Switch';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import * as List from '~/containers/List';
+import SafeAreaView from '~/containers/SafeAreaView';
+import I18n from '~/i18n';
+import { type AccessibilityStackParamList } from '~/stacks/types';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { useUserPreferences } from '~/lib/methods/userPreferences';
 import {
 	USER_MENTIONS_PREFERENCES_KEY,
 	ROOM_MENTIONS_PREFERENCES_KEY,
 	AUTOPLAY_GIFS_PREFERENCES_KEY,
 	ALERT_DISPLAY_TYPE_PREFERENCES_KEY
-} from '../../lib/constants/keys';
+} from '~/lib/constants/keys';
 import ListPicker from './components/ListPicker';
 
 export type TAlertDisplayType = 'TOAST' | 'DIALOG';

@@ -1,8 +1,8 @@
 import Button from '../Button';
 import OrSeparator from '../OrSeparator';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import styles from './styles';
-import I18n from '../../i18n';
+import I18n from '~/i18n';
 import { type IServicesSeparator } from './interfaces';
 
 const ServicesSeparator = ({ separator, collapsed, onPress, totalServices }: IServicesSeparator) => {

@@ -11,7 +11,7 @@ import Animated, {
 import { scheduleOnRN } from 'react-native-worklets';
 
 import styles from './styles';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import { SEEK_HIT_SLOP, THUMB_SEEK_SIZE, ACTIVE_OFFSET_X, DEFAULT_TIME_LABEL } from './constants';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);

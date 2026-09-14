@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { type FontVariant, Text } from 'react-native';
 import { useAudioRecorderState, type AudioRecorder } from 'expo-audio';
 
-import sharedStyles from '../../../../views/Styles';
-import { useTheme } from '../../../../theme';
+import sharedStyles from '~/views/Styles';
+import { useTheme } from '~/theme';
 import { formatTime } from './utils';
 
 export const Duration = ({ audioRecorder }: { audioRecorder: AudioRecorder }) => {
