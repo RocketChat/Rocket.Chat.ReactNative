@@ -8,6 +8,7 @@ jest.mock('./getFilePathAudio', () => ({
 
 import type AudioManagerInstance from './AudioManager';
 import type { AudioStatus } from 'expo-audio';
+import type { TMessageModel } from '../../definitions';
 
 interface IAudioManagerSetup {
 	AudioManager: typeof AudioManagerInstance;
@@ -28,7 +29,10 @@ const setup = (): IAudioManagerSetup => {
 			setLooping: jest.fn(),
 			setMuted: jest.fn(),
 			setVolume: jest.fn(),
-			setPlaybackRate: jest.fn(),
+			shouldCorrectPitch: false,
+			setPlaybackRate: jest.fn(function (this: { shouldCorrectPitch: boolean }) {
+				return this.shouldCorrectPitch;
+			}),
 			seekTo: jest.fn(),
 			release: jest.fn(),
 			remove: jest.fn(),
@@ -138,7 +142,8 @@ describe('AudioManager', () => {
 
 		await AudioManager.playAudio(key);
 
-		expect(players[0].setPlaybackRate).toHaveBeenCalledWith(1.5);
+		expect(players[0].setPlaybackRate).toHaveBeenCalledWith(1.5, 'medium');
+		expect(players[0].setPlaybackRate).toHaveLastReturnedWith(true);
 		expect(players[0].play).toHaveBeenCalled();
 	});
 
@@ -150,7 +155,8 @@ describe('AudioManager', () => {
 
 		AudioManager.setRate(key, 2);
 
-		expect(players[0].setPlaybackRate).toHaveBeenCalledWith(2);
+		expect(players[0].setPlaybackRate).toHaveBeenCalledWith(2, 'medium');
+		expect(players[0].setPlaybackRate).toHaveLastReturnedWith(true);
 	});
 
 	it('setRate leaves other loaded audios untouched while one is playing', async () => {
@@ -178,7 +184,72 @@ describe('AudioManager', () => {
 		const [seekOrder] = recreated.seekTo.mock.invocationCallOrder;
 		const [rateOrder] = recreated.setPlaybackRate.mock.invocationCallOrder;
 		const [playOrder] = recreated.play.mock.invocationCallOrder;
+		expect(recreated.setPlaybackRate).toHaveBeenCalledWith(1.5, 'medium');
+		expect(recreated.setPlaybackRate).toHaveLastReturnedWith(true);
 		expect(seekOrder).toBeLessThan(rateOrder);
 		expect(rateOrder).toBeLessThan(playOrder);
+	});
+
+	it('recreates the next completed audio when replaying a sequence', async () => {
+		const { AudioManager, players } = setup();
+		const firstKey = AudioManager.loadAudio({ msgId: 'a', rid: 'room', uri: 'file://x' });
+		const nextKey = AudioManager.loadAudio({ msgId: 'b', rid: 'room', uri: 'file://x' });
+		const nextMessage = { id: 'b', attachments: [{ audio_url: '/x', audio_type: 'audio/mp3' }] } as TMessageModel;
+		jest
+			.spyOn(AudioManager, 'getNextAudioMessage')
+			.mockImplementation(msgId => Promise.resolve(msgId === 'a' ? nextMessage : null));
+		const finished = { isLoaded: true, didJustFinish: true } as AudioStatus;
+
+		await AudioManager.playAudio(firstKey);
+		await AudioManager.onEnd(firstKey, finished);
+		expect(players[1].play).toHaveBeenCalledTimes(1);
+		await AudioManager.onEnd(nextKey, finished);
+
+		await AudioManager.playAudio(firstKey);
+		await AudioManager.onEnd(firstKey, finished);
+
+		expect(players).toHaveLength(4);
+		expect(players[3].play).toHaveBeenCalledTimes(1);
+
+		await AudioManager.onEnd(nextKey, finished);
+		AudioManager.removeAudioRendered(nextKey);
+		await AudioManager.playAudio(firstKey);
+		await AudioManager.onEnd(firstKey, finished);
+		expect(players).toHaveLength(5);
+	});
+
+	it('room cleanup removes completed audio state and releases live players only in that room', async () => {
+		const { AudioManager, players } = setup();
+		const completedKey = AudioManager.loadAudio({ msgId: 'a', rid: 'room', uri: 'file://x' });
+		const liveKey = AudioManager.loadAudio({ msgId: 'b', rid: 'room', uri: 'file://x' });
+		const otherKey = AudioManager.loadAudio({ msgId: 'c', rid: 'other', uri: 'file://x' });
+		const callback = jest.fn();
+		AudioManager.setOnPlaybackStatusUpdate(completedKey, callback);
+		AudioManager.setRate(completedKey, 2);
+		await AudioManager.onEnd(completedKey, { isLoaded: true, didJustFinish: true } as AudioStatus);
+
+		await AudioManager.unloadRoomAudios('room');
+
+		expect(players[0].release).toHaveBeenCalledTimes(1);
+		expect(players[1].release).toHaveBeenCalledTimes(1);
+		expect(players[2].release).not.toHaveBeenCalled();
+		for (const field of [
+			'audioQueue',
+			'audioUris',
+			'audioPositions',
+			'audioRates',
+			'audioSubscriptions',
+			'audioCallbacks',
+			'audioMeta'
+		] as const) {
+			expect(AudioManager[field]).not.toHaveProperty([completedKey]);
+			expect(AudioManager[field]).not.toHaveProperty([liveKey]);
+		}
+		expect(AudioManager['audioUris'][otherKey]).toBe('file://x');
+		expect(AudioManager['audioMeta'][otherKey]).toEqual({ msgId: 'c', rid: 'other' });
+		jest.spyOn(AudioManager, 'getNextAudioMessage').mockResolvedValue({ id: 'a', attachments: [{}] } as TMessageModel);
+		const playAudio = jest.spyOn(AudioManager, 'playAudio');
+		await AudioManager.playNextAudioInSequence(liveKey);
+		expect(playAudio).not.toHaveBeenCalled();
 	});
 });

@@ -114,7 +114,10 @@ class AudioManagerClass {
 		}
 
 		try {
-			this.audioQueue[audioKey]?.setPlaybackRate(value);
+			const player = this.audioQueue[audioKey];
+			if (!player) return;
+			player.shouldCorrectPitch = true;
+			player.setPlaybackRate(value, 'medium');
 		} catch (error) {
 			log(error);
 		}
@@ -199,7 +202,7 @@ class AudioManagerClass {
 		const nextMessage = await this.getNextAudioMessage(msgId, rid);
 		if (nextMessage && nextMessage.attachments) {
 			const nextAudioInSeqKey = this.getNextAudioKey({ message: nextMessage, rid });
-			if (nextAudioInSeqKey && this.audioQueue?.[nextAudioInSeqKey] && this.audiosRendered.has(nextAudioInSeqKey)) {
+			if (nextAudioInSeqKey && this.audioUris[nextAudioInSeqKey] && this.audiosRendered.has(nextAudioInSeqKey)) {
 				await this.playAudio(nextAudioInSeqKey);
 			}
 		}
@@ -209,7 +212,7 @@ class AudioManagerClass {
 		if (!rid) {
 			return;
 		}
-		const roomAudioKeysLoaded = Object.keys(this.audioQueue).filter(audioKey => this.audioMeta[audioKey]?.rid === rid);
+		const roomAudioKeysLoaded = Object.keys(this.audioMeta).filter(audioKey => this.audioMeta[audioKey].rid === rid);
 		const roomAudiosLoaded = roomAudioKeysLoaded.map(key => this.audioQueue[key]);
 		try {
 			await Promise.all(roomAudiosLoaded.map(audio => audio?.release()));
