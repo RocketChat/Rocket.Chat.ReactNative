@@ -1,0 +1,19 @@
+{
+	"is_react_native": true,
+	"is_native_ios": false,
+	"is_native_android": false,
+	"react_native_version": "0.81.5",
+	"metro_command": "pnpm start",
+	"metro_port": 8081,
+	"pods_command": "pnpm pod-install",
+	"ios_command": "pnpm ios",
+	"workspace": "ios/RocketChat.xcworkspace",
+	"scheme": "RocketChat",
+	"bundle_id": "chat.rocket.ios",
+	"simulator": "DCDEBDE5-D487-4115-B93C-2B30CD482C49",
+	"runtime": "iOS 26.0",
+	"app_build": "ios/build/Build/Products/Debug-iphonesimulator/Rocket.Chat.app",
+	"build_timestamp": "2026-09-14 15:14",
+	"branch": "diegolmello/upgrade-RN",
+	"commit": "cd859dac2c"
+}
