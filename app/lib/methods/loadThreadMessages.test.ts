@@ -1,5 +1,5 @@
 import { loadThreadMessages } from './loadThreadMessages';
-import { type IReaction } from '../../definitions';
+import { type IReaction } from '~/definitions';
 import database from '../database';
 import { getThreadById } from '../database/services/Thread';
 import { Encryption } from '../encryption';
