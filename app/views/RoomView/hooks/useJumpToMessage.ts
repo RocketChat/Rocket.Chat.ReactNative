@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { InteractionManager } from 'react-native';
 import parse from 'url-parse';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -79,24 +78,15 @@ function useJumpRouteParams({ navigation, route, tmid, jumpToMessage, openThread
 	const openThreadByIdRef = useLiveRef(openThreadById);
 
 	useEffect(() => {
-		const task = InteractionManager.runAfterInteractions(() => {
-			if (pendingJumpRef.current && !tmid) {
-				consumeJumpParamRef.current(pendingJumpRef.current);
-			}
-		});
-		return () => task.cancel();
-	}, [tmid, consumeJumpParamRef]);
-
-	useEffect(() => {
-		const task = InteractionManager.runAfterInteractions(() => {
-			if (jumpToThreadIdRef.current && !pendingJumpRef.current) {
-				const threadId = jumpToThreadIdRef.current;
-				jumpToThreadIdRef.current = undefined;
-				openThreadByIdRef.current(threadId);
-			}
-		});
-		return () => task.cancel();
-	}, [openThreadByIdRef]);
+		if (pendingJumpRef.current && !tmid) {
+			consumeJumpParamRef.current(pendingJumpRef.current);
+		}
+		if (jumpToThreadIdRef.current && !pendingJumpRef.current) {
+			const threadId = jumpToThreadIdRef.current;
+			jumpToThreadIdRef.current = undefined;
+			openThreadByIdRef.current(threadId);
+		}
+	}, []);
 
 	useChangedParam(route.params?.jumpToMessageId, onJumpParamChanged);
 	useChangedParam(route.params?.jumpToThreadId, openThreadById);
