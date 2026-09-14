@@ -37,6 +37,12 @@ import {
 import { type TRoomOrPreview } from '~/definitions/TRoom';
 import { sendAttachments } from '~/lib/methods/sendFileMessage/sendAttachments';
 import { sendMessage } from '~/lib/methods/sendMessage';
+import { showToast } from '~/lib/methods/helpers/showToast';
+import {
+	canConvertLongMessageToFile,
+	isTooLongMessage,
+	sendLongMessageAsFile
+} from '~/lib/methods/helpers/processTooLongMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '~/lib/methods/helpers';
 import {
 	createMessageActionStore,
@@ -66,10 +72,17 @@ interface IShareViewProps {
 	serverVersion?: string;
 	FileUpload_MediaTypeWhiteList?: string;
 	FileUpload_MaxFileSize?: number;
+	Message_MaxAllowedSize?: number;
+	Message_AllowConvertLongMessagesToAttachment?: boolean;
+	FileUpload_Enabled?: boolean;
 	dispatch: Dispatch;
 }
 
-type TShareServerInfo = Partial<Pick<IServer, 'version' | 'FileUpload_MaxFileSize' | 'FileUpload_MediaTypeWhiteList'>>;
+type TShareServerInfo = Partial<Pick<IServer, 'version' | 'FileUpload_MaxFileSize' | 'FileUpload_MediaTypeWhiteList'>> & {
+	Message_MaxAllowedSize?: number;
+	Message_AllowConvertLongMessagesToAttachment?: boolean;
+	FileUpload_Enabled?: boolean;
+};
 
 class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private messageComposerRef: RefObject<IMessageComposerRef | null>;
@@ -253,6 +266,44 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		// flush the composer caption into the selected attachment before sending
 		this.saveSelectedDescription();
 
+		// Over-limit pure text is sent as a .txt file, like web (auto, no modal). Captions out of scope.
+		// The .txt upload is fast, so close only after it succeeds and keep ShareView open for retry on failure.
+		if (!attachments.length && text.length && isTooLongMessage(text, this.maxAllowedSize)) {
+			if (!this.canConvertLongMessage) {
+				showToast(I18n.t('Message_too_long'));
+				return;
+			}
+			if (this.isShareExtension) {
+				this.setState({ loading: true });
+				sendLoadingEvent({ visible: true });
+			}
+			try {
+				await sendLongMessageAsFile({
+					rid: room.rid,
+					tmid: this.getThreadId(thread),
+					server,
+					user: { id: user.id, token: user.token },
+					username: user.username,
+					text
+				});
+			} catch {
+				if (this.isShareExtension) {
+					this.setState({ loading: false });
+					sendLoadingEvent({ visible: false });
+				}
+				return;
+			}
+			if (this.isShareExtension) {
+				sendLoadingEvent({ visible: false });
+				dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+			} else {
+				this.sentMessage = true;
+				this.finishShareView('', []);
+				navigation.pop();
+			}
+			return;
+		}
+
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
 			this.setState({ loading: true });
@@ -382,6 +433,25 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		return compareServerVersion(this.effectiveServerVersion, 'greaterThanOrEqualTo', '8.4.0');
 	}
 
+	// Share extension targets a specific workspace; prefer its info over the Redux-connected server there.
+	private get maxAllowedSize(): number | undefined {
+		const { Message_MaxAllowedSize } = this.props;
+		return this.isShareExtension
+			? (this.serverInfo.Message_MaxAllowedSize ?? Message_MaxAllowedSize)
+			: (Message_MaxAllowedSize ?? this.serverInfo.Message_MaxAllowedSize);
+	}
+
+	private get canConvertLongMessage(): boolean {
+		const { Message_AllowConvertLongMessagesToAttachment, FileUpload_Enabled } = this.props;
+		const allowConvert = this.isShareExtension
+			? (this.serverInfo.Message_AllowConvertLongMessagesToAttachment ?? Message_AllowConvertLongMessagesToAttachment)
+			: (Message_AllowConvertLongMessagesToAttachment ?? this.serverInfo.Message_AllowConvertLongMessagesToAttachment);
+		const fileUploadEnabled = this.isShareExtension
+			? (this.serverInfo.FileUpload_Enabled ?? FileUpload_Enabled)
+			: (FileUpload_Enabled ?? this.serverInfo.FileUpload_Enabled);
+		return canConvertLongMessageToFile({ isEditing: false, fileUploadEnabled, allowConvert });
+	}
+
 	onRemoveQuoteMessage = (messageId: string) => {
 		this.messageActionStore.getState().actions.removeQuote(messageId);
 	};
@@ -459,7 +529,10 @@ const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
 	serverVersion: state.server.version,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList as string,
-	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize as number
+	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize as number,
+	Message_MaxAllowedSize: state.settings.Message_MaxAllowedSize as number,
+	Message_AllowConvertLongMessagesToAttachment: state.settings.Message_AllowConvertLongMessagesToAttachment as boolean,
+	FileUpload_Enabled: state.settings.FileUpload_Enabled as boolean
 });
 
 export { ShareView };

@@ -20,7 +20,14 @@ import { EventTypes } from '../EmojiPicker/interfaces';
 import { type IEmoji } from '~/definitions';
 import database from '~/lib/database';
 import { sanitizeLikeString } from '~/lib/database/utils';
+import I18n from '~/i18n';
 import { generateTriggerId } from '~/lib/methods/actions';
+import { showToast } from '~/lib/methods/helpers/showToast';
+import {
+	canConvertLongMessageToFile,
+	isTooLongMessage,
+	sendLongMessageAsFile
+} from '~/lib/methods/helpers/processTooLongMessage';
 import { runSlashCommand } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
 import { prepareQuoteMessage, insertEmojiAtCursor, lastGlyphLength } from './helpers';
@@ -67,6 +74,11 @@ export const MessageComposer = ({
 	const { colors } = useTheme();
 	const user = useAppSelector(state => getUserSelector(state));
 	const server = useAppSelector(state => state.server.server);
+	const Message_MaxAllowedSize = useAppSelector(state => state.settings.Message_MaxAllowedSize as number);
+	const Message_AllowConvertLongMessagesToAttachment = useAppSelector(
+		state => state.settings.Message_AllowConvertLongMessagesToAttachment as boolean
+	);
+	const FileUpload_Enabled = useAppSelector(state => state.settings.FileUpload_Enabled as boolean);
 	const altTextSupported = useAltTextSupported();
 	const attachments = useComposerAttachments();
 
@@ -117,6 +129,38 @@ export const MessageComposer = ({
 
 		const textFromInput = composerInputComponentRef.current.getTextAndClear();
 
+		const convertible = canConvertLongMessageToFile({
+			isEditing: !!editingMessageId,
+			fileUploadEnabled: FileUpload_Enabled,
+			allowConvert: Message_AllowConvertLongMessagesToAttachment
+		});
+
+		// Over-limit plain/slash text is sent as a .txt file before slash handling, like web.
+		// Quotes are checked against the final message below; attachment captions cannot convert, so reject them.
+		if (isTooLongMessage(textFromInput, Message_MaxAllowedSize)) {
+			if (!convertible || attachments.length) {
+				showToast(I18n.t('Message_too_long'));
+				composerInputComponentRef.current.setInput(textFromInput);
+				return;
+			}
+			if (!quotedMessageIds.length) {
+				try {
+					await sendLongMessageAsFile({
+						rid,
+						tmid,
+						server,
+						user: { id: user.id, token: user.token },
+						username: user.username,
+						text: textFromInput
+					});
+				} catch (e) {
+					log(e);
+					composerInputComponentRef.current.setInput(textFromInput);
+				}
+				return;
+			}
+		}
+
 		if (editingMessageId) {
 			const updatedAttachments = attachments.length
 				? attachments.map(({ description, altText, fileId, filename }) =>
@@ -158,6 +202,28 @@ export const MessageComposer = ({
 
 		if (quotedMessageIds.length) {
 			const quoteMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds, tmid);
+			if (isTooLongMessage(quoteMessage, Message_MaxAllowedSize)) {
+				if (!convertible) {
+					showToast(I18n.t('Message_too_long'));
+					composerInputComponentRef.current.setInput(textFromInput);
+					return;
+				}
+				try {
+					await sendLongMessageAsFile({
+						rid,
+						tmid,
+						server,
+						user: { id: user.id, token: user.token },
+						username: user.username,
+						text: quoteMessage
+					});
+					messageActionStore.getState().actions.setQuoteMessageIds([]);
+				} catch (e) {
+					log(e);
+					composerInputComponentRef.current.setInput(textFromInput);
+				}
+				return;
+			}
 			onSendMessage?.(quoteMessage);
 			return;
 		}
