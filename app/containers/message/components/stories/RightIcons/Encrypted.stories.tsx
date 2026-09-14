@@ -1,12 +1,12 @@
 import { type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 
-import { createMockedStore } from '../../../../../reducers/mockedStore';
-import { type TAnyMessageModel } from '../../../../../definitions';
-import { E2E_MESSAGE_TYPE } from '../../../../../lib/constants/keys';
-import { MessageRoomProvider, type MessageRoomState } from '../../../stores/MessageRoomStore';
-import { MessageProvider } from '../../../stores/MessageStore';
-import EncryptedLeaf from '../../RightIcons/Encrypted';
+import { createMockedStore } from '~/reducers/mockedStore';
+import { type TAnyMessageModel } from '~/definitions';
+import { E2E_MESSAGE_TYPE } from '~/lib/constants/keys';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import EncryptedLeaf from '~/containers/message/components/RightIcons/Encrypted';
 
 const store = createMockedStore();
 

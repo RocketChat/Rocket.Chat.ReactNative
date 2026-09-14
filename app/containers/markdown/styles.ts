@@ -1,6 +1,6 @@
 import { Platform, StyleSheet } from 'react-native';
 
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 
 const codeFontFamily = Platform.select({
 	ios: { fontFamily: 'Courier New' },

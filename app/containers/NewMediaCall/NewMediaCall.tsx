@@ -6,8 +6,8 @@ import { PeerList } from './PeerList';
 import { SelectedPeer } from './SelectedPeer';
 import { CreateCall } from './CreateCall';
 import { FilterHeader } from './FilterHeader';
-import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
-import { useTheme } from '../../theme';
+import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
+import { useTheme } from '~/theme';
 
 export const NewMediaCall = (): ReactElement => {
 	const { colors } = useTheme();

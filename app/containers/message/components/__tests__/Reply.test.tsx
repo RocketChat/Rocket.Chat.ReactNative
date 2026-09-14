@@ -2,16 +2,16 @@ import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import Reply from '../Attachments/Reply';
-import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { type IAttachment, type TAnyMessageModel } from '../../../../definitions';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../../lib/constants/keys';
-import { fileDownloadAndPreview } from '../../../../lib/methods/helpers/fileDownload';
-import openLink from '../../../../lib/methods/helpers/openLink';
-import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { mockedStore } from '~/reducers/mockedStore';
+import { type IAttachment, type TAnyMessageModel } from '~/definitions';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
+import { fileDownloadAndPreview } from '~/lib/methods/helpers/fileDownload';
+import openLink from '~/lib/methods/helpers/openLink';
+import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 
-jest.mock('../../../markdown', () => {
+jest.mock('~/containers/markdown', () => {
 	const React = require('react');
 	const { Text } = require('react-native');
 	return {
@@ -21,16 +21,16 @@ jest.mock('../../../markdown', () => {
 	};
 });
 
-jest.mock('../../../../lib/methods/helpers/fileDownload', () => ({
+jest.mock('~/lib/methods/helpers/fileDownload', () => ({
 	fileDownloadAndPreview: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('../../../../lib/methods/helpers/openLink', () => ({
+jest.mock('~/lib/methods/helpers/openLink', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));
 
-jest.mock('../../../../lib/methods/helpers/formatAttachmentUrl', () => ({
+jest.mock('~/lib/methods/helpers/formatAttachmentUrl', () => ({
 	formatAttachmentUrl: jest.fn((url: string) => `formatted:${url}`)
 }));
 

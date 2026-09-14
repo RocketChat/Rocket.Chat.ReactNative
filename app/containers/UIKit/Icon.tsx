@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
 import { hasIcon, CustomIcon } from '../CustomIcon';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import { type IIcon } from './interfaces';
 
 const iconAliases: Record<string, string> = {

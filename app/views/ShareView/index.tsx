@@ -6,22 +6,22 @@ import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { type Dispatch } from 'redux';
 
-import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
-import { type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { type InsideStackParamList } from '../../stacks/types';
-import { themes } from '../../lib/constants/colors';
-import I18n from '../../i18n';
-import { prepareQuoteMessage } from '../../containers/MessageComposer/helpers';
-import { sendLoadingEvent } from '../../containers/Loading';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import { type TSupportedThemes, withTheme } from '../../theme';
-import { FormTextInput } from '../../containers/TextInput';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { getUserSelector } from '../../selectors/login';
-import database from '../../lib/database';
-import Thumbs from '../../containers/Thumbs';
-import { showActionSheetRef } from '../../containers/ActionSheet';
-import { AttachmentActionSheet } from '../../containers/MessageComposer/components/Attachments/AttachmentActionSheet';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
+import { type IMessageComposerRef, MessageComposerContainer } from '~/containers/MessageComposer';
+import { type InsideStackParamList } from '~/stacks/types';
+import { themes } from '~/lib/constants/colors';
+import I18n from '~/i18n';
+import { prepareQuoteMessage } from '~/containers/MessageComposer/helpers';
+import { sendLoadingEvent } from '~/containers/Loading';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { type TSupportedThemes, withTheme } from '~/theme';
+import { FormTextInput } from '~/containers/TextInput';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { getUserSelector } from '~/selectors/login';
+import database from '~/lib/database';
+import Thumbs from '~/containers/Thumbs';
+import { showActionSheetRef } from '~/containers/ActionSheet';
+import { AttachmentActionSheet } from '~/containers/MessageComposer/components/Attachments/AttachmentActionSheet';
 import Preview from './Preview';
 import Header from './Header';
 import styles from './styles';
@@ -33,13 +33,13 @@ import {
 	RootEnum,
 	type TSubscriptionModel,
 	type TThreadModel
-} from '../../definitions';
-import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
-import { sendMessage } from '../../lib/methods/sendMessage';
-import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
+} from '~/definitions';
+import { sendAttachments } from '~/lib/methods/sendFileMessage/sendAttachments';
+import { sendMessage } from '~/lib/methods/sendMessage';
+import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '~/lib/methods/helpers';
 import { RoomProviders } from '../RoomView/RoomProviders';
-import { createMessageActionStore, type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
-import { appStart } from '../../actions/app';
+import { createMessageActionStore, type TMessageActionStore } from '~/containers/message/stores/MessageActionStore';
+import { appStart } from '~/actions/app';
 
 interface IShareViewState {
 	selected: IShareAttachment;

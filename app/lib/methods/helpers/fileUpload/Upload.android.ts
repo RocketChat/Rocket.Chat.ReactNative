@@ -1,6 +1,6 @@
 import * as FileSystem from 'expo-file-system/legacy';
 
-import { type TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
+import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
 import { type IFormData } from './definitions';
 
 export class Upload {

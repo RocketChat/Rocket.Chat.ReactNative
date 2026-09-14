@@ -4,8 +4,8 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
 
-import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
-import I18n from '../../../i18n';
+import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
+import I18n from '~/i18n';
 import {
 	type IAutocompleteItemProps,
 	type IComposerInput,
@@ -16,12 +16,12 @@ import {
 import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
 import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
 import { useAutoSaveDraft } from '../hooks';
-import sharedStyles from '../../../views/Styles';
-import { useTheme } from '../../../theme';
-import { userTyping } from '../../../actions/room';
-import { parseJson } from '../../../lib/methods/helpers/parseJson';
-import { getRoomTitle } from '../../../lib/methods/helpers/helpers';
-import { isTablet } from '../../../lib/methods/helpers/deviceInfo';
+import sharedStyles from '~/views/Styles';
+import { useTheme } from '~/theme';
+import { userTyping } from '~/actions/room';
+import { parseJson } from '~/lib/methods/helpers/parseJson';
+import { getRoomTitle } from '~/lib/methods/helpers/helpers';
+import { isTablet } from '~/lib/methods/helpers/deviceInfo';
 import {
 	MAX_HEIGHT,
 	MIN_HEIGHT,
@@ -29,22 +29,22 @@ import {
 	MARKDOWN_STYLES,
 	COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH
 } from '../constants';
-import database from '../../../lib/database';
-import Navigation from '../../../lib/navigation/appNavigation';
-import { emitter } from '../../../lib/methods/helpers/emitter';
-import { useRoomContext } from '../../../views/RoomView/context';
-import { useMessageAction } from '../../message/stores/MessageActionStore';
-import { getMessageById } from '../../../lib/database/services/Message';
-import { generateTriggerId } from '../../../lib/methods/actions';
-import { executeCommandPreview } from '../../../lib/services/restApi';
-import log from '../../../lib/methods/helpers/log';
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { useAltTextSupported } from '../../../lib/hooks/useAltTextSupported';
-import { usePrevious } from '../../../lib/hooks/usePrevious';
-import { type ChatsStackParamList } from '../../../stacks/types';
-import { loadDraftMessage } from '../../../lib/methods/draftMessage';
+import database from '~/lib/database';
+import Navigation from '~/lib/navigation/appNavigation';
+import { emitter } from '~/lib/methods/helpers/emitter';
+import { useRoomContext } from '~/views/RoomView/context';
+import { useMessageAction } from '~/containers/message/stores/MessageActionStore';
+import { getMessageById } from '~/lib/database/services/Message';
+import { generateTriggerId } from '~/lib/methods/actions';
+import { executeCommandPreview } from '~/lib/services/restApi';
+import log from '~/lib/methods/helpers/log';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { useAltTextSupported } from '~/lib/hooks/useAltTextSupported';
+import { usePrevious } from '~/lib/hooks/usePrevious';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { loadDraftMessage } from '~/lib/methods/draftMessage';
 import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
-import { isExternalKeyboardConnected } from '../../../lib/methods/helpers/externalInput';
+import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 

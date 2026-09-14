@@ -1,6 +1,6 @@
 import parse from 'url-parse';
 
-import { type ICredentialsCasAPI, type ICredentialsSamlAPI } from '../../../definitions';
+import { type ICredentialsCasAPI, type ICredentialsSamlAPI } from '~/definitions';
 
 export type SamlOrCasRedirect =
 	| { kind: 'saml'; payload: ICredentialsSamlAPI }

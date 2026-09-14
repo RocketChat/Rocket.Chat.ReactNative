@@ -1,6 +1,6 @@
-import { getMessageById } from '../../../lib/database/services/Message';
-import { getThreadMessageById } from '../../../lib/database/services/ThreadMessage';
-import getSingleMessage from '../../../lib/methods/getSingleMessage';
+import { getMessageById } from '~/lib/database/services/Message';
+import { getThreadMessageById } from '~/lib/database/services/ThreadMessage';
+import getSingleMessage from '~/lib/methods/getSingleMessage';
 
 export type TGetMessageInfoResult = {
 	id: string;

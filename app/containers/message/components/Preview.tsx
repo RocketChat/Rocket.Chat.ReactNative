@@ -2,9 +2,9 @@ import { shallowEqual } from 'react-redux';
 
 import Message from '../index';
 import { MessageRoomProvider } from '../stores/MessageRoomStore';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { getUserSelector } from '../../../selectors/login';
-import { type TAnyMessageModel } from '../../../definitions';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { getUserSelector } from '~/selectors/login';
+import { type TAnyMessageModel } from '~/definitions';
 
 const MessagePreview = ({ message }: { message: TAnyMessageModel }) => {
 	const { user, baseUrl } = useAppSelector(

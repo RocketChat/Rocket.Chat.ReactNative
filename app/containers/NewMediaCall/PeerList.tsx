@@ -1,9 +1,9 @@
 import { FlatList } from 'react-native';
 
-import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
+import type { TPeerItem } from '~/lib/services/voip/getPeerAutocompleteOptions';
 import { PeerItem } from './PeerItem';
 import * as List from '../List';
-import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
+import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
 
 export const PeerList = () => {
 	const setSelectedPeer = usePeerAutocompleteStore(state => state.setSelectedPeer);

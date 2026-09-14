@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import StatusRows from './StatusRows';
-import { themes } from '../../lib/constants/colors';
+import { themes } from '~/lib/constants/colors';
 
 export default {
 	title: 'StatusRows'

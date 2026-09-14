@@ -1,11 +1,11 @@
 import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
-import Avatar from '../../Avatar';
+import Avatar from '~/containers/Avatar';
 import styles from '../styles';
 import { type IMessageAvatar } from '../interfaces';
-import { SubscriptionType } from '../../../definitions';
-import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { SubscriptionType } from '~/definitions';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useAvatar, useMessageField, useMessageGrouping } from '../stores/MessageStore';
 import { useMessageUser, useNavToRoomInfo } from '../stores/MessageRoomStore';
 

@@ -1,7 +1,7 @@
 import { createContext, type ReactElement, useContext, useState } from 'react';
 import { createStore, useStore } from 'zustand';
 
-import { type IEmoji, type IShareAttachment } from '../../definitions';
+import { type IEmoji, type IShareAttachment } from '~/definitions';
 import { type IAutocompleteBase, type TMicOrSend } from './interfaces';
 
 type TMessageComposerContextApi = {
