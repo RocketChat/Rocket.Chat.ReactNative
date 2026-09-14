@@ -18,7 +18,7 @@ jest.mock('~/lib/methods/AudioManager', () => ({
 		removeAudioRendered: jest.fn(),
 		pauseAudio: jest.fn(),
 		playAudio: jest.fn(),
-		setPositionAsync: jest.fn()
+		setPositionAsync: jest.fn(() => Promise.resolve())
 	}
 }));
 

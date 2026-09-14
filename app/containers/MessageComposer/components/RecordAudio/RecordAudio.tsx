@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import { useEffect, useRef, useState, type ReactElement } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { requestRecordingPermissionsAsync, setAudioModeAsync, useAudioRecorder } from 'expo-audio';
 import { getInfoAsync } from 'expo-file-system/legacy';
 import { useKeepAwake } from 'expo-keep-awake';
@@ -27,7 +27,6 @@ export const RecordAudio = (): ReactElement | null => {
 	const [styles, colors] = useStyle();
 	const audioRecorder = useAudioRecorder(RECORDING_SETTINGS);
 
-	const numberOfTriesRef = useRef(0);
 	const [status, setStatus] = useState<'recording' | 'reviewing'>('recording');
 	const { setRecordingAudio } = useMessageComposerApi();
 	const { rid, tmid } = useRoomContext();
@@ -47,21 +46,10 @@ export const RecordAudio = (): ReactElement | null => {
 
 				await setAudioModeAsync(RECORDING_MODE);
 				await audioRecorder.prepareToRecordAsync();
-				await audioRecorder.record();
-			} catch (error: any) {
-				// error only occurs on iOS devices
-				if (error?.code === 'E_AUDIO_RECORDERNOTCREATED') {
-					if (numberOfTriesRef.current <= 5) {
-						numberOfTriesRef.current += 1;
-						setTimeout(() => {
-							record();
-						}, 100);
-					} else {
-						console.error(error);
-					}
-				} else {
-					console.error(error);
-				}
+				audioRecorder.record();
+			} catch (error) {
+				log(error);
+				setRecordingAudio(false);
 			}
 		};
 

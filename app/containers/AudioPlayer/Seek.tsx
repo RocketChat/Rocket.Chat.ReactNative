@@ -80,6 +80,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 			translateX.value = clamp(newX, 0, maxWidth.value);
 		})
 		.onFinalize((_, didSucceed) => {
+			if (!isPanning.value) return;
 			isPanning.value = false;
 			scale.value = withTiming(1, { duration: 150 });
 			if (didSucceed) {
