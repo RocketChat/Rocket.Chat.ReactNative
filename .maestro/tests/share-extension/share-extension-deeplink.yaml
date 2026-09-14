@@ -59,10 +59,15 @@ tags:
 - runFlow:
     file: './utils/share-file.yaml'
     env:
-      fileName: 'test.pdf'
-- runFlow:
-    file: './utils/share-file.yaml'
-    env:
       fileName: 'test.html'
+
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.pdf'
 
 - evalScript: ${console.log(output.messageCount)}

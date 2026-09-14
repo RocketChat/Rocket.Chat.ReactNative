@@ -14,7 +14,7 @@ tags:
       - extendedWaitUntil:
           visible: 'Add account to device'
           timeout: 60000
-      - tapOn: 'Stay signed out'
+      - tapOn: 'Use without an account'
 
 - runFlow:
     when:

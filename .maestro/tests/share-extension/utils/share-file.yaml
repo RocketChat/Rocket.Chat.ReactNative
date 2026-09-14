@@ -29,7 +29,19 @@ tags:
       - extendedWaitUntil:
           visible: 'Search'
           timeout: 10000
-      - tapOn: 'Search'
+      - tapOn:
+          text: 'Search'
+          retryTapIfNoChange: true
+      - runFlow:
+          when:
+            notVisible: "Grid view"
+          commands:
+            - tapOn:
+                text: 'Search'
+                retryTapIfNoChange: true
+      - extendedWaitUntil:
+          visible: "Grid view"
+          timeout: 10000
       - inputText: ${fileName}
       - evalScript: ${output.iosfilename = fileName.split('.').join(', ')}
       - extendedWaitUntil:
