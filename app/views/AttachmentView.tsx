@@ -1,6 +1,6 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useHeaderHeight } from '@react-navigation/elements';
-import { ResizeMode, Video } from 'expo-av';
+import { type AVPlaybackStatus, ResizeMode, Video } from 'expo-av';
 import { useCallback, useLayoutEffect, useRef, useState, type Dispatch, type SetStateAction, type ReactElement } from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -59,6 +59,12 @@ const RenderContent = ({
 		};
 	}, [navigation]);
 
+	const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
+		if (status.isLoaded && status.didJustFinish && !status.isLooping) {
+			videoRef.current?.setStatusAsync({ positionMillis: 0, shouldPlay: false }).catch(() => {});
+		}
+	};
+
 	if (attachment.image_url) {
 		const url = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
 		const uri = encodeAttachmentUrl(url);
@@ -88,6 +94,7 @@ const RenderContent = ({
 				isLooping={false}
 				style={{ flex: 1 }}
 				useNativeControls
+				onPlaybackStatusUpdate={onPlaybackStatusUpdate}
 				onLoad={() => setLoading(false)}
 				onError={() => {
 					navigation.pop();
