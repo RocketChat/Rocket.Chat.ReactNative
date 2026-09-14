@@ -2,9 +2,7 @@ package chat.rocket.reactnative.share
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Parcelable
 import android.provider.OpenableColumns
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -57,24 +55,22 @@ class ShareActivity : AppCompatActivity() {
         completeRequest()
     }
 
-    @Suppress("DEPRECATION")
-    private fun intentUris(intent: Intent): List<Uri?>? = try {
+    // ponytail: Bundle.get has no deprecated overloads, so this needs no @Suppress on any API level
+    private fun intentUris(intent: Intent): List<Uri>? = try {
         when (intent.action) {
-            Intent.ACTION_SEND -> listOf(
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
-                } else {
-                    intent.getParcelableExtra(Intent.EXTRA_STREAM) as? Uri
-                }
-            )
-            Intent.ACTION_SEND_MULTIPLE -> {
-                val list = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM, Parcelable::class.java)
-                } else {
-                    intent.getParcelableArrayListExtra<Parcelable>(Intent.EXTRA_STREAM)
-                }
-                list?.map { it as? Uri }
+            Intent.ACTION_SEND -> {
+                (intent.extras?.get(Intent.EXTRA_STREAM) as? Uri)?.let(::listOf)
             }
+
+            Intent.ACTION_SEND_MULTIPLE -> {
+                val raw = intent.extras?.get(Intent.EXTRA_STREAM) as? List<*>
+                val uris = raw?.mapNotNull { it as? Uri }
+                if (raw != null && uris != null && uris.size != raw.size) {
+                    Log.w("ShareRocketChat", "Dropped ${raw.size - uris.size} non-Uri share extras")
+                }
+                uris
+            }
+
             else -> null
         }
     } catch (e: Exception) {
@@ -87,7 +83,7 @@ class ShareActivity : AppCompatActivity() {
         var valid = true
 
         intentUris(intent)?.forEach { uri ->
-            val mediaUri = uri?.let { handleMediaUri(it, intent.type) }
+            val mediaUri = handleMediaUri(uri, intent.type)
             if (mediaUri != null) {
                 if (mediaUris.isNotEmpty()) {
                     mediaUris.append(",")
