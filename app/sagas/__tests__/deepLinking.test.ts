@@ -495,6 +495,51 @@ describe('deepLinking saga — server already connected, should skip changing se
 		expect(dispatchedActions).toEqual(expect.arrayContaining([expect.objectContaining({ type: APP.INIT })]));
 	});
 
+	// Same workspace as the link, server disconnected: the unlock runs inline in handleOpen instead of
+	// handleKnownServerDeepLink, so it needs its own root recovery.
+	const setupFailedUnlockSameServer = (error: Error) => {
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === 'currentServer') return HOST;
+			if (key === `${TOKEN_KEY}-${HOST}`) return makeStoredUser();
+			return null;
+		});
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		jest.mocked(localAuthenticate).mockRejectedValue(error);
+	};
+
+	it('recovers the app root when the unlock fails on the current workspace with no root set', async () => {
+		const { store, dispatchedActions } = setupStore();
+		setupFailedUnlockSameServer(new UserCanceledError());
+
+		expect(store.getState().app.root).toBeUndefined();
+		expect(store.getState().server.connected).toBe(false);
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' })));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions).toEqual(expect.arrayContaining([expect.objectContaining({ type: APP.INIT })]));
+		expect(dispatchedActions).not.toEqual(expect.arrayContaining([expect.objectContaining({ type: 'SERVER.SELECT_REQUEST' })]));
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+	});
+
+	it('leaves an already-initialized root alone when the unlock fails on the current workspace', async () => {
+		const { store, dispatchedActions } = setupStore();
+		setupFailedUnlockSameServer(new UserCanceledError());
+
+		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+		const dispatchedBefore = dispatchedActions.length;
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' })));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions.slice(dispatchedBefore)).not.toEqual(
+			expect.arrayContaining([expect.objectContaining({ type: APP.INIT })])
+		);
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_INSIDE);
+	});
+
 	// Warm app: a failed unlock must not re-initialize and throw the user out of where they were.
 	it('leaves an already-initialized root alone when the unlock fails', async () => {
 		const { store, dispatchedActions } = setupStore();

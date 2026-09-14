@@ -213,6 +213,7 @@ const authenticateAndSelectServer = function* authenticateAndSelectServer(host, 
 		yield localAuthenticate(host);
 	} catch (e) {
 		logUnlessUserCanceled(e);
+		yield fallbackNavigation();
 		return false;
 	}
 	yield put(selectServerRequest(host, version, true, changeServer));
