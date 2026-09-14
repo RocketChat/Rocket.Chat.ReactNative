@@ -46,16 +46,14 @@ export default {
 
 // An auto-translated message from another user renders the language icon.
 export const Translated = () => (
-	<StoryWrapper
-		item={translatedItem}
-		room={{ user: { id: 'reader-id', username: 'rocket.cat' }, autoTranslateRoom: true, autoTranslateLanguage: 'en' }}>
+	<StoryWrapper item={translatedItem} room={{ autoTranslateRoom: true, autoTranslateLanguage: 'en' }}>
 		<TranslatedLeaf />
 	</StoryWrapper>
 );
 
 // A message that is not translated renders nothing.
 export const TranslatedHidden = () => (
-	<StoryWrapper item={plainItem} room={{ user: { id: 'reader-id', username: 'rocket.cat' } }}>
+	<StoryWrapper item={plainItem} room={{}}>
 		<TranslatedLeaf />
 	</StoryWrapper>
 );

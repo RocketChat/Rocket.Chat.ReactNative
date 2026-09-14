@@ -2,10 +2,11 @@ import { render } from '@testing-library/react-native';
 
 import {
 	createMessageActionStore,
-	inertStore,
 	MessageActionProvider,
+	useEditingMessageId,
 	useIsBeingEdited,
-	useMessageAction
+	useMessageAction,
+	useQuotedMessageIds
 } from '../MessageActionStore';
 
 describe('MessageActionStore', () => {
@@ -21,7 +22,7 @@ describe('MessageActionStore', () => {
 			expect(spy).toHaveBeenLastCalledWith(false);
 		});
 
-		it('does not share mutable state across separate no-provider renders, and its actions throw', () => {
+		it('does not share mutable state across separate no-provider renders', () => {
 			const spyA = jest.fn();
 			const spyB = jest.fn();
 			const ProbeA = () => {
@@ -38,9 +39,6 @@ describe('MessageActionStore', () => {
 
 			expect(spyA).toHaveBeenLastCalledWith(false);
 			expect(spyB).toHaveBeenLastCalledWith(false);
-			expect(() => inertStore.getState().actions.startEditing('x')).toThrow(
-				'MessageActionStore: no provider — actions unavailable'
-			);
 		});
 
 		it('returns true only for the message being edited under a provider', () => {
@@ -92,6 +90,74 @@ describe('MessageActionStore', () => {
 			);
 
 			expect(spy).toHaveBeenLastCalledWith(false);
+		});
+	});
+
+	describe('useQuotedMessageIds', () => {
+		it('returns the quoted messageIds under a quote action', () => {
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useQuotedMessageIds());
+				return null;
+			};
+
+			render(
+				<MessageActionProvider initialAction={{ kind: 'quote', messageIds: ['msg-1', 'msg-2'] }}>
+					<Probe />
+				</MessageActionProvider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith(['msg-1', 'msg-2']);
+		});
+
+		it('returns an empty array for non-quote actions', () => {
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useQuotedMessageIds());
+				return null;
+			};
+
+			render(
+				<MessageActionProvider initialAction={{ kind: 'edit', messageId: 'msg-1' }}>
+					<Probe />
+				</MessageActionProvider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith([]);
+		});
+	});
+
+	describe('useEditingMessageId', () => {
+		it('returns the messageId under an edit action', () => {
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useEditingMessageId());
+				return null;
+			};
+
+			render(
+				<MessageActionProvider initialAction={{ kind: 'edit', messageId: 'msg-1' }}>
+					<Probe />
+				</MessageActionProvider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith('msg-1');
+		});
+
+		it('returns undefined for non-edit actions', () => {
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useEditingMessageId());
+				return null;
+			};
+
+			render(
+				<MessageActionProvider initialAction={{ kind: 'quote', messageIds: ['msg-1'] }}>
+					<Probe />
+				</MessageActionProvider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith(undefined);
 		});
 	});
 
@@ -181,63 +247,75 @@ describe('MessageActionStore', () => {
 		});
 	});
 
-	describe('action creators (union transitions)', () => {
-		it('startEditing sets an edit action with the given messageId', () => {
+	describe('requestEditing', () => {
+		it('admits and sets an edit action when idle', () => {
 			const store = createMessageActionStore();
-			store.getState().actions.startEditing('msg-1');
+			store.getState().actions.requestEditing('msg-1');
 			expect(store.getState().action).toEqual({ kind: 'edit', messageId: 'msg-1' });
 		});
 
-		it('startQuote starts a quote action with a single messageId', () => {
+		it('rejects when an action is already in progress', () => {
+			const store = createMessageActionStore({ kind: 'quote', messageIds: ['other-msg'] });
+			store.getState().actions.requestEditing('msg-1');
+			expect(store.getState().action).toEqual({ kind: 'quote', messageIds: ['other-msg'] });
+		});
+	});
+
+	describe('requestQuote', () => {
+		it('admits and starts a quote action with a single messageId when idle', () => {
 			const store = createMessageActionStore();
-			store.getState().actions.startQuote('msg-1');
+			store.getState().actions.requestQuote('msg-1');
 			expect(store.getState().action).toEqual({ kind: 'quote', messageIds: ['msg-1'] });
 		});
 
-		it('addQuote appends to an existing quote action', () => {
-			const store = createMessageActionStore();
-			store.getState().actions.startQuote('msg-1');
-			store.getState().actions.addQuote('msg-2');
+		it('admits and appends to an existing quote action', () => {
+			const store = createMessageActionStore({ kind: 'quote', messageIds: ['msg-1'] });
+			store.getState().actions.requestQuote('msg-2');
 			expect(store.getState().action).toEqual({ kind: 'quote', messageIds: ['msg-1', 'msg-2'] });
 		});
 
-		it('addQuote starts a new quote action when there is none', () => {
-			const store = createMessageActionStore();
-			store.getState().actions.addQuote('msg-1');
+		it('rejects a duplicate messageId', () => {
+			const store = createMessageActionStore({ kind: 'quote', messageIds: ['msg-1'] });
+			store.getState().actions.requestQuote('msg-1');
 			expect(store.getState().action).toEqual({ kind: 'quote', messageIds: ['msg-1'] });
 		});
 
-		it('addQuote does not append a duplicate messageId', () => {
-			const store = createMessageActionStore();
-			store.getState().actions.startQuote('msg-1');
-			store.getState().actions.addQuote('msg-1');
-			expect(store.getState().action).toEqual({ kind: 'quote', messageIds: ['msg-1'] });
+		it('rejects when a non-quote action is already in progress', () => {
+			const store = createMessageActionStore({ kind: 'edit', messageId: 'other-msg' });
+			store.getState().actions.requestQuote('msg-1');
+			expect(store.getState().action).toEqual({ kind: 'edit', messageId: 'other-msg' });
 		});
+	});
 
-		it('removeQuote drops a messageId and keeps the quote action if others remain', () => {
+	describe('removeQuote', () => {
+		it('drops a messageId and keeps the quote action if others remain', () => {
 			const store = createMessageActionStore({ kind: 'quote', messageIds: ['msg-1', 'msg-2'] });
 			store.getState().actions.removeQuote('msg-1');
 			expect(store.getState().action).toEqual({ kind: 'quote', messageIds: ['msg-2'] });
 		});
 
-		it('removeQuote clears the action when the last quoted message is removed', () => {
+		it('clears the action when the last quoted message is removed', () => {
 			const store = createMessageActionStore({ kind: 'quote', messageIds: ['msg-1'] });
 			store.getState().actions.removeQuote('msg-1');
 			expect(store.getState().action).toBeNull();
 		});
 
-		it('removeQuote is a no-op when the current action is not a quote', () => {
+		it('is a no-op when the current action is not a quote', () => {
 			const store = createMessageActionStore({ kind: 'edit', messageId: 'msg-1' });
 			store.getState().actions.removeQuote('msg-1');
 			expect(store.getState().action).toEqual({ kind: 'edit', messageId: 'msg-1' });
 		});
+	});
 
-		it('startReacting sets a react action with the given messageId', () => {
+	describe('startReacting', () => {
+		it('sets a react action with the given messageId', () => {
 			const store = createMessageActionStore();
 			store.getState().actions.startReacting('msg-1');
 			expect(store.getState().action).toEqual({ kind: 'react', messageId: 'msg-1' });
 		});
+	});
 
+	describe('setQuoteMessageIds and clear', () => {
 		it('setQuoteMessageIds sets a quote action with the given ids, or clears it when empty', () => {
 			const store = createMessageActionStore();
 			store.getState().actions.setQuoteMessageIds(['msg-1', 'msg-2']);
@@ -245,6 +323,12 @@ describe('MessageActionStore', () => {
 
 			store.getState().actions.setQuoteMessageIds([]);
 			expect(store.getState().action).toBeNull();
+		});
+
+		it('setQuoteMessageIds overrides an in-progress non-quote action unconditionally', () => {
+			const store = createMessageActionStore({ kind: 'edit', messageId: 'msg-1' });
+			store.getState().actions.setQuoteMessageIds(['msg-2']);
+			expect(store.getState().action).toEqual({ kind: 'quote', messageIds: ['msg-2'] });
 		});
 
 		it('clear resets a react action', () => {
