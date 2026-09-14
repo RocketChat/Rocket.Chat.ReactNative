@@ -11,8 +11,6 @@ import MobileCoreServices
 
 class ShareRocketChatRN: UIViewController {
     let appScheme = "rocketchat"
-    // ponytail: 32k cap ported from ShareActivity.kt, else openURL/decode blows up
-    let maxTextLength = 32000
 
     private func shareExtensionURL(params: [String: String]) -> URL? {
         var components = URLComponents()
@@ -89,16 +87,9 @@ class ShareRocketChatRN: UIViewController {
 
     private func handleText(item: NSItemProvider) {
         item.loadItem(forTypeIdentifier: "public.text", options: nil) { (data, error) in
-            if let text = data as? String {
-                if text.count > self.maxTextLength {
-                    let filename = "shared-\(UUID().uuidString).txt"
-                    if let savedUrl = self.saveDataToSharedContainer(data: Data(text.utf8), filename: filename),
-                       let url = self.shareExtensionURL(params: ["mediaUris": savedUrl.absoluteString]) {
-                        _ = self.openURL(url)
-                    }
-                } else if let url = self.shareExtensionURL(params: ["text": text]) {
-                    _ = self.openURL(url)
-                }
+            if let text = data as? String,
+               let url = self.shareExtensionURL(params: ["text": text]) {
+                _ = self.openURL(url)
             }
             self.completeRequest()
         }

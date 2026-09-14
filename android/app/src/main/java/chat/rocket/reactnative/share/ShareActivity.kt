@@ -17,8 +17,6 @@ class ShareActivity : AppCompatActivity() {
 
     private val appScheme = "rocketchat"
 
-    private val maxTextLength = 32000
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         cleanupSharedDir()
@@ -52,15 +50,6 @@ class ShareActivity : AppCompatActivity() {
         // Handle sharing text
         val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
         if (sharedText != null) {
-            if (sharedText.length > maxTextLength) {
-                val ext = if (intent.type == "text/html") ".html" else ".txt"
-                val fileUri = saveDataToCacheDir(sharedText.toByteArray(Charsets.UTF_8), "shared-${UUID.randomUUID()}$ext")
-                if (fileUri != null) {
-                    openURL(Uri.parse("$appScheme://shareextension?mediaUris=${Uri.encode(fileUri.toString())}"))
-                    completeRequest()
-                    return
-                }
-            }
             val encoded = Uri.encode(sharedText)
             val url = Uri.parse("$appScheme://shareextension?text=$encoded")
             openURL(url)
@@ -207,18 +196,6 @@ class ShareActivity : AppCompatActivity() {
                 file = File(dir, "${UUID.randomUUID()}-$filename")
             }
             FileOutputStream(file).use { output -> input.copyTo(output) }
-            Uri.fromFile(file) // Return the file URI with file:// scheme
-        } catch (e: Exception) {
-            Log.e("ShareRocketChat", "Failed to save data", e)
-            null
-        }
-    }
-
-    private fun saveDataToCacheDir(data: ByteArray?, filename: String): Uri? {
-        // Save the shared data to the app's cache directory and return the file URI
-        return try {
-            val file = File(sharedDir(), filename)
-            FileOutputStream(file).use { it.write(data) }
             Uri.fromFile(file) // Return the file URI with file:// scheme
         } catch (e: Exception) {
             Log.e("ShareRocketChat", "Failed to save data", e)
