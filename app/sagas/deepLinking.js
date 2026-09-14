@@ -1,7 +1,7 @@
 import { InteractionManager } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import I18n from 'i18n-js';
-import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
+import { all, call, delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
@@ -10,7 +10,7 @@ import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks'
 import { loginRequest } from '../actions/login';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
 import { RootEnum } from '../definitions';
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CURRENT_SERVER, getServerUserIdKey } from '../lib/constants/keys';
 import database from '../lib/database';
 import { getServerById } from '../lib/database/services/Server';
 import { canOpenRoom } from '../lib/methods/canOpenRoom';
@@ -21,6 +21,7 @@ import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import log from '../lib/methods/helpers/log';
+import { showConfirmationAlert } from '../lib/methods/helpers/info';
 import { showToast } from '../lib/methods/helpers/showToast';
 import UserPreferences from '../lib/methods/userPreferences';
 import { videoConfJoin } from '../lib/methods/videoConf';
@@ -36,6 +37,21 @@ const roomTypes = {
 	group: 'p',
 	channels: 'l'
 };
+
+const confirmDeepLinkLogin = (host, params = {}) =>
+	new Promise(resolve => {
+		if (process.env.RUNNING_E2E_TESTS === 'true' && params.forceLoginPrompt !== 'true') {
+			resolve(true);
+			return;
+		}
+		showConfirmationAlert({
+			title: I18n.t('Deep_link_login_title'),
+			message: I18n.t('Deep_link_login_description', { server: host }),
+			confirmationText: I18n.t('Login'),
+			onPress: () => resolve(true),
+			onCancel: () => resolve(false)
+		});
+	});
 
 const handleInviteLink = function* handleInviteLink({ params, requireLogin = false }) {
 	if (params.path && params.path.startsWith('invite/')) {
@@ -128,6 +144,26 @@ const fallbackNavigation = function* fallbackNavigation() {
 	yield put(appInit());
 };
 
+const declineDeepLinkLogin = function* declineDeepLinkLogin() {
+	const currentRoot = yield select(state => state.app.root);
+	if (currentRoot) {
+		showToast(I18n.t('Deep_link_login_declined'));
+	}
+	yield fallbackNavigation();
+};
+
+const ensureDeepLinkLoginConsent = function* ensureDeepLinkLoginConsent(host, params) {
+	if (!params.token) {
+		return true;
+	}
+	const confirmed = yield call(confirmDeepLinkLogin, host, params);
+	if (!confirmed) {
+		yield declineDeepLinkLogin();
+		return false;
+	}
+	return true;
+};
+
 let consumedOAuthToken;
 
 const handleOAuth = function* handleOAuth({ params }) {
@@ -143,9 +179,24 @@ const handleOAuth = function* handleOAuth({ params }) {
 	}
 };
 
+let consumedSamlToken;
+
+const handleSaml = function* handleSaml({ params }) {
+	const { credentialToken } = params;
+	if (!credentialToken || credentialToken === consumedSamlToken) {
+		return;
+	}
+	consumedSamlToken = credentialToken;
+	try {
+		yield loginOAuthOrSso({ saml: true, credentialToken });
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleShareExtension = function* handleOpen({ params }) {
 	const server = UserPreferences.getString(CURRENT_SERVER);
-	const user = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+	const user = UserPreferences.getString(getServerUserIdKey(server));
 
 	if (!user) {
 		yield put(appInit());
@@ -153,17 +204,91 @@ const handleShareExtension = function* handleOpen({ params }) {
 	}
 
 	yield put(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
-	yield localAuthenticate(server);
-	const serverRecord = yield getServerById(server);
-	if (!serverRecord) {
+	try {
+		yield localAuthenticate(server);
+		const serverRecord = yield getServerById(server);
+		if (!serverRecord) {
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+			return;
+		}
+		yield put(selectServerRequest(server, serverRecord.version));
+		if (sdk.host !== server) {
+			const { loginSuccess } = yield race({
+				loginSuccess: take(types.LOGIN.SUCCESS),
+				loginFailure: take(types.LOGIN.FAILURE),
+				selectServerFailure: take(types.SERVER.SELECT_FAILURE),
+				logout: take(types.LOGOUT)
+			});
+			if (!loginSuccess) {
+				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+				return;
+			}
+		}
+		yield put(shareSetParams(params));
+		yield put(appStart({ root: RootEnum.ROOT_SHARE_EXTENSION }));
+	} catch (e) {
+		log(e);
+		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+	}
+};
+
+const loginWithDeepLinkToken = function* loginWithDeepLinkToken({ params, hostAlreadyConnected }) {
+	if (!hostAlreadyConnected) {
+		yield take(types.SERVER.SELECT_SUCCESS);
+		const connected = yield select(state => state.meteor.connected);
+		if (!connected) {
+			yield take(types.METEOR.SUCCESS);
+		}
+	}
+	yield put(loginRequest({ resume: params.token }, true));
+	yield take(types.LOGIN.SUCCESS);
+	yield put(appReady({}));
+
+	const currentRoot = yield select(state => state.app.root);
+	if (currentRoot !== RootEnum.ROOT_INSIDE) {
+		yield take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE);
+	}
+	yield completeDeepLinkNavigation(params);
+};
+
+const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, user, serverRecord }) {
+	const { host } = params;
+	try {
+		if (user && serverRecord) {
+			yield localAuthenticate(host);
+			yield put(selectServerRequest(host, serverRecord.version, true, true));
+			yield take(types.LOGIN.SUCCESS);
+			yield completeDeepLinkNavigation(params);
+			return;
+		}
+	} catch (e) {
+		// do nothing
+	}
+	if (!(yield ensureDeepLinkLoginConsent(host, params))) {
 		return;
 	}
-	yield put(selectServerRequest(server, serverRecord.version));
-	if (sdk.current?.client?.host !== server) {
-		yield take(types.LOGIN.SUCCESS);
+	const result = yield getServerInfo(host);
+	if (!result.success) {
+		if (params.voipAcceptFailed) {
+			yield call(handleVoipAcceptFailed, params);
+			return;
+		}
+		yield fallbackNavigation();
+		return;
 	}
-	yield put(shareSetParams(params));
-	yield put(appStart({ root: RootEnum.ROOT_SHARE_EXTENSION }));
+	const hostAlreadyConnected = sdk.host === host;
+	if (!hostAlreadyConnected) {
+		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		yield put(serverInitAdd(server));
+		yield delay(1000);
+		EventEmitter.emit('NewServer', { server: host });
+	}
+
+	if (params.token) {
+		yield loginWithDeepLinkToken({ params, hostAlreadyConnected });
+	} else {
+		yield handleInviteLink({ params, requireLogin: true });
+	}
 };
 
 const handleOpen = function* handleOpen({ params }) {
@@ -173,6 +298,10 @@ const handleOpen = function* handleOpen({ params }) {
 	}
 	if (params.type === 'oauth') {
 		yield handleOAuth({ params });
+		return;
+	}
+	if (params.type === 'saml') {
+		yield handleSaml({ params });
 		return;
 	}
 
@@ -193,7 +322,7 @@ const handleOpen = function* handleOpen({ params }) {
 
 	const [server, user] = yield all([
 		UserPreferences.getString(CURRENT_SERVER),
-		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
+		UserPreferences.getString(getServerUserIdKey(host))
 	]);
 
 	const serverRecord = yield getServerById(host);
@@ -209,55 +338,7 @@ const handleOpen = function* handleOpen({ params }) {
 		}
 		yield completeDeepLinkNavigation(params);
 	} else {
-		// search if deep link's server already exists
-		try {
-			if (user && serverRecord) {
-				yield localAuthenticate(host);
-				yield put(selectServerRequest(host, serverRecord.version, true, true));
-				yield take(types.LOGIN.SUCCESS);
-				yield completeDeepLinkNavigation(params);
-				return;
-			}
-		} catch (e) {
-			// do nothing?
-		}
-		// if deep link is from a different server
-		const result = yield getServerInfo(host);
-		if (!result.success) {
-			if (params.voipAcceptFailed) {
-				yield call(handleVoipAcceptFailed, params);
-				return;
-			}
-			// Fallback to prevent the app from being stuck on splash screen
-			yield fallbackNavigation();
-			return;
-		}
-		// if the host is different from the current one, we need to connect to it before navigating
-		const hostAlreadyConnected = sdk.current?.client?.host === host;
-		if (!hostAlreadyConnected) {
-			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-			yield put(serverInitAdd(server));
-			yield delay(1000);
-			EventEmitter.emit('NewServer', { server: host });
-		}
-
-		if (params.token) {
-			if (!hostAlreadyConnected) {
-				yield take(types.SERVER.SELECT_SUCCESS);
-			}
-			yield put(loginRequest({ resume: params.token }, true));
-			yield take(types.LOGIN.SUCCESS);
-			yield put(appReady({}));
-			// Wait for the login saga's appStart(ROOT_INSIDE) before navigating, so
-			// InsideStack is mounted and goRoom dispatches into the correct stack.
-			const currentRoot = yield select(state => state.app.root);
-			if (currentRoot !== RootEnum.ROOT_INSIDE) {
-				yield take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE);
-			}
-			yield completeDeepLinkNavigation(params);
-		} else {
-			yield handleInviteLink({ params, requireLogin: true });
-		}
+		yield handleOpenDifferentServer({ params, server, user, serverRecord });
 	}
 };
 
@@ -305,7 +386,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 
 	const [server, user] = yield all([
 		UserPreferences.getString(CURRENT_SERVER),
-		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
+		UserPreferences.getString(getServerUserIdKey(host))
 	]);
 
 	const serverRecord = yield getServerById(host);
@@ -324,6 +405,9 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 			yield put(selectServerRequest(host, serverRecord.version, true, true));
 			yield take(types.LOGIN.SUCCESS);
 			yield handleNavigateCallRoom({ params });
+			return;
+		}
+		if (!(yield ensureDeepLinkLoginConsent(host, params))) {
 			return;
 		}
 		// if deep link is from a different server

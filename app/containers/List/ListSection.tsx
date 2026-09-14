@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Header } from '.';
+import Header from './ListHeader';
 
 const styles = StyleSheet.create({
 	container: {

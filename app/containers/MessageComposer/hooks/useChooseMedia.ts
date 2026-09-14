@@ -2,19 +2,19 @@ import * as DocumentPicker from 'expo-document-picker';
 
 import { IMAGE_PICKER_CONFIG, LIBRARY_PICKER_CONFIG, VIDEO_PICKER_CONFIG } from '../constants';
 import { forceJpgExtension } from '../helpers';
-import I18n from '../../../i18n';
-import { canUploadFile } from '../../../lib/methods/helpers';
-import log from '../../../lib/methods/helpers/log';
-import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
-import { getThreadById } from '../../../lib/database/services/Thread';
-import Navigation from '../../../lib/navigation/appNavigation';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { useRoomContext } from '../../../views/RoomView/context';
-import { useMessageAction } from '../../message/stores/MessageActionStore';
-import { type IShareAttachment } from '../../../definitions';
-import ImagePicker, { type ImageOrVideo } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
+import I18n from '~/i18n';
+import { canUploadFile } from '~/lib/methods/helpers';
+import log from '~/lib/methods/helpers/log';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import { getThreadById } from '~/lib/database/services/Thread';
+import Navigation from '~/lib/navigation/appNavigation';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useRoomContext } from '~/views/RoomView/context';
+import { useMessageAction } from '~/containers/message/stores/MessageActionStore';
+import { type IShareAttachment } from '~/definitions';
+import ImagePicker, { type ImageOrVideo } from '~/lib/methods/helpers/ImagePicker/ImagePicker';
 import { useMessageComposerApi } from '../context';
-import { useAltTextSupported } from '../../../lib/hooks/useAltTextSupported';
+import { useAltTextSupported } from '~/lib/hooks/useAltTextSupported';
 
 const normalizeAttachment = (item: IShareAttachment) =>
 	item.filename ? item : { ...item, filename: item.path ? item.path.split('/').pop() : undefined };

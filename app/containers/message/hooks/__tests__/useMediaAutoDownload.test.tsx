@@ -3,38 +3,38 @@ import { Provider } from 'react-redux';
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 
 import { useMediaAutoDownload } from '../useMediaAutoDownload';
-import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { type IAttachment, type IUserMessage, type TAnyMessageModel } from '../../../../definitions';
-import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '../../../../lib/methods/handleMediaDownload';
-import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
-import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
-import { isImageBase64 } from '../../../../lib/methods/isImageBase64';
-import { emitter } from '../../../../lib/methods/helpers/emitter';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { mockedStore } from '~/reducers/mockedStore';
+import { type IAttachment, type IUserMessage, type TAnyMessageModel } from '~/definitions';
+import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '~/lib/methods/handleMediaDownload';
+import { fetchAutoDownloadEnabled } from '~/lib/methods/autoDownloadPreference';
+import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
+import { isImageBase64 } from '~/lib/methods/isImageBase64';
+import { emitter } from '~/lib/methods/helpers/emitter';
 
-jest.mock('../../../../lib/methods/handleMediaDownload', () => ({
+jest.mock('~/lib/methods/handleMediaDownload', () => ({
 	downloadMediaFile: jest.fn(),
 	getMediaCache: jest.fn(),
 	isDownloadActive: jest.fn(),
 	cancelDownload: jest.fn()
 }));
 
-jest.mock('../../../../lib/methods/autoDownloadPreference', () => ({
+jest.mock('~/lib/methods/autoDownloadPreference', () => ({
 	fetchAutoDownloadEnabled: jest.fn()
 }));
 
-jest.mock('../../../../lib/methods/helpers/formatAttachmentUrl', () => ({
+jest.mock('~/lib/methods/helpers/formatAttachmentUrl', () => ({
 	formatAttachmentUrl: jest.fn()
 }));
 
-jest.mock('../../../../lib/methods/isImageBase64', () => ({
+jest.mock('~/lib/methods/isImageBase64', () => ({
 	isImageBase64: jest.fn()
 }));
 
 // Real mitt behind spies so resumeDownload registrations can be observed and the
 // download listener can be driven with emitter.emit.
-jest.mock('../../../../lib/methods/helpers/emitter', () => {
+jest.mock('~/lib/methods/helpers/emitter', () => {
 	const mittModule = require('mitt');
 	const mitt = mittModule.default || mittModule;
 	const instance = mitt();
@@ -43,19 +43,6 @@ jest.mock('../../../../lib/methods/helpers/emitter', () => {
 			on: jest.fn((type: string, handler: (uri: string) => void) => instance.on(type, handler)),
 			off: jest.fn((type: string, handler: (uri: string) => void) => instance.off(type, handler)),
 			emit: (type: string, event: string) => instance.emit(type, event)
-		}
-	};
-});
-
-// The persisted/localFile logic is covered by useFile.test; here useFile is a plain
-// state cell so setCurrentFile merges are observable through the returned currentFile.
-jest.mock('../useFile', () => {
-	const { useState } = require('react');
-	return {
-		useFile: (file: IAttachment) => {
-			const [current, setCurrent] = useState(file);
-			const manage = (partial: Partial<IAttachment>) => setCurrent((prev: IAttachment) => ({ ...prev, ...partial }));
-			return [current, manage];
 		}
 	};
 });
@@ -101,7 +88,14 @@ const renderMediaHook = ({
 			</MessageRoomProvider>
 		</Provider>
 	);
-	return renderHook(() => useMediaAutoDownload({ file, author, showAttachment }), { wrapper });
+	return renderHook(
+		(props: { file: IAttachment; author?: IUserMessage; showAttachment?: (file: IAttachment) => void }) =>
+			useMediaAutoDownload(props),
+		{
+			wrapper,
+			initialProps: { file, author, showAttachment }
+		}
+	);
 };
 
 describe('useMediaAutoDownload', () => {
@@ -169,6 +163,17 @@ describe('useMediaAutoDownload', () => {
 			mockGetMediaCache.mockResolvedValue({ exists: true, uri: 'file://cache' });
 			const { result } = renderMediaHook({ file: { image_url: '/img' } });
 			await waitFor(() => expect(result.current.status).toBe('downloaded'));
+			expect(result.current.currentFile.title_link).toBe('file://cache');
+		});
+
+		it('keeps the local title_link when the file prop changes back to the remote url', async () => {
+			mockGetMediaCache.mockResolvedValue({ exists: true, uri: 'file://cache' });
+			const { result, rerender } = renderMediaHook({ file: { image_url: '/img', title: 'original.png' } });
+			await waitFor(() => expect(result.current.status).toBe('downloaded'));
+
+			rerender({ file: { image_url: '/img', title: 'renamed.png', title_link: '/remote' } });
+
+			expect(result.current.currentFile.title).toBe('renamed.png');
 			expect(result.current.currentFile.title_link).toBe('file://cache');
 		});
 

@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Fragment, type ReactElement } from 'react';
 
-import * as List from '../../containers/List';
-import I18n from '../../i18n';
-import { useTheme } from '../../theme';
+import * as List from '~/containers/List';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
-import { useActionSheet } from '../../containers/ActionSheet';
+import { useActionSheet } from '~/containers/ActionSheet';
 
 const styles = StyleSheet.create({
 	pickerText: {

@@ -1528,7 +1528,41 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
                                               ]
                                             }
                                           >
-                                            Rocket.Chat
+                                            <Text
+                                              style={
+                                                {
+                                                  "backgroundColor": "transparent",
+                                                  "flexShrink": 1,
+                                                  "fontFamily": "Inter",
+                                                  "fontVariant": [
+                                                    "tabular-nums",
+                                                  ],
+                                                  "fontWeight": "400",
+                                                  "textAlign": "left",
+                                                }
+                                              }
+                                            >
+                                              <Text
+                                                accessibilityLabel="Rocket.Chat"
+                                                style={
+                                                  [
+                                                    {
+                                                      "flexShrink": 1,
+                                                      "fontSize": 16,
+                                                      "lineHeight": 22,
+                                                    },
+                                                    {
+                                                      "color": "#2F343D",
+                                                    },
+                                                    {
+                                                      "color": "#095AD2",
+                                                    },
+                                                  ]
+                                                }
+                                              >
+                                                Rocket.Chat
+                                              </Text>
+                                            </Text>
                                           </Text>
                                           <Text
                                             accessibilityLabel=", the best open source chat"
@@ -2317,7 +2351,41 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
                                               ]
                                             }
                                           >
-                                            Rocket.Chat
+                                            <Text
+                                              style={
+                                                {
+                                                  "backgroundColor": "transparent",
+                                                  "flexShrink": 1,
+                                                  "fontFamily": "Inter",
+                                                  "fontVariant": [
+                                                    "tabular-nums",
+                                                  ],
+                                                  "fontWeight": "400",
+                                                  "textAlign": "left",
+                                                }
+                                              }
+                                            >
+                                              <Text
+                                                accessibilityLabel="Rocket.Chat"
+                                                style={
+                                                  [
+                                                    {
+                                                      "flexShrink": 1,
+                                                      "fontSize": 16,
+                                                      "lineHeight": 22,
+                                                    },
+                                                    {
+                                                      "color": "#2F343D",
+                                                    },
+                                                    {
+                                                      "color": "#095AD2",
+                                                    },
+                                                  ]
+                                                }
+                                              >
+                                                Rocket.Chat
+                                              </Text>
+                                            </Text>
                                           </Text>
                                           <Text
                                             accessibilityLabel=", the best open source chat"
@@ -24790,11 +24858,16 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
     </A11yOrderView>
     <View
       style={
-        {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "margin": 12,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "margin": 12,
+          },
+          {
+            "gap": 12,
+          },
+        ]
       }
     >
       <View
@@ -24805,35 +24878,47 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               "height": 1,
             },
             {
-              "backgroundColor": "#CBCED1",
+              "backgroundColor": "#EBECEF",
             },
           ]
         }
       />
-      <Text
+      <View
         style={
           [
             {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 14,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "textAlign": "left",
+              "borderRadius": 16,
+              "paddingHorizontal": 8,
+              "paddingVertical": 2,
             },
             {
-              "color": "#6C727A",
-            },
-            {
-              "marginHorizontal": 14,
+              "backgroundColor": "#E4E7EA",
             },
           ]
         }
       >
-        November 10, 2017
-      </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "700",
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          November 10, 2017
+        </Text>
+      </View>
       <View
         style={
           [
@@ -24842,7 +24927,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               "height": 1,
             },
             {
-              "backgroundColor": "#CBCED1",
+              "backgroundColor": "#EBECEF",
             },
           ]
         }
@@ -27090,11 +27175,16 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
     </A11yOrderView>
     <View
       style={
-        {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "margin": 12,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "margin": 12,
+          },
+          {
+            "gap": 12,
+          },
+        ]
       }
     >
       <View
@@ -27105,35 +27195,47 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               "height": 1,
             },
             {
-              "backgroundColor": "#CBCED1",
+              "backgroundColor": "#EBECEF",
             },
           ]
         }
       />
-      <Text
+      <View
         style={
           [
             {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 14,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "textAlign": "left",
+              "borderRadius": 16,
+              "paddingHorizontal": 8,
+              "paddingVertical": 2,
             },
             {
-              "color": "#6C727A",
-            },
-            {
-              "marginHorizontal": 14,
+              "backgroundColor": "#E4E7EA",
             },
           ]
         }
       >
-        November 10, 2017
-      </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "700",
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          November 10, 2017
+        </Text>
+      </View>
       <View
         style={
           [
@@ -27142,7 +27244,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               "height": 1,
             },
             {
-              "backgroundColor": "#CBCED1",
+              "backgroundColor": "#EBECEF",
             },
           ]
         }
@@ -54217,30 +54319,45 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                                             }
                                           >
                                             <Text
-                                              accessibilityLabel="main"
                                               style={
-                                                [
-                                                  {
-                                                    "flexShrink": 1,
-                                                    "fontSize": 16,
-                                                    "lineHeight": 22,
-                                                  },
-                                                  {
-                                                    "color": "#2F343D",
-                                                  },
-                                                  {
-                                                    "backgroundColor": "transparent",
-                                                    "fontFamily": "Inter",
-                                                    "fontVariant": [
-                                                      "tabular-nums",
-                                                    ],
-                                                    "fontWeight": "700",
-                                                    "textAlign": "left",
-                                                  },
-                                                ]
+                                                {
+                                                  "backgroundColor": "transparent",
+                                                  "flexShrink": 1,
+                                                  "fontFamily": "Inter",
+                                                  "fontVariant": [
+                                                    "tabular-nums",
+                                                  ],
+                                                  "fontWeight": "400",
+                                                  "textAlign": "left",
+                                                }
                                               }
                                             >
-                                              main
+                                              <Text
+                                                accessibilityLabel="main"
+                                                style={
+                                                  [
+                                                    {
+                                                      "flexShrink": 1,
+                                                      "fontSize": 16,
+                                                      "lineHeight": 22,
+                                                    },
+                                                    {
+                                                      "color": "#2F343D",
+                                                    },
+                                                    {
+                                                      "backgroundColor": "transparent",
+                                                      "fontFamily": "Inter",
+                                                      "fontVariant": [
+                                                        "tabular-nums",
+                                                      ],
+                                                      "fontWeight": "700",
+                                                      "textAlign": "left",
+                                                    },
+                                                  ]
+                                                }
+                                              >
+                                                main
+                                              </Text>
                                             </Text>
                                           </Text>
                                           <Text
@@ -57230,30 +57347,45 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                                             }
                                           >
                                             <Text
-                                              accessibilityLabel="main"
                                               style={
-                                                [
-                                                  {
-                                                    "flexShrink": 1,
-                                                    "fontSize": 16,
-                                                    "lineHeight": 22,
-                                                  },
-                                                  {
-                                                    "color": "#2F343D",
-                                                  },
-                                                  {
-                                                    "backgroundColor": "transparent",
-                                                    "fontFamily": "Inter",
-                                                    "fontVariant": [
-                                                      "tabular-nums",
-                                                    ],
-                                                    "fontWeight": "700",
-                                                    "textAlign": "left",
-                                                  },
-                                                ]
+                                                {
+                                                  "backgroundColor": "transparent",
+                                                  "flexShrink": 1,
+                                                  "fontFamily": "Inter",
+                                                  "fontVariant": [
+                                                    "tabular-nums",
+                                                  ],
+                                                  "fontWeight": "400",
+                                                  "textAlign": "left",
+                                                }
                                               }
                                             >
-                                              main
+                                              <Text
+                                                accessibilityLabel="main"
+                                                style={
+                                                  [
+                                                    {
+                                                      "flexShrink": 1,
+                                                      "fontSize": 16,
+                                                      "lineHeight": 22,
+                                                    },
+                                                    {
+                                                      "color": "#2F343D",
+                                                    },
+                                                    {
+                                                      "backgroundColor": "transparent",
+                                                      "fontFamily": "Inter",
+                                                      "fontVariant": [
+                                                        "tabular-nums",
+                                                      ],
+                                                      "fontWeight": "700",
+                                                      "textAlign": "left",
+                                                    },
+                                                  ]
+                                                }
+                                              >
+                                                main
+                                              </Text>
                                             </Text>
                                           </Text>
                                           <Text
@@ -97311,30 +97443,45 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                                             }
                                           >
                                             <Text
-                                              accessibilityLabel="important"
                                               style={
-                                                [
-                                                  {
-                                                    "flexShrink": 1,
-                                                    "fontSize": 16,
-                                                    "lineHeight": 22,
-                                                  },
-                                                  {
-                                                    "color": "#2F343D",
-                                                  },
-                                                  {
-                                                    "backgroundColor": "transparent",
-                                                    "fontFamily": "Inter",
-                                                    "fontVariant": [
-                                                      "tabular-nums",
-                                                    ],
-                                                    "fontWeight": "700",
-                                                    "textAlign": "left",
-                                                  },
-                                                ]
+                                                {
+                                                  "backgroundColor": "transparent",
+                                                  "flexShrink": 1,
+                                                  "fontFamily": "Inter",
+                                                  "fontVariant": [
+                                                    "tabular-nums",
+                                                  ],
+                                                  "fontWeight": "400",
+                                                  "textAlign": "left",
+                                                }
                                               }
                                             >
-                                              important
+                                              <Text
+                                                accessibilityLabel="important"
+                                                style={
+                                                  [
+                                                    {
+                                                      "flexShrink": 1,
+                                                      "fontSize": 16,
+                                                      "lineHeight": 22,
+                                                    },
+                                                    {
+                                                      "color": "#2F343D",
+                                                    },
+                                                    {
+                                                      "backgroundColor": "transparent",
+                                                      "fontFamily": "Inter",
+                                                      "fontVariant": [
+                                                        "tabular-nums",
+                                                      ],
+                                                      "fontWeight": "700",
+                                                      "textAlign": "left",
+                                                    },
+                                                  ]
+                                                }
+                                              >
+                                                important
+                                              </Text>
                                             </Text>
                                           </Text>
                                           <Text
@@ -99490,30 +99637,45 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                             }
                                           >
                                             <Text
-                                              accessibilityLabel="important"
                                               style={
-                                                [
-                                                  {
-                                                    "flexShrink": 1,
-                                                    "fontSize": 16,
-                                                    "lineHeight": 22,
-                                                  },
-                                                  {
-                                                    "color": "#2F343D",
-                                                  },
-                                                  {
-                                                    "backgroundColor": "transparent",
-                                                    "fontFamily": "Inter",
-                                                    "fontVariant": [
-                                                      "tabular-nums",
-                                                    ],
-                                                    "fontWeight": "700",
-                                                    "textAlign": "left",
-                                                  },
-                                                ]
+                                                {
+                                                  "backgroundColor": "transparent",
+                                                  "flexShrink": 1,
+                                                  "fontFamily": "Inter",
+                                                  "fontVariant": [
+                                                    "tabular-nums",
+                                                  ],
+                                                  "fontWeight": "400",
+                                                  "textAlign": "left",
+                                                }
                                               }
                                             >
-                                              important
+                                              <Text
+                                                accessibilityLabel="important"
+                                                style={
+                                                  [
+                                                    {
+                                                      "flexShrink": 1,
+                                                      "fontSize": 16,
+                                                      "lineHeight": 22,
+                                                    },
+                                                    {
+                                                      "color": "#2F343D",
+                                                    },
+                                                    {
+                                                      "backgroundColor": "transparent",
+                                                      "fontFamily": "Inter",
+                                                      "fontVariant": [
+                                                        "tabular-nums",
+                                                      ],
+                                                      "fontWeight": "700",
+                                                      "textAlign": "left",
+                                                    },
+                                                  ]
+                                                }
+                                              >
+                                                important
+                                              </Text>
                                             </Text>
                                           </Text>
                                           <Text
@@ -133108,30 +133270,45 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                                     }
                                   >
                                     <Text
-                                      accessibilityLabel="Message with markdown"
                                       style={
-                                        [
-                                          {
-                                            "flexShrink": 1,
-                                            "fontSize": 16,
-                                            "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
-                                          },
-                                          {
-                                            "backgroundColor": "transparent",
-                                            "fontFamily": "Inter",
-                                            "fontVariant": [
-                                              "tabular-nums",
-                                            ],
-                                            "fontWeight": "700",
-                                            "textAlign": "left",
-                                          },
-                                        ]
+                                        {
+                                          "backgroundColor": "transparent",
+                                          "flexShrink": 1,
+                                          "fontFamily": "Inter",
+                                          "fontVariant": [
+                                            "tabular-nums",
+                                          ],
+                                          "fontWeight": "400",
+                                          "textAlign": "left",
+                                        }
                                       }
                                     >
-                                      Message with markdown
+                                      <Text
+                                        accessibilityLabel="Message with markdown"
+                                        style={
+                                          [
+                                            {
+                                              "flexShrink": 1,
+                                              "fontSize": 16,
+                                              "lineHeight": 22,
+                                            },
+                                            {
+                                              "color": "#2F343D",
+                                            },
+                                            {
+                                              "backgroundColor": "transparent",
+                                              "fontFamily": "Inter",
+                                              "fontVariant": [
+                                                "tabular-nums",
+                                              ],
+                                              "fontWeight": "700",
+                                              "textAlign": "left",
+                                            },
+                                          ]
+                                        }
+                                      >
+                                        Message with markdown
+                                      </Text>
                                     </Text>
                                   </Text>
                                 </Text>
@@ -133185,21 +133362,39 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                                     }
                                   >
                                     <Text
-                                      accessibilityLabel="Some text"
                                       style={
-                                        [
-                                          {
-                                            "flexShrink": 1,
-                                            "fontSize": 16,
-                                            "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
-                                          },
-                                        ]
+                                        {
+                                          "backgroundColor": "transparent",
+                                          "flexShrink": 1,
+                                          "fontFamily": "Inter",
+                                          "fontVariant": [
+                                            "tabular-nums",
+                                          ],
+                                          "fontWeight": "400",
+                                          "textAlign": "left",
+                                        }
                                       }
                                     >
-                                      Some text
+                                      <Text
+                                        accessibilityLabel="Some text"
+                                        style={
+                                          [
+                                            {
+                                              "flexShrink": 1,
+                                              "fontSize": 16,
+                                              "lineHeight": 22,
+                                            },
+                                            {
+                                              "color": "#2F343D",
+                                            },
+                                            {
+                                              "fontStyle": "italic",
+                                            },
+                                          ]
+                                        }
+                                      >
+                                        Some text
+                                      </Text>
                                     </Text>
                                   </Text>
                                 </Text>
@@ -134405,30 +134600,45 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                                     }
                                   >
                                     <Text
-                                      accessibilityLabel="Message with markdown"
                                       style={
-                                        [
-                                          {
-                                            "flexShrink": 1,
-                                            "fontSize": 16,
-                                            "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
-                                          },
-                                          {
-                                            "backgroundColor": "transparent",
-                                            "fontFamily": "Inter",
-                                            "fontVariant": [
-                                              "tabular-nums",
-                                            ],
-                                            "fontWeight": "700",
-                                            "textAlign": "left",
-                                          },
-                                        ]
+                                        {
+                                          "backgroundColor": "transparent",
+                                          "flexShrink": 1,
+                                          "fontFamily": "Inter",
+                                          "fontVariant": [
+                                            "tabular-nums",
+                                          ],
+                                          "fontWeight": "400",
+                                          "textAlign": "left",
+                                        }
                                       }
                                     >
-                                      Message with markdown
+                                      <Text
+                                        accessibilityLabel="Message with markdown"
+                                        style={
+                                          [
+                                            {
+                                              "flexShrink": 1,
+                                              "fontSize": 16,
+                                              "lineHeight": 22,
+                                            },
+                                            {
+                                              "color": "#2F343D",
+                                            },
+                                            {
+                                              "backgroundColor": "transparent",
+                                              "fontFamily": "Inter",
+                                              "fontVariant": [
+                                                "tabular-nums",
+                                              ],
+                                              "fontWeight": "700",
+                                              "textAlign": "left",
+                                            },
+                                          ]
+                                        }
+                                      >
+                                        Message with markdown
+                                      </Text>
                                     </Text>
                                   </Text>
                                 </Text>
@@ -134482,21 +134692,39 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                                     }
                                   >
                                     <Text
-                                      accessibilityLabel="Some text"
                                       style={
-                                        [
-                                          {
-                                            "flexShrink": 1,
-                                            "fontSize": 16,
-                                            "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
-                                          },
-                                        ]
+                                        {
+                                          "backgroundColor": "transparent",
+                                          "flexShrink": 1,
+                                          "fontFamily": "Inter",
+                                          "fontVariant": [
+                                            "tabular-nums",
+                                          ],
+                                          "fontWeight": "400",
+                                          "textAlign": "left",
+                                        }
                                       }
                                     >
-                                      Some text
+                                      <Text
+                                        accessibilityLabel="Some text"
+                                        style={
+                                          [
+                                            {
+                                              "flexShrink": 1,
+                                              "fontSize": 16,
+                                              "lineHeight": 22,
+                                            },
+                                            {
+                                              "color": "#2F343D",
+                                            },
+                                            {
+                                              "fontStyle": "italic",
+                                            },
+                                          ]
+                                        }
+                                      >
+                                        Some text
+                                      </Text>
                                     </Text>
                                   </Text>
                                 </Text>
@@ -153745,7 +153973,41 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                                   ]
                                                 }
                                               >
-                                                Value 2
+                                                <Text
+                                                  style={
+                                                    {
+                                                      "backgroundColor": "transparent",
+                                                      "flexShrink": 1,
+                                                      "fontFamily": "Inter",
+                                                      "fontVariant": [
+                                                        "tabular-nums",
+                                                      ],
+                                                      "fontWeight": "400",
+                                                      "textAlign": "left",
+                                                    }
+                                                  }
+                                                >
+                                                  <Text
+                                                    accessibilityLabel="Value 2"
+                                                    style={
+                                                      [
+                                                        {
+                                                          "flexShrink": 1,
+                                                          "fontSize": 16,
+                                                          "lineHeight": 22,
+                                                        },
+                                                        {
+                                                          "color": "#2F343D",
+                                                        },
+                                                        {
+                                                          "color": "#095AD2",
+                                                        },
+                                                      ]
+                                                    }
+                                                  >
+                                                    Value 2
+                                                  </Text>
+                                                </Text>
                                               </Text>
                                             </Text>
                                           </Text>
@@ -154118,30 +154380,45 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                                 }
                                               >
                                                 <Text
-                                                  accessibilityLabel="Value 2"
                                                   style={
-                                                    [
-                                                      {
-                                                        "flexShrink": 1,
-                                                        "fontSize": 16,
-                                                        "lineHeight": 22,
-                                                      },
-                                                      {
-                                                        "color": "#2F343D",
-                                                      },
-                                                      {
-                                                        "backgroundColor": "transparent",
-                                                        "fontFamily": "Inter",
-                                                        "fontVariant": [
-                                                          "tabular-nums",
-                                                        ],
-                                                        "fontWeight": "700",
-                                                        "textAlign": "left",
-                                                      },
-                                                    ]
+                                                    {
+                                                      "backgroundColor": "transparent",
+                                                      "flexShrink": 1,
+                                                      "fontFamily": "Inter",
+                                                      "fontVariant": [
+                                                        "tabular-nums",
+                                                      ],
+                                                      "fontWeight": "400",
+                                                      "textAlign": "left",
+                                                    }
                                                   }
                                                 >
-                                                  Value 2
+                                                  <Text
+                                                    accessibilityLabel="Value 2"
+                                                    style={
+                                                      [
+                                                        {
+                                                          "flexShrink": 1,
+                                                          "fontSize": 16,
+                                                          "lineHeight": 22,
+                                                        },
+                                                        {
+                                                          "color": "#2F343D",
+                                                        },
+                                                        {
+                                                          "backgroundColor": "transparent",
+                                                          "fontFamily": "Inter",
+                                                          "fontVariant": [
+                                                            "tabular-nums",
+                                                          ],
+                                                          "fontWeight": "700",
+                                                          "textAlign": "left",
+                                                        },
+                                                      ]
+                                                    }
+                                                  >
+                                                    Value 2
+                                                  </Text>
                                                 </Text>
                                               </Text>
                                             </Text>
@@ -155013,7 +155290,41 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                                   ]
                                                 }
                                               >
-                                                Value 2
+                                                <Text
+                                                  style={
+                                                    {
+                                                      "backgroundColor": "transparent",
+                                                      "flexShrink": 1,
+                                                      "fontFamily": "Inter",
+                                                      "fontVariant": [
+                                                        "tabular-nums",
+                                                      ],
+                                                      "fontWeight": "400",
+                                                      "textAlign": "left",
+                                                    }
+                                                  }
+                                                >
+                                                  <Text
+                                                    accessibilityLabel="Value 2"
+                                                    style={
+                                                      [
+                                                        {
+                                                          "flexShrink": 1,
+                                                          "fontSize": 16,
+                                                          "lineHeight": 22,
+                                                        },
+                                                        {
+                                                          "color": "#2F343D",
+                                                        },
+                                                        {
+                                                          "color": "#095AD2",
+                                                        },
+                                                      ]
+                                                    }
+                                                  >
+                                                    Value 2
+                                                  </Text>
+                                                </Text>
                                               </Text>
                                             </Text>
                                           </Text>
@@ -155386,30 +155697,45 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                                 }
                                               >
                                                 <Text
-                                                  accessibilityLabel="Value 2"
                                                   style={
-                                                    [
-                                                      {
-                                                        "flexShrink": 1,
-                                                        "fontSize": 16,
-                                                        "lineHeight": 22,
-                                                      },
-                                                      {
-                                                        "color": "#2F343D",
-                                                      },
-                                                      {
-                                                        "backgroundColor": "transparent",
-                                                        "fontFamily": "Inter",
-                                                        "fontVariant": [
-                                                          "tabular-nums",
-                                                        ],
-                                                        "fontWeight": "700",
-                                                        "textAlign": "left",
-                                                      },
-                                                    ]
+                                                    {
+                                                      "backgroundColor": "transparent",
+                                                      "flexShrink": 1,
+                                                      "fontFamily": "Inter",
+                                                      "fontVariant": [
+                                                        "tabular-nums",
+                                                      ],
+                                                      "fontWeight": "400",
+                                                      "textAlign": "left",
+                                                    }
                                                   }
                                                 >
-                                                  Value 2
+                                                  <Text
+                                                    accessibilityLabel="Value 2"
+                                                    style={
+                                                      [
+                                                        {
+                                                          "flexShrink": 1,
+                                                          "fontSize": 16,
+                                                          "lineHeight": 22,
+                                                        },
+                                                        {
+                                                          "color": "#2F343D",
+                                                        },
+                                                        {
+                                                          "backgroundColor": "transparent",
+                                                          "fontFamily": "Inter",
+                                                          "fontVariant": [
+                                                            "tabular-nums",
+                                                          ],
+                                                          "fontWeight": "700",
+                                                          "textAlign": "left",
+                                                        },
+                                                      ]
+                                                    }
+                                                  >
+                                                    Value 2
+                                                  </Text>
                                                 </Text>
                                               </Text>
                                             </Text>

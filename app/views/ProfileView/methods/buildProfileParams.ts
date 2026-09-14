@@ -1,10 +1,10 @@
 import { sha256 } from 'js-sha256';
 
-import { type IProfileParams, type IUser } from '../../../definitions';
+import { type IProfileParams, type IUser } from '~/definitions';
 
 interface IProfileFormValues {
 	name: string;
-	username: string;
+	username?: string;
 	email: string | null;
 	currentPassword: string | null;
 	bio?: string;

@@ -1,11 +1,11 @@
 import { useEffect, useState, memo } from 'react';
 import { Grid } from 'react-native-easy-grid';
 
-import { resetAttempts } from '../../../lib/methods/helpers/localAuthentication';
+import { resetAttempts } from '~/lib/methods/helpers/localAuthentication';
 import { TYPE } from '../constants';
 import { getDiff, getLockedUntil } from '../utils';
-import I18n from '../../../i18n';
-import { useTheme } from '../../../theme';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
 import styles from './styles';
 import Title from './Title';
 import Subtitle from './Subtitle';

@@ -2,16 +2,17 @@ import { useContext, useEffect, useState } from 'react';
 import { View, type ViewStyle } from 'react-native';
 import { Image } from 'expo-image';
 
-import { isValidUrl } from '../../../../../lib/methods/helpers/isValidUrl';
-import { useTheme } from '../../../../../theme';
-import styles from '../../../styles';
-import OverlayComponent from '../../OverlayComponent';
+import { isValidUrl } from '~/lib/methods/helpers/isValidUrl';
+import { useTheme } from '~/theme';
+import styles from '~/containers/message/styles';
+import OverlayComponent from '~/containers/message/components/OverlayComponent';
 import { type IMessageImage } from './definitions';
-import { WidthAwareContext } from '../../WidthAwareView';
-import { useUserPreferences } from '../../../../../lib/methods/userPreferences';
-import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants/keys';
+import { WidthAwareContext } from '~/containers/message/components/WidthAwareView';
+import { useUserPreferences } from '~/lib/methods/userPreferences';
+import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '~/lib/constants/keys';
 import ImageBadge from './ImageBadge';
-import log from '../../../../../lib/methods/helpers/log';
+import log from '~/lib/methods/helpers/log';
+import { encodeAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 
 export const MessageImage = ({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
 	const { colors } = useTheme();
@@ -69,7 +70,7 @@ export const MessageImage = ({ uri, status, encrypted = false, imagePreview, ima
 		<>
 			{showImage ? (
 				<View style={[containerStyle, borderStyle]}>
-					<Image autoplay={autoplayGifs} style={imageStyle} source={{ uri: encodeURI(uri) }} contentFit='cover' />
+					<Image autoplay={autoplayGifs} style={imageStyle} source={{ uri: encodeAttachmentUrl(uri) }} contentFit='cover' />
 				</View>
 			) : null}
 			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (

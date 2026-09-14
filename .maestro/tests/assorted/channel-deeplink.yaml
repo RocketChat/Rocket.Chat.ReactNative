@@ -1,0 +1,63 @@
+appId: ${APP_ID}
+name: Channel Deeplink
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-12
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.group = output.utils.createRandomRoom(output.user.username, output.user.password, 'p')}
+- evalScript: ${output.channel = output.utils.createRandomRoom(output.user.username, output.user.password, 'c')}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# open group using name
+- killApp
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/', output.group.name)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.group.name}'
+    timeout: 60000
+
+# open group using id
+- killApp
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/', output.group._id)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.group.name}'
+    timeout: 60000
+
+# open channel using name
+- killApp
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', output.data.server, 'path=channel/', output.channel.name)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.channel.name}'
+    timeout: 60000
+
+# open channel using id
+- killApp
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', output.data.server, 'path=channel/', output.channel._id)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.channel.name}'
+    timeout: 60000

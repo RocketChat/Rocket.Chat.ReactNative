@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '../definitions';
-import { type TAnyMessageModel } from '../../../../definitions';
+import { type TAnyMessageModel } from '~/definitions';
 
 // Abort a jump whose target never re-observes within this window: release the anchor, drop to the Live
 // Tail, resolve the jump. Does not cancel an in-flight scroll — completion is reactive on re-observe.

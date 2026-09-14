@@ -2,14 +2,14 @@ import { Text, View } from 'react-native';
 import { Image } from 'expo-image';
 import { FlatList } from 'react-native-gesture-handler';
 
-import * as List from '../../List';
+import * as List from '~/containers/List';
 import { textParser } from '../utils';
 import styles from './styles';
 import { type IItemData } from '.';
-import { useTheme } from '../../../theme';
-import { CustomIcon } from '../../CustomIcon';
-import I18n from '../../../i18n';
-import Touch from '../../Touch';
+import { useTheme } from '~/theme';
+import { CustomIcon } from '~/containers/CustomIcon';
+import I18n from '~/i18n';
+import Touch from '~/containers/Touch';
 
 interface IItem {
 	item: IItemData;

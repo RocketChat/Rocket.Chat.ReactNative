@@ -9,45 +9,39 @@ import { type Subscription } from 'rxjs';
 import * as Haptics from 'expo-haptics';
 import { type NavigatorScreenParams } from '@react-navigation/native';
 
-import { type TNavigation } from '../../stacks/stackType';
+import { type TNavigation } from '~/stacks/stackType';
 
-import dayjs from '../../lib/dayjs';
-import {
-	getRoutingConfig,
-	getUserInfo,
-	editMessage,
-	setReaction,
-	joinRoom,
-	toggleFollowMessage
-} from '../../lib/services/restApi';
-import Touch from '../../containers/Touch';
-import { replyBroadcast } from '../../actions/messages';
-import database from '../../lib/database';
-import Message from '../../containers/message';
-import MessageActions, { type IMessageActions } from '../../containers/MessageActions';
-import MessageErrorActions, { type IMessageErrorActions } from '../../containers/MessageErrorActions';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import EventEmitter from '../../lib/methods/helpers/events';
-import I18n from '../../i18n';
-import RoomHeader from '../../containers/RoomHeader';
-import ReactionsList from '../../containers/ReactionsList';
-import { LISTENER } from '../../containers/Toast';
-import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
-import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
-import { showErrorAlert } from '../../lib/methods/helpers/info';
-import { withTheme } from '../../theme';
-import { Review } from '../../lib/methods/helpers/review';
-import RoomClass from '../../lib/methods/subscriptions/room';
-import { getUserSelector } from '../../selectors/login';
-import Navigation from '../../lib/navigation/appNavigation';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { withDimensions } from '../../lib/hooks/withDimensions';
-import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { takeInquiry, takeResume } from '../../ee/omnichannel/lib';
-import { sendLoadingEvent } from '../../containers/Loading';
-import getThreadName from '../../lib/methods/getThreadName';
-import getRoomInfo from '../../lib/methods/getRoomInfo';
-import { ContainerTypes } from '../../containers/UIKit/interfaces';
+import dayjs from '~/lib/dayjs';
+import { editMessage } from '~/lib/methods/editMessage';
+import { getRoutingConfig, getUserInfo, setReaction, joinRoom, toggleFollowMessage } from '~/lib/services/restApi';
+import Touch from '~/containers/Touch';
+import { replyBroadcast } from '~/actions/messages';
+import database from '~/lib/database';
+import Message from '~/containers/message';
+import MessageActions, { type IMessageActions } from '~/containers/MessageActions';
+import MessageErrorActions, { type IMessageErrorActions } from '~/containers/MessageErrorActions';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import EventEmitter from '~/lib/methods/helpers/events';
+import I18n from '~/i18n';
+import RoomHeader from '~/containers/RoomHeader';
+import ReactionsList from '~/containers/ReactionsList';
+import { LISTENER } from '~/containers/Toast';
+import { getBadgeColor, isBlocked, makeThreadName } from '~/lib/methods/helpers/room';
+import { isReadOnly } from '~/lib/methods/helpers/isReadOnly';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import { withTheme } from '~/theme';
+import { Review } from '~/lib/methods/helpers/review';
+import RoomClass from '~/lib/methods/subscriptions/room';
+import { getUserSelector } from '~/selectors/login';
+import Navigation from '~/lib/navigation/appNavigation';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { withDimensions } from '~/lib/hooks/withDimensions';
+import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { takeInquiry, takeResume } from '~/ee/omnichannel/lib';
+import { sendLoadingEvent } from '~/containers/Loading';
+import getThreadName from '~/lib/methods/getThreadName';
+import getRoomInfo from '~/lib/methods/getRoomInfo';
+import { ContainerTypes } from '~/containers/UIKit/interfaces';
 import RoomServices from './services';
 import LoadMore from './LoadMore';
 import Banner from './Banner';
@@ -71,19 +65,19 @@ import {
 	type TSubscriptionModel,
 	type IEmoji,
 	type RoomType
-} from '../../definitions';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
-import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../lib/constants/messageTypeLoad';
-import { themes } from '../../lib/constants/colors';
-import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications';
-import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
-import { callJitsi } from '../../lib/methods/callJitsi';
-import { isInActiveVoipCall } from '../../lib/services/voip/isInActiveVoipCall';
-import { loadSurroundingMessages } from '../../lib/methods/loadSurroundingMessages';
-import { loadThreadMessages } from '../../lib/methods/loadThreadMessages';
-import { readMessages } from '../../lib/methods/readMessages';
-import { sendMessage } from '../../lib/methods/sendMessage';
-import { triggerBlockAction } from '../../lib/methods/triggerActions';
+} from '~/definitions';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
+import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
+import { themes } from '~/lib/constants/colors';
+import { NOTIFICATION_IN_APP_VIBRATION } from '~/lib/constants/notifications';
+import { type ModalStackParamList } from '~/stacks/MasterDetailStack/types';
+import { callJitsi } from '~/lib/methods/callJitsi';
+import { isInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
+import { loadSurroundingMessages } from '~/lib/methods/loadSurroundingMessages';
+import { loadThreadMessages } from '~/lib/methods/loadThreadMessages';
+import { readMessages } from '~/lib/methods/readMessages';
+import { sendMessage } from '~/lib/methods/sendMessage';
+import { triggerBlockAction } from '~/lib/methods/triggerActions';
 import {
 	isGroupChat,
 	getUidDirectMessage,
@@ -92,29 +86,29 @@ import {
 	debounce,
 	isIOS,
 	hasPermission
-} from '../../lib/methods/helpers';
-import { withActionSheet } from '../../containers/ActionSheet';
-import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { createMessageActionStore, type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
+} from '~/lib/methods/helpers';
+import { withActionSheet } from '~/containers/ActionSheet';
+import { goRoom, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
+import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '~/containers/MessageComposer';
+import { createMessageActionStore, type TMessageActionStore } from '~/containers/message/stores/MessageActionStore';
 import { RoomProviders } from './RoomProviders';
-import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
-import AudioManager from '../../lib/methods/AudioManager';
+import { MessageRoomProvider } from '~/containers/message/stores/MessageRoomStore';
+import AudioManager from '~/lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
 import { resolveJumpAnchor } from './services/resolveJumpAnchor';
 import { type TGetMessageInfoResult } from './services/getMessageInfo';
-import { getMessageById } from '../../lib/database/services/Message';
-import { getThreadById } from '../../lib/database/services/Thread';
-import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
-import { clearInAppFeedback, removeInAppFeedback } from '../../actions/inAppFeedback';
-import UserPreferences from '../../lib/methods/userPreferences';
+import { getMessageById } from '~/lib/database/services/Message';
+import { getThreadById } from '~/lib/database/services/Thread';
+import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '~/lib/encryption/utils';
+import { clearInAppFeedback, removeInAppFeedback } from '~/actions/inAppFeedback';
+import UserPreferences from '~/lib/methods/userPreferences';
 import { type IRoomViewProps, type IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
-import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../../lib/methods/isRoomFederated';
+import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '~/lib/methods/isRoomFederated';
 import { InvitedRoom } from './components/InvitedRoom';
-import { getInvitationData } from '../../lib/methods/getInvitationData';
-import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
+import { getInvitationData } from '~/lib/methods/getInvitationData';
+import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 
 const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
 
@@ -306,33 +300,54 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
+		this.consumeJumpParams(prevProps);
+		this.updateOmnichannelIfNeeded(prevState);
+		this.setHeaderIfNeeded(prevProps, prevState);
+		this.setReadOnly();
+		this.updateE2EEStateIfNeeded(prevProps, prevState);
+		this.initIfInviteAccepted(prevState);
+	}
+
+	private consumeJumpParams(prevProps: IRoomViewProps) {
+		const params = this.props.route?.params;
+		const previousParams = prevProps.route?.params;
+
+		if (params?.jumpToMessageId && params.jumpToMessageId !== previousParams?.jumpToMessageId) {
+			this.consumeJumpParam(params.jumpToMessageId);
+		}
+
+		if (params?.jumpToThreadId && params.jumpToThreadId !== previousParams?.jumpToThreadId) {
+			this.navToThread({ tmid: params.jumpToThreadId });
+		}
+	}
+
+	private updateOmnichannelIfNeeded(prevState: IRoomViewState) {
+		if (this.t !== 'l') return;
+
 		const { roomUpdate, joined } = this.state;
-		const { insets, route, encryptionEnabled } = this.props;
-
-		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
-			this.consumeJumpParam(route?.params?.jumpToMessageId);
+		if (
+			!dequal(prevState.roomUpdate.lastMessage?.token, roomUpdate.lastMessage?.token) ||
+			!dequal(prevState.roomUpdate.visitor, roomUpdate.visitor) ||
+			!dequal(prevState.roomUpdate.status, roomUpdate.status) ||
+			prevState.joined !== joined
+		) {
+			this.updateOmnichannel();
 		}
+	}
 
-		if (route?.params?.jumpToThreadId && route?.params?.jumpToThreadId !== prevProps.route?.params?.jumpToThreadId) {
-			this.navToThread({ tmid: route?.params?.jumpToThreadId });
-		}
+	private setHeaderIfNeeded(prevProps: IRoomViewProps, prevState: IRoomViewState) {
+		const { roomUpdate } = this.state;
+		const { insets } = this.props;
 
-		// If it's a livechat room
-		if (this.t === 'l') {
-			if (
-				!dequal(prevState.roomUpdate.lastMessage?.token, roomUpdate.lastMessage?.token) ||
-				!dequal(prevState.roomUpdate.visitor, roomUpdate.visitor) ||
-				!dequal(prevState.roomUpdate.status, roomUpdate.status) ||
-				prevState.joined !== joined
-			) {
-				this.updateOmnichannel();
-			}
-		}
 		if (roomAttrsUpdate.some(key => !dequal(prevState.roomUpdate[key], roomUpdate[key]))) this.setHeader();
 		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
 		}
-		this.setReadOnly();
+	}
+
+	private updateE2EEStateIfNeeded(prevProps: IRoomViewProps, prevState: IRoomViewState) {
+		const { roomUpdate } = this.state;
+		const { encryptionEnabled } = this.props;
 
 		if (
 			encryptionEnabled !== prevProps.encryptionEnabled ||
@@ -341,8 +356,11 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		) {
 			this.updateE2EEState();
 		}
+	}
 
-		// init() is skipped for invite subscriptions. Initialize when invite has been accepted
+	private initIfInviteAccepted(prevState: IRoomViewState) {
+		const { roomUpdate } = this.state;
+
 		if (prevState.roomUpdate.status === 'INVITED' && roomUpdate.status !== 'INVITED') {
 			this.init();
 		}

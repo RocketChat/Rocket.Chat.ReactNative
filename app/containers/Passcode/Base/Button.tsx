@@ -2,9 +2,9 @@ import { memo } from 'react';
 import { Text, type StyleProp, type ViewStyle } from 'react-native';
 
 import styles from './styles';
-import Touch from '../../Touch';
-import { CustomIcon, type TIconsName } from '../../CustomIcon';
-import { useTheme } from '../../../theme';
+import Touch from '~/containers/Touch';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import { useTheme } from '~/theme';
 
 interface IPasscodeButton {
 	text?: string;

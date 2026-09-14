@@ -1,4 +1,4 @@
-import { getFilename, matchDownloadUrl, persistMessage } from './handleMediaDownload';
+import { getFilePath, getFilename, matchDownloadUrl, persistMessage } from './handleMediaDownload';
 import database from '../database';
 import { getMessageById } from '../database/services/Message';
 import { getThreadById } from '../database/services/Thread';
@@ -33,6 +33,22 @@ jest.mock('../database/services/ThreadMessage', () => ({
 	getThreadMessageById: jest.fn()
 }));
 
+jest.mock('../store/auxStore', () => ({
+	store: { getState: () => ({ server: { server: 'https://server.com' } }) }
+}));
+
+describe('getFilePath', () => {
+	it('derives the cache filename from the unencoded url', () => {
+		expect(
+			getFilePath({
+				type: 'video',
+				mimeType: 'video/quicktime',
+				urlToCache: 'https://server.com/file-upload/abc/Screen Recording.mov'
+			})
+		).toContain('/Screen_Recording.mov');
+	});
+});
+
 describe('matchDownloadUrl', () => {
 	it('matches when downloadUrl contains image_url', () => {
 		expect(
@@ -66,6 +82,15 @@ describe('matchDownloadUrl', () => {
 		expect(
 			matchDownloadUrl({ image_url: '/file-upload/abc/photo.jpg' }, 'https://server.com/file-upload/abc/audio.mp3')
 		).toBeFalsy();
+	});
+
+	it('matches an attachment url with a space against the download url', () => {
+		expect(
+			matchDownloadUrl(
+				{ video_url: '/file-upload/abc/Screen Recording.mov' },
+				'https://server.com/file-upload/abc/Screen Recording.mov'
+			)
+		).toBeTruthy();
 	});
 });
 

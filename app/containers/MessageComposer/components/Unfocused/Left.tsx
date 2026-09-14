@@ -1,11 +1,11 @@
 import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
-import { useFocused } from '../../context';
-import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
+import { useFocused } from '~/containers/MessageComposer/context';
+import { useEmojiKeyboard } from '~/containers/MessageComposer/hooks/useEmojiKeyboard';
 import { ActionsButton } from '../Buttons';
-import { MIN_HEIGHT } from '../../constants';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { MIN_HEIGHT } from '~/containers/MessageComposer/constants';
+import { useRoomContext } from '~/views/RoomView/context';
 
 export const Left = (): ReactElement | null => {
 	const { sharing } = useRoomContext();

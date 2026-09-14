@@ -2,9 +2,9 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import Markdown, { MarkdownPreview } from '.';
-import { setCustomEmojis } from '../../actions/customEmojis';
-import { mockedStore } from '../../reducers/mockedStore';
-import { themes } from '../../lib/constants/colors';
+import { setCustomEmojis } from '~/actions/customEmojis';
+import { mockedStore } from '~/reducers/mockedStore';
+import { themes } from '~/lib/constants/colors';
 
 const theme = 'light';
 
@@ -222,13 +222,23 @@ export const Lists = () => (
 
 export const Timestamp = () => (
 	<View style={styles.container}>
-		<Markdown msg='t: <t:1735732800:t>' />
-		<Markdown msg='T: <t:1735732800:T>' />
-		<Markdown msg='d: <t:1735732800:d>' />
-		<Markdown msg='D: <t:1735732800:D>' />
-		<Markdown msg='f: <t:1735732800:f>' />
-		<Markdown msg='F: <t:1735732800:F>' />
-		<Markdown msg='R: <t:1735732800:R>' />
+		<Markdown msg='Unix timestamp formats' />
+		<Markdown msg='t - Short time: <t:1735689600:t>' />
+		<Markdown msg='T - Long time: <t:1735689600:T>' />
+		<Markdown msg='d - Short date: <t:1735689600:d>' />
+		<Markdown msg='D - Long date: <t:1735689600:D>' />
+		<Markdown msg='f - Short date/time: <t:1735689600:f>' />
+		<Markdown msg='F - Long date/time: <t:1735689600:F>' />
+		<Markdown msg='R - Relative time: <t:1735689600:R>' />
+
+		<Markdown msg='ISO timestamp formats' />
+		<Markdown msg='t - Short time: <t:2025-01-01T00:00:00.000+00:00:t>' />
+		<Markdown msg='T - Long time: <t:2025-01-01T00:00:00.000+00:00:T>' />
+		<Markdown msg='d - Short date: <t:2025-01-01T00:00:00.000+00:00:d>' />
+		<Markdown msg='D - Long date: <t:2025-01-01T00:00:00.000+00:00:D>' />
+		<Markdown msg='f - Short date/time: <t:2025-01-01T00:00:00.000+00:00:f>' />
+		<Markdown msg='F - Long date/time: <t:2025-01-01T00:00:00.000+00:00:F>' />
+		<Markdown msg='R - Relative time: <t:2025-01-01T00:00:00.000+00:00:R>' />
 	</View>
 );
 

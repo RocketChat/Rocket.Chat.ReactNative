@@ -2,8 +2,8 @@ import { search, searchLocal, searchRemote, type TSearch } from './search';
 import { spotlight } from '../services/restApi';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
-import { type ISearch, type ISearchLocal, type IUserMessage } from '../../definitions';
-import { type ISpotlightRoom, type TSpotlightUser } from '../../definitions/ISpotlight';
+import { type ISearch, type ISearchLocal, type IUserMessage } from '~/definitions';
+import { type ISpotlightRoom, type TSpotlightUser } from '~/definitions/ISpotlight';
 
 // jest.setup.js globally mocks this module - exercise the real implementation here
 jest.unmock('./search');
