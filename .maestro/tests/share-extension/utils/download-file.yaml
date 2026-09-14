@@ -8,7 +8,7 @@ tags:
     when:
       platform: 'android'
     commands:
-      - tapOn: 'Search Google or type URL'
+      - tapOn: '.*type URL.*'
 - runFlow:
     when:
       platform: 'iOS'
