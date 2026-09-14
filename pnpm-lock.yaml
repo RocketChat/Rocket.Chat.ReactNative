@@ -250,8 +250,8 @@ importers:
         specifier: 2.6.2
         version: 2.6.2(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-localize:
-        specifier: 2.1.1
-        version: 2.1.1(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))
+        specifier: 3.7.0
+        version: 3.7.0(@expo/config-plugins@54.0.4)(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-math-view:
         specifier: 3.9.5
         version: 3.9.5(react-native-svg@15.12.1(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))
@@ -6543,10 +6543,18 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-localize@2.1.1:
-    resolution: {integrity: sha512-+uyz2/b0vyLq19fcb7r1qU1gqmzbp3aC6EMTvOVXwfBuiN+aJXR/fDdFOJJ8D7+bLccKeuS2zBDrazh+ZayX/g==}
+  react-native-localize@3.7.0:
+    resolution: {integrity: sha512-6Ohx+zZzycC6zhNVBGM/u1U+O6Ww29YIFseeyXqsKcO/pTfjLcdE40IUJF4SVVwrdh00IMJwy90HjLGUaeqK7Q==}
     peerDependencies:
-      react-native: '>=0.60.0'
+      '@expo/config-plugins': '*'
+      react: '*'
+      react-native: '*'
+      react-native-macos: '*'
+    peerDependenciesMeta:
+      '@expo/config-plugins':
+        optional: true
+      react-native-macos:
+        optional: true
 
   react-native-math-view@3.9.5:
     resolution: {integrity: sha512-UJxrisNafszfqIW+utoSDylb72SkZ92cKz1IfE5Dm0s+uIaHxOxepF2DdRbktAV8c0FEFllnXfErcGdh8sfIBw==}
@@ -15044,9 +15052,12 @@ snapshots:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0)
 
-  react-native-localize@2.1.1(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0)):
+  react-native-localize@3.7.0(@expo/config-plugins@54.0.4)(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
     dependencies:
+      react: 19.1.0
       react-native: 0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0)
+    optionalDependencies:
+      '@expo/config-plugins': 54.0.4
 
   react-native-math-view@3.9.5(react-native-svg@15.12.1(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0)):
     dependencies:
