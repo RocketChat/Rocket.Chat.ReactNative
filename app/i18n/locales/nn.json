@@ -359,6 +359,7 @@
   "Roles": "Roller",
   "room_changed_type": "endret rommet til {{room_type}}",
   "room_disallowed_reactions": "ikke tillatte reaksjoner",
+  "Room_failed_to_load": "Dette rommet kunne ikkje lastast. Sjekk tilkoplinga di og prøv igjen.",
   "Room_not_found": "Rom ikke funnet",
   "Save": "Lagre",
   "Save_Changes": "Lagre endringer",

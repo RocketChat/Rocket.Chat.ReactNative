@@ -471,6 +471,7 @@
   "Review_this_app": "アプリをレビューする",
   "Rocket_Chat_Documentation": "Rocket.Chat ドキュメント",
   "Roles": "ロール",
+  "Room_failed_to_load": "このルームを読み込めませんでした。接続を確認して、もう一度お試しください。",
   "Room_Info": "ルーム情報",
   "Room_Info_Edit": "ルーム情報を編集",
   "Room_Password": "部屋のパスワード",

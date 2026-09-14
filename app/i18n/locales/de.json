@@ -700,6 +700,7 @@
   "room_changed_topic_to": "hat das Thema des Raumes geändert zu: {{topic}}",
   "room_changed_type": "hat den Raum geändert zu {{type}}",
   "room_disallowed_reactions": "hat Reaktionen untersagt",
+  "Room_failed_to_load": "Dieser Raum konnte nicht geladen werden. Überprüfe deine Verbindung und versuche es erneut.",
   "Room_Info": "Room-Info",
   "Room_Info_Edit": "Room-Info bearbeiten",
   "Room_name_changed_to": "hat den Namen des Raumes geändert zu: {{name}}",
