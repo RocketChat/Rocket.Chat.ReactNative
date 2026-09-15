@@ -10,7 +10,8 @@ import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
 import log from '../lib/methods/helpers/log';
-import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
+import { localAuthenticate, UserCanceledError } from '../lib/methods/helpers/localAuthentication';
+import { runBiometricTrustMigration } from '../lib/biometricTrustStore/migration';
 import { appReady, appStart } from '../actions/app';
 import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods/userPreferencesMethods';
@@ -29,7 +30,14 @@ const restoreServer = async () => {
 	const restoredServer = isLoggedInServer(server) ? await getServerById(server) : await findLoggedInServer();
 
 	if (restoredServer) {
-		await localAuthenticate(restoredServer.id);
+		try {
+			await localAuthenticate(restoredServer.id);
+		} catch (e) {
+			// A superseded unlock still has a newer modal gating the screen, so keep booting.
+			if (!(e instanceof UserCanceledError)) {
+				throw e;
+			}
+		}
 	}
 
 	return restoredServer;
@@ -63,6 +71,8 @@ const deliverPendingPushNotification = function* deliverPendingPushNotification(
 };
 
 const restore = function* restore() {
+	yield call(runBiometricTrustMigration);
+
 	const restoredServer = yield* getServerToRestore();
 
 	if (restoredServer) {

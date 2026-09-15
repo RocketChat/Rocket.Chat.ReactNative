@@ -61,10 +61,16 @@ jest.mock('react-native-incall-manager', () => ({
 
 jest.mock('expo-haptics', () => ({
 	impactAsync: jest.fn(),
+	notificationAsync: jest.fn(),
 	ImpactFeedbackStyle: {
 		Light: 'light',
 		Medium: 'medium',
 		Heavy: 'heavy'
+	},
+	NotificationFeedbackType: {
+		Success: 'success',
+		Warning: 'warning',
+		Error: 'error'
 	}
 }));
 
@@ -328,6 +334,22 @@ jest.mock('react-native-math-view', () => {
 });
 
 jest.mock('react-native-keyboard-controller');
+
+jest.mock('react-native-keychain', () => ({
+	ACCESS_CONTROL: { BIOMETRY_CURRENT_SET: 'BiometryCurrentSet' },
+	ACCESSIBLE: { WHEN_UNLOCKED_THIS_DEVICE_ONLY: 'AccessibleWhenUnlockedThisDeviceOnly' },
+	AUTHENTICATION_TYPE: { BIOMETRICS: 'Biometrics' },
+	STORAGE_TYPE: {
+		AES_CBC: 'KeystoreAESCBC',
+		AES_GCM_NO_AUTH: 'KeystoreAESGCM_NoAuth',
+		AES_GCM: 'KeystoreAESGCM',
+		RSA: 'KeystoreRSAECB'
+	},
+	setGenericPassword: jest.fn(() => Promise.resolve(true)),
+	getGenericPassword: jest.fn(() => Promise.resolve(false)),
+	resetGenericPassword: jest.fn(() => Promise.resolve(true)),
+	hasGenericPassword: jest.fn(() => Promise.resolve(false))
+}));
 
 jest.mock('./app/lib/methods/helpers/externalInput', () => ({
 	isExternalKeyboardConnected: jest.fn(() => false)

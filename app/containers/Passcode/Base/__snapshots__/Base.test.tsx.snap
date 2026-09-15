@@ -5275,7 +5275,6 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
         <View
           style={
             {
-              "height": 32,
               "justifyContent": "center",
             }
           }
@@ -8984,7 +8983,6 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
         <View
           style={
             {
-              "height": 32,
               "justifyContent": "center",
             }
           }
