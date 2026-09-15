@@ -12,13 +12,13 @@ tags:
       - clearState: com.android.chrome
       - launchApp: com.android.chrome
       - extendedWaitUntil:
-          visible: 'Add account to device'
+          visible: '.*Add account to device.*'
           timeout: 60000
       - tapOn: 'Use without an account'
       - extendedWaitUntil:
-          visible: 'Chrome notifications make things easier'
+          visible: '.*Chrome notifications make things easier.*'
           timeout: 60000
-      - tapOn: 'No thank'
+      - tapOn: 'No thanks'
 
 - runFlow:
     when:
