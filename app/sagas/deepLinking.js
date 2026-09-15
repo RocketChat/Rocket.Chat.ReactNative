@@ -19,7 +19,7 @@ import { getUidDirectMessage, normalizeDeepLinkingServerHost } from '../lib/meth
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
-import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
+import { localAuthenticate, logUnlessUserCanceled, UserCanceledError } from '../lib/methods/helpers/localAuthentication';
 import log from '../lib/methods/helpers/log';
 import { showConfirmationAlert } from '../lib/methods/helpers/info';
 import { showToast } from '../lib/methods/helpers/showToast';
@@ -205,7 +205,17 @@ const handleShareExtension = function* handleOpen({ params }) {
 
 	yield put(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
 	try {
-		yield localAuthenticate(server);
+		try {
+			yield localAuthenticate(server);
+		} catch (e) {
+			if (!(e instanceof UserCanceledError)) {
+				throw e;
+			}
+			// Unlock canceled or superseded by another lock request — restart the normal flow instead
+			// of leaving the share extension stuck on the loading root.
+			yield put(appInit());
+			return;
+		}
 		const serverRecord = yield getServerById(server);
 		if (!serverRecord) {
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
@@ -232,6 +242,33 @@ const handleShareExtension = function* handleOpen({ params }) {
 	}
 };
 
+// Unlocks, then reconnects to `host` and waits for the login to land. Returns false when the unlock
+// was canceled or superseded, so the caller can bail instead of navigating.
+const authenticateAndSelectServer = function* authenticateAndSelectServer(host, version, changeServer = false) {
+	try {
+		yield localAuthenticate(host);
+	} catch (e) {
+		logUnlessUserCanceled(e);
+		yield fallbackNavigation();
+		return false;
+	}
+	yield put(selectServerRequest(host, version, true, changeServer));
+	yield take(types.LOGIN.SUCCESS);
+	return true;
+};
+
+const handleKnownServerDeepLink = function* handleKnownServerDeepLink({ params, host, version }) {
+	try {
+		yield localAuthenticate(host);
+		yield put(selectServerRequest(host, version, true, true));
+		yield take(types.LOGIN.SUCCESS);
+		yield completeDeepLinkNavigation(params);
+	} catch (e) {
+		logUnlessUserCanceled(e);
+		yield fallbackNavigation();
+	}
+};
+
 const loginWithDeepLinkToken = function* loginWithDeepLinkToken({ params, hostAlreadyConnected }) {
 	if (!hostAlreadyConnected) {
 		yield take(types.SERVER.SELECT_SUCCESS);
@@ -253,16 +290,10 @@ const loginWithDeepLinkToken = function* loginWithDeepLinkToken({ params, hostAl
 
 const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, user, serverRecord }) {
 	const { host } = params;
-	try {
-		if (user && serverRecord) {
-			yield localAuthenticate(host);
-			yield put(selectServerRequest(host, serverRecord.version, true, true));
-			yield take(types.LOGIN.SUCCESS);
-			yield completeDeepLinkNavigation(params);
-			return;
-		}
-	} catch (e) {
-		// do nothing
+	// search if deep link's server already exists
+	if (user && serverRecord) {
+		yield* handleKnownServerDeepLink({ params, host, version: serverRecord.version });
+		return;
 	}
 	if (!(yield ensureDeepLinkLoginConsent(host, params))) {
 		return;
@@ -331,10 +362,8 @@ const handleOpen = function* handleOpen({ params }) {
 	// if deep link is from same server
 	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
-		if (!connected) {
-			yield localAuthenticate(host);
-			yield put(selectServerRequest(host, serverRecord.version, true));
-			yield take(types.LOGIN.SUCCESS);
+		if (!connected && !(yield* authenticateAndSelectServer(host, serverRecord.version))) {
+			return;
 		}
 		yield completeDeepLinkNavigation(params);
 	} else {
@@ -393,40 +422,39 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 
 	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
-		if (!connected) {
-			yield localAuthenticate(host);
-			yield put(selectServerRequest(host, serverRecord.version, true));
-			yield take(types.LOGIN.SUCCESS);
+		if (!connected && !(yield* authenticateAndSelectServer(host, serverRecord.version))) {
+			return;
 		}
 		yield handleNavigateCallRoom({ params });
-	} else {
-		if (user && serverRecord) {
-			yield localAuthenticate(host);
-			yield put(selectServerRequest(host, serverRecord.version, true, true));
-			yield take(types.LOGIN.SUCCESS);
-			yield handleNavigateCallRoom({ params });
-			return;
-		}
-		if (!(yield ensureDeepLinkLoginConsent(host, params))) {
-			return;
-		}
-		// if deep link is from a different server
-		const result = yield getServerInfo(host);
-		if (!result.success) {
-			// Fallback to prevent the app from being stuck on splash screen
-			yield fallbackNavigation();
-			return;
-		}
-		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		yield put(serverInitAdd(server));
-		yield delay(1000);
-		EventEmitter.emit('NewServer', { server: host });
-		if (params.token) {
-			yield take(types.SERVER.SELECT_SUCCESS);
-			yield put(loginRequest({ resume: params.token }, true));
-			yield take(types.LOGIN.SUCCESS);
+		return;
+	}
+
+	if (user && serverRecord) {
+		if (yield* authenticateAndSelectServer(host, serverRecord.version, true)) {
 			yield handleNavigateCallRoom({ params });
 		}
+		return;
+	}
+
+	if (!(yield ensureDeepLinkLoginConsent(host, params))) {
+		return;
+	}
+	// if deep link is from a different server
+	const result = yield getServerInfo(host);
+	if (!result.success) {
+		// Fallback to prevent the app from being stuck on splash screen
+		yield fallbackNavigation();
+		return;
+	}
+	yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+	yield put(serverInitAdd(server));
+	yield delay(1000);
+	EventEmitter.emit('NewServer', { server: host });
+	if (params.token) {
+		yield take(types.SERVER.SELECT_SUCCESS);
+		yield put(loginRequest({ resume: params.token }, true));
+		yield take(types.LOGIN.SUCCESS);
+		yield handleNavigateCallRoom({ params });
 	}
 };
 

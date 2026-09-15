@@ -19,7 +19,7 @@ const item = {
 
 const StoryWrapper = ({ children }: { children: ReactNode }) => (
 	<Provider store={store}>
-		<MessageRoomProvider user={{ username: 'Marcos' }}>
+		<MessageRoomProvider>
 			<MessageProvider item={item}>{children}</MessageProvider>
 		</MessageRoomProvider>
 	</Provider>
