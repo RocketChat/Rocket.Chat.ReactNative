@@ -60,5 +60,3 @@ tags:
     file: './utils/share-file.yaml'
     env:
       fileName: 'test.html'
-
-- evalScript: ${console.log(output.messageCount)}
