@@ -41,7 +41,7 @@ tags:
       platform: 'iOS'
     commands:
       - extendedWaitUntil:
-          visible: '.*Do you want to download.*'
+          visible: 'Download'
           timeout: 10000
       - tapOn: 'Download'
 - runFlow:
