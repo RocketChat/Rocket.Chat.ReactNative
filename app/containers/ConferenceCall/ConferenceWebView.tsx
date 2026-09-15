@@ -156,6 +156,12 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 		loaded.current = true;
 	}, []);
 
+	// A same-origin top-level navigation after the first load would otherwise leave loaded=true,
+	// so a later HTTP failure returns early from onHttpError without ever showing retry.
+	const onLoadStart = useCallback(() => {
+		loaded.current = false;
+	}, []);
+
 	const onRetry = useCallback(() => {
 		setFailed(false);
 		loaded.current = false;
@@ -191,13 +197,14 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 			onOpenWindow={onOpenWindow}
 			onError={onError}
 			onHttpError={onHttpError}
+			onLoadStart={onLoadStart}
 			onLoadEnd={onLoadEnd}
 			style={styles.webview}
 			userAgent={userAgent}
 			javaScriptEnabled
 			domStorageEnabled
 			allowsInlineMediaPlayback
-			mediaCapturePermissionGrantType='grant'
+			mediaCapturePermissionGrantType='grantIfSameHostElseDeny'
 			mediaPlaybackRequiresUserAction={isIOS}
 			sharedCookiesEnabled
 		/>

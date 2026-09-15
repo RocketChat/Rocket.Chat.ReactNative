@@ -6,6 +6,7 @@ import { isConferenceWindowEnabled } from './helpers/isConferenceWindowEnabled';
 import log from './helpers/log';
 import openLink from './helpers/openLink';
 import { openConferenceCall } from './openConferenceCall';
+import { requestVoipCallPermissions } from './voipCallPermissions';
 
 export const videoConfJoin = async (
 	callId: string,
@@ -23,6 +24,9 @@ export const videoConfJoin = async (
 		if (result.success) {
 			const { url, providerName } = result;
 			if (providerName === 'jitsi' && url) {
+				// Legacy Jitsi path is a WebView too, so BT headset audio needs the same grant. A denial
+				// must not block the call, the speaker still works.
+				await requestVoipCallPermissions().catch(log);
 				navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });
 			} else if (url) {
 				openLink(url);

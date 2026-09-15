@@ -9,10 +9,12 @@ import { showErrorAlert } from './helpers/info';
 import openLink from './helpers/openLink';
 import { openConferenceCall } from './openConferenceCall';
 import { videoConfJoin } from './videoConf';
+import { requestVoipCallPermissions } from './voipCallPermissions';
 
 jest.mock('../navigation/appNavigation', () => ({ navigate: jest.fn() }));
 jest.mock('./helpers/openLink', () => jest.fn());
 jest.mock('./openConferenceCall', () => ({ openConferenceCall: jest.fn(() => Promise.resolve()) }));
+jest.mock('./voipCallPermissions', () => ({ requestVoipCallPermissions: jest.fn(() => Promise.resolve(true)) }));
 jest.mock('../services/restApi', () => ({ videoConferenceJoin: jest.fn() }));
 jest.mock('./helpers/info', () => ({ showErrorAlert: jest.fn() }));
 
@@ -77,6 +79,21 @@ describe('videoConfJoin', () => {
 
 			expect(navigation.navigate).not.toHaveBeenCalled();
 			expect(showErrorAlert).toHaveBeenCalled();
+		});
+
+		test('requests voip permissions before opening jitsi', async () => {
+			await videoConfJoin('call1', true, true);
+
+			expect(requestVoipCallPermissions).toHaveBeenCalled();
+			expect(navigation.navigate).toHaveBeenCalledWith('JitsiMeetView', expect.anything());
+		});
+
+		test('still opens jitsi when permission requesting fails', async () => {
+			(requestVoipCallPermissions as jest.Mock).mockRejectedValueOnce(new Error('denied'));
+
+			await videoConfJoin('call1', true, true);
+
+			expect(navigation.navigate).toHaveBeenCalledWith('JitsiMeetView', expect.anything());
 		});
 	});
 

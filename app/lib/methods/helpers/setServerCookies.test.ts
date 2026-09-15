@@ -104,6 +104,14 @@ describe('setServerCookies', () => {
 
 		expect(mockedSetFromResponse).not.toHaveBeenCalled();
 	});
+
+	test('rejects a workspace path that would inject cookie attributes', async () => {
+		await expect(
+			setServerCookies('https://example.com/chat;Domain=evil.example.com', { id: 'uid1', token: 'tok1' })
+		).rejects.toThrow();
+
+		expect(mockedSetFromResponse).not.toHaveBeenCalled();
+	});
 });
 
 describe('clearServerCookies', () => {

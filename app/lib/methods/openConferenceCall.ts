@@ -1,6 +1,10 @@
 import { Camera } from 'expo-camera';
 
-import { currentConferenceCallOpen, expandConferenceCall } from '../services/conference/conferenceCallNavigation';
+import {
+	beginConferenceCallOpen,
+	currentConferenceCallOpen,
+	expandConferenceCall
+} from '../services/conference/conferenceCallNavigation';
 import { preflightCallId, useConferenceCallStore } from '../services/conference/useConferenceCallStore';
 import { store } from '../store/auxStore';
 import { buildConferenceUrl } from './helpers/buildConferenceUrl';
@@ -38,7 +42,7 @@ export const openConferenceCall = async (target: TConferenceTarget): Promise<voi
 		throw new Error(`Cannot build a conference url for server "${server}"`);
 	}
 
-	const request = currentConferenceCallOpen();
+	const request = beginConferenceCallOpen();
 
 	await requestCallPermissions();
 

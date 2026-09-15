@@ -174,4 +174,22 @@ describe('openConferenceCall', () => {
 		expect(state().callId).toBeUndefined();
 		expect(Navigation.navigate).not.toHaveBeenCalled();
 	});
+
+	test('a newer open wins when two pending opens resolve in reverse order', async () => {
+		const first = holdPermissions();
+		const openFirst = openConferenceCall({ callId: 'call1' });
+		await first.requested;
+
+		const second = holdPermissions();
+		const openSecond = openConferenceCall({ callId: 'call2' });
+		await second.requested;
+
+		second.resolvePermissions();
+		await openSecond;
+		first.resolvePermissions();
+		await openFirst;
+
+		expect(state().callId).toBe('call2');
+		expect(state().url).toEqual('https://open.rocket.chat/conference/call2');
+	});
 });

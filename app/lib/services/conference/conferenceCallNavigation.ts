@@ -7,6 +7,11 @@ let openGeneration = 0;
 
 export const currentConferenceCallOpen = (): number => openGeneration;
 
+export const beginConferenceCallOpen = (): number => {
+	openGeneration += 1;
+	return openGeneration;
+};
+
 const invalidatePendingConferenceCallOpen = (): void => {
 	openGeneration += 1;
 };

@@ -242,4 +242,36 @@ describe('ConferenceWebView', () => {
 			expect(queryByTestId('conference-webview')).toBeTruthy();
 		});
 	});
+
+	describe('load and error handling', () => {
+		test('grants media capture to the conference host only', async () => {
+			await mountAndSettle();
+
+			expect(mockWebViewProps.mediaCapturePermissionGrantType).toBe('grantIfSameHostElseDeny');
+		});
+
+		test('a top-level navigation re-arms http error reporting', async () => {
+			const { queryByTestId, queryByText } = await mountAndSettle();
+
+			act(() => {
+				mockWebViewProps.onLoadEnd();
+			});
+			act(() => {
+				mockWebViewProps.onHttpError({ nativeEvent: { url: CONFERENCE_URL, statusCode: 500 } });
+			});
+
+			expect(queryByTestId('conference-webview')).toBeTruthy();
+			expect(queryByText('Try again')).toBeNull();
+
+			act(() => {
+				mockWebViewProps.onLoadStart();
+			});
+			act(() => {
+				mockWebViewProps.onHttpError({ nativeEvent: { url: CONFERENCE_URL, statusCode: 500 } });
+			});
+
+			expect(queryByTestId('conference-webview')).toBeNull();
+			expect(queryByText('Try again')).toBeTruthy();
+		});
+	});
 });

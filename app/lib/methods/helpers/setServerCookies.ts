@@ -45,6 +45,9 @@ export const setServerCookies = async (
 
 	const { protocol } = new URL(server);
 	const cookiePath = workspaceCookiePath(server) ?? '/';
+	if (hasCookieDelimiters(cookiePath)) {
+		throw new Error('Refusing to set server cookies with an unsafe workspace path');
+	}
 
 	const attributes = [`Expires=${date.toUTCString()}`, `Path=${cookiePath}`];
 	if (protocol === 'https:') {
@@ -62,7 +65,8 @@ export const clearServerCookies = async (server: string): Promise<void> => {
 	}
 
 	const scoped = workspaceCookiePath(server);
-	const paths = scoped ? [scoped, '/'] : ['/'];
+	const safeScoped = scoped && !hasCookieDelimiters(scoped) ? scoped : null;
+	const paths = safeScoped ? [safeScoped, '/'] : ['/'];
 
 	for (const name of SERVER_COOKIE_NAMES) {
 		for (const path of paths) {
