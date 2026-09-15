@@ -32,16 +32,6 @@ tags:
     commands:
       - launchApp: com.apple.mobilesafari
 
-# on ios, downloading pdf seems kinda hard
-- runFlow:
-    when:
-      platform: android
-    commands:
-      - runFlow:
-          file: 'download-file.yaml'
-          env:
-            file: 'XJR2sjYfSAMz5eyT2/test.pdf'
-
 - runFlow:
     file: 'download-file.yaml'
     env:
