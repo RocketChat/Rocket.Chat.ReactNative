@@ -501,6 +501,31 @@ describe('ShareView', () => {
 		spy.mockRestore();
 	});
 
+	it('rejects an oversized attachment caption while preserving input', async () => {
+		const shareView = makeInstance({
+			mime: 'image/jpeg',
+			serverVersion: '8.5.0',
+			settings: { Message_MaxAllowedSize: 5, Message_AllowConvertLongMessagesToAttachment: true, FileUpload_Enabled: true }
+		});
+		shareView.state.attachments[0].canUpload = true;
+		shareView.state.attachments[0].description = '123456';
+		shareView.state = {
+			...shareView.state,
+			selected: shareView.state.attachments[0]
+		};
+		shareView.saveSelectedDescription = jest.fn() as any;
+
+		const sendFileMessageMod = require('~/lib/methods/sendFileMessage');
+		const spy = jest.spyOn(sendFileMessageMod, 'sendFileMessage').mockResolvedValue(undefined);
+
+		await shareView.send();
+
+		expect(spy).not.toHaveBeenCalled();
+		expect(shareView.props.navigation.pop).not.toHaveBeenCalled();
+		expect(shareView.state.selected.description).toBe('123456');
+		spy.mockRestore();
+	});
+
 	it('bridges real origin media callbacks into ShareView and restores current text and Quotes', async () => {
 		jest.useFakeTimers();
 		const documentPicker = require('expo-document-picker').getDocumentAsync as jest.Mock;

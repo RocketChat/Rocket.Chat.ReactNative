@@ -1,7 +1,9 @@
 import * as FileSystem from 'expo-file-system/legacy';
 
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import { store } from '~/lib/store/auxStore';
 import { sendFileMessage } from '../sendFileMessage';
-import { canConvertLongMessageToFile, isTooLongMessage, sendLongMessageAsFile } from './processTooLongMessage';
+import { canConvertLongMessageToFile, isE2ELegacyUpload, isTooLongMessage, sendLongMessageAsFile } from './processTooLongMessage';
 
 jest.mock('expo-file-system/legacy', () => ({
 	cacheDirectory: 'file:///cache/',
@@ -13,6 +15,14 @@ jest.mock('expo-file-system/legacy', () => ({
 
 jest.mock('../sendFileMessage', () => ({
 	sendFileMessage: jest.fn()
+}));
+
+jest.mock('~/lib/store/auxStore', () => ({
+	store: { getState: jest.fn() }
+}));
+
+jest.mock('~/lib/database/services/Subscription', () => ({
+	getSubscriptionByRoomId: jest.fn()
 }));
 
 beforeEach(() => {
@@ -37,6 +47,28 @@ describe('canConvertLongMessageToFile', () => {
 		expect(canConvertLongMessageToFile({ isEditing: true, fileUploadEnabled: true, allowConvert: true })).toBe(false);
 		expect(canConvertLongMessageToFile({ isEditing: false, fileUploadEnabled: false, allowConvert: true })).toBe(false);
 		expect(canConvertLongMessageToFile({ isEditing: false, fileUploadEnabled: true, allowConvert: false })).toBe(false);
+	});
+});
+
+describe('isE2ELegacyUpload', () => {
+	const server = (version?: string) => (store.getState as jest.Mock).mockReturnValue({ server: { version } });
+
+	it('returns false on modern servers regardless of encryption', async () => {
+		server('6.10.0');
+		await expect(isE2ELegacyUpload('GENERAL')).resolves.toBe(false);
+		expect(getSubscriptionByRoomId).not.toHaveBeenCalled();
+	});
+
+	it('returns true only for encrypted rooms on legacy servers', async () => {
+		server('6.9.0');
+		(getSubscriptionByRoomId as jest.Mock).mockResolvedValue({ encrypted: true });
+		await expect(isE2ELegacyUpload('GENERAL')).resolves.toBe(true);
+
+		(getSubscriptionByRoomId as jest.Mock).mockResolvedValue({ encrypted: false });
+		await expect(isE2ELegacyUpload('GENERAL')).resolves.toBe(false);
+
+		(getSubscriptionByRoomId as jest.Mock).mockResolvedValue(null);
+		await expect(isE2ELegacyUpload('GENERAL')).resolves.toBe(false);
 	});
 });
 

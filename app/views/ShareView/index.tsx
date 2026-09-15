@@ -40,6 +40,7 @@ import { sendMessage } from '~/lib/methods/sendMessage';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import {
 	canConvertLongMessageToFile,
+	isE2ELegacyUpload,
 	isTooLongMessage,
 	sendLongMessageAsFile
 } from '~/lib/methods/helpers/processTooLongMessage';
@@ -261,15 +262,28 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		Keyboard.dismiss();
 
-		const { attachments, room, text, thread } = this.state;
+		const { attachments, room, text, thread, selected } = this.state;
 		const { navigation, server, user, dispatch } = this.props;
 		// flush the composer caption into the selected attachment before sending
 		this.saveSelectedDescription();
 
-		// Over-limit pure text is sent as a .txt file, like web (auto, no modal). Captions out of scope.
+		const { maxAllowedSize, allowConvert, fileUploadEnabled } = await this.getSharePolicy();
+		const convertible = canConvertLongMessageToFile({ isEditing: false, fileUploadEnabled, allowConvert });
+
+		// Oversized attachment captions cannot convert to files; reject while preserving input.
+		if (attachments.length && isTooLongMessage(selected?.description || '', maxAllowedSize)) {
+			showToast(I18n.t('Message_too_long'));
+			return;
+		}
+
+		// Over-limit pure text is sent as a .txt file, like web (auto, no modal).
 		// The .txt upload is fast, so close only after it succeeds and keep ShareView open for retry on failure.
-		if (!attachments.length && text.length && isTooLongMessage(text, this.maxAllowedSize)) {
-			if (!this.canConvertLongMessage) {
+		if (!attachments.length && text.length && isTooLongMessage(text, maxAllowedSize)) {
+			if (!convertible) {
+				showToast(I18n.t('Message_too_long'));
+				return;
+			}
+			if (await isE2ELegacyUpload(room.rid)) {
 				showToast(I18n.t('Message_too_long'));
 				return;
 			}
@@ -433,24 +447,44 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		return compareServerVersion(this.effectiveServerVersion, 'greaterThanOrEqualTo', '8.4.0');
 	}
 
-	// Share extension targets a specific workspace; prefer its info over the Redux-connected server there.
-	private get maxAllowedSize(): number | undefined {
-		const { Message_MaxAllowedSize } = this.props;
-		return this.isShareExtension
-			? (this.serverInfo.Message_MaxAllowedSize ?? Message_MaxAllowedSize)
-			: (Message_MaxAllowedSize ?? this.serverInfo.Message_MaxAllowedSize);
-	}
-
-	private get canConvertLongMessage(): boolean {
-		const { Message_AllowConvertLongMessagesToAttachment, FileUpload_Enabled } = this.props;
-		const allowConvert = this.isShareExtension
-			? (this.serverInfo.Message_AllowConvertLongMessagesToAttachment ?? Message_AllowConvertLongMessagesToAttachment)
-			: (Message_AllowConvertLongMessagesToAttachment ?? this.serverInfo.Message_AllowConvertLongMessagesToAttachment);
-		const fileUploadEnabled = this.isShareExtension
-			? (this.serverInfo.FileUpload_Enabled ?? FileUpload_Enabled)
-			: (FileUpload_Enabled ?? this.serverInfo.FileUpload_Enabled);
-		return canConvertLongMessageToFile({ isEditing: false, fileUploadEnabled, allowConvert });
-	}
+	// Target-workspace policy: the servers table has no columns for these keys,
+	// and Redux settings can be empty/stale while a server switch re-syncs,
+	// so read the target database's settings table first with the existing chains as fallback.
+	private getSharePolicy = async (): Promise<{
+		maxAllowedSize?: number;
+		allowConvert?: boolean;
+		fileUploadEnabled?: boolean;
+	}> => {
+		const { Message_MaxAllowedSize, Message_AllowConvertLongMessagesToAttachment, FileUpload_Enabled } = this.props;
+		const fallback = {
+			maxAllowedSize: this.isShareExtension
+				? (this.serverInfo.Message_MaxAllowedSize ?? Message_MaxAllowedSize)
+				: (Message_MaxAllowedSize ?? this.serverInfo.Message_MaxAllowedSize),
+			allowConvert: this.isShareExtension
+				? (this.serverInfo.Message_AllowConvertLongMessagesToAttachment ?? Message_AllowConvertLongMessagesToAttachment)
+				: (Message_AllowConvertLongMessagesToAttachment ?? this.serverInfo.Message_AllowConvertLongMessagesToAttachment),
+			fileUploadEnabled: this.isShareExtension
+				? (this.serverInfo.FileUpload_Enabled ?? FileUpload_Enabled)
+				: (FileUpload_Enabled ?? this.serverInfo.FileUpload_Enabled)
+		};
+		try {
+			const db = database.active;
+			const rows = (await db
+				.get('settings')
+				.query(
+					Q.where('id', Q.oneOf(['Message_MaxAllowedSize', 'Message_AllowConvertLongMessagesToAttachment', 'FileUpload_Enabled']))
+				)
+				.fetch()) as { id: string; valueAsNumber?: number; valueAsBoolean?: boolean }[];
+			const byId = Object.fromEntries(rows.map(row => [row.id, row]));
+			return {
+				maxAllowedSize: byId.Message_MaxAllowedSize?.valueAsNumber ?? fallback.maxAllowedSize,
+				allowConvert: byId.Message_AllowConvertLongMessagesToAttachment?.valueAsBoolean ?? fallback.allowConvert,
+				fileUploadEnabled: byId.FileUpload_Enabled?.valueAsBoolean ?? fallback.fileUploadEnabled
+			};
+		} catch {
+			return fallback;
+		}
+	};
 
 	onRemoveQuoteMessage = (messageId: string) => {
 		this.messageActionStore.getState().actions.removeQuote(messageId);

@@ -1,7 +1,10 @@
 import * as FileSystem from 'expo-file-system/legacy';
 
 import { type IUser, type TSendFileMessageFileInfo } from '~/definitions';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import { store } from '~/lib/store/auxStore';
 import { sendFileMessage } from '../sendFileMessage';
+import { compareServerVersion } from './compareServerVersion';
 
 export const isTooLongMessage = (text: string, maxAllowedSize?: number): boolean => {
 	if (!maxAllowedSize || maxAllowedSize <= 0) {
@@ -19,6 +22,15 @@ export const canConvertLongMessageToFile = ({
 	fileUploadEnabled?: boolean;
 	allowConvert?: boolean;
 }): boolean => !isEditing && !!fileUploadEnabled && !!allowConvert;
+
+export const isE2ELegacyUpload = async (rid: string): Promise<boolean> => {
+	const { version: serverVersion } = store.getState().server;
+	if (!compareServerVersion(serverVersion, 'lowerThan', '6.10.0')) {
+		return false;
+	}
+	const subscription = await getSubscriptionByRoomId(rid);
+	return !!subscription?.encrypted;
+};
 
 export const sendLongMessageAsFile = async ({
 	rid,

@@ -25,6 +25,7 @@ import { generateTriggerId } from '~/lib/methods/actions';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import {
 	canConvertLongMessageToFile,
+	isE2ELegacyUpload,
 	isTooLongMessage,
 	sendLongMessageAsFile
 } from '~/lib/methods/helpers/processTooLongMessage';
@@ -144,6 +145,11 @@ export const MessageComposer = ({
 				return;
 			}
 			if (!quotedMessageIds.length) {
+				if (await isE2ELegacyUpload(rid)) {
+					showToast(I18n.t('Message_too_long'));
+					composerInputComponentRef.current.setInput(textFromInput);
+					return;
+				}
 				try {
 					await sendLongMessageAsFile({
 						rid,
@@ -177,6 +183,12 @@ export const MessageComposer = ({
 
 			if (quotedMessageIds.length) {
 				quotedMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds, tmid);
+				// The quote becomes the attachment message when the first description is empty.
+				if (isTooLongMessage(quotedMessage, Message_MaxAllowedSize)) {
+					showToast(I18n.t('Message_too_long'));
+					composerInputComponentRef.current.setInput(textFromInput);
+					return;
+				}
 			}
 
 			try {
@@ -204,6 +216,11 @@ export const MessageComposer = ({
 			const quoteMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds, tmid);
 			if (isTooLongMessage(quoteMessage, Message_MaxAllowedSize)) {
 				if (!convertible) {
+					showToast(I18n.t('Message_too_long'));
+					composerInputComponentRef.current.setInput(textFromInput);
+					return;
+				}
+				if (await isE2ELegacyUpload(rid)) {
 					showToast(I18n.t('Message_too_long'));
 					composerInputComponentRef.current.setInput(textFromInput);
 					return;
