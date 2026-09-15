@@ -1,7 +1,7 @@
 import { type ServerInteraction } from '@rocket.chat/ui-kit';
 
-import { type ITriggerAction, ModalActions, type TModalAction } from '../../containers/UIKit/interfaces';
-import { toServerModalInteractionType, toUserInteraction } from '../../containers/UIKit/interactionAdapters';
+import { type ITriggerAction, ModalActions, type TModalAction } from '~/containers/UIKit/interfaces';
+import { toServerModalInteractionType, toUserInteraction } from '~/containers/UIKit/interactionAdapters';
 import EventEmitter from './helpers/events';
 import fetch from './helpers/fetch';
 import { random } from './helpers';

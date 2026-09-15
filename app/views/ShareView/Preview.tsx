@@ -1,20 +1,46 @@
-import { memo, useState } from 'react';
-import { Video, ResizeMode } from 'expo-av';
+import { memo, useRef, useState } from 'react';
+import { useVideoPlayer, VideoView } from 'expo-video';
+import { useEventListener } from 'expo';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import prettyBytes from 'pretty-bytes';
 import { useHeaderHeight } from '@react-navigation/elements';
 
-import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
-import { ImageViewer } from '../../containers/ImageViewer';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import { ImageViewer } from '~/containers/ImageViewer';
 import sharedStyles from '../Styles';
-import I18n from '../../i18n';
-import { THUMBS_HEIGHT } from '../../containers/Thumbs';
-import { type TSupportedThemes } from '../../theme';
-import { themes } from '../../lib/constants/colors';
-import { type IShareAttachment } from '../../definitions';
+import I18n from '~/i18n';
+import { THUMBS_HEIGHT } from '~/containers/Thumbs';
+import { type TSupportedThemes } from '~/theme';
+import { themes } from '~/lib/constants/colors';
+import { type IShareAttachment } from '~/definitions';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
 
 const MESSAGE_COMPOSER_HEIGHT = 56;
+
+const VideoPreview = memo(({ uri, width, height }: { uri: string; width?: number; height?: number }) => {
+	const player = useVideoPlayer(uri, player => {
+		player.pause();
+	});
+	const hasHandledErrorRef = useRef(false);
+
+	useEventListener(player, 'statusChange', ({ status }) => {
+		if (status === 'error' && !hasHandledErrorRef.current) {
+			hasHandledErrorRef.current = true;
+			showErrorAlert(I18n.t('There_was_an_error_while_playing_video'), I18n.t('Error'));
+		}
+	});
+
+	return (
+		<VideoView
+			player={player}
+			style={{ width: width || '100%', height: height || '100%' }}
+			contentFit='contain'
+			nativeControls
+			allowsFullscreen
+		/>
+	);
+});
 
 const styles = StyleSheet.create({
 	fileContainer: {
@@ -83,16 +109,7 @@ const Preview = memo(({ item, theme, length }: IPreview) => {
 							height: ev.nativeEvent.layout.height
 						});
 					}}>
-					<Video
-						source={{ uri: item.path }}
-						rate={1.0}
-						volume={1.0}
-						isMuted={false}
-						resizeMode={ResizeMode.CONTAIN}
-						isLooping={false}
-						style={{ width: wrapperDimensions?.width, height: wrapperDimensions?.height }}
-						useNativeControls
-					/>
+					<VideoPreview uri={item.path} width={wrapperDimensions?.width} height={wrapperDimensions?.height} />
 				</View>
 			);
 		}

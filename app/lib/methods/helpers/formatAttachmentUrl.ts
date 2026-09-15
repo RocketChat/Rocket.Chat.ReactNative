@@ -1,7 +1,7 @@
 import { URL } from 'react-native-url-polyfill';
 
 import { isImageBase64 } from '../isImageBase64';
-import { store } from '../../store/auxStore';
+import { store } from '~/lib/store/auxStore';
 
 function setParamInUrl({ url, token, userId }: { url: string; token: string; userId: string }) {
 	const urlObj = new URL(url);

@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import { Text, View } from 'react-native';
 
-import { themes } from '../../lib/constants/colors';
-import { useTheme } from '../../theme';
+import { themes } from '~/lib/constants/colors';
+import { useTheme } from '~/theme';
 import styles from './styles';
 
 interface ITag {

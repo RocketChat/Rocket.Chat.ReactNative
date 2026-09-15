@@ -1,7 +1,6 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useHeaderHeight } from '@react-navigation/elements';
-import { ResizeMode, Video } from 'expo-av';
-import { useCallback, useLayoutEffect, useRef, useState, type Dispatch, type SetStateAction, type ReactElement } from 'react';
+import { useCallback, useLayoutEffect, useState, type Dispatch, type SetStateAction, type ReactElement } from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
@@ -12,13 +11,14 @@ import RCActivityIndicator from '../containers/ActivityIndicator';
 import AltTextLabel from '../containers/AltTextLabel';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { ImageViewer } from '../containers/ImageViewer';
+import VideoPlayer from '../containers/VideoPlayer';
 import { LISTENER } from '../containers/Toast';
 import { type IAttachment } from '../definitions';
 import I18n from '../i18n';
 import { useAltTextSupported } from '../lib/hooks/useAltTextSupported';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { encodeAttachmentUrl, formatAttachmentUrl, isAndroid, showErrorAlert } from '../lib/methods/helpers';
+import { encodeAttachmentUrl, formatAttachmentUrl, isAndroid } from '../lib/methods/helpers';
 import { fileDownload } from '../lib/methods/helpers/fileDownload';
 import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
@@ -35,11 +35,9 @@ const RenderContent = ({
 	attachment: IAttachment;
 	altText?: string;
 }) => {
-	const videoRef = useRef<Video>(null);
 	const insets = useSafeAreaInsets();
 	const { width, height } = useWindowDimensions();
 	const headerHeight = useHeaderHeight();
-	const navigation = useAppNavigation<TNavigation, 'AttachmentView'>();
 	const { baseUrl, user } = useAppSelector(
 		state => ({
 			baseUrl: state.server.server,
@@ -47,17 +45,6 @@ const RenderContent = ({
 		}),
 		shallowEqual
 	);
-
-	useLayoutEffect(() => {
-		const blurSub = navigation.addListener('blur', () => {
-			if (videoRef.current && videoRef.current.stopAsync) {
-				videoRef.current.stopAsync();
-			}
-		});
-		return () => {
-			blurSub();
-		};
-	}, [navigation]);
 
 	if (attachment.image_url) {
 		const url = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
@@ -75,27 +62,7 @@ const RenderContent = ({
 		);
 	}
 	if (attachment.video_url) {
-		const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
-		const uri = encodeAttachmentUrl(url);
-		return (
-			<Video
-				source={{ uri }}
-				rate={1.0}
-				volume={1.0}
-				isMuted={false}
-				resizeMode={ResizeMode.CONTAIN}
-				shouldPlay
-				isLooping={false}
-				style={{ flex: 1 }}
-				useNativeControls
-				onLoad={() => setLoading(false)}
-				onError={() => {
-					navigation.pop();
-					showErrorAlert(I18n.t('Error_play_video'));
-				}}
-				ref={videoRef}
-			/>
-		);
+		return <VideoPlayer attachment={attachment} user={user} baseUrl={baseUrl} setLoading={setLoading} />;
 	}
 	return null;
 };

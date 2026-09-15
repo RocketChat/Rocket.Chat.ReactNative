@@ -1,8 +1,8 @@
 import { type FC } from 'react';
 import { Pressable, StyleSheet, Text, type StyleProp, type ViewStyle } from 'react-native';
 
-import { useTheme } from '../../theme';
-import sharedStyles from '../../views/Styles';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
 const styles = StyleSheet.create({

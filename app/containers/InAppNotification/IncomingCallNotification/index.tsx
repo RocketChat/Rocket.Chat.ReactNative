@@ -4,18 +4,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { A11y } from 'react-native-a11y-order';
 
-import { acceptCall, cancelCall } from '../../../actions/videoConf';
-import { type ISubscription, type SubscriptionType } from '../../../definitions';
-import i18n from '../../../i18n';
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { useEndpointData } from '../../../lib/hooks/useEndpointData';
-import { hideNotification } from '../../../lib/methods/helpers/notifications';
-import { CustomIcon } from '../../CustomIcon';
-import { CallHeader } from '../../CallHeader';
+import { acceptCall, cancelCall } from '~/actions/videoConf';
+import { type ISubscription, type SubscriptionType } from '~/definitions';
+import i18n from '~/i18n';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { useEndpointData } from '~/lib/hooks/useEndpointData';
+import { hideNotification } from '~/lib/methods/helpers/notifications';
+import { CustomIcon } from '~/containers/CustomIcon';
+import { CallHeader } from '~/containers/CallHeader';
 import { useStyle } from './style';
-import useUserData from '../../../lib/hooks/useUserData';
-import Ringer, { ERingerSounds } from '../../Ringer';
-import Touch from '../../Touch';
+import useUserData from '~/lib/hooks/useUserData';
+import Ringer, { ERingerSounds } from '~/containers/Ringer';
+import Touch from '~/containers/Touch';
 
 export interface INotifierComponent {
 	notification: {

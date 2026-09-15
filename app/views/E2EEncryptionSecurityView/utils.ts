@@ -1,5 +1,5 @@
-import { type IPasswordPolicy } from '../../lib/hooks/useVerifyPassword';
-import I18n from '../../i18n';
+import { type IPasswordPolicy } from '~/lib/hooks/useVerifyPassword';
+import I18n from '~/i18n';
 
 export const E2E_PASSWORD_POLICIES: IPasswordPolicy[] = [
 	{

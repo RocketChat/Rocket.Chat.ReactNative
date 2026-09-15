@@ -1,6 +1,6 @@
-import I18n from '../../../i18n';
-import Navigation from '../../navigation/appNavigation';
-import { closeLivechat as closeLivechatService } from '../../services/restApi';
+import I18n from '~/i18n';
+import Navigation from '~/lib/navigation/appNavigation';
+import { closeLivechat as closeLivechatService } from '~/lib/services/restApi';
 import { showErrorAlert } from './info';
 import log from './log';
 

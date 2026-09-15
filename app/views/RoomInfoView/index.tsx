@@ -8,29 +8,29 @@ import { type Subscription } from 'rxjs';
 import UAParser from 'ua-parser-js';
 import { shallowEqual } from 'react-redux';
 
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { type ISubscription, type IUser, SubscriptionType } from '../../definitions';
-import I18n from '../../i18n';
-import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { getRoomInfo, getUserInfo, getVisitorInfo, toggleBlockUser } from '../../lib/services/restApi';
-import { createDirectMessage } from '../../lib/methods/createDirectMessage';
-import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { useTheme } from '../../theme';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { type ISubscription, type IUser, SubscriptionType } from '~/definitions';
+import I18n from '~/i18n';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { getRoomTitle, getUidDirectMessage, hasPermission } from '~/lib/methods/helpers';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
+import { handleIgnore } from '~/lib/methods/helpers/handleIgnore';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { getRoomInfo, getUserInfo, getVisitorInfo, toggleBlockUser } from '~/lib/services/restApi';
+import { createDirectMessage } from '~/lib/methods/createDirectMessage';
+import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { useTheme } from '~/theme';
 import RoomInfoButtons from './components/RoomInfoButtons';
 import RoomInfoViewAvatar from './components/RoomInfoViewAvatar';
 import RoomInfoViewBody from './components/RoomInfoViewBody';
 import RoomInfoViewTitle from './components/RoomInfoViewTitle';
 import styles from './styles';
-import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';
-import Navigation from '../../lib/navigation/appNavigation';
+import { emitErrorCreateDirectMessage } from '~/lib/methods/helpers/emitErrorCreateDirectMessage';
+import Navigation from '~/lib/navigation/appNavigation';
 
 type TRoomInfoViewNavigationProp = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,

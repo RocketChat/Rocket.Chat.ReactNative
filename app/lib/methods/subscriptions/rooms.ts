@@ -3,17 +3,17 @@ import { InteractionManager } from 'react-native';
 import EJSON from 'ejson';
 import type Model from '@nozbe/watermelondb/Model';
 
-import database from '../../database';
+import database from '~/lib/database';
 import protectedFunction from '../helpers/protectedFunction';
 import log from '../helpers/log';
-import { store } from '../../store/auxStore';
+import { store } from '~/lib/store/auxStore';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
 import EventEmitter from '../helpers/events';
-import { removedRoom } from '../../../actions/room';
-import { setUser } from '../../../actions/login';
-import { INAPP_NOTIFICATION_EMITTER } from '../../constants/notifications';
-import { Encryption } from '../../encryption';
+import { removedRoom } from '~/actions/room';
+import { setUser } from '~/actions/login';
+import { INAPP_NOTIFICATION_EMITTER } from '~/lib/constants/notifications';
+import { Encryption } from '~/lib/encryption';
 import updateMessages from '../updateMessages';
 import {
 	type IMessage,
@@ -25,16 +25,16 @@ import {
 	type TThreadMessageModel,
 	type TThreadModel,
 	SubscriptionType
-} from '../../../definitions';
-import sdk from '../../services/sdk';
-import { type IDDPMessage } from '../../../definitions/IDDPMessage';
-import { getSubscriptionByRoomId } from '../../database/services/Subscription';
-import { getMessageById } from '../../database/services/Message';
-import { E2E_MESSAGE_TYPE } from '../../constants/keys';
+} from '~/definitions';
+import sdk from '~/lib/services/sdk';
+import { type IDDPMessage } from '~/definitions/IDDPMessage';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import { getMessageById } from '~/lib/database/services/Message';
+import { E2E_MESSAGE_TYPE } from '~/lib/constants/keys';
 import { getRoom } from '../getRoom';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import { getRoomAvatar, getRoomTitle, getSenderName, random } from '../helpers';
-import { handleVideoConfIncomingWebsocketMessages } from '../../../actions/videoConf';
+import { handleVideoConfIncomingWebsocketMessages } from '~/actions/videoConf';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 
@@ -46,7 +46,7 @@ const WINDOW_TIME = 500;
 
 export let roomsSubscription: { stop: () => void } | null = null;
 
-const createOrUpdateSubscription = async (subscription: ISubscription, room: IServerRoom | IRoom) => {
+export const createOrUpdateSubscription = async (subscription: ISubscription, room: IServerRoom | IRoom): Promise<void> => {
 	try {
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
@@ -150,74 +150,77 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 		}
 
 		const tmp = merge(subscription, room);
-		const sub = await getSubscriptionByRoomId(tmp.rid);
 
-		const batch: Model[] = [];
-		if (sub) {
-			try {
-				const update = sub.prepareUpdate(s => {
-					Object.assign(s, tmp);
-					if (subscription.announcement) {
-						if (subscription.announcement !== sub.announcement) {
-							s.bannerClosed = false;
-						}
-					}
-					if (sub.hideUnreadStatus && subscription.hasOwnProperty('hideUnreadStatus')) {
-						if (sub.hideUnreadStatus !== subscription.hideUnreadStatus) {
-							s.hideUnreadStatus = !!subscription.hideUnreadStatus;
-						}
-					}
-				});
-				batch.push(update);
-			} catch (e) {
-				console.log(e);
-			}
-		} else {
-			try {
-				const create = subCollection.prepareCreate(s => {
-					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
-					Object.assign(s, tmp);
-					if (s.roomUpdatedAt) {
-						s.roomUpdatedAt = new Date();
-					}
-				});
-				batch.push(create);
-			} catch (e) {
-				console.log(e);
-			}
-		}
+		// Serialize the fetch, prepares and the batch under the writer lock so a concurrent
+		// writer can't call prepareUpdate on a record with pending changes.
+		await db.write(async () => {
+			const sub = await getSubscriptionByRoomId(tmp.rid);
 
-		const { subscribedRoom } = store.getState().room;
-		if (tmp.lastMessage && subscribedRoom !== tmp.rid) {
-			const lastMessage = buildMessage(tmp.lastMessage);
-			const messagesCollection = db.get('messages');
-			let messageRecord = {} as TMessageModel | null;
-			if (lastMessage) {
-				messageRecord = await getMessageById(lastMessage._id);
-			}
-
-			if (messageRecord) {
-				batch.push(
-					messageRecord.prepareUpdate(() => {
-						Object.assign(messageRecord, lastMessage);
-					})
-				);
-			} else {
-				batch.push(
-					messagesCollection.prepareCreate(m => {
-						if (lastMessage) {
-							m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
-							if (m.subscription) {
-								m.subscription.id = lastMessage.rid;
+			const batch: Model[] = [];
+			if (sub) {
+				try {
+					const update = sub.prepareUpdate(s => {
+						Object.assign(s, tmp);
+						if (subscription.announcement) {
+							if (subscription.announcement !== sub.announcement) {
+								s.bannerClosed = false;
 							}
 						}
-						return Object.assign(m, lastMessage);
-					})
-				);
+						if (sub.hideUnreadStatus && subscription.hasOwnProperty('hideUnreadStatus')) {
+							if (sub.hideUnreadStatus !== subscription.hideUnreadStatus) {
+								s.hideUnreadStatus = !!subscription.hideUnreadStatus;
+							}
+						}
+					});
+					batch.push(update);
+				} catch (e) {
+					console.log(e);
+				}
+			} else {
+				try {
+					const create = subCollection.prepareCreate(s => {
+						s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
+						Object.assign(s, tmp);
+						if (s.roomUpdatedAt) {
+							s.roomUpdatedAt = new Date();
+						}
+					});
+					batch.push(create);
+				} catch (e) {
+					console.log(e);
+				}
 			}
-		}
 
-		await db.write(async () => {
+			const { subscribedRoom } = store.getState().room;
+			if (tmp.lastMessage && subscribedRoom !== tmp.rid) {
+				const lastMessage = buildMessage(tmp.lastMessage);
+				const messagesCollection = db.get('messages');
+				let messageRecord = {} as TMessageModel | null;
+				if (lastMessage) {
+					messageRecord = await getMessageById(lastMessage._id);
+				}
+
+				if (messageRecord) {
+					batch.push(
+						messageRecord.prepareUpdate(() => {
+							Object.assign(messageRecord, lastMessage);
+						})
+					);
+				} else {
+					batch.push(
+						messagesCollection.prepareCreate(m => {
+							if (lastMessage) {
+								m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
+								if (m.subscription) {
+									m.subscription.id = lastMessage.rid;
+								}
+							}
+							return Object.assign(m, lastMessage);
+						})
+					);
+				}
+			}
+
 			await db.batch(batch);
 		});
 

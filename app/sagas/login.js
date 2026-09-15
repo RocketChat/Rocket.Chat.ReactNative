@@ -15,7 +15,7 @@ import { findLoggedInServer } from '../lib/methods/loggedInServer';
 import EventEmitter from '../lib/methods/helpers/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../lib/methods/helpers/info';
-import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
+import { localAuthenticate, UserCanceledError } from '../lib/methods/helpers/localAuthentication';
 import { encryptionInit, encryptionStop } from '../actions/encryption';
 import { initTroubleshootingNotification } from '../actions/troubleshootingNotification';
 import UserPreferences from '../lib/methods/userPreferences';
@@ -23,7 +23,7 @@ import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry'
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CURRENT_SERVER, getServerUserIdKey, getUserTokenKey } from '../lib/constants/keys';
 import { getCustomEmojis } from '../lib/methods/getCustomEmojis';
 import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { getEnterpriseModules, isOmnichannelModuleAvailable, isVoipModuleAvailable } from '../lib/methods/enterpriseModules';
@@ -87,6 +87,18 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 	}
 };
 
+// Login already succeeded by the time this runs, so a superseded unlock must not fall through to
+// loginFailure; any other failure still propagates.
+const authenticateIgnoringCancel = function* authenticateIgnoringCancel(server) {
+	try {
+		yield localAuthenticate(server);
+	} catch (e) {
+		if (!(e instanceof UserCanceledError)) {
+			throw e;
+		}
+	}
+};
+
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, registerCustomFields }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
 	try {
@@ -102,7 +114,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			yield put(appStart({ root: RootEnum.ROOT_SET_USERNAME }));
 		} else {
 			const server = yield select(getServer);
-			yield localAuthenticate(server);
+			yield* authenticateIgnoringCancel(server);
 
 			// Saves username on server history
 			const serversDB = database.servers;
@@ -355,8 +367,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			}
 		});
 
-		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
-		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
+		UserPreferences.setString(getServerUserIdKey(server), user.id);
+		UserPreferences.setString(getUserTokenKey(server, user.id), user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
 		EventEmitter.emit('connected');
 		const currentRoot = yield select(state => state.app.root);

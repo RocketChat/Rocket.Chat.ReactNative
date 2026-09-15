@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 
-import { SubscriptionType } from '../../../definitions';
-import { getUserSelector } from '../../../selectors/login';
-import { getSubscriptionByRoomId } from '../../database/services/Subscription';
-import { isRoomFederated } from '../../methods/isRoomFederated';
-import { compareServerVersion } from '../../methods/helpers/compareServerVersion';
-import { isReadOnly } from '../../methods/helpers/isReadOnly';
+import { SubscriptionType } from '~/definitions';
+import { getUserSelector } from '~/selectors/login';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import { isRoomFederated } from '~/lib/methods/isRoomFederated';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
+import { isReadOnly } from '~/lib/methods/helpers/isReadOnly';
 import { useAppSelector } from '../useAppSelector';
 import { usePermissions } from '../usePermissions';
 

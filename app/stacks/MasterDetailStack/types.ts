@@ -1,11 +1,11 @@
 import { type NavigatorScreenParams } from '@react-navigation/core';
 
-import { type IAttachment } from '../../definitions/IAttachment';
-import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { type ILivechatTag } from '../../definitions/ILivechatTag';
-import { type IMessage, type TAnyMessageModel } from '../../definitions/IMessage';
-import { type ISubscription, type SubscriptionType, type TSubscriptionModel } from '../../definitions/ISubscription';
-import { type TChangeAvatarViewContext } from '../../definitions/TChangeAvatarViewContext';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
+import { type ILivechatTag } from '~/definitions/ILivechatTag';
+import { type IMessage, type TAnyMessageModel } from '~/definitions/IMessage';
+import { type ISubscription, type SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
+import { type TChangeAvatarViewContext } from '~/definitions/TChangeAvatarViewContext';
 
 export type MasterDetailChatsStackParamList = {
 	RoomView: {
@@ -42,11 +42,13 @@ export type ModalStackParamList = {
 		};
 	};
 	RoomInfoView: {
-		room: ISubscription;
-		member: any;
+		room?: ISubscription;
+		member?: any;
 		rid: string;
 		t: SubscriptionType;
 		showCloseModal?: boolean;
+		fromRid?: string;
+		itsMe?: boolean;
 	};
 	SelectListView: {
 		data: any;

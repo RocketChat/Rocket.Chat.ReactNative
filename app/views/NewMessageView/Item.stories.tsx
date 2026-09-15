@@ -2,10 +2,10 @@ import { View, StyleSheet } from 'react-native';
 import type { ComponentType, ReactNode } from 'react';
 
 import Item from './Item';
-import { mockedStore } from '../../reducers/mockedStore';
-import { setUser } from '../../actions/login';
-import { setPermissions } from '../../actions/permissions';
-import { setEnterpriseModules } from '../../actions/enterpriseModules';
+import { mockedStore } from '~/reducers/mockedStore';
+import { setUser } from '~/actions/login';
+import { setPermissions } from '~/actions/permissions';
+import { setEnterpriseModules } from '~/actions/enterpriseModules';
 
 const styles = StyleSheet.create({
 	container: {
