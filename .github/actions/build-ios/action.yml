@@ -58,7 +58,7 @@ runs:
         path: |
           ~/.pods
           ios/Pods
-        key: pods-v2-${{ hashFiles('ios/Podfile.lock') }}
+        key: pods-v1-${{ hashFiles('ios/Podfile.lock') }}
 
     - name: pod install
       run: |
