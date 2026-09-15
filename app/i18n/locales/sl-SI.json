@@ -640,6 +640,7 @@
   "Review_this_app": "Preglejte to aplikacijo",
   "Rocket_Chat_Documentation": "Dokumentacija Rocket.Chat",
   "Roles": "Vloge",
+  "Room_failed_to_load": "Te sobe ni bilo mogoče naložiti. Preverite povezavo in poskusite znova.",
   "Room_Info": "Informacije o sobi",
   "Room_Info_Edit": "Uredi informacije o sobi",
   "Room_Password": "Sobno geslo",

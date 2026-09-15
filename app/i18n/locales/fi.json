@@ -677,6 +677,7 @@
   "room_changed_topic_to": "vaihtoi huoneen aiheeksi: {{topic}}",
   "room_changed_type": "vaihtoi huoneen tyypiksi {{type}}",
   "room_disallowed_reactions": "kielsi reaktiot",
+  "Room_failed_to_load": "Tätä huonetta ei voitu ladata. Tarkista yhteytesi ja yritä uudelleen.",
   "Room_Info": "Huoneen tiedot",
   "Room_Info_Edit": "Huoneen tietojen muokkaus",
   "Room_name_changed_to": "vaihtoi huoneen nimeksi: {{name}}",

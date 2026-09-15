@@ -1,4 +1,4 @@
-import { useDebouncedCallback, type Options } from 'use-debounce';
+import { useDebouncedCallback, type DebouncedState, type Options } from 'use-debounce';
 
 export function debounce(func: Function, wait?: number, immediate?: boolean) {
 	let timeout: ReturnType<typeof setTimeout> | null;
@@ -24,6 +24,6 @@ export function debounce(func: Function, wait?: number, immediate?: boolean) {
 	return _debounce;
 }
 
-export function useDebounce(func: (...args: any) => any, wait?: number, options?: Options): (...args: any[]) => void {
+export function useDebounce<T extends (...args: any[]) => any>(func: T, wait?: number, options?: Options): DebouncedState<T> {
 	return useDebouncedCallback(func, wait || 1000, options);
 }
