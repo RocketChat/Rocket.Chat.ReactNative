@@ -1,18 +1,15 @@
-import BackgroundTimer from 'react-native-background-timer';
-
 import { updateJitsiTimeout } from '../services/restApi';
 
-let interval: number | null = null;
+let interval: ReturnType<typeof setInterval> | null = null;
 
 export const initVideoConfTimer = (rid: string): void => {
 	if (rid) {
 		updateJitsiTimeout(rid).catch((e: unknown) => console.log(e));
 		if (interval) {
-			BackgroundTimer.clearInterval(interval);
-			BackgroundTimer.stopBackgroundTimer();
+			clearInterval(interval);
 			interval = null;
 		}
-		interval = BackgroundTimer.setInterval(() => {
+		interval = setInterval(() => {
 			updateJitsiTimeout(rid).catch((e: unknown) => console.log(e));
 		}, 10000);
 	}
@@ -20,8 +17,7 @@ export const initVideoConfTimer = (rid: string): void => {
 
 export const endVideoConfTimer = (): void => {
 	if (interval) {
-		BackgroundTimer.clearInterval(interval);
+		clearInterval(interval);
 		interval = null;
-		BackgroundTimer.stopBackgroundTimer();
 	}
 };
