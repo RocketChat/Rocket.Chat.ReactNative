@@ -10,15 +10,20 @@ tags:
     commands:
       - clearState: com.android.chrome
       - launchApp: com.android.chrome
-      - extendedWaitUntil:
-          visible: '.*Add account to device.*'
-          timeout: 60000
-      - tapOn: 'Use without an account'
-      - takeScreenshot:
-          path: Chrome
-      - extendedWaitUntil:
-          visible: '.*Chrome notifications make things easier.*'
-          timeout: 60000
+# On Android, chrome may ask to add account to the device
+- runFlow:
+    when:
+      visible: '.*Add account to device.*'
+      platform: Android
+    commands:
+      - tapOn:
+          text: 'Use without an account'
+          optional: true
+- runFlow:
+    when:
+      visible: '.*Chrome notifications make things easier.*'
+      platform: Android
+    commands:
       - tapOn: 'No thanks'
 
 - runFlow:

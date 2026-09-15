@@ -4,11 +4,21 @@ tags:
   - 'util'
 
 ---
+# on most of the android emulator it shows 'Search or type URL'
 - runFlow:
     when:
       platform: 'android'
+      visible: '.*type URL.*'
     commands:
       - tapOn: '.*type URL.*'
+# on github action android emulator it shows 'Search or type web address' and testIds are different too
+- runFlow:
+    when:
+      platform: 'android'
+      visible: '.*Search or type web address.*'
+    commands:
+      - tapOn: '.*Search or type web address.*'
+
 - runFlow:
     when:
       platform: 'iOS'
