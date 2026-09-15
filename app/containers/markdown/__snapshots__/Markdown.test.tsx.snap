@@ -715,7 +715,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
           }
         >
            
-          👍
+          👍️
         </Text>
       </Text>
     </Text>
@@ -1005,7 +1005,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
           ]
         }
       >
-        👍
+        👍️
       </Text>
       <View
         style={
@@ -9315,7 +9315,7 @@ exports[`Story Snapshots: Preview should match snapshot 1`] = `
     @rocket.cat @name1 @all @here @unknown #general #unknown
   </Text>
   <Text
-    accessibilityLabel="Testing: 😃 👍 :marioparty:"
+    accessibilityLabel="Testing: 😃 👍️ :marioparty:"
     numberOfLines={1}
     style={
       [
@@ -9336,9 +9336,9 @@ exports[`Story Snapshots: Preview should match snapshot 1`] = `
         },
       ]
     }
-    testID="markdown-preview-Testing: 😃 👍 :marioparty:"
+    testID="markdown-preview-Testing: 😃 👍️ :marioparty:"
   >
-    Testing: 😃 👍 :marioparty:
+    Testing: 😃 👍️ :marioparty:
   </Text>
   <Text
     accessibilityLabel="Fallback from new md to old"

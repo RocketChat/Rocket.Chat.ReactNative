@@ -7,16 +7,16 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
-import { loginRequest } from '../../actions/login';
-import Button from '../../containers/Button';
-import { useWorkspaceDomain } from '../../lib/hooks/useWorkspaceDomain';
-import { ControlledFormTextInput } from '../../containers/TextInput';
-import I18n from '../../i18n';
-import { type OutsideParamList } from '../../stacks/types';
-import { useTheme } from '../../theme';
+import { loginRequest } from '~/actions/login';
+import Button from '~/containers/Button';
+import { useWorkspaceDomain } from '~/lib/hooks/useWorkspaceDomain';
+import { ControlledFormTextInput } from '~/containers/TextInput';
+import I18n from '~/i18n';
+import { type OutsideParamList } from '~/stacks/types';
+import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
-import UGCRules from '../../containers/UserGeneratedContentRules';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import UGCRules from '~/containers/UserGeneratedContentRules';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import styles from './styles';
 import { handleLoginErrors } from './handleLoginErrors';
 

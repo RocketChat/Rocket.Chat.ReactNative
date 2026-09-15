@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 
 export const EMOJI_BUTTON_SIZE = 44;
 export const EMOJI_SIZE = EMOJI_BUTTON_SIZE - 16;

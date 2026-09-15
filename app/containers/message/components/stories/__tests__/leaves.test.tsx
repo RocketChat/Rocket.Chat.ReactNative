@@ -1,4 +1,4 @@
-import { generateSnapshots } from '../../../../../../.rnstorybook/generateSnapshots';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 import * as attachments from '../Attachments.stories';
 import * as broadcast from '../Broadcast.stories';
 import * as callButton from '../CallButton.stories';

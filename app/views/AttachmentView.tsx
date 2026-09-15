@@ -18,7 +18,7 @@ import I18n from '../i18n';
 import { useAltTextSupported } from '../lib/hooks/useAltTextSupported';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { formatAttachmentUrl, isAndroid, showErrorAlert } from '../lib/methods/helpers';
+import { encodeAttachmentUrl, formatAttachmentUrl, isAndroid, showErrorAlert } from '../lib/methods/helpers';
 import { fileDownload } from '../lib/methods/helpers/fileDownload';
 import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
@@ -61,7 +61,7 @@ const RenderContent = ({
 
 	if (attachment.image_url) {
 		const url = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
-		const uri = encodeURI(url);
+		const uri = encodeAttachmentUrl(url);
 		const isAnimated = attachment.image_type === 'image/gif' || /\.gif(\?|$)/i.test(url);
 		return (
 			<ImageViewer
@@ -76,7 +76,7 @@ const RenderContent = ({
 	}
 	if (attachment.video_url) {
 		const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
-		const uri = encodeURI(url);
+		const uri = encodeAttachmentUrl(url);
 		return (
 			<Video
 				source={{ uri }}

@@ -1,18 +1,23 @@
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import Animated, { useAnimatedScrollHandler } from 'react-native-reanimated';
+import { FlatList, StyleSheet, View } from 'react-native';
+import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import { useIsScreenReaderEnabled } from '../../../../lib/hooks/useIsScreenReaderEnabled';
-import { isIOS } from '../../../../lib/methods/helpers';
-import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
-import { isExternalKeyboardConnected } from '../../../../lib/methods/helpers/externalInput';
-import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../../lib/constants/accessibility';
+import { useIsScreenReaderEnabled } from '~/lib/hooks/useIsScreenReaderEnabled';
+import { isIOS } from '~/lib/methods/helpers';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
+import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
+import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '~/lib/constants/accessibility';
 import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
-import { type IListProps } from '../definitions';
+import { type TAnyMessageModel } from '~/definitions';
+import { type IListProps } from '~/views/RoomView/definitions';
 import { SCROLL_LIMIT } from '../constants';
-import { useRoomContext } from '../../context';
+import { useIsAutocompleteVisible } from '~/containers/MessageComposer/ComposerStore';
+import FloatingDateSeparator from '~/containers/Separator/FloatingDateSeparator';
+import { useFloatingDate } from '../hooks/useFloatingDate';
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList<TAnyMessageModel>);
 
 const styles = StyleSheet.create({
 	list: {
@@ -23,15 +28,28 @@ const styles = StyleSheet.create({
 	}
 });
 
-const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
+const List = ({ flatListRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
-	const { isAutocompleteVisible } = useRoomContext();
+	const isAutocompleteVisible = useIsAutocompleteVisible();
+	const wasScrolledPastLimit = useSharedValue(false);
+	const {
+		ts,
+		opacity: floatingDateOpacity,
+		scrollEvents: { onBeginDrag, onMomentumBegin, onEndDrag, onMomentumEnd },
+		viewabilityConfigCallbackPairs
+	} = useFloatingDate();
+
+	// Spelled out rather than spread: the worklets babel plugin has to see an object hook's properties statically.
 	const scrollHandler = useAnimatedScrollHandler({
+		onBeginDrag,
+		onMomentumBegin,
+		onEndDrag,
+		onMomentumEnd,
 		onScroll: event => {
-			if (event.contentOffset.y > SCROLL_LIMIT) {
-				scheduleOnRN(setScrolledPastLimit, true);
-			} else {
-				scheduleOnRN(setScrolledPastLimit, false);
+			const isPastLimit = event.contentOffset.y > SCROLL_LIMIT;
+			if (isPastLimit !== wasScrolledPastLimit.value) {
+				wasScrolledPastLimit.value = isPastLimit;
+				scheduleOnRN(setScrolledPastLimit, isPastLimit);
 			}
 		}
 	});
@@ -44,12 +62,11 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 	const renderScrollComponent = !isIOS && (isScreenReaderEnabled || isExternalKeyboardConnected());
 	return (
 		<View style={styles.list}>
-			{/* @ts-ignore */}
-			<Animated.FlatList
+			<AnimatedFlatList
 				accessibilityElementsHidden={isAutocompleteVisible}
 				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
 				testID='room-view-messages'
-				ref={listRef}
+				ref={flatListRef}
 				keyExtractor={item => item.id}
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
@@ -68,7 +85,9 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 				onScroll={scrollHandler}
 				{...props}
 				{...scrollPersistTaps}
+				viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs}
 			/>
+			<FloatingDateSeparator ts={ts} opacity={floatingDateOpacity} />
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
 		</View>
 	);

@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useReducer } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 
-import { type IAttachment, type IUserMessage } from '../../../definitions';
-import { isImageBase64 } from '../../../lib/methods/isImageBase64';
-import { fetchAutoDownloadEnabled } from '../../../lib/methods/autoDownloadPreference';
+import { type IAttachment, type IUserMessage } from '~/definitions';
+import { isImageBase64 } from '~/lib/methods/isImageBase64';
+import { fetchAutoDownloadEnabled } from '~/lib/methods/autoDownloadPreference';
 import {
 	cancelDownload,
 	downloadMediaFile,
@@ -10,12 +10,11 @@ import {
 	isDownloadActive,
 	type MediaTypes,
 	type TDownloadState
-} from '../../../lib/methods/handleMediaDownload';
-import { emitter } from '../../../lib/methods/helpers/emitter';
-import { formatAttachmentUrl } from '../../../lib/methods/helpers/formatAttachmentUrl';
+} from '~/lib/methods/handleMediaDownload';
+import { emitter } from '~/lib/methods/helpers/emitter';
+import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import { useBaseUrl, useMessageUser } from '../stores/MessageRoomStore';
 import { useMessageId } from '../stores/MessageStore';
-import { useFile } from './useFile';
 
 const getFileType = (file: IAttachment): MediaTypes | null => {
 	if (file.image_url) {
@@ -80,13 +79,14 @@ export const useMediaAutoDownload = ({
 	const baseUrl = useBaseUrl();
 	const user = useMessageUser();
 	const [status, dispatchDownloadEvent] = useReducer(downloadStatusReducer, 'to-download');
-	const [currentFile, setCurrentFile] = useFile(file, id ?? '');
+	const [fileOverrides, setFileOverrides] = useState<Partial<IAttachment> | null>(null);
+	const currentFile = fileOverrides ? { ...file, ...fileOverrides } : file;
 	const originalUrl = getOriginalURL(file);
 	const url = formatAttachmentUrl(
 		file.title_link || getFileProperty(currentFile, fileType, 'url'),
-		user?.id ?? '',
-		user?.token ?? '',
-		baseUrl ?? '',
+		user.id,
+		user.token,
+		baseUrl,
 		originalUrl
 	);
 	const isEncrypted = currentFile.e2e === 'pending';
@@ -126,7 +126,7 @@ export const useMediaAutoDownload = ({
 	};
 
 	const tryAutoDownload = async () => {
-		const isCurrentUserAuthor = author?._id === user?.id;
+		const isCurrentUserAuthor = author?._id === user.id;
 		const isAutoDownloadEnabled = fetchAutoDownloadEnabled(`${fileType}PreferenceDownload`);
 		if (isAutoDownloadEnabled || isCurrentUserAuthor) {
 			await download();
@@ -137,7 +137,7 @@ export const useMediaAutoDownload = ({
 		try {
 			dispatchDownloadEvent('download_started');
 			const uri = await downloadMediaFile({
-				messageId: id ?? '',
+				messageId: id,
 				downloadUrl: url,
 				type: fileType,
 				mimeType: getFileProperty(currentFile, fileType, 'type'),
@@ -152,17 +152,13 @@ export const useMediaAutoDownload = ({
 	};
 
 	const updateCurrentFile = (uri: string) => {
-		setCurrentFile({
-			title_link: uri
-		});
+		setFileOverrides(prev => ({ ...prev, title_link: uri }));
 		dispatchDownloadEvent('download_succeeded');
 	};
 
 	const setDecrypted = () => {
 		if (isEncrypted) {
-			setCurrentFile({
-				e2e: 'done'
-			});
+			setFileOverrides(prev => ({ ...prev, e2e: 'done' }));
 		}
 	};
 

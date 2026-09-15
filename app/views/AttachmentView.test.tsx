@@ -96,6 +96,7 @@ jest.mock('../lib/hooks/useAppSelector', () => ({
 
 jest.mock('../lib/methods/helpers', () => ({
 	formatAttachmentUrl: (url: string) => url,
+	encodeAttachmentUrl: (url: string) => url,
 	isAndroid: false,
 	showErrorAlert: jest.fn()
 }));

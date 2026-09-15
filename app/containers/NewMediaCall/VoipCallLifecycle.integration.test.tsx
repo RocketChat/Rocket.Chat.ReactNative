@@ -19,16 +19,16 @@ import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 import { type ReactNode } from 'react';
 
 import { NewMediaCall } from './NewMediaCall';
-import CallView from '../../views/CallView';
-import Navigation from '../../lib/navigation/appNavigation';
-import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
-import { useCallStore } from '../../lib/services/voip/useCallStore';
-import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
-import { acceptNativeCallWithReadiness } from '../../lib/services/voip/acceptNativeCall';
-import { mockedStore } from '../../reducers/mockedStore';
-import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
-import type { InsideStackParamList } from '../../stacks/types';
-import type { IDDPMessage } from '../../definitions/IDDPMessage';
+import CallView from '~/views/CallView';
+import Navigation from '~/lib/navigation/appNavigation';
+import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
+import { mediaSessionInstance } from '~/lib/services/voip/MediaSessionInstance';
+import { acceptNativeCallWithReadiness } from '~/lib/services/voip/acceptNativeCall';
+import { mockedStore } from '~/reducers/mockedStore';
+import type { TPeerItem } from '~/lib/services/voip/getPeerAutocompleteOptions';
+import type { InsideStackParamList } from '~/stacks/types';
+import type { IDDPMessage } from '~/definitions/IDDPMessage';
 
 // Compile-time guard — fails tsc if 'CallView' is removed from InsideStackParamList.
 const assertType = <_T extends true>(_?: _T): void => {};
@@ -42,22 +42,22 @@ assertType<InsideStackParamList extends { CallView: unknown } ? true : false>();
 // reassign across the beforeEach without recreating the module mock.
 const mockSdkState: { streamHandler: ((msg: IDDPMessage) => void) | null } = { streamHandler: null };
 
-jest.mock('../../lib/database', () => ({
+jest.mock('~/lib/database', () => ({
 	db: { get: jest.fn() },
 	active: { get: jest.fn() }
 }));
-jest.mock('../../lib/database/services/Subscription', () => ({
+jest.mock('~/lib/database/services/Subscription', () => ({
 	getDMSubscriptionByUsername: jest.fn().mockResolvedValue(null)
 }));
-jest.mock('../../lib/methods/helpers/helpers', () => ({
+jest.mock('~/lib/methods/helpers/helpers', () => ({
 	getUidDirectMessage: jest.fn(() => 'other-user-id')
 }));
-jest.mock('../../lib/navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	__esModule: true,
 	default: { navigate: jest.fn(), back: jest.fn() },
 	waitForNavigationReady: jest.fn().mockResolvedValue(undefined)
 }));
-jest.mock('../../lib/services/sdk', () => ({
+jest.mock('~/lib/services/sdk', () => ({
 	__esModule: true,
 	default: {
 		// Capture the stream handler so tests can drive DDP signals directly —
@@ -69,7 +69,7 @@ jest.mock('../../lib/services/sdk', () => ({
 		methodCall: jest.fn()
 	}
 }));
-jest.mock('../../lib/store/auxStore', () => ({
+jest.mock('~/lib/store/auxStore', () => ({
 	store: {
 		getState: jest.fn(() => ({
 			settings: {
@@ -106,7 +106,7 @@ jest.mock('react-native-incall-manager', () => ({
 		setForceSpeakerphoneOn: jest.fn().mockResolvedValue(undefined)
 	}
 }));
-jest.mock('../../lib/methods/helpers/fileDownload', () => ({
+jest.mock('~/lib/methods/helpers/fileDownload', () => ({
 	fileDownload: jest.fn(),
 	fileDownloadAndPreview: jest.fn()
 }));
@@ -135,14 +135,14 @@ jest.mock('react-native-device-info', () => ({
 	getSystemVersion: () => '14.0',
 	isTablet: () => false
 }));
-jest.mock('../../lib/native/NativeVoip', () => ({
+jest.mock('~/lib/native/NativeVoip', () => ({
 	__esModule: true,
 	default: { stopNativeDDPClient: jest.fn() }
 }));
-jest.mock('../../lib/methods/voipCallPermissions', () => ({
+jest.mock('~/lib/methods/voipCallPermissions', () => ({
 	requestVoipCallPermissions: jest.fn().mockResolvedValue(true)
 }));
-jest.mock('../../lib/hooks/useIsScreenReaderEnabled', () => ({
+jest.mock('~/lib/hooks/useIsScreenReaderEnabled', () => ({
 	useIsScreenReaderEnabled: jest.fn(() => false)
 }));
 // PeerList/FilterHeader/SelectedPeer import Avatar → database → appGroup (native module).
@@ -151,24 +151,24 @@ jest.mock('./PeerList', () => ({ PeerList: () => null }));
 jest.mock('./FilterHeader', () => ({ FilterHeader: () => null }));
 jest.mock('./SelectedPeer', () => ({ SelectedPeer: () => null }));
 // getPeerAutocompleteOptions → restApi → @rocket.chat/mobile-crypto (ESM, not transformable).
-jest.mock('../../lib/services/voip/getPeerAutocompleteOptions', () => ({
+jest.mock('~/lib/services/voip/getPeerAutocompleteOptions', () => ({
 	getPeerAutocompleteOptions: jest.fn().mockResolvedValue([])
 }));
 // navigateToCallRoom → goRoom → restApi → encryption → ESM fail.
-jest.mock('../../lib/services/voip/navigateToCallRoom', () => ({
+jest.mock('~/lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
 }));
 // Gate boundary mock: the DDP listener now routes accepted signals through
 // acceptNativeCallWithReadiness rather than calling answerCall directly. The
 // gate's own unit tests cover readiness orchestration; this file asserts the
 // lifecycle/navigation contract, so the gate is short-circuited to answerCall.
-jest.mock('../../lib/services/voip/acceptNativeCall', () => ({
+jest.mock('~/lib/services/voip/acceptNativeCall', () => ({
 	acceptNativeCallWithReadiness: jest.fn(async (_callId: string, mediaSession: any) => {
 		await mediaSession.answerCall(_callId);
 	})
 }));
 // playCallEndedSound → expo-av → Audio.Sound constructor not present in this test boundary.
-jest.mock('../../lib/services/voip/playCallEndedSound', () => ({
+jest.mock('~/lib/services/voip/playCallEndedSound', () => ({
 	playCallEndedSound: jest.fn()
 }));
 

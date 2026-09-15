@@ -5,12 +5,12 @@ import { createStore } from 'redux';
 import { Image as ExpoImage } from 'expo-image';
 
 import ReactionsList from './index';
-import { type IReaction } from '../../definitions';
-import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import { type IReaction } from '~/definitions';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 import * as stories from './ReactionsList.stories';
 
 // Mock i18n
-jest.mock('../../i18n', () => ({
+jest.mock('~/i18n', () => ({
 	t: (key: string, options?: { count?: number; n?: number }) => {
 		switch (key) {
 			case 'All':
@@ -261,6 +261,24 @@ describe('ReactionsList Integration Tests', () => {
 		// Resolves against the store and renders as a custom emoji image, not the shortname text
 		expect(screen.UNSAFE_getAllByType(ExpoImage).length).toBeGreaterThan(0);
 		expect(screen.queryByText(':custom_emoji:')).toBeNull();
+	});
+
+	it('still renders the per-emoji tab when the server omits names (falls back to usernames)', () => {
+		// The raw reaction payload only ever guarantees `usernames` - `names` is missing entirely
+		// on some servers/paths, not just an empty array.
+		const reactionsWithoutNames = [
+			{
+				_id: 'reaction4',
+				emoji: '🎉',
+				usernames: ['user5']
+			}
+		] as IReaction[];
+
+		renderWithRedux(<ReactionsList reactions={reactionsWithoutNames} />);
+
+		fireEvent.press(screen.getByTestId('tab-🎉'));
+		expect(screen.getByTestId('usersList-🎉')).toBeOnTheScreen();
+		expect(screen.getAllByText('user5').length).toBeGreaterThan(0);
 	});
 });
 

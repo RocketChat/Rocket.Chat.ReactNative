@@ -2,18 +2,22 @@
 
 ## Rooms & Conversations
 
-| Term                | Definition                                                                                                                     | Aliases to avoid              |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------- |
-| **Room**            | A server-side conversation container with shared state (name, type, settings)                                                  | Chat, conversation            |
-| **Subscription**    | A user's personal relationship to a Room, holding per-user state (unread count, favorite, muted, open)                         | Membership, room entry        |
-| **Channel**         | A public Room (type `'c'`) visible to all Workspace users                                                                      | Public room                   |
-| **Group**           | A private Room (type `'p'`) visible only to invited members                                                                    | Private room, private channel |
-| **Direct Message**  | A 1-on-1 private Room (type `'d'`) between two users                                                                           | DM, PM, private message       |
-| **Thread**          | A branched conversation spawned from a single Message, identified by `tmid` (thread message id)                                | Reply chain                   |
-| **Discussion**      | A separate Room spawned from a parent Room, identified by `prid` (parent room id) — unlike Threads, Discussions are full Rooms | Sub-room, sub-channel         |
-| **Team**            | An organizational container that groups multiple Channels and users under a single entity                                      | Workspace (a different thing) |
-| **Broadcast Room**  | A Room where only authorized users can send Messages; other users can only Reply Broadcast to existing Messages                | Broadcast channel             |
-| **Reply Broadcast** | The action of replying to a Message in a Broadcast Room when the current user cannot send regular Messages                     | Broadcast reply               |
+| Term                | Definition                                                                                                                                                                                               | Aliases to avoid              |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| **Room**            | A server-side conversation container with shared state (name, type, settings)                                                                                                                            | Chat, conversation            |
+| **Subscription**    | A user's personal relationship to a Room, holding per-user state (unread count, favorite, muted, open), never a **DDP Subscription**                                                                     | Membership, room entry        |
+| **Subscribed Room** | A Room the user has joined, backed by a persisted Subscription model. Detected by a Subscription record whose status is not `invited`.                                                                   | Joined room                   |
+| **Preview Mode**    | Viewing a Room without joining: no Subscription record exists and the Room data comes from navigation params or a REST lookup. Persists until the user joins. Detected by the absence of a Subscription. | —                             |
+| **Invited**         | A Room where a Subscription exists but its status is `invited` and not yet accepted. Detected by a Subscription whose status is `invited`.                                                               | —                             |
+| **Room Membership** | The user's standing in a Room: exactly one of **Preview Mode**, **Invited**, or **Subscribed Room**. Derived from whether a Subscription exists and, if so, its status.                                  | Joined flag, membership       |
+| **Channel**         | A public Room (type `'c'`) visible to all Workspace users                                                                                                                                                | Public room                   |
+| **Group**           | A private Room (type `'p'`) visible only to invited members                                                                                                                                              | Private room, private channel |
+| **Direct Message**  | A 1-on-1 private Room (type `'d'`) between two users                                                                                                                                                     | DM, PM, private message       |
+| **Thread**          | A branched conversation spawned from a single Message, identified by `tmid` (thread message id)                                                                                                          | Reply chain                   |
+| **Discussion**      | A separate Room spawned from a parent Room, identified by `prid` (parent room id) — unlike Threads, Discussions are full Rooms                                                                           | Sub-room, sub-channel         |
+| **Team**            | An organizational container that groups multiple Channels and users under a single entity                                                                                                                | Workspace (a different thing) |
+| **Broadcast Room**  | A Room where only authorized users can send Messages; other users can only Reply Broadcast to existing Messages                                                                                          | Broadcast channel             |
+| **Reply Broadcast** | The action of replying to a Message in a Broadcast Room when the current user cannot send regular Messages                                                                                               | Broadcast reply               |
 
 ## Messages
 
@@ -83,10 +87,11 @@ Independent boolean markers on a Message, orthogonal to its Status — a Message
 
 ## Message Separators
 
-| Term                 | Definition                                                                                       | Aliases to avoid |
-| -------------------- | ------------------------------------------------------------------------------------------------ | ---------------- |
-| **Date Separator**   | A divider rendered between two Messages on different days, showing the date of the newer Message | Date divider     |
-| **Unread Separator** | A divider rendered between the last read Message and the first unread Message in a Room          | Unread divider   |
+| Term                        | Definition                                                                                                                | Aliases to avoid |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| **Date Separator**          | A divider rendered inline between two Messages on different days, showing the date of the newer Message                   | Date divider     |
+| **Floating Date Separator** | An overlay showing the date of the topmost visible Message; fades in while the user scrolls and out once the list settles | Sticky date      |
+| **Unread Separator**        | A divider rendered between the last read Message and the first unread Message in a Room                                   | Unread divider   |
 
 ## Message Loading
 
@@ -125,10 +130,12 @@ A **Last Open** and a **Last Seen** are not interchangeable — conflating them 
 
 Two distinct kinds of transient per-Room state drive how the Room view renders Messages. Keep them apart.
 
-| Term                     | Definition                                                                                                        |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| **Message Action State** | The active Message Action in the Room (Quote, Edit, or React) and its target Message(s); null when none is active |
-| **Positional State**     | Which Message is highlighted and the jump or scroll position                                                      |
+| Term                               | Definition                                                                                                        | Owner                         | Scope                                |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------- | ------------------------------------ |
+| **Message Action State**           | The active Message Action in the Room (Quote, Edit, or React) and its target Message(s); null when none is active | A per-Room MessageActionStore | One Room's Message rows and composer |
+| **Positional State**               | Umbrella for which Message is highlighted and the jump or scroll position. Splits across two owners (below).      | —                             | —                                    |
+| **Jump orchestration**             | Deciding to jump to a Message, resolving its anchor, and requesting the jump                                      | RoomView (`useJumpToMessage`) | The Room screen                      |
+| **Scroll and highlight execution** | Performing the scroll onto the target Message and rendering its highlight                                         | The List component            | The rendered Message list            |
 
 ### Message Actions
 
@@ -139,6 +146,19 @@ A **Message Action** is the active mode on a Message in the Room view. The three
 | **Quote** | A Message Action where one or more Messages are selected to be quoted into the composer | Multi-quote      |
 | **Edit**  | A Message Action where a single Message is being edited by the current user             | Editing          |
 | **React** | A Message Action where a single Message is the target of a reaction picker              | Reacting         |
+
+## Emojis
+
+A **Reaction** and the frequently used emojis table store an emoji by _name_, never as a glyph. A name that stops resolving does not degrade to the old picture — it renders as literal `:shortname:` text — which is why names are only ever added to the resolvable set, not removed. The name travels in two forms, colon-wrapped and bare; see the ambiguity flagged below. The dataset is generated; see [emojis](docs/emojis.md) for how.
+
+| Term                 | Definition                                                                                                                                   | Aliases to avoid          |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| **Shortname**        | The colon-wrapped `:name:` token Message text and a Reaction's `emoji` field hold; the only form `useShortnameToUnicode` resolves            | Emoji code, emoji id      |
+| **Listed Name**      | The single Shortname per listed emoji that the picker shows (`emojisByCategory`) and that search returns; unlisted emoji have none           | Canonical name, primary   |
+| **Alias**            | Any other Shortname resolving to the same emoji; searchable, but search answers with the Listed Name (`water_wave` finds `ocean`)            | Synonym, alternate name   |
+| **Legacy Shortname** | A hand-maintained Shortname the generated dataset does not carry, kept resolvable by fallback because an older client could have stored it   | Deprecated name, old name |
+| **Pinned Shortname** | A Shortname held at the glyph a previous release resolved, applied at generation time, for when upstream reassigns the name to another emoji | Override, frozen name     |
+| **Custom Emoji**     | A Workspace-uploaded image emoji, stored by name plus file extension rather than resolving to unicode                                        | Custom reaction, sticker  |
 
 ## Users & Roles
 
@@ -162,17 +182,19 @@ A **Message Action** is the active mode on a Message in the Room view. The three
 
 ## Omnichannel / Livechat
 
-| Term                   | Definition                                                                                           | Aliases to avoid             |
-| ---------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------- |
-| **Omnichannel Room**   | A customer-service Room (type `'l'`) connecting a Visitor to an Agent                                | Livechat room, support chat  |
-| **Visitor**            | An external customer who initiates an Omnichannel conversation, identified by a unique token         | Client, customer, end-user   |
-| **Agent**              | A User designated to handle Omnichannel conversations, with `statusLivechat` (available/unavailable) | Support agent, operator, rep |
-| **Inquiry**            | A queued Omnichannel request waiting to be picked up or routed to an Agent                           | Queue item, ticket           |
-| **Department**         | An organizational unit that groups Agents for Omnichannel routing                                    | Team (ambiguous), group      |
-| **Omnichannel Source** | How an Omnichannel conversation was initiated (widget, email, sms, app, api)                         | Channel origin               |
-| **Served By**          | The Agent currently assigned to handle an Omnichannel Room                                           | Assigned agent, handler      |
-| **On Hold**            | An Omnichannel Room temporarily paused by the Agent                                                  | Paused, suspended            |
-| **Transfer**           | Moving an Omnichannel Room to a different Agent or Department                                        | Forward, reassign, handoff   |
+| Term                   | Definition                                                                                                    | Aliases to avoid                  |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| **Omnichannel Room**   | A customer-service Room (type `'l'`) connecting a Visitor to an Agent                                         | Livechat room, support chat       |
+| **Visitor**            | An external customer who initiates an Omnichannel conversation, identified by a unique token                  | Client, customer, end-user        |
+| **Agent**              | A User designated to handle Omnichannel conversations, with `statusLivechat` (available/unavailable)          | Support agent, operator, rep      |
+| **Inquiry**            | A queued Omnichannel request waiting to be picked up or routed to an Agent                                    | Queue item, ticket                |
+| **Department**         | An organizational unit that groups Agents for Omnichannel routing                                             | Team (ambiguous), group           |
+| **Omnichannel Source** | How an Omnichannel conversation was initiated (widget, email, sms, app, api)                                  | Channel origin                    |
+| **Served By**          | The Agent currently assigned to handle an Omnichannel Room                                                    | Assigned agent, handler           |
+| **On Hold**            | An Omnichannel Room temporarily paused by the Agent                                                           | Paused, suspended                 |
+| **Transfer**           | Moving an Omnichannel Room to a different Agent or Department                                                 | Forward, reassign, handoff        |
+| **Routing Config**     | Per-server Omnichannel routing settings that say whether Agents may Return to Queue and see the Inquiry queue | Livechat config, routing settings |
+| **Return to Queue**    | An Agent handing an Omnichannel Room back so it becomes an Inquiry again                                      | Return inquiry, release chat      |
 
 ## Encryption
 
@@ -197,12 +219,13 @@ A **Message Action** is the active mode on a Message in the Room view. The three
 
 ## Workspace & Connection
 
-| Term                  | Definition                                                                                                               | Aliases to avoid                           |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------ |
-| **Workspace**         | A Rocket.Chat deployment the app connects to, with version, settings, and enterprise modules                             | Server (legacy), instance                  |
-| **Workspace History** | List of previously connected Workspaces for quick reconnection                                                           | Recent servers                             |
-| **Meteor Connect**    | The WebSocket connection to the Workspace's DDP (Distributed Data Protocol) endpoint                                     | Socket, connection                         |
-| **Socket Health**     | Whether the Meteor Connect socket is genuinely alive — confirmed by a round trip when in doubt, reopened when known dead | Staleness (stale/gray/fresh), socket probe |
+| Term                  | Definition                                                                                                                                                                                                                                                                                | Aliases to avoid                           |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| **Workspace**         | A Rocket.Chat deployment the app connects to, with version, settings, and enterprise modules                                                                                                                                                                                              | Server (legacy), instance                  |
+| **Workspace History** | List of previously connected Workspaces for quick reconnection                                                                                                                                                                                                                            | Recent servers                             |
+| **Meteor Connect**    | The WebSocket connection to the Workspace's DDP (Distributed Data Protocol) endpoint                                                                                                                                                                                                      | Socket, connection                         |
+| **Socket Health**     | Whether the Meteor Connect socket is genuinely alive — confirmed by a round trip when in doubt, reopened when known dead                                                                                                                                                                  | Staleness (stale/gray/fresh), socket probe |
+| **DDP Subscription**  | A live server-push feed on Meteor Connect, opened by name and parameters (`stream-room-messages`, `stream-notify-user`); the SDK derives its id from those parameters, so two callers asking for the same feed share one — distinct from a **Subscription**, which is a membership record | Stream, DDP stream, sub                    |
 
 ## Navigation & Layout
 
@@ -269,5 +292,8 @@ A **Message Action** is the active mode on a Message in the Room view. The three
 - **"Preview"** is overloaded. **Message Preview** (`isPreview`) is a Message rendered outside its Room (search, pinned, share, notifications). `PreviewContent` is a different concept: the compact body of a Thread Message shown in the parent Room. Disambiguate when either could be meant.
 - **"Muted"** is overloaded: a User can be muted in a Room (a moderator action that removes send permission, recorded by `user-muted`/`mute_unmute` System Messages) OR be an **Ignored User** (a per-viewer filter that hides their Messages behind an Ignored Message placeholder, stored in `room.ignored`). Muting is a room permission; ignoring is a personal filter. Different concepts — keep them apart.
 - **"Reply"** is overloaded: **Reply Broadcast** is the action available to non-authorized users in a Broadcast Room; replying in a **Thread** is navigation into the Thread view. Neither is a **Message Action** — there is no "reply" Message Action.
+- **"Shortname"** travels in two forms and only one resolves. In-app APIs pass the **bare** name — `IEmoji`, the `emojisByCategory` and `aliasesByEmojiName` keys, `DEFAULT_EMOJIS`, `searchEmojiNames`, the frequently used table's `content`, and the name `setReaction` sends. Message text, a Reaction's `emoji` field, and the `shortnameToUnicodeMap` keys are **colon-wrapped**. `formatShortnameToUnicode` matches only the colon-wrapped form, so a bare name must be wrapped before resolving and a stored one stripped before it is looked up by name.
+- **"Pinned"** is overloaded: **Pinned** is a Message Flag (a Message pinned in a Room); a **Pinned Shortname** is an emoji name held at an older glyph by `scripts/pinned-shortnames.js`. Nothing connects them — say which one you mean.
+- **"Alias"** is overloaded. Every glossary table here has an _Aliases to avoid_ column: words **not** to use. An emoji **Alias** is the opposite — a first-class Shortname that resolves and is searchable, just not the **Listed Name** search answers with. Do not read the emoji sense as a term to avoid.
 - **"Status" vs "flags"** — a Message has exactly one delivery **Status** (Sent, Temp, Error). **Pinned** and **Starred** are independent **Message Flags**, not statuses; do not group them with delivery states.
 - **"Interaction" retired** — the selection-plus-action state was once an "interaction" concept; the canonical term is now **Message Action State**. Use **Message Action**, not "interaction", for which Message is selected and how. (Selection is not separate — it lives inside the active Message Action.)
