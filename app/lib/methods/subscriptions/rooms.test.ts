@@ -1,7 +1,7 @@
 import { createOrUpdateSubscription } from './rooms';
 import { updateLastOpen } from '../updateLastOpen';
-import { getSubscriptionByRoomId } from '../../database/services/Subscription';
-import { getMessageById } from '../../database/services/Message';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import { getMessageById } from '~/lib/database/services/Message';
 import log from '../helpers/log';
 
 jest.mock('../../services/sdk', () => ({
@@ -103,11 +103,11 @@ jest.mock('../../database', () => {
 	};
 });
 
-jest.mock('../../database/services/Subscription', () => ({
+jest.mock('~/lib/database/services/Subscription', () => ({
 	getSubscriptionByRoomId: jest.fn()
 }));
 
-jest.mock('../../database/services/Message', () => ({
+jest.mock('~/lib/database/services/Message', () => ({
 	getMessageById: jest.fn()
 }));
 
