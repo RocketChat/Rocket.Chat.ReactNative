@@ -14,7 +14,7 @@ import i18n from '~/i18n';
 import { userAgent } from '~/lib/constants/userAgent';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { isIOS } from '~/lib/methods/helpers';
-import { isConferenceUrl } from '~/lib/methods/helpers/isConferenceUrl';
+import { isConferenceUrl, isHttpsUrl } from '~/lib/methods/helpers/isConferenceUrl';
 import log from '~/lib/methods/helpers/log';
 import openLink from '~/lib/methods/helpers/openLink';
 import { random } from '~/lib/methods/helpers/random';
@@ -39,7 +39,7 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 	const loaded = useRef(false);
 	const [failed, setFailed] = useState(false);
 
-	const credentialsAllowed = isConferenceUrl(url, server);
+	const credentialsAllowed = isConferenceUrl(url, server) && isHttpsUrl(url) && isHttpsUrl(server);
 	const [readyUrl, setReadyUrl] = useState<string | null>(null);
 	const [cookieAttempt, setCookieAttempt] = useState(0);
 	const ready = !credentialsAllowed || readyUrl === url;

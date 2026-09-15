@@ -145,6 +145,18 @@ describe('ConferenceWebView', () => {
 			expect(setServerCookies).not.toHaveBeenCalled();
 		});
 
+		test('does not attach credentials to an http loopback dev server', async () => {
+			mockedStore.dispatch(selectServerRequest('http://localhost:3000', '8.0.0'));
+			const LOOPBACK_URL = 'http://localhost:3000/conference/call1';
+
+			const { queryByTestId } = await mountAndSettle(LOOPBACK_URL);
+
+			expect(setServerCookies).not.toHaveBeenCalled();
+			expect(queryByTestId('conference-webview')).toBeTruthy();
+			expect(mockWebViewProps.source).toEqual({ uri: LOOPBACK_URL });
+			expect(mockWebViewProps.injectedJavaScriptBeforeContentLoaded).toBe('true;');
+		});
+
 		test('refreshing them does not tear down the running call', async () => {
 			const { queryByTestId } = await mountAndSettle();
 

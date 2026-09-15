@@ -50,11 +50,10 @@ describe('setServerCookies', () => {
 		expect(mockedSetFromResponse).not.toHaveBeenCalled();
 	});
 
-	test('allows loopback http for local dev without the secure flag', async () => {
-		await setServerCookies('http://localhost:3000', { id: 'uid1', token: 'tok1' });
+	test('rejects loopback http as defense in depth, even for local dev', async () => {
+		await expect(setServerCookies('http://localhost:3000', { id: 'uid1', token: 'tok1' })).rejects.toThrow();
 
-		expect(cookieStringFor('rc_uid')).toContain('rc_uid=uid1');
-		expect(cookieStringFor('rc_uid')).not.toMatch(/;\s*Secure/i);
+		expect(mockedSetFromResponse).not.toHaveBeenCalled();
 	});
 
 	test('keeps Path=/ for a root server', async () => {

@@ -14,6 +14,14 @@ export const isSecureHttpUrl = (value: string): boolean => {
 	}
 };
 
+export const isHttpsUrl = (value: string): boolean => {
+	try {
+		return new URL(value).protocol === 'https:';
+	} catch {
+		return false;
+	}
+};
+
 export const isConferenceUrl = (url: string, server: string): boolean => {
 	if (!server || !isSecureHttpUrl(server)) {
 		return false;

@@ -1,4 +1,4 @@
-import { isConferenceUrl } from './isConferenceUrl';
+import { isConferenceUrl, isHttpsUrl } from './isConferenceUrl';
 
 describe('isConferenceUrl', () => {
 	const server = 'https://open.rocket.chat';
@@ -49,5 +49,20 @@ describe('isConferenceUrl', () => {
 		expect(isConferenceUrl('http://localhost:3000/conference/abc123', 'http://localhost:3000')).toBe(true);
 		expect(isConferenceUrl('http://127.0.0.1:3000/conference/abc123', 'http://127.0.0.1:3000')).toBe(true);
 		expect(isConferenceUrl('http://[::1]:3000/conference/abc123', 'http://[::1]:3000')).toBe(true);
+	});
+});
+
+describe('isHttpsUrl', () => {
+	test('accepts https', () => {
+		expect(isHttpsUrl('https://open.rocket.chat')).toBe(true);
+	});
+
+	test('rejects loopback http', () => {
+		expect(isHttpsUrl('http://localhost:3000')).toBe(false);
+		expect(isHttpsUrl('http://127.0.0.1:3000')).toBe(false);
+	});
+
+	test('rejects a malformed url', () => {
+		expect(isHttpsUrl('not a url')).toBe(false);
 	});
 });
