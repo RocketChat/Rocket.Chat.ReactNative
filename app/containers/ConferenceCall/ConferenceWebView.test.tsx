@@ -244,10 +244,10 @@ describe('ConferenceWebView', () => {
 	});
 
 	describe('load and error handling', () => {
-		test('grants media capture to the conference host only', async () => {
+		test('grants media capture to the conference', async () => {
 			await mountAndSettle();
 
-			expect(mockWebViewProps.mediaCapturePermissionGrantType).toBe('grantIfSameHostElseDeny');
+			expect(mockWebViewProps.mediaCapturePermissionGrantType).toBe('grant');
 		});
 
 		test('a top-level navigation re-arms http error reporting', async () => {
