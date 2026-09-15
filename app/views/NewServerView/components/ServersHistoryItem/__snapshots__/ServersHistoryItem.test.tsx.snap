@@ -244,6 +244,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onLoadStart={[Function]}
                 onProgress={[Function]}
                 placeholder={[]}
+                sfEffect={null}
                 source={
                   [
                     {
@@ -258,6 +259,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     "width": 44,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={44}
               />
@@ -565,6 +568,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onLoadStart={[Function]}
                 onProgress={[Function]}
                 placeholder={[]}
+                sfEffect={null}
                 source={
                   [
                     {
@@ -579,6 +583,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     "width": 44,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={44}
               />
@@ -886,6 +892,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onLoadStart={[Function]}
                 onProgress={[Function]}
                 placeholder={[]}
+                sfEffect={null}
                 source={
                   [
                     {
@@ -900,6 +907,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     "width": 44,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={44}
               />
@@ -1212,6 +1221,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                 onLoadStart={[Function]}
                 onProgress={[Function]}
                 placeholder={[]}
+                sfEffect={null}
                 source={
                   [
                     {
@@ -1226,6 +1236,8 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                     "width": 44,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={44}
               />
@@ -1533,6 +1545,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                 onLoadStart={[Function]}
                 onProgress={[Function]}
                 placeholder={[]}
+                sfEffect={null}
                 source={
                   [
                     {
@@ -1547,6 +1560,8 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                     "width": 44,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={44}
               />
@@ -1859,6 +1874,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 onLoadStart={[Function]}
                 onProgress={[Function]}
                 placeholder={[]}
+                sfEffect={null}
                 source={
                   [
                     {
@@ -1873,6 +1889,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     "width": 44,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={44}
               />
@@ -2180,6 +2198,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 onLoadStart={[Function]}
                 onProgress={[Function]}
                 placeholder={[]}
+                sfEffect={null}
                 source={
                   [
                     {
@@ -2194,6 +2213,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     "width": 44,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={44}
               />
@@ -2501,6 +2522,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 onLoadStart={[Function]}
                 onProgress={[Function]}
                 placeholder={[]}
+                sfEffect={null}
                 source={
                   [
                     {
@@ -2515,6 +2537,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     "width": 44,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={44}
               />

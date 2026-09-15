@@ -154,6 +154,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            sfEffect={null}
             source={
               [
                 {
@@ -171,6 +172,8 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
                 "width": 48,
               }
             }
+            symbolSize={null}
+            symbolWeight={null}
             transition={null}
             width={48}
           />
@@ -506,6 +509,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            sfEffect={null}
             source={
               [
                 {
@@ -523,6 +527,8 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
                 "width": 48,
               }
             }
+            symbolSize={null}
+            symbolWeight={null}
             transition={null}
             width={48}
           />
@@ -858,6 +864,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            sfEffect={null}
             source={
               [
                 {
@@ -875,6 +882,8 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 "width": 48,
               }
             }
+            symbolSize={null}
+            symbolWeight={null}
             transition={null}
             width={48}
           />
@@ -1210,6 +1219,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            sfEffect={null}
             source={
               [
                 {
@@ -1227,6 +1237,8 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                 "width": 48,
               }
             }
+            symbolSize={null}
+            symbolWeight={null}
             transition={null}
             width={48}
           />
