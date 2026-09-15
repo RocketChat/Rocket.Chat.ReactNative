@@ -288,7 +288,7 @@ describe('ShareView', () => {
 		(shareView as any).messageComposerRef = { current: { getText: () => 'caption', setInput: jest.fn() } };
 
 		shareView.send();
-		await Promise.resolve();
+		await new Promise(resolve => setImmediate(resolve));
 
 		expect(finishShareView).toHaveBeenCalledWith('', []);
 		expect((shareView as any).sentMessage).toBe(true);
@@ -315,8 +315,7 @@ describe('ShareView', () => {
 			.mockImplementationOnce(() => new Promise<void>((_, reject) => (rejectUpload = reject)));
 
 		const sendPromise = shareView.send();
-		await Promise.resolve();
-		await Promise.resolve();
+		await new Promise(resolve => setImmediate(resolve));
 		shareView.componentWillUnmount();
 		(shareView as any).messageComposerRef = { current: null };
 		rejectUpload(new Error('upload failed'));
@@ -407,7 +406,7 @@ describe('ShareView', () => {
 		let resolveSend!: () => void;
 		sendMessage.mockImplementationOnce(() => new Promise<void>(resolve => (resolveSend = resolve)));
 		const sendPromise = shareView.send();
-		await Promise.resolve();
+		await new Promise(resolve => setImmediate(resolve));
 
 		expect(sendMessage).toHaveBeenCalledWith('room-id', 'shared extension text', '', expect.objectContaining({ id: 'user-id' }));
 		expect(shareView.state.loading).toBe(true);
