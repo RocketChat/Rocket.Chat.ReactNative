@@ -111,4 +111,38 @@ describe('useConferenceCallStore', () => {
 
 		expect(state().expanded).toBe(false);
 	});
+
+	test('same call id on another server replaces the url', () => {
+		state().open({ callId: 'call1', url: 'https://a.rocket.chat/conference/call1', server: 'https://a.rocket.chat' });
+
+		state().open({ callId: 'call1', url: 'https://b.rocket.chat/conference/call1', server: 'https://b.rocket.chat' });
+
+		expect(state().url).toEqual('https://b.rocket.chat/conference/call1');
+		expect(state().server).toEqual('https://b.rocket.chat');
+	});
+
+	test('preflight only matches on the same server', () => {
+		state().open({
+			callId: 'new:GENERAL',
+			url: 'https://a.rocket.chat/conference/new?rid=GENERAL',
+			server: 'https://a.rocket.chat'
+		});
+
+		state().open({
+			callId: 'call1',
+			url: 'https://b.rocket.chat/conference/call1',
+			rid: 'GENERAL',
+			server: 'https://b.rocket.chat'
+		});
+
+		expect(state().url).toEqual('https://b.rocket.chat/conference/call1');
+	});
+
+	test('closing clears the owning server', () => {
+		state().open({ callId: 'call1', url: 'https://open.rocket.chat/conference/call1', server: 'https://open.rocket.chat' });
+
+		state().close();
+
+		expect(state().server).toBeUndefined();
+	});
 });

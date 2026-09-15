@@ -16,6 +16,8 @@ const workspaceCookiePath = (server: string): string | null => {
 	}
 };
 
+const hasCookieDelimiters = (value: string): boolean => /[;\r\n]/.test(value);
+
 type TSetServerCookiesOptions = {
 	/**
 	 * Write the credential cookies even when the server is plain http. Only for callers that
@@ -32,6 +34,10 @@ export const setServerCookies = async (
 ): Promise<void> => {
 	if (!allowInsecureServer && !isSecureHttpUrl(server)) {
 		throw new Error('Refusing to set server cookies for an insecure server url');
+	}
+
+	if (hasCookieDelimiters(user.id) || hasCookieDelimiters(user.token)) {
+		throw new Error('Refusing to set server cookies with unsafe credential values');
 	}
 
 	const date = new Date();

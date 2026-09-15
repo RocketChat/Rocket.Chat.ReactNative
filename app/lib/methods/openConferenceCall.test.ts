@@ -61,6 +61,7 @@ describe('openConferenceCall', () => {
 		await openConferenceCall({ callId: 'call1' });
 
 		expect(state().url).toEqual('https://open.rocket.chat/conference/call1');
+		expect(state().server).toEqual('https://open.rocket.chat');
 		expect(state().expanded).toBe(true);
 	});
 

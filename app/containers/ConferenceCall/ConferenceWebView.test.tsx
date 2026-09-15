@@ -1,4 +1,4 @@
-import { act, render } from '@testing-library/react-native';
+import { act, fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
@@ -211,6 +211,34 @@ describe('ConferenceWebView', () => {
 			await settle();
 
 			expect(setServerCookies).toHaveBeenLastCalledWith(SERVER, { id: 'uid1', token: 'tok1' });
+			expect(queryByTestId('conference-webview')).toBeTruthy();
+		});
+
+		test('shows retry instead of mounting when the cookie write fails', async () => {
+			(setServerCookies as jest.Mock).mockRejectedValueOnce(new Error('cookie failed'));
+			const { queryByTestId, queryByText } = mount();
+			await settle();
+			await settle();
+
+			expect(queryByTestId('conference-webview')).toBeNull();
+			expect(queryByText('Try again')).toBeTruthy();
+		});
+
+		test('retry re-runs the cookie write after a failure', async () => {
+			(setServerCookies as jest.Mock).mockRejectedValueOnce(new Error('cookie failed'));
+			const { queryByTestId, getByText } = mount();
+			await settle();
+			await settle();
+
+			expect(queryByTestId('conference-webview')).toBeNull();
+
+			await act(async () => {
+				fireEvent.press(getByText('Try again'));
+				await Promise.resolve();
+			});
+			await settle();
+
+			expect(setServerCookies).toHaveBeenCalledTimes(2);
 			expect(queryByTestId('conference-webview')).toBeTruthy();
 		});
 	});

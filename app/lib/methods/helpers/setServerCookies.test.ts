@@ -93,6 +93,17 @@ describe('setServerCookies', () => {
 		const expires = cookieStringFor('rc_uid').match(/Expires=([^;]+)/i)?.[1] as string;
 		expect(new Date(expires).getTime()).toBeGreaterThan(Date.now());
 	});
+
+	test.each([
+		['uid; Domain=evil.example.com', 'tok1'],
+		['uid1', 'tok; Domain=evil.example.com'],
+		['uid\r\nSet-Cookie: x=y', 'tok1'],
+		['uid1', 'tok\nSet-Cookie: x=y']
+	])('rejects unsafe credential values without writing cookies (%p)', async (id, token) => {
+		await expect(setServerCookies('https://open.rocket.chat', { id, token })).rejects.toThrow();
+
+		expect(mockedSetFromResponse).not.toHaveBeenCalled();
+	});
 });
 
 describe('clearServerCookies', () => {

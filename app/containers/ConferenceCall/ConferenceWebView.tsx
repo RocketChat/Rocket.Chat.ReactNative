@@ -41,6 +41,7 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 
 	const credentialsAllowed = isConferenceUrl(url, server);
 	const [readyUrl, setReadyUrl] = useState<string | null>(null);
+	const [cookieAttempt, setCookieAttempt] = useState(0);
 	const ready = !credentialsAllowed || readyUrl === url;
 	// Android exposes the bridge to child frames, so a cross-origin provider frame could forge
 	// the source. The token lives only in the main frame's closure, which cross-origin frames
@@ -60,17 +61,22 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 		let cancelled = false;
 
 		setServerCookies(server, { id: userId, token })
-			.catch(log)
-			.finally(() => {
+			.then(() => {
 				if (!cancelled) {
 					setReadyUrl(url);
+				}
+			})
+			.catch((e: unknown) => {
+				log(e);
+				if (!cancelled) {
+					setFailed(true);
 				}
 			});
 
 		return () => {
 			cancelled = true;
 		};
-	}, [server, url, userId, token, credentialsAllowed]);
+	}, [server, url, userId, token, credentialsAllowed, cookieAttempt]);
 
 	useEffect(() => {
 		if (expanded) {
@@ -153,6 +159,7 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 	const onRetry = useCallback(() => {
 		setFailed(false);
 		loaded.current = false;
+		setCookieAttempt(c => c + 1);
 		webviewRef.current?.reload();
 	}, []);
 

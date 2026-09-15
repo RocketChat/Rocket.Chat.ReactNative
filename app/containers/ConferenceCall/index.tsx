@@ -11,18 +11,18 @@ import { useTheme } from '~/theme';
 import ConferenceWebView from './ConferenceWebView';
 
 const ConferenceCall = () => {
-	const { callId, url, expanded } = useConferenceCallStore();
+	const { callId, url, expanded, server: owner } = useConferenceCallStore();
 	const server = useAppSelector(state => state.server.server);
 	const { theme } = useTheme();
 	const { top, bottom } = useSafeAreaInsets();
 	const callServer = useRef(server);
 
 	useEffect(() => {
-		if (callId && callServer.current !== server) {
+		if (callId && (owner ?? callServer.current) !== server) {
 			closeConferenceCall();
 		}
 		callServer.current = server;
-	}, [server, callId]);
+	}, [server, callId, owner]);
 
 	const onOpenLink = useCallback(
 		(path: string) => {

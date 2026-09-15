@@ -51,6 +51,6 @@ export const openConferenceCall = async (target: TConferenceTarget): Promise<voi
 		return;
 	}
 
-	useConferenceCallStore.getState().open({ callId: targetId(target), url, rid: target.rid });
+	useConferenceCallStore.getState().open({ callId: targetId(target), url, rid: target.rid, server });
 	expandConferenceCall();
 };
