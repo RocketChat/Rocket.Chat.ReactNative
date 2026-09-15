@@ -247,9 +247,9 @@ PODS:
   - libwebp/sharpyuv (1.5.0)
   - libwebp/webp (1.5.0):
     - libwebp/sharpyuv
-  - MMKV (2.2.4):
-    - MMKVCore (~> 2.2.4)
-  - MMKVCore (2.2.4)
+  - MMKV (2.4.0):
+    - MMKVCore (~> 2.4.0)
+  - MMKVCore (2.4.0)
   - MobileCrypto (0.4.0):
     - boost
     - DoubleConversion
@@ -283,14 +283,14 @@ PODS:
     - nanopb/encode (= 3.30910.0)
   - nanopb/decode (3.30910.0)
   - nanopb/encode (3.30910.0)
-  - NitroMmkv (4.1.2):
+  - NitroMmkv (4.3.2):
     - boost
     - DoubleConversion
     - fast_float
     - fmt
     - glog
     - hermes-engine
-    - MMKVCore (= 2.2.4)
+    - MMKVCore (= 2.4.0)
     - NitroModules
     - RCT-Folly
     - RCT-Folly/Fabric
@@ -314,7 +314,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - NitroModules (0.33.9):
+  - NitroModules (0.37.1):
     - boost
     - DoubleConversion
     - fast_float
@@ -4069,12 +4069,12 @@ SPEC CHECKSUMS:
   libavif: 5f8e715bea24debec477006f21ef9e95432e254d
   libdav1d: 23581a4d8ec811ff171ed5e2e05cd27bad64c39f
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
-  MMKV: 1a8e7dbce7f9cad02c52e1b1091d07bd843aefaf
-  MMKVCore: f2dd4c9befea04277a55e84e7812f930537993df
+  MMKV: 86859fdfa2b0b21db1fd6e48788474a6416a2c77
+  MMKVCore: 3d16ce9f7d411e135020915fde98a056859a1efa
   MobileCrypto: cbe4be11a33b5888e77861de9346fa5d3fccc8ac
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
-  NitroMmkv: 4a2d747ce97a4ae740b3cb3a3853366813faf831
-  NitroModules: 18e41c298d86fc753fc754969fa9f84044e70711
+  NitroMmkv: 5d6c3a5cca0e47be9a4dd3f66262dbad0799c087
+  NitroModules: f2a165630c12aed5793d6b42b9002c6a649ea04e
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
   RCT-Folly: 846fda9475e61ec7bcbf8a3fe81edfcaeb090669
@@ -4148,7 +4148,7 @@ SPEC CHECKSUMS:
   React-timing: c39eeb992274aeaeb9f4666dc97a36a31d33fe94
   React-utils: 2f9ba0088251788ad66aa1855ff99ed2424024d2
   ReactAppDependencyProvider: 1bcd3527ac0390a1c898c114f81ff954be35ed79
-  ReactCodegen: 7fadc30654a54b3a0d62df08f55e2211e25486ee
+  ReactCodegen: e0a2012cda55dfd0d2e626ba5d11929c9ff5986c
   ReactCommon: 6d0fa86a4510730da7c72560e0ced14258292ab9
   ReactNativeIncallManager: dccd3e7499caa3bb73d3acfedf4fb0360f1a87d5
   RNBootSplash: 7fcc9a58ae343aeb1a1dd49f9030832fe432c544
@@ -4163,7 +4163,7 @@ SPEC CHECKSUMS:
   RNFBApp: a448037d2df74af9d374a0b765be12ff1e844dc0
   RNFBCrashlytics: c3bb5533f9957eddc88f3ea383583309a4ce9f89
   RNGestureHandler: b8d2e75c2e88fc2a1f6be3b3beeeed80b88fa37d
-  RNImageCropPicker: 0a63af4b79e514c1edd6c3152f19300c5ed85312
+  RNImageCropPicker: 5432d75a3bc7209dc8b6ab189fcfe19bd6339fb9
   RNKeychain: 76d042fc1dfba47f3945920bc82e0bce9ad1ff55
   RNLocalize: c46dd4008dc8990a098fcafd6ee051122a1ccfda
   RNReanimated: e1690cdd7f215cfb96a3b7986b81889867dfdb4f
