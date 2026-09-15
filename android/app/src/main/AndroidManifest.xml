@@ -22,6 +22,7 @@
     <!-- Strip restricted permissions inherited from react-native-callkeep. The app uses self-managed Telecom (MANAGE_OWN_CALLS) and does not need dialer or phone-number access. -->
     <uses-permission android:name="android.permission.CALL_PHONE" tools:node="remove" />
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" tools:node="remove" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32" tools:replace="android:maxSdkVersion" />
     <uses-permission android:name="android.permission.BIND_TELECOM_CONNECTION_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />

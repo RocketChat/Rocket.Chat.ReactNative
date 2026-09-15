@@ -1,5 +1,5 @@
 diff --git a/node_modules/expo-font/android/src/main/java/expo/modules/font/FontLoaderModule.kt b/node_modules/expo-font/android/src/main/java/expo/modules/font/FontLoaderModule.kt
-index 2cd51dc..db368ff 100644
+index dbb5cbc..0d80836 100644
 --- a/node_modules/expo-font/android/src/main/java/expo/modules/font/FontLoaderModule.kt
 +++ b/node_modules/expo-font/android/src/main/java/expo/modules/font/FontLoaderModule.kt
 @@ -5,6 +5,7 @@ package expo.modules.font
@@ -10,7 +10,7 @@ index 2cd51dc..db368ff 100644
  import com.facebook.react.common.assets.ReactFontManager
  import expo.modules.kotlin.exception.CodedException
  import expo.modules.kotlin.exception.Exceptions
-@@ -34,6 +35,25 @@ open class FontLoaderModule : Module() {
+@@ -37,6 +38,25 @@ open class FontLoaderModule : Module() {
      AsyncFunction("loadAsync") { fontFamilyName: String, localUri: String ->
        val context = appContext.reactContext ?: throw Exceptions.ReactContextLost()
  
@@ -26,7 +26,7 @@ index 2cd51dc..db368ff 100644
 +                val typeface = runCatching { Typeface.createFromAsset(context.assets, candidate) }.getOrNull()
 +                if (typeface != null) {
 +                    ReactFontManager.getInstance().setTypeface(fontFamilyName, Typeface.NORMAL, typeface)
-+                    loadedFonts = loadedFonts.toMutableSet().apply { add(fontFamilyName) }.toList()
++                    loadedFonts = getLoadedFonts().toMutableSet().apply { add(fontFamilyName) }.toList()
 +                    return@AsyncFunction // Exit early if we successfully loaded the font
 +                }
 +            }
