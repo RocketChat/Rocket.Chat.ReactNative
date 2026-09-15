@@ -442,7 +442,6 @@ describe('ShareView', () => {
 	});
 
 	it('bridges real origin media callbacks into ShareView and restores current text and Quotes', async () => {
-		jest.useFakeTimers();
 		const documentPicker = require('expo-document-picker').getDocumentAsync as jest.Mock;
 		const navigate = require('~/lib/navigation/appNavigation').navigate as jest.Mock;
 		const getSubscriptionByRoomId = require('~/lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
@@ -484,7 +483,6 @@ describe('ShareView', () => {
 
 		const initialization = shareView.startShareView();
 		await act(async () => {
-			jest.advanceTimersByTime(100);
 			await initialization;
 		});
 		act(() => fireEvent.changeText(screen.getByTestId('message-composer-input-share'), 'Share text'));
@@ -499,7 +497,6 @@ describe('ShareView', () => {
 	});
 
 	it.each(['success', 'failure'] as const)('bridges real callbacks through ShareView send %s', async outcome => {
-		jest.useFakeTimers();
 		const documentPicker = require('expo-document-picker').getDocumentAsync as jest.Mock;
 		const navigate = require('~/lib/navigation/appNavigation').navigate as jest.Mock;
 		documentPicker.mockResolvedValue({
