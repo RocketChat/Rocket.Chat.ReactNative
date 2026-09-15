@@ -1,0 +1,31 @@
+diff --git a/node_modules/react-native-math-view/android/build.gradle b/node_modules/react-native-math-view/android/build.gradle
+index d960a90..263db9b 100644
+--- a/node_modules/react-native-math-view/android/build.gradle
++++ b/node_modules/react-native-math-view/android/build.gradle
+@@ -21,7 +21,7 @@ android {
+ /*
+ repositories {
+     mavenCentral()
+-    jcenter()
++    mavenCentral()
+     google()
+     maven {
+         url "https://dl.bintray.com/kexanie/maven"
+@@ -31,7 +31,7 @@ repositories {
+ buildscript {
+     repositories {
+         maven { url "https://maven.google.com" }
+-        jcenter()
++        mavenCentral()
+         google()
+         maven {
+             url 'https://maven.google.com/'
+@@ -51,7 +51,7 @@ allprojects {
+     repositories {
+         mavenLocal()
+         maven { url "https://maven.google.com" }
+-        jcenter()
++        mavenCentral()
+         google()
+         maven {
+             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
