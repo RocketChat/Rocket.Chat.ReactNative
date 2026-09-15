@@ -1,0 +1,21 @@
+diff --git a/node_modules/react-native-nitro-modules/NitroModules.podspec b/node_modules/react-native-nitro-modules/NitroModules.podspec
+index 9163edc..251c9ed 100644
+--- a/node_modules/react-native-nitro-modules/NitroModules.podspec
++++ b/node_modules/react-native-nitro-modules/NitroModules.podspec
+@@ -52,9 +52,13 @@ Pod::Spec.new do |s|
+     "cpp/utils/PropNameIDCache.hpp",
+     "cpp/views/CachedProp.hpp",
+     "cpp/views/RawPropsCompat.hpp",
+-    "cpp/views/ReactProp.hpp",
+-    "cpp/views/ViewComponentDescriptor.hpp",
+-    "cpp/views/ViewPropsHolderState.hpp",
++    # NOTE: ReactProp.hpp, ViewComponentDescriptor.hpp and ViewPropsHolderState.hpp are
++    # intentionally not public: they include <react/renderer/core/*.h>, which pulls in
++    # react_native_assert.h -> <glog/logging.h>. glog's logging.h has an #include inside
++    # `namespace google`, which is illegal once the ClangImporter modularizes it while
++    # compiling this pod's Swift sources ("import of module 'glog.log_severity' appears
++    # within namespace 'google'"). They stay in source_files, so C++ consumers that
++    # include them directly still compile.
+     # Public iOS-specific headers that will be exposed in modulemap (for Swift)
+     "ios/core/ArrayBufferHolder.hpp",
+     "ios/core/PromiseHolder.hpp",
