@@ -39,7 +39,7 @@ export default StyleSheet.create({
 		margin: 8
 	},
 	backdrop: {
-		...StyleSheet.absoluteFillObject
+		...StyleSheet.absoluteFill
 	},
 	button: {
 		marginHorizontal: 16,

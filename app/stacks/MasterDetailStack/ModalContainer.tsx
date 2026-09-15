@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	backdrop: {
-		...StyleSheet.absoluteFillObject
+		...StyleSheet.absoluteFill
 	}
 });
 

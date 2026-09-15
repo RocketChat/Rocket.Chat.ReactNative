@@ -4,6 +4,13 @@ import { Image } from 'expo-image';
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
+jest.mock('./app/lib/methods/handleMediaDownload', () => ({
+	...jest.requireActual('./app/lib/methods/handleMediaDownload'),
+	getMediaCache: jest.fn(() => Promise.resolve({ exists: false })),
+	downloadMediaFile: jest.fn(() => Promise.resolve('')),
+	isDownloadActive: jest.fn(() => false)
+}));
+
 jest.mock('react-native-safe-area-context', () => {
 	const inset = { top: 0, right: 0, bottom: 0, left: 0 };
 	return {
