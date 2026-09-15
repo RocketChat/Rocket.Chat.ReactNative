@@ -13,7 +13,14 @@ jest.mock('../../lib/methods/helpers/showToast', () => ({
 	showToast: jest.fn()
 }));
 
+jest.mock('expo-file-system/legacy', () => ({
+	getInfoAsync: jest.fn(),
+	readAsStringAsync: jest.fn(),
+	EncodingType: { Base64: 'base64', UTF8: 'utf8' }
+}));
+
 const { showToast } = require('../../lib/methods/helpers/showToast');
+const ExpoFileSystem = require('expo-file-system/legacy') as { getInfoAsync: jest.Mock; readAsStringAsync: jest.Mock };
 const { ShareListView } = require('./index');
 
 const makeInstance = ({ mediaUris, attachments }: { mediaUris?: string; attachments: any[] }) => {
@@ -74,5 +81,40 @@ describe('ShareListView', () => {
 
 		expect(showToast).not.toHaveBeenCalled();
 		expect(navigation.navigate).toHaveBeenCalledTimes(1);
+	});
+
+	it('toasts and closes before channel select when no shared file is valid', async () => {
+		ExpoFileSystem.getInfoAsync.mockResolvedValue({ exists: false, uri: 'file:///missing.jpg' });
+		const shareListView = makeInstance({ mediaUris: 'file:///missing.jpg', attachments: [] });
+		const { dispatch } = shareListView.props as any;
+
+		await shareListView.componentDidMount();
+
+		expect(showToast).toHaveBeenCalledTimes(1);
+		expect(dispatch).toHaveBeenCalledTimes(1);
+	});
+
+	it('does not toast on mount when at least one shared file is valid', async () => {
+		ExpoFileSystem.getInfoAsync.mockResolvedValue({ exists: true, uri: 'file:///valid.jpg', size: 1 });
+		ExpoFileSystem.readAsStringAsync.mockResolvedValue('');
+		const shareListView = makeInstance({ mediaUris: 'file:///valid.jpg', attachments: [] });
+		const { dispatch } = shareListView.props as any;
+
+		await shareListView.componentDidMount();
+
+		expect(showToast).not.toHaveBeenCalled();
+		expect(dispatch).not.toHaveBeenCalled();
+	});
+
+	it('toasts and closes before channel select when the shared file exists but is not readable', async () => {
+		ExpoFileSystem.getInfoAsync.mockResolvedValue({ exists: true, uri: 'file:///unreadable.jpg', size: 1 });
+		ExpoFileSystem.readAsStringAsync.mockRejectedValue(new Error('Permission denied'));
+		const shareListView = makeInstance({ mediaUris: 'file:///unreadable.jpg', attachments: [] });
+		const { dispatch } = shareListView.props as any;
+
+		await shareListView.componentDidMount();
+
+		expect(showToast).toHaveBeenCalledTimes(1);
+		expect(dispatch).toHaveBeenCalledTimes(1);
 	});
 });

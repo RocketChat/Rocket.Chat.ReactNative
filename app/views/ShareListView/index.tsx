@@ -108,27 +108,45 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		if (mediaUris) {
 			try {
 				const info = await Promise.all(mediaUris.split(',').map((uri: string) => FileSystem.getInfoAsync(uri)));
-				const attachments = info
-					.map(file => {
-						if (!file.exists) {
-							return null;
-						}
+				const attachments = (
+					await Promise.all(
+						info.map(async file => {
+							if (!file.exists) {
+								return null;
+							}
+							try {
+								await FileSystem.readAsStringAsync(file.uri, {
+									encoding: FileSystem.EncodingType.Base64,
+									position: 0,
+									length: 1
+								});
+							} catch {
+								return null;
+							}
 
-						return {
-							filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
-							description: '',
-							size: file.size,
-							mime: mime.lookup(file.uri) || '',
-							path: file.uri
-						};
-					})
-					.filter((file): file is IFileToShare => !!file);
+							return {
+								filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
+								description: '',
+								size: file.size,
+								mime: mime.lookup(file.uri) || '',
+								path: file.uri
+							};
+						})
+					)
+				).filter((file): file is IFileToShare => !!file);
 				this.setState({
 					// text,
 					attachments
 				});
+				if (!attachments.length) {
+					showToast(I18n.t('Share_no_valid_attachments'));
+					this.closeShareExtension();
+					return;
+				}
 			} catch {
-				// Do nothing
+				showToast(I18n.t('Share_no_valid_attachments'));
+				this.closeShareExtension();
+				return;
 			}
 		}
 
