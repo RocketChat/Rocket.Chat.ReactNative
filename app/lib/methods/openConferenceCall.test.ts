@@ -1,6 +1,6 @@
 import { setUser } from '~/actions/login';
 import { selectServerRequest } from '~/actions/server';
-import { clearSettings, updateSettings } from '~/actions/settings';
+import { clearSettings } from '~/actions/settings';
 import { mockedStore } from '~/reducers/mockedStore';
 import Navigation from '../navigation/appNavigation';
 import { closeConferenceCall } from '../services/conference/conferenceCallNavigation';
@@ -53,7 +53,6 @@ describe('openConferenceCall', () => {
 		(Navigation.navigate as jest.Mock).mockClear();
 		mockedStore.dispatch(clearSettings());
 		mockedStore.dispatch(selectServerRequest('https://open.rocket.chat', '8.0.0'));
-		mockedStore.dispatch(updateSettings('VideoConf_Conference_Window_Enabled', true));
 		mockedStore.dispatch(setUser({ id: 'uid1', token: 'tok1' }));
 	});
 
@@ -115,15 +114,6 @@ describe('openConferenceCall', () => {
 
 	test('reports rather than silently swallowing a join it cannot serve', async () => {
 		mockedStore.dispatch(selectServerRequest('', '8.0.0'));
-
-		await expect(openConferenceCall({ callId: 'call1' })).rejects.toThrow();
-
-		expect(state().callId).toBeUndefined();
-		expect(Navigation.navigate).not.toHaveBeenCalled();
-	});
-
-	test('reports a join attempted while the conference window is disabled', async () => {
-		mockedStore.dispatch(updateSettings('VideoConf_Conference_Window_Enabled', false));
 
 		await expect(openConferenceCall({ callId: 'call1' })).rejects.toThrow();
 

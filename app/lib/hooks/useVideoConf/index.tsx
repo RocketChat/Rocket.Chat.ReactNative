@@ -11,7 +11,6 @@ import { openConferenceCall } from '~/lib/methods/openConferenceCall';
 import { requestVoipCallPermissions } from '~/lib/methods/voipCallPermissions';
 import { videoConferenceGetCapabilities } from '~/lib/services/restApi';
 import { useAppSelector } from '../useAppSelector';
-import { isConferenceWindowEnabled } from '~/lib/methods/helpers/isConferenceWindowEnabled';
 import StartACallActionSheet from './StartACallActionSheet';
 import { useVideoConfCall } from './useVideoConfCall';
 
@@ -39,30 +38,30 @@ export const useVideoConf = (
 
 	const isServer5OrNewer = useMemo(() => compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0'), [serverVersion]);
 
-	const canInitAnCall = async (): Promise<boolean> => {
-		if (!callEnabled) return false;
+	const checkCallAvailability = async (): Promise<{ canInit: boolean; providerName?: string }> => {
+		if (!callEnabled) return { canInit: false };
 
 		if (isServer5OrNewer) {
 			try {
-				await videoConferenceGetCapabilities();
-				return true;
+				const capabilities = await videoConferenceGetCapabilities();
+				return { canInit: true, providerName: capabilities.success ? capabilities.providerName : undefined };
 			} catch (error: any) {
 				const isAdmin = !!user.roles?.includes('admin');
 				handleErrors(isAdmin, error?.data?.error || availabilityErrors.NOT_CONFIGURED);
-				return false;
+				return { canInit: false };
 			}
 		}
-		return true;
+		return { canInit: true };
 	};
 
 	const showInitCallActionSheet = async () => {
 		try {
-			const canInit = await canInitAnCall();
+			const { canInit, providerName } = await checkCallAvailability();
 			if (!canInit) {
 				return;
 			}
 
-			if (isConferenceWindowEnabled()) {
+			if (providerName === 'livekit') {
 				await openConferenceCall({ rid });
 				return;
 			}

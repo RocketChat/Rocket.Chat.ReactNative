@@ -8,7 +8,7 @@ import {
 import { preflightCallId, useConferenceCallStore } from '../services/conference/useConferenceCallStore';
 import { store } from '../store/auxStore';
 import { buildConferenceUrl } from './helpers/buildConferenceUrl';
-import { isConferenceWindowEnabled } from './helpers/isConferenceWindowEnabled';
+import { isSecureHttpUrl } from './helpers/isConferenceUrl';
 import log from './helpers/log';
 import { requestVoipCallPermissions } from './voipCallPermissions';
 
@@ -29,13 +29,15 @@ const requestCallPermissions = async (): Promise<void> => {
 };
 
 export const openConferenceCall = async (target: TConferenceTarget): Promise<void> => {
-	// These two mean the request cannot be served at all. Throwing rather than returning keeps the
-	// caller's error handling in play — returning would leave the user tapping Join to no effect.
-	if (!isConferenceWindowEnabled()) {
-		throw new Error('Cannot open the conference window: it is disabled for this server');
+	const { server } = store.getState().server;
+
+	// An insecure server cannot be handed the login token this window authenticates with. Throwing
+	// rather than returning keeps the caller's error handling in play — returning would leave the
+	// user tapping Join to no effect.
+	if (!isSecureHttpUrl(server)) {
+		throw new Error(`Cannot open the conference window for an insecure server "${server}"`);
 	}
 
-	const { server } = store.getState().server;
 	const url = buildConferenceUrl(server, target);
 
 	if (!url) {

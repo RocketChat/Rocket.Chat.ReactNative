@@ -1,9 +1,9 @@
 import { selectServerRequest } from '~/actions/server';
-import { clearSettings, updateSettings } from '~/actions/settings';
+import { clearSettings } from '~/actions/settings';
 import i18n from '~/i18n';
 import { mockedStore } from '~/reducers/mockedStore';
 import navigation from '../navigation/appNavigation';
-import { videoConferenceJoin } from '../services/restApi';
+import { videoConferenceGetCapabilities, videoConferenceJoin } from '../services/restApi';
 import { initStore } from '../store/auxStore';
 import { showErrorAlert } from './helpers/info';
 import openLink from './helpers/openLink';
@@ -15,10 +15,14 @@ jest.mock('../navigation/appNavigation', () => ({ navigate: jest.fn() }));
 jest.mock('./helpers/openLink', () => jest.fn());
 jest.mock('./openConferenceCall', () => ({ openConferenceCall: jest.fn(() => Promise.resolve()) }));
 jest.mock('./voipCallPermissions', () => ({ requestVoipCallPermissions: jest.fn(() => Promise.resolve(true)) }));
-jest.mock('../services/restApi', () => ({ videoConferenceJoin: jest.fn() }));
+jest.mock('../services/restApi', () => ({
+	videoConferenceJoin: jest.fn(),
+	videoConferenceGetCapabilities: jest.fn()
+}));
 jest.mock('./helpers/info', () => ({ showErrorAlert: jest.fn() }));
 
 const mockedJoin = videoConferenceJoin as jest.Mock;
+const mockedCapabilities = videoConferenceGetCapabilities as jest.Mock;
 
 describe('videoConfJoin', () => {
 	beforeAll(() => {
@@ -29,10 +33,11 @@ describe('videoConfJoin', () => {
 		jest.clearAllMocks();
 		mockedStore.dispatch(clearSettings());
 		mockedStore.dispatch(selectServerRequest('https://open.rocket.chat', '8.0.0'));
+		mockedCapabilities.mockResolvedValue({ success: true, providerName: 'jitsi' });
 		mockedJoin.mockResolvedValue({ success: true, url: 'https://meet.jit.si/room1', providerName: 'jitsi' });
 	});
 
-	describe('without the conference window', () => {
+	describe('with a non-livekit provider', () => {
 		test('opens a jitsi call in the jitsi screen', async () => {
 			await videoConfJoin('call1', true, true);
 
@@ -44,6 +49,7 @@ describe('videoConfJoin', () => {
 		});
 
 		test('opens any other provider as a link', async () => {
+			mockedCapabilities.mockResolvedValue({ success: true, providerName: 'bbb' });
 			mockedJoin.mockResolvedValue({ success: true, url: 'https://bbb.example.com/x', providerName: 'bbb' });
 
 			await videoConfJoin('call1', true, true);
@@ -51,7 +57,7 @@ describe('videoConfJoin', () => {
 			expect(openLink).toHaveBeenCalledWith('https://bbb.example.com/x');
 		});
 
-		test('asks the server where to go', async () => {
+		test('joins through the regular endpoint', async () => {
 			await videoConfJoin('call1', true, true);
 
 			expect(mockedJoin).toHaveBeenCalledWith('call1', true, true);
@@ -63,8 +69,9 @@ describe('videoConfJoin', () => {
 			expect(openConferenceCall).not.toHaveBeenCalled();
 		});
 
-		test('does not open a blank browser tab when a URL-less provider answers', async () => {
-			mockedJoin.mockResolvedValue({ success: true, url: '', providerName: 'livekit' });
+		test('does not open a blank browser tab when an unknown provider answers with no url', async () => {
+			mockedCapabilities.mockResolvedValue({ success: true, providerName: 'unknown' });
+			mockedJoin.mockResolvedValue({ success: true, url: '', providerName: 'unknown' });
 
 			await videoConfJoin('call1', true, true);
 
@@ -97,9 +104,9 @@ describe('videoConfJoin', () => {
 		});
 	});
 
-	describe('with the conference window', () => {
+	describe('with the livekit provider', () => {
 		beforeEach(() => {
-			mockedStore.dispatch(updateSettings('VideoConf_Conference_Window_Enabled', true));
+			mockedCapabilities.mockResolvedValue({ success: true, providerName: 'livekit' });
 		});
 
 		test('opens the conference page for the call', async () => {
@@ -114,22 +121,13 @@ describe('videoConfJoin', () => {
 			expect(openConferenceCall).toHaveBeenCalledWith({ callId: 'call1', rid: 'GENERAL' });
 		});
 
-		test('falls back to the regular join flow on a cleartext server', async () => {
-			mockedStore.dispatch(selectServerRequest('http://open.rocket.chat', '8.0.0'));
-
-			await videoConfJoin('call1', true, true);
-
-			expect(openConferenceCall).not.toHaveBeenCalled();
-			expect(mockedJoin).toHaveBeenCalledWith('call1', true, true);
-		});
-
-		test('does not post the join — the page does that after its preflight', async () => {
+		test('does not call the join endpoint — the embedded page does its own join', async () => {
 			await videoConfJoin('call1', true, true);
 
 			expect(mockedJoin).not.toHaveBeenCalled();
 		});
 
-		test('does not use the jitsi screen even for jitsi', async () => {
+		test('does not use the jitsi screen even for a call that would otherwise look like jitsi', async () => {
 			await videoConfJoin('call1', true, true);
 
 			expect(navigation.navigate).not.toHaveBeenCalledWith('JitsiMeetView', expect.anything());

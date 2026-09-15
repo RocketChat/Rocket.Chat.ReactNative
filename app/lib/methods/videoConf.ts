@@ -1,8 +1,7 @@
 import i18n from '~/i18n';
 import navigation from '../navigation/appNavigation';
-import { videoConferenceJoin } from '../services/restApi';
+import { videoConferenceGetCapabilities, videoConferenceJoin } from '../services/restApi';
 import { showErrorAlert } from './helpers';
-import { isConferenceWindowEnabled } from './helpers/isConferenceWindowEnabled';
 import log from './helpers/log';
 import openLink from './helpers/openLink';
 import { openConferenceCall } from './openConferenceCall';
@@ -15,7 +14,10 @@ export const videoConfJoin = async (
 	{ fromPush, rid }: { fromPush?: boolean; rid?: string } = {}
 ): Promise<void> => {
 	try {
-		if (isConferenceWindowEnabled()) {
+		// Read-only: checking here doesn't post a join, which the embedded page does itself once it loads.
+		const capabilities = await videoConferenceGetCapabilities();
+
+		if (capabilities.success && capabilities.providerName === 'livekit') {
 			await openConferenceCall({ callId, rid });
 			return;
 		}
