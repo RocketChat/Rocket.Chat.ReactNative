@@ -216,7 +216,7 @@
 	},
 	"snyk": true,
 	"engines": {
-		"node": ">=18"
+		"node": ">=22.13.0"
 	},
 	"codegenConfig": {
 		"name": "SSLPinning",
@@ -227,6 +227,6 @@
 		}
 	},
 	"volta": {
-		"node": "24.13.1"
+		"node": "22.13.0"
 	}
 }
