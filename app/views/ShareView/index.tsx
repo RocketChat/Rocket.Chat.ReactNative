@@ -256,7 +256,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		Keyboard.dismiss();
 
 		const { attachments, room, text, thread, selected } = this.state;
-		const { server, user } = this.props;
+		const { navigation, server, user, dispatch } = this.props;
 		// flush the composer caption into the selected attachment before sending
 		this.saveSelectedDescription();
 
@@ -274,11 +274,14 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
-			this.setShareLoading(true);
+			this.setState({ loading: true });
+			sendLoadingEvent({ visible: true });
 
 			// if it's not share extension this can close
 		} else {
-			this.closeShareView();
+			this.sentMessage = true;
+			this.finishShareView('', []);
+			navigation.pop();
 		}
 
 		let msg: string | undefined;
@@ -319,7 +322,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		// if it's share extension this should close
 		if (this.isShareExtension) {
-			this.closeShareView();
+			sendLoadingEvent({ visible: false });
+			dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		}
 	};
 
