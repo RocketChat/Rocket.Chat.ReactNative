@@ -129,6 +129,8 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
+  - ExpoQuickLook (0.4.0):
+    - ExpoModulesCore
   - ExpoSystemUI (6.0.9):
     - ExpoModulesCore
   - ExpoVideoThumbnails (10.0.8):
@@ -3097,8 +3099,6 @@ PODS:
     - FirebaseCoreExtension
     - React-Core
     - RNFBApp
-  - RNFileViewer (2.1.4):
-    - React-Core
   - RNGestureHandler (2.28.0):
     - boost
     - DoubleConversion
@@ -3590,6 +3590,7 @@ DEPENDENCIES:
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
+  - "ExpoQuickLook (from `../node_modules/@magrinj/expo-quick-look/ios`)"
   - ExpoSystemUI (from `../node_modules/expo-system-ui/ios`)
   - ExpoVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
   - ExpoWebBrowser (from `../node_modules/expo-web-browser/ios`)
@@ -3690,7 +3691,6 @@ DEPENDENCIES:
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
-  - RNFileViewer (from `../node_modules/react-native-file-viewer`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
@@ -3779,6 +3779,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-local-authentication/ios"
   ExpoModulesCore:
     :path: "../node_modules/expo-modules-core"
+  ExpoQuickLook:
+    :path: "../node_modules/@magrinj/expo-quick-look/ios"
   ExpoSystemUI:
     :path: "../node_modules/expo-system-ui/ios"
   ExpoVideoThumbnails:
@@ -3974,8 +3976,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBCrashlytics:
     :path: "../node_modules/@react-native-firebase/crashlytics"
-  RNFileViewer:
-    :path: "../node_modules/react-native-file-viewer"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
@@ -4023,6 +4023,7 @@ SPEC CHECKSUMS:
   ExpoKeepAwake: 55f75eca6499bb9e4231ebad6f3e9cb8f99c0296
   ExpoLocalAuthentication: 8a31808565da7af926dd9b595e98594d8b1553b6
   ExpoModulesCore: 91a57f1d109cf53fe58d44fcf6b68a777561549a
+  ExpoQuickLook: 7ac65cd559a74619ea41e13df20e9d7a61e79ea6
   ExpoSystemUI: 2ad325f361a2fcd96a464e8574e19935c461c9cc
   ExpoVideoThumbnails: 503a79271416c8723f04b55ea4737282513ebe4f
   ExpoWebBrowser: 17b064c621789e41d4816c95c93f429b84971f52
@@ -4141,7 +4142,6 @@ SPEC CHECKSUMS:
   RNFBAnalytics: 2e8b8ffcd2bb3d59a43ecbe09571c73c56edef7a
   RNFBApp: a448037d2df74af9d374a0b765be12ff1e844dc0
   RNFBCrashlytics: c3bb5533f9957eddc88f3ea383583309a4ce9f89
-  RNFileViewer: f9424017fa643c115c1444e11292e84fb16ddd68
   RNGestureHandler: b8d2e75c2e88fc2a1f6be3b3beeeed80b88fa37d
   RNImageCropPicker: 0a63af4b79e514c1edd6c3152f19300c5ed85312
   RNKeychain: 76d042fc1dfba47f3945920bc82e0bce9ad1ff55
