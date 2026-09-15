@@ -37,6 +37,8 @@ import {
 import { type TRoomOrPreview } from '~/definitions/TRoom';
 import { sendAttachments } from '~/lib/methods/sendFileMessage/sendAttachments';
 import { sendMessage } from '~/lib/methods/sendMessage';
+import { showToast } from '~/lib/methods/helpers/showToast';
+import { isE2ELegacyUpload, isTooLongMessage, sendLongMessageAsFile } from '~/lib/methods/helpers/processTooLongMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '~/lib/methods/helpers';
 import {
 	createMessageActionStore,
@@ -66,10 +68,15 @@ interface IShareViewProps {
 	serverVersion?: string;
 	FileUpload_MediaTypeWhiteList?: string;
 	FileUpload_MaxFileSize?: number;
+	Message_MaxAllowedSize?: number;
+	Message_AllowConvertLongMessagesToAttachment?: boolean;
+	FileUpload_Enabled?: boolean;
 	dispatch: Dispatch;
 }
 
 type TShareServerInfo = Partial<Pick<IServer, 'version' | 'FileUpload_MaxFileSize' | 'FileUpload_MediaTypeWhiteList'>>;
+
+type TSharePolicy = { maxAllowedSize?: number; allowConvert?: boolean; fileUploadEnabled?: boolean };
 
 class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private messageComposerRef: RefObject<IMessageComposerRef | null>;
@@ -248,10 +255,22 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		Keyboard.dismiss();
 
-		const { attachments, room, text, thread } = this.state;
+		const { attachments, room, text, thread, selected } = this.state;
 		const { navigation, server, user, dispatch } = this.props;
 		// flush the composer caption into the selected attachment before sending
 		this.saveSelectedDescription();
+
+		const { maxAllowedSize, allowConvert, fileUploadEnabled } = await this.getSharePolicy();
+
+		// Oversized attachment captions cannot convert to files; reject while preserving input.
+		if (attachments.length && isTooLongMessage(selected?.description || '', maxAllowedSize)) {
+			showToast(I18n.t('Message_too_long'));
+			return;
+		}
+
+		if (!attachments.length && (await this.handleOverLimitText({ maxAllowedSize, allowConvert, fileUploadEnabled }))) {
+			return;
+		}
 
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
@@ -382,6 +401,88 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		return compareServerVersion(this.effectiveServerVersion, 'greaterThanOrEqualTo', '8.4.0');
 	}
 
+	// Target-workspace policy. The servers table has no columns for these keys, so the target
+	// database's settings table is the only place they exist; Redux is the fallback for the
+	// window where a server switch has not finished re-syncing settings yet.
+	private getSharePolicy = async (): Promise<TSharePolicy> => {
+		const { Message_MaxAllowedSize, Message_AllowConvertLongMessagesToAttachment, FileUpload_Enabled } = this.props;
+		const fallback = {
+			maxAllowedSize: Message_MaxAllowedSize,
+			allowConvert: Message_AllowConvertLongMessagesToAttachment,
+			fileUploadEnabled: FileUpload_Enabled
+		};
+		try {
+			const db = database.active;
+			const rows = (await db
+				.get('settings')
+				.query(
+					Q.where('id', Q.oneOf(['Message_MaxAllowedSize', 'Message_AllowConvertLongMessagesToAttachment', 'FileUpload_Enabled']))
+				)
+				.fetch()) as { id: string; valueAsNumber?: number; valueAsBoolean?: boolean }[];
+			const byId = Object.fromEntries(rows.map(row => [row.id, row]));
+			return {
+				maxAllowedSize: byId.Message_MaxAllowedSize?.valueAsNumber ?? fallback.maxAllowedSize,
+				allowConvert: byId.Message_AllowConvertLongMessagesToAttachment?.valueAsBoolean ?? fallback.allowConvert,
+				fileUploadEnabled: byId.FileUpload_Enabled?.valueAsBoolean ?? fallback.fileUploadEnabled
+			};
+		} catch {
+			return fallback;
+		}
+	};
+
+	// Over-limit pure text is sent as a .txt file, like web (auto, no modal).
+	// The .txt upload is fast, so close only after it succeeds and keep ShareView open for retry on failure.
+	// Returns true when the text was over the limit, meaning send() is done either way.
+	private handleOverLimitText = async ({ maxAllowedSize, allowConvert, fileUploadEnabled }: TSharePolicy): Promise<boolean> => {
+		const { room, text, thread } = this.state;
+		const { server, user } = this.props;
+		if (!isTooLongMessage(text, maxAllowedSize)) {
+			return false;
+		}
+		// Rooms on servers older than 6.10 can't take encrypted uploads, so there it's rejected instead.
+		if (!fileUploadEnabled || !allowConvert || (await isE2ELegacyUpload(room.rid))) {
+			showToast(I18n.t('Message_too_long'));
+			return true;
+		}
+		if (this.isShareExtension) {
+			this.setShareLoading(true);
+		}
+		try {
+			await sendLongMessageAsFile({
+				rid: room.rid,
+				tmid: this.getThreadId(thread),
+				server,
+				user: { id: user.id, token: user.token },
+				username: user.username,
+				text
+			});
+			this.closeShareView();
+		} catch {
+			if (this.isShareExtension) {
+				this.setShareLoading(false);
+			}
+		}
+		return true;
+	};
+
+	private setShareLoading = (visible: boolean) => {
+		this.setState({ loading: visible });
+		sendLoadingEvent({ visible });
+	};
+
+	// The share extension hands control back to the app; the in-app view just pops.
+	private closeShareView = () => {
+		const { navigation, dispatch } = this.props;
+		if (this.isShareExtension) {
+			sendLoadingEvent({ visible: false });
+			dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+			return;
+		}
+		this.sentMessage = true;
+		this.finishShareView('', []);
+		navigation.pop();
+	};
+
 	onRemoveQuoteMessage = (messageId: string) => {
 		this.messageActionStore.getState().actions.removeQuote(messageId);
 	};
@@ -459,7 +560,10 @@ const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
 	serverVersion: state.server.version,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList as string,
-	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize as number
+	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize as number,
+	Message_MaxAllowedSize: state.settings.Message_MaxAllowedSize as number,
+	Message_AllowConvertLongMessagesToAttachment: state.settings.Message_AllowConvertLongMessagesToAttachment as boolean,
+	FileUpload_Enabled: state.settings.FileUpload_Enabled as boolean
 });
 
 export { ShareView };
