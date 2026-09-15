@@ -78,7 +78,7 @@ jest.mock('i18n-js', () => ({
 	default: { t: (k: string) => k }
 }));
 
-jest.mock('../../lib/methods/helpers/info', () => ({
+jest.mock('~/lib/methods/helpers/info', () => ({
 	showConfirmationAlert: jest.fn(({ onPress }: { onPress: () => void }) => onPress())
 }));
 
