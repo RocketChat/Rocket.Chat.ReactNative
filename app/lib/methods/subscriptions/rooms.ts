@@ -46,7 +46,7 @@ const WINDOW_TIME = 500;
 
 export let roomsSubscription: { stop: () => void } | null = null;
 
-const createOrUpdateSubscription = async (subscription: ISubscription, room: IServerRoom | IRoom) => {
+export const createOrUpdateSubscription = async (subscription: ISubscription, room: IServerRoom | IRoom): Promise<void> => {
 	try {
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
@@ -151,13 +151,12 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 		}
 
 		const tmp = merge(subscription, room);
-		const sub = await getSubscriptionByRoomId(tmp.rid);
-
-		const { subscribedRoom } = store.getState().room;
-		const lastMessage = tmp.lastMessage && subscribedRoom !== tmp.rid ? buildMessage(tmp.lastMessage) : null;
-		const messageRecord = lastMessage ? await getMessageById(lastMessage._id) : null;
 
 		await db.write(async () => {
+			const sub = await getSubscriptionByRoomId(tmp.rid);
+			const { subscribedRoom } = store.getState().room;
+			const lastMessage = tmp.lastMessage && subscribedRoom !== tmp.rid ? buildMessage(tmp.lastMessage) : null;
+			const messageRecord = lastMessage ? await getMessageById(lastMessage._id) : null;
 			const batch: Model[] = [];
 
 			try {
