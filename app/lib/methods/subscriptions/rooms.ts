@@ -46,7 +46,7 @@ const WINDOW_TIME = 500;
 
 export let roomsSubscription: { stop: () => void } | null = null;
 
-export const createOrUpdateSubscription = async (subscription: ISubscription, room: IServerRoom | IRoom) => {
+export const createOrUpdateSubscription = async (subscription: ISubscription, room: IServerRoom | IRoom): Promise<void> => {
 	try {
 		const db = database.active;
 		const subCollection = db.get('subscriptions');

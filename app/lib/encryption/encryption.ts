@@ -398,7 +398,7 @@ class Encryption {
 			const decryptedSubscriptions = await Promise.all(
 				subsEncryptedToDecrypt.map(async (sub: TSubscriptionModel) => ({
 					sub,
-					newSub: await this.decryptSubscription(sub)
+					decryptedSubscription: await this.decryptSubscription(sub)
 				}))
 			);
 
@@ -406,12 +406,12 @@ class Encryption {
 			// call prepareUpdate on a record with pending changes.
 			await db.write(async () => {
 				const preparedSubscriptions = decryptedSubscriptions
-					.map(({ sub, newSub }) => {
+					.map(({ sub, decryptedSubscription }) => {
 						try {
 							return sub.prepareUpdate(
 								protectedFunction((m: TSubscriptionModel) => {
-									if (newSub?.lastMessage) {
-										m.lastMessage = newSub.lastMessage;
+									if (decryptedSubscription?.lastMessage) {
+										m.lastMessage = decryptedSubscription.lastMessage;
 									}
 								})
 							);
