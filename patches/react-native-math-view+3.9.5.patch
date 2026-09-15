@@ -18,3 +18,15 @@ index d960a90..ddf56d7 100644
          google()
          maven {
              // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+diff --git a/node_modules/react-native-math-view/android/src/main/java/io/autodidact/rnmathview/SVGShadowNode.java b/node_modules/react-native-math-view/android/src/main/java/io/autodidact/rnmathview/SVGShadowNode.java
+index e3719e6..76be8a4 100644
+--- a/node_modules/react-native-math-view/android/src/main/java/io/autodidact/rnmathview/SVGShadowNode.java
++++ b/node_modules/react-native-math-view/android/src/main/java/io/autodidact/rnmathview/SVGShadowNode.java
+@@ -11,7 +11,6 @@ import com.facebook.react.uimanager.NativeViewHierarchyManager;
+ import com.facebook.react.uimanager.ReactStylesDiffMap;
+ import com.facebook.react.uimanager.UIBlock;
+ import com.facebook.react.uimanager.UIManagerModule;
+-import com.facebook.react.uimanager.UIManagerModuleListener;
+ import com.facebook.react.uimanager.annotations.ReactProp;
+ import com.facebook.yoga.YogaMeasureFunction;
+ import com.facebook.yoga.YogaMeasureMode;
