@@ -1,6 +1,7 @@
 import { useEffect, type ReactElement, type RefObject } from 'react';
-import { act, render, screen, fireEvent, waitFor, userEvent } from '@testing-library/react-native';
+import { act, render, renderHook, screen, fireEvent, waitFor, userEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { getRecordingPermissionsAsync, requestRecordingPermissionsAsync, useAudioRecorder, PermissionStatus } from 'expo-audio';
 
 import { MessageComposerContainer } from './MessageComposerContainer';
 import { ComposerAttachments } from './components/Attachments/ComposerAttachments';
@@ -23,6 +24,10 @@ import { useMessageComposerApi } from './context';
 import { type IMessageComposerRef } from './interfaces';
 import { sendFileMessage } from '~/lib/methods/sendFileMessage';
 import { runSlashCommand } from '~/lib/services/restApi';
+import log from '~/lib/methods/helpers/log';
+import { RECORDING_SETTINGS } from '~/lib/constants/audio';
+
+jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
 jest.useFakeTimers();
 
@@ -734,6 +739,33 @@ describe('MessageComposer', () => {
 	});
 
 	describe('Audio', () => {
+		test('requests undetermined microphone permission before recording', async () => {
+			jest.mocked(getRecordingPermissionsAsync).mockResolvedValueOnce({
+				status: PermissionStatus.UNDETERMINED,
+				granted: false,
+				canAskAgain: true,
+				expires: 'never'
+			});
+			jest.mocked(requestRecordingPermissionsAsync).mockClear();
+			render(<Render />);
+			await user.press(screen.getByTestId('message-composer-send-audio'));
+			expect(requestRecordingPermissionsAsync).toHaveBeenCalled();
+			expect(screen.queryByTestId('message-composer-send-audio')).not.toBeOnTheScreen();
+		});
+
+		test('exits recording when recorder preparation fails', async () => {
+			const error = new Error('Failed to prepare recorder');
+			const { result } = renderHook(() => useAudioRecorder(RECORDING_SETTINGS));
+			const recorder = result.current;
+			jest.mocked(recorder.prepareToRecordAsync).mockRejectedValueOnce(error);
+			jest.mocked(useAudioRecorder).mockReturnValueOnce(recorder);
+			render(<Render />);
+			await user.press(screen.getByTestId('message-composer-send-audio'));
+			await waitFor(() => expect(log).toHaveBeenCalledWith(error));
+			expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
+			expect(recorder.record).not.toHaveBeenCalled();
+		});
+
 		test('tap record', async () => {
 			render(<Render />);
 			expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
