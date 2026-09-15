@@ -4,7 +4,6 @@ tags:
   - 'util'
 
 ---
-
 - runFlow:
     when:
       platform: android
@@ -15,6 +14,8 @@ tags:
           visible: '.*Add account to device.*'
           timeout: 60000
       - tapOn: 'Use without an account'
+      - takeScreenshot:
+          path: Chrome
       - extendedWaitUntil:
           visible: '.*Chrome notifications make things easier.*'
           timeout: 60000

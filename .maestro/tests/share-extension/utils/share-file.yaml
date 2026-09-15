@@ -8,18 +8,18 @@ tags:
     when:
       platform: android
     commands:
-    - pressKey: home
-    - launchApp: com.google.android.documentsui
-    - extendedWaitUntil:
-        visible: 'Files in Downloads'
-        timeout: 60000
-    - scrollUntilVisible:
-        element:
-          text: ${fileName}
-        timeout: 60000
-    - longPressOn: ${fileName}
-    - tapOn: 'Share'
-    - tapOn: 'Rocket.Chat'
+      - pressKey: home
+      - launchApp: com.google.android.documentsui
+      - extendedWaitUntil:
+          visible: 'Files in Downloads'
+          timeout: 60000
+      - scrollUntilVisible:
+          element:
+            text: ${fileName}
+          timeout: 60000
+      - longPressOn: ${fileName}
+      - tapOn: 'Share'
+      - tapOn: 'Rocket.Chat'
 
 - runFlow:
     when:
@@ -34,13 +34,13 @@ tags:
           retryTapIfNoChange: true
       - runFlow:
           when:
-            notVisible: "Grid view"
+            notVisible: 'Grid view'
           commands:
             - tapOn:
                 text: 'Search'
                 retryTapIfNoChange: true
       - extendedWaitUntil:
-          visible: "Grid view"
+          visible: 'Grid view'
           timeout: 10000
       - inputText: ${fileName}
       - evalScript: ${output.iosfilename = fileName.split('.').join(', ')}
@@ -50,7 +50,7 @@ tags:
           commands:
             - extendedWaitUntil:
                 visible:
-                    id: 'test.zip, zip'
+                  id: 'test.zip, zip'
                 timeout: 10000
             - longPressOn:
                 id: 'test.zip, zip'
@@ -73,11 +73,11 @@ tags:
             notVisible:
               text: 'Rocket.Chat'
           commands:
-              - tapOn:
-                  point: '10%, 90%'
-              - longPressOn:
-                  id: ${output.iosfilename}
-              - tapOn: 'Share'
+            - tapOn:
+                point: '10%, 90%'
+            - longPressOn:
+                id: ${output.iosfilename}
+            - tapOn: 'Share'
       - tapOn: 'Rocket.Chat'
 
 - extendedWaitUntil:
