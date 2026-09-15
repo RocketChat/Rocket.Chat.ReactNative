@@ -23,12 +23,7 @@ import { sanitizeLikeString } from '~/lib/database/utils';
 import I18n from '~/i18n';
 import { generateTriggerId } from '~/lib/methods/actions';
 import { showToast } from '~/lib/methods/helpers/showToast';
-import {
-	canConvertLongMessageToFile,
-	isE2ELegacyUpload,
-	isTooLongMessage,
-	sendLongMessageAsFile
-} from '~/lib/methods/helpers/processTooLongMessage';
+import { isE2ELegacyUpload, isTooLongMessage, sendLongMessageAsFile } from '~/lib/methods/helpers/processTooLongMessage';
 import { runSlashCommand } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
 import { prepareQuoteMessage, insertEmojiAtCursor, lastGlyphLength } from './helpers';
@@ -130,39 +125,46 @@ export const MessageComposer = ({
 
 		const textFromInput = composerInputComponentRef.current.getTextAndClear();
 
-		const convertible = canConvertLongMessageToFile({
-			isEditing: !!editingMessageId,
-			fileUploadEnabled: FileUpload_Enabled,
-			allowConvert: Message_AllowConvertLongMessagesToAttachment
-		});
+		const convertible = !editingMessageId && FileUpload_Enabled && Message_AllowConvertLongMessagesToAttachment;
+
+		const rejectTooLong = () => {
+			showToast(I18n.t('Message_too_long'));
+			composerInputComponentRef.current.setInput(textFromInput);
+		};
+
+		// Rooms on servers older than 6.10 can't take encrypted uploads, so there the message is rejected instead.
+		const trySendAsFile = async (text: string) => {
+			if (await isE2ELegacyUpload(rid)) {
+				rejectTooLong();
+				return;
+			}
+			try {
+				await sendLongMessageAsFile({
+					rid,
+					tmid,
+					server,
+					user: { id: user.id, token: user.token },
+					username: user.username,
+					text
+				});
+				if (quotedMessageIds.length) {
+					messageActionStore.getState().actions.setQuoteMessageIds([]);
+				}
+			} catch (e) {
+				log(e);
+				composerInputComponentRef.current.setInput(textFromInput);
+			}
+		};
 
 		// Over-limit plain/slash text is sent as a .txt file before slash handling, like web.
 		// Quotes are checked against the final message below; attachment captions cannot convert, so reject them.
 		if (isTooLongMessage(textFromInput, Message_MaxAllowedSize)) {
 			if (!convertible || attachments.length) {
-				showToast(I18n.t('Message_too_long'));
-				composerInputComponentRef.current.setInput(textFromInput);
+				rejectTooLong();
 				return;
 			}
 			if (!quotedMessageIds.length) {
-				if (await isE2ELegacyUpload(rid)) {
-					showToast(I18n.t('Message_too_long'));
-					composerInputComponentRef.current.setInput(textFromInput);
-					return;
-				}
-				try {
-					await sendLongMessageAsFile({
-						rid,
-						tmid,
-						server,
-						user: { id: user.id, token: user.token },
-						username: user.username,
-						text: textFromInput
-					});
-				} catch (e) {
-					log(e);
-					composerInputComponentRef.current.setInput(textFromInput);
-				}
+				await trySendAsFile(textFromInput);
 				return;
 			}
 		}
@@ -185,8 +187,7 @@ export const MessageComposer = ({
 				quotedMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds, tmid);
 				// The quote becomes the attachment message when the first description is empty.
 				if (isTooLongMessage(quotedMessage, Message_MaxAllowedSize)) {
-					showToast(I18n.t('Message_too_long'));
-					composerInputComponentRef.current.setInput(textFromInput);
+					rejectTooLong();
 					return;
 				}
 			}
@@ -216,29 +217,10 @@ export const MessageComposer = ({
 			const quoteMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds, tmid);
 			if (isTooLongMessage(quoteMessage, Message_MaxAllowedSize)) {
 				if (!convertible) {
-					showToast(I18n.t('Message_too_long'));
-					composerInputComponentRef.current.setInput(textFromInput);
+					rejectTooLong();
 					return;
 				}
-				if (await isE2ELegacyUpload(rid)) {
-					showToast(I18n.t('Message_too_long'));
-					composerInputComponentRef.current.setInput(textFromInput);
-					return;
-				}
-				try {
-					await sendLongMessageAsFile({
-						rid,
-						tmid,
-						server,
-						user: { id: user.id, token: user.token },
-						username: user.username,
-						text: quoteMessage
-					});
-					messageActionStore.getState().actions.setQuoteMessageIds([]);
-				} catch (e) {
-					log(e);
-					composerInputComponentRef.current.setInput(textFromInput);
-				}
+				await trySendAsFile(quoteMessage);
 				return;
 			}
 			onSendMessage?.(quoteMessage);

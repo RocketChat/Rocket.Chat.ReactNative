@@ -3,7 +3,7 @@ import * as FileSystem from 'expo-file-system/legacy';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { store } from '~/lib/store/auxStore';
 import { sendFileMessage } from '../sendFileMessage';
-import { canConvertLongMessageToFile, isE2ELegacyUpload, isTooLongMessage, sendLongMessageAsFile } from './processTooLongMessage';
+import { isE2ELegacyUpload, isTooLongMessage, sendLongMessageAsFile } from './processTooLongMessage';
 
 jest.mock('expo-file-system/legacy', () => ({
 	cacheDirectory: 'file:///cache/',
@@ -38,15 +38,6 @@ describe('isTooLongMessage', () => {
 	it('compares against the limit like web (msg.length > max)', () => {
 		expect(isTooLongMessage('12345', 5)).toBe(false);
 		expect(isTooLongMessage('123456', 5)).toBe(true);
-	});
-});
-
-describe('canConvertLongMessageToFile', () => {
-	it('requires uploads + convert enabled and not editing', () => {
-		expect(canConvertLongMessageToFile({ isEditing: false, fileUploadEnabled: true, allowConvert: true })).toBe(true);
-		expect(canConvertLongMessageToFile({ isEditing: true, fileUploadEnabled: true, allowConvert: true })).toBe(false);
-		expect(canConvertLongMessageToFile({ isEditing: false, fileUploadEnabled: false, allowConvert: true })).toBe(false);
-		expect(canConvertLongMessageToFile({ isEditing: false, fileUploadEnabled: true, allowConvert: false })).toBe(false);
 	});
 });
 

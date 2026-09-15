@@ -6,22 +6,8 @@ import { store } from '~/lib/store/auxStore';
 import { sendFileMessage } from '../sendFileMessage';
 import { compareServerVersion } from './compareServerVersion';
 
-export const isTooLongMessage = (text: string, maxAllowedSize?: number): boolean => {
-	if (!maxAllowedSize || maxAllowedSize <= 0) {
-		return false;
-	}
-	return text.length > maxAllowedSize;
-};
-
-export const canConvertLongMessageToFile = ({
-	isEditing,
-	fileUploadEnabled,
-	allowConvert
-}: {
-	isEditing: boolean;
-	fileUploadEnabled?: boolean;
-	allowConvert?: boolean;
-}): boolean => !isEditing && !!fileUploadEnabled && !!allowConvert;
+export const isTooLongMessage = (text: string, maxAllowedSize?: number): boolean =>
+	!!maxAllowedSize && text.length > maxAllowedSize;
 
 export const isE2ELegacyUpload = async (rid: string): Promise<boolean> => {
 	const { version: serverVersion } = store.getState().server;
