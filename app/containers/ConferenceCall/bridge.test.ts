@@ -43,12 +43,6 @@ describe('buildConferenceBridgeScript', () => {
 		expect(stored['Meteor.loginToken']).toEqual('tok1');
 	});
 
-	test('seeds an expiry in the future', () => {
-		const { stored } = run(buildConferenceBridgeScript(credentials));
-
-		expect(new Date(stored['Meteor.loginTokenExpires']).getTime()).toBeGreaterThan(Date.now());
-	});
-
 	test('a token carrying quotes, backslashes and newlines round-trips intact', () => {
 		const hostile = `a'b"c\\d\ne</script>`;
 

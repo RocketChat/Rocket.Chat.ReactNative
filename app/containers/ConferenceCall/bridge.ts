@@ -1,7 +1,5 @@
 const SOURCE = 'rc-conference';
 
-const SESSION_HORIZON_MS = 24 * 60 * 60 * 1000;
-
 export type TConferenceBridgeMessage = { type: 'close' } | { type: 'openInMainWindow'; path: string };
 
 type TConferenceCredentials = { userId: string; token: string; server: string; bridgeToken: string };
@@ -11,14 +9,12 @@ export const buildConferenceBridgeScript = ({ userId, token, server, bridgeToken
 	const loginToken = JSON.stringify(token);
 	const serverUrl = JSON.stringify(server);
 	const bridge = JSON.stringify(bridgeToken);
-	const expires = JSON.stringify(new Date(Date.now() + SESSION_HORIZON_MS).toISOString());
 	const source = JSON.stringify(SOURCE);
 
 	return `(function () {
 	try {
 		window.localStorage.setItem('Meteor.userId', ${uid});
 		window.localStorage.setItem('Meteor.loginToken', ${loginToken});
-		window.localStorage.setItem('Meteor.loginTokenExpires', ${expires});
 	} catch (e) {
 	}
 

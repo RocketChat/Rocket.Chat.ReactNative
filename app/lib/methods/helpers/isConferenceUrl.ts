@@ -1,6 +1,6 @@
 import { URL } from 'react-native-url-polyfill';
 
-export const isLoopbackHostname = (hostname: string): boolean =>
+const isLoopbackHostname = (hostname: string): boolean =>
 	hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]';
 
 export const normalizeServer = (server: string): string => server.replace(/\/+$/, '');
