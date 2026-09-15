@@ -204,7 +204,7 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 			javaScriptEnabled
 			domStorageEnabled
 			allowsInlineMediaPlayback
-			mediaCapturePermissionGrantType='grantIfSameHostElseDeny'
+			mediaCapturePermissionGrantType='grant'
 			mediaPlaybackRequiresUserAction={isIOS}
 			sharedCookiesEnabled
 		/>

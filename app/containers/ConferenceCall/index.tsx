@@ -8,6 +8,7 @@ import openLink from '~/lib/methods/helpers/openLink';
 import { closeConferenceCall } from '~/lib/services/conference/conferenceCallNavigation';
 import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
 import { useTheme } from '~/theme';
+import StatusBar from '../StatusBar';
 import ConferenceWebView from './ConferenceWebView';
 
 const ConferenceCall = () => {
@@ -42,6 +43,7 @@ const ConferenceCall = () => {
 		<View
 			style={[styles.host, { paddingTop: top, paddingBottom: bottom }, !expanded && styles.offscreen]}
 			pointerEvents={expanded ? 'auto' : 'none'}>
+			{expanded ? <StatusBar barStyle='light' /> : null}
 			<ConferenceWebView url={url} expanded={expanded} onClose={closeConferenceCall} onOpenLink={onOpenLink} />
 		</View>
 	);
