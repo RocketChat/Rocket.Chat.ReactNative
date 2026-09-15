@@ -3,9 +3,9 @@ import { StyleSheet, type StyleProp, Text, type TextStyle, View, type ViewStyle 
 
 import Status from '.';
 import { CustomIcon } from '../CustomIcon';
-import { type TUserStatus, STATUS_I18N_KEYS } from '../../definitions';
-import { formatStatusExpiry } from '../../lib/methods/helpers/formatStatusExpiry';
-import I18n from '../../i18n';
+import { type TUserStatus, STATUS_I18N_KEYS } from '~/definitions';
+import { formatStatusExpiry } from '~/lib/methods/helpers/formatStatusExpiry';
+import I18n from '~/i18n';
 
 const styles = StyleSheet.create({
 	row: {
@@ -43,8 +43,6 @@ const StatusRows = ({
 	rowStyle,
 	expiryRowStyle
 }: IStatusRows): ReactElement => {
-	'use memo';
-
 	const formattedExpiry = formatStatusExpiry(statusExpiresAt);
 	const presenceLabel = !statusText && status ? STATUS_I18N_KEYS[status] : undefined;
 

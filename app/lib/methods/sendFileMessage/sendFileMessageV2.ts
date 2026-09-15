@@ -1,8 +1,8 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '../../../definitions';
-import database from '../../database';
-import { Encryption } from '../../encryption';
+import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '~/definitions';
+import database from '~/lib/database';
+import { Encryption } from '~/lib/encryption';
 import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
 import FileUpload from '../helpers/fileUpload';
 import { type IFormData } from '../helpers/fileUpload/definitions';

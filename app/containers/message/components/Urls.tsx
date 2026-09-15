@@ -5,17 +5,17 @@ import { Image } from 'expo-image';
 import axios from 'axios';
 
 import MessageActionTouchable from './Touchable/MessageActionTouchable';
-import openLink from '../../../lib/methods/helpers/openLink';
-import sharedStyles from '../../../views/Styles';
-import { useTheme } from '../../../theme';
-import { LISTENER } from '../../Toast';
-import EventEmitter from '../../../lib/methods/helpers/events';
-import I18n from '../../../i18n';
-import { type IUrl } from '../../../definitions';
+import openLink from '~/lib/methods/helpers/openLink';
+import sharedStyles from '~/views/Styles';
+import { useTheme } from '~/theme';
+import { LISTENER } from '~/containers/Toast';
+import EventEmitter from '~/lib/methods/helpers/events';
+import I18n from '~/i18n';
+import { type IUrl } from '~/definitions';
 import { WidthAwareContext } from './WidthAwareView';
 import { useUrls } from '../stores/MessageStore';
 import { useBaseUrl, useMessageUser } from '../stores/MessageRoomStore';
-import { useSetting } from '../../../lib/hooks/useSetting';
+import { useSetting } from '~/lib/hooks/useSetting';
 
 const styles = StyleSheet.create({
 	container: {
@@ -45,8 +45,6 @@ const styles = StyleSheet.create({
 });
 
 const UrlContent = ({ title, description }: { title: string; description: string }) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	return (
 		<View style={styles.textContainer}>
@@ -118,8 +116,6 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 };
 
 const Url = ({ url }: { url: IUrl }) => {
-	'use memo';
-
 	const { colors, theme } = useTheme();
 	const baseUrl = useBaseUrl();
 	const user = useMessageUser();
@@ -183,8 +179,6 @@ const Url = ({ url }: { url: IUrl }) => {
 	);
 };
 const Urls = (): ReactElement[] | null => {
-	'use memo';
-
 	const urls = useUrls();
 
 	if (!urls || urls.length === 0) {

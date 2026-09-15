@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 import { THUMB_SEEK_SIZE } from './constants';
 
 const styles = StyleSheet.create({
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
 	},
 	duration: {
 		marginHorizontal: 12,
-		fontVariant: ['tabular-nums'],
 		fontSize: 14,
 		...sharedStyles.textRegular
 	},

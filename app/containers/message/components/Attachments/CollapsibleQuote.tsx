@@ -2,14 +2,14 @@ import { transparentize } from 'color2k';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { type IAttachment } from '../../../../definitions/IAttachment';
-import { CustomIcon } from '../../../CustomIcon';
-import { useTheme } from '../../../../theme';
-import sharedStyles from '../../../../views/Styles';
-import Markdown from '../../../markdown';
-import { useMessageUser } from '../../stores/MessageRoomStore';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { CustomIcon } from '~/containers/CustomIcon';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
+import Markdown from '~/containers/markdown';
+import { useMessageUser } from '~/containers/message/stores/MessageRoomStore';
 import MessageActionTouchable from '../Touchable/MessageActionTouchable';
-import { BUTTON_HIT_SLOP } from '../../utils';
+import { BUTTON_HIT_SLOP } from '~/containers/message/utils';
 
 const styles = StyleSheet.create({
 	button: {
@@ -69,8 +69,6 @@ interface IMessageReply {
 }
 
 const AttText = ({ text }: IMessageAttText) => {
-	'use memo';
-
 	const user = useMessageUser();
 
 	if (!text) {
@@ -81,8 +79,6 @@ const AttText = ({ text }: IMessageAttText) => {
 };
 
 const Fields = ({ attachment }: IMessageFields) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const user = useMessageUser();
 
@@ -105,8 +101,6 @@ const Fields = ({ attachment }: IMessageFields) => {
 };
 
 const CollapsibleQuote = ({ attachment }: IMessageReply) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const [collapsed, setCollapsed] = useState(attachment?.collapsed);
 

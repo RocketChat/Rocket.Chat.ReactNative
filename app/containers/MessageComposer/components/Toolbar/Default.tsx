@@ -1,17 +1,15 @@
 import { type ReactElement } from 'react';
 import { KeyboardController } from 'react-native-keyboard-controller';
 
-import { ActionsButton, BaseButton } from '..';
-import { useMessageComposerApi } from '../../context';
+import { ActionsButton, BaseButton } from '../Buttons';
+import { useMessageComposerApi } from '~/containers/MessageComposer/context';
 import { Gap } from '../Gap';
-import { emitter } from '../../../../lib/methods/helpers/emitter';
-import { useRoomContext } from '../../../../views/RoomView/context';
-import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
+import { emitter } from '~/lib/methods/helpers/emitter';
+import { useComposerSharing } from '~/containers/MessageComposer/ComposerStore';
+import { useEmojiKeyboard } from '~/containers/MessageComposer/hooks/useEmojiKeyboard';
 
 export const Default = (): ReactElement | null => {
-	'use memo';
-
-	const { sharing } = useRoomContext();
+	const sharing = useComposerSharing();
 	const { setMarkdownToolbar } = useMessageComposerApi();
 	const { openEmojiKeyboard } = useEmojiKeyboard();
 

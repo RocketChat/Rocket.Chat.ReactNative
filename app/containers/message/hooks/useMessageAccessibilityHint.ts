@@ -1,10 +1,8 @@
-import i18n from '../../../i18n';
+import i18n from '~/i18n';
 import { useIsThreadRoom } from '../stores/MessageRoomStore';
 import { useThreadData } from '../stores/MessageStore';
 
 export const useMessageAccessibilityHint = (): string | undefined => {
-	'use memo';
-
 	const { tlm, tcount } = useThreadData();
 	const isThreadRoom = useIsThreadRoom();
 

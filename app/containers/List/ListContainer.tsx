@@ -2,7 +2,7 @@ import { type ReactElement } from 'react';
 import { ScrollView, type ScrollViewProps, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 
 const styles = StyleSheet.create({
 	container: {
@@ -15,8 +15,6 @@ interface IListContainer extends ScrollViewProps {
 	testID?: string;
 }
 const ListContainer = ({ children, ...props }: IListContainer) => {
-	'use memo';
-
 	const { bottom } = useSafeAreaInsets();
 
 	return (

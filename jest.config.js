@@ -1,6 +1,14 @@
+const getAliasConfig = require('./config/import-aliases');
+
 module.exports = {
 	modulePathIgnorePatterns: ['<rootDir>/.*worktrees/'],
-	testPathIgnorePatterns: ['e2e', 'node_modules', '<rootDir>/.*worktrees/', '/__tests__/testHelpers\\.tsx$'],
+	testPathIgnorePatterns: [
+		'e2e',
+		'node_modules',
+		'<rootDir>/.*worktrees/',
+		'/__tests__/testHelpers\\.tsx$',
+		'/__tests__/mockedWatermelonDB\\.tsx$'
+	],
 	transformIgnorePatterns: [
 		'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|@rocket.chat/ui-kit|@rocket.chat/sdk|@rocket.chat/message-parser|tiny-events)'
 	],
@@ -10,7 +18,8 @@ module.exports = {
 	collectCoverage: false,
 	moduleNameMapper: {
 		'.+\\.(css|styl|less|sass|scss)$': 'identity-obj-proxy',
-		'.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/__mocks__/fileMock.js'
+		'.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/__mocks__/fileMock.js',
+		...getAliasConfig().jest
 	},
 	setupFilesAfterEnv: ['./jest.setup.js']
 };

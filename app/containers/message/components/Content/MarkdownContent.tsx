@@ -1,12 +1,10 @@
-import Markdown from '../../../markdown';
-import { useSetting } from '../../../../lib/hooks/useSetting';
-import { useMarkdownData, useMessageText, useOnLinkPress } from '../../stores/MessageStore';
-import { useMessageUser, useNavToRoomInfo } from '../../stores/MessageRoomStore';
+import Markdown from '~/containers/markdown';
+import { useSetting } from '~/lib/hooks/useSetting';
+import { useMarkdownData, useMessageText, useOnLinkPress } from '~/containers/message/stores/MessageStore';
+import { useMessageUser, useNavToRoomInfo } from '~/containers/message/stores/MessageRoomStore';
 import ContentWrapper from './ContentWrapper';
 
 const MarkdownContent = () => {
-	'use memo';
-
 	const useRealName = useSetting('UI_Use_Real_Name') as boolean;
 	const user = useMessageUser();
 	const onLinkPress = useOnLinkPress();

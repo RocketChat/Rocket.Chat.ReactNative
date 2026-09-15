@@ -1,12 +1,10 @@
-import { useTheme } from '../../../theme';
-import * as List from '../../../containers/List';
+import { useTheme } from '~/theme';
+import * as List from '~/containers/List';
 import { sidebarNavigate } from '../methods/sidebarNavigate';
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { useNewMediaCall } from '../../../lib/hooks/useNewMediaCall';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall';
 
 const Stacks = ({ currentScreen }: { currentScreen: string | null }) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const isMasterDetail = useMasterDetail();
 	const { openNewMediaCall, hasMediaCallPermission, isInActiveCall } = useNewMediaCall();

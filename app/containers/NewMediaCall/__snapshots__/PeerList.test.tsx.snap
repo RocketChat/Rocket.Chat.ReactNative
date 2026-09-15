@@ -181,6 +181,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                       "flexShrink": 1,
                       "fontFamily": "Inter",
                       "fontSize": 18,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "500",
                       "lineHeight": 26,
                       "textAlign": "left",
@@ -386,6 +389,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                       "flexShrink": 1,
                       "fontFamily": "Inter",
                       "fontSize": 18,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "500",
                       "lineHeight": 26,
                       "textAlign": "left",
@@ -591,6 +597,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                       "flexShrink": 1,
                       "fontFamily": "Inter",
                       "fontSize": 18,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "500",
                       "lineHeight": 26,
                       "textAlign": "left",
@@ -796,6 +805,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                       "flexShrink": 1,
                       "fontFamily": "Inter",
                       "fontSize": 18,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "500",
                       "lineHeight": 26,
                       "textAlign": "left",

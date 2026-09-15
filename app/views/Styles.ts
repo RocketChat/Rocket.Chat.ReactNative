@@ -5,6 +5,7 @@ import { MAX_SCREEN_CONTENT_WIDTH } from '../lib/constants/tablet';
 const defaultTextStyle: TextStyle = {
 	textAlign: 'left',
 	backgroundColor: 'transparent',
+	fontVariant: ['tabular-nums'],
 	...Platform.select({
 		android: {
 			includeFontPadding: false

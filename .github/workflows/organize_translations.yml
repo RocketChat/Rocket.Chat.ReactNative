@@ -5,9 +5,13 @@ on:
     paths:
       - 'app/i18n/locales/**.json'
 
+permissions: {}
+
 jobs:
   organize-and-commit:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       with:

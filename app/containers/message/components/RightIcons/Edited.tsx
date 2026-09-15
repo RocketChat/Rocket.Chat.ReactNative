@@ -1,12 +1,10 @@
 import { View } from 'react-native';
 
-import { CustomIcon } from '../../../CustomIcon';
-import styles from '../../styles';
-import { useIsEdited, useMessageText } from '../../stores/MessageStore';
+import { CustomIcon } from '~/containers/CustomIcon';
+import styles from '~/containers/message/styles';
+import { useIsEdited, useMessageText } from '~/containers/message/stores/MessageStore';
 
 const Edited = () => {
-	'use memo';
-
 	const isEdited = useIsEdited();
 	const { messageText } = useMessageText();
 

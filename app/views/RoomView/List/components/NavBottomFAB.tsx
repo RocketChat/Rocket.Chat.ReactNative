@@ -1,11 +1,11 @@
-import { memo, type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { CustomIcon } from '../../../../containers/CustomIcon';
-import { useTheme } from '../../../../theme';
-import Touch from '../../../../containers/Touch';
+import { CustomIcon } from '~/containers/CustomIcon';
+import { useTheme } from '~/theme';
+import Touch from '~/containers/Touch';
 import { EDGE_DISTANCE } from '../constants';
-import i18n from '../../../../i18n';
+import i18n from '~/i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const NavBottomFAB = memo(({ visible, onPress }: { visible: boolean; onPress: Function }): ReactElement | null => {
+const NavBottomFAB = ({ visible, onPress }: { visible: boolean; onPress: () => void }): ReactElement | null => {
 	const { colors } = useTheme();
 
 	if (!visible) {
@@ -47,6 +47,6 @@ const NavBottomFAB = memo(({ visible, onPress }: { visible: boolean; onPress: Fu
 			</Touch>
 		</View>
 	);
-});
+};
 
 export default NavBottomFAB;

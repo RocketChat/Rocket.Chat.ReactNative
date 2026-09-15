@@ -9,16 +9,15 @@ import {
 import { View, type AccessibilityActionEvent } from 'react-native';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import Touch from '../../Touch';
+import Touch from '~/containers/Touch';
 import { DeleteAction } from './Actions';
-import { useTheme } from '../../../theme';
-import I18n from '../../../i18n';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
 
 export interface ISwipeableDeleteTouchableProps {
 	children: ReactElement;
 	testID: string;
 	width: number;
-	rowHeight: number;
 	actionWidth: number;
 	longSwipe: number;
 	smallSwipe: number;
@@ -33,7 +32,6 @@ const SwipeableDeleteTouchable = ({
 	width,
 	children,
 	testID,
-	rowHeight,
 	actionWidth,
 	longSwipe,
 	smallSwipe,
@@ -188,7 +186,6 @@ const SwipeableDeleteTouchable = ({
 				<DeleteAction
 					width={width}
 					transX={transX}
-					rowHeight={rowHeight}
 					actionWidth={actionWidth}
 					longSwipe={longSwipe}
 					onDeletePress={handleDeletePress}

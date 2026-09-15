@@ -6,22 +6,23 @@ import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { type Dispatch } from 'redux';
 
-import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
-import { type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { type InsideStackParamList } from '../../stacks/types';
-import { themes } from '../../lib/constants/colors';
-import I18n from '../../i18n';
-import { prepareQuoteMessage } from '../../containers/MessageComposer/helpers';
-import { sendLoadingEvent } from '../../containers/Loading';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import { type TSupportedThemes, withTheme } from '../../theme';
-import { FormTextInput } from '../../containers/TextInput';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { getUserSelector } from '../../selectors/login';
-import database from '../../lib/database';
-import Thumbs from '../../containers/Thumbs';
-import { showActionSheetRef } from '../../containers/ActionSheet';
-import { AttachmentActionSheet } from '../../containers/MessageComposer/components/Attachments/AttachmentActionSheet';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
+import { getRoomTitle } from '~/lib/methods/helpers/helpers';
+import { type IMessageComposerRef, ComposerProvider, MessageComposerContainer } from '~/containers/MessageComposer';
+import { type InsideStackParamList } from '~/stacks/types';
+import { themes } from '~/lib/constants/colors';
+import I18n from '~/i18n';
+import { prepareQuoteMessage } from '~/containers/MessageComposer/helpers';
+import { sendLoadingEvent } from '~/containers/Loading';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { type TSupportedThemes, withTheme } from '~/theme';
+import { FormTextInput } from '~/containers/TextInput';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { getUserSelector } from '~/selectors/login';
+import database from '~/lib/database';
+import Thumbs from '~/containers/Thumbs';
+import { showActionSheetRef } from '~/containers/ActionSheet';
+import { AttachmentActionSheet } from '~/containers/MessageComposer/components/Attachments/AttachmentActionSheet';
 import Preview from './Preview';
 import Header from './Header';
 import styles from './styles';
@@ -31,15 +32,18 @@ import {
 	type IShareAttachment,
 	type IUser,
 	RootEnum,
-	type TSubscriptionModel,
 	type TThreadModel
-} from '../../definitions';
-import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
-import { sendMessage } from '../../lib/methods/sendMessage';
-import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
-import { RoomProviders } from '../RoomView/RoomProviders';
-import { createMessageActionStore, type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
-import { appStart } from '../../actions/app';
+} from '~/definitions';
+import { type TRoomOrPreview } from '~/definitions/TRoom';
+import { sendAttachments } from '~/lib/methods/sendFileMessage/sendAttachments';
+import { sendMessage } from '~/lib/methods/sendMessage';
+import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '~/lib/methods/helpers';
+import {
+	createMessageActionStore,
+	MessageActionProvider,
+	type TMessageActionStore
+} from '~/containers/message/stores/MessageActionStore';
+import { appStart } from '~/actions/app';
 
 interface IShareViewState {
 	selected: IShareAttachment;
@@ -47,7 +51,7 @@ interface IShareViewState {
 	readOnly: boolean;
 	attachments: IShareAttachment[];
 	text: string;
-	room: TSubscriptionModel;
+	room: TRoomOrPreview;
 	thread: TThreadModel | string;
 	maxFileSize?: number;
 	mediaAllowList?: string;
@@ -57,11 +61,7 @@ interface IShareViewProps {
 	navigation: NativeStackNavigationProp<InsideStackParamList, 'ShareView'>;
 	route: RouteProp<InsideStackParamList, 'ShareView'>;
 	theme: TSupportedThemes;
-	user: {
-		id: string;
-		username: string;
-		token: string;
-	};
+	user: IUser;
 	server: string;
 	serverVersion?: string;
 	FileUpload_MediaTypeWhiteList?: string;
@@ -97,7 +97,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			readOnly: false,
 			attachments: [],
 			text: props.route.params?.text ?? '',
-			room: props.route.params?.room ?? {},
+			room: props.route.params?.room ?? { rid: '', t: '' },
 			thread: props.route.params?.thread ?? {},
 			maxFileSize: this.isShareExtension ? this.serverInfo?.FileUpload_MaxFileSize : props.FileUpload_MaxFileSize,
 			mediaAllowList: this.isShareExtension ? this.serverInfo?.FileUpload_MediaTypeWhiteList : props.FileUpload_MediaTypeWhiteList
@@ -383,8 +383,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	}
 
 	onRemoveQuoteMessage = (messageId: string) => {
-		const newSelectedMessages = this.getSelectedMessageIds().filter(item => item !== messageId);
-		this.messageActionStore.getState().actions.setQuoteMessageIds(newSelectedMessages);
+		this.messageActionStore.getState().actions.removeQuote(messageId);
 	};
 
 	renderContent = () => {
@@ -393,28 +392,29 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		if (attachments.length) {
 			return (
-				<RoomProviders
-					store={this.messageActionStore}
-					rid={room.rid}
-					t={room.t}
-					room={room}
-					tmid={this.getThreadId(thread)}
-					sharing
-					onSendMessage={this.send}
-					onRemoveQuoteMessage={this.onRemoveQuoteMessage}>
-					<View style={styles.container}>
-						<Preview
-							// using key just to reset zoom/move after change selected
-							key={selected?.path}
-							item={selected}
-							length={attachments.length}
-							theme={theme}
-						/>
-						<MessageComposerContainer ref={this.messageComposerRef}>
-							<Thumbs attachments={attachments} onPress={this.selectFile} onRemove={this.removeFile} />
-						</MessageComposerContainer>
-					</View>
-				</RoomProviders>
+				<MessageActionProvider store={this.messageActionStore}>
+					<ComposerProvider
+						rid={room.rid}
+						t={room.t}
+						roomTitle={getRoomTitle(room)}
+						tmid={this.getThreadId(thread)}
+						sharing
+						onSendMessage={this.send}
+						onRemoveQuoteMessage={this.onRemoveQuoteMessage}>
+						<View style={styles.container}>
+							<Preview
+								// using key just to reset zoom/move after change selected
+								key={selected?.path}
+								item={selected}
+								length={attachments.length}
+								theme={theme}
+							/>
+							<MessageComposerContainer ref={this.messageComposerRef}>
+								<Thumbs attachments={attachments} onPress={this.selectFile} onRemove={this.removeFile} />
+							</MessageComposerContainer>
+						</View>
+					</ComposerProvider>
+				</MessageActionProvider>
 			);
 		}
 

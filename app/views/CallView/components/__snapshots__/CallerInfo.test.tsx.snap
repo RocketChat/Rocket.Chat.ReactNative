@@ -136,6 +136,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 24,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "700",
               "lineHeight": 32,
               "marginBottom": 4,
@@ -291,6 +294,9 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 24,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "700",
               "lineHeight": 32,
               "marginBottom": 4,

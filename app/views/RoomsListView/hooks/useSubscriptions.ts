@@ -3,11 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import type { Subscription } from 'rxjs';
 
-import { type TSubscriptionModel } from '../../../definitions';
-import { SortBy } from '../../../lib/constants/constantDisplayMode';
-import database from '../../../lib/database';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { getUserSelector } from '../../../selectors/login';
+import { type TSubscriptionModel } from '~/definitions';
+import { SortBy } from '~/lib/constants/constantDisplayMode';
+import database from '~/lib/database';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { getUserSelector } from '~/selectors/login';
 
 const CHATS_HEADER = 'Chats';
 const UNREAD_HEADER = 'Unread';
@@ -36,8 +36,6 @@ const addRoomsGroup = (data: TSubscriptionModel[], header: string, allData: TSub
 };
 
 export const useSubscriptions = () => {
-	'use memo';
-
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const server = useAppSelector(state => state.server);
 	const subscriptionRef = useRef<Subscription>(null);

@@ -1,19 +1,17 @@
 import { type ReactElement, useEffect } from 'react';
 import { Audio, InterruptionModeIOS } from 'expo-av';
 
-import { useCallStore } from '../../lib/services/voip/useCallStore';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
 import CallerInfo from './components/CallerInfo';
 import { styles } from './styles';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import { CallButtons } from './components/CallButtons';
-import SafeAreaView from '../../containers/SafeAreaView';
-import Ringer, { ERingerSounds } from '../../containers/Ringer';
-import { isIOS } from '../../lib/methods/helpers';
-import NativeVoipModule from '../../lib/native/NativeVoip';
+import SafeAreaView from '~/containers/SafeAreaView';
+import Ringer, { ERingerSounds } from '~/containers/Ringer';
+import { isIOS } from '~/lib/methods/helpers';
+import NativeVoipModule from '~/lib/native/NativeVoip';
 
 const CallView = (): ReactElement | null => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const call = useCallStore(state => state.call);
 	const callState = useCallStore(state => state.callState);

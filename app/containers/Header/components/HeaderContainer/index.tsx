@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { View, type ViewProps, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useTheme } from '../../../../theme';
+import { useTheme } from '~/theme';
 
 interface IHeaderContainer extends ViewProps {
 	addExtraNotchPadding?: boolean;
@@ -12,8 +12,6 @@ interface IHeaderContainer extends ViewProps {
 }
 
 const HeaderContainer = memo(({ isMasterDetail = false, customRightIcon, customLeftIcon, children }: IHeaderContainer) => {
-	'use memo';
-
 	const insets = useSafeAreaInsets();
 	const { colors } = useTheme();
 	const paddingTop = 4;

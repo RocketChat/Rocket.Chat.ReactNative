@@ -1,9 +1,9 @@
 import { useCallback, useReducer, useRef } from 'react';
 
-import { type IRoomItem } from '../../../containers/RoomItem/interfaces';
-import { searchLocal, searchRemote } from '../../../lib/methods/search';
-import { useDebounce } from '../../../lib/methods/helpers/debounce';
-import { announceSearchResultsForAccessibility } from '../../../lib/methods/helpers/announceSearchResultsForAccessibility';
+import { type IRoomItem } from '~/containers/RoomItem/interfaces';
+import { searchLocal, searchRemote } from '~/lib/methods/search';
+import { useDebounce } from '~/lib/methods/helpers/debounce';
+import { announceSearchResultsForAccessibility } from '~/lib/methods/helpers/announceSearchResultsForAccessibility';
 
 interface SearchState {
 	searchEnabled: boolean;
@@ -69,8 +69,6 @@ const searchReducer = (state: SearchState, action: SearchAction): SearchState =>
 };
 
 export const useSearch = () => {
-	'use memo';
-
 	const [state, dispatch] = useReducer(searchReducer, initialState);
 	// Guards against an older (slower) search overwriting the results of a newer one
 	const searchId = useRef(0);

@@ -1,6 +1,6 @@
 import CompactMessage from './CompactMessage';
 import FullMessage from './FullMessage';
-import { useIsInfoMessage, useMessageIgnored, useThreadPosition } from '../../stores/MessageStore';
+import { useIsInfoMessage, useMessageIgnored, useThreadPosition } from '~/containers/message/stores/MessageStore';
 
 export type TMessageProps = {
 	isPreview?: boolean;
@@ -8,8 +8,6 @@ export type TMessageProps = {
 };
 
 const Message = (props: TMessageProps) => {
-	'use memo';
-
 	const { isThreadReply, isThreadSequential } = useThreadPosition();
 	const isInfo = useIsInfoMessage();
 	const isIgnored = useMessageIgnored();

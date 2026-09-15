@@ -49,7 +49,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       source={
         [
           {
-            "headers": undefined,
+            "headers": {
+              "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+            },
             "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=240",
           },
         ]
@@ -117,7 +119,9 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
       source={
         [
           {
-            "headers": undefined,
+            "headers": {
+              "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+            },
             "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=240",
           },
         ]
@@ -204,6 +208,9 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "500",
             "textAlign": "center",
           },
@@ -211,6 +218,9 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 12,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "600",
             "textAlign": "left",
           },

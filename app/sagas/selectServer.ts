@@ -29,7 +29,8 @@ import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CERTIFICATE_KEY, CURRENT_SERVER, getServerUserIdKey, getUserTokenKey } from '../lib/constants/keys';
+import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
 import { getLoginSettings, setSettings } from '../lib/methods/getSettings';
 import { getServerInfo } from '../lib/methods/getServerInfo';
@@ -137,7 +138,7 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
-		if (sdk.current?.client?.host === server) {
+		if (sdk.host === server) {
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 			yield put(selectServerCancel());
 			return;
@@ -150,32 +151,29 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
-		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		yield* call(migrateTokenKeysToServerScoped);
+		const userId = UserPreferences.getString(getServerUserIdKey(server));
+		const token = userId ? UserPreferences.getString(getUserTokenKey(server, userId)) : null;
 		let user = null;
-		if (userId) {
+		if (userId && token) {
 			// search credentials on database
 			const userRecord = yield* call(getLoggedUserById, userId);
-			if (userRecord) {
-				user = {
-					id: userRecord.id,
-					token: userRecord.token,
-					username: userRecord.username,
-					name: userRecord.name,
-					language: userRecord.language,
-					status: userRecord.status,
-					statusText: userRecord.statusText,
-					roles: userRecord.roles,
-					avatarETag: userRecord.avatarETag,
-					bio: userRecord.bio,
-					nickname: userRecord.nickname,
-					requirePasswordChange: userRecord.requirePasswordChange
-				};
-			} else {
-				const token = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
-				if (token) {
-					user = { token };
-				}
-			}
+			user = userRecord
+				? {
+						id: userRecord.id,
+						token,
+						username: userRecord.username,
+						name: userRecord.name,
+						language: userRecord.language,
+						status: userRecord.status,
+						statusText: userRecord.statusText,
+						roles: userRecord.roles,
+						avatarETag: userRecord.avatarETag,
+						bio: userRecord.bio,
+						nickname: userRecord.nickname,
+						requirePasswordChange: userRecord.requirePasswordChange
+					}
+				: { token };
 		}
 
 		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
@@ -218,6 +216,10 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(selectServerSuccess({ server, version: serverVersion, name: serverInfo?.name || 'Rocket.Chat' }));
 	} catch (e) {
 		yield put(selectServerFailure());
+		const currentRoot = yield* appSelector(state => state.app.root);
+		if (currentRoot !== RootEnum.ROOT_INSIDE && currentRoot !== RootEnum.ROOT_SHARE_EXTENSION) {
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		}
 		log(e);
 	}
 };

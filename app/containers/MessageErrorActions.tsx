@@ -23,54 +23,55 @@ const MessageErrorActions = forwardRef<IMessageErrorActions, { tmid?: string }>(
 	const handleDelete = async (message: TMessageModel) => {
 		try {
 			const db = database.active;
-			const deleteBatch: Model[] = [];
 			const msgCollection = db.get('messages');
 			const threadCollection = db.get('threads');
 
-			// Delete the object (it can be Message or ThreadMessage instance)
-			deleteBatch.push(message.prepareDestroyPermanently());
-
-			// If it's a thread, we find and delete the whole tree, if necessary
-			if (tmid) {
-				try {
-					const msg = await msgCollection.find(message.id);
-					deleteBatch.push(msg.prepareDestroyPermanently());
-				} catch {
-					// Do nothing: message not found
-				}
-
-				try {
-					// Find the thread header and update it
-					const msg = await msgCollection.find(tmid);
-					if (msg?.tcount && msg.tcount <= 1) {
-						deleteBatch.push(
-							msg.prepareUpdate(m => {
-								m.tcount = null;
-								m.tlm = null;
-							})
-						);
-
-						try {
-							// If the whole thread was removed, delete the thread
-							const thread = await threadCollection.find(tmid);
-							deleteBatch.push(thread.prepareDestroyPermanently());
-						} catch {
-							// Do nothing: thread not found
-						}
-					} else {
-						deleteBatch.push(
-							msg.prepareUpdate(m => {
-								if (m.tcount) {
-									m.tcount -= 1;
-								}
-							})
-						);
-					}
-				} catch {
-					// Do nothing: message not found
-				}
-			}
 			await db.write(async () => {
+				const deleteBatch: Model[] = [];
+
+				// Delete the object (it can be Message or ThreadMessage instance)
+				deleteBatch.push(message.prepareDestroyPermanently());
+
+				// If it's a thread, we find and delete the whole tree, if necessary
+				if (tmid) {
+					try {
+						const msg = await msgCollection.find(message.id);
+						deleteBatch.push(msg.prepareDestroyPermanently());
+					} catch {
+						// Do nothing: message not found
+					}
+
+					try {
+						// Find the thread header and update it
+						const msg = await msgCollection.find(tmid);
+						if (msg?.tcount && msg.tcount <= 1) {
+							deleteBatch.push(
+								msg.prepareUpdate(m => {
+									m.tcount = null;
+									m.tlm = null;
+								})
+							);
+
+							try {
+								// If the whole thread was removed, delete the thread
+								const thread = await threadCollection.find(tmid);
+								deleteBatch.push(thread.prepareDestroyPermanently());
+							} catch {
+								// Do nothing: thread not found
+							}
+						} else {
+							deleteBatch.push(
+								msg.prepareUpdate(m => {
+									if (m.tcount) {
+										m.tcount -= 1;
+									}
+								})
+							);
+						}
+					} catch {
+						// Do nothing: message not found
+					}
+				}
 				await db.batch(deleteBatch);
 			});
 		} catch (e) {

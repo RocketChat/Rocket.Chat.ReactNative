@@ -1,14 +1,14 @@
 import { Text, useWindowDimensions, View } from 'react-native';
 
-import I18n from '../../../i18n';
+import I18n from '~/i18n';
 import MessageActionTouchable from './Touchable/MessageActionTouchable';
-import { CustomIcon } from '../../CustomIcon';
+import { CustomIcon } from '~/containers/CustomIcon';
 import styles from '../styles';
 import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from '../utils';
-import { useTheme } from '../../../theme';
+import { useTheme } from '~/theme';
 import { useMessageId, useMessageItem, useReactions } from '../stores/MessageStore';
-import { useMessageUser, useOnReactionLongPress, useOnReactionPress, useReactionInit } from '../stores/MessageRoomStore';
+import { useMessageUser, useReactionInit, useOnReactionPress, useOnReactionLongPress } from '../stores/MessageRoomStore';
 
 interface IReaction {
 	_id: string;
@@ -21,8 +21,6 @@ interface IMessageReaction {
 }
 
 const AddReaction = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const reactionInit = useReactionInit();
 	const id = useMessageId();
@@ -46,8 +44,6 @@ const AddReaction = () => {
 };
 
 const Reaction = ({ reaction }: IMessageReaction) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const item = useMessageItem();
 	const id = useMessageId();
@@ -79,8 +75,6 @@ const Reaction = ({ reaction }: IMessageReaction) => {
 };
 
 const Reactions = () => {
-	'use memo';
-
 	const reactions = useReactions();
 
 	if (!Array.isArray(reactions) || reactions.length === 0) {

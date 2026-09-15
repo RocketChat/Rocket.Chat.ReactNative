@@ -3,19 +3,23 @@ import { useContext, type ReactElement } from 'react';
 import { Alert } from 'react-native';
 import { PermissionStatus } from 'expo-camera';
 
-import i18n from '../../../../i18n';
-import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
-import { openAppSettings } from '../../../../lib/methods/helpers/openAppSettings';
-import { useTheme } from '../../../../theme';
-import { useRoomContext } from '../../../../views/RoomView/context';
-import { MessageInnerContext, useComposerAttachments, useMessageComposerApi, useMicOrSend } from '../../context';
-import { useCanUploadFile } from '../../hooks';
+import i18n from '~/i18n';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { openAppSettings } from '~/lib/methods/helpers/openAppSettings';
+import { useTheme } from '~/theme';
+import { useComposerRid, useComposerSharing } from '~/containers/MessageComposer/ComposerStore';
+import {
+	MessageInnerContext,
+	useComposerAttachments,
+	useMessageComposerApi,
+	useMicOrSend
+} from '~/containers/MessageComposer/context';
+import { useCanUploadFile } from '~/containers/MessageComposer/hooks';
 import { BaseButton } from './BaseButton';
 
 export const MicOrSendButton = (): ReactElement | null => {
-	'use memo';
-
-	const { rid, sharing } = useRoomContext();
+	const rid = useComposerRid();
+	const sharing = useComposerSharing();
 	const micOrSend = useMicOrSend();
 	const attachments = useComposerAttachments();
 	const { sendMessage } = useContext(MessageInnerContext);

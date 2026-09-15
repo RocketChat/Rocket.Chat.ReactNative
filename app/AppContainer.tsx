@@ -57,8 +57,6 @@ const RootNavigator = createNativeStackNavigator({
 		ShareExtension: { if: useIsShareExtension, screens: { ShareExtensionStack } }
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={{ navigationBarColor: themes[theme].surfaceLight }} />;
 });

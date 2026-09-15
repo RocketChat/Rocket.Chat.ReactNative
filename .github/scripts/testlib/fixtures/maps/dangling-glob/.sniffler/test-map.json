@@ -1,0 +1,6 @@
+[
+	{
+		"test": ".maestro/tests/flow.yaml",
+		"dependsOn": ["app/views/Nope/**"]
+	}
+]

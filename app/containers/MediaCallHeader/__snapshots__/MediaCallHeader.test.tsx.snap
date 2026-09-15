@@ -218,6 +218,9 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "lineHeight": 24,
                   "textAlign": "left",
@@ -546,6 +549,9 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "lineHeight": 24,
                   "textAlign": "left",
@@ -874,6 +880,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "lineHeight": 24,
                   "textAlign": "left",
@@ -895,6 +904,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 16,
                 "textAlign": "left",
@@ -1219,6 +1231,9 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "lineHeight": 24,
                   "textAlign": "left",
@@ -1567,6 +1582,9 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "lineHeight": 24,
                   "textAlign": "left",
@@ -1592,6 +1610,9 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 16,
                 "textAlign": "left",
@@ -1916,6 +1937,9 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "lineHeight": 24,
                   "textAlign": "left",
@@ -1941,6 +1965,9 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 16,
                 "textAlign": "left",

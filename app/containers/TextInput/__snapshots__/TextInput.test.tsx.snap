@@ -36,6 +36,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -78,6 +81,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -169,6 +175,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -211,6 +220,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -301,6 +313,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -343,6 +358,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -469,6 +487,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -511,6 +532,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -708,6 +732,9 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -750,6 +777,9 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -805,6 +835,9 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -847,6 +880,9 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -926,6 +962,9 @@ exports[`Story Snapshots: Multiline should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -972,6 +1011,9 @@ https://open.rocket.chat/images/logo/android-chrome-512x512.png
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -1041,6 +1083,9 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -1083,6 +1128,9 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -1138,6 +1186,9 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -1181,6 +1232,9 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -1376,6 +1430,9 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -1418,6 +1475,9 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -1473,6 +1533,9 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -1515,6 +1578,9 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,

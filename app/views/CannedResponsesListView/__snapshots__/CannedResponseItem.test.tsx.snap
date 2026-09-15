@@ -110,6 +110,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
                     "flex": 1,
                     "fontFamily": "Inter",
                     "fontSize": 14,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "500",
                     "paddingBottom": 0,
                     "paddingTop": 0,
@@ -132,6 +135,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
                     "flex": 1,
                     "fontFamily": "Inter",
                     "fontSize": 12,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingBottom": 0,
                     "paddingTop": 0,
@@ -209,6 +215,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "500",
                     "textAlign": "center",
                   },
@@ -229,6 +238,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "marginTop": 8,
                 "paddingBottom": 0,
@@ -364,6 +376,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
                     "flex": 1,
                     "fontFamily": "Inter",
                     "fontSize": 14,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "500",
                     "paddingBottom": 0,
                     "paddingTop": 0,
@@ -386,6 +401,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
                     "flex": 1,
                     "fontFamily": "Inter",
                     "fontSize": 12,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingBottom": 0,
                     "paddingTop": 0,
@@ -463,6 +481,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "500",
                     "textAlign": "center",
                   },
@@ -483,6 +504,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "marginTop": 8,
                 "paddingBottom": 0,
@@ -529,6 +553,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 12,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingBottom": 0,
                     "paddingHorizontal": 4,
@@ -566,6 +593,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 12,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingBottom": 0,
                     "paddingHorizontal": 4,
@@ -603,6 +633,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 12,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingBottom": 0,
                     "paddingHorizontal": 4,
@@ -640,6 +673,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 12,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingBottom": 0,
                     "paddingHorizontal": 4,
@@ -677,6 +713,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 12,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingBottom": 0,
                     "paddingHorizontal": 4,
@@ -714,6 +753,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 12,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingBottom": 0,
                     "paddingHorizontal": 4,
@@ -751,6 +793,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 12,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingBottom": 0,
                     "paddingHorizontal": 4,

@@ -1,8 +1,8 @@
 import { View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
-import i18n from '../../../../i18n';
-import { type IAutocompleteItemProps, type TAutocompleteItem } from '../../interfaces';
+import i18n from '~/i18n';
+import { type IAutocompleteItemProps, type TAutocompleteItem } from '~/containers/MessageComposer/interfaces';
 import { AutocompleteUserRoom } from './AutocompleteUserRoom';
 import { AutocompleteEmoji } from './AutocompleteEmoji';
 import { AutocompleteSlashCommand } from './AutocompleteSlashCommand';
@@ -70,8 +70,6 @@ const getAutocompleteAccessibilityLabel = (item: TAutocompleteItem): string => {
 };
 
 export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
-	'use memo';
-
 	const [styles, colors] = useStyle();
 	const autocompleteAccessibilityLabel = getAutocompleteAccessibilityLabel(item);
 	return (

@@ -1,13 +1,13 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { type MessageTypesValues, SubscriptionType } from '../../../definitions';
-import { useTheme } from '../../../theme';
-import sharedStyles from '../../../views/Styles';
+import { type MessageTypesValues, SubscriptionType } from '~/definitions';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
 import RightIcons from './RightIcons';
 import { messageHaveAuthorName } from '../utils';
 import MessageTime from './Time';
-import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { useSetting } from '../../../lib/hooks/useSetting';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useSetting } from '~/lib/hooks/useSetting';
 import { useIsOwnMessage, useMessageAuthor, useMessageGrouping, useMessageHeaderMeta } from '../stores/MessageStore';
 import { useNavToRoomInfo } from '../stores/MessageRoomStore';
 
@@ -41,8 +41,6 @@ const styles = StyleSheet.create({
 });
 
 const User = () => {
-	'use memo';
-
 	const useRealName = useSetting('UI_Use_Real_Name') as boolean;
 	const navToRoomInfo = useNavToRoomInfo();
 	const { colors } = useTheme();

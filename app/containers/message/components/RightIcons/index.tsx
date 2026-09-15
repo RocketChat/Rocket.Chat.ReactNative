@@ -15,8 +15,6 @@ const styles = StyleSheet.create({
 });
 
 const RightIcons = (): ReactElement => {
-	'use memo';
-
 	return (
 		<View style={styles.actionIcons}>
 			<Pinned />

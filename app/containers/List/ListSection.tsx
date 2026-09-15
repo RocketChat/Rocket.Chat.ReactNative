@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Header } from '.';
+import Header from './ListHeader';
 
 const styles = StyleSheet.create({
 	container: {
@@ -16,8 +16,6 @@ interface IListSection {
 }
 
 const ListSection = ({ children, title, translateTitle }: IListSection) => {
-	'use memo';
-
 	return (
 		<View style={styles.container}>
 			{title ? <Header {...{ title, translateTitle }} /> : null}

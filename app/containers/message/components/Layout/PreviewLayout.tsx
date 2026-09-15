@@ -3,8 +3,6 @@ import MessageTime from '../Time';
 import { ContentLayout } from './ContentLayout';
 
 const PreviewLayout = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
-	'use memo';
-
 	return (
 		<>
 			<User />

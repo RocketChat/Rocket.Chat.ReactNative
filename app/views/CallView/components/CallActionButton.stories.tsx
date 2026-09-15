@@ -7,7 +7,7 @@ import {
 	BASE_ROW_HEIGHT_CONDENSED,
 	FONT_SCALE_LIMIT,
 	ResponsiveLayoutContext
-} from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+} from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {

@@ -1,10 +1,10 @@
 import { type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 
-import { createMockedStore } from '../../../../reducers/mockedStore';
-import { type TAnyMessageModel } from '../../../../definitions';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { MessageProvider } from '../../stores/MessageStore';
+import { createMockedStore } from '~/reducers/mockedStore';
+import { type TAnyMessageModel } from '~/definitions';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
 import CallButtonLeaf from '../CallButton';
 
 const store = createMockedStore();
@@ -16,9 +16,7 @@ const item = {
 	autoTranslate: false
 } as unknown as TAnyMessageModel;
 
-const room: Partial<MessageRoomState> = {
-	handleEnterCall: () => {}
-};
+const room: Partial<MessageRoomState> = {};
 
 const StoryWrapper = ({ children }: { children: ReactNode }) => (
 	<Provider store={store}>

@@ -73,8 +73,6 @@ export const withActionSheet = (Component: ComponentType<any>): typeof Component
 const actionSheetRef: Ref<IActionSheetProvider> = createRef();
 
 export const ActionSheetProvider = memo(({ children }: { children: ReactElement | ReactElement[] }) => {
-	'use memo';
-
 	const getContext = (): IActionSheetProvider => ({
 		showActionSheet: options => {
 			actionSheetRef.current?.showActionSheet(options);
