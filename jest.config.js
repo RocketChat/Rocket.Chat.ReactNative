@@ -1,6 +1,8 @@
 const getAliasConfig = require('./config/import-aliases');
 
 module.exports = {
+	maxWorkers: 2,
+	workerIdleMemoryLimit: '512MB',
 	modulePathIgnorePatterns: ['<rootDir>/.*worktrees/'],
 	testPathIgnorePatterns: [
 		'e2e',

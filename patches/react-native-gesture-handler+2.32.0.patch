@@ -1,8 +1,35 @@
+diff --git a/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt b/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt
+index e4114c4..41544da 100644
+--- a/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt
++++ b/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt
+@@ -504,10 +504,22 @@ class RNGestureHandlerButtonViewManager :
+     }
+ 
+     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
++      if (isActivationKey(keyCode) && !isChildTouched() && !context.isScreenReaderOn()) {
++        findGestureHandlerRootView()?.activateNativeHandlers(this)
++        return true
++      }
+       receivedKeyEvent = true
+       return super.onKeyUp(keyCode, event)
+     }
+ 
++    private fun isActivationKey(keyCode: Int) = when (keyCode) {
++      KeyEvent.KEYCODE_DPAD_CENTER,
++      KeyEvent.KEYCODE_ENTER,
++      KeyEvent.KEYCODE_NUMPAD_ENTER,
++      KeyEvent.KEYCODE_SPACE -> true
++      else -> false
++    }
++
+     override fun performClick(): Boolean {
+       // don't preform click when a child button is pressed (mainly to prevent sound effect of
+       // a parent button from playing)
 diff --git a/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm b/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
-index 2296c39..0a872ba 100644
+index 6b9fa9c..6d2ccea 100644
 --- a/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
 +++ b/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
-@@ -89,6 +89,52 @@
+@@ -83,6 +83,52 @@ - (BOOL)shouldHandleTouch:(RNGHUIView *)view
  }
  
  #if !TARGET_OS_OSX
