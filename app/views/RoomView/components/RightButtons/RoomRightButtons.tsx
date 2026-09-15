@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import { type ISubscription, type SubscriptionType, type TSubscriptionModel, type TUserStatus } from '~/definitions';
 import i18n from '~/i18n';
-import { getRoomTitle, isGroupChat } from '~/lib/methods/helpers';
+import { getRoomTitle, isGroupChat, isIOS } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import getRoomAccessibilityLabel from '~/lib/helpers/getRoomAccessibilityLabel';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -21,7 +21,10 @@ import { fromSubscription } from '~/views/RoomView/stores/RoomStoreContext';
 import { useE2EEStatus } from '~/views/RoomView/hooks/useE2EEStatus';
 import { useSubscriptionUnreads } from '~/views/RoomView/hooks/useSubscriptionUnreads';
 import { navigateToScreen, type TRoomStackNavigation } from '~/views/RoomView/services/navigateToScreen';
-import { HeaderCallButton } from './HeaderCallButton';
+import { ApplyRoomHeaderItems, RoomHeaderItemsWithCall } from './ApplyRoomHeaderItems';
+import { type HeaderAction } from '~/lib/methods/helpers/navigation';
+import { getUnreadStyle } from '~/containers/UnreadBadge/getUnreadStyle';
+import { useGoRoomActionsView } from '~/views/RoomView/hooks/useGoRoomActionsView';
 
 interface IRoomRightButtonsProps {
 	rid: string;
@@ -31,7 +34,8 @@ interface IRoomRightButtonsProps {
 export const RoomRightButtons = ({ rid, roomStore }: IRoomRightButtonsProps): ReactElement => {
 	const navigation = useNavigation<TRoomStackNavigation>();
 	const isMasterDetail = useMasterDetail();
-	const { colors } = useTheme();
+	const { colors, theme } = useTheme();
+	const onRoomInfoPress = useGoRoomActionsView(roomStore);
 
 	const userId = useAppSelector(state => getUserSelector(state).id);
 	const threadsEnabled = useSetting('Threads_enabled') as boolean;
@@ -111,49 +115,68 @@ export const RoomRightButtons = ({ rid, roomStore }: IRoomRightButtonsProps): Re
 			? roomName
 			: getRoomAccessibilityLabel({ type: t, userId, isGroupChat: roomIsGroupChat, status: status as TUserStatus, teamMain });
 
+	const beforeCall: HeaderAction[] = isIOS
+		? [{ type: 'button', label: i18n.t('Room_Info'), iconName: 'info', onPress: onRoomInfoPress }]
+		: [];
+	const afterCall: HeaderAction[] = [];
+	if (hasE2EEWarning) {
+		beforeCall.push({
+			type: 'button',
+			label: i18n.t('E2E_Encryption'),
+			iconName: 'encrypted',
+			onPress: goE2EEToggleRoomView,
+			disabled: !canToggleEncryption,
+			testID: 'room-view-header-encryption'
+		});
+	}
+	if (issuesWithNotifications || disableNotifications) {
+		beforeCall.push({
+			type: 'button',
+			label: i18n.t('Notifications'),
+			iconName: 'notification-disabled',
+			tintColor: issuesWithNotifications ? colors.fontDanger : undefined,
+			onPress: navigateToNotificationOrPushTroubleshoot,
+			disabled: hasE2EEWarning,
+			testID: 'room-view-push-troubleshoot'
+		});
+	}
+	if (threadsEnabled) {
+		const badge = () => <HeaderButton.BadgeUnread tunread={tunread} tunreadUser={tunreadUser} tunreadGroup={tunreadGroup} />;
+		afterCall.push({
+			type: 'button',
+			label: threadsAccessibilityLabel(),
+			iconName: 'threads',
+			onPress: goThreadsView,
+			disabled: hasE2EEWarning,
+			testID: 'room-view-header-threads',
+			androidBadge: badge,
+			badge: tunread.length
+				? {
+						value: tunread.length >= 100 ? '+99' : tunread.length,
+						style: getUnreadStyle({ theme, tunread, tunreadUser, tunreadGroup })
+					}
+				: undefined
+		});
+	}
+	afterCall.push({
+		type: 'button',
+		label: i18n.t('Search_Messages'),
+		iconName: 'search',
+		onPress: goSearchView,
+		testID: 'room-view-search',
+		disabled: hasE2EEWarning
+	});
+	if (isSelfDm) {
+		return <ApplyRoomHeaderItems navigation={navigation} actions={[...beforeCall, ...afterCall]} />;
+	}
 	return (
-		<HeaderButton.Container>
-			{hasE2EEWarning ? (
-				<HeaderButton.Item
-					iconName='encrypted'
-					onPress={goE2EEToggleRoomView}
-					disabled={!canToggleEncryption}
-					testID='room-view-header-encryption'
-				/>
-			) : null}
-			{issuesWithNotifications || disableNotifications ? (
-				<HeaderButton.Item
-					color={issuesWithNotifications ? colors.fontDanger : ''}
-					iconName='notification-disabled'
-					onPress={navigateToNotificationOrPushTroubleshoot}
-					testID='room-view-push-troubleshoot'
-					disabled={hasE2EEWarning}
-				/>
-			) : null}
-			{!isSelfDm ? (
-				<HeaderCallButton
-					accessibilityLabel={i18n.t('Call_room_name', { roomName: accessibilityRoomName })}
-					rid={rid}
-					disabled={hasE2EEWarning}
-				/>
-			) : null}
-			{threadsEnabled ? (
-				<HeaderButton.Item
-					accessibilityLabel={threadsAccessibilityLabel()}
-					iconName='threads'
-					onPress={goThreadsView}
-					testID='room-view-header-threads'
-					badge={() => <HeaderButton.BadgeUnread tunread={tunread} tunreadUser={tunreadUser} tunreadGroup={tunreadGroup} />}
-					disabled={hasE2EEWarning}
-				/>
-			) : null}
-			<HeaderButton.Item
-				accessibilityLabel={i18n.t('Search_Messages')}
-				iconName='search'
-				onPress={goSearchView}
-				testID='room-view-search'
-				disabled={hasE2EEWarning}
-			/>
-		</HeaderButton.Container>
+		<RoomHeaderItemsWithCall
+			navigation={navigation}
+			beforeCall={beforeCall}
+			afterCall={afterCall}
+			rid={rid}
+			disabled={hasE2EEWarning}
+			accessibilityLabel={i18n.t('Call_room_name', { roomName: accessibilityRoomName })}
+		/>
 	);
 };

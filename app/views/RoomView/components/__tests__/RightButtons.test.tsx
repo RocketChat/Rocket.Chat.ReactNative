@@ -3,7 +3,7 @@ import { render } from '@testing-library/react-native';
 import { type RoomMembership } from '~/views/RoomView/definitions';
 import RightButtons from '../RightButtons/RightButtons';
 
-const mockNavigation = { navigate: jest.fn(), push: jest.fn() };
+const mockNavigation = { navigate: jest.fn(), push: jest.fn(), setOptions: jest.fn() };
 jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => mockNavigation
 }));
@@ -14,7 +14,7 @@ jest.mock('~/lib/hooks/useMasterDetail', () => ({
 	...jest.requireActual('~/lib/hooks/useMasterDetail'),
 	useMasterDetail: () => false
 }));
-jest.mock('~/theme', () => ({ useTheme: () => ({ colors: { fontDanger: '#f00' } }) }));
+jest.mock('~/theme', () => ({ useTheme: () => ({ theme: 'light', colors: { fontDanger: '#f00' } }) }));
 jest.mock('~/lib/helpers/getRoomAccessibilityLabel', () => ({ __esModule: true, default: () => 'label' }));
 jest.mock('~/lib/methods/helpers', () => ({
 	...jest.requireActual('~/lib/methods/helpers'),
@@ -73,32 +73,21 @@ jest.mock('~/containers/Header/components/HeaderButton', () => {
 		BadgeUnread: () => null
 	};
 });
-jest.mock('../RightButtons/HeaderCallButton', () => {
-	const ReactActual = jest.requireActual('react');
-	return {
-		HeaderCallButton: ({ rid, disabled, accessibilityLabel }: { rid: string; disabled: boolean; accessibilityLabel: string }) =>
-			ReactActual.createElement('CallButton', { rid, disabled, accessibilityLabel, testID: 'header-call-button-stub' })
-	};
-});
 
-const allTestIDs = [
-	'room-view-search',
-	'room-view-header-threads',
-	'header-call-button-stub',
-	'room-view-header-encryption',
-	'room-view-push-troubleshoot',
-	'room-view-header-omnichannel-kebab',
-	'room-view-header-follow',
-	'room-view-header-unfollow'
-];
+jest.mock('../useHeaderCallAction', () => ({
+	useHeaderCallAction: ({ disabled, accessibilityLabel }: any) => ({
+		type: 'button',
+		label: accessibilityLabel,
+		iconName: 'phone',
+		disabled,
+		onPress: jest.fn()
+	})
+}));
+jest.mock('../../hooks/useGoRoomActionsView', () => ({ useGoRoomActionsView: () => jest.fn() }));
+jest.mock('~/lib/methods/helpers/navigation', () => jest.requireActual('~/lib/methods/helpers/navigation/headerItems'));
 
 describe('RightButtons', () => {
 	const roomStore = { getState: () => mockRoomState } as any;
-
-	const expectOnly = (queryByTestId: (id: string) => unknown, present: string[]) => {
-		present.forEach(id => expect(queryByTestId(id)).toBeTruthy());
-		allTestIDs.filter(id => !present.includes(id)).forEach(id => expect(queryByTestId(id)).toBeNull());
-	};
 
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -124,122 +113,50 @@ describe('RightButtons', () => {
 		};
 	});
 
-	it('renders only the kebab for an active omnichannel room', () => {
-		mockRoomState = { ...mockRoomState, room: { id: 'sub-1', rid: 'rid-1', t: 'l', name: 'chat' } };
-		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
-		expectOnly(queryByTestId, ['room-view-header-omnichannel-kebab']);
-		expect(toJSON()).toMatchSnapshot();
-	});
+	const items = () => mockNavigation.setOptions.mock.calls.at(-1)?.[0].unstable_headerRightItems();
+	const menuItems = () => items().find((item: any) => item.type === 'menu').menu.items;
 
-	it('renders the unfollow button for a followed thread', () => {
-		mockHeaderHooks = { ...mockHeaderHooks, isFollowingThread: true };
-		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' tmid='tmid-1' roomStore={roomStore} />);
-		expectOnly(queryByTestId, ['room-view-header-unfollow']);
-		expect(queryByTestId('room-view-header-unfollow')).toHaveProp('accessibilityLabel', 'Unfollow thread');
-		expect(toJSON()).toMatchSnapshot();
+	it('keeps Search before More and excludes Search from the menu', () => {
+		render(<RightButtons rid='rid-1' roomStore={roomStore} />);
+		expect(items().map((item: any) => item.label)).toEqual(['Search messages', 'More']);
+		expect(menuItems().map((item: any) => item.label)).toEqual(['Room info', 'Call label', 'Threads']);
 	});
-
-	it('renders the follow button for an unfollowed thread', () => {
-		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' tmid='tmid-1' roomStore={roomStore} />);
-		expectOnly(queryByTestId, ['room-view-header-follow']);
-		expect(queryByTestId('room-view-header-follow')).toHaveProp('accessibilityLabel', 'Follow thread');
-		expect(toJSON()).toMatchSnapshot();
+	it('keeps Room Info and permitted livechat actions in the native menu', () => {
+		mockRoomState.room = { id: 'sub-1', rid: 'rid-1', t: 'l' };
+		render(<RightButtons rid='rid-1' roomStore={roomStore} />);
+		expect(menuItems().map((item: any) => item.label)).toEqual(['Room info', 'Close']);
+		expect(menuItems().at(-1).destructive).toBe(true);
 	});
-
-	it('renders call, threads and search for a regular channel', () => {
-		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
-		expectOnly(queryByTestId, ['header-call-button-stub', 'room-view-header-threads', 'room-view-search']);
-		expect(toJSON()).toMatchSnapshot();
+	it.each([false, true])('preserves thread follow state: %s', following => {
+		mockHeaderHooks.isFollowingThread = following;
+		render(<RightButtons rid='rid-1' tmid='tmid-1' roomStore={roomStore} />);
+		expect(items()).toHaveLength(1);
+		expect(menuItems().map((item: any) => item.label)).toEqual(['Room info', following ? 'Unfollow thread' : 'Follow thread']);
 	});
-
-	it('enables the encryption button when the user can toggle encryption', () => {
-		mockRoomState = { ...mockRoomState, room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
-		mockE2EEStatus = { showMissingE2EEKey: true, showE2EEDisabledRoom: false, hasE2EEWarning: true };
-		mockHeaderHooks = { ...mockHeaderHooks, canToggleEncryption: true };
-		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
-		expectOnly(queryByTestId, [
-			'room-view-header-encryption',
-			'header-call-button-stub',
-			'room-view-header-threads',
-			'room-view-search'
-		]);
-		expect(queryByTestId('room-view-header-encryption')).toHaveProp('disabled', false);
-		expect(queryByTestId('room-view-search')).toHaveProp('disabled', true);
-		expect(toJSON()).toMatchSnapshot();
+	it.each([false, true])('preserves E2EE permission gates: %s', permitted => {
+		mockE2EEStatus.hasE2EEWarning = true;
+		mockHeaderHooks.canToggleEncryption = permitted;
+		render(<RightButtons rid='rid-1' roomStore={roomStore} />);
+		expect(items()[0].disabled).toBe(true);
+		const menu = menuItems();
+		expect(menu.find((item: any) => item.icon?.name === 'lock').disabled).toBe(!permitted);
+		expect(menu.find((item: any) => item.icon?.name === 'phone').disabled).toBe(true);
+		expect(menu.find((item: any) => item.icon?.name === 'bubble.left.and.bubble.right').disabled).toBe(true);
 	});
-
-	it('disables the encryption button when the user cannot toggle encryption', () => {
-		mockRoomState = { ...mockRoomState, room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
-		mockE2EEStatus = { showMissingE2EEKey: true, showE2EEDisabledRoom: false, hasE2EEWarning: true };
-		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
-		expectOnly(queryByTestId, [
-			'room-view-header-encryption',
-			'header-call-button-stub',
-			'room-view-header-threads',
-			'room-view-search'
-		]);
-		expect(queryByTestId('room-view-header-encryption')).toHaveProp('disabled', true);
-		expect(toJSON()).toMatchSnapshot();
+	it('hides calls for self DMs', () => {
+		mockHeaderHooks.isSelfDm = true;
+		render(<RightButtons rid='rid-1' roomStore={roomStore} />);
+		expect(menuItems().some((item: any) => item.icon?.name === 'phone')).toBe(false);
 	});
-
-	it('renders the encryption button when the room has e2ee disabled', () => {
-		mockRoomState = { ...mockRoomState, room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
-		mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: true, hasE2EEWarning: true };
-		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
-		expectOnly(queryByTestId, [
-			'room-view-header-encryption',
-			'header-call-button-stub',
-			'room-view-header-threads',
-			'room-view-search'
-		]);
-		expect(queryByTestId('room-view-header-encryption')).toHaveProp('disabled', true);
-		expect(toJSON()).toMatchSnapshot();
-	});
-
-	it('renders the push troubleshoot button when there are notification issues', () => {
-		mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
-		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
-		expectOnly(queryByTestId, [
-			'room-view-push-troubleshoot',
-			'header-call-button-stub',
-			'room-view-header-threads',
-			'room-view-search'
-		]);
-		expect(queryByTestId('room-view-push-troubleshoot')).toHaveProp('color', '#f00');
-		expect(toJSON()).toMatchSnapshot();
-	});
-
-	it('renders the push troubleshoot button when notifications are disabled for the room', () => {
-		mockRoomState = {
-			...mockRoomState,
-			room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general', disableNotifications: true }
-		};
-		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
-		expectOnly(queryByTestId, [
-			'room-view-push-troubleshoot',
-			'header-call-button-stub',
-			'room-view-header-threads',
-			'room-view-search'
-		]);
-		expect(queryByTestId('room-view-push-troubleshoot')).toHaveProp('color', '');
-		expect(toJSON()).toMatchSnapshot();
-	});
-
-	it('hides the threads button when threads are disabled', () => {
-		mockAppState = {
-			...mockAppState,
-			settings: { Threads_enabled: false, Livechat_request_comment_when_closing_conversation: false }
-		};
-		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
-		expectOnly(queryByTestId, ['header-call-button-stub', 'room-view-search']);
-		expect(toJSON()).toMatchSnapshot();
-	});
-
-	it('hides the call button on a self DM', () => {
-		mockRoomState = { ...mockRoomState, room: { id: 'sub-1', rid: 'rid-1', t: 'd', name: 'user' } };
-		mockHeaderHooks = { ...mockHeaderHooks, isSelfDm: true };
-		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
-		expectOnly(queryByTestId, ['room-view-header-threads', 'room-view-search']);
-		expect(toJSON()).toMatchSnapshot();
+	it('refreshes the More badge and clears native actions when invited', () => {
+		mockHeaderHooks.tunread = ['thread'];
+		const { rerender } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
+		expect(items()[1].badge.value).toBe(1);
+		mockHeaderHooks.tunread = [];
+		rerender(<RightButtons rid='rid-1' roomStore={{ ...roomStore }} />);
+		expect(items()[1].badge).toBeUndefined();
+		mockRoomState.membership = 'invited';
+		rerender(<RightButtons rid='rid-1' roomStore={{ ...roomStore }} />);
+		expect(items()).toEqual([]);
 	});
 });

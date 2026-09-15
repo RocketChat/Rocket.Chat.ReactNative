@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import i18n from '~/i18n';
-import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { showConfirmationAlert, showErrorAlert, isIOS } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { useCanReturnQueue } from '~/ee/omnichannel/hooks/useCanReturnQueue';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -18,12 +18,16 @@ import { navigateToScreen, type TRoomStackNavigation } from '~/views/RoomView/se
 import { closeLivechat } from '~/views/RoomView/services/closeLivechat';
 import { placeLivechatOnHold } from '~/views/RoomView/services/placeLivechatOnHold';
 
+import { ApplyRoomHeaderItems } from './ApplyRoomHeaderItems';
+import { useGoRoomActionsView } from '~/views/RoomView/hooks/useGoRoomActionsView';
+
 interface IOmnichannelRightButtonsProps {
 	rid: string;
 	roomStore: RoomStore;
 }
 
 export const OmnichannelRightButtons = ({ rid, roomStore }: IOmnichannelRightButtonsProps): ReactElement => {
+	const onRoomInfoPress = useGoRoomActionsView(roomStore);
 	const navigation = useNavigation<TRoomStackNavigation>();
 	const isMasterDetail = useMasterDetail();
 	const { showActionSheet } = useActionSheet();
@@ -52,8 +56,7 @@ export const OmnichannelRightButtons = ({ rid, roomStore }: IOmnichannelRightBut
 		});
 	};
 
-	const showMoreActions = () => {
-		logEvent(events.ROOM_SHOW_MORE_ACTIONS);
+	const getMoreActions = () => {
 		const options = [] as TActionSheetOptionsItem[];
 		if (canPlaceLivechatOnHold) {
 			options.push({
@@ -88,12 +91,47 @@ export const OmnichannelRightButtons = ({ rid, roomStore }: IOmnichannelRightBut
 			danger: true
 		});
 
-		showActionSheet({ options });
+		return options;
 	};
 
+	const showMoreActions = () => {
+		logEvent(events.ROOM_SHOW_MORE_ACTIONS);
+		showActionSheet({ options: getMoreActions() });
+	};
 	return (
-		<HeaderButton.Container>
-			<HeaderButton.Item iconName='kebab' onPress={showMoreActions} testID='room-view-header-omnichannel-kebab' />
-		</HeaderButton.Container>
+		<ApplyRoomHeaderItems
+			navigation={navigation}
+			actions={[
+				{
+					type: 'menu',
+					label: i18n.t('More'),
+					accessibilityLabel: i18n.t('More'),
+					icon: { type: 'sfSymbol', name: 'ellipsis' },
+					menu: {
+						items: [
+							...(isIOS
+								? [
+										{
+											type: 'action' as const,
+											label: i18n.t('Room_Info'),
+											icon: { type: 'sfSymbol' as const, name: 'info.circle' as const },
+											onPress: onRoomInfoPress
+										}
+									]
+								: []),
+							...getMoreActions().map(action => ({
+								type: 'action' as const,
+								label: action.title,
+								onPress: action.onPress,
+								destructive: action.danger
+							}))
+						]
+					},
+					androidElement: (
+						<HeaderButton.Item iconName='kebab' onPress={showMoreActions} testID='room-view-header-omnichannel-kebab' />
+					)
+				}
+			]}
+		/>
 	);
 };

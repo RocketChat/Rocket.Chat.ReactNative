@@ -1,3 +1,6 @@
+import { useNavigation } from '@react-navigation/native';
+import { type TRoomStackNavigation } from '~/views/RoomView/services/navigateToScreen';
+import { ApplyRoomHeaderItems } from './ApplyRoomHeaderItems';
 import { type ReactElement } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
@@ -15,6 +18,7 @@ interface IRightButtonsProps {
 }
 
 const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElement | null => {
+	const navigation = useNavigation<TRoomStackNavigation>();
 	const { t, status, membership } = useStore(
 		roomStore,
 		useShallow(s => ({
@@ -25,22 +29,22 @@ const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElemen
 	);
 
 	if (!rid) {
-		return null;
+		return <ApplyRoomHeaderItems navigation={navigation} actions={[]} />;
 	}
 
 	if (membership === 'invited') {
-		return null;
+		return <ApplyRoomHeaderItems navigation={navigation} actions={[]} />;
 	}
 
 	if (t === 'l') {
 		if (status === 'queued' || membership !== 'subscribed') {
-			return null;
+			return <ApplyRoomHeaderItems navigation={navigation} actions={[]} />;
 		}
 		return <OmnichannelRightButtons rid={rid} roomStore={roomStore} />;
 	}
 
 	if (tmid) {
-		return <ThreadRightButtons tmid={tmid} />;
+		return <ThreadRightButtons tmid={tmid} roomStore={roomStore} />;
 	}
 
 	return <RoomRightButtons rid={rid} roomStore={roomStore} />;

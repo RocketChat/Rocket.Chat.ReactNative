@@ -1,3 +1,4 @@
+import { StackActions } from '@react-navigation/native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
 import { FlatList, Text, View } from 'react-native';
@@ -23,7 +24,7 @@ import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
 import { type TSupportedThemes, withTheme } from '~/theme';
 import { getUserSelector } from '~/selectors/login';
 import SafeAreaView from '~/containers/SafeAreaView';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import database from '~/lib/database';
 import { sanitizeLikeString } from '~/lib/database/utils';
 import getThreadName from '~/lib/methods/getThreadName';
@@ -82,7 +83,14 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		};
 		const showCloseModal = route.params?.showCloseModal;
 		if (showCloseModal) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+			Object.assign(
+				options,
+				headerItems({
+					left: [
+						{ type: 'button', label: I18n.t('Close'), iconName: 'close', onPress: () => navigation.dispatch(StackActions.pop()) }
+					]
+				})
+			);
 		}
 		return options;
 	};

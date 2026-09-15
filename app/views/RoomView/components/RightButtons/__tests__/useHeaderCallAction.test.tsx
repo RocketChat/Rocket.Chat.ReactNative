@@ -1,6 +1,20 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 
-import { HeaderCallButton } from '../HeaderCallButton';
+import { useHeaderCallAction } from '../../useHeaderCallAction';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+
+const HeaderCallButton = (props: Parameters<typeof useHeaderCallAction>[0]) => {
+	const action = useHeaderCallAction(props);
+	return action ? (
+		<HeaderButton.Item
+			iconName={action.iconName}
+			onPress={action.onPress}
+			disabled={action.disabled}
+			accessibilityLabel={action.accessibilityLabel}
+			testID={action.testID}
+		/>
+	) : null;
+};
 
 const mockVideoConf = {
 	showInitCallActionSheet: jest.fn(),

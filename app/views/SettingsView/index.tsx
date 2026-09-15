@@ -1,15 +1,17 @@
+import { DrawerActions, StackActions, useNavigation } from '@react-navigation/native';
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { useNavigation } from '@react-navigation/native';
 import { type ReactElement, useLayoutEffect } from 'react';
 import { Linking, Share } from 'react-native';
 import { Image } from 'expo-image';
 import { useDispatch } from 'react-redux';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+import { withKeyboardFocus } from 'react-native-external-keyboard';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import { appStart } from '~/actions/app';
 import { logout } from '~/actions/login';
 import { selectServerRequest } from '~/actions/server';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import NewWindowIcon from '~/containers/NewWindowIcon';
 import * as List from '~/containers/List';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -32,6 +34,8 @@ import { useTheme } from '~/theme';
 import { disconnect } from '~/lib/services/connect';
 import SidebarView from '../SidebarView';
 
+const DrawerItem = withKeyboardFocus(HeaderButton.Item);
+
 type TLogScreenName = 'SE_GO_LANGUAGE' | 'SE_GO_DEFAULTBROWSER' | 'SE_GO_THEME' | 'SE_GO_PROFILE' | 'SE_GO_SECURITYPRIVACY';
 
 const SettingsView = (): ReactElement => {
@@ -43,12 +47,34 @@ const SettingsView = (): ReactElement => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			headerLeft: () =>
-				isMasterDetail ? (
-					<HeaderButton.CloseModal navigation={navigation} testID='settings-view-close' />
-				) : (
-					<HeaderButton.Drawer navigation={navigation} testID='settings-view-drawer' />
-				),
+			...headerItems({
+				left: [
+					isMasterDetail
+						? {
+								type: 'button',
+								label: I18n.t('Close'),
+								iconName: 'close',
+								onPress: () => navigation.dispatch(StackActions.pop()),
+								testID: 'settings-view-close'
+							}
+						: {
+								type: 'button',
+								label: I18n.t('Menu'),
+								iconName: 'hamburguer',
+								androidElement: (
+									<DrawerItem
+										autoFocus
+										iconName='hamburguer'
+										accessibilityLabel={I18n.t('Menu')}
+										onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+										testID='settings-view-drawer'
+									/>
+								),
+								onPress: () => navigation.dispatch(DrawerActions.toggleDrawer()),
+								testID: 'settings-view-drawer'
+							}
+				]
+			}),
 			title: I18n.t('Settings')
 		});
 	}, [navigation, isMasterDetail]);

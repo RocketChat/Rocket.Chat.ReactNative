@@ -47,14 +47,14 @@ describe('useHeader', () => {
 		mockTestStore = makeRoomStore();
 	});
 
-	it('sets only the headerLeft spacer and returns when rid is missing', () => {
+	it('clears both header sides when rid is missing', () => {
 		renderHook(() => useHeader({ rid: undefined, tmid: undefined, name: 'general', roomStore: mockTestStore }));
 
 		expect(mockSetOptions).toHaveBeenCalledTimes(1);
 		const options = mockSetOptions.mock.calls[0][0];
 		expect(typeof options.headerLeft).toBe('function');
 		expect(options).not.toHaveProperty('headerTitle');
-		expect(options).not.toHaveProperty('headerRight');
+		expect(options.headerRight()).toBeNull();
 	});
 
 	it('re-fires the title effect when a selected field changes on a re-emitted room', () => {
@@ -70,20 +70,20 @@ describe('useHeader', () => {
 		});
 		expect(mockSetOptions).toHaveBeenCalledTimes(3);
 		expect(mockSetOptions.mock.calls[2][0]).toHaveProperty('headerTitle');
-		expect(mockSetOptions.mock.calls[2][0].headerTitle().props.subtitle).toBe('new');
+		expect(mockSetOptions.mock.calls[2][0].headerTitle().props.children.props.subtitle).toBe('new');
 	});
 
 	it('keeps the thread title from the passed name when the observed room name changes', () => {
 		renderHook(() => useHeader({ rid: 'rid-1', tmid: 'tmid-1', name: 'Thread name', roomStore: mockTestStore }));
 
 		const titleOptions = mockSetOptions.mock.calls[1][0];
-		expect(titleOptions.headerTitle().props.title).toBe('Thread name');
+		expect(titleOptions.headerTitle().props.children.props.title).toBe('Thread name');
 
 		act(() => {
 			mockTestStore.setState({ room: { rid: 'rid-1', t: 'c', name: 'parent-channel' } });
 		});
 		const nextTitleOptions = mockSetOptions.mock.calls[mockSetOptions.mock.calls.length - 1][0];
-		expect(nextTitleOptions.headerTitle().props.title).toBe('Thread name');
+		expect(nextTitleOptions.headerTitle().props.children.props.title).toBe('Thread name');
 	});
 
 	it('renders each header callback without throwing', () => {
@@ -93,6 +93,10 @@ describe('useHeader', () => {
 		const titleOptions = mockSetOptions.mock.calls[1][0];
 		expect(() => sideOptions.headerLeft()).not.toThrow();
 		expect(() => titleOptions.headerTitle()).not.toThrow();
-		expect(() => sideOptions.headerRight()).not.toThrow();
+		expect(sideOptions).not.toHaveProperty('headerRight');
 	});
 });
+
+jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: () => false }));
+jest.mock('../useUnreadsCount', () => ({ useUnreadsCount: () => 0 }));
+jest.mock('~/lib/methods/helpers/navigation', () => jest.requireActual('~/lib/methods/helpers/navigation/headerItems'));

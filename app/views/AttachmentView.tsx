@@ -7,10 +7,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import * as FileSystem from 'expo-file-system/legacy';
 
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { isImageBase64 } from '../lib/methods/isImageBase64';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import AltTextLabel from '../containers/AltTextLabel';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { ImageViewer } from '../containers/ImageViewer';
 import { LISTENER } from '../containers/Toast';
 import { type IAttachment } from '../definitions';
@@ -185,18 +185,31 @@ const AttachmentView = (): ReactElement => {
 		const title = getTitle();
 		navigation.setOptions({
 			title: title || '',
-			headerLeft: () => (
-				<HeaderButton.CloseModal
-					testID='close-attachment-view'
-					navigation={navigation}
-					color={colors.fontDefault}
-					style={{ marginRight: -12 }}
-				/>
-			),
-			headerRight:
-				Allow_Save_Media_to_Gallery && !isImageBase64(attachment.image_url)
-					? () => <HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.fontDefault} />
-					: undefined
+			...headerItems({
+				left: [
+					{
+						type: 'button',
+						label: I18n.t('Close'),
+						iconName: 'close',
+						onPress: () => navigation.pop(),
+						testID: 'close-attachment-view',
+						tintColor: colors.fontDefault
+					}
+				],
+				right:
+					Allow_Save_Media_to_Gallery && !isImageBase64(attachment.image_url)
+						? [
+								{
+									type: 'button',
+									label: I18n.t('Save'),
+									iconName: 'download',
+									onPress: handleSave,
+									testID: 'save-image',
+									tintColor: colors.fontDefault
+								}
+							]
+						: []
+			})
 		});
 	}, [Allow_Save_Media_to_Gallery, attachment.image_url, colors.fontDefault, getTitle, handleSave, navigation]);
 

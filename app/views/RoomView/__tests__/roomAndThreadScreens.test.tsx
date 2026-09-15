@@ -250,3 +250,5 @@ describe('RoomView room and thread screens on the same rid', () => {
 		expect(screen.getByTestId('agent-message-thread').props.accessibilityLabel).toBe('true');
 	});
 });
+
+jest.mock('../components/RightButtons/RightButtons', () => ({ __esModule: true, default: () => null }));

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
 
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { deleteRoom } from '../actions/room';
 import { DisplayMode } from '../lib/constants/constantDisplayMode';
 import { textInputDebounceTime } from '../lib/constants/debounceConfig';
@@ -12,7 +13,6 @@ import { themes } from '../lib/constants/colors';
 import { type TActionSheetOptions, type TActionSheetOptionsItem, withActionSheet } from '../containers/ActionSheet';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import BackgroundContainer from '../containers/BackgroundContainer';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import RoomHeader from '../containers/RoomHeader';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchHeader from '../containers/SearchHeader';
@@ -222,40 +222,43 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 
 		if (isSearching) {
 			const options: NativeStackNavigationOptions = {
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
-					</HeaderButton.Container>
-				),
-				headerTitle: () => (
-					<SearchHeader onSearchChangeText={this.onSearchChangeText} testID='team-channels-view-search-header' />
-				),
-				headerRight: undefined
+				...headerItems({
+					left: [{ type: 'button', label: I18n.t('Close'), iconName: 'close', onPress: this.onCancelSearchPress }],
+					right: []
+				}),
+				headerTitle: () => <SearchHeader onSearchChangeText={this.onSearchChangeText} testID='team-channels-view-search-header' />
 			};
 			return navigation.setOptions(options);
 		}
-
 		const options: NativeStackNavigationOptions = {
-			headerLeft: undefined,
+			...headerItems({
+				left: undefined,
+				right: [
+					...(showCreate
+						? [
+								{
+									type: 'button' as const,
+									label: I18n.t('Create'),
+									iconName: 'create' as const,
+									testID: 'team-channels-view-create',
+									onPress: () =>
+										navigation.navigate('AddChannelTeamView', { teamId: this.teamId, rid: this.team.rid, t: this.team.t as any })
+								}
+							]
+						: []),
+					{
+						type: 'button',
+						label: I18n.t('Search'),
+						iconName: 'search',
+						testID: 'team-channels-view-search',
+						onPress: this.onSearchPress
+					}
+				]
+			}),
 			headerTitle: () => (
 				<RoomHeader title={getRoomTitle(team)} subtitle={team.topic} type={team.t} onPress={this.goRoomActionsView} teamMain />
-			),
-			headerRight: () => (
-				<HeaderButton.Container>
-					{showCreate ? (
-						<HeaderButton.Item
-							iconName='create'
-							testID='team-channels-view-create'
-							onPress={() =>
-								navigation.navigate('AddChannelTeamView', { teamId: this.teamId, rid: this.team.rid, t: this.team.t as any })
-							}
-						/>
-					) : null}
-					<HeaderButton.Item iconName='search' testID='team-channels-view-search' onPress={this.onSearchPress} />
-				</HeaderButton.Container>
 			)
 		};
-
 		navigation.setOptions(options);
 	};
 

@@ -1,0 +1,58 @@
+diff --git a/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx b/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx
+--- a/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx
++++ b/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx
+@@ -171,6 +171,7 @@
+       ...rest,
+       icon: transformIcon(icon),
+       title: label,
++      label,
+       displayAsPalette: layout === 'palette',
+       displayInline: inline,
+       singleSelection:
+@@ -185,6 +186,17 @@
+     ...rest,
+     icon: transformIcon(icon),
+     title: label,
++    // Compatibility with react-native-screens 4.17 menu props.
++    label,
++    attributes: rest.hidden
++      ? 'hidden'
++      : rest.disabled
++        ? 'disabled'
++        : rest.destructive
++          ? 'destructive'
++          : rest.keepsMenuPresented
++            ? 'keepsMenuPresented'
++            : undefined,
+     subtitle: description,
+   };
+ };
+diff --git a/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js b/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
+--- a/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
++++ b/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
+@@ -109,6 +109,7 @@
+       ...rest,
+       icon: transformIcon(icon),
+       title: label,
++      label,
+       displayAsPalette: layout === 'palette',
+       displayInline: inline,
+       singleSelection: typeof multiselectable === 'boolean' ? !multiselectable : undefined,
+@@ -125,6 +126,17 @@
+     ...rest,
+     icon: transformIcon(icon),
+     title: label,
++    // Compatibility with react-native-screens 4.17 menu props.
++    label,
++    attributes: rest.hidden
++      ? 'hidden'
++      : rest.disabled
++        ? 'disabled'
++        : rest.destructive
++          ? 'destructive'
++          : rest.keepsMenuPresented
++            ? 'keepsMenuPresented'
++            : undefined,
+     subtitle: description
+   };
+ };

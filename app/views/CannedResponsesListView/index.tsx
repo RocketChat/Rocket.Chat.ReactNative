@@ -4,6 +4,7 @@ import { type RouteProp } from '@react-navigation/native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import database from '~/lib/database';
 import I18n from '~/i18n';
 import { hideActionSheetRef, showActionSheetRef } from '~/containers/ActionSheet';
@@ -13,7 +14,6 @@ import SearchHeader from '~/containers/SearchHeader';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { useTheme } from '~/theme';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import * as List from '~/containers/List';
 import { themes } from '~/lib/constants/colors';
 import log from '~/lib/methods/helpers/log';
@@ -209,37 +209,36 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		await handleGetListCannedResponse({ text: searchText, department: scope, depId: departmentId, debounced: false });
 	};
 
-	const getHeader = () => {
+	const getHeader = (): NativeStackNavigationOptions => {
 		if (isSearching) {
 			return {
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item
-							iconName='close'
-							onPress={() => {
+				...headerItems({
+					left: [
+						{
+							type: 'button',
+							label: I18n.t('Close'),
+							iconName: 'close',
+							onPress: () => {
 								onChangeText('');
 								setIsSearching(false);
-							}}
-						/>
-					</HeaderButton.Container>
-				),
-				headerTitle: () => <SearchHeader onSearchChangeText={onChangeText} testID='team-channels-view-search-header' />,
-				headerRight: () => null
+							}
+						}
+					],
+					right: []
+				}),
+				headerTitle: () => <SearchHeader onSearchChangeText={onChangeText} testID='team-channels-view-search-header' />
 			};
 		}
-
-		const options: NativeStackNavigationOptions = {
-			headerLeft: () => null,
-			headerTitle: I18n.t('Canned_Responses'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item iconName='filter' onPress={showFilters} />
-					<HeaderButton.Item iconName='search' onPress={() => setIsSearching(true)} />
-				</HeaderButton.Container>
-			)
+		return {
+			...headerItems({
+				left: [],
+				right: [
+					{ type: 'button', label: I18n.t('Filter'), iconName: 'filter', onPress: showFilters },
+					{ type: 'button', label: I18n.t('Search'), iconName: 'search', onPress: () => setIsSearching(true) }
+				]
+			}),
+			headerTitle: I18n.t('Canned_Responses')
 		};
-
-		return options;
 	};
 
 	const setHeader = () => {

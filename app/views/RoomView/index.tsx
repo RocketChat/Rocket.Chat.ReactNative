@@ -18,6 +18,7 @@ import { createRoomStore, observeRoom } from './stores/RoomStore';
 import { type RoomStore } from './definitions';
 import { useE2EEStatus } from './hooks/useE2EEStatus';
 import { useHeader } from './hooks/useHeader';
+import RightButtons from './components/RightButtons/RightButtons';
 
 const RoomView = ({ route, navigation }: IRoomViewProps) => {
 	const [input] = useState(() => parseRoomRoute(route.params));
@@ -37,33 +38,41 @@ const RoomView = ({ route, navigation }: IRoomViewProps) => {
 
 	useHeader({ rid, tmid, name, roomStore });
 
-	if (!rid || !t) {
-		return <RoomBackground />;
-	}
-
-	if (invitation) {
-		return (
-			<InvitedRoomScreen
-				title={invitation.title}
-				description={invitation.description}
-				inviter={invitation.inviter as IInviteSubscription['inviter']}
-				onAccept={() => getInvitationActions(roomStore.getState().room as IInviteSubscription).accept()}
-				onReject={() => getInvitationActions(roomStore.getState().room as IInviteSubscription).reject()}
-			/>
-		);
-	}
-
-	if (isEncryptable) {
-		if (showMissingE2EEKey) {
-			return <MissingRoomE2EEKey />;
+	const renderContent = () => {
+		if (!rid || !t) {
+			return <RoomBackground />;
 		}
 
-		if (showE2EEDisabledRoom) {
-			return <EncryptedRoom navigation={navigation} roomName={roomTitle} />;
+		if (invitation) {
+			return (
+				<InvitedRoomScreen
+					title={invitation.title}
+					description={invitation.description}
+					inviter={invitation.inviter as IInviteSubscription['inviter']}
+					onAccept={() => getInvitationActions(roomStore.getState().room as IInviteSubscription).accept()}
+					onReject={() => getInvitationActions(roomStore.getState().room as IInviteSubscription).reject()}
+				/>
+			);
 		}
-	}
 
-	return <RoomScreen route={route} rid={rid} t={t} tmid={tmid} roomStore={roomStore} ready={ready} />;
+		if (isEncryptable) {
+			if (showMissingE2EEKey) {
+				return <MissingRoomE2EEKey />;
+			}
+
+			if (showE2EEDisabledRoom) {
+				return <EncryptedRoom navigation={navigation} roomName={roomTitle} />;
+			}
+		}
+
+		return <RoomScreen route={route} rid={rid} t={t} tmid={tmid} roomStore={roomStore} ready={ready} />;
+	};
+	return (
+		<>
+			<RightButtons rid={rid} tmid={tmid} roomStore={roomStore} />
+			{renderContent()}
+		</>
+	);
 };
 
 export default RoomView;

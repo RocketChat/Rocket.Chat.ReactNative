@@ -124,3 +124,5 @@ describe('RoomView', () => {
 		expect(screen.queryByTestId('room-screen')).toBeNull();
 	});
 });
+
+jest.mock('../components/RightButtons/RightButtons', () => ({ __esModule: true, default: () => null }));

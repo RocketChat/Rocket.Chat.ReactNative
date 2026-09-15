@@ -8,7 +8,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { type StaticScreenProps, useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '~/theme';
-import { defaultHeader, themedHeader, drawerStyle } from '~/lib/methods/helpers/navigation';
+import { nativeHeader, drawerStyle } from '~/lib/methods/helpers/navigation';
 import withNavigation from '~/lib/navigation/withNavigation';
 import { isIOS } from '~/lib/methods/helpers';
 import { ModalContainer } from './ModalContainer';
@@ -156,7 +156,6 @@ const ShareViewScreen: ComponentType<StaticScreenProps<MasterDetailInsideStackPa
 ) as any;
 
 const ChatsStack = createNativeStackNavigator({
-	screenOptions: defaultHeader,
 	screens: {
 		RoomView: createNativeStackScreen({
 			screen: RoomViewScreen,
@@ -165,7 +164,7 @@ const ChatsStack = createNativeStackNavigator({
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
+	return <Navigator screenOptions={nativeHeader(theme)} />;
 });
 
 const DrawerNav = createDrawerNavigator({
@@ -177,7 +176,6 @@ const DrawerNav = createDrawerNavigator({
 });
 
 const ModalStack = createNativeStackNavigator({
-	screenOptions: defaultHeader,
 	screens: {
 		RoomActionsView: createNativeStackScreen({
 			screen: RoomActionsViewScreen,
@@ -252,14 +250,13 @@ const ModalStack = createNativeStackNavigator({
 	const navigation = useNavigation<NativeStackNavigationProp<any>>();
 	return (
 		<ModalContainer navigation={navigation} theme={theme}>
-			<Navigator screenOptions={themedHeader(theme)} />
+			<Navigator screenOptions={nativeHeader(theme)} />
 		</ModalContainer>
 	);
 });
 
 const InsideStack = createNativeStackNavigator({
 	screenOptions: {
-		...defaultHeader,
 		presentation: isIOS ? 'containedTransparentModal' : 'containedModal'
 	},
 	screens: {
@@ -291,7 +288,7 @@ const InsideStack = createNativeStackNavigator({
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
+	return <Navigator screenOptions={nativeHeader(theme)} />;
 });
 
 export default InsideStack;

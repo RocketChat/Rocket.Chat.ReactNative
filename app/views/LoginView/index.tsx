@@ -2,9 +2,10 @@ import { useLayoutEffect } from 'react';
 import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+import { headerItems } from '~/lib/methods/helpers/navigation';
+import I18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import LoginServices from '~/containers/LoginServices';
 import { type OutsideParamList } from '~/stacks/types';
 import UserForm from './UserForm';
@@ -25,7 +26,17 @@ const LoginView = ({ route }: LoginViewProps) => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: title ?? 'Rocket.Chat',
-			headerRight: () => <HeaderButton.Legal testID='login-view-more' navigation={navigation} />
+			...headerItems({
+				right: [
+					{
+						type: 'button',
+						label: I18n.t('More'),
+						iconName: 'kebab',
+						onPress: () => navigation.navigate('LegalView'),
+						testID: 'login-view-more'
+					}
+				]
+			})
 		});
 	}, [navigation, title]);
 

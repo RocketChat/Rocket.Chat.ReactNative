@@ -1,9 +1,11 @@
+import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { useLayoutEffect } from 'react';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
 
-import Switch from '~/containers/Switch';
+import { withKeyboardFocus } from 'react-native-external-keyboard';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import Switch from '~/containers/Switch';
 import * as List from '~/containers/List';
 import SafeAreaView from '~/containers/SafeAreaView';
 import I18n from '~/i18n';
@@ -17,6 +19,8 @@ import {
 	ALERT_DISPLAY_TYPE_PREFERENCES_KEY
 } from '~/lib/constants/keys';
 import ListPicker from './components/ListPicker';
+
+const DrawerItem = withKeyboardFocus(HeaderButton.Item);
 
 export type TAlertDisplayType = 'TOAST' | 'DIALOG';
 
@@ -53,9 +57,28 @@ const AccessibilityAndAppearanceView = () => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Accessibility_and_Appearance'),
-			headerLeft: isMasterDetail
-				? undefined
-				: () => <HeaderButton.Drawer navigation={navigation} testID='accessibility-view-drawer' />
+			...headerItems({
+				left: isMasterDetail
+					? undefined
+					: [
+							{
+								type: 'button',
+								label: I18n.t('Menu'),
+								iconName: 'hamburguer',
+								androidElement: (
+									<DrawerItem
+										autoFocus
+										iconName='hamburguer'
+										accessibilityLabel={I18n.t('Menu')}
+										onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+										testID='accessibility-view-drawer'
+									/>
+								),
+								onPress: () => navigation.dispatch(DrawerActions.toggleDrawer()),
+								testID: 'accessibility-view-drawer'
+							}
+						]
+			})
 		});
 	}, [navigation, isMasterDetail]);
 	return (

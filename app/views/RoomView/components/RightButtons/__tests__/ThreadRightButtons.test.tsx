@@ -41,7 +41,7 @@ describe('ThreadRightButtons', () => {
 	});
 
 	it('renders the follow button when the thread is not followed', () => {
-		render(<ThreadRightButtons tmid='tmid-1' />);
+		render(<ThreadRightButtons roomStore={roomStore} tmid='tmid-1' />);
 
 		const followButton = screen.getByTestId('room-view-header-follow');
 		expect(followButton).toHaveProp('accessibilityLabel', 'Follow thread');
@@ -52,7 +52,7 @@ describe('ThreadRightButtons', () => {
 	it('renders the unfollow button when the thread is followed', () => {
 		mockFollowersByThread = { 'tmid-1': ['u1'] };
 
-		render(<ThreadRightButtons tmid='tmid-1' />);
+		render(<ThreadRightButtons roomStore={roomStore} tmid='tmid-1' />);
 
 		const unfollowButton = screen.getByTestId('room-view-header-unfollow');
 		expect(unfollowButton).toHaveProp('accessibilityLabel', 'Unfollow thread');
@@ -62,21 +62,21 @@ describe('ThreadRightButtons', () => {
 
 	it('shows the follow state for the displayed Thread and current user', () => {
 		mockFollowersByThread = { 'tmid-1': ['u1'] };
-		render(<ThreadRightButtons tmid='tmid-1' />);
+		render(<ThreadRightButtons roomStore={roomStore} tmid='tmid-1' />);
 		expect(screen.getByTestId('room-view-header-unfollow')).toBeOnTheScreen();
 
-		screen.rerender(<ThreadRightButtons tmid='tmid-2' />);
+		screen.rerender(<ThreadRightButtons roomStore={roomStore} tmid='tmid-2' />);
 		expect(screen.getByTestId('room-view-header-follow')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-view-header-unfollow')).not.toBeOnTheScreen();
 
 		mockAppState = { login: { user: { id: 'u2', username: 'other', token: 'tok' } } };
-		screen.rerender(<ThreadRightButtons tmid='tmid-1' />);
+		screen.rerender(<ThreadRightButtons roomStore={roomStore} tmid='tmid-1' />);
 		expect(screen.getByTestId('room-view-header-follow')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-view-header-unfollow')).not.toBeOnTheScreen();
 	});
 
 	it('follows the thread when it is not followed yet', () => {
-		render(<ThreadRightButtons tmid='tmid-1' />);
+		render(<ThreadRightButtons roomStore={roomStore} tmid='tmid-1' />);
 
 		fireEvent.press(screen.getByTestId('room-view-header-follow'));
 
@@ -86,10 +86,42 @@ describe('ThreadRightButtons', () => {
 	it('unfollows the thread when it is followed', () => {
 		mockFollowersByThread = { 'tmid-1': ['u1'] };
 
-		render(<ThreadRightButtons tmid='tmid-1' />);
+		render(<ThreadRightButtons roomStore={roomStore} tmid='tmid-1' />);
 
 		fireEvent.press(screen.getByTestId('room-view-header-unfollow'));
 
 		expect(toggleFollowThread).toHaveBeenCalledWith('tmid-1', true);
 	});
 });
+
+jest.mock('@react-navigation/native', () => ({ useNavigation: () => ({}) }));
+
+jest.mock('../ApplyRoomHeaderItems', () => {
+	const React = jest.requireActual('react');
+	const renderActions = (actions: any[]) =>
+		actions.map(
+			(action, index) =>
+				action.androidElement ??
+				React.createElement('Item', {
+					...action,
+					key: action.testID ?? index,
+					accessibilityLabel: action.accessibilityLabel ?? action.label,
+					color: action.tintColor ?? ''
+				})
+		);
+	return {
+		ApplyRoomHeaderItems: ({ actions }: { actions: any[] }) =>
+			React.createElement(React.Fragment, null, ...renderActions(actions)),
+		RoomHeaderItemsWithCall: ({ beforeCall, afterCall, rid, disabled, accessibilityLabel }: any) =>
+			React.createElement(
+				React.Fragment,
+				null,
+				...renderActions(beforeCall),
+				React.createElement('CallButton', { rid, disabled, accessibilityLabel, testID: 'header-call-button-stub' }),
+				...renderActions(afterCall)
+			)
+	};
+});
+
+const roomStore = {} as import('~/views/RoomView/definitions').RoomStore;
+jest.mock('~/views/RoomView/hooks/useGoRoomActionsView', () => ({ useGoRoomActionsView: () => jest.fn() }));

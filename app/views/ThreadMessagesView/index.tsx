@@ -7,6 +7,7 @@ import { type Observable, type Subscription } from 'rxjs';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
 
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { showActionSheetRef } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
 import ActivityIndicator from '~/containers/ActivityIndicator';
@@ -118,49 +119,46 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 	getHeader = (): NativeStackNavigationOptions => {
 		const { isSearching, currentFilter } = this.state;
 		const { navigation, isMasterDetail, theme } = this.props;
-
 		if (isSearching) {
 			return {
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
-					</HeaderButton.Container>
-				),
+				...headerItems({
+					left: [{ type: 'button', label: I18n.t('Close'), iconName: 'close', onPress: this.onCancelSearchPress }],
+					right: []
+				}),
 				headerTitle: () => (
 					<SearchHeader onSearchChangeText={this.onSearchChangeText} testID='thread-messages-view-search-header' />
-				),
-				headerRight: () => null
+				)
 			};
 		}
-
-		const options: NativeStackNavigationOptions = {
-			headerLeft: undefined,
-			headerTitle: I18n.t('Threads'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item
-						accessibilityLabel={I18n.t('Filter')}
-						iconName='filter'
-						onPress={this.showFilters}
-						badge={() =>
+		return {
+			...headerItems({
+				left: isMasterDetail
+					? [{ type: 'button', label: I18n.t('Close'), iconName: 'close', onPress: () => navigation.pop() }]
+					: undefined,
+				right: [
+					{
+						type: 'button',
+						label: I18n.t('Filter'),
+						iconName: 'filter',
+						onPress: this.showFilters,
+						badge:
+							currentFilter !== Filter.All
+								? { value: '', style: { backgroundColor: colors[theme].buttonBackgroundDangerDefault } }
+								: undefined,
+						androidBadge: () =>
 							currentFilter !== Filter.All ? <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} /> : null
-						}
-					/>
-					<HeaderButton.Item
-						accessibilityLabel={I18n.t('Search')}
-						iconName='search'
-						onPress={this.onSearchPress}
-						testID='thread-messages-view-search-icon'
-					/>
-				</HeaderButton.Container>
-			)
+					},
+					{
+						type: 'button',
+						label: I18n.t('Search'),
+						iconName: 'search',
+						onPress: this.onSearchPress,
+						testID: 'thread-messages-view-search-icon'
+					}
+				]
+			}),
+			headerTitle: I18n.t('Threads')
 		};
-
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		}
-
-		return options;
 	};
 
 	setHeader = () => {

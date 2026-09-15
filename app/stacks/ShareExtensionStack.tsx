@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { type StaticParamList, type StaticScreenProps } from '@react-navigation/native';
 
 import { ThemeContext } from '../theme';
-import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
+import { nativeHeader } from '../lib/methods/helpers/navigation';
 import SelectServerView from '../views/SelectServerView';
 import ShareListView from '../views/ShareListView';
 import ShareView from '../views/ShareView';
@@ -18,7 +18,6 @@ const ShareListViewScreen: ComponentType<StaticScreenProps<undefined>> = withNav
 const ShareViewScreen: ComponentType<StaticScreenProps<ShareViewParams>> = withNavigation(ShareView as any) as any;
 
 const ShareExtension = createNativeStackNavigator({
-	screenOptions: defaultHeader,
 	screens: {
 		ShareListView: ShareListViewScreen,
 		ShareView: ShareViewScreen,
@@ -26,7 +25,7 @@ const ShareExtension = createNativeStackNavigator({
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
+	return <Navigator screenOptions={nativeHeader(theme)} />;
 });
 
 export type ShareInsideStackParamList = StaticParamList<typeof ShareExtension>;

@@ -1,13 +1,13 @@
+import { StackActions, useNavigation } from '@react-navigation/native';
 import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList } from 'react-native';
 import { shallowEqual } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ActivityIndicator from '~/containers/ActivityIndicator';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import * as List from '~/containers/List';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { type ISearch, type TSubscriptionModel } from '~/definitions';
@@ -52,7 +52,17 @@ const NewMessageView = () => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='new-message-view-close' />,
+			...headerItems({
+				left: [
+					{
+						type: 'button',
+						label: I18n.t('Close'),
+						iconName: 'close',
+						onPress: () => navigation.dispatch(StackActions.pop()),
+						testID: 'new-message-view-close'
+					}
+				]
+			}),
 			title: I18n.t('Create_New')
 		});
 	}, [navigation]);

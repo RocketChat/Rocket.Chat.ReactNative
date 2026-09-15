@@ -1,3 +1,4 @@
+import { StackActions, type CompositeNavigationProp } from '@react-navigation/native';
 /* eslint-disable complexity */
 import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -5,12 +6,11 @@ import isEmpty from 'lodash/isEmpty';
 import { Share, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { type Observable, type Subscription } from 'rxjs';
-import { type CompositeNavigationProp } from '@react-navigation/native';
 import { Component } from 'react';
 
 import { leaveRoom } from '~/actions/room';
 import Avatar from '~/containers/Avatar';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import * as List from '~/containers/List';
 import { MarkdownPreview } from '~/containers/markdown';
 import RoomTypeIcon from '~/containers/RoomTypeIcon';
@@ -150,7 +150,20 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 			title: I18n.t('Actions')
 		};
 		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='room-actions-view-close' />;
+			Object.assign(
+				options,
+				headerItems({
+					left: [
+						{
+							type: 'button',
+							label: I18n.t('Close'),
+							iconName: 'close',
+							onPress: () => navigation.dispatch(StackActions.pop()),
+							testID: 'room-actions-view-close'
+						}
+					]
+				})
+			);
 		}
 		return options;
 	};

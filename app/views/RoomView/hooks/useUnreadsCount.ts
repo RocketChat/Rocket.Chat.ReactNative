@@ -13,7 +13,7 @@ export function useUnreadsCount(rid?: string): number | null {
 				? database.active
 						.get<TSubscriptionModel>('subscriptions')
 						.query(Q.where('archived', false), Q.where('open', true), Q.where('rid', Q.notEq(rid)))
-						.observeWithColumns(['unread', 'hide_unread_status'])
+						.observeWithColumns(['unread', 'tunread', 'hide_unread_status'])
 				: undefined,
 		[rid]
 	);
@@ -23,7 +23,7 @@ export function useUnreadsCount(rid?: string): number | null {
 		return null;
 	}
 	return rooms.reduce(
-		(unreadCount, item) => (item.unread > 0 && !item.hideUnreadStatus ? unreadCount + item.unread : unreadCount),
+		(unreadCount, item) => (item.hideUnreadStatus ? unreadCount : unreadCount + (item.unread || item.tunread?.length || 0)),
 		0
 	);
 }

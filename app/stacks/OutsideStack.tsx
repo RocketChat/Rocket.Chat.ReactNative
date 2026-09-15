@@ -3,7 +3,7 @@ import { createNativeStackNavigator, createNativeStackScreen } from '@react-navi
 import { type StaticParamList } from '@react-navigation/native';
 
 import { ThemeContext } from '../theme';
-import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
+import { nativeHeader } from '../lib/methods/helpers/navigation';
 import NewServerView from '../views/NewServerView';
 import WorkspaceView from '../views/WorkspaceView';
 import LoginView from '../views/LoginView';
@@ -15,17 +15,17 @@ import AuthenticationWebView from '../views/AuthenticationWebView';
 
 const Outside = createNativeStackNavigator({
 	screens: {
-		NewServerView: createNativeStackScreen({ screen: NewServerView, options: defaultHeader }),
-		WorkspaceView: createNativeStackScreen({ screen: WorkspaceView, options: defaultHeader }),
-		LoginView: createNativeStackScreen({ screen: LoginView, options: defaultHeader }),
-		ForgotPasswordView: createNativeStackScreen({ screen: ForgotPasswordView, options: defaultHeader }),
-		SendEmailConfirmationView: createNativeStackScreen({ screen: SendEmailConfirmationView, options: defaultHeader }),
-		RegisterView: createNativeStackScreen({ screen: RegisterView, options: defaultHeader }),
-		LegalView: createNativeStackScreen({ screen: LegalView, options: defaultHeader })
+		NewServerView: createNativeStackScreen({ screen: NewServerView }),
+		WorkspaceView: createNativeStackScreen({ screen: WorkspaceView }),
+		LoginView: createNativeStackScreen({ screen: LoginView }),
+		ForgotPasswordView: createNativeStackScreen({ screen: ForgotPasswordView }),
+		SendEmailConfirmationView: createNativeStackScreen({ screen: SendEmailConfirmationView }),
+		RegisterView: createNativeStackScreen({ screen: RegisterView }),
+		LegalView: createNativeStackScreen({ screen: LegalView })
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
+	return <Navigator screenOptions={nativeHeader(theme)} />;
 });
 
 export type OutsideParamList = StaticParamList<typeof Outside>;
@@ -35,13 +35,13 @@ const OutsideModal = createNativeStackNavigator({
 	screens: {
 		OutsideStack: createNativeStackScreen({
 			screen: Outside,
-			options: { headerShown: false, ...defaultHeader }
+			options: { headerShown: false }
 		}),
-		AuthenticationWebView: createNativeStackScreen({ screen: AuthenticationWebView, options: defaultHeader })
+		AuthenticationWebView: createNativeStackScreen({ screen: AuthenticationWebView })
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
+	return <Navigator screenOptions={nativeHeader(theme)} />;
 });
 
 export type OutsideModalParamList = StaticParamList<typeof OutsideModal>;

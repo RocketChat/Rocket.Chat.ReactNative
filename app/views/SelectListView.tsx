@@ -1,6 +1,7 @@
+import { StackActions, type RouteProp } from '@react-navigation/native';
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { type RouteProp } from '@react-navigation/native';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
 
@@ -8,7 +9,6 @@ import { type ChatsStackParamList } from '../stacks/types';
 import log from '../lib/methods/helpers/log';
 import * as List from '../containers/List';
 import I18n from '../i18n';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { themes } from '../lib/constants/colors';
 import { type TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -85,13 +85,23 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 		};
 
 		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+			Object.assign(
+				options,
+				headerItems({
+					left: [
+						{ type: 'button', label: I18n.t('Close'), iconName: 'close', onPress: () => navigation.dispatch(StackActions.pop()) }
+					]
+				})
+			);
 		}
 
-		options.headerRight = () => (
-			<HeaderButton.Container>
-				<HeaderButton.Item title={I18n.t('Next')} onPress={() => this.nextAction(selected)} testID='select-list-view-submit' />
-			</HeaderButton.Container>
+		Object.assign(
+			options,
+			headerItems({
+				right: [
+					{ type: 'button', label: I18n.t('Next'), onPress: () => this.nextAction(selected), testID: 'select-list-view-submit' }
+				]
+			})
 		);
 
 		navigation.setOptions(options);

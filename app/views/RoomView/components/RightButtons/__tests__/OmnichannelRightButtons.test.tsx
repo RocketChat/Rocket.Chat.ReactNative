@@ -188,3 +188,32 @@ describe('OmnichannelRightButtons', () => {
 		});
 	});
 });
+
+jest.mock('../../../hooks/useGoRoomActionsView', () => ({ useGoRoomActionsView: () => jest.fn() }));
+
+jest.mock('../ApplyRoomHeaderItems', () => {
+	const React = jest.requireActual('react');
+	const renderActions = (actions: any[]) =>
+		actions.map(
+			(action, index) =>
+				action.androidElement ??
+				React.createElement('Item', {
+					...action,
+					key: action.testID ?? index,
+					accessibilityLabel: action.accessibilityLabel ?? action.label,
+					color: action.tintColor ?? ''
+				})
+		);
+	return {
+		ApplyRoomHeaderItems: ({ actions }: { actions: any[] }) =>
+			React.createElement(React.Fragment, null, ...renderActions(actions)),
+		RoomHeaderItemsWithCall: ({ beforeCall, afterCall, rid, disabled, accessibilityLabel }: any) =>
+			React.createElement(
+				React.Fragment,
+				null,
+				...renderActions(beforeCall),
+				React.createElement('CallButton', { rid, disabled, accessibilityLabel, testID: 'header-call-button-stub' }),
+				...renderActions(afterCall)
+			)
+	};
+});

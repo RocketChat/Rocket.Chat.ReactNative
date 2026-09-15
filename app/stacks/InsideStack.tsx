@@ -9,7 +9,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { type StaticScreenProps } from '@react-navigation/native';
 
 import { ThemeContext } from '../theme';
-import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
+import { nativeHeader } from '../lib/methods/helpers/navigation';
 import withNavigation from '../lib/navigation/withNavigation';
 import Sidebar from '../views/SidebarView';
 import { isIOS } from '../lib/methods/helpers';
@@ -150,7 +150,6 @@ const ForwardLivechatViewScreen: ComponentType<StaticScreenProps<TNavigation['Fo
 const AttachmentViewScreen: ComponentType<StaticScreenProps<TNavigation['AttachmentView']>> = AttachmentView as any;
 
 const ChatsStack = createNativeStackNavigator({
-	screenOptions: defaultHeader,
 	screens: {
 		RoomsListView: createNativeStackScreen({
 			screen: RoomsListView,
@@ -204,11 +203,10 @@ const ChatsStack = createNativeStackNavigator({
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
+	return <Navigator screenOptions={nativeHeader(theme)} />;
 });
 
 const ProfileStack = createNativeStackNavigator({
-	screenOptions: defaultHeader,
 	screens: {
 		ProfileView: ProfileViewScreen,
 		ChangePasswordView: ChangePasswordViewScreen,
@@ -220,11 +218,10 @@ const ProfileStack = createNativeStackNavigator({
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
+	return <Navigator screenOptions={nativeHeader(theme)} />;
 });
 
 const SettingsStack = createNativeStackNavigator({
-	screenOptions: defaultHeader,
 	screens: {
 		SettingsView: SettingsViewScreen,
 		SecurityPrivacyView: SecurityPrivacyViewScreen,
@@ -242,21 +239,19 @@ const SettingsStack = createNativeStackNavigator({
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
+	return <Navigator screenOptions={nativeHeader(theme)} />;
 });
 
 const AdminPanelStack = createNativeStackNavigator({
-	screenOptions: defaultHeader,
 	screens: {
 		AdminPanelView: AdminPanelViewScreen
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
+	return <Navigator screenOptions={nativeHeader(theme)} />;
 });
 
 const AccessibilityStack = createNativeStackNavigator({
-	screenOptions: defaultHeader,
 	screens: {
 		AccessibilityAndAppearanceView: AccessibilityAndAppearanceViewScreen,
 		DisplayPrefsView: DisplayPrefsViewScreen,
@@ -264,7 +259,7 @@ const AccessibilityStack = createNativeStackNavigator({
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
+	return <Navigator screenOptions={nativeHeader(theme)} />;
 });
 
 const DrawerStack = createDrawerNavigator({
@@ -293,7 +288,6 @@ const DrawerStack = createDrawerNavigator({
 });
 
 const NewMessageStack = createNativeStackNavigator({
-	screenOptions: defaultHeader,
 	screens: {
 		NewMessageView: NewMessageViewScreen,
 		SelectedUsersView: SelectedUsersViewScreen,
@@ -303,33 +297,31 @@ const NewMessageStack = createNativeStackNavigator({
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
+	return <Navigator screenOptions={nativeHeader(theme)} />;
 });
 
 const E2ESaveYourPasswordStack = createNativeStackNavigator({
-	screenOptions: defaultHeader,
 	screens: {
 		E2ESaveYourPasswordView: E2ESaveYourPasswordViewScreen,
 		E2EHowItWorksView: E2EHowItWorksViewScreen
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
+	return <Navigator screenOptions={nativeHeader(theme)} />;
 });
 
 const E2EEnterYourPasswordStack = createNativeStackNavigator({
-	screenOptions: defaultHeader,
 	screens: {
 		E2EEnterYourPasswordView: E2EEnterYourPasswordViewScreen,
 		E2EEncryptionSecurityView: E2EEncryptionSecurityViewScreen
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
+	return <Navigator screenOptions={nativeHeader(theme)} />;
 });
 
 const InsideStack = createNativeStackNavigator({
-	screenOptions: { ...defaultHeader, presentation: 'containedModal' },
+	screenOptions: { presentation: 'containedModal' },
 	screens: {
 		DrawerNavigator: createNativeStackScreen({
 			screen: DrawerStack,
@@ -361,7 +353,7 @@ const InsideStack = createNativeStackNavigator({
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
+	return <Navigator screenOptions={nativeHeader(theme)} />;
 });
 
 export default InsideStack;

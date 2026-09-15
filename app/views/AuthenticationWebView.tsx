@@ -1,4 +1,4 @@
-import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
+import { StackActions, useNavigation, type StaticScreenProps } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { WebView, type WebViewNavigation } from 'react-native-webview';
@@ -6,7 +6,8 @@ import { type WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
 import parse from 'url-parse';
 
 import ActivityIndicator from '../containers/ActivityIndicator';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
+import { headerItems } from '~/lib/methods/helpers/navigation';
+import I18n from '~/i18n';
 import { type ILoginCredentials } from '../definitions';
 import { userAgent } from '../lib/constants/userAgent';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
@@ -164,7 +165,11 @@ const AuthenticationWebView = ({ route }: AuthenticationWebViewProps) => {
 		const staticFallback = isSSOType ? 'SSO' : 'OAuth';
 
 		navigation.setOptions({
-			headerLeft: () => <HeaderButton.CloseModal />,
+			...headerItems({
+				left: [
+					{ type: 'button', label: I18n.t('Close'), iconName: 'close', onPress: () => navigation.dispatch(StackActions.pop()) }
+				]
+			}),
 			title: urlTitle || staticFallback
 		});
 	}, [authType, navigation, headerTitle, url]);

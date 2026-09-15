@@ -5,6 +5,8 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
+import { headerItems } from '~/lib/methods/helpers/navigation';
+import { HeaderBackButton } from '~/containers/Header/components/HeaderBackButton';
 import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
 import KeyboardView from '~/containers/KeyboardView';
 import sharedStyles from '../Styles';
@@ -28,7 +30,6 @@ import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitSe
 import ImagePicker, { type Image } from '~/lib/methods/helpers/ImagePicker/ImagePicker';
 import { compareServerVersion, isImageURL, useDebounce } from '~/lib/methods/helpers';
 import { ControlledFormTextInput } from '~/containers/TextInput';
-import { HeaderBackButton } from '~/containers/Header/components/HeaderBackButton';
 import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
 
 enum AvatarStateActions {
@@ -98,7 +99,18 @@ const ChangeAvatarView = () => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: titleHeader || I18n.t('Avatar'),
-			headerLeft: () => <HeaderBackButton onPress={() => navigation.goBack()} />
+			...headerItems({
+				left: [
+					{
+						type: 'button',
+						label: I18n.t('Back'),
+						iconName: 'chevron-left',
+						androidElement: <HeaderBackButton onPress={() => navigation.goBack()} />,
+						onPress: () => navigation.goBack(),
+						testID: 'header-back'
+					}
+				]
+			})
 		});
 	}, [titleHeader, navigation]);
 

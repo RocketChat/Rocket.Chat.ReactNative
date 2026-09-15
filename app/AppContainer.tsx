@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { type IApplicationState, RootEnum } from './definitions';
 import Navigation from './lib/navigation/appNavigation';
 import { useMasterDetail } from './lib/hooks/useMasterDetail';
-import { defaultHeader, getActiveRouteName, navigationTheme } from './lib/methods/helpers/navigation';
+import { nativeHeader, getActiveRouteName, navigationTheme } from './lib/methods/helpers/navigation';
 import OutsideStack from './stacks/OutsideStack';
 import InsideStack from './stacks/InsideStack';
 import MasterDetailStack from './stacks/MasterDetailStack';
@@ -42,8 +42,10 @@ const useIsSetUsername = () => useSelector((state: IApplicationState) => state.a
 const useIsShareExtension = () => useSelector((state: IApplicationState) => state.app.root === RootEnum.ROOT_SHARE_EXTENSION);
 
 const SetUsernameStack = createNativeStackNavigator({
-	screenOptions: defaultHeader,
 	screens: { SetUsernameView }
+}).with(({ Navigator }) => {
+	const { theme } = useContext(ThemeContext);
+	return <Navigator screenOptions={nativeHeader(theme)} />;
 });
 
 const RootNavigator = createNativeStackNavigator({

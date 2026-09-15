@@ -67,7 +67,7 @@ describe('useUnreadsCount', () => {
 		const observable = setupObservable();
 		renderHook(() => useUnreadsCount('rid-1'));
 
-		expect(observable.observeWithColumns).toHaveBeenCalledWith(['unread', 'hide_unread_status']);
+		expect(observable.observeWithColumns).toHaveBeenCalledWith(['unread', 'tunread', 'hide_unread_status']);
 	});
 
 	it('does not observe without a rid', () => {
@@ -85,4 +85,19 @@ describe('useUnreadsCount', () => {
 		unmount();
 		expect(observable.unsubscribe).toHaveBeenCalledTimes(1);
 	});
+});
+
+it('counts unread threads only when there are no unread messages and reacts to visibility changes', () => {
+	const observable = setupObservable();
+	const { result } = renderHook(() => useUnreadsCount('rid-1'));
+	observable.emitSubscriptions([
+		{ unread: 0, tunread: ['a', 'b'] },
+		{ unread: 3, tunread: ['c'] }
+	]);
+	expect(result.current).toBe(5);
+	observable.emitSubscriptions([
+		{ unread: 0, tunread: ['a'] },
+		{ unread: 3, tunread: ['c'], hideUnreadStatus: true }
+	]);
+	expect(result.current).toBe(1);
 });

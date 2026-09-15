@@ -191,3 +191,6 @@ describe('RightButtons routing', () => {
 		expect(threadMock.mounts.count).toBe(1);
 	});
 });
+
+jest.mock('@react-navigation/native', () => ({ useNavigation: () => ({}) }));
+jest.mock('../ApplyRoomHeaderItems', () => ({ ApplyRoomHeaderItems: () => null }));

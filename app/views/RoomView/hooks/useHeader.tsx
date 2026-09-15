@@ -1,15 +1,18 @@
 import { useLayoutEffect } from 'react';
-import { PixelRatio, View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from 'zustand';
 
 import RoomHeader from '~/containers/RoomHeader';
-import { getRoomTitle, isGroupChat } from '~/lib/methods/helpers';
+import { getRoomTitle, isGroupChat, isIOS } from '~/lib/methods/helpers';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { type IOmnichannelSource, type ISubscription, type IVisitor } from '~/definitions';
 import LeftButtons from '../components/LeftButtons';
-import RightButtons from '../components/RightButtons/RightButtons';
+import { headerItems, type HeaderAction } from '~/lib/methods/helpers/navigation';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import i18n from '~/i18n';
+import { useUnreadsCount } from './useUnreadsCount';
 import { type IRoomViewProps } from '../definitions';
 import { type RoomStore } from '../definitions';
 import { fromSubscription } from '../stores/RoomStoreContext';
@@ -64,20 +67,32 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 			};
 		})
 	);
+	const isMasterDetail = useMasterDetail();
+	const unreadsCount = useUnreadsCount(rid);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const goRoomActionsView = useGoRoomActionsView(roomStore);
 
 	useLayoutEffect(() => {
 		if (!rid) {
-			const height = 37 * PixelRatio.getFontScale();
-			navigation.setOptions({ headerLeft: () => <View style={{ height }} /> });
+			navigation.setOptions(headerItems({ left: [], right: [] }));
 			return;
 		}
-		navigation.setOptions({
-			headerLeft: () => <LeftButtons rid={rid} tmid={tmid} roomStore={roomStore} />,
-			headerRight: () => <RightButtons rid={rid} tmid={tmid} roomStore={roomStore} />
-		});
-	}, [rid, tmid, navigation, roomStore]);
+		const leftElement = <LeftButtons rid={rid} tmid={tmid} roomStore={roomStore} />;
+		const leftActions: HeaderAction[] =
+			(!isMasterDetail || tmid) && !(isIOS && Number.parseInt(String(Platform.Version), 10) < 26 && unreadsCount)
+				? [
+						{
+							type: 'button',
+							label: i18n.t('Back'),
+							iconName: 'chevron-left',
+							onPress: () => navigation.goBack(),
+							badge: unreadsCount ? { value: unreadsCount > 99 ? '+99' : unreadsCount } : undefined,
+							androidElement: leftElement
+						}
+					]
+				: [{ type: 'custom', element: leftElement }];
+		navigation.setOptions(headerItems({ left: leftActions }));
+	}, [rid, tmid, navigation, roomStore, isMasterDetail, unreadsCount]);
 
 	useLayoutEffect(() => {
 		if (!rid) {
@@ -85,24 +100,27 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 		}
 
 		navigation.setOptions({
+			title: headerFields.title,
 			headerTitle: () => (
-				<RoomHeader
-					prid={headerFields.prid}
-					tmid={tmid}
-					title={headerFields.title}
-					teamMain={headerFields.teamMain}
-					parentTitle={headerFields.parentTitle}
-					subtitle={headerFields.subtitle}
-					type={headerFields.type}
-					roomUserId={roomUserId}
-					visitor={headerFields.visitor}
-					isGroupChat={headerFields.isGroupChat}
-					onPress={goRoomActionsView}
-					testID={`room-view-title-${headerFields.title}`}
-					sourceType={headerFields.sourceType}
-					abacAttributes={headerFields.abacAttributes}
-					disabled={headerFields.disabled}
-				/>
+				<View style={isIOS ? { width: '100%', overflow: 'hidden' } : { flex: 1 }}>
+					<RoomHeader
+						prid={headerFields.prid}
+						tmid={tmid}
+						title={headerFields.title}
+						teamMain={headerFields.teamMain}
+						parentTitle={headerFields.parentTitle}
+						subtitle={headerFields.subtitle}
+						type={headerFields.type}
+						roomUserId={roomUserId}
+						visitor={headerFields.visitor}
+						isGroupChat={headerFields.isGroupChat}
+						onPress={goRoomActionsView}
+						testID={`room-view-title-${headerFields.title}`}
+						sourceType={headerFields.sourceType}
+						abacAttributes={headerFields.abacAttributes}
+						disabled={headerFields.disabled}
+					/>
+				</View>
 			)
 		});
 	}, [rid, tmid, headerFields, roomUserId, navigation, goRoomActionsView]);

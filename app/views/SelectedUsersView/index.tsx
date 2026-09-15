@@ -8,9 +8,9 @@ import { type RouteProp, useNavigation, useRoute } from '@react-navigation/nativ
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { headerItems } from '~/lib/methods/helpers/navigation';
 import { addUser, removeUser, reset } from '~/actions/selectedUsers';
 import ActivityIndicator from '~/containers/ActivityIndicator';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import * as List from '~/containers/List';
 import { sendLoadingEvent } from '~/containers/Loading';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -82,13 +82,12 @@ const SelectedUsersView = () => {
 		const buttonTitle = handleButtonTitle(buttonTextHeader);
 		const options = {
 			title: titleHeader,
-			headerRight: () =>
-				(!maxUsers || showButton || (isGroupChat() && users.length > 1)) &&
-				!!buttonTitle && (
-					<HeaderButton.Container>
-						<HeaderButton.Item title={buttonTitle} onPress={nextActionHeader} testID='selected-users-view-submit' />
-					</HeaderButton.Container>
-				)
+			...headerItems({
+				right:
+					(!maxUsers || showButton || (isGroupChat() && users.length > 1)) && !!buttonTitle
+						? [{ type: 'button', label: buttonTitle, onPress: nextActionHeader, testID: 'selected-users-view-submit' }]
+						: []
+			})
 		};
 		navigation.setOptions(options);
 	}, [navigation, users.length, maxUsers, buttonText, nextAction]);
