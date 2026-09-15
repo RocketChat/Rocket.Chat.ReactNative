@@ -557,6 +557,7 @@
   "Review_this_app": "Recensisci questa app",
   "Rocket_Chat_Documentation": "Documentazione Rocket.Chat",
   "Roles": "Ruoli",
+  "Room_failed_to_load": "Impossibile caricare questa stanza. Controlla la connessione e riprova.",
   "Room_Info": "Informazioni stanza",
   "Room_Info_Edit": "Modifica informazioni stanza",
   "Room_Password": "Password della stanza",

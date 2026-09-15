@@ -713,6 +713,7 @@
   "room_changed_topic_to": "గది టాపిక్‌ను మార్చారు: {{topic}}",
   "room_changed_type": "గది రకాన్ని మార్చారు {{type}}",
   "room_disallowed_reactions": "గదిలో ప్రతిక్రియలను అనుమతించలేదు",
+  "Room_failed_to_load": "ఈ గదిని లోడ్ చేయలేకపోయాము. మీ కనెక్షన్‌ను తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.",
   "Room_Info": "గది సమాచారం",
   "Room_Info_Edit": "గది సమాచారం సవరించు",
   "Room_name_changed_to": "గది పేరును మార్చారు: {{name}}",

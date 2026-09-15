@@ -714,6 +714,7 @@
   "room_changed_topic_to": "कमरे का विषय बदल गया है: {{topic}}",
   "room_changed_type": "कमरे को बदल दिया गया है {{type}} में",
   "room_disallowed_reactions": "प्रतिक्रियाएँ निषिद्ध हैं",
+  "Room_failed_to_load": "यह रूम लोड नहीं हो सका। अपना कनेक्शन जाँचें और पुनः प्रयास करें।",
   "Room_Info": "कमरे की जानकारी",
   "Room_Info_Edit": "कमरे की जानकारी संपादित करें",
   "Room_name_changed_to": "कमरे का नाम बदल गया है: {{name}}",
