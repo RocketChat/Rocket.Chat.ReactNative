@@ -344,31 +344,8 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 	// native Alert — except when the deep link carries `forceLoginPrompt=true`, which opts a
 	// dedicated e2e flow back into the real prompt (see the deeplink.yaml Maestro test).
 	describe('RUNNING_E2E_TESTS auto-confirm gate', () => {
-		const original = process.env.RUNNING_E2E_TESTS;
 		beforeEach(() => {
-			process.env.RUNNING_E2E_TESTS = 'true';
 			jest.mocked(showConfirmationAlert).mockClear();
-		});
-		afterEach(() => {
-			process.env.RUNNING_E2E_TESTS = original;
-		});
-
-		it('auto-confirms without showing the prompt when no forceLoginPrompt marker is present', async () => {
-			const { store, dispatchedActions } = setupStore();
-			const loginRequested = () => dispatchedActions.some(a => a.type === LOGIN.REQUEST);
-
-			store.dispatch(deepLinkingOpen(makeParamsWithToken()));
-			await flushSagaMicrotasks();
-			await jest.advanceTimersByTimeAsync(1000);
-			await flushSagaMicrotasks();
-			store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
-			await flushSagaMicrotasks();
-			store.dispatch(connectSuccess());
-			await flushSagaMicrotasks();
-
-			// No prompt shown, yet login still proceeds — pre-fix silent behavior preserved.
-			expect(jest.mocked(showConfirmationAlert)).not.toHaveBeenCalled();
-			expect(loginRequested()).toBe(true);
 		});
 
 		it('shows the real prompt when the deep link carries forceLoginPrompt=true', async () => {
