@@ -5,6 +5,7 @@ import { toServerModalInteractionType, toUserInteraction } from '~/containers/UI
 import EventEmitter from './helpers/events';
 import fetch from './helpers/fetch';
 import { random } from './helpers';
+import log from './helpers/log';
 import Navigation from '../navigation/appNavigation';
 import sdk from '../services/sdk';
 
@@ -100,6 +101,7 @@ export async function triggerAction({
 	appId,
 	rid,
 	mid,
+	tmid,
 	viewId,
 	container,
 	...rest
@@ -119,6 +121,7 @@ export async function triggerAction({
 			appId,
 			rid,
 			mid,
+			tmid,
 			viewId,
 			container,
 			payload,
@@ -160,7 +163,10 @@ export async function triggerAction({
 		const { type: interactionType, ...data } = parsed;
 		const modalType = toServerModalInteractionType(interactionType ?? '');
 		if (!modalType) {
-			throw new Error(`Unknown modal interaction type: ${interactionType ?? 'undefined'}`);
+			if (interactionType) {
+				return ModalActions.UNSUPPORTED;
+			}
+			return;
 		}
 		if (modalType === ModalActions.CLOSE) {
 			return ModalActions.CLOSE;

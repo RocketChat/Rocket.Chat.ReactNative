@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 
 import { type IAppActionButton } from './definitions';
-import { getAppActionButtons, getAppsLanguages } from './restApi';
 import log from '~/lib/methods/helpers/log';
+import { getAppActionButtons, getAppsLanguages } from '~/lib/services/restApi';
 import sdk from '~/lib/services/sdk';
 
 export type TAppTranslations = {
