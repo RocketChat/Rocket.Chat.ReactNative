@@ -1,0 +1,20 @@
+appId: ${APP_ID}
+name: Verify Download
+tags:
+  - 'util'
+
+---
+
+- runFlow:
+    file: 'download-file.yaml'
+    env:
+      file: ${file}
+
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - runFlow:
+          file: 'verify-download.yaml'
+          env:
+            file: ${file}

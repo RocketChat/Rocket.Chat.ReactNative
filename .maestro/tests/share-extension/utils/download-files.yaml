@@ -33,39 +33,39 @@ tags:
       - launchApp: com.apple.mobilesafari
 
 - runFlow:
-    file: 'download-file.yaml'
+    file: 'download-and-verify.yaml'
     env:
       file: '8hbJ3HH6tBGxQk6QY/test.docx'
 - runFlow:
-    file: 'download-file.yaml'
+    file: 'download-and-verify.yaml'
     env:
       file: 'juC7BJroRjHHostn5/test.html'
 - runFlow:
-    file: 'download-file.yaml'
+    file: 'download-and-verify.yaml'
     env:
       file: 'Q8HDSij22PBJtZDgc/test.txt'
 - runFlow:
-    file: 'download-file.yaml'
+    file: 'download-and-verify.yaml'
     env:
       file: 'H44YcW5DTDj6fASnN/test.zip'
 - runFlow:
-    file: 'download-file.yaml'
+    file: 'download-and-verify.yaml'
     env:
       file: 'EgmkWnFjnGoktb7f4/test.wav'
 - runFlow:
-    file: 'download-file.yaml'
+    file: 'download-and-verify.yaml'
     env:
       file: 'ccoC8yQxmqT9fdAMs/test.ogg'
 - runFlow:
-    file: 'download-file.yaml'
+    file: 'download-and-verify.yaml'
     env:
       file: 'MPp42KbYLaAZzNqis/test.mp3'
 - runFlow:
-    file: 'download-file.yaml'
+    file: 'download-and-verify.yaml'
     env:
       file: 'ZumNhPm24WBvWzEJu/test.mp4'
 - runFlow:
-    file: 'download-file.yaml'
+    file: 'download-and-verify.yaml'
     env:
       file: 'MXMdYzmz9fSxeoF7H/image.png'
 
@@ -75,14 +75,14 @@ tags:
       platform: iOS
     commands:
       - runFlow:
-          file: 'download-file.yaml'
+          file: 'download-and-verify.yaml'
           env:
             file: 'CrmXg9mNbomgzC7iw/test.heic'
       - runFlow:
-          file: 'download-file.yaml'
+          file: 'download-and-verify.yaml'
           env:
             file: 'dKdmmLYEqbujkkJzn/test.mov'
       - runFlow:
-          file: 'download-file.yaml'
+          file: 'download-and-verify.yaml'
           env:
             file: 'jJNm36QhGhh4eJ9QS/test.m4a'
