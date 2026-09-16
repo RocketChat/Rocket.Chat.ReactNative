@@ -1,4 +1,4 @@
-import Expo
+internal import Expo
 import React
 import ReactAppDependencyProvider
 import Firebase
