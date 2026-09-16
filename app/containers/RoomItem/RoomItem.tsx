@@ -90,6 +90,7 @@ const RoomItem = ({
 			swipeEnabled={swipeEnabled}
 			displayMode={displayMode}>
 			<Wrapper
+				testID={testID}
 				accessibilityLabel={accessibilityLabel}
 				accessibilityHint={I18n.t('Long_press_for_more_actions')}
 				avatar={avatar}

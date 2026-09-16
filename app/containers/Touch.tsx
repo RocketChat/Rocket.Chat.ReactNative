@@ -37,6 +37,7 @@ const Touch = forwardRef<any, ITouchProps>(
 			accessibilityHint,
 			accessibilityActions,
 			onAccessibilityAction,
+			testID,
 			style,
 			rectButtonStyle,
 			disabled,
@@ -85,9 +86,11 @@ const Touch = forwardRef<any, ITouchProps>(
 				focusable={!disabled}
 				canBeFocused={!disabled}
 				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
+				testID={testID}
 				{...props}
 				enabled={!disabled}>
 				<View
+					testID={testID}
 					accessible={accessible}
 					accessibilityRole={props.accessibilityRole}
 					accessibilityLabel={accessibilityLabel}

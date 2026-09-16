@@ -58,6 +58,7 @@ const Item = memo(
 			<BorderlessButton onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} enabled={!disabled} style={styles.container}>
 				<View
 					accessible
+					testID={testID}
 					accessibilityLabel={accessibilityLabel}
 					style={{
 						opacity: disabled ? 0.5 : 1
