@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Keyboard, Text, View, Alert } from 'react-native';
+import { Text, View, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -96,7 +96,6 @@ const UserForm = () => {
 		if (!isValid) {
 			return;
 		}
-		Keyboard.dismiss();
 		dispatch(loginRequest({ user, password }));
 	};
 
@@ -111,6 +110,7 @@ const UserForm = () => {
 					placeholder={Accounts_EmailOrUsernamePlaceholder}
 					keyboardType='email-address'
 					returnKeyType='next'
+					submitBehavior='submit'
 					onSubmitEditing={() => setFocus('password')}
 					testID='login-view-email'
 					textContentType='username'
@@ -122,6 +122,7 @@ const UserForm = () => {
 					label={I18n.t('Password')}
 					placeholder={Accounts_PasswordPlaceholder}
 					returnKeyType='send'
+					submitBehavior='submit'
 					secureTextEntry
 					onSubmitEditing={handleSubmit(submit)}
 					testID='login-view-password'
