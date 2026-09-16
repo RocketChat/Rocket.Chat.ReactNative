@@ -1,3 +1,5 @@
+Object.defineProperty(globalThis, 'fetch', { value: globalThis.fetch, writable: true, configurable: true });
+
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 import { Image } from 'expo-image';
