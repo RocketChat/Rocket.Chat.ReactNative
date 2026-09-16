@@ -22,6 +22,12 @@ tags:
 - runFlow:
     when:
       platform: 'iOS'
+      visible: '.*View Bookmarks, Share Menu, and Open Tabs.*'
+    commands:
+      - tapOn: 'Close'
+- runFlow:
+    when:
+      platform: 'iOS'
     commands:
       - tapOn: 'Search or enter website'
       - runFlow:
