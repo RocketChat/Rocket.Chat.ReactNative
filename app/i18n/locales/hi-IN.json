@@ -71,6 +71,8 @@
   "Announcement": "घोषणा",
   "announcement": "घोषणा",
   "Apply_Certificate": "प्रमाणपत्र लागू करें",
+  "App_action_error": "Couldn't run this app action",
+  "App_action_unsupported": "This app action isn't supported on mobile yet",
   "ARCHIVE": "संग्रह",
   "archive": "संग्रह",
   "are_typing": "टाइप कर रहे हैं",

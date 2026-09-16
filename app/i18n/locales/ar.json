@@ -53,6 +53,8 @@
   "Announcement": "إعلان",
   "announcement": "إعلان",
   "Apply_Certificate": "تقديم الشهادة",
+  "App_action_error": "تعذر تشغيل إجراء التطبيق هذا",
+  "App_action_unsupported": "إجراء التطبيق هذا غير مدعوم على الهاتف المحمول حتى الآن",
   "ARCHIVE": "أرشفة",
   "archive": "أرشفة",
   "are_typing": "يكتب",

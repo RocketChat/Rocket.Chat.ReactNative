@@ -49,6 +49,8 @@
   "Announcement": "Anuncio",
   "announcement": "anuncio",
   "Apply_Certificate": "Aplicar certificado",
+  "App_action_error": "Couldn't run this app action",
+  "App_action_unsupported": "This app action isn't supported on mobile yet",
   "ARCHIVE": "Fichero",
   "archive": "fichero",
   "are_typing": "están escribiendo",

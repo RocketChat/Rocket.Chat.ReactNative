@@ -71,6 +71,8 @@
   "Announcement": "Ankündigung",
   "announcement": "Ankündigung",
   "Apply_Certificate": "Zertifikat anwenden",
+  "App_action_error": "Couldn't run this app action",
+  "App_action_unsupported": "This app action isn't supported on mobile yet",
   "ARCHIVE": "Archiv",
   "archive": "Archiv",
   "are_typing": "tippen",

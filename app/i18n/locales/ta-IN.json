@@ -71,6 +71,8 @@
   "Announcement": "அறிவிப்பு",
   "announcement": "அறிவிப்பு",
   "Apply_Certificate": "சான்றிதழைப் பயன்படுத்துங்கள்",
+  "App_action_error": "Couldn't run this app action",
+  "App_action_unsupported": "This app action isn't supported on mobile yet",
   "ARCHIVE": "சேமி",
   "archive": "சேமி",
   "are_typing": "எழுதுதல் நடந்துள்ளது",

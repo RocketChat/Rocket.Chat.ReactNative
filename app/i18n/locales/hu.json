@@ -71,6 +71,8 @@
   "Announcement": "Bejelentés",
   "announcement": "bejelentés",
   "Apply_Certificate": "Tanúsítvány alkalmazása",
+  "App_action_error": "Couldn't run this app action",
+  "App_action_unsupported": "This app action isn't supported on mobile yet",
   "ARCHIVE": "Archívum",
   "archive": "archívum",
   "are_typing": "éppen ír",

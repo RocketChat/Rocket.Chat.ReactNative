@@ -64,6 +64,8 @@
   "Announcement": "Meddelande",
   "announcement": "meddelande",
   "Apply_Certificate": "Tillämpa certifikat",
+  "App_action_error": "Couldn't run this app action",
+  "App_action_unsupported": "This app action isn't supported on mobile yet",
   "ARCHIVE": "Arkiv",
   "archive": "arkiv",
   "are_typing": "skriver",

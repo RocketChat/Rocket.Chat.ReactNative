@@ -62,6 +62,8 @@
   "Announcement": "Объявление",
   "announcement": "объявление",
   "Apply_Certificate": "Применить сертификат",
+  "App_action_error": "Couldn't run this app action",
+  "App_action_unsupported": "This app action isn't supported on mobile yet",
   "ARCHIVE": "Архив",
   "archive": "архив",
   "are_typing": "печатают",
