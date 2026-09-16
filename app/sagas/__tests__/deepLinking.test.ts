@@ -109,7 +109,7 @@ import { appStart } from '~/actions/app';
 import { connectSuccess } from '~/actions/connect';
 import { APP, LOGIN, LOGOUT, SERVER } from '~/actions/actionsTypes';
 import { RootEnum } from '~/definitions';
-import deepLinkingRoot from '../deepLinking';
+import deepLinkingRoot, { shouldAutoConfirmDeepLinkLogin } from '../deepLinking';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getServerUserIdKey } from '~/lib/constants/keys';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
@@ -133,6 +133,20 @@ const toastedMessages = (emitSpy: jest.SpyInstance): string[] =>
 	emitSpy.mock.calls.map(([, payload]: any[]) => payload?.message).filter(Boolean);
 
 afterEach(cancelSagaTasks);
+
+// Marker decision behind the login-confirmation bypass (vuln fix): deleting or
+// inverting the forceLoginPrompt check must fail here. Env wiring itself is
+// compile-time inlined, so it's covered by Maestro deeplink.yaml instead.
+describe('shouldAutoConfirmDeepLinkLogin', () => {
+	it.each([
+		[true, {}, true],
+		[true, { forceLoginPrompt: 'true' }, false],
+		[false, {}, false],
+		[false, { forceLoginPrompt: 'true' }, false]
+	])('isE2E=%s params=%j → %s', (isE2E, params, expected) => {
+		expect(shouldAutoConfirmDeepLinkLogin(isE2E, params)).toBe(expected);
+	});
+});
 
 // ─── Factories ────────────────────────────────────────────────────────────────
 
@@ -338,26 +352,6 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		expect(dispatchedActions.some(a => a.type === APP.INIT)).toBe(false);
 		expect(toastedMessages(emitSpy)).toContain('Deep_link_login_declined');
 		emitSpy.mockRestore();
-	});
-
-	// Under RUNNING_E2E_TESTS the prompt is auto-confirmed so most flows don't have to dismiss a
-	// native Alert — except when the deep link carries `forceLoginPrompt=true`, which opts a
-	// dedicated e2e flow back into the real prompt (see the deeplink.yaml Maestro test).
-	describe('RUNNING_E2E_TESTS auto-confirm gate', () => {
-		beforeEach(() => {
-			jest.mocked(showConfirmationAlert).mockClear();
-		});
-
-		it('shows the real prompt when the deep link carries forceLoginPrompt=true', async () => {
-			const { store } = setupStore();
-
-			store.dispatch(deepLinkingOpen(makeParamsWithToken({ forceLoginPrompt: 'true' })));
-			await flushSagaMicrotasks();
-			await jest.advanceTimersByTimeAsync(1000);
-			await flushSagaMicrotasks();
-
-			expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
-		});
 	});
 
 	/**
