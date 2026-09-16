@@ -343,7 +343,7 @@ export const ComposerInput = memo(
 				setAutocompleteParams({ text: autocompleteText, type: ':' });
 				return;
 			}
-			if (lastWord.match(/^!/) && room?.t === 'l') {
+			if (lastWord.match(/^!/) && t === 'l') {
 				setAutocompleteParams({ text: autocompleteText, type: '!' });
 				return;
 			}
