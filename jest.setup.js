@@ -6,6 +6,9 @@ import { Image } from 'expo-image';
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
+const resolveExpoLazyFetchBeforeReactNativeMocks = () => globalThis.fetch;
+resolveExpoLazyFetchBeforeReactNativeMocks();
+
 jest.mock('./app/lib/methods/handleMediaDownload', () => ({
 	...jest.requireActual('./app/lib/methods/handleMediaDownload'),
 	getMediaCache: jest.fn(() => Promise.resolve({ exists: false })),

@@ -14,12 +14,14 @@ describe('fetch helper', () => {
 		global.fetch = fetchMock as unknown as typeof global.fetch;
 	});
 
-	it('drops headers whose value is undefined', async () => {
+	it('drops headers whose value is undefined or null', async () => {
 		await fetchWithHeaders('https://open.rocket.chat/api/info', {
-			headers: { 'Content-Type': 'application/json', 'X-Auth-Token': undefined, 'X-User-Id': undefined }
+			method: 'GET',
+			headers: { 'Content-Type': 'application/json', 'X-Auth-Token': undefined, 'X-User-Id': null as unknown as undefined }
 		});
 
 		expect(fetchMock).toHaveBeenCalledWith('https://open.rocket.chat/api/info', {
+			method: 'GET',
 			headers: { 'Content-Type': 'application/json', 'User-Agent': headers['User-Agent'] }
 		});
 	});

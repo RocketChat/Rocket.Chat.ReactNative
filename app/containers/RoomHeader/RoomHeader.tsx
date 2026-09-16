@@ -233,11 +233,14 @@ const Header = ({
 			enableA11yFocus={autoFocusHeader && !disabled}
 			focusable={!disabled}
 			canBeFocused={!disabled}
-			style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
-			accessible
-			accessibilityLabel={accessibilityLabel}
-			accessibilityRole='header'>
-			<TouchableOpacity testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
+			style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}>
+			<TouchableOpacity
+				testID='room-header'
+				onPress={handleOnPress}
+				disabled={disabled}
+				hitSlop={HIT_SLOP}
+				accessibilityLabel={accessibilityLabel}
+				accessibilityRole='header'>
 				<View style={styles.titleContainer}>
 					{tmid ? null : (
 						<RoomTypeIcon
