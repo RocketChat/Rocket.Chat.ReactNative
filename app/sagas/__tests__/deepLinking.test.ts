@@ -109,7 +109,7 @@ import { appStart } from '~/actions/app';
 import { connectSuccess } from '~/actions/connect';
 import { APP, LOGIN, LOGOUT, SERVER } from '~/actions/actionsTypes';
 import { RootEnum } from '~/definitions';
-import deepLinkingRoot from '../deepLinking';
+import deepLinkingRoot, { shouldAutoConfirmDeepLinkLogin } from '../deepLinking';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getServerUserIdKey } from '~/lib/constants/keys';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
@@ -338,6 +338,20 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		expect(dispatchedActions.some(a => a.type === APP.INIT)).toBe(false);
 		expect(toastedMessages(emitSpy)).toContain('Deep_link_login_declined');
 		emitSpy.mockRestore();
+	});
+
+	// Marker decision behind the login-confirmation bypass (vuln fix): deleting or
+	// inverting the forceLoginPrompt check must fail here. Env wiring itself is
+	// compile-time inlined, so it's covered by Maestro deeplink.yaml instead.
+	describe('shouldAutoConfirmDeepLinkLogin', () => {
+		it.each([
+			[true, {}, true],
+			[true, { forceLoginPrompt: 'true' }, false],
+			[false, {}, false],
+			[false, { forceLoginPrompt: 'true' }, false]
+		])('isE2E=%s params=%j → %s', (isE2E, params, expected) => {
+			expect(shouldAutoConfirmDeepLinkLogin(isE2E, params)).toBe(expected);
+		});
 	});
 
 	/**
