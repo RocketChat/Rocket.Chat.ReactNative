@@ -126,10 +126,10 @@ tags:
     text: 'Yes, move it!'
 - extendedWaitUntil:
     visible:
-      id: 'room-header'
+      id: 'room-view-title-.*'
     timeout: 60000
 - tapOn:
-    id: 'room-header'
+    id: 'room-view-title-.*'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-teams'

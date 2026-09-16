@@ -42,7 +42,7 @@ tags:
 - assertVisible:
     id: 'room-view-title-${output.teamname}'
 - tapOn:
-    id: 'room-header'
+    id: 'room-view-title-.*'
 - assertVisible:
     id: 'room-actions-info'
 - tapOn:

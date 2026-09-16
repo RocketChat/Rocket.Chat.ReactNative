@@ -21,7 +21,7 @@ tags:
     env:
       ROOM: 'general'
 - tapOn:
-    id: room-header
+    id: 'room-view-title-.*'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'

@@ -190,9 +190,9 @@ tags:
 
 # Check RoomActionsView render
 - assertVisible:
-    id: room-header
+    id: 'room-view-title-.*'
 - tapOn:
-    id: room-header
+    id: 'room-view-title-.*'
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
@@ -285,10 +285,10 @@ tags:
 # should navigate to DiscussionsView
 - extendedWaitUntil:
     visible:
-      id: 'room-header'
+      id: 'room-view-title-.*'
     timeout: 60000
 - tapOn:
-    id: 'room-header'
+    id: 'room-view-title-.*'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-discussions'

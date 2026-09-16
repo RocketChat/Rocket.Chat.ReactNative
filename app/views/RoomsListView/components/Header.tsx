@@ -64,8 +64,13 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 		subtitle = server?.replace(/(^\w+:|^)\/\//, '');
 	}
 	return (
-		<View style={styles.container} accessibilityLabel={`${serverName} ${subtitle}`} accessibilityRole='header' accessible>
-			<TouchableOpacity onPress={onPress} testID='rooms-list-header-servers-list-button'>
+		<View
+			style={styles.container}
+			accessibilityLabel={`${serverName} ${subtitle}`}
+			accessibilityRole='header'
+			accessible
+			testID='rooms-list-header-servers-list-button'>
+			<TouchableOpacity onPress={onPress}>
 				<View style={styles.button}>
 					<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 						{serverName}

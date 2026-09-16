@@ -80,7 +80,7 @@ tags:
     visible:
       id: 'room-view-title-${output.room}'
 - tapOn:
-    id: 'room-header'
+    id: 'room-view-title-.*'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'

@@ -19,10 +19,10 @@ tags:
       id: 'room-view'
     timeout: 60000
 - assertVisible:
-    id: 'room-header'
+    id: 'room-view-title-.*'
     index: 0
 - tapOn:
-    id: 'room-header'
+    id: 'room-view-title-.*'
     index: 0
 - extendedWaitUntil:
     visible:

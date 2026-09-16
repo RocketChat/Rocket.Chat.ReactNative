@@ -132,7 +132,7 @@ tags:
       text: '.*Message Starred.*'
     timeout: 60000
 - tapOn:
-    id: 'room-header'
+    id: 'room-view-title-.*'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
@@ -182,7 +182,7 @@ tags:
       text: '.*Message Unstarred.*'
     timeout: 60000
 - tapOn:
-    id: 'room-header'
+    id: 'room-view-title-.*'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
@@ -237,7 +237,7 @@ tags:
       text: '.*Pinned a message:.*'
     timeout: 60000
 - tapOn:
-    id: 'room-header'
+    id: 'room-view-title-.*'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
@@ -718,7 +718,7 @@ tags:
 
 # should navigate to direct message
 - tapOn:
-    id: 'room-header'
+    id: 'room-view-title-.*'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'

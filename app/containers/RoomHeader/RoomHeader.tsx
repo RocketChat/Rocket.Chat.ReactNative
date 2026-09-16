@@ -66,7 +66,6 @@ type TRoomHeaderHeaderTitle = {
 	tmid?: string;
 	prid?: string;
 	scale: number;
-	testID?: string;
 };
 
 interface IRoomHeader {
@@ -134,20 +133,20 @@ const SubTitle = memo(({ usersTyping, subtitle, formattedStatusExpiry, renderFun
 	return null;
 });
 
-const HeaderTitle = memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
+const HeaderTitle = memo(({ title, tmid, prid, scale }: TRoomHeaderHeaderTitle) => {
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
 
 	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.fontTitlesLabels };
 	if (!tmid && !prid) {
 		return (
-			<Text style={[styles.title, titleStyle]} numberOfLines={isLargeFontScale ? 2 : 1} testID={testID}>
+			<Text style={[styles.title, titleStyle]} numberOfLines={isLargeFontScale ? 2 : 1}>
 				{title}
 			</Text>
 		);
 	}
 
-	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} testID={testID} />;
+	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} />;
 });
 
 const Header = ({
@@ -236,8 +235,9 @@ const Header = ({
 			style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
 			accessible
 			accessibilityLabel={accessibilityLabel}
-			accessibilityRole='header'>
-			<TouchableOpacity testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
+			accessibilityRole='header'
+			testID={testID}>
+			<TouchableOpacity onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
 				<View style={styles.titleContainer}>
 					{tmid ? null : (
 						<RoomTypeIcon
@@ -250,7 +250,7 @@ const Header = ({
 							abacAttributes={abacAttributes}
 						/>
 					)}
-					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
+					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} />
 				</View>
 				<SubTitle
 					usersTyping={tmid ? [] : usersTyping}

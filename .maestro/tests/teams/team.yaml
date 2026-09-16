@@ -26,7 +26,7 @@ tags:
 
 # Team Header
 - assertVisible:
-    id: room-header
+    id: 'room-view-title-.*'
 - assertVisible:
     id: room-view-header-call
 - assertVisible:
@@ -36,7 +36,7 @@ tags:
 
 # Team Action Usage
 - tapOn:
-    id: room-header
+    id: 'room-view-title-.*'
 - tapOn:
     id: room-actions-teams
 - extendedWaitUntil:
@@ -47,7 +47,7 @@ tags:
 
 # Team Channels Header
 - assertVisible:
-    id: room-header
+    id: 'room-view-title-.*'
     label: Should have actions button
 - assertVisible:
     id: team-channels-view-create
@@ -120,9 +120,9 @@ tags:
     timeout: 60000
     label: should navigate to room view
 - assertVisible:
-    id: room-header
+    id: 'room-view-title-.*'
 - tapOn:
-    id: room-header
+    id: 'room-view-title-.*'
 - assertVisible:
     id: room-actions-teams
 - tapOn:
@@ -161,9 +161,9 @@ tags:
     env:
       ROOM: ${output.team}
 - assertVisible:
-    id: room-header
+    id: 'room-view-title-.*'
 - tapOn:
-    id: room-header
+    id: 'room-view-title-.*'
 - assertVisible:
     id: room-actions-teams
 - tapOn:
@@ -203,7 +203,7 @@ tags:
       id: room-view-title-${output.team}
     timeout: 60000
 - tapOn:
-    id: room-header
+    id: 'room-view-title-.*'
 - assertVisible:
     id: room-actions-teams
 - tapOn:
@@ -273,7 +273,7 @@ tags:
       id: room-view
     timeout: 60000
 - tapOn:
-    id: room-header
+    id: 'room-view-title-.*'
 - extendedWaitUntil:
     visible:
       id: room-actions-view

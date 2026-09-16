@@ -44,6 +44,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="John Doe"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -72,7 +73,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -151,7 +151,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="John Doe"
             >
               John Doe
             </Text>
@@ -242,6 +241,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="John Doe"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -270,7 +270,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -349,7 +348,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="John Doe"
             >
               John Doe
             </Text>
@@ -440,6 +438,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="John Doe"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -468,7 +467,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -547,7 +545,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="John Doe"
             >
               John Doe
             </Text>
@@ -638,6 +635,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="John Doe"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -666,7 +664,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -745,7 +742,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="John Doe"
             >
               John Doe
             </Text>
@@ -836,6 +832,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="John Doe"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -864,7 +861,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -943,7 +939,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="John Doe"
             >
               John Doe
             </Text>
@@ -1034,6 +1029,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="John Doe"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -1062,7 +1058,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -1141,7 +1136,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="John Doe"
             >
               John Doe
             </Text>
@@ -1269,6 +1263,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="John Doe"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -1297,7 +1292,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -1376,7 +1370,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="John Doe"
             >
               John Doe
             </Text>
@@ -1504,6 +1497,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="John Doe"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -1532,7 +1526,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -1611,7 +1604,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="John Doe"
             >
               John Doe
             </Text>
@@ -1707,6 +1699,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="private channel"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -1735,7 +1728,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -1806,7 +1798,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="private channel"
             >
               private channel
             </Text>
@@ -1857,6 +1848,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="public channel"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -1885,7 +1877,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -1956,7 +1947,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="public channel"
             >
               public channel
             </Text>
@@ -2007,6 +1997,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="discussion"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -2035,7 +2026,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -2122,7 +2112,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="discussion"
+              testID="markdown-preview-discussion"
             >
               discussion
             </Text>
@@ -2173,6 +2163,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="omnichannel"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -2201,7 +2192,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -2272,7 +2262,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="omnichannel"
             >
               omnichannel
             </Text>
@@ -2323,6 +2312,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="private team"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -2351,7 +2341,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -2422,7 +2411,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="private team"
             >
               private team
             </Text>
@@ -2473,6 +2461,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="public team"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -2501,7 +2490,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -2572,7 +2560,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="public team"
             >
               public team
             </Text>
@@ -2623,6 +2610,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="group dm"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -2651,7 +2639,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -2722,7 +2709,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="group dm"
             >
               group dm
             </Text>
@@ -2773,6 +2759,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="online dm"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -2801,7 +2788,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -2872,7 +2858,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="online dm"
             >
               online dm
             </Text>
@@ -2923,6 +2908,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="away dm"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -2951,7 +2937,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -3022,7 +3007,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="away dm"
             >
               away dm
             </Text>
@@ -3073,6 +3057,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="busy dm"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -3101,7 +3086,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -3172,7 +3156,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="busy dm"
             >
               busy dm
             </Text>
@@ -3223,6 +3206,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="loading dm"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -3251,7 +3235,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -3322,7 +3305,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="loading dm"
             >
               loading dm
             </Text>
@@ -3373,6 +3355,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="offline dm"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -3401,7 +3384,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -3472,7 +3454,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="offline dm"
             >
               offline dm
             </Text>
@@ -3523,6 +3504,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="classified"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -3551,7 +3533,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -3622,7 +3603,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="classified"
             >
               classified
             </Text>
@@ -3673,6 +3653,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="classified"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -3701,7 +3682,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -3772,7 +3752,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="classified"
             >
               classified
             </Text>
@@ -3856,7 +3835,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -4045,7 +4023,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -4234,7 +4211,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -4428,7 +4404,6 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -4601,6 +4576,11 @@ preview
           undefined,
         ]
       }
+      testID="markdown
+preview
+#3
+4
+5"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -4629,7 +4609,6 @@ preview
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -4685,11 +4664,7 @@ preview
                   },
                 ]
               }
-              testID="markdown
-preview
-#3
-4
-5"
+              testID="markdown-preview-markdown preview #3 4 5"
             >
               markdown preview #3 4 5
             </Text>
@@ -4807,6 +4782,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="title"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -4835,7 +4811,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -4906,7 +4881,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="title"
             >
               title
             </Text>
@@ -4957,6 +4931,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -4985,7 +4960,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -5056,7 +5030,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
             >
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
             </Text>
@@ -5135,7 +5108,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -5324,7 +5296,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -5485,6 +5456,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
     >
       <RNGestureHandlerButton
         collapsable={false}
@@ -5513,7 +5485,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -5584,7 +5555,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
             >
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
             </Text>
@@ -5708,7 +5678,6 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -5897,7 +5866,6 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
@@ -6086,7 +6054,6 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
             },
           ]
         }
-        testID="room-header"
         touchSoundDisabled={false}
       >
         <View
