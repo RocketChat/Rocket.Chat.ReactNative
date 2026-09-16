@@ -111,7 +111,6 @@ const UserForm = () => {
 					placeholder={Accounts_EmailOrUsernamePlaceholder}
 					keyboardType='email-address'
 					returnKeyType='next'
-					submitBehavior='submit'
 					onSubmitEditing={() => setFocus('password')}
 					testID='login-view-email'
 					textContentType='username'
