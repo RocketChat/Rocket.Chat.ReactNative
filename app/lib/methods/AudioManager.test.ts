@@ -252,4 +252,25 @@ describe('AudioManager', () => {
 		await AudioManager.playNextAudioInSequence(liveKey);
 		expect(playAudio).not.toHaveBeenCalled();
 	});
+
+	describe('key helpers', () => {
+		it('getAudioKey: builds the composite key from its inputs (rid/mid/uri parts)', () => {
+			const { AudioManager } = setup();
+			expect(AudioManager.loadAudio({ msgId: 'm1', rid: 'r1', uri: 'file://a.mp3' })).toBe('m1-r1-file://a.mp3');
+		});
+
+		it('getNextAudioKey: returns the next key from the rendered-set ordering', () => {
+			const { AudioManager } = setup();
+			const message = { id: 'b', attachments: [{ audio_url: '/x', audio_type: 'audio/mp3' }] } as TMessageModel;
+			expect(AudioManager.getNextAudioKey({ message, rid: 'room' })).toBe('b-room-file://x');
+		});
+
+		it('getNextAudioKey: returns undefined/null at the end of the set', () => {
+			const { AudioManager } = setup();
+			expect(AudioManager.getNextAudioKey({ message: { id: 'b' } as TMessageModel, rid: 'room' })).toBeUndefined();
+			(require('./getFilePathAudio').getFilePathAudio as jest.Mock).mockReturnValueOnce(null);
+			const message = { id: 'b', attachments: [{ audio_url: '/x' }] } as TMessageModel;
+			expect(AudioManager.getNextAudioKey({ message, rid: 'room' })).toBeFalsy();
+		});
+	});
 });

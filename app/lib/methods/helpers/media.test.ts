@@ -80,4 +80,27 @@ describe('canUploadFile', () => {
 		});
 		expect(result.success).toBe(true);
 	});
+
+	it('allows when size within max and mime matches whitelist', () => {
+		expect(canUploadFile({ file: baseFile, allowList: 'image/png', maxFileSize: 2048, permissionToUploadFile: true })).toEqual({
+			success: true
+		});
+	});
+
+	it('allows any size when maxFileSize is -1 (unlimited)', () => {
+		expect(
+			canUploadFile({
+				file: { ...baseFile, size: 999_999_999 },
+				allowList: 'image/png',
+				maxFileSize: -1,
+				permissionToUploadFile: true
+			})
+		).toEqual({ success: true });
+	});
+
+	it.each([[undefined], ['']])('allows any mime when the whitelist is empty/absent (%s)', allowList => {
+		expect(
+			canUploadFile({ file: baseFile, allowList: allowList as any, maxFileSize: 2048, permissionToUploadFile: true })
+		).toEqual({ success: true });
+	});
 });

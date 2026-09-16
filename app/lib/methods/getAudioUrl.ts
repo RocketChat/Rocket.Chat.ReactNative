@@ -6,4 +6,4 @@ export const getAudioUrl = ({ audioUrl, baseUrl, cdnPrefix }: { audioUrl?: strin
 };
 
 export const getAudioUrlToCache = ({ token, userId, url }: { url?: string; userId: string; token: string }) =>
-	`${url}?rc_uid=${userId}&rc_token=${token}`;
+	`${url}${url?.includes('?') ? '&' : '?'}rc_uid=${userId}&rc_token=${token}`;
