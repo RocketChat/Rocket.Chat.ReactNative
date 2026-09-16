@@ -31,6 +31,8 @@ tags:
     visible:
       id: 'login-view'
     timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 1000
 - pressKey: Remote Dpad Down
 - waitForAnimationToEnd:
     timeout: 1000
