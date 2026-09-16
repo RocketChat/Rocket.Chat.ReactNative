@@ -22,7 +22,6 @@ jobs:
         run: pnpm exec oxlint
 
       - name: Run TypeScript
-        continue-on-error: true
         run: pnpm exec tsc
 
       - name: Run Tests
