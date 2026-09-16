@@ -66,6 +66,15 @@ post_install do |installer|
     # :ccache_enabled => true
   )
 
+  # hermes-engine.podspec points HERMES_CLI_PATH at the Hermes V1 compiler even when
+  # RCT_HERMES_V1_ENABLED is 0, which emits bytecode the legacy VM refuses to load.
+  installer.aggregate_targets.each do |aggregate_target|
+    aggregate_target.xcconfigs.each do |config_name, config_file|
+      config_file.attributes['HERMES_CLI_PATH'] = '$(PODS_ROOT)/hermes-engine/destroot/bin/hermesc'
+      config_file.save_as(Pathname.new(aggregate_target.xcconfig_path(config_name)))
+    end
+  end
+
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
