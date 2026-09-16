@@ -84,7 +84,6 @@ const RoomItem = ({
 			favorite={favorite}
 			isRead={isRead}
 			rid={rid}
-			testID={testID}
 			type={type}
 			isFocused={!!isFocused}
 			swipeEnabled={swipeEnabled}

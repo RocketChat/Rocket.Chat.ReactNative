@@ -78,7 +78,6 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
             },
           ]
         }
-        testID="media-call-header-collapse"
       >
         <View
           accessibilityLabel="[missing "en.Minimize" translation]"
@@ -88,6 +87,7 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
               "opacity": 1,
             }
           }
+          testID="media-call-header-collapse"
         >
           <Text
             allowFontScaling={false}
@@ -287,7 +287,6 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
             },
           ]
         }
-        testID="media-call-header-end"
       >
         <View
           accessibilityLabel="End"
@@ -297,6 +296,7 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
               "opacity": 1,
             }
           }
+          testID="media-call-header-end"
         >
           <Text
             allowFontScaling={false}
@@ -409,7 +409,6 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
             },
           ]
         }
-        testID="media-call-header-collapse"
       >
         <View
           accessibilityLabel="[missing "en.Minimize" translation]"
@@ -419,6 +418,7 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
               "opacity": 1,
             }
           }
+          testID="media-call-header-collapse"
         >
           <Text
             allowFontScaling={false}
@@ -618,7 +618,6 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
             },
           ]
         }
-        testID="media-call-header-end"
       >
         <View
           accessibilityLabel="End"
@@ -628,6 +627,7 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
               "opacity": 1,
             }
           }
+          testID="media-call-header-end"
         >
           <Text
             allowFontScaling={false}
@@ -740,7 +740,6 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             },
           ]
         }
-        testID="media-call-header-collapse"
       >
         <View
           accessibilityLabel="[missing "en.Minimize" translation]"
@@ -750,6 +749,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
               "opacity": 1,
             }
           }
+          testID="media-call-header-collapse"
         >
           <Text
             allowFontScaling={false}
@@ -969,7 +969,6 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             },
           ]
         }
-        testID="media-call-header-end"
       >
         <View
           accessibilityLabel="End"
@@ -979,6 +978,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
               "opacity": 1,
             }
           }
+          testID="media-call-header-end"
         >
           <Text
             allowFontScaling={false}
@@ -1091,7 +1091,6 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
             },
           ]
         }
-        testID="media-call-header-collapse"
       >
         <View
           accessibilityLabel="[missing "en.Minimize" translation]"
@@ -1101,6 +1100,7 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
               "opacity": 1,
             }
           }
+          testID="media-call-header-collapse"
         >
           <Text
             allowFontScaling={false}
@@ -1300,7 +1300,6 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
             },
           ]
         }
-        testID="media-call-header-end"
       >
         <View
           accessibilityLabel="End"
@@ -1310,6 +1309,7 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
               "opacity": 1,
             }
           }
+          testID="media-call-header-end"
         >
           <Text
             allowFontScaling={false}
@@ -1442,7 +1442,6 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
             },
           ]
         }
-        testID="media-call-header-collapse"
       >
         <View
           accessibilityLabel="[missing "en.Minimize" translation]"
@@ -1452,6 +1451,7 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
               "opacity": 1,
             }
           }
+          testID="media-call-header-collapse"
         >
           <Text
             allowFontScaling={false}
@@ -1675,7 +1675,6 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
             },
           ]
         }
-        testID="media-call-header-end"
       >
         <View
           accessibilityLabel="End"
@@ -1685,6 +1684,7 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
               "opacity": 1,
             }
           }
+          testID="media-call-header-end"
         >
           <Text
             allowFontScaling={false}
@@ -1797,7 +1797,6 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
             },
           ]
         }
-        testID="media-call-header-collapse"
       >
         <View
           accessibilityLabel="[missing "en.Minimize" translation]"
@@ -1807,6 +1806,7 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
               "opacity": 1,
             }
           }
+          testID="media-call-header-collapse"
         >
           <Text
             allowFontScaling={false}
@@ -2030,7 +2030,6 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
             },
           ]
         }
-        testID="media-call-header-end"
       >
         <View
           accessibilityLabel="End"
@@ -2040,6 +2039,7 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
               "opacity": 1,
             }
           }
+          testID="media-call-header-end"
         >
           <Text
             allowFontScaling={false}

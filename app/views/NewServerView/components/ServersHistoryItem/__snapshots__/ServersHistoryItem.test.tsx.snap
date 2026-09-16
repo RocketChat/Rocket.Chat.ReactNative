@@ -176,7 +176,6 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               },
             ]
           }
-          testID="servers-history-https://open.rocket.chat"
           underlayColor="#E4E7EA"
         >
           <View
@@ -212,6 +211,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             accessible={true}
             onAccessibilityAction={[Function]}
             style={{}}
+            testID="servers-history-https://open.rocket.chat"
           >
             <View
               style={
@@ -500,7 +500,6 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               },
             ]
           }
-          testID="servers-history-https://superlongservername.tologintoasuperlongservername.rocket.chat"
           underlayColor="#E4E7EA"
         >
           <View
@@ -536,6 +535,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             accessible={true}
             onAccessibilityAction={[Function]}
             style={{}}
+            testID="servers-history-https://superlongservername.tologintoasuperlongservername.rocket.chat"
           >
             <View
               style={
@@ -824,7 +824,6 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               },
             ]
           }
-          testID="servers-history-https://stable.rocket.chat"
           underlayColor="#E4E7EA"
         >
           <View
@@ -860,6 +859,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             accessible={true}
             onAccessibilityAction={[Function]}
             style={{}}
+            testID="servers-history-https://stable.rocket.chat"
           >
             <View
               style={
@@ -1153,7 +1153,6 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               },
             ]
           }
-          testID="servers-history-https://open.rocket.chat"
           underlayColor="#E4E7EA"
         >
           <View
@@ -1189,6 +1188,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
             accessible={true}
             onAccessibilityAction={[Function]}
             style={{}}
+            testID="servers-history-https://open.rocket.chat"
           >
             <View
               style={
@@ -1477,7 +1477,6 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               },
             ]
           }
-          testID="servers-history-https://example.com"
           underlayColor="#E4E7EA"
         >
           <View
@@ -1513,6 +1512,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
             accessible={true}
             onAccessibilityAction={[Function]}
             style={{}}
+            testID="servers-history-https://example.com"
           >
             <View
               style={
@@ -1806,7 +1806,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               },
             ]
           }
-          testID="servers-history-https://open.rocket.chat"
           underlayColor="#E4E7EA"
         >
           <View
@@ -1842,6 +1841,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             accessible={true}
             onAccessibilityAction={[Function]}
             style={{}}
+            testID="servers-history-https://open.rocket.chat"
           >
             <View
               style={
@@ -2130,7 +2130,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               },
             ]
           }
-          testID="servers-history-https://open.rocket.chat"
           underlayColor="#2D3039"
         >
           <View
@@ -2166,6 +2165,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             accessible={true}
             onAccessibilityAction={[Function]}
             style={{}}
+            testID="servers-history-https://open.rocket.chat"
           >
             <View
               style={
@@ -2454,7 +2454,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               },
             ]
           }
-          testID="servers-history-https://open.rocket.chat"
           underlayColor="#16181a"
         >
           <View
@@ -2490,6 +2489,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             accessible={true}
             onAccessibilityAction={[Function]}
             style={{}}
+            testID="servers-history-https://open.rocket.chat"
           >
             <View
               style={

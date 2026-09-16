@@ -24,7 +24,6 @@ const Touchable = ({
 	type,
 	onPress,
 	onLongPress,
-	testID,
 	width,
 	favorite,
 	isRead,
@@ -218,7 +217,6 @@ const Touchable = ({
 					<Touch
 						onPress={handlePress}
 						onLongPress={handleLongPress}
-						testID={testID}
 						style={{
 							backgroundColor: isFocused ? colors.surfaceTint : colors.surfaceRoom
 						}}>

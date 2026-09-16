@@ -58,7 +58,6 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           },
         ]
       }
-      testID="server-item-https://open.rocket.chat/"
       underlayColor="#E4E7EA"
     >
       <View
@@ -86,6 +85,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
         accessibilityRole="radio"
         accessible={true}
         style={{}}
+        testID="server-item-https://open.rocket.chat/"
       >
         <View
           style={
@@ -298,7 +298,6 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           },
         ]
       }
-      testID="server-item-https://superlongservername.tologintoasuperlongservername/"
       underlayColor="#E4E7EA"
     >
       <View
@@ -326,6 +325,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
         accessibilityRole="radio"
         accessible={true}
         style={{}}
+        testID="server-item-https://superlongservername.tologintoasuperlongservername/"
       >
         <View
           style={
@@ -538,7 +538,6 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           },
         ]
       }
-      testID="server-item-https://stable.rocket.chat/"
       underlayColor="#E4E7EA"
     >
       <View
@@ -566,6 +565,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
         accessibilityRole="radio"
         accessible={true}
         style={{}}
+        testID="server-item-https://stable.rocket.chat/"
       >
         <View
           style={
@@ -901,7 +901,6 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               },
             ]
           }
-          testID="server-item-https://open.rocket.chat/"
           underlayColor="#E4E7EA"
         >
           <View
@@ -937,6 +936,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
             accessible={true}
             onAccessibilityAction={[Function]}
             style={{}}
+            testID="server-item-https://open.rocket.chat/"
           >
             <View
               style={
@@ -1269,7 +1269,6 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               },
             ]
           }
-          testID="server-item-https://example.com/"
           underlayColor="#E4E7EA"
         >
           <View
@@ -1305,6 +1304,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
             accessible={true}
             onAccessibilityAction={[Function]}
             style={{}}
+            testID="server-item-https://example.com/"
           >
             <View
               style={
@@ -1524,7 +1524,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           },
         ]
       }
-      testID="server-item-https://open.rocket.chat/"
       underlayColor="#E4E7EA"
     >
       <View
@@ -1552,6 +1551,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         accessibilityRole="radio"
         accessible={true}
         style={{}}
+        testID="server-item-https://open.rocket.chat/"
       >
         <View
           style={
@@ -1764,7 +1764,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           },
         ]
       }
-      testID="server-item-https://open.rocket.chat/"
       underlayColor="#2D3039"
     >
       <View
@@ -1792,6 +1791,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         accessibilityRole="radio"
         accessible={true}
         style={{}}
+        testID="server-item-https://open.rocket.chat/"
       >
         <View
           style={
@@ -2004,7 +2004,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           },
         ]
       }
-      testID="server-item-https://open.rocket.chat/"
       underlayColor="#16181a"
     >
       <View
@@ -2032,6 +2031,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         accessibilityRole="radio"
         accessible={true}
         style={{}}
+        testID="server-item-https://open.rocket.chat/"
       >
         <View
           style={

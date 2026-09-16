@@ -143,7 +143,6 @@ export interface ILastMessageProps {
 export interface ITouchableProps extends IRoomItemTouchables {
 	children: ReactElement;
 	type: SubscriptionType;
-	testID: string;
 	width: number;
 	favorite: boolean;
 	isRead: boolean;

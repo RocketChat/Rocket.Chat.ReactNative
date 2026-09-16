@@ -70,7 +70,6 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
               },
             ]
           }
-          testID="directory-item-style"
           underlayColor="#E4E7EA"
         >
           <View
@@ -94,6 +93,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
           />
           <View
             style={{}}
+            testID="directory-item-style"
           >
             <View
               style={
@@ -364,7 +364,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               },
             ]
           }
-          testID="directory-item"
           underlayColor="#E4E7EA"
         >
           <View
@@ -388,6 +387,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           />
           <View
             style={{}}
+            testID="directory-item"
           >
             <View
               style={
@@ -656,7 +656,6 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
               },
             ]
           }
-          testID="directory-item-dm"
           underlayColor="#E4E7EA"
         >
           <View
@@ -680,6 +679,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
           />
           <View
             style={{}}
+            testID="directory-item-dm"
           >
             <View
               style={
@@ -917,7 +917,6 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
               },
             ]
           }
-          testID="directory-item-long"
           underlayColor="#E4E7EA"
         >
           <View
@@ -941,6 +940,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
           />
           <View
             style={{}}
+            testID="directory-item-long"
           >
             <View
               style={
@@ -1231,7 +1231,6 @@ exports[`Story Snapshots: OnlyTitle should match snapshot 1`] = `
               },
             ]
           }
-          testID="directory-item-title"
           underlayColor="#E4E7EA"
         >
           <View
@@ -1255,6 +1254,7 @@ exports[`Story Snapshots: OnlyTitle should match snapshot 1`] = `
           />
           <View
             style={{}}
+            testID="directory-item-title"
           >
             <View
               style={
@@ -1425,7 +1425,6 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
               },
             ]
           }
-          testID="directory-item-team"
           underlayColor="#E4E7EA"
         >
           <View
@@ -1449,6 +1448,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
           />
           <View
             style={{}}
+            testID="directory-item-team"
           >
             <View
               style={
@@ -1717,7 +1717,6 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
               },
             ]
           }
-          testID="directory-item-label"
           underlayColor="#E4E7EA"
         >
           <View
@@ -1741,6 +1740,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
           />
           <View
             style={{}}
+            testID="directory-item-label"
           >
             <View
               style={
@@ -2031,7 +2031,6 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
               },
             ]
           }
-          testID="directory-item-no-desc"
           underlayColor="#E4E7EA"
         >
           <View
@@ -2055,6 +2054,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
           />
           <View
             style={{}}
+            testID="directory-item-no-desc"
           >
             <View
               style={

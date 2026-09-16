@@ -4946,7 +4946,6 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
                       },
                     ]
                   }
-                  testID="multi-select-chip-1"
                   underlayColor="#E4E7EA"
                 >
                   <View
@@ -4977,6 +4976,7 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
                         "paddingHorizontal": 4,
                       }
                     }
+                    testID="multi-select-chip-1"
                   >
                     <Text
                       numberOfLines={1}
