@@ -208,19 +208,28 @@ describe('actions', () => {
 			await expect(triggerAction(actionInput)).rejects.toThrow('Invalid JSON response from server');
 		});
 
-		it('throws when response has unknown modal interaction type', async () => {
+		it('reports an unsupported surface this client cannot render', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
 				text: () =>
 					Promise.resolve(
 						JSON.stringify({
-							type: 'unknown.legacy',
+							type: 'contextual_bar.open',
 							triggerId: 'trigger-fixed-id'
 						})
 					)
 			} as Response);
 
-			await expect(triggerAction(actionInput)).rejects.toThrow('Unknown modal interaction type: unknown.legacy');
+			await expect(triggerAction(actionInput)).resolves.toBe(ModalActions.UNSUPPORTED);
+		});
+
+		it('reports no action when an app only acknowledges the interaction', async () => {
+			mockedFetch.mockResolvedValueOnce({
+				ok: true,
+				text: () => Promise.resolve(JSON.stringify({ success: true }))
+			} as Response);
+
+			await expect(triggerAction(actionInput)).resolves.toBeUndefined();
 		});
 
 		it('invalidates trigger id after processing', async () => {

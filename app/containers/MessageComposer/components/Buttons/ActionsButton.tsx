@@ -10,12 +10,14 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useCanUploadFile, useChooseMedia } from '~/containers/MessageComposer/hooks';
 import { useComposerRid, useComposerTmid, useComposerType } from '~/containers/MessageComposer/ComposerStore';
+import { UIActionButtonContext, useAppActionButtons } from '~/lib/apps';
+import { triggerAppActionButton } from '~/lib/apps/triggerAppActionButton';
 
 export const ActionsButton = () => {
 	const rid = useComposerRid();
 	const tmid = useComposerTmid();
 	const t = useComposerType();
-	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
+	const { closeEmojiKeyboardAndAction, getText } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
 	const [permissionToViewCannedResponses] = usePermissions(['view-canned-responses'], rid);
 	const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({
@@ -25,6 +27,8 @@ export const ActionsButton = () => {
 	});
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useMasterDetail();
+	const appActions = useAppActionButtons({ context: UIActionButtonContext.MESSAGE_BOX_ACTION, rid });
+	const aiActions = useAppActionButtons({ context: UIActionButtonContext.ROOM_ACTION, category: 'ai', rid });
 
 	const createDiscussion = async () => {
 		if (!rid) return;
@@ -93,6 +97,30 @@ export const ActionsButton = () => {
 			title: I18n.t('Create_Discussion'),
 			icon: 'discussions',
 			onPress: () => createDiscussion()
+		});
+
+		aiActions.forEach(({ id, label, button }) => {
+			options.push({
+				title: label,
+				icon: 'stars',
+				danger: button.variant === 'danger',
+				testID: `message-composer-ai-action-${id}`,
+				onPress: () => {
+					triggerAppActionButton({ button, rid });
+				}
+			});
+		});
+
+		appActions.forEach(({ id, label, button }) => {
+			options.push({
+				title: label,
+				icon: 'apps',
+				danger: button.variant === 'danger',
+				testID: `message-composer-app-action-${id}`,
+				onPress: () => {
+					triggerAppActionButton({ button, rid, tmid, message: getText() ?? '' });
+				}
+			});
 		});
 
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
