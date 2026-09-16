@@ -156,8 +156,6 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 		loaded.current = true;
 	}, []);
 
-	// A same-origin top-level navigation after the first load would otherwise leave loaded=true,
-	// so a later HTTP failure returns early from onHttpError without ever showing retry.
 	const onLoadStart = useCallback(() => {
 		loaded.current = false;
 	}, []);

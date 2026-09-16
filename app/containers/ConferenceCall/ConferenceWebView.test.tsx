@@ -12,9 +12,7 @@ import ConferenceWebView from './ConferenceWebView';
 const SERVER = 'https://open.rocket.chat';
 const CONFERENCE_URL = `${SERVER}/conference/call1`;
 
-/** Props of the last WebView render, so the handlers under test can be invoked directly. */
 let mockWebViewProps: Record<string, any> = {};
-/** Mount count, to tell a re-render apart from the WebView being destroyed and recreated. */
 let mockWebViewMounts = 0;
 
 jest.mock('react-native-webview', () => {
