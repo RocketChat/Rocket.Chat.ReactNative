@@ -143,18 +143,6 @@
 		"yup": "0.32.11",
 		"zustand": "^5.0.10"
 	},
-	"expo": {
-		"autolinking": {
-			"android": {
-				"buildFromSource": [
-					"expo-asset",
-					"expo-audio",
-					"expo-file-system",
-					"expo-font"
-				]
-			}
-		}
-	},
 	"pnpm": {
 		"overrides": {
 			"ua-parser-js": "1.0.2",

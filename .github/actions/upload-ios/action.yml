@@ -57,7 +57,7 @@ runs:
         path: |
           ~/.pods
           ios/Pods
-        key: pods-v2-{{ checksum "ios/Podfile.lock" }}
+        key: pods-v2-${{ hashFiles('ios/Podfile.lock') }}
         restore-keys: |
           pods-v2-
 
