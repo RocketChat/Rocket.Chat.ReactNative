@@ -11,7 +11,7 @@ Refer to [React Native environment setup](https://reactnative.dev/docs/set-up-yo
 
 ### How to run
 
-Minimum Node version: 22.14.0
+Minimum Node version: 22.13.0
 
 This project uses pnpm (pinned via `package.json#packageManager`). On a fresh machine, enable corepack once so the right pnpm version is picked up:
 

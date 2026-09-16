@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Text, View, Alert, Keyboard } from 'react-native';
+import { Keyboard, Text, View, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';

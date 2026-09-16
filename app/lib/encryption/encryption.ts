@@ -64,6 +64,7 @@ import {
 } from './utils';
 
 const ROOM_KEY_EXCHANGE_SIZE = 10;
+
 class Encryption {
 	ready: boolean;
 	privateKey: string | null;
@@ -379,7 +380,7 @@ class Encryption {
 						return null;
 					}
 				});
-				await db.batch(...prepared);
+				await db.batch(prepared.filter((record): record is TMessageModel => record !== null));
 			});
 		} catch (e) {
 			log(e);
@@ -405,14 +406,20 @@ class Encryption {
 			);
 
 			const decryptedSubscriptions = await Promise.all(
-				subsEncryptedToDecrypt.map(async (sub: TSubscriptionModel) => ({
-					sub,
-					decryptedSubscription: await this.decryptSubscription(sub)
-				}))
+				subsEncryptedToDecrypt.map(async (sub: TSubscriptionModel) => {
+					try {
+						return { sub, decryptedSubscription: await this.decryptSubscription(sub) };
+					} catch (e) {
+						log(e);
+						return { sub, decryptedSubscription: null };
+					}
+				})
 			);
 
-			// Prepare and batch under the writer lock so a concurrent writer can't
-			// call prepareUpdate on a record with pending changes.
+			if (!decryptedSubscriptions.length) {
+				return;
+			}
+
 			await db.write(async () => {
 				const preparedSubscriptions = decryptedSubscriptions
 					.map(({ sub, decryptedSubscription }) => {
@@ -424,7 +431,8 @@ class Encryption {
 									}
 								})
 							);
-						} catch {
+						} catch (e) {
+							log(e);
 							return null;
 						}
 					})

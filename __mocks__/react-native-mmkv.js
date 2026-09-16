@@ -1,7 +1,4 @@
-// Mock for react-native-mmkv.
-// Covers only the surface app/lib/methods/userPreferences.ts uses: createMMKV, useMMKVString,
-// and the instance methods it calls. Keep this in sync with that module — a method that exists
-// here but not on the real MMKV instance makes Jest pass while the device fails.
+// Keep in sync with app/lib/methods/userPreferences.ts.
 const { useState, useEffect, useCallback } = require('react');
 
 // Shared storage between instances with the same id
@@ -65,7 +62,6 @@ class MMKVInstance {
 
 	clearAll() {
 		this.storage.clear();
-		// The real listener contract passes undefined to mean "everything changed"
 		this.notifyListeners(undefined);
 	}
 
