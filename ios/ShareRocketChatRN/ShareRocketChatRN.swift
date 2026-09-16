@@ -34,7 +34,6 @@ class ShareRocketChatRN: UIViewController {
         return dest
     }
 
-    // ponytail: copy, don't Data(contentsOf:) — extension limit ~120MB is RAM, not file size
     private func copyFileToSharedContainer(fileUrl: URL, filename: String) -> URL? {
         guard let appGroup = Bundle.main.object(forInfoDictionaryKey: "AppGroupIdentifier") as? String,
               let groupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {

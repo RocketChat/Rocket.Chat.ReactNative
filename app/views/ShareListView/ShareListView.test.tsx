@@ -1,4 +1,4 @@
-jest.mock('../../lib/database', () => ({
+jest.mock('~/lib/database', () => ({
 	servers: {
 		get: jest.fn(() => ({
 			find: jest.fn(() => Promise.resolve({}))
@@ -9,7 +9,7 @@ jest.mock('../../lib/database', () => ({
 	}
 }));
 
-jest.mock('../../lib/methods/helpers/showToast', () => ({
+jest.mock('~/lib/methods/helpers/showToast', () => ({
 	showToast: jest.fn()
 }));
 
@@ -19,7 +19,7 @@ jest.mock('expo-file-system/legacy', () => ({
 	EncodingType: { Base64: 'base64', UTF8: 'utf8' }
 }));
 
-const { showToast } = require('../../lib/methods/helpers/showToast');
+const { showToast } = require('~/lib/methods/helpers/showToast');
 const ExpoFileSystem = require('expo-file-system/legacy') as { getInfoAsync: jest.Mock; readAsStringAsync: jest.Mock };
 const { ShareListView } = require('./index');
 

@@ -55,7 +55,6 @@ class ShareActivity : AppCompatActivity() {
         completeRequest()
     }
 
-    // ponytail: Bundle.get has no deprecated overloads, so this needs no @Suppress on any API level
     private fun intentUris(intent: Intent): List<Uri>? = try {
         when (intent.action) {
             Intent.ACTION_SEND -> {

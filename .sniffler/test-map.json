@@ -72,7 +72,9 @@
 			"app/views/SelectServerView.tsx",
 			"app/views/NewServerView/**",
 			"app/views/RoomsListView/**",
-			"app/sagas/deepLinking.js"
+			"app/sagas/deepLinking.js",
+			"android/app/src/main/java/chat/rocket/reactnative/share/**",
+			"ios/ShareRocketChatRN/**"
 		]
 	},
 	{
