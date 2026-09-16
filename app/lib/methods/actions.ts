@@ -5,7 +5,6 @@ import { toServerModalInteractionType, toUserInteraction } from '~/containers/UI
 import EventEmitter from './helpers/events';
 import fetch from './helpers/fetch';
 import { random } from './helpers';
-import log from './helpers/log';
 import Navigation from '../navigation/appNavigation';
 import sdk from '../services/sdk';
 
