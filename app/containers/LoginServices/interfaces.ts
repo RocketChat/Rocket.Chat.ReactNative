@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 
-import { type IServices } from '../../selectors/login';
+import { type IServices } from '~/selectors/login';
 import { type TIconsName } from '../CustomIcon';
 
 type TAuthType = 'oauth' | 'oauth_custom' | 'saml' | 'cas' | 'apple';

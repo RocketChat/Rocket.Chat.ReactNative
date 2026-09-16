@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../database';
-import { type ICustomEmoji, type IEmoji, type TFrequentlyUsedEmojiModel } from '../../definitions';
+import { type ICustomEmoji, type IEmoji, type TFrequentlyUsedEmojiModel } from '~/definitions';
 import log from './helpers/log';
 import { sanitizeLikeString } from '../database/utils';
 import { aliasesByEmojiName } from '../constants/emojis/data';
@@ -38,7 +38,7 @@ export const searchEmojiNames = (keyword: string): string[] => {
 
 // Looked up by content, never used as the record id: emoji content / custom names can be
 // non-ASCII and corrupt across the native SQLite bridge when used as WatermelonDB ids.
-const getEmojiContent = (emoji: IEmoji) => (typeof emoji === 'string' ? emoji : emoji.name);
+export const getEmojiContent = (emoji: IEmoji) => (typeof emoji === 'string' ? emoji : emoji.name);
 
 export const addFrequentlyUsed = async (emoji: IEmoji) => {
 	const db = database.active;

@@ -3,38 +3,40 @@ import { Provider } from 'react-redux';
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 
 import { useMediaAutoDownload } from '../useMediaAutoDownload';
-import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { type IAttachment, type IUserMessage, type TAnyMessageModel } from '../../../../definitions';
-import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '../../../../lib/methods/handleMediaDownload';
-import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
-import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
-import { isImageBase64 } from '../../../../lib/methods/isImageBase64';
-import { emitter } from '../../../../lib/methods/helpers/emitter';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { mockedStore } from '~/reducers/mockedStore';
+import { setUser } from '~/actions/login';
+import { selectServerSuccess } from '~/actions/server';
+import { type IAttachment, type IUserMessage, type TAnyMessageModel } from '~/definitions';
+import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '~/lib/methods/handleMediaDownload';
+import { fetchAutoDownloadEnabled } from '~/lib/methods/autoDownloadPreference';
+import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
+import { isImageBase64 } from '~/lib/methods/isImageBase64';
+import { emitter } from '~/lib/methods/helpers/emitter';
 
-jest.mock('../../../../lib/methods/handleMediaDownload', () => ({
+jest.mock('~/lib/methods/handleMediaDownload', () => ({
 	downloadMediaFile: jest.fn(),
 	getMediaCache: jest.fn(),
 	isDownloadActive: jest.fn(),
 	cancelDownload: jest.fn()
 }));
 
-jest.mock('../../../../lib/methods/autoDownloadPreference', () => ({
+jest.mock('~/lib/methods/autoDownloadPreference', () => ({
 	fetchAutoDownloadEnabled: jest.fn()
 }));
 
-jest.mock('../../../../lib/methods/helpers/formatAttachmentUrl', () => ({
+jest.mock('~/lib/methods/helpers/formatAttachmentUrl', () => ({
 	formatAttachmentUrl: jest.fn()
 }));
 
-jest.mock('../../../../lib/methods/isImageBase64', () => ({
+jest.mock('~/lib/methods/isImageBase64', () => ({
 	isImageBase64: jest.fn()
 }));
 
 // Real mitt behind spies so resumeDownload registrations can be observed and the
 // download listener can be driven with emitter.emit.
-jest.mock('../../../../lib/methods/helpers/emitter', () => {
+jest.mock('~/lib/methods/helpers/emitter', () => {
 	const mittModule = require('mitt');
 	const mitt = mittModule.default || mittModule;
 	const instance = mitt();
@@ -59,6 +61,9 @@ const mockEmitterOn = emitter.on as jest.Mock;
 const URL = 'https://open.rocket.chat/file.png';
 const USER = { id: 'user-1', username: 'john', token: 'token' };
 
+mockedStore.dispatch(setUser(USER));
+mockedStore.dispatch(selectServerSuccess({ server: 'https://open.rocket.chat', version: '', name: '' }));
+
 // Flushes the mount effect's async cache/auto-download chain inside act, used when the
 // final status equals the initial 'to-download' so there is no change for waitFor to await.
 const flushMount = () =>
@@ -79,7 +84,7 @@ const renderMediaHook = ({
 	showAttachment?: (file: IAttachment) => void;
 	ctx?: Partial<MessageRoomState>;
 }) => {
-	const contextValue: Partial<MessageRoomState> = { baseUrl: 'https://open.rocket.chat', user: USER, ...ctx };
+	const contextValue: Partial<MessageRoomState> = { ...ctx };
 	const item = { id: 'msg-1' } as unknown as TAnyMessageModel;
 	const wrapper = ({ children }: { children: ReactNode }) => (
 		<Provider store={mockedStore}>

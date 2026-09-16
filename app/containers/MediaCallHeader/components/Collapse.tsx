@@ -1,7 +1,7 @@
-import I18n from '../../../i18n';
-import { useTheme } from '../../../theme';
-import { useCallStore } from '../../../lib/services/voip/useCallStore';
-import * as HeaderButton from '../../Header/components/HeaderButton';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 
 const Collapse = () => {
 	const { colors } = useTheme();

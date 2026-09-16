@@ -1,5 +1,5 @@
-import { type ILoginCredentials } from '../../../definitions';
-import { type IEmitUserInteraction } from '../../../containers/UIKit/interfaces';
+import { type BiometricInvalidationReason, type ILoginCredentials } from '~/definitions';
+import { type IEmitUserInteraction } from '~/containers/UIKit/interfaces';
 import log from './log';
 
 type TEventEmitterEmmitArgs =
@@ -9,7 +9,9 @@ type TEventEmitterEmmitArgs =
 	| { method: string }
 	| { invalid: boolean }
 	| { force: boolean }
+	| { canClose: boolean }
 	| { hasBiometry: boolean }
+	| { reason: BiometricInvalidationReason }
 	| { visible: boolean; onCancel?: null | Function }
 	| { cancel: () => void }
 	| { submit: (param: string) => void }

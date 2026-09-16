@@ -1,10 +1,10 @@
 import MessageActionTouchable from '../Touchable/MessageActionTouchable';
-import { CustomIcon } from '../../../CustomIcon';
-import { BUTTON_HIT_SLOP } from '../../utils';
-import styles from '../../styles';
-import { E2E_MESSAGE_TYPE } from '../../../../lib/constants/keys';
-import { useMessageField } from '../../stores/MessageStore';
-import { useOnEncryptedPress } from '../../stores/MessageRoomStore';
+import { CustomIcon } from '~/containers/CustomIcon';
+import { BUTTON_HIT_SLOP } from '~/containers/message/utils';
+import styles from '~/containers/message/styles';
+import { E2E_MESSAGE_TYPE } from '~/lib/constants/keys';
+import { useMessageField } from '~/containers/message/stores/MessageStore';
+import { useOnEncryptedPress } from '~/containers/message/stores/MessageRoomStore';
 
 const Encrypted = () => {
 	const onEncryptedPress = useOnEncryptedPress();
