@@ -14,7 +14,7 @@ import ConferenceWebView from './ConferenceWebView';
 const ConferenceCall = () => {
 	const { callId, url, expanded, server: owner } = useConferenceCallStore();
 	const server = useAppSelector(state => state.server.server);
-	const { theme } = useTheme();
+	const { theme, colors } = useTheme();
 	const { top, bottom } = useSafeAreaInsets();
 	const callServer = useRef(server);
 
@@ -41,7 +41,11 @@ const ConferenceCall = () => {
 
 	return (
 		<View
-			style={[styles.host, { paddingTop: top, paddingBottom: bottom }, !expanded && styles.offscreen]}
+			style={[
+				styles.host,
+				{ paddingTop: top, paddingBottom: bottom, backgroundColor: colors.backdropColor },
+				!expanded && styles.offscreen
+			]}
 			pointerEvents={expanded ? 'auto' : 'none'}>
 			{expanded ? <StatusBar barStyle='light' /> : null}
 			<ConferenceWebView url={url} expanded={expanded} onClose={closeConferenceCall} onOpenLink={onOpenLink} />
@@ -55,8 +59,7 @@ const styles = StyleSheet.create({
 		left: 0,
 		right: 0,
 		top: 0,
-		bottom: 0,
-		backgroundColor: 'rgb(31,33,38)'
+		bottom: 0
 	},
 	offscreen: {
 		transform: [{ translateX: -100000 }]

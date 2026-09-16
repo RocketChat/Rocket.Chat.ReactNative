@@ -21,6 +21,7 @@ import { random } from '~/lib/methods/helpers/random';
 import { setServerCookies } from '~/lib/methods/helpers/setServerCookies';
 import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
 import Button from '../Button';
 import { buildConferenceBridgeScript, parseConferenceBridgeMessage } from './bridge';
 
@@ -169,7 +170,7 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 
 	if (failed) {
 		return (
-			<View style={[styles.webview, styles.loading]}>
+			<View style={[styles.webview, styles.loading, { backgroundColor: colors.backdropColor }]}>
 				<Text style={[styles.errorText, { color: colors.fontWhite }]}>{i18n.t('error-init-video-conf')}</Text>
 				<Button title={i18n.t('Try_again')} onPress={onRetry} style={styles.errorButton} />
 				<Button title={i18n.t('Close')} type='secondary' onPress={onClose} style={styles.errorButton} />
@@ -179,7 +180,7 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 
 	if (!ready) {
 		return (
-			<View style={[styles.webview, styles.loading]}>
+			<View style={[styles.webview, styles.loading, { backgroundColor: colors.backdropColor }]}>
 				<ActivityIndicator />
 			</View>
 		);
@@ -197,7 +198,7 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 			onHttpError={onHttpError}
 			onLoadStart={onLoadStart}
 			onLoadEnd={onLoadEnd}
-			style={styles.webview}
+			style={[styles.webview, { backgroundColor: colors.backdropColor }]}
 			userAgent={userAgent}
 			javaScriptEnabled
 			domStorageEnabled
@@ -211,8 +212,7 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 
 const styles = StyleSheet.create({
 	webview: {
-		flex: 1,
-		backgroundColor: 'rgb(31,33,38)'
+		flex: 1
 	},
 	loading: {
 		alignItems: 'center',
@@ -220,6 +220,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 24
 	},
 	errorText: {
+		...sharedStyles.textRegular,
 		fontSize: 16,
 		textAlign: 'center',
 		marginBottom: 24
