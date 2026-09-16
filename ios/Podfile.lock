@@ -28,7 +28,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - BVLinearGradient (2.6.2):
+  - BVLinearGradient (2.8.3):
     - React-Core
   - DoubleConversion (1.1.6)
   - EXApplication (57.0.3):
@@ -4367,7 +4367,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   BugsnagReactNative: 2078dec76e54db9f6e687743af45dc3673cb32ab
-  BVLinearGradient: 7815a70ab485b7b155186dd0cc836363e0288cad
+  BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   EXApplication: a727f05eb8592f0bc764f6ab8d51eacc158652ec
   EXConstants: 8948a340eb14bf2bdaaa0e21a63cb9343860b87a
