@@ -82,6 +82,17 @@ post_install do |installer|
     end
   end
 
+  # With Hermes V1 disabled, react-native still points HERMES_CLI_PATH at the
+  # hermes-compiler package, whose bytecode the classic Hermes runtime rejects.
+  if ENV['RCT_HERMES_V1_ENABLED'] == '0'
+    installer.aggregate_targets.each do |aggregate_target|
+      aggregate_target.xcconfigs.each do |config_name, xcconfig|
+        xcconfig.attributes['HERMES_CLI_PATH'] = '$(PODS_ROOT)/hermes-engine/destroot/bin/hermesc'
+        xcconfig.save_as(aggregate_target.xcconfig_path(config_name))
+      end
+    end
+  end
+
   bitcode_strip_path = `xcrun --find bitcode_strip`.chop!
   def strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
     framework_path = File.join(Dir.pwd, framework_relative_path)
