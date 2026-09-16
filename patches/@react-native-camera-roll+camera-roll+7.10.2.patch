@@ -1,0 +1,26 @@
+diff --git a/node_modules/@react-native-camera-roll/camera-roll/src/NativeCameraRollModule.ts b/node_modules/@react-native-camera-roll/camera-roll/src/NativeCameraRollModule.ts
+index 63e1136..634a40b 100644
+--- a/node_modules/@react-native-camera-roll/camera-roll/src/NativeCameraRollModule.ts
++++ b/node_modules/@react-native-camera-roll/camera-roll/src/NativeCameraRollModule.ts
+@@ -21,8 +21,8 @@ type Album = {
+   id: string;
+   title: string;
+   count: number;
+-  type: AlbumType;
+-  subtype?: AlbumSubType;
++  type: string;
++  subtype?: string;
+ };
+ 
+ type SubTypes =
+@@ -41,8 +41,8 @@ type PhotoIdentifier = {
+   node: {
+     id: string;
+     type: string;
+-    subTypes: SubTypes;
+-    sourceType: SourceType;
++    subTypes: string;
++    sourceType: string;
+     group_name: string[];
+     image: {
+       filename: string | null;

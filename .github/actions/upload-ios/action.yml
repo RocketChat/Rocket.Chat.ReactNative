@@ -57,9 +57,9 @@ runs:
         path: |
           ~/.pods
           ios/Pods
-        key: pods-v1-{{ checksum "ios/Podfile.lock" }}
+        key: pods-v2-${{ hashFiles('ios/Podfile.lock') }}
         restore-keys: |
-          pods-v1-
+          pods-v2-
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0

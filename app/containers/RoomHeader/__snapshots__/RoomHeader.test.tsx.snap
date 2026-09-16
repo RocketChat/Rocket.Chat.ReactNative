@@ -12,9 +12,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="John Doe. Online."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -76,6 +73,8 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="John Doe. Online."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -210,9 +209,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="John Doe. Away."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -274,6 +270,8 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="John Doe. Away."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -408,9 +406,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="John Doe. Busy."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -472,6 +467,8 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="John Doe. Busy."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -606,9 +603,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="John Doe. Offline."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -670,6 +664,8 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="John Doe. Offline."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -804,9 +800,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Online John Doe In a meeting."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -868,6 +861,8 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="Online John Doe In a meeting."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -1002,9 +997,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Online John Doe In a meeting, Until Jun 15, 7:00 PM."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -1066,6 +1058,8 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="Online John Doe In a meeting, Until Jun 15, 7:00 PM."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -1237,9 +1231,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Away John Doe having lunch (clock icon should be visible), Until 1:00 PM."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -1301,6 +1292,8 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="Away John Doe having lunch (clock icon should be visible), Until 1:00 PM."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -1472,9 +1465,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Online John Doe In a meeting (past expiry — clock icon should be hidden)."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -1536,6 +1526,8 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="Online John Doe In a meeting (past expiry — clock icon should be hidden)."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -1675,9 +1667,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel private channel ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -1739,6 +1728,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel private channel ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -1825,9 +1816,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="public channel public channel ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -1889,6 +1877,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="public channel public channel ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -1975,9 +1965,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Discussion discussion ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -2039,6 +2026,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="Discussion discussion ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -2141,9 +2130,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Omnichannel omnichannel ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -2205,6 +2191,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="Omnichannel omnichannel ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -2291,9 +2279,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private team private team ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -2355,6 +2340,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private team private team ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -2441,9 +2428,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Team public team ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -2505,6 +2489,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="Team public team ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -2591,9 +2577,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Message group dm ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -2655,6 +2638,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="Message group dm ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -2741,9 +2726,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel online dm ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -2805,6 +2787,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel online dm ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -2891,9 +2875,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel away dm ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -2955,6 +2936,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel away dm ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -3041,9 +3024,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel busy dm ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -3105,6 +3085,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel busy dm ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -3191,9 +3173,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel loading dm ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -3255,6 +3234,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel loading dm ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -3341,9 +3322,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel offline dm ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -3405,6 +3383,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel offline dm ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -3491,9 +3471,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel classified ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -3555,6 +3532,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel classified ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -3641,9 +3620,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private team classified ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -3705,6 +3681,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private team classified ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -3796,9 +3774,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel title subtitle."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -3860,6 +3835,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel title subtitle."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -3985,9 +3962,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel title subtitle."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -4049,6 +4023,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel title subtitle."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -4174,9 +4150,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel title subtitle."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -4238,6 +4211,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel title subtitle."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -4368,9 +4343,6 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel title parent title."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -4432,6 +4404,8 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel title parent title."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -4565,13 +4539,6 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel markdown
-preview
-#3
-4
-5 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -4633,6 +4600,12 @@ preview
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel markdown
+preview
+#3
+4
+5 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -4775,9 +4748,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel title ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -4839,6 +4809,8 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel title ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -4925,9 +4897,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -4989,6 +4958,8 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -5075,9 +5046,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel title subtitle."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -5139,6 +5107,8 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel title subtitle."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -5264,9 +5234,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel title Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -5328,6 +5295,8 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel title Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -5453,9 +5422,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -5517,6 +5483,8 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -5648,9 +5616,6 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel title ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -5712,6 +5677,8 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel title ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -5837,9 +5804,6 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel title ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -5901,6 +5865,8 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel title ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
@@ -6026,9 +5992,6 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="private channel title ."
-      accessibilityRole="header"
-      accessible={true}
       autoFocus={false}
       canBeFocused={true}
       enableA11yFocus={false}
@@ -6090,6 +6053,8 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         touchSoundDisabled={false}
       >
         <View
+          accessibilityLabel="private channel title ."
+          accessibilityRole="header"
           accessible={true}
           collapsable={false}
           style={
