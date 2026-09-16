@@ -238,14 +238,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 		const options: NativeStackNavigationOptions = {
 			headerLeft: undefined,
 			headerTitle: () => (
-				<RoomHeader
-					title={getRoomTitle(team)}
-					subtitle={team.topic}
-					type={team.t}
-					onPress={this.goRoomActionsView}
-					teamMain
-					testID={`room-view-title-${getRoomTitle(team)}`}
-				/>
+				<RoomHeader title={getRoomTitle(team)} subtitle={team.topic} type={team.t} onPress={this.goRoomActionsView} teamMain />
 			),
 			headerRight: () => (
 				<HeaderButton.Container>

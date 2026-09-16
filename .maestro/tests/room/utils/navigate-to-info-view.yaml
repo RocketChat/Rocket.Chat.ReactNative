@@ -6,10 +6,10 @@ tags:
 ---
 - extendedWaitUntil:
     visible:
-      id: 'room-view-title-.*'
+      id: room-header
     timeout: 60000
 - tapOn:
-    id: 'room-view-title-.*'
+    id: room-header
 - extendedWaitUntil:
     visible:
       id: room-actions-view

@@ -31,7 +31,7 @@ tags:
 # should have actions button
 - extendedWaitUntil:
     visible:
-      id: 'room-view-title-.*'
+      id: 'room-header'
     timeout: 60000
 
 # should have threads button

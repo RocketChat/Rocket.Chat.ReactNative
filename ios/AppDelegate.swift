@@ -1,4 +1,4 @@
-internal import Expo
+import Expo
 import React
 import ReactAppDependencyProvider
 import Firebase
@@ -7,7 +7,7 @@ import WatchConnectivity
 import PushKit
 
 @UIApplicationMain
-class AppDelegate: ExpoAppDelegate {
+public class AppDelegate: ExpoAppDelegate {
   var window: UIWindow?
 
   var reactNativeDelegate: ReactNativeDelegate?
@@ -38,11 +38,12 @@ class AppDelegate: ExpoAppDelegate {
     }
       
     let delegate = ReactNativeDelegate()
-    let factory = ExpoReactNativeFactory(delegate: delegate)
+    let factory = RCTReactNativeFactory(delegate: delegate)
     delegate.dependencyProvider = RCTAppDependencyProvider()
 
     reactNativeDelegate = delegate
     reactNativeFactory = factory
+    bindReactNativeFactory(factory)
 
 #if os(iOS) || os(tvOS)
     window = UIWindow(frame: UIScreen.main.bounds)
@@ -88,9 +89,9 @@ class AppDelegate: ExpoAppDelegate {
   }
 }
 
-class ReactNativeDelegate: ExpoReactNativeFactoryDelegate {
+class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
   override func sourceURL(for bridge: RCTBridge) -> URL? {
-    bridge.bundleURL ?? bundleURL()
+    self.bundleURL()
   }
 
   override func bundleURL() -> URL? {

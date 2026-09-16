@@ -26,7 +26,7 @@ tags:
 
 # should have actions button
 - assertVisible:
-    id: 'room-view-title-.*'
+    id: room-header
 
 # should have join
 - assertVisible:
