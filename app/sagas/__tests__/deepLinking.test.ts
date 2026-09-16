@@ -344,13 +344,20 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 	// inverting the forceLoginPrompt check must fail here. Env wiring itself is
 	// compile-time inlined, so it's covered by Maestro deeplink.yaml instead.
 	describe('shouldAutoConfirmDeepLinkLogin', () => {
-		it.each([
-			[true, {}, true],
-			[true, { forceLoginPrompt: 'true' }, false],
-			[false, {}, false],
-			[false, { forceLoginPrompt: 'true' }, false]
-		])('isE2E=%s params=%j → %s', (isE2E, params, expected) => {
-			expect(shouldAutoConfirmDeepLinkLogin(isE2E, params)).toBe(expected);
+		it('auto-confirms when isE2E with no marker', () => {
+			expect(shouldAutoConfirmDeepLinkLogin(true, {})).toBe(true);
+		});
+
+		it('shows the prompt when isE2E with forceLoginPrompt=true', () => {
+			expect(shouldAutoConfirmDeepLinkLogin(true, { forceLoginPrompt: 'true' })).toBe(false);
+		});
+
+		it('shows the prompt when not isE2E with no marker', () => {
+			expect(shouldAutoConfirmDeepLinkLogin(false, {})).toBe(false);
+		});
+
+		it('shows the prompt when not isE2E with forceLoginPrompt=true', () => {
+			expect(shouldAutoConfirmDeepLinkLogin(false, { forceLoginPrompt: 'true' })).toBe(false);
 		});
 	});
 
