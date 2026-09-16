@@ -536,6 +536,7 @@
   "Reset_E2EE_Password_Description": "Sıfırlama, oturumunuzu kapatacak ve tekrar oturum açarken yeni bir E2EE şifresi oluşturacaktır.\n\nÇevrimiçi üyeleri olan şifreli odalara tekrar erişim sağlayabilirsiniz, ancak çevrimiçi üyesi olmayan odalara erişim sağlayamazsınız.",
   "Reset_password": "Şifre sıfırla",
   "resetting_password": "şifre sıfırlanıyor",
+  "Return_to_call": "Aramaya dön",
   "Review_app_desc": "{{store}} üzerinde bize 5 yıldız verin",
   "Review_app_later": "Belki daha sonra",
   "Review_app_no": "Hayır",
