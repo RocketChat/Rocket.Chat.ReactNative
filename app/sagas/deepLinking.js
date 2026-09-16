@@ -38,9 +38,9 @@ const roomTypes = {
 	channels: 'l'
 };
 
-export const confirmDeepLinkLogin = (host, params = {}, isE2E = process.env.RUNNING_E2E_TESTS === 'true') =>
+const confirmDeepLinkLogin = (host, params = {}) =>
 	new Promise(resolve => {
-		if (isE2E && params.forceLoginPrompt !== 'true') {
+		if (process.env.RUNNING_E2E_TESTS === 'true' && params.forceLoginPrompt !== 'true') {
 			resolve(true);
 			return;
 		}
