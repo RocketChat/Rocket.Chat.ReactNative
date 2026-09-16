@@ -5,10 +5,10 @@ import { useFocused } from '~/containers/MessageComposer/context';
 import { useEmojiKeyboard } from '~/containers/MessageComposer/hooks/useEmojiKeyboard';
 import { ActionsButton } from '../Buttons';
 import { MIN_HEIGHT } from '~/containers/MessageComposer/constants';
-import { useRoomContext } from '~/views/RoomView/context';
+import { useComposerSharing } from '~/containers/MessageComposer/ComposerStore';
 
 export const Left = (): ReactElement | null => {
-	const { sharing } = useRoomContext();
+	const sharing = useComposerSharing();
 	const focused = useFocused();
 	const { showEmojiKeyboard, showEmojiSearchbar } = useEmojiKeyboard();
 	if (focused || showEmojiKeyboard || showEmojiSearchbar || sharing) {

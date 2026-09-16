@@ -16,7 +16,7 @@ const getThreadName = async (rid: string, tmid: string, messageId: string): Prom
 		const db = database.active;
 		const threadCollection = db.get('threads');
 		let messageRecord = await getMessageById(messageId);
-		let threadRecord = await getThreadById(tmid);
+		const threadRecord = await getThreadById(tmid);
 		if (threadRecord) {
 			tmsg = buildThreadName(threadRecord);
 			if (tmsg !== messageRecord?.tmsg) {
@@ -30,23 +30,28 @@ const getThreadName = async (rid: string, tmid: string, messageId: string): Prom
 			const thread = await getSingleMessage(tmid);
 			const decryptedThread = await Encryption.decryptMessage(thread);
 			tmsg = buildThreadName(decryptedThread as IMessage);
-			// check it again to avoid race condition
-			threadRecord = await getThreadById(tmid);
-			if (!threadRecord) {
-				await db.write(async () => {
-					messageRecord = await getMessageById(messageId);
-					await db.batch(
-						threadCollection?.prepareCreate((t: TThreadModel) => {
-							t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
-							if (t.subscription) t.subscription.id = rid;
-							Object.assign(t, { ...thread, ...decryptedThread });
-						}),
-						messageRecord?.prepareUpdate(m => {
+			await db.write(async () => {
+				const createdMeanwhile = await getThreadById(tmid);
+				messageRecord = await getMessageById(messageId);
+				if (createdMeanwhile) {
+					if (tmsg !== messageRecord?.tmsg) {
+						await messageRecord?.update(m => {
 							m.tmsg = tmsg;
-						})
-					);
-				});
-			}
+						});
+					}
+					return;
+				}
+				await db.batch(
+					threadCollection?.prepareCreate((t: TThreadModel) => {
+						t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
+						if (t.subscription) t.subscription.id = rid;
+						Object.assign(t, { ...thread, ...decryptedThread });
+					}),
+					messageRecord?.prepareUpdate(m => {
+						m.tmsg = tmsg;
+					})
+				);
+			});
 		}
 	} catch (e) {
 		log(e);

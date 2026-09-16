@@ -7,6 +7,7 @@ import { type TColors, type TSupportedThemes } from '../theme';
 
 export * from './ERoomType';
 export * from './IAttachment';
+export * from './IBiometricTrustStore';
 export * from './ICannedResponse';
 export * from './ICertificate';
 export * from './ILoginCredentials';
@@ -21,6 +22,7 @@ export * from './IPreferences';
 export * from './IProfile';
 export * from './IReaction';
 export * from './IRole';
+export * from './IRoomMessageHandlers';
 export * from './IRoom';
 export * from './ISearch';
 export * from './IServer';
