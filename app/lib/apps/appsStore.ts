@@ -6,7 +6,7 @@ import log from '~/lib/methods/helpers/log';
 import sdk from '~/lib/services/sdk';
 
 export type TAppTranslations = {
-	// appId -> language -> key -> translation 
+	// appId -> language -> key -> translation
 	[appId: string]: { [language: string]: { [key: string]: string } };
 };
 
@@ -74,7 +74,6 @@ const handleStreamData = (ddpMessage: { fields?: { args?: [[string, unknown[]]] 
 		fetchTranslations().catch(log);
 	}
 };
-
 
 export const subscribeToApps = (): (() => void) => {
 	consumers += 1;

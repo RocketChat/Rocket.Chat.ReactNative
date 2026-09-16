@@ -3,7 +3,6 @@ import i18n from '~/i18n';
 
 const normalizeLanguage = (language: string) => language.toLowerCase().replace('_', '-');
 
-
 export const translateAppKey = ({
 	appId,
 	key,
