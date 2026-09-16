@@ -3484,6 +3484,34 @@ PODS:
     - SocketRocket
     - TOCropViewController (~> 2.8.0)
     - Yoga
+  - RNKeychain (10.0.0):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - RNLocalize (3.7.0):
     - boost
     - DoubleConversion
@@ -4031,6 +4059,7 @@ DEPENDENCIES:
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
+  - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -4345,6 +4374,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
+  RNKeychain:
+    :path: "../node_modules/react-native-keychain"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
   RNReanimated:
@@ -4521,6 +4552,7 @@ SPEC CHECKSUMS:
   RNFBCrashlytics: c3bb5533f9957eddc88f3ea383583309a4ce9f89
   RNGestureHandler: 89c0c079dc88636fed9580bb581bd7df69ef33d0
   RNImageCropPicker: 5432d75a3bc7209dc8b6ab189fcfe19bd6339fb9
+  RNKeychain: d0bdaca4688ae123909b137de08491f49a6cf6b1
   RNLocalize: c46dd4008dc8990a098fcafd6ee051122a1ccfda
   RNReanimated: 1a67ec7c458dd04abadba7549d9d5abb24d6ec8a
   RNScreens: 7a423c912ca9e107b37f54f32292186de32bfcaf

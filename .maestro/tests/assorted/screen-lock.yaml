@@ -1,0 +1,270 @@
+appId: ${APP_ID}
+name: Screen Lock
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-8
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# Navigate to Screen Lock config
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-sidebar'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-settings'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-settings'
+- extendedWaitUntil:
+    visible:
+      id: 'settings-view-security-privacy'
+    timeout: 60000
+- tapOn:
+    id: 'settings-view-security-privacy'
+- extendedWaitUntil:
+    visible:
+      id: 'security-privacy-view-screen-lock'
+    timeout: 60000
+- tapOn:
+    id: 'security-privacy-view-screen-lock'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-lock-config-view'
+    timeout: 60000
+
+# Enable "Unlock with passcode" -> opens PasscodeChoose
+- tapOn:
+    id: 'screen-lock-config-view-auto-lock'
+- extendedWaitUntil:
+    visible:
+      id: 'passcode-button-1'
+    timeout: 60000
+
+# Choose passcode 123456
+- tapOn:
+    id: 'passcode-button-1'
+- tapOn:
+    id: 'passcode-button-2'
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
+
+# Confirm passcode 123456
+- extendedWaitUntil:
+    visible:
+      text: 'Confirm your new passcode'
+    timeout: 60000
+- tapOn:
+    id: 'passcode-button-1'
+- tapOn:
+    id: 'passcode-button-2'
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
+
+# Back on Screen Lock config; choose "After 1 minute"
+- extendedWaitUntil:
+    visible:
+      id: 'screen-lock-config-view-auto-lock-time-60'
+    timeout: 60000
+- tapOn:
+    id: 'screen-lock-config-view-auto-lock-time-60'
+
+# Background the app, wait past the auto-lock interval, relaunch.
+- pressKey: Home
+- evalScript: ${output.utils.sleep(7000)}
+- launchApp:
+    appId: ${APP_ID}
+
+# Screen Lock modal must appear; unlock with current passcode
+- extendedWaitUntil:
+    visible:
+      id: 'passcode-button-1'
+    timeout: 60000
+- tapOn:
+    id: 'passcode-button-1'
+- tapOn:
+    id: 'passcode-button-2'
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
+
+# launchApp cold-starts, so unlocking lands on the rooms list. Navigate back to Screen Lock config.
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-sidebar'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-settings'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-settings'
+- extendedWaitUntil:
+    visible:
+      id: 'settings-view-security-privacy'
+    timeout: 60000
+- tapOn:
+    id: 'settings-view-security-privacy'
+- extendedWaitUntil:
+    visible:
+      id: 'security-privacy-view-screen-lock'
+    timeout: 60000
+- tapOn:
+    id: 'security-privacy-view-screen-lock'
+
+# Entering the Screen Lock screen requires re-auth (PR #4052); unlock with current passcode
+- extendedWaitUntil:
+    visible:
+      id: 'passcode-button-1'
+    timeout: 60000
+- tapOn:
+    id: 'passcode-button-1'
+- tapOn:
+    id: 'passcode-button-2'
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
+
+- extendedWaitUntil:
+    visible:
+      id: 'screen-lock-config-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'screen-lock-config-view-change-passcode'
+    timeout: 60000
+- tapOn:
+    id: 'screen-lock-config-view-change-passcode'
+
+# Re-authenticate with current passcode (autoLock is on -> handleLocalAuthentication)
+- extendedWaitUntil:
+    visible:
+      id: 'passcode-button-1'
+    timeout: 60000
+- tapOn:
+    id: 'passcode-button-1'
+- tapOn:
+    id: 'passcode-button-2'
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
+
+# Now the ChangePasscodeView (PasscodeChoose) opens; choose new passcode 345678
+- extendedWaitUntil:
+    visible:
+      text: 'Choose your new passcode'
+    timeout: 60000
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
+- tapOn:
+    id: 'passcode-button-7'
+- tapOn:
+    id: 'passcode-button-8'
+
+# Confirm new passcode 345678
+- extendedWaitUntil:
+    visible:
+      text: 'Confirm your new passcode'
+    timeout: 60000
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
+- tapOn:
+    id: 'passcode-button-7'
+- tapOn:
+    id: 'passcode-button-8'
+
+# Modal closes; we are back on the Screen Lock config screen
+- extendedWaitUntil:
+    visible:
+      id: 'screen-lock-config-view'
+    timeout: 60000
+- assertVisible:
+    id: 'screen-lock-config-view-change-passcode'
+
+# Background the app, wait past the auto-lock interval, relaunch.
+- pressKey: Home
+- evalScript: ${output.utils.sleep(7000)}
+- launchApp:
+    appId: ${APP_ID}
+
+# Screen Lock modal must appear; unlock with current passcode
+- extendedWaitUntil:
+    visible:
+      id: 'passcode-button-3'
+    timeout: 60000
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
+- tapOn:
+    id: 'passcode-button-7'
+- tapOn:
+    id: 'passcode-button-8'
+
+# The taps above pass whether or not the app accepts the digits, so assert the lock actually lifted.
+# launchApp cold-starts, so navigation resets to the rooms list rather than the Screen Lock screen.
+- extendedWaitUntil:
+    notVisible:
+      id: 'passcode-button-3'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
