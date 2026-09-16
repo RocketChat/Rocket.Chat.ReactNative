@@ -109,7 +109,7 @@ import { appStart } from '~/actions/app';
 import { connectSuccess } from '~/actions/connect';
 import { APP, LOGIN, LOGOUT, SERVER } from '~/actions/actionsTypes';
 import { RootEnum } from '~/definitions';
-import deepLinkingRoot, { shouldAutoConfirmDeepLinkLogin } from '../deepLinking';
+import deepLinkingRoot, { confirmDeepLinkLogin } from '../deepLinking';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getServerUserIdKey } from '~/lib/constants/keys';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
@@ -134,17 +134,34 @@ const toastedMessages = (emitSpy: jest.SpyInstance): string[] =>
 
 afterEach(cancelSagaTasks);
 
-// Marker decision behind the login-confirmation bypass (vuln fix): deleting or
-// inverting the forceLoginPrompt check must fail here. Env wiring itself is
-// compile-time inlined, so it's covered by Maestro deeplink.yaml instead.
-describe('shouldAutoConfirmDeepLinkLogin', () => {
-	it.each([
-		[true, {}, true],
-		[true, { forceLoginPrompt: 'true' }, false],
-		[false, {}, false],
-		[false, { forceLoginPrompt: 'true' }, false]
-	])('isE2E=%s params=%j → %s', (isE2E, params, expected) => {
-		expect(shouldAutoConfirmDeepLinkLogin(isE2E, params)).toBe(expected);
+// Caller coverage for the login-confirmation bypass (vuln fix): auto-confirm
+// only when isE2E with no forceLoginPrompt marker. isE2E defaults to the
+// compile-time inlined env flag, which can't be flipped at runtime in jest
+// (see babel.config.js) — the inlined-true direction is covered by Maestro
+// deeplink.yaml instead.
+describe('confirmDeepLinkLogin', () => {
+	beforeEach(() => {
+		jest.mocked(showConfirmationAlert).mockClear();
+	});
+
+	it('auto-confirms without prompting when isE2E with no marker', async () => {
+		await expect(confirmDeepLinkLogin(HOST, {}, true)).resolves.toBe(true);
+		expect(jest.mocked(showConfirmationAlert)).not.toHaveBeenCalled();
+	});
+
+	it('shows the prompt when isE2E with forceLoginPrompt=true', async () => {
+		await expect(confirmDeepLinkLogin(HOST, { forceLoginPrompt: 'true' }, true)).resolves.toBe(true);
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+	});
+
+	it.each([[{}], [{ forceLoginPrompt: 'true' }]])('shows the prompt when not isE2E, params=%j', async params => {
+		await expect(confirmDeepLinkLogin(HOST, params, false)).resolves.toBe(true);
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+	});
+
+	it('defaults to the inlined env flag (false under jest, so prompts)', async () => {
+		await expect(confirmDeepLinkLogin(HOST, {})).resolves.toBe(true);
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
 	});
 });
 
