@@ -1,0 +1,109 @@
+appId: ${APP_ID}
+name: Apps Engine Poll
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-9
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+- evalScript: ${output.pollButton = output.utils.findAppActionButton(output.user.username, output.user.password, 'messageBoxAction', 'message-box-create-poll')}
+- evalScript: ${output.pollLabel = output.utils.getAppTranslation(output.user.username, output.user.password, output.pollButton.appId, 'create_poll_button')}
+- evalScript: ${output.pollAction = 'message-composer-app-action-' + output.pollButton.appId + '/' + output.pollButton.actionId}
+- evalScript: ${output.question = 'Poll ' + output.random()}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+
+# should list the Poll app messageBoxAction in the composer actions, labeled with the app's own i18n
+- extendedWaitUntil:
+    visible:
+      id: 'message-composer-actions'
+    timeout: 60000
+- tapOn:
+    id: 'message-composer-actions'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: '${output.pollAction}'
+    timeout: 60000
+- assertVisible:
+    text: '${output.pollLabel}'
+
+# should open the app's modal and dismiss it without creating a poll
+- tapOn:
+    id: '${output.pollAction}'
+- extendedWaitUntil:
+    visible:
+      id: 'uikit-input-question'
+    timeout: 60000
+- assertVisible:
+    id: 'submit-modal-uikit'
+- tapOn:
+    id: 'close-modal-uikit'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+
+# should create a poll from the modal
+- tapOn:
+    id: 'message-composer-actions'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- tapOn:
+    id: '${output.pollAction}'
+- extendedWaitUntil:
+    visible:
+      id: 'uikit-input-question'
+    timeout: 60000
+- tapOn:
+    id: 'uikit-input-question'
+- inputText: ${output.question}
+- tapOn:
+    id: 'uikit-input-option-0'
+- inputText: 'Option A'
+- tapOn:
+    id: 'uikit-input-option-1'
+- inputText: 'Option B'
+- tapOn:
+    id: 'submit-modal-uikit'
+
+# should render the poll blocks the app posted back
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-${output.question}'
+    timeout: 60000
+- assertVisible:
+    text: 'Option A'
+- assertVisible:
+    text: 'Option B'
+- assertVisible:
+    text: '.*0.00% \(0\).*'
+
+# should vote and see the results update
+# The vote buttons carry the app's raw i18n key: mobile only translates app keys on action
+# button labels, not inside blocks.
+- tapOn:
+    text: '(poll_vote|Vote)'
+    index: 0
+- extendedWaitUntil:
+    visible:
+      text: '.*100.00% \(1\).*'
+    timeout: 60000
