@@ -21,6 +21,7 @@ import videoConfRootSaga from '../videoConf';
 import { isInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
 import { videoConferenceStart } from '~/lib/services/restApi';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
+import { ALLOW_CONCURRENT_INCOMING_CALLS } from '~/lib/constants/callWaiting';
 
 /** Drains pending saga microtasks (takeEvery → call(onDirectCall) completes synchronously today). */
 async function flushSagaMicrotasks(): Promise<void> {
@@ -50,27 +51,15 @@ describe('videoConf saga — VoIP / videoconf lock', () => {
 		return store;
 	}
 
-	it('short-circuits incoming direct videoconf when isInActiveVoipCall returns true', async () => {
-		jest.mocked(isInActiveVoipCall).mockReturnValue(true);
+	it.each([true, false])('surfaces incoming direct videoconf with isInActiveVoipCall %s', async voipActive => {
+		expect(ALLOW_CONCURRENT_INCOMING_CALLS).toBe(true);
+		jest.mocked(isInActiveVoipCall).mockReturnValue(voipActive);
 
-		const store = setupStoreWithVideoConfSaga();
-		const callsBefore = store.getState().videoConf.calls;
-
-		store.dispatch(handleVideoConfIncomingWebsocketMessages({ action: envelope, params: undefined }));
-		await flushSagaMicrotasks();
-
-		expect(isInActiveVoipCall).toHaveBeenCalled();
-		expect(store.getState().videoConf.calls).toBe(callsBefore);
-		expect(store.getState().videoConf.calls).toHaveLength(0);
-	});
-
-	it('handles incoming direct videoconf when VoIP does not block', async () => {
 		const store = setupStoreWithVideoConfSaga();
 
 		store.dispatch(handleVideoConfIncomingWebsocketMessages({ action: envelope, params: undefined }));
 		await flushSagaMicrotasks();
 
-		expect(isInActiveVoipCall).toHaveBeenCalled();
 		expect(store.getState().videoConf.calls).toHaveLength(1);
 		expect(store.getState().videoConf.calls[0]).toMatchObject({
 			callId: 'vc-1',
