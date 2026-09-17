@@ -1,8 +1,8 @@
 import CookieManager from '@react-native-cookies/cookies';
-import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useCallback, useEffect, useState, type ReactElement } from 'react';
-import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Linking, Pressable, StyleSheet, View } from 'react-native';
 import WebView, { type WebViewNavigation } from 'react-native-webview';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -10,21 +10,32 @@ import { userAgent } from '~/lib/constants/userAgent';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { isIOS } from '~/lib/methods/helpers';
 import { getRoomIdFromJitsiCallUrl } from '~/lib/methods/helpers/getRoomIdFromJitsiCall';
-import { events, logEvent } from '~/lib/methods/helpers/log';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { endVideoConfTimer, initVideoConfTimer } from '~/lib/methods/videoConfTimer';
+import { useVideoConfWindowStore } from '~/lib/services/videoConf/useVideoConfWindowStore';
+import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
+import { reclaimVoipAudio, yieldVoipAudio } from '~/lib/services/voip/voipAudioHandoff';
+import Navigation from '~/lib/navigation/appNavigation';
+import { CustomIcon } from '~/containers/CustomIcon';
+import I18n from '~/i18n';
 import { getUserSelector } from '~/selectors/login';
-import { type ChatsStackParamList } from '~/stacks/types';
+import { type InsideStackParamList } from '~/stacks/types';
 import JitsiAuthModal from './JitsiAuthModal';
 import SafeAreaView from '~/containers/SafeAreaView';
 
 const JitsiMeetView = (): ReactElement => {
 	const {
 		params: { rid, url, videoConf }
-	} = useRoute<RouteProp<ChatsStackParamList, 'JitsiMeetView'>>();
+	} = useRoute<RouteProp<InsideStackParamList, 'JitsiMeetView'>>();
 	const { goBack } = useNavigation();
 	const user = useAppSelector(state => getUserSelector(state));
 	const serverUrl = useAppSelector(state => state.server.server);
-	const { bottom } = useSafeAreaInsets();
+	const { bottom, top } = useSafeAreaInsets();
+	const isFocused = useIsFocused();
+	const hasVoipCall = useIsInActiveVoipCall();
+	const openWindow = useVideoConfWindowStore(state => state.openWindow);
+	const setMinimized = useVideoConfWindowStore(state => state.setMinimized);
+	const closeWindow = useVideoConfWindowStore(state => state.closeWindow);
 
 	const [authModal, setAuthModal] = useState(false);
 	const [cookiesSet, setCookiesSet] = useState(false);
@@ -104,11 +115,43 @@ const JitsiMeetView = (): ReactElement => {
 		setCookies();
 	}, []);
 
+	useEffect(() => {
+		openWindow();
+		return () => {
+			closeWindow();
+			reclaimVoipAudio('jitsi-closed').catch(log);
+		};
+	}, [closeWindow, openWindow]);
+
+	// The microphone follows whichever call is in front: the conference owns it while this screen
+	// is focused, and the VoIP call takes it back as soon as something is pushed on top.
+	useEffect(() => {
+		setMinimized(!isFocused);
+		if (isFocused) {
+			yieldVoipAudio('jitsi').catch(log);
+		} else {
+			reclaimVoipAudio('jitsi-minimized').catch(log);
+		}
+	}, [isFocused, setMinimized]);
+
+	const minimize = useCallback(() => {
+		Navigation.navigate('CallView');
+	}, []);
+
 	const callUrl = `${url}${url.includes('#config') ? '&' : '#'}config.disableDeepLinking=true`;
 
 	return (
 		<SafeAreaView style={styles.container}>
 			{authModal ? <JitsiAuthModal setAuthModal={setAuthModal} callUrl={callUrl} /> : null}
+			{hasVoipCall ? (
+				<Pressable
+					testID='jitsi-minimize'
+					accessibilityLabel={I18n.t('Minimize')}
+					onPress={minimize}
+					style={[styles.minimize, { top: top + 8 }]}>
+					<CustomIcon name='arrow-collapse' size={24} color='#fff' />
+				</Pressable>
+			) : null}
 			{cookiesSet ? (
 				<WebView
 					source={{
@@ -142,6 +185,14 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	webviewContainer: { flex: 1, backgroundColor: 'rgb(62,62,62)' },
+	minimize: {
+		position: 'absolute',
+		left: 12,
+		zIndex: 1,
+		padding: 8,
+		borderRadius: 20,
+		backgroundColor: 'rgba(0,0,0,0.5)'
+	},
 	loading: { alignItems: 'center', justifyContent: 'center' }
 });
 

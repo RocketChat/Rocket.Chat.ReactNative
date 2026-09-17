@@ -21,6 +21,7 @@ import { videoConfJoin } from '../lib/methods/videoConf';
 import { videoConferenceCancel, notifyUser, videoConferenceStart } from '../lib/services/restApi';
 import { type ICallInfo } from '../reducers/videoConf';
 import { isInActiveVoipCall } from '../lib/services/voip/isInActiveVoipCall';
+import { ALLOW_CONCURRENT_INCOMING_CALLS } from '../lib/constants/callWaiting';
 
 interface IGenericAction extends Action {
 	type: string;
@@ -48,7 +49,7 @@ const CALL_INTERVAL = 3000;
 const CALL_ATTEMPT_LIMIT = 10;
 
 function* onDirectCall(payload: ICallInfo) {
-	if (isInActiveVoipCall()) return;
+	if (!ALLOW_CONCURRENT_INCOMING_CALLS && isInActiveVoipCall()) return;
 
 	const calls = yield* appSelector(state => state.videoConf.calls);
 	const currentCall = calls.find(c => c.callId === payload.callId);

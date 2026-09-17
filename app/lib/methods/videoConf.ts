@@ -4,6 +4,7 @@ import DeviceInfo from 'react-native-device-info';
 import i18n from '~/i18n';
 import navigation from '../navigation/appNavigation';
 import { videoConferenceJoin } from '../services/restApi';
+import { reclaimVoipAudioOnAppReturn, yieldVoipAudio } from '../services/voip/voipAudioHandoff';
 import { isAndroid, showErrorAlert } from './helpers';
 import log from './helpers/log';
 import openLink from './helpers/openLink';
@@ -32,9 +33,15 @@ export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean
 		if (result.success) {
 			const { url, providerName } = result;
 			if (providerName === 'jitsi') {
+				// JitsiMeetView owns the microphone handoff for the in-app path (mount/unmount).
 				navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });
 			} else {
-				openLink(url);
+				// Every other provider (Pexip included) renders outside the app, so the handoff is owned here.
+				const yielded = await yieldVoipAudio(`videoconf-${providerName}`);
+				await openLink(url);
+				if (yielded) {
+					reclaimVoipAudioOnAppReturn(`videoconf-${providerName}`);
+				}
 			}
 		}
 	} catch (e) {

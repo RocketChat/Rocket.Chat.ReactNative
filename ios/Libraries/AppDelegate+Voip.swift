@@ -80,14 +80,23 @@ extension AppDelegate: PKPushRegistryDelegate {
     }
 
     if !VoipRegion.isChina() {
-      VoipService.prepareIncomingCall(voipPayload, storeEventsForJs: true)
+      // Mirrors `decideIncomingVoipPushAction` on Android.
+      let isBusy = !VoipService.allowConcurrentIncomingCalls && VoipService.hasActiveCall()
+
+      VoipService.prepareIncomingCall(voipPayload, storeEventsForJs: !isBusy)
 
       reportVoipIncomingCallToCallKit(
         callUUID: callId,
         handle: caller,
         localizedCallerName: caller,
         payload: payloadDict,
-        onReportComplete: { completion() }
+        onReportComplete: {
+          // PushKit requires the report to land before the call is ended.
+          if isBusy {
+            VoipService.rejectBusyCall(voipPayload)
+          }
+          completion()
+        }
       )
     } else {
       reportPlaceholderCallAndEnd(callId, caller)
