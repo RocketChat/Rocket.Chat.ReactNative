@@ -3,18 +3,62 @@ import { useCallback, useContext, useLayoutEffect, useRef, useState } from 'reac
 import { InteractionManager } from 'react-native';
 import { type KeyboardFocus } from 'react-native-external-keyboard';
 
+import { showActionSheetRef } from '~/containers/ActionSheet';
+import { type TIconsName } from '~/containers/CustomIcon';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
-import { isTablet } from '~/lib/methods/helpers';
+import { isIOS, isTablet } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';
 import RoomsListHeaderView from '../components/Header';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
+
+const MAX_HEADER_RIGHT_ACTIONS = 2;
+
+interface IHeaderRightAction {
+	key: string;
+	present: boolean;
+	iconName: TIconsName;
+	testID: string;
+	accessibilityLabel: string;
+	color?: string;
+	disabled?: boolean;
+	onPress: () => void;
+}
+
+const splitHeaderRightActions = (actions: IHeaderRightAction[]) => {
+	const present = actions.filter(action => action.present);
+	if (present.length <= MAX_HEADER_RIGHT_ACTIONS + 1) {
+		return { visible: present, overflow: [] as IHeaderRightAction[] };
+	}
+	return { visible: present.slice(0, MAX_HEADER_RIGHT_ACTIONS), overflow: present.slice(MAX_HEADER_RIGHT_ACTIONS) };
+};
+
+const useNativeBarTitle = (useNativeBar: boolean) => {
+	const connecting = useAppSelector(state => useNativeBar && (state.meteor.connecting || state.server.loading));
+	const isLoggingIn = useAppSelector(state => useNativeBar && state.login.isFetching);
+	const isFetching = useAppSelector(state => useNativeBar && state.rooms.isFetching);
+	const connected = useAppSelector(state => !useNativeBar || state.meteor.connected);
+
+	if (!useNativeBar) {
+		return '';
+	}
+	if (connecting || isLoggingIn) {
+		return i18n.t('Connecting');
+	}
+	if (!connected) {
+		return i18n.t('Waiting_for_network');
+	}
+	if (isFetching) {
+		return i18n.t('Updating');
+	}
+	return i18n.t('Chats');
+};
 
 export const useHeader = () => {
 	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsSearchContext);
@@ -83,7 +127,25 @@ export const useHeader = () => {
 		}
 	}, [isMasterDetail, navigation]);
 
+	const useNativeBar = isIOS && !isTablet;
+	const nativeBarTitle = useNativeBarTitle(useNativeBar);
+
 	useLayoutEffect(() => {
+		const headerLeft = () => (
+			<HeaderButton.Drawer
+				ref={drawerButtonRef}
+				navigation={navigation}
+				testID='rooms-list-view-sidebar'
+				onPress={
+					isMasterDetail
+						? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
+						: () => navigation.toggleDrawer()
+				}
+				badge={getBadge}
+				disabled={disabled}
+			/>
+		);
+
 		if (searchEnabled) {
 			const searchOptions = {
 				headerLeft: () => (
@@ -101,21 +163,91 @@ export const useHeader = () => {
 			return;
 		}
 
+		if (useNativeBar) {
+			const { visible, overflow } = splitHeaderRightActions([
+				{
+					key: 'search',
+					present: true,
+					iconName: 'search',
+					accessibilityLabel: i18n.t('Search'),
+					testID: 'rooms-list-view-search',
+					disabled,
+					onPress: startSearch
+				},
+				{
+					key: 'create',
+					present: canCreateRoom,
+					iconName: 'add',
+					accessibilityLabel: i18n.t('Create_new_channel_team_dm_discussion'),
+					testID: 'rooms-list-view-create-channel',
+					disabled,
+					onPress: goToNewMessage
+				},
+				{
+					key: 'push-troubleshoot',
+					present: issuesWithNotifications,
+					iconName: 'notification-disabled',
+					accessibilityLabel: i18n.t('Troubleshooting'),
+					testID: 'rooms-list-view-push-troubleshoot',
+					color: colors.fontDanger,
+					onPress: navigateToPushTroubleshootView
+				},
+				{
+					key: 'directory',
+					present: true,
+					iconName: 'directory',
+					accessibilityLabel: i18n.t('Directory'),
+					testID: 'rooms-list-view-directory',
+					disabled,
+					onPress: goDirectory
+				}
+			]);
+
+			navigation.setOptions({
+				headerLargeTitle: true,
+				headerTitle: nativeBarTitle,
+				headerLeft,
+				headerRight: () => (
+					<HeaderButton.Container>
+						{[
+							...visible.map(action => (
+								<HeaderButton.Item
+									key={action.key}
+									iconName={action.iconName}
+									accessibilityLabel={action.accessibilityLabel}
+									color={action.color}
+									disabled={action.disabled}
+									onPress={action.onPress}
+									testID={action.testID}
+								/>
+							)),
+							overflow.length >= 2 ? (
+								<HeaderButton.Item
+									key='more'
+									iconName='kebab'
+									accessibilityLabel={i18n.t('More')}
+									testID='rooms-list-view-more'
+									onPress={() =>
+										showActionSheetRef({
+											options: overflow.map(action => ({
+												title: action.accessibilityLabel,
+												icon: action.iconName,
+												testID: action.testID,
+												onPress: action.onPress
+											}))
+										})
+									}
+								/>
+							) : null
+						]}
+					</HeaderButton.Container>
+				)
+			});
+			return;
+		}
+
 		const options = {
-			headerLeft: () => (
-				<HeaderButton.Drawer
-					ref={drawerButtonRef}
-					navigation={navigation}
-					testID='rooms-list-view-sidebar'
-					onPress={
-						isMasterDetail
-							? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
-							: () => navigation.toggleDrawer()
-					}
-					badge={getBadge}
-					disabled={disabled}
-				/>
-			),
+			headerLeft,
 			headerTitle: () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />,
 			headerRight: () => (
 				<HeaderButton.Container>
@@ -166,6 +298,8 @@ export const useHeader = () => {
 		colors,
 		canCreateRoom,
 		searchEnabled,
+		useNativeBar,
+		nativeBarTitle,
 		goDirectory,
 		navigateToPushTroubleshootView,
 		getBadge,
