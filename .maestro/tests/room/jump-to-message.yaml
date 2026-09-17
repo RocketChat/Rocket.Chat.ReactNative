@@ -183,8 +183,7 @@ tags:
     visible:
       id: 'message-content-202'
     timeout: 60000
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # should navigate to a thread from another room
 - runFlow:
@@ -208,8 +207,7 @@ tags:
     file: './utils/expect-thread-messages.yaml'
     env:
       message: Go to jumping-thread's thread
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # should tap on thread message from main room
 - extendedWaitUntil:
@@ -227,8 +225,7 @@ tags:
     file: './utils/expect-thread-messages.yaml'
     env:
       message: 'thread message sent to main room'
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # should tap on quote
 - extendedWaitUntil:
@@ -252,8 +249,7 @@ tags:
     file: './utils/expect-thread-messages.yaml'
     env:
       message: 'quoted'
-- tapOn:
-    id: 'header-back'
+- runFlow: '../../helpers/go-back.yaml'
 
 # should jump from search message
 - extendedWaitUntil:

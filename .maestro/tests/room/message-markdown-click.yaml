@@ -57,8 +57,7 @@ tags:
     text: '.*detox-public.*'
 
 # Go back to room
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # Wait for room view to be visible again
 - extendedWaitUntil:
@@ -137,8 +136,7 @@ tags:
     text: '.*e2e_admin.*'
 
 # Go back to room
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # Wait for room view to be visible again
 - extendedWaitUntil:
@@ -157,8 +155,7 @@ tags:
     timeout: 60000
 
 # Go back to main room
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # Wait for room view to be visible again
 - extendedWaitUntil:
@@ -177,8 +174,7 @@ tags:
     timeout: 60000
 
 # Go back to main room
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # Wait for room view to be visible again
 - extendedWaitUntil:

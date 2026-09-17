@@ -56,8 +56,7 @@ tags:
     id: 'reset-avatar-suggestion'
 
 # should appear the discard alert when click the back icon
-- tapOn:
-    id: 'header-back'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       text: '.*Discard changes?.*'
@@ -68,8 +67,7 @@ tags:
     timeout: 60000
 - tapOn:
     text: '.*Cancel.*'
-- tapOn:
-    id: 'header-back'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       text: '.*Discard changes?.*'
