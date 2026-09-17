@@ -42,6 +42,8 @@ env:
 - runFlow:
     when:
       platform: iOS
+      notVisible:
+        id: 'room-view-header-encryption'
     commands:
       - tapOn:
           id: 'room-view-header-more'

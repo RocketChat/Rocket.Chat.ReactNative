@@ -153,6 +153,12 @@ tags:
     commands:
       - assertVisible:
           id: room-header
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: room-view-header-more
 - runFlow: '../../helpers/open-room-actions.yaml'
 - assertVisible:
     id: room-actions-teams
@@ -211,6 +217,12 @@ tags:
     commands:
       - assertVisible:
           id: room-header
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: room-view-header-more
 - runFlow: '../../helpers/open-room-actions.yaml'
 - assertVisible:
     id: room-actions-teams
