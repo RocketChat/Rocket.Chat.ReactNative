@@ -129,12 +129,7 @@ tags:
     notVisible:
       text: '.*Message Starred.*'
     timeout: 60000
-- tapOn:
-    id: 'room-header'
-- extendedWaitUntil:
-    visible:
-      id: 'room-actions-view'
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 - tapOn:
     id: 'room-actions-starred'
     retryTapIfNoChange: true
@@ -177,12 +172,7 @@ tags:
     notVisible:
       text: '.*Message Unstarred.*'
     timeout: 60000
-- tapOn:
-    id: 'room-header'
-- extendedWaitUntil:
-    visible:
-      id: 'room-actions-view'
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 - tapOn:
     id: 'room-actions-starred'
     retryTapIfNoChange: true
@@ -230,12 +220,7 @@ tags:
     visible:
       text: '.*Pinned a message:.*'
     timeout: 60000
-- tapOn:
-    id: 'room-header'
-- extendedWaitUntil:
-    visible:
-      id: 'room-actions-view'
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 - tapOn: Pinned
 - extendedWaitUntil:
     visible:
@@ -705,12 +690,7 @@ tags:
     timeout: 60000
 
 # should navigate to direct message
-- tapOn:
-    id: 'room-header'
-- extendedWaitUntil:
-    visible:
-      id: 'room-actions-view'
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 - tapOn:
     id: 'room-actions-members'
 - extendedWaitUntil:

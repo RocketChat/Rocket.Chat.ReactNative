@@ -188,15 +188,7 @@ tags:
     timeout: 60000
 
 # Check RoomActionsView render
-- assertVisible:
-    id: room-header
-- tapOn:
-    id: room-header
-    retryTapIfNoChange: true
-- extendedWaitUntil:
-    visible:
-      id: 'room-actions-view'
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 
 # should have room actions screen
 - assertVisible:
@@ -279,12 +271,7 @@ tags:
       ROOM: ${output.room.name}
 
 # should navigate to DiscussionsView
-- extendedWaitUntil:
-    visible:
-      id: 'room-header'
-    timeout: 60000
-- tapOn:
-    id: 'room-header'
+- runFlow: '../../helpers/open-room-actions.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-discussions'
