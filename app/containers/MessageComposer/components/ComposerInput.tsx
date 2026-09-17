@@ -331,6 +331,22 @@ export const ComposerInput = memo(
 				stopAutocomplete();
 				return;
 			}
+			if (lastWord.match(/^#/)) {
+				setAutocompleteParams({ text: autocompleteText, type: '#' });
+				return;
+			}
+			if (lastWord.match(/^@/)) {
+				setAutocompleteParams({ text: autocompleteText, type: '@' });
+				return;
+			}
+			if (lastWord.match(/^:/)) {
+				setAutocompleteParams({ text: autocompleteText, type: ':' });
+				return;
+			}
+			if (lastWord.match(/^!/) && t === 'l') {
+				setAutocompleteParams({ text: autocompleteText, type: '!' });
+				return;
+			}
 			if (!sharing && text.match(/^\//)) {
 				const commandParameter = text.match(/^\/([a-z0-9._-]+) (.+)/im);
 				if (commandParameter) {
@@ -348,22 +364,6 @@ export const ComposerInput = memo(
 					}
 				}
 				setAutocompleteParams({ text: autocompleteText, type: '/' });
-				return;
-			}
-			if (lastWord.match(/^#/)) {
-				setAutocompleteParams({ text: autocompleteText, type: '#' });
-				return;
-			}
-			if (lastWord.match(/^@/)) {
-				setAutocompleteParams({ text: autocompleteText, type: '@' });
-				return;
-			}
-			if (lastWord.match(/^:/)) {
-				setAutocompleteParams({ text: autocompleteText, type: ':' });
-				return;
-			}
-			if (lastWord.match(/^!/) && t === 'l') {
-				setAutocompleteParams({ text: autocompleteText, type: '!' });
 				return;
 			}
 
