@@ -31,16 +31,19 @@ tags:
     visible:
       id: 'login-view'
     timeout: 60000
-- pressKey: Remote Dpad Down
-- waitForAnimationToEnd:
-    timeout: 1000
-- pressKey: Remote Dpad Down
-- waitForAnimationToEnd:
-    timeout: 1000
-- pressKey: Remote Dpad Down
-- waitForAnimationToEnd:
-    timeout: 1000
-- pressKey: Remote Dpad Down
+- repeat:
+    times: 10
+    while:
+      notVisible:
+        id: 'login-view-email'
+        focused: true
+    commands:
+      - pressKey: Remote Dpad Down
+      - waitForAnimationToEnd:
+          timeout: 1000
+- assertVisible:
+    id: 'login-view-email'
+    focused: true
 - inputText: ${output.user.email}
 - pressKey: enter
 - waitForAnimationToEnd:
