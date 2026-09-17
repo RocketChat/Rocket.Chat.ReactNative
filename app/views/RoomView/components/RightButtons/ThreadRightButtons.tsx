@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 
-import { isIOS, isTablet } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { toggleFollowThread } from '~/lib/methods/toggleFollowThread';
@@ -14,7 +14,6 @@ interface IThreadRightButtonsProps {
 }
 
 export const ThreadRightButtons = ({ tmid }: IThreadRightButtonsProps): ReactElement => {
-	const useNativeBar = isIOS && !isTablet;
 	const userId = useAppSelector(state => getUserSelector(state).id);
 	const isFollowingThread = useThreadFollowing(tmid, userId);
 
@@ -23,7 +22,7 @@ export const ThreadRightButtons = ({ tmid }: IThreadRightButtonsProps): ReactEle
 		toggleFollowThread(tmid, isFollowingThread);
 	};
 
-	if (useNativeBar) {
+	if (hasNativeHeaderBar) {
 		return <ThreadRightButtonsNative isFollowingThread={isFollowingThread} onToggleFollowThread={onToggleFollowThread} />;
 	}
 

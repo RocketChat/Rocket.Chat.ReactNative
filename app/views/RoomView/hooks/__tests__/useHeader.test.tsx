@@ -22,6 +22,9 @@ jest.mock('~/lib/methods/helpers', () => ({
 	},
 	get isTablet() {
 		return mockIsTablet;
+	},
+	get hasNativeHeaderBar() {
+		return mockIsIOS && !mockIsTablet;
 	}
 }));
 jest.mock('~/lib/methods/isInviteSubscription', () => ({

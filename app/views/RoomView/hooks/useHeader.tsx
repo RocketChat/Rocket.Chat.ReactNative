@@ -6,7 +6,7 @@ import { useStore } from 'zustand';
 
 import RoomHeader from '~/containers/RoomHeader';
 import I18n from '~/i18n';
-import { getRoomTitle, isGroupChat, isIOS, isTablet } from '~/lib/methods/helpers';
+import { getRoomTitle, hasNativeHeaderBar, isGroupChat } from '~/lib/methods/helpers';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { type IOmnichannelSource, type ISubscription, type IVisitor } from '~/definitions';
@@ -70,7 +70,6 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 	const goRoomActionsView = useGoRoomActionsView(roomStore);
 	const connecting = useAppSelector(state => state.meteor.connecting || state.server.loading);
 	const connected = useAppSelector(state => state.meteor.connected);
-	const useNativeBar = isIOS && !isTablet;
 
 	useLayoutEffect(() => {
 		if (!rid) {
@@ -89,7 +88,7 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 			return;
 		}
 
-		if (useNativeBar) {
+		if (hasNativeHeaderBar) {
 			const title = connecting ? I18n.t('Connecting') : !connected ? I18n.t('Waiting_for_network') : headerFields.title;
 			navigation.setOptions({ title });
 			return;
@@ -116,5 +115,5 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 				/>
 			)
 		});
-	}, [rid, tmid, headerFields, roomUserId, navigation, goRoomActionsView, connecting, connected, useNativeBar]);
+	}, [rid, tmid, headerFields, roomUserId, navigation, goRoomActionsView, connecting, connected]);
 };
