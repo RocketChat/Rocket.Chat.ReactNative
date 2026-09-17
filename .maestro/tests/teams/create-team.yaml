@@ -41,8 +41,7 @@ tags:
     id: 'room-view-messages'
 - assertVisible:
     id: 'room-view-title-${output.teamname}'
-- tapOn:
-    id: 'room-header'
+- runFlow: '../../helpers/open-room-actions.yaml'
 - assertVisible:
     id: 'room-actions-info'
 - tapOn:

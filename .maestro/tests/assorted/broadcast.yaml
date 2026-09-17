@@ -79,12 +79,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room}'
-- tapOn:
-    id: 'room-header'
-- extendedWaitUntil:
-    visible:
-      id: 'room-actions-view'
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 - tapOn:
     id: 'room-actions-info'
 - extendedWaitUntil:

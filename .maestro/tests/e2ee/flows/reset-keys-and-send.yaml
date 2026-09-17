@@ -39,6 +39,12 @@ env:
     visible:
       text: '.*The encryption keys for the room need to be updated, another room member needs to be online for this to happen.*'
     timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          id: 'room-view-header-more'
 - extendedWaitUntil:
     visible:
       id: 'room-view-header-encryption'
