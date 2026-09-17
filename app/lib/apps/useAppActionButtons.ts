@@ -82,7 +82,7 @@ export const useAppActionButtons = ({
 
 		let cancelled = false;
 
-		const resolve = async () => {
+		const resolve = async (): Promise<void> => {
 			const subscription = rid ? await getSubscriptionByRoomId(rid) : null;
 			const permissionRoles = await getPermissionRoles(splitKey(permissionsKey));
 			if (cancelled) {

@@ -6,8 +6,8 @@ import {
 	RoomTypeFilter
 } from './definitions';
 
-const isTeamRoom = ({ teamMain }: IAppActionButtonRoom) => !!teamMain;
-const isDiscussion = ({ prid }: IAppActionButtonRoom) => !!prid;
+const isTeamRoom = ({ teamMain }: IAppActionButtonRoom): boolean => !!teamMain;
+const isDiscussion = ({ prid }: IAppActionButtonRoom): boolean => !!prid;
 
 const roomTypeMatchers: { [K in TRoomTypeFilter]: (room: IAppActionButtonRoom) => boolean } = {
 	[RoomTypeFilter.PUBLIC_CHANNEL]: room => room.t === 'c',
@@ -44,8 +44,8 @@ export interface IAppActionButtonAuth {
 export const applyAuthFilter = (button: IAppActionButton, { roles, permissions }: IAppActionButtonAuth): boolean => {
 	const { hasAllPermissions, hasOnePermission, hasAllRoles, hasOneRole } = button.when || {};
 
-	const grants = (permission: string) => (permissions[permission] ?? []).some(role => roles.includes(role));
-	const holds = (role: string) => roles.includes(role);
+	const grants = (permission: string): boolean => (permissions[permission] ?? []).some(role => roles.includes(role));
+	const holds = (role: string): boolean => roles.includes(role);
 
 	return (
 		(!hasAllPermissions || hasAllPermissions.every(grants)) &&
