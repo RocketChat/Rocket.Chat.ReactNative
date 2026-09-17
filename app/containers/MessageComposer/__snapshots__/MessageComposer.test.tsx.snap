@@ -9993,37 +9993,40 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   }
                 }
               >
-                <Text
+                <View
                   accessibilityLabel="Recently used"
                   accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#156FF5",
-                        "fontSize": 24,
-                      },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
                   testID="emoji-picker-tab-clock"
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#156FF5",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          {
+                            "paddingVertical": 4,
+                          },
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </RNGestureHandlerButton>
             <View
@@ -10087,37 +10090,40 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   }
                 }
               >
-                <Text
+                <View
                   accessibilityLabel="Smileys and people"
                   accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#6C727A",
-                        "fontSize": 24,
-                      },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
                   testID="emoji-picker-tab-emoji"
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#6C727A",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          {
+                            "paddingVertical": 4,
+                          },
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </RNGestureHandlerButton>
             <View
@@ -10181,37 +10187,40 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   }
                 }
               >
-                <Text
+                <View
                   accessibilityLabel="Animals and nature"
                   accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#6C727A",
-                        "fontSize": 24,
-                      },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
                   testID="emoji-picker-tab-leaf"
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#6C727A",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          {
+                            "paddingVertical": 4,
+                          },
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </RNGestureHandlerButton>
             <View
@@ -10275,37 +10284,40 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   }
                 }
               >
-                <Text
+                <View
                   accessibilityLabel="Food and drink"
                   accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#6C727A",
-                        "fontSize": 24,
-                      },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
                   testID="emoji-picker-tab-burger"
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#6C727A",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          {
+                            "paddingVertical": 4,
+                          },
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </RNGestureHandlerButton>
             <View
@@ -10369,37 +10381,40 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   }
                 }
               >
-                <Text
+                <View
                   accessibilityLabel="Activity"
                   accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#6C727A",
-                        "fontSize": 24,
-                      },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
                   testID="emoji-picker-tab-basketball"
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#6C727A",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          {
+                            "paddingVertical": 4,
+                          },
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </RNGestureHandlerButton>
             <View
@@ -10463,37 +10478,40 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   }
                 }
               >
-                <Text
+                <View
                   accessibilityLabel="Travel and places"
                   accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#6C727A",
-                        "fontSize": 24,
-                      },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
                   testID="emoji-picker-tab-airplane"
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#6C727A",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          {
+                            "paddingVertical": 4,
+                          },
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </RNGestureHandlerButton>
             <View
@@ -10557,37 +10575,40 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   }
                 }
               >
-                <Text
+                <View
                   accessibilityLabel="Objects"
                   accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#6C727A",
-                        "fontSize": 24,
-                      },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
                   testID="emoji-picker-tab-lamp-bulb"
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#6C727A",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          {
+                            "paddingVertical": 4,
+                          },
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </RNGestureHandlerButton>
             <View
@@ -10651,37 +10672,40 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   }
                 }
               >
-                <Text
+                <View
                   accessibilityLabel="Symbols"
                   accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#6C727A",
-                        "fontSize": 24,
-                      },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
                   testID="emoji-picker-tab-percentage"
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#6C727A",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          {
+                            "paddingVertical": 4,
+                          },
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </RNGestureHandlerButton>
             <View
@@ -10745,37 +10769,40 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   }
                 }
               >
-                <Text
+                <View
                   accessibilityLabel="Flags"
                   accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#6C727A",
-                        "fontSize": 24,
-                      },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
                   testID="emoji-picker-tab-flag"
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#6C727A",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          {
+                            "paddingVertical": 4,
+                          },
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </RNGestureHandlerButton>
             <View
@@ -10839,37 +10866,40 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   }
                 }
               >
-                <Text
+                <View
                   accessibilityLabel="Custom"
                   accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#6C727A",
-                        "fontSize": 24,
-                      },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
                   testID="emoji-picker-tab-rocket"
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#6C727A",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          {
+                            "paddingVertical": 4,
+                          },
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </RNGestureHandlerButton>
             <View

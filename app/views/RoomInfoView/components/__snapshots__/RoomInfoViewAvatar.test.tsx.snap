@@ -46,6 +46,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       onProgress={[Function]}
       placeholder={[]}
       priority="high"
+      sfEffect={null}
       source={
         [
           {
@@ -63,6 +64,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           "width": 120,
         }
       }
+      symbolSize={null}
+      symbolWeight={null}
       transition={null}
       width={120}
     />
@@ -116,6 +119,7 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
       onProgress={[Function]}
       placeholder={[]}
       priority="high"
+      sfEffect={null}
       source={
         [
           {
@@ -133,6 +137,8 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
           "width": 120,
         }
       }
+      symbolSize={null}
+      symbolWeight={null}
       transition={null}
       width={120}
     />

@@ -39,11 +39,14 @@ export const BASIC_AUTH_KEY = 'BASIC_AUTH_KEY';
 
 RocketChatSettings.customHeaders = headers;
 
+const withoutEmptyValues = (requestHeaders: CustomHeaders): Record<string, string> =>
+	Object.fromEntries(Object.entries(requestHeaders).filter((entry): entry is [string, string] => typeof entry[1] === 'string'));
+
 export default (url: string, options: IOptions = {}): Promise<Response> => {
-	let customOptions = { ...options, headers: RocketChatSettings.customHeaders };
-	if (options && options.headers) {
-		customOptions = { ...customOptions, headers: { ...options.headers, ...customOptions.headers } };
-	}
+	const customOptions = {
+		...options,
+		headers: withoutEmptyValues({ ...options.headers, ...RocketChatSettings.customHeaders })
+	};
 	// TODO: Check if this really works and if anyone else has complained about this problem.
 	// if (RocketChat.controller) {
 	// 	// @ts-ignore

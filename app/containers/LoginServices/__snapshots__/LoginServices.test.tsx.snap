@@ -76,7 +76,7 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
     </Text>
   </RNGestureHandlerButton>,
   <View
-    accessible={true}
+    importantForAccessibility="no"
     style={
       {
         "alignItems": "center",
@@ -99,6 +99,7 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
       }
     />
     <Text
+      accessible={false}
       style={
         [
           {
@@ -208,7 +209,7 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
     </Text>
   </RNGestureHandlerButton>,
   <View
-    accessible={true}
+    importantForAccessibility="no"
     style={
       {
         "alignItems": "center",
@@ -231,6 +232,7 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
       }
     />
     <Text
+      accessible={false}
       style={
         [
           {

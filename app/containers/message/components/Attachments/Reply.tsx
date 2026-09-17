@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 		paddingLeft: 8
 	},
 	backdrop: {
-		...StyleSheet.absoluteFillObject
+		...StyleSheet.absoluteFill
 	},
 	authorContainer: {
 		flex: 1,
