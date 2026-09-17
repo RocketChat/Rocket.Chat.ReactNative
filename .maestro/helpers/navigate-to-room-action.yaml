@@ -18,12 +18,27 @@ tags:
     visible:
       id: 'room-view'
     timeout: 60000
-- assertVisible:
-    id: 'room-header'
-    index: 0
-- tapOn:
-    id: 'room-header'
-    index: 0
+
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          id: 'room-view-header-more'
+      - tapOn:
+          id: 'room-view-header-room-actions'
+
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - assertVisible:
+          id: 'room-header'
+          index: 0
+      - tapOn:
+          id: 'room-header'
+          index: 0
+
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
