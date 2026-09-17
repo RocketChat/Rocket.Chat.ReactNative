@@ -13,6 +13,8 @@
 
     <!-- permissions related to jitsi call -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <!-- API 31+: routing call audio to a BT headset needs this at runtime; audio-only so never for location. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" android:usesPermissionFlags="neverForLocation" />
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />

@@ -469,6 +469,7 @@
   "Reset_E2EE_Password_Description": "リセットするとログアウトし、再度ログインする際に新しいE2EEパスワードが生成されます。\n\nオンラインメンバーのいる暗号化されたルームには再度アクセスできますが、メンバーがオンラインでないルームにはアクセスできません。",
   "Reset_password": "パスワードをリセット",
   "resetting_password": "パスワードを再設定",
+  "Return_to_call": "通話に戻る",
   "Review_app_desc": "{{store}}で5段階で評価をお願いします",
   "Review_app_later": "あとで",
   "Review_app_no": "いいえ",
