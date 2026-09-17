@@ -5,17 +5,34 @@ import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
 import { useHeader } from '../useHeader';
 
 let mockTestStore: RoomStore;
+let mockIsIOS = false;
+let mockConnecting = false;
+let mockConnected = true;
 
 jest.mock('../useGoRoomActionsView', () => ({ useGoRoomActionsView: jest.fn(() => jest.fn()) }));
 jest.mock('~/views/RoomView/components/LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
 jest.mock('~/views/RoomView/components/RightButtons/RightButtons', () => ({ __esModule: true, default: 'RightButtons' }));
 jest.mock('~/containers/RoomHeader', () => ({ __esModule: true, default: 'RoomHeader' }));
+let mockIsTablet = false;
 jest.mock('~/lib/methods/helpers', () => ({
 	getRoomTitle: jest.fn(() => 'Room Title'),
-	isGroupChat: jest.fn(() => false)
+	isGroupChat: jest.fn(() => false),
+	get isIOS() {
+		return mockIsIOS;
+	},
+	get isTablet() {
+		return mockIsTablet;
+	}
 }));
 jest.mock('~/lib/methods/isInviteSubscription', () => ({
 	isInviteSubscription: jest.fn(() => false)
+}));
+jest.mock('~/lib/hooks/useAppSelector', () => ({
+	useAppSelector: (selector: (state: unknown) => unknown) =>
+		selector({
+			meteor: { connecting: mockConnecting, connected: mockConnected },
+			server: { loading: false }
+		})
 }));
 
 const mockSetOptions = jest.fn();
@@ -45,6 +62,10 @@ describe('useHeader', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockTestStore = makeRoomStore();
+		mockIsIOS = false;
+		mockIsTablet = false;
+		mockConnecting = false;
+		mockConnected = true;
 	});
 
 	it('sets only the headerLeft spacer and returns when rid is missing', () => {
@@ -94,5 +115,66 @@ describe('useHeader', () => {
 		expect(() => sideOptions.headerLeft()).not.toThrow();
 		expect(() => titleOptions.headerTitle()).not.toThrow();
 		expect(() => sideOptions.headerRight()).not.toThrow();
+	});
+
+	describe('on iOS', () => {
+		beforeEach(() => {
+			mockIsIOS = true;
+		});
+
+		it('sets a plain string title instead of the RoomHeader render prop', () => {
+			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
+
+			const titleOptions = mockSetOptions.mock.calls[1][0];
+			expect(titleOptions).toEqual({ title: 'Room Title' });
+		});
+
+		it('swaps the title to Connecting while the socket is connecting', () => {
+			mockConnecting = true;
+
+			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
+
+			const titleOptions = mockSetOptions.mock.calls[1][0];
+			expect(titleOptions).toEqual({ title: 'Connecting...' });
+		});
+
+		it('swaps the title to Waiting_for_network when disconnected', () => {
+			mockConnected = false;
+
+			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
+
+			const titleOptions = mockSetOptions.mock.calls[1][0];
+			expect(titleOptions).toEqual({ title: 'Waiting for network...' });
+		});
+
+		it('swaps back to the room title once connected again', () => {
+			mockConnecting = true;
+			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
+			expect(mockSetOptions.mock.calls[1][0]).toEqual({ title: 'Connecting...' });
+
+			mockConnecting = false;
+			act(() => {
+				mockTestStore.setState({
+					room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general', topic: 'updated' } as RoomState['room']
+				});
+			});
+			const lastOptions = mockSetOptions.mock.calls[mockSetOptions.mock.calls.length - 1][0];
+			expect(lastOptions).toEqual({ title: 'Room Title' });
+		});
+	});
+
+	describe('on iPad', () => {
+		beforeEach(() => {
+			mockIsIOS = true;
+			mockIsTablet = true;
+		});
+
+		it('renders the tappable RoomHeader instead of the native string title', () => {
+			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
+
+			const titleOptions = mockSetOptions.mock.calls[1][0];
+			expect(titleOptions).toHaveProperty('headerTitle');
+			expect(typeof titleOptions.headerTitle).toBe('function');
+		});
 	});
 });
