@@ -8,8 +8,7 @@ tags:
     visible:
       id: 'room-view'
     timeout: 60000
-- tapOn:
-    id: 'header-back'
+- runFlow: '../../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'

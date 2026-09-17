@@ -99,8 +99,7 @@ tags:
       visible:
         id: 'room-view'
     commands:
-      - tapOn:
-          id: 'header-back'
+      - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-item-${output.discussionFromNewMessage}'
@@ -259,20 +258,17 @@ tags:
     id: room-info-view-edit-button
 
 # should go back to main room
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
     timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-view-messages'
     timeout: 60000
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
