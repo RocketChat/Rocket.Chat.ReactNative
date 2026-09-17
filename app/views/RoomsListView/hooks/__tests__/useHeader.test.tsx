@@ -19,7 +19,8 @@ jest.mock('~/lib/methods/helpers', () =>
 		{ ...jest.requireActual('~/lib/methods/helpers') },
 		{
 			isIOS: { get: () => mockIsIOS, configurable: true },
-			isTablet: { get: () => mockIsTablet, configurable: true }
+			isTablet: { get: () => mockIsTablet, configurable: true },
+			hasNativeHeaderBar: { get: () => mockIsIOS && !mockIsTablet, configurable: true }
 		}
 	)
 );

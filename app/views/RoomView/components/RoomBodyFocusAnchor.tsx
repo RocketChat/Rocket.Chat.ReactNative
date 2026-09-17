@@ -2,7 +2,7 @@ import { type ReactNode } from 'react';
 import { StyleSheet } from 'react-native';
 import { KeyboardFocusView } from 'react-native-external-keyboard';
 
-import { isIOS, isTablet } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
 import { fromSubscription, useRoomStore } from '../stores/RoomStoreContext';
@@ -22,7 +22,7 @@ export const RoomBodyFocusAnchor = ({ children }: IRoomBodyFocusAnchorProps) => 
 	const disabled = useRoomStore(fromSubscription(isInviteSubscription, false));
 	const accessibilityNavigationEnabled = useIsAccessibilityNavigationEnabled();
 
-	if (!isIOS || isTablet) {
+	if (!hasNativeHeaderBar) {
 		return <>{children}</>;
 	}
 

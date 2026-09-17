@@ -3,11 +3,13 @@ import { type DrawerNavigationProp } from '@react-navigation/drawer';
 import { ScrollView, View } from 'react-native';
 
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers';
 import styles from './styles';
 import { type DrawerParamList } from '~/stacks/types';
 import SupportedVersionsWarnItem from './components/SupportedVersionsWarnItem';
 import CustomStatus from './components/CustomStatus';
 import Stacks from './components/Stacks';
+import Workspaces from './components/Workspaces';
 import Admin from './components/Admin';
 import Profile from './components/Profile';
 
@@ -29,6 +31,7 @@ const SidebarView = ({ navigation }: { navigation: DrawerNavigationProp<DrawerPa
 				<SupportedVersionsWarnItem />
 				<CustomStatus />
 				<Stacks currentScreen={currentScreen} />
+				{hasNativeHeaderBar ? <Workspaces navigation={navigation} /> : null}
 				<Admin currentScreen={currentScreen} />
 			</ScrollView>
 		</View>

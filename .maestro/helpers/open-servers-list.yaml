@@ -1,0 +1,29 @@
+appId: ${APP_ID}
+name: Open servers list
+tags:
+  - 'util'
+
+---
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          id: 'rooms-list-view-sidebar'
+      - extendedWaitUntil:
+          visible:
+            id: 'sidebar-workspaces'
+          timeout: 60000
+      - tapOn:
+          id: 'sidebar-workspaces'
+
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-header-servers-list-button'
+          timeout: 60000
+      - tapOn:
+          id: 'rooms-list-header-servers-list-button'

@@ -12,7 +12,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
-import { isIOS, isTablet } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar, isTablet } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';
@@ -129,8 +129,7 @@ export const useHeader = () => {
 		}
 	}, [isMasterDetail, navigation]);
 
-	const useNativeBar = isIOS && !isTablet;
-	const nativeBarTitle = useNativeBarTitle(useNativeBar);
+	const nativeBarTitle = useNativeBarTitle(hasNativeHeaderBar);
 
 	useLayoutEffect(() => {
 		const headerLeft = () => (
@@ -148,7 +147,7 @@ export const useHeader = () => {
 			/>
 		);
 
-		if (searchEnabled && !useNativeBar) {
+		if (searchEnabled && !hasNativeHeaderBar) {
 			const searchOptions = {
 				headerLeft: () => (
 					<HeaderButton.Container style={{ marginLeft: 1 }} left>
@@ -165,7 +164,7 @@ export const useHeader = () => {
 			return;
 		}
 
-		if (useNativeBar) {
+		if (hasNativeHeaderBar) {
 			const { visible, overflow } = splitHeaderRightActions([
 				{
 					key: 'create',
@@ -299,7 +298,6 @@ export const useHeader = () => {
 		colors,
 		canCreateRoom,
 		searchEnabled,
-		useNativeBar,
 		nativeBarTitle,
 		goDirectory,
 		navigateToPushTroubleshootView,
@@ -311,10 +309,10 @@ export const useHeader = () => {
 	]);
 
 	useEffect(() => {
-		if (useNativeBar && !searchEnabled) {
+		if (hasNativeHeaderBar && !searchEnabled) {
 			searchBarRef.current?.clearText();
 		}
-	}, [useNativeBar, searchEnabled]);
+	}, [searchEnabled]);
 
 	// The rooms list header persists across native-stack navigation, so autoFocus (mount-only)
 	// won't re-fire on back-return or after the list/banner render asynchronously. Re-assert focus

@@ -20,7 +20,8 @@ jest.mock('~/lib/methods/helpers', () => ({
 	...jest.requireActual('~/lib/methods/helpers'),
 	getRoomTitle: () => 'Room Title',
 	isGroupChat: () => false,
-	isTablet: true
+	isTablet: true,
+	hasNativeHeaderBar: false
 }));
 jest.mock('~/lib/hooks/useVideoConf', () => ({
 	useVideoConf: () => ({ showInitCallActionSheet: jest.fn(), callEnabled: false, disabledTooltip: false })

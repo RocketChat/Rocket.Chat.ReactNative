@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import i18n from '~/i18n';
-import { isIOS, isTablet, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { useCanReturnQueue } from '~/ee/omnichannel/hooks/useCanReturnQueue';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -25,7 +25,6 @@ interface IOmnichannelRightButtonsProps {
 }
 
 export const OmnichannelRightButtons = ({ rid, roomStore }: IOmnichannelRightButtonsProps): ReactElement => {
-	const useNativeBar = isIOS && !isTablet;
 	const navigation = useNavigation<TRoomStackNavigation>();
 	const isMasterDetail = useMasterDetail();
 	const { showActionSheet } = useActionSheet();
@@ -93,7 +92,7 @@ export const OmnichannelRightButtons = ({ rid, roomStore }: IOmnichannelRightBut
 		showActionSheet({ options });
 	};
 
-	if (useNativeBar) {
+	if (hasNativeHeaderBar) {
 		return <OmnichannelRightButtonsNative onShowMoreActions={showMoreActions} />;
 	}
 
