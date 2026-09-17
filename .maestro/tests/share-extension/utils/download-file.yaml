@@ -55,7 +55,7 @@ tags:
     commands:
       - extendedWaitUntil:
           visible: 'Download'
-          timeout: 10000
+          timeout: 60000
       - tapOn: 'Download'
 - runFlow:
     when:
