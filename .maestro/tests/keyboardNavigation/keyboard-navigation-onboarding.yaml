@@ -46,9 +46,34 @@ tags:
     focused: true
 - inputText: ${output.user.email}
 - pressKey: enter
-- waitForAnimationToEnd:
-    timeout: 1000
+- repeat:
+    times: 10
+    while:
+      notVisible:
+        id: 'login-view-password'
+        focused: true
+    commands:
+      - pressKey: Remote Dpad Down
+      - waitForAnimationToEnd:
+          timeout: 1000
+- assertVisible:
+    id: 'login-view-password'
+    focused: true
 - inputText: ${output.user.password}
+- hideKeyboard
+- repeat:
+    times: 10
+    while:
+      notVisible:
+        id: 'login-view-submit'
+        focused: true
+    commands:
+      - pressKey: Remote Dpad Down
+      - waitForAnimationToEnd:
+          timeout: 1000
+- assertVisible:
+    id: 'login-view-submit'
+    focused: true
 - pressKey: enter
 - extendedWaitUntil:
     visible:
