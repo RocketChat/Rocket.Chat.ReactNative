@@ -1,5 +1,5 @@
-import { renderHook } from '@testing-library/react-native';
-import { type ReactElement } from 'react';
+import { act, renderHook } from '@testing-library/react-native';
+import { type ReactElement, useState } from 'react';
 
 import { RoomsSearchContext } from '../../contexts/RoomsSearchProvider';
 import { useHeader } from '../useHeader';
@@ -116,7 +116,7 @@ describe('RoomsListView useHeader', () => {
 		expect(options.headerTitle).toBe(expectedTitle);
 	});
 
-	it('builds the right cluster in search, create priority order, overflowing push-troubleshoot and directory', () => {
+	it('builds the right cluster in create, push-troubleshoot priority order, overflowing directory', () => {
 		mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
 
 		renderUseHeader();
@@ -124,48 +124,56 @@ describe('RoomsListView useHeader', () => {
 		const options = mockSetOptions.mock.calls[0][0];
 		const rightButtons: ReactElement<{ testID: string }>[] = options.headerRight().props.children.filter(Boolean);
 		const testIDs = rightButtons.map(button => button.props.testID);
-		expect(testIDs).toEqual(['rooms-list-view-search', 'rooms-list-view-create-channel', 'rooms-list-view-more']);
+		expect(testIDs).toEqual(['rooms-list-view-create-channel', 'rooms-list-view-push-troubleshoot', 'rooms-list-view-directory']);
 	});
 
-	it('does not render an overflow control when a single item would be hidden', () => {
+	it('does not render an overflow control when nothing extra is present', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
 		const rightButtons: ReactElement<{ testID: string }>[] = options.headerRight().props.children.filter(Boolean);
 		const testIDs = rightButtons.map(button => button.props.testID);
-		expect(testIDs).toEqual(['rooms-list-view-search', 'rooms-list-view-create-channel', 'rooms-list-view-directory']);
+		expect(testIDs).toEqual(['rooms-list-view-create-channel', 'rooms-list-view-directory']);
 	});
 
-	it('keeps search reachable in the native cluster', () => {
+	it('configures a stacked system search bar instead of a right-cluster search item', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		const rightButtons: ReactElement<{ testID: string; onPress: () => void }>[] = options
-			.headerRight()
-			.props.children.filter(Boolean);
-		const searchButton = rightButtons.find(button => button.props.testID === 'rooms-list-view-search');
-		expect(searchButton).toBeDefined();
+		const rightButtons: ReactElement<{ testID: string }>[] = options.headerRight().props.children.filter(Boolean);
+		expect(rightButtons.some(button => button.props.testID === 'rooms-list-view-search')).toBe(false);
 
-		searchButton?.props.onPress();
+		expect(options.headerSearchBarOptions.placement).toBe('stacked');
+		expect(options.headerSearchBarOptions.ref.current).toBeNull();
+
+		options.headerSearchBarOptions.onFocus();
 		expect(mockStartSearch).toHaveBeenCalledTimes(1);
+
+		options.headerSearchBarOptions.onChangeText({ nativeEvent: { text: 'general' } });
+		expect(mockSearch).toHaveBeenCalledWith('general');
+
+		options.headerSearchBarOptions.onCancelButtonPress();
+		expect(mockStopSearch).toHaveBeenCalledTimes(1);
 	});
 
-	it('lets search mode render SearchHeader with its close button ahead of the native bar', () => {
-		const renderWithSearch = () =>
-			renderHook(() => useHeader(), {
-				wrapper: ({ children }: { children: ReactElement }) => (
-					<RoomsSearchContext.Provider value={{ ...searchContextValue, searchEnabled: true }}>
-						{children}
-					</RoomsSearchContext.Provider>
-				)
-			});
+	it('clears the system search bar once search stops', () => {
+		let setSearchEnabled: (value: boolean) => void = () => {};
+		const wrapper = ({ children }: { children: ReactElement }) => {
+			const [searchEnabled, setter] = useState(true);
+			setSearchEnabled = setter;
+			return (
+				<RoomsSearchContext.Provider value={{ ...searchContextValue, searchEnabled }}>{children}</RoomsSearchContext.Provider>
+			);
+		};
 
-		renderWithSearch();
+		renderHook(() => useHeader(), { wrapper });
 
-		const options = mockSetOptions.mock.calls[0][0];
-		expect(options.headerLargeTitle).toBeUndefined();
-		expect(typeof options.headerTitle).toBe('function');
-		expect(typeof options.headerLeft).toBe('function');
+		const clearText = jest.fn();
+		mockSetOptions.mock.calls[0][0].headerSearchBarOptions.ref.current = { clearText };
+
+		act(() => setSearchEnabled(false));
+
+		expect(clearText).toHaveBeenCalledTimes(1);
 	});
 
 	it('falls back to the JS header on Android', () => {

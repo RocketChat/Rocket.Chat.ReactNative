@@ -1,7 +1,8 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useCallback, useContext, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { InteractionManager } from 'react-native';
 import { type KeyboardFocus } from 'react-native-external-keyboard';
+import { type SearchBarCommands } from 'react-native-screens';
 
 import { showActionSheetRef } from '~/containers/ActionSheet';
 import { type TIconsName } from '~/containers/CustomIcon';
@@ -65,6 +66,7 @@ export const useHeader = () => {
 	const [options, setOptions] = useState<any>(null);
 	const isAccessibilityNavigationEnabled = useIsAccessibilityNavigationEnabled();
 	const drawerButtonRef = useRef<KeyboardFocus>(null);
+	const searchBarRef = useRef<SearchBarCommands>(null);
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
 	const requirePasswordChange = useAppSelector(state => getUserSelector(state).requirePasswordChange);
 	const isMasterDetail = useMasterDetail();
@@ -146,7 +148,7 @@ export const useHeader = () => {
 			/>
 		);
 
-		if (searchEnabled) {
+		if (searchEnabled && !useNativeBar) {
 			const searchOptions = {
 				headerLeft: () => (
 					<HeaderButton.Container style={{ marginLeft: 1 }} left>
@@ -165,15 +167,6 @@ export const useHeader = () => {
 
 		if (useNativeBar) {
 			const { visible, overflow } = splitHeaderRightActions([
-				{
-					key: 'search',
-					present: true,
-					iconName: 'search',
-					accessibilityLabel: i18n.t('Search'),
-					testID: 'rooms-list-view-search',
-					disabled,
-					onPress: startSearch
-				},
 				{
 					key: 'create',
 					present: canCreateRoom,
@@ -207,6 +200,14 @@ export const useHeader = () => {
 				headerLargeTitle: true,
 				headerTitle: nativeBarTitle,
 				headerLeft,
+				headerSearchBarOptions: {
+					ref: searchBarRef,
+					placement: 'stacked',
+					placeholder: i18n.t('Search'),
+					onFocus: startSearch,
+					onChangeText: (event: { nativeEvent: { text: string } }) => search(event.nativeEvent.text),
+					onCancelButtonPress: stopSearch
+				},
 				headerRight: () => (
 					<HeaderButton.Container>
 						{[
@@ -308,6 +309,12 @@ export const useHeader = () => {
 		stopSearch,
 		search
 	]);
+
+	useEffect(() => {
+		if (useNativeBar && !searchEnabled) {
+			searchBarRef.current?.clearText();
+		}
+	}, [useNativeBar, searchEnabled]);
 
 	// The rooms list header persists across native-stack navigation, so autoFocus (mount-only)
 	// won't re-fire on back-return or after the list/banner render asynchronously. Re-assert focus
