@@ -10,7 +10,7 @@ tags:
 ---
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.login = output.utils.login(output.user.username, output.user.password)}
-- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password, output.user.username)}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password, 'p')}
 - evalScript: ${output.messageCount = 0}
 
 # download all the files which are need for test

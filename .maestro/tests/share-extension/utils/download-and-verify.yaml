@@ -1,5 +1,5 @@
 appId: ${APP_ID}
-name: Verify Download
+name: Download and Verify
 tags:
   - 'util'
 

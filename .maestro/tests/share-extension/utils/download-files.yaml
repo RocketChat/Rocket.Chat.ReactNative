@@ -1,5 +1,5 @@
 appId: ${APP_ID}
-name: Download File
+name: Download Files
 tags:
   - 'util'
 
@@ -32,6 +32,7 @@ tags:
     commands:
       - launchApp: com.apple.mobilesafari
 
+# Pre-seeded uploads on the QA server — fixed ids are intentional fixtures, not random data.
 - runFlow:
     file: 'download-and-verify.yaml'
     env:
