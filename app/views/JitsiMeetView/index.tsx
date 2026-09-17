@@ -10,8 +10,9 @@ import { userAgent } from '~/lib/constants/userAgent';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { isIOS } from '~/lib/methods/helpers';
 import { getRoomIdFromJitsiCallUrl } from '~/lib/methods/helpers/getRoomIdFromJitsiCall';
-import { events, logEvent } from '~/lib/methods/helpers/log';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { endVideoConfTimer, initVideoConfTimer } from '~/lib/methods/videoConfTimer';
+import { reclaimVoipAudio, yieldVoipAudio } from '~/lib/services/voip/voipAudioHandoff';
 import { getUserSelector } from '~/selectors/login';
 import { type InsideStackParamList } from '~/stacks/types';
 import JitsiAuthModal from './JitsiAuthModal';
@@ -102,6 +103,14 @@ const JitsiMeetView = (): ReactElement => {
 
 	useEffect(() => {
 		setCookies();
+	}, []);
+
+	// In-app videoconf: take the microphone off the VoIP call for as long as this screen is up.
+	useEffect(() => {
+		yieldVoipAudio('jitsi').catch(log);
+		return () => {
+			reclaimVoipAudio('jitsi').catch(log);
+		};
 	}, []);
 
 	const callUrl = `${url}${url.includes('#config') ? '&' : '#'}config.disableDeepLinking=true`;

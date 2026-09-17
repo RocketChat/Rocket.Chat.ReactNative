@@ -5,6 +5,7 @@ export default {
 	endCall: jest.fn(),
 	setCurrentCallActive: jest.fn(),
 	setAvailable: jest.fn(),
+	setOnHold: jest.fn(),
 	addEventListener: jest.fn((event, callback) => ({
 		remove: jest.fn()
 	}))
