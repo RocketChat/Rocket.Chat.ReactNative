@@ -34,6 +34,8 @@ tags:
           visible: 'Grid view'
           timeout: 10000
       - inputText: ${output.fileName}
+      # submit the Files search — without this the query sits unsubmitted, the check always warns and every file gets downloaded twice
+      - pressKey: enter
       # let a fresh download land; optional so a missing file falls through to heal instead of failing
       - extendedWaitUntil:
           visible:

@@ -25,6 +25,13 @@ tags:
       visible: '.*View Bookmarks, Share Menu, and Open Tabs.*'
     commands:
       - tapOn: 'Close'
+# fresh Safari shows a Start Page onboarding card that steals address-bar focus, so the URL is never typed
+- runFlow:
+    when:
+      platform: 'iOS'
+      visible: 'Customize Start Page'
+    commands:
+      - tapOn: 'close'
 - runFlow:
     when:
       platform: 'iOS'

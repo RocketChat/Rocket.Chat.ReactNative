@@ -43,6 +43,8 @@ tags:
           visible: 'Grid view'
           timeout: 10000
       - inputText: ${fileName}
+      # submit the Files search — without this the query sits unsubmitted and the file id never appears
+      - pressKey: enter
       - evalScript: ${output.iosfilename = fileName.split('.').join(', ')}
       - runFlow:
           when:
