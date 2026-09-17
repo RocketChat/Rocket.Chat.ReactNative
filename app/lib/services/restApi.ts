@@ -18,6 +18,7 @@ import {
 import { type TParams } from '~/definitions/ILivechatEditView';
 import { type ILivechatTag } from '~/definitions/ILivechatTag';
 import { type ISpotlight } from '~/definitions/ISpotlight';
+import { type IAppActionButton, type IAppLanguages } from '../apps/definitions';
 import { TEAM_TYPE } from '~/definitions/ITeam';
 import { type OperationParams, type ResultFor } from '~/definitions/rest/helpers';
 import { type SubscriptionsEndpoints } from '~/definitions/rest/v1/subscriptions';
@@ -1281,3 +1282,31 @@ export const mediaCallsStateSignals = async (contractId: string): Promise<{ sign
 		return { signals: [], success: false };
 	}
 };
+
+const appsApiGet = async <T>(path: string): Promise<T> => {
+	const { host, currentLogin } = sdk;
+	if (!host || !currentLogin) {
+		throw new Error('The Apps REST API requires an initialized, authenticated session');
+	}
+	const { userId, authToken } = currentLogin;
+
+	const response = await fetch(`${host}/api/apps/${path}`, {
+		method: 'GET',
+		headers: {
+			...RocketChatSettings.customHeaders,
+			'Content-Type': 'application/json',
+			'X-Auth-Token': authToken,
+			'X-User-Id': userId
+		}
+	});
+
+	if (!response.ok) {
+		throw new Error(`Failed to GET /api/apps/${path}: ${response.status}`);
+	}
+
+	return response.json();
+};
+
+export const getAppActionButtons = (): Promise<IAppActionButton[]> => appsApiGet<IAppActionButton[]>('actionButtons');
+
+export const getAppsLanguages = (): Promise<IAppLanguages> => appsApiGet<IAppLanguages>('languages');

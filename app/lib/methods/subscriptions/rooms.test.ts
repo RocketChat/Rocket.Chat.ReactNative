@@ -59,7 +59,7 @@ jest.mock('../getRoom', () => ({
 	getRoom: jest.fn()
 }));
 
-jest.mock('../actions', () => ({
+jest.mock('~/lib/apps/actions', () => ({
 	handlePayloadUserInteraction: jest.fn()
 }));
 
