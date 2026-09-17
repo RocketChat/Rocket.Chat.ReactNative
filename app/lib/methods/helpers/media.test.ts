@@ -98,9 +98,9 @@ describe('canUploadFile', () => {
 		).toEqual({ success: true });
 	});
 
-	it.each([[undefined], ['']])('allows any mime when the whitelist is empty/absent (%s)', allowList => {
-		expect(
-			canUploadFile({ file: baseFile, allowList: allowList as any, maxFileSize: 2048, permissionToUploadFile: true })
-		).toEqual({ success: true });
+	it.each<[string | undefined]>([[undefined], ['']])('allows any mime when the whitelist is empty/absent (%s)', allowList => {
+		expect(canUploadFile({ file: baseFile, allowList, maxFileSize: 2048, permissionToUploadFile: true })).toEqual({
+			success: true
+		});
 	});
 });

@@ -32,4 +32,9 @@ describe('getAudioUrlToCache', () => {
 			'https://open.rocket.chat/file.mp3?x=1&rc_uid=u1&rc_token=t1'
 		);
 	});
+
+	it('returns empty input unchanged when url is missing', () => {
+		expect(getAudioUrlToCache({ url: undefined, userId: 'u1', token: 't1' })).toBeUndefined();
+		expect(getAudioUrlToCache({ url: '', userId: 'u1', token: 't1' })).toBe('');
+	});
 });

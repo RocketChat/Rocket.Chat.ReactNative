@@ -265,12 +265,12 @@ describe('AudioManager', () => {
 			expect(AudioManager.getNextAudioKey({ message, rid: 'room' })).toBe('b-room-file://x');
 		});
 
-		it('getNextAudioKey: returns undefined/null at the end of the set', () => {
+		it('getNextAudioKey: returns undefined when there is no next audio', () => {
 			const { AudioManager } = setup();
 			expect(AudioManager.getNextAudioKey({ message: { id: 'b' } as TMessageModel, rid: 'room' })).toBeUndefined();
 			(require('./getFilePathAudio').getFilePathAudio as jest.Mock).mockReturnValueOnce(null);
 			const message = { id: 'b', attachments: [{ audio_url: '/x' }] } as TMessageModel;
-			expect(AudioManager.getNextAudioKey({ message, rid: 'room' })).toBeFalsy();
+			expect(AudioManager.getNextAudioKey({ message, rid: 'room' })).toBeUndefined();
 		});
 	});
 });

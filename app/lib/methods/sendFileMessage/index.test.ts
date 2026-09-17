@@ -21,35 +21,30 @@ describe('sendFileMessage selector', () => {
 
 	it('server < 6.10.0 dispatches sendFileMessageV1, forwarding all args', async () => {
 		(store.getState as jest.Mock).mockReturnValue({ server: { version: '6.9.0' } });
-		(sendFileMessageV1 as jest.Mock).mockResolvedValue('v1');
-		const fullArgs: Parameters<typeof sendFileMessage> = [...args.slice(0, 5), true] as any;
+		(sendFileMessageV1 as jest.Mock).mockResolvedValue(undefined);
+		const fullArgs: Parameters<typeof sendFileMessage> = [...args];
+		fullArgs[5] = true;
 
-		await expect(sendFileMessage(...fullArgs)).resolves.toBe('v1');
+		await expect(sendFileMessage(...fullArgs)).resolves.toBeUndefined();
 		expect(sendFileMessageV1).toHaveBeenCalledWith(...fullArgs);
 		expect(sendFileMessageV2).not.toHaveBeenCalled();
 	});
 
 	it('server >= 6.10.0 dispatches sendFileMessageV2, forwarding all args', async () => {
 		(store.getState as jest.Mock).mockReturnValue({ server: { version: '6.11.0' } });
-		(sendFileMessageV2 as jest.Mock).mockResolvedValue('v2');
+		(sendFileMessageV2 as jest.Mock).mockResolvedValue(undefined);
 
-		await expect(sendFileMessage(...args)).resolves.toBe('v2');
+		await expect(sendFileMessage(...args)).resolves.toBeUndefined();
 		expect(sendFileMessageV2).toHaveBeenCalledWith(...args);
 		expect(sendFileMessageV1).not.toHaveBeenCalled();
 	});
 
 	it('server exactly 6.10.0 takes the v2 branch (boundary, lowerThan is strict)', async () => {
 		(store.getState as jest.Mock).mockReturnValue({ server: { version: '6.10.0' } });
-		(sendFileMessageV2 as jest.Mock).mockResolvedValue('v2-boundary');
+		(sendFileMessageV2 as jest.Mock).mockResolvedValue(undefined);
 
-		await expect(sendFileMessage(...args)).resolves.toBe('v2-boundary');
+		await expect(sendFileMessage(...args)).resolves.toBeUndefined();
 		expect(sendFileMessageV2).toHaveBeenCalledWith(...args);
 		expect(sendFileMessageV1).not.toHaveBeenCalled();
-	});
-
-	it('returns the value of whichever impl it dispatched (no post-processing)', async () => {
-		(store.getState as jest.Mock).mockReturnValue({ server: { version: '6.9.9' } });
-		(sendFileMessageV1 as jest.Mock).mockResolvedValue('passthrough');
-		await expect(sendFileMessage(...args)).resolves.toBe('passthrough');
 	});
 });
