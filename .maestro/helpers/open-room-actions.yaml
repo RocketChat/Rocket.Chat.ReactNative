@@ -1,0 +1,27 @@
+appId: ${APP_ID}
+name: Open room actions
+tags:
+  - 'util'
+
+---
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          id: 'room-view-header-more'
+      - tapOn:
+          id: 'room-view-header-room-actions'
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - assertVisible:
+          id: 'room-header'
+      - tapOn:
+          id: 'room-header'
+          retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
