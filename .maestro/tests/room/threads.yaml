@@ -29,10 +29,14 @@ tags:
     timeout: 60000
 
 # should have actions button
-- extendedWaitUntil:
-    visible:
-      id: 'room-header'
-    timeout: 60000
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'room-header'
+          timeout: 60000
 
 # should have threads button
 - extendedWaitUntil:

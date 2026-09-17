@@ -8,12 +8,22 @@ tags:
     visible:
       id: 'rooms-list-view'
     timeout: 60000
-- tapOn:
-    id: 'rooms-list-view-search'
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-search-input'
-    timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          id: 'magnifyingglass'
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - tapOn:
+          id: 'rooms-list-view-search'
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-view-search-input'
+          timeout: 60000
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-item-${ROOM}'

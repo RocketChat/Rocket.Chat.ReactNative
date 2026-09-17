@@ -85,6 +85,12 @@ tags:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: 'jumping'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          id: 'room-view-header-more'
 - extendedWaitUntil:
     visible:
       id: 'room-view-search'
@@ -256,6 +262,12 @@ tags:
     visible:
       id: 'room-view-title-jumping-thread'
     timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          id: 'room-view-header-more'
 - tapOn:
     id: 'room-view-search'
 - extendedWaitUntil:
