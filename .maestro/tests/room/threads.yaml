@@ -37,6 +37,14 @@ tags:
           visible:
             id: 'room-header'
           timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'room-view-header-more'
+          timeout: 60000
 
 # should have threads button
 - extendedWaitUntil:

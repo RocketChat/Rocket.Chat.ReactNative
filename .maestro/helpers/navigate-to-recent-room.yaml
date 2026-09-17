@@ -10,12 +10,6 @@ tags:
     timeout: 60000
 - runFlow:
     when:
-      platform: iOS
-    commands:
-      - tapOn:
-          id: 'magnifyingglass'
-- runFlow:
-    when:
       platform: android
     commands:
       - tapOn:

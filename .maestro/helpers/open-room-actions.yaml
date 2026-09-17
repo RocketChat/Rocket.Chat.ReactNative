@@ -10,6 +10,11 @@ tags:
     commands:
       - tapOn:
           id: 'room-view-header-more'
+          retryTapIfNoChange: true
+      - extendedWaitUntil:
+          visible:
+            id: 'action-sheet-handle'
+          timeout: 60000
       - tapOn:
           id: 'room-view-header-room-actions'
 - runFlow:
@@ -18,8 +23,10 @@ tags:
     commands:
       - assertVisible:
           id: 'room-header'
+          index: 0
       - tapOn:
           id: 'room-header'
+          index: 0
           retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
