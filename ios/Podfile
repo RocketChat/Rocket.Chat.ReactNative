@@ -1,10 +1,6 @@
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 require File.join(File.dirname(`node --print "require.resolve('react-native/package.json')"`), "scripts/react_native_pods")
 
-ENV['RCT_USE_PREBUILT_RNCORE'] = '0'
-ENV['RCT_USE_RN_DEP'] = '0'
-ENV['RCT_HERMES_V1_ENABLED'] = '0'
-
 platform :ios, '16.4'
 install! 'cocoapods', :deterministic_uuids => false
 
@@ -49,7 +45,7 @@ $static_framework = [
 pre_install do |installer|
   Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
     installer.pod_targets.each do |pod|
-      if $static_framework.include?(pod.name)
+      if $static_framework.include?(pod.name) || pod.name.start_with?('RNFB')
         def pod.build_type;
         Pod::BuildType.static_library # >= 1.9
       end
@@ -78,15 +74,6 @@ post_install do |installer|
       if target.name == 'react-native-webview'
         config.build_settings['HEADER_SEARCH_PATHS'] ||= ['$(inherited)']
         config.build_settings['HEADER_SEARCH_PATHS'] << '$(SRCROOT)/..'
-      end
-    end
-  end
-
-  if ENV['RCT_HERMES_V1_ENABLED'] == '0'
-    installer.aggregate_targets.each do |aggregate_target|
-      aggregate_target.xcconfigs.each do |config_name, xcconfig|
-        xcconfig.attributes['HERMES_CLI_PATH'] = '$(PODS_ROOT)/hermes-engine/destroot/bin/hermesc'
-        xcconfig.save_as(aggregate_target.xcconfig_path(config_name))
       end
     end
   end
