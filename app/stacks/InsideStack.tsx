@@ -196,11 +196,7 @@ const ChatsStack = createNativeStackNavigator({
 		}),
 		QueueListView: QueueListViewScreen,
 		CannedResponsesListView: CannedResponsesListViewScreen,
-		CannedResponseDetail: CannedResponseDetailScreen,
-		JitsiMeetView: createNativeStackScreen({
-			screen: JitsiMeetViewScreen,
-			options: { headerShown: false, animation: isIOS ? 'default' : 'none' }
-		})
+		CannedResponseDetail: CannedResponseDetailScreen
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
@@ -353,6 +349,11 @@ const InsideStack = createNativeStackNavigator({
 		ModalBlockView: createNativeStackScreen({
 			screen: ModalBlockViewScreen,
 			options: (args: any): NativeStackNavigationOptions => (ModalBlockView as any).navigationOptions(args)
+		}),
+		// Sibling of CallView so it can be reached (and rendered above it) while a VoIP call is open.
+		JitsiMeetView: createNativeStackScreen({
+			screen: JitsiMeetViewScreen,
+			options: { headerShown: false, animation: isIOS ? 'default' : 'none' }
 		}),
 		CallView: createNativeStackScreen({
 			screen: CallViewScreen,
