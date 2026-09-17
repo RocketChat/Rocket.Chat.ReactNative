@@ -3,9 +3,8 @@ import { useStore } from 'zustand';
 import { useNavigation } from '@react-navigation/native';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import i18n from '~/i18n';
-import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { isIOS, isTablet, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { useCanReturnQueue } from '~/ee/omnichannel/hooks/useCanReturnQueue';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -17,6 +16,8 @@ import { useCanPlaceLivechatOnHold } from '~/views/RoomView/hooks/useCanPlaceLiv
 import { navigateToScreen, type TRoomStackNavigation } from '~/views/RoomView/services/navigateToScreen';
 import { closeLivechat } from '~/views/RoomView/services/closeLivechat';
 import { placeLivechatOnHold } from '~/views/RoomView/services/placeLivechatOnHold';
+import { OmnichannelRightButtonsLegacy } from './OmnichannelRightButtonsLegacy';
+import { OmnichannelRightButtonsNative } from './OmnichannelRightButtonsNative';
 
 interface IOmnichannelRightButtonsProps {
 	rid: string;
@@ -24,6 +25,7 @@ interface IOmnichannelRightButtonsProps {
 }
 
 export const OmnichannelRightButtons = ({ rid, roomStore }: IOmnichannelRightButtonsProps): ReactElement => {
+	const useNativeBar = isIOS && !isTablet;
 	const navigation = useNavigation<TRoomStackNavigation>();
 	const isMasterDetail = useMasterDetail();
 	const { showActionSheet } = useActionSheet();
@@ -91,9 +93,9 @@ export const OmnichannelRightButtons = ({ rid, roomStore }: IOmnichannelRightBut
 		showActionSheet({ options });
 	};
 
-	return (
-		<HeaderButton.Container>
-			<HeaderButton.Item iconName='kebab' onPress={showMoreActions} testID='room-view-header-omnichannel-kebab' />
-		</HeaderButton.Container>
-	);
+	if (useNativeBar) {
+		return <OmnichannelRightButtonsNative onShowMoreActions={showMoreActions} />;
+	}
+
+	return <OmnichannelRightButtonsLegacy onShowMoreActions={showMoreActions} />;
 };

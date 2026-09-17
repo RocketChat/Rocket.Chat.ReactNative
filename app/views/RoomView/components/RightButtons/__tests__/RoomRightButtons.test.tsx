@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
+import { showActionSheetRef } from '~/containers/ActionSheet';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { type RoomStore } from '~/views/RoomView/definitions';
 import { RoomRightButtons } from '../RoomRightButtons';
@@ -20,10 +21,18 @@ jest.mock('~/lib/hooks/useMasterDetail', () => ({
 
 jest.mock('~/theme', () => ({ useTheme: () => ({ colors: { fontDanger: '#f00' } }) }));
 jest.mock('~/lib/helpers/getRoomAccessibilityLabel', () => ({ __esModule: true, default: () => 'channel label' }));
+
+let mockIsIOS = true;
+let mockIsTablet = false;
 jest.mock('~/lib/methods/helpers', () => ({
-	...jest.requireActual('~/lib/methods/helpers'),
 	getRoomTitle: () => 'Room Title',
-	isGroupChat: () => false
+	isGroupChat: () => false,
+	get isIOS() {
+		return mockIsIOS;
+	},
+	get isTablet() {
+		return mockIsTablet;
+	}
 }));
 
 let mockThreadsEnabled = true;
@@ -66,6 +75,30 @@ jest.mock('~/views/RoomView/hooks/useSubscriptionUnreads', () => ({
 let mockCanToggleEncryption = false;
 jest.mock('~/lib/hooks/usePermissions', () => ({
 	usePermissions: () => [mockCanToggleEncryption]
+}));
+
+let mockCallEnabled = false;
+jest.mock('~/lib/hooks/useVideoConf', () => ({
+	useVideoConf: () => ({ showInitCallActionSheet: jest.fn(), callEnabled: mockCallEnabled, disabledTooltip: false })
+}));
+
+let mockHasMediaCallPermission = false;
+jest.mock('~/lib/hooks/useNewMediaCall', () => ({
+	useNewMediaCall: () => ({
+		openNewMediaCall: jest.fn(),
+		startCallImmediate: jest.fn(),
+		hasMediaCallPermission: mockHasMediaCallPermission,
+		isInActiveCall: false
+	})
+}));
+
+const mockGoRoomActionsView = jest.fn();
+jest.mock('~/views/RoomView/hooks/useGoRoomActionsView', () => ({
+	useGoRoomActionsView: () => mockGoRoomActionsView
+}));
+
+jest.mock('~/containers/ActionSheet', () => ({
+	showActionSheetRef: jest.fn()
 }));
 
 jest.mock('~/containers/Header/components/HeaderButton', () => {
@@ -114,6 +147,8 @@ describe('RoomRightButtons', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockIsMasterDetail = false;
+		mockIsIOS = true;
+		mockIsTablet = false;
 		mockThreadsEnabled = true;
 		mockAppState = {
 			login: { user: { id: 'u1', username: 'user', token: 'tok' } },
@@ -123,185 +158,162 @@ describe('RoomRightButtons', () => {
 		mockHasE2EEWarning = false;
 		mockUnreads = { tunread: [], tunreadUser: [], tunreadGroup: [], isSelfDm: false };
 		mockCanToggleEncryption = false;
+		mockCallEnabled = true;
+		mockHasMediaCallPermission = false;
 	});
 
-	it('renders the call, threads and search buttons for a regular channel', () => {
-		renderRoomRightButtons();
+	describe('on the iOS native bar', () => {
+		it('shows threads and call as bar items and folds search and Room Actions into the overflow menu', () => {
+			renderRoomRightButtons();
 
-		expect(screen.getByTestId('room-view-header-threads')).toHaveProp('iconName', 'threads');
-		expect(screen.getByTestId('room-view-search')).toHaveProp('accessibilityLabel', 'Search messages');
-		expect(screen.queryByTestId('room-view-header-encryption')).not.toBeOnTheScreen();
-		expect(screen.queryByTestId('room-view-push-troubleshoot')).not.toBeOnTheScreen();
+			expect(screen.getByTestId('room-view-header-threads')).toHaveProp('iconName', 'threads');
+			expect(screen.getByTestId('room-view-header-call')).toBeOnTheScreen();
+			expect(screen.queryByTestId('room-view-search')).not.toBeOnTheScreen();
+			expect(screen.getByTestId('room-view-header-more')).toBeOnTheScreen();
+
+			fireEvent.press(screen.getByTestId('room-view-header-more'));
+			const options = (showActionSheetRef as jest.Mock).mock.calls[0][0].options;
+			expect(options.map((option: { testID: string }) => option.testID)).toEqual([
+				'room-view-search',
+				'room-view-header-room-actions'
+			]);
+		});
+
+		it('demotes encryption and notifications to overflow when every warning is active', () => {
+			mockHasE2EEWarning = true;
+			mockCanToggleEncryption = true;
+			mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
+
+			renderRoomRightButtons();
+
+			expect(screen.getByTestId('room-view-header-threads')).toBeOnTheScreen();
+			expect(screen.getByTestId('room-view-header-call')).toBeOnTheScreen();
+			expect(screen.queryByTestId('room-view-header-encryption')).not.toBeOnTheScreen();
+			expect(screen.queryByTestId('room-view-push-troubleshoot')).not.toBeOnTheScreen();
+
+			fireEvent.press(screen.getByTestId('room-view-header-more'));
+			const options = (showActionSheetRef as jest.Mock).mock.calls[0][0].options;
+			expect(options.map((option: { testID: string }) => option.testID)).toEqual([
+				'room-view-header-encryption',
+				'room-view-push-troubleshoot',
+				'room-view-search',
+				'room-view-header-room-actions'
+			]);
+		});
+
+		it('promotes call to a bar item once threads is disabled, keeping the cap at two', () => {
+			mockThreadsEnabled = false;
+			mockHasE2EEWarning = true;
+			mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
+
+			renderRoomRightButtons();
+
+			expect(screen.queryByTestId('room-view-header-threads')).not.toBeOnTheScreen();
+			expect(screen.getByTestId('room-view-header-call')).toBeOnTheScreen();
+			expect(screen.getByTestId('room-view-header-encryption')).toBeOnTheScreen();
+			expect(screen.queryByTestId('room-view-push-troubleshoot')).not.toBeOnTheScreen();
+		});
+
+		it('opens Room Actions from the overflow menu', () => {
+			renderRoomRightButtons();
+
+			fireEvent.press(screen.getByTestId('room-view-header-more'));
+			const options = (showActionSheetRef as jest.Mock).mock.calls[0][0].options;
+			const roomActionsOption = options.find((option: { testID: string }) => option.testID === 'room-view-header-room-actions');
+			roomActionsOption.onPress();
+
+			expect(mockGoRoomActionsView).toHaveBeenCalledWith();
+		});
+
+		it('hides the call bar item on a self DM', () => {
+			mockRoomState = { room: { rid: 'rid-1', t: 'd', name: 'user' } };
+			mockUnreads = { ...mockUnreads, isSelfDm: true };
+
+			renderRoomRightButtons();
+
+			expect(screen.queryByTestId('room-view-header-call')).not.toBeOnTheScreen();
+		});
 	});
 
-	it('labels the call button with the room accessibility name', () => {
-		renderRoomRightButtons();
+	describe('on Android', () => {
+		beforeEach(() => {
+			mockIsIOS = false;
+		});
 
-		expect(screen.getByTestId('header-call-button-stub')).toHaveProp('accessibilityLabel', 'Call channel label');
+		it('renders every present item directly with no overflow menu', () => {
+			mockHasE2EEWarning = true;
+			mockCanToggleEncryption = true;
+			mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
+
+			renderRoomRightButtons();
+
+			expect(screen.getByTestId('room-view-header-encryption')).toBeOnTheScreen();
+			expect(screen.getByTestId('room-view-push-troubleshoot')).toBeOnTheScreen();
+			expect(screen.getByTestId('room-view-header-threads')).toBeOnTheScreen();
+			expect(screen.getByTestId('room-view-search')).toBeOnTheScreen();
+			expect(screen.queryByTestId('room-view-header-more')).not.toBeOnTheScreen();
+		});
 	});
 
-	it('hides the call button on a self DM', () => {
-		mockRoomState = { room: { rid: 'rid-1', t: 'd', name: 'user' } };
-		mockUnreads = { ...mockUnreads, isSelfDm: true };
+	describe('on iPad', () => {
+		beforeEach(() => {
+			mockIsTablet = true;
+		});
 
-		renderRoomRightButtons();
+		it('renders every present item directly with no overflow menu', () => {
+			renderRoomRightButtons();
 
-		expect(screen.queryByTestId('header-call-button-stub')).not.toBeOnTheScreen();
-		expect(screen.getByTestId('room-view-search')).toBeOnTheScreen();
+			expect(screen.getByTestId('room-view-header-threads')).toBeOnTheScreen();
+			expect(screen.getByTestId('room-view-search')).toBeOnTheScreen();
+			expect(screen.queryByTestId('room-view-header-more')).not.toBeOnTheScreen();
+		});
 	});
 
-	it('enables the encryption button and disables the others on an e2ee warning with permission', () => {
-		mockHasE2EEWarning = true;
-		mockCanToggleEncryption = true;
-		mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
+	it.each([false, true])(
+		'routes notification issues to push troubleshooting from the overflow menu (master-detail: %s)',
+		isMasterDetail => {
+			mockIsMasterDetail = isMasterDetail;
+			mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
+			mockRoomState = { room: { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general' } };
 
-		renderRoomRightButtons();
+			renderRoomRightButtons();
 
-		expect(screen.getByTestId('room-view-header-encryption')).toHaveProp('disabled', false);
-		expect(screen.getByTestId('room-view-header-threads')).toHaveProp('disabled', true);
-		expect(screen.getByTestId('room-view-search')).toHaveProp('disabled', true);
-		expect(screen.getByTestId('header-call-button-stub')).toHaveProp('disabled', true);
-		expect(screen.getByTestId('room-view-push-troubleshoot')).toHaveProp('disabled', true);
-	});
+			fireEvent.press(screen.getByTestId('room-view-header-more'));
+			const options = (showActionSheetRef as jest.Mock).mock.calls[0][0].options;
+			const notificationsOption = options.find((option: { testID: string }) => option.testID === 'room-view-push-troubleshoot');
+			notificationsOption.onPress();
+			expect(mockNavigation.navigate).toHaveBeenCalledWith(
+				...(isMasterDetail
+					? ['ModalStackNavigator', { screen: 'PushTroubleshootView', params: undefined }]
+					: ['PushTroubleshootView', undefined])
+			);
+		}
+	);
 
-	it('disables the encryption button on an e2ee warning without permission', () => {
-		mockHasE2EEWarning = true;
-
-		renderRoomRightButtons();
-
-		expect(screen.getByTestId('room-view-header-encryption')).toHaveProp('disabled', true);
-	});
-
-	it.each([false, true])('routes notification issues to push troubleshooting (master-detail: %s)', isMasterDetail => {
-		mockIsMasterDetail = isMasterDetail;
-		mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
-		mockRoomState = { room: { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general' } };
-
-		renderRoomRightButtons();
-
-		expect(screen.getByTestId('room-view-push-troubleshoot')).toHaveProp('color', '#f00');
-		fireEvent.press(screen.getByTestId('room-view-push-troubleshoot'));
-		expect(mockNavigation.navigate).toHaveBeenCalledWith(
-			...(isMasterDetail
-				? ['ModalStackNavigator', { screen: 'PushTroubleshootView', params: undefined }]
-				: ['PushTroubleshootView', undefined])
-		);
-	});
-
-	it.each([false, true])('routes disabled Room notifications to preferences (master-detail: %s)', isMasterDetail => {
-		mockIsMasterDetail = isMasterDetail;
-		mockRoomState = { room: { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general', disableNotifications: true } };
-
-		renderRoomRightButtons();
-
-		expect(screen.getByTestId('room-view-push-troubleshoot')).toHaveProp('color', '');
-		fireEvent.press(screen.getByTestId('room-view-push-troubleshoot'));
-		const params = { rid: 'rid-1', room: mockRoomState.room };
-		expect(mockNavigation.navigate).toHaveBeenCalledWith(
-			...(isMasterDetail ? ['ModalStackNavigator', { screen: 'NotificationPrefView', params }] : ['NotificationPrefView', params])
-		);
-	});
-
-	it('does not navigate from the notification button without a subscription', () => {
-		mockRoomState = { room: { rid: 'rid-1', t: 'c', name: 'general', disableNotifications: true } };
-
-		renderRoomRightButtons();
-
-		fireEvent.press(screen.getByTestId('room-view-push-troubleshoot'));
-
-		expect(mockNavigation.navigate).not.toHaveBeenCalled();
-	});
-
-	it('hides the threads button when threads are disabled', () => {
-		mockThreadsEnabled = false;
-
-		renderRoomRightButtons();
-
-		expect(screen.queryByTestId('room-view-header-threads')).not.toBeOnTheScreen();
-		expect(screen.getByTestId('room-view-search')).toBeOnTheScreen();
-	});
-
-	it('labels the threads button without unreads', () => {
-		renderRoomRightButtons();
-
-		expect(screen.getByTestId('room-view-header-threads')).toHaveProp('accessibilityLabel', 'Threads');
-	});
-
-	it('labels the threads button with the direct mention unread count', () => {
-		mockUnreads = { ...mockUnreads, tunread: ['tm-1'], tunreadUser: ['tm-1'] };
-
-		renderRoomRightButtons();
-
-		expect(screen.getByTestId('room-view-header-threads')).toHaveProp('accessibilityLabel', 'Threads, 1 unread, direct mention');
-	});
-
-	it('labels the threads button with the group mention unread count', () => {
-		mockUnreads = { ...mockUnreads, tunread: ['tm-1'], tunreadGroup: ['tm-1'] };
-
-		renderRoomRightButtons();
-
-		expect(screen.getByTestId('room-view-header-threads')).toHaveProp('accessibilityLabel', 'Threads, 1 unread, group mention');
-	});
-
-	it('labels the threads button with the plain unread count', () => {
-		mockUnreads = { ...mockUnreads, tunread: ['tm-1', 'tm-2'] };
-
-		renderRoomRightButtons();
-
-		expect(screen.getByTestId('room-view-header-threads')).toHaveProp('accessibilityLabel', 'Threads, 2 unread');
-	});
-
-	it('navigates to the threads and search screens on stack mode', () => {
+	it('navigates to the threads screen', () => {
 		mockRoomState = { room: { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
 
 		renderRoomRightButtons();
 
 		fireEvent.press(screen.getByTestId('room-view-header-threads'));
 		expect(mockNavigation.navigate).toHaveBeenCalledWith('ThreadMessagesView', { rid: 'rid-1', t: 'c' });
-
-		fireEvent.press(screen.getByTestId('room-view-search'));
-		expect(mockNavigation.navigate).toHaveBeenCalledWith('SearchMessagesView', { rid: 'rid-1', t: 'c', encrypted: true });
 	});
 
-	it('navigates through the modal stack on master-detail mode', () => {
-		mockIsMasterDetail = true;
-		mockRoomState = { room: { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
-
-		renderRoomRightButtons();
-
-		fireEvent.press(screen.getByTestId('room-view-header-threads'));
-		expect(mockNavigation.navigate).toHaveBeenCalledWith('ModalStackNavigator', {
-			screen: 'ThreadMessagesView',
-			params: { rid: 'rid-1', t: 'c' }
-		});
-
-		fireEvent.press(screen.getByTestId('room-view-search'));
-		expect(mockNavigation.navigate).toHaveBeenCalledWith('ModalStackNavigator', {
-			screen: 'SearchMessagesView',
-			params: { rid: 'rid-1', t: 'c', encrypted: true, showCloseModal: true }
-		});
-	});
-
-	it.each([false, true])('offers encryption navigation while other buttons are disabled (master-detail: %s)', isMasterDetail => {
-		mockIsMasterDetail = isMasterDetail;
+	it('offers encryption navigation from the overflow menu while other bar items are disabled', () => {
 		mockHasE2EEWarning = true;
 		mockCanToggleEncryption = true;
 		mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
 		mockRoomState = { room: { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general' } };
 		renderRoomRightButtons();
 
-		expect(screen.getByTestId('room-view-header-threads')).toHaveProp('disabled', true);
-		expect(screen.getByTestId('room-view-search')).toHaveProp('disabled', true);
-		expect(screen.getByTestId('room-view-push-troubleshoot')).toHaveProp('disabled', true);
-		expect(screen.getByTestId('room-view-header-encryption')).toHaveProp('disabled', false);
+		fireEvent.press(screen.getByTestId('room-view-header-more'));
+		const options = (showActionSheetRef as jest.Mock).mock.calls[0][0].options;
+		const encryptionOption = options.find((option: { testID: string }) => option.testID === 'room-view-header-encryption');
+		expect(encryptionOption.enabled).toBe(true);
 
-		fireEvent.press(screen.getByTestId('room-view-header-encryption'));
+		encryptionOption.onPress();
 		expect(logEvent).toHaveBeenCalledTimes(1);
 		expect(logEvent).toHaveBeenCalledWith(events.ROOM_GO_E2EE);
-		expect(mockNavigation.navigate).toHaveBeenCalledWith(
-			...(isMasterDetail
-				? ['ModalStackNavigator', { screen: 'E2EEToggleRoomView', params: { rid: 'rid-1' } }]
-				: ['E2EEToggleRoomView', { rid: 'rid-1' }])
-		);
+		expect(mockNavigation.navigate).toHaveBeenCalledWith('E2EEToggleRoomView', { rid: 'rid-1' });
 	});
 });

@@ -19,7 +19,22 @@ jest.mock('~/lib/helpers/getRoomAccessibilityLabel', () => ({ __esModule: true, 
 jest.mock('~/lib/methods/helpers', () => ({
 	...jest.requireActual('~/lib/methods/helpers'),
 	getRoomTitle: () => 'Room Title',
-	isGroupChat: () => false
+	isGroupChat: () => false,
+	isTablet: true
+}));
+jest.mock('~/lib/hooks/useVideoConf', () => ({
+	useVideoConf: () => ({ showInitCallActionSheet: jest.fn(), callEnabled: false, disabledTooltip: false })
+}));
+jest.mock('~/lib/hooks/useNewMediaCall', () => ({
+	useNewMediaCall: () => ({
+		openNewMediaCall: jest.fn(),
+		startCallImmediate: jest.fn(),
+		hasMediaCallPermission: false,
+		isInActiveCall: false
+	})
+}));
+jest.mock('~/views/RoomView/hooks/useGoRoomActionsView', () => ({
+	useGoRoomActionsView: () => jest.fn()
 }));
 
 let mockAppState = {
