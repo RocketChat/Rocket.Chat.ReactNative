@@ -46,15 +46,30 @@ tags:
     label: Should navigate to team channels view
 
 # Team Channels Header
-- assertVisible:
-    id: room-header
-    label: Should have actions button
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - assertVisible:
+          id: room-header
+          label: Should have actions button
 - assertVisible:
     id: team-channels-view-create
     label: Should have team channels button
-- assertVisible:
-    id: team-channels-view-search
-    label: Should have search button
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: magnifyingglass
+          label: Should have system search bar
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - assertVisible:
+          id: team-channels-view-search
+          label: Should have search button
 
 # Team Channels Header Usage
 - tapOn:
