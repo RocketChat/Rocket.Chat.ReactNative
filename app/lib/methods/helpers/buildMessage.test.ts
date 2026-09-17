@@ -1,3 +1,4 @@
+import { messagesStatus } from '~/lib/constants/messagesStatus';
 import buildMessage from './buildMessage';
 import normalizeMessage from './normalizeMessage';
 
@@ -6,8 +7,8 @@ describe('buildMessage', () => {
 		const input = { _id: 'm1', msg: 'hi', status: 1 } as any;
 		const result = buildMessage(input) as any;
 
-		expect(input.status).toBe(0);
-		expect(result?.status).toBe(0);
+		expect(input.status).toBe(messagesStatus.SENT);
+		expect(result?.status).toBe(messagesStatus.SENT);
 		expect(result?.attachments).toEqual([]);
 	});
 });
@@ -148,7 +149,7 @@ describe('normalizeMessage', () => {
 		expect((normalizeMessage({ _id: 'm1' } as any) as any).starred).toBeUndefined();
 	});
 
-	it('is not idempotent: a second pass corrupts translations and empties urls', () => {
+	it('is idempotent: a second pass leaves canonical translations and urls unchanged', () => {
 		const msg = {
 			_id: 'm1',
 			translations: { en: 'hi' },
@@ -162,10 +163,12 @@ describe('normalizeMessage', () => {
 		expect(msg.translations).toEqual([{ _id: 'm1en', language: 'en', value: 'hi' }]);
 		expect(msg.urls).toEqual([{ _id: 0, title: 'T', url: 'https://a.com/x' }]);
 
+		const afterFirstPass = JSON.stringify(msg);
 		normalizeMessage(msg);
 
-		expect(msg.translations).toEqual([{ _id: 'm10', language: '0', value: { _id: 'm1en', language: 'en', value: 'hi' } }]);
-		expect(msg.urls).toEqual([]);
+		expect(JSON.stringify(msg)).toBe(afterFirstPass);
+		expect(msg.translations).toEqual([{ _id: 'm1en', language: 'en', value: 'hi' }]);
+		expect(msg.urls).toEqual([{ _id: 0, title: 'T', url: 'https://a.com/x' }]);
 		expect(msg.reactions).toEqual([{ _id: 'm1:a:', emoji: ':a:', usernames: ['u'], names: ['N'] }]);
 		expect(msg.starred).toBe(true);
 	});
