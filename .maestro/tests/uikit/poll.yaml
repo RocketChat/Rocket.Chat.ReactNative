@@ -88,7 +88,7 @@ tags:
 # should render the poll blocks the app posted back
 - extendedWaitUntil:
     visible:
-      id: 'message-content-${output.question}'
+      text: '${output.question}'
     timeout: 60000
 - assertVisible:
     text: 'Option A'
@@ -97,12 +97,20 @@ tags:
 - assertVisible:
     text: '.*0.00% \(0\).*'
 
-# should vote and see the results update
-# The vote buttons carry the app's raw i18n key: mobile only translates app keys on action
-# button labels, not inside blocks.
+# should vote and see the results
 - tapOn:
     text: '(poll_vote|Vote)'
     index: 0
+- tapOn:
+    id: 'header-back'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room.name}
 - extendedWaitUntil:
     visible:
       text: '.*100.00% \(1\).*'
