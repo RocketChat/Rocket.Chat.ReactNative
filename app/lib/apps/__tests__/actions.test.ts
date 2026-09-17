@@ -1,24 +1,24 @@
 import { ActionTypes, ModalActions } from '~/containers/UIKit/interfaces';
-import { generateTriggerId, handlePayloadUserInteraction, triggerAction } from './actions';
-import EventEmitter from './helpers/events';
-import fetch from './helpers/fetch';
-import Navigation from '../navigation/appNavigation';
+import { generateTriggerId, handlePayloadUserInteraction, triggerAction } from '../actions';
+import EventEmitter from '~/lib/methods/helpers/events';
+import fetch from '~/lib/methods/helpers/fetch';
+import Navigation from '~/lib/navigation/appNavigation';
 
-jest.mock('./helpers', () => ({
+jest.mock('~/lib/methods/helpers', () => ({
 	random: jest.fn(() => 'trigger-fixed-id')
 }));
 
-jest.mock('./helpers/fetch', () => jest.fn());
+jest.mock('~/lib/methods/helpers/fetch', () => jest.fn());
 
-jest.mock('./helpers/events', () => ({
+jest.mock('~/lib/methods/helpers/events', () => ({
 	emit: jest.fn()
 }));
 
-jest.mock('../navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	navigate: jest.fn()
 }));
 
-jest.mock('../services/sdk', () => ({
+jest.mock('~/lib/services/sdk', () => ({
 	__esModule: true,
 	default: {
 		currentLogin: {

@@ -2,7 +2,7 @@ import { type IAppActionButton } from './definitions';
 import { ActionTypes, ModalActions } from '~/containers/UIKit/interfaces';
 import { LISTENER } from '~/containers/Toast';
 import I18n from '~/i18n';
-import { triggerAction } from '~/lib/methods/actions';
+import { triggerAction } from './actions';
 import EventEmitter from '~/lib/methods/helpers/events';
 import log from '~/lib/methods/helpers/log';
 

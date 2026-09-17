@@ -2,11 +2,11 @@ import { type ServerInteraction } from '@rocket.chat/ui-kit';
 
 import { type ITriggerAction, ModalActions, type TModalAction } from '~/containers/UIKit/interfaces';
 import { toServerModalInteractionType, toUserInteraction } from '~/containers/UIKit/interactionAdapters';
-import EventEmitter from './helpers/events';
-import fetch from './helpers/fetch';
-import { random } from './helpers';
-import Navigation from '../navigation/appNavigation';
-import sdk from '../services/sdk';
+import EventEmitter from '~/lib/methods/helpers/events';
+import fetch from '~/lib/methods/helpers/fetch';
+import { random } from '~/lib/methods/helpers';
+import Navigation from '~/lib/navigation/appNavigation';
+import sdk from '~/lib/services/sdk';
 
 const triggersId = new Map();
 
