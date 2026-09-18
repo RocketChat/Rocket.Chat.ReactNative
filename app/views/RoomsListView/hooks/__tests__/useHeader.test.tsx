@@ -137,14 +137,14 @@ describe('RoomsListView useHeader', () => {
 		expect(testIDs).toEqual(['rooms-list-view-create-channel', 'rooms-list-view-directory']);
 	});
 
-	it('configures a stacked system search bar instead of a right-cluster search item', () => {
+	it('configures a system search bar instead of a right-cluster search item', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
 		const rightButtons: ReactElement<{ testID: string }>[] = options.headerRight().props.children.filter(Boolean);
 		expect(rightButtons.some(button => button.props.testID === 'rooms-list-view-search')).toBe(false);
 
-		expect(options.headerSearchBarOptions.placement).toBe('stacked');
+		expect(options.headerSearchBarOptions.placement).toBe('automatic');
 		expect(options.headerSearchBarOptions.ref.current).toBeNull();
 
 		options.headerSearchBarOptions.onFocus();
