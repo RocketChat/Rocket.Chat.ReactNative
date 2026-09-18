@@ -38,6 +38,7 @@ import { useSubscriptions } from './hooks/useSubscriptions';
 import styles from './styles';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
+const BOTTOM_SEARCH_TOOLBAR_HEIGHT = hasNativeHeaderBar ? 44 : 0;
 
 const RoomsListView = memo(function RoomsListView() {
 	useHeader();
@@ -139,7 +140,7 @@ const RoomsListView = memo(function RoomsListView() {
 			extraData={searchEnabled ? searchResults : subscriptions}
 			keyExtractor={item => `${item.rid}-${searchEnabled}`}
 			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
-			contentContainerStyle={{ paddingBottom: bottom }}
+			contentContainerStyle={{ paddingBottom: bottom + BOTTOM_SEARCH_TOOLBAR_HEIGHT }}
 			renderItem={renderItem}
 			ListHeaderComponent={ListHeader}
 			ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}
