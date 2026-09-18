@@ -4,6 +4,7 @@ import database from '../database';
 import { getThreadById } from '../database/services/Thread';
 import { Encryption } from '../encryption';
 import sdk from '../services/sdk';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import buildMessage from './helpers/buildMessage';
 import log from './helpers/log';
 
@@ -57,6 +58,7 @@ const mockedGetThreadById = getThreadById as jest.MockedFunction<typeof getThrea
 const mockedBuildMessage = buildMessage as jest.MockedFunction<typeof buildMessage>;
 const mockedDecryptMessages = Encryption.decryptMessages as jest.Mock;
 const mockedLog = log as jest.Mock;
+const mockedSanitizedRaw = sanitizedRaw as jest.Mock;
 
 const TMID = 'PARENT_ID';
 const RID = 'ROOM_ID';
@@ -368,6 +370,68 @@ describe('loadThreadMessages', () => {
 		expect(getMock).toHaveBeenCalledWith('thread_messages');
 		expect(getMock).not.toHaveBeenCalledWith('threads');
 		expect(mockedGetThreadById).not.toHaveBeenCalled();
+	});
+
+	it('updates a stale threads record when local _updatedAt is a timestamp number', async () => {
+		const parent = buildParent(new Date('2026-01-02T00:00:00.000Z'), [{ emoji: ':thumbsup:', usernames: ['rocket.cat'] }]);
+		mockedMethodCall.mockResolvedValue([parent, buildReply()] as any);
+
+		const updated: any = {};
+		const threadRecord = {
+			id: TMID,
+			_updatedAt: new Date('2026-01-01T00:00:00.000Z').getTime(),
+			prepareUpdate: jest.fn((fn: any) => {
+				fn(updated);
+				return updated;
+			})
+		};
+		mockedGetThreadById.mockResolvedValue(threadRecord as any);
+
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(threadRecord.prepareUpdate).toHaveBeenCalledTimes(1);
+		expect(updated.reactions).toEqual(parent.reactions);
+		expect(batched).toContain(updated);
+	});
+
+	it('does not update when local _updatedAt is a string mixed with a Date parent', async () => {
+		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-02T00:00:00.000Z'), []), buildReply()] as any);
+
+		const threadRecord = { id: TMID, _updatedAt: '2026-01-01T00:00:00.000Z', prepareUpdate: jest.fn() };
+		mockedGetThreadById.mockResolvedValue(threadRecord as any);
+
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(threadRecord.prepareUpdate).not.toHaveBeenCalled();
+		expect(threadsCreated).toHaveLength(0);
+	});
+
+	it('logs and still resolves when getting the threads collection fails', async () => {
+		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-02'), []), buildReply()] as any);
+		mockedGetThreadById.mockResolvedValue(null);
+		const getError = new Error('threads get boom');
+		(database.active.get as jest.Mock).mockImplementation((table: string) => {
+			if (table === 'threads') {
+				throw getError;
+			}
+			return threadMessagesCollection;
+		});
+
+		const result = await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(mockedLog).toHaveBeenCalledWith(getError);
+		expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ _id: 'REPLY_ID' })]));
+		expect(dbBatch()).not.toHaveBeenCalled();
+	});
+
+	it('sanitizes the threads raw id from the parent _id', async () => {
+		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-02'), []), buildReply()] as any);
+		mockedGetThreadById.mockResolvedValue(null);
+
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(mockedSanitizedRaw).toHaveBeenCalledWith({ id: TMID }, threadsCollection.schema);
+		expect(mockedSanitizedRaw).toHaveBeenCalledWith({ id: 'REPLY_ID' }, threadMessagesCollection.schema);
 	});
 });
 
