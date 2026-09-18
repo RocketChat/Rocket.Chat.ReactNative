@@ -92,7 +92,7 @@ async function deleteTestUser(server, admin, userId) {
 async function downloadFixtures(server, test) {
 	const fixtures = new Map();
 	for (const [remote, name] of REMOTE) {
-		const r = await fetch(`${server}/file-upload/${remote}?download=1`, { headers: test.headers });
+			const r = await fetch(`${server}/file-upload/${remote}?download=1`, { headers: test.headers });
 		if (!r.ok) throw new Error(`${name}: HTTP ${r.status}`);
 		const buf = Buffer.from(await r.arrayBuffer());
 		if (!buf.length) throw new Error(`${name}: empty body`);
@@ -159,6 +159,7 @@ function findDownloads() {
 	if (found) return found;
 	execFileSync('xcrun', ['simctl', 'launch', UDID, 'com.apple.DocumentsApp'], { stdio: 'ignore' });
 	execFileSync('sleep', ['5'], { stdio: 'ignore' });
+	console.log(execFileSync('find', [base, '-maxdepth', '5', '-print'], { encoding: 'utf8' }));
 	const retry = scan();
 	if (!retry) throw new Error(`Downloads not found under ${base}`);
 	return retry;
