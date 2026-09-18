@@ -196,12 +196,13 @@ export const useHeader = () => {
 			]);
 
 			navigation.setOptions({
-				headerLargeTitle: true,
+				headerLargeTitle: false,
 				headerTitle: nativeBarTitle,
 				headerLeft,
-				headerStyle: { backgroundColor: `${colors.surfaceNeutral}E6` },
-				headerLargeTitleStyle: { color: colors.fontTitlesLabels },
-				scrollEdgeEffects: { top: 'automatic' },
+				headerStyle: { backgroundColor: colors.surfaceNeutral },
+				headerTransparent: false,
+				headerTitleStyle: { color: colors.fontTitlesLabels },
+				scrollEdgeEffects: { top: 'hidden' },
 				headerSearchBarOptions: {
 					ref: searchBarRef,
 					placement: 'automatic',

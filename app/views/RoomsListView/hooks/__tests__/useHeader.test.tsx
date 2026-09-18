@@ -93,13 +93,13 @@ describe('RoomsListView useHeader', () => {
 		};
 	});
 
-	it('sets a native string title with a large title on iPhone', () => {
+	it('sets a native string title without a large title on iPhone', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
 		expect(typeof options.headerTitle).toBe('string');
 		expect(options.headerTitle).toBe('Chats');
-		expect(options.headerLargeTitle).toBe(true);
+		expect(options.headerLargeTitle).toBe(false);
 	});
 
 	it.each([
