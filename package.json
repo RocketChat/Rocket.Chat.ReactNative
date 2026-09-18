@@ -118,7 +118,7 @@
 		"react-native-popover-view": "5.1.7",
 		"react-native-reanimated": "4.6.0",
 		"react-native-safe-area-context": "^5.5.2",
-		"react-native-screens": "~4.26.2",
+		"react-native-screens": "~4.28.0",
 		"react-native-skeleton-placeholder": "5.2.4",
 		"react-native-svg": "^15.12.1",
 		"react-native-url-polyfill": "2.0.0",
