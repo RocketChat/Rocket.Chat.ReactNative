@@ -109,7 +109,7 @@ import { appStart } from '~/actions/app';
 import { connectSuccess } from '~/actions/connect';
 import { APP, LOGIN, LOGOUT, SERVER } from '~/actions/actionsTypes';
 import { RootEnum } from '~/definitions';
-import deepLinkingRoot from '../deepLinking';
+import deepLinkingRoot, { shouldAutoConfirmDeepLinkLogin } from '../deepLinking';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getServerUserIdKey } from '~/lib/constants/keys';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
@@ -340,46 +340,24 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		emitSpy.mockRestore();
 	});
 
-	// Under RUNNING_E2E_TESTS the prompt is auto-confirmed so most flows don't have to dismiss a
-	// native Alert — except when the deep link carries `forceLoginPrompt=true`, which opts a
-	// dedicated e2e flow back into the real prompt (see the deeplink.yaml Maestro test).
-	describe('RUNNING_E2E_TESTS auto-confirm gate', () => {
-		const original = process.env.RUNNING_E2E_TESTS;
-		beforeEach(() => {
-			process.env.RUNNING_E2E_TESTS = 'true';
-			jest.mocked(showConfirmationAlert).mockClear();
-		});
-		afterEach(() => {
-			process.env.RUNNING_E2E_TESTS = original;
+	// Marker decision behind the login-confirmation bypass (vuln fix): deleting or
+	// inverting the forceLoginPrompt check must fail here. Env wiring itself is
+	// compile-time inlined, so it's covered by Maestro deeplink.yaml instead.
+	describe('shouldAutoConfirmDeepLinkLogin', () => {
+		it('auto-confirms when isE2E with no marker', () => {
+			expect(shouldAutoConfirmDeepLinkLogin(true, {})).toBe(true);
 		});
 
-		it('auto-confirms without showing the prompt when no forceLoginPrompt marker is present', async () => {
-			const { store, dispatchedActions } = setupStore();
-			const loginRequested = () => dispatchedActions.some(a => a.type === LOGIN.REQUEST);
-
-			store.dispatch(deepLinkingOpen(makeParamsWithToken()));
-			await flushSagaMicrotasks();
-			await jest.advanceTimersByTimeAsync(1000);
-			await flushSagaMicrotasks();
-			store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
-			await flushSagaMicrotasks();
-			store.dispatch(connectSuccess());
-			await flushSagaMicrotasks();
-
-			// No prompt shown, yet login still proceeds — pre-fix silent behavior preserved.
-			expect(jest.mocked(showConfirmationAlert)).not.toHaveBeenCalled();
-			expect(loginRequested()).toBe(true);
+		it('shows the prompt when isE2E with forceLoginPrompt=true', () => {
+			expect(shouldAutoConfirmDeepLinkLogin(true, { forceLoginPrompt: 'true' })).toBe(false);
 		});
 
-		it('shows the real prompt when the deep link carries forceLoginPrompt=true', async () => {
-			const { store } = setupStore();
+		it('shows the prompt when not isE2E with no marker', () => {
+			expect(shouldAutoConfirmDeepLinkLogin(false, {})).toBe(false);
+		});
 
-			store.dispatch(deepLinkingOpen(makeParamsWithToken({ forceLoginPrompt: 'true' })));
-			await flushSagaMicrotasks();
-			await jest.advanceTimersByTimeAsync(1000);
-			await flushSagaMicrotasks();
-
-			expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+		it('shows the prompt when not isE2E with forceLoginPrompt=true', () => {
+			expect(shouldAutoConfirmDeepLinkLogin(false, { forceLoginPrompt: 'true' })).toBe(false);
 		});
 	});
 
