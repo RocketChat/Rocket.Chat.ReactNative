@@ -144,25 +144,85 @@ function bootedIOSUDID() {
 	return booted[0].udid;
 }
 
+function findFileProviderAppGroup(base) {
+	for (const group of fs.readdirSync(base)) {
+		const groupPath = path.join(base, group);
+		const metadata = path.join(
+			groupPath,
+			'.com.apple.mobile_container_manager.metadata.plist'
+		);
+
+		if (!fs.existsSync(metadata)) {
+			continue;
+		}
+
+		try {
+			const identifier = execFileSync(
+				'plutil',
+				[
+					'-extract',
+					'MCMMetadataIdentifier',
+					'raw',
+					metadata
+				],
+				{ encoding: 'utf8' }
+			).trim();
+
+			if (identifier === 'group.com.apple.FileProvider.LocalStorage') {
+				return group;
+			}
+		} catch {}
+	}
+
+	return null;
+}
+
+
 function findDownloads() {
 	const UDID = bootedIOSUDID();
-	const base = path.join(os.homedir(), 'Library/Developer/CoreSimulator/Devices', UDID, 'data/Containers/Shared/AppGroup');
-	if (!fs.existsSync(base)) throw new Error(`simulator data directory not found: ${base}`);
-	const scan = () => {
-		for (const g of fs.readdirSync(base)) {
-			const p = path.join(base, g, 'File Provider Storage/Downloads');
-			if (fs.existsSync(p)) return p;
+
+	const base = path.join(
+		os.homedir(),
+		'Library',
+		'Developer',
+		'CoreSimulator',
+		'Devices',
+		UDID,
+		'data',
+		'Containers',
+		'Shared',
+		'AppGroup'
+	);
+
+	if (!fs.existsSync(base)) {
+		throw new Error(`simulator data directory not found: ${base}`);
+	}
+
+	let group = findFileProviderAppGroup(base);
+
+	if (!group) {
+		execFileSync('xcrun', ['simctl', 'launch', UDID, 'com.apple.DocumentsApp'], { stdio: 'ignore' });
+	}
+
+	for (let attempt = 0; attempt < 15; attempt += 1) {
+		if (!group) {
+			group = findFileProviderAppGroup(base);
 		}
-		return null;
-	};
-	const found = scan();
-	if (found) return found;
-	execFileSync('xcrun', ['simctl', 'launch', UDID, 'com.apple.DocumentsApp'], { stdio: 'ignore' });
-	execFileSync('sleep', ['5'], { stdio: 'ignore' });
-	console.log(execFileSync('find', [base, '-maxdepth', '5', '-print'], { encoding: 'utf8' }));
-	const retry = scan();
-	if (!retry) throw new Error(`Downloads not found under ${base}`);
-	return retry;
+
+		if (group) {
+			const downloads = path.join(base, group, 'File Provider Storage', 'Downloads');
+
+			if (fs.existsSync(downloads)) {
+				return downloads;
+			}
+		}
+
+		execFileSync('sleep', ['1'], { stdio: 'ignore' });
+	}
+
+	throw new Error(
+		'File Provider LocalStorage Downloads directory not found'
+	);
 }
 
 function pushIOS(fixtures) {
