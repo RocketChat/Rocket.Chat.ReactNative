@@ -1,0 +1,110 @@
+diff --git a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
+index 8a41697..ead4691 100644
+--- a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
++++ b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
+@@ -23,6 +23,7 @@
+ NS_ASSUME_NONNULL_BEGIN
+ 
+ @property (nonatomic, retain) NSString *title;
++@property (nonatomic, retain) NSString *subtitle;
+ @property (nonatomic, retain) NSString *titleFontFamily;
+ @property (nonatomic, retain) NSNumber *titleFontSize;
+ @property (nonatomic, retain) NSString *titleFontWeight;
+diff --git a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
+index a54cb63..7a7d6b4 100644
+--- a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
++++ b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
+@@ -507,6 +507,11 @@ RNS_IGNORE_SUPER_CALL_END
+ 
+   if (shouldHide) {
+     navitem.title = config.title;
++#if RNS_IPHONE_OS_VERSION_AVAILABLE(26_0)
++    if (@available(iOS 26.0, *)) {
++      navitem.subtitle = config.subtitle;
++    }
++#endif // RNS_IPHONE_OS_VERSION_AVAILABLE(26_0)
+ 
+     // Setting navigation bar visibility is split to mitigate iOS 26 bug with bar button items.
+     [navctr setNavigationBarHidden:YES animated:animated];
+@@ -648,6 +653,11 @@ RNS_IGNORE_SUPER_CALL_END
+   // This assignment should be done after `navitem.titleView = ...` assignment (iOS 16.0 bug).
+   // See: https://github.com/software-mansion/react-native-screens/issues/1570 (comments)
+   navitem.title = config.title;
++#if RNS_IPHONE_OS_VERSION_AVAILABLE(26_0)
++  if (@available(iOS 26.0, *)) {
++    navitem.subtitle = config.subtitle;
++  }
++#endif // RNS_IPHONE_OS_VERSION_AVAILABLE(26_0)
+   navitem.leftBarButtonItems = [config barButtonItemsFromConfigs:config.headerLeftBarButtonItems
+                                                 withCurrentItems:navitem.leftBarButtonItems];
+   navitem.rightBarButtonItems = [config barButtonItemsFromConfigs:config.headerRightBarButtonItems
+@@ -1025,6 +1035,7 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+   }
+ 
+   _title = RCTNSStringFromStringNilIfEmpty(newScreenProps.title);
++  _subtitle = RCTNSStringFromStringNilIfEmpty(newScreenProps.subtitle);
+   if (newScreenProps.titleFontFamily != oldScreenProps.titleFontFamily) {
+     _titleFontFamily = RCTNSStringFromStringNilIfEmpty(newScreenProps.titleFontFamily);
+   }
+diff --git a/node_modules/react-native-screens/lib/typescript/fabric/ScreenStackHeaderConfigNativeComponent.d.ts b/node_modules/react-native-screens/lib/typescript/fabric/ScreenStackHeaderConfigNativeComponent.d.ts
+index ec39792..785af97 100644
+--- a/node_modules/react-native-screens/lib/typescript/fabric/ScreenStackHeaderConfigNativeComponent.d.ts
++++ b/node_modules/react-native-screens/lib/typescript/fabric/ScreenStackHeaderConfigNativeComponent.d.ts
+@@ -32,6 +32,7 @@ export interface NativeProps extends ViewProps {
+     largeTitleColor?: ColorValue | undefined;
+     translucent?: boolean | undefined;
+     title?: string | undefined;
++    subtitle?: string | undefined;
+     titleFontFamily?: string | undefined;
+     titleFontSize?: CT.Int32 | undefined;
+     titleFontWeight?: string | undefined;
+diff --git a/node_modules/react-native-screens/lib/typescript/types.d.ts b/node_modules/react-native-screens/lib/typescript/types.d.ts
+index ff37881..7a7da9a 100644
+--- a/node_modules/react-native-screens/lib/typescript/types.d.ts
++++ b/node_modules/react-native-screens/lib/typescript/types.d.ts
+@@ -723,6 +723,14 @@ export interface ScreenStackHeaderConfigProps extends ViewProps {
+      * String that can be displayed in the header as a fallback for `headerTitle`.
+      */
+     title?: string | undefined;
++    /**
++     * String to display in the header underneath the title.
++     *
++     * @platform ios
++     *
++     * @supported iOS 26 or higher
++     */
++    subtitle?: string | undefined;
+     /**
+      * Allows for setting text color of the title.
+      */
+diff --git a/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts b/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts
+index da28c51..ef0cb5f 100644
+--- a/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts
+@@ -66,6 +66,7 @@ export interface NativeProps extends ViewProps {
+   largeTitleColor?: ColorValue | undefined;
+   translucent?: boolean | undefined;
+   title?: string | undefined;
++  subtitle?: string | undefined;
+   titleFontFamily?: string | undefined;
+   titleFontSize?: CT.Int32 | undefined;
+   titleFontWeight?: string | undefined;
+diff --git a/node_modules/react-native-screens/src/types.tsx b/node_modules/react-native-screens/src/types.tsx
+index 8594b73..c137d06 100644
+--- a/node_modules/react-native-screens/src/types.tsx
++++ b/node_modules/react-native-screens/src/types.tsx
+@@ -827,6 +827,14 @@ export interface ScreenStackHeaderConfigProps extends ViewProps {
+    * String that can be displayed in the header as a fallback for `headerTitle`.
+    */
+   title?: string | undefined;
++  /**
++   * String to display in the header underneath the title.
++   *
++   * @platform ios
++   *
++   * @supported iOS 26 or higher
++   */
++  subtitle?: string | undefined;
+   /**
+    * Allows for setting text color of the title.
+    */
