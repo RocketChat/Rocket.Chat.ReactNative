@@ -1,3 +1,19 @@
+diff --git a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfigViewManager.kt b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfigViewManager.kt
+index fa1b773..b2c5167 100644
+--- a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfigViewManager.kt
++++ b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfigViewManager.kt
+@@ -301,6 +301,11 @@ class ScreenStackHeaderConfigViewManager :
+         value: String?,
+     ) = Unit
+ 
++    override fun setSubtitle(
++        view: ScreenStackHeaderConfig?,
++        value: String?,
++    ) = Unit
++
+     override fun setTopInsetEnabled(
+         config: ScreenStackHeaderConfig,
+         topInsetEnabled: Boolean,
 diff --git a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
 index 8a41697..ead4691 100644
 --- a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
