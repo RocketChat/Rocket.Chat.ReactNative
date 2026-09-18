@@ -148,11 +148,20 @@ function findDownloads() {
 	const UDID = bootedIOSUDID();
 	const base = path.join(os.homedir(), 'Library/Developer/CoreSimulator/Devices', UDID, 'data/Containers/Shared/AppGroup');
 	if (!fs.existsSync(base)) throw new Error(`simulator data directory not found: ${base}`);
-	for (const g of fs.readdirSync(base)) {
-		const p = path.join(base, g, 'File Provider Storage/Downloads');
-		if (fs.existsSync(p)) return p;
-	}
-	throw new Error(`Downloads not found under ${base}`);
+	const scan = () => {
+		for (const g of fs.readdirSync(base)) {
+			const p = path.join(base, g, 'File Provider Storage/Downloads');
+			if (fs.existsSync(p)) return p;
+		}
+		return null;
+	};
+	const found = scan();
+	if (found) return found;
+	execFileSync('xcrun', ['simctl', 'launch', UDID, 'com.apple.DocumentsApp'], { stdio: 'ignore' });
+	execFileSync('sleep', ['5'], { stdio: 'ignore' });
+	const retry = scan();
+	if (!retry) throw new Error(`Downloads not found under ${base}`);
+	return retry;
 }
 
 function pushIOS(fixtures) {
