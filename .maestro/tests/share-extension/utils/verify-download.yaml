@@ -1,0 +1,71 @@
+appId: ${APP_ID}
+name: Verify Download
+tags:
+  - 'util'
+
+---
+# verify iOS download via Files app: if the file id is visible, the download landed; else delete any .download leftover and download again
+- runFlow:
+    when:
+      platform: 'iOS'
+    commands:
+      - evalScript: ${output.fileName = file.split('/').pop()}
+      - evalScript: ${output.iosfilename = output.fileName.split('.').join(', ')}
+      - runFlow:
+          when:
+            true: ${output.fileName.split('.')[1] === 'zip'}
+          commands:
+            - evalScript: ${output.iosfilename = 'test.zip, zip'}
+      - launchApp: com.apple.DocumentsApp
+      - extendedWaitUntil:
+          visible: 'Search'
+          timeout: 10000
+      - tapOn:
+          text: 'Search'
+          retryTapIfNoChange: true
+      - runFlow:
+          when:
+            notVisible: 'Grid view'
+          commands:
+            - tapOn:
+                text: 'Search'
+                retryTapIfNoChange: true
+      - extendedWaitUntil:
+          visible: 'Grid view'
+          timeout: 10000
+      - inputText: ${output.fileName}
+      # submit the Files search — without this the query sits unsubmitted, the check always warns and every file gets downloaded twice
+      - pressKey: enter
+      # let a fresh download land; optional so a missing file falls through to heal instead of failing
+      - extendedWaitUntil:
+          visible:
+            id: ${output.iosfilename}
+          timeout: 30000
+          optional: true
+      # file id not visible -> download failed: delete any .download leftover and download again (first, so its check runs in Files, not Safari)
+      - runFlow:
+          when:
+            notVisible:
+              id: ${output.iosfilename}
+          commands:
+            - runFlow:
+                when:
+                  visible: '.*\.download.*'
+                commands:
+                  - longPressOn: '.*\.download.*'
+                  - tapOn: 'Delete'
+                  - tapOn:
+                      text: 'Delete Now'
+                      optional: true
+            - launchApp: com.apple.mobilesafari
+            - runFlow:
+                file: 'download-file.yaml'
+                env:
+                  file: ${file}
+      # file id visible -> we have the file, back to Safari for the next download
+      - runFlow:
+          when:
+            visible:
+              id: ${output.iosfilename}
+          commands:
+            - launchApp: com.apple.mobilesafari

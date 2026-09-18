@@ -1,0 +1,66 @@
+appId: ${APP_ID}
+name: Download File
+tags:
+  - 'util'
+
+---
+# on most of the android emulator it shows 'Search or type URL'
+- runFlow:
+    when:
+      platform: 'android'
+      visible: '.*type URL.*'
+    commands:
+      - tapOn: '.*type URL.*'
+# on github action android emulator it shows 'Search or type web address' and testIds are different too
+- runFlow:
+    when:
+      platform: 'android'
+      visible: '.*Search or type web address.*'
+    commands:
+      - tapOn: '.*Search or type web address.*'
+
+- runFlow:
+    when:
+      platform: 'iOS'
+      visible: '.*View Bookmarks, Share Menu, and Open Tabs.*'
+    commands:
+      - tapOn: 'Close'
+# fresh Safari shows a Start Page onboarding card that steals address-bar focus, so the URL is never typed
+- runFlow:
+    when:
+      platform: 'iOS'
+      visible: 'Customize Start Page'
+    commands:
+      - tapOn: 'close'
+- runFlow:
+    when:
+      platform: 'iOS'
+    commands:
+      - tapOn: 'Search or enter website'
+      - runFlow:
+          when:
+            visible:
+              text: '.*Type English and Hindi'
+          commands:
+            - tapOn:
+                text: 'Continue'
+                index: 1
+
+- inputText: ${output.data.server}/file-upload/${file}?rc_uid=${output.login.userId}&rc_token=${output.login.authToken}&download=1
+- pressKey: enter
+
+- runFlow:
+    when:
+      platform: 'iOS'
+    commands:
+      - extendedWaitUntil:
+          visible: 'Download'
+          timeout: 60000
+      - tapOn: 'Download'
+- runFlow:
+    when:
+      platform: 'android'
+    commands:
+      - extendedWaitUntil:
+          visible: 'File downloaded'
+          timeout: 60000

@@ -1,0 +1,106 @@
+appId: ${APP_ID}
+name: Share File
+tags:
+  - 'util'
+
+---
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - pressKey: home
+      - launchApp: com.google.android.documentsui
+      - extendedWaitUntil:
+          visible: 'Files in Downloads'
+          timeout: 60000
+      - scrollUntilVisible:
+          element:
+            text: ${fileName}
+          timeout: 60000
+      - longPressOn: ${fileName}
+      - tapOn: 'Share'
+      - tapOn: 'Rocket.Chat'
+
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - launchApp: com.apple.DocumentsApp
+      - extendedWaitUntil:
+          visible: 'Search'
+          timeout: 10000
+      - tapOn:
+          text: 'Search'
+          retryTapIfNoChange: true
+      - runFlow:
+          when:
+            notVisible: 'Grid view'
+          commands:
+            - tapOn:
+                text: 'Search'
+                retryTapIfNoChange: true
+      - extendedWaitUntil:
+          visible: 'Grid view'
+          timeout: 10000
+      - inputText: ${fileName}
+      # submit the Files search — without this the query sits unsubmitted and the file id never appears
+      - pressKey: enter
+      - evalScript: ${output.iosfilename = fileName.split('.').join(', ')}
+      - runFlow:
+          when:
+            true: ${fileName.split('.')[1] === 'zip'}
+          commands:
+            - extendedWaitUntil:
+                visible:
+                  id: 'test.zip, zip'
+                timeout: 10000
+            - longPressOn:
+                id: 'test.zip, zip'
+      - runFlow:
+          when:
+            true: ${fileName.split('.')[1] !== 'zip'}
+          commands:
+            - extendedWaitUntil:
+                visible:
+                  id: ${output.iosfilename}
+                timeout: 10000
+            - longPressOn:
+                id: ${output.iosfilename}
+      - extendedWaitUntil:
+          visible: 'Share'
+          timeout: 10000
+      - tapOn: 'Share'
+      - runFlow:
+          when:
+            notVisible:
+              text: 'Rocket.Chat'
+          commands:
+            - tapOn:
+                point: '10%, 90%'
+            - longPressOn:
+                id: ${output.iosfilename}
+            - tapOn: 'Share'
+      - tapOn: 'Rocket.Chat'
+
+- extendedWaitUntil:
+    visible: 'Chats'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: 'share-extension-item-${output.room.name}'
+    timeout: 10000
+- tapOn:
+    id: 'share-extension-item-${output.room.name}'
+- extendedWaitUntil:
+    visible: 'Sending to ${output.room.name}'
+    timeout: 10000
+- tapOn:
+    id: 'message-composer-send'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- evalScript: ${output.newMessageCount = output.utils.roomMessageCount(output.user.username, output.user.password, output.room._id)}
+- assertTrue:
+    condition: ${output.newMessageCount === output.messageCount + 1}
+- evalScript: ${output.messageCount = output.newMessageCount}

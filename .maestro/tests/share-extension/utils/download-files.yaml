@@ -1,0 +1,89 @@
+appId: ${APP_ID}
+name: Download Files
+tags:
+  - 'util'
+
+---
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - clearState: com.android.chrome
+      - launchApp: com.android.chrome
+# On Android, chrome may ask to add account to the device
+- runFlow:
+    when:
+      visible: '.*Add account to device.*'
+      platform: Android
+    commands:
+      - tapOn:
+          text: 'Use without an account'
+          optional: true
+- runFlow:
+    when:
+      visible: '.*Chrome notifications make things easier.*'
+      platform: Android
+    commands:
+      - tapOn: 'No thanks'
+
+- runFlow:
+    when:
+      platform: ios
+    commands:
+      - launchApp: com.apple.mobilesafari
+
+# Pre-seeded uploads on the QA server — fixed ids are intentional fixtures, not random data.
+- runFlow:
+    file: 'download-and-verify.yaml'
+    env:
+      file: '8hbJ3HH6tBGxQk6QY/test.docx'
+- runFlow:
+    file: 'download-and-verify.yaml'
+    env:
+      file: 'juC7BJroRjHHostn5/test.html'
+- runFlow:
+    file: 'download-and-verify.yaml'
+    env:
+      file: 'Q8HDSij22PBJtZDgc/test.txt'
+- runFlow:
+    file: 'download-and-verify.yaml'
+    env:
+      file: 'H44YcW5DTDj6fASnN/test.zip'
+- runFlow:
+    file: 'download-and-verify.yaml'
+    env:
+      file: 'EgmkWnFjnGoktb7f4/test.wav'
+- runFlow:
+    file: 'download-and-verify.yaml'
+    env:
+      file: 'ccoC8yQxmqT9fdAMs/test.ogg'
+- runFlow:
+    file: 'download-and-verify.yaml'
+    env:
+      file: 'MPp42KbYLaAZzNqis/test.mp3'
+- runFlow:
+    file: 'download-and-verify.yaml'
+    env:
+      file: 'ZumNhPm24WBvWzEJu/test.mp4'
+- runFlow:
+    file: 'download-and-verify.yaml'
+    env:
+      file: 'MXMdYzmz9fSxeoF7H/image.png'
+
+# some ios related files
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - runFlow:
+          file: 'download-and-verify.yaml'
+          env:
+            file: 'CrmXg9mNbomgzC7iw/test.heic'
+      - runFlow:
+          file: 'download-and-verify.yaml'
+          env:
+            file: 'dKdmmLYEqbujkkJzn/test.mov'
+      - runFlow:
+          file: 'download-and-verify.yaml'
+          env:
+            file: 'jJNm36QhGhh4eJ9QS/test.m4a'

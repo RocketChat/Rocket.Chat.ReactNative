@@ -1,0 +1,98 @@
+appId: ${APP_ID}
+name: Share Extension
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-15
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.login = output.utils.login(output.user.username, output.user.password)}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password, 'p')}
+- evalScript: ${output.messageCount = 0}
+
+# download all the files which are need for test
+# - runFlow: './utils/download-files.yaml'
+
+# start app
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- killApp
+
+# share files
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'image.png'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.mp4'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.mp3'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.ogg'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.wav'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.docx'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.zip'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.txt'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.html'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.pdf'
+- runFlow:
+    when:
+      platform: iOS
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.heic'
+- runFlow:
+    when:
+      platform: iOS
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.mov'
+- runFlow:
+    when:
+      platform: iOS
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.m4a'
+
+# invalid uri shows a toast and returns to rooms list without crashing
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: 'rocketchat://shareextension?mediaUris=file:///nonexistent.jpg'
+- extendedWaitUntil:
+    visible: 'The shared file could not be found'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000

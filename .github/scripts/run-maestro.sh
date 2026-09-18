@@ -112,6 +112,14 @@ done < "$MAPFILE"
 echo "Main run will execute:"
 printf '  %s\n' "${FLOW_FILES[@]}"
 
+if [ "$SHARD" = "15" ]; then
+  if [ "$PLATFORM" = "android" ]; then
+    node scripts/push-downloads-to-sim.js --android
+  else
+    node scripts/push-downloads-to-sim.js --ios
+  fi
+fi
+
 run_main_suite() {
   rm -f "$MAIN_REPORT"
   if [ "$PLATFORM" = "android" ]; then
