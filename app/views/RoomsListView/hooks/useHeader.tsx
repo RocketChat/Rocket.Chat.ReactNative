@@ -52,7 +52,18 @@ export const useHeader = () => {
 	const navigation = useNavigation<any>();
 	const issuesWithNotifications = useAppSelector(state => state.troubleshootingNotification.issuesWithNotifications);
 	const notificationPresenceCap = useAppSelector(state => state.app.notificationPresenceCap);
+	const connecting = useAppSelector(state => state.meteor.connecting || state.server.loading || state.login.isFetching);
+	const connected = useAppSelector(state => state.meteor.connected);
+	const isFetchingRooms = useAppSelector(state => state.rooms.isFetching);
 	const { colors } = useTheme();
+
+	const nativeHeaderTitle = connecting
+		? i18n.t('Connecting')
+		: !connected
+			? i18n.t('Waiting_for_network')
+			: isFetchingRooms
+				? i18n.t('Updating')
+				: i18n.t('Chats');
 	const [
 		createPublicChannelPermission,
 		createPrivateChannelPermission,
@@ -174,7 +185,7 @@ export const useHeader = () => {
 
 			navigation.setOptions({
 				headerLargeTitle: false,
-				headerTitle: () => <RoomsListHeaderView search={search} searchEnabled={false} />,
+				headerTitle: nativeHeaderTitle,
 				headerLeft,
 				headerStyle: { backgroundColor: colors.surfaceNeutral },
 				headerTransparent: false,
@@ -284,7 +295,8 @@ export const useHeader = () => {
 		goToNewMessage,
 		startSearch,
 		stopSearch,
-		search
+		search,
+		nativeHeaderTitle
 	]);
 
 	useEffect(() => {
