@@ -162,6 +162,22 @@ describe('loadThreadMessages', () => {
 
 		expect(threadsCreated).toHaveLength(1);
 		expect(threadsCreated[0].reactions).toEqual(parent.reactions);
+		expect(threadsCreated[0].subscription).toBeUndefined();
+		expect(batched).toContain(threadsCreated[0]);
+	});
+
+	it('points the created threads record at the room subscription', async () => {
+		// NOTE: rid differs from parent.rid so the assertion proves the value comes from the rid parameter, not the parent.
+		const parent = { ...buildParent(new Date('2026-01-02'), []), subscription: { id: 'OLD_SUB_ID' } };
+		mockedMethodCall.mockResolvedValue([parent, buildReply()] as any);
+		mockedGetThreadById.mockResolvedValue(null);
+
+		await loadThreadMessages({ tmid: TMID, rid: 'OTHER_ROOM_ID' });
+
+		expect(threadsCollection.prepareCreate).toHaveBeenCalledTimes(1);
+		expect(threadsCreated).toHaveLength(1);
+		expect(threadsCreated[0].subscription.id).toBe('OTHER_ROOM_ID');
+		expect(threadsCreated[0]._raw).toEqual({ id: TMID });
 		expect(batched).toContain(threadsCreated[0]);
 	});
 
@@ -197,6 +213,21 @@ describe('loadThreadMessages', () => {
 
 		expect(threadRecord.prepareUpdate).not.toHaveBeenCalled();
 		expect(threadsCreated).toHaveLength(0);
+	});
+
+	it('leaves a newer threads record untouched and still writes the replies', async () => {
+		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-01'), []), buildReply()] as any);
+
+		const threadRecord = { id: TMID, _updatedAt: new Date('2026-01-02'), prepareUpdate: jest.fn() };
+		mockedGetThreadById.mockResolvedValue(threadRecord as any);
+
+		const result = await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(threadRecord.prepareUpdate).not.toHaveBeenCalled();
+		expect(threadsCollection.prepareCreate).not.toHaveBeenCalled();
+		expect(result).toEqual([expect.objectContaining({ _id: 'REPLY_ID' })]);
+		expect(batched).toHaveLength(1);
+		expect(batched[0]._id).toBe('REPLY_ID');
 	});
 
 	it('does not write the parent into thread_messages', async () => {
@@ -241,6 +272,102 @@ describe('loadThreadMessages', () => {
 		await loadThreadMessages({ tmid: TMID, rid: RID });
 
 		expect(Encryption.decryptMessages).toHaveBeenCalledWith(expect.arrayContaining([expect.objectContaining({ _id: TMID })]));
+	});
+
+	it('batches the thread upsert together with message creates and updates in one write', async () => {
+		const parent = buildParent(new Date('2026-01-03'), [{ emoji: ':thumbsup:', usernames: ['rocket.cat'] }]);
+		const updated: any = {};
+		const threadRecord = {
+			id: TMID,
+			_updatedAt: new Date('2026-01-02'),
+			prepareUpdate: jest.fn((fn: any) => {
+				fn(updated);
+				return updated;
+			})
+		};
+		mockedGetThreadById.mockResolvedValue(threadRecord as any);
+
+		const localReply = makeLocalThreadMessage({ id: 'R1', updatedAt: new Date('2026-01-01') });
+		localReply.msg = 'old';
+		setThreadMessageRecords([localReply]);
+		mockedMethodCall.mockResolvedValue([
+			parent,
+			{ _id: 'R1', rid: RID, tmid: TMID, msg: 'new', _updatedAt: new Date('2026-01-02') },
+			{ _id: 'R2', rid: RID, tmid: TMID, msg: 'reply', _updatedAt: new Date('2026-01-02') }
+		] as any);
+
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(mockedGetThreadById).toHaveBeenCalledWith(TMID);
+		expect(database.active.get as jest.Mock).toHaveBeenCalledWith('threads');
+		expect(threadRecord.prepareUpdate).toHaveBeenCalledTimes(1);
+		expect(updated.reactions).toEqual(parent.reactions);
+		expect(localReply.msg).toBe('new');
+		expect(dbWrite()).toHaveBeenCalledTimes(1);
+		expect(dbBatch()).toHaveBeenCalledTimes(1);
+		const batchArg = dbBatch().mock.calls[0][0];
+		expect(batchArg).toHaveLength(3);
+		expect(batchArg[0]).toBe(updated);
+		expect(batchArg).toContain(updated);
+		expect(batchArg).toContain(localReply);
+		expect(batchArg).toEqual(expect.arrayContaining([expect.objectContaining({ _id: 'R2' })]));
+	});
+
+	it('logs and still resolves when the threads lookup fails', async () => {
+		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-02'), []), buildReply()] as any);
+		const lookupError = new Error('threads lookup boom');
+		mockedGetThreadById.mockRejectedValue(lookupError);
+
+		const result = await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(mockedLog).toHaveBeenCalledWith(lookupError);
+		expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ _id: 'REPLY_ID' })]));
+		expect(dbBatch()).not.toHaveBeenCalled();
+	});
+
+	it('logs and still resolves when preparing the threads create fails', async () => {
+		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-02'), []), buildReply()] as any);
+		mockedGetThreadById.mockResolvedValue(null);
+		const createError = new Error('threads create boom');
+		threadsCollection.prepareCreate.mockImplementationOnce(() => {
+			throw createError;
+		});
+
+		const result = await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(mockedLog).toHaveBeenCalledWith(createError);
+		expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ _id: 'REPLY_ID' })]));
+		expect(dbBatch()).not.toHaveBeenCalled();
+	});
+
+	it('logs and still resolves when preparing the threads update fails', async () => {
+		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-02'), []), buildReply()] as any);
+		const updateError = new Error('threads update boom');
+		mockedGetThreadById.mockResolvedValue({
+			id: TMID,
+			_updatedAt: new Date('2026-01-01'),
+			prepareUpdate: jest.fn(() => {
+				throw updateError;
+			})
+		} as any);
+
+		const result = await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(mockedLog).toHaveBeenCalledWith(updateError);
+		expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ _id: 'REPLY_ID' })]));
+		expect(dbBatch()).not.toHaveBeenCalled();
+	});
+
+	it('does not touch the threads collection when the server returns no parent', async () => {
+		mockedMethodCall.mockResolvedValue([buildReply()] as any);
+		mockedGetThreadById.mockResolvedValue(null);
+
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		const getMock = database.active.get as jest.Mock;
+		expect(getMock).toHaveBeenCalledWith('thread_messages');
+		expect(getMock).not.toHaveBeenCalledWith('threads');
+		expect(mockedGetThreadById).not.toHaveBeenCalled();
 	});
 });
 
