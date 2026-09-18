@@ -199,11 +199,13 @@ export const useHeader = () => {
 				headerLargeTitle: true,
 				headerTitle: nativeBarTitle,
 				headerLeft,
+				headerStyle: { backgroundColor: `${colors.surfaceNeutral}E6` },
 				scrollEdgeEffects: { top: 'automatic' },
 				headerSearchBarOptions: {
 					ref: searchBarRef,
 					placement: 'stacked',
 					placeholder: i18n.t('Search'),
+					hideWhenScrolling: true,
 					onFocus: startSearch,
 					onChangeText: (event: { nativeEvent: { text: string } }) => search(event.nativeEvent.text),
 					onCancelButtonPress: stopSearch
