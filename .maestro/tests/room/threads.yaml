@@ -29,10 +29,22 @@ tags:
     timeout: 60000
 
 # should have actions button
-- extendedWaitUntil:
-    visible:
-      id: 'room-header'
-    timeout: 60000
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'room-header'
+          timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'room-view-header-more'
+          timeout: 60000
 
 # should have threads button
 - extendedWaitUntil:
@@ -78,8 +90,7 @@ tags:
     visible:
       id: 'message-content-replied'
     timeout: 60000
-- tapOn:
-    id: 'header-back'
+- runFlow: '../../helpers/go-back.yaml'
 # should navigate to thread from button
 - extendedWaitUntil:
     visible:
@@ -120,8 +131,7 @@ tags:
     env:
       message: threadonly
       isThread: 'true'
-- tapOn:
-    id: 'header-back'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     notVisible:
       id: 'room-view-title-thread'
@@ -153,8 +163,7 @@ tags:
     id: send-to-channel-unchecked
 - tapOn:
     id: message-composer-send
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     notVisible:
       id: 'room-view-title-thread'
@@ -186,8 +195,7 @@ tags:
     id: 'message-composer-send-to-channel'
 - tapOn:
     id: 'message-composer-send'
-- tapOn:
-    id: 'header-back'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     notVisible:
       id: 'room-view-title-thread'
@@ -206,8 +214,7 @@ tags:
     visible:
       id: 'room-view-title-thread'
     timeout: 60000
-- tapOn:
-    id: 'header-back'
+- runFlow: '../../helpers/go-back.yaml'
 
 # should navigate to thread from threads view
 - extendedWaitUntil:
@@ -230,8 +237,7 @@ tags:
     visible:
       id: 'room-view-title-thread'
     timeout: 60000
-- tapOn:
-    id: 'header-back'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-view-messages'
@@ -251,8 +257,7 @@ tags:
 - tapOn:
     id: 'message-composer-input-thread'
 - inputText: 'draftthread'
-- tapOn:
-    id: 'header-back'
+- runFlow: '../../helpers/go-back.yaml'
 
 - extendedWaitUntil:
     visible:
@@ -271,8 +276,7 @@ tags:
 - tapOn:
     id: 'message-composer-input-thread'
 - eraseText
-- tapOn:
-    id: 'header-back'
+- runFlow: '../../helpers/go-back.yaml'
 
 - extendedWaitUntil:
     visible:
@@ -292,8 +296,7 @@ tags:
     visible:
       text: '.*Add thread reply.*'
     timeout: 60000
-- tapOn:
-    id: 'header-back'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     notVisible:
       id: 'room-view-title-thread'
@@ -374,8 +377,7 @@ tags:
       text: '.*You will not be able to recover this message.*'
     timeout: 60000
 - tapOn: 'DELETE'
-- tapOn:
-    id: 'header-back'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'

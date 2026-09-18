@@ -15,6 +15,20 @@ jest.mock('~/views/RoomView/hooks/useThreadFollowing', () => ({
 
 jest.mock('~/lib/methods/toggleFollowThread', () => ({ toggleFollowThread: jest.fn() }));
 
+let mockIsIOS = true;
+let mockIsTablet = false;
+jest.mock('~/lib/methods/helpers', () => ({
+	get isIOS() {
+		return mockIsIOS;
+	},
+	get isTablet() {
+		return mockIsTablet;
+	},
+	get hasNativeHeaderBar() {
+		return mockIsIOS && !mockIsTablet;
+	}
+}));
+
 jest.mock('~/containers/Header/components/HeaderButton', () => {
 	const ReactActual = jest.requireActual('react');
 	return {
@@ -38,6 +52,8 @@ describe('ThreadRightButtons', () => {
 		jest.clearAllMocks();
 		mockFollowersByThread = {};
 		mockAppState = { login: { user: { id: 'u1', username: 'user', token: 'tok' } } };
+		mockIsIOS = true;
+		mockIsTablet = false;
 	});
 
 	it('renders the follow button when the thread is not followed', () => {
@@ -91,5 +107,18 @@ describe('ThreadRightButtons', () => {
 		fireEvent.press(screen.getByTestId('room-view-header-unfollow'));
 
 		expect(toggleFollowThread).toHaveBeenCalledWith('tmid-1', true);
+	});
+
+	it.each([
+		['Android', false, false],
+		['iPad', true, true]
+	])('follows the thread on the legacy bar (%s)', (_label, isIOSValue, isTabletValue) => {
+		mockIsIOS = isIOSValue;
+		mockIsTablet = isTabletValue;
+
+		render(<ThreadRightButtons tmid='tmid-1' />);
+		fireEvent.press(screen.getByTestId('room-view-header-follow'));
+
+		expect(toggleFollowThread).toHaveBeenCalledWith('tmid-1', false);
 	});
 });

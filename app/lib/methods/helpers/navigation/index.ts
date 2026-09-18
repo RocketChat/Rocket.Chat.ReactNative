@@ -6,22 +6,36 @@ import { themes } from '~/lib/constants/colors';
 import { type TSupportedThemes } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import Header from '~/containers/Header';
+import { isIOS } from '~/lib/methods/helpers';
 
-export const defaultHeader: NativeStackNavigationOptions = {
-	header: (props: NativeStackHeaderProps): ReactElement => createElement(Header, props)
-};
+export const defaultHeader: NativeStackNavigationOptions = isIOS
+	? {
+			headerBackButtonDisplayMode: 'minimal'
+		}
+	: {
+			header: (props: NativeStackHeaderProps): ReactElement => createElement(Header, props)
+		};
 
 export const drawerStyle = {
 	width: 320
 };
 
-export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions => ({
-	headerStyle: {
-		backgroundColor: themes[theme].surfaceNeutral
-	},
-	headerTintColor: themes[theme].fontDefault,
-	headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 }
-});
+export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions =>
+	isIOS
+		? {
+				headerStyle: {
+					backgroundColor: themes[theme].surfaceNeutral
+				},
+				headerTransparent: false,
+				headerTitleStyle: { color: themes[theme].fontTitlesLabels }
+			}
+		: {
+				headerStyle: {
+					backgroundColor: themes[theme].surfaceNeutral
+				},
+				headerTintColor: themes[theme].fontDefault,
+				headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 }
+			};
 
 export const navigationTheme = (theme: TSupportedThemes) => {
 	const defaultNavTheme = theme === 'light' ? DefaultTheme : DarkTheme;

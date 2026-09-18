@@ -49,10 +49,21 @@ jest.mock('~/views/RoomView/hooks/useCanPlaceLivechatOnHold', () => ({
 jest.mock('~/views/RoomView/services/closeLivechat', () => ({ closeLivechat: jest.fn() }));
 jest.mock('~/views/RoomView/services/placeLivechatOnHold', () => ({ placeLivechatOnHold: jest.fn() }));
 jest.mock('~/lib/services/restApi', () => ({ returnLivechat: jest.fn() }));
+let mockIsIOS = true;
+let mockIsTablet = false;
 jest.mock('~/lib/methods/helpers', () => ({
 	...jest.requireActual('~/lib/methods/helpers'),
 	showConfirmationAlert: jest.fn(),
-	showErrorAlert: jest.fn()
+	showErrorAlert: jest.fn(),
+	get isIOS() {
+		return mockIsIOS;
+	},
+	get isTablet() {
+		return mockIsTablet;
+	},
+	get hasNativeHeaderBar() {
+		return mockIsIOS && !mockIsTablet;
+	}
 }));
 
 jest.mock('~/containers/Header/components/HeaderButton', () => {
@@ -85,6 +96,8 @@ describe('OmnichannelRightButtons', () => {
 		};
 		mockCanReturnQueue = false;
 		mockCanPlaceLivechatOnHold = false;
+		mockIsIOS = true;
+		mockIsTablet = false;
 	});
 
 	it('renders the kebab button', () => {
@@ -186,5 +199,17 @@ describe('OmnichannelRightButtons', () => {
 			livechatRequestComment: true,
 			navigation: mockNavigation
 		});
+	});
+
+	it.each([
+		['Android', false, false],
+		['iPad', true, true]
+	])('offers the close option on the legacy bar (%s)', (_label, isIOSValue, isTabletValue) => {
+		mockIsIOS = isIOSValue;
+		mockIsTablet = isTabletValue;
+
+		const options = openKebab();
+
+		expect(titlesOf(options)).toEqual(['Close']);
 	});
 });

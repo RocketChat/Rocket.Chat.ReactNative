@@ -5,14 +5,25 @@ import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
 import { useHeader } from '../useHeader';
 
 let mockTestStore: RoomStore;
+let mockIsIOS = false;
 
 jest.mock('../useGoRoomActionsView', () => ({ useGoRoomActionsView: jest.fn(() => jest.fn()) }));
 jest.mock('~/views/RoomView/components/LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
 jest.mock('~/views/RoomView/components/RightButtons/RightButtons', () => ({ __esModule: true, default: 'RightButtons' }));
 jest.mock('~/containers/RoomHeader', () => ({ __esModule: true, default: 'RoomHeader' }));
+let mockIsTablet = false;
 jest.mock('~/lib/methods/helpers', () => ({
 	getRoomTitle: jest.fn(() => 'Room Title'),
-	isGroupChat: jest.fn(() => false)
+	isGroupChat: jest.fn(() => false),
+	get isIOS() {
+		return mockIsIOS;
+	},
+	get isTablet() {
+		return mockIsTablet;
+	},
+	get hasNativeHeaderBar() {
+		return mockIsIOS && !mockIsTablet;
+	}
 }));
 jest.mock('~/lib/methods/isInviteSubscription', () => ({
 	isInviteSubscription: jest.fn(() => false)
@@ -45,6 +56,8 @@ describe('useHeader', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockTestStore = makeRoomStore();
+		mockIsIOS = false;
+		mockIsTablet = false;
 	});
 
 	it('sets only the headerLeft spacer and returns when rid is missing', () => {
@@ -94,5 +107,34 @@ describe('useHeader', () => {
 		expect(() => sideOptions.headerLeft()).not.toThrow();
 		expect(() => titleOptions.headerTitle()).not.toThrow();
 		expect(() => sideOptions.headerRight()).not.toThrow();
+	});
+
+	describe('on iOS', () => {
+		beforeEach(() => {
+			mockIsIOS = true;
+		});
+
+		it('renders the tappable RoomHeader under the native header bar', () => {
+			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
+
+			const titleOptions = mockSetOptions.mock.calls[1][0];
+			expect(typeof titleOptions.headerTitle).toBe('function');
+			expect(titleOptions.headerTitle().props.title).toBe('Room Title');
+		});
+	});
+
+	describe('on iPad', () => {
+		beforeEach(() => {
+			mockIsIOS = true;
+			mockIsTablet = true;
+		});
+
+		it('renders the tappable RoomHeader instead of the native string title', () => {
+			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
+
+			const titleOptions = mockSetOptions.mock.calls[1][0];
+			expect(titleOptions).toHaveProperty('headerTitle');
+			expect(typeof titleOptions.headerTitle).toBe('function');
+		});
 	});
 });

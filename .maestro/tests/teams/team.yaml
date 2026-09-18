@@ -25,18 +25,31 @@ tags:
       ROOM: ${output.team}
 
 # Team Header
-- assertVisible:
-    id: room-header
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - assertVisible:
+          id: room-header
+      - assertVisible:
+          id: room-view-search
 - assertVisible:
     id: room-view-header-call
 - assertVisible:
     id: room-view-header-threads
-- assertVisible:
-    id: room-view-search
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          id: 'room-view-header-more'
+      - assertVisible:
+          id: 'room-view-search'
+      - tapOn:
+          id: 'action-sheet-handle'
 
 # Team Action Usage
-- tapOn:
-    id: room-header
+- runFlow: '../../helpers/open-room-actions.yaml'
 - tapOn:
     id: room-actions-teams
 - extendedWaitUntil:
@@ -46,15 +59,30 @@ tags:
     label: Should navigate to team channels view
 
 # Team Channels Header
-- assertVisible:
-    id: room-header
-    label: Should have actions button
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - assertVisible:
+          id: room-header
+          label: Should have actions button
 - assertVisible:
     id: team-channels-view-create
     label: Should have team channels button
-- assertVisible:
-    id: team-channels-view-search
-    label: Should have search button
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: magnifyingglass
+          label: Should have system search bar
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - assertVisible:
+          id: team-channels-view-search
+          label: Should have search button
 
 # Team Channels Header Usage
 - tapOn:
@@ -119,10 +147,19 @@ tags:
       id: room-view
     timeout: 60000
     label: should navigate to room view
-- assertVisible:
-    id: room-header
-- tapOn:
-    id: room-header
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - assertVisible:
+          id: room-header
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: room-view-header-more
+- runFlow: '../../helpers/open-room-actions.yaml'
 - assertVisible:
     id: room-actions-teams
 - tapOn:
@@ -151,8 +188,22 @@ tags:
     id: room-view-header-call
 - assertVisible:
     id: room-view-header-threads
-- assertVisible:
-    id: room-view-search
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - assertVisible:
+          id: room-view-search
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          id: 'room-view-header-more'
+      - assertVisible:
+          id: 'room-view-search'
+      - tapOn:
+          id: 'action-sheet-handle'
 - runFlow: '../../helpers/go-back.yaml'
 
 # should add existing channel to team
@@ -160,10 +211,19 @@ tags:
     file: '../../helpers/navigate-to-room.yaml'
     env:
       ROOM: ${output.team}
-- assertVisible:
-    id: room-header
-- tapOn:
-    id: room-header
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - assertVisible:
+          id: room-header
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: room-view-header-more
+- runFlow: '../../helpers/open-room-actions.yaml'
 - assertVisible:
     id: room-actions-teams
 - tapOn:
@@ -202,8 +262,7 @@ tags:
     visible:
       id: room-view-title-${output.team}
     timeout: 60000
-- tapOn:
-    id: room-header
+- runFlow: '../../helpers/open-room-actions.yaml'
 - assertVisible:
     id: room-actions-teams
 - tapOn:
@@ -272,12 +331,7 @@ tags:
     visible:
       id: room-view
     timeout: 60000
-- tapOn:
-    id: room-header
-- extendedWaitUntil:
-    visible:
-      id: room-actions-view
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 
 # should add users to the team
 - tapOn:

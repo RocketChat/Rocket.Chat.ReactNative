@@ -69,16 +69,14 @@ tags:
     visible:
       id: 'thread-messages-view-${output.thread}'
     timeout: 60000
-- tapOn:
-    id: 'custom-header-back'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-view-header-threads'
     timeout: 60000
 
 # should search user and navigate
-- tapOn:
-    id: 'header-back'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-directory'
@@ -125,8 +123,7 @@ tags:
     timeout: 60000
 
 # should search team and navigate
-- tapOn:
-    id: 'header-back'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-directory'

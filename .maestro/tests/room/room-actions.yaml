@@ -93,14 +93,12 @@ tags:
     visible:
       id: 'mentioned-messages-view'
     timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
     timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # should star and show in starred message
 - runFlow:
@@ -131,12 +129,7 @@ tags:
     notVisible:
       text: '.*Message Starred.*'
     timeout: 60000
-- tapOn:
-    id: 'room-header'
-- extendedWaitUntil:
-    visible:
-      id: 'room-actions-view'
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 - tapOn:
     id: 'room-actions-starred'
     retryTapIfNoChange: true
@@ -149,14 +142,12 @@ tags:
       id: 'message-content-messageToStar'
     timeout: 60000
 # should unstar
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
     timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: message-content-messageToStar
@@ -181,12 +172,7 @@ tags:
     notVisible:
       text: '.*Message Unstarred.*'
     timeout: 60000
-- tapOn:
-    id: 'room-header'
-- extendedWaitUntil:
-    visible:
-      id: 'room-actions-view'
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 - tapOn:
     id: 'room-actions-starred'
     retryTapIfNoChange: true
@@ -198,14 +184,12 @@ tags:
     notVisible:
       id: 'message-content-messageToStar'
     timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
     timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # should pin a message and show in pinned
 - runFlow:
@@ -236,12 +220,7 @@ tags:
     visible:
       text: '.*Pinned a message:.*'
     timeout: 60000
-- tapOn:
-    id: 'room-header'
-- extendedWaitUntil:
-    visible:
-      id: 'room-actions-view'
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 - tapOn: Pinned
 - extendedWaitUntil:
     visible:
@@ -261,8 +240,7 @@ tags:
     notVisible:
       id: 'message-content-messageToPin'
     timeout: 60000
-- tapOn:
-    id: 'custom-header-back'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
@@ -324,8 +302,7 @@ tags:
       id: 'notification-preference-view-email-alert'
     timeout: 60000
 
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
@@ -406,8 +383,7 @@ tags:
     timeout: 60000
 - tapOn:
     id: selected-users-view-submit
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       text: '.*3 members.*'
@@ -440,8 +416,7 @@ tags:
     visible:
       id: 'room-members-view-item-${output.otherUser.username}'
     timeout: 60000
-- tapOn:
-    id: 'custom-header-back'
+- runFlow: '../../helpers/go-back.yaml'
 
 # should filter user
 - tapOn:
@@ -697,14 +672,12 @@ tags:
     visible:
       text: 'User has been ignored'
     timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
     timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       text: '.*Message ignored. Tap to display it.*'
@@ -717,12 +690,7 @@ tags:
     timeout: 60000
 
 # should navigate to direct message
-- tapOn:
-    id: 'room-header'
-- extendedWaitUntil:
-    visible:
-      id: 'room-actions-view'
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 - tapOn:
     id: 'room-actions-members'
 - extendedWaitUntil:

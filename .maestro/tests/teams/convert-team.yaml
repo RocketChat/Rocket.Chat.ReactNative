@@ -124,12 +124,7 @@ tags:
     text: 'Yes, move it!'
 - tapOn:
     text: 'Yes, move it!'
-- extendedWaitUntil:
-    visible:
-      id: 'room-header'
-    timeout: 60000
-- tapOn:
-    id: 'room-header'
+- runFlow: '../../helpers/open-room-actions.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-teams'

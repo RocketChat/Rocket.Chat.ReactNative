@@ -25,8 +25,18 @@ tags:
     id: room-view
 
 # should have actions button
-- assertVisible:
-    id: room-header
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - assertVisible:
+          id: room-header
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: room-view-header-more
 
 # should have join
 - assertVisible:

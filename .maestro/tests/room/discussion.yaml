@@ -99,8 +99,7 @@ tags:
       visible:
         id: 'room-view'
     commands:
-      - tapOn:
-          id: 'header-back'
+      - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-item-${output.discussionFromNewMessage}'
@@ -189,15 +188,7 @@ tags:
     timeout: 60000
 
 # Check RoomActionsView render
-- assertVisible:
-    id: room-header
-- tapOn:
-    id: room-header
-    retryTapIfNoChange: true
-- extendedWaitUntil:
-    visible:
-      id: 'room-actions-view'
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 
 # should have room actions screen
 - assertVisible:
@@ -259,20 +250,17 @@ tags:
     id: room-info-view-edit-button
 
 # should go back to main room
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
     timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-view-messages'
     timeout: 60000
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
@@ -283,12 +271,7 @@ tags:
       ROOM: ${output.room.name}
 
 # should navigate to DiscussionsView
-- extendedWaitUntil:
-    visible:
-      id: 'room-header'
-    timeout: 60000
-- tapOn:
-    id: 'room-header'
+- runFlow: '../../helpers/open-room-actions.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-discussions'

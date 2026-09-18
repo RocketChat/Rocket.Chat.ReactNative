@@ -146,12 +146,7 @@ tags:
     visible:
       id: 'rooms-list-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-header-servers-list-button'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-header-servers-list-button'
+- runFlow: '../../helpers/open-servers-list.yaml'
 - extendedWaitUntil:
     visible:
       id: 'server-item-${output.data.alternateServer}'
@@ -227,12 +222,7 @@ tags:
     visible:
       id: 'rooms-list-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-header-servers-list-button'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-header-servers-list-button'
+- runFlow: '../../helpers/open-servers-list.yaml'
 - extendedWaitUntil:
     visible:
       id: 'server-item-${output.data.alternateServer}'
