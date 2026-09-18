@@ -40,27 +40,6 @@ const splitHeaderRightActions = (actions: IHeaderRightAction[]) => {
 	return { visible: present.slice(0, MAX_HEADER_RIGHT_ACTIONS), overflow: present.slice(MAX_HEADER_RIGHT_ACTIONS) };
 };
 
-const useNativeBarTitle = (useNativeBar: boolean) => {
-	const connecting = useAppSelector(state => useNativeBar && (state.meteor.connecting || state.server.loading));
-	const isLoggingIn = useAppSelector(state => useNativeBar && state.login.isFetching);
-	const isFetching = useAppSelector(state => useNativeBar && state.rooms.isFetching);
-	const connected = useAppSelector(state => !useNativeBar || state.meteor.connected);
-
-	if (!useNativeBar) {
-		return '';
-	}
-	if (connecting || isLoggingIn) {
-		return i18n.t('Connecting');
-	}
-	if (!connected) {
-		return i18n.t('Waiting_for_network');
-	}
-	if (isFetching) {
-		return i18n.t('Updating');
-	}
-	return i18n.t('Chats');
-};
-
 export const useHeader = () => {
 	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsSearchContext);
 	const [options, setOptions] = useState<any>(null);
@@ -129,8 +108,6 @@ export const useHeader = () => {
 		}
 	}, [isMasterDetail, navigation]);
 
-	const nativeBarTitle = useNativeBarTitle(hasNativeHeaderBar);
-
 	useLayoutEffect(() => {
 		const headerLeft = () => (
 			<HeaderButton.Drawer
@@ -197,11 +174,10 @@ export const useHeader = () => {
 
 			navigation.setOptions({
 				headerLargeTitle: false,
-				headerTitle: nativeBarTitle,
+				headerTitle: () => <RoomsListHeaderView search={search} searchEnabled={false} />,
 				headerLeft,
 				headerStyle: { backgroundColor: colors.surfaceNeutral },
 				headerTransparent: false,
-				headerTitleStyle: { color: colors.fontTitlesLabels },
 				scrollEdgeEffects: { top: 'hidden' },
 				headerSearchBarOptions: {
 					ref: searchBarRef,
@@ -302,7 +278,6 @@ export const useHeader = () => {
 		colors,
 		canCreateRoom,
 		searchEnabled,
-		nativeBarTitle,
 		goDirectory,
 		navigateToPushTroubleshootView,
 		getBadge,
