@@ -14,7 +14,7 @@ tags:
 - evalScript: ${output.messageCount = 0}
 
 # download all the files which are need for test
-- runFlow: './utils/download-files.yaml'
+# - runFlow: './utils/download-files.yaml'
 
 # start app
 - runFlow:
@@ -24,6 +24,7 @@ tags:
       PASSWORD: ${output.user.password}
 - killApp
 
+# share files
 - runFlow:
     file: './utils/share-file.yaml'
     env:
@@ -60,3 +61,38 @@ tags:
     file: './utils/share-file.yaml'
     env:
       fileName: 'test.html'
+- runFlow:
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.pdf'
+- runFlow:
+    when:
+      platform: iOS
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.heic'
+- runFlow:
+    when:
+      platform: iOS
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.mov'
+- runFlow:
+    when:
+      platform: iOS
+    file: './utils/share-file.yaml'
+    env:
+      fileName: 'test.m4a'
+
+# invalid uri shows a toast and returns to rooms list without crashing
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: 'rocketchat://shareextension?mediaUris=file:///nonexistent.jpg'
+- extendedWaitUntil:
+    visible: 'The shared file could not be found'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
