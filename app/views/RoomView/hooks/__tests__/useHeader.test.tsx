@@ -6,8 +6,6 @@ import { useHeader } from '../useHeader';
 
 let mockTestStore: RoomStore;
 let mockIsIOS = false;
-let mockConnecting = false;
-let mockConnected = true;
 
 jest.mock('../useGoRoomActionsView', () => ({ useGoRoomActionsView: jest.fn(() => jest.fn()) }));
 jest.mock('~/views/RoomView/components/LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
@@ -29,13 +27,6 @@ jest.mock('~/lib/methods/helpers', () => ({
 }));
 jest.mock('~/lib/methods/isInviteSubscription', () => ({
 	isInviteSubscription: jest.fn(() => false)
-}));
-jest.mock('~/lib/hooks/useAppSelector', () => ({
-	useAppSelector: (selector: (state: unknown) => unknown) =>
-		selector({
-			meteor: { connecting: mockConnecting, connected: mockConnected },
-			server: { loading: false }
-		})
 }));
 
 const mockSetOptions = jest.fn();
@@ -67,8 +58,6 @@ describe('useHeader', () => {
 		mockTestStore = makeRoomStore();
 		mockIsIOS = false;
 		mockIsTablet = false;
-		mockConnecting = false;
-		mockConnected = true;
 	});
 
 	it('sets only the headerLeft spacer and returns when rid is missing', () => {
@@ -125,44 +114,12 @@ describe('useHeader', () => {
 			mockIsIOS = true;
 		});
 
-		it('sets a plain string title instead of the RoomHeader render prop', () => {
+		it('renders the tappable RoomHeader under the native header bar', () => {
 			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
 
 			const titleOptions = mockSetOptions.mock.calls[1][0];
-			expect(titleOptions).toEqual({ title: 'Room Title' });
-		});
-
-		it('swaps the title to Connecting while the socket is connecting', () => {
-			mockConnecting = true;
-
-			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
-
-			const titleOptions = mockSetOptions.mock.calls[1][0];
-			expect(titleOptions).toEqual({ title: 'Connecting...' });
-		});
-
-		it('swaps the title to Waiting_for_network when disconnected', () => {
-			mockConnected = false;
-
-			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
-
-			const titleOptions = mockSetOptions.mock.calls[1][0];
-			expect(titleOptions).toEqual({ title: 'Waiting for network...' });
-		});
-
-		it('swaps back to the room title once connected again', () => {
-			mockConnecting = true;
-			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
-			expect(mockSetOptions.mock.calls[1][0]).toEqual({ title: 'Connecting...' });
-
-			mockConnecting = false;
-			act(() => {
-				mockTestStore.setState({
-					room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general', topic: 'updated' } as RoomState['room']
-				});
-			});
-			const lastOptions = mockSetOptions.mock.calls[mockSetOptions.mock.calls.length - 1][0];
-			expect(lastOptions).toEqual({ title: 'Room Title' });
+			expect(typeof titleOptions.headerTitle).toBe('function');
+			expect(titleOptions.headerTitle().props.title).toBe('Room Title');
 		});
 	});
 

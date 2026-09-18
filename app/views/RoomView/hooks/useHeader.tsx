@@ -5,10 +5,8 @@ import { useShallow } from 'zustand/react/shallow';
 import { useStore } from 'zustand';
 
 import RoomHeader from '~/containers/RoomHeader';
-import I18n from '~/i18n';
-import { getRoomTitle, hasNativeHeaderBar, isGroupChat } from '~/lib/methods/helpers';
+import { getRoomTitle, isGroupChat } from '~/lib/methods/helpers';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
-import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { type IOmnichannelSource, type ISubscription, type IVisitor } from '~/definitions';
 import LeftButtons from '../components/LeftButtons';
 import RightButtons from '../components/RightButtons/RightButtons';
@@ -68,8 +66,6 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 	);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const goRoomActionsView = useGoRoomActionsView(roomStore);
-	const connecting = useAppSelector(state => state.meteor.connecting || state.server.loading);
-	const connected = useAppSelector(state => state.meteor.connected);
 
 	useLayoutEffect(() => {
 		if (!rid) {
@@ -85,12 +81,6 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 
 	useLayoutEffect(() => {
 		if (!rid) {
-			return;
-		}
-
-		if (hasNativeHeaderBar) {
-			const title = connecting ? I18n.t('Connecting') : !connected ? I18n.t('Waiting_for_network') : headerFields.title;
-			navigation.setOptions({ title });
 			return;
 		}
 
@@ -115,5 +105,5 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 				/>
 			)
 		});
-	}, [rid, tmid, headerFields, roomUserId, navigation, goRoomActionsView, connecting, connected]);
+	}, [rid, tmid, headerFields, roomUserId, navigation, goRoomActionsView]);
 };
