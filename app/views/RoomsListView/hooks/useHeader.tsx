@@ -199,6 +199,7 @@ export const useHeader = () => {
 				headerLargeTitle: true,
 				headerTitle: nativeBarTitle,
 				headerLeft,
+				scrollEdgeEffects: { top: 'automatic' },
 				headerSearchBarOptions: {
 					ref: searchBarRef,
 					placement: 'stacked',

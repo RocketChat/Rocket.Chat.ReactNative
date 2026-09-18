@@ -14,7 +14,15 @@ import i18n from '~/i18n';
 import { MAX_SIDEBAR_WIDTH } from '~/lib/constants/tablet';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isRead, isTablet } from '~/lib/methods/helpers';
+import {
+	getRoomAvatar,
+	getRoomTitle,
+	getUidDirectMessage,
+	hasNativeHeaderBar,
+	isIOS,
+	isRead,
+	isTablet
+} from '~/lib/methods/helpers';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
@@ -136,6 +144,7 @@ const RoomsListView = memo(function RoomsListView() {
 			ListHeaderComponent={ListHeader}
 			ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}
 			getItemLayout={getItemLayout}
+			contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
 			keyboardShouldPersistTaps='always'
 			initialNumToRender={INITIAL_NUM_TO_RENDER}
 			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}
