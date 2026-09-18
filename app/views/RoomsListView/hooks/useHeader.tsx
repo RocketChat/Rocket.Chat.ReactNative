@@ -55,15 +55,20 @@ export const useHeader = () => {
 	const connecting = useAppSelector(state => state.meteor.connecting || state.server.loading || state.login.isFetching);
 	const connected = useAppSelector(state => state.meteor.connected);
 	const isFetchingRooms = useAppSelector(state => state.rooms.isFetching);
+	const serverName = useAppSelector(state => state.settings.Site_Name as string);
+	const server = useAppSelector(state => state.server.server);
 	const { colors } = useTheme();
 
-	const nativeHeaderTitle = connecting
-		? i18n.t('Connecting')
-		: !connected
-			? i18n.t('Waiting_for_network')
-			: isFetchingRooms
-				? i18n.t('Updating')
-				: i18n.t('Chats');
+	const nativeHeaderSubtitle =
+		supportedVersionsStatus === 'expired'
+			? 'Cannot connect'
+			: connecting
+				? i18n.t('Connecting')
+				: isFetchingRooms
+					? i18n.t('Updating')
+					: !connected
+						? i18n.t('Waiting_for_network')
+						: server?.replace(/(^\w+:|^)\/\//, '');
 	const [
 		createPublicChannelPermission,
 		createPrivateChannelPermission,
@@ -185,7 +190,8 @@ export const useHeader = () => {
 
 			navigation.setOptions({
 				headerLargeTitle: false,
-				headerTitle: nativeHeaderTitle,
+				headerTitle: serverName,
+				headerSubtitle: nativeHeaderSubtitle,
 				headerLeft,
 				headerStyle: { backgroundColor: colors.surfaceNeutral },
 				headerTransparent: false,
@@ -296,7 +302,8 @@ export const useHeader = () => {
 		startSearch,
 		stopSearch,
 		search,
-		nativeHeaderTitle
+		serverName,
+		nativeHeaderSubtitle
 	]);
 
 	useEffect(() => {

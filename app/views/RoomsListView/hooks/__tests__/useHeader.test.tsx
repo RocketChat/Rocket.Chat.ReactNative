@@ -50,9 +50,10 @@ let mockAppState = {
 	troubleshootingNotification: { issuesWithNotifications: false },
 	app: { notificationPresenceCap: false },
 	meteor: { connecting: false, connected: true },
-	server: { loading: false },
+	server: { loading: false, server: 'https://open.rocket.chat' },
 	login: { isFetching: false },
-	rooms: { isFetching: false }
+	rooms: { isFetching: false },
+	settings: { Site_Name: 'Rocket.Chat' }
 };
 jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: (selector: (state: typeof mockAppState) => unknown) => selector(mockAppState)
@@ -87,34 +88,38 @@ describe('RoomsListView useHeader', () => {
 			troubleshootingNotification: { issuesWithNotifications: false },
 			app: { notificationPresenceCap: false },
 			meteor: { connecting: false, connected: true },
-			server: { loading: false },
+			server: { loading: false, server: 'https://open.rocket.chat' },
 			login: { isFetching: false },
-			rooms: { isFetching: false }
+			rooms: { isFetching: false },
+			settings: { Site_Name: 'Rocket.Chat' }
 		};
 	});
 
-	it('sets a native string title without a large title on iPhone', () => {
+	it('sets the server name as a native string title with the server url as subtitle on iPhone', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
 		expect(typeof options.headerTitle).toBe('string');
-		expect(options.headerTitle).toBe('Chats');
+		expect(options.headerTitle).toBe('Rocket.Chat');
+		expect(options.headerSubtitle).toBe('open.rocket.chat');
 		expect(options.headerLargeTitle).toBe(false);
 	});
 
 	it.each([
+		[{ supportedVersions: { status: 'expired' } }, 'Cannot connect'],
 		[{ meteor: { connecting: true, connected: true } }, 'Connecting...'],
 		[{ login: { isFetching: true } }, 'Connecting...'],
 		[{ rooms: { isFetching: true } }, 'Updating...'],
 		[{ meteor: { connecting: false, connected: false } }, 'Waiting for network...'],
-		[{ meteor: { connecting: false, connected: false }, rooms: { isFetching: true } }, 'Waiting for network...']
-	])('swaps the native title to the connection state %j', (stateOverride, expectedTitle) => {
+		[{ meteor: { connecting: false, connected: false }, rooms: { isFetching: true } }, 'Updating...']
+	])('swaps the native subtitle to the connection state %j', (stateOverride, expectedSubtitle) => {
 		mockAppState = { ...mockAppState, ...stateOverride } as typeof mockAppState;
 
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		expect(options.headerTitle).toBe(expectedTitle);
+		expect(options.headerTitle).toBe('Rocket.Chat');
+		expect(options.headerSubtitle).toBe(expectedSubtitle);
 	});
 
 	it('builds the right cluster in create, push-troubleshoot priority order, overflowing directory', () => {
