@@ -14,7 +14,7 @@ set -uo pipefail
 #   IS_RELEASE_LANE  "true" forces the full suite (release-cut / release label)
 #   BASE_REF         PR base branch name (github.event.pull_request.base.ref)
 #   HEAD_SHA         PR head commit sha  (github.event.pull_request.head.sha)
-#   FULL_SHARDS      the guaranteed [1..15] list from assert-maestro-shards.sh
+#   FULL_SHARDS      the guaranteed [1..14] list from assert-maestro-shards.sh
 
 emit() {
 	echo "shards=$1" >>"$GITHUB_OUTPUT"
@@ -47,7 +47,7 @@ echo "$json" | jq -e . >/dev/null 2>&1 || full
 #     never fall through to the confident-zero skip below).
 echo "$json" | jq -e 'has("recommendedTests")' >/dev/null 2>&1 || full
 
-# 6. run-all reason -> full (provably covers 1..15).
+# 6. run-all reason -> full (provably covers 1..14).
 if echo "$json" | jq -e 'any(.recommendedTests[].reasons[]?; .kind == "run-all")' >/dev/null; then
 	full
 fi

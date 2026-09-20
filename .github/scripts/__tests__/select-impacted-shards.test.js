@@ -1,5 +1,5 @@
 // Tests for select-impacted-shards.sh: proves every uncertainty falls back to
-// the full 15-shard suite (under-selection impossible) and that the
+// the full 14-shard suite (under-selection impossible) and that the
 // confident-zero skip fires only on a genuinely empty impacted set.
 // Expected values are read from scenario-catalog.json so this file stays in
 // lockstep with the canonical matrix (rows F1, F2, F3, F4, F5, F5b, F6, F7, Z1).

@@ -4,7 +4,7 @@ set -euo pipefail
 # Emits the shard list the PR matrices fan out over and asserts every flow's
 # test-<N> tag falls inside it, so drift fails loud instead of a flow silently
 # never running.
-SHARD_COUNT=15
+SHARD_COUNT=14
 FLOWS_DIR=".maestro/tests"
 
 declared=()
