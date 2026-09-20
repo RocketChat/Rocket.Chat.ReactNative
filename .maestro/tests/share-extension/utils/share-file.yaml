@@ -25,61 +25,10 @@ tags:
     when:
       platform: iOS
     commands:
-      - launchApp: com.apple.DocumentsApp
-      - extendedWaitUntil:
-          visible: 'Search'
-          timeout: 10000
-      - tapOn:
-          text: 'Search'
-          retryTapIfNoChange: true
-      - runFlow:
-          when:
-            notVisible: 'Grid view'
-          commands:
-            - tapOn:
-                text: 'Search'
-                retryTapIfNoChange: true
-      - extendedWaitUntil:
-          visible: 'Grid view'
-          timeout: 10000
-      - inputText: ${fileName}
-      # submit the Files search — without this the query sits unsubmitted and the file id never appears
-      - pressKey: enter
-      - evalScript: ${output.iosfilename = fileName.split('.').join(', ')}
-      - runFlow:
-          when:
-            true: ${fileName.split('.')[1] === 'zip'}
-          commands:
-            - extendedWaitUntil:
-                visible:
-                  id: 'test.zip, zip'
-                timeout: 10000
-            - longPressOn:
-                id: 'test.zip, zip'
-      - runFlow:
-          when:
-            true: ${fileName.split('.')[1] !== 'zip'}
-          commands:
-            - extendedWaitUntil:
-                visible:
-                  id: ${output.iosfilename}
-                timeout: 10000
-            - longPressOn:
-                id: ${output.iosfilename}
       - extendedWaitUntil:
           visible: 'Share'
           timeout: 10000
       - tapOn: 'Share'
-      - runFlow:
-          when:
-            notVisible:
-              text: 'Rocket.Chat'
-          commands:
-            - tapOn:
-                point: '10%, 90%'
-            - longPressOn:
-                id: ${output.iosfilename}
-            - tapOn: 'Share'
       - tapOn: 'Rocket.Chat'
 
 - extendedWaitUntil:

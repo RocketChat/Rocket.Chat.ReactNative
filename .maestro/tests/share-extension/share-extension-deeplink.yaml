@@ -13,9 +13,6 @@ tags:
 - evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password, 'p')}
 - evalScript: ${output.messageCount = 0}
 
-# download all the files which are need for test
-# - runFlow: './utils/download-files.yaml'
-
 # start app
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
@@ -24,65 +21,78 @@ tags:
       PASSWORD: ${output.user.password}
 - killApp
 
-# share files
+# share files on iOS
 - runFlow:
-    file: './utils/share-file.yaml'
-    env:
-      fileName: 'image.png'
-- runFlow:
-    file: './utils/share-file.yaml'
-    env:
-      fileName: 'test.mp4'
-- runFlow:
-    file: './utils/share-file.yaml'
-    env:
-      fileName: 'test.mp3'
-- runFlow:
-    file: './utils/share-file.yaml'
-    env:
-      fileName: 'test.ogg'
-- runFlow:
-    file: './utils/share-file.yaml'
-    env:
-      fileName: 'test.wav'
-- runFlow:
-    file: './utils/share-file.yaml'
-    env:
-      fileName: 'test.docx'
-- runFlow:
-    file: './utils/share-file.yaml'
-    env:
-      fileName: 'test.zip'
-- runFlow:
-    file: './utils/share-file.yaml'
-    env:
-      fileName: 'test.txt'
-- runFlow:
-    file: './utils/share-file.yaml'
-    env:
-      fileName: 'test.html'
-- runFlow:
-    file: './utils/share-file.yaml'
-    env:
-      fileName: 'test.pdf'
-- runFlow:
-    when:
+    when: 
       platform: iOS
-    file: './utils/share-file.yaml'
-    env:
-      fileName: 'test.heic'
+    commands: 
+      - launchApp: com.apple.mobileslideshow
+      - extendedWaitUntil:
+          visible: "Library"
+          timeout: 10000
+      - assertVisible:
+          id: "PXGGridLayout-Info"
+      - tapOn:
+          id: "PXGGridLayout-Info"
+      - runFlow: './utils/share-file.yaml'
+
+# share files on android
 - runFlow:
-    when:
-      platform: iOS
-    file: './utils/share-file.yaml'
-    env:
-      fileName: 'test.mov'
-- runFlow:
-    when:
-      platform: iOS
-    file: './utils/share-file.yaml'
-    env:
-      fileName: 'test.m4a'
+    when: 
+      platform: android
+    commands:
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'image.png'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.mp4'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.mp3'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.ogg'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.wav'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.docx'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.zip'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.txt'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.html'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.pdf'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.heic'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.mov'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.m4a'
 
 # invalid uri shows a toast and returns to rooms list without crashing
 - runFlow:
