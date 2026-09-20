@@ -27,9 +27,19 @@ tags:
       platform: iOS
     commands: 
       - launchApp: com.apple.mobileslideshow
+      - runFlow:
+          when:
+            visible: '.*New in Photos.*'
+          commands:
+            - tapOn: 'Continue'
       - extendedWaitUntil:
           visible: "Library"
           timeout: 10000
+            - runFlow:
+          when:
+            visible: '.*New in Photos.*'
+          commands:
+            - tapOn: 'Continue'
       - assertVisible:
           id: "PXGGridLayout-Info"
       - tapOn:
