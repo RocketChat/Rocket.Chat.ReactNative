@@ -12,6 +12,8 @@ import { useCallStore, useControlsVisible } from '~/lib/services/voip/useCallSto
 import { Content } from './components/Content';
 import { CONTROLS_ANIMATION_DURATION } from '~/views/CallView/styles';
 
+const HEADER_TOP_PADDING = 12;
+
 const styles = StyleSheet.create({
 	header: {
 		flexDirection: 'row',
@@ -51,7 +53,7 @@ const MediaCallHeader = () => {
 		paddingTop: insets.top
 	};
 
-	const rowStyle = { ...defaultHeaderStyle, borderBottomColor: colors.strokeLight, paddingTop: insets.top + 12 };
+	const rowStyle = { ...defaultHeaderStyle, borderBottomColor: colors.strokeLight, paddingTop: insets.top + HEADER_TOP_PADDING };
 
 	if (!call) {
 		if (conferenceCallId) {
