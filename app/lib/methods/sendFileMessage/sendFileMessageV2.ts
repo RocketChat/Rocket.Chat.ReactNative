@@ -30,7 +30,8 @@ export async function sendFileMessageV2(
 
 		[uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid, isForceTryAgain });
 		if (!uploadPath || !uploadRecord) {
-			throw new Error("Couldn't create upload record");
+			// Upload already in progress (alert already shown) — same early return as V1.
+			return;
 		}
 		const { file, getContent, fileContent } = await Encryption.encryptFile(rid, fileInfo);
 		file.path = await copyFileToCacheDirectoryIfNeeded(file.path, file.name);
@@ -88,7 +89,7 @@ export async function sendFileMessageV2(
 		if (uploadPath && !uploadQueue[uploadPath]) {
 			console.log('Upload cancelled');
 		} else {
-			await persistUploadError(fileInfo.path, rid);
+			await persistUploadError(fileInfo.path, rid, e);
 			throw e;
 		}
 	}

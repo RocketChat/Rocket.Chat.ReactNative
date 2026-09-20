@@ -97,7 +97,10 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 		}
 
 		const db = database.active;
-		this.uploadsObservable = db.get('uploads').query(Q.where('rid', rid)).observeWithColumns(['progress', 'error']);
+		this.uploadsObservable = db
+			.get('uploads')
+			.query(Q.where('rid', rid))
+			.observeWithColumns(['progress', 'error', 'error_status', 'error_message']);
 
 		this.uploadsSubscription = this.uploadsObservable.subscribe(uploads => {
 			if (this.mounted) {
@@ -125,6 +128,8 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 						await db.write(async () => {
 							await u.update(() => {
 								u.error = true;
+								u.errorStatus = undefined;
+								u.errorMessage = undefined;
 							});
 						});
 					} catch (e) {
@@ -162,6 +167,8 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 			await db.write(async () => {
 				await item.update(() => {
 					item.error = false;
+					item.errorStatus = undefined;
+					item.errorMessage = undefined;
 				});
 			});
 			await sendFileMessage(rid, item.asPlain() as TSendFileMessageFileInfo, item.tmid, server, user, true);
@@ -215,13 +222,19 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 							<Text style={[styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={1}>
 								{I18n.t('Error_uploading')} {item.name}
 							</Text>
-							<A11y.Index index={2}>
-								<TouchableOpacity onPress={() => this.tryAgain(item)}>
-									<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
-										{I18n.t('Try_again')}
-									</Text>
-								</TouchableOpacity>
-							</A11y.Index>
+							{item.errorStatus === 413 ? (
+								<Text style={[styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={1}>
+									{I18n.t('error-file-too-large')}
+								</Text>
+							) : (
+								<A11y.Index index={2}>
+									<TouchableOpacity onPress={() => this.tryAgain(item)}>
+										<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
+											{I18n.t('Try_again')}
+										</Text>
+									</TouchableOpacity>
+								</A11y.Index>
+							)}
 						</View>
 						<A11y.Index index={3}>
 							<CustomIcon

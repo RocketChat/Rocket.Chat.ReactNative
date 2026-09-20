@@ -353,6 +353,18 @@ export default schemaMigrations({
 				// were used as ids and corrupt across the native bridge. ASCII ids (e.g. heart_eyes) are kept.
 				unsafeExecuteSql("DELETE FROM frequently_used_emojis WHERE id GLOB '*[^ -~]*';")
 			]
+		},
+		{
+			toVersion: 30,
+			steps: [
+				addColumns({
+					table: 'uploads',
+					columns: [
+						{ name: 'error_status', type: 'number', isOptional: true },
+						{ name: 'error_message', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

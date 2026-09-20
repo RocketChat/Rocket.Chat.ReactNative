@@ -1,10 +1,19 @@
 import { Alert } from 'react-native';
 
-import { createUploadRecord, copyFileToCacheDirectoryIfNeeded, getUploadPath, isUploadActive, uploadQueue } from './utils';
+import {
+	createUploadRecord,
+	copyFileToCacheDirectoryIfNeeded,
+	getUploadPath,
+	isUploadActive,
+	persistUploadError,
+	uploadQueue
+} from './utils';
+import { UploadHttpError } from '../helpers/fileUpload/definitions';
 
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
 jest.mock('~/i18n', () => ({ t: (k: string) => k }));
 jest.mock('../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../helpers/showToast', () => ({ showToast: jest.fn() }));
 jest.mock('~/lib/database/services/Upload', () => ({ getUploadByPath: jest.fn() }));
 jest.mock('@nozbe/watermelondb/RawRecord', () => ({ sanitizedRaw: (raw: unknown) => raw }));
 jest.mock('expo-file-system/legacy', () => ({ cacheDirectory: 'file://cache', copyAsync: jest.fn(() => Promise.resolve()) }));
@@ -30,6 +39,7 @@ beforeEach(() => {
 	mockCreate.mockReset();
 	(Alert.alert as jest.Mock).mockReset();
 	(require('expo-file-system/legacy').copyAsync as jest.Mock).mockClear();
+	(require('../helpers/showToast').showToast as jest.Mock).mockClear();
 	Object.keys(uploadQueue).forEach(k => delete uploadQueue[k]);
 });
 
@@ -116,5 +126,50 @@ describe('createUploadRecord', () => {
 
 		expect(path).toBe(uploadPath);
 		expect(record).toBe(created);
+	});
+});
+
+describe('persistUploadError', () => {
+	const { getUploadByPath } = require('~/lib/database/services/Upload');
+
+	beforeEach(() => {
+		(getUploadByPath as jest.Mock).mockReset();
+	});
+
+	it('stores the HTTP status and server message from an UploadHttpError', async () => {
+		const { showToast } = require('../helpers/showToast');
+		const updated: any = {};
+		(getUploadByPath as jest.Mock).mockResolvedValue({
+			update: jest.fn((cb: (u: any) => void) => {
+				cb(updated);
+			})
+		});
+
+		await persistUploadError('/tmp/pic.jpg', 'GENERAL', new UploadHttpError(413, { serverMessage: 'File is too large' }));
+
+		expect(getUploadByPath).toHaveBeenCalledWith('/tmp/pic.jpg-GENERAL');
+		expect(updated).toMatchObject({ error: true, errorStatus: 413, errorMessage: 'File is too large' });
+		expect(showToast).toHaveBeenCalledWith('error-file-too-large');
+	});
+
+	it('stores only the error flag for unknown failures', async () => {
+		const { showToast } = require('../helpers/showToast');
+		const updated: any = {};
+		(getUploadByPath as jest.Mock).mockResolvedValue({
+			update: jest.fn((cb: (u: any) => void) => {
+				cb(updated);
+			})
+		});
+
+		await persistUploadError('/tmp/pic.jpg', 'GENERAL', new Error('boom'));
+
+		expect(updated).toMatchObject({ error: true, errorStatus: undefined, errorMessage: undefined });
+		expect(showToast).not.toHaveBeenCalled();
+	});
+
+	it('does nothing when the record is gone', async () => {
+		(getUploadByPath as jest.Mock).mockResolvedValue(null);
+
+		await expect(persistUploadError('/tmp/pic.jpg', 'GENERAL', new Error('boom'))).resolves.toBeUndefined();
 	});
 });

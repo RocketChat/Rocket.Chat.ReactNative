@@ -23,6 +23,8 @@ import { sanitizeLikeString } from '~/lib/database/utils';
 import { generateTriggerId } from '~/lib/methods/actions';
 import { runSlashCommand } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
+import { showToast } from '~/lib/methods/helpers/showToast';
+import I18n from '~/i18n';
 import { prepareQuoteMessage, insertEmojiAtCursor, lastGlyphLength } from './helpers';
 import useShortnameToUnicode from '~/lib/hooks/useShortnameToUnicode';
 import { useCloseKeyboardWhenOrientationChanges } from './hooks/useCloseKeyboardWhenOrientationChanges';
@@ -129,6 +131,13 @@ export const MessageComposer = ({
 		}
 
 		if (attachments.length) {
+			const uploadableAttachments = attachments.filter(a => a.canUpload !== false);
+			if (!uploadableAttachments.length) {
+				const firstError = attachments.find(a => a.error)?.error;
+				showToast(firstError && I18n.isTranslated(firstError) ? I18n.t(firstError) : I18n.t('error-file-too-large'));
+				composerInputComponentRef.current.setInput(textFromInput);
+				return;
+			}
 			let quotedMessage: string | undefined;
 
 			if (quotedMessageIds.length) {

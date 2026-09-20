@@ -30,6 +30,10 @@ export default class Upload extends Model {
 
 	@field('error') error;
 
+	@field('error_status') errorStatus;
+
+	@field('error_message') errorMessage;
+
 	asPlain() {
 		return {
 			id: this.id,

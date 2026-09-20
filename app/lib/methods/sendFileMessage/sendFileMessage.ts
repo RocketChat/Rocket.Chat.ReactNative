@@ -85,7 +85,7 @@ export async function sendFileMessage(
 		if (uploadPath && !uploadQueue[uploadPath]) {
 			console.log('Upload cancelled');
 		} else {
-			await persistUploadError(fileInfo.path, rid);
+			await persistUploadError(fileInfo.path, rid, e);
 			throw e;
 		}
 	}

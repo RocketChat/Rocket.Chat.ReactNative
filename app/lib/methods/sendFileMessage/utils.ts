@@ -8,7 +8,8 @@ import { type IUpload, type TUploadModel } from '~/definitions';
 import i18n from '~/i18n';
 import database from '~/lib/database';
 import log from '../helpers/log';
-import { type IFileUpload } from '../helpers/fileUpload/definitions';
+import { showToast } from '../helpers/showToast';
+import { type IFileUpload, UploadHttpError } from '../helpers/fileUpload/definitions';
 
 export const uploadQueue: { [index: string]: IFileUpload } = {};
 
@@ -40,18 +41,25 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 	}
 }
 
-export const persistUploadError = async (path: string, rid: string) => {
+export const persistUploadError = async (path: string, rid: string, error?: unknown) => {
 	try {
 		const db = database.active;
 		const uploadRecord = await getUploadByPath(getUploadPath(path, rid));
 		if (!uploadRecord) {
 			return;
 		}
+		const errorStatus = error instanceof UploadHttpError ? error.status : undefined;
+		const errorMessage = error instanceof UploadHttpError ? (error.serverMessage ?? error.body) : undefined;
 		await db.write(async () => {
 			await uploadRecord.update(u => {
 				u.error = true;
+				u.errorStatus = errorStatus;
+				u.errorMessage = errorMessage;
 			});
 		});
+		if (errorStatus === 413) {
+			showToast(i18n.t('error-file-too-large'));
+		}
 	} catch {
 		// Do nothing
 	}
@@ -83,6 +91,8 @@ export const createUploadRecord = async ({
 			await db.write(async () => {
 				await uploadRecord?.update(u => {
 					u.error = false;
+					u.errorStatus = undefined;
+					u.errorMessage = undefined;
 					u.progress = 0;
 				});
 			});
