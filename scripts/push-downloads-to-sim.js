@@ -3,9 +3,6 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const ANDROID = process.argv.includes('--android');
-const IOS = process.argv.includes('--ios');
-
 const REMOTE = [
 	['XJR2sjYfSAMz5eyT2/test.pdf', 'test.pdf'],
 	['8hbJ3HH6tBGxQk6QY/test.docx', 'test.docx'],
@@ -133,116 +130,6 @@ async function fetchRealFixtures() {
 	}
 }
 
-function bootedIOSUDID() {
-	const devices = JSON.parse(execFileSync('xcrun', ['simctl', 'list', 'devices', '--json'], { encoding: 'utf8' })).devices;
-	const booted = Object.entries(devices)
-		.filter(([runtime]) => runtime.includes('iOS'))
-		.flatMap(([, runtimeDevices]) => runtimeDevices.filter(d => d.state === 'Booted' && d.name.startsWith('iPhone')));
-	if (booted.length === 0) throw new Error('no booted iPhone simulator found; start an iPhone simulator before running this script');
-	if (booted.length > 1)
-		throw new Error(`multiple booted iPhone simulators found: ${booted.map(d => `${d.name} (${d.udid})`).join(', ')}`);
-	return booted[0].udid;
-}
-
-function findFileProviderAppGroup(base) {
-	for (const group of fs.readdirSync(base)) {
-		const groupPath = path.join(base, group);
-		const metadata = path.join(
-			groupPath,
-			'.com.apple.mobile_container_manager.metadata.plist'
-		);
-
-		if (!fs.existsSync(metadata)) {
-			continue;
-		}
-
-		try {
-			const identifier = execFileSync(
-				'plutil',
-				[
-					'-extract',
-					'MCMMetadataIdentifier',
-					'raw',
-					metadata
-				],
-				{ encoding: 'utf8' }
-			).trim();
-
-			if (identifier === 'group.com.apple.FileProvider.LocalStorage') {
-				return group;
-			}
-		} catch {}
-	}
-
-	return null;
-}
-
-
-function findDownloads() {
-	const UDID = bootedIOSUDID();
-
-	const base = path.join(
-		os.homedir(),
-		'Library',
-		'Developer',
-		'CoreSimulator',
-		'Devices',
-		UDID,
-		'data',
-		'Containers',
-		'Shared',
-		'AppGroup'
-	);
-
-	if (!fs.existsSync(base)) {
-		throw new Error(`simulator data directory not found: ${base}`);
-	}
-
-	let group = findFileProviderAppGroup(base);
-
-	if (!group) {
-		execFileSync('xcrun', ['simctl', 'launch', UDID, 'com.apple.DocumentsApp'], { stdio: 'ignore' });
-	}
-
-	for (let attempt = 0; attempt < 15; attempt += 1) {
-		if (!group) {
-			group = findFileProviderAppGroup(base);
-		}
-
-		if (group) {
-			const downloads = path.join(base, group, 'File Provider Storage', 'Downloads');
-
-			if (fs.existsSync(downloads)) {
-				return downloads;
-			}
-		}
-
-		execFileSync('sleep', ['1'], { stdio: 'ignore' });
-	}
-
-	throw new Error(
-		'File Provider LocalStorage Downloads directory not found'
-	);
-}
-
-function pushIOS(fixtures) {
-	const downloads = findDownloads();
-	console.log(`Downloads: ${downloads}`);
-	const results = [];
-	for (const [name, content] of fixtures) {
-		const out = path.join(downloads, name);
-		if (fs.existsSync(out) && fs.statSync(out).size > 0) {
-			results.push(`keep ${name}`);
-			continue;
-		}
-		fs.writeFileSync(out, content);
-		results.push(`made ${name}`);
-	}
-	console.log(results.join('\n'));
-	console.log('---');
-	for (const f of fs.readdirSync(downloads)) console.log(f);
-}
-
 function androidSerial() {
 	const out = execFileSync('adb', ['devices'], { encoding: 'utf8' });
 	const serials = out
@@ -289,10 +176,8 @@ function pushAndroid(fixtures) {
 }
 
 async function main() {
-	if (ANDROID === IOS) throw new Error('pass exactly one of --android or --ios');
 	const fixtures = await fetchRealFixtures();
-	if (ANDROID) pushAndroid(fixtures);
-	else pushIOS(fixtures);
+	pushAndroid(fixtures);
 }
 
 main().catch(e => {
