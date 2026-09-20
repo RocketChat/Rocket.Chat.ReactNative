@@ -35,7 +35,7 @@ tags:
       - extendedWaitUntil:
           visible: "Library"
           timeout: 10000
-            - runFlow:
+      - runFlow:
           when:
             visible: '.*New in Photos.*'
           commands:
