@@ -1,3 +1,4 @@
+import { type ReactElement } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -269,7 +270,7 @@ const horizontalRuleText = `Text above the rule
 ---
 
 Text below the rule`;
-export const Table = () => (
+export const Table = (): ReactElement => (
 	<View style={styles.container}>
 		<Markdown msg={tableText} />
 		<Markdown msg={horizontalRuleText} />

@@ -1,4 +1,5 @@
-import { ScrollView, Text, View } from 'react-native';
+import { type ReactElement } from 'react';
+import { ScrollView, Text, type TextStyle, View } from 'react-native';
 import { type Table as TableProps, type TableCell } from '@rocket.chat/message-parser';
 
 import { themes } from '~/lib/constants/colors';
@@ -11,7 +12,7 @@ interface ITableProps {
 	value: TableProps['value'];
 }
 
-const alignmentStyle = (align: TableCell['align']) => {
+const alignmentStyle = (align: TableCell['align']): TextStyle | null => {
 	switch (align) {
 		case 'center':
 			return styles.alignCenter;
@@ -22,12 +23,12 @@ const alignmentStyle = (align: TableCell['align']) => {
 	}
 };
 
-const Table = ({ value }: ITableProps) => {
+const Table = ({ value }: ITableProps): ReactElement => {
 	const { theme } = useTheme();
 	const borderColor = { borderColor: themes[theme].strokeLight };
 	const color = { color: themes[theme].fontDefault };
 
-	const renderRow = (cells: TableCell[], isHeader: boolean) => (
+	const renderRow = (cells: TableCell[], isHeader: boolean): ReactElement => (
 		<View style={styles.row}>
 			{cells.map((cell, index) => (
 				<View key={`table-cell-${index}`} style={[styles.cell, styles.tableExtraBorders, styles.tableCell, borderColor]}>
