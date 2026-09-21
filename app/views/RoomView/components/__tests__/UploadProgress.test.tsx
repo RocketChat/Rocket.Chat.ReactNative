@@ -102,4 +102,26 @@ describe('UploadProgress', () => {
 		expect(screen.getByText(/Uploading/)).toBeOnTheScreen();
 		expect(screen.queryByText('Try_again')).toBeNull();
 	});
+
+	describe('accessibility', () => {
+		it('exposes the retry and cancel controls as separate buttons', () => {
+			show([upload({ error: true, errorStatus: 503 })]);
+
+			expect(screen.getByRole('button', { name: 'Try_again' })).toBeOnTheScreen();
+			expect(screen.getByRole('button', { name: 'Cancel_upload' })).toBeOnTheScreen();
+		});
+
+		it('reads the failure and its reason as one announcement', () => {
+			show([upload({ error: true, errorStatus: 507, errorMessage: 'Storage quota exceeded' })]);
+
+			expect(screen.getByLabelText('Error_uploading pic.jpg. Storage quota exceeded')).toBeOnTheScreen();
+		});
+
+		it('leaves cancel reachable when there is no retry to offer', () => {
+			show([upload({ error: true, errorStatus: 413 })]);
+
+			expect(screen.queryByRole('button', { name: 'Try_again' })).toBeNull();
+			expect(screen.getByRole('button', { name: 'Cancel_upload' })).toBeOnTheScreen();
+		});
+	});
 });

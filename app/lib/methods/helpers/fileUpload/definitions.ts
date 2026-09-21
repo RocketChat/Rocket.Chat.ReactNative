@@ -57,7 +57,6 @@ export const parseUploadErrorBody = (responseText: string | undefined): { server
 	return { body };
 };
 
-// Retry-After is either a number of seconds or an HTTP date (RFC 9110).
 export const parseRetryAfter = (value?: string | null): number | undefined => {
 	if (!value) {
 		return undefined;

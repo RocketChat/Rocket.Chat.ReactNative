@@ -225,42 +225,53 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 		const errorReason = getUploadErrorMessage(item);
 		const errorLabel = `${I18n.t('Error_uploading')} ${item.name}${errorReason ? `. ${errorReason}` : ''}`;
 
+		// The row itself is not an accessibility element: grouping it would swallow the
+		// controls below, which A11y.Index is here to make reachable one at a time.
 		return (
 			<A11y.Order>
-				<A11y.Index index={1}>
-					<View accessible accessibilityLabel={errorLabel} style={styles.row}>
-						<CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />
-						<View style={styles.descriptionContainer}>
-							<Text style={[styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={1}>
-								{I18n.t('Error_uploading')} {item.name}
-							</Text>
-							{errorReason ? (
-								<Text style={[styles.errorReasonText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={2}>
-									{errorReason}
+				<View style={styles.row}>
+					<CustomIcon
+						name='warning'
+						size={20}
+						color={themes[theme!].buttonBackgroundDangerDefault}
+						accessibilityElementsHidden
+						importantForAccessibility='no'
+					/>
+					<View style={styles.descriptionContainer}>
+						<A11y.Index index={1}>
+							<View accessible accessibilityLabel={errorLabel}>
+								<Text style={[styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={1}>
+									{I18n.t('Error_uploading')} {item.name}
 								</Text>
-							) : null}
-							{isRetryableUploadError(item.errorStatus) ? (
-								<A11y.Index index={2}>
-									<TouchableOpacity onPress={() => this.tryAgain(item)}>
-										<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
-											{I18n.t('Try_again')}
-										</Text>
-									</TouchableOpacity>
-								</A11y.Index>
-							) : null}
-						</View>
-						<A11y.Index index={3}>
-							<CustomIcon
-								accessible
-								accessibilityLabel={I18n.t('Cancel_upload')}
-								name='close'
-								size={20}
-								color={themes[theme!].fontSecondaryInfo}
-								onPress={() => this.deleteUpload(item)}
-							/>
+								{errorReason ? (
+									<Text style={[styles.errorReasonText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={2}>
+										{errorReason}
+									</Text>
+								) : null}
+							</View>
 						</A11y.Index>
+						{isRetryableUploadError(item.errorStatus) ? (
+							<A11y.Index index={2}>
+								<TouchableOpacity accessibilityRole='button' onPress={() => this.tryAgain(item)}>
+									<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
+										{I18n.t('Try_again')}
+									</Text>
+								</TouchableOpacity>
+							</A11y.Index>
+						) : null}
 					</View>
-				</A11y.Index>
+					<A11y.Index index={3}>
+						<CustomIcon
+							accessible
+							accessibilityRole='button'
+							accessibilityLabel={I18n.t('Cancel_upload')}
+							name='close'
+							size={20}
+							color={themes[theme!].fontSecondaryInfo}
+							onPress={() => this.deleteUpload(item)}
+						/>
+					</A11y.Index>
+				</View>
 			</A11y.Order>
 		);
 	};
