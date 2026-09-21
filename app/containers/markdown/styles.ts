@@ -153,6 +153,14 @@ export default StyleSheet.create({
 		paddingHorizontal: 13,
 		paddingVertical: 6
 	},
+	tableCell: {
+		width: 144
+	},
+	horizontalRule: {
+		height: 1,
+		marginVertical: 8,
+		alignSelf: 'stretch'
+	},
 	cellRightBorder: {
 		borderRightWidth: 1
 	},

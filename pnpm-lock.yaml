@@ -88,8 +88,8 @@ importers:
         specifier: 1.0.0-rc.1
         version: 1.0.0-rc.1
       '@rocket.chat/message-parser':
-        specifier: 0.31.36
-        version: 0.31.36
+        specifier: 0.32.0
+        version: 0.32.0
       '@rocket.chat/mobile-crypto':
         specifier: RocketChat/rocket.chat-mobile-crypto#main
         version: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -2639,12 +2639,12 @@ packages:
   '@rocket.chat/media-signaling@1.0.0-rc.1':
     resolution: {integrity: sha512-yUMFOyhJfN1XH4IssQF17zAeaamNiSw3riaeuc+pby4XYDd405aN8jh//Lz2nn9c8DeGCCzUbRStlMlmPsbr6g==}
 
-  '@rocket.chat/message-parser@0.31.36':
-    resolution: {integrity: sha512-Z8kmWHKswEYH9dnr6iU61DJG2BAmCTkvhXhZ4dtFHe8/UThgr8cJcFSpSJi/y8Fh7LakzQIsgq+xMZ1OcwZU+g==}
-    engines: {node: 22.16.0}
+  '@rocket.chat/message-parser@0.32.0':
+    resolution: {integrity: sha512-dnjKivGR5BUXfjVAX5fsld9YbUI1SeIMjmieK1XUt36+IWrtJThTBGfb6SwALDnRBey9vFc+XrIAAo2zb1AAvw==}
+    engines: {node: 22.22.3}
 
   '@rocket.chat/mobile-crypto@https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c}
+    resolution: {gitHosted: true, integrity: sha512-v3uaVCYlj9gGZkAZe3JWQkhlGaRyahmnagbMSKtSnl+6WuLNxaPOf0GjJKVuxBdqkXPPhr23JIihVlch3FVeCQ==, tarball: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c}
     version: 0.4.0
     peerDependencies:
       react: '*'
@@ -5532,6 +5532,7 @@ packages:
 
   jsrsasign@11.0.0:
     resolution: {integrity: sha512-BtRwVKS+5dsgPpAtzJcpo5OoWjSs1/zllSBG0+8o8/aV0Ki76m6iZwHnwnsqoTdhfFZDN1XIdcaZr5ZkP+H2gg==}
+    deprecated: This package is no longer maintained.
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -10593,7 +10594,7 @@ snapshots:
       '@rocket.chat/emitter': 0.32.0
       ajv: 8.18.0
 
-  '@rocket.chat/message-parser@0.31.36':
+  '@rocket.chat/message-parser@0.32.0':
     dependencies:
       tldts: 6.1.86
 

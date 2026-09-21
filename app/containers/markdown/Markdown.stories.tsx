@@ -259,3 +259,19 @@ this is a normal line`}
 		<Markdown msg='[Markdown link](https://rocket.chat)' textStyle={textStyle} />
 	</View>
 );
+
+const tableText = `| Client | OS | Tables |
+| --- | :-: | ---: |
+| Desktop | any | rendered |
+| *Mobile* | iOS, Android | **rendered** |`;
+const horizontalRuleText = `Text above the rule
+
+---
+
+Text below the rule`;
+export const Table = () => (
+	<View style={styles.container}>
+		<Markdown msg={tableText} />
+		<Markdown msg={horizontalRuleText} />
+	</View>
+);
