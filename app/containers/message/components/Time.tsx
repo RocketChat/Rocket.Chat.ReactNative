@@ -1,7 +1,7 @@
 import { Text } from 'react-native';
 
-import dayjs from '../../../lib/dayjs';
-import { useTheme } from '../../../theme';
+import dayjs from '~/lib/dayjs';
+import { useTheme } from '~/theme';
 import messageStyles from '../styles';
 import { useMessageField } from '../stores/MessageStore';
 import { useTimeFormat } from '../stores/MessageRoomStore';

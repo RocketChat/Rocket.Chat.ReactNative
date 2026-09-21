@@ -7,7 +7,7 @@ import parse from 'url-parse';
 
 import ActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
-import { type ICredentials } from '../definitions';
+import { type ILoginCredentials } from '../definitions';
 import { userAgent } from '../lib/constants/userAgent';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useDebounce } from '../lib/methods/helpers';
@@ -70,9 +70,9 @@ const AuthenticationWebView = ({ route }: AuthenticationWebViewProps) => {
 	const iframeRedirectRegex = new RegExp(`(?=.*(${server}))(?=.*(event|loginToken|token))`, 'g');
 
 	// Force 3s delay so the server has time to evaluate the token
-	const debouncedLogin = useDebounce((params: ICredentials) => login(params), 3000);
+	const debouncedLogin = useDebounce((params: ILoginCredentials) => login(params), 3000);
 
-	const login = async (params: ICredentials) => {
+	const login = async (params: ILoginCredentials) => {
 		if (loggingRef.current) {
 			return;
 		}

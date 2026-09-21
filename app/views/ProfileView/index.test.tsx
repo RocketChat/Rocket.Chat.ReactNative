@@ -3,12 +3,13 @@ import { useDispatch } from 'react-redux';
 import { sha256 } from 'js-sha256';
 
 import ProfileView from './index';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { saveUserProfile } from '../../lib/services/restApi';
-import { twoFactor } from '../../lib/services/twoFactor';
-import handleSaveUserProfileError from '../../lib/methods/helpers/handleSaveUserProfileError';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { setUser } from '../../actions/login';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { saveUserProfile } from '~/lib/services/restApi';
+import { twoFactor } from '~/lib/services/twoFactor/twoFactor';
+import { TwoFactorCancelledError } from '~/lib/services/twoFactor/twoFactorCancelled';
+import handleSaveUserProfileError from '~/lib/methods/helpers/handleSaveUserProfileError';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { setUser } from '~/actions/login';
 
 jest.mock('react-redux', () => ({
 	useDispatch: jest.fn()
@@ -19,23 +20,23 @@ jest.mock('@react-navigation/native', () => ({
 	useFocusEffect: jest.fn()
 }));
 
-jest.mock('../../lib/hooks/useAppSelector', () => ({
+jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: jest.fn()
 }));
 
-jest.mock('../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	saveUserProfile: jest.fn()
 }));
 
-jest.mock('../../lib/services/twoFactor', () => ({
+jest.mock('~/lib/services/twoFactor/twoFactor', () => ({
 	twoFactor: jest.fn()
 }));
 
-jest.mock('../../lib/methods/helpers/handleSaveUserProfileError', () => jest.fn());
+jest.mock('~/lib/methods/helpers/handleSaveUserProfileError', () => jest.fn());
 
 const mockShowActionSheet = jest.fn();
 const mockHideActionSheet = jest.fn();
-jest.mock('../../containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet, hideActionSheet: mockHideActionSheet })
 }));
 
@@ -46,8 +47,8 @@ jest.mock('react-native-keyboard-controller', () => {
 
 jest.mock('./components/DeleteAccountActionSheetContent', () => () => null);
 jest.mock('./components/ConfirmEmailChangeActionSheetContent', () => () => null);
-jest.mock('../../containers/CustomFields', () => () => null);
-jest.mock('../../containers/Avatar', () => ({ AvatarWithEdit: () => null }));
+jest.mock('~/containers/CustomFields', () => () => null);
+jest.mock('~/containers/Avatar', () => ({ AvatarWithEdit: () => null }));
 
 const user = {
 	id: 'user-id',
@@ -132,6 +133,28 @@ describe('ProfileView submit', () => {
 		await waitFor(() => expect(twoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: false }));
 		await waitFor(() => expect(saveUserProfile).toHaveBeenCalledTimes(2));
 		expect(handleSaveUserProfileError).not.toHaveBeenCalled();
+	});
+
+	it('stays silent when the user cancels the 2FA challenge', async () => {
+		(saveUserProfile as jest.Mock).mockRejectedValue({ error: 'totp-invalid', details: { method: 'totp' } });
+		(twoFactor as jest.Mock).mockRejectedValue(new TwoFactorCancelledError());
+
+		const { getByTestId } = renderProfile();
+		changeNameAndSubmit(getByTestId);
+
+		await waitFor(() => expect(twoFactor).toHaveBeenCalled());
+		expect(handleSaveUserProfileError).not.toHaveBeenCalled();
+	});
+
+	it('reports the 2FA error itself when the challenge fails for a reason other than cancelling', async () => {
+		const twoFactorError = { error: 'totp-required' };
+		(saveUserProfile as jest.Mock).mockRejectedValue({ error: 'totp-invalid', details: { method: 'totp' } });
+		(twoFactor as jest.Mock).mockRejectedValue(twoFactorError);
+
+		const { getByTestId } = renderProfile();
+		changeNameAndSubmit(getByTestId);
+
+		await waitFor(() => expect(handleSaveUserProfileError).toHaveBeenCalledWith(twoFactorError, 'saving_profile'));
 	});
 
 	it('handles the save error after a cancelled/non-2FA failure', async () => {

@@ -8,16 +8,26 @@ import database, { getDatabase } from '../database';
 import log from './helpers/log';
 import { disconnect } from '../services/connect';
 import sdk from '../services/sdk';
-import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants/keys';
+import {
+	CURRENT_SERVER,
+	E2E_PRIVATE_KEY,
+	E2E_PUBLIC_KEY,
+	E2E_RANDOM_PASSWORD_KEY,
+	getLegacyUserTokenKey,
+	getServerUserIdKey,
+	getUserTokenKey
+} from '../constants/keys';
 import UserPreferences from './userPreferences';
 import { removePushToken } from '../services/restApi';
 import { roomsSubscription } from './subscriptions/rooms';
 import { _activeUsersSubTimeout } from './getUsersPresence';
 
 function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
-	UserPreferences.removeItem(`${TOKEN_KEY}-${server}`);
+	UserPreferences.removeItem(getServerUserIdKey(server));
 	if (userId) {
-		UserPreferences.removeItem(`${TOKEN_KEY}-${userId}`);
+		UserPreferences.removeItem(getUserTokenKey(server, userId));
+		// A logout before the migration ran leaves a token the native fallbacks would still read.
+		UserPreferences.removeItem(getLegacyUserTokenKey(userId));
 	}
 	UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${server}`);
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
@@ -29,7 +39,7 @@ export async function removeServerData({ server }: { server: string }): Promise<
 	try {
 		const batch: Model[] = [];
 		const serversDB = database.servers;
-		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(getServerUserIdKey(server));
 
 		const usersCollection = serversDB.get('users');
 		if (userId) {
@@ -60,24 +70,30 @@ export async function removeServerDatabase({ server }: { server: string }): Prom
 	}
 }
 
+async function logoutFromServer(server: string, resume: string): Promise<void> {
+	try {
+		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
+		await sdk.login({ resume });
+
+		const token = getDeviceToken();
+		if (token) {
+			await sdk.del('push.token', { token });
+		}
+
+		await sdk.logout();
+	} catch (e) {
+		log(e);
+	}
+}
+
 export async function removeServer({ server }: { server: string }): Promise<void> {
 	try {
-		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(getServerUserIdKey(server));
 		if (userId) {
-			const resume = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
+			const resume = UserPreferences.getString(getUserTokenKey(server, userId));
 
-			try {
-				const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
-				await sdk.login({ resume });
-
-				const token = getDeviceToken();
-				if (token) {
-					await sdk.del('push.token', { token });
-				}
-
-				await sdk.logout();
-			} catch (e) {
-				log(e);
+			if (resume) {
+				await logoutFromServer(server, resume);
 			}
 		}
 
@@ -104,14 +120,13 @@ export async function logout({ server }: { server: string }): Promise<void> {
 		log(e);
 	}
 
-	try {
-		// RC 0.60.0
-		await sdk.current.logout();
-	} catch (e) {
-		log(e);
-	}
-
-	if (sdk.current) {
+	if (sdk.isInitialized) {
+		try {
+			// RC 0.60.0
+			await sdk.logout();
+		} catch (e) {
+			log(e);
+		}
 		disconnect();
 	}
 

@@ -9,12 +9,12 @@ import styles from './styles';
 import Button from './Button';
 import Dots from './Dots';
 import { TYPE } from '../constants';
-import { PASSCODE_LENGTH } from '../../../lib/constants/localAuthentication';
-import { useTheme } from '../../../theme';
+import { PASSCODE_LENGTH } from '~/lib/constants/localAuthentication';
+import { useTheme } from '~/theme';
 import LockIcon from './LockIcon';
 import Title from './Title';
 import Subtitle from './Subtitle';
-import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IPasscodeBase {
 	type: string;
@@ -33,14 +33,15 @@ export interface IBase {
 	animate: (animation: Animatable.Animation, duration?: number) => void;
 }
 
+const HEADER_HEIGHT = 206;
+const BUTTON_ROWS_TRIM = 56;
+
 const Base = forwardRef<IBase, IPasscodeBase>(
 	({ type, onEndProcess, previousPasscode, title, subtitle, onError, showBiometry, onBiometryPress }, ref) => {
 		const { colors } = useTheme();
 		const { height } = useResponsiveLayout();
 
-		// 206 is the height of the header calculating the margins, icon size height, title font size and subtitle height.
-		// 56 is a fixed number to decrease the height of button numbers.
-		const dinamicHeight = (height - 206 - 56) / 4;
+		const dinamicHeight = (height - HEADER_HEIGHT - BUTTON_ROWS_TRIM) / 4;
 		const heightButtonRow = { height: dinamicHeight > 102 ? 102 : dinamicHeight };
 
 		const rootRef = useRef<Animatable.View & View>(null);

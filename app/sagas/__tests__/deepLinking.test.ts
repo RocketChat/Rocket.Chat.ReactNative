@@ -1,55 +1,61 @@
 // ─── Boundary mocks — must appear before any import that triggers the module ───
 
-jest.mock('../../lib/methods/userPreferences', () => ({
+jest.mock('~/lib/methods/userPreferences', () => ({
 	__esModule: true,
 	default: {
 		getString: jest.fn()
 	}
 }));
 
-jest.mock('../../lib/database/services/Server', () => ({
+jest.mock('~/lib/database/services/Server', () => ({
 	getServerById: jest.fn()
 }));
 
-jest.mock('../../lib/methods/canOpenRoom', () => ({
+jest.mock('~/lib/methods/canOpenRoom', () => ({
 	canOpenRoom: jest.fn()
 }));
 
-jest.mock('../../lib/methods/getServerInfo', () => ({
+jest.mock('~/lib/methods/getServerInfo', () => ({
 	getServerInfo: jest.fn()
 }));
 
-jest.mock('../../lib/methods/helpers/goRoom', () => ({
+jest.mock('~/lib/methods/helpers/goRoom', () => ({
 	goRoom: jest.fn(),
 	navigateToRoom: jest.fn()
 }));
 
-jest.mock('../../lib/methods/helpers/localAuthentication', () => ({
-	localAuthenticate: jest.fn()
-}));
+jest.mock('~/lib/methods/helpers/localAuthentication', () => {
+	class UserCanceledError extends Error {
+		constructor() {
+			super('User canceled local authentication');
+			this.name = 'UserCanceledError';
+		}
+	}
+	return {
+		localAuthenticate: jest.fn(),
+		logUnlessUserCanceled: jest.fn(),
+		UserCanceledError
+	};
+});
 
-jest.mock('../../lib/services/connect', () => ({
+jest.mock('~/lib/services/connect', () => ({
 	loginOAuthOrSso: jest.fn()
 }));
 
-jest.mock('../../lib/services/sdk', () => ({
+jest.mock('~/lib/services/sdk', () => ({
 	__esModule: true,
 	default: {
-		current: {
-			client: {
-				host: ''
-			}
-		}
+		host: null
 	}
 }));
 
-jest.mock('../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	notifyUser: jest.fn()
 }));
 
 // handleNavigateCallRoom reads database.active.get('subscriptions').find(rid).
 // Configured per test via jest.mocked(database.active.get) in beforeEach.
-jest.mock('../../lib/database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: {
 		active: {
@@ -58,15 +64,15 @@ jest.mock('../../lib/database', () => ({
 	}
 }));
 
-jest.mock('../../lib/methods/videoConf', () => ({
+jest.mock('~/lib/methods/videoConf', () => ({
 	videoConfJoin: jest.fn()
 }));
 
-jest.mock('../../lib/services/voip/resetVoipState', () => ({
+jest.mock('~/lib/services/voip/resetVoipState', () => ({
 	resetVoipState: jest.fn()
 }));
 
-jest.mock('../../lib/navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	__esModule: true,
 	default: {
 		navigate: jest.fn(),
@@ -82,8 +88,12 @@ jest.mock('i18n-js', () => ({
 	default: { t: (k: string) => k }
 }));
 
+jest.mock('~/lib/methods/helpers/info', () => ({
+	showConfirmationAlert: jest.fn(({ onPress }: { onPress: () => void }) => onPress())
+}));
+
 // Mock helpers to avoid auxStore (getUidDirectMessage / getRoomTitle call reduxStore.getState())
-jest.mock('../../lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers', () => ({
 	getUidDirectMessage: jest.fn(() => null),
 	normalizeDeepLinkingServerHost: jest.fn((host: string) => host)
 }));
@@ -92,43 +102,37 @@ jest.mock('../../lib/methods/helpers', () => ({
 
 // ─── Real imports (after mocks) ───────────────────────────────────────────────
 
-import { applyMiddleware, createStore } from 'redux';
-import createSagaMiddleware from 'redux-saga';
+import { deepLinkingOpen, deepLinkingClickCallPush } from '~/actions/deepLinking';
+import { loginFailure, loginSuccess } from '~/actions/login';
+import { selectServerFailure, selectServerSuccess } from '~/actions/server';
+import { appStart } from '~/actions/app';
+import { connectSuccess } from '~/actions/connect';
+import { APP, LOGIN, LOGOUT, SERVER } from '~/actions/actionsTypes';
+import { RootEnum } from '~/definitions';
+import deepLinkingRoot, { shouldAutoConfirmDeepLinkLogin } from '../deepLinking';
+import UserPreferences from '~/lib/methods/userPreferences';
+import { getServerUserIdKey } from '~/lib/constants/keys';
+import { showConfirmationAlert } from '~/lib/methods/helpers/info';
+import { getServerById } from '~/lib/database/services/Server';
+import { localAuthenticate, logUnlessUserCanceled, UserCanceledError } from '~/lib/methods/helpers/localAuthentication';
+import { canOpenRoom } from '~/lib/methods/canOpenRoom';
+import { getServerInfo } from '~/lib/methods/getServerInfo';
+import { goRoom, navigateToRoom } from '~/lib/methods/helpers/goRoom';
+import { waitForNavigationReady } from '~/lib/navigation/appNavigation';
+import { loginOAuthOrSso } from '~/lib/services/connect';
+import sdk from '~/lib/services/sdk';
+import database from '~/lib/database';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
+import type { PreloadedState, RecordingStore } from '~/lib/testUtils/sagaStore';
 
-import { deepLinkingOpen, deepLinkingClickCallPush } from '../../actions/deepLinking';
-import { loginSuccess } from '../../actions/login';
-import { selectServerSuccess } from '../../actions/server';
-import { appStart } from '../../actions/app';
-import { RootEnum } from '../../definitions';
-import reducers from '../../reducers';
-import deepLinkingRoot from '../deepLinking';
-import UserPreferences from '../../lib/methods/userPreferences';
-import { getServerById } from '../../lib/database/services/Server';
-import { canOpenRoom } from '../../lib/methods/canOpenRoom';
-import { getServerInfo } from '../../lib/methods/getServerInfo';
-import { goRoom, navigateToRoom } from '../../lib/methods/helpers/goRoom';
-import { waitForNavigationReady } from '../../lib/navigation/appNavigation';
-import { loginOAuthOrSso } from '../../lib/services/connect';
-import sdk from '../../lib/services/sdk';
-import database from '../../lib/database';
-import EventEmitter from '../../lib/methods/helpers/events';
+const setupStore = (preloadedState?: PreloadedState): RecordingStore => createRecordingStore(deepLinkingRoot, preloadedState);
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+/** Messages pushed through showToast, which emits on the Toast LISTENER channel. */
+const toastedMessages = (emitSpy: jest.SpyInstance): string[] =>
+	emitSpy.mock.calls.map(([, payload]: any[]) => payload?.message).filter(Boolean);
 
-/** Drains pending saga microtasks so all synchronous saga steps complete. */
-async function flushSagaMicrotasks(): Promise<void> {
-	await Promise.resolve();
-	await Promise.resolve();
-}
-
-type PreloadedState = Parameters<typeof createStore>[1];
-
-function setupStore(preloadedState?: PreloadedState) {
-	const sagaMiddleware = createSagaMiddleware();
-	const store = createStore(reducers, preloadedState, applyMiddleware(sagaMiddleware));
-	sagaMiddleware.run(deepLinkingRoot);
-	return store;
-}
+afterEach(cancelSagaTasks);
 
 // ─── Factories ────────────────────────────────────────────────────────────────
 
@@ -152,7 +156,7 @@ const makeServerRecord = (overrides: Record<string, any> = {}) => ({
 	...overrides
 });
 
-/** Stored user token stub as returned by UserPreferences.getString(TOKEN_KEY-host). */
+/** Stored user token stub as returned by UserPreferences.getString(getServerUserIdKey(host)). */
 const makeStoredUser = () => TOKEN;
 
 // ─── Regression race (new server + token + room path) ──────────────
@@ -166,6 +170,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		jest.mocked(getServerById).mockReset();
 		jest.mocked(canOpenRoom).mockReset();
 		jest.mocked(getServerInfo).mockReset();
+		jest.mocked(localAuthenticate).mockReset();
 		jest.mocked(goRoom).mockReset();
 		jest.mocked(waitForNavigationReady).mockReset();
 
@@ -180,6 +185,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 
 		// getServerInfo succeeds → unknown-server-with-token path
 		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '6.0.0' } as any);
+		jest.mocked(localAuthenticate).mockResolvedValue(undefined);
 
 		// canOpenRoom returns a room object
 		jest.mocked(canOpenRoom).mockResolvedValue({ rid: 'room-1', name: 'general', t: 'c' } as any);
@@ -201,7 +207,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 	 * once, sequenced after the APP.START dispatch.
 	 */
 	it('calls goRoom exactly once after APP.START(ROOT_INSIDE) completes the chain', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 		const params = makeParamsWithToken();
 
 		store.dispatch(deepLinkingOpen(params));
@@ -217,23 +223,142 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
+		// Saga is now waiting for METEOR.SUCCESS — loginRequest is gated on the socket.
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+
 		// Saga is now waiting for LOGIN.SUCCESS
 		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
 
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
 		await flushSagaMicrotasks();
 
-		// Saga has dispatched appReady and selected state.app.root.
-		// Root is NOT yet ROOT_INSIDE (reducer hasn't seen ROOT_INSIDE yet),
-		// so saga is waiting for APP.START(ROOT_INSIDE).
 		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
 
-		// Now dispatch APP.START(ROOT_INSIDE) — this satisfies the take.
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
+	});
+
+	// Ordering race: socket connects before SERVER.SELECT_SUCCESS; the guard must
+	// skip the already-fired METEOR.SUCCESS take instead of hanging.
+	it('completes the chain when METEOR.SUCCESS fires before SERVER.SELECT_SUCCESS', async () => {
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		// Socket connects first — before SERVER.SELECT_SUCCESS is dispatched.
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		await flushSagaMicrotasks();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
+		await flushSagaMicrotasks();
+
+		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
+	});
+
+	// loginRequest must not fire until the socket is connected (locks the gate).
+	it('does not dispatch loginRequest until METEOR.SUCCESS', async () => {
+		const { store, dispatchedActions } = setupStore();
+		const loginRequested = () => dispatchedActions.some(a => a.type === LOGIN.REQUEST);
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		await flushSagaMicrotasks();
+
+		// Server selected but socket not connected yet → still parked at the gate.
+		expect(loginRequested()).toBe(false);
+
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+
+		// Socket connected → gate released, loginRequest dispatched.
+		expect(loginRequested()).toBe(true);
+	});
+
+	it('does not touch the deep link server when the login confirmation is declined', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
+
+		const { store, dispatchedActions } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		// Prompt shown, and declining leaves the deep link's server entirely untouched: no
+		// connection attempt, no server added, no navigation away from where the user was.
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+		expect(emitSpy).not.toHaveBeenCalledWith('NewServer', expect.anything());
+		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
+		expect(dispatchedActions.some(a => a.type === LOGIN.REQUEST)).toBe(false);
+		expect(dispatchedActions.some(a => a.type === SERVER.INIT_ADD)).toBe(false);
+		expect(dispatchedActions.some(a => a.type === APP.START)).toBe(false);
+		// Cold start: normal init takes over instead of the deep link's server, and there is no
+		// mounted Toast to show a message on.
+		expect(dispatchedActions.some(a => a.type === APP.INIT)).toBe(true);
+		expect(toastedMessages(emitSpy)).not.toContain('Deep_link_login_declined');
+		emitSpy.mockRestore();
+	});
+
+	it('leaves a running app where it was when the login confirmation is declined', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
+
+		const { store, dispatchedActions } = setupStore({ app: { root: RootEnum.ROOT_INSIDE } } as PreloadedState);
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+		expect(emitSpy).not.toHaveBeenCalledWith('NewServer', expect.anything());
+		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
+		expect(dispatchedActions.some(a => a.type === LOGIN.REQUEST)).toBe(false);
+		expect(dispatchedActions.some(a => a.type === SERVER.INIT_ADD)).toBe(false);
+		expect(dispatchedActions.some(a => a.type === APP.START)).toBe(false);
+		expect(dispatchedActions.some(a => a.type === APP.INIT)).toBe(false);
+		expect(toastedMessages(emitSpy)).toContain('Deep_link_login_declined');
+		emitSpy.mockRestore();
+	});
+
+	// Marker decision behind the login-confirmation bypass (vuln fix): deleting or
+	// inverting the forceLoginPrompt check must fail here. Env wiring itself is
+	// compile-time inlined, so it's covered by Maestro deeplink.yaml instead.
+	describe('shouldAutoConfirmDeepLinkLogin', () => {
+		it('auto-confirms when isE2E with no marker', () => {
+			expect(shouldAutoConfirmDeepLinkLogin(true, {})).toBe(true);
+		});
+
+		it('shows the prompt when isE2E with forceLoginPrompt=true', () => {
+			expect(shouldAutoConfirmDeepLinkLogin(true, { forceLoginPrompt: 'true' })).toBe(false);
+		});
+
+		it('shows the prompt when not isE2E with no marker', () => {
+			expect(shouldAutoConfirmDeepLinkLogin(false, {})).toBe(false);
+		});
+
+		it('shows the prompt when not isE2E with forceLoginPrompt=true', () => {
+			expect(shouldAutoConfirmDeepLinkLogin(false, { forceLoginPrompt: 'true' })).toBe(false);
+		});
 	});
 
 	/**
@@ -242,7 +367,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 	 * Then dispatch APP.START(ROOT_INSIDE). Flush. Assert goRoom called once.
 	 */
 	it('goRoom is NOT called between LOGIN.SUCCESS and APP.START(ROOT_INSIDE)', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 		const params = makeParamsWithToken();
 
 		store.dispatch(deepLinkingOpen(params));
@@ -253,6 +378,9 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
 		await flushSagaMicrotasks();
 
@@ -261,7 +389,6 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 
 		// Now release the saga by dispatching APP.START(ROOT_INSIDE)
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
@@ -274,7 +401,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 	 * before flushing, so the reducer updates the root before the saga's select runs.
 	 */
 	it('skips the APP.START take when state.app.root is already ROOT_INSIDE at select time', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 		const params = makeParamsWithToken();
 
 		store.dispatch(deepLinkingOpen(params));
@@ -285,12 +412,14 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+
 		// Dispatch LOGIN.SUCCESS AND APP.START(ROOT_INSIDE) synchronously before any flush.
 		// The reducer processes both dispatches before the saga's select runs,
 		// so the select sees ROOT_INSIDE and skips the take.
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		// goRoom should fire immediately — the take was skipped by the select short-circuit
@@ -303,7 +432,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 	 * called once.
 	 */
 	it('APP.START(ROOT_OUTSIDE) does not satisfy the take; APP.START(ROOT_INSIDE) does', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 		const params = makeParamsWithToken();
 
 		store.dispatch(deepLinkingOpen(params));
@@ -312,6 +441,9 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		await flushSagaMicrotasks();
 
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		await flushSagaMicrotasks();
+
+		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();
 
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
@@ -327,7 +459,6 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		// Now dispatch correct root — satisfies the take
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		await flushSagaMicrotasks();
-		await flushSagaMicrotasks();
 
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
 	});
@@ -338,7 +469,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 	 * the take, takeLatest has not been retriggered).
 	 */
 	it('a second APP.START(ROOT_INSIDE) after navigation does not re-trigger goRoom', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 		const params = makeParamsWithToken();
 
 		store.dispatch(deepLinkingOpen(params));
@@ -349,19 +480,20 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
 		await flushSagaMicrotasks();
 
 		// First APP.START(ROOT_INSIDE) — fires the take
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		await flushSagaMicrotasks();
-		await flushSagaMicrotasks();
 
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
 
 		// Second APP.START(ROOT_INSIDE) — saga is done, no re-trigger
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		// Still exactly once
@@ -382,6 +514,8 @@ describe('deepLinking saga — server already connected, should skip changing se
 		jest.mocked(getServerById).mockReset();
 		jest.mocked(canOpenRoom).mockReset();
 		jest.mocked(getServerInfo).mockReset();
+		jest.mocked(localAuthenticate).mockReset();
+		jest.mocked(logUnlessUserCanceled).mockReset();
 		jest.mocked(goRoom).mockReset();
 		jest.mocked(waitForNavigationReady).mockReset();
 
@@ -394,18 +528,18 @@ describe('deepLinking saga — server already connected, should skip changing se
 		});
 		jest.mocked(getServerById).mockResolvedValue(null);
 		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '6.0.0' } as any);
+		jest.mocked(localAuthenticate).mockResolvedValue(undefined);
 		jest.mocked(canOpenRoom).mockResolvedValue({ rid: 'room-1', name: 'general', t: 'c' } as any);
 		jest.mocked(waitForNavigationReady).mockResolvedValue(undefined);
 		jest.mocked(goRoom).mockResolvedValue(undefined);
 
 		// Key setup: SDK websocket is already open to HOST
-		(sdk.current as any).client.host = HOST;
+		(sdk as any).host = HOST;
 	});
 
 	afterEach(() => {
 		jest.useRealTimers();
-		// Reset so other describe blocks see the default empty host
-		(sdk.current as any).client.host = '';
+		(sdk as any).host = null;
 	});
 
 	/**
@@ -414,13 +548,11 @@ describe('deepLinking saga — server already connected, should skip changing se
 	 * (not SELECT_SUCCESS) when the server is already connected.
 	 */
 	it('calls goRoom after LOGIN.SUCCESS + APP.START(ROOT_INSIDE) without needing SERVER.SELECT_SUCCESS', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 
 		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
-		// Two flushes drain the getServerById and getServerInfo promise microtasks.
 		// No jest.advanceTimersByTimeAsync needed — delay(1000) is skipped when
 		// hostAlreadyConnected is true.
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		// Saga must be parked at take(LOGIN.SUCCESS), not take(SERVER.SELECT_SUCCESS)
@@ -434,7 +566,6 @@ describe('deepLinking saga — server already connected, should skip changing se
 
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		await flushSagaMicrotasks();
-		await flushSagaMicrotasks();
 
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
 	});
@@ -447,9 +578,8 @@ describe('deepLinking saga — server already connected, should skip changing se
 	it('does not emit NewServer when the SDK is already connected to the deeplink host', async () => {
 		const emitSpy = jest.spyOn(EventEmitter, 'emit');
 
-		const store = setupStore();
+		const { store } = setupStore();
 		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		expect(emitSpy).not.toHaveBeenCalledWith('NewServer', expect.anything());
@@ -458,10 +588,120 @@ describe('deepLinking saga — server already connected, should skip changing se
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		await flushSagaMicrotasks();
-		await flushSagaMicrotasks();
 
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
 		emitSpy.mockRestore();
+	});
+
+	const setupFailedUnlock = (error: Error) => {
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === 'currentServer') return 'https://other.server.com';
+			if (key === getServerUserIdKey(HOST)) return makeStoredUser();
+			return null;
+		});
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		jest.mocked(localAuthenticate).mockRejectedValue(error);
+	};
+
+	it.each([
+		['a failed unlock', () => new Error('unlock failed')],
+		['a canceled unlock', () => new UserCanceledError()]
+	])('drops the deep link on %s for an existing secondary server', async (_label, makeError) => {
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
+		const { store, dispatchedActions } = setupStore();
+		const error = makeError();
+		setupFailedUnlock(error);
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' })));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(localAuthenticate)).toHaveBeenCalledWith(HOST);
+		expect(jest.mocked(logUnlessUserCanceled)).toHaveBeenCalledWith(error);
+		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
+		expect(dispatchedActions).not.toEqual(expect.arrayContaining([expect.objectContaining({ type: 'SERVER.SELECT_REQUEST' })]));
+		expect(emitSpy).not.toHaveBeenCalledWith('NewServer', expect.anything());
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+
+		emitSpy.mockRestore();
+	});
+
+	// Cold start: the deep link arrived over the splash screen, so bailing out with no root would
+	// leave the app with no navigator and only a force-quit to recover.
+	it('recovers the app root when the unlock fails with no root set', async () => {
+		const { store, dispatchedActions } = setupStore();
+		setupFailedUnlock(new UserCanceledError());
+
+		expect(store.getState().app.root).toBeUndefined();
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' })));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions).toEqual(expect.arrayContaining([expect.objectContaining({ type: APP.INIT })]));
+	});
+
+	// Same workspace as the link, server disconnected: the unlock runs inline in handleOpen instead of
+	// handleKnownServerDeepLink, so it needs its own root recovery.
+	const setupFailedUnlockSameServer = (error: Error) => {
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === 'currentServer') return HOST;
+			if (key === getServerUserIdKey(HOST)) return makeStoredUser();
+			return null;
+		});
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		jest.mocked(localAuthenticate).mockRejectedValue(error);
+	};
+
+	it('recovers the app root when the unlock fails on the current workspace with no root set', async () => {
+		const { store, dispatchedActions } = setupStore();
+		setupFailedUnlockSameServer(new UserCanceledError());
+
+		expect(store.getState().app.root).toBeUndefined();
+		expect(store.getState().server.connected).toBe(false);
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' })));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions).toEqual(expect.arrayContaining([expect.objectContaining({ type: APP.INIT })]));
+		expect(dispatchedActions).not.toEqual(expect.arrayContaining([expect.objectContaining({ type: 'SERVER.SELECT_REQUEST' })]));
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+	});
+
+	it('leaves an already-initialized root alone when the unlock fails on the current workspace', async () => {
+		const { store, dispatchedActions } = setupStore();
+		setupFailedUnlockSameServer(new UserCanceledError());
+
+		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+		const dispatchedBefore = dispatchedActions.length;
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' })));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions.slice(dispatchedBefore)).not.toEqual(
+			expect.arrayContaining([expect.objectContaining({ type: APP.INIT })])
+		);
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_INSIDE);
+	});
+
+	// Warm app: a failed unlock must not re-initialize and throw the user out of where they were.
+	it('leaves an already-initialized root alone when the unlock fails', async () => {
+		const { store, dispatchedActions } = setupStore();
+		setupFailedUnlock(new UserCanceledError());
+
+		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+		const dispatchedBefore = dispatchedActions.length;
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' })));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions.slice(dispatchedBefore)).not.toEqual(
+			expect.arrayContaining([expect.objectContaining({ type: APP.INIT })])
+		);
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_INSIDE);
 	});
 });
 
@@ -477,6 +717,7 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 		jest.mocked(UserPreferences.getString).mockReset();
 		jest.mocked(getServerById).mockReset();
 		jest.mocked(getServerInfo).mockReset();
+		jest.mocked(localAuthenticate).mockReset();
 		jest.mocked(navigateToRoom).mockReset();
 		jest.mocked(database.active.get).mockReset();
 
@@ -487,6 +728,7 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 		});
 		jest.mocked(getServerById).mockResolvedValue(null);
 		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '6.0.0' } as any);
+		jest.mocked(localAuthenticate).mockResolvedValue(undefined);
 
 		// handleNavigateCallRoom resolves the subscription for params.rid.
 		jest.mocked(database.active.get).mockReturnValue({
@@ -499,7 +741,7 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 	});
 
 	it('navigates to the call room once after SELECT_SUCCESS and LOGIN.SUCCESS', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 
 		store.dispatch(deepLinkingClickCallPush(makeCallParams()));
 		await flushSagaMicrotasks();
@@ -512,7 +754,6 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 		await flushSagaMicrotasks();
 
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(navigateToRoom)).toHaveBeenCalledTimes(1);
@@ -530,10 +771,9 @@ describe('deepLinking saga — handleOAuth dedup guard', () => {
 	});
 
 	it('calls loginOAuthOrSso with the oauth credentials on a fresh token', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 
 		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-fresh-A', credentialSecret: 'secret-A' } as any));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledTimes(1);
@@ -543,45 +783,237 @@ describe('deepLinking saga — handleOAuth dedup guard', () => {
 	});
 
 	it('does not call loginOAuthOrSso when the credentialSecret is missing', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 
 		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-no-secret-D' } as any));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(loginOAuthOrSso)).not.toHaveBeenCalled();
 	});
 
 	it('does not call loginOAuthOrSso a second time for the same credentialToken', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 
 		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-dup-B', credentialSecret: 'secret-B' } as any));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		// Second dispatch with the identical token — guard must suppress it.
 		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-dup-B', credentialSecret: 'secret-B' } as any));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledTimes(1);
 	});
 
 	it('calls loginOAuthOrSso again for a different credentialToken after a previous one was consumed', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 
 		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-first-C', credentialSecret: 'secret-C' } as any));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		// A distinct token must not be blocked by the guard.
 		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-second-C', credentialSecret: 'secret-C2' } as any));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledTimes(2);
 		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenNthCalledWith(2, {
 			oauth: { credentialToken: 'token-second-C', credentialSecret: 'secret-C2' }
 		});
+	});
+});
+
+describe('deepLinking saga — unknown host hands off to the add-server flow', () => {
+	const PREVIOUS_SERVER = 'https://previous.rocket.chat';
+
+	beforeEach(() => {
+		jest.useFakeTimers();
+		jest.mocked(UserPreferences.getString).mockReset();
+		jest.mocked(getServerById).mockReset();
+		jest.mocked(getServerInfo).mockReset();
+
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === 'currentServer') return PREVIOUS_SERVER;
+			return null;
+		});
+		jest.mocked(getServerById).mockResolvedValue(undefined as any);
+		jest.mocked(getServerInfo).mockResolvedValue({ success: true } as any);
+		(sdk as any).host = PREVIOUS_SERVER;
+	});
+
+	afterEach(() => {
+		jest.useRealTimers();
+		jest.restoreAllMocks();
+	});
+
+	it('starts the outside stack, seeds the previous server, then emits NewServer for the host', async () => {
+		const emit = jest.spyOn(EventEmitter, 'emit').mockImplementation(() => {});
+		const { store, dispatchedActions } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParams() as any));
+		await flushSagaMicrotasks();
+
+		const outsideIndex = dispatchedActions.findIndex(
+			action => action.type === APP.START && action.root === RootEnum.ROOT_OUTSIDE
+		);
+		const initAddIndex = dispatchedActions.findIndex(action => action.type === SERVER.INIT_ADD);
+
+		expect(outsideIndex).toBeGreaterThanOrEqual(0);
+		expect(initAddIndex).toBeGreaterThan(outsideIndex);
+		expect(dispatchedActions[initAddIndex].previousServer).toBe(PREVIOUS_SERVER);
+		expect(emit).not.toHaveBeenCalledWith('NewServer', { server: HOST });
+
+		jest.advanceTimersByTime(1000);
+		await flushSagaMicrotasks();
+
+		expect(emit).toHaveBeenCalledWith('NewServer', { server: HOST });
+		emit.mockRestore();
+	});
+});
+
+describe('deepLinking saga — handleShareExtension user-facing roots', () => {
+	beforeEach(() => {
+		jest.mocked(UserPreferences.getString).mockReset();
+		jest.mocked(getServerById).mockReset();
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === 'currentServer') return HOST;
+			return makeStoredUser();
+		});
+		(sdk as any).host = null;
+	});
+
+	afterEach(() => {
+		cancelSagaTasks();
+		(sdk as any).host = null;
+	});
+
+	it('lands on ROOT_OUTSIDE, not the loading root, when the server record is missing', async () => {
+		jest.mocked(getServerById).mockResolvedValue(null as any);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+	});
+
+	it('lands on ROOT_OUTSIDE when the login that the share sheet waits on fails', async () => {
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
+		await flushSagaMicrotasks();
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_LOADING_SHARE_EXTENSION);
+
+		store.dispatch(loginFailure({ message: 'connect failed' }));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+	});
+
+	it('lands on ROOT_OUTSIDE when selecting the server fails while the share sheet waits', async () => {
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
+		await flushSagaMicrotasks();
+
+		store.dispatch(selectServerFailure());
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+	});
+
+	it('lands on ROOT_OUTSIDE when the server logs the share sheet out instead of failing the login', async () => {
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
+		await flushSagaMicrotasks();
+
+		store.dispatch({ type: LOGOUT });
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+	});
+
+	it('lands on ROOT_OUTSIDE when local authentication throws', async () => {
+		jest.mocked(localAuthenticate).mockRejectedValueOnce(new Error('biometrics unavailable'));
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+	});
+
+	it('still reaches ROOT_SHARE_EXTENSION when the login succeeds', async () => {
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
+		await flushSagaMicrotasks();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: TOKEN } as any));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_SHARE_EXTENSION);
+	});
+});
+
+describe('deepLinking saga — handleSaml', () => {
+	beforeEach(() => {
+		jest.mocked(loginOAuthOrSso).mockReset();
+		jest.mocked(loginOAuthOrSso).mockResolvedValue(undefined as any);
+	});
+
+	it('redeems the SAML credential token through the regular saml login', async () => {
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'saml', host: HOST, credentialToken: 'saml-fresh-A' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledWith({ saml: true, credentialToken: 'saml-fresh-A' });
+	});
+
+	it('does not call loginOAuthOrSso when the credentialToken is missing', async () => {
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'saml', host: HOST } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(loginOAuthOrSso)).not.toHaveBeenCalled();
+	});
+
+	it('does not redeem the same SAML credentialToken twice', async () => {
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'saml', host: HOST, credentialToken: 'saml-dup-B' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		// The credential token is single use on the server, so a replayed deep link must be suppressed.
+		store.dispatch(deepLinkingOpen({ type: 'saml', host: HOST, credentialToken: 'saml-dup-B' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledTimes(1);
+	});
+
+	it('redeems a different SAML credentialToken after a previous one was consumed', async () => {
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'saml', host: HOST, credentialToken: 'saml-first-C' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		store.dispatch(deepLinkingOpen({ type: 'saml', host: HOST, credentialToken: 'saml-second-C' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledTimes(2);
+		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenNthCalledWith(2, { saml: true, credentialToken: 'saml-second-C' });
 	});
 });

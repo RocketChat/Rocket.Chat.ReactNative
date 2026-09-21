@@ -1,7 +1,7 @@
 import { InteractionManager } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import I18n from 'i18n-js';
-import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
+import { all, call, delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
@@ -10,7 +10,7 @@ import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks'
 import { loginRequest } from '../actions/login';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
 import { RootEnum } from '../definitions';
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CURRENT_SERVER, getServerUserIdKey } from '../lib/constants/keys';
 import database from '../lib/database';
 import { getServerById } from '../lib/database/services/Server';
 import { canOpenRoom } from '../lib/methods/canOpenRoom';
@@ -19,8 +19,9 @@ import { getUidDirectMessage, normalizeDeepLinkingServerHost } from '../lib/meth
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
-import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
+import { localAuthenticate, logUnlessUserCanceled, UserCanceledError } from '../lib/methods/helpers/localAuthentication';
 import log from '../lib/methods/helpers/log';
+import { showConfirmationAlert } from '../lib/methods/helpers/info';
 import { showToast } from '../lib/methods/helpers/showToast';
 import UserPreferences from '../lib/methods/userPreferences';
 import { videoConfJoin } from '../lib/methods/videoConf';
@@ -36,6 +37,23 @@ const roomTypes = {
 	group: 'p',
 	channels: 'l'
 };
+
+export const shouldAutoConfirmDeepLinkLogin = (isE2E, params = {}) => isE2E && params.forceLoginPrompt !== 'true';
+
+const confirmDeepLinkLogin = (host, params = {}) =>
+	new Promise(resolve => {
+		if (shouldAutoConfirmDeepLinkLogin(process.env.RUNNING_E2E_TESTS === 'true', params)) {
+			resolve(true);
+			return;
+		}
+		showConfirmationAlert({
+			title: I18n.t('Deep_link_login_title'),
+			message: I18n.t('Deep_link_login_description', { server: host }),
+			confirmationText: I18n.t('Login'),
+			onPress: () => resolve(true),
+			onCancel: () => resolve(false)
+		});
+	});
 
 const handleInviteLink = function* handleInviteLink({ params, requireLogin = false }) {
 	if (params.path && params.path.startsWith('invite/')) {
@@ -128,6 +146,26 @@ const fallbackNavigation = function* fallbackNavigation() {
 	yield put(appInit());
 };
 
+const declineDeepLinkLogin = function* declineDeepLinkLogin() {
+	const currentRoot = yield select(state => state.app.root);
+	if (currentRoot) {
+		showToast(I18n.t('Deep_link_login_declined'));
+	}
+	yield fallbackNavigation();
+};
+
+const ensureDeepLinkLoginConsent = function* ensureDeepLinkLoginConsent(host, params) {
+	if (!params.token) {
+		return true;
+	}
+	const confirmed = yield call(confirmDeepLinkLogin, host, params);
+	if (!confirmed) {
+		yield declineDeepLinkLogin();
+		return false;
+	}
+	return true;
+};
+
 let consumedOAuthToken;
 
 const handleOAuth = function* handleOAuth({ params }) {
@@ -143,9 +181,24 @@ const handleOAuth = function* handleOAuth({ params }) {
 	}
 };
 
+let consumedSamlToken;
+
+const handleSaml = function* handleSaml({ params }) {
+	const { credentialToken } = params;
+	if (!credentialToken || credentialToken === consumedSamlToken) {
+		return;
+	}
+	consumedSamlToken = credentialToken;
+	try {
+		yield loginOAuthOrSso({ saml: true, credentialToken });
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleShareExtension = function* handleOpen({ params }) {
 	const server = UserPreferences.getString(CURRENT_SERVER);
-	const user = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+	const user = UserPreferences.getString(getServerUserIdKey(server));
 
 	if (!user) {
 		yield put(appInit());
@@ -153,17 +206,122 @@ const handleShareExtension = function* handleOpen({ params }) {
 	}
 
 	yield put(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
-	yield localAuthenticate(server);
-	const serverRecord = yield getServerById(server);
-	if (!serverRecord) {
+	try {
+		try {
+			yield localAuthenticate(server);
+		} catch (e) {
+			if (!(e instanceof UserCanceledError)) {
+				throw e;
+			}
+			// Unlock canceled or superseded by another lock request — restart the normal flow instead
+			// of leaving the share extension stuck on the loading root.
+			yield put(appInit());
+			return;
+		}
+		const serverRecord = yield getServerById(server);
+		if (!serverRecord) {
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+			return;
+		}
+		yield put(selectServerRequest(server, serverRecord.version));
+		if (sdk.host !== server) {
+			const { loginSuccess } = yield race({
+				loginSuccess: take(types.LOGIN.SUCCESS),
+				loginFailure: take(types.LOGIN.FAILURE),
+				selectServerFailure: take(types.SERVER.SELECT_FAILURE),
+				logout: take(types.LOGOUT)
+			});
+			if (!loginSuccess) {
+				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+				return;
+			}
+		}
+		yield put(shareSetParams(params));
+		yield put(appStart({ root: RootEnum.ROOT_SHARE_EXTENSION }));
+	} catch (e) {
+		log(e);
+		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+	}
+};
+
+// Unlocks, then reconnects to `host` and waits for the login to land. Returns false when the unlock
+// was canceled or superseded, so the caller can bail instead of navigating.
+const authenticateAndSelectServer = function* authenticateAndSelectServer(host, version, changeServer = false) {
+	try {
+		yield localAuthenticate(host);
+	} catch (e) {
+		logUnlessUserCanceled(e);
+		yield fallbackNavigation();
+		return false;
+	}
+	yield put(selectServerRequest(host, version, true, changeServer));
+	yield take(types.LOGIN.SUCCESS);
+	return true;
+};
+
+const handleKnownServerDeepLink = function* handleKnownServerDeepLink({ params, host, version }) {
+	try {
+		yield localAuthenticate(host);
+		yield put(selectServerRequest(host, version, true, true));
+		yield take(types.LOGIN.SUCCESS);
+		yield completeDeepLinkNavigation(params);
+	} catch (e) {
+		logUnlessUserCanceled(e);
+		yield fallbackNavigation();
+	}
+};
+
+const loginWithDeepLinkToken = function* loginWithDeepLinkToken({ params, hostAlreadyConnected }) {
+	if (!hostAlreadyConnected) {
+		yield take(types.SERVER.SELECT_SUCCESS);
+		const connected = yield select(state => state.meteor.connected);
+		if (!connected) {
+			yield take(types.METEOR.SUCCESS);
+		}
+	}
+	yield put(loginRequest({ resume: params.token }, true));
+	yield take(types.LOGIN.SUCCESS);
+	yield put(appReady({}));
+
+	const currentRoot = yield select(state => state.app.root);
+	if (currentRoot !== RootEnum.ROOT_INSIDE) {
+		yield take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE);
+	}
+	yield completeDeepLinkNavigation(params);
+};
+
+const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, user, serverRecord }) {
+	const { host } = params;
+	// search if deep link's server already exists
+	if (user && serverRecord) {
+		yield* handleKnownServerDeepLink({ params, host, version: serverRecord.version });
 		return;
 	}
-	yield put(selectServerRequest(server, serverRecord.version));
-	if (sdk.current?.client?.host !== server) {
-		yield take(types.LOGIN.SUCCESS);
+	if (!(yield ensureDeepLinkLoginConsent(host, params))) {
+		return;
 	}
-	yield put(shareSetParams(params));
-	yield put(appStart({ root: RootEnum.ROOT_SHARE_EXTENSION }));
+	const result = yield getServerInfo(host);
+	if (!result.success) {
+		if (params.voipAcceptFailed) {
+			yield call(handleVoipAcceptFailed, params);
+			return;
+		}
+		yield fallbackNavigation();
+		return;
+	}
+	const hostAlreadyConnected = sdk.host === host;
+	if (!hostAlreadyConnected) {
+		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		yield put(serverInitAdd(server));
+		yield delay(1000);
+		EventEmitter.emit('NewServer', { server: host });
+	}
+
+	if (params.token) {
+		yield loginWithDeepLinkToken({ params, hostAlreadyConnected });
+	} else {
+		yield handleInviteLink({ params, requireLogin: true });
+	}
 };
 
 const handleOpen = function* handleOpen({ params }) {
@@ -173,6 +331,10 @@ const handleOpen = function* handleOpen({ params }) {
 	}
 	if (params.type === 'oauth') {
 		yield handleOAuth({ params });
+		return;
+	}
+	if (params.type === 'saml') {
+		yield handleSaml({ params });
 		return;
 	}
 
@@ -193,7 +355,7 @@ const handleOpen = function* handleOpen({ params }) {
 
 	const [server, user] = yield all([
 		UserPreferences.getString(CURRENT_SERVER),
-		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
+		UserPreferences.getString(getServerUserIdKey(host))
 	]);
 
 	const serverRecord = yield getServerById(host);
@@ -202,62 +364,12 @@ const handleOpen = function* handleOpen({ params }) {
 	// if deep link is from same server
 	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
-		if (!connected) {
-			yield localAuthenticate(host);
-			yield put(selectServerRequest(host, serverRecord.version, true));
-			yield take(types.LOGIN.SUCCESS);
+		if (!connected && !(yield* authenticateAndSelectServer(host, serverRecord.version))) {
+			return;
 		}
 		yield completeDeepLinkNavigation(params);
 	} else {
-		// search if deep link's server already exists
-		try {
-			if (user && serverRecord) {
-				yield localAuthenticate(host);
-				yield put(selectServerRequest(host, serverRecord.version, true, true));
-				yield take(types.LOGIN.SUCCESS);
-				yield completeDeepLinkNavigation(params);
-				return;
-			}
-		} catch (e) {
-			// do nothing?
-		}
-		// if deep link is from a different server
-		const result = yield getServerInfo(host);
-		if (!result.success) {
-			if (params.voipAcceptFailed) {
-				yield call(handleVoipAcceptFailed, params);
-				return;
-			}
-			// Fallback to prevent the app from being stuck on splash screen
-			yield fallbackNavigation();
-			return;
-		}
-		// if the host is different from the current one, we need to connect to it before navigating
-		const hostAlreadyConnected = sdk.current?.client?.host === host;
-		if (!hostAlreadyConnected) {
-			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-			yield put(serverInitAdd(server));
-			yield delay(1000);
-			EventEmitter.emit('NewServer', { server: host });
-		}
-
-		if (params.token) {
-			if (!hostAlreadyConnected) {
-				yield take(types.SERVER.SELECT_SUCCESS);
-			}
-			yield put(loginRequest({ resume: params.token }, true));
-			yield take(types.LOGIN.SUCCESS);
-			yield put(appReady({}));
-			// Wait for the login saga's appStart(ROOT_INSIDE) before navigating, so
-			// InsideStack is mounted and goRoom dispatches into the correct stack.
-			const currentRoot = yield select(state => state.app.root);
-			if (currentRoot !== RootEnum.ROOT_INSIDE) {
-				yield take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE);
-			}
-			yield completeDeepLinkNavigation(params);
-		} else {
-			yield handleInviteLink({ params, requireLogin: true });
-		}
+		yield handleOpenDifferentServer({ params, server, user, serverRecord });
 	}
 };
 
@@ -305,44 +417,46 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 
 	const [server, user] = yield all([
 		UserPreferences.getString(CURRENT_SERVER),
-		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
+		UserPreferences.getString(getServerUserIdKey(host))
 	]);
 
 	const serverRecord = yield getServerById(host);
 
 	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
-		if (!connected) {
-			yield localAuthenticate(host);
-			yield put(selectServerRequest(host, serverRecord.version, true));
-			yield take(types.LOGIN.SUCCESS);
+		if (!connected && !(yield* authenticateAndSelectServer(host, serverRecord.version))) {
+			return;
 		}
 		yield handleNavigateCallRoom({ params });
-	} else {
-		if (user && serverRecord) {
-			yield localAuthenticate(host);
-			yield put(selectServerRequest(host, serverRecord.version, true, true));
-			yield take(types.LOGIN.SUCCESS);
-			yield handleNavigateCallRoom({ params });
-			return;
-		}
-		// if deep link is from a different server
-		const result = yield getServerInfo(host);
-		if (!result.success) {
-			// Fallback to prevent the app from being stuck on splash screen
-			yield fallbackNavigation();
-			return;
-		}
-		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		yield put(serverInitAdd(server));
-		yield delay(1000);
-		EventEmitter.emit('NewServer', { server: host });
-		if (params.token) {
-			yield take(types.SERVER.SELECT_SUCCESS);
-			yield put(loginRequest({ resume: params.token }, true));
-			yield take(types.LOGIN.SUCCESS);
+		return;
+	}
+
+	if (user && serverRecord) {
+		if (yield* authenticateAndSelectServer(host, serverRecord.version, true)) {
 			yield handleNavigateCallRoom({ params });
 		}
+		return;
+	}
+
+	if (!(yield ensureDeepLinkLoginConsent(host, params))) {
+		return;
+	}
+	// if deep link is from a different server
+	const result = yield getServerInfo(host);
+	if (!result.success) {
+		// Fallback to prevent the app from being stuck on splash screen
+		yield fallbackNavigation();
+		return;
+	}
+	yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+	yield put(serverInitAdd(server));
+	yield delay(1000);
+	EventEmitter.emit('NewServer', { server: host });
+	if (params.token) {
+		yield take(types.SERVER.SELECT_SUCCESS);
+		yield put(loginRequest({ resume: params.token }, true));
+		yield take(types.LOGIN.SUCCESS);
+		yield handleNavigateCallRoom({ params });
 	}
 };
 

@@ -1,10 +1,13 @@
-import { type IUrl, type IUrlFromServer } from '../../../definitions';
+import { type IUrl, type IUrlFromServer } from '~/definitions';
 import { buildImageURL } from './buildImageURL';
 
 export default (urls: IUrlFromServer[]): IUrl[] =>
 	urls
-		.filter((url: IUrlFromServer) => url.meta && !url.ignoreParse)
+		.filter((url: IUrlFromServer) => (url.meta && !url.ignoreParse) || typeof (url as IUrl)._id === 'number')
 		.map((url: IUrlFromServer, index) => {
+			if (!(url.meta && !url.ignoreParse)) {
+				return url as unknown as IUrl;
+			}
 			const tmp: IUrl = {} as any;
 			const { meta } = url;
 			tmp._id = index;

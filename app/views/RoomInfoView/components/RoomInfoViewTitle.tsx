@@ -2,16 +2,16 @@ import { Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { type ReactElement } from 'react';
 
-import { type ISubscription, type TUserStatus, SubscriptionType } from '../../../definitions';
+import { type ISubscription, type TUserStatus, SubscriptionType } from '~/definitions';
 import styles from '../styles';
-import { useTheme } from '../../../theme';
-import RoomTypeIcon from '../../../containers/RoomTypeIcon';
-import { getRoomTitle } from '../../../lib/methods/helpers';
-import CollapsibleText from '../../../containers/CollapsibleText';
-import StatusRows from '../../../containers/Status/StatusRows';
-import EventEmitter from '../../../lib/methods/helpers/events';
-import { LISTENER } from '../../../containers/Toast';
-import I18n from '../../../i18n';
+import { useTheme } from '~/theme';
+import RoomTypeIcon from '~/containers/RoomTypeIcon';
+import { getRoomTitle } from '~/lib/methods/helpers';
+import CollapsibleText from '~/containers/CollapsibleText';
+import StatusRows from '~/containers/Status/StatusRows';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { LISTENER } from '~/containers/Toast';
+import I18n from '~/i18n';
 
 interface IRoomInfoViewTitle {
 	room?: ISubscription;

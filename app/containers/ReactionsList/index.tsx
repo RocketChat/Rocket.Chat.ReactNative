@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native';
 
-import { type IReaction } from '../../definitions';
-import I18n from '../../i18n';
+import { type IReaction } from '~/definitions';
+import I18n from '~/i18n';
 import styles from './styles';
 import AllTab from './AllTab';
 import UsersList from './UsersList';
@@ -55,8 +55,8 @@ const ReactionsList = ({ reactions }: IReactionsListProps) => {
 		if (route.key === 'all') {
 			return <AllTab reactions={sortedReactions} />;
 		}
-		if (route.emoji && route.usernames && route.names) {
-			return <UsersList emoji={route.emoji} usernames={route.usernames} names={route.names} />;
+		if (route.emoji && route.usernames) {
+			return <UsersList emoji={route.emoji} usernames={route.usernames} names={route.names || []} />;
 		}
 		return null;
 	};
@@ -64,14 +64,14 @@ const ReactionsList = ({ reactions }: IReactionsListProps) => {
 	const renderTabItem = (tab: IRoute, color: string) => {
 		if (tab.key === 'all') {
 			return (
-				<View style={styles.tabBarItem}>
+				<View style={styles.tabBarItem} testID='reactions-tab-all'>
 					<Text style={[styles.allTabItem, { color }]}>{I18n.t('All')}</Text>
 				</View>
 			);
 		}
 		if (tab.emoji) {
 			return (
-				<View style={styles.tabBarItem}>
+				<View style={styles.tabBarItem} testID={`reactions-tab-${tab.emoji}`}>
 					<Emoji content={tab.emoji} standardEmojiStyle={styles.standardEmojiStyle} customEmojiStyle={styles.customEmojiStyle} />
 					<Text style={[styles.reactionCount, { color }]}>{tab.usernames?.length}</Text>
 				</View>

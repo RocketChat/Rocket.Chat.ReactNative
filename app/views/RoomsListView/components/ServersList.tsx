@@ -3,26 +3,26 @@ import { FlatList, Text, View } from 'react-native';
 import { batch, useDispatch } from 'react-redux';
 import { type Subscription } from 'rxjs';
 
-import { appStart } from '../../../actions/app';
-import { selectServerRequest, serverInitAdd } from '../../../actions/server';
-import { hideActionSheetRef } from '../../../containers/ActionSheet';
-import Button from '../../../containers/Button';
-import * as List from '../../../containers/List';
-import ServerItem from '../../../containers/ServerItem';
-import { RootEnum, type TServerModel } from '../../../definitions';
-import I18n from '../../../i18n';
-import { TOKEN_KEY } from '../../../lib/constants/keys';
-import database from '../../../lib/database';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { removeServer } from '../../../lib/methods/logout';
-import EventEmitter from '../../../lib/methods/helpers/events';
-import { goRoom } from '../../../lib/methods/helpers/goRoom';
-import { showConfirmationAlert } from '../../../lib/methods/helpers/info';
-import { localAuthenticate } from '../../../lib/methods/helpers/localAuthentication';
-import { events, logEvent } from '../../../lib/methods/helpers/log';
-import UserPreferences from '../../../lib/methods/userPreferences';
-import { useTheme } from '../../../theme';
+import { appStart } from '~/actions/app';
+import { selectServerRequest, serverInitAdd } from '~/actions/server';
+import { hideActionSheetRef } from '~/containers/ActionSheet';
+import Button from '~/containers/Button';
+import * as List from '~/containers/List';
+import ServerItem from '~/containers/ServerItem';
+import { RootEnum, type TServerModel } from '~/definitions';
+import I18n from '~/i18n';
+import { getServerUserIdKey } from '~/lib/constants/keys';
+import database from '~/lib/database';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { removeServer } from '~/lib/methods/logout';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
+import { showConfirmationAlert } from '~/lib/methods/helpers/info';
+import { localAuthenticate, logUnlessUserCanceled } from '~/lib/methods/helpers/localAuthentication';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import UserPreferences from '~/lib/methods/userPreferences';
+import { useTheme } from '~/theme';
 import styles from '../styles';
 
 const ROW_HEIGHT = 68;
@@ -77,7 +77,7 @@ const ServersList = () => {
 		close();
 		if (server !== serverParam) {
 			logEvent(events.RL_CHANGE_SERVER);
-			const userId = UserPreferences.getString(`${TOKEN_KEY}-${serverParam}`);
+			const userId = UserPreferences.getString(getServerUserIdKey(serverParam));
 			if (isMasterDetail) {
 				goRoom({ item: {}, isMasterDetail });
 			}
@@ -88,7 +88,12 @@ const ServersList = () => {
 					EventEmitter.emit('NewServer', { server: serverParam });
 				}, 300);
 			} else {
-				await localAuthenticate(serverParam);
+				try {
+					await localAuthenticate(serverParam);
+				} catch (e) {
+					logUnlessUserCanceled(e);
+					return;
+				}
 				dispatch(selectServerRequest(serverParam, version, true, true));
 			}
 		}

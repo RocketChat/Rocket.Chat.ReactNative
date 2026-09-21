@@ -4,24 +4,24 @@ import { type NativeStackNavigationOptions, type NativeStackNavigationProp } fro
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
-import { type IMessageFromServer, type TThreadModel } from '../../definitions';
-import { type ChatsStackParamList } from '../../stacks/types';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import I18n from '../../i18n';
-import log from '../../lib/methods/helpers/log';
-import { isIOS, useDebounce } from '../../lib/methods/helpers';
-import SafeAreaView from '../../containers/SafeAreaView';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import * as List from '../../containers/List';
-import BackgroundContainer from '../../containers/BackgroundContainer';
-import { useTheme } from '../../theme';
-import SearchHeader from '../../containers/SearchHeader';
+import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
+import { type IMessageFromServer, type TThreadModel } from '~/definitions';
+import { type ChatsStackParamList } from '~/stacks/types';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import I18n from '~/i18n';
+import log from '~/lib/methods/helpers/log';
+import { isIOS, useDebounce } from '~/lib/methods/helpers';
+import SafeAreaView from '~/containers/SafeAreaView';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import * as List from '~/containers/List';
+import BackgroundContainer from '~/containers/BackgroundContainer';
+import { useTheme } from '~/theme';
+import SearchHeader from '~/containers/SearchHeader';
 import Item from './Item';
-import { getDiscussions } from '../../lib/services/restApi';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
+import { getDiscussions } from '~/lib/services/restApi';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
 
 const API_FETCH_COUNT = 50;
 
