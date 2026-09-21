@@ -7,6 +7,8 @@ import type {
 	MediaCallWebRTCProcessor
 } from '@rocket.chat/media-signaling';
 import { mediaDevices } from 'react-native-webrtc';
+
+import { gatedGetUserMedia } from './captureGate';
 import { getUniqueIdSync } from 'react-native-device-info';
 
 import { MediaCallLogger } from './MediaCallLogger';
@@ -61,7 +63,7 @@ class MediaSessionStore extends Emitter<{ change: void }> {
 			processorFactories: {
 				webrtc: (config: WebRTCProcessorConfig) => this.webrtcProcessorFactory(config)
 			},
-			mediaStreamFactory: (constraints: any) => mediaDevices.getUserMedia(constraints) as unknown as Promise<MediaStream>,
+			mediaStreamFactory: (constraints: any) => gatedGetUserMedia(constraints),
 			displayMediaFactory: (constraints: any) => mediaDevices.getUserMedia(constraints) as unknown as Promise<MediaStream>,
 			randomStringFactory,
 			logger: new MediaCallLogger(),

@@ -82,6 +82,18 @@ export interface Spec extends TurboModule {
 	stopRingback(): Promise<void>;
 
 	/**
+	 * iOS: `RTCAudioSession.useManualAudio`. When true, WebRTC no longer starts its audio unit on
+	 * AVAudioSession activation and waits for `setWebRTCAudioEnabled` instead. Android: no-op.
+	 */
+	setWebRTCManualAudio(enabled: boolean): void;
+
+	/**
+	 * iOS: `RTCAudioSession.isAudioEnabled`. Only effective in manual mode; false tears the
+	 * VoiceProcessingIO unit down and releases the microphone hardware. Android: no-op.
+	 */
+	setWebRTCAudioEnabled(enabled: boolean): void;
+
+	/**
 	 * Required for NativeEventEmitter in TurboModules.
 	 * Called when JS starts listening to events.
 	 * @platform android
@@ -111,6 +123,8 @@ const NativeVoipModule =
 		stopAudioRouteSync: () => Promise.resolve(),
 		startRingback: () => Promise.resolve(),
 		stopRingback: () => Promise.resolve(),
+		setWebRTCManualAudio: () => undefined,
+		setWebRTCAudioEnabled: () => undefined,
 		addListener: () => undefined,
 		removeListeners: () => undefined
 	} as Spec);

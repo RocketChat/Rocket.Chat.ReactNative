@@ -238,6 +238,11 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         }
     }
 
+    // iOS-only: RTCAudioSession manual-audio controls. Android releases the mic when the send track stops.
+    override fun setWebRTCManualAudio(enabled: Boolean) {}
+
+    override fun setWebRTCAudioEnabled(enabled: Boolean) {}
+
     override fun startAudioRouteSync(promise: Promise) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             promise.resolve(null)

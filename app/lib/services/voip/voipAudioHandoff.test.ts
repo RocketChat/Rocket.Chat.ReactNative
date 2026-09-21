@@ -2,6 +2,8 @@ import { AppState } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 
+import NativeVoipModule from '~/lib/native/NativeVoip';
+import { gatedGetUserMedia, isCaptureSuspended } from './captureGate';
 import { useCallStore } from './useCallStore';
 import {
 	isVoipAudioYielded,
@@ -23,23 +25,35 @@ jest.mock('~/lib/methods/helpers', () => ({
 	isAndroid: false
 }));
 
+const mockCallKeepListeners: Record<string, Array<() => void>> = {};
 jest.mock('react-native-callkeep', () => ({
 	__esModule: true,
 	default: {
 		setOnHold: jest.fn(),
 		setCurrentCallActive: jest.fn(),
-		addEventListener: jest.fn(() => ({ remove: jest.fn() })),
+		addEventListener: jest.fn((event: string, cb: () => void) => {
+			mockCallKeepListeners[event] = [...(mockCallKeepListeners[event] ?? []), cb];
+			return { remove: jest.fn() };
+		}),
 		endCall: jest.fn()
 	}
 }));
+
+/** Fires CallKit's audio-session activation, which the iOS reclaim waits on before re-enabling WebRTC audio. */
+async function activateAudioSession(): Promise<void> {
+	(mockCallKeepListeners.didActivateAudioSession ?? []).forEach(cb => cb());
+	await Promise.resolve();
+}
 
 jest.mock('react-native-incall-manager', () => ({
 	__esModule: true,
 	default: { start: jest.fn(), stop: jest.fn(), setForceSpeakerphoneOn: jest.fn() }
 }));
 
+const mockGetUserMedia = jest.fn(() => Promise.resolve({ getAudioTracks: () => [] }));
 jest.mock('react-native-webrtc', () => ({
-	RTCAudioSession: { audioSessionDidActivate: jest.fn(), audioSessionDidDeactivate: jest.fn() }
+	RTCAudioSession: { audioSessionDidActivate: jest.fn(), audioSessionDidDeactivate: jest.fn() },
+	mediaDevices: { getUserMedia: (...args: unknown[]) => mockGetUserMedia(...(args as [])) }
 }));
 
 jest.mock('~/lib/native/NativeVoip', () => ({
@@ -47,7 +61,9 @@ jest.mock('~/lib/native/NativeVoip', () => ({
 	default: {
 		setSpeakerOn: jest.fn(() => Promise.resolve(true)),
 		startAudioRouteSync: jest.fn(() => Promise.resolve()),
-		stopAudioRouteSync: jest.fn(() => Promise.resolve())
+		stopAudioRouteSync: jest.fn(() => Promise.resolve()),
+		setWebRTCManualAudio: jest.fn(),
+		setWebRTCAudioEnabled: jest.fn()
 	}
 }));
 
@@ -87,6 +103,7 @@ function bindCall(callId: string, overrides: Record<string, unknown> = {}) {
 describe('voipAudioHandoff', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		Object.keys(mockCallKeepListeners).forEach(key => delete mockCallKeepListeners[key]);
 		mockCurrentSession = { setInputTrack: mockSetInputTrack, startInputTrack: mockStartInputTrack };
 		resetVoipAudioHandoff();
 		useCallStore.setState({ call: null, callId: null, nativeAcceptedCallId: null, isOnHold: false, isSpeakerOn: false });
@@ -137,12 +154,66 @@ describe('voipAudioHandoff', () => {
 		await reclaimVoipAudio('jitsi');
 
 		expect(mockStartInputTrack).toHaveBeenCalled();
-		expect(InCallManager.start).toHaveBeenCalledWith({ media: 'audio' });
 		expect(RNCallKeep.setOnHold).toHaveBeenCalledWith('uuid-1', false);
 		expect(call.localParticipant.setHeld).toHaveBeenLastCalledWith(false);
 		expect(RNCallKeep.setCurrentCallActive).toHaveBeenCalledWith('uuid-1');
 		expect(useCallStore.getState().isOnHold).toBe(false);
 		expect(isVoipAudioYielded()).toBe(false);
+
+		// iOS: WebRTC audio comes back only once CallKit reactivates the session after the unhold.
+		expect(InCallManager.start).not.toHaveBeenCalled();
+		await activateAudioSession();
+		expect(InCallManager.start).toHaveBeenCalledWith({ media: 'audio' });
+		expect(NativeVoipModule.setWebRTCAudioEnabled).toHaveBeenLastCalledWith(true);
+		expect(NativeVoipModule.setWebRTCManualAudio).toHaveBeenLastCalledWith(false);
+	});
+
+	it('stops the iOS WebRTC audio unit on yield', async () => {
+		bindCall('uuid-1');
+
+		await yieldVoipAudio('jitsi');
+
+		expect(NativeVoipModule.setWebRTCManualAudio).toHaveBeenCalledWith(true);
+		expect(NativeVoipModule.setWebRTCAudioEnabled).toHaveBeenCalledWith(false);
+	});
+
+	it('gates getUserMedia before holding, and parks requests until reclaim', async () => {
+		const call = bindCall('uuid-1');
+		let suspendedWhenHeld: boolean | null = null;
+		call.localParticipant.setHeld.mockImplementation(() => {
+			suspendedWhenHeld ??= isCaptureSuspended();
+		});
+
+		await yieldVoipAudio('jitsi');
+		expect(call.localParticipant.setHeld).toHaveBeenCalledWith(true);
+		expect(suspendedWhenHeld).toBe(true);
+
+		let resolved = false;
+		const parked = gatedGetUserMedia({ audio: true }).then(() => {
+			resolved = true;
+		});
+		await Promise.resolve();
+		expect(mockGetUserMedia).not.toHaveBeenCalled();
+		expect(resolved).toBe(false);
+
+		await reclaimVoipAudio('jitsi');
+		await parked;
+
+		expect(mockGetUserMedia).toHaveBeenCalledWith({ audio: true });
+		// The parked request is the input-track refresh; a second one would leak a stream.
+		expect(mockStartInputTrack).not.toHaveBeenCalled();
+		expect(isCaptureSuspended()).toBe(false);
+	});
+
+	it('releases parked requests on reset', async () => {
+		bindCall('uuid-1');
+		await yieldVoipAudio('jitsi');
+		const parked = gatedGetUserMedia({ audio: true });
+
+		resetVoipAudioHandoff();
+
+		await expect(parked).resolves.toBeDefined();
+		expect(isCaptureSuspended()).toBe(false);
 	});
 
 	it('leaves a user-initiated hold in place on reclaim', async () => {

@@ -6,11 +6,13 @@ import { RTCAudioSession } from 'react-native-webrtc';
 import {
 	VIDEOCONF_AUDIO_HANDOFF,
 	VIDEOCONF_HANDOFF_HOLDS_NATIVE_CALL,
-	VIDEOCONF_HANDOFF_RELEASES_CAPTURE
+	VIDEOCONF_HANDOFF_RELEASES_CAPTURE,
+	VIDEOCONF_HANDOFF_STOPS_IOS_AUDIO_UNIT
 } from '~/lib/constants/callWaiting';
 import { isIOS } from '~/lib/methods/helpers';
 import log from '~/lib/methods/helpers/log';
 import NativeVoipModule from '~/lib/native/NativeVoip';
+import { resumeCapture, suspendCapture } from './captureGate';
 import { MediaCallLogger } from './MediaCallLogger';
 import { useCallStore } from './useCallStore';
 
@@ -22,9 +24,10 @@ import { useCallStore } from './useCallStore';
  * Pexip included — goes through `openLink`, which is either an in-app browser or an external
  * one. Both paths call the same two functions here.
  *
- * Two independent steps, each behind its own flag so they can be A/B'd on device:
- *  1. capture — stop the WebRTC input track (the OS mic stays open otherwise)
+ * Three independent steps, each behind its own flag so they can be A/B'd on device:
+ *  1. capture — gate `getUserMedia` and stop the WebRTC input track
  *  2. native  — CallKit/Telecom hold + drop the audio session
+ *  3. iOS     — stop the WebRTC audio unit, which is what actually frees the microphone hardware
  */
 
 const TAG = '[VoipAudioHandoff]';
@@ -41,6 +44,10 @@ let reclaimFallbackTimer: ReturnType<typeof setTimeout> | null = null;
 
 /** Milliseconds to wait for an external browser to background us before assuming it never will. */
 const EXTERNAL_HANDOFF_SETTLE_MS = 750;
+/** Milliseconds to wait for CallKit to reactivate the audio session after unhold before re-enabling WebRTC audio anyway. */
+const AUDIO_SESSION_ACTIVATION_TIMEOUT_MS = 1500;
+let iosAudioUnitStopped = false;
+let cancelActivationWait: (() => void) | null = null;
 
 export function isVoipAudioYielded(): boolean {
 	return yieldedCallUuid != null;
@@ -53,12 +60,14 @@ type CaptureSession = {
 };
 
 /**
- * Stops the shared capture track. `MediaSignalingSession.setInputTrack` is the only code path
- * that calls `track.stop()`, and it is private — this reach-in is the PoC stand-in for a public
- * `suspendInput()` / `resumeInput()` in `@rocket.chat/media-signaling`.
+ * Suspends or restores the shared capture track. `MediaSignalingSession.setInputTrack` is the only
+ * code path that calls `track.stop()`, and it is private — this reach-in is the PoC stand-in for a
+ * public `suspendInput()` / `resumeInput()` in `@rocket.chat/media-signaling`.
  *
- * Not durable: `Session.updateState()` calls `requestInputTrackUpdate()` on every session state
- * change, which re-runs `getUserMedia`. There is no suppression flag to set from here.
+ * Durability comes from the gate, not from stopping the track: `Session.updateState()` re-runs
+ * `getUserMedia` on every state change while a call is busy, and hold does not change that. With
+ * the gate suspended those requests park, and the session's `callsToGetUserMedia` guard keeps it
+ * from issuing more.
  */
 async function setCaptureSuspended(suspended: boolean): Promise<void> {
 	// Required lazily: a static import would pull the ESM-only `@rocket.chat/media-signaling`
@@ -68,19 +77,75 @@ async function setCaptureSuspended(suspended: boolean): Promise<void> {
 
 	const session = mediaSessionStore.getCurrentInstance() as CaptureSession | null;
 
-	if (!session) {
+	if (suspended) {
+		suspendCapture();
+		if (!session) {
+			return;
+		}
+		try {
+			await session.setInputTrack?.(null);
+		} catch (error) {
+			log(error);
+		}
 		return;
 	}
 
+	// A parked request resumes on its own; starting another would leak the first stream, since the
+	// session only keeps the output of the last concurrent `getUserMedia`.
+	const released = resumeCapture();
+	if (released > 0 || !session) {
+		return;
+	}
 	try {
-		if (suspended) {
-			await session.setInputTrack?.(null);
+		await session.startInputTrack?.();
+	} catch (error) {
+		log(error);
+	}
+}
+
+/**
+ * iOS: stopping the send track leaves WebRTC's VoiceProcessingIO unit running for playout, and
+ * that unit keeps the microphone hardware. Manual audio mode lets us tear it down while the peer
+ * connection stays alive.
+ */
+function setIosAudioUnitStopped(stopped: boolean): void {
+	if (!isIOS || !VIDEOCONF_HANDOFF_STOPS_IOS_AUDIO_UNIT) {
+		return;
+	}
+	try {
+		if (stopped) {
+			NativeVoipModule.setWebRTCManualAudio(true);
+			NativeVoipModule.setWebRTCAudioEnabled(false);
+			iosAudioUnitStopped = true;
 		} else {
-			await session.startInputTrack?.();
+			NativeVoipModule.setWebRTCAudioEnabled(true);
+			NativeVoipModule.setWebRTCManualAudio(false);
+			iosAudioUnitStopped = false;
 		}
 	} catch (error) {
 		log(error);
 	}
+}
+
+/** Resolves on CallKit's `didActivateAudioSession`, or after a timeout when it never comes (user-held call). */
+function waitForAudioSessionActivation(): Promise<void> {
+	return new Promise(resolve => {
+		let done = false;
+		const finish = () => {
+			if (done) {
+				return;
+			}
+			done = true;
+			clearTimeout(timer);
+			subscription?.remove();
+			cancelActivationWait = null;
+			resolve();
+		};
+		cancelActivationWait?.();
+		cancelActivationWait = finish;
+		const subscription = RNCallKeep.addEventListener('didActivateAudioSession', finish);
+		const timer = setTimeout(finish, AUDIO_SESSION_ACTIVATION_TIMEOUT_MS);
+	});
 }
 
 /**
@@ -108,6 +173,9 @@ function setCallAudioSessionActive(active: boolean): void {
 			}
 		} catch (error) {
 			log(error);
+		}
+		if (!active) {
+			setIosAudioUnitStopped(true);
 		}
 		return;
 	}
@@ -144,6 +212,12 @@ export async function yieldVoipAudio(reason: string): Promise<boolean> {
 	heldBeforeYield = isOnHold;
 	speakerBeforeYield = isSpeakerOn;
 
+	// Capture first: the hold below changes session state, which re-requests the input track,
+	// and that request must park behind the gate instead of reopening the microphone.
+	if (VIDEOCONF_HANDOFF_RELEASES_CAPTURE) {
+		await setCaptureSuspended(true);
+	}
+
 	if (VIDEOCONF_HANDOFF_HOLDS_NATIVE_CALL) {
 		if (!isOnHold) {
 			// Signaling hold first: the `didToggleHoldCallAction` listener in MediaCallEvents is
@@ -153,10 +227,6 @@ export async function yieldVoipAudio(reason: string): Promise<boolean> {
 			RNCallKeep.setOnHold(callUuid, true);
 		}
 		setCallAudioSessionActive(false);
-	}
-
-	if (VIDEOCONF_HANDOFF_RELEASES_CAPTURE) {
-		await setCaptureSuspended(true);
 	}
 
 	return true;
@@ -184,15 +254,35 @@ export async function reclaimVoipAudio(reason: string): Promise<void> {
 		await setCaptureSuspended(false);
 	}
 
-	if (VIDEOCONF_HANDOFF_HOLDS_NATIVE_CALL) {
-		setCallAudioSessionActive(true);
+	if (!VIDEOCONF_HANDOFF_HOLDS_NATIVE_CALL) {
+		return;
+	}
+
+	const unhold = () => {
 		if (!heldBeforeYield) {
 			RNCallKeep.setOnHold(callUuid, false);
 			call.localParticipant.setHeld(false);
 			useCallStore.setState({ isOnHold: false });
 			RNCallKeep.setCurrentCallActive(callUuid);
 		}
+	};
+
+	if (!iosAudioUnitStopped) {
+		setCallAudioSessionActive(true);
+		unhold();
+		return;
 	}
+
+	// CallKit reactivates the audio session only after the unhold, so the WebRTC audio unit has to
+	// come back afterwards. Not awaited: the rest of the reclaim must not wait on CallKit.
+	const activation = waitForAudioSessionActivation();
+	unhold();
+	activation
+		.then(() => {
+			setCallAudioSessionActive(true);
+			setIosAudioUnitStopped(false);
+		})
+		.catch(log);
 }
 
 function clearPendingReclaim(): void {
@@ -244,6 +334,11 @@ export function resetVoipAudioHandoff(): void {
 	yieldedCallUuid = null;
 	heldBeforeYield = false;
 	speakerBeforeYield = false;
+	resumeCapture();
+	cancelActivationWait?.();
+	if (iosAudioUnitStopped) {
+		setIosAudioUnitStopped(false);
+	}
 }
 
 // A call that ends while the microphone is yielded leaves nothing to reclaim to.

@@ -22,3 +22,10 @@ export const VIDEOCONF_HANDOFF_RELEASES_CAPTURE = true;
  * videoconf (in-app WebView or out-of-app browser) can configure its own.
  */
 export const VIDEOCONF_HANDOFF_HOLDS_NATIVE_CALL = true;
+
+/**
+ * Handoff step 3 (iOS) — stop the WebRTC audio unit via `RTCAudioSession.useManualAudio` while the
+ * conference is in front. Stopping the send track alone keeps the VoiceProcessingIO unit, and the
+ * microphone hardware, alive.
+ */
+export const VIDEOCONF_HANDOFF_STOPS_IOS_AUDIO_UNIT = true;
