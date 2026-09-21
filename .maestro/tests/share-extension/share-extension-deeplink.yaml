@@ -26,6 +26,8 @@ tags:
     when: 
       platform: iOS
     commands: 
+      - killApp:
+          appId: com.apple.mobileslideshow
       - launchApp:
           appId: com.apple.mobileslideshow
           permissions: 
