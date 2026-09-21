@@ -9,6 +9,8 @@ import i18n from '~/i18n';
 import database from '~/lib/database';
 import log from '../helpers/log';
 import { showToast } from '../helpers/showToast';
+import { getUploadErrorMessage } from '../helpers/getUploadErrorMessage';
+import { isRetryableUploadError } from '../helpers/isRetryableUploadError';
 import { type IFileUpload, UploadHttpError } from '../helpers/fileUpload/definitions';
 
 export const uploadQueue: { [index: string]: IFileUpload } = {};
@@ -49,7 +51,8 @@ export const persistUploadError = async (path: string, rid: string, error?: unkn
 			return;
 		}
 		const errorStatus = error instanceof UploadHttpError ? error.status : undefined;
-		const errorMessage = error instanceof UploadHttpError ? (error.serverMessage ?? error.body) : undefined;
+		// Only the parsed message is stored: the raw body can be a proxy's HTML and belongs in logs, not the UI.
+		const errorMessage = error instanceof UploadHttpError ? error.serverMessage : undefined;
 		await db.write(async () => {
 			await uploadRecord.update(u => {
 				u.error = true;
@@ -57,8 +60,9 @@ export const persistUploadError = async (path: string, rid: string, error?: unkn
 				u.errorMessage = errorMessage;
 			});
 		});
-		if (errorStatus === 413) {
-			showToast(i18n.t('error-file-too-large'));
+		const reason = getUploadErrorMessage({ errorStatus, errorMessage });
+		if (reason && !isRetryableUploadError(errorStatus)) {
+			showToast(reason);
 		}
 	} catch {
 		// Do nothing

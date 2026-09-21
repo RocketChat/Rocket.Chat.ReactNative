@@ -1,5 +1,5 @@
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
-import { type IFormData, UploadHttpError, parseUploadErrorBody } from './definitions';
+import { type IFormData, UploadHttpError, parseRetryAfter, parseUploadErrorBody } from './definitions';
 
 export class Upload {
 	private xhr: XMLHttpRequest;
@@ -46,7 +46,8 @@ export class Upload {
 					resolve(JSON.parse(this.xhr.responseText));
 				} else {
 					const { serverMessage, body } = parseUploadErrorBody(this.xhr.responseText);
-					reject(new UploadHttpError(this.xhr.status, { serverMessage, body }));
+					const retryAfterSeconds = parseRetryAfter(this.xhr.getResponseHeader('Retry-After'));
+					reject(new UploadHttpError(this.xhr.status, { serverMessage, body, retryAfterSeconds }));
 				}
 			};
 

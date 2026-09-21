@@ -6,7 +6,6 @@ import { forceJpgExtension } from '../helpers';
 import I18n from '~/i18n';
 import { canUploadFile } from '~/lib/methods/helpers';
 import log from '~/lib/methods/helpers/log';
-import { showToast } from '~/lib/methods/helpers/showToast';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { getThreadById } from '~/lib/database/services/Thread';
 import Navigation from '~/lib/navigation/appNavigation';
@@ -141,10 +140,6 @@ export const useChooseMedia = ({
 				maxFileSize,
 				permissionToUploadFile: permissionToUpload
 			});
-
-			if (!canUpload && error && I18n.isTranslated(error)) {
-				showToast(I18n.t(error));
-			}
 
 			return {
 				...normalizedItem,

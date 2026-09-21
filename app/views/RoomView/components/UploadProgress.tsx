@@ -14,6 +14,8 @@ import { type TSupportedThemes, withTheme } from '~/theme';
 import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '~/definitions';
 import { sendFileMessage } from '~/lib/methods/sendFileMessage';
 import { cancelUpload, isUploadActive } from '~/lib/methods/sendFileMessage/utils';
+import { getUploadErrorMessage } from '~/lib/methods/helpers/getUploadErrorMessage';
+import { isRetryableUploadError } from '~/lib/methods/helpers/isRetryableUploadError';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,10 +25,12 @@ const styles = StyleSheet.create({
 		maxHeight: 246
 	},
 	item: {
-		height: 54,
+		// Grows past 54 when a failure has both a reason and a Try again to show.
+		minHeight: 54,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		justifyContent: 'center',
-		paddingHorizontal: 20
+		paddingHorizontal: 20,
+		paddingVertical: 8
 	},
 	row: {
 		flexDirection: 'row',
@@ -46,6 +50,11 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		bottom: 0,
 		height: 3
+	},
+	errorReasonText: {
+		fontSize: 14,
+		lineHeight: 18,
+		...sharedStyles.textRegular
 	},
 	tryAgainButtonText: {
 		fontSize: 16,
@@ -126,10 +135,10 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					try {
 						const db = database.active;
 						await db.write(async () => {
+							// Leaves errorStatus/errorMessage alone: a record persisted by a previous
+							// session already knows why it failed, and the queue is empty on a cold start.
 							await u.update(() => {
 								u.error = true;
-								u.errorStatus = undefined;
-								u.errorMessage = undefined;
 							});
 						});
 					} catch (e) {
@@ -213,20 +222,24 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 				/>
 			];
 		}
+		const errorReason = getUploadErrorMessage(item);
+		const errorLabel = `${I18n.t('Error_uploading')} ${item.name}${errorReason ? `. ${errorReason}` : ''}`;
+
 		return (
 			<A11y.Order>
 				<A11y.Index index={1}>
-					<View accessible accessibilityLabel={`${I18n.t('Error_uploading')} ${item.name}`} style={styles.row}>
+					<View accessible accessibilityLabel={errorLabel} style={styles.row}>
 						<CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />
 						<View style={styles.descriptionContainer}>
 							<Text style={[styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={1}>
 								{I18n.t('Error_uploading')} {item.name}
 							</Text>
-							{item.errorStatus === 413 ? (
-								<Text style={[styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={1}>
-									{I18n.t('error-file-too-large')}
+							{errorReason ? (
+								<Text style={[styles.errorReasonText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={2}>
+									{errorReason}
 								</Text>
-							) : (
+							) : null}
+							{isRetryableUploadError(item.errorStatus) ? (
 								<A11y.Index index={2}>
 									<TouchableOpacity onPress={() => this.tryAgain(item)}>
 										<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
@@ -234,7 +247,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 										</Text>
 									</TouchableOpacity>
 								</A11y.Index>
-							)}
+							) : null}
 						</View>
 						<A11y.Index index={3}>
 							<CustomIcon

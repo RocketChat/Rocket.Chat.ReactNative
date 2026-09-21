@@ -1,7 +1,7 @@
 import * as FileSystem from 'expo-file-system/legacy';
 
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
-import { type IFormData, UploadHttpError, parseUploadErrorBody } from './definitions';
+import { type IFormData, UploadHttpError, getRetryAfterFromHeaders, parseUploadErrorBody } from './definitions';
 
 export class Upload {
 	private uploadUrl: string;
@@ -73,7 +73,8 @@ export class Upload {
 					resolve(JSON.parse(response.body));
 				} else {
 					const { serverMessage, body } = parseUploadErrorBody(response?.body);
-					reject(new UploadHttpError(response?.status ?? 0, { serverMessage, body }));
+					const retryAfterSeconds = getRetryAfterFromHeaders(response?.headers);
+					reject(new UploadHttpError(response?.status ?? 0, { serverMessage, body, retryAfterSeconds }));
 				}
 			} catch (error) {
 				if (this.isCancelled) {

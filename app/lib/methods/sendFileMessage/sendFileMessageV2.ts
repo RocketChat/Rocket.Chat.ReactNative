@@ -4,6 +4,7 @@ import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '~/
 import database from '~/lib/database';
 import { Encryption } from '~/lib/encryption';
 import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
+import { uploadWithRetry } from './uploadWithRetry';
 import FileUpload from '../helpers/fileUpload';
 import { type IFormData } from '../helpers/fileUpload/definitions';
 import fetch from '../helpers/fetch';
@@ -30,8 +31,7 @@ export async function sendFileMessageV2(
 
 		[uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid, isForceTryAgain });
 		if (!uploadPath || !uploadRecord) {
-			// Upload already in progress (alert already shown) — same early return as V1.
-			return;
+			throw new Error("Couldn't create upload record");
 		}
 		const { file, getContent, fileContent } = await Encryption.encryptFile(rid, fileInfo);
 		file.path = await copyFileToCacheDirectoryIfNeeded(file.path, file.name);
@@ -50,18 +50,21 @@ export async function sendFileMessageV2(
 			});
 		}
 
-		uploadQueue[uploadPath] = new FileUpload(`${server}/api/v1/rooms.media/${rid}`, headers, formData, async (loaded, total) => {
-			try {
-				await db.write(async () => {
-					await uploadRecord?.update(u => {
-						u.progress = Math.floor((loaded / total) * 100);
-					});
-				});
-			} catch (e) {
-				console.error(e);
-			}
-		});
-		const response = await uploadQueue[uploadPath].send();
+		const response = await uploadWithRetry(
+			uploadPath,
+			() =>
+				new FileUpload(`${server}/api/v1/rooms.media/${rid}`, headers, formData, async (loaded, total) => {
+					try {
+						await db.write(async () => {
+							await uploadRecord?.update(u => {
+								u.progress = Math.floor((loaded / total) * 100);
+							});
+						});
+					} catch (e) {
+						console.error(e);
+					}
+				})
+		);
 
 		let content;
 		if (getContent) {

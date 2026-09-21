@@ -11,7 +11,7 @@ import {
 import { UploadHttpError } from '../helpers/fileUpload/definitions';
 
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
-jest.mock('~/i18n', () => ({ t: (k: string) => k }));
+jest.mock('~/i18n', () => ({ t: (k: string) => k, isTranslated: () => false }));
 jest.mock('../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('../helpers/showToast', () => ({ showToast: jest.fn() }));
 jest.mock('~/lib/database/services/Upload', () => ({ getUploadByPath: jest.fn() }));
@@ -131,39 +131,55 @@ describe('createUploadRecord', () => {
 
 describe('persistUploadError', () => {
 	const { getUploadByPath } = require('~/lib/database/services/Upload');
+	const { showToast } = require('../helpers/showToast');
+
+	const persist = async (error: unknown) => {
+		const updated: any = {};
+		(getUploadByPath as jest.Mock).mockResolvedValue({
+			update: jest.fn((cb: (u: any) => void) => {
+				cb(updated);
+			})
+		});
+		await persistUploadError('/tmp/pic.jpg', 'GENERAL', error);
+		return updated;
+	};
 
 	beforeEach(() => {
 		(getUploadByPath as jest.Mock).mockReset();
 	});
 
 	it('stores the HTTP status and server message from an UploadHttpError', async () => {
-		const { showToast } = require('../helpers/showToast');
-		const updated: any = {};
-		(getUploadByPath as jest.Mock).mockResolvedValue({
-			update: jest.fn((cb: (u: any) => void) => {
-				cb(updated);
-			})
-		});
-
-		await persistUploadError('/tmp/pic.jpg', 'GENERAL', new UploadHttpError(413, { serverMessage: 'File is too large' }));
+		const updated = await persist(new UploadHttpError(413, { serverMessage: 'File is too large' }));
 
 		expect(getUploadByPath).toHaveBeenCalledWith('/tmp/pic.jpg-GENERAL');
 		expect(updated).toMatchObject({ error: true, errorStatus: 413, errorMessage: 'File is too large' });
 		expect(showToast).toHaveBeenCalledWith('error-file-too-large');
 	});
 
-	it('stores only the error flag for unknown failures', async () => {
-		const { showToast } = require('../helpers/showToast');
-		const updated: any = {};
-		(getUploadByPath as jest.Mock).mockResolvedValue({
-			update: jest.fn((cb: (u: any) => void) => {
-				cb(updated);
-			})
-		});
+	it('keeps a raw response body out of the record', async () => {
+		const updated = await persist(new UploadHttpError(413, { body: '<html>413 Request Entity Too Large</html>' }));
 
-		await persistUploadError('/tmp/pic.jpg', 'GENERAL', new Error('boom'));
+		expect(updated).toMatchObject({ error: true, errorStatus: 413, errorMessage: undefined });
+		expect(showToast).toHaveBeenCalledWith('error-file-too-large');
+	});
+
+	it('stores only the error flag for unknown failures', async () => {
+		const updated = await persist(new Error('boom'));
 
 		expect(updated).toMatchObject({ error: true, errorStatus: undefined, errorMessage: undefined });
+		expect(showToast).not.toHaveBeenCalled();
+	});
+
+	it('announces a failure the user cannot retry away', async () => {
+		await persist(new UploadHttpError(403, { serverMessage: 'Not allowed' }));
+
+		expect(showToast).toHaveBeenCalledWith('Not allowed');
+	});
+
+	it('stays quiet about a failure that may still resolve itself', async () => {
+		const updated = await persist(new UploadHttpError(429, { serverMessage: 'error-too-many-requests' }));
+
+		expect(updated).toMatchObject({ errorStatus: 429 });
 		expect(showToast).not.toHaveBeenCalled();
 	});
 

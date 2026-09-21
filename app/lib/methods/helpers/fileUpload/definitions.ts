@@ -22,7 +22,9 @@ export class UploadHttpError extends Error {
 
 	readonly body?: string;
 
-	constructor(status: number, options?: { serverMessage?: string; body?: string }) {
+	readonly retryAfterSeconds?: number;
+
+	constructor(status: number, options?: { serverMessage?: string; body?: string; retryAfterSeconds?: number }) {
 		super(`Error: ${status}`);
 		this.name = 'UploadHttpError';
 		this.status = status;
@@ -31,6 +33,9 @@ export class UploadHttpError extends Error {
 		}
 		if (options?.body) {
 			this.body = options.body;
+		}
+		if (options?.retryAfterSeconds) {
+			this.retryAfterSeconds = options.retryAfterSeconds;
 		}
 	}
 }
@@ -50,4 +55,29 @@ export const parseUploadErrorBody = (responseText: string | undefined): { server
 		}
 	} catch {}
 	return { body };
+};
+
+// Retry-After is either a number of seconds or an HTTP date (RFC 9110).
+export const parseRetryAfter = (value?: string | null): number | undefined => {
+	if (!value) {
+		return undefined;
+	}
+	const seconds = Number(value);
+	if (Number.isFinite(seconds)) {
+		return seconds > 0 ? seconds : undefined;
+	}
+	const timestamp = Date.parse(value);
+	if (Number.isNaN(timestamp)) {
+		return undefined;
+	}
+	const delta = Math.ceil((timestamp - Date.now()) / 1000);
+	return delta > 0 ? delta : undefined;
+};
+
+export const getRetryAfterFromHeaders = (headers?: Record<string, string>): number | undefined => {
+	if (!headers) {
+		return undefined;
+	}
+	const key = Object.keys(headers).find(name => name.toLowerCase() === 'retry-after');
+	return key ? parseRetryAfter(headers[key]) : undefined;
 };
