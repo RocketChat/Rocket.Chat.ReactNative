@@ -32,7 +32,8 @@ tags:
       - tapOn: 'Rocket.Chat'
 
 - extendedWaitUntil:
-    visible: 'Chats'
+    visible:
+      id: 'share-list-view'
     timeout: 10000
 - extendedWaitUntil:
     visible:
