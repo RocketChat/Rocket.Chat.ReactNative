@@ -51,7 +51,7 @@ export const persistUploadError = async (path: string, rid: string, error?: unkn
 			return;
 		}
 		const errorStatus = error instanceof UploadHttpError ? error.status : undefined;
-		// Only the parsed message is stored: the raw body can be a proxy's HTML and belongs in logs, not the UI.
+		// Not error.body: a proxy's raw HTML belongs in logs, not in the UI.
 		const errorMessage = error instanceof UploadHttpError ? error.serverMessage : undefined;
 		await db.write(async () => {
 			await uploadRecord.update(u => {

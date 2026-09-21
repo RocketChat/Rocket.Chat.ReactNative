@@ -9,11 +9,6 @@ const MAX_RETRY_DELAY = 30000;
 
 const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms));
 
-/**
- * How long to wait before trying the same upload again, or undefined to give up.
- * Rate limiting is the only failure that clears itself: everything else either
- * works the first time or needs the user to change something.
- */
 export const getUploadRetryDelay = (error: unknown, attempt: number): number | undefined => {
 	if (!(error instanceof UploadHttpError) || error.status !== 429 || attempt >= MAX_UPLOAD_ATTEMPTS) {
 		return undefined;
@@ -22,11 +17,8 @@ export const getUploadRetryDelay = (error: unknown, attempt: number): number | u
 	return Math.min(delay, MAX_RETRY_DELAY);
 };
 
-/**
- * An XMLHttpRequest cannot be sent twice, so every attempt builds a new upload and
- * publishes it on the queue under the same path — that is what cancelUpload aborts.
- * A missing queue entry means the user cancelled, and the attempt is not repeated.
- */
+// An XMLHttpRequest cannot be sent twice, so each attempt builds a new upload and republishes
+// it on the queue — that is what cancelUpload aborts, and a missing entry means it cancelled.
 export const uploadWithRetry = async (uploadPath: string, createUpload: () => IFileUpload): Promise<TRoomsMediaResponse> => {
 	for (let attempt = 1; ; attempt += 1) {
 		uploadQueue[uploadPath] = createUpload();

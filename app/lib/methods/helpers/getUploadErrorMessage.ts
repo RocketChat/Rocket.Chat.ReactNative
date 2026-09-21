@@ -1,14 +1,9 @@
 import I18n from '~/i18n';
 
-// Statuses we can explain better than the server can, in every locale we ship.
 const STATUS_MESSAGES: Record<number, string> = {
 	413: 'error-file-too-large'
 };
 
-/**
- * Turns a persisted upload failure into something worth showing a user, or
- * undefined when all we know is that it failed.
- */
 export const getUploadErrorMessage = ({
 	errorStatus,
 	errorMessage

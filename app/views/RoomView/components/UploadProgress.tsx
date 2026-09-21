@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
 		maxHeight: 246
 	},
 	item: {
-		// Grows past 54 when a failure has both a reason and a Try again to show.
 		minHeight: 54,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		justifyContent: 'center',
@@ -135,8 +134,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					try {
 						const db = database.active;
 						await db.write(async () => {
-							// Leaves errorStatus/errorMessage alone: a record persisted by a previous
-							// session already knows why it failed, and the queue is empty on a cold start.
+							// Do not clear errorStatus/errorMessage: a record from a previous session already knows why it failed.
 							await u.update(() => {
 								u.error = true;
 							});
@@ -225,8 +223,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 		const errorReason = getUploadErrorMessage(item);
 		const errorLabel = `${I18n.t('Error_uploading')} ${item.name}${errorReason ? `. ${errorReason}` : ''}`;
 
-		// The row itself is not an accessibility element: grouping it would swallow the
-		// controls below, which A11y.Index is here to make reachable one at a time.
+		// The row must not be `accessible`: grouping it hides the controls A11y.Index exposes.
 		return (
 			<A11y.Order>
 				<View style={styles.row}>
