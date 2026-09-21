@@ -28,6 +28,12 @@ describe('getUploadErrorMessage', () => {
 		expect(getUploadErrorMessage({ errorStatus: 400, errorMessage: 'error-file-too-large' })).toBe('error-file-too-large');
 	});
 
+	it('translates an oversize sentence carrying the key', () => {
+		expect(
+			getUploadErrorMessage({ errorStatus: 400, errorMessage: 'File size exceeds the allowed limit [error-file-too-large]' })
+		).toBe('error-file-too-large');
+	});
+
 	it('shows an unknown server message as it came', () => {
 		expect(getUploadErrorMessage({ errorStatus: 507, errorMessage: 'Storage quota exceeded' })).toBe('Storage quota exceeded');
 	});
