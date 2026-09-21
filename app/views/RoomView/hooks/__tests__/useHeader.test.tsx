@@ -1,8 +1,13 @@
 import { act, renderHook } from '@testing-library/react-native';
+import { Platform } from 'react-native';
+
 import { createStore } from 'zustand';
 
 import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
 import { useHeader } from '../useHeader';
+import { useNativeRoomHeader } from '../useNativeRoomHeader';
+
+jest.mock('../useNativeRoomHeader', () => ({ useNativeRoomHeader: jest.fn() }));
 
 let mockTestStore: RoomStore;
 let mockIsIOS = false;
@@ -136,5 +141,27 @@ describe('useHeader', () => {
 			expect(titleOptions).toHaveProperty('headerTitle');
 			expect(typeof titleOptions.headerTitle).toBe('function');
 		});
+	});
+});
+
+describe('native title availability', () => {
+	const originalVersion = Platform.Version;
+	const originalOS = Platform.OS;
+	afterEach(() => {
+		Object.defineProperty(Platform, 'Version', { configurable: true, value: originalVersion });
+		Object.defineProperty(Platform, 'OS', { configurable: true, value: originalOS });
+	});
+
+	it.each([
+		['ios', '26.0', true],
+		['ios', '18.0', false],
+		['android', 36, false]
+	])('uses the appropriate title on %s %s', (os, version, native) => {
+		jest.clearAllMocks();
+		Object.defineProperty(Platform, 'OS', { configurable: true, value: os });
+		Object.defineProperty(Platform, 'Version', { configurable: true, value: version });
+		renderHook(() => useHeader({ rid: 'rid-1', roomStore: makeRoomStore() }));
+		expect(useNativeRoomHeader).toHaveBeenCalledWith(native, expect.any(Object), undefined, null);
+		expect(mockSetOptions.mock.calls.some(([options]) => typeof options.headerTitle === 'function')).toBe(!native);
 	});
 });

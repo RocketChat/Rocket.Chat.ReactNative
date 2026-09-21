@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const withStorybook = require('@storybook/react-native/metro/withStorybook');
 
@@ -8,11 +9,32 @@ const defaultConfig = getDefaultConfig(__dirname);
 
 const sourceExts = [...defaultConfig.resolver.sourceExts, 'mjs'];
 
+const nativeStackPath = path.join(__dirname, 'node_modules/@react-navigation/native-stack');
+const localNavigation = fs.lstatSync(nativeStackPath).isSymbolicLink();
+const localPackagePaths = [
+	fs.realpathSync(nativeStackPath),
+	fs.realpathSync(path.join(__dirname, 'node_modules/react-native-screens'))
+];
+
 const config = {
+	...(localNavigation && {
+		watchFolders: localPackagePaths
+	}),
 	transformer: {
 		unstable_allowRequireContext: true
 	},
 	resolver: {
+		...(localNavigation && {
+			nodeModulesPaths: [path.join(__dirname, 'node_modules')],
+			resolveRequest: (context, moduleName, platform) =>
+				context.resolveRequest(
+					localPackagePaths.some(directory => context.originModulePath.startsWith(`${directory}${path.sep}`))
+						? { ...context, disableHierarchicalLookup: true }
+						: context,
+					moduleName === '@react-navigation/native-stack' ? path.join(nativeStackPath, 'src/index.tsx') : moduleName,
+					platform
+				)
+		}),
 		// When running E2E tests, prioritize .mock.ts files for app code
 		sourceExts: process.env.RUNNING_E2E_TESTS === 'true' ? ['mock.ts', ...sourceExts] : sourceExts
 	}

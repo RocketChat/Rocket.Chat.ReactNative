@@ -1,5 +1,5 @@
 import { useLayoutEffect } from 'react';
-import { PixelRatio, View } from 'react-native';
+import { PixelRatio, Platform, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from 'zustand';
@@ -14,6 +14,7 @@ import { type IRoomViewProps } from '../definitions';
 import { type RoomStore } from '../definitions';
 import { fromSubscription } from '../stores/RoomStoreContext';
 import { useGoRoomActionsView } from './useGoRoomActionsView';
+import { useNativeRoomHeader } from './useNativeRoomHeader';
 
 interface IUseHeaderParams {
 	rid?: string;
@@ -23,7 +24,7 @@ interface IUseHeaderParams {
 	roomStore: RoomStore;
 }
 
-interface IHeaderFields {
+export interface IHeaderFields {
 	prid?: string;
 	title: string;
 	parentTitle: string;
@@ -66,6 +67,8 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 	);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const goRoomActionsView = useGoRoomActionsView(roomStore);
+	const nativeTitle = Platform.OS === 'ios' && Number.parseInt(String(Platform.Version), 10) >= 26;
+	useNativeRoomHeader(!!rid && nativeTitle, headerFields, tmid, roomUserId);
 
 	useLayoutEffect(() => {
 		if (!rid) {
@@ -80,7 +83,7 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 	}, [rid, tmid, navigation, roomStore]);
 
 	useLayoutEffect(() => {
-		if (!rid) {
+		if (!rid || nativeTitle) {
 			return;
 		}
 
@@ -105,5 +108,5 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 				/>
 			)
 		});
-	}, [rid, tmid, headerFields, roomUserId, navigation, goRoomActionsView]);
+	}, [rid, tmid, headerFields, roomUserId, navigation, goRoomActionsView, nativeTitle]);
 };
