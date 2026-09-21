@@ -64,6 +64,7 @@ import {
 } from './utils';
 
 const ROOM_KEY_EXCHANGE_SIZE = 10;
+
 class Encryption {
 	ready: boolean;
 	privateKey: string | null;
@@ -379,7 +380,7 @@ class Encryption {
 						return null;
 					}
 				});
-				await db.batch(...prepared);
+				await db.batch(prepared.filter(record => record !== null));
 			});
 		} catch (e) {
 			log(e);
@@ -404,32 +405,37 @@ class Encryption {
 				sub => sub.lastMessage?.t === E2E_MESSAGE_TYPE && sub.lastMessage?.e2e !== E2E_STATUS.DONE
 			);
 
-			const decryptedSubscriptions = await Promise.all(
-				subsEncryptedToDecrypt.map(async (sub: TSubscriptionModel) => ({
-					sub,
-					decryptedSubscription: await this.decryptSubscription(sub)
-				}))
+			const decrypted = await Promise.all(
+				subsEncryptedToDecrypt.map(async (sub: TSubscriptionModel) => {
+					try {
+						return { sub, newSub: await this.decryptSubscription(sub) };
+					} catch (e) {
+						log(e);
+						return { sub, newSub: null };
+					}
+				})
 			);
 
-			// Prepare and batch under the writer lock so a concurrent writer can't
-			// call prepareUpdate on a record with pending changes.
+			if (!decrypted.length) {
+				return;
+			}
+
 			await db.write(async () => {
-				const preparedSubscriptions = decryptedSubscriptions
-					.map(({ sub, decryptedSubscription }) => {
-						try {
-							return sub.prepareUpdate(
-								protectedFunction((m: TSubscriptionModel) => {
-									if (decryptedSubscription?.lastMessage) {
-										m.lastMessage = decryptedSubscription.lastMessage;
-									}
-								})
-							);
-						} catch {
-							return null;
-						}
-					})
-					.filter((record): record is TSubscriptionModel => record !== null);
-				await db.batch(preparedSubscriptions);
+				const prepared = decrypted.map(({ sub, newSub }) => {
+					try {
+						return sub.prepareUpdate(
+							protectedFunction((m: TSubscriptionModel) => {
+								if (newSub?.lastMessage) {
+									m.lastMessage = newSub.lastMessage;
+								}
+							})
+						);
+					} catch (e) {
+						log(e);
+						return null;
+					}
+				});
+				await db.batch(prepared.filter(record => record !== null));
 			});
 		} catch (e) {
 			log(e);
