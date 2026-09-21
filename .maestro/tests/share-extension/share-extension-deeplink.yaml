@@ -26,24 +26,24 @@ tags:
     when: 
       platform: iOS
     commands: 
-      - launchApp: com.apple.mobileslideshow
-      - runFlow:
-          when:
-            visible: '.*New in Photos.*'
-          commands:
-            - tapOn: 'Continue'
+      - launchApp:
+          appId: com.apple.mobileslideshow
+          permissions: 
+            all: allow
       - extendedWaitUntil:
-          visible: "Library"
-          timeout: 10000
-      - runFlow:
-          when:
-            visible: '.*New in Photos.*'
-          commands:
-            - tapOn: 'Continue'
-      - assertVisible:
-          id: "PXGGridLayout-Info"
+          visible: 'What’s New in Photos'
+          timeout: 60000
+          optional: true
       - tapOn:
-          id: "PXGGridLayout-Info"
+          text: 'Continue'
+          optional: true
+      - extendedWaitUntil:
+          visible: 'Library'
+          timeout: 10000
+      - assertVisible:
+          id: 'PXGGridLayout-Info'
+      - tapOn:
+          id: 'PXGGridLayout-Info'
       - runFlow: './utils/share-file.yaml'
 
 # share files on android
