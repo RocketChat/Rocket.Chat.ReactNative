@@ -25,20 +25,42 @@ tags:
     when:
       platform: iOS
     commands:
+      - runFlow:
+          when:
+            visible: 'Share'
+          commands:
+            - extendedWaitUntil:
+                visible: 'Share'
+                timeout: 10000
+            - tapOn: 'Share'
       - extendedWaitUntil:
-          visible: 'Share'
-          timeout: 10000
-      - tapOn: 'Share'
-      - tapOn: 'Rocket.Chat'
+          visible: '1 Photo Selected'
+          timeout: 15000
+      - scrollUntilVisible:
+          element:
+            text: 'Rocket.Chat'
+          direction: RIGHT
+          timeout: 15000
+      - waitForAnimationToEnd:
+          timeout: 5000
+      - tapOn:
+          id: 'shareCell'
+          text: 'Rocket.Chat'
+      - waitForAnimationToEnd:
+          timeout: 5000
+      - takeScreenshot: share-tapped.png
 
+- extendedWaitUntil:
+    visible: 'Send to...'
+    timeout: 30000
 - extendedWaitUntil:
     visible:
       id: 'share-list-view'
-    timeout: 10000
+    timeout: 30000
 - extendedWaitUntil:
     visible:
       id: 'share-extension-item-${output.room.name}'
-    timeout: 10000
+    timeout: 30000
 - tapOn:
     id: 'share-extension-item-${output.room.name}'
 - extendedWaitUntil:

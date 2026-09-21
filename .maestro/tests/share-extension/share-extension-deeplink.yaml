@@ -41,14 +41,14 @@ tags:
           optional: true
       - runFlow:
           when:
-            notVisible: 'Share'
+            notVisible: '1 Photo Selected'
           commands:
             - extendedWaitUntil:
                 visible: 'Library'
                 timeout: 10000
             - assertVisible:
                 id: 'PXGGridLayout-Info'
-            - tapOn:
+            - longPressOn:
                 id: 'PXGGridLayout-Info'
       - runFlow: './utils/share-file.yaml'
 
