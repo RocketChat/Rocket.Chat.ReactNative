@@ -18,7 +18,6 @@ export const getUploadErrorMessage = ({
 	if (!errorMessage) {
 		return undefined;
 	}
-	// The server sends a sentence carrying the key, not a bare key. Same shape as helpers/info.
 	if (errorMessage.includes('[error-file-too-large]')) {
 		return I18n.t('error-file-too-large');
 	}

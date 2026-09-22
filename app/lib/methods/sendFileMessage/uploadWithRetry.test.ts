@@ -68,6 +68,7 @@ describe('uploadWithRetry', () => {
 		const pending = uploadWithRetry(PATH, createUpload).catch(e => e);
 		await jest.advanceTimersByTimeAsync(2000);
 		await jest.advanceTimersByTimeAsync(4000);
+		await jest.advanceTimersByTimeAsync(8000);
 
 		await expect(pending).resolves.toMatchObject({ status: 429 });
 		expect(createUpload).toHaveBeenCalledTimes(MAX_UPLOAD_ATTEMPTS);
@@ -86,6 +87,18 @@ describe('uploadWithRetry', () => {
 		const pending = uploadWithRetry(PATH, createUpload).catch(e => e);
 		await jest.advanceTimersByTimeAsync(1000);
 		delete uploadQueue[PATH];
+		await jest.advanceTimersByTimeAsync(1000);
+
+		await expect(pending).resolves.toMatchObject({ status: 429 });
+		expect(createUpload).toHaveBeenCalledTimes(1);
+	});
+
+	it('stops when a new upload reused the path while backing off', async () => {
+		const createUpload = uploadThat(jest.fn().mockRejectedValue(new UploadHttpError(429)));
+
+		const pending = uploadWithRetry(PATH, createUpload).catch(e => e);
+		await jest.advanceTimersByTimeAsync(1000);
+		uploadQueue[PATH] = { send: jest.fn().mockResolvedValue(RESPONSE), cancel: jest.fn() };
 		await jest.advanceTimersByTimeAsync(1000);
 
 		await expect(pending).resolves.toMatchObject({ status: 429 });

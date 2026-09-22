@@ -17,6 +17,7 @@ export async function sendFileMessageV2(
 	user: Partial<Pick<IUser, 'id' | 'token'>>,
 	isForceTryAgain?: boolean
 ): Promise<void> {
+	const uploadRecordPath = fileInfo.path;
 	let uploadPath: string | null = '';
 	let uploadRecord: TUploadModel | null;
 	try {
@@ -92,7 +93,7 @@ export async function sendFileMessageV2(
 		if (uploadPath && !uploadQueue[uploadPath]) {
 			console.log('Upload cancelled');
 		} else {
-			await persistUploadError(fileInfo.path, rid, e);
+			await persistUploadError(uploadRecordPath, rid, e);
 			throw e;
 		}
 	}

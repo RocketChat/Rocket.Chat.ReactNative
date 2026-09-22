@@ -134,7 +134,6 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					try {
 						const db = database.active;
 						await db.write(async () => {
-							// Do not clear errorStatus/errorMessage: a record from a previous session already knows why it failed.
 							await u.update(() => {
 								u.error = true;
 							});
@@ -223,7 +222,6 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 		const errorReason = getUploadErrorMessage(item);
 		const errorLabel = `${I18n.t('Error_uploading')} ${item.name}${errorReason ? `. ${errorReason}` : ''}`;
 
-		// The row must not be `accessible`: grouping it hides the controls A11y.Index exposes.
 		return (
 			<A11y.Order>
 				<View style={styles.row}>
