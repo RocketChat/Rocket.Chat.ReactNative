@@ -1,5 +1,5 @@
 import { type MutableRefObject } from 'react';
-import { type TextInput } from 'react-native';
+import { type TextInput, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 import { FormTextInput } from '../TextInput';
@@ -55,12 +55,16 @@ const CustomFields = ({
 							}, 200);
 						}}
 						value={customFields[key]}>
-						<FormTextInput
-							required={parsedCustomFields[key]?.required}
-							label={key}
-							value={customFields[key]}
-							testID='settings-view-language'
-						/>
+						{/* pointerEvents='none' keeps the input from stealing the tap, so it reaches the picker's touchable */}
+						<View pointerEvents='none'>
+							<FormTextInput
+								required={parsedCustomFields[key]?.required}
+								label={key}
+								value={customFields[key]}
+								editable={false}
+								testID={`custom-field-${key}`}
+							/>
+						</View>
 					</RNPickerSelect>
 				);
 			}
@@ -80,6 +84,7 @@ const CustomFields = ({
 					onSubmitEditing={handleSubmitEditing}
 					required={parsedCustomFields[key]?.required}
 					maxLength={parsedCustomFields[key]?.maxLength ?? undefined}
+					testID={`custom-field-${key}`}
 					containerStyle={{ marginBottom: 0, marginTop: 0 }}
 				/>
 			);
