@@ -18,7 +18,6 @@
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
 		"paths": {
-			"@react-navigation/native-stack": ["./node_modules/@react-navigation/native-stack/src/index.tsx"],
 			"~/*": ["./app/*"],
 			"~/scripts/*": ["./scripts/*"],
 			"~/.rnstorybook/*": ["./.rnstorybook/*"]

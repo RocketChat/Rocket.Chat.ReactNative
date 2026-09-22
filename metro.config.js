@@ -25,21 +25,13 @@ const config = {
 	},
 	resolver: {
 		...(localNavigation && {
-			nodeModulesPaths: [
-				path.join(__dirname, 'node_modules'),
-				path.join(localPackagePaths[0], 'node_modules'),
-				path.join(localPackagePaths[1], 'node_modules')
-			],
+			nodeModulesPaths: [path.join(__dirname, 'node_modules')],
 			resolveRequest: (context, moduleName, platform) =>
 				context.resolveRequest(
 					localPackagePaths.some(directory => context.originModulePath.startsWith(`${directory}${path.sep}`))
 						? { ...context, disableHierarchicalLookup: true }
 						: context,
-					moduleName === '@react-navigation/native-stack'
-						? path.join(localPackagePaths[0], 'src/index.tsx')
-						: moduleName === 'react-native-screens'
-							? path.join(localPackagePaths[1], 'src/index.tsx')
-							: moduleName,
+					moduleName === '@react-navigation/native-stack' ? path.join(nativeStackPath, 'src/index.tsx') : moduleName,
 					platform
 				)
 		}),

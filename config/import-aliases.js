@@ -5,7 +5,6 @@ const tsconfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../tsconfig
 const paths = tsconfig.compilerOptions.paths;
 
 const entries = Object.entries(paths).sort(([left], [right]) => right.length - left.length);
-const babelEntries = entries.filter(([, [value]]) => !value.startsWith('./node_modules/'));
 
 const stripWildcard = value => value.replace(/\*$/, '');
 const stripAliasSuffix = value => stripWildcard(value).replace(/\/$/, '');
@@ -13,7 +12,7 @@ const relativeTarget = value => stripAliasSuffix(value).replace(/^\.\//, '');
 const relativeTargetWithSlash = value => stripWildcard(value).replace(/^\.\//, '');
 
 const getAliasConfig = () => ({
-	babel: Object.fromEntries(babelEntries.map(([key, [value]]) => [stripAliasSuffix(key), `./${relativeTarget(value)}`])),
+	babel: Object.fromEntries(entries.map(([key, [value]]) => [stripAliasSuffix(key), `./${relativeTarget(value)}`])),
 	jest: Object.fromEntries(
 		entries.map(([key, [value]]) => [
 			`^${stripWildcard(key).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(.*)$`,

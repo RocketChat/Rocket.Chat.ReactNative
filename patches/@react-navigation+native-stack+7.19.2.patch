@@ -1,0 +1,182 @@
+diff --git a/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js b/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
+index a56cb12..301d782 100644
+--- a/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
++++ b/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
+@@ -149,7 +149,10 @@ export function useHeaderConfigProps({
+   headerStyle,
+   headerBlurEffect,
+   headerTintColor,
++  headerSubtitle,
++  headerSubtitleImageSource,
+   headerTitle,
++  headerTitleImageSource,
+   headerTitleAlign,
+   headerTitleStyle,
+   headerTransparent,
+@@ -230,6 +233,14 @@ export function useHeaderConfigProps({
+     tintColor,
+     children: titleText
+   }) : null;
++  if (process.env.NODE_ENV !== 'production') {
++    if (headerTitleElement != null && headerSubtitle != null) {
++      console.warn(`'headerSubtitle' is ignored when 'headerTitle' renders a custom element for the screen '${route.name}'. Remove 'headerSubtitle' or use a string 'headerTitle' instead.`);
++    }
++  }
++  const subtitleText = headerTitleElement != null ? undefined : headerSubtitle;
++  const titleImageSource = headerTitleElement != null ? undefined : headerTitleImageSource;
++  const subtitleImageSource = headerTitleElement != null ? undefined : headerSubtitleImageSource;
+   const supportsHeaderSearchBar = typeof isSearchBarAvailableForCurrentPlatform === 'boolean' ? isSearchBarAvailableForCurrentPlatform :
+   // Fallback for older versions of react-native-screens
+   Platform.OS === 'ios' && SearchBar != null;
+@@ -356,7 +367,10 @@ export function useHeaderConfigProps({
+     largeTitleFontSize,
+     largeTitleFontWeight,
+     largeTitleHideShadow: headerLargeTitleShadowVisible === false,
++    subtitle: subtitleText,
++    subtitleImageSource,
+     title: titleText,
++    titleImageSource,
+     titleColor,
+     titleFontFamily,
+     titleFontSize,
+diff --git a/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts b/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
+index c32d1da..4717022 100644
+--- a/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
++++ b/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
+@@ -321,6 +321,42 @@ export type NativeStackNavigationOptions = {
+          */
+         tintColor?: string;
+     }) => React.ReactNode);
++    /**
++     * Image rendered as a leading glyph before the header title.
++     *
++     * Ignored when `headerTitle` renders a custom element.
++     *
++     * Only supported on iOS.
++     *
++     * @platform ios
++     *
++     * @supported iOS 26 or higher
++     */
++    headerTitleImageSource?: ImageSourcePropType;
++    /**
++     * String to display in the header underneath the title.
++     *
++     * Ignored when `headerTitle` renders a custom element.
++     *
++     * Only supported on iOS.
++     *
++     * @platform ios
++     *
++     * @supported iOS 26 or higher
++     */
++    headerSubtitle?: string;
++    /**
++     * Image rendered as a leading glyph before the header subtitle.
++     *
++     * Ignored when `headerTitle` renders a custom element.
++     *
++     * Only supported on iOS.
++     *
++     * @platform ios
++     *
++     * @supported iOS 26 or higher
++     */
++    headerSubtitleImageSource?: ImageSourcePropType;
+     /**
+      * How to align the the header title.
+      * Defaults to `left` on platforms other than iOS.
+diff --git a/node_modules/@react-navigation/native-stack/src/types.tsx b/node_modules/@react-navigation/native-stack/src/types.tsx
+index aeb4939..1373158 100644
+--- a/node_modules/@react-navigation/native-stack/src/types.tsx
++++ b/node_modules/@react-navigation/native-stack/src/types.tsx
+@@ -371,6 +371,42 @@ export type NativeStackNavigationOptions = {
+          */
+         tintColor?: string;
+       }) => React.ReactNode);
++  /**
++   * Image rendered as a leading glyph before the header title.
++   *
++   * Ignored when `headerTitle` renders a custom element.
++   *
++   * Only supported on iOS.
++   *
++   * @platform ios
++   *
++   * @supported iOS 26 or higher
++   */
++  headerTitleImageSource?: ImageSourcePropType;
++  /**
++   * String to display in the header underneath the title.
++   *
++   * Ignored when `headerTitle` renders a custom element.
++   *
++   * Only supported on iOS.
++   *
++   * @platform ios
++   *
++   * @supported iOS 26 or higher
++   */
++  headerSubtitle?: string;
++  /**
++   * Image rendered as a leading glyph before the header subtitle.
++   *
++   * Ignored when `headerTitle` renders a custom element.
++   *
++   * Only supported on iOS.
++   *
++   * @platform ios
++   *
++   * @supported iOS 26 or higher
++   */
++  headerSubtitleImageSource?: ImageSourcePropType;
+   /**
+    * How to align the the header title.
+    * Defaults to `left` on platforms other than iOS.
+diff --git a/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx b/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx
+index a7e3004..3addeae 100644
+--- a/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx
++++ b/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx
+@@ -210,7 +210,10 @@ export function useHeaderConfigProps({
+   headerStyle,
+   headerBlurEffect,
+   headerTintColor,
++  headerSubtitle,
++  headerSubtitleImageSource,
+   headerTitle,
++  headerTitleImageSource,
+   headerTitleAlign,
+   headerTitleStyle,
+   headerTransparent,
+@@ -330,6 +333,20 @@ export function useHeaderConfigProps({
+         })
+       : null;
+ 
++  if (process.env.NODE_ENV !== 'production') {
++    if (headerTitleElement != null && headerSubtitle != null) {
++      console.warn(
++        `'headerSubtitle' is ignored when 'headerTitle' renders a custom element for the screen '${route.name}'. Remove 'headerSubtitle' or use a string 'headerTitle' instead.`
++      );
++    }
++  }
++
++  const subtitleText = headerTitleElement != null ? undefined : headerSubtitle;
++  const titleImageSource =
++    headerTitleElement != null ? undefined : headerTitleImageSource;
++  const subtitleImageSource =
++    headerTitleElement != null ? undefined : headerSubtitleImageSource;
++
+   const supportsHeaderSearchBar =
+     typeof isSearchBarAvailableForCurrentPlatform === 'boolean'
+       ? isSearchBarAvailableForCurrentPlatform
+@@ -522,7 +539,10 @@ export function useHeaderConfigProps({
+     largeTitleFontSize,
+     largeTitleFontWeight,
+     largeTitleHideShadow: headerLargeTitleShadowVisible === false,
++    subtitle: subtitleText,
++    subtitleImageSource,
+     title: titleText,
++    titleImageSource,
+     titleColor,
+     titleFontFamily,
+     titleFontSize,
