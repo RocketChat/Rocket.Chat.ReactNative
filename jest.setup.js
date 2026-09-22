@@ -291,6 +291,8 @@ jest.mock('./app/lib/methods/helpers/externalInput', () => ({
 	isExternalKeyboardConnected: jest.fn(() => false)
 }));
 
+jest.mock('react-native-enriched-markdown', () => require('react-native-enriched-markdown/jest'));
+
 jest.mock('react-native-webview', () => {
 	const { forwardRef } = require('react');
 	const { View } = require('react-native');

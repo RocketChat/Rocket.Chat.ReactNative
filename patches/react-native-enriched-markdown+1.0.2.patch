@@ -1,0 +1,18 @@
+diff --git a/node_modules/react-native-enriched-markdown/jest.d.ts b/node_modules/react-native-enriched-markdown/jest.d.ts
+index 0000000..0000000 100644
+--- a/node_modules/react-native-enriched-markdown/jest.d.ts
++++ b/node_modules/react-native-enriched-markdown/jest.d.ts
+@@ -1 +1,12 @@
+-export * from './src/jest';
++import type { ComponentType } from 'react';
++import type {
++	EnrichedMarkdownTextProps,
++	EnrichedMarkdownTextInputProps,
++	DEFAULT_ACCESSIBILITY_LABELS as DefaultAccessibilityLabels,
++	resolveAccessibilityLabels as ResolveAccessibilityLabels
++} from './lib/typescript/src/index';
++
++export declare const EnrichedMarkdownText: ComponentType<EnrichedMarkdownTextProps>;
++export declare const EnrichedMarkdownTextInput: ComponentType<EnrichedMarkdownTextInputProps>;
++export declare const DEFAULT_ACCESSIBILITY_LABELS: typeof DefaultAccessibilityLabels;
++export declare const resolveAccessibilityLabels: typeof ResolveAccessibilityLabels;
