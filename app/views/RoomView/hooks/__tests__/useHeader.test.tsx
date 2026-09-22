@@ -8,6 +8,8 @@ import { useHeader } from '../useHeader';
 import { useNativeRoomHeader } from '../useNativeRoomHeader';
 
 jest.mock('../useNativeRoomHeader', () => ({ useNativeRoomHeader: jest.fn() }));
+const mockNativeRightItems: unknown[] = [];
+jest.mock('../useRoomHeaderRightItems', () => ({ useRoomHeaderRightItems: jest.fn(() => mockNativeRightItems) }));
 
 let mockTestStore: RoomStore;
 let mockIsIOS = false;
@@ -125,6 +127,16 @@ describe('useHeader', () => {
 			const titleOptions = mockSetOptions.mock.calls[1][0];
 			expect(typeof titleOptions.headerTitle).toBe('function');
 			expect(titleOptions.headerTitle().props.title).toBe('Room Title');
+		});
+
+		it('sets unstable_headerRightItems and keeps the native back button instead of headerLeft/headerRight', () => {
+			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
+
+			const sideOptions = mockSetOptions.mock.calls[0][0];
+			expect(typeof sideOptions.unstable_headerRightItems).toBe('function');
+			expect(sideOptions.unstable_headerRightItems()).toBe(mockNativeRightItems);
+			expect(sideOptions).not.toHaveProperty('headerLeft');
+			expect(sideOptions).not.toHaveProperty('headerRight');
 		});
 	});
 

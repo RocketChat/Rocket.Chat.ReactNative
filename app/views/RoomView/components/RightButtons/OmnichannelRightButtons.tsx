@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import i18n from '~/i18n';
-import { hasNativeHeaderBar, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { useCanReturnQueue } from '~/ee/omnichannel/hooks/useCanReturnQueue';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -17,7 +17,6 @@ import { navigateToScreen, type TRoomStackNavigation } from '~/views/RoomView/se
 import { closeLivechat } from '~/views/RoomView/services/closeLivechat';
 import { placeLivechatOnHold } from '~/views/RoomView/services/placeLivechatOnHold';
 import { OmnichannelRightButtonsLegacy } from './OmnichannelRightButtonsLegacy';
-import { OmnichannelRightButtonsNative } from './OmnichannelRightButtonsNative';
 
 interface IOmnichannelRightButtonsProps {
 	rid: string;
@@ -91,10 +90,6 @@ export const OmnichannelRightButtons = ({ rid, roomStore }: IOmnichannelRightBut
 
 		showActionSheet({ options });
 	};
-
-	if (hasNativeHeaderBar) {
-		return <OmnichannelRightButtonsNative onShowMoreActions={showMoreActions} />;
-	}
 
 	return <OmnichannelRightButtonsLegacy onShowMoreActions={showMoreActions} />;
 };

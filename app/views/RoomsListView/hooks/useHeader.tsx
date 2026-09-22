@@ -5,7 +5,6 @@ import { type KeyboardFocus } from 'react-native-external-keyboard';
 import { type SearchBarCommands } from 'react-native-screens';
 
 import { showActionSheetRef } from '~/containers/ActionSheet';
-import { type TIconsName } from '~/containers/CustomIcon';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -17,6 +16,7 @@ import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';
 import RoomsListHeaderView from '../components/Header';
+import ServersList from '../components/ServersList';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
 
 const MAX_HEADER_RIGHT_ACTIONS = 2;
@@ -24,10 +24,9 @@ const MAX_HEADER_RIGHT_ACTIONS = 2;
 interface IHeaderRightAction {
 	key: string;
 	present: boolean;
-	iconName: TIconsName;
-	testID: string;
+	sfSymbol: string;
 	accessibilityLabel: string;
-	color?: string;
+	tintColor?: string;
 	disabled?: boolean;
 	onPress: () => void;
 }
@@ -97,6 +96,13 @@ export const useHeader = () => {
 		return null;
 	}, [supportedVersionsStatus, notificationPresenceCap, colors]);
 
+	const nativeBadgeColor =
+		supportedVersionsStatus === 'warn'
+			? colors.buttonBackgroundDangerDefault
+			: notificationPresenceCap
+				? colors.userPresenceDisabled
+				: undefined;
+
 	const goDirectory = useCallback(() => {
 		logEvent(events.RL_GO_DIRECTORY);
 		if (isMasterDetail) {
@@ -162,27 +168,24 @@ export const useHeader = () => {
 				{
 					key: 'create',
 					present: canCreateRoom,
-					iconName: 'add',
+					sfSymbol: 'plus',
 					accessibilityLabel: i18n.t('Create_new_channel_team_dm_discussion'),
-					testID: 'rooms-list-view-create-channel',
 					disabled,
 					onPress: goToNewMessage
 				},
 				{
 					key: 'push-troubleshoot',
 					present: issuesWithNotifications,
-					iconName: 'notification-disabled',
+					sfSymbol: 'bell.slash',
 					accessibilityLabel: i18n.t('Troubleshooting'),
-					testID: 'rooms-list-view-push-troubleshoot',
-					color: colors.fontDanger,
+					tintColor: colors.fontDanger,
 					onPress: navigateToPushTroubleshootView
 				},
 				{
 					key: 'directory',
 					present: true,
-					iconName: 'directory',
+					sfSymbol: 'globe',
 					accessibilityLabel: i18n.t('Directory'),
-					testID: 'rooms-list-view-directory',
 					disabled,
 					onPress: goDirectory
 				}
@@ -192,7 +195,6 @@ export const useHeader = () => {
 				headerLargeTitle: false,
 				headerTitle: serverName,
 				headerSubtitle: nativeHeaderSubtitle,
-				headerLeft,
 				headerStyle: { backgroundColor: colors.surfaceNeutral },
 				headerTransparent: false,
 				scrollEdgeEffects: { top: 'hidden' },
@@ -204,41 +206,55 @@ export const useHeader = () => {
 					onChangeText: (event: { nativeEvent: { text: string } }) => search(event.nativeEvent.text),
 					onCancelButtonPress: stopSearch
 				},
-				headerRight: () => (
-					<HeaderButton.Container>
-						{[
-							...visible.map(action => (
-								<HeaderButton.Item
-									key={action.key}
-									iconName={action.iconName}
-									accessibilityLabel={action.accessibilityLabel}
-									color={action.color}
-									disabled={action.disabled}
-									onPress={action.onPress}
-									testID={action.testID}
-								/>
-							)),
-							overflow.length >= 2 ? (
-								<HeaderButton.Item
-									key='more'
-									iconName='kebab'
-									accessibilityLabel={i18n.t('More')}
-									testID='rooms-list-view-more'
-									onPress={() =>
-										showActionSheetRef({
-											options: overflow.map(action => ({
-												title: action.accessibilityLabel,
-												icon: action.iconName,
-												testID: action.testID,
-												onPress: action.onPress
-											}))
-										})
+				unstable_headerLeftItems: () => [
+					{
+						type: 'button',
+						label: i18n.t('Menu'),
+						accessibilityLabel: i18n.t('Menu'),
+						icon: { type: 'sfSymbol', name: 'line.3.horizontal' },
+						disabled,
+						badge: nativeBadgeColor ? { value: '', style: { backgroundColor: nativeBadgeColor } } : undefined,
+						onPress: isMasterDetail
+							? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
+							: () => navigation.toggleDrawer()
+					},
+					{
+						type: 'button',
+						label: serverName,
+						accessibilityLabel: `${serverName} ${nativeHeaderSubtitle}`,
+						icon: { type: 'sfSymbol', name: 'server.rack' },
+						onPress: () => showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false })
+					}
+				],
+				unstable_headerRightItems: () => [
+					...visible.map(action => ({
+						type: 'button' as const,
+						label: action.accessibilityLabel,
+						accessibilityLabel: action.accessibilityLabel,
+						icon: { type: 'sfSymbol' as const, name: action.sfSymbol },
+						tintColor: action.tintColor,
+						disabled: action.disabled,
+						onPress: action.onPress
+					})),
+					...(overflow.length >= 2
+						? [
+								{
+									type: 'menu' as const,
+									label: i18n.t('More'),
+									accessibilityLabel: i18n.t('More'),
+									icon: { type: 'sfSymbol' as const, name: 'ellipsis' },
+									menu: {
+										items: overflow.map(action => ({
+											type: 'action' as const,
+											label: action.accessibilityLabel,
+											icon: { type: 'sfSymbol' as const, name: action.sfSymbol },
+											onPress: action.onPress
+										}))
 									}
-								/>
-							) : null
-						]}
-					</HeaderButton.Container>
-				)
+								}
+							]
+						: [])
+				]
 			});
 			return;
 		}
@@ -303,7 +319,8 @@ export const useHeader = () => {
 		stopSearch,
 		search,
 		serverName,
-		nativeHeaderSubtitle
+		nativeHeaderSubtitle,
+		nativeBadgeColor
 	]);
 
 	useEffect(() => {

@@ -5,7 +5,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { useStore } from 'zustand';
 
 import RoomHeader from '~/containers/RoomHeader';
-import { getRoomTitle, isGroupChat } from '~/lib/methods/helpers';
+import { getRoomTitle, hasNativeHeaderBar, isGroupChat } from '~/lib/methods/helpers';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { type IOmnichannelSource, type ISubscription, type IVisitor } from '~/definitions';
 import LeftButtons from '../components/LeftButtons';
@@ -15,6 +15,7 @@ import { type RoomStore } from '../definitions';
 import { fromSubscription } from '../stores/RoomStoreContext';
 import { useGoRoomActionsView } from './useGoRoomActionsView';
 import { useNativeRoomHeader } from './useNativeRoomHeader';
+import { useRoomHeaderRightItems } from './useRoomHeaderRightItems';
 
 interface IUseHeaderParams {
 	rid?: string;
@@ -69,6 +70,7 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 	const goRoomActionsView = useGoRoomActionsView(roomStore);
 	const nativeTitle = Platform.OS === 'ios' && Number.parseInt(String(Platform.Version), 10) >= 26;
 	useNativeRoomHeader(!!rid && nativeTitle, headerFields, tmid, roomUserId);
+	const nativeRightItems = useRoomHeaderRightItems(hasNativeHeaderBar ? rid : undefined, tmid, roomStore);
 
 	useLayoutEffect(() => {
 		if (!rid) {
@@ -76,11 +78,18 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 			navigation.setOptions({ headerLeft: () => <View style={{ height }} /> });
 			return;
 		}
+
+		if (hasNativeHeaderBar) {
+			// Native back button keeps the native-stack default; only the right cluster is overridden.
+			navigation.setOptions({ unstable_headerRightItems: () => nativeRightItems });
+			return;
+		}
+
 		navigation.setOptions({
 			headerLeft: () => <LeftButtons rid={rid} tmid={tmid} roomStore={roomStore} />,
 			headerRight: () => <RightButtons rid={rid} tmid={tmid} roomStore={roomStore} />
 		});
-	}, [rid, tmid, navigation, roomStore]);
+	}, [rid, tmid, navigation, roomStore, nativeRightItems]);
 
 	useLayoutEffect(() => {
 		if (!rid || nativeTitle) {

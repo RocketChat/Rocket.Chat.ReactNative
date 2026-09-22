@@ -31,8 +31,10 @@ jest.mock('~/lib/hooks/usePermissions', () => ({ usePermissions: () => [true, fa
 jest.mock('~/selectors/login', () => ({ getUserSelector: () => ({ requirePasswordChange: false }) }));
 const mockColors = { fontDanger: '#f00', buttonBackgroundDangerDefault: '#f00', userPresenceDisabled: '#f00' };
 jest.mock('~/theme', () => ({ useTheme: () => ({ colors: mockColors }) }));
-jest.mock('~/containers/ActionSheet', () => ({ showActionSheetRef: jest.fn() }));
+const mockShowActionSheetRef = jest.fn();
+jest.mock('~/containers/ActionSheet', () => ({ showActionSheetRef: (...args: unknown[]) => mockShowActionSheetRef(...args) }));
 jest.mock('../../components/Header', () => ({ __esModule: true, default: 'RoomsListHeaderView' }));
+jest.mock('../../components/ServersList', () => ({ __esModule: true, default: 'ServersList' }));
 
 jest.mock('~/containers/Header/components/HeaderButton', () => {
 	const ReactActual = jest.requireActual('react');
@@ -128,26 +130,41 @@ describe('RoomsListView useHeader', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		const rightButtons: ReactElement<{ testID: string }>[] = options.headerRight().props.children.filter(Boolean);
-		const testIDs = rightButtons.map(button => button.props.testID);
-		expect(testIDs).toEqual(['rooms-list-view-create-channel', 'rooms-list-view-push-troubleshoot', 'rooms-list-view-directory']);
+		const rightItems = options.unstable_headerRightItems();
+		const labels = rightItems.map((item: { accessibilityLabel: string }) => item.accessibilityLabel);
+		expect(labels).toEqual(['Create new channel, team, direct message or discussion', 'Troubleshooting', 'Directory']);
 	});
 
 	it('does not render an overflow control when nothing extra is present', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		const rightButtons: ReactElement<{ testID: string }>[] = options.headerRight().props.children.filter(Boolean);
-		const testIDs = rightButtons.map(button => button.props.testID);
-		expect(testIDs).toEqual(['rooms-list-view-create-channel', 'rooms-list-view-directory']);
+		const rightItems = options.unstable_headerRightItems();
+		const labels = rightItems.map((item: { accessibilityLabel: string }) => item.accessibilityLabel);
+		expect(labels).toEqual(['Create new channel, team, direct message or discussion', 'Directory']);
+		expect(rightItems.every((item: { type: string }) => item.type === 'button')).toBe(true);
+	});
+
+	it('exposes the drawer and server switcher as native left items', () => {
+		renderUseHeader();
+
+		const options = mockSetOptions.mock.calls[0][0];
+		const leftItems = options.unstable_headerLeftItems();
+		expect(leftItems).toHaveLength(2);
+		expect(leftItems[0].icon).toEqual({ type: 'sfSymbol', name: 'line.3.horizontal' });
+		expect(leftItems[1].icon).toEqual({ type: 'sfSymbol', name: 'server.rack' });
+		expect(leftItems[1].label).toBe('Rocket.Chat');
+
+		leftItems[1].onPress();
+		expect(mockShowActionSheetRef).toHaveBeenCalledWith(expect.objectContaining({ enableContentPanningGesture: false }));
 	});
 
 	it('configures a system search bar instead of a right-cluster search item', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		const rightButtons: ReactElement<{ testID: string }>[] = options.headerRight().props.children.filter(Boolean);
-		expect(rightButtons.some(button => button.props.testID === 'rooms-list-view-search')).toBe(false);
+		const rightItems = options.unstable_headerRightItems();
+		expect(rightItems.some((item: { accessibilityLabel: string }) => item.accessibilityLabel === 'Search')).toBe(false);
 
 		expect(options.headerSearchBarOptions.placement).toBe('automatic');
 		expect(options.headerSearchBarOptions.ref.current).toBeNull();
