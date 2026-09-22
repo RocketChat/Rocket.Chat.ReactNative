@@ -3,7 +3,6 @@
 #import <PushKit/PushKit.h>
 
 #import <SSLPinning/SSLPinning.h>
-#import <WebRTC/RTCAudioSession.h>
 
 @interface VoipModule : RCTEventEmitter <NativeVoipSpec>
 @end
@@ -147,14 +146,6 @@ RCT_EXPORT_MODULE()
 
 - (void)stopRingback:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
     resolve(nil);
-}
-
-- (void)setWebRTCManualAudio:(BOOL)enabled {
-    [RTCAudioSession sharedInstance].useManualAudio = enabled;
-}
-
-- (void)setWebRTCAudioEnabled:(BOOL)enabled {
-    [RTCAudioSession sharedInstance].isAudioEnabled = enabled;
 }
 
 // TurboModule codegen calls these on VoipModule directly. Empty implementations replaced

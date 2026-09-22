@@ -4,7 +4,7 @@ import DeviceInfo from 'react-native-device-info';
 import i18n from '~/i18n';
 import navigation from '../navigation/appNavigation';
 import { videoConferenceJoin } from '../services/restApi';
-import { reclaimVoipAudioOnAppReturn, yieldVoipAudio } from '../services/voip/voipAudioHandoff';
+import { confirmEndVoipCallForVideoConf, endVoipCallForVideoConf } from '../services/voip/endVoipCallForVideoConf';
 import { isAndroid, showErrorAlert } from './helpers';
 import log from './helpers/log';
 import openLink from './helpers/openLink';
@@ -28,20 +28,21 @@ export const handleAndroidBltPermission = async (): Promise<void> => {
 };
 
 export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean, fromPush?: boolean): Promise<void> => {
+	// Both calls want the microphone, so the ongoing VoIP call is traded for the conference. Already
+	// answered for the direct-call flow, where `acceptCall` asks before notifying the caller.
+	if (!(await confirmEndVoipCallForVideoConf())) {
+		return;
+	}
+	endVoipCallForVideoConf();
+
 	try {
 		const result = await videoConferenceJoin(callId, cam, mic);
 		if (result.success) {
 			const { url, providerName } = result;
 			if (providerName === 'jitsi') {
-				// JitsiMeetView owns the microphone handoff for the in-app path (mount/unmount).
 				navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });
 			} else {
-				// Every other provider (Pexip included) renders outside the app, so the handoff is owned here.
-				const yielded = await yieldVoipAudio(`videoconf-${providerName}`);
-				await openLink(url);
-				if (yielded) {
-					reclaimVoipAudioOnAppReturn(`videoconf-${providerName}`);
-				}
+				openLink(url);
 			}
 		}
 	} catch (e) {

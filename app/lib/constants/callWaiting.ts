@@ -1,31 +1,9 @@
 /**
- * PoC toggle: when true, an incoming call still surfaces while the user is already in a call.
- * Read by `app/sagas/videoConf.ts`; `VoipIncomingCallDispatch.kt` keeps its own copy for the
- * Android native push path. Outgoing calls are unaffected.
+ * When true, an incoming video conference still surfaces while the user is already in a VoIP call.
+ * Read by `app/sagas/videoConf.ts`; `VoipIncomingCallDispatch.kt` and `VoipService.swift` keep
+ * their own copies for the native VoIP push path. Outgoing calls are unaffected.
+ *
+ * The two calls never share the microphone — accepting the conference ends the VoIP call, after
+ * the confirmation in `confirmEndVoipCallForVideoConf`.
  */
 export const ALLOW_CONCURRENT_INCOMING_CALLS = true;
-
-/**
- * PoC toggle: hand the microphone over to a video conference while keeping the VoIP call alive.
- * Read by `app/lib/services/voip/voipAudioHandoff.ts`.
- */
-export const VIDEOCONF_AUDIO_HANDOFF = true;
-
-/**
- * Handoff step 1 — stop the WebRTC capture track so the OS microphone is released.
- * `localParticipant.setMuted` only flips `track.enabled`, which keeps the device open.
- */
-export const VIDEOCONF_HANDOFF_RELEASES_CAPTURE = true;
-
-/**
- * Handoff step 2 — put the call on CallKit/Telecom hold and drop the audio session so the
- * videoconf (in-app WebView or out-of-app browser) can configure its own.
- */
-export const VIDEOCONF_HANDOFF_HOLDS_NATIVE_CALL = true;
-
-/**
- * Handoff step 3 (iOS) — stop the WebRTC audio unit via `RTCAudioSession.useManualAudio` while the
- * conference is in front. Stopping the send track alone keeps the VoiceProcessingIO unit, and the
- * microphone hardware, alive.
- */
-export const VIDEOCONF_HANDOFF_STOPS_IOS_AUDIO_UNIT = true;

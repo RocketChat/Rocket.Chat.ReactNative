@@ -3,7 +3,6 @@ import { setAudioModeAsync } from 'expo-audio';
 
 import { useCallStore } from '~/lib/services/voip/useCallStore';
 import CallerInfo from './components/CallerInfo';
-import ReturnToConference from './components/ReturnToConference';
 import { styles } from './styles';
 import { useTheme } from '~/theme';
 import { CallButtons } from './components/CallButtons';
@@ -68,7 +67,6 @@ const CallView = (): ReactElement | null => {
 	return (
 		<SafeAreaView testID='call-view-container' style={[styles.contentContainer, { backgroundColor: colors.surfaceLight }]}>
 			{showRingback && isIOS ? <Ringer ringer={ERingerSounds.DIALTONE} /> : null}
-			<ReturnToConference />
 			<CallerInfo />
 			<CallButtons />
 		</SafeAreaView>
