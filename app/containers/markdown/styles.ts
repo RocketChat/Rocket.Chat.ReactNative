@@ -11,6 +11,9 @@ export default StyleSheet.create({
 	blocks: {
 		gap: 2
 	},
+	lineBreak: {
+		height: 8
+	},
 	container: {
 		alignItems: 'flex-start',
 		flexDirection: 'row'

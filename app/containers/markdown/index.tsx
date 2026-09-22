@@ -1,21 +1,22 @@
 import { useMemo, type FC } from 'react';
 import { type StyleProp, type TextStyle, View } from 'react-native';
+import { EnrichedMarkdownText } from 'react-native-enriched-markdown';
 import { parse } from '@rocket.chat/message-parser';
 import type { Root } from '@rocket.chat/message-parser';
 import isEmpty from 'lodash/isEmpty';
 
 import { type IUserMention, type IUserChannel, type TOnLinkPress } from './interfaces';
-import MarkdownContext from './contexts/MarkdownContext';
-import LineBreak from './components/LineBreak';
+import { buildRenderSegments } from './serialize';
+import { buildMarkdownStyle } from './buildMarkdownStyle';
+import { useMarkdownLinkPress } from './hooks/useMarkdownLinkPress';
 import { KaTeX } from './components/Katex';
-import { BigEmoji } from './components/emoji';
-import UnorderedList from './components/list/UnorderedList';
-import OrderedList from './components/list/OrderedList';
-import TaskList from './components/list/TaskList';
-import Quote from './components/Quote';
-import Paragraph from './components/Paragraph';
-import { Code } from './components/code';
-import Heading from './components/Heading';
+import { useTheme } from '~/theme';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useCustomEmoji } from '~/lib/hooks/useCustomEmoji';
+import useShortnameToUnicode from '~/lib/hooks/useShortnameToUnicode';
+import { useUserPreferences } from '~/lib/methods/userPreferences';
+import { USER_MENTIONS_PREFERENCES_KEY, ROOM_MENTIONS_PREFERENCES_KEY } from '~/lib/constants/keys';
+import { getUserSelector } from '~/selectors/login';
 import log from '~/lib/methods/helpers/log';
 import styles from './styles';
 
@@ -33,8 +34,6 @@ interface IMarkdownProps {
 	isTranslated?: boolean;
 	textStyle?: StyleProp<TextStyle>;
 }
-
-type MarkdownBlock = Root[number];
 
 const PARSE_CACHE_MAX = 200;
 const parseCache = new Map<string, Root>();
@@ -66,37 +65,6 @@ const resolveTokens = (msg: string, md: Root | undefined, isTranslated?: boolean
 	return parseMessage(typeof msg === 'string' ? msg : String(msg || ''));
 };
 
-const MarkdownBlockView = ({ block }: { block: MarkdownBlock }) => {
-	switch (block.type) {
-		case 'BIG_EMOJI':
-			return <BigEmoji value={block.value} />;
-		case 'UNORDERED_LIST':
-			return <UnorderedList value={block.value} />;
-		case 'ORDERED_LIST':
-			return <OrderedList value={block.value} />;
-		case 'TASKS':
-			return <TaskList value={block.value} />;
-		case 'QUOTE':
-			return <Quote value={block.value} />;
-		case 'PARAGRAPH':
-			return <Paragraph value={block.value} />;
-		case 'CODE':
-			return <Code value={block.value} />;
-		case 'HEADING':
-			return <Heading value={block.value} level={block.level} />;
-		case 'LINE_BREAK':
-			return <LineBreak />;
-		// This prop exists, but not even on the web it is treated, so...
-		// https://github.com/RocketChat/Rocket.Chat/blob/develop/packages/gazzodown/src/Markup.tsx
-		// case 'LIST_ITEM':
-		// 	return <View />;
-		case 'KATEX':
-			return <KaTeX value={block.value} />;
-		default:
-			return null;
-	}
-};
-
 const Markdown: FC<IMarkdownProps> = ({
 	msg,
 	md,
@@ -109,6 +77,15 @@ const Markdown: FC<IMarkdownProps> = ({
 	isTranslated,
 	textStyle
 }: IMarkdownProps) => {
+	const { colors } = useTheme();
+	const baseUrl = useAppSelector(state => state.server.server);
+	const convertAsciiEmoji = useAppSelector(state => getUserSelector(state)?.settings?.preferences?.convertAsciiEmoji ?? false);
+	const getCustomEmoji = useCustomEmoji();
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const [mentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY, false);
+	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
+	const { handleLinkPress, handleLinkLongPress } = useMarkdownLinkPress({ channels, navToRoomInfo, onLinkPress });
+
 	let tokens: Root | null = null;
 
 	if (msg) {
@@ -120,30 +97,69 @@ const Markdown: FC<IMarkdownProps> = ({
 		}
 	}
 
-	const contextValue = useMemo(
-		() => ({
+	const segments = useMemo(() => {
+		if (!tokens) {
+			return [];
+		}
+
+		return buildRenderSegments(tokens, {
 			mentions,
 			channels,
 			useRealName,
 			username,
-			navToRoomInfo,
-			onLinkPress,
-			textStyle
-		}),
-		[mentions, channels, useRealName, username, navToRoomInfo, onLinkPress, textStyle]
-	);
+			mentionsWithAtSymbol: mentionsWithAtSymbol ?? false,
+			roomsWithHashTagSymbol: roomsWithHashTagSymbol ?? false,
+			getCustomEmoji,
+			baseUrl,
+			convertAsciiEmoji,
+			formatShortnameToUnicode
+		});
+	}, [
+		tokens,
+		mentions,
+		channels,
+		useRealName,
+		username,
+		mentionsWithAtSymbol,
+		roomsWithHashTagSymbol,
+		getCustomEmoji,
+		baseUrl,
+		convertAsciiEmoji,
+		formatShortnameToUnicode
+	]);
 
-	if (!tokens) {
+	const isBigEmojiOnly = !!tokens && tokens.length === 1 && tokens[0].type === 'BIG_EMOJI';
+	const markdownStyle = useMemo(() => buildMarkdownStyle(colors, isBigEmojiOnly), [colors, isBigEmojiOnly]);
+
+	if (!tokens || segments.length === 0) {
 		return null;
 	}
 
 	return (
 		<View style={styles.blocks}>
-			<MarkdownContext.Provider value={contextValue}>
-				{tokens.map((block, index) => (
-					<MarkdownBlockView key={`${block.type}-${index}`} block={block} />
-				))}
-			</MarkdownContext.Provider>
+			{segments.map((segment, index) => {
+				if (segment.type === 'katex') {
+					return <KaTeX key={`katex-${index}`} value={segment.value} />;
+				}
+
+				if (segment.type === 'linebreak') {
+					return <View key={`linebreak-${index}`} style={styles.lineBreak} />;
+				}
+
+				return (
+					<EnrichedMarkdownText
+						key={`markdown-${index}`}
+						markdown={segment.content}
+						accessibilityLabel={segment.accessibilityLabel}
+						markdownStyle={markdownStyle}
+						containerStyle={textStyle as TextStyle}
+						flavor='github'
+						md4cFlags={{ latexMath: false }}
+						onLinkPress={event => handleLinkPress(event.url)}
+						onLinkLongPress={event => handleLinkLongPress(event.url)}
+					/>
+				);
+			})}
 		</View>
 	);
 };
