@@ -6,6 +6,8 @@ import { themes } from '~/lib/constants/colors';
 import { type TSupportedThemes } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import Header from '~/containers/Header';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import I18n from '~/i18n';
 import { isIOS } from '~/lib/methods/helpers';
 
 export const defaultHeader: NativeStackNavigationOptions = isIOS
@@ -15,6 +17,40 @@ export const defaultHeader: NativeStackNavigationOptions = isIOS
 	: {
 			header: (props: NativeStackHeaderProps): ReactElement => createElement(Header, props)
 		};
+
+export const outsideHeaderRightLegal = (navigation: any, testID: string): NativeStackNavigationOptions =>
+	isIOS
+		? {
+				unstable_headerRightItems: () => [
+					{
+						type: 'button',
+						label: I18n.t('More'),
+						accessibilityLabel: I18n.t('More'),
+						icon: { type: 'sfSymbol', name: 'ellipsis' },
+						onPress: () => navigation?.navigate('LegalView')
+					}
+				]
+			}
+		: {
+				headerRight: (): ReactElement => createElement(HeaderButton.Legal, { testID, navigation })
+			};
+
+export const outsideHeaderLeftClose = (onPress: () => void, testID: string): NativeStackNavigationOptions =>
+	isIOS
+		? {
+				unstable_headerLeftItems: () => [
+					{
+						type: 'button',
+						label: I18n.t('Close'),
+						accessibilityLabel: I18n.t('Close'),
+						icon: { type: 'sfSymbol', name: 'xmark' },
+						onPress
+					}
+				]
+			}
+		: {
+				headerLeft: (): ReactElement => createElement(HeaderButton.CloseModal, { onPress, testID })
+			};
 
 export const drawerStyle = {
 	width: 320
