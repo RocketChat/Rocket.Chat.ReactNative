@@ -16,6 +16,9 @@ import { type IRoomViewProps } from '../definitions';
 import { type IHeaderFields } from './useHeader';
 import { useHeaderIconImage, useHeaderRemoteImage } from './useHeaderImage';
 
+const TITLE_FONT_SIZE = 17;
+const SUBTITLE_FONT_SIZE = 12;
+
 const sourceIcons: Record<string, TIconsName> = {
 	widget: 'livechat-monochromatic',
 	email: 'mail',
@@ -130,7 +133,7 @@ export const useNativeRoomHeader = (enabled: boolean, fields: IHeaderFields, tmi
 	const glyphImage = useHeaderIconImage(
 		enabled && fields.type ? roomIcon : undefined,
 		isDirectMessage || fields.type === 'l' ? statusColor : colors.fontTitlesLabels,
-		16
+		TITLE_FONT_SIZE
 	);
 	const server = useAppSelector(state => state.server.server);
 	const source = fields.sourceType;
@@ -140,7 +143,7 @@ export const useNativeRoomHeader = (enabled: boolean, fields: IHeaderFields, tmi
 			: undefined;
 	const remoteImage = useHeaderRemoteImage(remoteUri);
 	const roomImage = remoteImage ?? glyphImage;
-	const clockImage = useHeaderIconImage(enabled && showClock ? 'clock' : undefined, colors.fontSecondaryInfo, 12);
+	const clockImage = useHeaderIconImage(enabled && showClock ? 'clock' : undefined, colors.fontSecondaryInfo, SUBTITLE_FONT_SIZE);
 	const subtitleImage = tmid ? roomImage : clockImage;
 	const titleReady = !!tmid || !!roomImage;
 
@@ -150,8 +153,10 @@ export const useNativeRoomHeader = (enabled: boolean, fields: IHeaderFields, tmi
 				headerTitle: titleReady ? title : '',
 				headerSubtitle: (titleReady && subtitle) || undefined,
 				headerTitleImageSource: tmid ? undefined : roomImage,
-				headerSubtitleImageSource: subtitleImage
+				headerSubtitleImageSource: subtitleImage,
+				headerTitleStyle: { color: colors.fontTitlesLabels },
+				headerSubtitleColor: colors.fontSecondaryInfo
 			});
 		}
-	}, [enabled, navigation, title, subtitle, tmid, roomImage, subtitleImage, titleReady]);
+	}, [enabled, navigation, title, subtitle, tmid, roomImage, subtitleImage, titleReady, colors]);
 };

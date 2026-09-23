@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfigViewManager.kt b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfigViewManager.kt
-index fa1b7731..153d712e 100644
+index fa1b773..f54b225 100644
 --- a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfigViewManager.kt
 +++ b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfigViewManager.kt
 @@ -3,6 +3,7 @@ package com.swmansion.rnscreens
@@ -10,7 +10,7 @@ index fa1b7731..153d712e 100644
  import com.facebook.react.module.annotations.ReactModule
  import com.facebook.react.uimanager.ReactStylesDiffMap
  import com.facebook.react.uimanager.StateWrapper
-@@ -236,6 +237,21 @@ class ScreenStackHeaderConfigViewManager :
+@@ -236,6 +237,26 @@ class ScreenStackHeaderConfigViewManager :
          value: String?,
      ) = Unit
  
@@ -29,11 +29,16 @@ index fa1b7731..153d712e 100644
 +        value: ReadableMap?,
 +    ) = Unit
 +
++    override fun setSubtitleColor(
++        view: ScreenStackHeaderConfig?,
++        value: Int?,
++    ) = Unit
++
      override fun setBackTitleFontFamily(
          view: ScreenStackHeaderConfig?,
          value: String?,
 diff --git a/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm b/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
-index 64beb499..87936eac 100644
+index 64beb49..87936ea 100644
 --- a/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
 +++ b/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
 @@ -38,6 +38,15 @@
@@ -53,7 +58,7 @@ index 64beb499..87936eac 100644
        size:imageSource.size
        scale:imageSource.scale
 diff --git a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
-index 8a416972..9b13f60d 100644
+index 8a41697..25e6586 100644
 --- a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
 +++ b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
 @@ -8,10 +8,14 @@
@@ -71,7 +76,7 @@ index 8a416972..9b13f60d 100644
  @end
  
  @interface RNSScreenStackHeaderConfig : RNSReactBaseView
-@@ -23,10 +27,13 @@
+@@ -23,10 +27,14 @@
  NS_ASSUME_NONNULL_BEGIN
  
  @property (nonatomic, retain) NSString *title;
@@ -80,13 +85,14 @@ index 8a416972..9b13f60d 100644
  @property (nonatomic, retain) NSNumber *titleFontSize;
  @property (nonatomic, retain) NSString *titleFontWeight;
  @property (nonatomic, retain) UIColor *titleColor;
++@property (nonatomic, retain, nullable) UIColor *subtitleColor;
 +@property (nonatomic, retain, nullable) RCTImageSource *titleImageSource;
 +@property (nonatomic, retain, nullable) RCTImageSource *subtitleImageSource;
  @property (nonatomic, retain) NSString *backTitle;
  @property (nonatomic, retain) NSString *backTitleFontFamily;
  @property (nonatomic, retain) NSNumber *backTitleFontSize;
 diff --git a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
-index a54cb632..90d223ae 100644
+index a54cb63..98212de 100644
 --- a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
 +++ b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
 @@ -13,6 +13,7 @@
@@ -240,7 +246,7 @@ index a54cb632..90d223ae 100644
      _lastSendState = react::RNSScreenStackHeaderConfigState(react::Size{}, react::EdgeInsets{}, react::Point{});
      [self initProps];
    }
-@@ -131,6 +240,52 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -131,6 +240,56 @@ RNS_IGNORE_SUPER_CALL_END
    return nil;
  }
  
@@ -280,8 +286,12 @@ index a54cb632..90d223ae 100644
 +- (nullable NSAttributedString *)attributedSubtitle
 +{
 +  UIImage *glyph = [self resolvedSubtitleImage];
-+  if (glyph == nil || _subtitle == nil) {
++  if (_subtitle == nil || (glyph == nil && _subtitleColor == nil)) {
 +    return nil;
++  }
++  if (glyph == nil) {
++    return [[NSAttributedString alloc] initWithString:_subtitle
++                                           attributes:[RNSScreenStackHeaderConfig subtitleTextAttributesForConfig:self]];
 +  }
 +
 +  return [RNSScreenStackHeaderConfig
@@ -293,7 +303,7 @@ index a54cb632..90d223ae 100644
  - (void)updateViewControllerIfNeeded
  {
    UIViewController *vc = _screenView.controller;
-@@ -181,10 +336,10 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -181,10 +340,10 @@ RNS_IGNORE_SUPER_CALL_END
  
    if (newState != _lastSendState) {
      _lastSendState = newState;
@@ -308,7 +318,7 @@ index a54cb632..90d223ae 100644
    }
  }
  
-@@ -293,10 +448,11 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -293,10 +452,11 @@ RNS_IGNORE_SUPER_CALL_END
          // in the image attribute not being updated. We manually set frame to the size of an image
          // in order to trigger proper reload that'd update the image attribute.
          RCTImageSource *imageSource = [RNSScreenStackHeaderConfig imageSourceFromImageView:imageView];
@@ -324,7 +334,7 @@ index a54cb632..90d223ae 100644
        }
  
        UIImage *image = imageView.image;
-@@ -365,6 +521,83 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -365,6 +525,81 @@ RNS_IGNORE_SUPER_CALL_END
    }
  }
  
@@ -374,7 +384,7 @@ index a54cb632..90d223ae 100644
 +  return [self resolvedTitleTextAttributesWithFontFamily:config.titleFontFamily
 +                                                fontSize:size
 +                                              fontWeight:nil
-+                                                   color:config.titleColor
++                                                   color:config.subtitleColor ?: config.titleColor
 +                                        boldFallbackFont:[UIFont systemFontOfSize:[size floatValue]]];
 +}
 +
@@ -384,17 +394,15 @@ index a54cb632..90d223ae 100644
 +{
 +  UIFont *font =
 +      textAttributes[NSFontAttributeName] ?: [UIFont boldSystemFontOfSize:[DEFAULT_TITLE_FONT_SIZE floatValue]];
-+  UIColor *tintColor = textAttributes[NSForegroundColorAttributeName] ?: UIColor.labelColor;
 +
-+  CGFloat glyphHeight = font.capHeight;
++  CGFloat glyphHeight = font.pointSize;
 +  CGSize intrinsicSize = glyph.size;
 +  CGFloat aspectRatio = intrinsicSize.height > 0 ? intrinsicSize.width / intrinsicSize.height : 1;
 +
 +  NSTextAttachment *attachment = [NSTextAttachment new];
-+  attachment.image = [[glyph imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-+      imageWithTintColor:tintColor
-+           renderingMode:UIImageRenderingModeAlwaysOriginal];
-+  attachment.bounds = CGRectMake(0, 0, glyphHeight * aspectRatio, glyphHeight);
++  attachment.image = [glyph imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
++  attachment.bounds =
++      CGRectMake(0, (font.capHeight - glyphHeight) / 2, glyphHeight * aspectRatio, glyphHeight);
 +
 +  NSMutableAttributedString *composed = [[NSMutableAttributedString alloc]
 +      initWithAttributedString:[NSAttributedString attributedStringWithAttachment:attachment]];
@@ -408,7 +416,7 @@ index a54cb632..90d223ae 100644
  + (UINavigationBarAppearance *)buildAppearance:(UIViewController *)vc withConfig:(RNSScreenStackHeaderConfig *)config
  {
    UINavigationBarAppearance *appearance = [UINavigationBarAppearance new];
-@@ -380,8 +613,10 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -380,8 +615,10 @@ RNS_IGNORE_SUPER_CALL_END
        appearance.shadowColor = shadowColor;
        appearance.shadowImage = shadowImage;
      }
@@ -420,7 +428,7 @@ index a54cb632..90d223ae 100644
    }
  
    // set background color if specified
-@@ -408,59 +643,20 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -408,59 +645,20 @@ RNS_IGNORE_SUPER_CALL_END
    }
  
    if (config.titleFontFamily || config.titleFontSize || config.titleFontWeight || config.titleColor) {
@@ -489,7 +497,7 @@ index a54cb632..90d223ae 100644
    }
  
    UIImage *backButtonImage = [config loadBackButtonImageInViewController:vc];
-@@ -507,6 +703,11 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -507,6 +705,11 @@ RNS_IGNORE_SUPER_CALL_END
  
    if (shouldHide) {
      navitem.title = config.title;
@@ -501,7 +509,7 @@ index a54cb632..90d223ae 100644
  
      // Setting navigation bar visibility is split to mitigate iOS 26 bug with bar button items.
      [navctr setNavigationBarHidden:YES animated:animated];
-@@ -648,6 +849,21 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -648,6 +851,21 @@ RNS_IGNORE_SUPER_CALL_END
    // This assignment should be done after `navitem.titleView = ...` assignment (iOS 16.0 bug).
    // See: https://github.com/software-mansion/react-native-screens/issues/1570 (comments)
    navitem.title = config.title;
@@ -523,7 +531,7 @@ index a54cb632..90d223ae 100644
    navitem.leftBarButtonItems = [config barButtonItemsFromConfigs:config.headerLeftBarButtonItems
                                                  withCurrentItems:navitem.leftBarButtonItems];
    navitem.rightBarButtonItems = [config barButtonItemsFromConfigs:config.headerRightBarButtonItems
-@@ -700,7 +916,8 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -700,7 +918,8 @@ RNS_IGNORE_SUPER_CALL_END
    const auto *config = self;
  
    const auto isBackTitleBlank = [NSString rnscreens_isBlankOrNull:config.backTitle] == YES;
@@ -533,7 +541,7 @@ index a54cb632..90d223ae 100644
  
    // If previous screen controller was recreated (e.g. when you go back to tab with stack that has multiple screens),
    // its navigationItem may not have any information from screen's headerConfig, including the title.
-@@ -858,12 +1075,13 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -858,12 +1077,13 @@ RNS_IGNORE_SUPER_CALL_END
      return;
    }
  
@@ -553,7 +561,7 @@ index a54cb632..90d223ae 100644
  
    //  [_reactSubviews insertObject:(RNSScreenStackHeaderSubview *)childComponentView atIndex:index];
    [self insertReactSubview:(RNSScreenStackHeaderSubview *)childComponentView atIndex:index];
-@@ -987,6 +1205,8 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+@@ -987,6 +1207,8 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
  {
    [super prepareForRecycle];
    _initialPropsSet = NO;
@@ -562,7 +570,7 @@ index a54cb632..90d223ae 100644
  
    _lastSendState = react::RNSScreenStackHeaderConfigState(react::Size{}, react::EdgeInsets{}, react::Point{});
  }
-@@ -1025,6 +1245,7 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+@@ -1025,6 +1247,7 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
    }
  
    _title = RCTNSStringFromStringNilIfEmpty(newScreenProps.title);
@@ -570,10 +578,11 @@ index a54cb632..90d223ae 100644
    if (newScreenProps.titleFontFamily != oldScreenProps.titleFontFamily) {
      _titleFontFamily = RCTNSStringFromStringNilIfEmpty(newScreenProps.titleFontFamily);
    }
-@@ -1064,6 +1285,24 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+@@ -1064,6 +1287,25 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
    // We cannot compare SharedColor because it is shared value.
    // We could compare color value, but it is more performant to just assign new value
    _titleColor = RCTUIColorFromSharedColor(newScreenProps.titleColor);
++  _subtitleColor = RCTUIColorFromSharedColor(newScreenProps.subtitleColor);
 +  if (newScreenProps.titleImageSource != oldScreenProps.titleImageSource) {
 +    const auto &titleImageSource = newScreenProps.titleImageSource;
 +    _titleImageSource = titleImageSource.uri.empty()
@@ -596,7 +605,7 @@ index a54cb632..90d223ae 100644
    _color = RCTUIColorFromSharedColor(newScreenProps.color);
    _backgroundColor = RCTUIColorFromSharedColor(newScreenProps.backgroundColor);
 diff --git a/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts b/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts
-index da28c51c..c421621a 100644
+index da28c51..e6400df 100644
 --- a/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts
 +++ b/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts
 @@ -4,6 +4,7 @@ import { codegenNativeComponent } from 'react-native';
@@ -607,7 +616,7 @@ index da28c51c..c421621a 100644
    ViewProps,
    ColorValue,
  } from 'react-native';
-@@ -66,10 +67,13 @@ export interface NativeProps extends ViewProps {
+@@ -66,10 +67,14 @@ export interface NativeProps extends ViewProps {
    largeTitleColor?: ColorValue | undefined;
    translucent?: boolean | undefined;
    title?: string | undefined;
@@ -616,16 +625,17 @@ index da28c51c..c421621a 100644
    titleFontSize?: CT.Int32 | undefined;
    titleFontWeight?: string | undefined;
    titleColor?: ColorValue | undefined;
++  subtitleColor?: ColorValue | undefined;
 +  titleImageSource?: ImageSource | undefined;
 +  subtitleImageSource?: ImageSource | undefined;
    disableBackButtonMenu?: boolean | undefined;
    backButtonDisplayMode?: CT.WithDefault<BackButtonDisplayMode, 'default'>;
    hideBackButton?: boolean | undefined;
 diff --git a/node_modules/react-native-screens/src/types.tsx b/node_modules/react-native-screens/src/types.tsx
-index 8594b733..777ae443 100644
+index 8594b73..299a098 100644
 --- a/node_modules/react-native-screens/src/types.tsx
 +++ b/node_modules/react-native-screens/src/types.tsx
-@@ -827,10 +827,41 @@ export interface ScreenStackHeaderConfigProps extends ViewProps {
+@@ -827,10 +827,49 @@ export interface ScreenStackHeaderConfigProps extends ViewProps {
     * String that can be displayed in the header as a fallback for `headerTitle`.
     */
    title?: string | undefined;
@@ -643,7 +653,7 @@ index 8594b733..777ae443 100644
    titleColor?: ColorValue | undefined;
 +  /**
 +   * Image rendered as a leading glyph before the title. The glyph is sized from
-+   * the resolved title font and tinted with `titleColor`.
++   * the resolved title font and keeps its original colors.
 +   * Requires iOS 26 or higher and is ignored on Android and earlier iOS versions.
 +   * The glyph is hidden while the large title is expanded and appears on collapse.
 +   * A custom header title view replaces the title and its glyph.
@@ -655,7 +665,7 @@ index 8594b733..777ae443 100644
 +  titleImageSource?: ImageSourcePropType | undefined;
 +  /**
 +   * Image rendered as a leading glyph before the subtitle. The glyph is sized
-+   * from the resolved subtitle font and tinted with `titleColor`.
++   * from the resolved subtitle font and keeps its original colors.
 +   * Requires iOS 26 or higher and is ignored on Android and earlier iOS versions.
 +   * A custom header title view does not replace the subtitle or its glyph.
 +   *
@@ -664,6 +674,14 @@ index 8594b733..777ae443 100644
 +   * @supported iOS 26 or higher
 +   */
 +  subtitleImageSource?: ImageSourcePropType | undefined;
++  /**
++   * Color of the subtitle text. Defaults to `titleColor`.
++   *
++   * @platform ios
++   *
++   * @supported iOS 26 or higher
++   */
++  subtitleColor?: ColorValue | undefined;
    /**
     * Customize font family to be used for the title.
     */
