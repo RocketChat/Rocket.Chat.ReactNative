@@ -1,5 +1,5 @@
 import { useMemo, type FC } from 'react';
-import { type StyleProp, type TextStyle, View } from 'react-native';
+import { type StyleProp, type TextStyle, View, useWindowDimensions } from 'react-native';
 import { EnrichedMarkdownText } from 'react-native-enriched-markdown';
 import { parse } from '@rocket.chat/message-parser';
 import type { Root } from '@rocket.chat/message-parser';
@@ -78,6 +78,7 @@ const Markdown: FC<IMarkdownProps> = ({
 	textStyle
 }: IMarkdownProps) => {
 	const { colors } = useTheme();
+	const { fontScale } = useWindowDimensions();
 	const baseUrl = useAppSelector(state => state.server.server);
 	const convertAsciiEmoji = useAppSelector(state => getUserSelector(state)?.settings?.preferences?.convertAsciiEmoji ?? false);
 	const getCustomEmoji = useCustomEmoji();
@@ -129,7 +130,7 @@ const Markdown: FC<IMarkdownProps> = ({
 	]);
 
 	const isBigEmojiOnly = !!tokens && tokens.length === 1 && tokens[0].type === 'BIG_EMOJI';
-	const markdownStyle = useMemo(() => buildMarkdownStyle(colors, isBigEmojiOnly), [colors, isBigEmojiOnly]);
+	const markdownStyle = useMemo(() => buildMarkdownStyle(colors, isBigEmojiOnly, fontScale), [colors, isBigEmojiOnly, fontScale]);
 
 	if (!tokens || segments.length === 0) {
 		return null;

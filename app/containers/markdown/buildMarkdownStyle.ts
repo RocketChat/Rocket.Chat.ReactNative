@@ -5,7 +5,7 @@ import { type TColors } from '~/theme';
 
 const codeFontFamily = Platform.select({ ios: 'Courier New', android: 'monospace' });
 
-export const buildMarkdownStyle = (colors: TColors, isBigEmojiOnly: boolean): MarkdownStyle => ({
+export const buildMarkdownStyle = (colors: TColors, isBigEmojiOnly: boolean, fontScale: number): MarkdownStyle => ({
 	paragraph: {
 		fontSize: isBigEmojiOnly ? 30 : 16,
 		lineHeight: isBigEmojiOnly ? 43 : 22,
@@ -51,11 +51,11 @@ export const buildMarkdownStyle = (colors: TColors, isBigEmojiOnly: boolean): Ma
 		'^timestamp://': { color: colors.fontDefault, backgroundColor: colors.surfaceSelected }
 	},
 	image: {
-		maxHeight: isBigEmojiOnly ? 30 : 300,
+		maxHeight: isBigEmojiOnly ? 30 * fontScale : 300,
 		resizeMode: 'contain'
 	},
 	inlineImage: {
-		size: isBigEmojiOnly ? 30 : 15
+		size: (isBigEmojiOnly ? 30 : 19) * fontScale
 	},
 	taskList: {
 		checkedColor: colors.fontDefault

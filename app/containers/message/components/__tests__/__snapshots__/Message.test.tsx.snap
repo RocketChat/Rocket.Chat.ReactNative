@@ -29690,7 +29690,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         <Text
                           accessibilityLabel="👊 🤙👏"
                         >
-                          👊 🤙👏
+                          👊🤙👏
                         </Text>
                       </View>
                     </View>
@@ -30500,7 +30500,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         <Text
                           accessibilityLabel=":react_rocket: :nyan_rocket: :marioparty:"
                         >
-                          ![](https://open.rocket.chat/emoji-custom/react_rocket.png) ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png) ![](https://open.rocket.chat/emoji-custom/marioparty.gif)
+                          ⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif)
                         </Text>
                       </View>
                     </View>
@@ -30905,7 +30905,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         <Text
                           accessibilityLabel=":react_rocket:"
                         >
-                          ![](https://open.rocket.chat/emoji-custom/react_rocket.png)
+                          ⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)
                         </Text>
                       </View>
                     </View>
@@ -31310,7 +31310,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         <Text
                           accessibilityLabel="🤙 :react_rocket:"
                         >
-                          🤙 ![](https://open.rocket.chat/emoji-custom/react_rocket.png)
+                          🤙⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)
                         </Text>
                       </View>
                     </View>
@@ -32133,7 +32133,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                         <Text
                           accessibilityLabel="👊 🤙👏"
                         >
-                          👊 🤙👏
+                          👊🤙👏
                         </Text>
                       </View>
                     </View>
@@ -32943,7 +32943,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                         <Text
                           accessibilityLabel=":react_rocket: :nyan_rocket: :marioparty:"
                         >
-                          ![](https://open.rocket.chat/emoji-custom/react_rocket.png) ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png) ![](https://open.rocket.chat/emoji-custom/marioparty.gif)
+                          ⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif)
                         </Text>
                       </View>
                     </View>
@@ -33348,7 +33348,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                         <Text
                           accessibilityLabel=":react_rocket:"
                         >
-                          ![](https://open.rocket.chat/emoji-custom/react_rocket.png)
+                          ⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)
                         </Text>
                       </View>
                     </View>
@@ -33753,7 +33753,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                         <Text
                           accessibilityLabel="🤙 :react_rocket:"
                         >
-                          🤙 ![](https://open.rocket.chat/emoji-custom/react_rocket.png)
+                          🤙⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)
                         </Text>
                       </View>
                     </View>
@@ -80426,7 +80426,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                 <Text
                                   accessibilityLabel="How are you? :nyan_rocket:"
                                 >
-                                  How are you? ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                                  How are you? ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                                 </Text>
                               </View>
                             </View>
@@ -80551,7 +80551,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                 <Text
                                   accessibilityLabel="How are you? :nyan_rocket:"
                                 >
-                                  How are you? ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                                  How are you? ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                                 </Text>
                               </View>
                             </View>
@@ -81849,7 +81849,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                     <Text
                                       accessibilityLabel="Are you seeing this mario :marioparty: ?"
                                     >
-                                      Are you seeing this mario ![](https://open.rocket.chat/emoji-custom/marioparty.gif) ?
+                                      Are you seeing this mario ⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif) ?
                                     </Text>
                                   </View>
                                   <View
@@ -89127,7 +89127,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                 <Text
                                   accessibilityLabel="How are you? :nyan_rocket:"
                                 >
-                                  How are you? ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                                  How are you? ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                                 </Text>
                               </View>
                             </View>
@@ -90412,7 +90412,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                     <Text
                                       accessibilityLabel="Are you seeing this mario :marioparty: ?"
                                     >
-                                      Are you seeing this mario ![](https://open.rocket.chat/emoji-custom/marioparty.gif) ?
+                                      Are you seeing this mario ⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif) ?
                                     </Text>
                                   </View>
                                   <View
@@ -137214,7 +137214,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                         <Text
                           accessibilityLabel="Message :nyan_rocket:"
                         >
-                          Message ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          Message ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
                     </View>
@@ -140445,7 +140445,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                         <Text
                           accessibilityLabel="Message :nyan_rocket:"
                         >
-                          Message ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          Message ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
                     </View>
@@ -146007,7 +146007,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                           <Text
                             accessibilityLabel="This is a description :nyan_rocket:"
                           >
-                            This is a description ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                            This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                           </Text>
                         </View>
                         <View
@@ -147686,7 +147686,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                           <Text
                             accessibilityLabel="This is a description :nyan_rocket:"
                           >
-                            This is a description ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                            This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                           </Text>
                         </View>
                         <View
@@ -148586,7 +148586,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                           <Text
                             accessibilityLabel="This is a description :nyan_rocket:"
                           >
-                            This is a description ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                            This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                           </Text>
                         </View>
                         <View
@@ -150193,7 +150193,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                           <Text
                             accessibilityLabel="This is a description :nyan_rocket:"
                           >
-                            This is a description ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                            This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                           </Text>
                         </View>
                         <View
@@ -151186,7 +151186,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                           <Text
                             accessibilityLabel="This is a description :nyan_rocket:"
                           >
-                            This is a description ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                            This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                           </Text>
                         </View>
                       </View>
@@ -151447,7 +151447,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                           <Text
                             accessibilityLabel="This is a description :nyan_rocket:"
                           >
-                            This is a description ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                            This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                           </Text>
                         </View>
                       </View>
@@ -151561,7 +151561,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                           <Text
                             accessibilityLabel="This is a description :nyan_rocket:"
                           >
-                            This is a description ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                            This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                           </Text>
                         </View>
                       </View>
@@ -152090,7 +152090,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                           <Text
                             accessibilityLabel="This is a description :nyan_rocket:"
                           >
-                            This is a description ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                            This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                           </Text>
                         </View>
                       </View>
@@ -152351,7 +152351,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                           <Text
                             accessibilityLabel="This is a description :nyan_rocket:"
                           >
-                            This is a description ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                            This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                           </Text>
                         </View>
                       </View>
@@ -152787,7 +152787,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                           <Text
                             accessibilityLabel="This is a description :nyan_rocket:"
                           >
-                            This is a description ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                            This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                           </Text>
                         </View>
                         <View
@@ -153382,7 +153382,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                           <Text
                             accessibilityLabel="This is a description :nyan_rocket:"
                           >
-                            This is a description ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                            This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                           </Text>
                         </View>
                         <View
@@ -153564,7 +153564,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                           <Text
                             accessibilityLabel="This is a description :nyan_rocket:"
                           >
-                            This is a description ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                            This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                           </Text>
                         </View>
                         <View
@@ -155037,7 +155037,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                           <Text
                             accessibilityLabel="This is a description for Base64 Attachment :nyan_rocket:"
                           >
-                            This is a description for Base64 Attachment ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                            This is a description for Base64 Attachment ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                           </Text>
                         </View>
                         <View
@@ -157262,7 +157262,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                           <Text
                             accessibilityLabel="This is a description for Base64 Attachment :nyan_rocket:"
                           >
-                            This is a description for Base64 Attachment ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                            This is a description for Base64 Attachment ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                           </Text>
                         </View>
                         <View
@@ -157839,7 +157839,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                           <Text
                             accessibilityLabel="This is a description :nyan_rocket:"
                           >
-                            This is a description ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                            This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                           </Text>
                         </View>
                         <View
@@ -159348,7 +159348,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                           <Text
                             accessibilityLabel="This is a description :nyan_rocket:"
                           >
-                            This is a description ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                            This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                           </Text>
                         </View>
                         <View

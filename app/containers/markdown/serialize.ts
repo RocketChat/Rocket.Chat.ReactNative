@@ -104,11 +104,13 @@ const emojiDisplayText = (block: EmojiBlock, ctx: ISerializeContext): string => 
 	return emojiUnicode;
 };
 
+const WORD_JOINER = '\u2060';
+
 const serializeEmoji = (block: EmojiBlock, ctx: ISerializeContext): string => {
 	const emojiName = 'unicode' in block ? '' : block.value.value.replace(/:/g, '');
 	const customEmoji = 'unicode' in block ? null : ctx.getCustomEmoji(emojiName);
 	if (customEmoji) {
-		return `![](${ctx.baseUrl}/emoji-custom/${encodeURIComponent(customEmoji.name)}.${customEmoji.extension})`;
+		return `${WORD_JOINER}![](${ctx.baseUrl}/emoji-custom/${encodeURIComponent(customEmoji.name)}.${customEmoji.extension})`;
 	}
 
 	return escapePlainText(emojiDisplayText(block, ctx));
@@ -311,7 +313,7 @@ const plainTextBlock = (block: Paragraph | Blocks, ctx: ISerializeContext): stri
 
 export const buildRenderSegments = (tokens: Root, ctx: ISerializeContext): TRenderSegment[] => {
 	if (tokens.length === 1 && tokens[0].type === 'BIG_EMOJI') {
-		const content = tokens[0].value.map(emojiBlock => serializeEmoji(emojiBlock, ctx)).join(' ');
+		const content = tokens[0].value.map(emojiBlock => serializeEmoji(emojiBlock, ctx)).join('');
 		const accessibilityLabel = tokens[0].value.map(emojiBlock => emojiDisplayText(emojiBlock, ctx)).join(' ');
 		return [{ type: 'markdown', content, accessibilityLabel }];
 	}

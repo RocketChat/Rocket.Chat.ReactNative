@@ -79,11 +79,28 @@ describe('markdown serialize', () => {
 		expect(result).toContain('](<timestamp://1735689600>)');
 	});
 
-	it('serializes a custom emoji as an inline image', () => {
-		const result = serialize(':marioparty:', {
-			getCustomEmoji: name => (name === 'marioparty' ? { name: 'marioparty', extension: 'gif' } : null)
+	describe('custom emoji', () => {
+		const getCustomEmoji: ISerializeContext['getCustomEmoji'] = name =>
+			name === 'marioparty' ? { name: 'marioparty', extension: 'gif' } : null;
+		const marioparty = '\u2060![](https://open.rocket.chat/emoji-custom/marioparty.gif)';
+
+		it('serializes a custom emoji as an image after a word joiner so it renders inline', () => {
+			expect(serialize(':marioparty:', { getCustomEmoji })).toBe(marioparty);
 		});
-		expect(result).toBe('![](https://open.rocket.chat/emoji-custom/marioparty.gif)');
+
+		it('joins big emoji without separators', () => {
+			expect(serialize(':marioparty: :marioparty: :marioparty:', { getCustomEmoji })).toBe(marioparty.repeat(3));
+		});
+
+		it('joins custom and unicode big emoji without separators', () => {
+			expect(serialize(':marioparty: 😀', { getCustomEmoji })).toBe(`${marioparty}😀`);
+		});
+
+		it('keeps a custom emoji inline within a sentence', () => {
+			expect(serialize(':marioparty: hello :marioparty: world', { getCustomEmoji })).toBe(
+				`${marioparty} hello ${marioparty} world`
+			);
+		});
 	});
 
 	it('serializes an unordered list', () => {

@@ -123,7 +123,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
     <Text
       accessibilityLabel="Custom emojis: :react_rocket: :nyan_rocket: :marioparty:"
     >
-      Custom emojis: ![](https://open.rocket.chat/emoji-custom/react_rocket.png) ![](https://open.rocket.chat/emoji-custom/nyan_rocket.png) ![](https://open.rocket.chat/emoji-custom/marioparty.gif)
+      Custom emojis: ⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png) ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png) ⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif)
     </Text>
   </View>
   <View
@@ -136,7 +136,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
     <Text
       accessibilityLabel="😃 👍️ :marioparty:"
     >
-      😃 👍️ ![](https://open.rocket.chat/emoji-custom/marioparty.gif)
+      😃👍️⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif)
     </Text>
   </View>
 </View>
