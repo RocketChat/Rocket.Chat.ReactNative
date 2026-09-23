@@ -9,8 +9,9 @@ import {
 import { scheduleOnRN } from 'react-native-worklets';
 
 import Touch from '../Touch';
-import { getOpenWidth, getFullSwipeThreshold, SWIPE_SPRING_CONFIG } from './styles';
+import { getOpenWidth, getActionWidth, getFullSwipeThreshold, SWIPE_SPRING_CONFIG } from './styles';
 import { LeftActions, RightActions } from './Actions';
+import { getSwipeRelease, type TRowState } from './swipeRelease';
 import { registerOpenSwipeItem, unregisterOpenSwipeItem, closeOpenSwipeItem } from './openSwipeItem';
 import { type ITouchableProps } from './interfaces';
 import { useTheme } from '~/theme';
@@ -43,6 +44,7 @@ const Touchable = ({
 	const rowOffSet = useSharedValue(0);
 	const transX = useSharedValue(0);
 	const rowState = useSharedValue(0); // 0: closed, 1: right opened, -1: left opened
+	const gestureActive = useSharedValue(false);
 	const valueRef = useRef(0);
 	const consumedTouchRef = useRef(false);
 	const touchStartHandledRef = useRef(false);
@@ -119,77 +121,28 @@ const Touchable = ({
 		}
 	};
 
+	const handleLeftFullSwipe = () => (I18n.isRTL ? handleHideChannel() : handleToggleRead());
+
+	const handleRightFullSwipe = () => (I18n.isRTL ? handleToggleRead() : handleHideChannel());
+
 	const handleRelease = (event: GestureUpdateEvent<PanGestureHandlerEventPayload>) => {
-		const { translationX } = event;
-		valueRef.current += translationX;
-		const openWidth = getOpenWidth(width);
-		const fullSwipeThreshold = getFullSwipeThreshold(width);
-		const closeThreshold = openWidth / 2;
-		let toValue = 0;
-		let nextRowState = rowState.value;
-		if (rowState.value === 0) {
-			// if no option is opened
-			if (translationX > 0 && translationX < fullSwipeThreshold) {
-				toValue = openWidth;
-				nextRowState = -1;
-			} else if (translationX >= fullSwipeThreshold) {
-				toValue = 0;
-				if (I18n.isRTL) {
-					handleHideChannel();
-				} else {
-					handleToggleRead();
-				}
-			} else if (translationX < 0 && translationX > -fullSwipeThreshold) {
-				// open trailing option if he swipe left
-				toValue = -openWidth;
-				nextRowState = 1;
-			} else if (translationX <= -fullSwipeThreshold) {
-				toValue = 0;
-				nextRowState = 1;
-				if (I18n.isRTL) {
-					handleToggleRead();
-				} else {
-					handleHideChannel();
-				}
-			} else {
-				toValue = 0;
-			}
-		} else if (rowState.value === -1) {
-			// if left option is opened
-			if (valueRef.current < closeThreshold) {
-				toValue = 0;
-				nextRowState = 0;
-			} else if (valueRef.current > fullSwipeThreshold) {
-				toValue = 0;
-				nextRowState = 0;
-				if (I18n.isRTL) {
-					handleHideChannel();
-				} else {
-					handleToggleRead();
-				}
-			} else {
-				toValue = openWidth;
-			}
-		} else if (rowState.value === 1) {
-			// if right option is opened
-			if (valueRef.current > -closeThreshold) {
-				toValue = 0;
-				nextRowState = 0;
-			} else if (valueRef.current < -fullSwipeThreshold) {
-				if (I18n.isRTL) {
-					handleToggleRead();
-				} else {
-					handleHideChannel();
-				}
-			} else {
-				toValue = -openWidth;
-			}
+		const release = getSwipeRelease({
+			rowState: rowState.value as TRowState,
+			offset: valueRef.current + event.translationX,
+			actionWidth: getActionWidth(width),
+			openWidth: getOpenWidth(width),
+			fullSwipeThreshold: getFullSwipeThreshold(width)
+		});
+		if (release.fullSwipe === 'left') {
+			handleLeftFullSwipe();
+		} else if (release.fullSwipe === 'right') {
+			handleRightFullSwipe();
 		}
-		rowState.value = nextRowState;
-		transX.value = withSpring(toValue, { ...SWIPE_SPRING_CONFIG, velocity: event.velocityX });
-		rowOffSet.value = toValue;
-		valueRef.current = toValue;
-		if (nextRowState !== 0) {
+		rowState.value = release.rowState;
+		transX.value = withSpring(release.toValue, { ...SWIPE_SPRING_CONFIG, velocity: event.velocityX });
+		rowOffSet.value = release.toValue;
+		valueRef.current = release.toValue;
+		if (release.rowState !== 0) {
 			registerOpenSwipeItem({ rid, transX, rowState, rowOffSet });
 		} else {
 			unregisterOpenSwipeItem(rid);
@@ -207,6 +160,7 @@ const Touchable = ({
 		.failOffsetY([-20, 20]) // Fail on vertical movement to distinguish scrolling
 		.enabled(swipeEnabled)
 		.onBegin(() => {
+			gestureActive.value = true;
 			const closedOtherRow = closeOpenSwipeItem(rid);
 			scheduleOnRN(handleTouchBegin, closedOtherRow);
 		})
@@ -221,7 +175,11 @@ const Touchable = ({
 						: next;
 		})
 		.onEnd(event => {
+			gestureActive.value = false;
 			scheduleOnRN(handleRelease, event);
+		})
+		.onFinalize(() => {
+			gestureActive.value = false;
 		});
 
 	// Use Race instead of Simultaneous to prevent conflicts
@@ -243,6 +201,7 @@ const Touchable = ({
 			<Animated.View>
 				<LeftActions
 					transX={transX}
+					gestureActive={gestureActive}
 					isRead={isRead}
 					width={width}
 					onToggleReadPress={onToggleReadPress}
@@ -250,6 +209,7 @@ const Touchable = ({
 				/>
 				<RightActions
 					transX={transX}
+					gestureActive={gestureActive}
 					favorite={favorite}
 					width={width}
 					toggleFav={handleToggleFav}

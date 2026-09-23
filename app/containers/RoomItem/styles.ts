@@ -10,6 +10,10 @@ export const getOpenWidth = (width: number) => {
 	'worklet';
 	return width * OPEN_RATIO;
 };
+export const getActionWidth = (width: number) => {
+	'worklet';
+	return getOpenWidth(width) / 2;
+};
 export const getFullSwipeThreshold = (width: number) => {
 	'worklet';
 	return width * FULL_SWIPE_RATIO;
