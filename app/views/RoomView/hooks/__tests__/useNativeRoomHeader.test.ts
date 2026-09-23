@@ -109,3 +109,17 @@ it('uses supported Omnichannel app images and falls back when decoding fails', a
 	await waitFor(() => expect(latestOptions().headerTitleImageSource?.uri).toBe('omnichannel:offline'));
 	getSize.mockRestore();
 });
+
+it('opens room actions when the title is pressed', async () => {
+	const onTitlePress = jest.fn();
+	renderHook(() => useNativeRoomHeader(true, fields, undefined, undefined, onTitlePress));
+	await waitFor(() => expect(latestOptions().onHeaderTitlePress).toBeInstanceOf(Function));
+	latestOptions().onHeaderTitlePress({ nativeEvent: {} });
+	expect(onTitlePress).toHaveBeenCalledWith();
+});
+
+it('does not make the title pressable for invite subscriptions', async () => {
+	renderHook(() => useNativeRoomHeader(true, { ...fields, disabled: true }, undefined, undefined, jest.fn()));
+	await waitFor(() => expect(latestOptions().headerTitleImageSource?.uri).toBe('channel-public:title'));
+	expect(latestOptions().onHeaderTitlePress).toBeUndefined();
+});

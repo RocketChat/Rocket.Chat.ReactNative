@@ -69,7 +69,7 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const goRoomActionsView = useGoRoomActionsView(roomStore);
 	const nativeTitle = Platform.OS === 'ios' && Number.parseInt(String(Platform.Version), 10) >= 26;
-	useNativeRoomHeader(!!rid && nativeTitle, headerFields, tmid, roomUserId);
+	useNativeRoomHeader(!!rid && nativeTitle, headerFields, tmid, roomUserId, goRoomActionsView);
 	const nativeRightItems = useRoomHeaderRightItems(hasNativeHeaderBar ? rid : undefined, tmid, roomStore);
 
 	useLayoutEffect(() => {

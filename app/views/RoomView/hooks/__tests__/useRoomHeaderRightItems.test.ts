@@ -24,8 +24,6 @@ let mockCanPlaceLivechatOnHold = false;
 jest.mock('~/ee/omnichannel/hooks/useCanReturnQueue', () => ({ useCanReturnQueue: () => false }));
 jest.mock('../useCanPlaceLivechatOnHold', () => ({ useCanPlaceLivechatOnHold: () => mockCanPlaceLivechatOnHold }));
 jest.mock('../useThreadFollowing', () => ({ useThreadFollowing: () => false }));
-const mockGoRoomActions = jest.fn();
-jest.mock('../useGoRoomActionsView', () => ({ useGoRoomActionsView: () => mockGoRoomActions }));
 jest.mock('~/views/RoomView/services/closeLivechat', () => ({ closeLivechat: jest.fn() }));
 jest.mock('~/views/RoomView/services/placeLivechatOnHold', () => ({ placeLivechatOnHold: jest.fn() }));
 jest.mock('~/lib/services/restApi', () => ({ returnLivechat: jest.fn() }));
@@ -64,13 +62,13 @@ describe('useRoomHeaderRightItems', () => {
 		};
 	});
 
-	it('lists search and actions in the room more menu and runs the chosen action', () => {
+	it('lists search in the room more menu and runs the chosen action', () => {
 		const { result } = renderHook(() => useRoomHeaderRightItems('rid-1', undefined, roomStore));
 		const actions = moreMenuOf(result.current);
 
-		expect(actions.map(action => action.label)).toEqual(['Search messages', 'Actions']);
-		actions[1].onPress();
-		expect(mockGoRoomActions).toHaveBeenCalled();
+		expect(actions.map(action => action.label)).toEqual(['Search messages']);
+		actions[0].onPress();
+		expect(mockGoSearchView).toHaveBeenCalled();
 	});
 
 	it('moves overflowing header actions into the menu, keeping disabled state', () => {
@@ -82,8 +80,7 @@ describe('useRoomHeaderRightItems', () => {
 
 		expect(actions.map(action => [action.label, !!action.disabled])).toEqual([
 			['Encrypted', true],
-			['Search messages', true],
-			['Actions', false]
+			['Search messages', true]
 		]);
 	});
 

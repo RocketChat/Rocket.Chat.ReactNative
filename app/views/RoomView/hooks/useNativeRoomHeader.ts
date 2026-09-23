@@ -122,7 +122,13 @@ const useRoomHeaderContent = (
 	};
 };
 
-export const useNativeRoomHeader = (enabled: boolean, fields: IHeaderFields, tmid?: string, roomUserId?: string | null) => {
+export const useNativeRoomHeader = (
+	enabled: boolean,
+	fields: IHeaderFields,
+	tmid?: string,
+	roomUserId?: string | null,
+	onTitlePress?: () => void
+) => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const { colors } = useTheme();
 	const { connected, activeUser, isDirectMessage, status, statusColor } = useRoomHeaderPresence(enabled, fields, roomUserId);
@@ -155,8 +161,9 @@ export const useNativeRoomHeader = (enabled: boolean, fields: IHeaderFields, tmi
 				headerTitleImageSource: tmid ? undefined : roomImage,
 				headerSubtitleImageSource: subtitleImage,
 				headerTitleStyle: { color: colors.fontTitlesLabels },
-				headerSubtitleColor: colors.fontSecondaryInfo
+				headerSubtitleColor: colors.fontSecondaryInfo,
+				onHeaderTitlePress: onTitlePress && !fields.disabled ? () => onTitlePress() : undefined
 			});
 		}
-	}, [enabled, navigation, title, subtitle, tmid, roomImage, subtitleImage, titleReady, colors]);
+	}, [enabled, navigation, title, subtitle, tmid, roomImage, subtitleImage, titleReady, colors, onTitlePress, fields.disabled]);
 };

@@ -173,7 +173,7 @@ describe('native title availability', () => {
 		Object.defineProperty(Platform, 'OS', { configurable: true, value: os });
 		Object.defineProperty(Platform, 'Version', { configurable: true, value: version });
 		renderHook(() => useHeader({ rid: 'rid-1', roomStore: makeRoomStore() }));
-		expect(useNativeRoomHeader).toHaveBeenCalledWith(native, expect.any(Object), undefined, null);
+		expect(useNativeRoomHeader).toHaveBeenCalledWith(native, expect.any(Object), undefined, null, expect.any(Function));
 		expect(mockSetOptions.mock.calls.some(([options]) => typeof options.headerTitle === 'function')).toBe(!native);
 	});
 });

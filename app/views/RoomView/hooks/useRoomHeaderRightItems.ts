@@ -22,7 +22,6 @@ import { placeLivechatOnHold } from '../services/placeLivechatOnHold';
 import { navigateToScreen, type TRoomStackNavigation } from '../services/navigateToScreen';
 import { splitRoomHeaderActions, type TRoomHeaderActionKey } from '../helpers/roomHeaderActions';
 import { useCanPlaceLivechatOnHold } from './useCanPlaceLivechatOnHold';
-import { useGoRoomActionsView } from './useGoRoomActionsView';
 import { useThreadFollowing } from './useThreadFollowing';
 import { useRoomRightButtonsData } from '../components/RightButtons/useRoomRightButtonsData';
 import { useHeaderCallPress } from '../components/RightButtons/useHeaderCallPress';
@@ -162,7 +161,6 @@ const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean):
 	} = data;
 	const { callPresent: callPresentRaw, isCallDisabled, onPressCall } = useHeaderCallPress(rid);
 	const callPresent = !isSelfDm && callPresentRaw;
-	const goRoomActions = useGoRoomActionsView(roomStore);
 
 	const { visibleKeys, overflowKeys } = splitRoomHeaderActions({
 		threads: threadsEnabled,
@@ -216,8 +214,7 @@ const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean):
 			icon: headerIcon('search'),
 			disabled: hasE2EEWarning,
 			onPress: goSearchView
-		},
-		{ type: 'action', label: i18n.t('Actions'), icon: headerIcon('kebab'), onPress: () => goRoomActions() }
+		}
 	];
 
 	if (!enabled) {
