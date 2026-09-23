@@ -13,6 +13,7 @@ import { loginRequest, logout, setLoginServices, setUser } from '~/actions/login
 import { waitForLoginReady } from './waitForLoginReady';
 import sdk, { type IStreamDataListener } from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
+import { useAppsStore } from '../apps/appsStore';
 import { pendingHangups } from './voip/pendingHangups';
 import I18n from '~/i18n';
 import {
@@ -420,6 +421,7 @@ function abort(): void {
 function disconnect(): void {
 	sdk.disconnect();
 	mediaSessionInstance.reset();
+	useAppsStore.getState().reset();
 }
 
 async function getWebsocketInfo({

@@ -422,6 +422,15 @@
 	},
 	{
 		"test": ".maestro/tests/uikit/button-kit.yaml",
-		"dependsOn": ["app/containers/UIKit/**"]
+		"dependsOn": ["app/containers/UIKit/**", "app/lib/apps/**"]
+	},
+	{
+		"test": ".maestro/tests/uikit/poll.yaml",
+		"dependsOn": [
+			"app/containers/UIKit/**",
+			"app/lib/apps/**",
+			"app/containers/MessageComposer/**",
+			"app/views/ModalBlockView.tsx"
+		]
 	}
 ]

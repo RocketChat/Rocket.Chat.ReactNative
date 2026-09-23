@@ -5,12 +5,12 @@ import {
 	type ITriggerSubmitView,
 	ModalActions
 } from '~/containers/UIKit/interfaces';
-import Navigation from '../navigation/appNavigation';
+import Navigation from '~/lib/navigation/appNavigation';
 import { triggerAction } from './actions';
 
 export async function triggerSubmitView({ viewId, ...options }: ITriggerSubmitView) {
 	const result = await triggerAction({ type: ActionTypes.SUBMIT, viewId, ...options });
-	if (!result || ModalActions.CLOSE === result) {
+	if (!result || ModalActions.CLOSE === result || ModalActions.UNSUPPORTED === result) {
 		Navigation.back();
 	}
 }

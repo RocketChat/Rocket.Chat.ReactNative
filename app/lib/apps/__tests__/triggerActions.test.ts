@@ -1,13 +1,13 @@
 import { ActionTypes, ModalActions } from '~/containers/UIKit/interfaces';
-import Navigation from '../navigation/appNavigation';
-import { triggerAction } from './actions';
-import { triggerBlockAction, triggerCancel, triggerSubmitView } from './triggerActions';
+import Navigation from '~/lib/navigation/appNavigation';
+import { triggerAction } from '../actions';
+import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../triggerActions';
 
-jest.mock('../navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	back: jest.fn()
 }));
 
-jest.mock('./actions', () => ({
+jest.mock('../actions', () => ({
 	triggerAction: jest.fn()
 }));
 

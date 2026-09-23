@@ -229,6 +229,7 @@ class ModalParser extends UiKitParserModal<ReactElement> {
 		return (
 			<FormTextInput
 				key={actionId}
+				testID={actionId ? `uikit-input-${actionId}` : undefined}
 				{...(placeholder && { placeholder: plainText(placeholder) })}
 				multiline={multiline}
 				loading={loading}
