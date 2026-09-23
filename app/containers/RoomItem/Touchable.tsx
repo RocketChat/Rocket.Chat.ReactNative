@@ -1,5 +1,5 @@
-import { useRef, memo, type ReactElement } from 'react';
-import Animated, { useSharedValue, useAnimatedStyle, useAnimatedReaction, withSpring } from 'react-native-reanimated';
+import { useRef, useEffect, memo, type ReactElement } from 'react';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import {
 	Gesture,
 	GestureDetector,
@@ -11,7 +11,7 @@ import { scheduleOnRN } from 'react-native-worklets';
 import Touch from '../Touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE, SWIPE_SPRING_CONFIG } from './styles';
 import { LeftActions, RightActions } from './Actions';
-import { openSwipeItemId } from './openSwipeItem';
+import { registerOpenSwipeItem, unregisterOpenSwipeItem, closeOpenSwipeItem } from './openSwipeItem';
 import { type ITouchableProps } from './interfaces';
 import { useTheme } from '~/theme';
 import I18n from '~/i18n';
@@ -45,19 +45,10 @@ const Touchable = ({
 		transX.value = withSpring(0, SWIPE_SPRING_CONFIG);
 		rowOffSet.value = 0;
 		valueRef.current = 0;
-		if (openSwipeItemId.value === rid) {
-			openSwipeItemId.value = null;
-		}
+		unregisterOpenSwipeItem(rid);
 	};
 
-	useAnimatedReaction(
-		() => openSwipeItemId.value,
-		current => {
-			if (current !== rid && rowState.value !== 0) {
-				scheduleOnRN(close);
-			}
-		}
-	);
+	useEffect(() => () => unregisterOpenSwipeItem(rid), [rid]);
 
 	const handleToggleFav = () => {
 		toggleFav(rid, favorite);
@@ -87,7 +78,6 @@ const Touchable = ({
 			close();
 			return;
 		}
-		openSwipeItemId.value = null;
 		if (onPress) {
 			onPress();
 		}
@@ -99,7 +89,6 @@ const Touchable = ({
 			return;
 		}
 
-		openSwipeItemId.value = null;
 		if (onLongPress) {
 			onLongPress();
 		}
@@ -109,6 +98,7 @@ const Touchable = ({
 		const { translationX } = event;
 		valueRef.current += translationX;
 		let toValue = 0;
+		let nextRowState = rowState.value;
 		if (rowState.value === 0) {
 			// if no option is opened
 			if (translationX > 0 && translationX < LONG_SWIPE) {
@@ -117,7 +107,7 @@ const Touchable = ({
 				} else {
 					toValue = ACTION_WIDTH;
 				}
-				rowState.value = -1;
+				nextRowState = -1;
 			} else if (translationX >= LONG_SWIPE) {
 				toValue = 0;
 				if (I18n.isRTL) {
@@ -132,10 +122,10 @@ const Touchable = ({
 				} else {
 					toValue = -2 * ACTION_WIDTH;
 				}
-				rowState.value = 1;
+				nextRowState = 1;
 			} else if (translationX <= -LONG_SWIPE) {
 				toValue = 0;
-				rowState.value = 1;
+				nextRowState = 1;
 				if (I18n.isRTL) {
 					handleToggleRead();
 				} else {
@@ -148,10 +138,10 @@ const Touchable = ({
 			// if left option is opened
 			if (valueRef.current < SMALL_SWIPE) {
 				toValue = 0;
-				rowState.value = 0;
+				nextRowState = 0;
 			} else if (valueRef.current > LONG_SWIPE) {
 				toValue = 0;
-				rowState.value = 0;
+				nextRowState = 0;
 				if (I18n.isRTL) {
 					handleHideChannel();
 				} else {
@@ -166,7 +156,7 @@ const Touchable = ({
 			// if right option is opened
 			if (valueRef.current > -2 * SMALL_SWIPE) {
 				toValue = 0;
-				rowState.value = 0;
+				nextRowState = 0;
 			} else if (valueRef.current < -LONG_SWIPE) {
 				if (I18n.isRTL) {
 					handleToggleRead();
@@ -179,10 +169,15 @@ const Touchable = ({
 				toValue = -2 * ACTION_WIDTH;
 			}
 		}
+		rowState.value = nextRowState;
 		transX.value = withSpring(toValue, SWIPE_SPRING_CONFIG);
 		rowOffSet.value = toValue;
 		valueRef.current = toValue;
-		openSwipeItemId.value = rowState.value !== 0 ? rid : null;
+		if (nextRowState !== 0) {
+			registerOpenSwipeItem(rid, close);
+		} else {
+			unregisterOpenSwipeItem(rid);
+		}
 	};
 
 	const longPressGesture = Gesture.LongPress()
@@ -195,8 +190,8 @@ const Touchable = ({
 		.activeOffsetX([-10, 10]) // More sensitive horizontal detection
 		.failOffsetY([-20, 20]) // Fail on vertical movement to distinguish scrolling
 		.enabled(swipeEnabled)
-		.onStart(() => {
-			openSwipeItemId.value = rid;
+		.onBegin(() => {
+			scheduleOnRN(closeOpenSwipeItem, rid);
 		})
 		.onUpdate(event => {
 			transX.value = event.translationX + rowOffSet.value;
@@ -208,16 +203,13 @@ const Touchable = ({
 
 	// Use Race instead of Simultaneous to prevent conflicts
 	// Pan gesture will take priority over long press for horizontal swipes
-	const swipeGesture = Gesture.Race(panGesture, longPressGesture);
+	const composedGesture = Gesture.Race(panGesture, longPressGesture);
 
-	// Manual gesture never activates, so it observes touches without claiming or cancelling swipeGesture or Touch's own press
-	const closeOtherRowsGesture = Gesture.Manual().onTouchesDown(() => {
-		if (rowState.value === 0) {
-			openSwipeItemId.value = rid;
+	const handleActiveStateChange = (active: boolean) => {
+		if (active) {
+			closeOpenSwipeItem(rid);
 		}
-	});
-
-	const composedGesture = Gesture.Simultaneous(swipeGesture, closeOtherRowsGesture);
+	};
 
 	const animatedStyles = useAnimatedStyle(() => ({
 		transform: [{ translateX: transX.value }]
@@ -245,6 +237,7 @@ const Touchable = ({
 					<Touch
 						onPress={handlePress}
 						onLongPress={handleLongPress}
+						onActiveStateChange={handleActiveStateChange}
 						style={{
 							backgroundColor: isFocused ? colors.surfaceTint : colors.surfaceRoom
 						}}>
