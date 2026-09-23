@@ -11,13 +11,24 @@ export default function VideoConferenceBlock({ callId, blockId }: { callId: stri
 	const { result, error } = useEndpointData('video-conference.info', { callId });
 
 	if (result?.success) {
-		const { users, type, status, createdBy, rid } = result;
+		const { users, type, status, createdBy, rid, discussionRid } = result;
 
-		if ('endedAt' in result) return <VideoConferenceEnded createdBy={createdBy} rid={rid} type={type} users={users} />;
+		if ('endedAt' in result) {
+			return (
+				<VideoConferenceEnded
+					createdBy={createdBy}
+					rid={rid}
+					type={type}
+					status={status}
+					users={users}
+					discussionRid={discussionRid}
+				/>
+			);
+		}
 
-		if (type === 'direct' && status === 0) return <VideoConferenceDirect />;
+		if (type === 'direct' && status === 0) return <VideoConferenceDirect discussionRid={discussionRid} />;
 
-		return <VideoConferenceOutgoing blockId={blockId} users={users} />;
+		return <VideoConferenceOutgoing blockId={blockId} users={users} discussionRid={discussionRid} />;
 	}
 
 	if (result?.error || error) return <VideoConferenceIssue />;

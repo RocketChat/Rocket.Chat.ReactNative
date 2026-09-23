@@ -2,7 +2,7 @@ import { type ReactElement } from 'react';
 import { Text } from 'react-native';
 
 import { type IUser } from '~/definitions';
-import { type VideoConferenceType } from '~/definitions/IVideoConference';
+import { type VideoConferenceStatus, type VideoConferenceType } from '~/definitions/IVideoConference';
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useVideoConf } from '~/lib/hooks/useVideoConf';
@@ -15,13 +15,17 @@ import Touch from '~/containers/Touch';
 export default function VideoConferenceEnded({
 	users,
 	type,
+	status,
 	createdBy,
-	rid
+	rid,
+	discussionRid
 }: {
 	users: TCallUsers;
 	type: VideoConferenceType;
+	status: VideoConferenceStatus;
 	createdBy: Pick<IUser, '_id' | 'username' | 'name'>;
 	rid: string;
+	discussionRid?: string;
 }): ReactElement {
 	const style = useStyle();
 	const username = useAppSelector(state => state.login.user.username);
@@ -29,9 +33,10 @@ export default function VideoConferenceEnded({
 	const isInActiveVoipCall = useIsInActiveVoipCall();
 
 	const onlyAuthorOnCall = users.length === 1 && users.some(user => user.username === createdBy.username);
+	const notAnswered = status === 2 || status === 4;
 
 	return (
-		<VideoConferenceBaseContainer variant='ended'>
+		<VideoConferenceBaseContainer variant='ended' discussionRid={discussionRid}>
 			{type === 'direct' ? (
 				<>
 					<Touch style={style.callToActionCallBack} onPress={showInitCallActionSheet} disabled={isInActiveVoipCall}>
@@ -39,15 +44,15 @@ export default function VideoConferenceEnded({
 							{createdBy.username === username ? i18n.t('Call_again') : i18n.t('Call_back')}
 						</Text>
 					</Touch>
-					<Text style={style.callBack}>{i18n.t('Call_was_not_answered')}</Text>
+					{notAnswered ? <Text style={style.callBack}>{i18n.t('Call_was_not_answered')}</Text> : null}
 				</>
 			) : (
 				<>
 					{users.length && !onlyAuthorOnCall ? (
 						<CallParticipants users={users} />
-					) : (
+					) : notAnswered ? (
 						<Text style={style.notAnswered}>{i18n.t('Call_was_not_answered')}</Text>
-					)}
+					) : null}
 				</>
 			)}
 		</VideoConferenceBaseContainer>
