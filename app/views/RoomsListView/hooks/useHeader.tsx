@@ -198,6 +198,7 @@ export const useHeader = () => {
 				headerTransparent: true,
 				headerTitle: serverName,
 				headerSubtitle: nativeHeaderSubtitle,
+				onHeaderTitlePress: () => showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false }),
 				headerSearchBarOptions: {
 					ref: searchBarRef,
 					placement: 'automatic',
@@ -217,13 +218,6 @@ export const useHeader = () => {
 						onPress: isMasterDetail
 							? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
 							: () => navigation.toggleDrawer()
-					},
-					{
-						type: 'button',
-						label: serverName,
-						accessibilityLabel: `${serverName} ${nativeHeaderSubtitle}`,
-						icon: headerIcon('workspaces'),
-						onPress: () => showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false })
 					}
 				],
 				unstable_headerRightItems: () => [

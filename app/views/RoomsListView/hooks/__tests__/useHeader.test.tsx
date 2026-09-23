@@ -149,17 +149,20 @@ describe('RoomsListView useHeader', () => {
 		expect(rightItems.every((item: { type: string }) => item.type === 'button')).toBe(true);
 	});
 
-	it('exposes the drawer and server switcher as native left items', () => {
+	it('exposes only the drawer as a native left item', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
 		const leftItems = options.unstable_headerLeftItems();
-		expect(leftItems).toHaveLength(2);
+		expect(leftItems).toHaveLength(1);
 		expect(leftItems[0].icon).toEqual({ type: 'image', source: { uri: 'hamburguer' } });
-		expect(leftItems[1].icon).toEqual({ type: 'image', source: { uri: 'workspaces' } });
-		expect(leftItems[1].label).toBe('Rocket.Chat');
+	});
 
-		leftItems[1].onPress();
+	it('opens the server switcher when the header title is pressed', () => {
+		renderUseHeader();
+
+		const options = mockSetOptions.mock.calls[0][0];
+		options.onHeaderTitlePress();
 		expect(mockShowActionSheetRef).toHaveBeenCalledWith(expect.objectContaining({ enableContentPanningGesture: false }));
 	});
 
