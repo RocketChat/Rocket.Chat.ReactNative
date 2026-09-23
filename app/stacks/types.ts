@@ -178,6 +178,9 @@ export type ChatsStackParamList = {
 		onlyAudio?: boolean;
 		videoConf?: boolean;
 	};
+	VideoConfWebView: {
+		url: string;
+	};
 	ChangeAvatarView: {
 		context: TChangeAvatarViewContext;
 		titleHeader?: string;
