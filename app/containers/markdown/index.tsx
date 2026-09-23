@@ -2,13 +2,14 @@ import { useMemo, type FC } from 'react';
 import { type StyleProp, type TextStyle, View, useWindowDimensions } from 'react-native';
 import { EnrichedMarkdownText } from 'react-native-enriched-markdown';
 import { parse } from '@rocket.chat/message-parser';
-import type { Root } from '@rocket.chat/message-parser';
+import type { Options, Root } from '@rocket.chat/message-parser';
 import isEmpty from 'lodash/isEmpty';
 
 import { type IUserMention, type IUserChannel, type TOnLinkPress } from './interfaces';
 import { buildRenderSegments } from './serialize';
 import { buildMarkdownStyle } from './buildMarkdownStyle';
 import { useMarkdownLinkPress } from './hooks/useMarkdownLinkPress';
+import { useParseOptions } from './hooks/useParseOptions';
 import { KaTeX } from './components/Katex';
 import { useTheme } from '~/theme';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -38,13 +39,14 @@ interface IMarkdownProps {
 const PARSE_CACHE_MAX = 200;
 const parseCache = new Map<string, Root>();
 
-const parseMessage = (msg: string): Root => {
-	const cached = parseCache.get(msg);
+const parseMessage = (msg: string, options: Options): Root => {
+	const cacheKey = `${JSON.stringify(options)}${msg}`;
+	const cached = parseCache.get(cacheKey);
 	if (cached) {
 		return cached;
 	}
 
-	const result = parse(msg);
+	const result = parse(msg, options);
 
 	if (parseCache.size >= PARSE_CACHE_MAX) {
 		const oldestKey = parseCache.keys().next().value;
@@ -53,16 +55,16 @@ const parseMessage = (msg: string): Root => {
 		}
 	}
 
-	parseCache.set(msg, result);
+	parseCache.set(cacheKey, result);
 	return result;
 };
 
-const resolveTokens = (msg: string, md: Root | undefined, isTranslated?: boolean): Root => {
+const resolveTokens = (msg: string, md: Root | undefined, options: Options, isTranslated?: boolean): Root => {
 	if (!isTranslated && md) {
 		return md;
 	}
 
-	return parseMessage(typeof msg === 'string' ? msg : String(msg || ''));
+	return parseMessage(typeof msg === 'string' ? msg : String(msg || ''), options);
 };
 
 const Markdown: FC<IMarkdownProps> = ({
@@ -86,12 +88,13 @@ const Markdown: FC<IMarkdownProps> = ({
 	const [mentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY, false);
 	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
 	const { handleLinkPress, handleLinkLongPress } = useMarkdownLinkPress({ channels, navToRoomInfo, onLinkPress });
+	const parseOptions = useParseOptions();
 
 	let tokens: Root | null = null;
 
 	if (msg) {
 		try {
-			const result = resolveTokens(msg, md, isTranslated);
+			const result = resolveTokens(msg, md, parseOptions, isTranslated);
 			tokens = isEmpty(result) ? null : result;
 		} catch (e) {
 			log(e);
@@ -155,7 +158,7 @@ const Markdown: FC<IMarkdownProps> = ({
 						markdownStyle={markdownStyle}
 						containerStyle={textStyle as TextStyle}
 						flavor='github'
-						md4cFlags={{ latexMath: false }}
+						md4cFlags={{ latexMath: true }}
 						onLinkPress={event => handleLinkPress(event.url)}
 						onLinkLongPress={event => handleLinkLongPress(event.url)}
 					/>

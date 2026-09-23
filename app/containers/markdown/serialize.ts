@@ -172,7 +172,7 @@ const serializeInlineNode = (node: Inlines, ctx: ISerializeContext): string => {
 		case 'INLINE_CODE':
 			return serializeInlineCode(node.value);
 		case 'INLINE_KATEX':
-			return escapePlainText(node.value);
+			return `$${node.value}$`;
 		case 'TIMESTAMP': {
 			const label = formatTimestampLabel(node.value);
 			const unixSeconds = timestampToUnixSeconds(node.value.timestamp);

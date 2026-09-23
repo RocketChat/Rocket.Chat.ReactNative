@@ -3617,7 +3617,7 @@ SPEC CHECKSUMS:
   ReactCodegen: 4acb96173b6ecf8bb9a42044614b848dcfbc4fc6
   ReactCommon: 02f6a489d5eb4ab79d7deba5cd4434e0ba351a07
   ReactNativeDependencies: 6738e602b46fd24aa453cd58267ec3bb8bf29d27
-  ReactNativeEnrichedMarkdown: facbd2da8917887f88cb30e79663529ae75620a5
+  ReactNativeEnrichedMarkdown: e1daa0dc301192ffbae33ddf73e284d5a47d562b
   ReactNativeIncallManager: dccd3e7499caa3bb73d3acfedf4fb0360f1a87d5
   RNBootSplash: 768ba7c7983ab8415dce47ac54815acd4f5ae843
   RNCallKeep: 1930a01d8caf48f018be4f2db0c9f03405c2f977
