@@ -9,7 +9,7 @@ import {
 import { scheduleOnRN } from 'react-native-worklets';
 
 import Touch from '../Touch';
-import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE, SWIPE_SPRING_CONFIG } from './styles';
+import { getOpenWidth, getFullSwipeThreshold, SWIPE_SPRING_CONFIG } from './styles';
 import { LeftActions, RightActions } from './Actions';
 import { registerOpenSwipeItem, unregisterOpenSwipeItem, closeOpenSwipeItem } from './openSwipeItem';
 import { type ITouchableProps } from './interfaces';
@@ -19,6 +19,11 @@ import { toggleFav } from '~/lib/methods/toggleFav';
 import { toggleRead } from '~/lib/methods/toggleRead';
 import { hideRoom } from '~/lib/methods/hideRoom';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
+
+const rubberband = (overshoot: number, dimension: number, constant = 0.55) => {
+	'worklet';
+	return (overshoot * dimension * constant) / (dimension + constant * Math.abs(overshoot));
+};
 
 const Touchable = ({
 	children,
@@ -117,33 +122,28 @@ const Touchable = ({
 	const handleRelease = (event: GestureUpdateEvent<PanGestureHandlerEventPayload>) => {
 		const { translationX } = event;
 		valueRef.current += translationX;
+		const openWidth = getOpenWidth(width);
+		const fullSwipeThreshold = getFullSwipeThreshold(width);
+		const closeThreshold = openWidth / 2;
 		let toValue = 0;
 		let nextRowState = rowState.value;
 		if (rowState.value === 0) {
 			// if no option is opened
-			if (translationX > 0 && translationX < LONG_SWIPE) {
-				if (I18n.isRTL) {
-					toValue = 2 * ACTION_WIDTH;
-				} else {
-					toValue = ACTION_WIDTH;
-				}
+			if (translationX > 0 && translationX < fullSwipeThreshold) {
+				toValue = openWidth;
 				nextRowState = -1;
-			} else if (translationX >= LONG_SWIPE) {
+			} else if (translationX >= fullSwipeThreshold) {
 				toValue = 0;
 				if (I18n.isRTL) {
 					handleHideChannel();
 				} else {
 					handleToggleRead();
 				}
-			} else if (translationX < 0 && translationX > -LONG_SWIPE) {
+			} else if (translationX < 0 && translationX > -fullSwipeThreshold) {
 				// open trailing option if he swipe left
-				if (I18n.isRTL) {
-					toValue = -ACTION_WIDTH;
-				} else {
-					toValue = -2 * ACTION_WIDTH;
-				}
+				toValue = -openWidth;
 				nextRowState = 1;
-			} else if (translationX <= -LONG_SWIPE) {
+			} else if (translationX <= -fullSwipeThreshold) {
 				toValue = 0;
 				nextRowState = 1;
 				if (I18n.isRTL) {
@@ -156,10 +156,10 @@ const Touchable = ({
 			}
 		} else if (rowState.value === -1) {
 			// if left option is opened
-			if (valueRef.current < SMALL_SWIPE) {
+			if (valueRef.current < closeThreshold) {
 				toValue = 0;
 				nextRowState = 0;
-			} else if (valueRef.current > LONG_SWIPE) {
+			} else if (valueRef.current > fullSwipeThreshold) {
 				toValue = 0;
 				nextRowState = 0;
 				if (I18n.isRTL) {
@@ -167,30 +167,26 @@ const Touchable = ({
 				} else {
 					handleToggleRead();
 				}
-			} else if (I18n.isRTL) {
-				toValue = 2 * ACTION_WIDTH;
 			} else {
-				toValue = ACTION_WIDTH;
+				toValue = openWidth;
 			}
 		} else if (rowState.value === 1) {
 			// if right option is opened
-			if (valueRef.current > -2 * SMALL_SWIPE) {
+			if (valueRef.current > -closeThreshold) {
 				toValue = 0;
 				nextRowState = 0;
-			} else if (valueRef.current < -LONG_SWIPE) {
+			} else if (valueRef.current < -fullSwipeThreshold) {
 				if (I18n.isRTL) {
 					handleToggleRead();
 				} else {
 					handleHideChannel();
 				}
-			} else if (I18n.isRTL) {
-				toValue = -ACTION_WIDTH;
 			} else {
-				toValue = -2 * ACTION_WIDTH;
+				toValue = -openWidth;
 			}
 		}
 		rowState.value = nextRowState;
-		transX.value = withSpring(toValue, SWIPE_SPRING_CONFIG);
+		transX.value = withSpring(toValue, { ...SWIPE_SPRING_CONFIG, velocity: event.velocityX });
 		rowOffSet.value = toValue;
 		valueRef.current = toValue;
 		if (nextRowState !== 0) {
@@ -215,8 +211,14 @@ const Touchable = ({
 			scheduleOnRN(handleTouchBegin, closedOtherRow);
 		})
 		.onUpdate(event => {
-			transX.value = event.translationX + rowOffSet.value;
-			if (transX.value > 2 * width) transX.value = 2 * width;
+			const next = event.translationX + rowOffSet.value;
+			const boundary = getFullSwipeThreshold(width);
+			transX.value =
+				next > boundary
+					? boundary + rubberband(next - boundary, width)
+					: next < -boundary
+						? -boundary - rubberband(-next - boundary, width)
+						: next;
 		})
 		.onEnd(event => {
 			scheduleOnRN(handleRelease, event);
