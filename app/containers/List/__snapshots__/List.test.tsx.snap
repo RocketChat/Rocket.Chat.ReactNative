@@ -2,17 +2,12 @@
 
 exports[`Story Snapshots: Alert should match snapshot 1`] = `
 <ViewManagerAdapter_ExpoUI
+  colorScheme="light"
   layoutDirection="leftToRight"
-  onLayout={[Function]}
   style={
-    [
-      {
-        "flex": 1,
-      },
-      {
-        "backgroundColor": "#E4E7EA",
-      },
-    ]
+    {
+      "flex": 1,
+    }
   }
 >
   <ViewManagerAdapter_ExpoUI
@@ -20,11 +15,7 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       [
         {
           "$type": "listStyle",
-          "style": "plain",
-        },
-        {
-          "$type": "scrollContentBackground",
-          "visible": "hidden",
+          "style": "insetGrouped",
         },
       ]
     }
@@ -35,20 +26,24 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -62,65 +57,14 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
           <View
             style={
               {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "transparent",
               }
             }
           >
@@ -222,20 +166,24 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -249,65 +197,14 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
           <View
             style={
               {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "transparent",
               }
             }
           >
@@ -409,20 +306,24 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -436,65 +337,14 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
           <View
             style={
               {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "transparent",
               }
             }
           >
@@ -645,20 +495,24 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -672,65 +526,14 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
           <View
             style={
               {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "transparent",
               }
             }
           >
@@ -874,57 +677,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
               </View>
             </View>
           </View>
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
         </View>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
@@ -934,17 +686,12 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
 
 exports[`Story Snapshots: Header should match snapshot 1`] = `
 <ViewManagerAdapter_ExpoUI
+  colorScheme="light"
   layoutDirection="leftToRight"
-  onLayout={[Function]}
   style={
-    [
-      {
-        "flex": 1,
-      },
-      {
-        "backgroundColor": "#E4E7EA",
-      },
-    ]
+    {
+      "flex": 1,
+    }
   }
 >
   <ViewManagerAdapter_ExpoUI
@@ -952,11 +699,7 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
       [
         {
           "$type": "listStyle",
-          "style": "plain",
-        },
-        {
-          "$type": "scrollContentBackground",
-          "visible": "hidden",
+          "style": "insetGrouped",
         },
       ]
     }
@@ -967,20 +710,24 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -994,7 +741,7 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
@@ -1036,20 +783,24 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -1063,7 +814,7 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
@@ -1107,17 +858,12 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
 
 exports[`Story Snapshots: Icon should match snapshot 1`] = `
 <ViewManagerAdapter_ExpoUI
+  colorScheme="light"
   layoutDirection="leftToRight"
-  onLayout={[Function]}
   style={
-    [
-      {
-        "flex": 1,
-      },
-      {
-        "backgroundColor": "#E4E7EA",
-      },
-    ]
+    {
+      "flex": 1,
+    }
   }
 >
   <ViewManagerAdapter_ExpoUI
@@ -1125,11 +871,7 @@ exports[`Story Snapshots: Icon should match snapshot 1`] = `
       [
         {
           "$type": "listStyle",
-          "style": "plain",
-        },
-        {
-          "$type": "scrollContentBackground",
-          "visible": "hidden",
+          "style": "insetGrouped",
         },
       ]
     }
@@ -1140,20 +882,24 @@ exports[`Story Snapshots: Icon should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -1167,7 +913,7 @@ exports[`Story Snapshots: Icon should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
@@ -1485,17 +1231,12 @@ exports[`Story Snapshots: ListItemWithRightContainerStyle should match snapshot 
 
 exports[`Story Snapshots: Pressable should match snapshot 1`] = `
 <ViewManagerAdapter_ExpoUI
+  colorScheme="light"
   layoutDirection="leftToRight"
-  onLayout={[Function]}
   style={
-    [
-      {
-        "flex": 1,
-      },
-      {
-        "backgroundColor": "#E4E7EA",
-      },
-    ]
+    {
+      "flex": 1,
+    }
   }
 >
   <ViewManagerAdapter_ExpoUI
@@ -1503,11 +1244,7 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
       [
         {
           "$type": "listStyle",
-          "style": "plain",
-        },
-        {
-          "$type": "scrollContentBackground",
-          "visible": "hidden",
+          "style": "insetGrouped",
         },
       ]
     }
@@ -1518,20 +1255,24 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -1545,58 +1286,7 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
@@ -1638,7 +1328,7 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "transparent",
                     "borderRadius": undefined,
                     "margin": undefined,
                     "marginBottom": undefined,
@@ -1751,20 +1441,24 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -1778,58 +1472,7 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
@@ -1871,7 +1514,7 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "transparent",
                     "borderRadius": undefined,
                     "margin": undefined,
                     "marginBottom": undefined,
@@ -1982,74 +1625,18 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
         </View>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>
 </ViewManagerAdapter_ExpoUI>
 `;
 
 exports[`Story Snapshots: Radio should match snapshot 1`] = `
 <ViewManagerAdapter_ExpoUI
+  colorScheme="light"
   layoutDirection="leftToRight"
-  onLayout={[Function]}
   style={
-    [
-      {
-        "flex": 1,
-      },
-      {
-        "backgroundColor": "#E4E7EA",
-      },
-    ]
+    {
+      "flex": 1,
+    }
   }
 >
   <ViewManagerAdapter_ExpoUI
@@ -2057,11 +1644,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       [
         {
           "$type": "listStyle",
-          "style": "plain",
-        },
-        {
-          "$type": "scrollContentBackground",
-          "visible": "hidden",
+          "style": "insetGrouped",
         },
       ]
     }
@@ -2072,20 +1655,24 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -2099,58 +1686,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
@@ -2192,7 +1728,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "transparent",
                     "borderRadius": undefined,
                     "margin": undefined,
                     "marginBottom": undefined,
@@ -2354,20 +1890,24 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -2381,58 +1921,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
@@ -2474,7 +1963,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "transparent",
                     "borderRadius": undefined,
                     "margin": undefined,
                     "marginBottom": undefined,
@@ -2636,20 +2125,24 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -2663,58 +2156,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
@@ -2756,7 +2198,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "transparent",
                     "borderRadius": undefined,
                     "margin": undefined,
                     "marginBottom": undefined,
@@ -2918,20 +2360,24 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -2945,58 +2391,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
@@ -3038,7 +2433,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "transparent",
                     "borderRadius": undefined,
                     "margin": undefined,
                     "marginBottom": undefined,
@@ -3218,57 +2613,6 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
         </View>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>
 </ViewManagerAdapter_ExpoUI>
 `;
@@ -3296,17 +2640,12 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
   }
 >
   <ViewManagerAdapter_ExpoUI
+    colorScheme="light"
     layoutDirection="leftToRight"
-    onLayout={[Function]}
     style={
-      [
-        {
-          "flex": 1,
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-        },
-      ]
+      {
+        "flex": 1,
+      }
     }
   >
     <ViewManagerAdapter_ExpoUI
@@ -3314,540 +2653,60 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
         [
           {
             "$type": "listStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "scrollContentBackground",
-            "visible": "hidden",
+            "style": "insetGrouped",
           },
         ]
       }
       onGlobalEvent={[Function]}
       onSelectionChange={[Function]}
     >
-      <ViewManagerAdapter_ExpoUI
-        modifiers={
-          [
-            {
-              "$type": "listRowInsets",
-              "bottom": 0,
-              "leading": 0,
-              "top": 0,
-              "trailing": 0,
-            },
-            {
-              "$type": "listRowBackground",
-              "color": "clear",
-            },
-            {
-              "$type": "listRowSeparator",
-              "edges": undefined,
-              "visibility": "hidden",
-            },
-          ]
-        }
-        onGlobalEvent={[Function]}
-      >
+      <ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
+          name="content"
         >
-          <View
-            style={
-              {
-                "width": undefined,
-              }
-            }
-          >
-            <View
-              style={
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
                 {
-                  "marginBottom": 28,
-                  "marginHorizontal": 16,
-                }
-              }
-            >
-              <View
-                style={
-                  [
-                    {
-                      "borderRadius": 10,
-                      "overflow": "hidden",
-                    },
-                    {
-                      "backgroundColor": "#FFFFFF",
-                    },
-                  ]
-                }
-              >
-                <View
-                  style={
-                    {
-                      "backgroundColor": "#FFFFFF",
-                    }
-                  }
-                >
-                  <View
-                    accessibilityLabel="Section Item"
-                    accessibilityRole="button"
-                    accessible={true}
-                    style={
-                      [
-                        {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "justifyContent": "center",
-                          "paddingHorizontal": 12,
-                        },
-                        undefined,
-                        {
-                          "height": 46,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "flex": 1,
-                          "justifyContent": "center",
-                        }
-                      }
-                    >
-                      <View
-                        style={
-                          {
-                            "alignItems": "center",
-                            "flexDirection": "row",
-                          }
-                        }
-                      >
-                        <Text
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "flex": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontVariant": [
-                                  "tabular-nums",
-                                ],
-                                "fontWeight": "500",
-                                "textAlign": "left",
-                              },
-                              undefined,
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          Section Item
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#CBCED1",
-                      },
-                    ]
-                  }
-                />
-                <View
-                  style={
-                    {
-                      "backgroundColor": "#FFFFFF",
-                    }
-                  }
-                >
-                  <View
-                    accessibilityLabel="Section Item"
-                    accessibilityRole="button"
-                    accessible={true}
-                    style={
-                      [
-                        {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "justifyContent": "center",
-                          "paddingHorizontal": 12,
-                        },
-                        undefined,
-                        {
-                          "height": 46,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "flex": 1,
-                          "justifyContent": "center",
-                        }
-                      }
-                    >
-                      <View
-                        style={
-                          {
-                            "alignItems": "center",
-                            "flexDirection": "row",
-                          }
-                        }
-                      >
-                        <Text
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "flex": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontVariant": [
-                                  "tabular-nums",
-                                ],
-                                "fontWeight": "500",
-                                "textAlign": "left",
-                              },
-                              undefined,
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          Section Item
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
-        </ViewManagerAdapter_ExpoUI>
-      </ViewManagerAdapter_ExpoUI>
-      <ViewManagerAdapter_ExpoUI
-        modifiers={
-          [
-            {
-              "$type": "listRowInsets",
-              "bottom": 0,
-              "leading": 0,
-              "top": 0,
-              "trailing": 0,
-            },
-            {
-              "$type": "listRowBackground",
-              "color": "clear",
-            },
-            {
-              "$type": "listRowSeparator",
-              "edges": undefined,
-              "visibility": "hidden",
-            },
-          ]
-        }
-        onGlobalEvent={[Function]}
-      >
-        <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
-        >
-          <View
-            style={
-              {
-                "width": undefined,
-              }
-            }
-          >
-            <View
-              style={
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
                 {
-                  "marginBottom": 28,
-                  "marginHorizontal": 16,
-                }
-              }
-            >
-              <View
-                style={
-                  [
-                    {
-                      "borderRadius": 10,
-                      "overflow": "hidden",
-                    },
-                    {
-                      "backgroundColor": "#FFFFFF",
-                    },
-                  ]
-                }
-              >
-                <View
-                  style={
-                    {
-                      "backgroundColor": "#FFFFFF",
-                    }
-                  }
-                >
-                  <View
-                    accessibilityLabel="Section Item"
-                    accessibilityRole="button"
-                    accessible={true}
-                    style={
-                      [
-                        {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "justifyContent": "center",
-                          "paddingHorizontal": 12,
-                        },
-                        undefined,
-                        {
-                          "height": 46,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "flex": 1,
-                          "justifyContent": "center",
-                        }
-                      }
-                    >
-                      <View
-                        style={
-                          {
-                            "alignItems": "center",
-                            "flexDirection": "row",
-                          }
-                        }
-                      >
-                        <Text
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "flex": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontVariant": [
-                                  "tabular-nums",
-                                ],
-                                "fontWeight": "500",
-                                "textAlign": "left",
-                              },
-                              undefined,
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          Section Item
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#CBCED1",
-                      },
-                    ]
-                  }
-                />
-                <View
-                  style={
-                    {
-                      "backgroundColor": "#FFFFFF",
-                    }
-                  }
-                >
-                  <View
-                    accessibilityLabel="Section Item"
-                    accessibilityRole="button"
-                    accessible={true}
-                    style={
-                      [
-                        {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "justifyContent": "center",
-                          "paddingHorizontal": 12,
-                        },
-                        undefined,
-                        {
-                          "height": 46,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "flex": 1,
-                          "justifyContent": "center",
-                        }
-                      }
-                    >
-                      <View
-                        style={
-                          {
-                            "alignItems": "center",
-                            "flexDirection": "row",
-                          }
-                        }
-                      >
-                        <Text
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "flex": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontVariant": [
-                                  "tabular-nums",
-                                ],
-                                "fontWeight": "500",
-                                "textAlign": "left",
-                              },
-                              undefined,
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          Section Item
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
-        </ViewManagerAdapter_ExpoUI>
-      </ViewManagerAdapter_ExpoUI>
-      <ViewManagerAdapter_ExpoUI
-        modifiers={
-          [
-            {
-              "$type": "listRowInsets",
-              "bottom": 0,
-              "leading": 0,
-              "top": 0,
-              "trailing": 0,
-            },
-            {
-              "$type": "listRowBackground",
-              "color": "clear",
-            },
-            {
-              "$type": "listRowSeparator",
-              "edges": undefined,
-              "visibility": "hidden",
-            },
-          ]
-        }
-        onGlobalEvent={[Function]}
-      >
-        <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
-        >
-          <View
-            style={
-              {
-                "width": undefined,
-              }
-            }
-          >
-            <View
-              style={
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
                 {
-                  "marginBottom": 28,
-                  "marginHorizontal": 16,
-                }
-              }
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
             >
               <View
                 style={
                   {
-                    "paddingHorizontal": 12,
-                    "paddingVertical": 8,
+                    "width": 0,
                   }
-                }
-              >
-                <Text
-                  accessibilityRole="header"
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  Chats
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "borderRadius": 10,
-                      "overflow": "hidden",
-                    },
-                    {
-                      "backgroundColor": "#FFFFFF",
-                    },
-                  ]
                 }
               >
                 <View
                   style={
                     {
-                      "backgroundColor": "#FFFFFF",
+                      "backgroundColor": "transparent",
                     }
                   }
                 >
@@ -3914,233 +2773,170 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#CBCED1",
-                      },
-                    ]
-                  }
-                />
-                <View
-                  style={
-                    {
-                      "backgroundColor": "#FFFFFF",
-                    }
-                  }
-                >
-                  <View
-                    accessibilityLabel="Section Item"
-                    accessibilityRole="button"
-                    accessible={true}
-                    style={
-                      [
-                        {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "justifyContent": "center",
-                          "paddingHorizontal": 12,
-                        },
-                        undefined,
-                        {
-                          "height": 46,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "flex": 1,
-                          "justifyContent": "center",
-                        }
-                      }
-                    >
-                      <View
-                        style={
-                          {
-                            "alignItems": "center",
-                            "flexDirection": "row",
-                          }
-                        }
-                      >
-                        <Text
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "flex": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontVariant": [
-                                  "tabular-nums",
-                                ],
-                                "fontWeight": "500",
-                                "textAlign": "left",
-                              },
-                              undefined,
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          Section Item
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#CBCED1",
-                      },
-                    ]
-                  }
-                />
-                <View
-                  style={
-                    {
-                      "paddingHorizontal": 12,
-                      "paddingTop": 8,
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "400",
-                          "lineHeight": 20,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
               </View>
-            </View>
-          </View>
-        </ViewManagerAdapter_ExpoUI>
-      </ViewManagerAdapter_ExpoUI>
-      <ViewManagerAdapter_ExpoUI
-        modifiers={
-          [
-            {
-              "$type": "listRowInsets",
-              "bottom": 0,
-              "leading": 0,
-              "top": 0,
-              "trailing": 0,
-            },
-            {
-              "$type": "listRowBackground",
-              "color": "clear",
-            },
-            {
-              "$type": "listRowSeparator",
-              "edges": undefined,
-              "visibility": "hidden",
-            },
-          ]
-        }
-        onGlobalEvent={[Function]}
-      >
-        <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
-        >
-          <View
-            style={
-              {
-                "width": undefined,
-              }
-            }
-          >
-            <View
-              style={
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
                 {
-                  "marginBottom": 28,
-                  "marginHorizontal": 16,
-                }
-              }
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
             >
               <View
                 style={
                   {
-                    "paddingHorizontal": 12,
-                    "paddingVertical": 8,
+                    "width": 0,
                   }
                 }
               >
-                <Text
-                  accessibilityRole="header"
+                <View
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                    }
                   }
                 >
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-                </Text>
+                  <View
+                    accessibilityLabel="Section Item"
+                    accessibilityRole="button"
+                    accessible={true}
+                    style={
+                      [
+                        {
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "justifyContent": "center",
+                          "paddingHorizontal": 12,
+                        },
+                        undefined,
+                        {
+                          "height": 46,
+                        },
+                      ]
+                    }
+                  >
+                    <View
+                      style={
+                        {
+                          "flex": 1,
+                          "justifyContent": "center",
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          {
+                            "alignItems": "center",
+                            "flexDirection": "row",
+                          }
+                        }
+                      >
+                        <Text
+                          style={
+                            [
+                              {
+                                "backgroundColor": "transparent",
+                                "flex": 1,
+                                "flexShrink": 1,
+                                "fontFamily": "Inter",
+                                "fontSize": 16,
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "500",
+                                "textAlign": "left",
+                              },
+                              undefined,
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Section Item
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
               </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+        </ViewManagerAdapter_ExpoUI>
+      </ViewManagerAdapter_ExpoUI>
+      <ViewManagerAdapter_ExpoUI>
+        <ViewManagerAdapter_ExpoUI
+          name="content"
+        >
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
+                {
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
+            >
               <View
                 style={
-                  [
-                    {
-                      "borderRadius": 10,
-                      "overflow": "hidden",
-                    },
-                    {
-                      "backgroundColor": "#FFFFFF",
-                    },
-                  ]
+                  {
+                    "width": 0,
+                  }
                 }
               >
                 <View
                   style={
                     {
-                      "backgroundColor": "#FFFFFF",
+                      "backgroundColor": "transparent",
                     }
                   }
                 >
@@ -4206,141 +3002,600 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                       </View>
                     </View>
                   </View>
-                </View>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#CBCED1",
-                      },
-                    ]
-                  }
-                />
-                <View
-                  style={
-                    {
-                      "backgroundColor": "#FFFFFF",
-                    }
-                  }
-                >
-                  <View
-                    accessibilityLabel="Section Item"
-                    accessibilityRole="button"
-                    accessible={true}
-                    style={
-                      [
-                        {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "justifyContent": "center",
-                          "paddingHorizontal": 12,
-                        },
-                        undefined,
-                        {
-                          "height": 46,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "flex": 1,
-                          "justifyContent": "center",
-                        }
-                      }
-                    >
-                      <View
-                        style={
-                          {
-                            "alignItems": "center",
-                            "flexDirection": "row",
-                          }
-                        }
-                      >
-                        <Text
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "flex": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontVariant": [
-                                  "tabular-nums",
-                                ],
-                                "fontWeight": "500",
-                                "textAlign": "left",
-                              },
-                              undefined,
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          Section Item
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#CBCED1",
-                      },
-                    ]
-                  }
-                />
-                <View
-                  style={
-                    {
-                      "paddingHorizontal": 12,
-                      "paddingTop": 8,
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "400",
-                          "lineHeight": 20,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
-                    }
-                  >
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-                  </Text>
                 </View>
               </View>
-            </View>
-          </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
+                {
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
+            >
+              <View
+                style={
+                  {
+                    "width": 0,
+                  }
+                }
+              >
+                <View
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                    }
+                  }
+                >
+                  <View
+                    accessibilityLabel="Section Item"
+                    accessibilityRole="button"
+                    accessible={true}
+                    style={
+                      [
+                        {
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "justifyContent": "center",
+                          "paddingHorizontal": 12,
+                        },
+                        undefined,
+                        {
+                          "height": 46,
+                        },
+                      ]
+                    }
+                  >
+                    <View
+                      style={
+                        {
+                          "flex": 1,
+                          "justifyContent": "center",
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          {
+                            "alignItems": "center",
+                            "flexDirection": "row",
+                          }
+                        }
+                      >
+                        <Text
+                          style={
+                            [
+                              {
+                                "backgroundColor": "transparent",
+                                "flex": 1,
+                                "flexShrink": 1,
+                                "fontFamily": "Inter",
+                                "fontSize": 16,
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "500",
+                                "textAlign": "left",
+                              },
+                              undefined,
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Section Item
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+        </ViewManagerAdapter_ExpoUI>
+      </ViewManagerAdapter_ExpoUI>
+      <ViewManagerAdapter_ExpoUI
+        title="Chats"
+      >
+        <ViewManagerAdapter_ExpoUI
+          name="footer"
+        >
+          <ViewManagerAdapter_ExpoUI
+            text="Chats"
+          />
+        </ViewManagerAdapter_ExpoUI>
+        <ViewManagerAdapter_ExpoUI
+          name="content"
+        >
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
+                {
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
+            >
+              <View
+                style={
+                  {
+                    "width": 0,
+                  }
+                }
+              >
+                <View
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                    }
+                  }
+                >
+                  <View
+                    accessibilityLabel="Section Item"
+                    accessibilityRole="button"
+                    accessible={true}
+                    style={
+                      [
+                        {
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "justifyContent": "center",
+                          "paddingHorizontal": 12,
+                        },
+                        undefined,
+                        {
+                          "height": 46,
+                        },
+                      ]
+                    }
+                  >
+                    <View
+                      style={
+                        {
+                          "flex": 1,
+                          "justifyContent": "center",
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          {
+                            "alignItems": "center",
+                            "flexDirection": "row",
+                          }
+                        }
+                      >
+                        <Text
+                          style={
+                            [
+                              {
+                                "backgroundColor": "transparent",
+                                "flex": 1,
+                                "flexShrink": 1,
+                                "fontFamily": "Inter",
+                                "fontSize": 16,
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "500",
+                                "textAlign": "left",
+                              },
+                              undefined,
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Section Item
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
+                {
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
+            >
+              <View
+                style={
+                  {
+                    "width": 0,
+                  }
+                }
+              >
+                <View
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                    }
+                  }
+                >
+                  <View
+                    accessibilityLabel="Section Item"
+                    accessibilityRole="button"
+                    accessible={true}
+                    style={
+                      [
+                        {
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "justifyContent": "center",
+                          "paddingHorizontal": 12,
+                        },
+                        undefined,
+                        {
+                          "height": 46,
+                        },
+                      ]
+                    }
+                  >
+                    <View
+                      style={
+                        {
+                          "flex": 1,
+                          "justifyContent": "center",
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          {
+                            "alignItems": "center",
+                            "flexDirection": "row",
+                          }
+                        }
+                      >
+                        <Text
+                          style={
+                            [
+                              {
+                                "backgroundColor": "transparent",
+                                "flex": 1,
+                                "flexShrink": 1,
+                                "fontFamily": "Inter",
+                                "fontSize": 16,
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "500",
+                                "textAlign": "left",
+                              },
+                              undefined,
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Section Item
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+        </ViewManagerAdapter_ExpoUI>
+      </ViewManagerAdapter_ExpoUI>
+      <ViewManagerAdapter_ExpoUI
+        title="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+      >
+        <ViewManagerAdapter_ExpoUI
+          name="footer"
+        >
+          <ViewManagerAdapter_ExpoUI
+            text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+          />
+        </ViewManagerAdapter_ExpoUI>
+        <ViewManagerAdapter_ExpoUI
+          name="content"
+        >
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
+                {
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
+            >
+              <View
+                style={
+                  {
+                    "width": 0,
+                  }
+                }
+              >
+                <View
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                    }
+                  }
+                >
+                  <View
+                    accessibilityLabel="Section Item"
+                    accessibilityRole="button"
+                    accessible={true}
+                    style={
+                      [
+                        {
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "justifyContent": "center",
+                          "paddingHorizontal": 12,
+                        },
+                        undefined,
+                        {
+                          "height": 46,
+                        },
+                      ]
+                    }
+                  >
+                    <View
+                      style={
+                        {
+                          "flex": 1,
+                          "justifyContent": "center",
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          {
+                            "alignItems": "center",
+                            "flexDirection": "row",
+                          }
+                        }
+                      >
+                        <Text
+                          style={
+                            [
+                              {
+                                "backgroundColor": "transparent",
+                                "flex": 1,
+                                "flexShrink": 1,
+                                "fontFamily": "Inter",
+                                "fontSize": 16,
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "500",
+                                "textAlign": "left",
+                              },
+                              undefined,
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Section Item
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
+                {
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
+            >
+              <View
+                style={
+                  {
+                    "width": 0,
+                  }
+                }
+              >
+                <View
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                    }
+                  }
+                >
+                  <View
+                    accessibilityLabel="Section Item"
+                    accessibilityRole="button"
+                    accessible={true}
+                    style={
+                      [
+                        {
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "justifyContent": "center",
+                          "paddingHorizontal": 12,
+                        },
+                        undefined,
+                        {
+                          "height": 46,
+                        },
+                      ]
+                    }
+                  >
+                    <View
+                      style={
+                        {
+                          "flex": 1,
+                          "justifyContent": "center",
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          {
+                            "alignItems": "center",
+                            "flexDirection": "row",
+                          }
+                        }
+                      >
+                        <Text
+                          style={
+                            [
+                              {
+                                "backgroundColor": "transparent",
+                                "flex": 1,
+                                "flexShrink": 1,
+                                "fontFamily": "Inter",
+                                "fontSize": 16,
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "500",
+                                "textAlign": "left",
+                              },
+                              undefined,
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Section Item
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
@@ -4350,17 +3605,12 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
 
 exports[`Story Snapshots: Separator should match snapshot 1`] = `
 <ViewManagerAdapter_ExpoUI
+  colorScheme="light"
   layoutDirection="leftToRight"
-  onLayout={[Function]}
   style={
-    [
-      {
-        "flex": 1,
-      },
-      {
-        "backgroundColor": "#E4E7EA",
-      },
-    ]
+    {
+      "flex": 1,
+    }
   }
 >
   <ViewManagerAdapter_ExpoUI
@@ -4368,85 +3618,24 @@ exports[`Story Snapshots: Separator should match snapshot 1`] = `
       [
         {
           "$type": "listStyle",
-          "style": "plain",
-        },
-        {
-          "$type": "scrollContentBackground",
-          "visible": "hidden",
+          "style": "insetGrouped",
         },
       ]
     }
     onGlobalEvent={[Function]}
     onSelectionChange={[Function]}
-  >
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-  </ViewManagerAdapter_ExpoUI>
+  />
 </ViewManagerAdapter_ExpoUI>
 `;
 
 exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
 <ViewManagerAdapter_ExpoUI
+  colorScheme="light"
   layoutDirection="leftToRight"
-  onLayout={[Function]}
   style={
-    [
-      {
-        "flex": 1,
-      },
-      {
-        "backgroundColor": "#E4E7EA",
-      },
-    ]
+    {
+      "flex": 1,
+    }
   }
 >
   <ViewManagerAdapter_ExpoUI
@@ -4454,11 +3643,7 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       [
         {
           "$type": "listStyle",
-          "style": "plain",
-        },
-        {
-          "$type": "scrollContentBackground",
-          "visible": "hidden",
+          "style": "insetGrouped",
         },
       ]
     }
@@ -4469,20 +3654,24 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -4496,65 +3685,14 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
           <View
             style={
               {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "transparent",
               }
             }
           >
@@ -4628,20 +3766,24 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -4655,65 +3797,14 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
           <View
             style={
               {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "transparent",
               }
             }
           >
@@ -4809,20 +3900,24 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -4836,65 +3931,14 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
           <View
             style={
               {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "transparent",
               }
             }
           >
@@ -4991,20 +4035,24 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -5018,65 +4066,14 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
           <View
             style={
               {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "transparent",
               }
             }
           >
@@ -5169,57 +4166,6 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
         </View>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>
 </ViewManagerAdapter_ExpoUI>
 `;
@@ -5247,17 +4193,12 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
   }
 >
   <ViewManagerAdapter_ExpoUI
+    colorScheme="light"
     layoutDirection="leftToRight"
-    onLayout={[Function]}
     style={
-      [
-        {
-          "flex": 1,
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-        },
-      ]
+      {
+        "flex": 1,
+      }
     }
   >
     <ViewManagerAdapter_ExpoUI
@@ -5265,11 +4206,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
         [
           {
             "$type": "listStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "scrollContentBackground",
-            "visible": "hidden",
+            "style": "insetGrouped",
           },
         ]
       }
@@ -5277,90 +4214,55 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
       onSelectionChange={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
-        modifiers={
-          [
-            {
-              "$type": "listRowInsets",
-              "bottom": 0,
-              "leading": 0,
-              "top": 0,
-              "trailing": 0,
-            },
-            {
-              "$type": "listRowBackground",
-              "color": "clear",
-            },
-            {
-              "$type": "listRowSeparator",
-              "edges": undefined,
-              "visibility": "hidden",
-            },
-          ]
-        }
-        onGlobalEvent={[Function]}
+        title="Chats"
       >
         <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
+          name="footer"
         >
-          <View
-            style={
-              {
-                "width": undefined,
-              }
-            }
-          >
-            <View
-              style={
+          <ViewManagerAdapter_ExpoUI
+            text="Chats"
+          />
+        </ViewManagerAdapter_ExpoUI>
+        <ViewManagerAdapter_ExpoUI
+          name="content"
+        >
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
                 {
-                  "marginBottom": 28,
-                  "marginHorizontal": 16,
-                }
-              }
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
             >
               <View
                 style={
                   {
-                    "paddingHorizontal": 12,
-                    "paddingVertical": 8,
+                    "width": 0,
                   }
-                }
-              >
-                <Text
-                  accessibilityRole="header"
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  Chats
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "borderRadius": 10,
-                      "overflow": "hidden",
-                    },
-                    {
-                      "backgroundColor": "#FFFFFF",
-                    },
-                  ]
                 }
               >
                 <ExternalKeyboardView
@@ -5401,7 +4303,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "backgroundColor": "#FFFFFF",
+                          "backgroundColor": "transparent",
                           "borderRadius": undefined,
                           "margin": undefined,
                           "marginBottom": undefined,
@@ -5624,21 +4526,48 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                     </View>
                   </RNGestureHandlerButton>
                 </ExternalKeyboardView>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#CBCED1",
-                      },
-                    ]
+              </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
+                {
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
+            >
+              <View
+                style={
+                  {
+                    "width": 0,
                   }
-                />
+                }
+              >
                 <ExternalKeyboardView
                   canBeFocused={true}
                   enableA11yFocus={false}
@@ -5677,7 +4606,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "backgroundColor": "#FFFFFF",
+                          "backgroundColor": "transparent",
                           "borderRadius": undefined,
                           "margin": undefined,
                           "marginBottom": undefined,
@@ -5902,142 +4831,61 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                     </View>
                   </RNGestureHandlerButton>
                 </ExternalKeyboardView>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#CBCED1",
-                      },
-                    ]
-                  }
-                />
-                <View
-                  style={
-                    {
-                      "paddingHorizontal": 12,
-                      "paddingTop": 8,
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "400",
-                          "lineHeight": 20,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
               </View>
-            </View>
-          </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
       <ViewManagerAdapter_ExpoUI
-        modifiers={
-          [
-            {
-              "$type": "listRowInsets",
-              "bottom": 0,
-              "leading": 0,
-              "top": 0,
-              "trailing": 0,
-            },
-            {
-              "$type": "listRowBackground",
-              "color": "clear",
-            },
-            {
-              "$type": "listRowSeparator",
-              "edges": undefined,
-              "visibility": "hidden",
-            },
-          ]
-        }
-        onGlobalEvent={[Function]}
+        title="Chats"
       >
         <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
+          name="footer"
         >
-          <View
-            style={
-              {
-                "width": undefined,
-              }
-            }
-          >
-            <View
-              style={
+          <ViewManagerAdapter_ExpoUI
+            text="Chats"
+          />
+        </ViewManagerAdapter_ExpoUI>
+        <ViewManagerAdapter_ExpoUI
+          name="content"
+        >
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
                 {
-                  "marginBottom": 28,
-                  "marginHorizontal": 16,
-                }
-              }
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
             >
               <View
                 style={
                   {
-                    "paddingHorizontal": 12,
-                    "paddingVertical": 8,
+                    "width": 0,
                   }
-                }
-              >
-                <Text
-                  accessibilityRole="header"
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  Chats
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "borderRadius": 10,
-                      "overflow": "hidden",
-                    },
-                    {
-                      "backgroundColor": "#FFFFFF",
-                    },
-                  ]
                 }
               >
                 <ExternalKeyboardView
@@ -6078,7 +4926,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "backgroundColor": "#FFFFFF",
+                          "backgroundColor": "transparent",
                           "borderRadius": undefined,
                           "margin": undefined,
                           "marginBottom": undefined,
@@ -6301,21 +5149,48 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                     </View>
                   </RNGestureHandlerButton>
                 </ExternalKeyboardView>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#CBCED1",
-                      },
-                    ]
+              </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
+                {
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
+            >
+              <View
+                style={
+                  {
+                    "width": 0,
                   }
-                />
+                }
+              >
                 <ExternalKeyboardView
                   canBeFocused={true}
                   enableA11yFocus={false}
@@ -6354,7 +5229,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "backgroundColor": "#FFFFFF",
+                          "backgroundColor": "transparent",
                           "borderRadius": undefined,
                           "margin": undefined,
                           "marginBottom": undefined,
@@ -6579,55 +5454,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                     </View>
                   </RNGestureHandlerButton>
                 </ExternalKeyboardView>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#CBCED1",
-                      },
-                    ]
-                  }
-                />
-                <View
-                  style={
-                    {
-                      "paddingHorizontal": 12,
-                      "paddingTop": 8,
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "400",
-                          "lineHeight": 20,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
               </View>
-            </View>
-          </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
@@ -6658,17 +5487,12 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
   }
 >
   <ViewManagerAdapter_ExpoUI
+    colorScheme="dark"
     layoutDirection="leftToRight"
-    onLayout={[Function]}
     style={
-      [
-        {
-          "flex": 1,
-        },
-        {
-          "backgroundColor": "#16181a",
-        },
-      ]
+      {
+        "flex": 1,
+      }
     }
   >
     <ViewManagerAdapter_ExpoUI
@@ -6676,11 +5500,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
         [
           {
             "$type": "listStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "scrollContentBackground",
-            "visible": "hidden",
+            "style": "insetGrouped",
           },
         ]
       }
@@ -6688,90 +5508,55 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
       onSelectionChange={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
-        modifiers={
-          [
-            {
-              "$type": "listRowInsets",
-              "bottom": 0,
-              "leading": 0,
-              "top": 0,
-              "trailing": 0,
-            },
-            {
-              "$type": "listRowBackground",
-              "color": "clear",
-            },
-            {
-              "$type": "listRowSeparator",
-              "edges": undefined,
-              "visibility": "hidden",
-            },
-          ]
-        }
-        onGlobalEvent={[Function]}
+        title="Chats"
       >
         <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
+          name="footer"
         >
-          <View
-            style={
-              {
-                "width": undefined,
-              }
-            }
-          >
-            <View
-              style={
+          <ViewManagerAdapter_ExpoUI
+            text="Chats"
+          />
+        </ViewManagerAdapter_ExpoUI>
+        <ViewManagerAdapter_ExpoUI
+          name="content"
+        >
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
                 {
-                  "marginBottom": 28,
-                  "marginHorizontal": 16,
-                }
-              }
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
             >
               <View
                 style={
                   {
-                    "paddingHorizontal": 12,
-                    "paddingVertical": 8,
+                    "width": 0,
                   }
-                }
-              >
-                <Text
-                  accessibilityRole="header"
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  Chats
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "borderRadius": 10,
-                      "overflow": "hidden",
-                    },
-                    {
-                      "backgroundColor": "#000000",
-                    },
-                  ]
                 }
               >
                 <ExternalKeyboardView
@@ -6812,7 +5597,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "backgroundColor": "#000000",
+                          "backgroundColor": "transparent",
                           "borderRadius": undefined,
                           "margin": undefined,
                           "marginBottom": undefined,
@@ -7035,21 +5820,48 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                     </View>
                   </RNGestureHandlerButton>
                 </ExternalKeyboardView>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#1f2329",
-                      },
-                    ]
+              </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
+                {
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
+            >
+              <View
+                style={
+                  {
+                    "width": 0,
                   }
-                />
+                }
+              >
                 <ExternalKeyboardView
                   canBeFocused={true}
                   enableA11yFocus={false}
@@ -7088,7 +5900,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "backgroundColor": "#000000",
+                          "backgroundColor": "transparent",
                           "borderRadius": undefined,
                           "margin": undefined,
                           "marginBottom": undefined,
@@ -7313,142 +6125,61 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                     </View>
                   </RNGestureHandlerButton>
                 </ExternalKeyboardView>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#1f2329",
-                      },
-                    ]
-                  }
-                />
-                <View
-                  style={
-                    {
-                      "paddingHorizontal": 12,
-                      "paddingTop": 8,
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "400",
-                          "lineHeight": 20,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
               </View>
-            </View>
-          </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
       <ViewManagerAdapter_ExpoUI
-        modifiers={
-          [
-            {
-              "$type": "listRowInsets",
-              "bottom": 0,
-              "leading": 0,
-              "top": 0,
-              "trailing": 0,
-            },
-            {
-              "$type": "listRowBackground",
-              "color": "clear",
-            },
-            {
-              "$type": "listRowSeparator",
-              "edges": undefined,
-              "visibility": "hidden",
-            },
-          ]
-        }
-        onGlobalEvent={[Function]}
+        title="Chats"
       >
         <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
+          name="footer"
         >
-          <View
-            style={
-              {
-                "width": undefined,
-              }
-            }
-          >
-            <View
-              style={
+          <ViewManagerAdapter_ExpoUI
+            text="Chats"
+          />
+        </ViewManagerAdapter_ExpoUI>
+        <ViewManagerAdapter_ExpoUI
+          name="content"
+        >
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
                 {
-                  "marginBottom": 28,
-                  "marginHorizontal": 16,
-                }
-              }
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
             >
               <View
                 style={
                   {
-                    "paddingHorizontal": 12,
-                    "paddingVertical": 8,
+                    "width": 0,
                   }
-                }
-              >
-                <Text
-                  accessibilityRole="header"
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  Chats
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "borderRadius": 10,
-                      "overflow": "hidden",
-                    },
-                    {
-                      "backgroundColor": "#000000",
-                    },
-                  ]
                 }
               >
                 <ExternalKeyboardView
@@ -7489,7 +6220,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "backgroundColor": "#000000",
+                          "backgroundColor": "transparent",
                           "borderRadius": undefined,
                           "margin": undefined,
                           "marginBottom": undefined,
@@ -7712,21 +6443,48 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                     </View>
                   </RNGestureHandlerButton>
                 </ExternalKeyboardView>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#1f2329",
-                      },
-                    ]
+              </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
+                {
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
+            >
+              <View
+                style={
+                  {
+                    "width": 0,
                   }
-                />
+                }
+              >
                 <ExternalKeyboardView
                   canBeFocused={true}
                   enableA11yFocus={false}
@@ -7765,7 +6523,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "backgroundColor": "#000000",
+                          "backgroundColor": "transparent",
                           "borderRadius": undefined,
                           "margin": undefined,
                           "marginBottom": undefined,
@@ -7990,55 +6748,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                     </View>
                   </RNGestureHandlerButton>
                 </ExternalKeyboardView>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#1f2329",
-                      },
-                    ]
-                  }
-                />
-                <View
-                  style={
-                    {
-                      "paddingHorizontal": 12,
-                      "paddingTop": 8,
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "400",
-                          "lineHeight": 20,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
               </View>
-            </View>
-          </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
@@ -8048,17 +6760,12 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
 
 exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
 <ViewManagerAdapter_ExpoUI
+  colorScheme="light"
   layoutDirection="leftToRight"
-  onLayout={[Function]}
   style={
-    [
-      {
-        "flex": 1,
-      },
-      {
-        "backgroundColor": "#E4E7EA",
-      },
-    ]
+    {
+      "flex": 1,
+    }
   }
 >
   <ViewManagerAdapter_ExpoUI
@@ -8066,11 +6773,7 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
       [
         {
           "$type": "listStyle",
-          "style": "plain",
-        },
-        {
-          "$type": "scrollContentBackground",
-          "visible": "hidden",
+          "style": "insetGrouped",
         },
       ]
     }
@@ -8081,20 +6784,24 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -8108,65 +6815,14 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
           <View
             style={
               {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "transparent",
               }
             }
           >
@@ -8240,20 +6896,24 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -8267,58 +6927,7 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
@@ -8469,57 +7078,6 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
         </View>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>
 </ViewManagerAdapter_ExpoUI>
 `;
@@ -8547,17 +7105,12 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
   }
 >
   <ViewManagerAdapter_ExpoUI
+    colorScheme="dark"
     layoutDirection="leftToRight"
-    onLayout={[Function]}
     style={
-      [
-        {
-          "flex": 1,
-        },
-        {
-          "backgroundColor": "#2D3039",
-        },
-      ]
+      {
+        "flex": 1,
+      }
     }
   >
     <ViewManagerAdapter_ExpoUI
@@ -8565,11 +7118,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
         [
           {
             "$type": "listStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "scrollContentBackground",
-            "visible": "hidden",
+            "style": "insetGrouped",
           },
         ]
       }
@@ -8577,90 +7126,55 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
       onSelectionChange={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
-        modifiers={
-          [
-            {
-              "$type": "listRowInsets",
-              "bottom": 0,
-              "leading": 0,
-              "top": 0,
-              "trailing": 0,
-            },
-            {
-              "$type": "listRowBackground",
-              "color": "clear",
-            },
-            {
-              "$type": "listRowSeparator",
-              "edges": undefined,
-              "visibility": "hidden",
-            },
-          ]
-        }
-        onGlobalEvent={[Function]}
+        title="Chats"
       >
         <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
+          name="footer"
         >
-          <View
-            style={
-              {
-                "width": undefined,
-              }
-            }
-          >
-            <View
-              style={
+          <ViewManagerAdapter_ExpoUI
+            text="Chats"
+          />
+        </ViewManagerAdapter_ExpoUI>
+        <ViewManagerAdapter_ExpoUI
+          name="content"
+        >
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
                 {
-                  "marginBottom": 28,
-                  "marginHorizontal": 16,
-                }
-              }
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
             >
               <View
                 style={
                   {
-                    "paddingHorizontal": 12,
-                    "paddingVertical": 8,
+                    "width": 0,
                   }
-                }
-              >
-                <Text
-                  accessibilityRole="header"
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  Chats
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "borderRadius": 10,
-                      "overflow": "hidden",
-                    },
-                    {
-                      "backgroundColor": "#1F2329",
-                    },
-                  ]
                 }
               >
                 <ExternalKeyboardView
@@ -8701,7 +7215,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "backgroundColor": "#1F2329",
+                          "backgroundColor": "transparent",
                           "borderRadius": undefined,
                           "margin": undefined,
                           "marginBottom": undefined,
@@ -8924,21 +7438,48 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     </View>
                   </RNGestureHandlerButton>
                 </ExternalKeyboardView>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#333842",
-                      },
-                    ]
+              </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
+                {
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
+            >
+              <View
+                style={
+                  {
+                    "width": 0,
                   }
-                />
+                }
+              >
                 <ExternalKeyboardView
                   canBeFocused={true}
                   enableA11yFocus={false}
@@ -8977,7 +7518,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "backgroundColor": "#1F2329",
+                          "backgroundColor": "transparent",
                           "borderRadius": undefined,
                           "margin": undefined,
                           "marginBottom": undefined,
@@ -9202,142 +7743,61 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     </View>
                   </RNGestureHandlerButton>
                 </ExternalKeyboardView>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#333842",
-                      },
-                    ]
-                  }
-                />
-                <View
-                  style={
-                    {
-                      "paddingHorizontal": 12,
-                      "paddingTop": 8,
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "400",
-                          "lineHeight": 20,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
               </View>
-            </View>
-          </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
       <ViewManagerAdapter_ExpoUI
-        modifiers={
-          [
-            {
-              "$type": "listRowInsets",
-              "bottom": 0,
-              "leading": 0,
-              "top": 0,
-              "trailing": 0,
-            },
-            {
-              "$type": "listRowBackground",
-              "color": "clear",
-            },
-            {
-              "$type": "listRowSeparator",
-              "edges": undefined,
-              "visibility": "hidden",
-            },
-          ]
-        }
-        onGlobalEvent={[Function]}
+        title="Chats"
       >
         <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
+          name="footer"
         >
-          <View
-            style={
-              {
-                "width": undefined,
-              }
-            }
-          >
-            <View
-              style={
+          <ViewManagerAdapter_ExpoUI
+            text="Chats"
+          />
+        </ViewManagerAdapter_ExpoUI>
+        <ViewManagerAdapter_ExpoUI
+          name="content"
+        >
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
                 {
-                  "marginBottom": 28,
-                  "marginHorizontal": 16,
-                }
-              }
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
             >
               <View
                 style={
                   {
-                    "paddingHorizontal": 12,
-                    "paddingVertical": 8,
+                    "width": 0,
                   }
-                }
-              >
-                <Text
-                  accessibilityRole="header"
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  Chats
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "borderRadius": 10,
-                      "overflow": "hidden",
-                    },
-                    {
-                      "backgroundColor": "#1F2329",
-                    },
-                  ]
                 }
               >
                 <ExternalKeyboardView
@@ -9378,7 +7838,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "backgroundColor": "#1F2329",
+                          "backgroundColor": "transparent",
                           "borderRadius": undefined,
                           "margin": undefined,
                           "marginBottom": undefined,
@@ -9601,21 +8061,48 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     </View>
                   </RNGestureHandlerButton>
                 </ExternalKeyboardView>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#333842",
-                      },
-                    ]
+              </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
+                {
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
+            >
+              <View
+                style={
+                  {
+                    "width": 0,
                   }
-                />
+                }
+              >
                 <ExternalKeyboardView
                   canBeFocused={true}
                   enableA11yFocus={false}
@@ -9654,7 +8141,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "backgroundColor": "#1F2329",
+                          "backgroundColor": "transparent",
                           "borderRadius": undefined,
                           "margin": undefined,
                           "marginBottom": undefined,
@@ -9879,55 +8366,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     </View>
                   </RNGestureHandlerButton>
                 </ExternalKeyboardView>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#333842",
-                      },
-                    ]
-                  }
-                />
-                <View
-                  style={
-                    {
-                      "paddingHorizontal": 12,
-                      "paddingTop": 8,
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "400",
-                          "lineHeight": 20,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
               </View>
-            </View>
-          </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
@@ -10974,17 +9415,12 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
 
 exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
 <ViewManagerAdapter_ExpoUI
+  colorScheme="light"
   layoutDirection="leftToRight"
-  onLayout={[Function]}
   style={
-    [
-      {
-        "flex": 1,
-      },
-      {
-        "backgroundColor": "#E4E7EA",
-      },
-    ]
+    {
+      "flex": 1,
+    }
   }
 >
   <ViewManagerAdapter_ExpoUI
@@ -10992,11 +9428,7 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       [
         {
           "$type": "listStyle",
-          "style": "plain",
-        },
-        {
-          "$type": "scrollContentBackground",
-          "visible": "hidden",
+          "style": "insetGrouped",
         },
       ]
     }
@@ -11007,20 +9439,24 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 48,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -11034,65 +9470,14 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
           <View
             style={
               {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "transparent",
               }
             }
           >
@@ -11212,20 +9597,24 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -11239,65 +9628,14 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
           <View
             style={
               {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "transparent",
               }
             }
           >
@@ -11420,20 +9758,24 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 48,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -11447,65 +9789,14 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
           <View
             style={
               {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "transparent",
               }
             }
           >
@@ -11696,20 +9987,24 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       modifiers={
         [
           {
+            "$type": "frame",
+            "maxWidth": 9007199254740991,
+          },
+          {
+            "$type": "alignmentGuide",
+            "guide": "listRowSeparatorLeading",
+            "value": 12,
+          },
+          {
+            "$type": "onGeometryChange",
+            "eventListener": [Function],
+          },
+          {
             "$type": "listRowInsets",
             "bottom": 0,
             "leading": 0,
             "top": 0,
             "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
           },
         ]
       }
@@ -11723,65 +10018,14 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
         <View
           style={
             {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
+              "width": 0,
             }
           }
         >
           <View
             style={
               {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "transparent",
               }
             }
           >
@@ -11900,57 +10144,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
         </View>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
-    <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "listRowInsets",
-            "bottom": 0,
-            "leading": 0,
-            "top": 0,
-            "trailing": 0,
-          },
-          {
-            "$type": "listRowBackground",
-            "color": "clear",
-          },
-          {
-            "$type": "listRowSeparator",
-            "edges": undefined,
-            "visibility": "hidden",
-          },
-        ]
-      }
-      onGlobalEvent={[Function]}
-    >
-      <ViewManagerAdapter_ExpoUI
-        expoInternalSizeFromChildren={true}
-        layoutRoot={false}
-        matchContents={true}
-      >
-        <View
-          style={
-            {
-              "width": undefined,
-            }
-          }
-        >
-          <View
-            style={
-              [
-                {
-                  "height": 0.5,
-                },
-                undefined,
-                {
-                  "backgroundColor": "#CBCED1",
-                },
-              ]
-            }
-          />
-        </View>
-      </ViewManagerAdapter_ExpoUI>
-    </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>
 </ViewManagerAdapter_ExpoUI>
 `;
@@ -11978,17 +10171,12 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
   }
 >
   <ViewManagerAdapter_ExpoUI
+    colorScheme="light"
     layoutDirection="leftToRight"
-    onLayout={[Function]}
     style={
-      [
-        {
-          "flex": 1,
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-        },
-      ]
+      {
+        "flex": 1,
+      }
     }
   >
     <ViewManagerAdapter_ExpoUI
@@ -11996,11 +10184,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
         [
           {
             "$type": "listStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "scrollContentBackground",
-            "visible": "hidden",
+            "style": "insetGrouped",
           },
         ]
       }
@@ -12008,90 +10192,55 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
       onSelectionChange={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
-        modifiers={
-          [
-            {
-              "$type": "listRowInsets",
-              "bottom": 0,
-              "leading": 0,
-              "top": 0,
-              "trailing": 0,
-            },
-            {
-              "$type": "listRowBackground",
-              "color": "clear",
-            },
-            {
-              "$type": "listRowSeparator",
-              "edges": undefined,
-              "visibility": "hidden",
-            },
-          ]
-        }
-        onGlobalEvent={[Function]}
+        title="Chats"
       >
         <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
+          name="footer"
         >
-          <View
-            style={
-              {
-                "width": undefined,
-              }
-            }
-          >
-            <View
-              style={
+          <ViewManagerAdapter_ExpoUI
+            text="Chats"
+          />
+        </ViewManagerAdapter_ExpoUI>
+        <ViewManagerAdapter_ExpoUI
+          name="content"
+        >
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
                 {
-                  "marginBottom": 28,
-                  "marginHorizontal": 16,
-                }
-              }
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
             >
               <View
                 style={
                   {
-                    "paddingHorizontal": 12,
-                    "paddingVertical": 8,
+                    "width": 0,
                   }
-                }
-              >
-                <Text
-                  accessibilityRole="header"
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  Chats
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "borderRadius": 10,
-                      "overflow": "hidden",
-                    },
-                    {
-                      "backgroundColor": "#FFFFFF",
-                    },
-                  ]
                 }
               >
                 <ExternalKeyboardView
@@ -12132,7 +10281,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "backgroundColor": "#FFFFFF",
+                          "backgroundColor": "transparent",
                           "borderRadius": undefined,
                           "margin": undefined,
                           "marginBottom": undefined,
@@ -12355,21 +10504,48 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                     </View>
                   </RNGestureHandlerButton>
                 </ExternalKeyboardView>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#CBCED1",
-                      },
-                    ]
+              </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
+                {
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
+            >
+              <View
+                style={
+                  {
+                    "width": 0,
                   }
-                />
+                }
+              >
                 <ExternalKeyboardView
                   canBeFocused={true}
                   enableA11yFocus={false}
@@ -12408,7 +10584,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "backgroundColor": "#FFFFFF",
+                          "backgroundColor": "transparent",
                           "borderRadius": undefined,
                           "margin": undefined,
                           "marginBottom": undefined,
@@ -12633,142 +10809,61 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                     </View>
                   </RNGestureHandlerButton>
                 </ExternalKeyboardView>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#CBCED1",
-                      },
-                    ]
-                  }
-                />
-                <View
-                  style={
-                    {
-                      "paddingHorizontal": 12,
-                      "paddingTop": 8,
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "400",
-                          "lineHeight": 20,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
               </View>
-            </View>
-          </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
       <ViewManagerAdapter_ExpoUI
-        modifiers={
-          [
-            {
-              "$type": "listRowInsets",
-              "bottom": 0,
-              "leading": 0,
-              "top": 0,
-              "trailing": 0,
-            },
-            {
-              "$type": "listRowBackground",
-              "color": "clear",
-            },
-            {
-              "$type": "listRowSeparator",
-              "edges": undefined,
-              "visibility": "hidden",
-            },
-          ]
-        }
-        onGlobalEvent={[Function]}
+        title="Chats"
       >
         <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
+          name="footer"
         >
-          <View
-            style={
-              {
-                "width": undefined,
-              }
-            }
-          >
-            <View
-              style={
+          <ViewManagerAdapter_ExpoUI
+            text="Chats"
+          />
+        </ViewManagerAdapter_ExpoUI>
+        <ViewManagerAdapter_ExpoUI
+          name="content"
+        >
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
                 {
-                  "marginBottom": 28,
-                  "marginHorizontal": 16,
-                }
-              }
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
             >
               <View
                 style={
                   {
-                    "paddingHorizontal": 12,
-                    "paddingVertical": 8,
+                    "width": 0,
                   }
-                }
-              >
-                <Text
-                  accessibilityRole="header"
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  Chats
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "borderRadius": 10,
-                      "overflow": "hidden",
-                    },
-                    {
-                      "backgroundColor": "#FFFFFF",
-                    },
-                  ]
                 }
               >
                 <ExternalKeyboardView
@@ -12809,7 +10904,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "backgroundColor": "#FFFFFF",
+                          "backgroundColor": "transparent",
                           "borderRadius": undefined,
                           "margin": undefined,
                           "marginBottom": undefined,
@@ -13032,21 +11127,48 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                     </View>
                   </RNGestureHandlerButton>
                 </ExternalKeyboardView>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#CBCED1",
-                      },
-                    ]
+              </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
+                {
+                  "$type": "frame",
+                  "maxWidth": 9007199254740991,
+                },
+                {
+                  "$type": "alignmentGuide",
+                  "guide": "listRowSeparatorLeading",
+                  "value": 12,
+                },
+                {
+                  "$type": "onGeometryChange",
+                  "eventListener": [Function],
+                },
+                {
+                  "$type": "listRowInsets",
+                  "bottom": 0,
+                  "leading": 0,
+                  "top": 0,
+                  "trailing": 0,
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+          >
+            <ViewManagerAdapter_ExpoUI
+              expoInternalSizeFromChildren={true}
+              layoutRoot={false}
+              matchContents={true}
+            >
+              <View
+                style={
+                  {
+                    "width": 0,
                   }
-                />
+                }
+              >
                 <ExternalKeyboardView
                   canBeFocused={true}
                   enableA11yFocus={false}
@@ -13085,7 +11207,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "backgroundColor": "#FFFFFF",
+                          "backgroundColor": "transparent",
                           "borderRadius": undefined,
                           "margin": undefined,
                           "marginBottom": undefined,
@@ -13310,55 +11432,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                     </View>
                   </RNGestureHandlerButton>
                 </ExternalKeyboardView>
-                <View
-                  style={
-                    [
-                      {
-                        "height": 0.5,
-                      },
-                      {
-                        "marginLeft": 12,
-                      },
-                      {
-                        "backgroundColor": "#CBCED1",
-                      },
-                    ]
-                  }
-                />
-                <View
-                  style={
-                    {
-                      "paddingHorizontal": 12,
-                      "paddingTop": 8,
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "400",
-                          "lineHeight": 20,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
               </View>
-            </View>
-          </View>
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>

@@ -1,8 +1,9 @@
-import { memo } from 'react';
+import { memo, useContext } from 'react';
 import { StyleSheet, View, type ViewStyle } from 'react-native';
 
 import { themes } from '~/lib/constants/colors';
 import { useTheme } from '~/theme';
+import { NativeListContext } from './NativeListContext';
 
 const styles = StyleSheet.create({
 	separator: {
@@ -16,6 +17,11 @@ interface IListSeparator {
 
 const ListSeparator = memo(({ style }: IListSeparator) => {
 	const { theme } = useTheme();
+	const isInNativeList = useContext(NativeListContext);
+
+	if (isInNativeList) {
+		return null;
+	}
 
 	return <View style={[styles.separator, style, { backgroundColor: themes[theme].strokeLight }]} />;
 });
