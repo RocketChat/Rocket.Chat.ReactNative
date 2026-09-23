@@ -1,9 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import { type NativeStackHeaderItem } from '@react-navigation/native-stack';
+import { type NativeStackHeaderItem, type NativeStackHeaderItemMenuAction } from '@react-navigation/native-stack';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { showActionSheetRef, useActionSheet, type TActionSheetOptionsItem } from '~/containers/ActionSheet';
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -43,7 +42,6 @@ const getTunreadBadgeColor = (
 const useOmnichannelRightItems = (rid: string, roomStore: RoomStore, enabled: boolean): NativeStackHeaderItem[] => {
 	const navigation = useNavigation<TRoomStackNavigation>();
 	const isMasterDetail = useMasterDetail();
-	const { showActionSheet } = useActionSheet();
 	const livechatRequestComment = useSetting('Livechat_request_comment_when_closing_conversation') as boolean;
 
 	const departmentId = useStore(
@@ -68,40 +66,38 @@ const useOmnichannelRightItems = (rid: string, roomStore: RoomStore, enabled: bo
 		});
 	};
 
-	const showMoreActions = () => {
-		logEvent(events.ROOM_SHOW_MORE_ACTIONS);
-		const options = [] as TActionSheetOptionsItem[];
-		if (canPlaceLivechatOnHold) {
-			options.push({
-				title: i18n.t('Place_chat_on_hold'),
-				icon: 'pause',
-				onPress: () => placeLivechatOnHold({ rid, navigation })
-			});
-		}
-		if (canForwardGuest) {
-			options.push({
-				title: i18n.t('Forward_Chat'),
-				icon: 'chat-forward',
-				onPress: () => {
-					navigateToScreen({ navigation, isMasterDetail, screen: 'ForwardLivechatView', params: { rid } });
-				}
-			});
-		}
-		if (canReturnQueue) {
-			options.push({
-				title: i18n.t('Return_to_waiting_line'),
-				icon: 'move-to-the-queue',
-				onPress: () => handleReturnLivechat()
-			});
-		}
-		options.push({
-			title: i18n.t('Close'),
-			icon: 'chat-close',
-			onPress: () => closeLivechat({ rid, departmentId, isMasterDetail, livechatRequestComment, navigation }),
-			danger: true
+	const moreActions: NativeStackHeaderItemMenuAction[] = [];
+	if (canPlaceLivechatOnHold) {
+		moreActions.push({
+			type: 'action',
+			label: i18n.t('Place_chat_on_hold'),
+			icon: headerIcon('pause'),
+			onPress: () => placeLivechatOnHold({ rid, navigation })
 		});
-		showActionSheet({ options });
-	};
+	}
+	if (canForwardGuest) {
+		moreActions.push({
+			type: 'action',
+			label: i18n.t('Forward_Chat'),
+			icon: headerIcon('chat-forward'),
+			onPress: () => navigateToScreen({ navigation, isMasterDetail, screen: 'ForwardLivechatView', params: { rid } })
+		});
+	}
+	if (canReturnQueue) {
+		moreActions.push({
+			type: 'action',
+			label: i18n.t('Return_to_waiting_line'),
+			icon: headerIcon('move-to-the-queue'),
+			onPress: handleReturnLivechat
+		});
+	}
+	moreActions.push({
+		type: 'action',
+		label: i18n.t('Close'),
+		icon: headerIcon('chat-close'),
+		destructive: true,
+		onPress: () => closeLivechat({ rid, departmentId, isMasterDetail, livechatRequestComment, navigation })
+	});
 
 	if (!enabled) {
 		return EMPTY_ITEMS;
@@ -109,11 +105,11 @@ const useOmnichannelRightItems = (rid: string, roomStore: RoomStore, enabled: bo
 
 	return [
 		{
-			type: 'button',
+			type: 'menu',
 			label: i18n.t('More'),
 			accessibilityLabel: i18n.t('More'),
 			icon: headerIcon('kebab'),
-			onPress: showMoreActions
+			menu: { items: moreActions }
 		}
 	];
 };
@@ -181,38 +177,47 @@ const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean):
 			? { value: tunread.length, style: { backgroundColor: getTunreadBadgeColor(tunreadUser ?? [], tunreadGroup ?? [], colors) } }
 			: undefined;
 
-	const overflowOptions = [
-		...overflowKeys.map(key => {
+	const overflowActions: NativeStackHeaderItemMenuAction[] = [
+		...overflowKeys.map((key): NativeStackHeaderItemMenuAction => {
 			if (key === 'threads') {
-				return { title: threadsAccessibilityLabel, icon: 'threads' as const, onPress: goThreadsView };
+				return { type: 'action', label: threadsAccessibilityLabel, icon: headerIcon('threads'), onPress: goThreadsView };
 			}
 			if (key === 'encryption') {
 				return {
-					title: i18n.t('Encrypted'),
-					icon: 'encrypted' as const,
-					enabled: canToggleEncryption,
+					type: 'action',
+					label: i18n.t('Encrypted'),
+					icon: headerIcon('encrypted'),
+					disabled: !canToggleEncryption,
 					onPress: goE2EEToggleRoomView
 				};
 			}
 			if (key === 'call') {
 				return {
-					title: callAccessibilityLabel,
-					icon: 'phone' as const,
-					enabled: !isCallDisabled,
+					type: 'action',
+					label: callAccessibilityLabel,
+					icon: headerIcon('phone'),
+					disabled: isCallDisabled,
 					onPress: onPressCall
 				};
 			}
 			if (key === 'notifications') {
 				return {
-					title: i18n.t('Troubleshooting'),
-					icon: 'notification-disabled' as const,
+					type: 'action',
+					label: i18n.t('Troubleshooting'),
+					icon: headerIcon('notification-disabled'),
 					onPress: navigateToNotificationOrPushTroubleshoot
 				};
 			}
 			throw new Error(`Unhandled room header action key: ${key}`);
 		}),
-		{ title: i18n.t('Search_Messages'), icon: 'search' as const, enabled: !hasE2EEWarning, onPress: goSearchView },
-		{ title: i18n.t('Actions'), icon: 'kebab' as const, onPress: () => goRoomActions() }
+		{
+			type: 'action',
+			label: i18n.t('Search_Messages'),
+			icon: headerIcon('search'),
+			disabled: hasE2EEWarning,
+			onPress: goSearchView
+		},
+		{ type: 'action', label: i18n.t('Actions'), icon: headerIcon('kebab'), onPress: () => goRoomActions() }
 	];
 
 	if (!enabled) {
@@ -263,11 +268,11 @@ const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean):
 		});
 	}
 	items.push({
-		type: 'button',
+		type: 'menu',
 		label: i18n.t('More'),
 		accessibilityLabel: i18n.t('More'),
 		icon: headerIcon('kebab'),
-		onPress: () => showActionSheetRef({ options: overflowOptions })
+		menu: { items: overflowActions }
 	});
 
 	return items;

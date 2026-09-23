@@ -5,15 +5,20 @@ import { IconSet, type TIconsName } from '~/containers/CustomIcon';
 const HEADER_ICON_SIZE = 24;
 
 const HEADER_ICONS: TIconsName[] = [
+	'chat-close',
+	'chat-forward',
 	'close',
 	'create',
 	'directory',
 	'encrypted',
 	'hamburguer',
 	'kebab',
+	'move-to-the-queue',
 	'notification',
 	'notification-disabled',
+	'pause',
 	'phone',
+	'search',
 	'threads',
 	'workspaces'
 ];
