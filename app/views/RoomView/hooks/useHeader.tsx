@@ -15,6 +15,7 @@ import { type RoomStore } from '../definitions';
 import { fromSubscription } from '../stores/RoomStoreContext';
 import { useGoRoomActionsView } from './useGoRoomActionsView';
 import { useNativeRoomHeader } from './useNativeRoomHeader';
+import { useNativeBackButton } from './useNativeBackButton';
 import { useRoomHeaderRightItems } from './useRoomHeaderRightItems';
 
 interface IUseHeaderParams {
@@ -70,6 +71,7 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 	const goRoomActionsView = useGoRoomActionsView(roomStore);
 	const nativeTitle = Platform.OS === 'ios' && Number.parseInt(String(Platform.Version), 10) >= 26;
 	useNativeRoomHeader(!!rid && nativeTitle, headerFields, tmid, roomUserId, goRoomActionsView);
+	useNativeBackButton(!!rid && nativeTitle, rid);
 	const nativeRightItems = useRoomHeaderRightItems(hasNativeHeaderBar ? rid : undefined, tmid, roomStore);
 
 	useLayoutEffect(() => {

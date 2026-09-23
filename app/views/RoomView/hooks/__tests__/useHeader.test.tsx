@@ -8,6 +8,7 @@ import { useHeader } from '../useHeader';
 import { useNativeRoomHeader } from '../useNativeRoomHeader';
 
 jest.mock('../useNativeRoomHeader', () => ({ useNativeRoomHeader: jest.fn() }));
+jest.mock('../useNativeBackButton', () => ({ useNativeBackButton: jest.fn() }));
 const mockNativeRightItems: unknown[] = [];
 jest.mock('../useRoomHeaderRightItems', () => ({ useRoomHeaderRightItems: jest.fn(() => mockNativeRightItems) }));
 
