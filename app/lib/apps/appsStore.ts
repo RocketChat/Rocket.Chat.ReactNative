@@ -4,6 +4,8 @@ import { type IAppActionButton } from './definitions';
 import log from '~/lib/methods/helpers/log';
 import { getAppActionButtons, getAppsLanguages } from '~/lib/services/restApi';
 import sdk from '~/lib/services/sdk';
+import { isLoginReady } from '~/lib/services/waitForLoginReady';
+import { store } from '~/lib/store/auxStore';
 
 export type TAppTranslations = {
 	// appId -> language -> key -> translation
@@ -60,6 +62,9 @@ const APPS_EVENT = 'apps';
 
 let consumers = 0;
 let generation = 0;
+let subscribed = false;
+let loginReady = false;
+let storeListener: (() => void) | null = null;
 let streamListener: Promise<{ stop: () => void }> | null = null;
 let streamSubscription: { unsubscribe: () => Promise<unknown> } | null = null;
 
@@ -75,29 +80,69 @@ const handleStreamData = (ddpMessage: { fields?: { args?: [[string, unknown[]]] 
 	}
 };
 
+const subscribeToStream = () => {
+	if (subscribed || consumers === 0) {
+		return;
+	}
+	subscribed = true;
+	const current = (generation += 1);
+	const { fetchActionButtons, fetchTranslations } = useAppsStore.getState();
+	fetchActionButtons().catch(log);
+	fetchTranslations().catch(log);
+	const fail = (e: unknown) => {
+		// Leaves the next `isLoginReady()` edge free to try again.
+		subscribed = false;
+		log(e);
+	};
+	try {
+		streamListener = sdk.onStreamData(APPS_STREAM, handleStreamData);
+		sdk
+			.subscribe(APPS_STREAM, APPS_EVENT)
+			.then(subscription => {
+				// The last consumer may have unmounted while this was in flight.
+				if (current !== generation || consumers === 0) {
+					subscription?.unsubscribe().catch(log);
+					return;
+				}
+				streamSubscription = subscription ?? null;
+			})
+			.catch(fail);
+	} catch (e) {
+		fail(e);
+	}
+};
+
+const unsubscribeFromStream = () => {
+	generation += 1;
+	subscribed = false;
+	streamListener?.then(listener => listener.stop()).catch(log);
+	streamListener = null;
+	streamSubscription?.unsubscribe().catch(log);
+	streamSubscription = null;
+};
+
+// The composer can mount before the first connection, and `disconnect()` drops both the SDK and the
+// store, so setup follows the connection rather than the mount.
+const handleStoreChange = () => {
+	const ready = isLoginReady();
+	if (ready === loginReady) {
+		return;
+	}
+	loginReady = ready;
+	if (ready) {
+		subscribeToStream();
+	} else {
+		unsubscribeFromStream();
+	}
+};
+
 export const subscribeToApps = (): (() => void) => {
 	consumers += 1;
 	if (consumers === 1) {
-		const current = (generation += 1);
-		const { fetchActionButtons, fetchTranslations } = useAppsStore.getState();
-		fetchActionButtons().catch(log);
-		fetchTranslations().catch(log);
-		try {
-			// Both throw synchronously while no server is selected, the composer can mount first.
-			streamListener = sdk.onStreamData(APPS_STREAM, handleStreamData);
-			sdk
-				.subscribe(APPS_STREAM, APPS_EVENT)
-				.then(subscription => {
-					// The last consumer may have unmounted while this was in flight.
-					if (current !== generation || consumers === 0) {
-						subscription?.unsubscribe().catch(log);
-						return;
-					}
-					streamSubscription = subscription ?? null;
-				})
-				.catch(log);
-		} catch (e) {
-			log(e);
+		loginReady = isLoginReady();
+		storeListener = store.subscribe(handleStoreChange);
+		if (loginReady) {
+			subscribeToStream();
 		}
 	}
 
@@ -106,10 +151,8 @@ export const subscribeToApps = (): (() => void) => {
 		if (consumers > 0) {
 			return;
 		}
-		generation += 1;
-		streamListener?.then(listener => listener.stop()).catch(log);
-		streamListener = null;
-		streamSubscription?.unsubscribe().catch(log);
-		streamSubscription = null;
+		storeListener?.();
+		storeListener = null;
+		unsubscribeFromStream();
 	};
 };
