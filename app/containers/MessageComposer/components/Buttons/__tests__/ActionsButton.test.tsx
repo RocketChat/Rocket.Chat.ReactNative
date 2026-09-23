@@ -111,7 +111,7 @@ describe('ActionsButton', () => {
 		});
 	});
 
-	it('sends only the room with an ai action', () => {
+	it('sends the thread but not the composer draft with an ai action', () => {
 		const aiItem = item('summarize', { context: 'roomAction', category: 'ai' });
 		mockUseAppActionButtons.mockImplementation(params =>
 			(params as { context: string }).context === 'roomAction' ? [aiItem] : []
@@ -119,6 +119,6 @@ describe('ActionsButton', () => {
 
 		openSheet()[1].onPress();
 
-		expect(mockTriggerAppActionButton).toHaveBeenCalledWith({ button: aiItem.button, rid: 'rid-1' });
+		expect(mockTriggerAppActionButton).toHaveBeenCalledWith({ button: aiItem.button, rid: 'rid-1', tmid: 'tmid-1' });
 	});
 });

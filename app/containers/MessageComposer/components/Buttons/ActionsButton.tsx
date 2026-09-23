@@ -107,7 +107,7 @@ export const ActionsButton = () => {
 				danger: button.variant === 'danger',
 				testID: `message-composer-ai-action-${id}`,
 				onPress: () => {
-					triggerAppActionButton({ button, rid });
+					triggerAppActionButton({ button, rid, tmid });
 				}
 			});
 		});
