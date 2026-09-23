@@ -154,6 +154,7 @@ const Markdown: FC<IMarkdownProps> = ({
 						containerStyle={textStyle as TextStyle}
 						flavor='github'
 						md4cFlags={{ latexMath: true }}
+						selectable={false}
 						onLinkPress={event => handleLinkPress(event.url)}
 						onLinkLongPress={event => handleLinkLongPress(event.url)}
 					/>
