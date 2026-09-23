@@ -9,7 +9,7 @@ tags:
       platform: Android
     commands:
       - tapOn:
-          id: 'header-back'
+          id: '(custom-)?header-back'
           retryTapIfNoChange: true
 
 - runFlow:
