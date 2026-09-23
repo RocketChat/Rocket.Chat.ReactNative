@@ -42,7 +42,6 @@ jest.mock('react-native-reanimated', () => {
 	return {
 		...actual,
 		useSharedValue: jest.fn(init => ({ value: init })),
-		makeMutable: jest.fn(init => ({ value: init })),
 		useAnimatedReaction: jest.fn(),
 		withTiming: jest.fn(value => value),
 		useAnimatedGestureHandler: jest.fn(() => jest.fn()),
