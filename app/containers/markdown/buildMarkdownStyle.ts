@@ -51,7 +51,7 @@ export const buildMarkdownStyle = (colors: TColors, isBigEmojiOnly: boolean): Ma
 		'^timestamp://': { color: colors.fontDefault, backgroundColor: colors.surfaceSelected }
 	},
 	image: {
-		maxHeight: 300,
+		maxHeight: isBigEmojiOnly ? 30 : 300,
 		resizeMode: 'contain'
 	},
 	inlineImage: {
