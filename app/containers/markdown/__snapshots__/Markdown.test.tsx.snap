@@ -162,7 +162,7 @@ exports[`Story Snapshots: Hashtag should match snapshot 1`] = `
     <Text
       accessibilityLabel="test-channel #unknown"
     >
-      [test\\-channel](&lt;channel://123&gt;) \\#unknown
+      [**test\\-channel**](&lt;channel://123&gt;) \\#unknown
     </Text>
   </View>
 </View>
@@ -253,7 +253,7 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
     <Text
       accessibilityLabel="H1 bold italic strike code 🚀 rocket.cat test-channel https://rocket.chat"
     >
-      # H1 **bold** _italic_ ~~strike~~ \`code\` 🚀 [rocket\\.cat](&lt;user://random?me=1&gt;) [test\\-channel](&lt;channel://123&gt;) [https://rocket\\.chat](&lt;https://rocket.chat&gt;)
+      # H1 **bold** _italic_ ~~strike~~ \`code\` 🚀 [**rocket\\.cat**](&lt;user://random?me=1&gt;) [**test\\-channel**](&lt;channel://123&gt;) [https://rocket\\.chat](&lt;https://rocket.chat&gt;)
     </Text>
   </View>
   <View
@@ -266,7 +266,7 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
     <Text
       accessibilityLabel="H2 bold italic strike code 🚀 rocket.cat test-channel https://rocket.chat"
     >
-      ## H2 **bold** _italic_ ~~strike~~ \`code\` 🚀 [rocket\\.cat](&lt;user://random?me=1&gt;) [test\\-channel](&lt;channel://123&gt;) [https://rocket\\.chat](&lt;https://rocket.chat&gt;)
+      ## H2 **bold** _italic_ ~~strike~~ \`code\` 🚀 [**rocket\\.cat**](&lt;user://random?me=1&gt;) [**test\\-channel**](&lt;channel://123&gt;) [https://rocket\\.chat](&lt;https://rocket.chat&gt;)
     </Text>
   </View>
   <View
@@ -279,7 +279,7 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
     <Text
       accessibilityLabel="H3 bold italic strike code 🚀 rocket.cat test-channel https://rocket.chat"
     >
-      ### H3 **bold** _italic_ ~~strike~~ \`code\` 🚀 [rocket\\.cat](&lt;user://random?me=1&gt;) [test\\-channel](&lt;channel://123&gt;) [https://rocket\\.chat](&lt;https://rocket.chat&gt;)
+      ### H3 **bold** _italic_ ~~strike~~ \`code\` 🚀 [**rocket\\.cat**](&lt;user://random?me=1&gt;) [**test\\-channel**](&lt;channel://123&gt;) [https://rocket\\.chat](&lt;https://rocket.chat&gt;)
     </Text>
   </View>
   <View
@@ -292,7 +292,7 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
     <Text
       accessibilityLabel="H4 bold italic strike code 🚀 rocket.cat test-channel https://rocket.chat"
     >
-      #### H4 **bold** _italic_ ~~strike~~ \`code\` 🚀 [rocket\\.cat](&lt;user://random?me=1&gt;) [test\\-channel](&lt;channel://123&gt;) [https://rocket\\.chat](&lt;https://rocket.chat&gt;)
+      #### H4 **bold** _italic_ ~~strike~~ \`code\` 🚀 [**rocket\\.cat**](&lt;user://random?me=1&gt;) [**test\\-channel**](&lt;channel://123&gt;) [https://rocket\\.chat](&lt;https://rocket.chat&gt;)
     </Text>
   </View>
 </View>
@@ -488,7 +488,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
       <Text
         accessibilityLabel="rocket.cat name1 all here @unknown team"
       >
-        [rocket\\.cat](&lt;user://random?me=1&gt;) [name1](&lt;user://random2&gt;) [all](&lt;user://all&gt;) [here](&lt;user://here&gt;) @unknown [team](&lt;user://team?team=1&gt;)
+        [**rocket\\.cat**](&lt;user://random?me=1&gt;) [**name1**](&lt;user://random2&gt;) [**all**](&lt;user://all&gt;) [**here**](&lt;user://here&gt;) @unknown [**team**](&lt;user://team?team=1&gt;)
       </Text>
     </View>
     <View
@@ -501,7 +501,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
       <Text
         accessibilityLabel="Rocket Cat Name all here @unknown team"
       >
-        [Rocket Cat](&lt;user://random?me=1&gt;) [Name](&lt;user://random2&gt;) [all](&lt;user://all&gt;) [here](&lt;user://here&gt;) @unknown [team](&lt;user://team?team=1&gt;)
+        [**Rocket Cat**](&lt;user://random?me=1&gt;) [**Name**](&lt;user://random2&gt;) [**all**](&lt;user://all&gt;) [**here**](&lt;user://here&gt;) @unknown [**team**](&lt;user://team?team=1&gt;)
       </Text>
     </View>
   </View>
@@ -529,7 +529,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
       <Text
         accessibilityLabel="Normal: rocket.cat name1 all here test-channel"
       >
-        Normal: [rocket\\.cat](&lt;user://random?me=1&gt;) [name1](&lt;user://random2&gt;) [all](&lt;user://all&gt;) [here](&lt;user://here&gt;) [test\\-channel](&lt;channel://123&gt;)
+        Normal: [**rocket\\.cat**](&lt;user://random?me=1&gt;) [**name1**](&lt;user://random2&gt;) [**all**](&lt;user://all&gt;) [**here**](&lt;user://here&gt;) [**test\\-channel**](&lt;channel://123&gt;)
       </Text>
     </View>
     <View
@@ -542,7 +542,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
       <Text
         accessibilityLabel="Bold: rocket.cat name1 all here test-channel"
       >
-        Bold: **[rocket\\.cat](&lt;user://random?me=1&gt;)** **[name1](&lt;user://random2&gt;)** **[all](&lt;user://all&gt;)** **[here](&lt;user://here&gt;)** **[test\\-channel](&lt;channel://123&gt;)**
+        Bold: **[**rocket\\.cat**](&lt;user://random?me=1&gt;)** **[**name1**](&lt;user://random2&gt;)** **[**all**](&lt;user://all&gt;)** **[**here**](&lt;user://here&gt;)** **[**test\\-channel**](&lt;channel://123&gt;)**
       </Text>
     </View>
     <View
@@ -555,7 +555,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
       <Text
         accessibilityLabel="Italic:  rocket.cat   name1   all   here   test-channel "
       >
-        Italic: _ [rocket\\.cat](&lt;user://random?me=1&gt;) _ _ [name1](&lt;user://random2&gt;) _ _ [all](&lt;user://all&gt;) _ _ [here](&lt;user://here&gt;) _ _ [test\\-channel](&lt;channel://123&gt;) _
+        Italic: _ [**rocket\\.cat**](&lt;user://random?me=1&gt;) _ _ [**name1**](&lt;user://random2&gt;) _ _ [**all**](&lt;user://all&gt;) _ _ [**here**](&lt;user://here&gt;) _ _ [**test\\-channel**](&lt;channel://123&gt;) _
       </Text>
     </View>
     <View
@@ -568,7 +568,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
       <Text
         accessibilityLabel="Strikethrough: rocket.cat name1 all here test-channel"
       >
-        Strikethrough: ~~[rocket\\.cat](&lt;user://random?me=1&gt;)~~ ~~[name1](&lt;user://random2&gt;)~~ ~~[all](&lt;user://all&gt;)~~ ~~[here](&lt;user://here&gt;)~~ ~~[test\\-channel](&lt;channel://123&gt;)~~
+        Strikethrough: ~~[**rocket\\.cat**](&lt;user://random?me=1&gt;)~~ ~~[**name1**](&lt;user://random2&gt;)~~ ~~[**all**](&lt;user://all&gt;)~~ ~~[**here**](&lt;user://here&gt;)~~ ~~[**test\\-channel**](&lt;channel://123&gt;)~~
       </Text>
     </View>
     <View
@@ -581,7 +581,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
       <Text
         accessibilityLabel="Italic + Bold + Strikethrough: rocket.cat name1 all here test-channel"
       >
-        Italic \\+ Bold \\+ Strikethrough: _~~**[rocket\\.cat](&lt;user://random?me=1&gt;)**~~_ _~~**[name1](&lt;user://random2&gt;)**~~_ _~~**[all](&lt;user://all&gt;)**~~_ _~~**[here](&lt;user://here&gt;)**~~_ _~~**[test\\-channel](&lt;channel://123&gt;)**~~_
+        Italic \\+ Bold \\+ Strikethrough: _~~**[**rocket\\.cat**](&lt;user://random?me=1&gt;)**~~_ _~~**[**name1**](&lt;user://random2&gt;)**~~_ _~~**[**all**](&lt;user://all&gt;)**~~_ _~~**[**here**](&lt;user://here&gt;)**~~_ _~~**[**test\\-channel**](&lt;channel://123&gt;)**~~_
       </Text>
     </View>
   </View>
@@ -921,7 +921,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
         }
       }
     >
-      [rocket\\.cat](&lt;user://random?me=1&gt;) [name1](&lt;user://random2&gt;) [all](&lt;user://all&gt;) [here](&lt;user://here&gt;) @unknown [team](&lt;user://team?team=1&gt;)
+      [**rocket\\.cat**](&lt;user://random?me=1&gt;) [**name1**](&lt;user://random2&gt;) [**all**](&lt;user://all&gt;) [**here**](&lt;user://here&gt;) @unknown [**team**](&lt;user://team?team=1&gt;)
     </Text>
   </View>
   <View
@@ -940,7 +940,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
         }
       }
     >
-      [test\\-channel](&lt;channel://123&gt;) \\#unknown
+      [**test\\-channel**](&lt;channel://123&gt;) \\#unknown
     </Text>
   </View>
   <View

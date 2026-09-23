@@ -150,13 +150,13 @@ const serializeInlineNode = (node: Inlines, ctx: ISerializeContext): string => {
 			const mention = node.value.value;
 			const prefix = ctx.mentionsWithAtSymbol ? '@' : '';
 			if (mention === 'all' || mention === 'here') {
-				return `[${escapePlainText(prefix + mention)}](${escapeUrl(`user://${mention}`)})`;
+				return `[**${escapePlainText(prefix + mention)}**](${escapeUrl(`user://${mention}`)})`;
 			}
 			const resolved = resolveUserMentionLabel(mention, ctx);
 			if (!resolved) {
 				return escapePlainText(`@${mention}`);
 			}
-			return `[${escapePlainText(prefix + resolved.label)}](${escapeUrl(`user://${resolved.rid}${resolved.query}`)})`;
+			return `[**${escapePlainText(prefix + resolved.label)}**](${escapeUrl(`user://${resolved.rid}${resolved.query}`)})`;
 		}
 		case 'MENTION_CHANNEL': {
 			const hashtag = node.value.value;
@@ -165,7 +165,7 @@ const serializeInlineNode = (node: Inlines, ctx: ISerializeContext): string => {
 			if (!rid) {
 				return escapePlainText(`#${hashtag}`);
 			}
-			return `[${escapePlainText(prefix + hashtag)}](${escapeUrl(`channel://${rid}`)})`;
+			return `[**${escapePlainText(prefix + hashtag)}**](${escapeUrl(`channel://${rid}`)})`;
 		}
 		case 'EMOJI':
 			return serializeEmoji(node, ctx);

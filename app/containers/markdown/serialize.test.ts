@@ -39,7 +39,7 @@ describe('markdown serialize', () => {
 		const result = serialize('@rocket.cat', {
 			mentions: [{ _id: 'u1', username: 'rocket.cat', name: 'Rocket Cat', type: 'user' }]
 		});
-		expect(result).toBe('[rocket\\.cat](<user://u1>)');
+		expect(result).toBe('[**rocket\\.cat**](<user://u1>)');
 	});
 
 	it('marks the mention itsMe with ?me=1', () => {
@@ -47,14 +47,14 @@ describe('markdown serialize', () => {
 			username: 'rocket.cat',
 			mentions: [{ _id: 'u1', username: 'rocket.cat', name: 'Rocket Cat', type: 'user' }]
 		});
-		expect(result).toBe('[rocket\\.cat](<user://u1?me=1>)');
+		expect(result).toBe('[**rocket\\.cat**](<user://u1?me=1>)');
 	});
 
 	it('marks a team mention with ?team=1', () => {
 		const result = serialize('@design-team', {
 			mentions: [{ _id: 't1', name: 'design-team', type: 'team' }]
 		});
-		expect(result).toBe('[design\\-team](<user://t1?team=1>)');
+		expect(result).toBe('[**design\\-team**](<user://t1?team=1>)');
 	});
 
 	it('renders an unknown user mention as plain text', () => {
@@ -63,7 +63,7 @@ describe('markdown serialize', () => {
 
 	it('serializes a known channel mention as a channel scheme link', () => {
 		const result = serialize('#general', { channels: [{ _id: 'r1', name: 'general' }] });
-		expect(result).toBe('[general](<channel://r1>)');
+		expect(result).toBe('[**general**](<channel://r1>)');
 	});
 
 	it('renders an unknown channel mention as plain text', () => {

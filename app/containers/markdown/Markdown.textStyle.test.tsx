@@ -30,8 +30,8 @@ describe('Markdown textStyle integration', () => {
 		const markdownText = UNSAFE_getByType(EnrichedMarkdownText);
 
 		expect(markdownText.props.markdown).toContain('[my link](<https://rocket.chat>)');
-		expect(markdownText.props.markdown).toContain('[@rocket\\.cat](<user://u1>)');
-		expect(markdownText.props.markdown).toContain('[\\#general](<channel://r1>)');
+		expect(markdownText.props.markdown).toContain('[**@rocket\\.cat**](<user://u1>)');
+		expect(markdownText.props.markdown).toContain('[**\\#general**](<channel://r1>)');
 		expect(markdownText.props.containerStyle).toEqual(textStyle);
 
 		markdownText.props.onLinkPress({ url: 'https://rocket.chat' });
