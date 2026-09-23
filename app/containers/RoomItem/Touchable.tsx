@@ -195,11 +195,6 @@ const Touchable = ({
 		.activeOffsetX([-10, 10]) // More sensitive horizontal detection
 		.failOffsetY([-20, 20]) // Fail on vertical movement to distinguish scrolling
 		.enabled(swipeEnabled)
-		.onTouchesDown(() => {
-			if (rowState.value === 0) {
-				openSwipeItemId.value = rid;
-			}
-		})
 		.onStart(() => {
 			openSwipeItemId.value = rid;
 		})
@@ -213,7 +208,16 @@ const Touchable = ({
 
 	// Use Race instead of Simultaneous to prevent conflicts
 	// Pan gesture will take priority over long press for horizontal swipes
-	const composedGesture = Gesture.Race(panGesture, longPressGesture);
+	const swipeGesture = Gesture.Race(panGesture, longPressGesture);
+
+	// Manual gesture never activates, so it observes touches without claiming or cancelling swipeGesture or Touch's own press
+	const closeOtherRowsGesture = Gesture.Manual().onTouchesDown(() => {
+		if (rowState.value === 0) {
+			openSwipeItemId.value = rid;
+		}
+	});
+
+	const composedGesture = Gesture.Simultaneous(swipeGesture, closeOtherRowsGesture);
 
 	const animatedStyles = useAnimatedStyle(() => ({
 		transform: [{ translateX: transX.value }]
