@@ -32,6 +32,25 @@ index fa1b7731..153d712e 100644
      override fun setBackTitleFontFamily(
          view: ScreenStackHeaderConfig?,
          value: String?,
+diff --git a/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm b/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
+index 64beb499..2c16cff4 100644
+--- a/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
++++ b/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
+@@ -22,7 +22,13 @@
+     imageLoadingCompletionBlock([RNSImageLoadingHelper handleRenderingModeForImage:image isTemplate:isTemplate]);
+   } else
+ #endif // !defined(NDEBUG)
+-  {
++  if (imageSource.request.URL.isFileURL) {
++    UIImage *image = [UIImage imageWithContentsOfFile:imageSource.request.URL.path];
++    if (image != nil) {
++      image = [UIImage imageWithCGImage:image.CGImage scale:imageSource.scale orientation:image.imageOrientation];
++    }
++    imageLoadingCompletionBlock([RNSImageLoadingHelper handleRenderingModeForImage:image isTemplate:isTemplate]);
++  } else {
+     [self loadImageFromSource:imageSource
+               withImageLoader:imageLoader
+                    asTemplate:isTemplate
 diff --git a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
 index 8a416972..9b13f60d 100644
 --- a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
