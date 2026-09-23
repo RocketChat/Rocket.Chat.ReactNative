@@ -81,6 +81,22 @@ describe('useAppActionButtons', () => {
 		expect(result.current[0]).toMatchObject({ id: 'app-id/summarize', label: 'Summarize thread' });
 	});
 
+	it('drops the previous room buttons until the new room resolves', async () => {
+		mockActionButtons = [button()];
+
+		const { result, rerender } = renderHook(
+			({ rid }: { rid: string }) => useAppActionButtons({ context: UIActionButtonContext.MESSAGE_BOX_ACTION, rid }),
+			{ initialProps: { rid: 'rid' } }
+		);
+
+		await waitFor(() => expect(result.current).toHaveLength(1));
+
+		rerender({ rid: 'other-rid' });
+
+		expect(result.current).toEqual([]);
+		await waitFor(() => expect(result.current).toHaveLength(1));
+	});
+
 	it('keeps only the requested context', async () => {
 		mockActionButtons = [button(), button({ actionId: 'other', context: UIActionButtonContext.ROOM_ACTION })];
 

@@ -42,6 +42,8 @@ const getPermissionRoles = async (ids: string[]): Promise<{ [permission: string]
 const splitKey = (key: string): string[] => (key ? key.split(',') : []);
 
 interface IAppActionButtonContext {
+	/** Inputs this context was resolved for, so a room change can't be filtered against the previous one. */
+	key: string;
 	room: IAppActionButtonRoom;
 	roles: string[];
 	permissions: { [permission: string]: string[] };
@@ -73,6 +75,7 @@ export const useAppActionButtons = ({
 	const permissionIds = useMemo(() => collectPermissions(buttons), [buttons]);
 	const permissionsKey = permissionIds.join(',');
 	const userRolesKey = userRoles.join(',');
+	const contextKey = `${rid ?? ''}|${permissionsKey}|${userRolesKey}`;
 	const hasButtons = buttons.length > 0;
 
 	useEffect(() => {
@@ -82,13 +85,14 @@ export const useAppActionButtons = ({
 
 		let cancelled = false;
 
-		const resolve = async (): Promise<void> => {
+		const resolveFilterContext = async (): Promise<void> => {
 			const subscription = rid ? await getSubscriptionByRoomId(rid) : null;
 			const permissionRoles = await getPermissionRoles(splitKey(permissionsKey));
 			if (cancelled) {
 				return;
 			}
 			setContext({
+				key: contextKey,
 				room: {
 					t: subscription?.t,
 					teamMain: subscription?.teamMain,
@@ -100,15 +104,17 @@ export const useAppActionButtons = ({
 			});
 		};
 
-		resolve().catch(log);
+		resolveFilterContext().catch(log);
 
 		return () => {
 			cancelled = true;
 		};
-	}, [hasButtons, rid, permissionsKey, userRolesKey]);
+	}, [hasButtons, rid, permissionsKey, userRolesKey, contextKey]);
 
 	return useMemo(() => {
-		if (!filterContext) {
+		// A resolve for the previous room may still be the latest state; filtering against it would
+		// list buttons this room excludes.
+		if (!filterContext || filterContext.key !== contextKey) {
 			return [];
 		}
 		const { room, roles, permissions } = filterContext;
@@ -124,5 +130,5 @@ export const useAppActionButtons = ({
 				label: translateAppKey({ appId: button.appId, key: button.labelI18n, translations }),
 				button
 			}));
-	}, [buttons, category, filterContext, translations]);
+	}, [buttons, category, contextKey, filterContext, translations]);
 };

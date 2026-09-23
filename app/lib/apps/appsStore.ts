@@ -71,11 +71,12 @@ let streamSubscription: { unsubscribe: () => Promise<unknown> } | null = null;
 const handleStreamData = (ddpMessage: { fields?: { args?: [[string, unknown[]]] } }) => {
 	const [event] = ddpMessage?.fields?.args?.[0] || [];
 	const { fetchActionButtons, fetchTranslations } = useAppsStore.getState();
+	// The engine fires `actions/changed` on both register and clear, so it covers the whole button
+	// lifecycle on its own; translations ship with an app and only arrive when one is added.
 	if (event === 'actions/changed') {
 		fetchActionButtons().catch(log);
 	}
-	if (event === 'app/added' || event === 'app/removed' || event === 'app/updated') {
-		fetchActionButtons().catch(log);
+	if (event === 'app/added') {
 		fetchTranslations().catch(log);
 	}
 };

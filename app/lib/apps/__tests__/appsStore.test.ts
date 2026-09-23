@@ -21,12 +21,12 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 
 const mockStop = jest.fn();
 const mockUnsubscribe = jest.fn(() => Promise.resolve());
-const mockOnStreamData = jest.fn(() => Promise.resolve({ stop: mockStop }));
+const mockOnStreamData = jest.fn((_event: string, _callback: (message: unknown) => void) => Promise.resolve({ stop: mockStop }));
 const mockSubscribe = jest.fn(() => Promise.resolve({ unsubscribe: mockUnsubscribe }));
 jest.mock('~/lib/services/sdk', () => ({
 	__esModule: true,
 	default: {
-		onStreamData: (...args: unknown[]) => mockOnStreamData(...(args as [])),
+		onStreamData: (event: string, callback: (message: unknown) => void) => mockOnStreamData(event, callback),
 		subscribe: (...args: unknown[]) => mockSubscribe(...(args as []))
 	}
 }));
@@ -43,11 +43,21 @@ jest.mock('~/lib/store/auxStore', () => ({
 	}
 }));
 
+const notify = () => mockListeners.forEach(listener => listener());
+
 const setLoginReady = (ready: boolean) => {
 	mockState.login.isAuthenticated = ready;
 	mockState.meteor.connected = ready;
-	mockListeners.forEach(listener => listener());
+	notify();
 };
+
+/** Keeps the session authenticated so only the transport flaps, as it does on a socket drop. */
+const setConnected = (connected: boolean) => {
+	mockState.meteor.connected = connected;
+	notify();
+};
+
+const streamCallback = () => mockOnStreamData.mock.calls[0][1] as (message: unknown) => void;
 
 const flush = () => new Promise(resolve => setImmediate(resolve));
 
@@ -123,6 +133,58 @@ describe('subscribeToApps', () => {
 		await flush();
 
 		expect(mockSubscribe).toHaveBeenCalledTimes(1);
+
+		dispose();
+	});
+
+	it('resubscribes when only the transport flaps, with the session still authenticated', async () => {
+		setLoginReady(true);
+		const dispose = subscribeToApps();
+		await flush();
+
+		setConnected(false);
+		await flush();
+
+		expect(mockState.login.isAuthenticated).toBe(true);
+		expect(mockStop).toHaveBeenCalledTimes(1);
+		expect(mockUnsubscribe).toHaveBeenCalledTimes(1);
+
+		setConnected(true);
+		await flush();
+
+		expect(mockSubscribe).toHaveBeenCalledTimes(2);
+
+		dispose();
+	});
+
+	it('refetches only the action buttons on actions/changed', async () => {
+		setLoginReady(true);
+		const dispose = subscribeToApps();
+		await flush();
+		mockGetAppActionButtons.mockClear();
+		mockGetAppsLanguages.mockClear();
+
+		streamCallback()({ fields: { args: [['actions/changed', []]] } });
+		await flush();
+
+		expect(mockGetAppActionButtons).toHaveBeenCalledTimes(1);
+		expect(mockGetAppsLanguages).not.toHaveBeenCalled();
+
+		dispose();
+	});
+
+	it('refetches only the translations on app/added', async () => {
+		setLoginReady(true);
+		const dispose = subscribeToApps();
+		await flush();
+		mockGetAppActionButtons.mockClear();
+		mockGetAppsLanguages.mockClear();
+
+		streamCallback()({ fields: { args: [['app/added', ['app-id']]] } });
+		await flush();
+
+		expect(mockGetAppsLanguages).toHaveBeenCalledTimes(1);
+		expect(mockGetAppActionButtons).not.toHaveBeenCalled();
 
 		dispose();
 	});
