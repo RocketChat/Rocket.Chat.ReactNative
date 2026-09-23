@@ -6,9 +6,7 @@ import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useTheme } from '~/theme';
 import { sidebarNavigate } from '../methods/sidebarNavigate';
 
-const Admin = ({ currentScreen }: { currentScreen: string | null }) => {
-	const isMasterDetail = useMasterDetail();
-	const { colors } = useTheme();
+export const useIsAdmin = () => {
 	const [
 		viewStatisticsPermission,
 		viewRoomAdministrationPermission,
@@ -31,6 +29,14 @@ const Admin = ({ currentScreen }: { currentScreen: string | null }) => {
 			viewPrivilegedSettingPermission
 		]
 	);
+
+	return isAdmin;
+};
+
+const Admin = ({ currentScreen }: { currentScreen: string | null }) => {
+	const isMasterDetail = useMasterDetail();
+	const { colors } = useTheme();
+	const isAdmin = useIsAdmin();
 
 	if (!isAdmin) {
 		return null;

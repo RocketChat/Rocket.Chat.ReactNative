@@ -9,9 +9,11 @@ import { showActionSheetRef } from '~/containers/ActionSheet';
 import Navigation from '~/lib/navigation/appNavigation';
 import { SupportedVersionsWarning } from '~/containers/SupportedVersions';
 
+export const useIsSupportedVersionsWarnVisible = () => useAppSelector(state => state.supportedVersions.status) === 'warn';
+
 const SupportedVersionsWarnItem = () => {
 	const { colors } = useTheme();
-	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
+	const isVisible = useIsSupportedVersionsWarnVisible();
 	const isMasterDetail = useMasterDetail();
 
 	const onPressSupportedVersionsWarning = () => {
@@ -22,7 +24,7 @@ const SupportedVersionsWarnItem = () => {
 		}
 	};
 
-	if (supportedVersionsStatus === 'warn') {
+	if (isVisible) {
 		return (
 			<>
 				<List.Item
