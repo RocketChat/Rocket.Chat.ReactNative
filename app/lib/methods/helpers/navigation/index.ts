@@ -58,13 +58,7 @@ export const drawerStyle = {
 
 export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions =>
 	isIOS
-		? {
-				headerStyle: {
-					backgroundColor: themes[theme].surfaceNeutral
-				},
-				headerTransparent: false,
-				headerTitleStyle: { color: themes[theme].fontTitlesLabels }
-			}
+		? {}
 		: {
 				headerStyle: {
 					backgroundColor: themes[theme].surfaceNeutral

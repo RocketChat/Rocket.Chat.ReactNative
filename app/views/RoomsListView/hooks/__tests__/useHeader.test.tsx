@@ -104,7 +104,7 @@ describe('RoomsListView useHeader', () => {
 		expect(typeof options.headerTitle).toBe('string');
 		expect(options.headerTitle).toBe('Rocket.Chat');
 		expect(options.headerSubtitle).toBe('open.rocket.chat');
-		expect(options.headerLargeTitle).toBe(false);
+		expect(options.headerLargeTitle).toBe(true);
 	});
 
 	it.each([

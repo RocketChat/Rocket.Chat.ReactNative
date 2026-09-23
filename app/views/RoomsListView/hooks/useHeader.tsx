@@ -192,12 +192,10 @@ export const useHeader = () => {
 			]);
 
 			navigation.setOptions({
-				headerLargeTitle: false,
+				headerLargeTitle: true,
+				headerTransparent: true,
 				headerTitle: serverName,
 				headerSubtitle: nativeHeaderSubtitle,
-				headerStyle: { backgroundColor: colors.surfaceNeutral },
-				headerTransparent: false,
-				scrollEdgeEffects: { top: 'hidden' },
 				headerSearchBarOptions: {
 					ref: searchBarRef,
 					placement: 'automatic',
