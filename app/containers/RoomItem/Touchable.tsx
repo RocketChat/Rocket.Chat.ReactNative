@@ -160,7 +160,7 @@ const Touchable = ({
 		.failOffsetY([-20, 20]) // Fail on vertical movement to distinguish scrolling
 		.enabled(swipeEnabled)
 		.onBegin(() => {
-			gestureActive.value = true;
+			gestureActive.set(true);
 			const closedOtherRow = closeOpenSwipeItem(rid);
 			scheduleOnRN(handleTouchBegin, closedOtherRow);
 		})
@@ -175,11 +175,11 @@ const Touchable = ({
 						: next;
 		})
 		.onEnd(event => {
-			gestureActive.value = false;
+			gestureActive.set(false);
 			scheduleOnRN(handleRelease, event);
 		})
 		.onFinalize(() => {
-			gestureActive.value = false;
+			gestureActive.set(false);
 		});
 
 	// Use Race instead of Simultaneous to prevent conflicts
