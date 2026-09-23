@@ -1,5 +1,4 @@
-import { useEffect, useReducer, useRef, memo } from 'react';
-import { type Subscription } from 'rxjs';
+import { memo } from 'react';
 import { AccessibilityInfo } from 'react-native';
 
 import { useActionSheet } from '../ActionSheet';
@@ -11,8 +10,7 @@ import RoomItem from './RoomItem';
 import { getRoomActionsOptions } from './getRoomActionsOptions';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
-
-const attrs = ['width', 'isFocused', 'showLastMessage', 'autoJoin', 'showAvatar', 'displayMode'];
+import { useRecordValue } from './useRecordValue';
 
 const RoomItemContainer = memo(
 	({
@@ -35,30 +33,15 @@ const RoomItemContainer = memo(
 	}: IRoomItemContainerProps) => {
 		const { showActionSheet } = useActionSheet();
 		const serverVersion = useAppSelector(state => state.server.version);
-		const name = getRoomTitle(item);
+		const name = useRecordValue(item, getRoomTitle);
 		const testID = `rooms-list-view-item-${name}`;
-		const avatar = getRoomAvatar(item);
-		const isRead = getIsRead(item);
+		const avatar = useRecordValue(item, getRoomAvatar);
+		const isRead = useRecordValue(item, getIsRead);
+		const isInvited = useRecordValue(item, isInviteSubscription);
 		const date = item.roomUpdatedAt && formatDate(item.roomUpdatedAt);
 		const alert = item.alert || item.tunread?.length;
-		const [_, forceUpdate] = useReducer(x => x + 1, 1);
-		const roomSubscription = useRef<Subscription | null>(null);
 		const userId = item.t === 'd' && id && !isGroupChat(item) ? id : null;
 		const accessibilityDate = formatDateAccessibility(item.roomUpdatedAt);
-
-		useEffect(() => {
-			const init = () => {
-				if (item?.observe) {
-					const observable = item.observe();
-					roomSubscription.current = observable?.subscribe?.(() => {
-						if (_) forceUpdate();
-					});
-				}
-			};
-			init();
-
-			return () => roomSubscription.current?.unsubscribe();
-		}, []);
 
 		const handleOnPress = () => onPress(item);
 
@@ -89,7 +72,7 @@ const RoomItemContainer = memo(
 				name={name}
 				avatar={avatar}
 				isGroupChat={isGroupChat(item)}
-				isInvited={isInviteSubscription(item)}
+				isInvited={isInvited}
 				isRead={isRead}
 				onPress={handleOnPress}
 				onLongPress={handleOnLongPress}
@@ -126,8 +109,7 @@ const RoomItemContainer = memo(
 				abacAttributes={item.abacAttributes}
 			/>
 		);
-	},
-	(props, nextProps) => attrs.every(key => props[key] === nextProps[key])
+	}
 );
 
 export default RoomItemContainer;
