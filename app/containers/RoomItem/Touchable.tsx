@@ -195,6 +195,11 @@ const Touchable = ({
 		.activeOffsetX([-10, 10]) // More sensitive horizontal detection
 		.failOffsetY([-20, 20]) // Fail on vertical movement to distinguish scrolling
 		.enabled(swipeEnabled)
+		.onTouchesDown(() => {
+			if (rowState.value === 0) {
+				openSwipeItemId.value = rid;
+			}
+		})
 		.onStart(() => {
 			openSwipeItemId.value = rid;
 		})
