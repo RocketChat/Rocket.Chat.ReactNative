@@ -16,3 +16,362 @@ index 0000000..0000000 100644
 +export declare const EnrichedMarkdownTextInput: ComponentType<EnrichedMarkdownTextInputProps>;
 +export declare const DEFAULT_ACCESSIBILITY_LABELS: typeof DefaultAccessibilityLabels;
 +export declare const resolveAccessibilityLabels: typeof ResolveAccessibilityLabels;
+diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
+index 0bac034784..c2d2915ba3 100644
+--- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
++++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
+@@ -4,11 +4,15 @@ import android.content.Context
+ import android.graphics.Bitmap
+ import android.graphics.Canvas
+ import android.graphics.Color
++import android.graphics.ImageDecoder
+ import android.graphics.Paint
+ import android.graphics.Path
++import android.graphics.drawable.Animatable
++import android.graphics.drawable.AnimatedImageDrawable
+ import android.graphics.drawable.Drawable
+ import android.net.Uri
+ import android.os.Build
++import android.os.SystemClock
+ import android.text.Spannable
+ import android.text.Spanned
+ import android.text.style.LeadingMarginSpan
+@@ -25,6 +29,7 @@ import com.swmansion.enriched.markdown.utils.text.ImageCache
+ import com.swmansion.enriched.markdown.utils.text.ImageDownloader
+ import com.swmansion.enriched.markdown.utils.text.LocalImageLoader
+ import java.lang.ref.WeakReference
++import java.nio.ByteBuffer
+ import java.util.concurrent.Executors
+ import android.text.style.ImageSpan as AndroidImageSpan
+ import android.text.style.LineHeightSpan as AndroidLineHeightSpan
+@@ -44,7 +49,7 @@ class ImageSpan(
+   private var loadedDrawable: Drawable? = null
+   private val height: Int = if (isInline) styleConfig.inlineImageStyle.size.toInt() else styleConfig.imageStyle.height.toInt()
+ 
+-  private val borderRadiusPx: Int = styleConfig.imageStyle.borderRadius.toInt()
++  private val borderRadiusPx: Int = if (isInline) 0 else styleConfig.imageStyle.borderRadius.toInt()
+   private val maxHeightPx: Int = if (isInline) 0 else styleConfig.imageStyle.maxHeight.toInt()
+   private val aspectRatio: Float = if (isInline) 0f else styleConfig.imageStyle.aspectRatio
+   private val resizeMode: String = if (isInline) "" else styleConfig.imageStyle.resizeMode
+@@ -68,6 +73,43 @@ class ImageSpan(
+   private var viewRef: WeakReference<TextView>? = null
+   private var sourceDrawable: Drawable? = null
+ 
++  private val animationCallback =
++    object : Drawable.Callback {
++      override fun invalidateDrawable(who: Drawable) {
++        viewRef?.get()?.invalidate()
++      }
++
++      override fun scheduleDrawable(
++        who: Drawable,
++        what: Runnable,
++        `when`: Long,
++      ) {
++        viewRef?.get()?.postDelayed(what, `when` - SystemClock.uptimeMillis())
++      }
++
++      override fun unscheduleDrawable(
++        who: Drawable,
++        what: Runnable,
++      ) {
++        viewRef?.get()?.removeCallbacks(what)
++      }
++    }
++
++  private fun decodeAnimatedDrawable(): Drawable? {
++    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) return null
++    val bytes = ImageDownloader.animatedSource(requestKey) ?: return null
++    return try {
++      val drawable = ImageDecoder.decodeDrawable(ImageDecoder.createSource(ByteBuffer.wrap(bytes)))
++      (drawable as? AnimatedImageDrawable)?.apply {
++        callback = animationCallback
++        start()
++      }
++    } catch (e: Exception) {
++      Log.e("ImageSpan", "Failed to decode animated image: $imageUrl", e)
++      null
++    }
++  }
++
+   private fun intrinsicImageSize(): Pair<Int, Int> {
+     sourceDrawable?.let { return it.intrinsicWidth to it.intrinsicHeight }
+     val cached = ImageCache.getOriginal(imageUrl) ?: return 0 to 0
+@@ -110,7 +152,7 @@ class ImageSpan(
+     if (scheme == "http" || scheme == "https") {
+       ImageDownloader.download(context, imageUrl, requestHeaders) { bitmap ->
+         if (bitmap != null) {
+-          sourceDrawable = bitmap.toDrawable(context.resources)
++          sourceDrawable = decodeAnimatedDrawable() ?: bitmap.toDrawable(context.resources)
+           wrapAndAssignDrawable()
+         }
+       }
+@@ -137,7 +179,9 @@ class ImageSpan(
+ 
+     boxHeight = resolveBoxHeight(targetWidth)
+ 
+-    val cachedBitmap = ImageCache.getProcessed(requestKey, targetWidth, boxHeight, borderRadiusPx, resizeMode)
++    val isAnimated = base is Animatable
++    val cachedBitmap =
++      if (isAnimated) null else ImageCache.getProcessed(requestKey, targetWidth, boxHeight, borderRadiusPx, resizeMode)
+ 
+     if (cachedBitmap != null) {
+       loadedDrawable =
+@@ -154,7 +198,7 @@ class ImageSpan(
+           isBlockImage = !isInline,
+           resizeMode = resizeMode,
+           legacySizing = legacySizing,
+-          cacheKey = CacheKey(requestKey, targetWidth, boxHeight, borderRadiusPx, resizeMode),
++          cacheKey = if (isAnimated) null else CacheKey(requestKey, targetWidth, boxHeight, borderRadiusPx, resizeMode),
+         )
+     }
+     requestReflow()
+diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt
+index 7a2071e4d8..746ef5f9df 100644
+--- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt
++++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt
+@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
+ import android.os.Handler
+ import android.os.Looper
+ import android.util.Log
++import android.util.LruCache
+ import okhttp3.Cache
+ import okhttp3.Call
+ import okhttp3.Callback
+@@ -20,6 +21,8 @@ object ImageDownloader {
+   private const val TAG = "ImageDownloader"
+   private const val DISK_CACHE_SIZE = 100L * 1024 * 1024
+   private const val TIMEOUT = 15L
++  private const val ANIMATED_SOURCES_SIZE = 8 * 1024 * 1024
++  private const val WEBP_ANIMATION_FLAG = 0x02
+ 
+   private val mainHandler = Handler(Looper.getMainLooper())
+ 
+@@ -29,6 +32,26 @@ object ImageDownloader {
+ 
+   private val inFlight = HashMap<String, MutableList<(Bitmap?) -> Unit>>()
+ 
++  private val animatedSources =
++    object : LruCache<String, ByteArray>(ANIMATED_SOURCES_SIZE) {
++      override fun sizeOf(
++        key: String,
++        value: ByteArray,
++      ): Int = value.size
++    }
++
++  fun animatedSource(requestKey: String): ByteArray? = animatedSources.get(requestKey)
++
++  private fun isAnimatedFormat(bytes: ByteArray): Boolean {
++    val isGif = bytes.size > 4 && String(bytes, 0, 4, Charsets.US_ASCII) == "GIF8"
++    val isAnimatedWebp =
++      bytes.size > 20 &&
++        String(bytes, 0, 4, Charsets.US_ASCII) == "RIFF" &&
++        String(bytes, 8, 8, Charsets.US_ASCII) == "WEBPVP8X" &&
++        (bytes[20].toInt() and WEBP_ANIMATION_FLAG) != 0
++    return isGif || isAnimatedWebp
++  }
++
+   private fun getClient(context: Context): OkHttpClient =
+     client ?: synchronized(this) {
+       client ?: buildClient(context).also {
+@@ -85,6 +108,7 @@ object ImageDownloader {
+             response.use {
+               try {
+                 val bytes = it.body?.bytes() ?: return@use null
++                if (isAnimatedFormat(bytes)) animatedSources.put(requestKey, bytes)
+                 decodeDownsampled(bytes, maxTargetWidth)
+               } catch (_: OutOfMemoryError) {
+                 Log.e(TAG, "OOM decoding image: $url")
+diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
+index 3a8f80a1ca..b54a8f95e6 100644
+--- a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
++++ b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
+@@ -36,6 +36,9 @@ static NSMapTable<NSString *, ENRMImageAttachment *> *_attachmentRegistry;
+ @property (nonatomic, strong) RCTUIImage *loadedImage;
+ @property (nonatomic, strong) RCTUIImage *placeholderImage;
+ @property (nonatomic, copy) NSString *lastProcessedKey;
++@property (nonatomic, strong) NSHashTable<NSTextContainer *> *displayedContainers;
++@property (nonatomic, strong, nullable) NSTimer *animationTimer;
++@property (nonatomic, assign) NSUInteger frameIndex;
+ 
+ @end
+ 
+@@ -72,8 +75,9 @@ static NSMapTable<NSString *, ENRMImageAttachment *> *_attachmentRegistry;
+ 
+ + (instancetype)attachmentForURL:(NSString *)imageURL config:(StyleConfig *)config isInline:(BOOL)isInline
+ {
+-  NSString *key =
+-      [NSString stringWithFormat:@"%@_%d", ENRMImageCacheKey(imageURL, [config imageRequestHeaders]), isInline];
++  CGFloat height = isInline ? [config inlineImageSize] : [config imageHeight];
++  NSString *key = [NSString stringWithFormat:@"%@_%d_%.2f_%.2f", ENRMImageCacheKey(imageURL, [config imageRequestHeaders]),
++                                             isInline, height, [config imageMaxHeight]];
+   ENRMImageAttachment *existing = [[self attachmentRegistry] objectForKey:key];
+   if (existing && existing.loadedImage) {
+     return existing;
+@@ -101,7 +105,8 @@ static NSMapTable<NSString *, ENRMImageAttachment *> *_attachmentRegistry;
+     _cachedMaxHeight = [config imageMaxHeight];
+     _cachedAspectRatio = [config imageAspectRatio];
+     _cachedResizeMode = [config imageResizeMode];
+-    _cachedBorderRadius = [config imageBorderRadius];
++    _cachedBorderRadius = isInline ? 0 : [config imageBorderRadius];
++    _displayedContainers = [NSHashTable weakObjectsHashTable];
+ 
+     [self setupPlaceholder];
+     [self startDownloadingImage];
+@@ -172,13 +177,62 @@ static NSMapTable<NSString *, ENRMImageAttachment *> *_attachmentRegistry;
+                 characterIndex:(NSUInteger)characterIndex
+ {
+   self.textContainer = textContainer;
++  if (textContainer) {
++    [self.displayedContainers addObject:textContainer];
++  }
+ 
+   if (self.originalImage && imageBounds.size.width > 0) {
+     self.bounds = imageBounds;
+     [self processAndApplyImage:self.originalImage withTargetWidth:imageBounds.size.width];
+   }
+ 
+-  return self.loadedImage ?: self.placeholderImage;
++  return [self currentFrame] ?: self.placeholderImage;
++}
++
++- (void)dealloc
++{
++  [_animationTimer invalidate];
++}
++
++- (void)setLoadedImage:(RCTUIImage *)loadedImage
++{
++  _loadedImage = loadedImage;
++  self.frameIndex = 0;
++  [self.animationTimer invalidate];
++  self.animationTimer = nil;
++#if !TARGET_OS_OSX
++  NSUInteger frameCount = loadedImage.images.count;
++  if (frameCount <= 1 || loadedImage.duration <= 0)
++    return;
++
++  __weak typeof(self) weakSelf = self;
++  self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:loadedImage.duration / frameCount
++                                                        repeats:YES
++                                                          block:^(NSTimer *timer) { [weakSelf advanceFrame]; }];
++#endif
++}
++
++- (RCTUIImage *)currentFrame
++{
++#if !TARGET_OS_OSX
++  NSArray<RCTUIImage *> *frames = self.loadedImage.images;
++  if (frames.count > 1) {
++    return frames[self.frameIndex % frames.count];
++  }
++#endif
++  return self.loadedImage;
++}
++
++- (void)advanceFrame
++{
++  self.frameIndex += 1;
++  for (NSTextContainer *container in self.displayedContainers.allObjects) {
++    NSLayoutManager *layoutManager = container.layoutManager;
++    NSRange range = [self findAttachmentRangeInText:layoutManager.textStorage];
++    if (range.location != NSNotFound) {
++      [layoutManager invalidateDisplayForCharacterRange:range];
++    }
++  }
+ }
+ 
+ - (void)handleLoadedImage:(RCTUIImage *)image
+@@ -259,6 +313,19 @@ static NSMapTable<NSString *, ENRMImageAttachment *> *_attachmentRegistry;
+                            height:(CGFloat)targetHeight
+                      borderRadius:(CGFloat)radius
+ {
++#if !TARGET_OS_OSX
++  if (image.images.count > 1) {
++    NSMutableArray<RCTUIImage *> *scaledFrames = [NSMutableArray arrayWithCapacity:image.images.count];
++    for (RCTUIImage *frame in image.images) {
++      RCTUIImage *scaledFrame = [self createScaledImage:frame toWidth:targetWidth height:targetHeight borderRadius:radius];
++      if (scaledFrame) {
++        [scaledFrames addObject:scaledFrame];
++      }
++    }
++    return [RCTUIImage animatedImageWithImages:scaledFrames duration:image.duration];
++  }
++#endif
++
+   CGFloat sourceWidth = image.size.width;
+   CGFloat sourceHeight = image.size.height;
+   if (sourceWidth <= 0 || sourceHeight <= 0)
+diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m b/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m
+index 974154201f..c2a891d30c 100644
+--- a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m
++++ b/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m
+@@ -2,6 +2,7 @@
+ #import "ENRMImageAttachment.h"
+ #import "ENRMLocalImageLoader.h"
+ #import <CommonCrypto/CommonDigest.h>
++#import <ImageIO/ImageIO.h>
+ #include <TargetConditionals.h>
+ 
+ static const NSUInteger kDiskCacheMemoryCapacity = 10 * 1024 * 1024;
+@@ -15,6 +16,51 @@ static inline NSUInteger ENRMImageByteCost(RCTUIImage *image)
+   return CGImageGetBytesPerRow(cgImage) * CGImageGetHeight(cgImage);
+ }
+ 
++#if !TARGET_OS_OSX
++static NSTimeInterval ENRMFrameDuration(CGImageSourceRef source, size_t index)
++{
++  NSDictionary *properties = CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source, index, NULL));
++  NSDictionary *frameProperties = properties[(NSString *)kCGImagePropertyGIFDictionary]
++                                      ?: properties[(NSString *)kCGImagePropertyPNGDictionary]
++                                      ?: properties[(NSString *)kCGImagePropertyWebPDictionary];
++  NSNumber *delay = frameProperties[(NSString *)kCGImagePropertyGIFUnclampedDelayTime];
++  if (delay.doubleValue <= 0) {
++    delay = frameProperties[(NSString *)kCGImagePropertyGIFDelayTime];
++  }
++  return delay.doubleValue >= 0.02 ? delay.doubleValue : 0.1;
++}
++
++static RCTUIImage *ENRMImageFromData(NSData *data)
++{
++  CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
++  if (!source)
++    return nil;
++
++  size_t frameCount = CGImageSourceGetCount(source);
++  if (frameCount <= 1) {
++    CFRelease(source);
++    return [RCTUIImage imageWithData:data];
++  }
++
++  NSMutableArray<RCTUIImage *> *frames = [NSMutableArray arrayWithCapacity:frameCount];
++  NSTimeInterval duration = 0;
++  for (size_t index = 0; index < frameCount; index++) {
++    CGImageRef frame = CGImageSourceCreateImageAtIndex(source, index, NULL);
++    if (!frame)
++      continue;
++    [frames addObject:[RCTUIImage imageWithCGImage:frame]];
++    CGImageRelease(frame);
++    duration += ENRMFrameDuration(source, index);
++  }
++  CFRelease(source);
++
++  if (frames.count <= 1) {
++    return frames.firstObject;
++  }
++  return [RCTUIImage animatedImageWithImages:frames duration:duration];
++}
++#endif
++
+ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *> *headers)
+ {
+   if (headers.count == 0) {
+@@ -116,7 +162,7 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
+   [[_session dataTaskWithRequest:request
+                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+ #if !TARGET_OS_OSX
+-                 RCTUIImage *image = (data && !error) ? [RCTUIImage imageWithData:data] : nil;
++                 RCTUIImage *image = (data && !error) ? ENRMImageFromData(data) : nil;
+ #else
+         RCTUIImage *image = (data && !error) ? [[RCTUIImage alloc] initWithData:data] : nil;
+ #endif
