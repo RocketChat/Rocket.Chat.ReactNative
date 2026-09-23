@@ -1293,7 +1293,6 @@ const appsApiGet = async <T>(path: string): Promise<T> => {
 	const response = await fetch(`${host}/api/apps/${path}`, {
 		method: 'GET',
 		headers: {
-			...RocketChatSettings.customHeaders,
 			'Content-Type': 'application/json',
 			'X-Auth-Token': authToken,
 			'X-User-Id': userId

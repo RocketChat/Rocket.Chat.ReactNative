@@ -4,8 +4,7 @@ import { type IAppActionButtonItem } from '~/lib/apps/useAppActionButtons';
 import { ActionsButton } from '../ActionsButton';
 
 const mockUseAppActionButtons = jest.fn((_params: unknown): IAppActionButtonItem[] => []);
-jest.mock('~/lib/apps', () => ({
-	UIActionButtonContext: { MESSAGE_BOX_ACTION: 'messageBoxAction', ROOM_ACTION: 'roomAction' },
+jest.mock('~/lib/apps/useAppActionButtons', () => ({
 	useAppActionButtons: (params: unknown) => mockUseAppActionButtons(params)
 }));
 

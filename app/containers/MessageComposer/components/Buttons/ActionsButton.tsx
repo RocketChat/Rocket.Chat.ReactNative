@@ -10,7 +10,8 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useCanUploadFile, useChooseMedia } from '~/containers/MessageComposer/hooks';
 import { useComposerRid, useComposerTmid, useComposerType } from '~/containers/MessageComposer/ComposerStore';
-import { UIActionButtonContext, useAppActionButtons } from '~/lib/apps';
+import { UIActionButtonContext } from '~/lib/apps/definitions';
+import { useAppActionButtons } from '~/lib/apps/useAppActionButtons';
 import { triggerAppActionButton } from '~/lib/apps/triggerAppActionButton';
 
 export const ActionsButton = () => {
