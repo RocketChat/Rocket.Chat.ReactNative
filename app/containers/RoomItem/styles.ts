@@ -5,6 +5,12 @@ import sharedStyles from '~/views/Styles';
 export const ACTION_WIDTH = 80;
 export const SMALL_SWIPE = ACTION_WIDTH / 2;
 export const LONG_SWIPE = ACTION_WIDTH * 2.5;
+export const SWIPE_SPRING_CONFIG = {
+	overshootClamping: true,
+	damping: 20,
+	mass: 0.5,
+	stiffness: 200
+};
 
 export default StyleSheet.create({
 	flex: {

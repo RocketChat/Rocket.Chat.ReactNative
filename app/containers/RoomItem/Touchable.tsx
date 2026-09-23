@@ -1,5 +1,5 @@
 import { useRef, memo, type ReactElement } from 'react';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, useAnimatedReaction, withSpring } from 'react-native-reanimated';
 import {
 	Gesture,
 	GestureDetector,
@@ -9,8 +9,9 @@ import {
 import { scheduleOnRN } from 'react-native-worklets';
 
 import Touch from '../Touch';
-import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
+import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE, SWIPE_SPRING_CONFIG } from './styles';
 import { LeftActions, RightActions } from './Actions';
+import { openSwipeItemId } from './openSwipeItem';
 import { type ITouchableProps } from './interfaces';
 import { useTheme } from '~/theme';
 import I18n from '~/i18n';
@@ -41,10 +42,22 @@ const Touchable = ({
 
 	const close = () => {
 		rowState.value = 0;
-		transX.value = withSpring(0, { overshootClamping: true });
+		transX.value = withSpring(0, SWIPE_SPRING_CONFIG);
 		rowOffSet.value = 0;
 		valueRef.current = 0;
+		if (openSwipeItemId.value === rid) {
+			openSwipeItemId.value = null;
+		}
 	};
+
+	useAnimatedReaction(
+		() => openSwipeItemId.value,
+		current => {
+			if (current !== rid && rowState.value !== 0) {
+				scheduleOnRN(close);
+			}
+		}
+	);
 
 	const handleToggleFav = () => {
 		toggleFav(rid, favorite);
@@ -74,6 +87,7 @@ const Touchable = ({
 			close();
 			return;
 		}
+		openSwipeItemId.value = null;
 		if (onPress) {
 			onPress();
 		}
@@ -85,6 +99,7 @@ const Touchable = ({
 			return;
 		}
 
+		openSwipeItemId.value = null;
 		if (onLongPress) {
 			onLongPress();
 		}
@@ -164,9 +179,10 @@ const Touchable = ({
 				toValue = -2 * ACTION_WIDTH;
 			}
 		}
-		transX.value = withSpring(toValue, { overshootClamping: true });
+		transX.value = withSpring(toValue, SWIPE_SPRING_CONFIG);
 		rowOffSet.value = toValue;
 		valueRef.current = toValue;
+		openSwipeItemId.value = rowState.value !== 0 ? rid : null;
 	};
 
 	const longPressGesture = Gesture.LongPress()
@@ -179,6 +195,9 @@ const Touchable = ({
 		.activeOffsetX([-10, 10]) // More sensitive horizontal detection
 		.failOffsetY([-20, 20]) // Fail on vertical movement to distinguish scrolling
 		.enabled(swipeEnabled)
+		.onStart(() => {
+			openSwipeItemId.value = rid;
+		})
 		.onUpdate(event => {
 			transX.value = event.translationX + rowOffSet.value;
 			if (transX.value > 2 * width) transX.value = 2 * width;
