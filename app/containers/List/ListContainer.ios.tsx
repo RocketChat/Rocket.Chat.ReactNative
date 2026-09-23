@@ -10,6 +10,8 @@ import {
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
 
+import { useTheme } from '~/theme';
+
 const styles = StyleSheet.create({
 	host: {
 		flex: 1
@@ -29,12 +31,13 @@ interface IListContainer {
 }
 
 const ListContainer = ({ children, testID }: IListContainer) => {
+	const { colors } = useTheme();
 	const { width: windowWidth } = useWindowDimensions();
 	const [width, setWidth] = useState(windowWidth);
 	const onLayout = (event: LayoutChangeEvent) => setWidth(event.nativeEvent.layout.width);
 
 	return (
-		<Host style={styles.host} onLayout={onLayout}>
+		<Host style={[styles.host, { backgroundColor: colors.surfaceNeutral }]} onLayout={onLayout}>
 			<List modifiers={listModifiers} testID={testID}>
 				{Children.toArray(children).map(child => (
 					<Group key={(child as ReactElement).key} modifiers={rowModifiers}>
