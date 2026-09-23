@@ -14,5 +14,7 @@ export const closeOpenSwipeItem = (exceptRid?: string) => {
 	if (openSwipeItem && openSwipeItem.rid !== exceptRid) {
 		openSwipeItem.close();
 		openSwipeItem = null;
+		return true;
 	}
+	return false;
 };

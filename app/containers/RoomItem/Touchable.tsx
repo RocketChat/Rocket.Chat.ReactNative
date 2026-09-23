@@ -39,6 +39,7 @@ const Touchable = ({
 	const transX = useSharedValue(0);
 	const rowState = useSharedValue(0); // 0: closed, 1: right opened, -1: left opened
 	const valueRef = useRef(0);
+	const consumedTouchRef = useRef(false);
 
 	const close = () => {
 		rowState.value = 0;
@@ -78,6 +79,10 @@ const Touchable = ({
 			close();
 			return;
 		}
+		if (consumedTouchRef.current) {
+			consumedTouchRef.current = false;
+			return;
+		}
 		if (onPress) {
 			onPress();
 		}
@@ -86,6 +91,10 @@ const Touchable = ({
 	const handleLongPress = () => {
 		if (rowState.value !== 0) {
 			close();
+			return;
+		}
+		if (consumedTouchRef.current) {
+			consumedTouchRef.current = false;
 			return;
 		}
 
@@ -207,7 +216,7 @@ const Touchable = ({
 
 	const handleActiveStateChange = (active: boolean) => {
 		if (active) {
-			closeOpenSwipeItem(rid);
+			consumedTouchRef.current = closeOpenSwipeItem(rid);
 		}
 	};
 
