@@ -713,10 +713,10 @@ tags:
     visible:
       id: 'room-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.otherUser.username}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.otherUser.username}
 - tapOn: Back
 - extendedWaitUntil:
     visible:

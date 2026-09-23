@@ -37,10 +37,10 @@ tags:
     file: '../../helpers/open-deeplink.yaml'
     env:
       link: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name)}
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
@@ -70,10 +70,10 @@ tags:
     file: '../../helpers/open-deeplink.yaml'
     env:
       link: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name)}
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
@@ -94,10 +94,10 @@ tags:
     file: '../../helpers/open-deeplink.yaml'
     env:
       link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/', output.room.name)}
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}
 
 # should navigate to the thread using path
 - stopApp: ${APP_ID}
@@ -105,10 +105,10 @@ tags:
     file: '../../helpers/open-deeplink.yaml'
     env:
       link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/', output.room.name, '/thread/', output.result.message._id)}
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.threadMessage}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.threadMessage}
 
 # should navigate to the room using rid
 - stopApp: ${APP_ID}
@@ -116,10 +116,10 @@ tags:
     file: '../../helpers/open-deeplink.yaml'
     env:
       link: ${output.utils.getDeepLink('room', output.data.server, 'rid=', output.room._id)}
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
@@ -132,10 +132,10 @@ tags:
     file: '../../helpers/open-deeplink.yaml'
     env:
       link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/', output.room.name)}
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}
 
 # should simulate a tap on a push notification and navigate to the room
 # we are skipping this because we can't send push on iOS simulator and for android we have similar test
@@ -162,10 +162,10 @@ tags:
     file: '../../helpers/open-deeplink.yaml'
     env:
       link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/', output.room.name)}
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}
 
 # should add a not existing server and fallback to the previous one
 - stopApp: ${APP_ID}
@@ -333,8 +333,18 @@ tags:
     visible:
       id: 'new-server-view'
     timeout: 60000
-- assertNotVisible:
-    id: 'room-view-title-${output.room.name}'
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - assertNotVisible:
+          id: 'room-view-title-${output.room.name}'
+- runFlow:
+    when:
+      platform: ios
+    commands:
+      - assertNotVisible:
+          text: '${output.room.name}'
 
 # should show a security confirmation prompt on deep link login and sign in when confirmed
 - runFlow:
@@ -366,10 +376,10 @@ tags:
     commands:
       - tapOn:
           text: 'Login'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:

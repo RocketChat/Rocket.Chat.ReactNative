@@ -33,18 +33,26 @@ tags:
           id: room-header
       - assertVisible:
           id: room-view-search
-- assertVisible:
-    id: room-view-header-call
-- assertVisible:
-    id: room-view-header-threads
+      - assertVisible:
+          id: room-view-header-call
+      - assertVisible:
+          id: room-view-header-threads
 - runFlow:
     when:
       platform: iOS
     commands:
-      - tapOn:
-          id: 'room-view-header-more'
       - assertVisible:
-          id: 'room-view-search'
+          text: '.*Call.*'
+      - assertVisible:
+          text: 'Threads'
+      - tapOn:
+          text: 'More'
+      - extendedWaitUntil:
+          visible:
+            id: 'action-sheet'
+          timeout: 60000
+      - assertVisible:
+          text: 'Search messages'
       - tapOn:
           id: 'action-sheet-handle'
 
@@ -158,7 +166,7 @@ tags:
       platform: iOS
     commands:
       - assertVisible:
-          id: room-view-header-more
+          text: 'More'
 - runFlow: '../../helpers/open-room-actions.yaml'
 - assertVisible:
     id: room-actions-teams
@@ -186,24 +194,32 @@ tags:
     file: '../../helpers/assert-room-title.yaml'
     env:
       ROOM: ${output.privateRoomName}
-- assertVisible:
-    id: room-view-header-call
-- assertVisible:
-    id: room-view-header-threads
 - runFlow:
     when:
       platform: android
     commands:
+      - assertVisible:
+          id: room-view-header-call
+      - assertVisible:
+          id: room-view-header-threads
       - assertVisible:
           id: room-view-search
 - runFlow:
     when:
       platform: iOS
     commands:
-      - tapOn:
-          id: 'room-view-header-more'
       - assertVisible:
-          id: 'room-view-search'
+          text: '.*Call.*'
+      - assertVisible:
+          text: 'Threads'
+      - tapOn:
+          text: 'More'
+      - extendedWaitUntil:
+          visible:
+            id: 'action-sheet'
+          timeout: 60000
+      - assertVisible:
+          text: 'Search messages'
       - tapOn:
           id: 'action-sheet-handle'
 - runFlow: '../../helpers/go-back.yaml'
@@ -224,7 +240,7 @@ tags:
       platform: iOS
     commands:
       - assertVisible:
-          id: room-view-header-more
+          text: 'More'
 - runFlow: '../../helpers/open-room-actions.yaml'
 - assertVisible:
     id: room-actions-teams

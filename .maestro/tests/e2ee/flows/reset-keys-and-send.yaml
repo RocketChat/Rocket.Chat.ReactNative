@@ -41,18 +41,31 @@ env:
     timeout: 60000
 - runFlow:
     when:
-      platform: iOS
-      notVisible:
-        id: 'room-view-header-encryption'
+      platform: android
     commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'room-view-header-encryption'
+          timeout: 60000
       - tapOn:
-          id: 'room-view-header-more'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-header-encryption'
-    timeout: 60000
-- tapOn:
-    id: 'room-view-header-encryption'
+          id: 'room-view-header-encryption'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - runFlow:
+          when:
+            notVisible:
+              text: 'Encrypted'
+          commands:
+            - tapOn:
+                text: 'More'
+      - extendedWaitUntil:
+          visible:
+            text: 'Encrypted'
+          timeout: 60000
+      - tapOn:
+          text: 'Encrypted'
 - extendedWaitUntil:
     visible:
       id: 'e2ee-toggle-room-view'
@@ -77,10 +90,10 @@ env:
     file: '../../../helpers/navigate-to-room.yaml'
     env:
       ROOM: ${ROOM}
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${ROOM}'
-    timeout: 60000
+- runFlow:
+    file: '../../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${ROOM}
 - runFlow:
     file: '../../../helpers/send-message.yaml'
     env:

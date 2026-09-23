@@ -23,10 +23,10 @@ tags:
       ROOM: ${output.room.name}
 
 # should have room screen
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}
 
 # should have actions button
 - runFlow:
@@ -43,14 +43,26 @@ tags:
     commands:
       - extendedWaitUntil:
           visible:
-            id: 'room-view-header-more'
+            text: 'More'
           timeout: 60000
 
 # should have threads button
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-header-threads'
-    timeout: 60000
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'room-view-header-threads'
+          timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: 'Threads'
+          timeout: 60000
 
 # should create thread
 - runFlow:
@@ -73,10 +85,10 @@ tags:
     timeout: 60000
 - tapOn:
     text: 'Reply in thread'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-thread'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: 'thread'
 - extendedWaitUntil:
     visible:
       id: 'message-composer-input-thread'
@@ -92,38 +104,48 @@ tags:
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 # should navigate to thread from button
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}
 - extendedWaitUntil:
     visible:
       id: 'message-thread-button-thread'
     timeout: 60000
 - tapOn:
     id: 'message-thread-button-thread'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-thread'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: 'thread'
 
 # should toggle follow thread
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-header-unfollow'
-    timeout: 60000
-- tapOn:
-    id: 'room-view-header-unfollow'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-header-follow'
-    timeout: 60000
-- tapOn:
-    id: 'room-view-header-follow'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-header-unfollow'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'room-view-header-unfollow'
+      IOS_LABEL: 'Unfollow thread'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'room-view-header-follow'
+      IOS_LABEL: 'Follow thread'
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'room-view-header-unfollow'
+          timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: 'Unfollow thread'
+          timeout: 60000
 
 # should send message in thread only
 - runFlow:
@@ -132,14 +154,26 @@ tags:
       message: threadonly
       isThread: 'true'
 - runFlow: '../../helpers/go-back.yaml'
-- extendedWaitUntil:
-    notVisible:
-      id: 'room-view-title-thread'
-    timeout: 5000
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 5000
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          notVisible:
+            id: 'room-view-title-thread'
+          timeout: 5000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          notVisible:
+            text: 'thread'
+          timeout: 5000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}
 - extendedWaitUntil:
     notVisible:
       id: 'message-content-threadonly'
@@ -152,10 +186,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'message-thread-button-thread'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-thread'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: 'thread'
 - tapOn:
     id: 'message-composer-input-thread'
 - inputText: 'sendToChannel'
@@ -164,14 +198,26 @@ tags:
 - tapOn:
     id: message-composer-send
 - runFlow: '../../helpers/go-back.yaml'
-- extendedWaitUntil:
-    notVisible:
-      id: 'room-view-title-thread'
-    timeout: 5000
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 5000
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          notVisible:
+            id: 'room-view-title-thread'
+          timeout: 5000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          notVisible:
+            text: 'thread'
+          timeout: 5000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}
 - extendedWaitUntil:
     visible:
       text: '.*sendToChannel.*'
@@ -196,33 +242,44 @@ tags:
 - tapOn:
     id: 'message-composer-send'
 - runFlow: '../../helpers/go-back.yaml'
-- extendedWaitUntil:
-    notVisible:
-      id: 'room-view-title-thread'
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          notVisible:
+            id: 'room-view-title-thread'
+          timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          notVisible:
+            text: 'thread'
+          timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}
 - extendedWaitUntil:
     visible:
       id: 'message-content-navthreadname'
     timeout: 60000
 - tapOn:
     id: 'message-content-navthreadname'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-thread'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: 'thread'
 - runFlow: '../../helpers/go-back.yaml'
 
 # should navigate to thread from threads view
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-header-threads'
-    timeout: 60000
-- tapOn:
-    id: 'room-view-header-threads'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'room-view-header-threads'
+      IOS_LABEL: 'Threads'
 - extendedWaitUntil:
     visible:
       id: 'thread-messages-view'
@@ -233,10 +290,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'thread-messages-view-thread'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-thread'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: 'thread'
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
@@ -250,10 +307,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'message-thread-button-thread'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-thread'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: 'thread'
 - tapOn:
     id: 'message-composer-input-thread'
 - inputText: 'draftthread'
@@ -265,10 +322,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'message-thread-button-thread'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-thread'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: 'thread'
 - extendedWaitUntil:
     visible:
       text: '.*draftthread.*'
@@ -284,10 +341,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'message-thread-button-thread'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-thread'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: 'thread'
 - extendedWaitUntil:
     notVisible:
       text: '.*draftthread.*'
@@ -297,14 +354,26 @@ tags:
       text: '.*Add thread reply.*'
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
-- extendedWaitUntil:
-    notVisible:
-      id: 'room-view-title-thread'
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          notVisible:
+            id: 'room-view-title-thread'
+          timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          notVisible:
+            text: 'thread'
+          timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}
 
 # should create thread delete the message and the thread show the correct number of messages
 - runFlow:
@@ -327,10 +396,10 @@ tags:
     timeout: 60000
 - tapOn:
     text: 'Reply in thread'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-thread-message-count'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: 'thread-message-count'
 - extendedWaitUntil:
     visible:
       id: 'message-composer-input-thread'
@@ -378,10 +447,10 @@ tags:
     timeout: 60000
 - tapOn: 'DELETE'
 - runFlow: '../../helpers/go-back.yaml'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}
 - extendedWaitUntil:
     visible:
       id: 'thread-count-0'

@@ -4,10 +4,10 @@ tags:
   - 'util'
 
 ---
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-thread 1'
-    timeout: 60000
+- runFlow:
+    file: '../../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: 'thread 1'
 - extendedWaitUntil:
     visible:
       id: '.*message-content-${message}.*'

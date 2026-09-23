@@ -224,10 +224,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'report-user-view-submit'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.otherUser.username}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.otherUser.username}
 
 # should go to user info view from a channel
 - runFlow: '../../helpers/go-back.yaml'
@@ -281,7 +281,7 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'report-user-view-submit'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}

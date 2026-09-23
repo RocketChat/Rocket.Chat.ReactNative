@@ -36,7 +36,7 @@ tags:
       platform: iOS
     commands:
       - assertVisible:
-          id: room-view-header-more
+          text: 'More'
 
 # should have join
 - assertVisible:
