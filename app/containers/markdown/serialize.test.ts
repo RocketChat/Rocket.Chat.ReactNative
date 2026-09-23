@@ -20,7 +20,6 @@ const serialize = (msg: string, ctx: Partial<ISerializeContext> = {}) => {
 	return segments
 		.map(segment => {
 			if (segment.type === 'markdown') return segment.content;
-			if (segment.type === 'katex') return `$$${segment.value}$$`;
 			return '';
 		})
 		.join('\n\n');
@@ -115,9 +114,9 @@ describe('markdown serialize', () => {
 		expect(serialize('```\nconst a = 1;\n```')).toBe('```\nconst a = 1;\n```');
 	});
 
-	it('splits a block-level KATEX AST node (as produced by the server-parsed md prop) into a separate katex segment', () => {
+	it('splits a block-level KATEX AST node (as produced by the server-parsed md prop) into a native block math segment', () => {
 		const tokens: Parameters<typeof buildRenderSegments>[0] = [{ type: 'KATEX', value: 'x^2' }];
 		const segments = buildRenderSegments(tokens, baseContext);
-		expect(segments).toEqual([{ type: 'katex', value: 'x^2' }]);
+		expect(segments).toEqual([{ type: 'markdown', content: '$$\nx^2\n$$', accessibilityLabel: 'x^2' }]);
 	});
 });

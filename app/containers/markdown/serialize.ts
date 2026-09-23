@@ -25,10 +25,7 @@ export interface ISerializeContext {
 	formatShortnameToUnicode: (shortname: string) => string;
 }
 
-export type TRenderSegment =
-	| { type: 'markdown'; content: string; accessibilityLabel: string }
-	| { type: 'katex'; value: string }
-	| { type: 'linebreak' };
+export type TRenderSegment = { type: 'markdown'; content: string; accessibilityLabel: string } | { type: 'linebreak' };
 
 const ESCAPE_PATTERN = /[\\`*_{}[\]()#+\-.!|~^$=<>]/g;
 
@@ -322,7 +319,7 @@ export const buildRenderSegments = (tokens: Root, ctx: ISerializeContext): TRend
 
 	for (const block of tokens as Array<Paragraph | Blocks>) {
 		if (block.type === 'KATEX') {
-			segments.push({ type: 'katex', value: block.value });
+			segments.push({ type: 'markdown', content: `$$\n${block.value}\n$$`, accessibilityLabel: block.value });
 			continue;
 		}
 

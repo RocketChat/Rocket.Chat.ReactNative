@@ -10,7 +10,6 @@ import { buildRenderSegments } from './serialize';
 import { buildMarkdownStyle } from './buildMarkdownStyle';
 import { useMarkdownLinkPress } from './hooks/useMarkdownLinkPress';
 import { useParseOptions } from './hooks/useParseOptions';
-import { KaTeX } from './components/Katex';
 import { useTheme } from '~/theme';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useCustomEmoji } from '~/lib/hooks/useCustomEmoji';
@@ -142,10 +141,6 @@ const Markdown: FC<IMarkdownProps> = ({
 	return (
 		<View style={styles.blocks}>
 			{segments.map((segment, index) => {
-				if (segment.type === 'katex') {
-					return <KaTeX key={`katex-${index}`} value={segment.value} />;
-				}
-
 				if (segment.type === 'linebreak') {
 					return <View key={`linebreak-${index}`} style={styles.lineBreak} />;
 				}

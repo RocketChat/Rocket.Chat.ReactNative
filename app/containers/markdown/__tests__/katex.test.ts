@@ -32,9 +32,37 @@ describe('markdown katex', () => {
 		]);
 	});
 
-	it('splits double dollar math into a katex block when dollar syntax is enabled', () => {
+	it('splits double dollar math into a native block math segment when dollar syntax is enabled', () => {
 		expect(segmentsFor('$$\\int_0^1 x\\,dx = \\frac{1}{2}$$', true, true, false)).toEqual([
-			{ type: 'katex', value: '\\int_0^1 x\\,dx = \\frac{1}{2}' }
+			{
+				type: 'markdown',
+				content: '$$\n\\int_0^1 x\\,dx = \\frac{1}{2}\n$$',
+				accessibilityLabel: '\\int_0^1 x\\,dx = \\frac{1}{2}'
+			}
+		]);
+	});
+
+	it('serializes bracket matrix math as a native block math segment when parenthesis syntax is enabled', () => {
+		const matrix = '\\frac{a}{b} + \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}';
+		expect(segmentsFor(`\\[${matrix}\\]`, true, false, true)).toEqual([
+			{ type: 'markdown', content: `$$\n${matrix}\n$$`, accessibilityLabel: matrix }
+		]);
+	});
+
+	it('keeps mention prefixes when the symbol preferences are enabled', () => {
+		const tokens = parse('@all #general');
+		const mentionContext = {
+			...context,
+			channels: [{ _id: 'GENERAL', name: 'general' }],
+			mentionsWithAtSymbol: true,
+			roomsWithHashTagSymbol: true
+		};
+		expect(buildRenderSegments(tokens, mentionContext)).toEqual([
+			{
+				type: 'markdown',
+				content: '[**@all**](<user://all>) [**\\#general**](<channel://GENERAL>)',
+				accessibilityLabel: '@all #general'
+			}
 		]);
 	});
 
