@@ -40,6 +40,15 @@ const Touchable = ({
 	const rowState = useSharedValue(0); // 0: closed, 1: right opened, -1: left opened
 	const valueRef = useRef(0);
 	const consumedTouchRef = useRef(false);
+	const touchStartHandledRef = useRef(false);
+
+	const handleTouchBegin = (closedOtherRow: boolean) => {
+		if (touchStartHandledRef.current) {
+			return;
+		}
+		touchStartHandledRef.current = true;
+		consumedTouchRef.current = closedOtherRow;
+	};
 
 	const close = () => {
 		rowState.value = 0;
@@ -75,6 +84,7 @@ const Touchable = ({
 	};
 
 	const handlePress = () => {
+		touchStartHandledRef.current = false;
 		if (rowState.value !== 0) {
 			close();
 			return;
@@ -89,6 +99,7 @@ const Touchable = ({
 	};
 
 	const handleLongPress = () => {
+		touchStartHandledRef.current = false;
 		if (rowState.value !== 0) {
 			close();
 			return;
@@ -183,7 +194,7 @@ const Touchable = ({
 		rowOffSet.value = toValue;
 		valueRef.current = toValue;
 		if (nextRowState !== 0) {
-			registerOpenSwipeItem(rid, close);
+			registerOpenSwipeItem({ rid, transX, rowState, rowOffSet });
 		} else {
 			unregisterOpenSwipeItem(rid);
 		}
@@ -200,7 +211,8 @@ const Touchable = ({
 		.failOffsetY([-20, 20]) // Fail on vertical movement to distinguish scrolling
 		.enabled(swipeEnabled)
 		.onBegin(() => {
-			scheduleOnRN(closeOpenSwipeItem, rid);
+			const closedOtherRow = closeOpenSwipeItem(rid);
+			scheduleOnRN(handleTouchBegin, closedOtherRow);
 		})
 		.onUpdate(event => {
 			transX.value = event.translationX + rowOffSet.value;
@@ -215,8 +227,8 @@ const Touchable = ({
 	const composedGesture = Gesture.Race(panGesture, longPressGesture);
 
 	const handleActiveStateChange = (active: boolean) => {
-		if (active) {
-			consumedTouchRef.current = closeOpenSwipeItem(rid);
+		if (!active) {
+			touchStartHandledRef.current = false;
 		}
 	};
 

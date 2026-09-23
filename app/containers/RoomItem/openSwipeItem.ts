@@ -1,19 +1,36 @@
-let openSwipeItem: { rid: string; close: () => void } | null = null;
+import { makeMutable, withSpring, type SharedValue } from 'react-native-reanimated';
 
-export const registerOpenSwipeItem = (rid: string, close: () => void) => {
-	openSwipeItem = { rid, close };
+import { SWIPE_SPRING_CONFIG } from './styles';
+
+type OpenSwipeItem = {
+	rid: string;
+	transX: SharedValue<number>;
+	rowState: SharedValue<number>;
+	rowOffSet: SharedValue<number>;
+};
+
+export const openSwipeItem = makeMutable<OpenSwipeItem | null>(null);
+
+export const registerOpenSwipeItem = (item: OpenSwipeItem) => {
+	'worklet';
+	openSwipeItem.value = item;
 };
 
 export const unregisterOpenSwipeItem = (rid: string) => {
-	if (openSwipeItem?.rid === rid) {
-		openSwipeItem = null;
+	'worklet';
+	if (openSwipeItem.value?.rid === rid) {
+		openSwipeItem.value = null;
 	}
 };
 
 export const closeOpenSwipeItem = (exceptRid?: string) => {
-	if (openSwipeItem && openSwipeItem.rid !== exceptRid) {
-		openSwipeItem.close();
-		openSwipeItem = null;
+	'worklet';
+	const item = openSwipeItem.value;
+	if (item && item.rid !== exceptRid) {
+		item.rowState.value = 0;
+		item.transX.value = withSpring(0, SWIPE_SPRING_CONFIG);
+		item.rowOffSet.value = 0;
+		openSwipeItem.value = null;
 		return true;
 	}
 	return false;

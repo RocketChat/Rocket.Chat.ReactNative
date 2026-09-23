@@ -1,4 +1,13 @@
+import { makeMutable } from 'react-native-reanimated';
+
 import { registerOpenSwipeItem, unregisterOpenSwipeItem, closeOpenSwipeItem } from '../openSwipeItem';
+
+const createItem = (rid: string) => ({
+	rid,
+	transX: makeMutable(80),
+	rowState: makeMutable(1),
+	rowOffSet: makeMutable(80)
+});
 
 describe('closeOpenSwipeItem', () => {
 	afterEach(() => {
@@ -7,12 +16,13 @@ describe('closeOpenSwipeItem', () => {
 	});
 
 	it('closes the open item and reports it was consumed', () => {
-		const close = jest.fn();
-		registerOpenSwipeItem('roomA', close);
+		const item = createItem('roomA');
+		registerOpenSwipeItem(item);
 
 		const consumed = closeOpenSwipeItem('roomB');
 
-		expect(close).toHaveBeenCalledTimes(1);
+		expect(item.rowState.value).toBe(0);
+		expect(item.rowOffSet.value).toBe(0);
 		expect(consumed).toBe(true);
 	});
 
@@ -23,12 +33,12 @@ describe('closeOpenSwipeItem', () => {
 	});
 
 	it('reports nothing was consumed when closing the same room that is open', () => {
-		const close = jest.fn();
-		registerOpenSwipeItem('roomA', close);
+		const item = createItem('roomA');
+		registerOpenSwipeItem(item);
 
 		const consumed = closeOpenSwipeItem('roomA');
 
-		expect(close).not.toHaveBeenCalled();
+		expect(item.rowState.value).toBe(1);
 		expect(consumed).toBe(false);
 	});
 });
