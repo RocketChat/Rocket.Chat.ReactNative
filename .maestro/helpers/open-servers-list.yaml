@@ -9,7 +9,7 @@ tags:
       platform: iOS
     commands:
       - tapOn:
-          id: 'rooms-list-view-sidebar'
+          text: 'Menu'
       - extendedWaitUntil:
           visible:
             id: 'sidebar-workspaces'

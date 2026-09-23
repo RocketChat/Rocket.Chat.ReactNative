@@ -8,15 +8,17 @@ tags:
     when:
       platform: iOS
     commands:
+      # The native header's overflow ("More") item carries only a label, no accessibilityIdentifier.
+      # It opens a JS action sheet whose "Actions" entry navigates to Room Actions.
       - tapOn:
-          id: 'room-view-header-more'
+          text: 'More'
           retryTapIfNoChange: true
       - extendedWaitUntil:
           visible:
-            id: 'action-sheet-handle'
+            text: 'Actions'
           timeout: 60000
       - tapOn:
-          id: 'room-view-header-room-actions'
+          text: 'Actions'
 - runFlow:
     when:
       platform: Android

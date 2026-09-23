@@ -178,12 +178,14 @@ tags:
     id: rooms-list-view-item-${output.privateRoomName}
 - tapOn:
     id: rooms-list-view-item-${output.privateRoomName}
-- extendedWaitUntil:
-    visible:
-      id: room-view-title-${output.privateRoomName}
-    timeout: 60000
-- assertVisible:
-    id: room-view-title-${output.privateRoomName}
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.privateRoomName}
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.privateRoomName}
 - assertVisible:
     id: room-view-header-call
 - assertVisible:
@@ -258,10 +260,10 @@ tags:
     label: should have submit button
 - tapOn:
     id: add-existing-channel-view-submit
-- extendedWaitUntil:
-    visible:
-      id: room-view-title-${output.team}
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.team}
 - runFlow: '../../helpers/open-room-actions.yaml'
 - assertVisible:
     id: room-actions-teams
