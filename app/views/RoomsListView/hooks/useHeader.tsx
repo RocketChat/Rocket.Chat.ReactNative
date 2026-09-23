@@ -5,6 +5,7 @@ import { type KeyboardFocus } from 'react-native-external-keyboard';
 import { type SearchBarCommands } from 'react-native-screens';
 
 import { showActionSheetRef } from '~/containers/ActionSheet';
+import { type TIconsName } from '~/containers/CustomIcon';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -13,6 +14,7 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { hasNativeHeaderBar, isTablet } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
+import { headerIcon } from '~/lib/methods/helpers/navigation/headerIcon';
 import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';
 import RoomsListHeaderView from '../components/Header';
@@ -24,7 +26,7 @@ const MAX_HEADER_RIGHT_ACTIONS = 2;
 interface IHeaderRightAction {
 	key: string;
 	present: boolean;
-	sfSymbol: string;
+	icon: TIconsName;
 	accessibilityLabel: string;
 	tintColor?: string;
 	disabled?: boolean;
@@ -168,7 +170,7 @@ export const useHeader = () => {
 				{
 					key: 'create',
 					present: canCreateRoom,
-					sfSymbol: 'plus',
+					icon: 'create',
 					accessibilityLabel: i18n.t('Create_new_channel_team_dm_discussion'),
 					disabled,
 					onPress: goToNewMessage
@@ -176,7 +178,7 @@ export const useHeader = () => {
 				{
 					key: 'push-troubleshoot',
 					present: issuesWithNotifications,
-					sfSymbol: 'bell.slash',
+					icon: 'notification-disabled',
 					accessibilityLabel: i18n.t('Troubleshooting'),
 					tintColor: colors.fontDanger,
 					onPress: navigateToPushTroubleshootView
@@ -184,7 +186,7 @@ export const useHeader = () => {
 				{
 					key: 'directory',
 					present: true,
-					sfSymbol: 'globe',
+					icon: 'directory',
 					accessibilityLabel: i18n.t('Directory'),
 					disabled,
 					onPress: goDirectory
@@ -209,7 +211,7 @@ export const useHeader = () => {
 						type: 'button',
 						label: i18n.t('Menu'),
 						accessibilityLabel: i18n.t('Menu'),
-						icon: { type: 'sfSymbol', name: 'line.3.horizontal' },
+						icon: headerIcon('hamburguer'),
 						disabled,
 						badge: nativeBadgeColor ? { value: '', style: { backgroundColor: nativeBadgeColor } } : undefined,
 						onPress: isMasterDetail
@@ -220,7 +222,7 @@ export const useHeader = () => {
 						type: 'button',
 						label: serverName,
 						accessibilityLabel: `${serverName} ${nativeHeaderSubtitle}`,
-						icon: { type: 'sfSymbol', name: 'server.rack' },
+						icon: headerIcon('workspaces'),
 						onPress: () => showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false })
 					}
 				],
@@ -229,7 +231,7 @@ export const useHeader = () => {
 						type: 'button' as const,
 						label: action.accessibilityLabel,
 						accessibilityLabel: action.accessibilityLabel,
-						icon: { type: 'sfSymbol' as const, name: action.sfSymbol },
+						icon: headerIcon(action.icon),
 						tintColor: action.tintColor,
 						disabled: action.disabled,
 						onPress: action.onPress
@@ -240,12 +242,12 @@ export const useHeader = () => {
 									type: 'menu' as const,
 									label: i18n.t('More'),
 									accessibilityLabel: i18n.t('More'),
-									icon: { type: 'sfSymbol' as const, name: 'ellipsis' },
+									icon: headerIcon('kebab'),
 									menu: {
 										items: overflow.map(action => ({
 											type: 'action' as const,
 											label: action.accessibilityLabel,
-											icon: { type: 'sfSymbol' as const, name: action.sfSymbol },
+											icon: headerIcon(action.icon),
 											onPress: action.onPress
 										}))
 									}

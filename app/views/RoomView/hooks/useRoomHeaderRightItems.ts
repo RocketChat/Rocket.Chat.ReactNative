@@ -11,6 +11,7 @@ import { useCanReturnQueue } from '~/ee/omnichannel/hooks/useCanReturnQueue';
 import { useSetting } from '~/lib/hooks/useSetting';
 import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
+import { headerIcon } from '~/lib/methods/helpers/navigation/headerIcon';
 import { toggleFollowThread } from '~/lib/methods/toggleFollowThread';
 import { returnLivechat } from '~/lib/services/restApi';
 import { getUserSelector } from '~/selectors/login';
@@ -111,7 +112,7 @@ const useOmnichannelRightItems = (rid: string, roomStore: RoomStore, enabled: bo
 			type: 'button',
 			label: i18n.t('More'),
 			accessibilityLabel: i18n.t('More'),
-			icon: { type: 'sfSymbol', name: 'ellipsis' },
+			icon: headerIcon('kebab'),
 			onPress: showMoreActions
 		}
 	];
@@ -137,7 +138,7 @@ const useThreadRightItems = (tmid: string | undefined, enabled: boolean): Native
 			type: 'button',
 			label: i18n.t(isFollowingThread ? 'Unfollow_thread' : 'Follow_thread'),
 			accessibilityLabel: i18n.t(isFollowingThread ? 'Unfollow_thread' : 'Follow_thread'),
-			icon: { type: 'sfSymbol', name: isFollowingThread ? 'bell' : 'bell.slash' },
+			icon: headerIcon(isFollowingThread ? 'notification' : 'notification-disabled'),
 			onPress: onToggleFollowThread
 		}
 	];
@@ -224,7 +225,7 @@ const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean):
 			type: 'button',
 			label: i18n.t('Encrypted'),
 			accessibilityLabel: i18n.t('Encrypted'),
-			icon: { type: 'sfSymbol', name: 'lock' },
+			icon: headerIcon('encrypted'),
 			disabled: !canToggleEncryption,
 			onPress: goE2EEToggleRoomView
 		});
@@ -234,7 +235,7 @@ const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean):
 			type: 'button',
 			label: i18n.t('Troubleshooting'),
 			accessibilityLabel: i18n.t('Troubleshooting'),
-			icon: { type: 'sfSymbol', name: 'bell.slash' },
+			icon: headerIcon('notification-disabled'),
 			tintColor: issuesWithNotifications ? colors.fontDanger : undefined,
 			disabled: hasE2EEWarning,
 			onPress: navigateToNotificationOrPushTroubleshoot
@@ -245,7 +246,7 @@ const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean):
 			type: 'button',
 			label: callAccessibilityLabel,
 			accessibilityLabel: callAccessibilityLabel,
-			icon: { type: 'sfSymbol', name: 'phone' },
+			icon: headerIcon('phone'),
 			disabled: hasE2EEWarning || isCallDisabled,
 			onPress: onPressCall
 		});
@@ -255,7 +256,7 @@ const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean):
 			type: 'button',
 			label: threadsAccessibilityLabel,
 			accessibilityLabel: threadsAccessibilityLabel,
-			icon: { type: 'sfSymbol', name: 'bubble.left.and.bubble.right' },
+			icon: headerIcon('threads'),
 			disabled: hasE2EEWarning,
 			badge: tunreadBadge,
 			onPress: goThreadsView
@@ -265,7 +266,7 @@ const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean):
 		type: 'button',
 		label: i18n.t('More'),
 		accessibilityLabel: i18n.t('More'),
-		icon: { type: 'sfSymbol', name: 'ellipsis' },
+		icon: headerIcon('kebab'),
 		onPress: () => showActionSheetRef({ options: overflowOptions })
 	});
 

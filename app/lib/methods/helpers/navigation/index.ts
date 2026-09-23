@@ -9,6 +9,7 @@ import Header from '~/containers/Header';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import I18n from '~/i18n';
 import { isIOS } from '~/lib/methods/helpers';
+import { headerIcon } from './headerIcon';
 
 export const defaultHeader: NativeStackNavigationOptions = isIOS
 	? {
@@ -26,7 +27,7 @@ export const outsideHeaderRightLegal = (navigation: any, testID: string): Native
 						type: 'button',
 						label: I18n.t('More'),
 						accessibilityLabel: I18n.t('More'),
-						icon: { type: 'sfSymbol', name: 'ellipsis' },
+						icon: headerIcon('kebab'),
 						onPress: () => navigation?.navigate('LegalView')
 					}
 				]
@@ -43,7 +44,7 @@ export const outsideHeaderLeftClose = (onPress: () => void, testID: string): Nat
 						type: 'button',
 						label: I18n.t('Close'),
 						accessibilityLabel: I18n.t('Close'),
-						icon: { type: 'sfSymbol', name: 'xmark' },
+						icon: headerIcon('close'),
 						onPress
 					}
 				]

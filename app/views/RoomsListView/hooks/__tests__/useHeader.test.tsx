@@ -25,6 +25,10 @@ jest.mock('~/lib/methods/helpers', () =>
 	)
 );
 
+jest.mock('~/lib/methods/helpers/navigation/headerIcon', () => ({
+	headerIcon: (name: string) => ({ type: 'image', source: { uri: name } })
+}));
+
 jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: () => false }));
 jest.mock('~/lib/hooks/useIsAccessibilityNavigationEnabled', () => ({ useIsAccessibilityNavigationEnabled: () => false }));
 jest.mock('~/lib/hooks/usePermissions', () => ({ usePermissions: () => [true, false, false, false, false] }));
@@ -151,8 +155,8 @@ describe('RoomsListView useHeader', () => {
 		const options = mockSetOptions.mock.calls[0][0];
 		const leftItems = options.unstable_headerLeftItems();
 		expect(leftItems).toHaveLength(2);
-		expect(leftItems[0].icon).toEqual({ type: 'sfSymbol', name: 'line.3.horizontal' });
-		expect(leftItems[1].icon).toEqual({ type: 'sfSymbol', name: 'server.rack' });
+		expect(leftItems[0].icon).toEqual({ type: 'image', source: { uri: 'hamburguer' } });
+		expect(leftItems[1].icon).toEqual({ type: 'image', source: { uri: 'workspaces' } });
 		expect(leftItems[1].label).toBe('Rocket.Chat');
 
 		leftItems[1].onPress();
