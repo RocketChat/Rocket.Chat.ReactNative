@@ -33,24 +33,25 @@ index fa1b7731..153d712e 100644
          view: ScreenStackHeaderConfig?,
          value: String?,
 diff --git a/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm b/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
-index 64beb499..2c16cff4 100644
+index 64beb499..87936eac 100644
 --- a/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
 +++ b/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
-@@ -22,7 +22,13 @@
-     imageLoadingCompletionBlock([RNSImageLoadingHelper handleRenderingModeForImage:image isTemplate:isTemplate]);
-   } else
- #endif // !defined(NDEBUG)
--  {
+@@ -38,6 +38,15 @@
+   RCTAssert(imageSource != nil, @"[RNScreens] imageSource must not be nil");
+   RCTAssert(imageLoader != nil, @"[RNScreens] imageLoader must not be nil");
+ 
 +  if (imageSource.request.URL.isFileURL) {
 +    UIImage *image = [UIImage imageWithContentsOfFile:imageSource.request.URL.path];
 +    if (image != nil) {
 +      image = [UIImage imageWithCGImage:image.CGImage scale:imageSource.scale orientation:image.imageOrientation];
 +    }
 +    imageLoadingCompletionBlock([RNSImageLoadingHelper handleRenderingModeForImage:image isTemplate:isTemplate]);
-+  } else {
-     [self loadImageFromSource:imageSource
-               withImageLoader:imageLoader
-                    asTemplate:isTemplate
++    return;
++  }
++
+   [imageLoader loadImageWithURLRequest:imageSource.request
+       size:imageSource.size
+       scale:imageSource.scale
 diff --git a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
 index 8a416972..9b13f60d 100644
 --- a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
@@ -85,7 +86,7 @@ index 8a416972..9b13f60d 100644
  @property (nonatomic, retain) NSString *backTitleFontFamily;
  @property (nonatomic, retain) NSNumber *backTitleFontSize;
 diff --git a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
-index a54cb632..43905c9d 100644
+index a54cb632..90d223ae 100644
 --- a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
 +++ b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
 @@ -13,6 +13,7 @@
@@ -209,7 +210,7 @@ index a54cb632..43905c9d 100644
 +            dispatch_async(dispatch_get_main_queue(), onLoaded);
 +          }];
 +
-+  return nil;
++  return [[RNSHeaderImageSlot sharedImageCache] objectForKey:uri];
 +}
 +
 +- (void)reset

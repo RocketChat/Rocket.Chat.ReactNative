@@ -4,13 +4,20 @@ import { Image, type ImageSourcePropType } from 'react-native';
 import { IconSet, type TIconsName } from '~/containers/CustomIcon';
 import log from '~/lib/methods/helpers/log';
 
+const iconImageCache = new Map<string, ImageSourcePropType>();
+
 export const useHeaderIconImage = (name: TIconsName | undefined, color: string, size: number) => {
 	const [image, setImage] = useState<{ name: TIconsName; color: string; source: ImageSourcePropType }>();
+	const cacheKey = `${name}:${color}:${size}`;
+	const cachedSource = name ? iconImageCache.get(cacheKey) : undefined;
 	useEffect(() => {
 		let cancelled = false;
-		if (name) {
+		if (name && !iconImageCache.has(cacheKey)) {
 			IconSet.getImageSource(name, size, color)
 				.then(source => {
+					if (source) {
+						iconImageCache.set(cacheKey, source);
+					}
 					if (!cancelled && source) {
 						setImage({ name, color, source });
 					}
@@ -20,7 +27,10 @@ export const useHeaderIconImage = (name: TIconsName | undefined, color: string, 
 		return () => {
 			cancelled = true;
 		};
-	}, [name, color, size]);
+	}, [name, color, size, cacheKey]);
+	if (cachedSource) {
+		return cachedSource;
+	}
 	return image?.name === name && image?.color === color ? image?.source : undefined;
 };
 

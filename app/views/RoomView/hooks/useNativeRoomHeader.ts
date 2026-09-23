@@ -142,15 +142,16 @@ export const useNativeRoomHeader = (enabled: boolean, fields: IHeaderFields, tmi
 	const roomImage = remoteImage ?? glyphImage;
 	const clockImage = useHeaderIconImage(enabled && showClock ? 'clock' : undefined, colors.fontSecondaryInfo, 12);
 	const subtitleImage = tmid ? roomImage : clockImage;
+	const titleReady = !!tmid || !!roomImage;
 
 	useLayoutEffect(() => {
 		if (enabled) {
 			navigation.setOptions({
-				headerTitle: title,
-				headerSubtitle: subtitle || undefined,
+				headerTitle: titleReady ? title : '',
+				headerSubtitle: (titleReady && subtitle) || undefined,
 				headerTitleImageSource: tmid ? undefined : roomImage,
 				headerSubtitleImageSource: subtitleImage
 			});
 		}
-	}, [enabled, navigation, title, subtitle, tmid, roomImage, subtitleImage]);
+	}, [enabled, navigation, title, subtitle, tmid, roomImage, subtitleImage, titleReady]);
 };

@@ -47,6 +47,13 @@ beforeEach(() => {
 	};
 });
 
+it('holds the title until the room icon is ready', async () => {
+	renderHook(() => useNativeRoomHeader(true, { ...fields, type: 'p', title: 'Held' }));
+	expect(mockSetOptions.mock.calls[0][0]).toMatchObject({ headerTitle: '', headerSubtitle: undefined });
+	await waitFor(() => expect(latestOptions().headerTitleImageSource?.uri).toBe('channel-private:title'));
+	expect(mockSetOptions.mock.calls.every(([options]) => options.headerTitle === '' || options.headerTitleImageSource)).toBe(true);
+});
+
 it('shows plain topic text and the room icon', async () => {
 	renderHook(() => useNativeRoomHeader(true, fields));
 	await waitFor(() => expect(latestOptions().headerTitleImageSource?.uri).toBe('channel-public:title'));
