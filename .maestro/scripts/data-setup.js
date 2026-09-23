@@ -220,7 +220,7 @@ const deleteCreatedUsers = () => {
     }
 };
 
-const roomMessageCount = (username, password, roomId) => {
+const groupMessageCount = (username, password, roomId) => {
     login(username, password);
 
     const result = getWithRetry(`${data.server}/api/v1/groups.messages?roomId=${roomId}`, {
@@ -295,5 +295,5 @@ output.utils = {
     getDeepLink,
     createDM,
     sleep,
-    roomMessageCount
+    groupMessageCount
 };

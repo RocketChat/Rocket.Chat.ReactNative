@@ -221,7 +221,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
 					</HeaderButton.Container>
 				),
-				headerTitle: () => <SearchHeader onSearchChangeText={this.search} testID='share-list-search' />,
+				headerTitle: () => <SearchHeader onSearchChangeText={this.search} />,
 				headerRight: () => null
 			});
 			return;
@@ -237,7 +237,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 			headerRight: () =>
 				this.airGappedReadOnly ? null : (
 					<HeaderButton.Container>
-						<HeaderButton.Item iconName='search' onPress={this.initSearch} testID='share-list-search-button' />
+						<HeaderButton.Item iconName='search' onPress={this.initSearch} />
 					</HeaderButton.Container>
 				)
 		});
