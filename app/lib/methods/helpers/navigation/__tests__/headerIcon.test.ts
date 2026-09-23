@@ -16,6 +16,6 @@ describe('headerIcon', () => {
 		await preloadHeaderIcons();
 
 		expect(headerIcon('kebab')).toEqual({ type: 'image', source: { uri: 'file://kebab.png', scale: 3 } });
-		expect(mockGetImageSource).toHaveBeenCalledWith('kebab', 24, 'black');
+		expect(mockGetImageSource).toHaveBeenCalledWith('kebab', 30, 'black');
 	});
 });

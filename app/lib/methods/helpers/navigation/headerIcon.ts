@@ -2,7 +2,7 @@ import type { ImageSourcePropType } from 'react-native';
 
 import { IconSet, type TIconsName } from '~/containers/CustomIcon';
 
-const HEADER_ICON_SIZE = 24;
+const HEADER_ICON_SIZE = 30;
 
 const HEADER_ICONS: TIconsName[] = [
 	'chat-close',
