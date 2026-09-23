@@ -15,7 +15,7 @@ describe('headerIcon', () => {
 
 		await preloadHeaderIcons();
 
-		expect(headerIcon('kebab')).toEqual({ type: 'image', source: { uri: 'file://kebab.png', scale: 3 } });
+		expect(headerIcon('kebab')).toEqual({ type: 'image', source: { uri: 'file://kebab.png', scale: 3, alignmentInset: 2.5 } });
 		expect(mockGetImageSource).toHaveBeenCalledWith('kebab', 30, 'black');
 	});
 });

@@ -43,10 +43,26 @@ index fa1b773..41866aa 100644
          view: ScreenStackHeaderConfig?,
          value: String?,
 diff --git a/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm b/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
-index 64beb49..87936ea 100644
+index 64beb49..14bb54a 100644
 --- a/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
 +++ b/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
-@@ -38,6 +38,15 @@
+@@ -13,6 +13,15 @@
+   RCTImageSource *imageSource = [RCTConvert RCTImageSource:jsonImageSource];
+   RCTAssert(imageSource != nil, @"[RNScreens] Expected nonnil image source");
+ 
++  NSNumber *alignmentInset = jsonImageSource[@"alignmentInset"];
++  if (alignmentInset != nil) {
++    CGFloat inset = alignmentInset.doubleValue;
++    void (^loadingCompletionBlock)(UIImage *_Nullable) = imageLoadingCompletionBlock;
++    imageLoadingCompletionBlock = ^(UIImage *_Nullable image) {
++      loadingCompletionBlock([image imageWithAlignmentRectInsets:UIEdgeInsetsMake(inset, inset, inset, inset)]);
++    };
++  }
++
+ #if !defined(NDEBUG) // We're in debug mode here
+   if (imageSource.packagerAsset) {
+     // We use `+ [RCTConvert UIImage:]` only in debug mode, because it is deprecated, however
+@@ -38,6 +47,15 @@
    RCTAssert(imageSource != nil, @"[RNScreens] imageSource must not be nil");
    RCTAssert(imageLoader != nil, @"[RNScreens] imageLoader must not be nil");
  
