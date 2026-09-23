@@ -171,7 +171,7 @@ describe('persistUploadError', () => {
 	});
 
 	it('announces a failure the user cannot retry away', async () => {
-		await persist(new UploadHttpError(403, { serverMessage: 'Not allowed' }));
+		await persist(new UploadHttpError(415, { serverMessage: 'Not allowed' }));
 
 		expect(showToast).toHaveBeenCalledWith('Not allowed');
 	});

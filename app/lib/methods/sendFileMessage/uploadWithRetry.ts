@@ -1,5 +1,5 @@
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
-import { type IFileUpload, UploadHttpError } from '../helpers/fileUpload/definitions';
+import { type IFileUpload, UploadHttpError, parseRetryAfterFromMessage } from '../helpers/fileUpload/definitions';
 import { uploadQueue } from './utils';
 
 export const MAX_UPLOAD_ATTEMPTS = 4;
@@ -13,8 +13,9 @@ export const getUploadRetryDelay = (error: unknown, attempt: number): number | u
 	if (!(error instanceof UploadHttpError) || error.status !== 429 || attempt >= MAX_UPLOAD_ATTEMPTS) {
 		return undefined;
 	}
-	const delay = error.retryAfterSeconds ? error.retryAfterSeconds * 1000 : BASE_RETRY_DELAY * 2 ** (attempt - 1);
-	return Math.min(delay, MAX_RETRY_DELAY);
+	const retryAfterSeconds = error.retryAfterSeconds ?? parseRetryAfterFromMessage(error.serverMessage);
+	const delay = retryAfterSeconds ? retryAfterSeconds * 1000 : BASE_RETRY_DELAY * 2 ** (attempt - 1);
+	return delay <= MAX_RETRY_DELAY ? delay : undefined;
 };
 
 export const uploadWithRetry = async (uploadPath: string, createUpload: () => IFileUpload): Promise<TRoomsMediaResponse> => {

@@ -80,3 +80,10 @@ export const getRetryAfterFromHeaders = (headers?: Record<string, string>): numb
 	const key = Object.keys(headers).find(name => name.toLowerCase() === 'retry-after');
 	return key ? parseRetryAfter(headers[key]) : undefined;
 };
+
+const WAIT_SECONDS_PATTERN = /wait (\d+) seconds/;
+
+export const parseRetryAfterFromMessage = (message?: string): number | undefined => {
+	const seconds = Number(message?.match(WAIT_SECONDS_PATTERN)?.[1]);
+	return seconds > 0 ? seconds : undefined;
+};

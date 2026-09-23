@@ -35,8 +35,24 @@ describe('getUploadRetryDelay', () => {
 		expect(getUploadRetryDelay(new UploadHttpError(429, { retryAfterSeconds: 5 }), 1)).toBe(5000);
 	});
 
-	it('refuses to wait longer than 30 seconds', () => {
-		expect(getUploadRetryDelay(new UploadHttpError(429, { retryAfterSeconds: 600 }), 1)).toBe(30000);
+	it('waits as long as the rate limit message asks when there is no Retry-After', () => {
+		const serverMessage =
+			'Error, too many requests. Please slow down. You must wait 12 seconds before trying this endpoint again. [error-too-many-requests]';
+		expect(getUploadRetryDelay(new UploadHttpError(429, { serverMessage }), 1)).toBe(12000);
+	});
+
+	it('prefers Retry-After over the rate limit message', () => {
+		const serverMessage = 'You must wait 12 seconds before trying this endpoint again.';
+		expect(getUploadRetryDelay(new UploadHttpError(429, { serverMessage, retryAfterSeconds: 5 }), 1)).toBe(5000);
+	});
+
+	it('gives up instead of retrying early when the server asks for more than 30 seconds', () => {
+		expect(getUploadRetryDelay(new UploadHttpError(429, { retryAfterSeconds: 60 }), 1)).toBeUndefined();
+		expect(getUploadRetryDelay(new UploadHttpError(429, { serverMessage: 'You must wait 60 seconds' }), 1)).toBeUndefined();
+	});
+
+	it('waits exactly 30 seconds when that is what the server asks for', () => {
+		expect(getUploadRetryDelay(new UploadHttpError(429, { retryAfterSeconds: 30 }), 1)).toBe(30000);
 	});
 });
 
@@ -72,6 +88,14 @@ describe('uploadWithRetry', () => {
 
 		await expect(pending).resolves.toMatchObject({ status: 429 });
 		expect(createUpload).toHaveBeenCalledTimes(MAX_UPLOAD_ATTEMPTS);
+	});
+
+	it('does not auto-retry when the rate limit window outlasts the cap', async () => {
+		const serverMessage = 'You must wait 60 seconds before trying this endpoint again. [error-too-many-requests]';
+		const createUpload = uploadThat(jest.fn().mockRejectedValue(new UploadHttpError(429, { serverMessage })));
+
+		await expect(uploadWithRetry(PATH, createUpload)).rejects.toMatchObject({ status: 429 });
+		expect(createUpload).toHaveBeenCalledTimes(1);
 	});
 
 	it('does not retry a 413', async () => {

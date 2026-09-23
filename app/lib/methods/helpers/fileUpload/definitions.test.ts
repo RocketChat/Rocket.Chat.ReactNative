@@ -1,4 +1,10 @@
-import { UploadHttpError, getRetryAfterFromHeaders, parseRetryAfter, parseUploadErrorBody } from './definitions';
+import {
+	UploadHttpError,
+	getRetryAfterFromHeaders,
+	parseRetryAfter,
+	parseRetryAfterFromMessage,
+	parseUploadErrorBody
+} from './definitions';
 
 describe('parseUploadErrorBody', () => {
 	it('returns nothing for an empty body', () => {
@@ -68,6 +74,20 @@ describe('getRetryAfterFromHeaders', () => {
 	it('returns nothing without headers', () => {
 		expect(getRetryAfterFromHeaders(undefined)).toBeUndefined();
 		expect(getRetryAfterFromHeaders({ 'content-type': 'application/json' })).toBeUndefined();
+	});
+});
+
+describe('parseRetryAfterFromMessage', () => {
+	it('reads the wait from the rate limit message', () => {
+		expect(
+			parseRetryAfterFromMessage(
+				'Error, too many requests. Please slow down. You must wait 42 seconds before trying this endpoint again. [error-too-many-requests]'
+			)
+		).toBe(42);
+	});
+
+	it.each([[undefined], [''], ['Too many requests'], ['You must wait 0 seconds']])('returns nothing for %p', message => {
+		expect(parseRetryAfterFromMessage(message)).toBeUndefined();
 	});
 });
 
