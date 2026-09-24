@@ -4,20 +4,19 @@ import { type RouteProp } from '@react-navigation/native';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
 
-import { type ChatsStackParamList } from '../stacks/types';
-import log from '../lib/methods/helpers/log';
-import * as List from '../containers/List';
-import I18n from '../i18n';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
-import { themes } from '../lib/constants/colors';
-import { type TSupportedThemes, withTheme } from '../theme';
-import SafeAreaView from '../containers/SafeAreaView';
-import { ICON_SIZE } from '../containers/List/constants';
-import SearchBox from '../containers/SearchBox';
-import Radio from '../containers/Radio';
-import sharedStyles from './Styles';
-import { type TDataSelect } from '../definitions/IDataSelect';
-import { withMasterDetail } from '../lib/hooks/useMasterDetail';
+import { type ChatsStackParamList } from '~/stacks/types';
+import log from '~/lib/methods/helpers/log';
+import I18n from '~/i18n';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { themes } from '~/lib/constants/colors';
+import { type TSupportedThemes, withTheme } from '~/theme';
+import SafeAreaView from '~/containers/SafeAreaView';
+import SearchBox from '~/containers/SearchBox';
+import sharedStyles from '../Styles';
+import Item from './Item';
+import { isIOS } from '~/lib/methods/helpers';
+import { type TDataSelect } from '~/definitions/IDataSelect';
+import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -138,55 +137,27 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 		}
 	};
 
-	renderItem = ({ item }: { item: TDataSelect }) => {
-		const { theme } = this.props;
-		const { selected } = this.state;
-
+	renderItem = ({ item, index }: { item: TDataSelect; index: number }) => {
+		const { isSearching, data, dataFiltered } = this.state;
+		const rowCount = (isSearching ? dataFiltered : data)?.length ?? 0;
 		const channelIcon = item.t === 'p' ? 'channel-private' : 'channel-public';
 		const teamIcon = item.t === 'p' ? 'teams-private' : 'teams';
-		const icon = item.teamMain ? teamIcon : channelIcon;
-		const checked = this.isChecked(item.rid) ? 'check' : '';
-
-		const showRadio = () => (
-			<Radio
-				testID={selected ? `radio-button-selected-${item.name}` : `radio-button-unselected-${item.name}`}
-				check={selected.includes(item.rid)}
-				size={ICON_SIZE}
-			/>
-		);
-		const showCheck = () =>
-			checked !== '' ? (
-				<List.Icon
-					testID={checked ? `${item.name}-checked` : `${item.name}-unchecked`}
-					name={checked}
-					color={themes[theme].fontHint}
-				/>
-			) : null;
-
-		const handleAcessibilityLabel = (rid: string) => {
-			let label = '';
-			if (this.isRadio) {
-				label = this.isChecked(rid) ? I18n.t('Selected') : I18n.t('Unselected');
-			} else {
-				label = this.isChecked(rid) ? I18n.t('Checked') : I18n.t('Unchecked');
-			}
-			return label;
-		};
+		const isChecked = this.isChecked(item.rid);
+		const checkedLabel = isChecked ? I18n.t('Checked') : I18n.t('Unchecked');
+		const radioLabel = isChecked ? I18n.t('Selected') : I18n.t('Unselected');
 
 		return (
-			<>
-				<List.Separator />
-				<List.Item
-					title={item.name || ''}
-					translateTitle={false}
-					testID={`select-list-view-item-${item.name}`}
-					onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid))}
-					alert={item.alert}
-					left={() => <List.Icon name={icon} color={themes[theme].fontHint} />}
-					right={() => (this.isRadio ? showRadio() : showCheck())}
-					additionalAccessibilityLabel={handleAcessibilityLabel(item.rid)}
-				/>
-			</>
+			<Item
+				name={item.name || ''}
+				icon={item.teamMain ? teamIcon : channelIcon}
+				alert={item.alert}
+				isRadio={this.isRadio}
+				isChecked={isChecked}
+				accessibilityState={this.isRadio ? radioLabel : checkedLabel}
+				onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid))}
+				isFirst={index === 0}
+				isLast={index === rowCount - 1}
+			/>
 		);
 	};
 
@@ -201,7 +172,10 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 					keyExtractor={item => item.rid}
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.isSearch ? this.renderSearch : this.renderInfoText}
-					contentContainerStyle={{ backgroundColor: themes[theme].surfaceRoom, paddingBottom: insets.bottom }}
+					contentContainerStyle={{
+						backgroundColor: isIOS ? themes[theme].surfaceHover : themes[theme].surfaceRoom,
+						paddingBottom: insets.bottom
+					}}
 					keyboardShouldPersistTaps='always'
 				/>
 			</SafeAreaView>

@@ -2,17 +2,19 @@ import { type ReactElement, useLayoutEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, type TextInputProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { textInputDebounceTime } from '../lib/constants/debounceConfig';
-import * as List from '../containers/List';
-import SafeAreaView from '../containers/SafeAreaView';
-import SearchBox from '../containers/SearchBox';
-import I18n from '../i18n';
-import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { useDebounce } from '../lib/methods/helpers';
-import { type TNavigation } from '../stacks/stackType';
-import { useTheme } from '../theme';
-import { type IOptionsField } from './NotificationPreferencesView/options';
-import sharedStyles from './Styles';
+import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
+import * as List from '~/containers/List';
+import SafeAreaView from '~/containers/SafeAreaView';
+import SearchBox from '~/containers/SearchBox';
+import I18n from '~/i18n';
+import { useAppNavigation, useAppRoute } from '~/lib/hooks/navigation';
+import { useDebounce } from '~/lib/methods/helpers';
+import { type TNavigation } from '~/stacks/stackType';
+import { useTheme } from '~/theme';
+import sharedStyles from '../Styles';
+import { PlainSeparator } from '~/containers/NativeListRow/Separator';
+import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
+import Item from './Item';
 
 const styles = StyleSheet.create({
 	noResult: {
@@ -22,26 +24,6 @@ const styles = StyleSheet.create({
 		...sharedStyles.textAlignCenter
 	}
 });
-
-interface IItem {
-	item: IOptionsField;
-	selected: boolean;
-	onItemPress: () => void;
-}
-
-const Item = ({ item, selected, onItemPress }: IItem) => {
-	const { colors } = useTheme();
-	return (
-		<List.Item
-			title={I18n.t(item.label, { defaultValue: item.label, second: item?.second })}
-			right={() => (selected ? <List.Icon name='check' color={colors.badgeBackgroundLevel2} /> : null)}
-			onPress={onItemPress}
-			translateTitle={false}
-			additionalAccessibilityLabel={selected}
-			additionalAccessibilityLabelCheck
-		/>
-	);
-};
 
 const RenderSearch = ({ onChangeText }: TextInputProps) => (
 	<>
@@ -57,6 +39,7 @@ const PickerView = (): ReactElement => {
 	} = useAppRoute<TNavigation, 'PickerView'>();
 
 	const { colors } = useTheme();
+	const listBackgroundColor = useListBackgroundColor(colors.surfaceHover);
 
 	const { bottom } = useSafeAreaInsets();
 	const [data, setData] = useState(paramData);
@@ -93,20 +76,22 @@ const PickerView = (): ReactElement => {
 	};
 
 	return (
-		<SafeAreaView>
+		<SafeAreaView style={{ backgroundColor: listBackgroundColor }}>
 			<FlatList
 				data={data}
 				keyExtractor={item => item.value as string}
-				renderItem={({ item }) => (
+				renderItem={({ item, index }) => (
 					<Item
 						item={item}
 						selected={(paramValue || data[0]?.value) === item.value}
 						onItemPress={() => handleChangeValue(item.value)}
+						isFirst={index === 0}
+						isLast={index === data.length - 1}
 					/>
 				)}
 				onEndReached={handleOnEndReached}
 				onEndReachedThreshold={0.5}
-				ItemSeparatorComponent={List.Separator}
+				ItemSeparatorComponent={PlainSeparator}
 				ListHeaderComponent={<RenderSearch onChangeText={onChangeText} />}
 				contentContainerStyle={{ paddingBottom: bottom }}
 				ListFooterComponent={List.Separator}
