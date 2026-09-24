@@ -4,10 +4,13 @@ import { useNativeBackButton } from '../useNativeBackButton';
 
 const mockSetOptions = jest.fn();
 const mockGoBack = jest.fn();
+let mockCanGoBack = true;
 let mockUnreads: number | null = null;
 const mockUseUnreadsCount = jest.fn((_rid?: string) => mockUnreads);
 
-jest.mock('@react-navigation/native', () => ({ useNavigation: () => ({ setOptions: mockSetOptions, goBack: mockGoBack }) }));
+jest.mock('@react-navigation/native', () => ({
+	useNavigation: () => ({ setOptions: mockSetOptions, goBack: mockGoBack, canGoBack: () => mockCanGoBack })
+}));
 jest.mock('../useUnreadsCount', () => ({ useUnreadsCount: (rid?: string) => mockUseUnreadsCount(rid) }));
 
 const renderBackItem = (unreads: number | null) => {
@@ -22,6 +25,7 @@ const renderBackItem = (unreads: number | null) => {
 beforeEach(() => {
 	jest.clearAllMocks();
 	mockUnreads = null;
+	mockCanGoBack = true;
 });
 
 it('replaces the back button with a chevron labelled with the unread count', () => {
@@ -51,5 +55,11 @@ it('does nothing when disabled', () => {
 	mockUnreads = 3;
 	renderHook(() => useNativeBackButton(false, 'rid'));
 	expect(mockUseUnreadsCount).toHaveBeenCalledWith(undefined);
+	expect(mockSetOptions).not.toHaveBeenCalled();
+});
+
+it('keeps the default header when it cannot go back', () => {
+	mockCanGoBack = false;
+	renderHook(() => useNativeBackButton(true, 'rid'));
 	expect(mockSetOptions).not.toHaveBeenCalled();
 });
