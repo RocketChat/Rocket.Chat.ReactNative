@@ -85,7 +85,9 @@ const NativeListRow = ({
 		...(onLongPress ? [onLongPressGesture(onLongPress)] : [])
 	];
 	const titleText = (
-		<Text modifiers={[lineLimit(1), font({ size: 16, weight: 'medium' }), foregroundStyle(colors.fontDefault)]}>{title}</Text>
+		<Text modifiers={[lineLimit(1), font({ textStyle: 'body', weight: 'medium' }), foregroundStyle(colors.fontDefault)]}>
+			{title}
+		</Text>
 	);
 
 	return (
@@ -100,7 +102,9 @@ const NativeListRow = ({
 						trailing={trailing}
 						supportingText={
 							subtitle ? (
-								<Text modifiers={[lineLimit(1), font({ size: 14 }), foregroundStyle(colors.fontSecondaryInfo)]}>{subtitle}</Text>
+								<Text modifiers={[lineLimit(1), font({ textStyle: 'subheadline' }), foregroundStyle(colors.fontSecondaryInfo)]}>
+									{subtitle}
+								</Text>
 							) : undefined
 						}>
 						{titleLeading ? (
