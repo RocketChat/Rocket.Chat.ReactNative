@@ -10,6 +10,7 @@ import Title from './Title';
 import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
 import Tag from './Tag';
+import RoomContextMenu from './RoomContextMenu';
 import I18n from '~/i18n';
 import { DisplayMode } from '~/lib/constants/constantDisplayMode';
 import { type IRoomItemProps } from './interfaces';
@@ -77,112 +78,70 @@ const RoomItem = ({
 	const accessibilityLabel = `${name}. ${statusAccessibilityLabel}. ${accessibilityDate}. ${memoizedMessage}`;
 
 	return (
-		<Touchable
-			onPress={onPress}
-			onLongPress={onLongPress}
-			width={width}
-			favorite={favorite}
-			isRead={isRead}
+		<RoomContextMenu
+			enabled={swipeEnabled}
 			rid={rid}
 			type={type}
-			isFocused={!!isFocused}
-			swipeEnabled={swipeEnabled}
-			displayMode={displayMode}>
-			<Wrapper
-				testID={testID}
-				accessibilityLabel={accessibilityLabel}
-				accessibilityHint={I18n.t('Long_press_for_more_actions')}
-				avatar={avatar}
-				type={type}
-				userId={userId}
+			name={name}
+			lastMessage={memoizedMessage}
+			isRead={isRead}
+			favorite={!!favorite}
+			width={width}>
+			<Touchable
+				onPress={onPress}
+				onLongPress={onLongPress}
+				width={width}
+				favorite={favorite}
+				isRead={isRead}
 				rid={rid}
-				prid={prid}
-				status={status}
-				isGroupChat={isGroupChat}
-				teamMain={teamMain}
-				displayMode={displayMode}
-				showAvatar={showAvatar}
-				showLastMessage={!!showLastMessage}
-				sourceType={sourceType}>
-				{showLastMessage && displayMode === DisplayMode.Expanded ? (
-					<>
-						<View style={styles.titleContainer}>
-							{showAvatar ? (
-								<TypeIcon
-									userId={userId}
-									type={type}
-									prid={prid}
-									status={status}
-									isGroupChat={isGroupChat}
-									teamMain={teamMain}
-									sourceType={sourceType}
-									abacAttributes={abacAttributes}
-								/>
-							) : null}
-							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
-							{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
-							{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
-						</View>
-						<View style={styles.row} testID='room-item-last-message-container'>
-							<LastMessage
-								lastMessage={lastMessage}
-								type={type}
-								showLastMessage={showLastMessage}
-								username={username || ''}
-								alert={alert && !hideUnreadStatus}
-								useRealName={useRealName}
-							/>
-							<UnreadBadge
-								unread={unread}
-								userMentions={userMentions}
-								groupMentions={groupMentions}
-								tunread={tunread}
-								tunreadUser={tunreadUser}
-								tunreadGroup={tunreadGroup}
-								hideMentionStatus={hideMentionStatus}
-								hideUnreadStatus={hideUnreadStatus}
-							/>
-							{isInvited ? (
-								<CustomIcon
-									size={24}
-									name='mail'
-									role='status'
-									accessibilityLabel={I18n.t('Invited')}
-									color={colors.badgeBackgroundLevel2}
-								/>
-							) : null}
-						</View>
-						{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
-					</>
-				) : (
-					<>
-						<View style={[styles.titleContainer, styles.flex]}>
-							<TypeIcon
-								userId={userId}
-								type={type}
-								prid={prid}
-								status={status}
-								isGroupChat={isGroupChat}
-								teamMain={teamMain}
-								size={22}
-								style={{ marginRight: 8 }}
-								sourceType={sourceType}
-								abacAttributes={abacAttributes}
-							/>
-							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
-							{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
-							{isInvited ? (
-								<CustomIcon
-									size={24}
-									name='mail'
-									role='status'
-									accessibilityLabel={I18n.t('Invited')}
-									color={colors.badgeBackgroundLevel2}
-								/>
-							) : null}
-
-							<View style={styles.wrapUpdatedAndBadge}>
+				type={type}
+				isFocused={!!isFocused}
+				swipeEnabled={swipeEnabled}
+				displayMode={displayMode}>
+				<Wrapper
+					testID={testID}
+					accessibilityLabel={accessibilityLabel}
+					accessibilityHint={I18n.t('Long_press_for_more_actions')}
+					avatar={avatar}
+					type={type}
+					userId={userId}
+					rid={rid}
+					prid={prid}
+					status={status}
+					isGroupChat={isGroupChat}
+					teamMain={teamMain}
+					displayMode={displayMode}
+					showAvatar={showAvatar}
+					showLastMessage={!!showLastMessage}
+					sourceType={sourceType}>
+					{showLastMessage && displayMode === DisplayMode.Expanded ? (
+						<>
+							<View style={styles.titleContainer}>
+								{showAvatar ? (
+									<TypeIcon
+										userId={userId}
+										type={type}
+										prid={prid}
+										status={status}
+										isGroupChat={isGroupChat}
+										teamMain={teamMain}
+										sourceType={sourceType}
+										abacAttributes={abacAttributes}
+									/>
+								) : null}
+								<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+								{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
 								{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
+							</View>
+							<View style={styles.row} testID='room-item-last-message-container'>
+								<LastMessage
+									lastMessage={lastMessage}
+									type={type}
+									showLastMessage={showLastMessage}
+									username={username || ''}
+									alert={alert && !hideUnreadStatus}
+									useRealName={useRealName}
+								/>
 								<UnreadBadge
 									unread={unread}
 									userMentions={userMentions}
@@ -193,13 +152,65 @@ const RoomItem = ({
 									hideMentionStatus={hideMentionStatus}
 									hideUnreadStatus={hideUnreadStatus}
 								/>
+								{isInvited ? (
+									<CustomIcon
+										size={24}
+										name='mail'
+										role='status'
+										accessibilityLabel={I18n.t('Invited')}
+										color={colors.badgeBackgroundLevel2}
+									/>
+								) : null}
 							</View>
-						</View>
-						{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
-					</>
-				)}
-			</Wrapper>
-		</Touchable>
+							{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
+						</>
+					) : (
+						<>
+							<View style={[styles.titleContainer, styles.flex]}>
+								<TypeIcon
+									userId={userId}
+									type={type}
+									prid={prid}
+									status={status}
+									isGroupChat={isGroupChat}
+									teamMain={teamMain}
+									size={22}
+									style={{ marginRight: 8 }}
+									sourceType={sourceType}
+									abacAttributes={abacAttributes}
+								/>
+								<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+								{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
+								{isInvited ? (
+									<CustomIcon
+										size={24}
+										name='mail'
+										role='status'
+										accessibilityLabel={I18n.t('Invited')}
+										color={colors.badgeBackgroundLevel2}
+									/>
+								) : null}
+
+								<View style={styles.wrapUpdatedAndBadge}>
+									{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
+									<UnreadBadge
+										unread={unread}
+										userMentions={userMentions}
+										groupMentions={groupMentions}
+										tunread={tunread}
+										tunreadUser={tunreadUser}
+										tunreadGroup={tunreadGroup}
+										hideMentionStatus={hideMentionStatus}
+										hideUnreadStatus={hideUnreadStatus}
+									/>
+								</View>
+							</View>
+							{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
+						</>
+					)}
+				</Wrapper>
+			</Touchable>
+		</RoomContextMenu>
 	);
 };
 
