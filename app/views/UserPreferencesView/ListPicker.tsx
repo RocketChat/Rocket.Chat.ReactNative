@@ -57,13 +57,18 @@ const ListPicker = ({
 		value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0]
 	);
 
+	const selectOption = (selectedValue: string) => {
+		const previous = option;
+		onChangeValue({ [preference]: selectedValue }, () => setOption(previous));
+		setOption(OPTIONS[preference].find(i => i.value === selectedValue));
+	};
+
 	const getOptions = (): TActionSheetOptionsItem[] =>
 		OPTIONS[preference].map(i => ({
 			title: I18n.t(i.label, { defaultValue: i.label }),
 			onPress: () => {
 				hideActionSheet();
-				onChangeValue({ [preference]: i.value.toString() }, () => setOption(option));
-				setOption(i);
+				selectOption(i.value);
 			},
 			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.fontHint} /> : undefined
 		}));
@@ -77,11 +82,7 @@ const ListPicker = ({
 				testID={testID}
 				options={OPTIONS[preference].map(i => ({ label: I18n.t(i.label, { defaultValue: i.label }), value: i.value }))}
 				selection={option?.value ?? ''}
-				onSelectionChange={selected => {
-					const previous = option;
-					onChangeValue({ [preference]: selected }, () => setOption(previous));
-					setOption(OPTIONS[preference].find(i => i.value === selected));
-				}}
+				onSelectionChange={selectOption}
 			/>
 		);
 	}
