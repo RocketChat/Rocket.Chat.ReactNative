@@ -173,7 +173,7 @@ describe('RoomsListView useHeader', () => {
 		const rightItems = options.unstable_headerRightItems();
 		expect(rightItems.some((item: { accessibilityLabel: string }) => item.accessibilityLabel === 'Search')).toBe(false);
 
-		expect(options.headerSearchBarOptions.placement).toBe('stacked');
+		expect(options.headerSearchBarOptions.placement).toBe('automatic');
 		expect(options.headerSearchBarOptions.ref.current).toBeNull();
 
 		options.headerSearchBarOptions.onFocus();
