@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { type ReactElement, useEffect, useMemo, useRef, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -21,11 +21,11 @@ import I18n from '~/i18n';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { setUserStatus } from '~/lib/services/restApi';
 import { getUserSelector } from '~/selectors/login';
-import { showErrorAlertWithEMessage, compareServerVersion } from '~/lib/methods/helpers';
+import { showErrorAlertWithEMessage, compareServerVersion, isIOS } from '~/lib/methods/helpers';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { useTheme } from '~/theme';
 import { USER_STATUS_TEXT_MAX_LENGTH } from '~/lib/constants/maxLength';
-import { type ClearAfterValue, computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
+import ClearAfterPicker, { type ClearAfterValue, computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
 import FooterComponent from './FooterComponent';
 
 const validationSchema = yup.object().shape({
@@ -70,38 +70,6 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1
 	}
 });
-
-const Status = ({
-	statusType,
-	status,
-	setStatus
-}: {
-	statusType: IStatus;
-	status: TUserStatus;
-	setStatus: (status: TUserStatus) => void;
-}) => {
-	const { id, name } = statusType;
-	return (
-		<>
-			<List.Radio
-				isSelected={status === id}
-				additionalAccessibilityLabel={`${status === id ? I18n.t('Current_Status') : ''}`}
-				title={name}
-				onPress={() => {
-					const key = `STATUS_${id.toUpperCase()}` as keyof typeof events;
-					logEvent(events[key]);
-					if (status !== id) {
-						setStatus(id);
-					}
-				}}
-				testID={`status-view-${id}`}
-				value={statusType.id}
-				left={() => <StatusIcon size={24} status={statusType.id} />}
-			/>
-			<List.Separator />
-		</>
-	);
-};
 
 const StatusView = (): ReactElement => {
 	const user = useSelector((state: IApplicationState) => getUserSelector(state));
@@ -160,8 +128,11 @@ const StatusView = (): ReactElement => {
 		setHeader();
 	}, [isMasterDetail]);
 
-	const setStatus = (updatedStatus: TUserStatus) => {
-		setValue('status', updatedStatus);
+	const selectStatus = (id: TUserStatus) => {
+		logEvent(events[`STATUS_${id.toUpperCase()}` as keyof typeof events]);
+		if (inputValues.status !== id) {
+			setValue('status', id);
+		}
 	};
 
 	const setCustomStatus = async (status: TUserStatus, statusText: string, expiresAt?: string | null) => {
@@ -210,38 +181,43 @@ const StatusView = (): ReactElement => {
 	};
 
 	return (
-		<SafeAreaView testID='status-view'>
-			<FlatList
-				data={statusType}
-				keyExtractor={item => item.id}
-				renderItem={({ item }) => <Status statusType={item} status={inputValues.status} setStatus={setStatus} />}
-				ListHeaderComponent={
-					<>
-						<ControlledFormTextInput
-							name='statusText'
-							control={control}
-							label={I18n.t('Status')}
-							value={statusText}
-							containerStyle={styles.inputContainer}
-							inputStyle={styles.inputStyle}
-							testID='status-view-input'
-							error={errors.statusText?.message}
+		<SafeAreaView testID='status-view' style={{ backgroundColor: colors.surfaceTint, paddingBottom: bottom }}>
+			<ControlledFormTextInput
+				name='statusText'
+				control={control}
+				label={I18n.t('Status')}
+				value={statusText}
+				containerStyle={styles.inputContainer}
+				inputStyle={styles.inputStyle}
+				testID='status-view-input'
+				error={errors.statusText?.message}
+			/>
+			<List.Container>
+				<List.Section>
+					{statusType.map(({ id, name }) => (
+						<List.Radio
+							key={id}
+							isSelected={inputValues.status === id}
+							additionalAccessibilityLabel={inputValues.status === id ? I18n.t('Current_Status') : ''}
+							title={name}
+							onPress={() => selectStatus(id)}
+							testID={`status-view-${id}`}
+							value={id}
+							left={() => <StatusIcon size={24} status={id} />}
 						/>
-						<List.Separator />
-					</>
-				}
-				ListFooterComponent={
-					<FooterComponent
-						supportsStatusExpiry={supportsStatusExpiry}
-						clearAfter={clearAfter}
-						clearAfterDate={clearAfterDate}
-						onClearAfterChange={handleClearAfterChange}
-						disabled={isStatusChanged()}
-						onSubmit={submit}
-					/>
-				}
-				style={{ backgroundColor: colors.surfaceTint }}
-				contentContainerStyle={{ paddingBottom: bottom }}
+					))}
+				</List.Section>
+				{isIOS && supportsStatusExpiry ? (
+					<ClearAfterPicker value={clearAfter} customDate={clearAfterDate} onChange={handleClearAfterChange} />
+				) : null}
+			</List.Container>
+			<FooterComponent
+				supportsStatusExpiry={supportsStatusExpiry && !isIOS}
+				clearAfter={clearAfter}
+				clearAfterDate={clearAfterDate}
+				onClearAfterChange={handleClearAfterChange}
+				disabled={isStatusChanged()}
+				onSubmit={submit}
 			/>
 		</SafeAreaView>
 	);

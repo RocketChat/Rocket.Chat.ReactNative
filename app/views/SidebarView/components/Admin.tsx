@@ -1,14 +1,13 @@
-import { memo, useMemo } from 'react';
+import { memo, useContext, useMemo } from 'react';
 
 import * as List from '~/containers/List';
+import { NativeListContext } from '~/containers/List/NativeListContext';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useTheme } from '~/theme';
 import { sidebarNavigate } from '../methods/sidebarNavigate';
 
-const Admin = ({ currentScreen }: { currentScreen: string | null }) => {
-	const isMasterDetail = useMasterDetail();
-	const { colors } = useTheme();
+export const useIsAdmin = () => {
 	const [
 		viewStatisticsPermission,
 		viewRoomAdministrationPermission,
@@ -32,10 +31,21 @@ const Admin = ({ currentScreen }: { currentScreen: string | null }) => {
 		]
 	);
 
+	return isAdmin;
+};
+
+export const useAdminRoute = () => (useMasterDetail() ? 'AdminPanelView' : 'AdminPanelStackNavigator');
+
+const Admin = ({ currentScreen }: { currentScreen: string | null }) => {
+	const routeName = useAdminRoute();
+	const { colors } = useTheme();
+	const isInNativeList = useContext(NativeListContext);
+	const isAdmin = useIsAdmin();
+
 	if (!isAdmin) {
 		return null;
 	}
-	const routeName = isMasterDetail ? 'AdminPanelView' : 'AdminPanelStackNavigator';
+	const isHighlighted = currentScreen === routeName && !isInNativeList;
 	return (
 		<>
 			<List.Item
@@ -43,7 +53,7 @@ const Admin = ({ currentScreen }: { currentScreen: string | null }) => {
 				testID='sidebar-admin'
 				left={() => <List.Icon name='settings' />}
 				onPress={() => sidebarNavigate(routeName)}
-				backgroundColor={currentScreen === routeName ? colors.strokeLight : undefined}
+				backgroundColor={isHighlighted ? colors.strokeLight : undefined}
 			/>
 			<List.Separator />
 		</>

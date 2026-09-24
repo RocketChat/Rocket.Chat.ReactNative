@@ -384,7 +384,7 @@
 		"test": ".maestro/tests/teams/convert-team.yaml",
 		"dependsOn": [
 			"app/views/RoomActionsView/**",
-			"app/views/SelectListView.tsx",
+			"app/views/SelectListView/**",
 			"app/views/CreateChannelView/**",
 			"app/views/NewMessageView/**",
 			"app/views/SelectedUsersView/**",
@@ -414,7 +414,7 @@
 			"app/views/AddExistingChannelView/**",
 			"app/views/RoomMembersView/**",
 			"app/views/SelectedUsersView/**",
-			"app/views/SelectListView.tsx",
+			"app/views/SelectListView/**",
 			"app/views/CreateChannelView/**",
 			"app/sagas/room.js",
 			"app/sagas/createChannel.js"
