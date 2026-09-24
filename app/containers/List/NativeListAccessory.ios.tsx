@@ -1,5 +1,5 @@
 import { Checkbox } from '@expo/ui';
-import { RNHostView, Text, Toggle } from '@expo/ui/swift-ui';
+import { Image, RNHostView, Text, Toggle } from '@expo/ui/swift-ui';
 import { disabled, font, foregroundStyle, labelsHidden, lineLimit, tint } from '@expo/ui/swift-ui/modifiers';
 
 import { useTheme } from '~/theme';
@@ -14,7 +14,7 @@ const NativeListAccessory = ({ accessory }: { accessory: TNativeListAccessory })
 		case 'icon':
 			return <NativeListIcon name={accessory.name} color={accessory.color ?? colors.fontDefault} size={accessory.size} />;
 		case 'check':
-			return <NativeListIcon name='check' color={colors.buttonBackgroundPrimaryDefault} />;
+			return <Image systemName='checkmark' color={colors.buttonBackgroundPrimaryDefault} />;
 		case 'status':
 			return <NativeListStatus status={accessory.status} />;
 		case 'toggle':

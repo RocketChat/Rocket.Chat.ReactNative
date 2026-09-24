@@ -1239,9 +1239,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
               [
                 {
                   "$type": "font",
-                  "family": "custom",
                   "size": 24,
-                  "textStyle": "body",
                 },
                 {
                   "$type": "foregroundStyle",
@@ -1252,8 +1250,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
                 },
               ]
             }
-            onGlobalEvent={[Function]}
-            text=""
+            systemName="checkmark"
           />
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
@@ -1524,9 +1521,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
               [
                 {
                   "$type": "font",
-                  "family": "custom",
                   "size": 24,
-                  "textStyle": "body",
                 },
                 {
                   "$type": "foregroundStyle",
@@ -1537,8 +1532,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
                 },
               ]
             }
-            onGlobalEvent={[Function]}
-            text=""
+            systemName="checkmark"
           />
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
