@@ -145,10 +145,7 @@ runs:
     - name: Upload sourcemaps/NDK symbols to Bugsnag
       run: |
         pnpm bugsnag:upload-android --variant release --app-manifest android/app/build/intermediates/merged_manifests/release/processReleaseManifest/AndroidManifest.xml
-        bugsnag_aab="$RUNNER_TEMP/app-release-bugsnag.aab"
-        cp android/app/build/outputs/bundle/release/app-release.aab "$bugsnag_aab"
-        zip -d "$bugsnag_aab" 'BUNDLE-METADATA/com.android.tools.build.debugsymbols/*/libratex_ffi.so.sym' || [ $? -eq 12 ]
-        pnpm exec bugsnag-cli upload android-aab "$bugsnag_aab"
+        pnpm exec bugsnag-cli upload android-aab --exclude "**/libratex_ffi.so*" android/app/build/outputs/bundle/release/app-release.aab
       shell: bash
 
     - name: Upload AAB

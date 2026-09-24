@@ -380,8 +380,8 @@ importers:
         specifier: ~7.25.9
         version: 7.25.9
       '@bugsnag/cli':
-        specifier: ^3.2.1
-        version: 3.5.1
+        specifier: ^3.10.6
+        version: 3.10.6
       '@bugsnag/source-maps':
         specifier: ^2.3.3
         version: 2.3.3
@@ -1293,8 +1293,8 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  '@bugsnag/cli@3.5.1':
-    resolution: {integrity: sha512-Xt3LnFWTRBn+tXX28lNQl3SftKPYhmdqT5/w2AzQlji/zjL4sTC82U9IKpWbFtMyfjndYnNQ6HTkP06yc/VQ9g==}
+  '@bugsnag/cli@3.10.6':
+    resolution: {integrity: sha512-mB+8jSd0gk9AZ5qE+pu3qh/5bKRIEgNNEmuQl9mbCWoe3WhQvNdMQpOUr4Su2EdGYdUNcbQ8hBG6h5yHn3xpmg==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -7631,6 +7631,10 @@ packages:
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
+  undici@6.28.1:
+    resolution: {integrity: sha512-zWpdTVD54H48CIybL0rWQ3ukpb9d23wM7eH5RtfdmeP70cWHNjtfo7P4vZX+5CoDcO53J4Pu5uXp7lNfjc6DRA==}
+    engines: {node: '>=18.17'}
+
   unicode-canonical-property-names-ecmascript@2.0.1:
     resolution: {integrity: sha512-dA8WbNeb2a6oQzAQ55YlT5vQAWGV9WXOsi3SskE3bcCdM0P4SDd+24zS/OCacdRq5BkdsRj9q3Pg6YyQoxIGqg==}
     engines: {node: '>=4'}
@@ -9078,8 +9082,9 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@bugsnag/cli@3.5.1':
+  '@bugsnag/cli@3.10.6':
     dependencies:
+      undici: 6.28.1
       yaml: 2.8.2
 
   '@bugsnag/core@8.6.0':
@@ -16679,6 +16684,8 @@ snapshots:
     optional: true
 
   undici-types@7.16.0: {}
+
+  undici@6.28.1: {}
 
   unicode-canonical-property-names-ecmascript@2.0.1: {}
 
