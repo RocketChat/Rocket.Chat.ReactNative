@@ -112,6 +112,14 @@ done < "$MAPFILE"
 echo "Main run will execute:"
 printf '  %s\n' "${FLOW_FILES[@]}"
 
+# Share-extension flows pick fixtures from the Android Files app's Downloads
+if [ "$PLATFORM" = "android" ] && printf '%s\n' "${FLOW_FILES[@]}" | grep -q '/share-extension/'; then
+  if ! node scripts/push-downloads-to-sim.js; then
+    echo "::error title=Share fixture push failed::scripts/push-downloads-to-sim.js could not download or push the share-extension fixtures to the emulator's Downloads. This is an environment failure, not an app or test regression."
+    exit 3
+  fi
+fi
+
 run_main_suite() {
   rm -f "$MAIN_REPORT"
   if [ "$PLATFORM" = "android" ]; then
