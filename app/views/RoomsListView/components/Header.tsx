@@ -1,5 +1,6 @@
 import { memo } from 'react';
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { showActionSheetRef } from '~/containers/ActionSheet';
@@ -71,17 +72,17 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 				accessibilityLabel={`${serverName} ${subtitle}`}
 				accessibilityRole='header'>
 				<View style={styles.button}>
-					<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+					<PlainText style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 						{serverName}
-					</Text>
+					</PlainText>
 				</View>
 				{subtitle ? (
-					<Text
+					<PlainText
 						testID='rooms-list-header-server-subtitle'
 						style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}
 						numberOfLines={1}>
 						{subtitle}
-					</Text>
+					</PlainText>
 				) : null}
 			</TouchableOpacity>
 		</View>

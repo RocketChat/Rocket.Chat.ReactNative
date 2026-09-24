@@ -282,6 +282,9 @@ importers:
       react-native-picker-select:
         specifier: 9.0.1
         version: 9.0.1(@react-native-picker/picker@2.11.4(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3))
+      react-native-plain-text:
+        specifier: 0.8.2
+        version: 0.8.2(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
       react-native-popover-view:
         specifier: 5.1.7
         version: 5.1.7
@@ -6798,6 +6801,12 @@ packages:
     resolution: {integrity: sha512-iIhb82OSH1vqB/HoipvbuX3RCzmeaQmIASlaRbv6X8imNjzh1DH/LaKoF4+DAZJLT0iX7QG79vpwZu8wjWap3Q==}
     peerDependencies:
       '@react-native-picker/picker': ^2.4.0
+
+  react-native-plain-text@0.8.2:
+    resolution: {integrity: sha512-EpMcQ0+BKfAq/WDL1cgv6YptP6fsvDoLQaQ/UZait1mn9Hp90GzlH6gkYd4stpc4UBhuhyjYki2EU23DBwZ/4A==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
 
   react-native-popover-view@5.1.7:
     resolution: {integrity: sha512-Xa+zKYp9x62UNezT8o9SnqQaBQEHdGwGHZnFnA2bsXLneVRvvlBopNwMNj+p7N65qnPf3mmzWj+57ThtM1qFuw==}
@@ -15762,6 +15771,11 @@ snapshots:
     dependencies:
       '@react-native-picker/picker': 2.11.4(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
       lodash.isequal: 4.5.0
+
+  react-native-plain-text@0.8.2(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3):
+    dependencies:
+      react: 19.2.3
+      react-native: 0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
 
   react-native-popover-view@5.1.7:
     dependencies:

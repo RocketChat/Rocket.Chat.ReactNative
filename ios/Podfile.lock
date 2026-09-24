@@ -2685,6 +2685,28 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
+  - RNPlainText (0.8.2):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - RNReanimated (4.6.0):
     - hermes-engine
     - RCTRequired
@@ -3129,6 +3151,7 @@ DEPENDENCIES:
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNLocalize (from `../node_modules/react-native-localize`)
+  - RNPlainText (from `../node_modules/react-native-plain-text`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -3436,6 +3459,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-keychain"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
+  RNPlainText:
+    :path: "../node_modules/react-native-plain-text"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -3608,6 +3633,7 @@ SPEC CHECKSUMS:
   RNImageCropPicker: 5c9c8bef4c72d3f451b499aa0ecd90a644ea1bbd
   RNKeychain: d57edf101a72acf3ae85fe4d796eed1d951d2a90
   RNLocalize: 17bce0556e2d33fe1201c8cef53b3b7786e07612
+  RNPlainText: 3b6117ad475ad861bc45988e133b465b2e335c2a
   RNReanimated: c57ef141c7843c2849531e7556236d7223b7db1a
   RNScreens: 8708989f700bdc3dc5abc3c77aa3b5f3e73ce2b2
   RNSVG: 68c366b996064ea99cee1e55da62b8feafb33a78
