@@ -18,6 +18,8 @@ public class AppDelegate: ExpoAppDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+    migrateLegacyExperimentalDatabases()
+
     // IMPORTANT: Initialize MMKV encryption FIRST, before any other initialization
     // This reads existing encryption key or generates a new one for fresh installs
     // Must run before Firebase, Bugsnag, and React Native start
@@ -67,6 +69,39 @@ public class AppDelegate: ExpoAppDelegate {
     watchConnection = WatchConnection(session: WCSession.default)
 
     return result
+  }
+
+  // Renames <=4.73.0 `-experimental.db` files; a 0-byte target is one NotificationService created.
+  private func migrateLegacyExperimentalDatabases() {
+    let fileManager = FileManager.default
+    guard let suite = Bundle.main.object(forInfoDictionaryKey: "AppGroupIdentifier") as? String,
+      let containerURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: suite),
+      let files = try? fileManager.contentsOfDirectory(at: containerURL, includingPropertiesForKeys: nil)
+    else {
+      return
+    }
+    let legacySuffix = "-experimental.db"
+    databases: for legacy in files {
+      let name = legacy.lastPathComponent
+      guard name.hasSuffix(legacySuffix) else { continue }
+      let target = containerURL.appendingPathComponent(String(name.dropLast(legacySuffix.count)) + ".db")
+      if let targetSize = (try? fileManager.attributesOfItem(atPath: target.path))?[.size] as? Int, targetSize > 0 {
+        continue
+      }
+      for sidecar in ["-wal", "-shm", "-journal"] {
+        let legacySidecar = URL(fileURLWithPath: legacy.path + sidecar)
+        guard fileManager.fileExists(atPath: legacySidecar.path) else { continue }
+        let targetSidecar = URL(fileURLWithPath: target.path + sidecar)
+        try? fileManager.removeItem(at: targetSidecar)
+        do {
+          try fileManager.moveItem(at: legacySidecar, to: targetSidecar)
+        } catch {
+          continue databases
+        }
+      }
+      try? fileManager.removeItem(at: target)
+      try? fileManager.moveItem(at: legacy, to: target)
+    }
   }
 
   // Linking API

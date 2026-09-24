@@ -68,6 +68,8 @@ open class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
+    migrateLegacyExperimentalDatabases()
+
     Bugsnag.start(this)
     
     // Initialize MMKV encryption - reads existing key or generates new one
@@ -83,5 +85,37 @@ open class MainApplication : Application(), ReactApplication {
 	override fun onConfigurationChanged(newConfig: Configuration) {
     super.onConfigurationChanged(newConfig)
     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
+  }
+
+  // Renames <=4.73.0 `-experimental.db.db` files.
+  private fun migrateLegacyExperimentalDatabases() {
+    try {
+      val dir = getDatabasePath("probe").parentFile?.parentFile ?: return
+      val legacySuffix = "-experimental.db.db"
+      val files = dir.listFiles() ?: return
+      databases@ for (legacy in files) {
+        if (!legacy.isFile || !legacy.name.endsWith(legacySuffix)) {
+          continue
+        }
+        val baseName = legacy.name.removeSuffix(legacySuffix)
+        val target = java.io.File(dir, "$baseName.db.db")
+        if (target.exists() && target.length() > 0) {
+          continue
+        }
+        for (sidecar in listOf("-wal", "-shm", "-journal")) {
+          val legacySidecar = java.io.File(dir, legacy.name + sidecar)
+          if (legacySidecar.exists()) {
+            val targetSidecar = java.io.File(dir, target.name + sidecar)
+            targetSidecar.delete()
+            if (!legacySidecar.renameTo(targetSidecar)) {
+              continue@databases
+            }
+          }
+        }
+        target.delete()
+        legacy.renameTo(target)
+      }
+    } catch (e: Exception) {
+    }
   }
 }
