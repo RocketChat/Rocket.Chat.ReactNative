@@ -21,11 +21,11 @@ import I18n from '~/i18n';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { setUserStatus } from '~/lib/services/restApi';
 import { getUserSelector } from '~/selectors/login';
-import { showErrorAlertWithEMessage, compareServerVersion } from '~/lib/methods/helpers';
+import { showErrorAlertWithEMessage, compareServerVersion, isIOS } from '~/lib/methods/helpers';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { useTheme } from '~/theme';
 import { USER_STATUS_TEXT_MAX_LENGTH } from '~/lib/constants/maxLength';
-import { type ClearAfterValue, computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
+import ClearAfterPicker, { type ClearAfterValue, computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
 import FooterComponent from './FooterComponent';
 
 const validationSchema = yup.object().shape({
@@ -207,9 +207,12 @@ const StatusView = (): ReactElement => {
 						/>
 					))}
 				</List.Section>
+				{isIOS && supportsStatusExpiry ? (
+					<ClearAfterPicker value={clearAfter} customDate={clearAfterDate} onChange={handleClearAfterChange} />
+				) : null}
 			</List.Container>
 			<FooterComponent
-				supportsStatusExpiry={supportsStatusExpiry}
+				supportsStatusExpiry={supportsStatusExpiry && !isIOS}
 				clearAfter={clearAfter}
 				clearAfterDate={clearAfterDate}
 				onClearAfterChange={handleClearAfterChange}
