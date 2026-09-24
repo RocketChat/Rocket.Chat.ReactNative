@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
 import { asNativeListRow } from '~/containers/List/nativeListRow';
+import { NativeListContext } from '~/containers/List/NativeListContext';
+import NativeListPicker from '~/containers/List/NativeListPicker';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
@@ -50,6 +52,7 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
+	const nativeListMode = useContext(NativeListContext);
 	const [option, setOption] = useState(
 		value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0]
 	);
@@ -66,6 +69,22 @@ const ListPicker = ({
 		}));
 
 	const label = option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label;
+
+	if (nativeListMode === 'native') {
+		return (
+			<NativeListPicker
+				title={I18n.t(title)}
+				testID={testID}
+				options={OPTIONS[preference].map(i => ({ label: I18n.t(i.label, { defaultValue: i.label }), value: i.value }))}
+				selection={option?.value ?? ''}
+				onSelectionChange={selected => {
+					const previous = option;
+					onChangeValue({ [preference]: selected }, () => setOption(previous));
+					setOption(OPTIONS[preference].find(i => i.value === selected));
+				}}
+			/>
+		);
+	}
 
 	return (
 		<List.Item

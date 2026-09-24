@@ -1,9 +1,12 @@
+import { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
 import { asNativeListRow } from '~/containers/List/nativeListRow';
+import { NativeListContext } from '~/containers/List/NativeListContext';
+import NativeListPicker from '~/containers/List/NativeListPicker';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
@@ -41,6 +44,7 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
+	const nativeListMode = useContext(NativeListContext);
 
 	const OPTIONS: TOPTIONS = [
 		{
@@ -70,6 +74,17 @@ const ListPicker = ({
 			},
 			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
 		}));
+
+	if (nativeListMode === 'native') {
+		return (
+			<NativeListPicker
+				title={title}
+				options={OPTIONS.map(i => ({ label: i.label, value: i.value }))}
+				selection={option.value}
+				onSelectionChange={selected => onChangeValue(selected as TAlertDisplayType)}
+			/>
+		);
+	}
 
 	const openOptions = () => {
 		const options = getOptions();

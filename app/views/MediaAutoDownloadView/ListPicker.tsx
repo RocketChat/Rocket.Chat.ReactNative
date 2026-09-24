@@ -1,9 +1,11 @@
-import { Fragment, type ReactElement } from 'react';
+import { Fragment, useContext, type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { useActionSheet } from '~/containers/ActionSheet';
 import * as List from '~/containers/List';
 import { asNativeListRow } from '~/containers/List/nativeListRow';
+import { NativeListContext } from '~/containers/List/NativeListContext';
+import NativeListPicker from '~/containers/List/NativeListPicker';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
@@ -58,6 +60,7 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
+	const nativeListMode = useContext(NativeListContext);
 	const option = OPTIONS.find(option => option.value === value) || OPTIONS[2];
 
 	const getOptions = (): ReactElement => (
@@ -83,6 +86,18 @@ const ListPicker = ({
 
 	/* when picking an option the label should be Never but when showing among the other settings the label should be Off */
 	const label = option.label === 'Never' ? I18n.t('Off') : I18n.t(option.label);
+
+	if (nativeListMode === 'native') {
+		return (
+			<NativeListPicker
+				title={title}
+				testID={testID}
+				options={OPTIONS.map(i => ({ label: I18n.t(i.label), value: i.value, testID: `${testID}-${i.value}` }))}
+				selection={option.value}
+				onSelectionChange={selected => onChangeValue(selected as MediaDownloadOption)}
+			/>
+		);
+	}
 
 	return (
 		<List.Item
