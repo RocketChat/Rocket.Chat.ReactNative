@@ -68,6 +68,9 @@ open class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
+    // Migrate pre-4.73 experimental databases before React Native boots (no db open yet).
+    migrateLegacyExperimentalDatabases()
+
     Bugsnag.start(this)
     
     // Initialize MMKV encryption - reads existing key or generates new one
@@ -83,5 +86,28 @@ open class MainApplication : Application(), ReactApplication {
 	override fun onConfigurationChanged(newConfig: Configuration) {
     super.onConfigurationChanged(newConfig)
     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
+  }
+
+  // Rename pre-4.73 `<name>-experimental.db` files to unified names when missing; never overwrites.
+  private fun migrateLegacyExperimentalDatabases() {
+    try {
+      val dirs = listOfNotNull(filesDir?.parentFile, getDatabasePath("probe").parentFile)
+      for (dir in dirs) {
+        val files = dir.listFiles() ?: continue
+        for (file in files) {
+          if (!file.isFile || !file.name.contains("-experimental.db")) {
+            continue
+          }
+          val target = java.io.File(dir, file.name.replace("-experimental.db", ".db"))
+          if (target.exists()) {
+            continue
+          }
+          file.renameTo(target)
+        }
+      }
+    } catch (e: Exception) {
+      // Migration must never break startup. Worst case the app starts with a fresh
+      // database and the startup saga falls back to the logged-out flow.
+    }
   }
 }
