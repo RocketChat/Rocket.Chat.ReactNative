@@ -4,6 +4,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 
 import I18n from '~/i18n';
 import dayjs from '~/lib/dayjs';
+import { TIMESTAMP_FULL_FORMAT } from '../serialize';
 import { useTheme } from '~/theme';
 import { LISTENER } from '~/containers/Toast';
 import EventEmitter from '~/lib/methods/helpers/events';
@@ -76,7 +77,7 @@ export const useMarkdownLinkPress = ({ channels, navToRoomInfo, onLinkPress }: I
 
 			if (url.startsWith('timestamp://')) {
 				const unixSeconds = Number(url.slice('timestamp://'.length));
-				const message = dayjs(unixSeconds * 1000).format('dddd, MMM DD, YYYY hh:mm A');
+				const message = dayjs(unixSeconds * 1000).format(TIMESTAMP_FULL_FORMAT);
 				EventEmitter.emit(LISTENER, { message });
 				return;
 			}

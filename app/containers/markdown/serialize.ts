@@ -1,5 +1,6 @@
 import type {
 	Root,
+	BigEmoji,
 	Paragraph,
 	Blocks,
 	Inlines,
@@ -27,7 +28,7 @@ export interface ISerializeContext {
 
 export type TRenderSegment = { type: 'markdown'; content: string; accessibilityLabel: string } | { type: 'linebreak' };
 
-const ESCAPE_PATTERN = /[\\`*_{}[\]()#+\-.!|~^$=<>]/g;
+const ESCAPE_PATTERN = /[\\`*_{}[\]()#+\-.!|~^$=<>&]/g;
 
 export const escapePlainText = (value: string): string => value.replace(ESCAPE_PATTERN, '\\$&');
 
@@ -38,6 +39,11 @@ const timestampToUnixSeconds = (timestamp: string): number => {
 	if (/^-?\d{13}$/.test(timestamp)) return Math.floor(Number(timestamp) / 1000);
 	return Math.floor(dayjs(timestamp).valueOf() / 1000);
 };
+
+export const TIMESTAMP_FULL_FORMAT = 'dddd, MMM DD, YYYY hh:mm A';
+
+export const isBigEmojiOnly = (tokens: Root | null): tokens is [BigEmoji] =>
+	!!tokens && tokens.length === 1 && tokens[0].type === 'BIG_EMOJI';
 
 const formatTimestampLabel = (value: TimestampBlock['value']): string => {
 	const timestampMs = timestampToUnixSeconds(value.timestamp) * 1000;
@@ -51,7 +57,7 @@ const formatTimestampLabel = (value: TimestampBlock['value']): string => {
 		case 'D':
 			return dayjs(timestampMs).format('dddd, MMM DD, YYYY');
 		case 'f':
-			return dayjs(timestampMs).format('dddd, MMM DD, YYYY hh:mm A');
+			return dayjs(timestampMs).format(TIMESTAMP_FULL_FORMAT);
 		case 'F':
 			return dayjs(timestampMs).format('dddd, MMM DD, YYYY hh:mm:ss A');
 		case 'R':
@@ -309,7 +315,7 @@ const plainTextBlock = (block: Paragraph | Blocks, ctx: ISerializeContext): stri
 };
 
 export const buildRenderSegments = (tokens: Root, ctx: ISerializeContext): TRenderSegment[] => {
-	if (tokens.length === 1 && tokens[0].type === 'BIG_EMOJI') {
+	if (isBigEmojiOnly(tokens)) {
 		const content = tokens[0].value.map(emojiBlock => serializeEmoji(emojiBlock, ctx)).join('');
 		const accessibilityLabel = tokens[0].value.map(emojiBlock => emojiDisplayText(emojiBlock, ctx)).join(' ');
 		return [{ type: 'markdown', content, accessibilityLabel }];

@@ -44,8 +44,8 @@ export const buildMarkdownStyle = (colors: TColors, isBigEmojiOnly: boolean, fon
 	},
 	linkVariants: {
 		'^user://(all|here)$': { color: colors.statusFontService, underline: false },
-		'user://[^?]+\\?me=1$': { color: colors.statusFontDanger, underline: false },
-		'user://[^?]+\\?team=1$': { color: colors.statusFontWarning, underline: false },
+		'^user://[^?]+\\?me=1$': { color: colors.statusFontDanger, underline: false },
+		'^user://[^?]+\\?team=1$': { color: colors.statusFontWarning, underline: false },
 		'^user://': { color: colors.statusFontWarning, underline: false },
 		'^channel://': { color: colors.fontInfo, underline: false },
 		'^timestamp://': { color: colors.fontDefault, backgroundColor: colors.surfaceSelected }

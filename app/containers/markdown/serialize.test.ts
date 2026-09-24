@@ -30,6 +30,10 @@ describe('markdown serialize', () => {
 		expect(serialize('a * b')).toBe('a \\* b');
 	});
 
+	it('escapes ampersands so text entities render literally', () => {
+		expect(serialize('a &lt; b &amp; c')).toBe('a \\&lt; b \\&amp; c');
+	});
+
 	it('serializes bold, italic and strike as CommonMark', () => {
 		expect(serialize('*bold* _italic_ ~strike~')).toBe('**bold** _italic_ ~~strike~~');
 	});

@@ -6,7 +6,7 @@ import type { Options, Root } from '@rocket.chat/message-parser';
 import isEmpty from 'lodash/isEmpty';
 
 import { type IUserMention, type IUserChannel, type TOnLinkPress } from './interfaces';
-import { buildRenderSegments } from './serialize';
+import { buildRenderSegments, isBigEmojiOnly } from './serialize';
 import { buildMarkdownStyle } from './buildMarkdownStyle';
 import { useMarkdownLinkPress } from './hooks/useMarkdownLinkPress';
 import { useParseOptions } from './hooks/useParseOptions';
@@ -63,7 +63,7 @@ const resolveTokens = (msg: string, md: Root | undefined, options: Options, isTr
 		return md;
 	}
 
-	return parseMessage(typeof msg === 'string' ? msg : String(msg || ''), options);
+	return parseMessage(msg, options);
 };
 
 const Markdown: FC<IMarkdownProps> = ({
@@ -131,8 +131,8 @@ const Markdown: FC<IMarkdownProps> = ({
 		formatShortnameToUnicode
 	]);
 
-	const isBigEmojiOnly = !!tokens && tokens.length === 1 && tokens[0].type === 'BIG_EMOJI';
-	const markdownStyle = useMemo(() => buildMarkdownStyle(colors, isBigEmojiOnly, fontScale), [colors, isBigEmojiOnly, fontScale]);
+	const bigEmojiOnly = isBigEmojiOnly(tokens);
+	const markdownStyle = useMemo(() => buildMarkdownStyle(colors, bigEmojiOnly, fontScale), [colors, bigEmojiOnly, fontScale]);
 
 	if (!tokens || segments.length === 0) {
 		return null;
