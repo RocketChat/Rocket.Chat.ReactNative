@@ -194,7 +194,8 @@ jest.mock('./app/containers/CustomIcon', () => {
 	return {
 		...actualNav,
 		IconSet: {
-			hasIcon: () => true
+			hasIcon: () => true,
+			getImageSource: () => Promise.resolve({ uri: 'file:///icon.png' })
 		}
 	};
 });

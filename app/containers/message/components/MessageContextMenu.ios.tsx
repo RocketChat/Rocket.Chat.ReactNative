@@ -1,9 +1,10 @@
 import { type ReactElement } from 'react';
 import { Host } from '@expo/ui';
-import { Button, ContextMenu, RNHostView, Text, VStack } from '@expo/ui/swift-ui';
-import { disabled, font, foregroundStyle, frame, lineLimit, padding } from '@expo/ui/swift-ui/modifiers';
+import { ContextMenu, RNHostView, Text, VStack } from '@expo/ui/swift-ui';
+import { font, foregroundStyle, frame, lineLimit, padding } from '@expo/ui/swift-ui/modifiers';
 import { View } from 'react-native';
 
+import ContextMenuButton from '~/containers/ContextMenuButton/ContextMenuButton.ios';
 import { useTheme } from '~/theme';
 import { useMessageContextMenu } from '../hooks/useMessageContextMenu';
 
@@ -40,13 +41,14 @@ const MessageContextMenu = ({ children }: { children: ReactElement }) => {
 				</ContextMenu.Preview>
 				<ContextMenu.Items>
 					{options.map(option => (
-						<Button
+						<ContextMenuButton
 							key={option.testID ?? option.title}
 							testID={option.testID}
-							label={option.title}
-							role={option.danger ? 'destructive' : 'default'}
+							title={option.title}
+							icon={option.icon}
+							danger={option.danger}
+							enabled={option.enabled !== false}
 							onPress={option.onPress}
-							modifiers={[disabled(option.enabled === false)]}
 						/>
 					))}
 				</ContextMenu.Items>
