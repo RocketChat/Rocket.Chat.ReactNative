@@ -47,11 +47,11 @@ beforeEach(() => {
 	};
 });
 
-it('holds the title until the room icon is ready', async () => {
-	renderHook(() => useNativeRoomHeader(true, { ...fields, type: 'p', title: 'Held' }));
-	expect(mockSetOptions.mock.calls[0][0]).toMatchObject({ headerTitle: '', headerSubtitle: undefined });
+it('sets the title before the room icon is ready and adds the icon when it loads', async () => {
+	renderHook(() => useNativeRoomHeader(true, { ...fields, type: 'p', title: 'Shown' }));
+	expect(mockSetOptions.mock.calls[0][0]).toMatchObject({ headerTitle: 'Shown', headerSubtitle: 'Topic' });
 	await waitFor(() => expect(latestOptions().headerTitleImageSource?.uri).toBe('channel-private:title'));
-	expect(mockSetOptions.mock.calls.every(([options]) => options.headerTitle === '' || options.headerTitleImageSource)).toBe(true);
+	expect(latestOptions().headerTitle).toBe('Shown');
 });
 
 it('shows plain topic text and the room icon', async () => {

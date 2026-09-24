@@ -2,11 +2,11 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
-import MediaCallHeader from './MediaCallHeader';
+import MediaCallHeader from '../MediaCallHeader';
 import { navigateToCallRoom } from '~/lib/services/voip/navigateToCallRoom';
 import { useCallStore } from '~/lib/services/voip/useCallStore';
 import { mockedStore } from '~/reducers/mockedStore';
-import * as stories from './MediaCallHeader.stories';
+import * as stories from '../MediaCallHeader.stories';
 import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 
 const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);

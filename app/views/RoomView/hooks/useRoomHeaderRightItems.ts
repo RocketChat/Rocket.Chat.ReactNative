@@ -20,6 +20,7 @@ import { fromSubscription } from '../stores/RoomStoreContext';
 import { closeLivechat } from '../services/closeLivechat';
 import { placeLivechatOnHold } from '../services/placeLivechatOnHold';
 import { navigateToScreen, type TRoomStackNavigation } from '../services/navigateToScreen';
+import { getRoomHeaderMode } from '../helpers/getRoomHeaderMode';
 import { splitRoomHeaderActions, type TRoomHeaderActionKey } from '../helpers/roomHeaderActions';
 import { useCanPlaceLivechatOnHold } from './useCanPlaceLivechatOnHold';
 import { useThreadFollowing } from './useThreadFollowing';
@@ -141,7 +142,6 @@ const useThreadRightItems = (tmid: string | undefined, enabled: boolean): Native
 
 const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean): NativeStackHeaderItem[] => {
 	const { colors } = useTheme();
-	const data = useRoomRightButtonsData(rid, roomStore);
 	const {
 		threadsEnabled,
 		issuesWithNotifications,
@@ -158,7 +158,7 @@ const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean):
 		goSearchView,
 		goE2EEToggleRoomView,
 		threadsAccessibilityLabel
-	} = data;
+	} = useRoomRightButtonsData(rid, roomStore);
 	const { callPresent: callPresentRaw, isCallDisabled, onPressCall } = useHeaderCallPress(rid);
 	const callPresent = !isSelfDm && callPresentRaw;
 
@@ -275,23 +275,20 @@ export const useRoomHeaderRightItems = (
 		}))
 	);
 
-	const isInvited = membership === 'invited';
-	const isOmnichannel = !!rid && !isInvited && t === 'l' && status !== 'queued' && membership === 'subscribed';
-	const isThread = !!rid && !isInvited && !isOmnichannel && !!tmid;
-	const isRoom = !!rid && !isInvited && !isOmnichannel && !isThread;
+	const mode = getRoomHeaderMode({ rid, tmid, t, status, membership });
 
-	const omnichannelItems = useOmnichannelRightItems(rid ?? '', roomStore, isOmnichannel);
-	const threadItems = useThreadRightItems(tmid, isThread);
-	const roomItems = useRoomRightItems(rid ?? '', roomStore, isRoom);
+	const omnichannelItems = useOmnichannelRightItems(rid ?? '', roomStore, mode === 'omnichannel');
+	const threadItems = useThreadRightItems(tmid, mode === 'thread');
+	const roomItems = useRoomRightItems(rid ?? '', roomStore, mode === 'room');
 
-	if (!rid || isInvited) {
-		return EMPTY_ITEMS;
-	}
-	if (isOmnichannel) {
+	if (mode === 'omnichannel') {
 		return omnichannelItems;
 	}
-	if (isThread) {
+	if (mode === 'thread') {
 		return threadItems;
 	}
-	return roomItems;
+	if (mode === 'room') {
+		return roomItems;
+	}
+	return EMPTY_ITEMS;
 };

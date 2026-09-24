@@ -23,7 +23,6 @@ const ListHeader = () => {
 	if (searchEnabled) {
 		return null;
 	}
-	return null;
 
 	const goEncryption = () => {
 		logEvent(events.RL_GO_E2E_SAVE_PASSWORD);

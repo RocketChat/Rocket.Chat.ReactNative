@@ -45,6 +45,7 @@ import { toggleFollowThread as toggleFollowThreadService } from '~/lib/methods/t
 import UserPreferences from '~/lib/methods/userPreferences';
 import Navigation from '~/lib/navigation/appNavigation';
 import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { headerIcon } from '~/lib/methods/helpers/navigation/headerIcon';
 
 const API_FETCH_COUNT = 50;
 const THREADS_FILTER = 'threadsFilter';
@@ -125,6 +126,8 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 		if (hasNativeHeaderBar) {
 			const options: NativeStackNavigationOptions = {
 				headerLargeTitle: true,
+				headerTransparent: true,
+				headerLargeStyle: { backgroundColor: 'transparent' },
 				headerTitle: I18n.t('Threads'),
 				headerSearchBarOptions: {
 					ref: this.searchBarRef,
@@ -134,20 +137,22 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 					onChangeText: (event: { nativeEvent: { text: string } }) => this.onSearchChangeText(event.nativeEvent.text),
 					onCancelButtonPress: this.onCancelSearchPress
 				},
-				headerRight: () => (
-					<HeaderButton.Container>
-						<HeaderButton.Item
-							accessibilityLabel={I18n.t('Filter')}
-							iconName='filter'
-							onPress={this.showFilters}
-							badge={() =>
-								currentFilter !== Filter.All ? (
-									<HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} />
-								) : null
-							}
-						/>
-					</HeaderButton.Container>
-				)
+				unstable_headerRightItems: () => [
+					{
+						type: 'menu',
+						label: I18n.t('Filter'),
+						accessibilityLabel: I18n.t('Filter'),
+						icon: headerIcon('filter'),
+						menu: {
+							items: [Filter.All, Filter.Following, Filter.Unread].map(filter => ({
+								type: 'action' as const,
+								label: I18n.t(filter),
+								state: currentFilter === filter ? ('on' as const) : ('off' as const),
+								onPress: () => this.onFilterSelected(filter)
+							}))
+						}
+					}
+				]
 			};
 			if (isMasterDetail) {
 				options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
@@ -386,6 +391,8 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 					end: result.count < API_FETCH_COUNT,
 					offset: offset + API_FETCH_COUNT
 				});
+			} else {
+				this.setState({ loading: false, end: true });
 			}
 		} catch (e) {
 			log(e);
@@ -547,13 +554,14 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 				extraData={this.state}
 				renderItem={this.renderItem}
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-				contentContainerStyle={[styles.contentContainer, { paddingBottom: insets.bottom }]}
+				contentContainerStyle={[styles.contentContainer, { paddingBottom: hasNativeHeaderBar ? 0 : insets.bottom }]}
 				onEndReached={this.load}
 				onEndReachedThreshold={0.5}
 				maxToRenderPerBatch={5}
 				windowSize={10}
 				initialNumToRender={7}
 				removeClippedSubviews={isIOS}
+				contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444

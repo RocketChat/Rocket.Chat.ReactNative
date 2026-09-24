@@ -151,13 +151,12 @@ export const useNativeRoomHeader = (
 	const roomImage = remoteImage ?? glyphImage;
 	const clockImage = useHeaderIconImage(enabled && showClock ? 'clock' : undefined, colors.fontSecondaryInfo, SUBTITLE_FONT_SIZE);
 	const subtitleImage = tmid ? roomImage : clockImage;
-	const titleReady = !!tmid || !!roomImage;
 
 	useLayoutEffect(() => {
 		if (enabled) {
 			navigation.setOptions({
-				headerTitle: titleReady ? title : '',
-				headerSubtitle: (titleReady && subtitle) || undefined,
+				headerTitle: title,
+				headerSubtitle: subtitle || undefined,
 				headerTitleImageSource: tmid ? undefined : roomImage,
 				headerSubtitleImageSource: subtitleImage,
 				headerTitleStyle: { color: colors.fontTitlesLabels },
@@ -165,5 +164,5 @@ export const useNativeRoomHeader = (
 				onHeaderTitlePress: onTitlePress && !fields.disabled ? () => onTitlePress() : undefined
 			});
 		}
-	}, [enabled, navigation, title, subtitle, tmid, roomImage, subtitleImage, titleReady, colors, onTitlePress, fields.disabled]);
+	}, [enabled, navigation, title, subtitle, tmid, roomImage, subtitleImage, colors, onTitlePress, fields.disabled]);
 };

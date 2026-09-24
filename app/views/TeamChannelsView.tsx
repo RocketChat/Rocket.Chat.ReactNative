@@ -236,6 +236,8 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 				headerLargeTitle: true,
 				headerLeft: undefined,
 				headerTitle: getRoomTitle(team),
+				headerSubtitle: team.topic,
+				onHeaderTitlePress: () => this.goRoomActionsView(),
 				headerSearchBarOptions: {
 					ref: this.searchBarRef,
 					placement: 'stacked',

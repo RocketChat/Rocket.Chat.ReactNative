@@ -12,6 +12,7 @@ const HEADER_ICONS: TIconsName[] = [
 	'create',
 	'directory',
 	'encrypted',
+	'filter',
 	'hamburguer',
 	'kebab',
 	'move-to-the-queue',

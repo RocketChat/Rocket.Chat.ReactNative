@@ -80,7 +80,7 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="[missing "en.Minimize" translation]"
+          accessibilityLabel="Minimize"
           accessible={true}
           style={
             {
@@ -411,7 +411,7 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="[missing "en.Minimize" translation]"
+          accessibilityLabel="Minimize"
           accessible={true}
           style={
             {
@@ -742,7 +742,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="[missing "en.Minimize" translation]"
+          accessibilityLabel="Minimize"
           accessible={true}
           style={
             {
@@ -1093,7 +1093,7 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="[missing "en.Minimize" translation]"
+          accessibilityLabel="Minimize"
           accessible={true}
           style={
             {
@@ -1444,7 +1444,7 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="[missing "en.Minimize" translation]"
+          accessibilityLabel="Minimize"
           accessible={true}
           style={
             {
@@ -1799,7 +1799,7 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="[missing "en.Minimize" translation]"
+          accessibilityLabel="Minimize"
           accessible={true}
           style={
             {

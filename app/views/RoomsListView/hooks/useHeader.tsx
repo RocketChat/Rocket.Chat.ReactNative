@@ -59,7 +59,7 @@ export const useHeader = () => {
 
 	const nativeHeaderSubtitle =
 		supportedVersionsStatus === 'expired'
-			? 'Cannot connect'
+			? i18n.t('Cannot_connect')
 			: connecting
 				? i18n.t('Connecting')
 				: isFetchingRooms

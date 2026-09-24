@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { memo, useContext, useEffect } from 'react';
-import { BackHandler, FlatList, RefreshControl } from 'react-native';
+import { BackHandler, FlatList, Platform, RefreshControl } from 'react-native';
 import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 
@@ -30,7 +30,6 @@ import { useSubscriptions } from './hooks/useSubscriptions';
 import styles from './styles';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
-const BOTTOM_SEARCH_TOOLBAR_HEIGHT = isIOS ? 44 : 0;
 
 const RoomsListView = memo(function RoomsListView() {
 	useHeader();
@@ -132,7 +131,7 @@ const RoomsListView = memo(function RoomsListView() {
 			extraData={searchEnabled ? searchResults : subscriptions}
 			keyExtractor={item => `${item.rid}-${searchEnabled}`}
 			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
-			contentContainerStyle={{ paddingBottom: bottom + BOTTOM_SEARCH_TOOLBAR_HEIGHT }}
+			contentContainerStyle={{ paddingBottom: Platform.select({ ios: 0, default: bottom }) }}
 			renderItem={renderItem}
 			ListHeaderComponent={ListHeader}
 			ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}
