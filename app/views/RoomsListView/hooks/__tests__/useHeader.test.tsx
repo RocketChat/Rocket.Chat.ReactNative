@@ -5,11 +5,10 @@ import { RoomsSearchContext } from '../../contexts/RoomsSearchProvider';
 import { useHeader } from '../useHeader';
 
 const mockSetOptions = jest.fn();
-const mockNavigation = { setOptions: mockSetOptions, navigate: jest.fn(), toggleDrawer: jest.fn() };
+const mockNavigation = { setOptions: mockSetOptions, navigate: jest.fn(), toggleDrawer: jest.fn(), getParent: jest.fn() };
 
 jest.mock('@react-navigation/native', () => ({
-	useNavigation: () => mockNavigation,
-	useFocusEffect: jest.fn()
+	useNavigation: () => mockNavigation
 }));
 
 let mockIsIOS = true;
@@ -28,7 +27,8 @@ jest.mock('~/lib/methods/helpers/navigation/headerIcon', () => ({
 	headerIcon: (name: string) => ({ type: 'image', source: { uri: name } })
 }));
 
-jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: () => false }));
+let mockIsMasterDetail = false;
+jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: () => mockIsMasterDetail }));
 jest.mock('~/lib/hooks/useIsAccessibilityNavigationEnabled', () => ({ useIsAccessibilityNavigationEnabled: () => false }));
 jest.mock('~/lib/hooks/usePermissions', () => ({ usePermissions: () => [true, false, false, false, false] }));
 jest.mock('~/selectors/login', () => ({ getUserSelector: () => ({ requirePasswordChange: false }) }));
@@ -88,6 +88,7 @@ describe('RoomsListView useHeader', () => {
 		jest.clearAllMocks();
 		mockIsIOS = true;
 		mockIsTablet = false;
+		mockIsMasterDetail = false;
 		mockAppState = {
 			supportedVersions: { status: 'supported' },
 			troubleshootingNotification: { issuesWithNotifications: false },
@@ -172,7 +173,7 @@ describe('RoomsListView useHeader', () => {
 		const rightItems = options.unstable_headerRightItems();
 		expect(rightItems.some((item: { accessibilityLabel: string }) => item.accessibilityLabel === 'Search')).toBe(false);
 
-		expect(options.headerSearchBarOptions.placement).toBe('automatic');
+		expect(options.headerSearchBarOptions.placement).toBe('stacked');
 		expect(options.headerSearchBarOptions.ref.current).toBeNull();
 
 		options.headerSearchBarOptions.onFocus();
@@ -203,6 +204,27 @@ describe('RoomsListView useHeader', () => {
 		act(() => setSearchEnabled(false));
 
 		expect(clearText).toHaveBeenCalledTimes(1);
+	});
+
+	it('deactivates the system search bar once search stops on tablet', () => {
+		mockIsMasterDetail = true;
+		let setSearchEnabled: (value: boolean) => void = () => {};
+		const wrapper = ({ children }: { children: ReactElement }) => {
+			const [searchEnabled, setter] = useState(true);
+			setSearchEnabled = setter;
+			return (
+				<RoomsSearchContext.Provider value={{ ...searchContextValue, searchEnabled }}>{children}</RoomsSearchContext.Provider>
+			);
+		};
+
+		renderHook(() => useHeader(), { wrapper });
+
+		const cancelSearch = jest.fn();
+		mockSetOptions.mock.calls[0][0].headerSearchBarOptions.ref.current = { cancelSearch };
+
+		act(() => setSearchEnabled(false));
+
+		expect(cancelSearch).toHaveBeenCalledTimes(1);
 	});
 
 	it('falls back to the JS header on Android', () => {

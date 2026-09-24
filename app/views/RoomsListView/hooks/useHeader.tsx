@@ -1,4 +1,4 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { InteractionManager } from 'react-native';
 import { type KeyboardFocus } from 'react-native-external-keyboard';
@@ -39,6 +39,13 @@ const splitHeaderRightActions = (actions: IHeaderRightAction[]) => {
 		return { visible: present, overflow: [] as IHeaderRightAction[] };
 	}
 	return { visible: present.slice(0, MAX_HEADER_RIGHT_ACTIONS), overflow: present.slice(MAX_HEADER_RIGHT_ACTIONS) };
+};
+
+const getScreenFocusNavigation = (navigation: any, isMasterDetail: boolean) => {
+	if (!isMasterDetail) {
+		return navigation;
+	}
+	return navigation.getParent()?.getParent() ?? navigation;
 };
 
 export const useHeader = () => {
@@ -201,7 +208,7 @@ export const useHeader = () => {
 				onHeaderTitlePress: () => showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false }),
 				headerSearchBarOptions: {
 					ref: searchBarRef,
-					placement: 'automatic',
+					placement: 'stacked',
 					placeholder: i18n.t('Search'),
 					onFocus: startSearch,
 					onChangeText: (event: { nativeEvent: { text: string } }) => search(event.nativeEvent.text),
@@ -318,26 +325,38 @@ export const useHeader = () => {
 	]);
 
 	useEffect(() => {
-		if (isIOS && !searchEnabled) {
-			searchBarRef.current?.clearText();
+		if (!isIOS || searchEnabled) {
+			return;
 		}
-	}, [searchEnabled]);
+		if (isMasterDetail) {
+			searchBarRef.current?.cancelSearch();
+			return;
+		}
+		searchBarRef.current?.clearText();
+	}, [searchEnabled, isMasterDetail]);
 
-	// The rooms list header persists across native-stack navigation, so autoFocus (mount-only)
-	// won't re-fire on back-return or after the list/banner render asynchronously. Re-assert focus
-	// on the drawer button every time the screen is focused so external-keyboard/screen-reader
-	// navigation always starts from a known element. Regular touch users are left untouched.
-	useFocusEffect(
-		useCallback(() => {
-			if (!isAccessibilityNavigationEnabled) {
-				return;
-			}
-			const task = InteractionManager.runAfterInteractions(() => {
+	const focusNavigation = getScreenFocusNavigation(navigation, isMasterDetail);
+
+	useEffect(() => {
+		if (!isAccessibilityNavigationEnabled) {
+			return;
+		}
+		let task: ReturnType<typeof InteractionManager.runAfterInteractions> | undefined;
+		const focusDrawerButton = () => {
+			task?.cancel();
+			task = InteractionManager.runAfterInteractions(() => {
 				drawerButtonRef.current?.focus();
 			});
-			return () => task.cancel();
-		}, [isAccessibilityNavigationEnabled])
-	);
+		};
+		if (focusNavigation.isFocused()) {
+			focusDrawerButton();
+		}
+		const unsubscribe = focusNavigation.addListener('focus', focusDrawerButton);
+		return () => {
+			unsubscribe();
+			task?.cancel();
+		};
+	}, [focusNavigation, isAccessibilityNavigationEnabled]);
 
 	return { options };
 };
