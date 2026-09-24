@@ -46,13 +46,8 @@ const Touchable = ({
 	const rowState = useSharedValue(0); // 0: closed, 1: right opened, -1: left opened
 	const gestureActive = useSharedValue(false);
 	const consumedTouchRef = useRef(false);
-	const touchStartHandledRef = useRef(false);
 
 	const handleTouchBegin = (closedOtherRow: boolean) => {
-		if (touchStartHandledRef.current) {
-			return;
-		}
-		touchStartHandledRef.current = true;
 		consumedTouchRef.current = closedOtherRow;
 	};
 
@@ -89,7 +84,6 @@ const Touchable = ({
 	};
 
 	const handlePress = () => {
-		touchStartHandledRef.current = false;
 		if (rowState.value !== 0) {
 			close();
 			return;
@@ -104,7 +98,6 @@ const Touchable = ({
 	};
 
 	const handleLongPress = () => {
-		touchStartHandledRef.current = false;
 		if (rowState.value !== 0) {
 			close();
 			return;
@@ -183,12 +176,6 @@ const Touchable = ({
 	// Pan gesture will take priority over long press for horizontal swipes
 	const composedGesture = Gesture.Race(panGesture, longPressGesture);
 
-	const handleActiveStateChange = (active: boolean) => {
-		if (!active) {
-			touchStartHandledRef.current = false;
-		}
-	};
-
 	const animatedStyles = useAnimatedStyle(() => ({
 		transform: [{ translateX: transX.value }]
 	}));
@@ -217,7 +204,6 @@ const Touchable = ({
 					<Touch
 						onPress={handlePress}
 						onLongPress={handleLongPress}
-						onActiveStateChange={handleActiveStateChange}
 						style={{
 							backgroundColor: isFocused ? colors.surfaceTint : colors.surfaceRoom
 						}}>
