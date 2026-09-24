@@ -1,5 +1,5 @@
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/core';
-import { useContext, useEffect, useState, type ReactElement } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { Text } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -7,7 +7,7 @@ import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/Actio
 import { CustomIcon } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
 import { asNativeListRow } from '~/containers/List/native/rowMarkers';
-import { NativeListContext } from '~/containers/List/native/context';
+import { useNativeListMode } from '~/containers/List/native/context';
 import NativeListPicker from '~/containers/List/native/Picker';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { type IRoomNotifications, type TRoomNotificationsModel } from '~/definitions';
@@ -46,7 +46,7 @@ const RenderListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const nativeListMode = useContext(NativeListContext);
+	const nativeListMode = useNativeListMode();
 
 	const pref = room[preference]
 		? OPTIONS[preference as TOptions].find(option => option.value === room[preference])

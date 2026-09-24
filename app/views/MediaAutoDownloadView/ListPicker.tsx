@@ -1,10 +1,10 @@
-import { Fragment, useContext, type ReactElement } from 'react';
+import { Fragment, type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { useActionSheet } from '~/containers/ActionSheet';
 import * as List from '~/containers/List';
 import { asNativeListRow } from '~/containers/List/native/rowMarkers';
-import { NativeListContext } from '~/containers/List/native/context';
+import { useNativeListMode } from '~/containers/List/native/context';
 import NativeListPicker from '~/containers/List/native/Picker';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
@@ -60,7 +60,7 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const nativeListMode = useContext(NativeListContext);
+	const nativeListMode = useNativeListMode();
 	const option = OPTIONS.find(option => option.value === value) || OPTIONS[2];
 
 	const getOptions = (): ReactElement => (

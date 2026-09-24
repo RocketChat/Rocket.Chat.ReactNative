@@ -1,10 +1,10 @@
-import { useContext, type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { Text } from 'react-native';
 
 import { useActionSheet } from '~/containers/ActionSheet';
 import * as List from '~/containers/List';
 import { asNativeListSection } from '~/containers/List/native/rowMarkers';
-import { NativeListContext } from '~/containers/List/native/context';
+import { useNativeListMode } from '~/containers/List/native/context';
 import I18n from '~/i18n';
 import dayjs from '~/lib/dayjs';
 import { useTheme } from '~/theme';
@@ -25,7 +25,7 @@ interface IClearAfterPickerProps {
 const ClearAfterPicker = ({ value, customDate, onChange }: IClearAfterPickerProps): ReactElement => {
 	const { showActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const nativeListMode = useContext(NativeListContext);
+	const nativeListMode = useNativeListMode();
 	const customDateLabel = customDate ? dayjs(customDate).format('LL LT') : null;
 
 	const getDisplayLabel = (): string => {

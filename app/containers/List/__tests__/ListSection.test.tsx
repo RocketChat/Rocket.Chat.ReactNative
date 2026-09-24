@@ -13,7 +13,7 @@ jest.mock('../native/Section', () => {
 describe('ListSection', () => {
 	it('renders as a native section inside a native list', async () => {
 		await render(
-			<NativeListContext.Provider value='native'>
+			<NativeListContext.Provider value={{ mode: 'native', renderRow: row => row }}>
 				<ListSection title='Calls' translateTitle={false}>
 					<Text>row</Text>
 				</ListSection>

@@ -3,7 +3,7 @@ import { Section, Text } from '@expo/ui/swift-ui';
 
 import ListInfo from '../ListInfo';
 import { flattenListChildren, isListSeparator } from '../listChildren';
-import { NativeListRowRendererContext } from './context';
+import { NativeListContext } from './context';
 import { translateListText } from './itemProps';
 import { type INativeListSection } from './types';
 
@@ -15,7 +15,7 @@ interface IInfoProps {
 const isInfo = (element: ReactElement): element is ReactElement<IInfoProps> => element.type === ListInfo;
 
 const NativeListSection = ({ children, title, translateTitle }: INativeListSection) => {
-	const renderRow = useContext(NativeListRowRendererContext);
+	const { renderRow } = useContext(NativeListContext);
 	const elements = flattenListChildren(children).filter(element => !isListSeparator(element));
 	const infos = elements.filter(isInfo);
 	const rows = elements.filter(element => !isInfo(element));

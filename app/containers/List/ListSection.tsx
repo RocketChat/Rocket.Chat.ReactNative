@@ -1,9 +1,9 @@
-import { useContext, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import Header from './ListHeader';
 import NativeListSection from './native/Section';
-import { NativeListContext } from './native/context';
+import { useNativeListMode } from './native/context';
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,7 +18,7 @@ interface IListSection {
 }
 
 const ListSection = ({ children, title, translateTitle }: IListSection) => {
-	const nativeListMode = useContext(NativeListContext);
+	const nativeListMode = useNativeListMode();
 
 	if (nativeListMode === 'native') {
 		return (

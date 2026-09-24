@@ -17,7 +17,7 @@ const latestPicker = (): INativeListPicker => mockPicker.mock.calls[mockPicker.m
 
 const renderNative = (onChangeValue: jest.Mock) =>
 	render(
-		<NativeListContext.Provider value='native'>
+		<NativeListContext.Provider value={{ mode: 'native', renderRow: row => row }}>
 			<ListPicker
 				preference='alsoSendThreadToChannel'
 				value='always'

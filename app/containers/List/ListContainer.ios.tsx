@@ -10,7 +10,7 @@ import ListItem from './ListItem';
 import ListRadio from './ListRadio';
 import { isNativeListRow, isNativeListSection } from './native/rowMarkers';
 import { flattenListChildren, isListSeparator } from './listChildren';
-import { NativeListContext, NativeListRowRendererContext } from './native/context';
+import { NativeListContext } from './native/context';
 import { ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 
 const styles = StyleSheet.create({
@@ -63,7 +63,7 @@ const ListContainer = ({ children, testID, selection }: IListContainer) => {
 	const renderHostedRow = (row: ReactElement) => (
 		<Group key={row.key} modifiers={rowModifiers(row)}>
 			<RNHostView matchContents>
-				<NativeListContext.Provider value='hosted'>
+				<NativeListContext.Provider value={{ mode: 'hosted', renderRow }}>
 					<View style={{ width: rowWidth }}>{row}</View>
 				</NativeListContext.Provider>
 			</RNHostView>
@@ -79,19 +79,17 @@ const ListContainer = ({ children, testID, selection }: IListContainer) => {
 	const renderRow = (row: ReactElement) => (isNativeRow(row) ? renderNativeRow(row) : renderHostedRow(row));
 
 	return (
-		<NativeListContext.Provider value='native'>
-			<NativeListRowRendererContext.Provider value={renderRow}>
-				<Host style={styles.host} colorScheme={theme === 'light' ? 'light' : 'dark'}>
-					<List
-						modifiers={selection ? sidebarModifiers : insetGroupedModifiers}
-						selection={selection ? selectedTags(selection) : undefined}
-						testID={testID}>
-						{flattenListChildren(children)
-							.filter(element => !isListSeparator(element))
-							.map(element => (isSection(element) ? element : renderRow(element)))}
-					</List>
-				</Host>
-			</NativeListRowRendererContext.Provider>
+		<NativeListContext.Provider value={{ mode: 'native', renderRow }}>
+			<Host style={styles.host} colorScheme={theme === 'light' ? 'light' : 'dark'}>
+				<List
+					modifiers={selection ? sidebarModifiers : insetGroupedModifiers}
+					selection={selection ? selectedTags(selection) : undefined}
+					testID={testID}>
+					{flattenListChildren(children)
+						.filter(element => !isListSeparator(element))
+						.map(element => (isSection(element) ? element : renderRow(element)))}
+				</List>
+			</Host>
 		</NativeListContext.Provider>
 	);
 };
