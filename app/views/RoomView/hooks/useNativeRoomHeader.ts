@@ -112,7 +112,7 @@ const useRoomHeaderContent = (
 	const usersTyping = useAppSelector(state => state.usersTyping, shallowEqual);
 	const typing = !tmid && usersTyping.length > 0;
 	const subtitle = getSubtitle({ fields, tmid, usersTyping, connected, connecting, activeUser });
-	const plainTitle = usePreviewFormatText(fields.title);
+	const plainTitle = usePreviewFormatText(fields.title ?? '');
 	const formattedSubtitle = usePreviewFormatText(subtitle ?? '');
 	const hasStatusExpiry = fields.type === 'd' && connected && !!formatStatusExpiry(activeUser?.statusExpiresAt);
 	return {
