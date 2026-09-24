@@ -8,10 +8,10 @@ import sharedStyles from '~/views/Styles';
 import Header from '~/containers/Header';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import I18n from '~/i18n';
-import { isIOS } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers';
 import { headerIcon } from './headerIcon';
 
-export const defaultHeader: NativeStackNavigationOptions = isIOS
+export const defaultHeader: NativeStackNavigationOptions = hasNativeHeaderBar
 	? {
 			headerBackButtonDisplayMode: 'minimal'
 		}
@@ -19,8 +19,11 @@ export const defaultHeader: NativeStackNavigationOptions = isIOS
 			header: (props: NativeStackHeaderProps): ReactElement => createElement(Header, props)
 		};
 
-export const outsideHeaderRightLegal = (navigation: any, testID: string): NativeStackNavigationOptions =>
-	isIOS
+export const outsideHeaderRightLegal = (
+	navigation: { navigate: (screen: 'LegalView') => void },
+	testID: string
+): NativeStackNavigationOptions =>
+	hasNativeHeaderBar
 		? {
 				unstable_headerRightItems: () => [
 					{
@@ -28,7 +31,7 @@ export const outsideHeaderRightLegal = (navigation: any, testID: string): Native
 						label: I18n.t('More'),
 						accessibilityLabel: I18n.t('More'),
 						icon: headerIcon('kebab'),
-						onPress: () => navigation?.navigate('LegalView')
+						onPress: () => navigation.navigate('LegalView')
 					}
 				]
 			}
@@ -37,7 +40,7 @@ export const outsideHeaderRightLegal = (navigation: any, testID: string): Native
 			};
 
 export const outsideHeaderLeftClose = (onPress: () => void, testID: string): NativeStackNavigationOptions =>
-	isIOS
+	hasNativeHeaderBar
 		? {
 				unstable_headerLeftItems: () => [
 					{
@@ -53,20 +56,15 @@ export const outsideHeaderLeftClose = (onPress: () => void, testID: string): Nat
 				headerLeft: (): ReactElement => createElement(HeaderButton.CloseModal, { onPress, testID })
 			};
 
-export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions =>
-	isIOS
-		? {
-				headerStyle: {
-					backgroundColor: themes[theme].surfaceNeutral
-				}
-			}
-		: {
-				headerStyle: {
-					backgroundColor: themes[theme].surfaceNeutral
-				},
-				headerTintColor: themes[theme].fontDefault,
-				headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 }
-			};
+export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions => ({
+	headerStyle: {
+		backgroundColor: themes[theme].surfaceNeutral
+	},
+	...(!hasNativeHeaderBar && {
+		headerTintColor: themes[theme].fontDefault,
+		headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 }
+	})
+});
 
 export const navigationTheme = (theme: TSupportedThemes) => {
 	const defaultNavTheme = theme === 'light' ? DefaultTheme : DarkTheme;

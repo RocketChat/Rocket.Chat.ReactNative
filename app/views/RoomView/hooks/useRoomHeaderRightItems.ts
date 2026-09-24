@@ -176,38 +176,24 @@ const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean):
 			: undefined;
 
 	const overflowActions: NativeStackHeaderItemMenuAction[] = [
-		...overflowKeys.map((key): NativeStackHeaderItemMenuAction => {
-			if (key === 'threads') {
-				return { type: 'action', label: threadsAccessibilityLabel, icon: headerIcon('threads'), onPress: goThreadsView };
-			}
-			if (key === 'encryption') {
-				return {
-					type: 'action',
-					label: i18n.t('Encrypted'),
-					icon: headerIcon('encrypted'),
-					disabled: !canToggleEncryption,
-					onPress: goE2EEToggleRoomView
-				};
-			}
-			if (key === 'call') {
-				return {
-					type: 'action',
-					label: callAccessibilityLabel,
-					icon: headerIcon('phone'),
-					disabled: isCallDisabled,
-					onPress: onPressCall
-				};
-			}
-			if (key === 'notifications') {
-				return {
-					type: 'action',
-					label: i18n.t('Troubleshooting'),
-					icon: headerIcon('notification-disabled'),
-					onPress: navigateToNotificationOrPushTroubleshoot
-				};
-			}
-			throw new Error(`Unhandled room header action key: ${key}`);
-		}),
+		...overflowKeys.map(
+			(key): NativeStackHeaderItemMenuAction =>
+				key === 'encryption'
+					? {
+							type: 'action',
+							label: i18n.t('Encrypted'),
+							icon: headerIcon('encrypted'),
+							disabled: !canToggleEncryption,
+							onPress: goE2EEToggleRoomView
+						}
+					: {
+							type: 'action',
+							label: i18n.t('Troubleshooting'),
+							icon: headerIcon('notification-disabled'),
+							disabled: hasE2EEWarning,
+							onPress: navigateToNotificationOrPushTroubleshoot
+						}
+		),
 		{
 			type: 'action',
 			label: i18n.t('Search_Messages'),

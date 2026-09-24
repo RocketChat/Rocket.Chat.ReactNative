@@ -1,5 +1,4 @@
 import { act, renderHook } from '@testing-library/react-native';
-import { Platform } from 'react-native';
 
 import { createStore } from 'zustand';
 
@@ -23,7 +22,7 @@ let mockIsTablet = false;
 jest.mock('~/lib/methods/helpers', () => ({
 	getRoomTitle: jest.fn(() => 'Room Title'),
 	isGroupChat: jest.fn(() => false),
-	get isIOS() {
+	get hasNativeHeaderBar() {
 		return mockIsIOS;
 	},
 	get isTablet() {
@@ -120,14 +119,6 @@ describe('useHeader', () => {
 			mockIsIOS = true;
 		});
 
-		it('renders the tappable RoomHeader under the native header bar', () => {
-			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
-
-			const titleOptions = mockSetOptions.mock.calls[1][0];
-			expect(typeof titleOptions.headerTitle).toBe('function');
-			expect(titleOptions.headerTitle().props.title).toBe('Room Title');
-		});
-
 		it('leaves the native header empty when rid is missing', () => {
 			renderHook(() => useHeader({ rid: undefined, tmid: undefined, name: 'general', roomStore: mockTestStore }));
 
@@ -149,14 +140,6 @@ describe('useHeader', () => {
 		beforeEach(() => {
 			mockIsIOS = true;
 			mockIsTablet = true;
-		});
-
-		it('renders the tappable RoomHeader instead of the native string title', () => {
-			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
-
-			const titleOptions = mockSetOptions.mock.calls[1][0];
-			expect(titleOptions).toHaveProperty('headerTitle');
-			expect(typeof titleOptions.headerTitle).toBe('function');
 		});
 
 		it('uses the native right items like iPhone', () => {
@@ -185,21 +168,12 @@ describe('useHeader', () => {
 });
 
 describe('native title availability', () => {
-	const originalVersion = Platform.Version;
-	const originalOS = Platform.OS;
-	afterEach(() => {
-		Object.defineProperty(Platform, 'Version', { configurable: true, value: originalVersion });
-		Object.defineProperty(Platform, 'OS', { configurable: true, value: originalOS });
-	});
-
 	it.each([
-		['ios', '26.0', true],
-		['ios', '18.0', false],
-		['android', 36, false]
-	])('uses the appropriate title on %s %s', (os, version, native) => {
+		[true, true],
+		[false, false]
+	])('uses the native title when the native header bar is %s', (nativeHeaderBar, native) => {
 		jest.clearAllMocks();
-		Object.defineProperty(Platform, 'OS', { configurable: true, value: os });
-		Object.defineProperty(Platform, 'Version', { configurable: true, value: version });
+		mockIsIOS = nativeHeaderBar;
 		renderHook(() => useHeader({ rid: 'rid-1', roomStore: makeRoomStore() }));
 		expect(useNativeRoomHeader).toHaveBeenCalledWith(native, expect.any(Object), undefined, null, expect.any(Function));
 		expect(mockSetOptions.mock.calls.some(([options]) => typeof options.headerTitle === 'function')).toBe(!native);

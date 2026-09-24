@@ -125,7 +125,6 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 		if (hasNativeHeaderBar) {
 			const options: NativeStackNavigationOptions = {
 				headerLargeTitle: true,
-				headerLeft: undefined,
 				headerTitle: I18n.t('Threads'),
 				headerSearchBarOptions: {
 					ref: this.searchBarRef,

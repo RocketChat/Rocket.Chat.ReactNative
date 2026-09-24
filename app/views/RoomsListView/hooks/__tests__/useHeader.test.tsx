@@ -17,7 +17,7 @@ jest.mock('~/lib/methods/helpers', () =>
 	Object.defineProperties(
 		{ ...jest.requireActual('~/lib/methods/helpers') },
 		{
-			isIOS: { get: () => mockIsIOS, configurable: true },
+			hasNativeHeaderBar: { get: () => mockIsIOS, configurable: true },
 			isTablet: { get: () => mockIsTablet, configurable: true }
 		}
 	)
@@ -128,7 +128,7 @@ describe('RoomsListView useHeader', () => {
 		expect(options.headerSubtitle).toBe(expectedSubtitle);
 	});
 
-	it('builds the right cluster in create, push-troubleshoot priority order, overflowing directory', () => {
+	it('builds the right cluster in create, push-troubleshoot, directory order', () => {
 		mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
 
 		renderUseHeader();
@@ -139,7 +139,7 @@ describe('RoomsListView useHeader', () => {
 		expect(labels).toEqual(['Create new channel, team, direct message or discussion', 'Troubleshooting', 'Directory']);
 	});
 
-	it('does not render an overflow control when nothing extra is present', () => {
+	it('renders only buttons when push troubleshooting is absent', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];

@@ -12,7 +12,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
-import { isIOS, isTablet } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar, isTablet } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { headerIcon } from '~/lib/methods/helpers/navigation/headerIcon';
 import { getUserSelector } from '~/selectors/login';
@@ -20,8 +20,6 @@ import { useTheme } from '~/theme';
 import RoomsListHeaderView from '../components/Header';
 import ServersList from '../components/ServersList';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
-
-const MAX_HEADER_RIGHT_ACTIONS = 2;
 
 interface IHeaderRightAction {
 	key: string;
@@ -32,14 +30,6 @@ interface IHeaderRightAction {
 	disabled?: boolean;
 	onPress: () => void;
 }
-
-const splitHeaderRightActions = (actions: IHeaderRightAction[]) => {
-	const present = actions.filter(action => action.present);
-	if (present.length <= MAX_HEADER_RIGHT_ACTIONS + 1) {
-		return { visible: present, overflow: [] as IHeaderRightAction[] };
-	}
-	return { visible: present.slice(0, MAX_HEADER_RIGHT_ACTIONS), overflow: present.slice(MAX_HEADER_RIGHT_ACTIONS) };
-};
 
 const getScreenFocusNavigation = (navigation: any, isMasterDetail: boolean) => {
 	if (!isMasterDetail) {
@@ -155,7 +145,7 @@ export const useHeader = () => {
 			/>
 		);
 
-		if (searchEnabled && !isIOS) {
+		if (searchEnabled && !hasNativeHeaderBar) {
 			const searchOptions = {
 				headerLeft: () => (
 					<HeaderButton.Container style={{ marginLeft: 1 }} left>
@@ -172,33 +162,35 @@ export const useHeader = () => {
 			return;
 		}
 
-		if (isIOS) {
-			const { visible, overflow } = splitHeaderRightActions([
-				{
-					key: 'create',
-					present: canCreateRoom,
-					icon: 'create',
-					accessibilityLabel: i18n.t('Create_new_channel_team_dm_discussion'),
-					disabled,
-					onPress: goToNewMessage
-				},
-				{
-					key: 'push-troubleshoot',
-					present: issuesWithNotifications,
-					icon: 'notification-disabled',
-					accessibilityLabel: i18n.t('Troubleshooting'),
-					tintColor: colors.fontDanger,
-					onPress: navigateToPushTroubleshootView
-				},
-				{
-					key: 'directory',
-					present: true,
-					icon: 'directory',
-					accessibilityLabel: i18n.t('Directory'),
-					disabled,
-					onPress: goDirectory
-				}
-			]);
+		if (hasNativeHeaderBar) {
+			const actions = (
+				[
+					{
+						key: 'create',
+						present: canCreateRoom,
+						icon: 'create',
+						accessibilityLabel: i18n.t('Create_new_channel_team_dm_discussion'),
+						disabled,
+						onPress: goToNewMessage
+					},
+					{
+						key: 'push-troubleshoot',
+						present: issuesWithNotifications,
+						icon: 'notification-disabled',
+						accessibilityLabel: i18n.t('Troubleshooting'),
+						tintColor: colors.fontDanger,
+						onPress: navigateToPushTroubleshootView
+					},
+					{
+						key: 'directory',
+						present: true,
+						icon: 'directory',
+						accessibilityLabel: i18n.t('Directory'),
+						disabled,
+						onPress: goDirectory
+					}
+				] satisfies IHeaderRightAction[]
+			).filter(action => action.present);
 
 			navigation.setOptions({
 				headerLargeTitle: true,
@@ -240,35 +232,15 @@ export const useHeader = () => {
 									onPress: stopSearch
 								}
 							]
-						: [
-								...visible.map(action => ({
-									type: 'button' as const,
-									label: action.accessibilityLabel,
-									accessibilityLabel: action.accessibilityLabel,
-									icon: headerIcon(action.icon),
-									tintColor: action.tintColor,
-									disabled: action.disabled,
-									onPress: action.onPress
-								})),
-								...(overflow.length >= 2
-									? [
-											{
-												type: 'menu' as const,
-												label: i18n.t('More'),
-												accessibilityLabel: i18n.t('More'),
-												icon: headerIcon('kebab'),
-												menu: {
-													items: overflow.map(action => ({
-														type: 'action' as const,
-														label: action.accessibilityLabel,
-														icon: headerIcon(action.icon),
-														onPress: action.onPress
-													}))
-												}
-											}
-										]
-									: [])
-							]
+						: actions.map(action => ({
+								type: 'button' as const,
+								label: action.accessibilityLabel,
+								accessibilityLabel: action.accessibilityLabel,
+								icon: headerIcon(action.icon),
+								tintColor: action.tintColor,
+								disabled: action.disabled,
+								onPress: action.onPress
+							}))
 			});
 			return;
 		}
@@ -338,7 +310,7 @@ export const useHeader = () => {
 	]);
 
 	useEffect(() => {
-		if (!isIOS || searchEnabled) {
+		if (!hasNativeHeaderBar || searchEnabled) {
 			return;
 		}
 		if (isMasterDetail) {

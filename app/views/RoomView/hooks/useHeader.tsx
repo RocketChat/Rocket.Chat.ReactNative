@@ -1,12 +1,12 @@
 import { useLayoutEffect } from 'react';
-import { PixelRatio, Platform, View } from 'react-native';
+import { PixelRatio, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackHeaderItem } from '@react-navigation/native-stack';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from 'zustand';
 
 import RoomHeader from '~/containers/RoomHeader';
-import { getRoomTitle, isIOS, isGroupChat } from '~/lib/methods/helpers';
+import { getRoomTitle, hasNativeHeaderBar, isGroupChat } from '~/lib/methods/helpers';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { type IOmnichannelSource, type ISubscription, type IVisitor } from '~/definitions';
@@ -71,14 +71,13 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 	);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const goRoomActionsView = useGoRoomActionsView(roomStore);
-	const nativeTitle = Platform.OS === 'ios' && Number.parseInt(String(Platform.Version), 10) >= 26;
-	useNativeRoomHeader(!!rid && nativeTitle, headerFields, tmid, roomUserId, goRoomActionsView);
-	useNativeBackButton(!!rid && nativeTitle, rid);
-	const nativeRightItems = useRoomHeaderRightItems(isIOS ? rid : undefined, tmid, roomStore);
+	useNativeRoomHeader(!!rid && hasNativeHeaderBar, headerFields, tmid, roomUserId, goRoomActionsView);
+	useNativeBackButton(!!rid && hasNativeHeaderBar, rid);
+	const nativeRightItems = useRoomHeaderRightItems(hasNativeHeaderBar ? rid : undefined, tmid, roomStore);
 	const isMasterDetail = useMasterDetail();
 
 	useLayoutEffect(() => {
-		if (!rid && isIOS) {
+		if (!rid && hasNativeHeaderBar) {
 			return;
 		}
 
@@ -88,7 +87,7 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 			return;
 		}
 
-		if (isIOS) {
+		if (hasNativeHeaderBar) {
 			const avatarItem: NativeStackHeaderItem = {
 				type: 'custom',
 				element: <LeftButtons rid={rid} tmid={tmid} roomStore={roomStore} />,
@@ -109,7 +108,7 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 	}, [rid, tmid, navigation, roomStore, nativeRightItems, isMasterDetail]);
 
 	useLayoutEffect(() => {
-		if (!rid || nativeTitle) {
+		if (!rid || hasNativeHeaderBar) {
 			return;
 		}
 
@@ -134,5 +133,5 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 				/>
 			)
 		});
-	}, [rid, tmid, headerFields, roomUserId, navigation, goRoomActionsView, nativeTitle]);
+	}, [rid, tmid, headerFields, roomUserId, navigation, goRoomActionsView]);
 };

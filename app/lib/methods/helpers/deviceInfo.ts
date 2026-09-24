@@ -17,4 +17,4 @@ export const supportSystemTheme = (): boolean => {
 // Tablet info
 export const isTablet = DeviceInfo.isTablet();
 
-export const hasNativeHeaderBar = isIOS && !isTablet;
+export const hasNativeHeaderBar = isIOS && parseInt(DeviceInfo.getSystemVersion(), 10) >= 26;

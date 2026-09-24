@@ -3,7 +3,6 @@
 		"target": "esnext",
 		"module": "esnext",
 		"moduleResolution": "bundler",
-		"preserveSymlinks": true,
 		"jsx": "react-native",
 		"allowJs": true,
 		"noEmit": true,
