@@ -10,6 +10,8 @@ import { asNativeListRow } from '~/containers/List/nativeListRow';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 
+const PROFILE_ROW_HEIGHT = 68;
+
 const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
 	const isMasterDetail = useMasterDetail();
 	const { username, name, statusText } = useAppSelector(getUserSelector, shallowEqual);
@@ -29,7 +31,8 @@ const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamL
 			translateTitle={false}
 			subtitle={statusText || siteName}
 			translateSubtitle={false}
-			left={() => <Avatar text={username} size={36} />}
+			left={() => <Avatar text={username} size={40} />}
+			heightContainer={PROFILE_ROW_HEIGHT}
 			onPress={onPressUser}
 			testID='sidebar-close-drawer'
 			numberOfLines={1}
