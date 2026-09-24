@@ -20,12 +20,7 @@ tags:
     file: '../../helpers/navigate-to-room.yaml'
     env:
       ROOM: 'general'
-- tapOn:
-    id: room-header
-- extendedWaitUntil:
-    visible:
-      id: 'room-actions-view'
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 - tapOn:
     id: 'room-actions-members'
 - extendedWaitUntil:

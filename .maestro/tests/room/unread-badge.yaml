@@ -34,9 +34,7 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'rooms-list-view-item-${output.otherUser.username}'
-- tapOn:
-    id: header-back
-    retryTapIfNoChange: true
+- runFlow: '../../helpers/go-back.yaml'
 - waitForAnimationToEnd:
     timeout: 5000
 - extendedWaitUntil:
@@ -62,9 +60,7 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'rooms-list-view-item-${output.otherUser.username}'
-- tapOn:
-    id: header-back
-    retryTapIfNoChange: true
+- runFlow: '../../helpers/go-back.yaml'
 - waitForAnimationToEnd:
     timeout: 5000
 - extendedWaitUntil:
@@ -91,9 +87,7 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'rooms-list-view-item-${output.otherUser.username}'
-- tapOn:
-    id: header-back
-    retryTapIfNoChange: true
+- runFlow: '../../helpers/go-back.yaml'
 - waitForAnimationToEnd:
     timeout: 5000
 - extendedWaitUntil:
@@ -120,9 +114,7 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'rooms-list-view-item-${output.otherUser.username}'
-- tapOn:
-    id: header-back
-    retryTapIfNoChange: true
+- runFlow: '../../helpers/go-back.yaml'
 - waitForAnimationToEnd:
     timeout: 5000
 - extendedWaitUntil:

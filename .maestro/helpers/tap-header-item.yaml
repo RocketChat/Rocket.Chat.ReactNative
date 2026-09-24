@@ -1,0 +1,21 @@
+appId: ${APP_ID}
+name: Tap header item
+tags:
+  - 'util'
+
+---
+# iOS native header items (unstable_headerLeftItems/RightItems) carry no accessibilityIdentifier,
+# only a label. Android keeps the JS-rendered header, matched by testID as before.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          id: ${ANDROID_ID}
+
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          text: ${IOS_LABEL}

@@ -7,7 +7,8 @@ import * as mime from 'react-native-mime-types';
 import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
-import { Component } from 'react';
+import { type SearchBarCommands } from 'react-native-screens';
+import { Component, createRef } from 'react';
 
 import database from '~/lib/database';
 import I18n from '~/i18n';
@@ -25,7 +26,7 @@ import { getSubscriptionSearchClause } from '~/lib/database/utils';
 import styles from './styles';
 import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '~/definitions';
 import { type ShareInsideStackParamList } from '~/definitions/navigationTypes';
-import { getRoomAvatar, isAndroid, isIOS } from '~/lib/methods/helpers';
+import { getRoomAvatar, hasNativeHeaderBar, isAndroid, isIOS } from '~/lib/methods/helpers';
 import { shareSetParams } from '~/actions/share';
 import { appStart } from '~/actions/app';
 
@@ -78,6 +79,8 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 	private unsubscribeBlur: (() => void) | undefined;
 
 	private backHandler: NativeEventSubscription | undefined;
+
+	private searchBarRef = createRef<SearchBarCommands>();
 
 	constructor(props: IShareListViewProps) {
 		super(props);
@@ -146,7 +149,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		if (previousProps.connecting !== connecting && connecting) {
 			this.setState({ chats: [], searchResults: [], searching: false, searchText: '' });
 		}
-		if (previousState.searching !== searching) {
+		if (!hasNativeHeaderBar && previousState.searching !== searching) {
 			this.setHeader();
 		}
 	}
@@ -193,6 +196,30 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 	setHeader = () => {
 		const { searching } = this.state;
 		const { navigation } = this.props;
+
+		if (hasNativeHeaderBar) {
+			navigation.setOptions({
+				headerLargeTitle: true,
+				headerLeft: () => (
+					<HeaderButton.Container left>
+						<HeaderButton.Item iconName='close' onPress={this.closeShareExtension} testID='share-extension-close' />
+					</HeaderButton.Container>
+				),
+				headerTitle: I18n.t('Send_to'),
+				headerSearchBarOptions: this.airGappedReadOnly
+					? undefined
+					: {
+							ref: this.searchBarRef,
+							placement: 'stacked',
+							placeholder: I18n.t('Search'),
+							onFocus: this.initSearch,
+							onChangeText: (event: { nativeEvent: { text: string } }) => this.search(event.nativeEvent.text),
+							onCancelButtonPress: this.cancelSearch
+						},
+				headerRight: () => null
+			});
+			return;
+		}
 
 		if (searching) {
 			navigation.setOptions({
@@ -336,7 +363,10 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 	};
 
 	cancelSearch = () => {
-		this.setState({ searching: false, searchResults: [], searchText: '' }, () => this.setHeader());
+		this.setState({ searching: false, searchResults: [], searchText: '' }, () => {
+			this.setHeader();
+			this.searchBarRef.current?.clearText();
+		});
 		Keyboard.dismiss();
 	};
 
