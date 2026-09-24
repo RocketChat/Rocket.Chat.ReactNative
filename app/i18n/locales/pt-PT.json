@@ -479,6 +479,7 @@
   "Reset_E2EE_Password_Description": "Repor irá terminá-lo a sessão e gerar uma nova palavra-passe E2EE ao iniciar sessão novamente.\n\nVoltará a ter acesso a salas encriptadas com membros online, mas não àquelas sem qualquer membro online.",
   "Reset_password": "Repor palavra-passe",
   "resetting_password": "a repor palavra-passe",
+  "Return_to_call": "Regressar à chamada",
   "Review_message": "Rever mensagem",
   "Rocket_Chat_Documentation": "Documentação do Rocket.Chat",
   "Roles": "Funções",

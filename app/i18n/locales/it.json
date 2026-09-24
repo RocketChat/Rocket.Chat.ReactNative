@@ -553,6 +553,7 @@
   "Reset_E2EE_Password_Description": "Reimpostare ti disconnetterà e genererà una nuova password E2EE al tuo prossimo accesso.\n\nRecupererai l'accesso alle stanze crittografate con membri online, ma non a quelle senza alcun membro online.",
   "Reset_password": "Ripristina password",
   "resetting_password": "ripristinando password",
+  "Return_to_call": "Torna alla chiamata",
   "Review_app_desc": "Dacci 5 stesse su {{store}}",
   "Review_app_later": "In seguito",
   "Review_app_no": "No",
