@@ -9,8 +9,9 @@ import { useTheme } from '~/theme';
 import ListInfo from './ListInfo';
 import ListSection from './ListSection';
 import ListSeparator from './ListSeparator';
-import NativeListItem from './NativeListItem.ios';
-import { toNativeListItem } from './nativeListItemProps';
+import ListItem from './ListItem';
+import ListRadio from './ListRadio';
+import { isNativeListRow } from './nativeListRow';
 import { NativeListContext } from './NativeListContext';
 import { ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 
@@ -56,6 +57,8 @@ const flatten = (children: ReactNode, keyPrefix = ''): ReactElement[] =>
 const isSeparator = (element: ReactElement) => element.type === ListSeparator;
 const isInfo = (element: ReactElement): element is ReactElement<IInfoProps> => element.type === ListInfo;
 const isSection = (element: ReactElement): element is ReactElement<ISectionProps> => element.type === ListSection;
+const isNativeRow = (element: ReactElement) =>
+	element.type === ListItem || element.type === ListRadio || isNativeListRow(element.type);
 const hasLeftIcon = (element: ReactElement) => Boolean((element.props as { left?: unknown }).left);
 const rowSelectionTag = (element: ReactElement) => {
 	const { selectionTag, testID } = element.props as { selectionTag?: string; testID?: string };
@@ -86,15 +89,20 @@ const ListContainer = ({ children, testID, selection }: IListContainer) => {
 	const renderHostedRow = (row: ReactElement) => (
 		<Group key={row.key} modifiers={rowModifiers(row)}>
 			<RNHostView matchContents>
-				<View style={{ width: rowWidth }}>{row}</View>
+				<NativeListContext.Provider value='hosted'>
+					<View style={{ width: rowWidth }}>{row}</View>
+				</NativeListContext.Provider>
 			</RNHostView>
 		</Group>
 	);
 
-	const renderRow = (row: ReactElement) => {
-		const nativeItem = toNativeListItem(row);
-		return nativeItem ? <NativeListItem key={row.key} item={nativeItem} modifiers={selectionTag(row)} /> : renderHostedRow(row);
-	};
+	const renderNativeRow = (row: ReactElement) => (
+		<Group key={row.key} modifiers={selectionTag(row)}>
+			{row}
+		</Group>
+	);
+
+	const renderRow = (row: ReactElement) => (isNativeRow(row) ? renderNativeRow(row) : renderHostedRow(row));
 
 	const renderSection = (section: ReactElement<ISectionProps>) => {
 		const { title, translateTitle, children: sectionChildren } = section.props;
@@ -117,7 +125,7 @@ const ListContainer = ({ children, testID, selection }: IListContainer) => {
 	};
 
 	return (
-		<NativeListContext.Provider value>
+		<NativeListContext.Provider value='native'>
 			<Host style={styles.host} colorScheme={theme === 'light' ? 'light' : 'dark'}>
 				<List
 					modifiers={selection ? sidebarModifiers : insetGroupedModifiers}

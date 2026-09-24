@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Fragment, type ReactElement } from 'react';
 
 import * as List from '~/containers/List';
+import { asNativeListRow } from '~/containers/List/nativeListRow';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
@@ -71,4 +72,4 @@ const ListPicker = ({
 	);
 };
 
-export default ListPicker;
+export default asNativeListRow(ListPicker);

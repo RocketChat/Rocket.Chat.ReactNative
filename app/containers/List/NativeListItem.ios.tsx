@@ -1,92 +1,104 @@
-import { I18nManager, StyleSheet, View } from 'react-native';
-import { ListItem } from '@expo/ui';
-import { HStack, RNHostView, Text } from '@expo/ui/swift-ui';
+import { type ReactNode } from 'react';
+import { I18nManager } from 'react-native';
+import { Button, HStack, RNHostView, Spacer, Text, VStack } from '@expo/ui/swift-ui';
 import {
 	accessibilityLabel,
+	buttonStyle,
+	contentShape,
 	font,
 	foregroundStyle,
 	frame,
 	lineLimit,
 	listRowInsets,
 	opacity,
-	type ModifierConfig
+	shapes
 } from '@expo/ui/swift-ui/modifiers';
 
 import { useTheme } from '~/theme';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { CustomIcon } from '../CustomIcon';
-import ListIcon from './ListIcon';
-import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
+import NativeListAccessory from './NativeListAccessory.ios';
+import NativeListIcon from './NativeListIcon.ios';
+import { type IListItem } from './ListItem';
+import { describeNativeListAccessory } from './describeNativeListAccessory';
+import { BASE_HEIGHT, PADDING_HORIZONTAL } from './constants';
 import {
-	type INativeListItem,
 	nativeListItemAccessibilityLabel,
 	nativeListItemSubtitle,
 	nativeListItemTitle,
 	pressNativeListItem
 } from './nativeListItemProps';
 
-const styles = StyleSheet.create({
-	trailing: {
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	chevron: {
-		...(I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {})
-	}
-});
+const CHEVRON = I18nManager.isRTL ? 'chevron-left' : 'chevron-right';
 
-interface INativeListItemRow {
-	item: INativeListItem;
-	modifiers: ModifierConfig[];
-}
-
-const NativeListItem = ({ item, modifiers }: INativeListItemRow) => {
+const NativeListItemTitle = ({ item }: { item: IListItem }) => {
 	const { colors } = useTheme();
+	const title = nativeListItemTitle(item);
+
+	if (typeof item.title === 'function') {
+		const customTitle = item.title();
+		return customTitle ? <RNHostView matchContents>{customTitle}</RNHostView> : null;
+	}
+	return (
+		<HStack spacing={4}>
+			<Text
+				modifiers={[
+					item.numberOfLines ? lineLimit(item.numberOfLines) : lineLimit(),
+					font({ textStyle: 'body', weight: 'medium' }),
+					foregroundStyle(item.color ?? colors.fontDefault)
+				]}>
+				{title}
+			</Text>
+			{item.alert ? <NativeListIcon name='info' color={colors.buttonBackgroundDangerDefault} /> : null}
+		</HStack>
+	);
+};
+
+const NativeListItemRow = ({ item, children }: { item: IListItem; children: ReactNode }) => {
 	const { fontScale } = useResponsiveLayout();
+	const rowModifiers = [
+		accessibilityLabel(nativeListItemAccessibilityLabel(item)),
+		frame({ minHeight: (item.heightContainer ?? BASE_HEIGHT) * fontScale }),
+		listRowInsets({ leading: PADDING_HORIZONTAL, trailing: PADDING_HORIZONTAL }),
+		...(item.disabled ? [opacity(0.3)] : [])
+	];
+
+	if (!item.onPress) {
+		return (
+			<HStack spacing={12} testID={item.testID} modifiers={rowModifiers}>
+				{children}
+			</HStack>
+		);
+	}
+	return (
+		<Button onPress={() => pressNativeListItem(item)} testID={item.testID} modifiers={[buttonStyle('plain'), ...rowModifiers]}>
+			<HStack spacing={12} modifiers={[contentShape(shapes.rectangle())]}>
+				{children}
+			</HStack>
+		</Button>
+	);
+};
+
+const NativeListItem = ({ item }: { item: IListItem }) => {
+	const { colors } = useTheme();
 	const subtitle = nativeListItemSubtitle(item);
-	const hasTrailing = Boolean(item.right || item.showActionIndicator);
+	const leading = describeNativeListAccessory(item.left?.());
+	const trailing = describeNativeListAccessory(item.right?.());
 
 	return (
-		<ListItem
-			onPress={() => pressNativeListItem(item)}
-			testID={item.testID}
-			modifiers={[
-				accessibilityLabel(nativeListItemAccessibilityLabel(item)),
-				frame({ minHeight: (item.heightContainer ?? BASE_HEIGHT) * fontScale }),
-				listRowInsets({ leading: PADDING_HORIZONTAL, trailing: PADDING_HORIZONTAL }),
-				...(item.disabled ? [opacity(0.3)] : []),
-				...modifiers
-			]}
-			leading={item.left ? item.left() : undefined}
-			trailing={
-				hasTrailing ? (
-					<View style={styles.trailing}>
-						{item.right ? item.right() : null}
-						{item.showActionIndicator ? <ListIcon name='chevron-right' style={styles.chevron} /> : null}
-					</View>
-				) : undefined
-			}
-			supportingText={
-				subtitle ? (
-					<Text modifiers={[lineLimit(1), font({ size: 14 }), foregroundStyle(colors.fontSecondaryInfo)]}>{subtitle}</Text>
-				) : undefined
-			}>
-			<HStack spacing={4}>
-				<Text
-					modifiers={[
-						item.numberOfLines ? lineLimit(item.numberOfLines) : lineLimit(),
-						font({ size: 16, weight: 'medium' }),
-						foregroundStyle(item.color ?? colors.fontDefault)
-					]}>
-					{nativeListItemTitle(item)}
-				</Text>
-				{item.alert ? (
-					<RNHostView matchContents>
-						<CustomIcon name='info' size={ICON_SIZE} color={colors.buttonBackgroundDangerDefault} />
-					</RNHostView>
+		<NativeListItemRow item={item}>
+			{leading ? <NativeListAccessory accessory={leading} /> : null}
+			<VStack alignment='leading' spacing={2}>
+				<NativeListItemTitle item={item} />
+				{subtitle ? (
+					<Text modifiers={[lineLimit(1), font({ textStyle: 'subheadline' }), foregroundStyle(colors.fontSecondaryInfo)]}>
+						{subtitle}
+					</Text>
 				) : null}
-			</HStack>
-		</ListItem>
+			</VStack>
+			<Spacer />
+			{trailing ? <NativeListAccessory accessory={trailing} /> : null}
+			{item.showActionIndicator ? <NativeListIcon name={CHEVRON} color={colors.fontSecondaryInfo} /> : null}
+		</NativeListItemRow>
 	);
 };
 

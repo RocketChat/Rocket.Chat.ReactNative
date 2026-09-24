@@ -23,37 +23,24 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
     onSelectionChange={[Function]}
   >
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Chats",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "accessibilityLabel",
+              "label": "Chats",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
@@ -77,7 +64,7 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                   },
                   {
                     "$type": "font",
-                    "size": 16,
+                    "textStyle": "body",
                     "weight": "medium",
                   },
                   {
@@ -93,74 +80,50 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
               text="Chats"
             />
             <ViewManagerAdapter_ExpoUI
-              expoInternalSizeFromChildren={true}
-              layoutRoot={false}
-              matchContents={true}
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
+              modifiers={
+                [
+                  {
+                    "$type": "font",
+                    "family": "custom",
+                    "size": 24,
+                    "textStyle": "body",
+                  },
+                  {
+                    "$type": "foregroundStyle",
+                    "style": {
                       "color": "#EC0D2A",
-                      "fontSize": 24,
+                      "type": "color",
                     },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </ViewManagerAdapter_ExpoUI>
+                  },
+                ]
+              }
+              onGlobalEvent={[Function]}
+              text=""
+            />
           </ViewManagerAdapter_ExpoUI>
         </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI />
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "accessibilityLabel",
+              "label": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
@@ -184,7 +147,7 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                   },
                   {
                     "$type": "font",
-                    "size": 16,
+                    "textStyle": "body",
                     "weight": "medium",
                   },
                   {
@@ -200,74 +163,50 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
               text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
             />
             <ViewManagerAdapter_ExpoUI
-              expoInternalSizeFromChildren={true}
-              layoutRoot={false}
-              matchContents={true}
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
+              modifiers={
+                [
+                  {
+                    "$type": "font",
+                    "family": "custom",
+                    "size": 24,
+                    "textStyle": "body",
+                  },
+                  {
+                    "$type": "foregroundStyle",
+                    "style": {
                       "color": "#EC0D2A",
-                      "fontSize": 24,
+                      "type": "color",
                     },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </ViewManagerAdapter_ExpoUI>
+                  },
+                ]
+              }
+              onGlobalEvent={[Function]}
+              text=""
+            />
           </ViewManagerAdapter_ExpoUI>
         </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI />
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Chats",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "accessibilityLabel",
+              "label": "Chats",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
@@ -291,7 +230,7 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                   },
                   {
                     "$type": "font",
-                    "size": 16,
+                    "textStyle": "body",
                     "weight": "medium",
                   },
                   {
@@ -307,127 +246,71 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
               text="Chats"
             />
             <ViewManagerAdapter_ExpoUI
-              expoInternalSizeFromChildren={true}
-              layoutRoot={false}
-              matchContents={true}
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
+              modifiers={
+                [
+                  {
+                    "$type": "font",
+                    "family": "custom",
+                    "size": 24,
+                    "textStyle": "body",
+                  },
+                  {
+                    "$type": "foregroundStyle",
+                    "style": {
                       "color": "#EC0D2A",
-                      "fontSize": 24,
+                      "type": "color",
                     },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </ViewManagerAdapter_ExpoUI>
+                  },
+                ]
+              }
+              onGlobalEvent={[Function]}
+              text=""
+            />
           </ViewManagerAdapter_ExpoUI>
         </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI />
         <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
-        >
-          <View
-            style={
+          modifiers={
+            [
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
-                      "color": "#2F343D",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </View>
-          </View>
-        </ViewManagerAdapter_ExpoUI>
+                "$type": "font",
+                "family": "custom",
+                "size": 24,
+                "textStyle": "body",
+              },
+              {
+                "$type": "foregroundStyle",
+                "style": {
+                  "color": "#2F343D",
+                  "type": "color",
+                },
+              },
+            ]
+          }
+          onGlobalEvent={[Function]}
+          text=""
+        />
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "accessibilityLabel",
+              "label": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
@@ -451,7 +334,7 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                   },
                   {
                     "$type": "font",
-                    "size": 16,
+                    "textStyle": "body",
                     "weight": "medium",
                   },
                   {
@@ -467,93 +350,50 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
               text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
             />
             <ViewManagerAdapter_ExpoUI
-              expoInternalSizeFromChildren={true}
-              layoutRoot={false}
-              matchContents={true}
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
+              modifiers={
+                [
+                  {
+                    "$type": "font",
+                    "family": "custom",
+                    "size": 24,
+                    "textStyle": "body",
+                  },
+                  {
+                    "$type": "foregroundStyle",
+                    "style": {
                       "color": "#EC0D2A",
-                      "fontSize": 24,
+                      "type": "color",
                     },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </ViewManagerAdapter_ExpoUI>
+                  },
+                ]
+              }
+              onGlobalEvent={[Function]}
+              text=""
+            />
           </ViewManagerAdapter_ExpoUI>
         </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI />
         <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
-        >
-          <View
-            style={
+          modifiers={
+            [
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
-                      "color": "#2F343D",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </View>
-          </View>
-        </ViewManagerAdapter_ExpoUI>
+                "$type": "font",
+                "family": "custom",
+                "size": 24,
+                "textStyle": "body",
+              },
+              {
+                "$type": "foregroundStyle",
+                "style": {
+                  "color": "#2F343D",
+                  "type": "color",
+                },
+              },
+            ]
+          }
+          onGlobalEvent={[Function]}
+          text=""
+        />
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>
@@ -1128,157 +968,167 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
     onSelectionChange={[Function]}
   >
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Press me",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "buttonStyle",
+              "style": "plain",
+            },
+            {
+              "$type": "accessibilityLabel",
+              "label": "Press me",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
+        onButtonPress={[Function]}
         onGlobalEvent={[Function]}
-        spacing={12}
       >
         <ViewManagerAdapter_ExpoUI
-          alignment="leading"
-          spacing={2}
+          modifiers={
+            [
+              {
+                "$type": "contentShape",
+                "kind": undefined,
+                "shape": "rectangle",
+              },
+            ]
+          }
+          onGlobalEvent={[Function]}
+          spacing={12}
         >
           <ViewManagerAdapter_ExpoUI
-            spacing={4}
+            alignment="leading"
+            spacing={2}
           >
             <ViewManagerAdapter_ExpoUI
-              modifiers={
-                [
-                  {
-                    "$type": "lineLimit",
-                    "limit": undefined,
-                    "reservesSpace": undefined,
-                  },
-                  {
-                    "$type": "font",
-                    "size": 16,
-                    "weight": "medium",
-                  },
-                  {
-                    "$type": "foregroundStyle",
-                    "style": {
-                      "color": "#2F343D",
-                      "type": "color",
+              spacing={4}
+            >
+              <ViewManagerAdapter_ExpoUI
+                modifiers={
+                  [
+                    {
+                      "$type": "lineLimit",
+                      "limit": undefined,
+                      "reservesSpace": undefined,
                     },
-                  },
-                ]
-              }
-              onGlobalEvent={[Function]}
-              text="Press me"
-            />
+                    {
+                      "$type": "font",
+                      "textStyle": "body",
+                      "weight": "medium",
+                    },
+                    {
+                      "$type": "foregroundStyle",
+                      "style": {
+                        "color": "#2F343D",
+                        "type": "color",
+                      },
+                    },
+                  ]
+                }
+                onGlobalEvent={[Function]}
+                text="Press me"
+              />
+            </ViewManagerAdapter_ExpoUI>
           </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI />
         </ViewManagerAdapter_ExpoUI>
-        <ViewManagerAdapter_ExpoUI />
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "I'm disabled",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-          {
-            "$type": "opacity",
-            "value": 0.3,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "buttonStyle",
+              "style": "plain",
+            },
+            {
+              "$type": "accessibilityLabel",
+              "label": "I'm disabled",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
+            },
+            {
+              "$type": "opacity",
+              "value": 0.3,
             },
           ]
         }
+        onButtonPress={[Function]}
         onGlobalEvent={[Function]}
-        spacing={12}
       >
         <ViewManagerAdapter_ExpoUI
-          alignment="leading"
-          spacing={2}
+          modifiers={
+            [
+              {
+                "$type": "contentShape",
+                "kind": undefined,
+                "shape": "rectangle",
+              },
+            ]
+          }
+          onGlobalEvent={[Function]}
+          spacing={12}
         >
           <ViewManagerAdapter_ExpoUI
-            spacing={4}
+            alignment="leading"
+            spacing={2}
           >
             <ViewManagerAdapter_ExpoUI
-              modifiers={
-                [
-                  {
-                    "$type": "lineLimit",
-                    "limit": undefined,
-                    "reservesSpace": undefined,
-                  },
-                  {
-                    "$type": "font",
-                    "size": 16,
-                    "weight": "medium",
-                  },
-                  {
-                    "$type": "foregroundStyle",
-                    "style": {
-                      "color": "#2F343D",
-                      "type": "color",
+              spacing={4}
+            >
+              <ViewManagerAdapter_ExpoUI
+                modifiers={
+                  [
+                    {
+                      "$type": "lineLimit",
+                      "limit": undefined,
+                      "reservesSpace": undefined,
                     },
-                  },
-                ]
-              }
-              onGlobalEvent={[Function]}
-              text="I'm disabled"
-            />
+                    {
+                      "$type": "font",
+                      "textStyle": "body",
+                      "weight": "medium",
+                    },
+                    {
+                      "$type": "foregroundStyle",
+                      "style": {
+                        "color": "#2F343D",
+                        "type": "color",
+                      },
+                    },
+                  ]
+                }
+                onGlobalEvent={[Function]}
+                text="I'm disabled"
+              />
+            </ViewManagerAdapter_ExpoUI>
           </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI />
         </ViewManagerAdapter_ExpoUI>
-        <ViewManagerAdapter_ExpoUI />
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>
@@ -1308,451 +1158,357 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
     onSelectionChange={[Function]}
   >
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Option 1 Selected",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "buttonStyle",
+              "style": "plain",
+            },
+            {
+              "$type": "accessibilityLabel",
+              "label": "Option 1 Selected",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
+        onButtonPress={[Function]}
         onGlobalEvent={[Function]}
-        spacing={12}
       >
         <ViewManagerAdapter_ExpoUI
-          alignment="leading"
-          spacing={2}
+          modifiers={
+            [
+              {
+                "$type": "contentShape",
+                "kind": undefined,
+                "shape": "rectangle",
+              },
+            ]
+          }
+          onGlobalEvent={[Function]}
+          spacing={12}
         >
           <ViewManagerAdapter_ExpoUI
-            spacing={4}
+            alignment="leading"
+            spacing={2}
           >
             <ViewManagerAdapter_ExpoUI
-              modifiers={
-                [
-                  {
-                    "$type": "lineLimit",
-                    "limit": undefined,
-                    "reservesSpace": undefined,
-                  },
-                  {
-                    "$type": "font",
-                    "size": 16,
-                    "weight": "medium",
-                  },
-                  {
-                    "$type": "foregroundStyle",
-                    "style": {
-                      "color": "#2F343D",
-                      "type": "color",
-                    },
-                  },
-                ]
-              }
-              onGlobalEvent={[Function]}
-              text="Option 1"
-            />
-          </ViewManagerAdapter_ExpoUI>
-        </ViewManagerAdapter_ExpoUI>
-        <ViewManagerAdapter_ExpoUI />
-        <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
-              }
+              spacing={4}
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
+              <ViewManagerAdapter_ExpoUI
+                modifiers={
                   [
                     {
-                      "color": "#1D74F5",
-                      "fontSize": 24,
+                      "$type": "lineLimit",
+                      "limit": undefined,
+                      "reservesSpace": undefined,
                     },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
                     {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
+                      "$type": "font",
+                      "textStyle": "body",
+                      "weight": "medium",
                     },
-                    {},
+                    {
+                      "$type": "foregroundStyle",
+                      "style": {
+                        "color": "#2F343D",
+                        "type": "color",
+                      },
+                    },
                   ]
                 }
-              >
-                
-              </Text>
-            </View>
-          </View>
+                onGlobalEvent={[Function]}
+                text="Option 1"
+              />
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI />
+          <ViewManagerAdapter_ExpoUI
+            modifiers={
+              [
+                {
+                  "$type": "font",
+                  "family": "custom",
+                  "size": 24,
+                  "textStyle": "body",
+                },
+                {
+                  "$type": "foregroundStyle",
+                  "style": {
+                    "color": "#156FF5",
+                    "type": "color",
+                  },
+                },
+              ]
+            }
+            onGlobalEvent={[Function]}
+            text=""
+          />
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Option 2 Unselected",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "buttonStyle",
+              "style": "plain",
+            },
+            {
+              "$type": "accessibilityLabel",
+              "label": "Option 2 Unselected",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
+        onButtonPress={[Function]}
         onGlobalEvent={[Function]}
-        spacing={12}
       >
         <ViewManagerAdapter_ExpoUI
-          alignment="leading"
-          spacing={2}
+          modifiers={
+            [
+              {
+                "$type": "contentShape",
+                "kind": undefined,
+                "shape": "rectangle",
+              },
+            ]
+          }
+          onGlobalEvent={[Function]}
+          spacing={12}
         >
           <ViewManagerAdapter_ExpoUI
-            spacing={4}
+            alignment="leading"
+            spacing={2}
           >
             <ViewManagerAdapter_ExpoUI
-              modifiers={
-                [
-                  {
-                    "$type": "lineLimit",
-                    "limit": undefined,
-                    "reservesSpace": undefined,
-                  },
-                  {
-                    "$type": "font",
-                    "size": 16,
-                    "weight": "medium",
-                  },
-                  {
-                    "$type": "foregroundStyle",
-                    "style": {
-                      "color": "#2F343D",
-                      "type": "color",
-                    },
-                  },
-                ]
-              }
-              onGlobalEvent={[Function]}
-              text="Option 2"
-            />
-          </ViewManagerAdapter_ExpoUI>
-        </ViewManagerAdapter_ExpoUI>
-        <ViewManagerAdapter_ExpoUI />
-        <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
-              }
+              spacing={4}
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
+              <ViewManagerAdapter_ExpoUI
+                modifiers={
                   [
                     {
-                      "color": "#9EA2A8",
-                      "fontSize": 24,
+                      "$type": "lineLimit",
+                      "limit": undefined,
+                      "reservesSpace": undefined,
                     },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
                     {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
+                      "$type": "font",
+                      "textStyle": "body",
+                      "weight": "medium",
                     },
-                    {},
+                    {
+                      "$type": "foregroundStyle",
+                      "style": {
+                        "color": "#2F343D",
+                        "type": "color",
+                      },
+                    },
                   ]
                 }
-              >
-                
-              </Text>
-            </View>
-          </View>
+                onGlobalEvent={[Function]}
+                text="Option 2"
+              />
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI />
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Option 3 Unselected",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "buttonStyle",
+              "style": "plain",
+            },
+            {
+              "$type": "accessibilityLabel",
+              "label": "Option 3 Unselected",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
+        onButtonPress={[Function]}
         onGlobalEvent={[Function]}
-        spacing={12}
       >
         <ViewManagerAdapter_ExpoUI
-          alignment="leading"
-          spacing={2}
+          modifiers={
+            [
+              {
+                "$type": "contentShape",
+                "kind": undefined,
+                "shape": "rectangle",
+              },
+            ]
+          }
+          onGlobalEvent={[Function]}
+          spacing={12}
         >
           <ViewManagerAdapter_ExpoUI
-            spacing={4}
+            alignment="leading"
+            spacing={2}
           >
             <ViewManagerAdapter_ExpoUI
-              modifiers={
-                [
-                  {
-                    "$type": "lineLimit",
-                    "limit": undefined,
-                    "reservesSpace": undefined,
-                  },
-                  {
-                    "$type": "font",
-                    "size": 16,
-                    "weight": "medium",
-                  },
-                  {
-                    "$type": "foregroundStyle",
-                    "style": {
-                      "color": "#2F343D",
-                      "type": "color",
-                    },
-                  },
-                ]
-              }
-              onGlobalEvent={[Function]}
-              text="Option 3"
-            />
-          </ViewManagerAdapter_ExpoUI>
-        </ViewManagerAdapter_ExpoUI>
-        <ViewManagerAdapter_ExpoUI />
-        <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
-              }
+              spacing={4}
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
+              <ViewManagerAdapter_ExpoUI
+                modifiers={
                   [
                     {
-                      "color": "#9EA2A8",
-                      "fontSize": 24,
+                      "$type": "lineLimit",
+                      "limit": undefined,
+                      "reservesSpace": undefined,
                     },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
                     {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
+                      "$type": "font",
+                      "textStyle": "body",
+                      "weight": "medium",
                     },
-                    {},
+                    {
+                      "$type": "foregroundStyle",
+                      "style": {
+                        "color": "#2F343D",
+                        "type": "color",
+                      },
+                    },
                   ]
                 }
-              >
-                
-              </Text>
-            </View>
-          </View>
+                onGlobalEvent={[Function]}
+                text="Option 3"
+              />
+            </ViewManagerAdapter_ExpoUI>
+          </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI />
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Selected",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "buttonStyle",
+              "style": "plain",
+            },
+            {
+              "$type": "accessibilityLabel",
+              "label": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Selected",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
+        onButtonPress={[Function]}
         onGlobalEvent={[Function]}
-        spacing={12}
       >
         <ViewManagerAdapter_ExpoUI
-          alignment="leading"
-          spacing={2}
+          modifiers={
+            [
+              {
+                "$type": "contentShape",
+                "kind": undefined,
+                "shape": "rectangle",
+              },
+            ]
+          }
+          onGlobalEvent={[Function]}
+          spacing={12}
         >
           <ViewManagerAdapter_ExpoUI
-            spacing={4}
+            alignment="leading"
+            spacing={2}
           >
+            <ViewManagerAdapter_ExpoUI
+              spacing={4}
+            >
+              <ViewManagerAdapter_ExpoUI
+                modifiers={
+                  [
+                    {
+                      "$type": "lineLimit",
+                      "limit": undefined,
+                      "reservesSpace": undefined,
+                    },
+                    {
+                      "$type": "font",
+                      "textStyle": "body",
+                      "weight": "medium",
+                    },
+                    {
+                      "$type": "foregroundStyle",
+                      "style": {
+                        "color": "#2F343D",
+                        "type": "color",
+                      },
+                    },
+                  ]
+                }
+                onGlobalEvent={[Function]}
+                text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+              />
+            </ViewManagerAdapter_ExpoUI>
             <ViewManagerAdapter_ExpoUI
               modifiers={
                 [
                   {
                     "$type": "lineLimit",
-                    "limit": undefined,
+                    "limit": 1,
                     "reservesSpace": undefined,
                   },
                   {
                     "$type": "font",
-                    "size": 16,
-                    "weight": "medium",
+                    "textStyle": "subheadline",
                   },
                   {
                     "$type": "foregroundStyle",
                     "style": {
-                      "color": "#2F343D",
+                      "color": "#6C727A",
                       "type": "color",
                     },
                   },
@@ -1762,84 +1518,28 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
               text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
             />
           </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI />
           <ViewManagerAdapter_ExpoUI
             modifiers={
               [
                 {
-                  "$type": "lineLimit",
-                  "limit": 1,
-                  "reservesSpace": undefined,
-                },
-                {
                   "$type": "font",
-                  "size": 14,
+                  "family": "custom",
+                  "size": 24,
+                  "textStyle": "body",
                 },
                 {
                   "$type": "foregroundStyle",
                   "style": {
-                    "color": "#6C727A",
+                    "color": "#156FF5",
                     "type": "color",
                   },
                 },
               ]
             }
             onGlobalEvent={[Function]}
-            text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+            text=""
           />
-        </ViewManagerAdapter_ExpoUI>
-        <ViewManagerAdapter_ExpoUI />
-        <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
-                      "color": "#1D74F5",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </View>
-          </View>
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
@@ -1895,37 +1595,24 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           name="content"
         >
           <ViewManagerAdapter_ExpoUI
-            modifiers={
-              [
-                {
-                  "$type": "buttonStyle",
-                  "style": "plain",
-                },
-                {
-                  "$type": "accessibilityLabel",
-                  "label": "Section Item",
-                },
-                {
-                  "$type": "frame",
-                  "minHeight": 46,
-                },
-                {
-                  "$type": "listRowInsets",
-                  "leading": 12,
-                  "trailing": 12,
-                },
-              ]
-            }
-            onButtonPress={[Function]}
+            modifiers={[]}
             onGlobalEvent={[Function]}
           >
             <ViewManagerAdapter_ExpoUI
               modifiers={
                 [
                   {
-                    "$type": "contentShape",
-                    "kind": undefined,
-                    "shape": "rectangle",
+                    "$type": "accessibilityLabel",
+                    "label": "Section Item",
+                  },
+                  {
+                    "$type": "frame",
+                    "minHeight": 46,
+                  },
+                  {
+                    "$type": "listRowInsets",
+                    "leading": 12,
+                    "trailing": 12,
                   },
                 ]
               }
@@ -1949,7 +1636,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                         },
                         {
                           "$type": "font",
-                          "size": 16,
+                          "textStyle": "body",
                           "weight": "medium",
                         },
                         {
@@ -1970,37 +1657,24 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
             </ViewManagerAdapter_ExpoUI>
           </ViewManagerAdapter_ExpoUI>
           <ViewManagerAdapter_ExpoUI
-            modifiers={
-              [
-                {
-                  "$type": "buttonStyle",
-                  "style": "plain",
-                },
-                {
-                  "$type": "accessibilityLabel",
-                  "label": "Section Item",
-                },
-                {
-                  "$type": "frame",
-                  "minHeight": 46,
-                },
-                {
-                  "$type": "listRowInsets",
-                  "leading": 12,
-                  "trailing": 12,
-                },
-              ]
-            }
-            onButtonPress={[Function]}
+            modifiers={[]}
             onGlobalEvent={[Function]}
           >
             <ViewManagerAdapter_ExpoUI
               modifiers={
                 [
                   {
-                    "$type": "contentShape",
-                    "kind": undefined,
-                    "shape": "rectangle",
+                    "$type": "accessibilityLabel",
+                    "label": "Section Item",
+                  },
+                  {
+                    "$type": "frame",
+                    "minHeight": 46,
+                  },
+                  {
+                    "$type": "listRowInsets",
+                    "leading": 12,
+                    "trailing": 12,
                   },
                 ]
               }
@@ -2024,7 +1698,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                         },
                         {
                           "$type": "font",
-                          "size": 16,
+                          "textStyle": "body",
                           "weight": "medium",
                         },
                         {
@@ -2051,37 +1725,24 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           name="content"
         >
           <ViewManagerAdapter_ExpoUI
-            modifiers={
-              [
-                {
-                  "$type": "buttonStyle",
-                  "style": "plain",
-                },
-                {
-                  "$type": "accessibilityLabel",
-                  "label": "Section Item",
-                },
-                {
-                  "$type": "frame",
-                  "minHeight": 46,
-                },
-                {
-                  "$type": "listRowInsets",
-                  "leading": 12,
-                  "trailing": 12,
-                },
-              ]
-            }
-            onButtonPress={[Function]}
+            modifiers={[]}
             onGlobalEvent={[Function]}
           >
             <ViewManagerAdapter_ExpoUI
               modifiers={
                 [
                   {
-                    "$type": "contentShape",
-                    "kind": undefined,
-                    "shape": "rectangle",
+                    "$type": "accessibilityLabel",
+                    "label": "Section Item",
+                  },
+                  {
+                    "$type": "frame",
+                    "minHeight": 46,
+                  },
+                  {
+                    "$type": "listRowInsets",
+                    "leading": 12,
+                    "trailing": 12,
                   },
                 ]
               }
@@ -2105,7 +1766,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                         },
                         {
                           "$type": "font",
-                          "size": 16,
+                          "textStyle": "body",
                           "weight": "medium",
                         },
                         {
@@ -2126,37 +1787,24 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
             </ViewManagerAdapter_ExpoUI>
           </ViewManagerAdapter_ExpoUI>
           <ViewManagerAdapter_ExpoUI
-            modifiers={
-              [
-                {
-                  "$type": "buttonStyle",
-                  "style": "plain",
-                },
-                {
-                  "$type": "accessibilityLabel",
-                  "label": "Section Item",
-                },
-                {
-                  "$type": "frame",
-                  "minHeight": 46,
-                },
-                {
-                  "$type": "listRowInsets",
-                  "leading": 12,
-                  "trailing": 12,
-                },
-              ]
-            }
-            onButtonPress={[Function]}
+            modifiers={[]}
             onGlobalEvent={[Function]}
           >
             <ViewManagerAdapter_ExpoUI
               modifiers={
                 [
                   {
-                    "$type": "contentShape",
-                    "kind": undefined,
-                    "shape": "rectangle",
+                    "$type": "accessibilityLabel",
+                    "label": "Section Item",
+                  },
+                  {
+                    "$type": "frame",
+                    "minHeight": 46,
+                  },
+                  {
+                    "$type": "listRowInsets",
+                    "leading": 12,
+                    "trailing": 12,
                   },
                 ]
               }
@@ -2180,7 +1828,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                         },
                         {
                           "$type": "font",
-                          "size": 16,
+                          "textStyle": "body",
                           "weight": "medium",
                         },
                         {
@@ -2216,37 +1864,24 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           name="content"
         >
           <ViewManagerAdapter_ExpoUI
-            modifiers={
-              [
-                {
-                  "$type": "buttonStyle",
-                  "style": "plain",
-                },
-                {
-                  "$type": "accessibilityLabel",
-                  "label": "Section Item",
-                },
-                {
-                  "$type": "frame",
-                  "minHeight": 46,
-                },
-                {
-                  "$type": "listRowInsets",
-                  "leading": 12,
-                  "trailing": 12,
-                },
-              ]
-            }
-            onButtonPress={[Function]}
+            modifiers={[]}
             onGlobalEvent={[Function]}
           >
             <ViewManagerAdapter_ExpoUI
               modifiers={
                 [
                   {
-                    "$type": "contentShape",
-                    "kind": undefined,
-                    "shape": "rectangle",
+                    "$type": "accessibilityLabel",
+                    "label": "Section Item",
+                  },
+                  {
+                    "$type": "frame",
+                    "minHeight": 46,
+                  },
+                  {
+                    "$type": "listRowInsets",
+                    "leading": 12,
+                    "trailing": 12,
                   },
                 ]
               }
@@ -2270,7 +1905,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                         },
                         {
                           "$type": "font",
-                          "size": 16,
+                          "textStyle": "body",
                           "weight": "medium",
                         },
                         {
@@ -2291,37 +1926,24 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
             </ViewManagerAdapter_ExpoUI>
           </ViewManagerAdapter_ExpoUI>
           <ViewManagerAdapter_ExpoUI
-            modifiers={
-              [
-                {
-                  "$type": "buttonStyle",
-                  "style": "plain",
-                },
-                {
-                  "$type": "accessibilityLabel",
-                  "label": "Section Item",
-                },
-                {
-                  "$type": "frame",
-                  "minHeight": 46,
-                },
-                {
-                  "$type": "listRowInsets",
-                  "leading": 12,
-                  "trailing": 12,
-                },
-              ]
-            }
-            onButtonPress={[Function]}
+            modifiers={[]}
             onGlobalEvent={[Function]}
           >
             <ViewManagerAdapter_ExpoUI
               modifiers={
                 [
                   {
-                    "$type": "contentShape",
-                    "kind": undefined,
-                    "shape": "rectangle",
+                    "$type": "accessibilityLabel",
+                    "label": "Section Item",
+                  },
+                  {
+                    "$type": "frame",
+                    "minHeight": 46,
+                  },
+                  {
+                    "$type": "listRowInsets",
+                    "leading": 12,
+                    "trailing": 12,
                   },
                 ]
               }
@@ -2345,7 +1967,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                         },
                         {
                           "$type": "font",
-                          "size": 16,
+                          "textStyle": "body",
                           "weight": "medium",
                         },
                         {
@@ -2381,37 +2003,24 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           name="content"
         >
           <ViewManagerAdapter_ExpoUI
-            modifiers={
-              [
-                {
-                  "$type": "buttonStyle",
-                  "style": "plain",
-                },
-                {
-                  "$type": "accessibilityLabel",
-                  "label": "Section Item",
-                },
-                {
-                  "$type": "frame",
-                  "minHeight": 46,
-                },
-                {
-                  "$type": "listRowInsets",
-                  "leading": 12,
-                  "trailing": 12,
-                },
-              ]
-            }
-            onButtonPress={[Function]}
+            modifiers={[]}
             onGlobalEvent={[Function]}
           >
             <ViewManagerAdapter_ExpoUI
               modifiers={
                 [
                   {
-                    "$type": "contentShape",
-                    "kind": undefined,
-                    "shape": "rectangle",
+                    "$type": "accessibilityLabel",
+                    "label": "Section Item",
+                  },
+                  {
+                    "$type": "frame",
+                    "minHeight": 46,
+                  },
+                  {
+                    "$type": "listRowInsets",
+                    "leading": 12,
+                    "trailing": 12,
                   },
                 ]
               }
@@ -2435,7 +2044,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                         },
                         {
                           "$type": "font",
-                          "size": 16,
+                          "textStyle": "body",
                           "weight": "medium",
                         },
                         {
@@ -2456,37 +2065,24 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
             </ViewManagerAdapter_ExpoUI>
           </ViewManagerAdapter_ExpoUI>
           <ViewManagerAdapter_ExpoUI
-            modifiers={
-              [
-                {
-                  "$type": "buttonStyle",
-                  "style": "plain",
-                },
-                {
-                  "$type": "accessibilityLabel",
-                  "label": "Section Item",
-                },
-                {
-                  "$type": "frame",
-                  "minHeight": 46,
-                },
-                {
-                  "$type": "listRowInsets",
-                  "leading": 12,
-                  "trailing": 12,
-                },
-              ]
-            }
-            onButtonPress={[Function]}
+            modifiers={[]}
             onGlobalEvent={[Function]}
           >
             <ViewManagerAdapter_ExpoUI
               modifiers={
                 [
                   {
-                    "$type": "contentShape",
-                    "kind": undefined,
-                    "shape": "rectangle",
+                    "$type": "accessibilityLabel",
+                    "label": "Section Item",
+                  },
+                  {
+                    "$type": "frame",
+                    "minHeight": 46,
+                  },
+                  {
+                    "$type": "listRowInsets",
+                    "leading": 12,
+                    "trailing": 12,
                   },
                 ]
               }
@@ -2510,7 +2106,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                         },
                         {
                           "$type": "font",
-                          "size": 16,
+                          "textStyle": "body",
                           "weight": "medium",
                         },
                         {
@@ -2585,37 +2181,24 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
     onSelectionChange={[Function]}
   >
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Chats",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "accessibilityLabel",
+              "label": "Chats",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
@@ -2639,7 +2222,7 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
                   },
                   {
                     "$type": "font",
-                    "size": 16,
+                    "textStyle": "body",
                     "weight": "medium",
                   },
                   {
@@ -2660,37 +2243,24 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Chats All",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "accessibilityLabel",
+              "label": "Chats All",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
@@ -2714,7 +2284,7 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
                   },
                   {
                     "$type": "font",
-                    "size": 16,
+                    "textStyle": "body",
                     "weight": "medium",
                   },
                   {
@@ -2740,7 +2310,7 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
                 },
                 {
                   "$type": "font",
-                  "size": 14,
+                  "textStyle": "subheadline",
                 },
                 {
                   "$type": "foregroundStyle",
@@ -2759,43 +2329,30 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
-      testID="test-id"
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "accessibilityLabel",
+              "label": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
         onGlobalEvent={[Function]}
         spacing={12}
+        testID="test-id"
       >
         <ViewManagerAdapter_ExpoUI
           alignment="leading"
@@ -2814,7 +2371,7 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
                   },
                   {
                     "$type": "font",
-                    "size": 16,
+                    "textStyle": "body",
                     "weight": "medium",
                   },
                   {
@@ -2840,7 +2397,7 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
                 },
                 {
                   "$type": "font",
-                  "size": 14,
+                  "textStyle": "subheadline",
                 },
                 {
                   "$type": "foregroundStyle",
@@ -2859,37 +2416,24 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "accessibilityLabel",
+              "label": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
@@ -2913,7 +2457,7 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
                   },
                   {
                     "$type": "font",
-                    "size": 16,
+                    "textStyle": "body",
                     "weight": "medium",
                   },
                   {
@@ -2939,7 +2483,7 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
                 },
                 {
                   "$type": "font",
-                  "size": 14,
+                  "textStyle": "subheadline",
                 },
                 {
                   "$type": "foregroundStyle",
@@ -5572,37 +5116,24 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
     onSelectionChange={[Function]}
   >
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Chats",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "accessibilityLabel",
+              "label": "Chats",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
@@ -5626,7 +5157,7 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
                   },
                   {
                     "$type": "font",
-                    "size": 16,
+                    "textStyle": "body",
                     "weight": "medium",
                   },
                   {
@@ -5647,78 +5178,83 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Press me!",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "buttonStyle",
+              "style": "plain",
+            },
+            {
+              "$type": "accessibilityLabel",
+              "label": "Press me!",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
+        onButtonPress={[Function]}
         onGlobalEvent={[Function]}
-        spacing={12}
       >
         <ViewManagerAdapter_ExpoUI
-          alignment="leading"
-          spacing={2}
+          modifiers={
+            [
+              {
+                "$type": "contentShape",
+                "kind": undefined,
+                "shape": "rectangle",
+              },
+            ]
+          }
+          onGlobalEvent={[Function]}
+          spacing={12}
         >
           <ViewManagerAdapter_ExpoUI
-            spacing={4}
+            alignment="leading"
+            spacing={2}
           >
             <ViewManagerAdapter_ExpoUI
-              modifiers={
-                [
-                  {
-                    "$type": "lineLimit",
-                    "limit": undefined,
-                    "reservesSpace": undefined,
-                  },
-                  {
-                    "$type": "font",
-                    "size": 16,
-                    "weight": "medium",
-                  },
-                  {
-                    "$type": "foregroundStyle",
-                    "style": {
-                      "color": "white",
-                      "type": "color",
+              spacing={4}
+            >
+              <ViewManagerAdapter_ExpoUI
+                modifiers={
+                  [
+                    {
+                      "$type": "lineLimit",
+                      "limit": undefined,
+                      "reservesSpace": undefined,
                     },
-                  },
-                ]
-              }
-              onGlobalEvent={[Function]}
-              text="Press me!"
-            />
+                    {
+                      "$type": "font",
+                      "textStyle": "body",
+                      "weight": "medium",
+                    },
+                    {
+                      "$type": "foregroundStyle",
+                      "style": {
+                        "color": "white",
+                        "type": "color",
+                      },
+                    },
+                  ]
+                }
+                onGlobalEvent={[Function]}
+                text="Press me!"
+              />
+            </ViewManagerAdapter_ExpoUI>
           </ViewManagerAdapter_ExpoUI>
+          <ViewManagerAdapter_ExpoUI />
         </ViewManagerAdapter_ExpoUI>
-        <ViewManagerAdapter_ExpoUI />
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>
@@ -8079,37 +7615,24 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
     onSelectionChange={[Function]}
   >
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Icon Left",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "accessibilityLabel",
+              "label": "Icon Left",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
@@ -8117,49 +7640,26 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
         spacing={12}
       >
         <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
-        >
-          <View
-            style={
-              [
-                {
-                  "alignItems": "center",
-                  "justifyContent": "center",
+          modifiers={
+            [
+              {
+                "$type": "font",
+                "family": "custom",
+                "size": 24,
+                "textStyle": "body",
+              },
+              {
+                "$type": "foregroundStyle",
+                "style": {
+                  "color": "#2F343D",
+                  "type": "color",
                 },
-                undefined,
-              ]
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#2F343D",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </ViewManagerAdapter_ExpoUI>
+              },
+            ]
+          }
+          onGlobalEvent={[Function]}
+          text=""
+        />
         <ViewManagerAdapter_ExpoUI
           alignment="leading"
           spacing={2}
@@ -8177,7 +7677,7 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                   },
                   {
                     "$type": "font",
-                    "size": 16,
+                    "textStyle": "body",
                     "weight": "medium",
                   },
                   {
@@ -8198,37 +7698,24 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Icon Right",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "accessibilityLabel",
+              "label": "Icon Right",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
@@ -8252,7 +7739,7 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                   },
                   {
                     "$type": "font",
-                    "size": 16,
+                    "textStyle": "body",
                     "weight": "medium",
                   },
                   {
@@ -8271,92 +7758,47 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
         </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI />
         <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
-        >
-          <View
-            style={
+          modifiers={
+            [
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
-                      "color": "#2F343D",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </View>
-          </View>
-        </ViewManagerAdapter_ExpoUI>
+                "$type": "font",
+                "family": "custom",
+                "size": 24,
+                "textStyle": "body",
+              },
+              {
+                "$type": "foregroundStyle",
+                "style": {
+                  "color": "#2F343D",
+                  "type": "color",
+                },
+              },
+            ]
+          }
+          onGlobalEvent={[Function]}
+          text=""
+        />
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "accessibilityLabel",
+              "label": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
@@ -8364,49 +7806,26 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
         spacing={12}
       >
         <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
-        >
-          <View
-            style={
-              [
-                {
-                  "alignItems": "center",
-                  "justifyContent": "center",
+          modifiers={
+            [
+              {
+                "$type": "font",
+                "family": "custom",
+                "size": 24,
+                "textStyle": "body",
+              },
+              {
+                "$type": "foregroundStyle",
+                "style": {
+                  "color": "#2F343D",
+                  "type": "color",
                 },
-                undefined,
-              ]
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#2F343D",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </ViewManagerAdapter_ExpoUI>
+              },
+            ]
+          }
+          onGlobalEvent={[Function]}
+          text=""
+        />
         <ViewManagerAdapter_ExpoUI
           alignment="leading"
           spacing={2}
@@ -8424,7 +7843,7 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                   },
                   {
                     "$type": "font",
-                    "size": 16,
+                    "textStyle": "body",
                     "weight": "medium",
                   },
                   {
@@ -8450,7 +7869,7 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                 },
                 {
                   "$type": "font",
-                  "size": 14,
+                  "textStyle": "subheadline",
                 },
                 {
                   "$type": "foregroundStyle",
@@ -8467,92 +7886,47 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
         </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI />
         <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
-        >
-          <View
-            style={
+          modifiers={
+            [
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
-                      "color": "#2F343D",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </View>
-          </View>
-        </ViewManagerAdapter_ExpoUI>
+                "$type": "font",
+                "family": "custom",
+                "size": 24,
+                "textStyle": "body",
+              },
+              {
+                "$type": "foregroundStyle",
+                "style": {
+                  "color": "#2F343D",
+                  "type": "color",
+                },
+              },
+            ]
+          }
+          onGlobalEvent={[Function]}
+          text=""
+        />
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={
-        [
-          {
-            "$type": "buttonStyle",
-            "style": "plain",
-          },
-          {
-            "$type": "accessibilityLabel",
-            "label": "Show Action Indicator",
-          },
-          {
-            "$type": "frame",
-            "minHeight": 46,
-          },
-          {
-            "$type": "listRowInsets",
-            "leading": 12,
-            "trailing": 12,
-          },
-        ]
-      }
-      onButtonPress={[Function]}
+      modifiers={[]}
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
         modifiers={
           [
             {
-              "$type": "contentShape",
-              "kind": undefined,
-              "shape": "rectangle",
+              "$type": "accessibilityLabel",
+              "label": "Show Action Indicator",
+            },
+            {
+              "$type": "frame",
+              "minHeight": 46,
+            },
+            {
+              "$type": "listRowInsets",
+              "leading": 12,
+              "trailing": 12,
             },
           ]
         }
@@ -8576,7 +7950,7 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                   },
                   {
                     "$type": "font",
-                    "size": 16,
+                    "textStyle": "body",
                     "weight": "medium",
                   },
                   {
@@ -8595,58 +7969,26 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
         </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI />
         <ViewManagerAdapter_ExpoUI
-          expoInternalSizeFromChildren={true}
-          layoutRoot={false}
-          matchContents={true}
-        >
-          <View
-            style={
+          modifiers={
+            [
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  {},
-                ]
-              }
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
-                      "color": "#2F343D",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </View>
-          </View>
-        </ViewManagerAdapter_ExpoUI>
+                "$type": "font",
+                "family": "custom",
+                "size": 24,
+                "textStyle": "body",
+              },
+              {
+                "$type": "foregroundStyle",
+                "style": {
+                  "color": "#6C727A",
+                  "type": "color",
+                },
+              },
+            ]
+          }
+          onGlobalEvent={[Function]}
+          text=""
+        />
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>

@@ -5,6 +5,7 @@ import { shallowEqual, useDispatch } from 'react-redux';
 import { CustomIcon } from '~/containers/CustomIcon';
 import Status from '~/containers/Status/Status';
 import * as List from '~/containers/List';
+import { asNativeListRow } from '~/containers/List/nativeListRow';
 import styles from '../styles';
 import { useTheme } from '~/theme';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -80,4 +81,4 @@ const CustomStatus = () => {
 	);
 };
 
-export default memo(CustomStatus);
+export default asNativeListRow(memo(CustomStatus));

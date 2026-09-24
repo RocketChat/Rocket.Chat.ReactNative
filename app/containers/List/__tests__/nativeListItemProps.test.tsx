@@ -1,39 +1,17 @@
-import { createElement } from 'react';
-import { View } from 'react-native';
-
 import EventEmitter from '~/lib/methods/helpers/events';
 import { LISTENER } from '../../Toast';
-import ListItem from '../ListItem';
-import ListRadio from '../ListRadio';
-import {
-	type INativeListItem,
-	nativeListItemAccessibilityLabel,
-	pressNativeListItem,
-	toNativeListItem
-} from '../nativeListItemProps';
+import { type IListItem } from '../ListItem';
+import { nativeListItemAccessibilityLabel, nativeListItemTitle, pressNativeListItem } from '../nativeListItemProps';
 
 jest.mock('~/i18n', () => ({ t: (key: string) => `t:${key}` }));
 
-describe('toNativeListItem', () => {
-	it('maps a List.Item with a string title', () => {
-		expect(toNativeListItem(createElement(ListItem, { title: 'Theme', testID: 'theme' }))).toMatchObject({
-			title: 'Theme',
-			testID: 'theme'
-		});
+describe('nativeListItemTitle', () => {
+	it('translates string titles', () => {
+		expect(nativeListItemTitle({ title: 'Theme' })).toBe('t:Theme');
 	});
 
-	it('keeps a List.Item with a custom title component hosted', () => {
-		expect(toNativeListItem(createElement(ListItem, { title: () => null }))).toBeNull();
-	});
-
-	it('keeps other rows hosted', () => {
-		expect(toNativeListItem(createElement(View))).toBeNull();
-	});
-
-	it('maps a List.Radio to a row with a radio accessory and selection label', () => {
-		const item = toNativeListItem(createElement(ListRadio, { title: 'English', value: 'en', isSelected: true }));
-		expect(item?.right).toBeInstanceOf(Function);
-		expect(item?.additionalAccessibilityLabel).toBe('t:Selected');
+	it('has no text for custom title components', () => {
+		expect(nativeListItemTitle({ title: () => null })).toBeUndefined();
 	});
 });
 
@@ -67,7 +45,7 @@ describe('nativeListItemAccessibilityLabel', () => {
 
 describe('pressNativeListItem', () => {
 	const onPress = jest.fn();
-	const item: INativeListItem = { title: 'Theme', onPress };
+	const item: IListItem = { title: 'Theme', onPress };
 
 	beforeEach(() => onPress.mockClear());
 

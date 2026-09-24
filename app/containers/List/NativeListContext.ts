@@ -1,3 +1,5 @@
 import { createContext } from 'react';
 
-export const NativeListContext = createContext(false);
+export type TNativeListMode = false | 'native' | 'hosted';
+
+export const NativeListContext = createContext<TNativeListMode>(false);

@@ -3,22 +3,13 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { useActionSheet } from '~/containers/ActionSheet';
 import * as List from '~/containers/List';
+import { asNativeListRow } from '~/containers/List/nativeListRow';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
 import { type MediaDownloadOption } from '~/lib/constants/mediaAutoDownload';
 
 const styles = StyleSheet.create({
-	leftTitleContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'flex-start'
-	},
-	leftTitle: {
-		...sharedStyles.textMedium,
-		fontSize: 16,
-		lineHeight: 24
-	},
 	rightContainer: {
 		flex: 1
 	},
@@ -97,11 +88,8 @@ const ListPicker = ({
 		<List.Item
 			testID={testID}
 			onPress={() => showActionSheet({ children: getOptions() })}
-			title={() => (
-				<View style={styles.leftTitleContainer}>
-					<Text style={[styles.leftTitle, { color: colors.fontDefault }]}>{title}</Text>
-				</View>
-			)}
+			title={title}
+			translateTitle={false}
 			right={() => (
 				<View style={styles.rightTitleContainer}>
 					<Text style={[styles.rightTitle, { color: colors.fontHint }]}>{label}</Text>
@@ -113,4 +101,4 @@ const ListPicker = ({
 	);
 };
 
-export default ListPicker;
+export default asNativeListRow(ListPicker);
