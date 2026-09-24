@@ -23,6 +23,7 @@ describe('closeOpenSwipeItem', () => {
 
 		expect(item.rowState.value).toBe(0);
 		expect(item.rowOffSet.value).toBe(0);
+		expect(item.transX.value).toBe(0);
 		expect(consumed).toBe(true);
 	});
 
