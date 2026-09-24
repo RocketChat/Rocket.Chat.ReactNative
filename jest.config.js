@@ -13,7 +13,7 @@ module.exports = {
 		'/__tests__/mockedWatermelonDB\\.tsx$'
 	],
 	transformIgnorePatterns: [
-		'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|@rocket.chat/ui-kit|@rocket.chat/sdk|@rocket.chat/message-parser|tiny-events)'
+		'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|@rocket.chat/ui-kit|@rocket.chat/sdk|@rocket.chat/message-parser|tiny-events|react-native-enriched-markdown)'
 	],
 	preset: './jest.preset.js',
 	cacheDirectory: '<rootDir>/.jest-cache',

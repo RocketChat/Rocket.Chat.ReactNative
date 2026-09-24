@@ -150,6 +150,15 @@ export const defaultSettings = {
 	Hide_System_Messages: {
 		type: 'valueAsArray'
 	},
+	Katex_Enabled: {
+		type: 'valueAsBoolean'
+	},
+	Katex_Dollar_Syntax: {
+		type: 'valueAsBoolean'
+	},
+	Katex_Parenthesis_Syntax: {
+		type: 'valueAsBoolean'
+	},
 	LDAP_Enable: {
 		type: 'valueAsBoolean'
 	},

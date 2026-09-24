@@ -2423,6 +2423,28 @@ PODS:
     - React-utils (= 0.86.3)
     - ReactNativeDependencies
   - ReactNativeDependencies (0.86.3)
+  - ReactNativeEnrichedMarkdown (1.0.2):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - ReactNativeIncallManager (4.2.1):
     - React-Core
   - RNBootSplash (6.3.11):
@@ -3118,6 +3140,7 @@ DEPENDENCIES:
   - ReactCodegen (from `build/generated/ios/ReactCodegen`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeDependencies (from `../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec`)
+  - ReactNativeEnrichedMarkdown (from `../node_modules/react-native-enriched-markdown`)
   - ReactNativeIncallManager (from `../node_modules/react-native-incall-manager`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - RNCallKeep (from `../node_modules/react-native-callkeep`)
@@ -3411,6 +3434,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeDependencies:
     :podspec: "../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec"
+  ReactNativeEnrichedMarkdown:
+    :path: "../node_modules/react-native-enriched-markdown"
   ReactNativeIncallManager:
     :path: "../node_modules/react-native-incall-manager"
   RNBootSplash:
@@ -3600,6 +3625,7 @@ SPEC CHECKSUMS:
   ReactCodegen: 4acb96173b6ecf8bb9a42044614b848dcfbc4fc6
   ReactCommon: 02f6a489d5eb4ab79d7deba5cd4434e0ba351a07
   ReactNativeDependencies: 6738e602b46fd24aa453cd58267ec3bb8bf29d27
+  ReactNativeEnrichedMarkdown: e1daa0dc301192ffbae33ddf73e284d5a47d562b
   ReactNativeIncallManager: dccd3e7499caa3bb73d3acfedf4fb0360f1a87d5
   RNBootSplash: 768ba7c7983ab8415dce47ac54815acd4f5ae843
   RNCallKeep: 1930a01d8caf48f018be4f2db0c9f03405c2f977
