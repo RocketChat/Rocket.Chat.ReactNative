@@ -56,6 +56,13 @@ jest.mock('~/containers/MessageComposer/components/Attachments/AttachmentActionS
 jest.mock('~/lib/methods/sendMessage', () => ({
 	sendMessage: jest.fn()
 }));
+jest.mock('expo-file-system/legacy', () => ({
+	cacheDirectory: 'file:///cache/',
+	EncodingType: { UTF8: 'utf8' },
+	writeAsStringAsync: jest.fn(),
+	getInfoAsync: jest.fn(() => Promise.resolve({ exists: true, size: 6 })),
+	deleteAsync: jest.fn(() => Promise.resolve())
+}));
 
 const { showActionSheetRef } = require('~/containers/ActionSheet');
 const { AttachmentActionSheet } = require('~/containers/MessageComposer/components/Attachments/AttachmentActionSheet');
@@ -79,12 +86,18 @@ const makeInstance = ({
 	mime,
 	serverVersion,
 	serverInfoVersion,
-	isShareExtension = false
+	isShareExtension = false,
+	settings
 }: {
 	mime: string;
 	serverVersion?: string;
 	serverInfoVersion?: string;
 	isShareExtension?: boolean;
+	settings?: {
+		Message_MaxAllowedSize?: number;
+		Message_AllowConvertLongMessagesToAttachment?: boolean;
+		FileUpload_Enabled?: boolean;
+	};
 }) => {
 	const shareView = new ShareView({
 		navigation: {
@@ -107,7 +120,8 @@ const makeInstance = ({
 		},
 		server: 'server-id',
 		serverVersion,
-		dispatch: jest.fn()
+		dispatch: jest.fn(),
+		...settings
 	} as any);
 	(shareView as any).setState = (
 		update: Record<string, unknown> | ((state: unknown) => Record<string, unknown>),
@@ -297,7 +311,7 @@ describe('ShareView', () => {
 		(shareView as any).messageComposerRef = { current: { getText: () => 'caption', setInput: jest.fn() } };
 
 		shareView.send();
-		await Promise.resolve();
+		await new Promise(resolve => setImmediate(resolve));
 
 		expect(finishShareView).toHaveBeenCalledWith('', []);
 		expect((shareView as any).sentMessage).toBe(true);
@@ -324,8 +338,7 @@ describe('ShareView', () => {
 			.mockImplementationOnce(() => new Promise<void>((_, reject) => (rejectUpload = reject)));
 
 		const sendPromise = shareView.send();
-		await Promise.resolve();
-		await Promise.resolve();
+		await new Promise(resolve => setImmediate(resolve));
 		shareView.componentWillUnmount();
 		(shareView as any).messageComposerRef = { current: null };
 		rejectUpload(new Error('upload failed'));
@@ -416,7 +429,7 @@ describe('ShareView', () => {
 		let resolveSend!: () => void;
 		sendMessage.mockImplementationOnce(() => new Promise<void>(resolve => (resolveSend = resolve)));
 		const sendPromise = shareView.send();
-		await Promise.resolve();
+		await new Promise(resolve => setImmediate(resolve));
 
 		expect(sendMessage).toHaveBeenCalledWith('room-id', 'shared extension text', '', expect.objectContaining({ id: 'user-id' }));
 		expect(shareView.state.loading).toBe(true);
@@ -439,6 +452,100 @@ describe('ShareView', () => {
 		expect(sendMessage).toHaveBeenCalledWith('room-id', 'ordinary shared text', '', expect.objectContaining({ id: 'user-id' }));
 		expect(finishShareView).toHaveBeenCalledWith('', []);
 		expect(shareView.props.navigation.pop).toHaveBeenCalledTimes(1);
+	});
+
+	it('sends over-limit ShareView text as a .txt file instead of a message', async () => {
+		const shareView = makeInstance({
+			mime: 'text/plain',
+			serverVersion: '8.5.0',
+			settings: { Message_MaxAllowedSize: 5, Message_AllowConvertLongMessagesToAttachment: true, FileUpload_Enabled: true }
+		});
+		shareView.state.attachments = [];
+		shareView.state.text = '123456';
+		const finishShareView = jest.fn();
+		(shareView as any).finishShareView = finishShareView;
+		const sendMessage = require('~/lib/methods/sendMessage').sendMessage as jest.Mock;
+
+		const sendFileMessageMod = require('~/lib/methods/sendFileMessage');
+		const spy = jest.spyOn(sendFileMessageMod, 'sendFileMessage').mockResolvedValue(undefined);
+
+		await shareView.send();
+
+		expect(sendMessage).not.toHaveBeenCalled();
+		expect(spy).toHaveBeenCalledWith(
+			'room-id',
+			expect.objectContaining({ type: 'text/plain', size: 6 }),
+			'',
+			'server-id',
+			expect.objectContaining({ id: 'user-id' })
+		);
+		expect(shareView.props.navigation.pop).toHaveBeenCalledTimes(1);
+		spy.mockRestore();
+	});
+
+	it('shows a toast and keeps ShareView open when over-limit text cannot convert', async () => {
+		const shareView = makeInstance({
+			mime: 'text/plain',
+			serverVersion: '8.5.0',
+			settings: { Message_MaxAllowedSize: 5, Message_AllowConvertLongMessagesToAttachment: false, FileUpload_Enabled: true }
+		});
+		shareView.state.attachments = [];
+		shareView.state.text = '123456';
+		const sendMessage = require('~/lib/methods/sendMessage').sendMessage as jest.Mock;
+
+		await shareView.send();
+
+		expect(sendMessage).not.toHaveBeenCalled();
+		expect(shareView.props.navigation.pop).not.toHaveBeenCalled();
+	});
+
+	it('keeps ShareView open for retry when the over-limit .txt upload fails', async () => {
+		const shareView = makeInstance({
+			mime: 'text/plain',
+			serverVersion: '8.5.0',
+			settings: { Message_MaxAllowedSize: 5, Message_AllowConvertLongMessagesToAttachment: true, FileUpload_Enabled: true }
+		});
+		shareView.state.attachments = [];
+		shareView.state.text = '123456';
+		const finishShareView = jest.fn();
+		(shareView as any).finishShareView = finishShareView;
+		const sendMessage = require('~/lib/methods/sendMessage').sendMessage as jest.Mock;
+
+		const sendFileMessageMod = require('~/lib/methods/sendFileMessage');
+		const spy = jest.spyOn(sendFileMessageMod, 'sendFileMessage').mockRejectedValueOnce(new Error('upload failed'));
+
+		await shareView.send();
+
+		expect(sendMessage).not.toHaveBeenCalled();
+		expect(finishShareView).not.toHaveBeenCalled();
+		expect(shareView.props.navigation.pop).not.toHaveBeenCalled();
+		expect(shareView.state.text).toBe('123456');
+		spy.mockRestore();
+	});
+
+	it('rejects an oversized attachment caption while preserving input', async () => {
+		const shareView = makeInstance({
+			mime: 'image/jpeg',
+			serverVersion: '8.5.0',
+			settings: { Message_MaxAllowedSize: 5, Message_AllowConvertLongMessagesToAttachment: true, FileUpload_Enabled: true }
+		});
+		shareView.state.attachments[0].canUpload = true;
+		shareView.state.attachments[0].description = '123456';
+		shareView.state = {
+			...shareView.state,
+			selected: shareView.state.attachments[0]
+		};
+		shareView.saveSelectedDescription = jest.fn() as any;
+
+		const sendFileMessageMod = require('~/lib/methods/sendFileMessage');
+		const spy = jest.spyOn(sendFileMessageMod, 'sendFileMessage').mockResolvedValue(undefined);
+
+		await shareView.send();
+
+		expect(spy).not.toHaveBeenCalled();
+		expect(shareView.props.navigation.pop).not.toHaveBeenCalled();
+		expect(shareView.state.selected.description).toBe('123456');
+		spy.mockRestore();
 	});
 
 	it('bridges real origin media callbacks into ShareView and restores current text and Quotes', async () => {
