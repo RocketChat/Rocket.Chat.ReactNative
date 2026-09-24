@@ -12,7 +12,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
-import { hasNativeHeaderBar, isTablet } from '~/lib/methods/helpers';
+import { isIOS, isTablet } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { headerIcon } from '~/lib/methods/helpers/navigation/headerIcon';
 import { getUserSelector } from '~/selectors/login';
@@ -148,7 +148,7 @@ export const useHeader = () => {
 			/>
 		);
 
-		if (searchEnabled && !hasNativeHeaderBar) {
+		if (searchEnabled && !isIOS) {
 			const searchOptions = {
 				headerLeft: () => (
 					<HeaderButton.Container style={{ marginLeft: 1 }} left>
@@ -165,7 +165,7 @@ export const useHeader = () => {
 			return;
 		}
 
-		if (hasNativeHeaderBar) {
+		if (isIOS) {
 			const { visible, overflow } = splitHeaderRightActions([
 				{
 					key: 'create',
@@ -318,7 +318,7 @@ export const useHeader = () => {
 	]);
 
 	useEffect(() => {
-		if (hasNativeHeaderBar && !searchEnabled) {
+		if (isIOS && !searchEnabled) {
 			searchBarRef.current?.clearText();
 		}
 	}, [searchEnabled]);

@@ -14,15 +14,7 @@ import i18n from '~/i18n';
 import { MAX_SIDEBAR_WIDTH } from '~/lib/constants/tablet';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import {
-	getRoomAvatar,
-	getRoomTitle,
-	getUidDirectMessage,
-	hasNativeHeaderBar,
-	isIOS,
-	isRead,
-	isTablet
-} from '~/lib/methods/helpers';
+import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isRead, isTablet } from '~/lib/methods/helpers';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
@@ -38,7 +30,7 @@ import { useSubscriptions } from './hooks/useSubscriptions';
 import styles from './styles';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
-const BOTTOM_SEARCH_TOOLBAR_HEIGHT = hasNativeHeaderBar ? 44 : 0;
+const BOTTOM_SEARCH_TOOLBAR_HEIGHT = isIOS ? 44 : 0;
 
 const RoomsListView = memo(function RoomsListView() {
 	useHeader();
@@ -73,7 +65,7 @@ const RoomsListView = memo(function RoomsListView() {
 	}, [searchEnabled]);
 
 	const onPressItem = (item = {} as IRoomItem) => {
-		if (!navigation.isFocused()) {
+		if (!isMasterDetail && !navigation.isFocused()) {
 			return;
 		}
 		if (item.rid === subscribedRoom) {
@@ -145,7 +137,7 @@ const RoomsListView = memo(function RoomsListView() {
 			ListHeaderComponent={ListHeader}
 			ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}
 			getItemLayout={getItemLayout}
-			contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
+			contentInsetAdjustmentBehavior={isIOS ? 'automatic' : undefined}
 			keyboardShouldPersistTaps='always'
 			initialNumToRender={INITIAL_NUM_TO_RENDER}
 			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}

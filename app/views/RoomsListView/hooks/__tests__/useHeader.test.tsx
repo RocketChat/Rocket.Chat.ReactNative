@@ -19,8 +19,7 @@ jest.mock('~/lib/methods/helpers', () =>
 		{ ...jest.requireActual('~/lib/methods/helpers') },
 		{
 			isIOS: { get: () => mockIsIOS, configurable: true },
-			isTablet: { get: () => mockIsTablet, configurable: true },
-			hasNativeHeaderBar: { get: () => mockIsIOS && !mockIsTablet, configurable: true }
+			isTablet: { get: () => mockIsTablet, configurable: true }
 		}
 	)
 );
@@ -216,13 +215,13 @@ describe('RoomsListView useHeader', () => {
 		expect(typeof options.headerTitle).toBe('function');
 	});
 
-	it('falls back to the JS header on iPad', () => {
+	it('uses the native header on iPad', () => {
 		mockIsTablet = true;
 
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		expect(options.headerLargeTitle).toBeUndefined();
-		expect(typeof options.headerTitle).toBe('function');
+		expect(options.headerLargeTitle).toBe(true);
+		expect(options.headerTitle).toBe('Rocket.Chat');
 	});
 });

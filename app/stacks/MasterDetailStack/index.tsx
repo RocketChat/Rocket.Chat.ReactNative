@@ -4,14 +4,14 @@ import {
 	createNativeStackScreen,
 	type NativeStackNavigationProp
 } from '@react-navigation/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { type StaticScreenProps, useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '~/theme';
-import { defaultHeader, themedHeader, drawerStyle } from '~/lib/methods/helpers/navigation';
+import { defaultHeader, themedHeader } from '~/lib/methods/helpers/navigation';
 import withNavigation from '~/lib/navigation/withNavigation';
 import { isIOS } from '~/lib/methods/helpers';
 import { ModalContainer } from './ModalContainer';
+import { createSplitNavigator } from './SplitNavigator';
 import { type MasterDetailChatsStackParamList, type MasterDetailInsideStackParamList, type ModalStackParamList } from './types';
 import RoomView from '~/views/RoomView';
 import RoomsListView from '~/views/RoomsListView';
@@ -168,10 +168,23 @@ const ChatsStack = createNativeStackNavigator({
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
-const DrawerNav = createDrawerNavigator({
-	screenOptions: { drawerType: 'permanent', headerShown: false, drawerStyle: { ...drawerStyle } },
-	drawerContent: () => <RoomsListView />,
+const RoomsListStack = createNativeStackNavigator({
+	screenOptions: defaultHeader,
 	screens: {
+		RoomsListView: createNativeStackScreen({
+			screen: RoomsListView,
+			options: { headerShown: isIOS }
+		})
+	}
+}).with(({ Navigator }) => {
+	const { theme } = useContext(ThemeContext);
+	return <Navigator screenOptions={themedHeader(theme)} />;
+});
+
+const SplitNav = createSplitNavigator({
+	initialRouteName: 'ChatsStackNavigator',
+	screens: {
+		RoomsListStackNavigator: RoomsListStack,
 		ChatsStackNavigator: ChatsStack
 	}
 });
@@ -267,7 +280,7 @@ const InsideStack = createNativeStackNavigator({
 	},
 	screens: {
 		DrawerNavigator: createNativeStackScreen({
-			screen: DrawerNav as any,
+			screen: SplitNav as any,
 			options: { headerShown: false }
 		}),
 		ModalStackNavigator: createNativeStackScreen({

@@ -53,10 +53,6 @@ export const outsideHeaderLeftClose = (onPress: () => void, testID: string): Nat
 				headerLeft: (): ReactElement => createElement(HeaderButton.CloseModal, { onPress, testID })
 			};
 
-export const drawerStyle = {
-	width: 320
-};
-
 export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions =>
 	isIOS
 		? {}
