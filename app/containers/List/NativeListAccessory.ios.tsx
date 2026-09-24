@@ -1,3 +1,4 @@
+import { Checkbox } from '@expo/ui';
 import { RNHostView, Text, Toggle } from '@expo/ui/swift-ui';
 import { disabled, font, foregroundStyle, labelsHidden, lineLimit, tint } from '@expo/ui/swift-ui/modifiers';
 
@@ -23,6 +24,15 @@ const NativeListAccessory = ({ accessory }: { accessory: TNativeListAccessory })
 					onIsOnChange={accessory.onValueChange}
 					testID={accessory.testID}
 					modifiers={[labelsHidden(), tint(colors.buttonBackgroundPrimaryDefault), disabled(accessory.disabled)]}
+				/>
+			);
+		case 'checkbox':
+			return (
+				<Checkbox
+					value={accessory.value}
+					onValueChange={accessory.onValueChange}
+					testID={accessory.testID}
+					modifiers={[labelsHidden(), tint(colors.buttonBackgroundPrimaryDefault)]}
 				/>
 			);
 		case 'text':

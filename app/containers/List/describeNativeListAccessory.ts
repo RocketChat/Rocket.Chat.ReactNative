@@ -7,6 +7,7 @@ import NewWindowIcon from '../NewWindowIcon';
 import Radio from '../Radio';
 import Status from '../Status/Status';
 import Switch from '../Switch';
+import ListCheckbox, { type IListCheckbox } from './ListCheckbox';
 import ListIcon from './ListIcon';
 
 export type TNativeListAccessory =
@@ -14,6 +15,7 @@ export type TNativeListAccessory =
 	| { kind: 'check' }
 	| { kind: 'status'; status: TUserStatus }
 	| { kind: 'toggle'; isOn: boolean; onValueChange?: (value: boolean) => void; disabled: boolean; testID?: string }
+	| { kind: 'checkbox'; value: boolean; onValueChange: (value: boolean) => void; testID?: string }
 	| { kind: 'text'; text: string }
 	| { kind: 'hosted'; element: ReactElement };
 
@@ -53,6 +55,11 @@ const describeToggle: TDescriber = props => {
 	return { kind: 'toggle', isOn: Boolean(value), onValueChange: onValueChange ?? undefined, disabled: Boolean(disabled), testID };
 };
 
+const describeCheckbox: TDescriber = props => {
+	const { value, onValueChange, testID } = props as IListCheckbox;
+	return { kind: 'checkbox', value, onValueChange, testID };
+};
+
 const describeWrapper: TDescriber = ({ children }) => {
 	const child = onlyChild(children);
 	const described = child ? describeNativeListAccessory(child) : null;
@@ -60,6 +67,7 @@ const describeWrapper: TDescriber = ({ children }) => {
 };
 
 const describers = new Map<unknown, TDescriber>([
+	[ListCheckbox, describeCheckbox],
 	[ListIcon, props => iconAccessory(props.name, props)],
 	[CustomIcon, props => iconAccessory(props.name, props)],
 	[NewWindowIcon, props => iconAccessory('new-window', props)],

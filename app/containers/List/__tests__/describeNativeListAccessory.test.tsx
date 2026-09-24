@@ -6,6 +6,7 @@ import NewWindowIcon from '../../NewWindowIcon';
 import Radio from '../../Radio';
 import Status from '../../Status/Status';
 import Switch from '../../Switch';
+import ListCheckbox from '../ListCheckbox';
 import ListIcon from '../ListIcon';
 import { describeNativeListAccessory } from '../describeNativeListAccessory';
 
@@ -48,6 +49,16 @@ describe('describeNativeListAccessory', () => {
 		const onValueChange = jest.fn();
 		const accessory = describeNativeListAccessory(<Switch value onValueChange={onValueChange} disabled testID='switch' />);
 		expect(accessory).toEqual({ kind: 'toggle', isOn: true, onValueChange, disabled: true, testID: 'switch' });
+	});
+
+	it('maps List.Checkbox to a checkbox keeping value, handler and testID', () => {
+		const onValueChange = jest.fn();
+		expect(describeNativeListAccessory(<ListCheckbox value onValueChange={onValueChange} testID='checkbox' />)).toEqual({
+			kind: 'checkbox',
+			value: true,
+			onValueChange,
+			testID: 'checkbox'
+		});
 	});
 
 	it('maps plain text, also when wrapped in a single View', () => {
