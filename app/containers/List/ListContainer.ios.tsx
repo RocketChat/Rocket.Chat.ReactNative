@@ -55,7 +55,7 @@ const ListContainer = ({ children, testID, selection }: IListContainer) => {
 	const rowModifiers = (row: ReactElement) => [
 		frame({ maxWidth: Number.MAX_SAFE_INTEGER }),
 		alignmentGuide('listRowSeparatorLeading', hasLeftIcon(row) ? PADDING_HORIZONTAL * 2 + ICON_SIZE : PADDING_HORIZONTAL),
-		onGeometryChange(({ width }) => setRowWidth(width)),
+		onGeometryChange(({ width }) => setRowWidth(current => (current === width ? current : width))),
 		listRowInsets({ top: 0, leading: 0, bottom: 0, trailing: 0 }),
 		...selectionTag(row)
 	];
