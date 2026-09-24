@@ -203,6 +203,8 @@ export const useHeader = () => {
 			navigation.setOptions({
 				headerLargeTitle: true,
 				headerTransparent: true,
+				headerStyle: { backgroundColor: `${colors.surfaceNeutral}B3` },
+				headerBlurEffect: 'regular',
 				headerTitle: serverName,
 				headerSubtitle: nativeHeaderSubtitle,
 				onHeaderTitlePress: () => showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false }),

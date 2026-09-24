@@ -55,7 +55,11 @@ export const outsideHeaderLeftClose = (onPress: () => void, testID: string): Nat
 
 export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions =>
 	isIOS
-		? {}
+		? {
+				headerStyle: {
+					backgroundColor: themes[theme].surfaceNeutral
+				}
+			}
 		: {
 				headerStyle: {
 					backgroundColor: themes[theme].surfaceNeutral
