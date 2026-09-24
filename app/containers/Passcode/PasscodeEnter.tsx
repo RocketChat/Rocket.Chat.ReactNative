@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { sha256 } from 'js-sha256';
 
@@ -136,4 +135,4 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 	);
 };
 
-export default gestureHandlerRootHOC(PasscodeEnter);
+export default PasscodeEnter;
