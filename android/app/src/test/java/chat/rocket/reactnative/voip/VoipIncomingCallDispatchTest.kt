@@ -22,9 +22,33 @@ class VoipIncomingCallDispatchTest {
     }
 
     @Test
-    fun `valid push with active call rejects busy`() {
+    fun `valid push with active call rings when concurrent incoming calls are allowed`() {
+        assertEquals(
+            VoipIncomingPushAction.SHOW_INCOMING,
+            decideIncomingVoipPushAction(
+                isValidForIncomingHandling = true,
+                hasActiveCall = true,
+                allowConcurrentIncomingCalls = true
+            )
+        )
+    }
+
+    @Test
+    fun `valid push with active call rejects busy when concurrent incoming calls are disallowed`() {
         assertEquals(
             VoipIncomingPushAction.REJECT_BUSY,
+            decideIncomingVoipPushAction(
+                isValidForIncomingHandling = true,
+                hasActiveCall = true,
+                allowConcurrentIncomingCalls = false
+            )
+        )
+    }
+
+    @Test
+    fun `shipped default allows a second incoming call to ring`() {
+        assertEquals(
+            VoipIncomingPushAction.SHOW_INCOMING,
             decideIncomingVoipPushAction(isValidForIncomingHandling = true, hasActiveCall = true)
         )
     }

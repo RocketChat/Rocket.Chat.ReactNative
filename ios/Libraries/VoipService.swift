@@ -32,6 +32,10 @@ public final class VoipService: NSObject {
     // MARK: - Constants
     
     private static let TAG = "RocketChat.VoipService"
+    /// PoC toggle: when true, a second incoming push rings instead of being rejected as busy.
+    /// Mirrors `ALLOW_CONCURRENT_INCOMING_CALLS` in `app/lib/constants/callWaiting.ts` and
+    /// `VoipIncomingCallDispatch.kt`.
+    public static let allowConcurrentIncomingCalls = true
     private static let voipTokenStorageKey = "RCVoipPushToken"
     private static let storage = MMKVBridge.build()
     /// Serializes access to `lastVoipToken` and `initialEventsData` (main-thread writers vs RN bridge readers).
@@ -158,9 +162,8 @@ public final class VoipService: NSObject {
     /// Returns `true` when CXCallObserver reports any non-ended call (ringing or connected),
     /// including phone, FaceTime, and third-party VoIP.
     ///
-    /// **Call-waiting (current `AppDelegate+Voip` behavior):** This is **not** called from the PushKit
-    /// path; CallKit handles multiple simultaneous calls. Kept for parity with Android busy detection,
-    /// documentation of `prepareIncomingCall(_:storeEventsForJs:)`, and optional future or test use.
+    /// Consulted from the PushKit path only when `allowConcurrentIncomingCalls` is false; with the
+    /// flag on, CallKit stacks the second ring and this is not called.
     public static func hasActiveCall() -> Bool {
         configureCallObserverIfNeeded()
         return callObserver.calls.contains { !$0.hasEnded }
@@ -535,11 +538,9 @@ public final class VoipService: NSObject {
     }
 
     /// Rejects an incoming call because the user is already on another call.
-    /// Must be called **after** `reportNewIncomingCall` (PushKit requirement).
-    ///
-    /// **Call-waiting:** `AppDelegate+Voip` does **not** invoke this; second rings are shown in CallKit
-    /// instead of auto-rejecting. Same rationale as `hasActiveCall()` — API remains for Android-aligned
-    /// flows, `storeEventsForJs: false` cleanup, and future wiring.
+    /// Must be called **after** `reportNewIncomingCall` (PushKit requirement), so `AppDelegate+Voip`
+    /// invokes it from the CallKit report completion handler. Reached only when
+    /// `allowConcurrentIncomingCalls` is false.
     public static func rejectBusyCall(_ payload: VoipPayload) {
         cancelIncomingCallTimeout(for: payload.callId)
         clearTrackedIncomingCall(for: payload.callUUID)
