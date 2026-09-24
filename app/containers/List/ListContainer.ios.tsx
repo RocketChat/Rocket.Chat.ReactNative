@@ -2,7 +2,7 @@ import { Children, cloneElement, Fragment, isValidElement, useState, type ReactE
 import { StyleSheet, View } from 'react-native';
 import { Host } from '@expo/ui';
 import { Group, List, RNHostView, Section, Text } from '@expo/ui/swift-ui';
-import { alignmentGuide, frame, listRowInsets, listStyle, onGeometryChange } from '@expo/ui/swift-ui/modifiers';
+import { alignmentGuide, frame, listRowInsets, listStyle, onGeometryChange, tag } from '@expo/ui/swift-ui/modifiers';
 
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
@@ -18,11 +18,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-const listModifiers = [listStyle('insetGrouped')];
+const insetGroupedModifiers = [listStyle('insetGrouped')];
+const sidebarModifiers = [listStyle('sidebar')];
+
+export interface IListSelection {
+	selectedTag: string | null;
+}
 
 interface IListContainer {
 	children: (ReactElement | null)[] | ReactElement | null;
 	testID?: string;
+	selection?: IListSelection;
 }
 
 interface ISectionProps {
@@ -49,18 +55,27 @@ const isSeparator = (element: ReactElement) => element.type === ListSeparator;
 const isInfo = (element: ReactElement): element is ReactElement<IInfoProps> => element.type === ListInfo;
 const isSection = (element: ReactElement): element is ReactElement<ISectionProps> => element.type === ListSection;
 const hasLeftIcon = (element: ReactElement) => Boolean((element.props as { left?: unknown }).left);
+const rowSelectionTag = (element: ReactElement) => (element.props as { selectionTag?: string }).selectionTag;
+
+const selectedTags = ({ selectedTag }: IListSelection) => (selectedTag ? [selectedTag] : []);
 
 const translate = (text: string, shouldTranslate = true) => (shouldTranslate ? I18n.t(text) : text);
 
-const ListContainer = ({ children, testID }: IListContainer) => {
+const ListContainer = ({ children, testID, selection }: IListContainer) => {
 	const { theme } = useTheme();
 	const [rowWidth, setRowWidth] = useState(0);
+
+	const selectionTag = (row: ReactElement) => {
+		const rowTag = rowSelectionTag(row);
+		return rowTag && selection ? [tag(rowTag)] : [];
+	};
 
 	const rowModifiers = (row: ReactElement) => [
 		frame({ maxWidth: Number.MAX_SAFE_INTEGER }),
 		alignmentGuide('listRowSeparatorLeading', hasLeftIcon(row) ? PADDING_HORIZONTAL * 2 + ICON_SIZE : PADDING_HORIZONTAL),
 		onGeometryChange(({ width }) => setRowWidth(width)),
-		listRowInsets({ top: 0, leading: 0, bottom: 0, trailing: 0 })
+		listRowInsets({ top: 0, leading: 0, bottom: 0, trailing: 0 }),
+		...selectionTag(row)
 	];
 
 	const renderRow = (row: ReactElement) => (
@@ -94,7 +109,10 @@ const ListContainer = ({ children, testID }: IListContainer) => {
 	return (
 		<NativeListContext.Provider value>
 			<Host style={styles.host} colorScheme={theme === 'light' ? 'light' : 'dark'}>
-				<List modifiers={listModifiers} testID={testID}>
+				<List
+					modifiers={selection ? sidebarModifiers : insetGroupedModifiers}
+					selection={selection ? selectedTags(selection) : undefined}
+					testID={testID}>
 					{flatten(children)
 						.filter(element => !isSeparator(element))
 						.map(element => (isSection(element) ? renderSection(element) : renderRow(element)))}

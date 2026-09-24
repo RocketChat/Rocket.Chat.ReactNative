@@ -9,6 +9,7 @@ export interface IStackItem {
 	testID: string;
 	onPress: () => void;
 	selected: boolean;
+	route?: string;
 	disabled?: boolean;
 }
 
@@ -25,7 +26,8 @@ export const useStackItems = (currentScreen: string | null): IStackItem[] => {
 		icon,
 		testID,
 		onPress: () => sidebarNavigate(route),
-		selected: currentScreen === route
+		selected: currentScreen === route,
+		route
 	});
 
 	const mediaCallItems: IStackItem[] = hasMediaCallPermission
