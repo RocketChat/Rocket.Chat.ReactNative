@@ -419,20 +419,59 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -900,20 +939,59 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -1381,20 +1459,59 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -1862,20 +1979,59 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -2343,20 +2499,59 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -2824,20 +3019,59 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -3305,20 +3539,59 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -3786,20 +4059,59 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -4267,20 +4579,59 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -4748,20 +5099,59 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -5229,20 +5619,59 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -5646,20 +6075,59 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
       name="items"
     >
       <ViewManagerAdapter_ExpoUI
-        label="Mark read"
+        modifiers={
+          [
+            {
+              "$type": "disabled",
+              "disabled": false,
+            },
+          ]
+        }
         onButtonPress={[Function]}
+        onGlobalEvent={[Function]}
+        role="default"
         testID="action-sheet-mark-read"
-      />
+      >
+        <ViewManagerAdapter_ExpoUI
+          title="Mark read"
+        />
+      </ViewManagerAdapter_ExpoUI>
       <ViewManagerAdapter_ExpoUI
-        label="Favorite"
+        modifiers={
+          [
+            {
+              "$type": "disabled",
+              "disabled": false,
+            },
+          ]
+        }
         onButtonPress={[Function]}
+        onGlobalEvent={[Function]}
+        role="default"
         testID="action-sheet-favorite"
-      />
+      >
+        <ViewManagerAdapter_ExpoUI
+          title="Favorite"
+        />
+      </ViewManagerAdapter_ExpoUI>
       <ViewManagerAdapter_ExpoUI
-        label="Hide"
+        modifiers={
+          [
+            {
+              "$type": "disabled",
+              "disabled": false,
+            },
+          ]
+        }
         onButtonPress={[Function]}
+        onGlobalEvent={[Function]}
+        role="default"
         testID="action-sheet-hide"
-      />
+      >
+        <ViewManagerAdapter_ExpoUI
+          title="Hide"
+        />
+      </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>
 </ViewManagerAdapter_ExpoUI>
@@ -6155,20 +6623,59 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -6660,20 +7167,59 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -7115,20 +7661,59 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -7566,20 +8151,59 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -7920,20 +8544,59 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -8316,20 +8979,59 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -8821,20 +9523,59 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -9321,20 +10062,59 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -9774,20 +10554,59 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -10220,20 +11039,59 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -10661,20 +11519,59 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -11142,20 +12039,59 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -11618,20 +12554,59 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -12094,20 +13069,59 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -12570,20 +13584,59 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -13114,20 +14167,59 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -13658,20 +14750,59 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -14202,20 +15333,59 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -14620,20 +15790,59 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -15033,20 +16242,59 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -15446,20 +16694,59 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -15859,20 +17146,59 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -16272,20 +17598,59 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -16685,20 +18050,59 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -17098,20 +18502,59 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -17511,20 +18954,59 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -17924,20 +19406,59 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -18337,20 +19858,59 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -18797,20 +20357,59 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -19316,20 +20915,59 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -19771,20 +21409,59 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -20290,20 +21967,59 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -20707,20 +22423,59 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
       name="items"
     >
       <ViewManagerAdapter_ExpoUI
-        label="Mark read"
+        modifiers={
+          [
+            {
+              "$type": "disabled",
+              "disabled": false,
+            },
+          ]
+        }
         onButtonPress={[Function]}
+        onGlobalEvent={[Function]}
+        role="default"
         testID="action-sheet-mark-read"
-      />
+      >
+        <ViewManagerAdapter_ExpoUI
+          title="Mark read"
+        />
+      </ViewManagerAdapter_ExpoUI>
       <ViewManagerAdapter_ExpoUI
-        label="Favorite"
+        modifiers={
+          [
+            {
+              "$type": "disabled",
+              "disabled": false,
+            },
+          ]
+        }
         onButtonPress={[Function]}
+        onGlobalEvent={[Function]}
+        role="default"
         testID="action-sheet-favorite"
-      />
+      >
+        <ViewManagerAdapter_ExpoUI
+          title="Favorite"
+        />
+      </ViewManagerAdapter_ExpoUI>
       <ViewManagerAdapter_ExpoUI
-        label="Hide"
+        modifiers={
+          [
+            {
+              "$type": "disabled",
+              "disabled": false,
+            },
+          ]
+        }
         onButtonPress={[Function]}
+        onGlobalEvent={[Function]}
+        role="default"
         testID="action-sheet-hide"
-      />
+      >
+        <ViewManagerAdapter_ExpoUI
+          title="Hide"
+        />
+      </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>
 </ViewManagerAdapter_ExpoUI>
@@ -21132,20 +22887,59 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -21545,20 +23339,59 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -21958,20 +23791,59 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -22371,20 +24243,59 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -22784,20 +24695,59 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -23197,20 +25147,59 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -23610,20 +25599,59 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -24023,20 +26051,59 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -24436,20 +26503,59 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -24862,20 +26968,59 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
@@ -25283,20 +27428,59 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
         name="items"
       >
         <ViewManagerAdapter_ExpoUI
-          label="Mark read"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-mark-read"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Mark read"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Favorite"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-favorite"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Favorite"
+          />
+        </ViewManagerAdapter_ExpoUI>
         <ViewManagerAdapter_ExpoUI
-          label="Hide"
+          modifiers={
+            [
+              {
+                "$type": "disabled",
+                "disabled": false,
+              },
+            ]
+          }
           onButtonPress={[Function]}
+          onGlobalEvent={[Function]}
+          role="default"
           testID="action-sheet-hide"
-        />
+        >
+          <ViewManagerAdapter_ExpoUI
+            title="Hide"
+          />
+        </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
   </ViewManagerAdapter_ExpoUI>,
