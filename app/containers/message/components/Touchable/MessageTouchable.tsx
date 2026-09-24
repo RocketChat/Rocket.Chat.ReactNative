@@ -2,11 +2,13 @@ import { useTheme } from '~/theme';
 import MessageA11yOrder from '../MessageA11yOrder';
 import MessageA11yIndex from '../MessageA11yIndex';
 import Touch from './Touch';
+import MessageContextMenu from '../MessageContextMenu';
 import Message, { type TMessageProps } from '../Message/Message';
 import { useLastFocusedMessageRef } from '~/lib/a11y/useLastFocusedMessageRef';
 import { useMessageAccessibilityLabel } from '~/containers/message/hooks/useMessageAccessibilityLabel';
 import { useMessageAccessibilityActions } from '~/containers/message/hooks/useMessageAccessibilityActions';
 import { useMessageAccessibilityHint } from '~/containers/message/hooks/useMessageAccessibilityHint';
+import { useIsMessageContextMenuEnabled } from '~/containers/message/hooks/useMessageContextMenu';
 import { useIsBeingEdited } from '~/containers/message/stores/MessageActionStore';
 import {
 	useIsInfoMessage,
@@ -30,6 +32,7 @@ const MessageTouchable = (props: TMessageProps) => {
 	const accessibilityLabelValue = useMessageAccessibilityLabel();
 	const accessibilityActions = useMessageAccessibilityActions(!tappable);
 	const accessibilityHint = useMessageAccessibilityHint();
+	const isContextMenuEnabled = useIsMessageContextMenuEnabled();
 
 	let backgroundColor = undefined;
 	if (isBeingEdited) {
@@ -55,23 +58,25 @@ const MessageTouchable = (props: TMessageProps) => {
 	return (
 		<MessageA11yOrder>
 			<MessageA11yIndex index={1}>
-				<Touch
-					componentRef={touchRef}
-					onLongPress={handleLongPress}
-					onPress={onPressAction}
-					disabled={!tappable}
-					style={{ backgroundColor }}
-					testID={isBeingEdited ? `message-editing-${id}` : undefined}
-					accessible
-					accessibilityRole='button'
-					accessibilityLabel={accessibilityLabelValue}
-					accessibilityHint={accessibilityHint}
-					accessibilityActions={accessibilityActions}
-					onAccessibilityAction={e => {
-						if (e.nativeEvent.actionName === 'showActions') handleLongPress();
-					}}>
-					<Message isPreview={props.isPreview} />
-				</Touch>
+				<MessageContextMenu>
+					<Touch
+						componentRef={touchRef}
+						onLongPress={isContextMenuEnabled ? undefined : handleLongPress}
+						onPress={onPressAction}
+						disabled={!tappable}
+						style={{ backgroundColor }}
+						testID={isBeingEdited ? `message-editing-${id}` : undefined}
+						accessible
+						accessibilityRole='button'
+						accessibilityLabel={accessibilityLabelValue}
+						accessibilityHint={accessibilityHint}
+						accessibilityActions={accessibilityActions}
+						onAccessibilityAction={e => {
+							if (e.nativeEvent.actionName === 'showActions') handleLongPress();
+						}}>
+						<Message isPreview={props.isPreview} />
+					</Touch>
+				</MessageContextMenu>
 			</MessageA11yIndex>
 		</MessageA11yOrder>
 	);

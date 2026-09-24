@@ -17,7 +17,8 @@ export const RoomMessageActions = ({
 	quoteInit,
 	reactionInit,
 	onReactionPress,
-	jumpToMessage
+	jumpToMessage,
+	children
 }: IRoomMessageActionsProps) => {
 	const roomStore = useRoomStoreApi();
 	const isSubscribed = useRoomStore(s => isSubscriptionModel(s.room));
@@ -27,7 +28,7 @@ export const RoomMessageActions = ({
 	const getRoom = () => roomStore.getState().room as TSubscriptionModel;
 
 	if (!isSubscribed) {
-		return null;
+		return children;
 	}
 
 	return (
@@ -43,8 +44,9 @@ export const RoomMessageActions = ({
 				reactionInit={reactionInit}
 				onReactionPress={onReactionPress}
 				jumpToMessage={jumpToMessage}
-				isReadOnly={readOnly}
-			/>
+				isReadOnly={readOnly}>
+				{children}
+			</MessageActions>
 			<MessageErrorActions ref={messageErrorActionsRef} tmid={tmid} />
 		</>
 	);
