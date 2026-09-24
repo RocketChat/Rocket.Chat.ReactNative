@@ -43,7 +43,7 @@ const RoomsListView = memo(function RoomsListView() {
 	const isMasterDetail = useMasterDetail();
 	const navigation = useNavigation();
 	const { width } = useSafeAreaFrame();
-	const { bottom } = useSafeAreaInsets();
+	const { bottom, left, right } = useSafeAreaInsets();
 	const getItemLayout = useGetItemLayout();
 	const { subscriptions, loading } = useSubscriptions();
 	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
@@ -93,7 +93,7 @@ const RoomsListView = memo(function RoomsListView() {
 				showLastMessage={showLastMessage}
 				onPress={onPressItem}
 				// TODO: move to RoomItem
-				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
+				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width - left - right}
 				useRealName={useRealName}
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}

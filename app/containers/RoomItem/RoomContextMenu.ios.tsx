@@ -1,6 +1,7 @@
 import { Host } from '@expo/ui';
 import { Button, ContextMenu, RNHostView, Text, VStack } from '@expo/ui/swift-ui';
 import { font, foregroundStyle, frame, lineLimit, padding } from '@expo/ui/swift-ui/modifiers';
+import { View } from 'react-native';
 
 import { useTheme } from '~/theme';
 import { useRoomContextMenuActions } from './useRoomContextMenuActions';
@@ -20,7 +21,9 @@ const RoomContextMenu = ({ children, enabled, rid, type, name, lastMessage, isRe
 		<Host style={{ width }} matchContents={{ vertical: true }} colorScheme={theme === 'light' ? 'light' : 'dark'}>
 			<ContextMenu>
 				<ContextMenu.Trigger>
-					<RNHostView matchContents>{children}</RNHostView>
+					<RNHostView matchContents>
+						<View style={{ width }}>{children}</View>
+					</RNHostView>
 				</ContextMenu.Trigger>
 				<ContextMenu.Preview>
 					<VStack
