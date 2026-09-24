@@ -37,7 +37,7 @@ const Item = ({ userId, name, username, onPress, testID, onLongPress, isFirst, i
 			trailingAction={
 				hasMediaCallPermission && !isSelf
 					? {
-							systemImage: 'phone',
+							icon: 'phone',
 							onPress: startMediaCall,
 							testID: `${testID}-call`,
 							accessibilityLabel: I18n.t('Voice_call'),

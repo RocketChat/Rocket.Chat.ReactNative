@@ -381,7 +381,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               [
                 {
                   "$type": "font",
+                  "family": "custom",
                   "size": 20,
+                  "textStyle": "body",
                 },
                 {
                   "$type": "foregroundStyle",
@@ -392,7 +394,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                 },
               ]
             }
-            systemName="phone"
+            onGlobalEvent={[Function]}
+            text=""
           />
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
@@ -604,7 +607,9 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
               [
                 {
                   "$type": "font",
+                  "family": "custom",
                   "size": 20,
+                  "textStyle": "body",
                 },
                 {
                   "$type": "foregroundStyle",
@@ -615,7 +620,8 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
                 },
               ]
             }
-            systemName="phone"
+            onGlobalEvent={[Function]}
+            text=""
           />
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>
@@ -827,7 +833,9 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
               [
                 {
                   "$type": "font",
+                  "family": "custom",
                   "size": 20,
+                  "textStyle": "body",
                 },
                 {
                   "$type": "foregroundStyle",
@@ -838,7 +846,8 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
                 },
               ]
             }
-            systemName="phone"
+            onGlobalEvent={[Function]}
+            text=""
           />
         </ViewManagerAdapter_ExpoUI>
       </ViewManagerAdapter_ExpoUI>

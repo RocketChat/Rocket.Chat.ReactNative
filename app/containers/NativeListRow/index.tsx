@@ -1,7 +1,7 @@
 import { type ReactElement, type ReactNode } from 'react';
 import { PixelRatio, StyleSheet, View } from 'react-native';
 import { Host, ListItem } from '@expo/ui';
-import { Button, HStack, Image, RNHostView, Text } from '@expo/ui/swift-ui';
+import { Button, HStack, RNHostView, Text } from '@expo/ui/swift-ui';
 import {
 	accessibilityAddTraits,
 	accessibilityLabel as accessibilityLabelModifier,
@@ -14,6 +14,8 @@ import {
 	padding
 } from '@expo/ui/swift-ui/modifiers';
 
+import { type TIconsName } from '~/containers/CustomIcon';
+import NativeListIcon from '~/containers/List/NativeListIcon.ios';
 import { useTheme } from '~/theme';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { CONTENT_SPACING, ROW_HEIGHT, ROW_MARGIN_HORIZONTAL, ROW_PADDING_HORIZONTAL, ROW_RADIUS } from './constants';
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
 });
 
 export interface INativeListRowAction {
-	systemImage: 'phone';
+	icon: TIconsName;
 	onPress: () => void;
 	testID: string;
 	accessibilityLabel: string;
@@ -119,8 +121,8 @@ const NativeListRow = ({
 								disabledModifier(Boolean(trailingAction.disabled)),
 								accessibilityLabelModifier(trailingAction.accessibilityLabel)
 							]}>
-							<Image
-								systemName={trailingAction.systemImage}
+							<NativeListIcon
+								name={trailingAction.icon}
 								size={20}
 								color={trailingAction.disabled ? colors.fontDisabled : colors.fontDefault}
 							/>
