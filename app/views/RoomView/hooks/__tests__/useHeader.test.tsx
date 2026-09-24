@@ -30,6 +30,7 @@ jest.mock('~/lib/methods/helpers', () => ({
 		return mockIsTablet;
 	}
 }));
+jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: () => mockIsTablet }));
 jest.mock('~/lib/methods/isInviteSubscription', () => ({
 	isInviteSubscription: jest.fn(() => false)
 }));
@@ -164,6 +165,21 @@ describe('useHeader', () => {
 			const sideOptions = mockSetOptions.mock.calls[0][0];
 			expect(sideOptions.unstable_headerRightItems()).toBe(mockNativeRightItems);
 			expect(sideOptions).not.toHaveProperty('headerRight');
+		});
+
+		it('shows the room avatar without the shared glass background', () => {
+			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
+
+			const [avatarItem] = mockSetOptions.mock.calls[0][0].unstable_headerLeftItems();
+			expect(avatarItem.type).toBe('custom');
+			expect(avatarItem.hidesSharedBackground).toBe(true);
+			expect(avatarItem.element.type).toBe('LeftButtons');
+		});
+
+		it('keeps the native back button on a thread', () => {
+			renderHook(() => useHeader({ rid: 'rid-1', tmid: 'tmid-1', name: 'Thread', roomStore: mockTestStore }));
+
+			expect(mockSetOptions.mock.calls[0][0]).not.toHaveProperty('unstable_headerLeftItems');
 		});
 	});
 });
