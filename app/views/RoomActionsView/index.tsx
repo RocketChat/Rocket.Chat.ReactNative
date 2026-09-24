@@ -789,7 +789,6 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 					}
 					style={{ backgroundColor: themes[theme].surfaceRoom }}
 					accessibilityLabel={I18n.t('Room_Info')}
-					enabled={!isGroupChatHandler}
 					testID='room-actions-info'>
 					<View style={styles.roomInfoContainer}>
 						<Avatar text={avatar} style={styles.avatar} size={50 * fontScale} type={t} rid={rid} />

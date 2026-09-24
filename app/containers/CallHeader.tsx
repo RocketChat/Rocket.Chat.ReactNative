@@ -53,8 +53,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 								accessibilityLabel={cam ? I18n.t('Turn_camera_off') : I18n.t('Turn_camera_on')}
 								onPress={() => setCam(!cam)}
 								style={[style.iconCallContainerRight, { backgroundColor: handleColors(cam).button }]}
-								hitSlop={BUTTON_HIT_SLOP}
-								enabled={!calling}>
+								hitSlop={BUTTON_HIT_SLOP}>
 								<CustomIcon name={cam ? 'camera-filled' : 'camera-disabled'} size={24} color={handleColors(cam).icon} />
 							</Touch>
 						</A11y.Index>
@@ -63,8 +62,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 								accessibilityLabel={mic ? I18n.t('Turn_mic_off') : I18n.t('Turn_mic_on')}
 								onPress={() => setMic(!mic)}
 								style={[style.iconCallContainer, { backgroundColor: handleColors(mic).button }]}
-								hitSlop={BUTTON_HIT_SLOP}
-								enabled={!calling}>
+								hitSlop={BUTTON_HIT_SLOP}>
 								<CustomIcon name={mic ? 'mic' : 'mic-off'} size={24} color={handleColors(mic).icon} />
 							</Touch>
 						</A11y.Index>
