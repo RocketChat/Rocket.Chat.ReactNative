@@ -6,8 +6,8 @@ import { isRead } from '~/lib/methods/helpers';
 
 jest.mock('../RoomItem', () => {
 	const { Text: MockText } = jest.requireActual('react-native');
-	return ({ name, isRead: read }: { name: string; isRead: boolean }) => (
-		<MockText>{`${name}:${read ? 'read' : 'unread'}`}</MockText>
+	return ({ name, isRead: read, unread }: { name: string; isRead: boolean; unread: number }) => (
+		<MockText>{`${name}:${read ? 'read' : 'unread'}:${unread}`}</MockText>
 	);
 });
 jest.mock('../../ActionSheet', () => ({ useActionSheet: () => ({ showActionSheet: jest.fn() }) }));
@@ -52,14 +52,24 @@ describe('RoomItemContainer', () => {
 	it('reflects in-place record updates after the record emits', () => {
 		const { record, changes } = createRecord();
 		const { getByText } = renderRow(record);
-		expect(getByText('general:unread')).toBeTruthy();
+		expect(getByText('general:unread:3')).toBeTruthy();
 
 		record.alert = false;
 		record.unread = 0;
 		record.fname = 'renamed';
 		act(() => changes.next());
 
-		expect(getByText('renamed:read')).toBeTruthy();
+		expect(getByText('renamed:read:0')).toBeTruthy();
+	});
+
+	it('reflects an unread count change while the row stays unread', () => {
+		const { record, changes } = createRecord();
+		const { getByText } = renderRow(record);
+
+		record.unread = 4;
+		act(() => changes.next());
+
+		expect(getByText('general:unread:4')).toBeTruthy();
 	});
 
 	it('unsubscribes from the record on unmount', () => {

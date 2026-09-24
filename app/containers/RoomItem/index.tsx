@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect, useReducer } from 'react';
 import { AccessibilityInfo } from 'react-native';
 
 import { useActionSheet } from '../ActionSheet';
@@ -10,7 +10,6 @@ import RoomItem from './RoomItem';
 import { getRoomActionsOptions } from './getRoomActionsOptions';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
-import { useRecordValue } from './useRecordValue';
 
 const RoomItemContainer = memo(
 	({
@@ -31,13 +30,19 @@ const RoomItemContainer = memo(
 		getIsRead = () => false,
 		swipeEnabled = true
 	}: IRoomItemContainerProps) => {
+		'use no memo';
+		const [, forceUpdate] = useReducer((version: number) => version + 1, 0);
+		useEffect(() => {
+			const subscription = item.observe?.().subscribe(forceUpdate);
+			return () => subscription?.unsubscribe();
+		}, [item]);
 		const { showActionSheet } = useActionSheet();
 		const serverVersion = useAppSelector(state => state.server.version);
-		const name = useRecordValue(item, getRoomTitle);
+		const name = getRoomTitle(item);
 		const testID = `rooms-list-view-item-${name}`;
-		const avatar = useRecordValue(item, getRoomAvatar);
-		const isRead = useRecordValue(item, getIsRead);
-		const isInvited = useRecordValue(item, isInviteSubscription);
+		const avatar = getRoomAvatar(item);
+		const isRead = getIsRead(item);
+		const isInvited = isInviteSubscription(item);
 		const date = item.roomUpdatedAt && formatDate(item.roomUpdatedAt);
 		const alert = item.alert || item.tunread?.length;
 		const userId = item.t === 'd' && id && !isGroupChat(item) ? id : null;
