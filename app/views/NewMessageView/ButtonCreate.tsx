@@ -8,6 +8,8 @@ interface IButton {
 	testID: string;
 	title: string;
 	icon: TIconsName;
+	isFirst?: boolean;
+	isLast?: boolean;
 }
 
 const ButtonCreate = ({ onPress, testID, title, icon }: IButton) => {
