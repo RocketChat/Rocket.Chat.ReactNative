@@ -2569,7 +2569,7 @@ PODS:
     - FirebaseCoreExtension
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.32.0):
+  - RNGestureHandler (3.3.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2591,6 +2591,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
+    - RNWorklets (>= 0.8.0)
     - Yoga
   - RNImageCropPicker (0.51.1):
     - hermes-engine
@@ -3604,7 +3605,7 @@ SPEC CHECKSUMS:
   RNFBAnalytics: 2e8b8ffcd2bb3d59a43ecbe09571c73c56edef7a
   RNFBApp: a448037d2df74af9d374a0b765be12ff1e844dc0
   RNFBCrashlytics: c3bb5533f9957eddc88f3ea383583309a4ce9f89
-  RNGestureHandler: 7b07d9192bc65c6883fb37fdecc05dc6b61c814f
+  RNGestureHandler: 85e32defcf23dd3b023356355c5c1dd1d9d51bde
   RNImageCropPicker: 5c9c8bef4c72d3f451b499aa0ecd90a644ea1bbd
   RNKeychain: d57edf101a72acf3ae85fe4d796eed1d951d2a90
   RNLocalize: 17bce0556e2d33fe1201c8cef53b3b7786e07612
