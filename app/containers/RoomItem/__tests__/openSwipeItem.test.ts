@@ -1,11 +1,12 @@
 import { makeMutable } from 'react-native-reanimated';
 
+import { type TRowState } from '../swipeRelease';
 import { registerOpenSwipeItem, unregisterOpenSwipeItem, closeOpenSwipeItem } from '../openSwipeItem';
 
 const createItem = (rid: string) => ({
 	rid,
 	transX: makeMutable(80),
-	rowState: makeMutable(1),
+	rowState: makeMutable<TRowState>(1),
 	rowOffSet: makeMutable(80)
 });
 

@@ -5,6 +5,7 @@ import { fireGestureHandler } from 'react-native-gesture-handler/jest-utils';
 import { makeMutable, useSharedValue } from 'react-native-reanimated';
 
 import Touchable from '../Touchable';
+import { type TRowState } from '../swipeRelease';
 import { registerOpenSwipeItem, unregisterOpenSwipeItem } from '../openSwipeItem';
 import { SubscriptionType } from '~/definitions';
 
@@ -46,7 +47,12 @@ afterEach(() => {
 
 test('a tap after a touch that closed another row without pressing still opens the room', async () => {
 	const { gesture, onPress, pressRow } = setup();
-	registerOpenSwipeItem({ rid: 'roomA', transX: makeMutable(80), rowState: makeMutable(1), rowOffSet: makeMutable(80) });
+	registerOpenSwipeItem({
+		rid: 'roomA',
+		transX: makeMutable(80),
+		rowState: makeMutable<TRowState>(1),
+		rowOffSet: makeMutable(80)
+	});
 	await act(() => fireGestureHandler(gesture, touchWithoutSwipe));
 
 	await act(() => fireGestureHandler(gesture, touchWithoutSwipe));
@@ -57,7 +63,12 @@ test('a tap after a touch that closed another row without pressing still opens t
 
 test('a tap that closed another row does not open the room', async () => {
 	const { gesture, onPress, pressRow } = setup();
-	registerOpenSwipeItem({ rid: 'roomA', transX: makeMutable(80), rowState: makeMutable(1), rowOffSet: makeMutable(80) });
+	registerOpenSwipeItem({
+		rid: 'roomA',
+		transX: makeMutable(80),
+		rowState: makeMutable<TRowState>(1),
+		rowOffSet: makeMutable(80)
+	});
 
 	await act(() => fireGestureHandler(gesture, touchWithoutSwipe));
 	pressRow();

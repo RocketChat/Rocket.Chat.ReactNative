@@ -12,7 +12,7 @@ import Touch from '../Touch';
 import { getOpenWidth, getActionWidth, getFullSwipeThreshold, SWIPE_SPRING_CONFIG } from './styles';
 import { LeftActions, RightActions } from './Actions';
 import { getSwipeRelease, type TRowState } from './swipeRelease';
-import { registerOpenSwipeItem, unregisterOpenSwipeItem, closeOpenSwipeItem } from './openSwipeItem';
+import { registerOpenSwipeItem, unregisterOpenSwipeItem, closeOpenSwipeItem, resetSwipeRow } from './openSwipeItem';
 import { type ITouchableProps } from './interfaces';
 import { useTheme } from '~/theme';
 import I18n from '~/i18n';
@@ -43,7 +43,7 @@ const Touchable = ({
 	const serverVersion = useAppSelector(state => state.server.version);
 	const rowOffSet = useSharedValue(0);
 	const transX = useSharedValue(0);
-	const rowState = useSharedValue(0); // 0: closed, 1: right opened, -1: left opened
+	const rowState = useSharedValue<TRowState>(0);
 	const gestureActive = useSharedValue(false);
 	const consumedTouchRef = useRef(false);
 
@@ -52,9 +52,7 @@ const Touchable = ({
 	};
 
 	const close = () => {
-		rowState.value = 0;
-		transX.value = withSpring(0, SWIPE_SPRING_CONFIG);
-		rowOffSet.value = 0;
+		resetSwipeRow({ transX, rowState, rowOffSet });
 		unregisterOpenSwipeItem(rid);
 	};
 
@@ -65,25 +63,21 @@ const Touchable = ({
 		close();
 	};
 
-	const handleToggleRead = () => {
-		toggleRead(rid, isRead, serverVersion);
-	};
+	const toggleReadRoom = () => toggleRead(rid, isRead, serverVersion);
 
-	const handleHideChannel = () => {
-		hideRoom(rid, type);
-	};
+	const hideChannel = () => hideRoom(rid, type);
 
 	const onToggleReadPress = () => {
-		handleToggleRead();
+		toggleReadRoom();
 		close();
 	};
 
 	const onHidePress = () => {
-		handleHideChannel();
+		hideChannel();
 		close();
 	};
 
-	const handlePress = () => {
+	const guardTouch = (action?: () => void) => () => {
 		if (rowState.value !== 0) {
 			close();
 			return;
@@ -92,42 +86,25 @@ const Touchable = ({
 			consumedTouchRef.current = false;
 			return;
 		}
-		if (onPress) {
-			onPress();
-		}
+		action?.();
 	};
 
-	const handleLongPress = () => {
-		if (rowState.value !== 0) {
-			close();
-			return;
-		}
-		if (consumedTouchRef.current) {
-			consumedTouchRef.current = false;
-			return;
-		}
+	const handlePress = guardTouch(onPress);
 
-		if (onLongPress) {
-			onLongPress();
-		}
-	};
-
-	const handleLeftFullSwipe = () => (I18n.isRTL ? handleHideChannel() : handleToggleRead());
-
-	const handleRightFullSwipe = () => (I18n.isRTL ? handleToggleRead() : handleHideChannel());
+	const handleLongPress = guardTouch(onLongPress);
 
 	const handleRelease = (event: GestureUpdateEvent<PanGestureHandlerEventPayload>) => {
 		const release = getSwipeRelease({
-			rowState: rowState.value as TRowState,
+			rowState: rowState.value,
 			offset: rowOffSet.value + event.translationX,
 			actionWidth: getActionWidth(width),
 			openWidth: getOpenWidth(width),
 			fullSwipeThreshold: getFullSwipeThreshold(width)
 		});
-		if (release.fullSwipe === 'left') {
-			handleLeftFullSwipe();
-		} else if (release.fullSwipe === 'right') {
-			handleRightFullSwipe();
+		if (release.fullSwipe === (I18n.isRTL ? 'left' : 'right')) {
+			hideChannel();
+		} else if (release.fullSwipe) {
+			toggleReadRoom();
 		}
 		rowState.value = release.rowState;
 		transX.value = withSpring(release.toValue, { ...SWIPE_SPRING_CONFIG, velocity: event.velocityX });
