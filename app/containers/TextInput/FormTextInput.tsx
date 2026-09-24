@@ -9,6 +9,7 @@ import {
 	View,
 	type ViewStyle
 } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { A11y } from 'react-native-a11y-order';
 
 import i18n from '~/i18n';
@@ -256,9 +257,9 @@ export const FormTextInput = ({
 					{showErrorMessage && inputError ? (
 						<View accessible={false} style={styles.errorContainer}>
 							<CustomIcon accessible={false} name='warning' size={16} color={colors.fontDanger} />
-							<Text accessible={false} style={{ ...styles.error, color: colors.fontDanger }}>
+							<PlainText accessible={false} style={{ ...styles.error, color: colors.fontDanger }}>
 								{inputError}
-							</Text>
+							</PlainText>
 						</View>
 					) : null}
 				</View>

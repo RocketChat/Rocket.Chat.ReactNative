@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Touch from '~/containers/Touch';
@@ -26,11 +27,11 @@ export const FooterAction = ({
 
 	return (
 		<View style={[styles.joinRoomContainer, { paddingBottom: bottom }]} testID={testID}>
-			<Text style={[styles.previewMode, { color: colors.fontTitlesLabels }]}>{title}</Text>
+			<PlainText style={[styles.previewMode, { color: colors.fontTitlesLabels }]}>{title}</PlainText>
 			<Touch onPress={onPress} style={[styles.joinRoomButton, { backgroundColor: colors.fontHint }]} disabled={loading}>
-				<Text style={[styles.joinRoomText, { color: colors.fontWhite }]} testID={buttonTestID}>
+				<PlainText style={[styles.joinRoomText, { color: colors.fontWhite }]} testID={buttonTestID}>
 					{buttonLabel}
-				</Text>
+				</PlainText>
 			</Touch>
 		</View>
 	);

@@ -1,4 +1,5 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { type ReactElement } from 'react';
 
 import I18n from '~/i18n';
@@ -15,7 +16,7 @@ const Roles = ({ roles }: { roles?: string[] }) => {
 	if (roles?.length) {
 		return (
 			<View style={styles.item} testID='user-roles'>
-				<Text style={[styles.itemLabel, { color: colors.fontTitlesLabels }]}>{I18n.t('Roles')}</Text>
+				<PlainText style={[styles.itemLabel, { color: colors.fontTitlesLabels }]}>{I18n.t('Roles')}</PlainText>
 				<RoomInfoTagContainer>
 					{roles.map(role =>
 						role ? <RoomInfoTag name={role} key={role} testID={`user-role-${role.replace(/ /g, '-')}`} /> : null

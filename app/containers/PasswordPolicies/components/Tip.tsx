@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import { useTheme } from '~/theme';
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
@@ -42,7 +43,7 @@ const Tip = ({ iconType, description }: ITipProps) => {
 	return (
 		<View accessible accessibilityLabel={`${accessibilityLabel}${description}`} style={styles.container}>
 			<CustomIcon color={color} name={icon} size={16} />
-			<Text style={{ ...styles.text, color }}>{description}</Text>
+			<PlainText style={{ ...styles.text, color }}>{description}</PlainText>
 		</View>
 	);
 };

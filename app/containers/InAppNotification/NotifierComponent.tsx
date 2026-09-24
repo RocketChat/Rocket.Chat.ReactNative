@@ -1,5 +1,6 @@
 import { memo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Avatar from '../Avatar';
@@ -115,12 +116,12 @@ const NotifierComponent = memo(({ notification, isMasterDetail }: INotifierCompo
 				testID={`in-app-notification-${text}`}>
 				<Avatar text={avatar} size={AVATAR_SIZE} type={type} rid={rid} style={styles.avatar} />
 				<View style={styles.inner}>
-					<Text style={[styles.roomName, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+					<PlainText style={[styles.roomName, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 						{title}
-					</Text>
-					<Text style={[styles.message, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+					</PlainText>
+					<PlainText style={[styles.message, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 						{text}
-					</Text>
+					</PlainText>
 				</View>
 			</Touch>
 			<Touch onPress={hideNotification} hitSlop={BUTTON_HIT_SLOP}>

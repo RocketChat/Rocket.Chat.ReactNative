@@ -1,4 +1,5 @@
-import { FlatList, Text, View, RefreshControl } from 'react-native';
+import { FlatList, View, RefreshControl } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { dequal } from 'dequal';
 import { connect } from 'react-redux';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -108,7 +109,7 @@ class ReadReceiptView extends Component<IReadReceiptViewProps, IReadReceiptViewS
 		}
 		return (
 			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceTint }]} testID='read-receipt-view'>
-				<Text style={[styles.emptyText, { color: themes[theme].fontHint }]}>{I18n.t('No_Read_Receipts')}</Text>
+				<PlainText style={[styles.emptyText, { color: themes[theme].fontHint }]}>{I18n.t('No_Read_Receipts')}</PlainText>
 			</View>
 		);
 	};
@@ -124,16 +125,16 @@ class ReadReceiptView extends Component<IReadReceiptViewProps, IReadReceiptViewS
 				<Avatar text={item.user.username} size={40} />
 				<View style={styles.infoContainer}>
 					<View style={styles.item}>
-						<Text style={[styles.name, { color: themes[theme].fontTitlesLabels }]}>{item?.user?.name}</Text>
-						<Text style={[styles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text>
+						<PlainText style={[styles.name, { color: themes[theme].fontTitlesLabels }]}>{item?.user?.name}</PlainText>
+						<PlainText style={[styles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</PlainText>
 					</View>
-					<Text
+					<PlainText
 						style={[
 							styles.username,
 							{
 								color: themes[theme].fontSecondaryInfo
 							}
-						]}>{`@${item.user.username}`}</Text>
+						]}>{`@${item.user.username}`}</PlainText>
 				</View>
 			</View>
 		);

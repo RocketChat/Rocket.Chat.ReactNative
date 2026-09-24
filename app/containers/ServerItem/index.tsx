@@ -1,5 +1,6 @@
 import { memo } from 'react';
-import { PixelRatio, Text, View } from 'react-native';
+import { PixelRatio, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { Image } from 'expo-image';
 
 import * as List from '../List';
@@ -64,12 +65,12 @@ const ServerItem = memo(({ item, onPress, onDeletePress, hasCheck }: IServerItem
 					<Image source={defaultLogo} style={styles.serverIcon} contentFit='contain' />
 				)}
 				<View style={styles.serverTextContainer}>
-					<Text numberOfLines={1} style={[styles.serverName, { color: colors.fontTitlesLabels }]}>
+					<PlainText numberOfLines={1} style={[styles.serverName, { color: colors.fontTitlesLabels }]}>
 						{item.name || item.id}
-					</Text>
-					<Text numberOfLines={1} style={[styles.serverUrl, { color: colors.fontSecondaryInfo }]}>
+					</PlainText>
+					<PlainText numberOfLines={1} style={[styles.serverUrl, { color: colors.fontSecondaryInfo }]}>
 						{item.id}
-					</Text>
+					</PlainText>
 				</View>
 
 				<List.Icon name={iconName} color={iconColor} />

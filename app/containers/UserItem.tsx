@@ -1,4 +1,5 @@
-import { Pressable, PixelRatio, type StyleProp, StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { Pressable, PixelRatio, type StyleProp, StyleSheet, View, type ViewStyle } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import Avatar from './Avatar';
 import { CustomIcon, type TIconsName } from './CustomIcon';
@@ -70,9 +71,9 @@ const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, i
 			<View style={[styles.container, { height }, style]}>
 				<Avatar text={username} size={30} style={styles.avatar} />
 				<View style={styles.textContainer}>
-					<Text style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
+					<PlainText style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
 						{name}
-					</Text>
+					</PlainText>
 				</View>
 				{icon ? <CustomIcon name={icon} size={22} color={iconColor || colors.fontHint} style={styles.icon} /> : null}
 			</View>

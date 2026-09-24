@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, type SwitchProps } from 'react-native';
+import { StyleSheet, View, type SwitchProps } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
@@ -41,10 +42,10 @@ export const SwitchItem = ({ id, value, label, hint, onValueChange, disabled = f
 	return (
 		<View style={[styles.switchContainer, { backgroundColor: colors.surfaceTint }]}>
 			<View accessible accessibilityLabel={`${I18n.t(label)}, ${I18n.t(hint)}`} style={styles.switchTextContainer}>
-				<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t(label)}</Text>
-				<Text testID={`create-channel-${id}-hint`} style={[styles.hint, { color: colors.fontSecondaryInfo }]}>
+				<PlainText style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t(label)}</PlainText>
+				<PlainText testID={`create-channel-${id}-hint`} style={[styles.hint, { color: colors.fontSecondaryInfo }]}>
 					{I18n.t(hint)}
-				</Text>
+				</PlainText>
 			</View>
 			<Switch
 				accessibilityRole='switch'

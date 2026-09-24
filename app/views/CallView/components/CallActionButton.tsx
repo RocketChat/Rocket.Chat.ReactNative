@@ -1,4 +1,5 @@
-import { Text, View, Pressable } from 'react-native';
+import { View, Pressable } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import * as Haptics from 'expo-haptics';
 import { type ReactElement } from 'react';
 
@@ -72,9 +73,9 @@ const CallActionButton = ({
 				testID={testID}>
 				<CustomIcon name={icon} size={32} color={getIconColor()} />
 			</Pressable>
-			<Text numberOfLines={1} style={[styles.actionButtonLabel, { color: colors.fontDefault }]}>
+			<PlainText numberOfLines={1} style={[styles.actionButtonLabel, { color: colors.fontDefault }]}>
 				{label}
-			</Text>
+			</PlainText>
 		</View>
 	);
 };

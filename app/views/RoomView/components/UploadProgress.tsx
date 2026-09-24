@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { Q } from '@nozbe/watermelondb';
 import { type Observable, type Subscription } from 'rxjs';
 import { A11y } from 'react-native-a11y-order';
@@ -217,9 +218,9 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 							</Text>
 							<A11y.Index index={2}>
 								<TouchableOpacity onPress={() => this.tryAgain(item)}>
-									<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
+									<PlainText style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
 										{I18n.t('Try_again')}
-									</Text>
+									</PlainText>
 								</TouchableOpacity>
 							</A11y.Index>
 						</View>

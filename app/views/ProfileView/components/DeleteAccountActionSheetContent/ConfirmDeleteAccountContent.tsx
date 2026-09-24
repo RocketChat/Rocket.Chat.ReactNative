@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { useDispatch } from 'react-redux';
 import { type ReactElement } from 'react';
 
@@ -71,11 +72,13 @@ const ConfirmDeleteAccountContent = ({
 		<View style={sharedStyles.containerScrollView} testID='action-sheet-content-with-input-and-submit'>
 			<View accessible accessibilityLabel={i18n.t('Are_you_sure_question_mark')} style={styles.titleContainer}>
 				<CustomIcon name={'warning'} size={32} color={colors.buttonBackgroundDangerDefault} />
-				<Text style={[styles.titleContainerText, { color: colors.fontDefault }]}>{i18n.t('Are_you_sure_question_mark')}</Text>
+				<PlainText style={[styles.titleContainerText, { color: colors.fontDefault }]}>
+					{i18n.t('Are_you_sure_question_mark')}
+				</PlainText>
 			</View>
-			<Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>
+			<PlainText style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>
 				{i18n.t('Deleting_a_user_will_delete_all_messages')}
-			</Text>
+			</PlainText>
 			{changeOwnerRooms ? <AlertText text={changeOwnerRooms} style={styles.changeOwnerRoomsAlert} /> : null}
 			{removedRooms ? <AlertText text={removedRooms} style={styles.removedRoomsAlert} /> : null}
 

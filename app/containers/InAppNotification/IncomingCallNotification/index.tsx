@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, memo, type ReactElement } from 'react';
-import { AccessibilityInfo, findNodeHandle, Text, View } from 'react-native';
+import { AccessibilityInfo, findNodeHandle, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { A11y } from 'react-native-a11y-order';
@@ -106,7 +107,7 @@ const IncomingCallHeader = memo(
 									}}
 									style={styles.cancelButton}
 									rectButtonStyle={styles.buttonContainer}>
-									<Text style={styles.buttonText}>{i18n.t('decline')}</Text>
+									<PlainText style={styles.buttonText}>{i18n.t('decline')}</PlainText>
 								</Touch>
 							</A11y.Index>
 							<A11y.Index index={5} style={styles.buttonWrapper}>
@@ -119,7 +120,7 @@ const IncomingCallHeader = memo(
 									}}
 									style={styles.acceptButton}
 									rectButtonStyle={styles.buttonContainer}>
-									<Text style={styles.buttonText}>{i18n.t('accept')}</Text>
+									<PlainText style={styles.buttonText}>{i18n.t('accept')}</PlainText>
 								</Touch>
 							</A11y.Index>
 						</View>

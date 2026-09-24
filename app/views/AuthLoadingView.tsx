@@ -1,5 +1,6 @@
 import { memo, type ReactElement } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import I18n from '../i18n';
 import { useTheme } from '../theme';
@@ -28,7 +29,7 @@ const AuthLoadingView = memo((): ReactElement => {
 			{text ? (
 				<>
 					<ActivityIndicator color={colors.fontSecondaryInfo} size='large' />
-					<Text style={[styles.text, { color: colors.fontDefault }]}>{`${text}\n${I18n.t('Please_wait')}`}</Text>
+					<PlainText style={[styles.text, { color: colors.fontDefault }]}>{`${text}\n${I18n.t('Please_wait')}`}</PlainText>
 				</>
 			) : null}
 		</View>

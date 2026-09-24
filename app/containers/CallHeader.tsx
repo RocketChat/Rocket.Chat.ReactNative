@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { A11y } from 'react-native-a11y-order';
 
 import { useAppSelector } from '../lib/hooks/useAppSelector';
@@ -44,7 +45,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 			<View>
 				<View style={style.actionSheetHeader}>
 					<View style={style.rowContainer}>
-						<Text style={style.actionSheetHeaderTitle}>{title}</Text>
+						<PlainText style={style.actionSheetHeaderTitle}>{title}</PlainText>
 						{calling && direct ? <DotsLoader /> : null}
 					</View>
 					<View style={style.actionSheetHeaderButtons}>
@@ -73,9 +74,9 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 				<View style={style.actionSheetUsernameContainer}>
 					<AvatarContainer text={avatar} size={36} />
 					{direct ? <StatusContainer size={16} id={uid} style={style.statusContainerMargin} /> : null}
-					<Text style={{ ...style.actionSheetUsername, marginLeft: !direct ? 8 : 0 }} numberOfLines={1}>
+					<PlainText style={{ ...style.actionSheetUsername, marginLeft: !direct ? 8 : 0 }} numberOfLines={1}>
 						{name}
-					</Text>
+					</PlainText>
 				</View>
 			</View>
 		</A11y.Order>

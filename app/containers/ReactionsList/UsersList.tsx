@@ -1,5 +1,6 @@
 import { memo, type ReactElement } from 'react';
-import { Text, View, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { useSelector } from 'react-redux';
 
 import { useTheme } from '~/theme';
@@ -22,18 +23,18 @@ const UsersList = ({ emoji, usernames, names }: { emoji: string; usernames: stri
 			contentContainerStyle={styles.listContainer}
 			ListHeaderComponent={
 				<View style={styles.emojiNameContainer}>
-					<Text style={[styles.emojiName, { color: colors.fontSecondaryInfo }]} testID='usersListEmojiName'>
+					<PlainText style={[styles.emojiName, { color: colors.fontSecondaryInfo }]} testID='usersListEmojiName'>
 						{emoji}
-					</Text>
+					</PlainText>
 				</View>
 			}
 			renderItem={({ item }) => (
 				<View style={styles.listItemContainer} testID='userItem'>
 					<Avatar text={item.username} size={36} />
 					<View style={styles.textContainer}>
-						<Text style={[styles.usernameText, { color: colors.fontDefault }]} numberOfLines={1}>
+						<PlainText style={[styles.usernameText, { color: colors.fontDefault }]} numberOfLines={1}>
 							{useRealName && item.name ? item.name : item.username}
-						</Text>
+						</PlainText>
 					</View>
 				</View>
 			)}

@@ -1,5 +1,5 @@
 import { type ReactElement } from 'react';
-import { Text } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import i18n from '~/i18n';
 import { videoConfJoin } from '~/lib/methods/videoConf';
@@ -14,7 +14,7 @@ export default function VideoConferenceOutgoing({ users, blockId }: { users: TCa
 	return (
 		<VideoConferenceBaseContainer variant='outgoing'>
 			<Touch style={style.callToActionButton} onPress={() => videoConfJoin(blockId)}>
-				<Text style={style.callToActionButtonText}>{i18n.t('Join')}</Text>
+				<PlainText style={style.callToActionButtonText}>{i18n.t('Join')}</PlainText>
 			</Touch>
 			<CallParticipants users={users} />
 		</VideoConferenceBaseContainer>

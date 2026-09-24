@@ -1,4 +1,5 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import type { ReactNode } from 'react';
 
 import { useTheme } from '~/theme';
@@ -12,7 +13,7 @@ export const RoomInfoTag = ({ name, icon, testID }: { name: string; icon?: TIcon
 	return (
 		<View style={[styles.roleBadge, { backgroundColor: colors.surfaceSelected }]} testID={testID}>
 			{icon ? <CustomIcon name={icon} size={16} /> : null}
-			<Text style={[styles.role, { color: colors.buttonFontSecondary }]}>{name}</Text>
+			<PlainText style={[styles.role, { color: colors.buttonFontSecondary }]}>{name}</PlainText>
 		</View>
 	);
 };

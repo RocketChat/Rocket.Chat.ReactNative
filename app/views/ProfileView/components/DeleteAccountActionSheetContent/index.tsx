@@ -1,4 +1,5 @@
-import { AccessibilityInfo, Keyboard, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, Keyboard, StyleSheet, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { sha256 } from 'js-sha256';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -96,13 +97,13 @@ const DeleteAccountActionSheetContent = (): ReactElement => {
 		<View style={sharedStyles.containerScrollView} testID='action-sheet-content-with-input-and-submit'>
 			<View accessible accessibilityLabel={i18n.t('Are_you_sure_you_want_to_delete_your_account')} style={styles.titleContainer}>
 				<CustomIcon name={'warning'} size={32} color={colors.buttonBackgroundDangerDefault} />
-				<Text style={[styles.titleContainerText, { color: colors.fontDefault }]}>
+				<PlainText style={[styles.titleContainerText, { color: colors.fontDefault }]}>
 					{i18n.t('Are_you_sure_you_want_to_delete_your_account')}
-				</Text>
+				</PlainText>
 			</View>
-			<Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>
+			<PlainText style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>
 				{i18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
-			</Text>
+			</PlainText>
 
 			<ControlledFormTextInput
 				control={control}

@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { type ReactElement } from 'react';
 
 import { useTheme } from '~/theme';
@@ -82,10 +83,10 @@ const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} />
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
-						<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+						<PlainText style={[styles.title, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 							{username}
-						</Text>
-						<Text style={[styles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text>
+						</PlainText>
+						<PlainText style={[styles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</PlainText>
 					</View>
 					<View style={styles.messageContainer}>
 						<MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={styles.markdown} />

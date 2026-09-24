@@ -1,5 +1,6 @@
 import { useLayoutEffect, type ReactElement } from 'react';
-import { View, Text, Linking } from 'react-native';
+import { View, Linking } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import { useTheme } from '~/theme';
 import { CustomIcon } from '../CustomIcon';
@@ -36,19 +37,19 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 				<CustomIcon name='warning' size={36} color={colors.buttonBackgroundDangerDefault} />
 			</View>
 			{message.title ? (
-				<Text testID='sv-warn-title' style={[styles.title, { color: colors.fontTitlesLabels }]}>
+				<PlainText testID='sv-warn-title' style={[styles.title, { color: colors.fontTitlesLabels }]}>
 					{message.title}
-				</Text>
+				</PlainText>
 			) : null}
 			{message.subtitle ? (
-				<Text testID='sv-warn-subtitle' style={[styles.subtitle, { color: colors.fontDefault }]}>
+				<PlainText testID='sv-warn-subtitle' style={[styles.subtitle, { color: colors.fontDefault }]}>
 					{message.subtitle}
-				</Text>
+				</PlainText>
 			) : null}
 			{message.description ? (
-				<Text testID='sv-warn-description' style={[styles.description, { color: colors.fontDefault }]}>
+				<PlainText testID='sv-warn-description' style={[styles.description, { color: colors.fontDefault }]}>
 					{message.description}
-				</Text>
+				</PlainText>
 			) : null}
 			<Button
 				testID='sv-warn-button'

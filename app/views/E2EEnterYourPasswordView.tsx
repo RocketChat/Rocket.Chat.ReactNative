@@ -1,6 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback, useEffect, useLayoutEffect, useRef, type ReactElement } from 'react';
-import { ScrollView, StyleSheet, Text, AccessibilityInfo, View } from 'react-native';
+import { ScrollView, StyleSheet, AccessibilityInfo, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -128,7 +129,7 @@ const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): Re
 				style={sharedStyles.container}
 				contentContainerStyle={{ ...sharedStyles.containerScrollView }}>
 				<SafeAreaView style={{ ...styles.content, backgroundColor: colors.surfaceRoom }} testID='e2e-enter-your-password-view'>
-					<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Enter_E2EE_Password_description')}</Text>
+					<PlainText style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Enter_E2EE_Password_description')}</PlainText>
 
 					<ControlledFormTextInput
 						name='password'

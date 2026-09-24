@@ -1,5 +1,6 @@
 import { memo, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import I18n from '~/i18n';
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
@@ -107,9 +108,9 @@ const Header = memo(({ room, thread }: IHeader) => {
 					</Text>
 				</Text>
 				<CustomIcon name={icon} size={16} color={textColor} />
-				<Text style={[styles.name, { color: textColor }]} numberOfLines={1}>
+				<PlainText style={[styles.name, { color: textColor }]} numberOfLines={1}>
 					{title}
-				</Text>
+				</PlainText>
 			</View>
 		</View>
 	);

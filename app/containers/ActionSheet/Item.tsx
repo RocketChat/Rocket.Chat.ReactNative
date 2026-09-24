@@ -1,5 +1,6 @@
 import { memo } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '~/theme';
@@ -49,15 +50,15 @@ export const Item = memo(({ item, hide }: IActionSheetItem) => {
 				testID={item.testID}>
 				{item.icon ? <CustomIcon name={item.icon} size={24} color={color} /> : null}
 				<View style={styles.titleContainer}>
-					<Text numberOfLines={1} style={[styles.title, { color, marginLeft: item.icon ? 16 : 0 }]}>
+					<PlainText numberOfLines={1} style={[styles.title, { color, marginLeft: item.icon ? 16 : 0 }]}>
 						{item.title}
-					</Text>
+					</PlainText>
 					{item?.subtitle ? (
-						<Text
+						<PlainText
 							numberOfLines={1}
 							style={[styles.subtitle, { color: colors.fontSecondaryInfo, marginLeft: item.icon ? 16 : 0 }]}>
 							{item.subtitle}
-						</Text>
+						</PlainText>
 					) : null}
 				</View>
 				{item.right ? <View style={styles.rightContainer}>{item.right ? item.right() : null}</View> : null}

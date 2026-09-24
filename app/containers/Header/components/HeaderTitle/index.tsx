@@ -1,5 +1,6 @@
 import { memo, type ReactNode } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import { isAndroid } from '~/lib/methods/helpers';
 import { useTheme } from '~/theme';
@@ -18,26 +19,26 @@ const HeaderTitle = memo(({ headerTitle }: IHeaderTitle) => {
 	if (typeof headerTitle === 'string') {
 		if (isAndroid) {
 			return (
-				<Text
+				<PlainText
 					numberOfLines={1}
 					style={{
 						...styles.androidTitle,
 						color: colors.fontTitlesLabels
 					}}>
 					{headerTitle}
-				</Text>
+				</PlainText>
 			);
 		}
 		return (
 			<View style={styles.headerTitleContainer}>
-				<Text
+				<PlainText
 					numberOfLines={1}
 					style={{
 						...styles.title,
 						color: colors.fontTitlesLabels
 					}}>
 					{headerTitle}
-				</Text>
+				</PlainText>
 			</View>
 		);
 	}

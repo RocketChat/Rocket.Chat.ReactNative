@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import I18n from '~/i18n';
 import { formatLongDate } from '~/lib/dayjs';
@@ -33,9 +34,9 @@ const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: 
 	if (ts && unread) {
 		return (
 			<View style={separatorStyles.container}>
-				<Text style={[styles.text, unreadText]}>{I18n.t('unread_messages')}</Text>
+				<PlainText style={[styles.text, unreadText]}>{I18n.t('unread_messages')}</PlainText>
 				<View style={[separatorStyles.line, unreadLine, styles.marginHorizontal]} />
-				<Text style={[styles.text, unreadText]}>{formatLongDate(ts)}</Text>
+				<PlainText style={[styles.text, unreadText]}>{formatLongDate(ts)}</PlainText>
 			</View>
 		);
 	}
@@ -44,7 +45,7 @@ const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: 
 	}
 	return (
 		<View style={separatorStyles.container}>
-			<Text style={[styles.text, unreadText, styles.marginRight]}>{I18n.t('unread_messages')}</Text>
+			<PlainText style={[styles.text, unreadText, styles.marginRight]}>{I18n.t('unread_messages')}</PlainText>
 			<View style={[separatorStyles.line, unreadLine]} />
 		</View>
 	);

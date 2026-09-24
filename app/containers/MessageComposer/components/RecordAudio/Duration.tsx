@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { type FontVariant, Text } from 'react-native';
+import { type FontVariant } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { useAudioRecorderState, type AudioRecorder } from 'expo-audio';
 
 import sharedStyles from '~/views/Styles';
@@ -17,7 +18,7 @@ export const Duration = ({ audioRecorder }: { audioRecorder: AudioRecorder }) =>
 		setDuration(nextDuration);
 	}
 
-	return <Text style={styles.text}>{duration}</Text>;
+	return <PlainText style={styles.text}>{duration}</PlainText>;
 };
 
 function useStyle() {

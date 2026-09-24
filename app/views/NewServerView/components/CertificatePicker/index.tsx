@@ -1,4 +1,5 @@
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import I18n from '~/i18n';
 import { type TCertificatePicker } from '~/views/NewServerView/definitions';
@@ -35,9 +36,9 @@ const CertificatePicker = ({ connecting, certificate, chooseCertificate, handleR
 
 	return (
 		<View style={styles.container}>
-			<Text style={[styles.buttonPrompt, { color: colors.fontSecondaryInfo }]}>
+			<PlainText style={[styles.buttonPrompt, { color: colors.fontSecondaryInfo }]}>
 				{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
-			</Text>
+			</PlainText>
 			<Button
 				onPress={certificate ? handleRemove : chooseCertificate}
 				testID='new-server-choose-certificate'

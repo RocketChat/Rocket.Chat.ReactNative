@@ -1,4 +1,5 @@
 import { View, StyleSheet, Text, type ViewStyle } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import sharedStyles from '../views/Styles';
 import { useTheme } from '../theme';
@@ -38,7 +39,9 @@ const UGCRules = ({ styleContainer }: { styleContainer?: ViewStyle }) => {
 	};
 	return (
 		<View style={[styles.bottomContainer, styleContainer]}>
-			<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Onboarding_agree_terms')}</Text>
+			<PlainText style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>
+				{I18n.t('Onboarding_agree_terms')}
+			</PlainText>
 			<Text
 				style={[styles.bottomContainerTextUnderline, styles.bottomContainerText, { color: colors.fontInfo }]}
 				onPress={() => openContract('terms-of-service')}>

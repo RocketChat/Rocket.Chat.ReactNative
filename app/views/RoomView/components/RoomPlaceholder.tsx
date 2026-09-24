@@ -1,5 +1,6 @@
 import { type ReactElement, type ReactNode } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import { useTheme } from '~/theme';
@@ -58,8 +59,10 @@ export const RoomPlaceholder = ({ icon, title, description, detail, testID, chil
 					<View style={[styles.icon, { backgroundColor: colors.surfaceNeutral }]}>
 						<CustomIcon name={icon} size={42} color={colors.fontSecondaryInfo} />
 					</View>
-					<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{title}</Text>
-					<Text style={[styles.description, { color: colors.fontDefault }, !detail && styles.gapBottom]}>{description}</Text>
+					<PlainText style={[styles.title, { color: colors.fontTitlesLabels }]}>{title}</PlainText>
+					<PlainText style={[styles.description, { color: colors.fontDefault }, !detail && styles.gapBottom]}>
+						{description}
+					</PlainText>
 					{detail ? <View style={styles.gapBottom}>{detail}</View> : null}
 				</View>
 				{children}

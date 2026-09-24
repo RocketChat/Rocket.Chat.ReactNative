@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { AccessibilityInfo, BackHandler, Keyboard, Text } from 'react-native';
+import { AccessibilityInfo, BackHandler, Keyboard } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { useDispatch } from 'react-redux';
 import { Image } from 'expo-image';
 import { useForm } from 'react-hook-form';
@@ -157,13 +158,13 @@ const NewServerView = () => {
 					source={require('~/static/images/logo_with_name.png')}
 					contentFit='contain'
 				/>
-				<Text
+				<PlainText
 					style={{
 						...styles.title,
 						color: colors.fontTitlesLabels
 					}}>
 					{I18n.t('Add_server')}
-				</Text>
+				</PlainText>
 				<ServerInput
 					error={errors.workspaceUrl?.message}
 					control={control}

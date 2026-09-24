@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -145,7 +146,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		<KeyboardView style={styles.container} backgroundColor={colors.surfaceTint}>
 			<SafeAreaView testID='create-discussion-view' style={{ backgroundColor: colors.surfaceTint }}>
 				<ScrollView {...scrollPersistTaps}>
-					<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Discussion_Desc')}</Text>
+					<PlainText style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Discussion_Desc')}</PlainText>
 					<View style={styles.form}>
 						<SelectChannel
 							server={server}

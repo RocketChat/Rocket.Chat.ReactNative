@@ -1,4 +1,5 @@
-import { Pressable, StyleSheet, View, Text, type StyleProp, type ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import { useTheme } from '~/theme';
 import { CustomIcon } from '../CustomIcon';
@@ -63,9 +64,9 @@ const Chip = ({ avatar, text, onPress, testID, style, fullWidth }: IChip) => {
 			<View style={styles.container}>
 				{avatar ? <Avatar text={avatar} size={28} style={styles.avatar} /> : null}
 				<View style={[styles.textContainer, fullWidth && { maxWidth: undefined }]}>
-					<Text style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
+					<PlainText style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
 						{text}
-					</Text>
+					</PlainText>
 				</View>
 				{onPress ? <CustomIcon name='close' size={16} /> : null}
 			</View>

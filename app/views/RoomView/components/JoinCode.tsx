@@ -1,5 +1,6 @@
 import { memo, useImperativeHandle, useState } from 'react';
-import { InteractionManager, StyleSheet, Text, type TextInput, View } from 'react-native';
+import { InteractionManager, StyleSheet, type TextInput, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import Modal from 'react-native-modal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -74,7 +75,7 @@ const JoinCode = memo(({ rid, t, onJoin, ref }: IJoinCodeProps) => {
 						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
 						{ backgroundColor: colors.surfaceRoom }
 					]}>
-					<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('Insert_Join_Code')}</Text>
+					<PlainText style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('Insert_Join_Code')}</PlainText>
 					<FormTextInput
 						value={code}
 						inputRef={(e: TextInput | null) => {

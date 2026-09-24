@@ -1,5 +1,6 @@
 import { useLayoutEffect } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp } from '@react-navigation/core';
@@ -80,8 +81,8 @@ const WorkspaceView = () => {
 			<FormContainerInner>
 				<View style={styles.alignItemsCenter}>
 					<ServerAvatar url={server} image={Assets_favicon_512?.url ?? Assets_favicon_512?.defaultUrl} />
-					<Text style={[styles.serverName, { color: colors.fontTitlesLabels }]}>{Site_Name}</Text>
-					<Text style={[styles.serverUrl, { color: colors.fontSecondaryInfo }]}>{Site_Url}</Text>
+					<PlainText style={[styles.serverName, { color: colors.fontTitlesLabels }]}>{Site_Name}</PlainText>
+					<PlainText style={[styles.serverUrl, { color: colors.fontSecondaryInfo }]}>{Site_Url}</PlainText>
 				</View>
 				{showLoginButton ? <Button title={I18n.t('Login')} type='primary' onPress={login} testID='workspace-view-login' /> : null}
 				{showRegistrationButton ? (

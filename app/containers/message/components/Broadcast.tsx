@@ -1,4 +1,5 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import MessageActionTouchable from './Touchable/MessageActionTouchable';
 import { CustomIcon } from '~/containers/CustomIcon';
@@ -26,7 +27,7 @@ const Broadcast = () => {
 					testID='message-broadcast-reply'>
 					<View style={styles.buttonInnerContainer}>
 						<CustomIcon name='arrow-back' size={20} color={colors.fontWhite} />
-						<Text style={[styles.buttonText, { color: colors.fontWhite }]}>{I18n.t('Reply')}</Text>
+						<PlainText style={[styles.buttonText, { color: colors.fontWhite }]}>{I18n.t('Reply')}</PlainText>
 					</View>
 				</MessageActionTouchable>
 			</View>

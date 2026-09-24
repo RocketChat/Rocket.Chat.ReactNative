@@ -1,5 +1,6 @@
 import { memo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
@@ -30,9 +31,9 @@ const OrSeparator = memo(() => {
 	return (
 		<View importantForAccessibility='no' style={styles.container}>
 			<View style={[styles.line, line]} />
-			<Text accessible={false} style={[styles.text, text]}>
+			<PlainText accessible={false} style={[styles.text, text]}>
 				{I18n.t('OR')}
-			</Text>
+			</PlainText>
 			<View style={[styles.line, line]} />
 		</View>
 	);

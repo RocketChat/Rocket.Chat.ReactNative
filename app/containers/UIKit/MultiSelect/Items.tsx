@@ -1,4 +1,5 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { Image } from 'expo-image';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -44,9 +45,9 @@ const Item = ({ item, selected, onSelect }: IItem) => {
 					{item.imageUrl ? <Image style={styles.itemImage} source={{ uri: item.imageUrl }} /> : null}
 				</View>
 				<View style={styles.flex}>
-					<Text numberOfLines={1} style={{ color: colors.fontTitlesLabels }}>
+					<PlainText numberOfLines={1} style={{ color: colors.fontTitlesLabels }}>
 						{textParser([item.text])}
-					</Text>
+					</PlainText>
 				</View>
 				<View style={styles.flexZ}>
 					<CustomIcon color={iconColor} size={22} name={iconName} />

@@ -1,4 +1,4 @@
-import { Text } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import I18n from '~/i18n';
 import styles from '~/containers/message/styles';
@@ -12,9 +12,9 @@ const IgnoredContent = () => {
 
 	return (
 		<ContentWrapper>
-			<Text style={[styles.textInfo, { color: colors.fontSecondaryInfo }]} testID={`message-ignored-${messageText}`}>
+			<PlainText style={[styles.textInfo, { color: colors.fontSecondaryInfo }]} testID={`message-ignored-${messageText}`}>
 				{I18n.t('Message_Ignored')}
-			</Text>
+			</PlainText>
 		</ContentWrapper>
 	);
 };

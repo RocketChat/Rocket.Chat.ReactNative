@@ -1,5 +1,6 @@
 import { useLayoutEffect, useState } from 'react';
-import { AccessibilityInfo, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, ScrollView, StyleSheet, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -203,7 +204,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 					]}
 					testID='change-password-view-list'
 					{...scrollPersistTaps}>
-					<Text style={{ ...styles.createNewPasswordTitle, color: colors.fontTitlesLabels }}>Create new password</Text>
+					<PlainText style={{ ...styles.createNewPasswordTitle, color: colors.fontTitlesLabels }}>Create new password</PlainText>
 
 					<View style={{ gap: 12 }}>
 						{fromProfileView ? (

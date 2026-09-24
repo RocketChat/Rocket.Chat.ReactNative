@@ -1,4 +1,5 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import { useActionSheet } from './ActionSheet';
 import I18n from '../i18n';
@@ -42,8 +43,8 @@ const AltTextActionSheetContent = ({ altText }: { altText: string }) => {
 
 	return (
 		<View style={styles.altTextContent}>
-			<Text style={[styles.altTextTitle, { color: colors.fontTitlesLabels }]}>{I18n.t('Alt_text')}</Text>
-			<Text style={[styles.altTextBody, { color: colors.fontDefault }]}>{altText}</Text>
+			<PlainText style={[styles.altTextTitle, { color: colors.fontTitlesLabels }]}>{I18n.t('Alt_text')}</PlainText>
+			<PlainText style={[styles.altTextBody, { color: colors.fontDefault }]}>{altText}</PlainText>
 		</View>
 	);
 };
@@ -75,7 +76,7 @@ const AltTextLabel = ({ altText, testID }: TAltTextLabelProps) => {
 			accessibilityRole='button'
 			accessibilityLabel={I18n.t('Alt_text')}
 			style={[styles.container, { backgroundColor: colors.surfaceNeutral }]}>
-			<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Alt')}</Text>
+			<PlainText style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Alt')}</PlainText>
 		</Pressable>
 	);
 };

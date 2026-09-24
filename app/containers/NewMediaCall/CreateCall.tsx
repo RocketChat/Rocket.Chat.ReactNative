@@ -1,4 +1,5 @@
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
@@ -52,9 +53,9 @@ export const CreateCall = () => {
 			testID='new-media-call-button'
 			android_ripple={{ color: colors.buttonBackgroundSuccessPress }}>
 			<CustomIcon name='phone' size={24} color={isCallDisabled ? colors.buttonPrimaryDisabled : colors.fontWhite} />
-			<Text style={[styles.callText, { color: isCallDisabled ? colors.buttonPrimaryDisabled : colors.fontWhite }]}>
+			<PlainText style={[styles.callText, { color: isCallDisabled ? colors.buttonPrimaryDisabled : colors.fontWhite }]}>
 				{I18n.t('Call')}
-			</Text>
+			</PlainText>
 		</Pressable>
 	);
 };

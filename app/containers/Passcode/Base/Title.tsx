@@ -1,5 +1,6 @@
 import { memo } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { Row } from 'react-native-easy-grid';
 
 import styles from './styles';
@@ -15,7 +16,7 @@ const Title = memo(({ text }: IPasscodeTitle) => {
 	return (
 		<Row style={styles.row}>
 			<View style={styles.titleView}>
-				<Text style={[styles.textTitle, { color: colors.fontTitlesLabels }]}>{text}</Text>
+				<PlainText style={[styles.textTitle, { color: colors.fontTitlesLabels }]}>{text}</PlainText>
 			</View>
 		</Row>
 	);

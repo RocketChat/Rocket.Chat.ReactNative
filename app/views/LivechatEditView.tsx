@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp } from '@react-navigation/native';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { connect } from 'react-redux';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
@@ -60,7 +61,7 @@ interface ILivechatEditViewProps {
 }
 
 const Title = ({ title, theme }: ITitle) =>
-	title ? <Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{title}</Text> : null;
+	title ? <PlainText style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{title}</PlainText> : null;
 
 const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewProps) => {
 	const [customFields, setCustomFields] = useState<ICustomFields>({});
@@ -268,7 +269,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 						editable={!!editLivechatRoomCustomFieldsPermission}
 					/>
 
-					<Text style={[styles.label, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Tags')}</Text>
+					<PlainText style={[styles.label, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Tags')}</PlainText>
 					<MultiSelect
 						options={tagOptions}
 						onChange={({ value }: { value: string[] }) => {

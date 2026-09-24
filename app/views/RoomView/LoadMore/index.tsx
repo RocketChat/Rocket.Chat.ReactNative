@@ -1,5 +1,6 @@
 import { memo, type ReactElement, useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { useDispatch } from 'react-redux';
 
 import { MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
@@ -70,7 +71,7 @@ const LoadMore = memo(
 					{loading ? (
 						<ActivityIndicator color={colors.fontSecondaryInfo} />
 					) : (
-						<Text style={[styles.text, { color: colors.fontTitlesLabels }]}>{I18n.t(text)}</Text>
+						<PlainText style={[styles.text, { color: colors.fontTitlesLabels }]}>{I18n.t(text)}</PlainText>
 					)}
 				</Touch>
 			</>

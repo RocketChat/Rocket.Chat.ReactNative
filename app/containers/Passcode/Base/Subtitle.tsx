@@ -1,5 +1,6 @@
 import { memo } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from 'react-native-plain-text';
 import { Row } from 'react-native-easy-grid';
 
 import styles from './styles';
@@ -16,7 +17,7 @@ const Subtitle = memo(({ text }: IPasscodeSubtitle) => {
 	return (
 		<Row style={styles.row}>
 			<View style={styles.subtitleView}>
-				<Text style={[styles.textSubtitle, { color: themes[theme].fontDanger }]}>{text}</Text>
+				<PlainText style={[styles.textSubtitle, { color: themes[theme].fontDanger }]}>{text}</PlainText>
 			</View>
 		</Row>
 	);
