@@ -7,7 +7,7 @@ import { setUser } from '~/actions/login';
 import { addSettings } from '~/actions/settings';
 import { selectServerSuccess } from '~/actions/server';
 import { initStore } from '~/lib/store/auxStore';
-import { type INativeListPicker } from '~/containers/List/NativeListPicker';
+import { type INativeListPicker } from '~/containers/List/native/Picker';
 import StatusView from './index';
 
 const mockNavigationSetOptions = jest.fn();
@@ -55,7 +55,7 @@ jest.mock('~/containers/ActionSheet', () => ({
 }));
 
 const mockPicker = jest.fn();
-jest.mock('~/containers/List/NativeListPicker', () => {
+jest.mock('~/containers/List/native/Picker', () => {
 	const { View } = require('react-native');
 	return {
 		__esModule: true,

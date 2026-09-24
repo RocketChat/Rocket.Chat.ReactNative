@@ -11,7 +11,7 @@ import { type DrawerParamList } from '~/stacks/types';
 import * as List from '~/containers/List';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { NativeListContext } from '~/containers/List/NativeListContext';
+import { NativeListContext } from '~/containers/List/native/context';
 
 const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
 	const { colors } = useTheme();

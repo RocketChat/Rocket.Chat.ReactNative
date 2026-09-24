@@ -1,9 +1,9 @@
 import { Text } from '@expo/ui/swift-ui';
 import { font, foregroundStyle } from '@expo/ui/swift-ui/modifiers';
 
-import { type TIconsName } from '../CustomIcon';
-import { mappedIcons } from '../CustomIcon/mappedIcons';
-import { ICON_SIZE } from './constants';
+import { type TIconsName } from '~/containers/CustomIcon';
+import { mappedIcons } from '~/containers/CustomIcon/mappedIcons';
+import { ICON_SIZE } from '../constants';
 
 interface INativeListIcon {
 	name: TIconsName;

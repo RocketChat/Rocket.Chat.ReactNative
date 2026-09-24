@@ -3,8 +3,8 @@ import { font, foregroundStyle, frame, listRowInsets, pickerStyle, tag, tint } f
 
 import { useTheme } from '~/theme';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { BASE_HEIGHT, PADDING_HORIZONTAL } from './constants';
-import { type INativeListPicker } from './NativeListPicker';
+import { BASE_HEIGHT, PADDING_HORIZONTAL } from '../constants';
+import { type INativeListPicker } from './Picker';
 
 const NativeListPicker = ({ title, testID, options, selection, onSelectionChange }: INativeListPicker) => {
 	const { colors } = useTheme();

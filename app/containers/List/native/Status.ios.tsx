@@ -1,8 +1,8 @@
 import { type TUserStatus } from '~/definitions';
 import { useUserStatusColor } from '~/lib/hooks/useUserStatusColor';
 import { useTheme } from '~/theme';
-import { hasIcon, type TIconsName } from '../CustomIcon';
-import NativeListIcon from './NativeListIcon.ios';
+import { hasIcon, type TIconsName } from '~/containers/CustomIcon';
+import NativeListIcon from './Icon.ios';
 
 const statusIconName = (status: TUserStatus): TIconsName => {
 	const name = `status-${status}`;

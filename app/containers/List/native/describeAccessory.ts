@@ -2,13 +2,13 @@ import { Children, isValidElement, type ReactElement, type ReactNode } from 'rea
 import { Text, View, type SwitchProps } from 'react-native';
 
 import { type TUserStatus } from '~/definitions';
-import { CustomIcon, type TIconsName } from '../CustomIcon';
-import NewWindowIcon from '../NewWindowIcon';
-import Radio from '../Radio';
-import Status from '../Status/Status';
-import Switch from '../Switch';
-import ListCheckbox, { type IListCheckbox } from './ListCheckbox';
-import ListIcon from './ListIcon';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import NewWindowIcon from '~/containers/NewWindowIcon';
+import Radio from '~/containers/Radio';
+import Status from '~/containers/Status/Status';
+import Switch from '~/containers/Switch';
+import ListCheckbox, { type IListCheckbox } from '../ListCheckbox';
+import ListIcon from '../ListIcon';
 
 export type TNativeListAccessory =
 	| { kind: 'icon'; name: TIconsName; color?: string; size?: number }

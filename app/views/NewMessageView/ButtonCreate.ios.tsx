@@ -1,6 +1,6 @@
 import { I18nManager } from 'react-native';
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
-import NativeListIcon from '~/containers/List/NativeListIcon.ios';
+import NativeListIcon from '~/containers/List/native/Icon.ios';
 import NativeListRow from '~/containers/NativeListRow';
 import { PlainSeparator } from '~/containers/NativeListRow/Separator';
 import I18n from '~/i18n';

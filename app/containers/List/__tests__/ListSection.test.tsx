@@ -2,10 +2,10 @@ import { Text } from 'react-native';
 import { render, screen } from '@testing-library/react-native';
 
 import ListSection from '../ListSection';
-import { NativeListContext } from '../NativeListContext';
-import { asNativeListSection, isNativeListRow, isNativeListSection } from '../nativeListRow';
+import { NativeListContext } from '../native/context';
+import { asNativeListSection, isNativeListRow, isNativeListSection } from '../native/rowMarkers';
 
-jest.mock('../NativeListSection', () => {
+jest.mock('../native/Section', () => {
 	const { Text: MockText } = jest.requireActual('react-native');
 	return ({ title }: { title?: string }) => <MockText>{`native section ${title}`}</MockText>;
 });

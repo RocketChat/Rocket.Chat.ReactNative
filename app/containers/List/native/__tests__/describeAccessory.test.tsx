@@ -1,14 +1,14 @@
 import { Text, View } from 'react-native';
 
-import Avatar from '../../Avatar';
-import { CustomIcon } from '../../CustomIcon';
-import NewWindowIcon from '../../NewWindowIcon';
-import Radio from '../../Radio';
-import Status from '../../Status/Status';
-import Switch from '../../Switch';
-import ListCheckbox from '../ListCheckbox';
-import ListIcon from '../ListIcon';
-import { describeNativeListAccessory } from '../describeNativeListAccessory';
+import Avatar from '~/containers/Avatar';
+import { CustomIcon } from '~/containers/CustomIcon';
+import NewWindowIcon from '~/containers/NewWindowIcon';
+import Radio from '~/containers/Radio';
+import Status from '~/containers/Status/Status';
+import Switch from '~/containers/Switch';
+import ListCheckbox from '../../ListCheckbox';
+import ListIcon from '../../ListIcon';
+import { describeNativeListAccessory } from '../describeAccessory';
 
 describe('describeNativeListAccessory', () => {
 	it('has nothing to render for an empty slot', () => {

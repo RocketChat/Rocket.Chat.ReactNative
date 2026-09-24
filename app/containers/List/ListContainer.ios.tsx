@@ -8,9 +8,9 @@ import { useTheme } from '~/theme';
 import ListSection from './ListSection';
 import ListItem from './ListItem';
 import ListRadio from './ListRadio';
-import { isNativeListRow, isNativeListSection } from './nativeListRow';
+import { isNativeListRow, isNativeListSection } from './native/rowMarkers';
 import { flattenListChildren, isListSeparator } from './listChildren';
-import { NativeListContext, NativeListRowRendererContext } from './NativeListContext';
+import { NativeListContext, NativeListRowRendererContext } from './native/context';
 import { ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 
 const styles = StyleSheet.create({

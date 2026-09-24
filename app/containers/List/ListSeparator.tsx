@@ -3,7 +3,7 @@ import { StyleSheet, View, type ViewStyle } from 'react-native';
 
 import { themes } from '~/lib/constants/colors';
 import { useTheme } from '~/theme';
-import { NativeListContext } from './NativeListContext';
+import { NativeListContext } from './native/context';
 
 const styles = StyleSheet.create({
 	separator: {

@@ -16,17 +16,12 @@ import {
 
 import { useTheme } from '~/theme';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import NativeListAccessory from './NativeListAccessory.ios';
-import NativeListIcon from './NativeListIcon.ios';
-import { type IListItem } from './ListItem';
-import { describeNativeListAccessory } from './describeNativeListAccessory';
-import { BASE_HEIGHT, PADDING_HORIZONTAL } from './constants';
-import {
-	nativeListItemAccessibilityLabel,
-	nativeListItemSubtitle,
-	nativeListItemTitle,
-	pressNativeListItem
-} from './nativeListItemProps';
+import NativeListAccessory from './Accessory.ios';
+import NativeListIcon from './Icon.ios';
+import { type IListItem } from '../ListItem';
+import { describeNativeListAccessory } from './describeAccessory';
+import { BASE_HEIGHT, PADDING_HORIZONTAL } from '../constants';
+import { nativeListItemAccessibilityLabel, nativeListItemSubtitle, nativeListItemTitle, pressNativeListItem } from './itemProps';
 
 const CHEVRON = I18nManager.isRTL ? 'chevron-left' : 'chevron-right';
 

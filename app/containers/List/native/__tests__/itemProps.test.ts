@@ -1,7 +1,7 @@
 import EventEmitter from '~/lib/methods/helpers/events';
-import { LISTENER } from '../../Toast';
-import { type IListItem } from '../ListItem';
-import { nativeListItemAccessibilityLabel, nativeListItemTitle, pressNativeListItem } from '../nativeListItemProps';
+import { LISTENER } from '~/containers/Toast';
+import { type IListItem } from '../../ListItem';
+import { nativeListItemAccessibilityLabel, nativeListItemTitle, pressNativeListItem } from '../itemProps';
 
 jest.mock('~/i18n', () => ({ t: (key: string) => `t:${key}` }));
 

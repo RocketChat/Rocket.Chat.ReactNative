@@ -3,7 +3,7 @@ import { type ReactElement } from 'react';
 
 import NewWindowIcon from '~/containers/NewWindowIcon';
 import * as List from '~/containers/List';
-import { asNativeListSection } from '~/containers/List/nativeListRow';
+import { asNativeListSection } from '~/containers/List/native/rowMarkers';
 
 function NotificationDelay(): ReactElement {
 	const openNotificationDocumentation = () => Linking.openURL('https://go.rocket.chat/i/push-notifications');

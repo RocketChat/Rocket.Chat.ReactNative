@@ -1,7 +1,7 @@
 import { type ReactElement, useEffect, useState } from 'react';
 
 import * as List from '~/containers/List';
-import { asNativeListSection } from '~/containers/List/nativeListRow';
+import { asNativeListSection } from '~/containers/List/native/rowMarkers';
 import { useVideoConf } from '~/lib/hooks/useVideoConf';
 import type { TSubscriptionModel } from '~/definitions';
 import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall';

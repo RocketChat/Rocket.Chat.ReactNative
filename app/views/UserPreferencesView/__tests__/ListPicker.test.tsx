@@ -1,11 +1,11 @@
 import { act, render } from '@testing-library/react-native';
 
-import { NativeListContext } from '~/containers/List/NativeListContext';
-import { type INativeListPicker } from '~/containers/List/NativeListPicker';
+import { NativeListContext } from '~/containers/List/native/context';
+import { type INativeListPicker } from '~/containers/List/native/Picker';
 import ListPicker from '../ListPicker';
 
 const mockPicker = jest.fn();
-jest.mock('~/containers/List/NativeListPicker', () => ({
+jest.mock('~/containers/List/native/Picker', () => ({
 	__esModule: true,
 	default: (props: INativeListPicker) => {
 		mockPicker(props);

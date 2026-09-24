@@ -2,8 +2,8 @@ import { useContext, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import Header from './ListHeader';
-import NativeListSection from './NativeListSection';
-import { NativeListContext } from './NativeListContext';
+import NativeListSection from './native/Section';
+import { NativeListContext } from './native/context';
 
 const styles = StyleSheet.create({
 	container: {

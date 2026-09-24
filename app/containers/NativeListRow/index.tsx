@@ -15,7 +15,7 @@ import {
 } from '@expo/ui/swift-ui/modifiers';
 
 import { type TIconsName } from '~/containers/CustomIcon';
-import NativeListIcon from '~/containers/List/NativeListIcon.ios';
+import NativeListIcon from '~/containers/List/native/Icon.ios';
 import { useTheme } from '~/theme';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { CONTENT_SPACING, ROW_HEIGHT, ROW_MARGIN_HORIZONTAL, ROW_PADDING_HORIZONTAL, ROW_RADIUS } from './constants';

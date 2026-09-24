@@ -1,10 +1,10 @@
 import { useContext, type ReactElement, type ReactNode } from 'react';
 import { Section, Text } from '@expo/ui/swift-ui';
 
-import ListInfo from './ListInfo';
-import { flattenListChildren, isListSeparator } from './listChildren';
-import { NativeListRowRendererContext } from './NativeListContext';
-import { translateListText } from './nativeListItemProps';
+import ListInfo from '../ListInfo';
+import { flattenListChildren, isListSeparator } from '../listChildren';
+import { NativeListRowRendererContext } from './context';
+import { translateListText } from './itemProps';
 
 interface IInfoProps {
 	info: string;

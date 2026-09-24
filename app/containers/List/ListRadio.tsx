@@ -6,7 +6,7 @@ import ListItem, { type IListItem } from './ListItem';
 import ListIcon from './ListIcon';
 import { useTheme } from '~/theme';
 import Radio from '../Radio';
-import { NativeListContext } from './NativeListContext';
+import { NativeListContext } from './native/context';
 
 interface IListRadio extends IListItem {
 	value: any;

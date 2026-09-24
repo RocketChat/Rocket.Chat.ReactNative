@@ -3,9 +3,9 @@ import { Image, RNHostView, Text, Toggle } from '@expo/ui/swift-ui';
 import { disabled, font, foregroundStyle, labelsHidden, lineLimit, tint } from '@expo/ui/swift-ui/modifiers';
 
 import { useTheme } from '~/theme';
-import NativeListIcon from './NativeListIcon.ios';
-import NativeListStatus from './NativeListStatus.ios';
-import { type TNativeListAccessory } from './describeNativeListAccessory';
+import NativeListIcon from './Icon.ios';
+import NativeListStatus from './Status.ios';
+import { type TNativeListAccessory } from './describeAccessory';
 
 const NativeListAccessory = ({ accessory }: { accessory: TNativeListAccessory }) => {
 	const { colors } = useTheme();

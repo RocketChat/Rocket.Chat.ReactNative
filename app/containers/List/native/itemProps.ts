@@ -1,7 +1,7 @@
 import I18n from '~/i18n';
 import EventEmitter from '~/lib/methods/helpers/events';
-import { LISTENER } from '../Toast';
-import { type IListItem } from './ListItem';
+import { LISTENER } from '~/containers/Toast';
+import { type IListItem } from '../ListItem';
 
 export const translateListText = (text: string, shouldTranslate = true) => (shouldTranslate ? I18n.t(text) : text);
 

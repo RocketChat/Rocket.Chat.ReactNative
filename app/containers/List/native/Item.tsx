@@ -1,4 +1,4 @@
-import { type IListItem } from './ListItem';
+import { type IListItem } from '../ListItem';
 
 const NativeListItem = (_: { item: IListItem }) => null;
 
