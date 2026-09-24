@@ -11,11 +11,6 @@ type OpenSwipeItem = {
 
 export const openSwipeItem = makeMutable<OpenSwipeItem | null>(null);
 
-export const registerOpenSwipeItem = (item: OpenSwipeItem) => {
-	'worklet';
-	openSwipeItem.value = item;
-};
-
 export const unregisterOpenSwipeItem = (rid: string) => {
 	'worklet';
 	if (openSwipeItem.value?.rid === rid) {
@@ -34,4 +29,10 @@ export const closeOpenSwipeItem = (exceptRid?: string) => {
 		return true;
 	}
 	return false;
+};
+
+export const registerOpenSwipeItem = (item: OpenSwipeItem) => {
+	'worklet';
+	closeOpenSwipeItem(item.rid);
+	openSwipeItem.value = item;
 };

@@ -42,4 +42,14 @@ describe('closeOpenSwipeItem', () => {
 		expect(item.rowState.value).toBe(1);
 		expect(consumed).toBe(false);
 	});
+
+	it('closes the previously open item when another one registers', () => {
+		const previous = createItem('roomA');
+		registerOpenSwipeItem(previous);
+
+		registerOpenSwipeItem(createItem('roomB'));
+
+		expect(previous.rowState.value).toBe(0);
+		expect(previous.transX.value).toBe(0);
+	});
 });
