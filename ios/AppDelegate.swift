@@ -18,6 +18,9 @@ public class AppDelegate: ExpoAppDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+    // Migrate pre-4.73 experimental databases before React Native boots (no db open yet).
+    migrateLegacyExperimentalDatabases()
+
     // IMPORTANT: Initialize MMKV encryption FIRST, before any other initialization
     // This reads existing encryption key or generates a new one for fresh installs
     // Must run before Firebase, Bugsnag, and React Native start
@@ -67,6 +70,23 @@ public class AppDelegate: ExpoAppDelegate {
     watchConnection = WatchConnection(session: WCSession.default)
 
     return result
+  }
+
+  // Rename pre-4.73 `<name>-experimental.db` files to unified names when missing; never overwrites.
+  private func migrateLegacyExperimentalDatabases() {
+    guard let suite = Bundle.main.object(forInfoDictionaryKey: "AppGroupIdentifier") as? String,
+      let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: suite),
+      let files = try? FileManager.default.contentsOfDirectory(at: containerURL, includingPropertiesForKeys: nil)
+    else {
+      return
+    }
+    for file in files {
+      let name = file.lastPathComponent
+      guard name.contains("-experimental.db") else { continue }
+      let target = containerURL.appendingPathComponent(name.replacingOccurrences(of: "-experimental.db", with: ".db"))
+      guard !FileManager.default.fileExists(atPath: target.path) else { continue }
+      try? FileManager.default.moveItem(at: file, to: target)
+    }
   }
 
   // Linking API
