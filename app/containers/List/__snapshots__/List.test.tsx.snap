@@ -1195,7 +1195,7 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
       }
     />
     <ExternalKeyboardView
-      canBeFocused={true}
+      canBeFocused={false}
       enableA11yFocus={false}
       enableContextMenu={false}
       group={false}
@@ -1221,7 +1221,7 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
           {
             "busy": undefined,
             "checked": undefined,
-            "disabled": undefined,
+            "disabled": true,
             "expanded": undefined,
             "selected": undefined,
           }
@@ -4022,7 +4022,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           }
         />
         <ExternalKeyboardView
-          canBeFocused={true}
+          canBeFocused={false}
           enableA11yFocus={false}
           enableContextMenu={false}
           group={false}
@@ -4048,7 +4048,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": undefined,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -4661,7 +4661,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           }
         />
         <ExternalKeyboardView
-          canBeFocused={true}
+          canBeFocused={false}
           enableA11yFocus={false}
           enableContextMenu={false}
           group={false}
@@ -4687,7 +4687,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": undefined,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -5347,7 +5347,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           }
         />
         <ExternalKeyboardView
-          canBeFocused={true}
+          canBeFocused={false}
           enableA11yFocus={false}
           enableContextMenu={false}
           group={false}
@@ -5373,7 +5373,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": undefined,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -5986,7 +5986,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           }
         />
         <ExternalKeyboardView
-          canBeFocused={true}
+          canBeFocused={false}
           enableA11yFocus={false}
           enableContextMenu={false}
           group={false}
@@ -6012,7 +6012,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": undefined,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -6953,7 +6953,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           }
         />
         <ExternalKeyboardView
-          canBeFocused={true}
+          canBeFocused={false}
           enableA11yFocus={false}
           enableContextMenu={false}
           group={false}
@@ -6979,7 +6979,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": undefined,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -7592,7 +7592,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           }
         />
         <ExternalKeyboardView
-          canBeFocused={true}
+          canBeFocused={false}
           enableA11yFocus={false}
           enableContextMenu={false}
           group={false}
@@ -7618,7 +7618,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": undefined,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -9946,7 +9946,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           }
         />
         <ExternalKeyboardView
-          canBeFocused={true}
+          canBeFocused={false}
           enableA11yFocus={false}
           enableContextMenu={false}
           group={false}
@@ -9972,7 +9972,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": undefined,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -10585,7 +10585,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           }
         />
         <ExternalKeyboardView
-          canBeFocused={true}
+          canBeFocused={false}
           enableA11yFocus={false}
           enableContextMenu={false}
           group={false}
@@ -10611,7 +10611,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": undefined,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }

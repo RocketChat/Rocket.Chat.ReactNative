@@ -319,7 +319,7 @@ exports[`Story Snapshots: Disabled should match snapshot 1`] = `
       }
     />
     <ExternalKeyboardView
-      canBeFocused={true}
+      canBeFocused={false}
       enableA11yFocus={false}
       enableContextMenu={false}
       group={false}
@@ -345,7 +345,7 @@ exports[`Story Snapshots: Disabled should match snapshot 1`] = `
           {
             "busy": undefined,
             "checked": undefined,
-            "disabled": undefined,
+            "disabled": true,
             "expanded": undefined,
             "selected": undefined,
           }
