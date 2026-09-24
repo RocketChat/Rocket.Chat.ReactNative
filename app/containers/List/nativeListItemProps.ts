@@ -3,13 +3,13 @@ import EventEmitter from '~/lib/methods/helpers/events';
 import { LISTENER } from '../Toast';
 import { type IListItem } from './ListItem';
 
-const translate = (text: string, shouldTranslate = true) => (shouldTranslate ? I18n.t(text) : text);
+export const translateListText = (text: string, shouldTranslate = true) => (shouldTranslate ? I18n.t(text) : text);
 
 export const nativeListItemTitle = ({ title, translateTitle }: IListItem) =>
-	typeof title === 'string' ? translate(title, translateTitle) : undefined;
+	typeof title === 'string' ? translateListText(title, translateTitle) : undefined;
 
 export const nativeListItemSubtitle = ({ subtitle, translateSubtitle }: IListItem) =>
-	subtitle ? translate(subtitle, translateSubtitle) : undefined;
+	subtitle ? translateListText(subtitle, translateSubtitle) : undefined;
 
 const stateLabel = ({ additionalAccessibilityLabel, additionalAccessibilityLabelCheck }: IListItem) => {
 	if (typeof additionalAccessibilityLabel === 'string') {

@@ -1,10 +1,10 @@
 import { useContext, type ReactElement, type ReactNode } from 'react';
 import { Section, Text } from '@expo/ui/swift-ui';
 
-import I18n from '~/i18n';
 import ListInfo from './ListInfo';
 import { flattenListChildren, isListSeparator } from './listChildren';
 import { NativeListRowRendererContext } from './NativeListContext';
+import { translateListText } from './nativeListItemProps';
 
 interface IInfoProps {
 	info: string;
@@ -18,8 +18,6 @@ export interface INativeListSection {
 }
 
 const isInfo = (element: ReactElement): element is ReactElement<IInfoProps> => element.type === ListInfo;
-
-export const translateListText = (text: string, shouldTranslate = true) => (shouldTranslate ? I18n.t(text) : text);
 
 const NativeListSection = ({ children, title, translateTitle }: INativeListSection) => {
 	const renderRow = useContext(NativeListRowRendererContext);
