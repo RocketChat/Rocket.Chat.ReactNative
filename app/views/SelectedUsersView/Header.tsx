@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { FlatList, View, Text, StyleSheet } from 'react-native';
 
-import { themes } from '~/lib/constants/colors';
 import SearchBox from '~/containers/SearchBox';
 import I18n from '~/i18n';
 import { type ISelectedUser } from '~/reducers/selectedUsers';
@@ -9,6 +8,7 @@ import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import Chip from '~/containers/Chip';
+import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
 
 const styles = StyleSheet.create({
 	selectedText: {
@@ -33,7 +33,8 @@ const Header = ({
 	onPressItem: (userItem: ISelectedUser) => void;
 }) => {
 	const flatlist = useRef<FlatList<ISelectedUser>>(null);
-	const { theme } = useTheme();
+	const { colors } = useTheme();
+	const backgroundColor = useListBackgroundColor(colors.surfaceRoom);
 	const { users } = useAppSelector(state => ({
 		users: state.selectedUsers.users
 	}));
@@ -41,11 +42,11 @@ const Header = ({
 	const onContentSizeChange = () => flatlist?.current?.scrollToEnd({ animated: true });
 
 	return (
-		<View style={{ backgroundColor: themes[theme].surfaceRoom }}>
+		<View style={{ backgroundColor }}>
 			<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='select-users-view-search' />
 			{users.length === 0 ? null : (
 				<View>
-					<Text style={[styles.selectedText, { color: themes[theme].fontHint }]}>
+					<Text style={[styles.selectedText, { color: colors.fontHint }]}>
 						{I18n.t('N_Selected_members', { n: users.length })}
 					</Text>
 					<FlatList

@@ -5,6 +5,7 @@ import { useTheme } from '~/theme';
 import I18n from '~/i18n';
 import { FormTextInput } from '../TextInput';
 import { supportsLiquidGlass } from '../TextInput/GlassBackground';
+import { useListBackgroundColor } from '../NativeListRow/useListBackgroundColor';
 
 const styles = StyleSheet.create({
 	inputContainer: {
@@ -17,6 +18,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps) =>
 	const [text, setText] = useState('');
 
 	const { colors } = useTheme();
+	const backgroundColor = useListBackgroundColor(colors.surfaceRoom);
 
 	const internalOnChangeText = (value: string) => {
 		setText(value);
@@ -24,7 +26,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps) =>
 	};
 
 	return (
-		<View testID='searchbox' style={{ backgroundColor: supportsLiquidGlass ? colors.surfaceTint : colors.surfaceRoom }}>
+		<View testID='searchbox' style={{ backgroundColor }}>
 			<FormTextInput
 				autoCapitalize='none'
 				autoCorrect={false}

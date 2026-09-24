@@ -4,7 +4,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
 <View
   style={
     {
-      "backgroundColor": "#FFFFFF",
+      "backgroundColor": "#F2F3F5",
     }
   }
   testID="searchbox"

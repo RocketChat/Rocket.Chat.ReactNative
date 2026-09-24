@@ -15,6 +15,7 @@ import { type NewMessageStackParamList } from '~/stacks/types';
 import { compareServerVersion } from '~/lib/methods/helpers';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { usePermissions } from '~/lib/hooks/usePermissions';
+import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
 import ButtonCreate from './ButtonCreate';
 
 const styles = StyleSheet.create({
@@ -35,6 +36,7 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
+	const listBackgroundColor = useListBackgroundColor(colors.surfaceTint);
 
 	const serverVersion = useAppSelector(state => state.server.version as string);
 
@@ -108,7 +110,7 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 	].filter((button): button is IButtonConfig => Boolean(button.visible));
 
 	return (
-		<View style={[styles.container, { backgroundColor: colors.surfaceTint }]}>
+		<View style={[styles.container, { backgroundColor: listBackgroundColor }]}>
 			{buttons.map((button, index) => (
 				<ButtonCreate
 					key={button.testID}
