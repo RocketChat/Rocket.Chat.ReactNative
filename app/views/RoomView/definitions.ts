@@ -1,4 +1,4 @@
-import { type Ref, type RefObject } from 'react';
+import { type ReactNode, type Ref, type RefObject } from 'react';
 import { type FlatListProps } from 'react-native';
 import { type FlatList } from 'react-native-gesture-handler';
 import { type StoreApi } from 'zustand';
@@ -228,6 +228,7 @@ export type IRoomMessageActionsProps = Pick<
 	tmid?: string;
 	messageActionsRef: RefObject<IMessageActions | null>;
 	messageErrorActionsRef: RefObject<IMessageErrorActions | null>;
+	children?: ReactNode;
 };
 
 export interface IUseRoomMessagingParams {
