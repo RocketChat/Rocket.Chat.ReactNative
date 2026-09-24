@@ -227,6 +227,36 @@ describe('RoomsListView useHeader', () => {
 		expect(cancelSearch).toHaveBeenCalledTimes(1);
 	});
 
+	it('replaces the tablet right actions with a Cancel item that stops search while searching', () => {
+		mockIsTablet = true;
+		const wrapper = ({ children }: { children: ReactElement }) => (
+			<RoomsSearchContext.Provider value={{ ...searchContextValue, searchEnabled: true }}>{children}</RoomsSearchContext.Provider>
+		);
+
+		renderHook(() => useHeader(), { wrapper });
+
+		const options = mockSetOptions.mock.calls[0][0];
+		expect(options.headerSearchBarOptions.hideNavigationBar).toBe(false);
+		const rightItems = options.unstable_headerRightItems();
+		expect(rightItems.map((item: { label: string }) => item.label)).toEqual(['Cancel']);
+
+		rightItems[0].onPress();
+		expect(mockStopSearch).toHaveBeenCalledTimes(1);
+	});
+
+	it('keeps the iPhone right actions and hides the navigation bar while searching', () => {
+		const wrapper = ({ children }: { children: ReactElement }) => (
+			<RoomsSearchContext.Provider value={{ ...searchContextValue, searchEnabled: true }}>{children}</RoomsSearchContext.Provider>
+		);
+
+		renderHook(() => useHeader(), { wrapper });
+
+		const options = mockSetOptions.mock.calls[0][0];
+		expect(options.headerSearchBarOptions.hideNavigationBar).toBe(true);
+		const labels = options.unstable_headerRightItems().map((item: { label: string }) => item.label);
+		expect(labels).not.toContain('Cancel');
+	});
+
 	it('falls back to the JS header on Android', () => {
 		mockIsIOS = false;
 

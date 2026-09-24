@@ -210,6 +210,7 @@ export const useHeader = () => {
 					ref: searchBarRef,
 					placement: 'stacked',
 					placeholder: i18n.t('Search'),
+					hideNavigationBar: !isTablet,
 					onFocus: startSearch,
 					onChangeText: (event: { nativeEvent: { text: string } }) => search(event.nativeEvent.text),
 					onCancelButtonPress: stopSearch
@@ -227,35 +228,45 @@ export const useHeader = () => {
 							: () => navigation.toggleDrawer()
 					}
 				],
-				unstable_headerRightItems: () => [
-					...visible.map(action => ({
-						type: 'button' as const,
-						label: action.accessibilityLabel,
-						accessibilityLabel: action.accessibilityLabel,
-						icon: headerIcon(action.icon),
-						tintColor: action.tintColor,
-						disabled: action.disabled,
-						onPress: action.onPress
-					})),
-					...(overflow.length >= 2
+				unstable_headerRightItems: () =>
+					isTablet && searchEnabled
 						? [
 								{
-									type: 'menu' as const,
-									label: i18n.t('More'),
-									accessibilityLabel: i18n.t('More'),
-									icon: headerIcon('kebab'),
-									menu: {
-										items: overflow.map(action => ({
-											type: 'action' as const,
-											label: action.accessibilityLabel,
-											icon: headerIcon(action.icon),
-											onPress: action.onPress
-										}))
-									}
+									type: 'button' as const,
+									label: i18n.t('Cancel'),
+									accessibilityLabel: i18n.t('Cancel'),
+									onPress: stopSearch
 								}
 							]
-						: [])
-				]
+						: [
+								...visible.map(action => ({
+									type: 'button' as const,
+									label: action.accessibilityLabel,
+									accessibilityLabel: action.accessibilityLabel,
+									icon: headerIcon(action.icon),
+									tintColor: action.tintColor,
+									disabled: action.disabled,
+									onPress: action.onPress
+								})),
+								...(overflow.length >= 2
+									? [
+											{
+												type: 'menu' as const,
+												label: i18n.t('More'),
+												accessibilityLabel: i18n.t('More'),
+												icon: headerIcon('kebab'),
+												menu: {
+													items: overflow.map(action => ({
+														type: 'action' as const,
+														label: action.accessibilityLabel,
+														icon: headerIcon(action.icon),
+														onPress: action.onPress
+													}))
+												}
+											}
+										]
+									: [])
+							]
 			});
 			return;
 		}
