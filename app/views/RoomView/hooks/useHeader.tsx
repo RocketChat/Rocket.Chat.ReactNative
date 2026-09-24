@@ -5,7 +5,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { useStore } from 'zustand';
 
 import RoomHeader from '~/containers/RoomHeader';
-import { getRoomTitle, hasNativeHeaderBar, isGroupChat } from '~/lib/methods/helpers';
+import { getRoomTitle, isIOS, isGroupChat } from '~/lib/methods/helpers';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { type IOmnichannelSource, type ISubscription, type IVisitor } from '~/definitions';
 import LeftButtons from '../components/LeftButtons';
@@ -72,16 +72,20 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 	const nativeTitle = Platform.OS === 'ios' && Number.parseInt(String(Platform.Version), 10) >= 26;
 	useNativeRoomHeader(!!rid && nativeTitle, headerFields, tmid, roomUserId, goRoomActionsView);
 	useNativeBackButton(!!rid && nativeTitle, rid);
-	const nativeRightItems = useRoomHeaderRightItems(hasNativeHeaderBar ? rid : undefined, tmid, roomStore);
+	const nativeRightItems = useRoomHeaderRightItems(isIOS ? rid : undefined, tmid, roomStore);
 
 	useLayoutEffect(() => {
+		if (!rid && isIOS) {
+			return;
+		}
+
 		if (!rid) {
 			const height = 37 * PixelRatio.getFontScale();
 			navigation.setOptions({ headerLeft: () => <View style={{ height }} /> });
 			return;
 		}
 
-		if (hasNativeHeaderBar) {
+		if (isIOS) {
 			// Native back button keeps the native-stack default; only the right cluster is overridden.
 			navigation.setOptions({ unstable_headerRightItems: () => nativeRightItems });
 			return;

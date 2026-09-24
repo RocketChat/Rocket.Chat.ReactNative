@@ -28,9 +28,6 @@ jest.mock('~/lib/methods/helpers', () => ({
 	},
 	get isTablet() {
 		return mockIsTablet;
-	},
-	get hasNativeHeaderBar() {
-		return mockIsIOS && !mockIsTablet;
 	}
 }));
 jest.mock('~/lib/methods/isInviteSubscription', () => ({
@@ -130,6 +127,12 @@ describe('useHeader', () => {
 			expect(titleOptions.headerTitle().props.title).toBe('Room Title');
 		});
 
+		it('leaves the native header empty when rid is missing', () => {
+			renderHook(() => useHeader({ rid: undefined, tmid: undefined, name: 'general', roomStore: mockTestStore }));
+
+			expect(mockSetOptions).not.toHaveBeenCalled();
+		});
+
 		it('sets unstable_headerRightItems and keeps the native back button instead of headerLeft/headerRight', () => {
 			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
 
@@ -153,6 +156,14 @@ describe('useHeader', () => {
 			const titleOptions = mockSetOptions.mock.calls[1][0];
 			expect(titleOptions).toHaveProperty('headerTitle');
 			expect(typeof titleOptions.headerTitle).toBe('function');
+		});
+
+		it('uses the native right items like iPhone', () => {
+			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
+
+			const sideOptions = mockSetOptions.mock.calls[0][0];
+			expect(sideOptions.unstable_headerRightItems()).toBe(mockNativeRightItems);
+			expect(sideOptions).not.toHaveProperty('headerRight');
 		});
 	});
 });
