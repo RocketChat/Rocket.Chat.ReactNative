@@ -14,7 +14,13 @@ const NativeListAccessory = ({ accessory }: { accessory: TNativeListAccessory })
 		case 'icon':
 			return <NativeListIcon name={accessory.name} color={accessory.color ?? colors.fontDefault} size={accessory.size} />;
 		case 'check':
-			return <Image systemName='checkmark' color={colors.buttonBackgroundPrimaryDefault} />;
+			return (
+				<Image
+					systemName='checkmark'
+					color={colors.buttonBackgroundPrimaryDefault}
+					modifiers={[font({ textStyle: 'body', weight: 'semibold' })]}
+				/>
+			);
 		case 'status':
 			return <NativeListStatus status={accessory.status} />;
 		case 'toggle':
