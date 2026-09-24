@@ -17,7 +17,7 @@ const NativeListAccessory = ({ accessory }: { accessory: TNativeListAccessory })
 			return (
 				<Image
 					systemName='checkmark'
-					color={colors.buttonBackgroundPrimaryDefault}
+					color={colors.badgeBackgroundLevel2}
 					modifiers={[font({ textStyle: 'body', weight: 'semibold' })]}
 				/>
 			);
@@ -38,7 +38,7 @@ const NativeListAccessory = ({ accessory }: { accessory: TNativeListAccessory })
 					value={accessory.value}
 					onValueChange={accessory.onValueChange}
 					testID={accessory.testID}
-					modifiers={[labelsHidden(), tint(colors.buttonBackgroundPrimaryDefault)]}
+					modifiers={[labelsHidden(), tint(colors.strokeHighlight)]}
 				/>
 			);
 		case 'text':

@@ -97,7 +97,7 @@ const NativeListItem = ({ item }: { item: IListItem }) => {
 			</VStack>
 			<Spacer />
 			{trailing ? <NativeListAccessory accessory={trailing} /> : null}
-			{item.showActionIndicator ? <NativeListIcon name={CHEVRON} color={colors.fontSecondaryInfo} /> : null}
+			{item.showActionIndicator ? <NativeListIcon name={CHEVRON} color={colors.fontDefault} /> : null}
 		</NativeListItemRow>
 	);
 };
