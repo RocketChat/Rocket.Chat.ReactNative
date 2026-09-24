@@ -68,7 +68,6 @@ open class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
-    // Migrate pre-4.73 experimental databases before React Native boots (no db open yet).
     migrateLegacyExperimentalDatabases()
 
     Bugsnag.start(this)
@@ -88,26 +87,35 @@ open class MainApplication : Application(), ReactApplication {
     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
   }
 
-  // Rename pre-4.73 `<name>-experimental.db` files to unified names when missing; never overwrites.
+  // Renames <=4.73.0 `-experimental.db.db` files.
   private fun migrateLegacyExperimentalDatabases() {
     try {
-      val dirs = listOfNotNull(filesDir?.parentFile, getDatabasePath("probe").parentFile)
-      for (dir in dirs) {
-        val files = dir.listFiles() ?: continue
-        for (file in files) {
-          if (!file.isFile || !file.name.contains("-experimental.db")) {
-            continue
-          }
-          val target = java.io.File(dir, file.name.replace("-experimental.db", ".db"))
-          if (target.exists()) {
-            continue
-          }
-          file.renameTo(target)
+      val dir = getDatabasePath("probe").parentFile?.parentFile ?: return
+      val legacySuffix = "-experimental.db.db"
+      val files = dir.listFiles() ?: return
+      databases@ for (legacy in files) {
+        if (!legacy.isFile || !legacy.name.endsWith(legacySuffix)) {
+          continue
         }
+        val baseName = legacy.name.removeSuffix(legacySuffix)
+        val target = java.io.File(dir, "$baseName.db.db")
+        if (target.exists() && target.length() > 0) {
+          continue
+        }
+        for (sidecar in listOf("-wal", "-shm", "-journal")) {
+          val legacySidecar = java.io.File(dir, legacy.name + sidecar)
+          if (legacySidecar.exists()) {
+            val targetSidecar = java.io.File(dir, target.name + sidecar)
+            targetSidecar.delete()
+            if (!legacySidecar.renameTo(targetSidecar)) {
+              continue@databases
+            }
+          }
+        }
+        target.delete()
+        legacy.renameTo(target)
       }
     } catch (e: Exception) {
-      // Migration must never break startup. Worst case the app starts with a fresh
-      // database and the startup saga falls back to the logged-out flow.
     }
   }
 }
