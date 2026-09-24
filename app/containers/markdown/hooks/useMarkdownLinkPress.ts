@@ -4,7 +4,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 
 import I18n from '~/i18n';
 import dayjs from '~/lib/dayjs';
-import { TIMESTAMP_FULL_FORMAT } from '../serialize';
+import { CHANNEL_SCHEME, ME_QUERY, TEAM_QUERY, TIMESTAMP_FULL_FORMAT, TIMESTAMP_SCHEME, USER_SCHEME } from '../linkSchemes';
 import { useTheme } from '~/theme';
 import { LISTENER } from '~/containers/Toast';
 import EventEmitter from '~/lib/methods/helpers/events';
@@ -25,7 +25,7 @@ interface IUseMarkdownLinkPressParams {
 }
 
 const isInternalScheme = (url: string): boolean =>
-	url.startsWith('user://') || url.startsWith('channel://') || url.startsWith('timestamp://');
+	url.startsWith(USER_SCHEME) || url.startsWith(CHANNEL_SCHEME) || url.startsWith(TIMESTAMP_SCHEME);
 
 export const useMarkdownLinkPress = ({ channels, navToRoomInfo, onLinkPress }: IUseMarkdownLinkPressParams) => {
 	const { theme } = useTheme();
@@ -57,26 +57,26 @@ export const useMarkdownLinkPress = ({ channels, navToRoomInfo, onLinkPress }: I
 
 	const handleLinkPress = useCallback(
 		(url: string) => {
-			if (url.startsWith('user://')) {
-				const [rid, query] = url.slice('user://'.length).split('?');
-				if (rid === 'all' || rid === 'here' || query === 'team=1') {
+			if (url.startsWith(USER_SCHEME)) {
+				const [rid, query = ''] = url.slice(USER_SCHEME.length).split('?');
+				if (rid === 'all' || rid === 'here' || `?${query}` === TEAM_QUERY) {
 					return;
 				}
 				logEvent(events.ROOM_MENTION_GO_USER_INFO);
-				navToRoomInfo?.({ t: 'd', rid, itsMe: query === 'me=1' });
+				navToRoomInfo?.({ t: 'd', rid, itsMe: `?${query}` === ME_QUERY });
 				return;
 			}
 
-			if (url.startsWith('channel://')) {
-				const rid = url.slice('channel://'.length);
+			if (url.startsWith(CHANNEL_SCHEME)) {
+				const rid = url.slice(CHANNEL_SCHEME.length);
 				if (channels?.some(channel => channel._id === rid)) {
 					handleChannelPress(rid);
 				}
 				return;
 			}
 
-			if (url.startsWith('timestamp://')) {
-				const unixSeconds = Number(url.slice('timestamp://'.length));
+			if (url.startsWith(TIMESTAMP_SCHEME)) {
+				const unixSeconds = Number(url.slice(TIMESTAMP_SCHEME.length));
 				const message = dayjs(unixSeconds * 1000).format(TIMESTAMP_FULL_FORMAT);
 				EventEmitter.emit(LISTENER, { message });
 				return;

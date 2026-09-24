@@ -12,6 +12,7 @@ import type {
 import dayjs from '~/lib/dayjs';
 import { type IUserMention, type IUserChannel } from './interfaces';
 import { type TGetCustomEmoji } from '~/definitions';
+import { CHANNEL_SCHEME, ME_QUERY, TEAM_QUERY, TIMESTAMP_FULL_FORMAT, TIMESTAMP_SCHEME, USER_SCHEME } from './linkSchemes';
 
 export interface ISerializeContext {
 	mentions?: IUserMention[];
@@ -39,8 +40,6 @@ const timestampToUnixSeconds = (timestamp: string): number => {
 	if (/^-?\d{13}$/.test(timestamp)) return Math.floor(Number(timestamp) / 1000);
 	return Math.floor(dayjs(timestamp).valueOf() / 1000);
 };
-
-export const TIMESTAMP_FULL_FORMAT = 'dddd, MMM DD, YYYY hh:mm A';
 
 export const isBigEmojiOnly = (tokens: Root | null): tokens is [BigEmoji] =>
 	!!tokens && tokens.length === 1 && tokens[0].type === 'BIG_EMOJI';
@@ -73,34 +72,63 @@ interface IUserMentionLabel {
 	query: string;
 }
 
-const resolveUserMentionLabel = (mention: string, ctx: ISerializeContext): IUserMentionLabel | null => {
-	const found = ctx.mentions?.find(m => m && (m.username === mention || m.name === mention));
+const resolveUserMentionLabel = (mention: string, context: ISerializeContext): IUserMentionLabel | null => {
+	const found = context.mentions?.find(candidate => candidate && (candidate.username === mention || candidate.name === mention));
 	if (!found) {
 		return null;
 	}
 
-	const label = found.type === 'user' ? (ctx.useRealName && found.name ? found.name : found.username) : found.name;
-	const itsMe = mention === ctx.username;
-	const query = found.type === 'team' ? '?team=1' : itsMe ? '?me=1' : '';
+	const label = found.type === 'user' ? (context.useRealName && found.name ? found.name : found.username) : found.name;
+	const itsMe = mention === context.username;
+	const query = found.type === 'team' ? TEAM_QUERY : itsMe ? ME_QUERY : '';
 
 	return { label: label ?? mention, rid: found._id, query };
 };
 
-const resolveChannelMentionLabel = (hashtag: string, ctx: ISerializeContext): string | null => {
-	const found = ctx.channels?.find(channel => channel.name === hashtag);
+const findChannelRid = (hashtag: string, context: ISerializeContext): string | null => {
+	const found = context.channels?.find(channel => channel.name === hashtag);
 	return found?._id ?? null;
 };
 
-const emojiDisplayText = (block: EmojiBlock, ctx: ISerializeContext): string => {
+interface IResolvedMention {
+	text: string;
+	url?: string;
+}
+
+const resolveUserMention = (mention: string, context: ISerializeContext): IResolvedMention => {
+	const prefix = context.mentionsWithAtSymbol ? '@' : '';
+	if (mention === 'all' || mention === 'here') {
+		return { text: prefix + mention, url: `${USER_SCHEME}${mention}` };
+	}
+	const resolved = resolveUserMentionLabel(mention, context);
+	if (!resolved) {
+		return { text: `@${mention}` };
+	}
+	return { text: prefix + resolved.label, url: `${USER_SCHEME}${resolved.rid}${resolved.query}` };
+};
+
+const resolveChannelMention = (hashtag: string, context: ISerializeContext): IResolvedMention => {
+	const rid = findChannelRid(hashtag, context);
+	if (!rid) {
+		return { text: `#${hashtag}` };
+	}
+	const prefix = context.roomsWithHashTagSymbol ? '#' : '';
+	return { text: prefix + hashtag, url: `${CHANNEL_SCHEME}${rid}` };
+};
+
+const serializeMention = ({ text, url }: IResolvedMention): string =>
+	url ? `[**${escapePlainText(text)}**](${escapeUrl(url)})` : escapePlainText(text);
+
+const emojiDisplayText = (block: EmojiBlock, context: ISerializeContext): string => {
 	if ('unicode' in block) {
 		return block.unicode;
 	}
 
 	const emojiToken = `:${block.shortCode}:`;
-	const emojiUnicode = ctx.formatShortnameToUnicode(emojiToken);
+	const emojiUnicode = context.formatShortnameToUnicode(emojiToken);
 	const isAsciiEmoji = block.value.value !== block.shortCode;
 
-	if (!ctx.convertAsciiEmoji && isAsciiEmoji) {
+	if (!context.convertAsciiEmoji && isAsciiEmoji) {
 		return block.value.value;
 	}
 
@@ -109,14 +137,14 @@ const emojiDisplayText = (block: EmojiBlock, ctx: ISerializeContext): string => 
 
 const WORD_JOINER = '\u2060';
 
-const serializeEmoji = (block: EmojiBlock, ctx: ISerializeContext): string => {
+const serializeEmoji = (block: EmojiBlock, context: ISerializeContext): string => {
 	const emojiName = 'unicode' in block ? '' : block.value.value.replace(/:/g, '');
-	const customEmoji = 'unicode' in block ? null : ctx.getCustomEmoji(emojiName);
+	const customEmoji = 'unicode' in block ? null : context.getCustomEmoji(emojiName);
 	if (customEmoji) {
-		return `${WORD_JOINER}![](${ctx.baseUrl}/emoji-custom/${encodeURIComponent(customEmoji.name)}.${customEmoji.extension})`;
+		return `${WORD_JOINER}![](${context.baseUrl}/emoji-custom/${encodeURIComponent(customEmoji.name)}.${customEmoji.extension})`;
 	}
 
-	return escapePlainText(emojiDisplayText(block, ctx));
+	return escapePlainText(emojiDisplayText(block, context));
 };
 
 const serializeInlineCode = (value: { value: string }): string => {
@@ -129,49 +157,32 @@ const serializeInlineCode = (value: { value: string }): string => {
 
 const toLinkLabelValue = (label: LinkBlock['value']['label']): Inlines[] => (Array.isArray(label) ? label : [label]);
 
-const serializeInline = (nodes: Inlines[], ctx: ISerializeContext): string =>
-	nodes.map(node => serializeInlineNode(node, ctx)).join('');
+const serializeInline = (nodes: Inlines[], context: ISerializeContext): string =>
+	nodes.map(node => serializeInlineNode(node, context)).join('');
 
-const serializeInlineNode = (node: Inlines, ctx: ISerializeContext): string => {
+const serializeInlineNode = (node: Inlines, context: ISerializeContext): string => {
 	switch (node.type) {
 		case 'PLAIN_TEXT':
 			return escapePlainText(node.value);
 		case 'BOLD':
-			return `**${serializeInline(node.value, ctx)}**`;
+			return `**${serializeInline(node.value, context)}**`;
 		case 'ITALIC':
-			return `_${serializeInline(node.value, ctx)}_`;
+			return `_${serializeInline(node.value, context)}_`;
 		case 'STRIKE':
-			return `~~${serializeInline(node.value, ctx)}~~`;
+			return `~~${serializeInline(node.value, context)}~~`;
 		case 'LINK': {
-			const label = serializeInline(toLinkLabelValue(node.value.label), ctx);
+			const label = serializeInline(toLinkLabelValue(node.value.label), context);
 			if (!node.value.src.value) {
 				return label;
 			}
 			return `[${label}](${escapeUrl(node.value.src.value)})`;
 		}
-		case 'MENTION_USER': {
-			const mention = node.value.value;
-			const prefix = ctx.mentionsWithAtSymbol ? '@' : '';
-			if (mention === 'all' || mention === 'here') {
-				return `[**${escapePlainText(prefix + mention)}**](${escapeUrl(`user://${mention}`)})`;
-			}
-			const resolved = resolveUserMentionLabel(mention, ctx);
-			if (!resolved) {
-				return escapePlainText(`@${mention}`);
-			}
-			return `[**${escapePlainText(prefix + resolved.label)}**](${escapeUrl(`user://${resolved.rid}${resolved.query}`)})`;
-		}
-		case 'MENTION_CHANNEL': {
-			const hashtag = node.value.value;
-			const prefix = ctx.roomsWithHashTagSymbol ? '#' : '';
-			const rid = resolveChannelMentionLabel(hashtag, ctx);
-			if (!rid) {
-				return escapePlainText(`#${hashtag}`);
-			}
-			return `[**${escapePlainText(prefix + hashtag)}**](${escapeUrl(`channel://${rid}`)})`;
-		}
+		case 'MENTION_USER':
+			return serializeMention(resolveUserMention(node.value.value, context));
+		case 'MENTION_CHANNEL':
+			return serializeMention(resolveChannelMention(node.value.value, context));
 		case 'EMOJI':
-			return serializeEmoji(node, ctx);
+			return serializeEmoji(node, context);
 		case 'INLINE_CODE':
 			return serializeInlineCode(node.value);
 		case 'INLINE_KATEX':
@@ -179,7 +190,7 @@ const serializeInlineNode = (node: Inlines, ctx: ISerializeContext): string => {
 		case 'TIMESTAMP': {
 			const label = formatTimestampLabel(node.value);
 			const unixSeconds = timestampToUnixSeconds(node.value.timestamp);
-			return `[${escapePlainText(` ${label} `)}](${escapeUrl(`timestamp://${unixSeconds}`)})`;
+			return `[${escapePlainText(` ${label} `)}](${escapeUrl(`${TIMESTAMP_SCHEME}${unixSeconds}`)})`;
 		}
 		case 'IMAGE':
 			return `![](${escapeUrl(node.value.src.value)})`;
@@ -188,44 +199,31 @@ const serializeInlineNode = (node: Inlines, ctx: ISerializeContext): string => {
 	}
 };
 
-const plainTextInline = (nodes: Inlines[], ctx: ISerializeContext): string =>
-	nodes.map(node => plainTextNode(node, ctx)).join('');
+const plainTextInline = (nodes: Inlines[], context: ISerializeContext): string =>
+	nodes.map(node => plainTextNode(node, context)).join('');
 
-const plainTextNode = (node: Inlines, ctx: ISerializeContext): string => {
+const plainTextNode = (node: Inlines, context: ISerializeContext): string => {
 	switch (node.type) {
 		case 'PLAIN_TEXT':
 			return node.value;
 		case 'BOLD':
 		case 'ITALIC':
 		case 'STRIKE':
-			return plainTextInline(node.value, ctx);
+			return plainTextInline(node.value, context);
 		case 'LINK':
-			return plainTextInline(toLinkLabelValue(node.value.label), ctx);
-		case 'MENTION_USER': {
-			const mention = node.value.value;
-			const prefix = ctx.mentionsWithAtSymbol ? '@' : '';
-			if (mention === 'all' || mention === 'here') {
-				return prefix + mention;
-			}
-			const resolved = resolveUserMentionLabel(mention, ctx);
-			return resolved ? prefix + resolved.label : `@${mention}`;
-		}
-		case 'MENTION_CHANNEL': {
-			const hashtag = node.value.value;
-			const prefix = ctx.roomsWithHashTagSymbol ? '#' : '';
-			const rid = resolveChannelMentionLabel(hashtag, ctx);
-			return rid ? prefix + hashtag : `#${hashtag}`;
-		}
+			return plainTextInline(toLinkLabelValue(node.value.label), context);
+		case 'MENTION_USER':
+			return resolveUserMention(node.value.value, context).text;
+		case 'MENTION_CHANNEL':
+			return resolveChannelMention(node.value.value, context).text;
 		case 'EMOJI':
-			return emojiDisplayText(node, ctx);
+			return emojiDisplayText(node, context);
 		case 'INLINE_CODE':
 			return node.value.value;
 		case 'INLINE_KATEX':
 			return node.value;
 		case 'TIMESTAMP':
 			return formatTimestampLabel(node.value);
-		case 'IMAGE':
-			return '';
 		default:
 			return '';
 	}
@@ -254,33 +252,33 @@ const resolveParagraphNodes = (value: Paragraph['value']): Paragraph['value'] | 
 	return value;
 };
 
-const serializeParagraphValue = (value: Paragraph['value'], ctx: ISerializeContext): string | null => {
+const serializeParagraphValue = (value: Paragraph['value'], context: ISerializeContext): string | null => {
 	const nodes = resolveParagraphNodes(value);
-	return nodes ? serializeInline(nodes, ctx) : null;
+	return nodes ? serializeInline(nodes, context) : null;
 };
 
-const plainTextParagraphValue = (value: Paragraph['value'], ctx: ISerializeContext): string | null => {
+const plainTextParagraphValue = (value: Paragraph['value'], context: ISerializeContext): string | null => {
 	const nodes = resolveParagraphNodes(value);
-	return nodes ? plainTextInline(nodes, ctx) : null;
+	return nodes ? plainTextInline(nodes, context) : null;
 };
 
-const serializeBlock = (block: Paragraph | Blocks, ctx: ISerializeContext): string => {
+const serializeBlock = (block: Paragraph | Blocks, context: ISerializeContext): string => {
 	switch (block.type) {
 		case 'PARAGRAPH':
-			return serializeParagraphValue(block.value, ctx) ?? '';
+			return serializeParagraphValue(block.value, context) ?? '';
 		case 'HEADING':
-			return `${'#'.repeat(block.level)} ${serializeInline(block.value, ctx)}`;
+			return `${'#'.repeat(block.level)} ${serializeInline(block.value, context)}`;
 		case 'QUOTE':
 			return block.value
-				.map(item => serializeParagraphValue(item.value, ctx) ?? '')
+				.map(item => serializeParagraphValue(item.value, context) ?? '')
 				.map(line => `> ${line}`)
 				.join('\n>\n');
 		case 'UNORDERED_LIST':
-			return block.value.map(item => `- ${serializeInline(item.value, ctx)}`).join('\n');
+			return block.value.map(item => `- ${serializeInline(item.value, context)}`).join('\n');
 		case 'ORDERED_LIST':
-			return block.value.map(item => `${item.number}. ${serializeInline(item.value, ctx)}`).join('\n');
+			return block.value.map(item => `${item.number}. ${serializeInline(item.value, context)}`).join('\n');
 		case 'TASKS':
-			return block.value.map(item => `- [${item.status ? 'x' : ' '}] ${serializeInline(item.value, ctx)}`).join('\n');
+			return block.value.map(item => `- [${item.status ? 'x' : ' '}] ${serializeInline(item.value, context)}`).join('\n');
 		case 'CODE': {
 			const lines = block.value.map(line => line.value.value).join('\n');
 			let fence = '```';
@@ -294,19 +292,18 @@ const serializeBlock = (block: Paragraph | Blocks, ctx: ISerializeContext): stri
 	}
 };
 
-const plainTextBlock = (block: Paragraph | Blocks, ctx: ISerializeContext): string => {
+const plainTextBlock = (block: Paragraph | Blocks, context: ISerializeContext): string => {
 	switch (block.type) {
 		case 'PARAGRAPH':
-			return plainTextParagraphValue(block.value, ctx) ?? '';
+			return plainTextParagraphValue(block.value, context) ?? '';
 		case 'HEADING':
-			return plainTextInline(block.value, ctx);
+			return plainTextInline(block.value, context);
 		case 'QUOTE':
-			return block.value.map(item => plainTextParagraphValue(item.value, ctx) ?? '').join('\n');
+			return block.value.map(item => plainTextParagraphValue(item.value, context) ?? '').join('\n');
 		case 'UNORDERED_LIST':
 		case 'ORDERED_LIST':
-			return block.value.map(item => plainTextInline(item.value, ctx)).join('\n');
 		case 'TASKS':
-			return block.value.map(item => plainTextInline(item.value, ctx)).join('\n');
+			return block.value.map(item => plainTextInline(item.value, context)).join('\n');
 		case 'CODE':
 			return block.value.map(line => line.value.value).join('\n');
 		default:
@@ -314,10 +311,10 @@ const plainTextBlock = (block: Paragraph | Blocks, ctx: ISerializeContext): stri
 	}
 };
 
-export const buildRenderSegments = (tokens: Root, ctx: ISerializeContext): TRenderSegment[] => {
+export const buildRenderSegments = (tokens: Root, context: ISerializeContext): TRenderSegment[] => {
 	if (isBigEmojiOnly(tokens)) {
-		const content = tokens[0].value.map(emojiBlock => serializeEmoji(emojiBlock, ctx)).join('');
-		const accessibilityLabel = tokens[0].value.map(emojiBlock => emojiDisplayText(emojiBlock, ctx)).join(' ');
+		const content = tokens[0].value.map(emojiBlock => serializeEmoji(emojiBlock, context)).join('');
+		const accessibilityLabel = tokens[0].value.map(emojiBlock => emojiDisplayText(emojiBlock, context)).join(' ');
 		return [{ type: 'markdown', content, accessibilityLabel }];
 	}
 
@@ -334,9 +331,9 @@ export const buildRenderSegments = (tokens: Root, ctx: ISerializeContext): TRend
 			continue;
 		}
 
-		const content = serializeBlock(block, ctx);
+		const content = serializeBlock(block, context);
 		if (content) {
-			segments.push({ type: 'markdown', content, accessibilityLabel: plainTextBlock(block, ctx) });
+			segments.push({ type: 'markdown', content, accessibilityLabel: plainTextBlock(block, context) });
 		}
 	}
 

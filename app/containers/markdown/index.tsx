@@ -1,8 +1,8 @@
 import { useMemo, type FC } from 'react';
-import { type StyleProp, type TextStyle, View, useWindowDimensions } from 'react-native';
+import { type StyleProp, StyleSheet, type TextStyle, View, useWindowDimensions } from 'react-native';
 import { EnrichedMarkdownText } from 'react-native-enriched-markdown';
 import { parse } from '@rocket.chat/message-parser';
-import type { Options, Root } from '@rocket.chat/message-parser';
+import type { Root } from '@rocket.chat/message-parser';
 import isEmpty from 'lodash/isEmpty';
 
 import { type IUserMention, type IUserChannel, type TOnLinkPress } from './interfaces';
@@ -35,37 +35,6 @@ interface IMarkdownProps {
 	textStyle?: StyleProp<TextStyle>;
 }
 
-const PARSE_CACHE_MAX = 200;
-const parseCache = new Map<string, Root>();
-
-const parseMessage = (msg: string, options: Options): Root => {
-	const cacheKey = `${JSON.stringify(options)}${msg}`;
-	const cached = parseCache.get(cacheKey);
-	if (cached) {
-		return cached;
-	}
-
-	const result = parse(msg, options);
-
-	if (parseCache.size >= PARSE_CACHE_MAX) {
-		const oldestKey = parseCache.keys().next().value;
-		if (oldestKey !== undefined) {
-			parseCache.delete(oldestKey);
-		}
-	}
-
-	parseCache.set(cacheKey, result);
-	return result;
-};
-
-const resolveTokens = (msg: string, md: Root | undefined, options: Options, isTranslated?: boolean): Root => {
-	if (!isTranslated && md) {
-		return md;
-	}
-
-	return parseMessage(msg, options);
-};
-
 const Markdown: FC<IMarkdownProps> = ({
 	msg,
 	md,
@@ -89,36 +58,41 @@ const Markdown: FC<IMarkdownProps> = ({
 	const { handleLinkPress, handleLinkLongPress } = useMarkdownLinkPress({ channels, navToRoomInfo, onLinkPress });
 	const parseOptions = useParseOptions();
 
-	let tokens: Root | null = null;
+	const { tokens, segments } = useMemo(() => {
+		if (!msg) {
+			return { tokens: null, segments: [] };
+		}
 
-	if (msg) {
 		try {
-			const result = resolveTokens(msg, md, parseOptions, isTranslated);
-			tokens = isEmpty(result) ? null : result;
-		} catch (e) {
-			log(e);
-		}
-	}
+			const parsed = !isTranslated && md ? md : parse(msg, parseOptions);
+			if (isEmpty(parsed)) {
+				return { tokens: null, segments: [] };
+			}
 
-	const segments = useMemo(() => {
-		if (!tokens) {
-			return [];
+			return {
+				tokens: parsed,
+				segments: buildRenderSegments(parsed, {
+					mentions,
+					channels,
+					useRealName,
+					username,
+					mentionsWithAtSymbol: mentionsWithAtSymbol ?? false,
+					roomsWithHashTagSymbol: roomsWithHashTagSymbol ?? false,
+					getCustomEmoji,
+					baseUrl,
+					convertAsciiEmoji,
+					formatShortnameToUnicode
+				})
+			};
+		} catch (error) {
+			log(error);
+			return { tokens: null, segments: [] };
 		}
-
-		return buildRenderSegments(tokens, {
-			mentions,
-			channels,
-			useRealName,
-			username,
-			mentionsWithAtSymbol: mentionsWithAtSymbol ?? false,
-			roomsWithHashTagSymbol: roomsWithHashTagSymbol ?? false,
-			getCustomEmoji,
-			baseUrl,
-			convertAsciiEmoji,
-			formatShortnameToUnicode
-		});
 	}, [
-		tokens,
+		msg,
+		md,
+		isTranslated,
+		parseOptions,
 		mentions,
 		channels,
 		useRealName,
@@ -134,7 +108,7 @@ const Markdown: FC<IMarkdownProps> = ({
 	const bigEmojiOnly = isBigEmojiOnly(tokens);
 	const markdownStyle = useMemo(() => buildMarkdownStyle(colors, bigEmojiOnly, fontScale), [colors, bigEmojiOnly, fontScale]);
 
-	if (!tokens || segments.length === 0) {
+	if (segments.length === 0) {
 		return null;
 	}
 
@@ -151,7 +125,7 @@ const Markdown: FC<IMarkdownProps> = ({
 						markdown={segment.content}
 						accessibilityLabel={segment.accessibilityLabel}
 						markdownStyle={markdownStyle}
-						containerStyle={textStyle as TextStyle}
+						containerStyle={StyleSheet.flatten(textStyle)}
 						flavor='github'
 						md4cFlags={{ latexMath: true }}
 						selectable={false}

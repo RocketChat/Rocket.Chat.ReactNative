@@ -1,7 +1,13 @@
 import { parse } from '@rocket.chat/message-parser';
+import { renderHook } from '@testing-library/react-native';
 
 import { buildRenderSegments, type ISerializeContext } from '../serialize';
-import { buildParseOptions } from '../hooks/useParseOptions';
+import { useParseOptions } from '../hooks/useParseOptions';
+import { useSetting } from '~/lib/hooks/useSetting';
+
+jest.mock('~/lib/hooks/useSetting', () => ({
+	useSetting: jest.fn()
+}));
 
 const context: ISerializeContext = {
 	mentions: [],
@@ -16,8 +22,16 @@ const context: ISerializeContext = {
 	formatShortnameToUnicode: shortname => shortname
 };
 
-const segmentsFor = (msg: string, katexEnabled: boolean, dollarSyntax: boolean, parenthesisSyntax: boolean) =>
-	buildRenderSegments(parse(msg, buildParseOptions(katexEnabled, dollarSyntax, parenthesisSyntax)), context);
+const segmentsFor = (msg: string, katexEnabled: boolean, dollarSyntax: boolean, parenthesisSyntax: boolean) => {
+	const settings: Record<string, boolean> = {
+		Katex_Enabled: katexEnabled,
+		Katex_Dollar_Syntax: dollarSyntax,
+		Katex_Parenthesis_Syntax: parenthesisSyntax
+	};
+	jest.mocked(useSetting).mockImplementation(key => settings[key]);
+	const { result } = renderHook(() => useParseOptions());
+	return buildRenderSegments(parse(msg, result.current), context);
+};
 
 describe('markdown katex', () => {
 	it('serializes inline dollar math as a latex math span when dollar syntax is enabled', () => {

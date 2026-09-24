@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react-native';
 import { EnrichedMarkdownText } from 'react-native-enriched-markdown';
 
-import Markdown from '.';
+import Markdown from '..';
 
 jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: jest.fn(() => false)

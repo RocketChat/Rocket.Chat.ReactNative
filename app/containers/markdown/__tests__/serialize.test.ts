@@ -1,6 +1,6 @@
 import { parse } from '@rocket.chat/message-parser';
 
-import { buildRenderSegments, type ISerializeContext } from './serialize';
+import { buildRenderSegments, type ISerializeContext } from '../serialize';
 
 const baseContext: ISerializeContext = {
 	mentions: [],
