@@ -45,7 +45,6 @@ const Touchable = ({
 	const transX = useSharedValue(0);
 	const rowState = useSharedValue(0); // 0: closed, 1: right opened, -1: left opened
 	const gestureActive = useSharedValue(false);
-	const valueRef = useRef(0);
 	const consumedTouchRef = useRef(false);
 	const touchStartHandledRef = useRef(false);
 
@@ -61,7 +60,6 @@ const Touchable = ({
 		rowState.value = 0;
 		transX.value = withSpring(0, SWIPE_SPRING_CONFIG);
 		rowOffSet.value = 0;
-		valueRef.current = 0;
 		unregisterOpenSwipeItem(rid);
 	};
 
@@ -128,7 +126,7 @@ const Touchable = ({
 	const handleRelease = (event: GestureUpdateEvent<PanGestureHandlerEventPayload>) => {
 		const release = getSwipeRelease({
 			rowState: rowState.value as TRowState,
-			offset: valueRef.current + event.translationX,
+			offset: rowOffSet.value + event.translationX,
 			actionWidth: getActionWidth(width),
 			openWidth: getOpenWidth(width),
 			fullSwipeThreshold: getFullSwipeThreshold(width)
@@ -141,7 +139,6 @@ const Touchable = ({
 		rowState.value = release.rowState;
 		transX.value = withSpring(release.toValue, { ...SWIPE_SPRING_CONFIG, velocity: event.velocityX });
 		rowOffSet.value = release.toValue;
-		valueRef.current = release.toValue;
 		if (release.rowState !== 0) {
 			registerOpenSwipeItem({ rid, transX, rowState, rowOffSet });
 		} else {
