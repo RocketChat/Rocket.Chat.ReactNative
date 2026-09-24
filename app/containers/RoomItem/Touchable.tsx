@@ -1,10 +1,11 @@
 import { useRef, memo, type ReactElement } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import {
-	Gesture,
 	GestureDetector,
-	type GestureUpdateEvent,
-	type PanGestureHandlerEventPayload
+	type PanGestureActiveEvent,
+	useCompetingGestures,
+	useLongPressGesture,
+	usePanGesture
 } from 'react-native-gesture-handler';
 import { scheduleOnRN } from 'react-native-worklets';
 
@@ -90,7 +91,7 @@ const Touchable = ({
 		}
 	};
 
-	const handleRelease = (event: GestureUpdateEvent<PanGestureHandlerEventPayload>) => {
+	const handleRelease = (event: PanGestureActiveEvent) => {
 		const { translationX } = event;
 		valueRef.current += translationX;
 		let toValue = 0;
@@ -169,27 +170,29 @@ const Touchable = ({
 		valueRef.current = toValue;
 	};
 
-	const longPressGesture = Gesture.LongPress()
-		.minDuration(500)
-		.onStart(() => {
+	const longPressGesture = useLongPressGesture({
+		minDuration: 500,
+		onActivate: () => {
 			scheduleOnRN(handleLongPress);
-		});
+		}
+	});
 
-	const panGesture = Gesture.Pan()
-		.activeOffsetX([-10, 10]) // More sensitive horizontal detection
-		.failOffsetY([-20, 20]) // Fail on vertical movement to distinguish scrolling
-		.enabled(swipeEnabled)
-		.onUpdate(event => {
+	const panGesture = usePanGesture({
+		activeOffsetX: [-10, 10], // More sensitive horizontal detection
+		failOffsetY: [-20, 20], // Fail on vertical movement to distinguish scrolling
+		enabled: swipeEnabled,
+		onUpdate: event => {
 			transX.value = event.translationX + rowOffSet.value;
 			if (transX.value > 2 * width) transX.value = 2 * width;
-		})
-		.onEnd(event => {
+		},
+		onDeactivate: event => {
 			scheduleOnRN(handleRelease, event);
-		});
+		}
+	});
 
-	// Use Race instead of Simultaneous to prevent conflicts
+	// Use competing gestures instead of simultaneous to prevent conflicts
 	// Pan gesture will take priority over long press for horizontal swipes
-	const composedGesture = Gesture.Race(panGesture, longPressGesture);
+	const composedGesture = useCompetingGestures(panGesture, longPressGesture);
 
 	const animatedStyles = useAnimatedStyle(() => ({
 		transform: [{ translateX: transX.value }]

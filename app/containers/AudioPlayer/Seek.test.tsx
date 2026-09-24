@@ -1,22 +1,26 @@
 import { act, render, renderHook } from '@testing-library/react-native';
-import { Gesture, State } from 'react-native-gesture-handler';
+import { State, usePanGesture } from 'react-native-gesture-handler';
 import { fireGestureHandler } from 'react-native-gesture-handler/jest-utils';
 import { useSharedValue } from 'react-native-reanimated';
 
 import Seek from './Seek';
 
 jest.mock('~/theme', () => ({ useTheme: () => ({ colors: {} }) }));
+jest.mock('react-native-gesture-handler', () => {
+	const actual = jest.requireActual('react-native-gesture-handler');
+	return { ...actual, usePanGesture: jest.fn(actual.usePanGesture) };
+});
 
 const setup = () => {
-	const pan = jest.spyOn(Gesture, 'Pan');
 	const { result } = renderHook(() => ({ currentTime: useSharedValue(30), duration: useSharedValue(120) }));
 	const { currentTime, duration } = result.current;
 	const onChangeTime = jest.fn();
 	render(<Seek currentTime={currentTime} duration={duration} loaded onChangeTime={onChangeTime} />);
-	return { gesture: pan.mock.results[0].value, currentTime, onChangeTime };
+	const { results } = jest.mocked(usePanGesture).mock;
+	return { gesture: results[results.length - 1].value, currentTime, onChangeTime };
 };
 
-afterEach(() => jest.restoreAllMocks());
+afterEach(() => jest.clearAllMocks());
 
 test('a tap that never starts dragging preserves the paused position', async () => {
 	const { gesture, currentTime, onChangeTime } = setup();
