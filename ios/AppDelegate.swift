@@ -18,7 +18,6 @@ public class AppDelegate: ExpoAppDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
-    // Migrate pre-4.73 experimental databases before React Native boots (no db open yet).
     migrateLegacyExperimentalDatabases()
 
     // IMPORTANT: Initialize MMKV encryption FIRST, before any other initialization
@@ -72,20 +71,36 @@ public class AppDelegate: ExpoAppDelegate {
     return result
   }
 
-  // Rename pre-4.73 `<name>-experimental.db` files to unified names when missing; never overwrites.
+  // Renames <=4.73.0 `-experimental.db` files; a 0-byte target is one NotificationService created.
   private func migrateLegacyExperimentalDatabases() {
+    let fileManager = FileManager.default
     guard let suite = Bundle.main.object(forInfoDictionaryKey: "AppGroupIdentifier") as? String,
-      let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: suite),
-      let files = try? FileManager.default.contentsOfDirectory(at: containerURL, includingPropertiesForKeys: nil)
+      let containerURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: suite),
+      let files = try? fileManager.contentsOfDirectory(at: containerURL, includingPropertiesForKeys: nil)
     else {
       return
     }
-    for file in files {
-      let name = file.lastPathComponent
-      guard name.contains("-experimental.db") else { continue }
-      let target = containerURL.appendingPathComponent(name.replacingOccurrences(of: "-experimental.db", with: ".db"))
-      guard !FileManager.default.fileExists(atPath: target.path) else { continue }
-      try? FileManager.default.moveItem(at: file, to: target)
+    let legacySuffix = "-experimental.db"
+    databases: for legacy in files {
+      let name = legacy.lastPathComponent
+      guard name.hasSuffix(legacySuffix) else { continue }
+      let target = containerURL.appendingPathComponent(String(name.dropLast(legacySuffix.count)) + ".db")
+      if let targetSize = (try? fileManager.attributesOfItem(atPath: target.path))?[.size] as? Int, targetSize > 0 {
+        continue
+      }
+      for sidecar in ["-wal", "-shm", "-journal"] {
+        let legacySidecar = URL(fileURLWithPath: legacy.path + sidecar)
+        guard fileManager.fileExists(atPath: legacySidecar.path) else { continue }
+        let targetSidecar = URL(fileURLWithPath: target.path + sidecar)
+        try? fileManager.removeItem(at: targetSidecar)
+        do {
+          try fileManager.moveItem(at: legacySidecar, to: targetSidecar)
+        } catch {
+          continue databases
+        }
+      }
+      try? fileManager.removeItem(at: target)
+      try? fileManager.moveItem(at: legacy, to: target)
     }
   }
 
