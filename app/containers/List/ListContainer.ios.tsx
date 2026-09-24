@@ -9,6 +9,8 @@ import { useTheme } from '~/theme';
 import ListInfo from './ListInfo';
 import ListSection from './ListSection';
 import ListSeparator from './ListSeparator';
+import NativeListItem from './NativeListItem.ios';
+import { toNativeListItem } from './nativeListItemProps';
 import { NativeListContext } from './NativeListContext';
 import { ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 
@@ -55,7 +57,10 @@ const isSeparator = (element: ReactElement) => element.type === ListSeparator;
 const isInfo = (element: ReactElement): element is ReactElement<IInfoProps> => element.type === ListInfo;
 const isSection = (element: ReactElement): element is ReactElement<ISectionProps> => element.type === ListSection;
 const hasLeftIcon = (element: ReactElement) => Boolean((element.props as { left?: unknown }).left);
-const rowSelectionTag = (element: ReactElement) => (element.props as { selectionTag?: string }).selectionTag;
+const rowSelectionTag = (element: ReactElement) => {
+	const { selectionTag, testID } = element.props as { selectionTag?: string; testID?: string };
+	return selectionTag ?? testID;
+};
 
 const selectedTags = ({ selectedTag }: IListSelection) => (selectedTag ? [selectedTag] : []);
 
@@ -78,13 +83,18 @@ const ListContainer = ({ children, testID, selection }: IListContainer) => {
 		...selectionTag(row)
 	];
 
-	const renderRow = (row: ReactElement) => (
+	const renderHostedRow = (row: ReactElement) => (
 		<Group key={row.key} modifiers={rowModifiers(row)}>
 			<RNHostView matchContents>
 				<View style={{ width: rowWidth }}>{row}</View>
 			</RNHostView>
 		</Group>
 	);
+
+	const renderRow = (row: ReactElement) => {
+		const nativeItem = toNativeListItem(row);
+		return nativeItem ? <NativeListItem key={row.key} item={nativeItem} modifiers={selectionTag(row)} /> : renderHostedRow(row);
+	};
 
 	const renderSection = (section: ReactElement<ISectionProps>) => {
 		const { title, translateTitle, children: sectionChildren } = section.props;

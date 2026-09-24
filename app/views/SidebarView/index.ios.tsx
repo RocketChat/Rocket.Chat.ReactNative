@@ -8,10 +8,10 @@ import styles from './styles';
 import { type DrawerParamList } from '~/stacks/types';
 import SupportedVersionsWarnItem, { useIsSupportedVersionsWarnVisible } from './components/SupportedVersionsWarnItem';
 import CustomStatus, { useIsCustomStatusVisible } from './components/CustomStatus';
-import StackItem from './components/StackItem';
 import { useStackItems } from './components/useStackItems';
 import { ADMIN_SELECTION_TAG, getSidebarSelection } from './components/getSidebarSelection';
-import Admin, { useAdminRoute, useIsAdmin } from './components/Admin';
+import { useAdminRoute, useIsAdmin } from './components/Admin';
+import { sidebarNavigate } from './methods/sidebarNavigate';
 import Profile from './components/Profile';
 
 const currentRouteName = (navigation: DrawerNavigationProp<DrawerParamList>) => {
@@ -51,13 +51,25 @@ const SidebarView = ({ navigation }: { navigation: DrawerNavigationProp<DrawerPa
 				{stackItems.length ? (
 					<List.Section>
 						{stackItems.map(item => (
-							<StackItem key={item.testID} item={item} selectionTag={item.route ? item.testID : undefined} />
+							<List.Item
+								key={item.testID}
+								title={item.title}
+								left={() => <List.Icon name={item.icon} />}
+								onPress={item.onPress}
+								testID={item.testID}
+								disabled={item.disabled}
+							/>
 						))}
 					</List.Section>
 				) : null}
 				{isAdmin ? (
 					<List.Section>
-						<Admin currentScreen={currentScreen} selectionTag={ADMIN_SELECTION_TAG} />
+						<List.Item
+							title='Admin_Panel'
+							testID={ADMIN_SELECTION_TAG}
+							left={() => <List.Icon name='settings' />}
+							onPress={() => sidebarNavigate(adminRoute)}
+						/>
 					</List.Section>
 				) : null}
 			</ListContainer>

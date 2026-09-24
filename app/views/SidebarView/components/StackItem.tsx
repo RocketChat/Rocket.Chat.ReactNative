@@ -5,7 +5,7 @@ import * as List from '~/containers/List';
 import { NativeListContext } from '~/containers/List/NativeListContext';
 import { type IStackItem } from './useStackItems';
 
-const StackItem = ({ item }: { item: IStackItem; selectionTag?: string }) => {
+const StackItem = ({ item }: { item: IStackItem }) => {
 	const { colors } = useTheme();
 	const isInNativeList = useContext(NativeListContext);
 	const isHighlighted = item.selected && !isInNativeList;
