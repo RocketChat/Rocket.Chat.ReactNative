@@ -1,5 +1,5 @@
-import { type IListItem } from '../ListItem';
+import { type INativeListItem } from './types';
 
-const NativeListItem = (_: { item: IListItem }) => null;
+const NativeListItem = (_: INativeListItem) => null;
 
 export default NativeListItem;

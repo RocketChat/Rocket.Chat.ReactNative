@@ -1,20 +1,15 @@
-import { useContext, type ReactElement, type ReactNode } from 'react';
+import { useContext, type ReactElement } from 'react';
 import { Section, Text } from '@expo/ui/swift-ui';
 
 import ListInfo from '../ListInfo';
 import { flattenListChildren, isListSeparator } from '../listChildren';
 import { NativeListRowRendererContext } from './context';
 import { translateListText } from './itemProps';
+import { type INativeListSection } from './types';
 
 interface IInfoProps {
 	info: string;
 	translateInfo?: boolean;
-}
-
-export interface INativeListSection {
-	children: ReactNode;
-	title?: string;
-	translateTitle?: boolean;
 }
 
 const isInfo = (element: ReactElement): element is ReactElement<IInfoProps> => element.type === ListInfo;

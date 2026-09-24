@@ -1,5 +1,5 @@
-import { type ReactNode } from 'react';
+import { type INativeListSection } from './types';
 
-const NativeListSection = (_: { children: ReactNode; title?: string; translateTitle?: boolean }) => null;
+const NativeListSection = (_: INativeListSection) => null;
 
 export default NativeListSection;

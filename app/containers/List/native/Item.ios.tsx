@@ -19,6 +19,7 @@ import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsi
 import NativeListAccessory from './Accessory.ios';
 import NativeListIcon from './Icon.ios';
 import { type IListItem } from '../ListItem';
+import { type INativeListItem } from './types';
 import { describeNativeListAccessory } from './describeAccessory';
 import { BASE_HEIGHT, PADDING_HORIZONTAL } from '../constants';
 import { nativeListItemAccessibilityLabel, nativeListItemSubtitle, nativeListItemTitle, pressNativeListItem } from './itemProps';
@@ -73,7 +74,7 @@ const NativeListItemRow = ({ item, children }: { item: IListItem; children: Reac
 	);
 };
 
-const NativeListItem = ({ item }: { item: IListItem }) => {
+const NativeListItem = ({ item }: INativeListItem) => {
 	const { colors } = useTheme();
 	const subtitle = nativeListItemSubtitle(item);
 	const leading = describeNativeListAccessory(item.left?.());

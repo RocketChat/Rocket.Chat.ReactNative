@@ -1,16 +1,4 @@
-export interface INativeListPickerOption {
-	label: string;
-	value: string;
-	testID?: string;
-}
-
-export interface INativeListPicker {
-	title: string;
-	testID?: string;
-	options: INativeListPickerOption[];
-	selection: string;
-	onSelectionChange: (value: string) => void;
-}
+import { type INativeListPicker } from './types';
 
 const NativeListPicker = (_: INativeListPicker) => null;
 

@@ -1,7 +1,7 @@
 import { act, render } from '@testing-library/react-native';
 
 import { NativeListContext } from '~/containers/List/native/context';
-import { type INativeListPicker } from '~/containers/List/native/Picker';
+import { type INativeListPicker } from '~/containers/List/native/types';
 import ListPicker from '../ListPicker';
 
 const mockPicker = jest.fn();

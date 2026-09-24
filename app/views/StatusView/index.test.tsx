@@ -7,7 +7,7 @@ import { setUser } from '~/actions/login';
 import { addSettings } from '~/actions/settings';
 import { selectServerSuccess } from '~/actions/server';
 import { initStore } from '~/lib/store/auxStore';
-import { type INativeListPicker } from '~/containers/List/native/Picker';
+import { type INativeListPicker } from '~/containers/List/native/types';
 import StatusView from './index';
 
 const mockNavigationSetOptions = jest.fn();
