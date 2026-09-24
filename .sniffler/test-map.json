@@ -330,6 +330,16 @@
 		]
 	},
 	{
+		"test": ".maestro/tests/room/attachment-send.yaml",
+		"dependsOn": [
+			"app/views/RoomView/**",
+			"app/containers/MessageComposer/**",
+			"app/lib/methods/helpers/ImagePicker/**",
+			"app/lib/methods/sendFileMessage/**",
+			"app/lib/hooks/useAltTextSupported.ts"
+		]
+	},
+	{
 		"test": ".maestro/tests/room/reaction-picker-small-screen.yaml",
 		"dependsOn": ["app/containers/EmojiPicker/**", "app/containers/ReactionsList/**"]
 	},
