@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import { type ReactElement, useEffect, useMemo, useRef, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Fragment, type ReactElement, useEffect, useMemo, useRef, useState } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -180,44 +180,81 @@ const StatusView = (): ReactElement => {
 		if (date) setClearAfterDate(date);
 	};
 
+	const statusInput = (
+		<ControlledFormTextInput
+			name='statusText'
+			control={control}
+			label={I18n.t('Status')}
+			value={statusText}
+			containerStyle={styles.inputContainer}
+			inputStyle={styles.inputStyle}
+			testID='status-view-input'
+			error={errors.statusText?.message}
+		/>
+	);
+
+	const renderStatus = ({ id, name }: IStatus) => (
+		<List.Radio
+			isSelected={inputValues.status === id}
+			additionalAccessibilityLabel={inputValues.status === id ? I18n.t('Current_Status') : ''}
+			title={name}
+			onPress={() => selectStatus(id)}
+			testID={`status-view-${id}`}
+			value={id}
+			left={() => <StatusIcon size={24} status={id} />}
+		/>
+	);
+
+	const renderFooter = (showClearAfterPicker: boolean) => (
+		<FooterComponent
+			supportsStatusExpiry={showClearAfterPicker}
+			clearAfter={clearAfter}
+			clearAfterDate={clearAfterDate}
+			onClearAfterChange={handleClearAfterChange}
+			disabled={isStatusChanged()}
+			onSubmit={submit}
+		/>
+	);
+
+	if (isIOS) {
+		return (
+			<SafeAreaView testID='status-view' style={{ backgroundColor: colors.surfaceTint, paddingBottom: bottom }}>
+				{statusInput}
+				<List.Container>
+					<List.Section>
+						{statusType.map(status => (
+							<Fragment key={status.id}>{renderStatus(status)}</Fragment>
+						))}
+					</List.Section>
+					{supportsStatusExpiry ? (
+						<ClearAfterPicker value={clearAfter} customDate={clearAfterDate} onChange={handleClearAfterChange} />
+					) : null}
+				</List.Container>
+				{renderFooter(false)}
+			</SafeAreaView>
+		);
+	}
+
 	return (
-		<SafeAreaView testID='status-view' style={{ backgroundColor: colors.surfaceTint, paddingBottom: bottom }}>
-			<ControlledFormTextInput
-				name='statusText'
-				control={control}
-				label={I18n.t('Status')}
-				value={statusText}
-				containerStyle={styles.inputContainer}
-				inputStyle={styles.inputStyle}
-				testID='status-view-input'
-				error={errors.statusText?.message}
-			/>
-			<List.Container>
-				<List.Section>
-					{statusType.map(({ id, name }) => (
-						<List.Radio
-							key={id}
-							isSelected={inputValues.status === id}
-							additionalAccessibilityLabel={inputValues.status === id ? I18n.t('Current_Status') : ''}
-							title={name}
-							onPress={() => selectStatus(id)}
-							testID={`status-view-${id}`}
-							value={id}
-							left={() => <StatusIcon size={24} status={id} />}
-						/>
-					))}
-				</List.Section>
-				{isIOS && supportsStatusExpiry ? (
-					<ClearAfterPicker value={clearAfter} customDate={clearAfterDate} onChange={handleClearAfterChange} />
-				) : null}
-			</List.Container>
-			<FooterComponent
-				supportsStatusExpiry={supportsStatusExpiry && !isIOS}
-				clearAfter={clearAfter}
-				clearAfterDate={clearAfterDate}
-				onClearAfterChange={handleClearAfterChange}
-				disabled={isStatusChanged()}
-				onSubmit={submit}
+		<SafeAreaView testID='status-view'>
+			<FlatList
+				data={statusType}
+				keyExtractor={item => item.id}
+				renderItem={({ item }) => (
+					<>
+						{renderStatus(item)}
+						<List.Separator />
+					</>
+				)}
+				ListHeaderComponent={
+					<>
+						{statusInput}
+						<List.Separator />
+					</>
+				}
+				ListFooterComponent={renderFooter(supportsStatusExpiry)}
+				style={{ backgroundColor: colors.surfaceTint }}
+				contentContainerStyle={{ paddingBottom: bottom }}
 			/>
 		</SafeAreaView>
 	);
