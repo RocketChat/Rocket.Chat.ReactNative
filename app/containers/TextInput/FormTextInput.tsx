@@ -19,6 +19,7 @@ import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { TextInput } from './TextInput';
 import { isIOS } from '~/lib/methods/helpers';
 import Touch from '../Touch';
+import { GlassBackground, supportsLiquidGlass } from './GlassBackground';
 
 const styles = StyleSheet.create({
 	error: {
@@ -72,6 +73,11 @@ const styles = StyleSheet.create({
 	iconRight: {
 		right: 12
 	},
+	glassInput: {
+		borderWidth: 0,
+		borderRadius: 999,
+		backgroundColor: 'transparent'
+	},
 	clearInputIcon: {
 		width: 20,
 		height: 20
@@ -91,6 +97,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	iconRight?: TIconsName;
 	left?: ReactElement;
 	onClearInput?: () => void;
+	glass?: boolean;
 }
 
 const getInputError = (error: unknown): string => {
@@ -120,12 +127,14 @@ export const FormTextInput = ({
 	placeholder,
 	accessibilityLabel,
 	showErrorMessage = true,
+	glass = false,
 	...inputProps
 }: IRCTextInputProps): ReactElement => {
 	const { colors } = useTheme();
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
 	const inputError = getInputError(error);
+	const showGlass = glass && supportsLiquidGlass;
 	// iOS 26 surfaces a system "Save Password?" sheet asynchronously after any
 	// credential-classified field submit. It overlays the app and blocks
 	// XCUITest hit-testing, breaking Maestro flows that interact with the
@@ -161,6 +170,7 @@ export const FormTextInput = ({
 					) : null}
 
 					<View accessible={false} style={styles.wrap}>
+						{showGlass ? <GlassBackground /> : null}
 						<TextInput
 							accessible
 							accessibilityLabel={accessibilityLabelText}
@@ -178,7 +188,8 @@ export const FormTextInput = ({
 											borderColor: colors.buttonBackgroundDangerDefault
 										}
 									: {},
-								inputStyle
+								inputStyle,
+								showGlass && styles.glassInput
 							]}
 							// @ts-ignore ref error
 							ref={inputRef}

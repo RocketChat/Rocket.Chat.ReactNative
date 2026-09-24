@@ -189,6 +189,7 @@ const StatusView = (): ReactElement => {
 			containerStyle={styles.inputContainer}
 			inputStyle={styles.inputStyle}
 			testID='status-view-input'
+			glass
 			error={errors.statusText?.message}
 		/>
 	);

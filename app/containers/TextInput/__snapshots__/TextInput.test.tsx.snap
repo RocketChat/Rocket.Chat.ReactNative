@@ -100,6 +100,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                   {},
                   undefined,
+                  false,
                 ],
                 {
                   "textAlign": "auto",
@@ -239,6 +240,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                   {},
                   undefined,
+                  false,
                 ],
                 {
                   "textAlign": "auto",
@@ -379,6 +381,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                   {},
                   undefined,
+                  false,
                 ],
                 {
                   "textAlign": "auto",
@@ -551,6 +554,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   },
                   {},
                   undefined,
+                  false,
                 ],
                 {
                   "textAlign": "auto",
@@ -794,6 +798,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
                   },
                   {},
                   undefined,
+                  false,
                 ],
                 {
                   "textAlign": "auto",
@@ -897,6 +902,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
                   },
                   {},
                   undefined,
+                  false,
                 ],
                 {
                   "textAlign": "auto",
@@ -1028,6 +1034,7 @@ https://open.rocket.chat/images/logo/android-chrome-512x512.png
                   },
                   {},
                   undefined,
+                  false,
                 ],
                 {
                   "textAlign": "auto",
@@ -1145,6 +1152,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                   },
                   {},
                   undefined,
+                  false,
                 ],
                 {
                   "textAlign": "auto",
@@ -1251,6 +1259,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                   },
                   {},
                   undefined,
+                  false,
                 ],
                 {
                   "textAlign": "auto",
@@ -1492,6 +1501,7 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
                   },
                   {},
                   undefined,
+                  false,
                 ],
                 {
                   "textAlign": "auto",
@@ -1595,6 +1605,7 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
                   },
                   {},
                   undefined,
+                  false,
                 ],
                 {
                   "textAlign": "auto",

@@ -4,13 +4,12 @@ import { StyleSheet, type TextInputProps, View } from 'react-native';
 import { useTheme } from '~/theme';
 import I18n from '~/i18n';
 import { FormTextInput } from '../TextInput';
+import { supportsLiquidGlass } from '../TextInput/GlassBackground';
 
 const styles = StyleSheet.create({
 	inputContainer: {
-		marginHorizontal: 12,
-		marginTop: 16,
-		// override the default margin bottom of the FormTextInput
-		marginBottom: 16
+		marginHorizontal: 16,
+		marginVertical: 12
 	}
 });
 
@@ -25,7 +24,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps) =>
 	};
 
 	return (
-		<View testID='searchbox' style={{ backgroundColor: colors.surfaceRoom }}>
+		<View testID='searchbox' style={{ backgroundColor: supportsLiquidGlass ? colors.surfaceTint : colors.surfaceRoom }}>
 			<FormTextInput
 				autoCapitalize='none'
 				autoCorrect={false}
@@ -39,7 +38,9 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps) =>
 				value={text}
 				testID={testID}
 				onClearInput={() => internalOnChangeText('')}
-				iconRight={'search'}
+				iconLeft={supportsLiquidGlass ? 'search' : undefined}
+				iconRight={supportsLiquidGlass ? undefined : 'search'}
+				glass
 			/>
 		</View>
 	);
