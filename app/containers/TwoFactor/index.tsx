@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, memo } from 'react';
 import { AccessibilityInfo, View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
 import Modal from 'react-native-modal';
@@ -159,9 +159,7 @@ const TwoFactor = memo(() => {
 		<Modal
 			customBackdrop={<View aria-hidden style={[styles.overlay, { backgroundColor: colors.overlayBackground }]} />}
 			avoidKeyboard
-			useNativeDriver
-			isVisible={visible}
-			hideModalContentWhileAnimating>
+			isVisible={visible}>
 			<GestureHandlerRootView style={styles.container} testID='two-factor'>
 				<View
 					style={[

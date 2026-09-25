@@ -1,6 +1,6 @@
 import { memo, useImperativeHandle, useState } from 'react';
 import { InteractionManager, StyleSheet, type TextInput, View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import Modal from 'react-native-modal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -67,7 +67,7 @@ const JoinCode = memo(({ rid, t, onJoin, ref }: IJoinCodeProps) => {
 	useImperativeHandle(ref, () => ({ show }));
 
 	return (
-		<Modal avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
+		<Modal avoidKeyboard isVisible={visible}>
 			<GestureHandlerRootView style={styles.container} testID='join-code'>
 				<View
 					style={[
