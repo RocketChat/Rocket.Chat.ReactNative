@@ -8,24 +8,50 @@ import { SortBy } from '~/lib/constants/constantDisplayMode';
 import database from '~/lib/database';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { getUserSelector } from '~/selectors/login';
+import {
+	CHANNELS_GROUP,
+	CONVERSATIONS_GROUP,
+	DIRECT_MESSAGES_GROUP,
+	DISCUSSIONS_GROUP,
+	FAVORITES_GROUP,
+	getGroupOrder,
+	TEAMS_GROUP
+} from './sidebarGroupOrder';
 
 const CHATS_HEADER = 'Chats';
 const UNREAD_HEADER = 'Unread';
-const FAVORITES_HEADER = 'Favorites';
-const DISCUSSIONS_HEADER = 'Discussions';
-const TEAMS_HEADER = 'Teams';
-const CHANNELS_HEADER = 'Channels';
-const DM_HEADER = 'Direct_Messages';
 const OMNICHANNEL_HEADER_IN_PROGRESS = 'Open_Livechats';
 const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
 const CUSTOM_CATEGORIES_LICENSE_MODULE = 'experimental-enterprise-features';
 const NO_CATEGORIES: ISidebarCategory[] = [];
 
 const filterIsUnread = (s: TSubscriptionModel) => (s.alert || s.unread) && !s.hideUnreadStatus;
-const filterIsFavorite = (s: TSubscriptionModel) => s.f;
 const filterIsOmnichannel = (s: TSubscriptionModel) => s.t === 'l';
-const filterIsTeam = (s: TSubscriptionModel) => s.teamMain;
-const filterIsDiscussion = (s: TSubscriptionModel) => s.prid;
+
+const getRoomGroup = (subscription: TSubscriptionModel, groups: Map<string, TSubscriptionModel[]>) => {
+	if (subscription.category && groups.has(subscription.category)) {
+		return subscription.category;
+	}
+	if (subscription.f && groups.has(FAVORITES_GROUP)) {
+		return FAVORITES_GROUP;
+	}
+	if (subscription.teamMain && groups.has(TEAMS_GROUP)) {
+		return TEAMS_GROUP;
+	}
+	if (subscription.prid && groups.has(DISCUSSIONS_GROUP)) {
+		return DISCUSSIONS_GROUP;
+	}
+	if ((subscription.t === 'c' || subscription.t === 'p') && groups.has(CHANNELS_GROUP)) {
+		return CHANNELS_GROUP;
+	}
+	if (subscription.t === 'd' && groups.has(DIRECT_MESSAGES_GROUP)) {
+		return DIRECT_MESSAGES_GROUP;
+	}
+	if (groups.has(CONVERSATIONS_GROUP)) {
+		return CONVERSATIONS_GROUP;
+	}
+	return undefined;
+};
 
 const addRoomsGroup = (data: TSubscriptionModel[], header: string, allData: TSubscriptionModel[], title?: string) => {
 	if (data.length > 0) {
@@ -47,10 +73,9 @@ export const useSubscriptions = () => {
 	const { sortBy, showUnread, showFavorites, groupByType } = useAppSelector(state => state.sortPreferences, shallowEqual);
 	const hasCustomCategoriesLicense = useAppSelector(state => state.enterpriseModules.includes(CUSTOM_CATEGORIES_LICENSE_MODULE));
 	const sidebarCategories = useAppSelector(state => getUserSelector(state).sidebarCategories ?? NO_CATEGORIES);
-	const customCategories = useMemo(
-		() => (hasCustomCategoriesLicense ? sidebarCategories.filter(category => !category.default) : NO_CATEGORIES),
-		[hasCustomCategoriesLicense, sidebarCategories]
-	);
+	const categories = hasCustomCategoriesLicense ? sidebarCategories : NO_CATEGORIES;
+	const customCategories = useMemo(() => categories.filter(category => !category.default), [categories]);
+	const groupOrder = useMemo(() => getGroupOrder(categories), [categories]);
 	const hasCustomCategories = customCategories.length > 0;
 	const isGrouping = showUnread || showFavorites || groupByType || hasCustomCategories;
 
@@ -96,34 +121,45 @@ export const useSubscriptions = () => {
 					tempChats = addRoomsGroup(unread, UNREAD_HEADER, tempChats);
 				}
 
-				customCategories.forEach(category => {
-					const categoryChats = chats.filter(s => s.category === category._id);
-					chats = chats.filter(s => s.category !== category._id);
-					tempChats = addRoomsGroup(categoryChats, category._id, tempChats, category.name);
+				const isVisibleGroup = (key: string) => {
+					switch (key) {
+						case FAVORITES_GROUP:
+							return showFavorites;
+						case TEAMS_GROUP:
+						case DISCUSSIONS_GROUP:
+						case CHANNELS_GROUP:
+						case DIRECT_MESSAGES_GROUP:
+							return groupByType;
+						case CONVERSATIONS_GROUP:
+							return !groupByType;
+						default:
+							return customCategories.some(category => category._id === key);
+					}
+				};
+				const visibleGroups = groupOrder.filter(isVisibleGroup);
+				const groups = new Map(visibleGroups.map(key => [key, [] as TSubscriptionModel[]]));
+				chats.forEach(subscription => {
+					const group = getRoomGroup(subscription, groups);
+					if (group) {
+						groups.get(group)?.push(subscription);
+					}
 				});
 
-				// favorites
-				if (showFavorites) {
-					const favorites = chats.filter(s => filterIsFavorite(s));
-					chats = chats.filter(s => !filterIsFavorite(s));
-					tempChats = addRoomsGroup(favorites, FAVORITES_HEADER, tempChats);
-				}
-
-				// type
-				if (groupByType) {
-					const teams = chats.filter(s => filterIsTeam(s));
-					const discussions = chats.filter(s => filterIsDiscussion(s));
-					const channels = chats.filter(s => (s.t === 'c' || s.t === 'p') && !filterIsDiscussion(s) && !filterIsTeam(s));
-					const direct = chats.filter(s => s.t === 'd' && !filterIsDiscussion(s) && !filterIsTeam(s));
-					tempChats = addRoomsGroup(teams, TEAMS_HEADER, tempChats);
-					tempChats = addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
-					tempChats = addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
-					tempChats = addRoomsGroup(direct, DM_HEADER, tempChats);
-				} else if (showUnread || showFavorites || isOmnichannelAgent || hasCustomCategories) {
-					tempChats = addRoomsGroup(chats, CHATS_HEADER, tempChats);
-				} else {
-					tempChats = chats;
-				}
+				const hasChatsHeader = showUnread || showFavorites || isOmnichannelAgent || hasCustomCategories;
+				visibleGroups.forEach(key => {
+					const groupChats = groups.get(key) ?? [];
+					const customCategory = customCategories.find(category => category._id === key);
+					if (customCategory) {
+						tempChats.push({ rid: key, separator: true, name: customCategory.name } as TSubscriptionModel);
+						tempChats = tempChats.concat(groupChats);
+					} else if (key !== CONVERSATIONS_GROUP) {
+						tempChats = addRoomsGroup(groupChats, key, tempChats);
+					} else if (hasChatsHeader) {
+						tempChats = addRoomsGroup(groupChats, CHATS_HEADER, tempChats);
+					} else {
+						tempChats = tempChats.concat(groupChats);
+					}
+				});
 
 				// const chatsUpdate = tempChats.map(item => item.rid);
 
@@ -147,7 +183,8 @@ export const useSubscriptions = () => {
 		roles,
 		server,
 		customCategories,
-		hasCustomCategories
+		hasCustomCategories,
+		groupOrder
 	]);
 
 	return {
