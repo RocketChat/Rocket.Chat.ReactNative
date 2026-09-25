@@ -14,6 +14,7 @@ import { getThreadMessageById } from '~/lib/database/services/ThreadMessage';
 import { store as reduxStore } from '~/lib/store/auxStore';
 import { addUserTyping, clearUserTyping, removeUserTyping } from '~/actions/usersTyping';
 import { debounce } from '../helpers';
+import { emitter } from '../helpers/emitter';
 import { subscribeRoom, unsubscribeRoom } from '~/actions/room';
 import { Encryption } from '~/lib/encryption';
 import {
@@ -138,6 +139,11 @@ export default class RoomSubscription {
 				if (!activities?.length) {
 					reduxStore.dispatch(removeUserTyping(name));
 				}
+			}
+		} else if (ev === 'videoconf') {
+			const [callId] = ddpMessage.fields.args;
+			if (typeof callId === 'string') {
+				emitter.emit('videoConfUpdated', { rid: _rid, callId });
 			}
 		} else if (ev === 'deleteMessage') {
 			InteractionManager.runAfterInteractions(async () => {
