@@ -7,20 +7,9 @@ tags:
 - runFlow:
     when:
       platform: Android
-      visible:
-        id: 'custom-header-back'
     commands:
       - tapOn:
-          id: 'custom-header-back'
-
-- runFlow:
-    when:
-      platform: Android
-      visible:
-        id: 'header-back'
-    commands:
-      - tapOn:
-          id: 'header-back'
+          id: '(custom-)?header-back'
 
 - runFlow:
     when:

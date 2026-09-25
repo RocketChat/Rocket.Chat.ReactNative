@@ -3,6 +3,7 @@ name: Search room
 tags:
   - 'util'
 ---
+- runFlow: './pop-to-rooms-list.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'

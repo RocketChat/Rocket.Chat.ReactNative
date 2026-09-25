@@ -4,6 +4,7 @@ tags:
   - 'util'
 
 ---
+- runFlow: './pop-to-rooms-list.yaml'
 - waitForAnimationToEnd
 - scrollUntilVisible:
     element:
