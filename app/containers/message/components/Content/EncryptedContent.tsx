@@ -12,9 +12,9 @@ const EncryptedContent = () => {
 		<ContentWrapper>
 			<Text
 				style={[styles.textInfo, { color: colors.fontSecondaryInfo }]}
-				accessibilityLabel={I18n.t('Encrypted_message')}
+				accessibilityLabel={I18n.t('E2E_Key_Error')}
 				testID='message-encrypted'>
-				{I18n.t('Encrypted_message')}
+				{I18n.t('E2E_Key_Error')}
 			</Text>
 		</ContentWrapper>
 	);

@@ -55,7 +55,7 @@ export const useMessageAccessibilityLabel = (): string => {
 		label = threadMessageLabel;
 	}
 	if (isEncrypted) {
-		label = i18n.t('Encrypted_message');
+		label = i18n.t('E2E_Key_Error');
 	}
 	if (isInfo) {
 		label = getInfoMessage({ type, role, msg, author, comment });
@@ -66,7 +66,7 @@ export const useMessageAccessibilityLabel = (): string => {
 	const user = useRealName ? author?.name : author?.username || '';
 	const readOrUnreadLabel = !unread && unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
 	const readReceipt = isReadReceiptEnabled && !isInfo ? readOrUnreadLabel : '';
-	const encryptedMessageLabel = isEncrypted ? i18n.t('Encrypted_message') : '';
+	const encryptedMessageLabel = isEncrypted ? i18n.t('E2E_Key_Error') : '';
 	const translatedLanguage = translationLanguages[autoTranslateLanguage || 'en'];
 	const translated = isTranslated ? i18n.t('Message_translated_into_idiom', { idiom: translatedLanguage }) : '';
 	// For translated messages, the translated body is announced by the inner A11y.Index node, so the outer label
