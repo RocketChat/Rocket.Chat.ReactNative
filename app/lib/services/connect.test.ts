@@ -1,5 +1,6 @@
 import { connect, determineAuthType, disconnect, login, loginTOTP } from './connect';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
+import { useAppsStore } from '../apps/appsStore';
 import { pendingHangups } from './voip/pendingHangups';
 import { setUser } from '~/actions/login';
 import database from '../database';
@@ -425,6 +426,20 @@ describe('VoIP media session lifecycle (disconnect)', () => {
 	it('calls mediaSessionInstance.reset when disconnect runs', () => {
 		disconnect();
 		expect(mediaSessionInstance.reset).toHaveBeenCalledTimes(1);
+	});
+});
+
+describe('apps store lifecycle (disconnect)', () => {
+	it('clears the apps store when disconnect runs', () => {
+		useAppsStore.setState({
+			actionButtons: [{ appId: 'app-id', actionId: 'action-id', labelI18n: 'label', context: 'messageBoxAction' }],
+			translations: { 'app-id': { en: { label: 'Label' } } }
+		});
+
+		disconnect();
+
+		expect(useAppsStore.getState().actionButtons).toEqual([]);
+		expect(useAppsStore.getState().translations).toEqual({});
 	});
 });
 

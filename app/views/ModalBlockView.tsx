@@ -13,7 +13,7 @@ import { textParser } from '../containers/UIKit/utils';
 import Navigation from '../lib/navigation/appNavigation';
 import { type MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions, type TModalAction } from '../containers/UIKit/interfaces';
-import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods/triggerActions';
+import { triggerBlockAction, triggerCancel, triggerSubmitView } from '~/lib/apps/triggerActions';
 import { type IApplicationState, type TAnyMessageModel } from '../definitions';
 import KeyboardView from '../containers/KeyboardView';
 import { MessageRoomProvider } from '../containers/message/stores/MessageRoomStore';

@@ -17,6 +17,7 @@ export type TEmitterEvents = TDynamicMediaDownloadEvents & {
 	setComposerHeightThread: number;
 	audioFocused: string;
 	navigationReady: undefined;
+	showToast: { message: string };
 };
 
 export type TKeyEmitterEvent = keyof TEmitterEvents;

@@ -1,24 +1,24 @@
 import { ActionTypes, ModalActions } from '~/containers/UIKit/interfaces';
-import { generateTriggerId, handlePayloadUserInteraction, triggerAction } from './actions';
-import EventEmitter from './helpers/events';
-import fetch from './helpers/fetch';
-import Navigation from '../navigation/appNavigation';
+import { generateTriggerId, handlePayloadUserInteraction, triggerAction } from '../actions';
+import EventEmitter from '~/lib/methods/helpers/events';
+import fetch from '~/lib/methods/helpers/fetch';
+import Navigation from '~/lib/navigation/appNavigation';
 
-jest.mock('./helpers', () => ({
+jest.mock('~/lib/methods/helpers', () => ({
 	random: jest.fn(() => 'trigger-fixed-id')
 }));
 
-jest.mock('./helpers/fetch', () => jest.fn());
+jest.mock('~/lib/methods/helpers/fetch', () => jest.fn());
 
-jest.mock('./helpers/events', () => ({
+jest.mock('~/lib/methods/helpers/events', () => ({
 	emit: jest.fn()
 }));
 
-jest.mock('../navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	navigate: jest.fn()
 }));
 
-jest.mock('../services/sdk', () => ({
+jest.mock('~/lib/services/sdk', () => ({
 	__esModule: true,
 	default: {
 		currentLogin: {
@@ -208,19 +208,28 @@ describe('actions', () => {
 			await expect(triggerAction(actionInput)).rejects.toThrow('Invalid JSON response from server');
 		});
 
-		it('throws when response has unknown modal interaction type', async () => {
+		it('reports an unsupported surface this client cannot render', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
 				text: () =>
 					Promise.resolve(
 						JSON.stringify({
-							type: 'unknown.legacy',
+							type: 'contextual_bar.open',
 							triggerId: 'trigger-fixed-id'
 						})
 					)
 			} as Response);
 
-			await expect(triggerAction(actionInput)).rejects.toThrow('Unknown modal interaction type: unknown.legacy');
+			await expect(triggerAction(actionInput)).resolves.toBe(ModalActions.UNSUPPORTED);
+		});
+
+		it('reports no action when an app only acknowledges the interaction', async () => {
+			mockedFetch.mockResolvedValueOnce({
+				ok: true,
+				text: () => Promise.resolve(JSON.stringify({ success: true }))
+			} as Response);
+
+			await expect(triggerAction(actionInput)).resolves.toBeUndefined();
 		});
 
 		it('invalidates trigger id after processing', async () => {

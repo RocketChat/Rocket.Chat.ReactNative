@@ -10,6 +10,7 @@ import CustomStatus from './components/CustomStatus';
 import Stacks from './components/Stacks';
 import Admin from './components/Admin';
 import Profile from './components/Profile';
+import Apps from './components/Apps';
 
 const SidebarView = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
 	const [currentScreen, setCurrentScreen] = useState<string | null>(null);
@@ -30,6 +31,7 @@ const SidebarView = ({ navigation }: { navigation: DrawerNavigationProp<DrawerPa
 				<CustomStatus />
 				<Stacks currentScreen={currentScreen} />
 				<Admin currentScreen={currentScreen} />
+				<Apps navigation={navigation} />
 			</ScrollView>
 		</View>
 	);

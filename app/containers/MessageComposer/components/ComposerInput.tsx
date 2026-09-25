@@ -34,7 +34,7 @@ import { emitter } from '~/lib/methods/helpers/emitter';
 import { useComposerRid, useComposerRoomTitle, useComposerSharing, useComposerTmid, useComposerType } from '../ComposerStore';
 import { useMessageAction, useMessageActionStoreApi } from '~/containers/message/stores/MessageActionStore';
 import { getMessageById } from '~/lib/database/services/Message';
-import { generateTriggerId } from '~/lib/methods/actions';
+import { generateTriggerId } from '~/lib/apps/actions';
 import { executeCommandPreview } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';

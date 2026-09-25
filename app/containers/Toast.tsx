@@ -5,6 +5,7 @@ import EasyToast from 'react-native-easy-toast';
 import { useUserPreferences } from '../lib/methods/userPreferences';
 import { type TAlertDisplayType } from '../views/AccessibilityAndAppearanceView';
 import EventEmitter from '../lib/methods/helpers/events';
+import { emitter } from '../lib/methods/helpers/emitter';
 import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import { ALERT_DISPLAY_TYPE_PREFERENCES_KEY } from '../lib/constants/keys';
@@ -32,8 +33,10 @@ const Toast = (): ReactElement => {
 
 	useEffect(() => {
 		listener = EventEmitter.addEventListener(LISTENER, showToast);
+		emitter.on('showToast', showToast);
 		return () => {
 			EventEmitter.removeListener(LISTENER, listener);
+			emitter.off('showToast', showToast);
 		};
 	}, [alertDisplayType]);
 

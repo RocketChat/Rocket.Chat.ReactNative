@@ -18,7 +18,8 @@ import { type TSupportedThemes } from '~/theme';
 export const ActionTypes = {
 	ACTION: 'blockAction',
 	SUBMIT: 'viewSubmit',
-	CLOSED: 'viewClosed'
+	CLOSED: 'viewClosed',
+	ACTION_BUTTON: 'actionButton'
 } as const;
 
 export const ContainerTypes = {
@@ -31,7 +32,8 @@ export const ModalActions = {
 	OPEN: 'modal.open',
 	CLOSE: 'modal.close',
 	UPDATE: 'modal.update',
-	ERRORS: 'errors'
+	ERRORS: 'errors',
+	UNSUPPORTED: 'unsupported'
 } as const;
 
 export type TActionType = (typeof ActionTypes)[keyof typeof ActionTypes];
@@ -112,6 +114,7 @@ export interface ITriggerAction {
 	blockId?: string;
 	rid?: string;
 	mid?: string;
+	tmid?: string;
 	viewId?: string;
 	payload?: any;
 	view?: IView;
