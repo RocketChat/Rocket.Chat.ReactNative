@@ -99,16 +99,15 @@
 		"react-native-device-info": "11.1.0",
 		"react-native-easy-grid": "0.2.2",
 		"react-native-easy-toast": "2.3.0",
+		"react-native-enriched-markdown": "1.0.2",
 		"react-native-external-keyboard": "^0.9.0",
 		"react-native-gesture-handler": "~2.32.0",
 		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker#47092e8c90550a54d45fe307f7cb2a24c9535ed5",
 		"react-native-incall-manager": "^4.2.1",
-		"react-native-katex": "git+https://github.com/RocketChat/react-native-katex.git",
 		"react-native-keyboard-controller": "1.18.5",
 		"react-native-keychain": "10.0.0",
 		"react-native-linear-gradient": "2.8.3",
 		"react-native-localize": "3.7.0",
-		"react-native-math-view": "3.9.5",
 		"react-native-mime-types": "2.3.0",
 		"react-native-mmkv": "^4.3.2",
 		"react-native-modal": "13.0.1",
@@ -158,6 +157,7 @@
 			"core-js-pure",
 			"esbuild",
 			"protobufjs",
+			"react-native-enriched-markdown",
 			"sharp",
 			"unrs-resolver"
 		]
@@ -168,7 +168,7 @@
 		"@babel/plugin-transform-named-capturing-groups-regex": "~7.25.9",
 		"@babel/preset-env": "~7.25.9",
 		"@babel/runtime": "~7.25.9",
-		"@bugsnag/cli": "^3.2.1",
+		"@bugsnag/cli": "^3.10.6",
 		"@bugsnag/source-maps": "^2.3.3",
 		"@gorhom/bottom-sheet": "^5",
 		"@react-native-community/cli": "20.0.0",
@@ -241,5 +241,9 @@
 	},
 	"volta": {
 		"node": "22.13.0"
+	},
+	"enriched-markdown": {
+		"enableCodeHighlight": false,
+		"enableMath": true
 	}
 }
