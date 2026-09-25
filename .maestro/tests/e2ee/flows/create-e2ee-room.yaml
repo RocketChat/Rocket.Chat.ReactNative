@@ -22,8 +22,10 @@ tags:
     visible:
       id: 'select-users-view'
     timeout: 60000
-- tapOn:
-    id: 'select-users-view-search'
+- runFlow:
+    file: '../../../helpers/tap-search-field.yaml'
+    env:
+      SEARCH_ID: 'select-users-view-search'
 - inputText: ${USER_TO_ADD}
 - extendedWaitUntil:
     visible:

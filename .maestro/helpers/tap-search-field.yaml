@@ -1,0 +1,33 @@
+appId: ${APP_ID}
+name: Tap search field
+tags:
+  - 'util'
+---
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - runFlow:
+          when:
+            notVisible:
+              id: 'magnifyingglass'
+          commands:
+            - swipe:
+                start: 50%, 30%
+                end: 50%, 60%
+      - extendedWaitUntil:
+          visible:
+            id: 'magnifyingglass'
+          timeout: 60000
+      - tapOn:
+          id: 'magnifyingglass'
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: ${SEARCH_ID}
+          timeout: 60000
+      - tapOn:
+          id: ${SEARCH_ID}

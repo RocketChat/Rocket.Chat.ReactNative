@@ -1,5 +1,4 @@
 import { type ReactNode } from 'react';
-import { I18nManager } from 'react-native';
 import { Button, HStack, RNHostView, Spacer, Text, VStack } from '@expo/ui/swift-ui';
 import {
 	accessibilityLabel,
@@ -18,13 +17,12 @@ import { useTheme } from '~/theme';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import NativeListAccessory from './Accessory.ios';
 import NativeListIcon from './Icon.ios';
+import NativeListIndicator from './Indicator.ios';
 import { type IListItem } from '../ListItem';
 import { type INativeListItem } from './types';
 import { describeNativeListAccessory } from './describeAccessory';
 import { BASE_HEIGHT, PADDING_HORIZONTAL } from '../constants';
 import { nativeListItemAccessibilityLabel, nativeListItemSubtitle, nativeListItemTitle, pressNativeListItem } from './itemProps';
-
-const CHEVRON = I18nManager.isRTL ? 'chevron-left' : 'chevron-right';
 
 const NativeListItemTitle = ({ item }: { item: IListItem }) => {
 	const { colors } = useTheme();
@@ -93,7 +91,7 @@ const NativeListItem = ({ item }: INativeListItem) => {
 			</VStack>
 			<Spacer />
 			{trailing ? <NativeListAccessory accessory={trailing} /> : null}
-			{item.showActionIndicator ? <NativeListIcon name={CHEVRON} color={colors.fontDefault} /> : null}
+			{item.showActionIndicator ? <NativeListIndicator indicator='disclosure' /> : null}
 		</NativeListItemRow>
 	);
 };

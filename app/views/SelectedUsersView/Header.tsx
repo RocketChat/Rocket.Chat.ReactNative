@@ -8,6 +8,7 @@ import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import Chip from '~/containers/Chip';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers';
 import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
 
 const styles = StyleSheet.create({
@@ -43,7 +44,9 @@ const Header = ({
 
 	return (
 		<View style={{ backgroundColor }}>
-			<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='select-users-view-search' />
+			{hasNativeHeaderBar ? null : (
+				<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='select-users-view-search' />
+			)}
 			{users.length === 0 ? null : (
 				<View>
 					<Text style={[styles.selectedText, { color: colors.fontHint }]}>

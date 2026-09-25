@@ -1,5 +1,5 @@
 import { type NavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { type ReactElement, useCallback, useEffect, useReducer, useRef } from 'react';
+import { type ReactElement, useCallback, useEffect, useLayoutEffect, useReducer, useRef } from 'react';
 import { FlatList, Text } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -20,7 +20,8 @@ import I18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
-import { compareServerVersion, getRoomTitle, isGroupChat, useDebounce } from '~/lib/methods/helpers';
+import { compareServerVersion, getRoomTitle, hasNativeHeaderBar, isGroupChat, useDebounce } from '~/lib/methods/helpers';
+import { headerIcon } from '~/lib/methods/helpers/navigation/headerIcon';
 import { handleIgnore } from '~/lib/methods/helpers/handleIgnore';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import log from '~/lib/methods/helpers/log';
@@ -127,7 +128,7 @@ const RoomMembersView = (): ReactElement => {
 		viewAllTeamsPermission
 	] = usePermissions(['mute-user', 'set-leader', 'set-owner', 'set-moderator', 'remove-user', ...teamPermissions], params.rid);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const subscription = params?.room?.observe && params.room.observe().subscribe(changes => updateState({ room: changes }));
 		setHeader(true);
 		return () => subscription?.unsubscribe();
@@ -252,6 +253,44 @@ const RoomMembersView = (): ReactElement => {
 	};
 
 	const setHeader = (allUsers: boolean) => {
+		if (hasNativeHeaderBar) {
+			navigation.setOptions({
+				title: I18n.t('Members'),
+				headerRight: undefined,
+				headerTransparent: true,
+				headerSearchBarOptions: {
+					placement: 'stacked',
+					placeholder: I18n.t('Search'),
+					onChangeText: (event: { nativeEvent: { text: string } }) => debounceFilterChange(event.nativeEvent.text),
+					onCancelButtonPress: () => debounceFilterChange('')
+				},
+				unstable_headerRightItems: () => [
+					{
+						type: 'menu',
+						label: I18n.t('Filter'),
+						accessibilityLabel: I18n.t('Filter'),
+						icon: headerIcon('filter'),
+						menu: {
+							items: [
+								{
+									type: 'action',
+									label: I18n.t('Online'),
+									state: allUsers ? 'off' : 'on',
+									onPress: () => toggleStatus(false)
+								},
+								{
+									type: 'action',
+									label: I18n.t('All'),
+									state: allUsers ? 'on' : 'off',
+									onPress: () => toggleStatus(true)
+								}
+							]
+						}
+					}
+				]
+			});
+			return;
+		}
 		navigation.setOptions({
 			title: I18n.t('Members'),
 			headerRight: () => (
@@ -431,6 +470,7 @@ const RoomMembersView = (): ReactElement => {
 		<SafeAreaView testID='room-members-view'>
 			<FlatList
 				data={state.members}
+				contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
 				renderItem={({ item, index }) => (
 					<UserItem
 						name={item.name || item.username}
@@ -443,7 +483,7 @@ const RoomMembersView = (): ReactElement => {
 					/>
 				)}
 				style={[styles.list, { backgroundColor: listBackgroundColor }]}
-				contentContainerStyle={{ paddingBottom: bottom }}
+				contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom }}
 				keyExtractor={item => item._id}
 				ItemSeparatorComponent={RowSeparator}
 				ListHeaderComponent={
@@ -454,7 +494,9 @@ const RoomMembersView = (): ReactElement => {
 							t={state.room.t}
 							abacAttributes={state.room.abacAttributes}
 						/>
-						<SearchBox onChangeText={text => debounceFilterChange(text)} testID='room-members-view-search' />
+						{hasNativeHeaderBar ? null : (
+							<SearchBox onChangeText={text => debounceFilterChange(text)} testID='room-members-view-search' />
+						)}
 					</>
 				}
 				ListFooterComponent={() => (state.isLoading ? <ActivityIndicator /> : null)}

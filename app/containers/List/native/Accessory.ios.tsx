@@ -4,6 +4,7 @@ import { disabled, font, foregroundStyle, labelsHidden, lineLimit, tint } from '
 
 import { useTheme } from '~/theme';
 import NativeListIcon from './Icon.ios';
+import NativeListIndicator from './Indicator.ios';
 import NativeListStatus from './Status.ios';
 import { type TNativeListAccessory } from './describeAccessory';
 
@@ -13,6 +14,8 @@ const NativeListAccessory = ({ accessory }: { accessory: TNativeListAccessory })
 	switch (accessory.kind) {
 		case 'icon':
 			return <NativeListIcon name={accessory.name} color={accessory.color ?? colors.fontDefault} size={accessory.size} />;
+		case 'indicator':
+			return <NativeListIndicator indicator={accessory.indicator} />;
 		case 'check':
 			return (
 				<Image

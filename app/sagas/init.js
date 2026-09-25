@@ -10,7 +10,6 @@ import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
 import log from '../lib/methods/helpers/log';
-import { isIOS } from '../lib/methods/helpers';
 import { localAuthenticate, UserCanceledError } from '../lib/methods/helpers/localAuthentication';
 import { runBiometricTrustMigration } from '../lib/biometricTrustStore/migration';
 import { appReady, appStart } from '../actions/app';
@@ -18,7 +17,7 @@ import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods/userPreferencesMethods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
 import { getServerById } from '../lib/database/services/Server';
-import { preloadHeaderIcons } from '../lib/methods/helpers/navigation/headerIcon';
+import { preloadNativeHeaderIcons } from './preloadNativeHeaderIcons';
 
 const PUSH_NOTIFICATION_KEY = 'pushNotification';
 
@@ -75,13 +74,7 @@ const deliverPendingPushNotification = function* deliverPendingPushNotification(
 const restore = function* restore() {
 	yield call(runBiometricTrustMigration);
 
-	if (isIOS) {
-		try {
-			yield call(preloadHeaderIcons);
-		} catch (e) {
-			log(e);
-		}
-	}
+	yield call(preloadNativeHeaderIcons);
 
 	const restoredServer = yield* getServerToRestore();
 

@@ -45,12 +45,10 @@ tags:
     id: 'new-message-view-create-direct-message'
 
 # should add users
-- extendedWaitUntil:
-    visible:
-      id: 'select-users-view-search'
-    timeout: 60000
-- tapOn:
-    id: 'select-users-view-search'
+- runFlow:
+    file: '../../helpers/tap-search-field.yaml'
+    env:
+      SEARCH_ID: 'select-users-view-search'
 - inputText: 'rocket.cat'
 - extendedWaitUntil:
     visible:
@@ -58,8 +56,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'select-users-view-item-rocket.cat'
-- tapOn:
-    id: 'select-users-view-search'
+- runFlow:
+    file: '../../helpers/tap-search-field.yaml'
+    env:
+      SEARCH_ID: 'select-users-view-search'
 - eraseText
 - inputText: ${output.otherUser.username}
 - extendedWaitUntil:

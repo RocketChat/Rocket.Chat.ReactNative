@@ -35,12 +35,10 @@ tags:
     timeout: 60000
 
 # should search public channel and navigate
-- extendedWaitUntil:
-    visible:
-      id: 'directory-view-search'
-    timeout: 60000
-- tapOn:
-    id: 'directory-view-search'
+- runFlow:
+    file: '../../helpers/tap-search-field.yaml'
+    env:
+      SEARCH_ID: 'directory-view-search'
 - inputText: join-from-directory
 - extendedWaitUntil:
     visible:
@@ -96,20 +94,16 @@ tags:
     visible:
       id: 'directory-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'directory-view-filter'
-    timeout: 60000
-- tapOn:
-    id: 'directory-view-filter'
-- extendedWaitUntil:
-    visible:
-      id: 'directory-switch-users'
-    timeout: 60000
-- tapOn:
-    id: 'directory-switch-users'
-- tapOn:
-    id: 'directory-view-search'
+- runFlow:
+    file: '../../helpers/select-header-filter.yaml'
+    env:
+      ANDROID_FILTER_ID: 'directory-view-filter'
+      ANDROID_OPTION_ID: 'directory-switch-users'
+      IOS_OPTION: 'Users'
+- runFlow:
+    file: '../../helpers/tap-search-field.yaml'
+    env:
+      SEARCH_ID: 'directory-view-search'
 - inputText: ${output.otherUser.username}
 - runFlow:
     when:
@@ -142,20 +136,16 @@ tags:
     visible:
       id: 'directory-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'directory-view-filter'
-    timeout: 60000
-- tapOn:
-    id: 'directory-view-filter'
-- extendedWaitUntil:
-    visible:
-      id: 'directory-switch-teams'
-    timeout: 60000
-- tapOn:
-    id: 'directory-switch-teams'
-- tapOn:
-    id: 'directory-view-search'
+- runFlow:
+    file: '../../helpers/select-header-filter.yaml'
+    env:
+      ANDROID_FILTER_ID: 'directory-view-filter'
+      ANDROID_OPTION_ID: 'directory-switch-teams'
+      IOS_OPTION: 'Teams'
+- runFlow:
+    file: '../../helpers/tap-search-field.yaml'
+    env:
+      SEARCH_ID: 'directory-view-search'
 - inputText: ${output.team}
 - extendedWaitUntil:
     visible:

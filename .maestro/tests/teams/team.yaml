@@ -114,13 +114,11 @@ tags:
 # Create new channel for team
 - tapOn:
     id: add-channel-team-view-create-channel
-- assertVisible:
-    id: select-users-view-search
-- tapOn:
-    id: select-users-view-search
-- inputText:
-    id: select-users-view-search
-    text: rocket.cat
+- runFlow:
+    file: '../../helpers/tap-search-field.yaml'
+    env:
+      SEARCH_ID: 'select-users-view-search'
+- inputText: rocket.cat
 - extendedWaitUntil:
     visible:
       id: select-users-view-item-rocket.cat
@@ -364,10 +362,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: room-actions-add-user
-- assertVisible:
-    id: select-users-view-search
-- tapOn:
-    id: select-users-view-search
+- runFlow:
+    file: '../../helpers/tap-search-field.yaml'
+    env:
+      SEARCH_ID: 'select-users-view-search'
 - inputText: rocket.cat
 - runFlow: '../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
@@ -380,12 +378,10 @@ tags:
     visible:
       id: selected-user-rocket.cat
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: select-users-view-search
-    timeout: 60000
-- tapOn:
-    id: select-users-view-search
+- runFlow:
+    file: '../../helpers/tap-search-field.yaml'
+    env:
+      SEARCH_ID: 'select-users-view-search'
 - eraseText
 - inputText: ${output.secondUser.username}
 - runFlow: '../../helpers/hide-keyboard.yaml'
@@ -404,16 +400,12 @@ tags:
 - tapOn:
     id: selected-users-view-submit
 
-- assertVisible:
-    id: room-members-view-filter
-- tapOn:
-    id: room-members-view-filter
-- extendedWaitUntil:
-    visible:
-      id: room-members-view-toggle-status-all
-    timeout: 60000
-- tapOn:
-    id: room-members-view-toggle-status-all
+- runFlow:
+    file: '../../helpers/select-header-filter.yaml'
+    env:
+      ANDROID_FILTER_ID: 'room-members-view-filter'
+      ANDROID_OPTION_ID: 'room-members-view-toggle-status-all'
+      IOS_OPTION: 'All'
 - extendedWaitUntil:
     visible:
       id: room-members-view-item-${output.secondUser.username}

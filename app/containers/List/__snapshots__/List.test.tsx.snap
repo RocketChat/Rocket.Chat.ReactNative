@@ -7971,21 +7971,20 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
             [
               {
                 "$type": "font",
-                "family": "custom",
-                "size": 24,
-                "textStyle": "body",
+                "textStyle": "footnote",
+                "weight": "semibold",
               },
               {
                 "$type": "foregroundStyle",
                 "style": {
-                  "color": "#2F343D",
+                  "color": "#6C727A",
                   "type": "color",
                 },
               },
             ]
           }
           onGlobalEvent={[Function]}
-          text=""
+          systemName="chevron.forward"
         />
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>

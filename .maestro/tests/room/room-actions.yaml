@@ -364,12 +364,10 @@ tags:
     visible:
       id: 'selected-user-rocket.cat'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'select-users-view-search'
-    timeout: 60000
-- tapOn:
-    id: select-users-view-search
+- runFlow:
+    file: '../../helpers/tap-search-field.yaml'
+    env:
+      SEARCH_ID: 'select-users-view-search'
 - inputText: ${output.otherUser.username}
 - extendedWaitUntil:
     visible:
@@ -396,18 +394,12 @@ tags:
     visible:
       id: 'room-members-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'room-members-view-filter'
-    timeout: 60000
-- tapOn:
-    id: 'room-members-view-filter'
-- extendedWaitUntil:
-    visible:
-      id: 'room-members-view-toggle-status-all'
-    timeout: 60000
-- tapOn:
-    id: 'room-members-view-toggle-status-all'
+- runFlow:
+    file: '../../helpers/select-header-filter.yaml'
+    env:
+      ANDROID_FILTER_ID: 'room-members-view-filter'
+      ANDROID_OPTION_ID: 'room-members-view-toggle-status-all'
+      IOS_OPTION: 'All'
 - extendedWaitUntil:
     notVisible:
       id: 'room-members-view-toggle-status-all'
@@ -425,12 +417,10 @@ tags:
     visible:
       id: 'room-members-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'room-members-view-search'
-    timeout: 60000
-- tapOn:
-    id: room-members-view-search
+- runFlow:
+    file: '../../helpers/tap-search-field.yaml'
+    env:
+      SEARCH_ID: 'room-members-view-search'
 - inputText: 'rocket'
 - tapOn:
     id: room-members-view
@@ -442,8 +432,7 @@ tags:
     notVisible:
       id: 'room-members-view-item-${output.otherUser.username}'
     timeout: 60000
-- tapOn:
-    id: clear-text-input
+- runFlow: '../../helpers/clear-search-field.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-members-view-item-rocket.cat'

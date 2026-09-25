@@ -13,6 +13,7 @@ import ListIcon from '../ListIcon';
 export type TNativeListAccessory =
 	| { kind: 'icon'; name: TIconsName; color?: string; size?: number }
 	| { kind: 'check' }
+	| { kind: 'indicator'; indicator: 'disclosure' | 'external' }
 	| { kind: 'status'; status: TUserStatus }
 	| { kind: 'toggle'; isOn: boolean; onValueChange?: (value: boolean) => void; disabled: boolean; testID?: string }
 	| { kind: 'checkbox'; value: boolean; onValueChange: (value: boolean) => void; testID?: string }
@@ -25,12 +26,15 @@ interface IIconProps {
 	size?: number;
 }
 
-const iconAccessory = (name: TIconsName, { color, size }: Partial<IIconProps>): TNativeListAccessory => ({
-	kind: 'icon',
-	name,
-	color: color || undefined,
-	size
-});
+const iconAccessory = (name: TIconsName, { color, size }: Partial<IIconProps>): TNativeListAccessory => {
+	if (name === 'chevron-right') {
+		return { kind: 'indicator', indicator: 'disclosure' };
+	}
+	if (name === 'new-window') {
+		return { kind: 'indicator', indicator: 'external' };
+	}
+	return { kind: 'icon', name, color: color || undefined, size };
+};
 
 const textContent = (children: ReactNode) => {
 	const parts = Children.toArray(children);
@@ -70,7 +74,7 @@ const describers = new Map<unknown, TDescriber>([
 	[ListCheckbox, describeCheckbox],
 	[ListIcon, props => iconAccessory(props.name, props)],
 	[CustomIcon, props => iconAccessory(props.name, props)],
-	[NewWindowIcon, props => iconAccessory('new-window', props)],
+	[NewWindowIcon, () => ({ kind: 'indicator', indicator: 'external' })],
 	[Radio, ({ check }) => (check ? { kind: 'check' } : null)],
 	[Status, ({ status }) => ({ kind: 'status', status: status ?? 'offline' })],
 	[Switch, describeToggle],

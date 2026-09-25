@@ -32,8 +32,15 @@ describe('describeNativeListAccessory', () => {
 		});
 	});
 
-	it('maps the external link icon to the new-window glyph', () => {
-		expect(describeNativeListAccessory(<NewWindowIcon />)).toEqual({ kind: 'icon', name: 'new-window' });
+	it('maps the external link icon to the external indicator', () => {
+		expect(describeNativeListAccessory(<NewWindowIcon />)).toEqual({ kind: 'indicator', indicator: 'external' });
+	});
+
+	it('maps the chevron icon to the disclosure indicator', () => {
+		expect(describeNativeListAccessory(<ListIcon name='chevron-right' />)).toEqual({
+			kind: 'indicator',
+			indicator: 'disclosure'
+		});
 	});
 
 	it('shows a checkmark only for a checked radio', () => {

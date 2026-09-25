@@ -11,6 +11,7 @@ import {
 	foregroundStyle,
 	lineLimit,
 	onLongPressGesture,
+	opacity,
 	padding
 } from '@expo/ui/swift-ui/modifiers';
 
@@ -59,6 +60,7 @@ export interface INativeListRow {
 	isSelected?: boolean;
 	isFirst?: boolean;
 	isLast?: boolean;
+	disabled?: boolean;
 }
 
 const NativeListRow = ({
@@ -74,7 +76,8 @@ const NativeListRow = ({
 	accessibilityLabel,
 	isSelected,
 	isFirst,
-	isLast
+	isLast,
+	disabled
 }: INativeListRow) => {
 	const { colors, theme } = useTheme();
 	const { fontScale } = useResponsiveLayout();
@@ -82,7 +85,8 @@ const NativeListRow = ({
 	const rowModifiers = [
 		accessibilityLabelModifier(accessibilityLabel),
 		...(isSelected ? [accessibilityAddTraits(['isSelected'])] : []),
-		...(onLongPress ? [onLongPressGesture(onLongPress)] : [])
+		...(onLongPress ? [onLongPressGesture(onLongPress)] : []),
+		...(disabled ? [disabledModifier(true), opacity(0.3)] : [])
 	];
 	const titleText = (
 		<Text modifiers={[lineLimit(1), font({ textStyle: 'body', weight: 'medium' }), foregroundStyle(colors.fontDefault)]}>
