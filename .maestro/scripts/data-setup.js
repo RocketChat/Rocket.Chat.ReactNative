@@ -257,6 +257,20 @@ const deleteCreatedUsers = () => {
     }
 };
 
+const groupMessageCount = (username, password, roomId) => {
+    login(username, password);
+
+    const result = getWithRetry(`${data.server}/api/v1/groups.messages?roomId=${roomId}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers
+        }
+    });
+    const resultJson = json(result.body);
+
+    return resultJson?.count || 0;
+}
+
 function logAccounts() {
     console.log(JSON.stringify(data.accounts));
 }
@@ -319,5 +333,6 @@ output.utils = {
     createDM,
     findAppActionButton,
     getAppTranslation,
-    sleep
+    sleep,
+    groupMessageCount
 };
