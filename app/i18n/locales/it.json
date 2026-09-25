@@ -188,6 +188,7 @@
   "Dont_activate": "Non attivare ora",
   "Dont_Have_An_Account": "Non hai un account?",
   "E2E_Encryption": "Crittografia E2E",
+  "E2E_Key_Error": "Questo messaggio è crittografato end-to-end e non può essere decrittografato a causa di una chiave di crittografia non corretta",
   "E2E_encryption_change_password_confirmation": "Si, cambiala",
   "E2E_encryption_change_password_description": "Ora puoi creare gruppi e messaggi privati crittografati. Potrai, inoltre, crittografare i tuoi gruppi e messaggi privati esistenti. \nQuesta è crittografia end-to-end, la chiave per codificare/decodificare i tuoi messaggi non verrà salvata sul server. Per questo motivo devi salvarla in un luogo sicuro. Ti verrà richiesto di inserirla sugli altri dispositivi sui quali vuoi usare la crittografia e2e.",
   "E2E_encryption_change_password_error": "Si è verificato un errore durante il cambio della password della chiave E2E!",

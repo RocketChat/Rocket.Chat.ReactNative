@@ -284,6 +284,7 @@
   "Dont_Have_An_Account": "Não tem uma conta?",
   "Downloaded_file": "Arquivo baixado",
   "E2E_Encryption": "Encriptação ponta a ponta (E2E)",
+  "E2E_Key_Error": "Esta mensagem é criptografada de ponta a ponta e não pode ser descriptografada devido a uma chave de criptografia incorreta",
   "E2E_encryption_change_password_confirmation": "Sim, alterar",
   "E2E_encryption_change_password_description": "Agora você pode criar grupos privados criptografados e mensagens diretas. Você também pode alterar os grupos privados ou DMs existentes para criptografados. Esta é uma criptografia de ponta a ponta, logo a chave para codificar / decodificar suas mensagens não será salva na workspace. Por esse motivo, você precisa armazenar sua senha em algum lugar seguro. Será solicitada a inserção de senha em outros dispositivos nos quais deseja usar a criptografia E2E.",
   "E2E_encryption_change_password_error": "Erro ao alterar senha E2E!",

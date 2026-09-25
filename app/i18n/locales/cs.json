@@ -279,6 +279,7 @@
   "Dont_Have_An_Account": "Nemáte účet?",
   "Downloaded_file": "Stažený soubor",
   "E2E_Encryption": "E2E šifrování",
+  "E2E_Key_Error": "Tato zpráva je šifrována end-to-end a nelze ji dešifrovat kvůli nesprávnému šifrovacímu klíči",
   "E2E_encryption_change_password_confirmation": "Ano, změnit",
   "E2E_encryption_change_password_description": "Nyní můžete vytvářet šifrované soukromé skupiny a přímé zprávy. Můžete také změnit stávající soukromé skupiny nebo DM na šifrované. \nToto je šifrování typu end-to-end, takže klíč pro kódování/dekódování vašich zpráv nebude uložen na pracovním prostoru. K tomu důvod, proč potřebujete uložit své heslo na bezpečném místě, budete požádáni o jeho zadání na jiných zařízeních, na kterých chcete používat šifrování e2e.",
   "E2E_encryption_change_password_error": "Chyba při změně hesla klíče E2E!",

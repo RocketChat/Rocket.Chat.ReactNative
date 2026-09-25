@@ -261,6 +261,7 @@
   "Dont_Have_An_Account": "Nincs fiókja?",
   "Downloaded_file": "Letöltött fájl",
   "E2E_Encryption": "E2E titkosítás",
+  "E2E_Key_Error": "Ez az üzenet végponttól végpontig titkosított, és hibás titkosítási kulcs miatt nem fejthető vissza",
   "E2E_encryption_change_password_confirmation": "Igen, változtassa meg",
   "E2E_encryption_change_password_description": "Mostantól titkosított privát csoportokat és közvetlen üzeneteket hozhat létre. A meglévő privát csoportokat vagy DM-eket is titkosítottra módosíthatja. Ez egy végponttól végpontig tartó titkosítás, így az üzenetek kódolásához/dekódolásához szükséges kulcs nem kerül elmentésre a munkaterületen. Ezért a jelszavát biztonságos helyen kell tárolnia. Más eszközökön, amelyeken az e2e titkosítást használni kívánja, meg kell majd adnia.",
   "E2E_encryption_change_password_error": "Hiba az E2E kulcs jelszavának módosítása közben!",

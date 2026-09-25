@@ -210,6 +210,7 @@
   "Dont_Have_An_Account": "Vous n'avez pas de compte ?",
   "Downloaded_file": "Fichier téléchargé",
   "E2E_Encryption": "Cryptage E2E",
+  "E2E_Key_Error": "Ce message est chiffré de bout en bout et ne peut pas être déchiffré en raison d'une clé de chiffrement incorrecte",
   "E2E_encryption_change_password_confirmation": "Oui, changez-le",
   "E2E_encryption_change_password_description": "Vous pouvez désormais créer des groupes privés et des messages directs chiffrés. Vous pouvez également modifier les groupes privés ou DM existants pour les crypter.\nIl s'agit du chiffrement de bout en bout, la clé permettant de coder/décoder vos messages ne sera pas enregistrée sur le serveur. Pour cette raison, vous devez stocker ce mot de passe à un endroit sûr. Vous devrez le saisir sur les autres appareils sur lesquels vous souhaitez utiliser le cryptage E2E.",
   "E2E_encryption_change_password_error": "Erreur lors de la modification du mot de passe de la clé E2E",

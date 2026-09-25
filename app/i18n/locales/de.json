@@ -256,6 +256,7 @@
   "Dont_Have_An_Account": "Sie haben noch kein Konto?",
   "Downloaded_file": "Heruntergeladene Datei",
   "E2E_Encryption": "E2E-Verschlüsselung",
+  "E2E_Key_Error": "Diese Nachricht ist Ende-zu-Ende-verschlüsselt und kann aufgrund eines falschen Verschlüsselungsschlüssels nicht entschlüsselt werden",
   "E2E_encryption_change_password_confirmation": "Ja, ändern",
   "E2E_encryption_change_password_description": "Sie können jetzt verschlüsselte private Gruppen und Direktnachrichten erstellen. Sie können auch bereits vorhandene private Gruppen oder Direktnachrichten verschlüsseln. Da dies eine Ende-zu-Ende-Verschlüsselung ist, werden die Schlüssel auf keinem Server gespeichert. Daher müssen Sie den Schlüssel an einem sicheren Ort aufbewahren - Sie müssen ihn auf anderen Geräten eingeben, auf denen Sie die Ende-zu-Ende-Verschlüsselung verwenden möchten.",
   "E2E_encryption_change_password_error": "Fehler beim Ändern des E2E-Passworts!",

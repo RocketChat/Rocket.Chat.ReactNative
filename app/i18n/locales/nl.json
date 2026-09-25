@@ -210,6 +210,7 @@
   "Dont_Have_An_Account": "Heb je geen account?",
   "Downloaded_file": "Gedownload bestand",
   "E2E_Encryption": "E2E-codering",
+  "E2E_Key_Error": "Dit bericht is end-to-end versleuteld en kan niet worden ontsleuteld vanwege een onjuiste versleutelingssleutel",
   "E2E_encryption_change_password_confirmation": "Ja, verander het",
   "E2E_encryption_change_password_description": "Je kan nu versleutelde privégroepen en directe berichten aanmaken. Je kan ook bestaande privégroepen of DM's wijzigen in versleuteld.\nDit is end-to-end codering, dus de sleutel om jouw berichten te coderen/decoderen en deze wordt niet op de server opgeslagen. Daarom moet je dit wachtwoord op een veilige plaats opslaan. Je moet het invoeren op andere apparaten waarop je e2e-codering wilt gebruiken.",
   "E2E_encryption_change_password_error": "Fout bij het wijzigen van het E2E-wachtwoord",

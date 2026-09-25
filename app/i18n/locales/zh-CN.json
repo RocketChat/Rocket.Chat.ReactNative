@@ -173,6 +173,7 @@
   "Dont_activate": "現在不要激活",
   "Dont_Have_An_Account": "还没有账号?",
   "E2E_Encryption": "E2E 加密",
+  "E2E_Key_Error": "此消息已端到端加密，因加密密钥不正确而无法解密",
   "E2E_encryption_change_password_confirmation": "是，我要变更",
   "E2E_encryption_change_password_description": "现在您可以建立加密私人群组和私讯。您也可以变更已存在的私人群组或是私讯来加密。 \\n\\n这是点对点的加密，所以用来加密/解密的金钥将不会储存到伺服器上。为此，您必须安全存放您的密码。如果您希望在其他装置上使用对点加密时，将会需要输入此密码。",
   "E2E_encryption_change_password_error": "变更 E2E 密码时发生错误！",

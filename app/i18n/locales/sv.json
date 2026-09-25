@@ -241,6 +241,7 @@
   "Dont_Have_An_Account": "Har du inget konto?",
   "Downloaded_file": "Nedladdad fil",
   "E2E_Encryption": "E2E-kryptering",
+  "E2E_Key_Error": "Det här meddelandet är end-to-end-krypterat och kan inte dekrypteras på grund av en felaktig krypteringsnyckel",
   "E2E_encryption_change_password_confirmation": "Ja, ändra",
   "E2E_encryption_change_password_description": "Nu kan du skapa krypterade privata grupper och direktmeddelanden. Du kan också kryptera befintliga privata grupper och direktmeddelande. \nHär används end-to-end-kryptering, så nyckeln för att koda/avkoda dina meddelanden sparas inte på servern. Därför måste du spara ditt lösenord på en säker plats. Du behöver ange den på andra enheter som du vill använda end-to-end-kryptering på.",
   "E2E_encryption_change_password_error": "Ett fel inträffade när lösenordet för E2E-nyckeln skulle ändras.",

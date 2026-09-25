@@ -177,6 +177,7 @@
   "Dont_activate": "Şimdi etkinleştirme",
   "Dont_Have_An_Account": "Hesabın yok mu?",
   "E2E_Encryption": "Uçtan Uca Şifreleme (E2E)",
+  "E2E_Key_Error": "Bu mesaj uçtan uca şifrelenmiştir ve yanlış şifreleme anahtarı nedeniyle şifresi çözülemez",
   "E2E_encryption_change_password_confirmation": "Evet, değiştir!",
   "E2E_encryption_change_password_description": "Artık şifrelenmiş özel gruplar ve doğrudan iletiler oluşturabilirsiniz. Mevcut özel grupları veya özel iletileri şifreli olarak da değiştirebilirsiniz. \nBu uçtan uca şifrelemedir, bu nedenle iletilerinizi şifrelemek / çözmek için kullanılan anahtar sunucuya kaydedilmez. Bu nedenle şifrenizi güvenli bir yerde saklamanız gerekir. Uçtan uca şifrelemeyi (E2E) kullanmak istediğiniz diğer cihazlara girmeniz istenecektir.",
   "E2E_encryption_change_password_error": "Uçtan uca şifreleme (E2E) anahtar şifresi değiştirilirken hata!",

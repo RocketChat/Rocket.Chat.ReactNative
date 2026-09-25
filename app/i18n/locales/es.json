@@ -156,6 +156,7 @@
   "Do_you_really_want_to_key_this_room_question_mark": "¿Deseas {{key}} de esta sala?",
   "Dont_Have_An_Account": "¿Todavía no tienes una cuenta?",
   "E2EE_password": "Contraseña E2EE",
+  "E2E_Key_Error": "Este mensaje está cifrado de extremo a extremo y no se puede descifrar debido a una clave de cifrado incorrecta",
   "Edit": "Editar",
   "Edit_attachment_options": "Editar opciones del adjunto",
   "Edit_Avatar": "Editar avatar",

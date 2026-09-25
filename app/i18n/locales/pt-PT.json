@@ -171,6 +171,7 @@
   "Do_you_really_want_to_key_this_room_question_mark": "Você quer mesmo {{key}} esta sala?",
   "Dont_Have_An_Account": "Não tem uma conta?",
   "E2E_Encryption": "Encriptação E2E",
+  "E2E_Key_Error": "Esta mensagem é encriptada de ponta a ponta e não pode ser desencriptada devido a uma chave de encriptação incorreta",
   "E2E_How_It_Works_info1": "Agora você pode criar grupos privados criptografados e mensagens diretas. Você também pode alterar grupos privados existentes ou DMs para criptografados.",
   "E2E_How_It_Works_info2": "Isto é  *criptografia ponto a ponto* portanto a chave para codificar/descodificar as suas mensagens não será salva no servidor. Por essa razão *você precisa armazenar esta palavra-passe em algum lugar seguro* que você posa aceder mais tarde, se precisar.",
   "E2E_How_It_Works_info3": "Se você prosseguir, uma palavra-passe E2E será gerada automaticamente.",

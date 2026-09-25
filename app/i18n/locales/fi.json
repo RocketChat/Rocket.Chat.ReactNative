@@ -241,6 +241,7 @@
   "Dont_Have_An_Account": "Eikö sinulla ole tiliä?",
   "Downloaded_file": "Ladattu tiedosto",
   "E2E_Encryption": "Täysi salaus",
+  "E2E_Key_Error": "Tämä viesti on päästä päähän salattu, eikä sitä voida purkaa virheellisen salausavaimen vuoksi",
   "E2E_encryption_change_password_confirmation": "Kyllä, vaihda se",
   "E2E_encryption_change_password_description": "Nyt voit luoda salattuja yksityisiä ryhmiä ja suoria viestejä. Voit myös muuttaa nykyisiä yksityisiä ryhmiä tai suoria viestejä salatuksi. \nTämä on täysi salaus, joten viestiesi salaamiseen ja salaukseen purkuun käytettävää avainta ei tallenneta palvelimeen. Siksi sinun on tallennettava salasanasi turvalliseen paikkaan. Sinun on annettava se muissa laitteissa, joissa haluat käyttää täyttä salausta.",
   "E2E_encryption_change_password_error": "Virhe vaihdettaessa täyden salauksen avaimen salasanaa!",
