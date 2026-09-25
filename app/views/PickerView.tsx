@@ -1,6 +1,6 @@
 import { type ReactElement, useLayoutEffect, useState } from 'react';
 import { FlatList, StyleSheet, type TextInputProps } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { textInputDebounceTime } from '../lib/constants/debounceConfig';

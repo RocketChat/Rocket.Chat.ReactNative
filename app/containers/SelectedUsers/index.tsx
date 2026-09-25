@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { useTheme } from '~/theme';
 import { type ISelectedUser } from '~/reducers/selectedUsers';

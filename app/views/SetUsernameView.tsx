@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';

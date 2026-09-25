@@ -9227,6 +9227,8 @@ exports[`Story Snapshots: Preview should match snapshot 1`] = `
 >
   <Text
     accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    accessibilityRole="text"
+    accessible={true}
     numberOfLines={1}
     style={
       [
@@ -9253,6 +9255,8 @@ exports[`Story Snapshots: Preview should match snapshot 1`] = `
   </Text>
   <Text
     accessibilityLabel="a b c d e"
+    accessibilityRole="text"
+    accessible={true}
     numberOfLines={1}
     style={
       [
@@ -9279,6 +9283,8 @@ exports[`Story Snapshots: Preview should match snapshot 1`] = `
   </Text>
   <Text
     accessibilityLabel="a b c"
+    accessibilityRole="text"
+    accessible={true}
     numberOfLines={1}
     style={
       [
@@ -9305,6 +9311,8 @@ exports[`Story Snapshots: Preview should match snapshot 1`] = `
   </Text>
   <Text
     accessibilityLabel="@rocket.cat @name1 @all @here @unknown #general #unknown"
+    accessibilityRole="text"
+    accessible={true}
     numberOfLines={1}
     style={
       [
@@ -9331,6 +9339,8 @@ exports[`Story Snapshots: Preview should match snapshot 1`] = `
   </Text>
   <Text
     accessibilityLabel="Testing: 😃 👍️ :marioparty:"
+    accessibilityRole="text"
+    accessible={true}
     numberOfLines={1}
     style={
       [
@@ -9357,6 +9367,8 @@ exports[`Story Snapshots: Preview should match snapshot 1`] = `
   </Text>
   <Text
     accessibilityLabel="Fallback from new md to old"
+    accessibilityRole="text"
+    accessible={true}
     numberOfLines={1}
     style={
       [

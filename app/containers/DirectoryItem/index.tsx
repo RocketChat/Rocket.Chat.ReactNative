@@ -1,6 +1,6 @@
 import { memo, type ReactElement } from 'react';
 import { PixelRatio, View, type ViewStyle } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import Touch from '../Touch';
 import Avatar from '../Avatar';

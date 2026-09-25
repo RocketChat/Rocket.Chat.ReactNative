@@ -1,5 +1,5 @@
 import { Pressable, PixelRatio, type StyleProp, StyleSheet, View, type ViewStyle } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import Avatar from './Avatar';
 import { CustomIcon, type TIconsName } from './CustomIcon';

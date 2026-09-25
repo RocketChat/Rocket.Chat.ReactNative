@@ -1,6 +1,6 @@
 import { type FC, memo, type ReactElement } from 'react';
 import { type TextStyle, View, type ViewStyle } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { useTheme } from '~/theme';
 import styles from './styles';

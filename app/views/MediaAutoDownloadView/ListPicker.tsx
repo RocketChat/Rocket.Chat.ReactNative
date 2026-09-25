@@ -1,6 +1,6 @@
 import { Fragment, type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { useActionSheet } from '~/containers/ActionSheet';
 import * as List from '~/containers/List';

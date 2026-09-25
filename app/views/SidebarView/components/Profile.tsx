@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { type DrawerNavigationProp } from '@react-navigation/drawer';
 import { TouchableWithoutFeedback, View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { shallowEqual } from 'react-redux';
 
 import Avatar from '~/containers/Avatar';

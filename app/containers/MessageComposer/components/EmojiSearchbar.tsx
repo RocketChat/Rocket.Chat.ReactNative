@@ -1,6 +1,6 @@
 import { useContext, useState, type ReactElement } from 'react';
 import { View, Pressable, FlatList, StyleSheet } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
 import { MessageInnerContext } from '../context';

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { FlatList, StyleSheet, View, useWindowDimensions } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { type TSupportedThemes, useTheme } from '~/theme';
 import { themes } from '~/lib/constants/colors';

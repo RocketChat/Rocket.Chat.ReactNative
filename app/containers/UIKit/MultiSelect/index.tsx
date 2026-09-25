@@ -1,6 +1,6 @@
 import { useEffect, useState, memo } from 'react';
 import { type TextStyle } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import Button from '~/containers/Button';

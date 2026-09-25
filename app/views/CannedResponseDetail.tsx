@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StyleSheet, View, ScrollView } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import I18n from '../i18n';
 import SafeAreaView from '../containers/SafeAreaView';

@@ -25,6 +25,9 @@ exports[`Story Snapshots: File should match snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="requirements.pdf"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -161,6 +164,9 @@ exports[`Story Snapshots: File should match snapshot 1`] = `
         }
       />
       <Text
+        accessibilityLabel="Save"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -212,6 +218,9 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="sunset.jpg"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -318,6 +327,9 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
         }
       />
       <Text
+        accessibilityLabel="Save"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -369,6 +381,9 @@ exports[`Story Snapshots: ImageOnLegacyServer should match snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="sunset.jpg"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -475,6 +490,9 @@ exports[`Story Snapshots: ImageOnLegacyServer should match snapshot 1`] = `
         }
       />
       <Text
+        accessibilityLabel="Save"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -526,6 +544,9 @@ exports[`Story Snapshots: ImageWithPrefilledAltText should match snapshot 1`] = 
     }
   >
     <Text
+      accessibilityLabel="sunset.jpg"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -632,6 +653,9 @@ exports[`Story Snapshots: ImageWithPrefilledAltText should match snapshot 1`] = 
         }
       />
       <Text
+        accessibilityLabel="Save"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -683,6 +707,9 @@ exports[`Story Snapshots: Video should match snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="walkthrough.mp4"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -819,6 +846,9 @@ exports[`Story Snapshots: Video should match snapshot 1`] = `
         }
       />
       <Text
+        accessibilityLabel="Save"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {

@@ -1,6 +1,6 @@
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { useEffect, useState, type ReactElement } from 'react';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';

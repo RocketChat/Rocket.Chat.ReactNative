@@ -1,5 +1,5 @@
 import { StyleSheet, type TextStyle } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';

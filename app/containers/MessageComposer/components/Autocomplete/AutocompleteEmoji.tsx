@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { type IAutocompleteEmoji } from '~/containers/MessageComposer/interfaces';
 import { Emoji } from '~/containers/EmojiPicker/Emoji';

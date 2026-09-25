@@ -1,5 +1,5 @@
 import { type ReactElement } from 'react';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { useActionSheet } from '~/containers/ActionSheet';
 import * as List from '~/containers/List';

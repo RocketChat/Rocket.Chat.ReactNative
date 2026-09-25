@@ -156,6 +156,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="Rocket.Chat"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [
@@ -178,6 +181,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               Rocket.Chat
             </Text>
             <Text
+              accessibilityLabel="https://open.rocket.chat/"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [
@@ -396,6 +402,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="Super Long Server Name in Rocket.Chat"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [
@@ -418,6 +427,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               Super Long Server Name in Rocket.Chat
             </Text>
             <Text
+              accessibilityLabel="https://superlongservername.tologintoasuperlongservername/"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [
@@ -636,6 +648,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="Rocket.Chat"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [
@@ -658,6 +673,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               Rocket.Chat
             </Text>
             <Text
+              accessibilityLabel="https://stable.rocket.chat/"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [
@@ -1007,6 +1025,9 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="Rocket.Chat"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -1029,6 +1050,9 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                   Rocket.Chat
                 </Text>
                 <Text
+                  accessibilityLabel="https://open.rocket.chat/"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -1375,6 +1399,9 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="Another Server"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -1397,6 +1424,9 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                   Another Server
                 </Text>
                 <Text
+                  accessibilityLabel="https://example.com/"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -1622,6 +1652,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="Rocket.Chat"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [
@@ -1644,6 +1677,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               Rocket.Chat
             </Text>
             <Text
+              accessibilityLabel="https://open.rocket.chat/"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [
@@ -1862,6 +1898,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="Rocket.Chat"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [
@@ -1884,6 +1923,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               Rocket.Chat
             </Text>
             <Text
+              accessibilityLabel="https://open.rocket.chat/"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [
@@ -2102,6 +2144,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="Rocket.Chat"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [
@@ -2124,6 +2169,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               Rocket.Chat
             </Text>
             <Text
+              accessibilityLabel="https://open.rocket.chat/"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [

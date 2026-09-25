@@ -1,6 +1,6 @@
 import { useState, useLayoutEffect } from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';

@@ -1,6 +1,6 @@
 import { memo, type ReactElement, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { useDispatch } from 'react-redux';
 
 import { MessageTypeLoad } from '~/lib/constants/messageTypeLoad';

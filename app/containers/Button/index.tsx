@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 import { type StyleProp, StyleSheet, type TextStyle, type ViewStyle } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
 
 import { useTheme } from '~/theme';

@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import sharedStyles from '~/views/Styles';
 import { type IAutocompleteCannedResponse } from '~/containers/MessageComposer/interfaces';

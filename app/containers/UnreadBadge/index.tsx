@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { type StyleProp, StyleSheet, useWindowDimensions, View, type ViewStyle } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import sharedStyles from '~/views/Styles';
 import { getUnreadStyle } from './getUnreadStyle';

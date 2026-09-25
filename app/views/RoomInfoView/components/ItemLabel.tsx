@@ -1,4 +1,4 @@
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { useTheme } from '~/theme';
 import styles from '../styles';

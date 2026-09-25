@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Image, StyleSheet, TextInput, View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 import Button from '~/containers/Button';

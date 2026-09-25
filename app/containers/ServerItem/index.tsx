@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { PixelRatio, View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { Image } from 'expo-image';
 
 import * as List from '../List';

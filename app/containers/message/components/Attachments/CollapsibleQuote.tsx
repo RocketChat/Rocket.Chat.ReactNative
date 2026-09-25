@@ -1,7 +1,7 @@
 import { transparentize } from 'color2k';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { type IAttachment } from '~/definitions/IAttachment';
 import { CustomIcon } from '~/containers/CustomIcon';

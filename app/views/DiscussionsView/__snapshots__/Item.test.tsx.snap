@@ -181,6 +181,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="rocket.cat"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -204,6 +207,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   rocket.cat
                 </Text>
                 <Text
+                  accessibilityLabel="10:00 AM"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -235,6 +241,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               >
                 <Text
                   accessibilityLabel="Message content"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={2}
                   style={
                     [
@@ -374,6 +382,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="November 10, 2020"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={1}
                       style={
                         [
@@ -582,6 +593,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="rocket.cat"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -605,6 +619,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   rocket.cat
                 </Text>
                 <Text
+                  accessibilityLabel="10:00 AM"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -636,6 +653,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               >
                 <Text
                   accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={2}
                   style={
                     [
@@ -775,6 +794,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="November 10, 2020"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={1}
                       style={
                         [
@@ -983,6 +1005,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="rocket.cat"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -1006,6 +1031,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   rocket.cat
                 </Text>
                 <Text
+                  accessibilityLabel="10:00 AM"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -1037,6 +1065,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               >
                 <Text
                   accessibilityLabel="Message content"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={2}
                   style={
                     [
@@ -1178,6 +1208,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="November 10, 2020"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={1}
                       style={
                         [
@@ -1386,6 +1419,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="rocket.cat"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -1409,6 +1445,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   rocket.cat
                 </Text>
                 <Text
+                  accessibilityLabel="10:00 AM"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -1440,6 +1479,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               >
                 <Text
                   accessibilityLabel="Attachment title"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={2}
                   style={
                     [
@@ -1579,6 +1620,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="November 10, 2020"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={1}
                       style={
                         [
@@ -1787,6 +1831,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="rocket.cat"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -1810,6 +1857,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   rocket.cat
                 </Text>
                 <Text
+                  accessibilityLabel="10:00 AM"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -1841,6 +1891,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               >
                 <Text
                   accessibilityLabel="Message content"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={2}
                   style={
                     [
@@ -1980,6 +2032,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="November 10, 2020"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={1}
                       style={
                         [
@@ -2208,6 +2263,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="rocket.cat"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -2231,6 +2289,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   rocket.cat
                 </Text>
                 <Text
+                  accessibilityLabel="10:00 AM"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -2262,6 +2323,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               >
                 <Text
                   accessibilityLabel="Message content"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={2}
                   style={
                     [
@@ -2401,6 +2464,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="November 10, 2020"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={1}
                       style={
                         [
@@ -2596,6 +2662,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="rocket.cat"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -2619,6 +2688,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   rocket.cat
                 </Text>
                 <Text
+                  accessibilityLabel="10:00 AM"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -2650,6 +2722,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               >
                 <Text
                   accessibilityLabel="Message content"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={2}
                   style={
                     [
@@ -2789,6 +2863,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="November 10, 2020"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={1}
                       style={
                         [
@@ -2984,6 +3061,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="rocket.cat"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -3007,6 +3087,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   rocket.cat
                 </Text>
                 <Text
+                  accessibilityLabel="10:00 AM"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -3038,6 +3121,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               >
                 <Text
                   accessibilityLabel="Message content"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={2}
                   style={
                     [
@@ -3177,6 +3262,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="November 10, 2020"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={1}
                       style={
                         [

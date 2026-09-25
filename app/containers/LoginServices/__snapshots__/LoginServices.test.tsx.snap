@@ -53,6 +53,9 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
       }
     />
     <Text
+      accessibilityLabel="More options"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -99,6 +102,8 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
       }
     />
     <Text
+      accessibilityLabel="OR"
+      accessibilityRole="text"
       accessible={false}
       style={
         [
@@ -186,6 +191,9 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
       }
     />
     <Text
+      accessibilityLabel="Less options"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -232,6 +240,8 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
       }
     />
     <Text
+      accessibilityLabel="OR"
+      accessibilityRole="text"
       accessible={false}
       style={
         [
@@ -324,6 +334,9 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
       }
     />
     <Text
+      accessibilityLabel="Login on web"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -900,6 +913,9 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
       }
     />
     <Text
+      accessibilityLabel="Login on web"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {

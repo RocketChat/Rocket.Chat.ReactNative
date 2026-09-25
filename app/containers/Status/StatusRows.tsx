@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, type StyleProp, type TextStyle, View, type ViewStyle } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import Status from '.';
 import { CustomIcon } from '../CustomIcon';

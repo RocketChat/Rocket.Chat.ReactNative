@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { type Dispatch, type SetStateAction, type ReactElement } from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import Modal from 'react-native-modal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 

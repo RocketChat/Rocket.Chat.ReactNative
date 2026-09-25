@@ -222,6 +222,9 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
                     
                   </Text>
                   <Text
+                    accessibilityLabel="Styled Room"
+                    accessibilityRole="text"
+                    accessible={true}
                     numberOfLines={1}
                     style={
                       [
@@ -247,6 +250,8 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
                 </View>
                 <Text
                   accessibilityLabel="Custom style applied"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -514,6 +519,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                     
                   </Text>
                   <Text
+                    accessibilityLabel="General"
+                    accessibilityRole="text"
+                    accessible={true}
                     numberOfLines={1}
                     style={
                       [
@@ -539,6 +547,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                 </View>
                 <Text
                   accessibilityLabel="A public room"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -775,6 +785,9 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="Alice Johnson"
+                    accessibilityRole="text"
+                    accessible={true}
                     numberOfLines={1}
                     style={
                       [
@@ -800,6 +813,8 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
                 </View>
                 <Text
                   accessibilityLabel="Hey there!"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -1067,6 +1082,9 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
                     
                   </Text>
                   <Text
+                    accessibilityLabel="This is a very very very very very very very long room name that should be truncated"
+                    accessibilityRole="text"
+                    accessible={true}
                     numberOfLines={1}
                     style={
                       [
@@ -1092,6 +1110,8 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
                 </View>
                 <Text
                   accessibilityLabel="Long name test"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -1131,6 +1151,9 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
                 </Text>
               </View>
               <Text
+                accessibilityLabel="9999 members"
+                accessibilityRole="text"
+                accessible={true}
                 style={
                   [
                     {
@@ -1322,6 +1345,9 @@ exports[`Story Snapshots: OnlyTitle should match snapshot 1`] = `
                     
                   </Text>
                   <Text
+                    accessibilityLabel="Just a title"
+                    accessibilityRole="text"
+                    accessible={true}
                     numberOfLines={1}
                     style={
                       [
@@ -1575,6 +1601,9 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
                     
                   </Text>
                   <Text
+                    accessibilityLabel="Engineering Team"
+                    accessibilityRole="text"
+                    accessible={true}
                     numberOfLines={1}
                     style={
                       [
@@ -1600,6 +1629,8 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
                 </View>
                 <Text
                   accessibilityLabel="Main team room"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -1867,6 +1898,9 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
                     
                   </Text>
                   <Text
+                    accessibilityLabel="General"
+                    accessibilityRole="text"
+                    accessible={true}
                     numberOfLines={1}
                     style={
                       [
@@ -1892,6 +1926,8 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
                 </View>
                 <Text
                   accessibilityLabel="Room with label"
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     [
@@ -1931,6 +1967,9 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
                 </Text>
               </View>
               <Text
+                accessibilityLabel="123 members"
+                accessibilityRole="text"
+                accessible={true}
                 style={
                   [
                     {
@@ -2181,6 +2220,9 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
                     
                   </Text>
                   <Text
+                    accessibilityLabel="No description room"
+                    accessibilityRole="text"
+                    accessible={true}
                     numberOfLines={1}
                     style={
                       [

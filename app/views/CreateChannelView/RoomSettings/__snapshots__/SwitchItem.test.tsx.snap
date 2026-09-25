@@ -36,6 +36,9 @@ exports[`Story Snapshots: Switch should match snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="[missing "en.Onboarding_title" translation]"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -58,6 +61,9 @@ exports[`Story Snapshots: Switch should match snapshot 1`] = `
         [missing "en.Onboarding_title" translation]
       </Text>
       <Text
+        accessibilityLabel="Only channel owners can send new messages"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {

@@ -1,6 +1,6 @@
 import { memo, type ReactNode } from 'react';
 import { View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { isAndroid } from '~/lib/methods/helpers';
 import { useTheme } from '~/theme';

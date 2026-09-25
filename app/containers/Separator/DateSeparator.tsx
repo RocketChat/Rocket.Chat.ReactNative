@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { formatLongDate } from '~/lib/dayjs';
 import sharedStyles from '~/views/Styles';

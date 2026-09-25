@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { type FontVariant } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { useAudioRecorderState, type AudioRecorder } from 'expo-audio';
 
 import sharedStyles from '~/views/Styles';

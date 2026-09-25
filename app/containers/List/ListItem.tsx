@@ -9,7 +9,7 @@ import {
 	type AccessibilityRole,
 	type ViewStyle
 } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import Touch from '../Touch';
 import sharedStyles from '~/views/Styles';

@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactElement } from 'react';
 import { View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { getAvatarURL } from '~/lib/methods/helpers/getAvatarUrl';

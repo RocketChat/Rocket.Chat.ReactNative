@@ -187,6 +187,9 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="general"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -210,6 +213,9 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
             general
           </Text>
           <Text
+            accessibilityLabel="Hey! How are you doing?"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -542,6 +548,9 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="diego.mello"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -565,6 +574,9 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
             diego.mello
           </Text>
           <Text
+            accessibilityLabel="Hey! How are you doing?"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -897,6 +909,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="general"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -920,6 +935,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             general
           </Text>
           <Text
+            accessibilityLabel="Hey! How are you doing?"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1252,6 +1270,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="general"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1275,6 +1296,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             general
           </Text>
           <Text
+            accessibilityLabel="Hey! How are you doing?"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, Linking } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { useDispatch } from 'react-redux';
 
 import I18n from '~/i18n';

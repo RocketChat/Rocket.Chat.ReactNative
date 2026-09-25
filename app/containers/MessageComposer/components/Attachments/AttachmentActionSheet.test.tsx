@@ -50,7 +50,7 @@ describe('AttachmentActionSheet', () => {
 	it('shows alt text input for image attachments when supported by the server', () => {
 		render(<AttachmentActionSheet attachment={baseAttachment} onSave={jest.fn()} />);
 
-		expect(screen.getByLabelText('Alternative text')).toBeOnTheScreen();
+		expect(screen.getByPlaceholderText('Add alt text...')).toBeOnTheScreen();
 	});
 
 	it('hides alt text input when the server does not support it', () => {
@@ -72,14 +72,14 @@ describe('AttachmentActionSheet', () => {
 	it('prefills the input with the existing altText', () => {
 		render(<AttachmentActionSheet attachment={{ ...baseAttachment, altText: 'A cat on a sofa' }} onSave={jest.fn()} />);
 
-		expect(screen.getByLabelText('Alternative text').props.value).toBe('A cat on a sofa');
+		expect(screen.getByPlaceholderText('Add alt text...').props.value).toBe('A cat on a sofa');
 	});
 
 	it('calls onSave with the typed altText and hides the action sheet', () => {
 		const onSave = jest.fn();
 		render(<AttachmentActionSheet attachment={baseAttachment} onSave={onSave} />);
 
-		fireEvent.changeText(screen.getByLabelText('Alternative text'), 'A red apple');
+		fireEvent.changeText(screen.getByPlaceholderText('Add alt text...'), 'A red apple');
 		fireEvent.press(screen.getByText('Save'));
 
 		expect(onSave).toHaveBeenCalledWith({ altText: 'A red apple' });

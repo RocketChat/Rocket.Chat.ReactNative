@@ -1,6 +1,6 @@
 import { useContext, useEffect, useLayoutEffect, useState, type ReactElement } from 'react';
 import { StyleSheet, View, type ViewStyle } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { Image } from 'expo-image';
 import axios from 'axios';

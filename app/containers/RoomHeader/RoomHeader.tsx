@@ -1,6 +1,6 @@
 import { memo, type ReactElement } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { KeyboardFocusView } from 'react-native-external-keyboard';
 

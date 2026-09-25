@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { type IAutocompleteSlashCommand } from '~/containers/MessageComposer/interfaces';
 import I18n from '~/i18n';

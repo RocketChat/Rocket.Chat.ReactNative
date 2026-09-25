@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { useTheme } from '~/theme';
 import type { TPeerItem } from '~/lib/services/voip/getPeerAutocompleteOptions';

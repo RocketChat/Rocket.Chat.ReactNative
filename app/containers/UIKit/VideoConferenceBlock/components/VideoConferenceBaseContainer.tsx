@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 import { View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import i18n from '~/i18n';
 import { useTheme } from '~/theme';

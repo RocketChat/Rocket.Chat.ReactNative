@@ -1,4 +1,4 @@
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { type ReactElement } from 'react';
 

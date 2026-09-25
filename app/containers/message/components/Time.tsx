@@ -1,4 +1,4 @@
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import dayjs from '~/lib/dayjs';
 import { useTheme } from '~/theme';

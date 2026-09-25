@@ -29,6 +29,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
     testID="unread-badge-9"
   >
     <Text
+      accessibilityLabel="9"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -72,6 +75,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
     testID="unread-badge-+99"
   >
     <Text
+      accessibilityLabel="+99"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -118,6 +124,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
     testID="unread-badge-9"
   >
     <Text
+      accessibilityLabel="9"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -162,6 +171,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
     testID="unread-badge-+999"
   >
     <Text
+      accessibilityLabel="+999"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -206,6 +218,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
     testID="mention-badge-9"
   >
     <Text
+      accessibilityLabel="9"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -250,6 +265,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
     testID="group-mention-badge-9"
   >
     <Text
+      accessibilityLabel="9"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -294,6 +312,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
     testID="unread-badge-9"
   >
     <Text
+      accessibilityLabel="9"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -352,6 +373,9 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
     testID="unread-badge-1"
   >
     <Text
+      accessibilityLabel="1"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -396,6 +420,9 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
     testID="mention-badge-1"
   >
     <Text
+      accessibilityLabel="1"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -440,6 +467,9 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
     testID="group-mention-badge-1"
   >
     <Text
+      accessibilityLabel="1"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -484,6 +514,9 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
     testID="mention-badge-1"
   >
     <Text
+      accessibilityLabel="1"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -528,6 +561,9 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
     testID="unread-badge-1"
   >
     <Text
+      accessibilityLabel="1"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -572,6 +608,9 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
     testID="unread-badge-1"
   >
     <Text
+      accessibilityLabel="1"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -616,6 +655,9 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
     testID="unread-badge-1"
   >
     <Text
+      accessibilityLabel="1"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -674,6 +716,9 @@ exports[`Story Snapshots: Normal should match snapshot 1`] = `
     testID="unread-badge-9"
   >
     <Text
+      accessibilityLabel="9"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -718,6 +763,9 @@ exports[`Story Snapshots: Normal should match snapshot 1`] = `
     testID="unread-badge-+999"
   >
     <Text
+      accessibilityLabel="+999"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -773,6 +821,9 @@ exports[`Story Snapshots: Small should match snapshot 1`] = `
     testID="unread-badge-9"
   >
     <Text
+      accessibilityLabel="9"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -816,6 +867,9 @@ exports[`Story Snapshots: Small should match snapshot 1`] = `
     testID="unread-badge-+99"
   >
     <Text
+      accessibilityLabel="+99"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -877,6 +931,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       testID="unread-badge-1"
     >
       <Text
+        accessibilityLabel="1"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -921,6 +978,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       testID="mention-badge-1"
     >
       <Text
+        accessibilityLabel="1"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -965,6 +1025,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       testID="group-mention-badge-1"
     >
       <Text
+        accessibilityLabel="1"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1009,6 +1072,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       testID="unread-badge-1"
     >
       <Text
+        accessibilityLabel="1"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1064,6 +1130,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       testID="unread-badge-1"
     >
       <Text
+        accessibilityLabel="1"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1108,6 +1177,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       testID="mention-badge-1"
     >
       <Text
+        accessibilityLabel="1"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1152,6 +1224,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       testID="group-mention-badge-1"
     >
       <Text
+        accessibilityLabel="1"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1196,6 +1271,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       testID="unread-badge-1"
     >
       <Text
+        accessibilityLabel="1"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1251,6 +1329,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       testID="unread-badge-1"
     >
       <Text
+        accessibilityLabel="1"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1295,6 +1376,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       testID="mention-badge-1"
     >
       <Text
+        accessibilityLabel="1"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1339,6 +1423,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       testID="group-mention-badge-1"
     >
       <Text
+        accessibilityLabel="1"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1383,6 +1470,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       testID="unread-badge-1"
     >
       <Text
+        accessibilityLabel="1"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [

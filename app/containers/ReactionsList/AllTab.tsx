@@ -1,6 +1,6 @@
 import { memo, type ReactElement } from 'react';
 import { View, FlatList } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import Emoji from '../message/components/Emoji';
 import { useTheme } from '~/theme';

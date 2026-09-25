@@ -173,6 +173,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
               }
             >
               <Text
+                accessibilityLabel="+55 11 98888-7777"
+                accessibilityRole="text"
+                accessible={true}
                 numberOfLines={1}
                 style={
                   [
@@ -384,6 +387,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 
               </Text>
               <Text
+                accessibilityLabel="Alice Johnson"
+                accessibilityRole="text"
+                accessible={true}
                 numberOfLines={1}
                 style={
                   [
@@ -595,6 +601,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 
               </Text>
               <Text
+                accessibilityLabel="Long display name to validate text truncation behavior for PeerItem in narrow widths"
+                accessibilityRole="text"
+                accessible={true}
                 numberOfLines={1}
                 style={
                   [
@@ -806,6 +815,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 
               </Text>
               <Text
+                accessibilityLabel="Bob Smith"
+                accessibilityRole="text"
+                accessible={true}
                 numberOfLines={1}
                 style={
                   [

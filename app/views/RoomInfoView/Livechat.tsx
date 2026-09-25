@@ -1,6 +1,6 @@
 import { type ReactElement, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { type ISubscription } from '~/definitions';
 import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';

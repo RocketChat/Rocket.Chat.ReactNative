@@ -1,5 +1,5 @@
 import { Alert, StyleSheet } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { type ReactElement } from 'react';
 
 import * as List from '~/containers/List';

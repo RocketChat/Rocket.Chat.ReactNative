@@ -9,7 +9,7 @@ import {
 	View,
 	type ViewStyle
 } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { A11y } from 'react-native-a11y-order';
 
 import i18n from '~/i18n';

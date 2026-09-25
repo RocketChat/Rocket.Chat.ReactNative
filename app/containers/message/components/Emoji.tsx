@@ -1,4 +1,4 @@
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import useShortnameToUnicode from '~/lib/hooks/useShortnameToUnicode';
 import { useCustomEmoji } from '~/lib/hooks/useCustomEmoji';

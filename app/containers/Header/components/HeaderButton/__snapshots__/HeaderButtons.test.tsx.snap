@@ -190,6 +190,9 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               testID="unread-badge-1"
             >
               <Text
+                accessibilityLabel="1"
+                accessibilityRole="text"
+                accessible={true}
                 numberOfLines={1}
                 style={
                   [
@@ -309,6 +312,9 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               testID="unread-badge-1"
             >
               <Text
+                accessibilityLabel="1"
+                accessibilityRole="text"
+                accessible={true}
                 numberOfLines={1}
                 style={
                   [
@@ -428,6 +434,9 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               testID="unread-badge-1"
             >
               <Text
+                accessibilityLabel="1"
+                accessibilityRole="text"
+                accessible={true}
                 numberOfLines={1}
                 style={
                   [
@@ -3387,6 +3396,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   testID="unread-badge-1"
                 >
                   <Text
+                    accessibilityLabel="1"
+                    accessibilityRole="text"
+                    accessible={true}
                     numberOfLines={1}
                     style={
                       [
@@ -3938,6 +3950,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   testID="unread-badge-1"
                 >
                   <Text
+                    accessibilityLabel="1"
+                    accessibilityRole="text"
+                    accessible={true}
                     numberOfLines={1}
                     style={
                       [
@@ -4489,6 +4504,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   testID="unread-badge-1"
                 >
                   <Text
+                    accessibilityLabel="1"
+                    accessibilityRole="text"
+                    accessible={true}
                     numberOfLines={1}
                     style={
                       [

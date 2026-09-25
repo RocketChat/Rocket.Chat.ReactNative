@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 import { Image } from 'expo-image';
 import { FlatList } from 'react-native-gesture-handler';
 

@@ -1,6 +1,6 @@
 import { useState, useRef, createRef, type ReactElement } from 'react';
 import { StyleSheet, type TextInputProps, View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import i18n from '~/i18n';

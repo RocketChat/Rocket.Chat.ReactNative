@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { View } from 'react-native';
-import { PlainText } from 'react-native-plain-text';
+import { PlainText } from '~/containers/PlainText';
 
 import { type IAvatar } from '~/definitions';
 import { getAvatarSuggestion } from '~/lib/services/restApi';
