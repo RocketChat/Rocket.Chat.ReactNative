@@ -14,6 +14,8 @@ import { type TSupportedThemes, withTheme } from '~/theme';
 import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '~/definitions';
 import { sendFileMessage } from '~/lib/methods/sendFileMessage';
 import { cancelUpload, isUploadActive } from '~/lib/methods/sendFileMessage/utils';
+import { getUploadErrorMessage } from '~/lib/methods/helpers/getUploadErrorMessage';
+import { isRetryableUploadError } from '~/lib/methods/helpers/isRetryableUploadError';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,10 +25,11 @@ const styles = StyleSheet.create({
 		maxHeight: 246
 	},
 	item: {
-		height: 54,
+		minHeight: 54,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		justifyContent: 'center',
-		paddingHorizontal: 20
+		paddingHorizontal: 20,
+		paddingVertical: 8
 	},
 	row: {
 		flexDirection: 'row',
@@ -46,6 +49,11 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		bottom: 0,
 		height: 3
+	},
+	errorReasonText: {
+		fontSize: 14,
+		lineHeight: 18,
+		...sharedStyles.textRegular
 	},
 	tryAgainButtonText: {
 		fontSize: 16,
@@ -97,7 +105,10 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 		}
 
 		const db = database.active;
-		this.uploadsObservable = db.get('uploads').query(Q.where('rid', rid)).observeWithColumns(['progress', 'error']);
+		this.uploadsObservable = db
+			.get('uploads')
+			.query(Q.where('rid', rid))
+			.observeWithColumns(['progress', 'error', 'error_status', 'error_message']);
 
 		this.uploadsSubscription = this.uploadsObservable.subscribe(uploads => {
 			if (this.mounted) {
@@ -162,6 +173,8 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 			await db.write(async () => {
 				await item.update(() => {
 					item.error = false;
+					item.errorStatus = undefined;
+					item.errorMessage = undefined;
 				});
 			});
 			await sendFileMessage(rid, item.asPlain() as TSendFileMessageFileInfo, item.tmid, server, user, true);
@@ -206,35 +219,54 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 				/>
 			];
 		}
+		const errorReason = getUploadErrorMessage(item);
+		const errorLabel = `${I18n.t('Error_uploading')} ${item.name}${errorReason ? `. ${errorReason}` : ''}`;
+
 		return (
 			<A11y.Order>
-				<A11y.Index index={1}>
-					<View accessible accessibilityLabel={`${I18n.t('Error_uploading')} ${item.name}`} style={styles.row}>
-						<CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />
-						<View style={styles.descriptionContainer}>
-							<Text style={[styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={1}>
-								{I18n.t('Error_uploading')} {item.name}
-							</Text>
+				<View style={styles.row}>
+					<CustomIcon
+						name='warning'
+						size={20}
+						color={themes[theme!].buttonBackgroundDangerDefault}
+						accessibilityElementsHidden
+						importantForAccessibility='no'
+					/>
+					<View style={styles.descriptionContainer}>
+						<A11y.Index index={1}>
+							<View accessible accessibilityLabel={errorLabel}>
+								<Text style={[styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={1}>
+									{I18n.t('Error_uploading')} {item.name}
+								</Text>
+								{errorReason ? (
+									<Text style={[styles.errorReasonText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={2}>
+										{errorReason}
+									</Text>
+								) : null}
+							</View>
+						</A11y.Index>
+						{isRetryableUploadError(item.errorStatus) ? (
 							<A11y.Index index={2}>
-								<TouchableOpacity onPress={() => this.tryAgain(item)}>
+								<TouchableOpacity accessibilityRole='button' onPress={() => this.tryAgain(item)}>
 									<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
 										{I18n.t('Try_again')}
 									</Text>
 								</TouchableOpacity>
 							</A11y.Index>
-						</View>
-						<A11y.Index index={3}>
-							<CustomIcon
-								accessible
-								accessibilityLabel={I18n.t('Cancel_upload')}
-								name='close'
-								size={20}
-								color={themes[theme!].fontSecondaryInfo}
-								onPress={() => this.deleteUpload(item)}
-							/>
-						</A11y.Index>
+						) : null}
 					</View>
-				</A11y.Index>
+					<A11y.Index index={3}>
+						<CustomIcon
+							accessible
+							accessibilityRole='button'
+							accessibilityLabel={I18n.t('Cancel_upload')}
+							name='close'
+							size={20}
+							color={themes[theme!].fontSecondaryInfo}
+							onPress={() => this.deleteUpload(item)}
+						/>
+					</A11y.Index>
+				</View>
 			</A11y.Order>
 		);
 	};

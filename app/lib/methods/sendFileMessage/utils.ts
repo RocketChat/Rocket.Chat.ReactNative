@@ -1,3 +1,4 @@
+import { type Database } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import isEmpty from 'lodash/isEmpty';
 import { Alert } from 'react-native';
@@ -8,9 +9,19 @@ import { type IUpload, type TUploadModel } from '~/definitions';
 import i18n from '~/i18n';
 import database from '~/lib/database';
 import log from '../helpers/log';
-import { type IFileUpload } from '../helpers/fileUpload/definitions';
+import { showToast } from '../helpers/showToast';
+import { getUploadErrorMessage } from '../helpers/getUploadErrorMessage';
+import { isRetryableUploadError } from '../helpers/isRetryableUploadError';
+import { type IFileUpload, UploadHttpError } from '../helpers/fileUpload/definitions';
 
 export const uploadQueue: { [index: string]: IFileUpload } = {};
+
+export class UploadSupersededError extends Error {
+	constructor() {
+		super('Upload superseded by a newer attempt on the same path');
+		this.name = 'UploadSupersededError';
+	}
+}
 
 export const getUploadPath = (path: string, rid: string) => `${path}-${rid}`;
 
@@ -40,22 +51,64 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 	}
 }
 
-export const persistUploadError = async (path: string, rid: string) => {
+export const persistUploadError = async (path: string, rid: string, error?: unknown) => {
 	try {
 		const db = database.active;
 		const uploadRecord = await getUploadByPath(getUploadPath(path, rid));
 		if (!uploadRecord) {
 			return;
 		}
+		const errorStatus = error instanceof UploadHttpError ? error.status : undefined;
+		const errorMessage = error instanceof UploadHttpError ? error.serverMessage : undefined;
 		await db.write(async () => {
 			await uploadRecord.update(u => {
 				u.error = true;
+				u.errorStatus = errorStatus;
+				u.errorMessage = errorMessage;
 			});
 		});
+		const reason = getUploadErrorMessage({ errorStatus, errorMessage });
+		if (reason && !isRetryableUploadError(errorStatus)) {
+			showToast(reason);
+		}
 	} catch {
 		// Do nothing
 	}
 };
+
+export const finalizeFailedUpload = async (
+	uploadPath: string,
+	uploadRecordPath: string,
+	rid: string,
+	error: unknown
+): Promise<void> => {
+	if (error instanceof UploadSupersededError) {
+		return;
+	}
+	if (uploadPath && !uploadQueue[uploadPath]) {
+		console.log('Upload cancelled');
+		return;
+	}
+	if (uploadPath) {
+		delete uploadQueue[uploadPath];
+	}
+	await persistUploadError(uploadRecordPath, rid, error);
+	throw error;
+};
+
+export const createUploadProgressCallback =
+	(db: Database, uploadRecord: TUploadModel | null) =>
+	async (loaded: number, total: number): Promise<void> => {
+		try {
+			await db.write(async () => {
+				await uploadRecord?.update(u => {
+					u.progress = Math.floor((loaded / total) * 100);
+				});
+			});
+		} catch (e) {
+			console.error(e);
+		}
+	};
 
 export const createUploadRecord = async ({
 	rid,
@@ -83,6 +136,8 @@ export const createUploadRecord = async ({
 			await db.write(async () => {
 				await uploadRecord?.update(u => {
 					u.error = false;
+					u.errorStatus = undefined;
+					u.errorMessage = undefined;
 					u.progress = 0;
 				});
 			});

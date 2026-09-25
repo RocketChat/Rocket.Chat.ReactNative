@@ -3,7 +3,13 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '~/definitions';
 import database from '~/lib/database';
 import { Encryption } from '~/lib/encryption';
-import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
+import {
+	copyFileToCacheDirectoryIfNeeded,
+	createUploadProgressCallback,
+	createUploadRecord,
+	finalizeFailedUpload
+} from './utils';
+import { uploadWithRetry } from './uploadWithRetry';
 import FileUpload from '../helpers/fileUpload';
 import { type IFormData } from '../helpers/fileUpload/definitions';
 import fetch from '../helpers/fetch';
@@ -16,6 +22,7 @@ export async function sendFileMessageV2(
 	user: Partial<Pick<IUser, 'id' | 'token'>>,
 	isForceTryAgain?: boolean
 ): Promise<void> {
+	const uploadRecordPath = fileInfo.path;
 	let uploadPath: string | null = '';
 	let uploadRecord: TUploadModel | null;
 	try {
@@ -49,18 +56,11 @@ export async function sendFileMessageV2(
 			});
 		}
 
-		uploadQueue[uploadPath] = new FileUpload(`${server}/api/v1/rooms.media/${rid}`, headers, formData, async (loaded, total) => {
-			try {
-				await db.write(async () => {
-					await uploadRecord?.update(u => {
-						u.progress = Math.floor((loaded / total) * 100);
-					});
-				});
-			} catch (e) {
-				console.error(e);
-			}
-		});
-		const response = await uploadQueue[uploadPath].send();
+		const response = await uploadWithRetry(
+			uploadPath,
+			() =>
+				new FileUpload(`${server}/api/v1/rooms.media/${rid}`, headers, formData, createUploadProgressCallback(db, uploadRecord))
+		);
 
 		let content;
 		if (getContent) {
@@ -85,11 +85,6 @@ export async function sendFileMessageV2(
 		});
 	} catch (e: any) {
 		console.error(e);
-		if (uploadPath && !uploadQueue[uploadPath]) {
-			console.log('Upload cancelled');
-		} else {
-			await persistUploadError(fileInfo.path, rid);
-			throw e;
-		}
+		await finalizeFailedUpload(uploadPath ?? '', uploadRecordPath, rid, e);
 	}
 }

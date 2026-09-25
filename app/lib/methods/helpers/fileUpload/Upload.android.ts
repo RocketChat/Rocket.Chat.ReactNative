@@ -1,7 +1,7 @@
 import * as FileSystem from 'expo-file-system/legacy';
 
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
-import { type IFormData } from './definitions';
+import { type IFormData, UploadHttpError, getRetryAfterFromHeaders, parseUploadErrorBody } from './definitions';
 
 export class Upload {
 	private uploadUrl: string;
@@ -48,7 +48,7 @@ export class Upload {
 		return new Promise(async (resolve, reject) => {
 			try {
 				if (!this.file) {
-					return reject();
+					return reject(new Error('No file to upload'));
 				}
 				this.uploadTask = FileSystem.createUploadTask(
 					this.uploadUrl,
@@ -72,7 +72,9 @@ export class Upload {
 				if (response && response.status >= 200 && response.status < 400) {
 					resolve(JSON.parse(response.body));
 				} else {
-					reject(new Error(`Error: ${response?.status}`));
+					const { serverMessage, body } = parseUploadErrorBody(response?.body);
+					const retryAfterSeconds = getRetryAfterFromHeaders(response?.headers);
+					reject(new UploadHttpError(response?.status ?? 0, { serverMessage, body, retryAfterSeconds }));
 				}
 			} catch (error) {
 				if (this.isCancelled) {
