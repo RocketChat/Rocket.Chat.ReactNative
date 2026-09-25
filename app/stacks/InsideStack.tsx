@@ -40,6 +40,7 @@ import ReadReceiptsView from '../views/ReadReceiptView';
 import CannedResponsesListView from '../views/CannedResponsesListView';
 import CannedResponseDetail from '../views/CannedResponseDetail';
 import JitsiMeetView from '../views/JitsiMeetView';
+import VideoConfWebView from '../views/VideoConfWebView';
 import DiscussionsView from '../views/DiscussionsView';
 import ChangeAvatarView from '../views/ChangeAvatarView';
 import AddChannelTeamView from '../views/AddChannelTeamView';
@@ -196,11 +197,7 @@ const ChatsStack = createNativeStackNavigator({
 		}),
 		QueueListView: QueueListViewScreen,
 		CannedResponsesListView: CannedResponsesListViewScreen,
-		CannedResponseDetail: CannedResponseDetailScreen,
-		JitsiMeetView: createNativeStackScreen({
-			screen: JitsiMeetViewScreen,
-			options: { headerShown: false, animation: isIOS ? 'default' : 'none' }
-		})
+		CannedResponseDetail: CannedResponseDetailScreen
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
@@ -357,6 +354,15 @@ const InsideStack = createNativeStackNavigator({
 		CallView: createNativeStackScreen({
 			screen: CallViewScreen,
 			options: { headerShown: false }
+		}),
+		// Siblings of CallView so they can be reached (and rendered above it) while a VoIP call is open.
+		JitsiMeetView: createNativeStackScreen({
+			screen: JitsiMeetViewScreen,
+			options: { headerShown: false, animation: isIOS ? 'default' : 'none' }
+		}),
+		VideoConfWebView: createNativeStackScreen({
+			screen: VideoConfWebView,
+			options: { animation: isIOS ? 'default' : 'none' }
 		})
 	}
 }).with(({ Navigator }) => {

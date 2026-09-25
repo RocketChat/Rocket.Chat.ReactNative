@@ -14,6 +14,7 @@ import { getThreadMessageById } from '~/lib/database/services/ThreadMessage';
 import { store as reduxStore } from '~/lib/store/auxStore';
 import { addUserTyping, clearUserTyping, removeUserTyping } from '~/actions/usersTyping';
 import { debounce } from '../helpers';
+import { emitter } from '../helpers/emitter';
 import { subscribeRoom, unsubscribeRoom } from '~/actions/room';
 import { Encryption } from '~/lib/encryption';
 import {
@@ -101,44 +102,63 @@ export default class RoomSubscription {
 		}
 	};
 
+	handleTyping = (rid: string, args: any[]) => {
+		const { user } = reduxStore.getState().login;
+		const { UI_Use_Real_Name } = reduxStore.getState().settings;
+		const { subscribedRoom } = reduxStore.getState().room;
+		if (subscribedRoom !== rid) {
+			return;
+		}
+		const [name, typing] = args;
+		const key = UI_Use_Real_Name ? 'name' : 'username';
+		if (name === user[key]) {
+			return;
+		}
+		if (typing) {
+			reduxStore.dispatch(addUserTyping(name));
+		} else {
+			reduxStore.dispatch(removeUserTyping(name));
+		}
+	};
+
+	handleUserActivity = (rid: string, args: any[]) => {
+		const { user } = reduxStore.getState().login;
+		const { UI_Use_Real_Name } = reduxStore.getState().settings;
+		const { subscribedRoom } = reduxStore.getState().room;
+		if (subscribedRoom !== rid) {
+			return;
+		}
+		const [name, activities] = args;
+		const key = UI_Use_Real_Name ? 'name' : 'username';
+		if (name === user[key]) {
+			return;
+		}
+		if (!!activities && activities.includes('user-typing')) {
+			reduxStore.dispatch(addUserTyping(name));
+		}
+		if (!activities?.length) {
+			reduxStore.dispatch(removeUserTyping(name));
+		}
+	};
+
+	handleVideoConf = (rid: string, args: any[]) => {
+		const [callId] = args;
+		if (typeof callId === 'string') {
+			emitter.emit('videoConfUpdated', { rid, callId });
+		}
+	};
+
 	handleNotifyRoomReceived = protectedFunction(async (ddpMessage: IDDPMessage) => {
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
 		if (this.rid !== _rid) {
 			return;
 		}
 		if (ev === 'typing') {
-			const { user } = reduxStore.getState().login;
-			const { UI_Use_Real_Name } = reduxStore.getState().settings;
-			const { subscribedRoom } = reduxStore.getState().room;
-			if (subscribedRoom !== _rid) {
-				return;
-			}
-			const [name, typing] = ddpMessage.fields.args;
-			const key = UI_Use_Real_Name ? 'name' : 'username';
-			if (name !== user[key]) {
-				if (typing) {
-					reduxStore.dispatch(addUserTyping(name));
-				} else {
-					reduxStore.dispatch(removeUserTyping(name));
-				}
-			}
+			this.handleTyping(_rid, ddpMessage.fields.args);
 		} else if (ev === 'user-activity') {
-			const { user } = reduxStore.getState().login;
-			const { UI_Use_Real_Name } = reduxStore.getState().settings;
-			const { subscribedRoom } = reduxStore.getState().room;
-			if (subscribedRoom !== _rid) {
-				return;
-			}
-			const [name, activities] = ddpMessage.fields.args;
-			const key = UI_Use_Real_Name ? 'name' : 'username';
-			if (name !== user[key]) {
-				if (!!activities && activities.includes('user-typing')) {
-					reduxStore.dispatch(addUserTyping(name));
-				}
-				if (!activities?.length) {
-					reduxStore.dispatch(removeUserTyping(name));
-				}
-			}
+			this.handleUserActivity(_rid, ddpMessage.fields.args);
+		} else if (ev === 'videoconf') {
+			this.handleVideoConf(_rid, ddpMessage.fields.args);
 		} else if (ev === 'deleteMessage') {
 			InteractionManager.runAfterInteractions(async () => {
 				if (ddpMessage && ddpMessage.fields && ddpMessage.fields.args.length > 0) {
