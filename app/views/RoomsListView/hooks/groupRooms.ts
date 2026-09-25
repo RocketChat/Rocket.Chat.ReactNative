@@ -83,17 +83,8 @@ export const groupRooms = (
 
 	let groupedChats = [] as TSubscriptionModel[];
 	visibleGroups.forEach(key => {
-		const groupChats = groups.get(key) ?? [];
-		const customCategoryName = customCategoryNames.get(key);
-		if (customCategoryName !== undefined) {
-			groupedChats = addRoomsGroup(groupChats, key, groupedChats, customCategoryName);
-		} else if (key !== CONVERSATIONS_GROUP) {
-			groupedChats = addRoomsGroup(groupChats, key, groupedChats);
-		} else if (hasChatsHeader) {
-			groupedChats = addRoomsGroup(groupChats, CHATS_HEADER, groupedChats);
-		} else {
-			groupedChats = groupedChats.concat(groupChats);
-		}
+		const header = key === CONVERSATIONS_GROUP ? (hasChatsHeader ? CHATS_HEADER : '') : key;
+		groupedChats = addRoomsGroup(groups.get(key) ?? [], header, groupedChats, customCategoryNames.get(key));
 	});
 	return groupedChats;
 };
