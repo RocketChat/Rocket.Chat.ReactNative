@@ -4,7 +4,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
 <View
   style={
     {
-      "backgroundColor": "#FFFFFF",
+      "backgroundColor": "#F2F3F5",
     }
   }
   testID="searchbox"
@@ -26,9 +26,8 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
               "marginBottom": 10,
             },
             {
-              "marginBottom": 16,
-              "marginHorizontal": 12,
-              "marginTop": 16,
+              "marginHorizontal": 16,
+              "marginVertical": 12,
             },
           ]
         }

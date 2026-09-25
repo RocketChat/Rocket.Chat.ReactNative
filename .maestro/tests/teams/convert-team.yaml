@@ -42,10 +42,10 @@ tags:
     text: 'Convert'
 - tapOn:
     text: 'Convert'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.publicChannelToBeConverted}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.publicChannelToBeConverted}
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
@@ -74,10 +74,10 @@ tags:
     text: 'Convert'
 - tapOn:
     text: 'Convert'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.toBeConverted}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.toBeConverted}
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
@@ -124,12 +124,7 @@ tags:
     text: 'Yes, move it!'
 - tapOn:
     text: 'Yes, move it!'
-- extendedWaitUntil:
-    visible:
-      id: 'room-header'
-    timeout: 60000
-- tapOn:
-    id: 'room-header'
+- runFlow: '../../helpers/open-room-actions.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-teams'
@@ -178,10 +173,10 @@ tags:
     visible:
       id: 'room-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.toBeConverted}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.toBeConverted}
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:

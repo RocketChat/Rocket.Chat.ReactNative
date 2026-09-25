@@ -33,7 +33,7 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps) => {
 	}, [navigation]);
 
 	return (
-		<SafeAreaView testID='push-troubleshoot-view'>
+		<SafeAreaView testID='push-troubleshoot-view' style={{ paddingTop: 16 }}>
 			<List.Container testID='push-troubleshoot-view-list'>
 				<DeviceNotificationSettings />
 				{/* <CommunityEditionPushQuota /> */}

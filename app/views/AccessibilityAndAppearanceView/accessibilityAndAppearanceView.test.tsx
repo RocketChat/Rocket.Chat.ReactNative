@@ -28,10 +28,10 @@ describe('Autoplay GIFs switch', () => {
 
 		const { getByTestId } = render(<AccessibilityAndAppearanceView />);
 
-		const autoplaySwitch = getByTestId('accessibility-autoplay-gifs-switch').findByProps({ value: false });
-		expect(autoplaySwitch.props.value).toBe(false);
+		const autoplaySwitch = getByTestId('accessibility-autoplay-gifs-switch').findByProps({ isOn: false });
+		expect(autoplaySwitch.props.isOn).toBe(false);
 
-		fireEvent(autoplaySwitch, 'valueChange', true);
+		fireEvent(autoplaySwitch, 'isOnChange', { nativeEvent: { isOn: true } });
 
 		expect(mockSetAutoplayGifs).toHaveBeenCalledWith(true);
 	});

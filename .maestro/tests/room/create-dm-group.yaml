@@ -18,12 +18,11 @@ tags:
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-create-channel'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-view-create-channel'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-create-channel'
+      IOS_LABEL: 'Create new channel, team, direct message or discussion'
 
 # should have new message screen
 - extendedWaitUntil:
@@ -46,12 +45,10 @@ tags:
     id: 'new-message-view-create-direct-message'
 
 # should add users
-- extendedWaitUntil:
-    visible:
-      id: 'select-users-view-search'
-    timeout: 60000
-- tapOn:
-    id: 'select-users-view-search'
+- runFlow:
+    file: '../../helpers/tap-search-field.yaml'
+    env:
+      SEARCH_ID: 'select-users-view-search'
 - inputText: 'rocket.cat'
 - extendedWaitUntil:
     visible:
@@ -59,8 +56,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'select-users-view-item-rocket.cat'
-- tapOn:
-    id: 'select-users-view-search'
+- runFlow:
+    file: '../../helpers/tap-search-field.yaml'
+    env:
+      SEARCH_ID: 'select-users-view-search'
 - eraseText
 - inputText: ${output.otherUser.username}
 - extendedWaitUntil:
@@ -77,7 +76,7 @@ tags:
     id: 'selected-users-view-submit'
 
 # check Group DM exist
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-rocket.cat, ${output.otherUser.username}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: 'rocket.cat, ${output.otherUser.username}'

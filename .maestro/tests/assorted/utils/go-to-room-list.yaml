@@ -4,12 +4,9 @@ tags:
   - 'util'
 
 ---
-- extendedWaitUntil:
-    visible:
-      id: 'custom-header-back'
-    timeout: 60000
-- tapOn:
-    id: 'custom-header-back'
+- waitForAnimationToEnd:
+    timeout: 10000
+- runFlow: '../../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'accessibility-view-drawer'

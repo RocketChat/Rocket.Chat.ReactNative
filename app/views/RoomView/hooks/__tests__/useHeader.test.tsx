@@ -1,19 +1,35 @@
 import { act, renderHook } from '@testing-library/react-native';
+
 import { createStore } from 'zustand';
 
 import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
 import { useHeader } from '../useHeader';
+import { useNativeRoomHeader } from '../useNativeRoomHeader';
+
+jest.mock('../useNativeRoomHeader', () => ({ useNativeRoomHeader: jest.fn() }));
+jest.mock('../useNativeBackButton', () => ({ useNativeBackButton: jest.fn() }));
+const mockNativeRightItems: unknown[] = [];
+jest.mock('../useRoomHeaderRightItems', () => ({ useRoomHeaderRightItems: jest.fn(() => mockNativeRightItems) }));
 
 let mockTestStore: RoomStore;
+let mockIsIOS = false;
 
 jest.mock('../useGoRoomActionsView', () => ({ useGoRoomActionsView: jest.fn(() => jest.fn()) }));
 jest.mock('~/views/RoomView/components/LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
 jest.mock('~/views/RoomView/components/RightButtons/RightButtons', () => ({ __esModule: true, default: 'RightButtons' }));
 jest.mock('~/containers/RoomHeader', () => ({ __esModule: true, default: 'RoomHeader' }));
+let mockIsTablet = false;
 jest.mock('~/lib/methods/helpers', () => ({
 	getRoomTitle: jest.fn(() => 'Room Title'),
-	isGroupChat: jest.fn(() => false)
+	isGroupChat: jest.fn(() => false),
+	get hasNativeHeaderBar() {
+		return mockIsIOS;
+	},
+	get isTablet() {
+		return mockIsTablet;
+	}
 }));
+jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: () => mockIsTablet }));
 jest.mock('~/lib/methods/isInviteSubscription', () => ({
 	isInviteSubscription: jest.fn(() => false)
 }));
@@ -45,6 +61,8 @@ describe('useHeader', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockTestStore = makeRoomStore();
+		mockIsIOS = false;
+		mockIsTablet = false;
 	});
 
 	it('sets only the headerLeft spacer and returns when rid is missing', () => {
@@ -94,5 +112,70 @@ describe('useHeader', () => {
 		expect(() => sideOptions.headerLeft()).not.toThrow();
 		expect(() => titleOptions.headerTitle()).not.toThrow();
 		expect(() => sideOptions.headerRight()).not.toThrow();
+	});
+
+	describe('on iOS', () => {
+		beforeEach(() => {
+			mockIsIOS = true;
+		});
+
+		it('leaves the native header empty when rid is missing', () => {
+			renderHook(() => useHeader({ rid: undefined, tmid: undefined, name: 'general', roomStore: mockTestStore }));
+
+			expect(mockSetOptions).not.toHaveBeenCalled();
+		});
+
+		it('sets unstable_headerRightItems and keeps the native back button instead of headerLeft/headerRight', () => {
+			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
+
+			const sideOptions = mockSetOptions.mock.calls[0][0];
+			expect(typeof sideOptions.unstable_headerRightItems).toBe('function');
+			expect(sideOptions.unstable_headerRightItems()).toBe(mockNativeRightItems);
+			expect(sideOptions).not.toHaveProperty('headerLeft');
+			expect(sideOptions).not.toHaveProperty('headerRight');
+		});
+	});
+
+	describe('on iPad', () => {
+		beforeEach(() => {
+			mockIsIOS = true;
+			mockIsTablet = true;
+		});
+
+		it('uses the native right items like iPhone', () => {
+			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
+
+			const sideOptions = mockSetOptions.mock.calls[0][0];
+			expect(sideOptions.unstable_headerRightItems()).toBe(mockNativeRightItems);
+			expect(sideOptions).not.toHaveProperty('headerRight');
+		});
+
+		it('shows the room avatar without the shared glass background', () => {
+			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
+
+			const [avatarItem] = mockSetOptions.mock.calls[0][0].unstable_headerLeftItems();
+			expect(avatarItem.type).toBe('custom');
+			expect(avatarItem.hidesSharedBackground).toBe(true);
+			expect(avatarItem.element.type).toBe('LeftButtons');
+		});
+
+		it('keeps the native back button on a thread', () => {
+			renderHook(() => useHeader({ rid: 'rid-1', tmid: 'tmid-1', name: 'Thread', roomStore: mockTestStore }));
+
+			expect(mockSetOptions.mock.calls[0][0]).not.toHaveProperty('unstable_headerLeftItems');
+		});
+	});
+});
+
+describe('native title availability', () => {
+	it.each([
+		[true, true],
+		[false, false]
+	])('uses the native title when the native header bar is %s', (nativeHeaderBar, native) => {
+		jest.clearAllMocks();
+		mockIsIOS = nativeHeaderBar;
+		renderHook(() => useHeader({ rid: 'rid-1', roomStore: makeRoomStore() }));
+		expect(useNativeRoomHeader).toHaveBeenCalledWith(native, expect.any(Object), undefined, null, expect.any(Function));
+		expect(mockSetOptions.mock.calls.some(([options]) => typeof options.headerTitle === 'function')).toBe(!native);
 	});
 });

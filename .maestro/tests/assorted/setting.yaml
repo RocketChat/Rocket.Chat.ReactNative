@@ -20,8 +20,11 @@ tags:
     visible:
       id: 'rooms-list-view'
     timeout: 60000
-- tapOn:
-    id: 'rooms-list-view-sidebar'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-sidebar'
+      IOS_LABEL: 'Menu'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
@@ -177,10 +180,11 @@ tags:
     timeout: 60000
 
 # should navigate to legalview
-- assertVisible:
-    id: 'rooms-list-view-sidebar'
-- tapOn:
-    id: 'rooms-list-view-sidebar'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-sidebar'
+      IOS_LABEL: 'Menu'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'

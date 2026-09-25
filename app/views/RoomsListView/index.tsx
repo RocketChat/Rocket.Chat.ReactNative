@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { memo, useContext, useEffect } from 'react';
-import { BackHandler, FlatList, RefreshControl } from 'react-native';
+import { BackHandler, FlatList, Platform, RefreshControl } from 'react-native';
 import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 
@@ -64,7 +64,7 @@ const RoomsListView = memo(function RoomsListView() {
 	}, [searchEnabled]);
 
 	const onPressItem = (item = {} as IRoomItem) => {
-		if (!navigation.isFocused()) {
+		if (!isMasterDetail && !navigation.isFocused()) {
 			return;
 		}
 		if (item.rid === subscribedRoom) {
@@ -131,11 +131,12 @@ const RoomsListView = memo(function RoomsListView() {
 			extraData={searchEnabled ? searchResults : subscriptions}
 			keyExtractor={item => `${item.rid}-${searchEnabled}`}
 			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
-			contentContainerStyle={{ paddingBottom: bottom }}
+			contentContainerStyle={{ paddingBottom: Platform.select({ ios: 0, default: bottom }) }}
 			renderItem={renderItem}
 			ListHeaderComponent={ListHeader}
 			ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}
 			getItemLayout={getItemLayout}
+			contentInsetAdjustmentBehavior={isIOS ? 'automatic' : undefined}
 			keyboardShouldPersistTaps='always'
 			initialNumToRender={INITIAL_NUM_TO_RENDER}
 			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}

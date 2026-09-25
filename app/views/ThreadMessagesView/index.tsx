@@ -5,7 +5,8 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { type Observable, type Subscription } from 'rxjs';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
-import { Component } from 'react';
+import { type SearchBarCommands } from 'react-native-screens';
+import { Component, createRef } from 'react';
 
 import { showActionSheetRef } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
@@ -38,12 +39,13 @@ import {
 	type TSubscriptionModel,
 	type TThreadModel
 } from '~/definitions';
-import { getUidDirectMessage, debounce, isIOS } from '~/lib/methods/helpers';
+import { getUidDirectMessage, debounce, hasNativeHeaderBar, isIOS } from '~/lib/methods/helpers';
 import { getSyncThreadsList, getThreadsList } from '~/lib/services/restApi';
 import { toggleFollowThread as toggleFollowThreadService } from '~/lib/methods/toggleFollowThread';
 import UserPreferences from '~/lib/methods/userPreferences';
 import Navigation from '~/lib/navigation/appNavigation';
 import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { headerIcon } from '~/lib/methods/helpers/navigation/headerIcon';
 
 const API_FETCH_COUNT = 50;
 const THREADS_FILTER = 'threadsFilter';
@@ -79,6 +81,8 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 	private messagesSubscription?: Subscription;
 
 	private messagesObservable?: Observable<TThreadModel[]>;
+
+	private searchBarRef = createRef<SearchBarCommands>();
 
 	constructor(props: IThreadMessagesViewProps) {
 		super(props);
@@ -118,6 +122,41 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 	getHeader = (): NativeStackNavigationOptions => {
 		const { isSearching, currentFilter } = this.state;
 		const { navigation, isMasterDetail, theme } = this.props;
+
+		if (hasNativeHeaderBar) {
+			const options: NativeStackNavigationOptions = {
+				headerTransparent: true,
+				headerTitle: I18n.t('Threads'),
+				headerSearchBarOptions: {
+					ref: this.searchBarRef,
+					placement: 'stacked',
+					placeholder: I18n.t('Search'),
+					onFocus: this.onSearchPress,
+					onChangeText: (event: { nativeEvent: { text: string } }) => this.onSearchChangeText(event.nativeEvent.text),
+					onCancelButtonPress: this.onCancelSearchPress
+				},
+				unstable_headerRightItems: () => [
+					{
+						type: 'menu',
+						label: I18n.t('Filter'),
+						accessibilityLabel: I18n.t('Filter'),
+						icon: headerIcon('filter'),
+						menu: {
+							items: [Filter.All, Filter.Following, Filter.Unread].map(filter => ({
+								type: 'action' as const,
+								label: I18n.t(filter),
+								state: currentFilter === filter ? ('on' as const) : ('off' as const),
+								onPress: () => this.onFilterSelected(filter)
+							}))
+						}
+					}
+				]
+			};
+			if (isMasterDetail) {
+				options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+			}
+			return options;
+		}
 
 		if (isSearching) {
 			return {
@@ -350,6 +389,8 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 					end: result.count < API_FETCH_COUNT,
 					offset: offset + API_FETCH_COUNT
 				});
+			} else {
+				this.setState({ loading: false, end: true });
 			}
 		} catch (e) {
 			log(e);
@@ -380,14 +421,21 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 	};
 
 	onSearchPress = () => {
-		this.setState({ isSearching: true }, () => this.setHeader());
+		this.setState({ isSearching: true }, () => {
+			if (!hasNativeHeaderBar) {
+				this.setHeader();
+			}
+		});
 	};
 
 	onCancelSearchPress = () => {
 		this.setState({ isSearching: false, searchText: '' }, () => {
 			const { subscription } = this.state;
-			this.setHeader();
+			if (!hasNativeHeaderBar) {
+				this.setHeader();
+			}
 			this.subscribeMessages(subscription);
+			this.searchBarRef.current?.clearText();
 		});
 	};
 
@@ -504,13 +552,14 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 				extraData={this.state}
 				renderItem={this.renderItem}
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-				contentContainerStyle={[styles.contentContainer, { paddingBottom: insets.bottom }]}
+				contentContainerStyle={[styles.contentContainer, { paddingBottom: hasNativeHeaderBar ? 0 : insets.bottom }]}
 				onEndReached={this.load}
 				onEndReachedThreshold={0.5}
 				maxToRenderPerBatch={5}
 				windowSize={10}
 				initialNumToRender={7}
 				removeClippedSubviews={isIOS}
+				contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444

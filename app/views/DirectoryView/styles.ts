@@ -10,6 +10,7 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	listContainer: {
+		paddingTop: 16,
 		paddingBottom: 30
 	},
 	filterItemContainer: {

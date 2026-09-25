@@ -2,13 +2,16 @@ import { useLayoutEffect, type ReactElement } from 'react';
 import { FlatList, type ListRenderItem } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import {
+	type NativeStackHeaderItemMenuAction,
+	type NativeStackNavigationOptions,
+	type NativeStackNavigationProp
+} from '@react-navigation/native-stack';
 import { type CompositeNavigationProp } from '@react-navigation/native';
 
 import { useActionSheet } from '~/containers/ActionSheet';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
-import * as List from '~/containers/List';
 import DirectoryItem from '~/containers/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '~/i18n';
@@ -27,6 +30,10 @@ import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useDirectorySearch } from './hooks/useDirectorySearch';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers';
+import { headerIcon } from '~/lib/methods/helpers/navigation/headerIcon';
+import RowSeparator from '~/containers/NativeListRow/Separator';
+import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
 
 interface IDirectoryViewProps {
 	navigation: CompositeNavigationProp<
@@ -37,6 +44,7 @@ interface IDirectoryViewProps {
 
 const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 	const { colors } = useTheme();
+	const listBackgroundColor = useListBackgroundColor(colors.surfaceRoom);
 	const { bottom } = useSafeAreaInsets();
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 
@@ -71,14 +79,72 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 			});
 		};
 
-		const options: NativeStackNavigationOptions = {
-			title: I18n.t('Directory'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item iconName='filter' onPress={showFilters} testID='directory-view-filter' />
-				</HeaderButton.Container>
-			)
-		};
+		const typeAction = (
+			itemType: string,
+			title: string,
+			icon: NativeStackHeaderItemMenuAction['icon']
+		): NativeStackHeaderItemMenuAction => ({
+			type: 'action',
+			label: I18n.t(title),
+			icon,
+			state: type === itemType ? 'on' : 'off',
+			onPress: () => changeType(itemType)
+		});
+
+		const options: NativeStackNavigationOptions = hasNativeHeaderBar
+			? {
+					title: I18n.t('Directory'),
+					headerRight: undefined,
+					headerTransparent: true,
+					headerSearchBarOptions: {
+						placement: 'stacked',
+						placeholder: I18n.t('Search'),
+						onChangeText: event => onSearchChangeText(event.nativeEvent.text),
+						onSearchButtonPress: () => search(),
+						onCancelButtonPress: () => onSearchChangeText('')
+					},
+					unstable_headerRightItems: () => [
+						{
+							type: 'menu',
+							label: I18n.t('Filter'),
+							accessibilityLabel: I18n.t('Filter'),
+							icon: headerIcon('filter'),
+							menu: {
+								items: [
+									{
+										type: 'submenu',
+										label: I18n.t('Filter'),
+										inline: true,
+										items: [
+											typeAction('channels', 'Channels', { type: 'sfSymbol', name: 'number' }),
+											typeAction('users', 'Users', { type: 'sfSymbol', name: 'person' }),
+											typeAction('teams', 'Teams', { type: 'sfSymbol', name: 'person.3' })
+										]
+									},
+									...(isFederationEnabled
+										? [
+												{
+													type: 'action' as const,
+													label: I18n.t('Search_global_users'),
+													description: I18n.t('Search_global_users_description'),
+													state: globalUsers ? ('on' as const) : ('off' as const),
+													onPress: toggleWorkspace
+												}
+											]
+										: [])
+								]
+							}
+						}
+					]
+				}
+			: {
+					title: I18n.t('Directory'),
+					headerRight: () => (
+						<HeaderButton.Container>
+							<HeaderButton.Item iconName='filter' onPress={showFilters} testID='directory-view-filter' />
+						</HeaderButton.Container>
+					)
+				};
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;
 		}
@@ -93,7 +159,9 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 		changeType,
 		toggleWorkspace,
 		showActionSheet,
-		hideActionSheet
+		hideActionSheet,
+		onSearchChangeText,
+		search
 	]);
 
 	const goRoom = (item: TGoRoomItem) => {
@@ -154,7 +222,9 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 			onPress: () => onPressItem(item),
 			testID: `directory-view-item-${item.name}`,
 			style,
-			rid: item._id
+			rid: item._id,
+			isFirst: index === 0,
+			isLast: index === data.length - 1
 		};
 
 		if (type === 'users') {
@@ -193,18 +263,20 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 	};
 
 	return (
-		<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='directory-view'>
-			<SearchBox onChangeText={onSearchChangeText} onSubmitEditing={search} testID='directory-view-search' />
-			<List.Separator />
+		<SafeAreaView style={{ backgroundColor: listBackgroundColor }} testID='directory-view'>
+			{hasNativeHeaderBar ? null : (
+				<SearchBox onChangeText={onSearchChangeText} onSubmitEditing={search} testID='directory-view-search' />
+			)}
 
 			<FlatList
 				data={data}
+				contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
 				style={styles.list}
 				contentContainerStyle={[styles.listContainer, { paddingBottom: bottom }]}
 				extraData={type}
 				keyExtractor={item => item._id}
 				renderItem={renderItem}
-				ItemSeparatorComponent={List.Separator}
+				ItemSeparatorComponent={RowSeparator}
 				keyboardShouldPersistTaps='always'
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				onEndReached={() => loadMore()}

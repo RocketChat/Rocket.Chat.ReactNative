@@ -3,22 +3,15 @@ import { StyleSheet, Text, View } from 'react-native';
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
+import { asNativeListRow } from '~/containers/List/native/rowMarkers';
+import { useNativeListMode } from '~/containers/List/native/context';
+import NativeListPicker from '~/containers/List/native/Picker';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import { type TAlertDisplayType } from '..';
 
 const styles = StyleSheet.create({
-	leftTitleContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'flex-start'
-	},
-	leftTitle: {
-		...sharedStyles.textMedium,
-		fontSize: 16,
-		lineHeight: 24
-	},
 	rightContainer: {
 		flex: 1
 	},
@@ -50,6 +43,7 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
+	const nativeListMode = useNativeListMode();
 
 	const OPTIONS: TOPTIONS = [
 		{
@@ -80,6 +74,17 @@ const ListPicker = ({
 			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
 		}));
 
+	if (nativeListMode === 'native') {
+		return (
+			<NativeListPicker
+				title={title}
+				options={OPTIONS.map(i => ({ label: i.label, value: i.value }))}
+				selection={option.value}
+				onSelectionChange={selected => onChangeValue(selected as TAlertDisplayType)}
+			/>
+		);
+	}
+
 	const openOptions = () => {
 		const options = getOptions();
 		showActionSheet({ options });
@@ -88,11 +93,8 @@ const ListPicker = ({
 		<List.Item
 			accessibilityLabel={`${title}. ${option?.label}`}
 			onPress={openOptions}
-			title={() => (
-				<View style={styles.leftTitleContainer}>
-					<Text style={[styles.leftTitle, { color: colors.fontDefault }]}>{title}</Text>
-				</View>
-			)}
+			title={title}
+			translateTitle={false}
 			right={() => (
 				<View style={styles.rightTitleContainer}>
 					<Text style={[styles.rightTitle, { color: colors.fontInfo }]}>{option?.label}</Text>
@@ -104,4 +106,4 @@ const ListPicker = ({
 	);
 };
 
-export default ListPicker;
+export default asNativeListRow(ListPicker);

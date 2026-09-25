@@ -13,8 +13,9 @@ const styles = StyleSheet.create({
 interface IListContainer extends ScrollViewProps {
 	children: (ReactElement | null)[] | ReactElement | null;
 	testID?: string;
+	backgroundHidden?: boolean;
 }
-const ListContainer = ({ children, ...props }: IListContainer) => {
+const ListContainer = ({ children, backgroundHidden: _backgroundHidden, ...props }: IListContainer) => {
 	const { bottom } = useSafeAreaInsets();
 
 	return (
