@@ -8,6 +8,7 @@ import database from '../lib/database';
 import log from '../lib/methods/helpers/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import buildMessage from '../lib/methods/helpers/buildMessage';
+import { FULL_ROOMS_SYNC_KEY } from '../lib/database/utils';
 import { getRooms } from '../lib/methods/getRooms';
 import { subscribeRooms } from '../lib/methods/subscribeRooms';
 
@@ -34,9 +35,11 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 		const newRoomsUpdatedAt = new Date();
 		let roomsUpdatedAt;
 		const server = yield select(state => state.server.server);
+		const db = database.active;
+		const isFullSyncRequired = yield db.localStorage.get(FULL_ROOMS_SYNC_KEY);
 		if (params.allData) {
 			yield put(roomsRefresh());
-		} else {
+		} else if (!isFullSyncRequired) {
 			const serversCollection = serversDB.get('servers');
 			try {
 				const serverRecord = yield serversCollection.find(server);
@@ -48,7 +51,6 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 
 		const [subscriptionsResult, roomsResult] = yield getRooms(roomsUpdatedAt);
 		const subscriptions = yield mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
-		const db = database.active;
 		const subCollection = db.get('subscriptions');
 		const messagesCollection = db.get('messages');
 
@@ -133,6 +135,9 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 		}
 
 		yield updateRooms({ server, newRoomsUpdatedAt });
+		if (isFullSyncRequired) {
+			yield db.localStorage.remove(FULL_ROOMS_SYNC_KEY);
+		}
 		yield put(roomsSuccess());
 	} catch (e) {
 		yield put(roomsFailure(e));

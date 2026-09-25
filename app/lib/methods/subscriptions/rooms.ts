@@ -19,7 +19,9 @@ import {
 	type IMessage,
 	type IServerRoom,
 	type IRoom,
+	type ISidebarCategory,
 	type ISubscription,
+	type TLoggedUserModel,
 	type TMessageModel,
 	type TRoomModel,
 	type TThreadMessageModel,
@@ -267,6 +269,25 @@ const debouncedUpdate = (subscription: ISubscription) => {
 	queue[subscription.rid ? getSubQueueId(subscription.rid) : getRoomQueueId(subscription._id)] = subscription;
 };
 
+const setSidebarCategories = async (sidebarCategories: ISidebarCategory[]) => {
+	store.dispatch(setUser({ sidebarCategories }));
+	const userId = store.getState().login.user.id;
+	if (!userId) {
+		return;
+	}
+	try {
+		const serversDB = database.servers;
+		const userRecord = await serversDB.get('users').find(userId);
+		await serversDB.write(() =>
+			userRecord.update((record: TLoggedUserModel) => {
+				record.sidebarCategories = sidebarCategories;
+			})
+		);
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleUserData = ({ diff, unset }: { diff: any; unset: any }) => {
 	if (diff?.emails?.length > 0) {
 		store.dispatch(setUser({ emails: diff.emails }));
@@ -279,6 +300,12 @@ const handleUserData = ({ diff, unset }: { diff: any; unset: any }) => {
 	}
 	if (diff?.['settings.preferences.alsoSendThreadToChannel'] !== undefined) {
 		store.dispatch(setUser({ alsoSendThreadToChannel: diff['settings.preferences.alsoSendThreadToChannel'] }));
+	}
+	if (diff?.['settings.preferences.sidebarCategories'] !== undefined) {
+		setSidebarCategories(diff['settings.preferences.sidebarCategories']);
+	}
+	if (unset?.['settings.preferences.sidebarCategories']) {
+		setSidebarCategories([]);
 	}
 	if (diff?.avatarETag) {
 		store.dispatch(setUser({ avatarETag: diff.avatarETag }));

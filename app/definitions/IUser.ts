@@ -105,6 +105,12 @@ export interface IUserSettings {
 }
 export type TNotifications = 'default' | 'all' | 'mentions' | 'nothing';
 
+export interface ISidebarCategory {
+	_id: string;
+	name: string;
+	default?: boolean;
+}
+
 export interface INotificationPreferences {
 	id: string;
 	enableMessageParserEarlyAdoption: boolean;

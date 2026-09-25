@@ -171,7 +171,8 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 						avatarETag: userRecord.avatarETag,
 						bio: userRecord.bio,
 						nickname: userRecord.nickname,
-						requirePasswordChange: userRecord.requirePasswordChange
+						requirePasswordChange: userRecord.requirePasswordChange,
+						sidebarCategories: userRecord.sidebarCategories ?? []
 					}
 				: { token };
 		}
