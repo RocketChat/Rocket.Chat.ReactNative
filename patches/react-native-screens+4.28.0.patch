@@ -962,3 +962,74 @@ index 8594b73..5afaf41 100644
    /**
     * Customize font family to be used for the title.
     */
+diff --git a/node_modules/react-native-screens/ios/RNSScreenStack.mm b/node_modules/react-native-screens/ios/RNSScreenStack.mm
+index c233036..5d3e28d 100644
+--- a/node_modules/react-native-screens/ios/RNSScreenStack.mm
++++ b/node_modules/react-native-screens/ios/RNSScreenStack.mm
+@@ -38,6 +38,58 @@ namespace react = facebook::react;
+ 
+ @end
+ 
++static UIView *RNSFindLargeTitleView(UIView *view)
++{
++  if ([NSStringFromClass([view class]) containsString:@"LargeTitleView"]) {
++    return view;
++  }
++  for (UIView *subview in view.subviews) {
++    UIView *found = RNSFindLargeTitleView(subview);
++    if (found != nil) {
++      return found;
++    }
++  }
++  return nil;
++}
++
++static void RNSAlignLargeTitleMargins(UINavigationController *controller)
++{
++  UIViewController *top = controller.topViewController;
++  if (top == nil || controller.navigationBar.prefersLargeTitles == NO) {
++    return;
++  }
++  UIView *titleView = RNSFindLargeTitleView(top.view);
++  if (titleView == nil) {
++    return;
++  }
++  NSDirectionalEdgeInsets margins = titleView.directionalLayoutMargins;
++  if (margins.leading >= margins.trailing) {
++    return;
++  }
++  UINavigationItem *item = top.navigationItem;
++  UINavigationItemLargeTitleDisplayMode mode = item.largeTitleDisplayMode;
++  item.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
++  item.largeTitleDisplayMode = mode;
++  titleView.insetsLayoutMarginsFromSafeArea = !titleView.insetsLayoutMarginsFromSafeArea;
++  titleView.insetsLayoutMarginsFromSafeArea = !titleView.insetsLayoutMarginsFromSafeArea;
++  titleView.preservesSuperviewLayoutMargins = !titleView.preservesSuperviewLayoutMargins;
++  titleView.preservesSuperviewLayoutMargins = !titleView.preservesSuperviewLayoutMargins;
++  margins = titleView.directionalLayoutMargins;
++  if (margins.leading < margins.trailing) {
++    margins.leading = margins.trailing;
++    titleView.directionalLayoutMargins = margins;
++  }
++  [titleView setNeedsLayout];
++  [titleView layoutIfNeeded];
++  if ([titleView.superview isKindOfClass:[UIScrollView class]]) {
++    UIScrollView *scrollView = (UIScrollView *)titleView.superview;
++    [top setContentScrollView:nil forEdge:NSDirectionalRectEdgeTop];
++    [top setContentScrollView:scrollView forEdge:NSDirectionalRectEdgeTop];
++    [controller.navigationBar setNeedsLayout];
++    [controller.navigationBar layoutIfNeeded];
++  }
++}
++
+ @implementation RNSNavigationController
+ 
+ #if !TARGET_OS_TV
+@@ -59,6 +111,7 @@ namespace react = facebook::react;
+ - (void)viewDidLayoutSubviews
+ {
+   [super viewDidLayoutSubviews];
++  RNSAlignLargeTitleMargins(self);
+   if ([self.topViewController isKindOfClass:[RNSScreen class]]) {
+     RNSScreen *screenController = (RNSScreen *)self.topViewController;
+     BOOL isNotDismissingModal = screenController.presentedViewController == nil ||
