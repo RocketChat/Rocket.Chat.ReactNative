@@ -1,0 +1,122 @@
+appId: ${APP_ID}
+name: Share Extension
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-9
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.login = output.utils.login(output.user.username, output.user.password)}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password, 'p')}
+- evalScript: ${output.messageCount = 0}
+
+# start app
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- killApp
+
+# share files on iOS
+- runFlow:
+    when: 
+      platform: iOS
+    commands:
+      - killApp:
+          appId: com.apple.mobileslideshow
+      - launchApp:
+          appId: com.apple.mobileslideshow
+          permissions: 
+            all: allow
+      - extendedWaitUntil:
+          visible: 'What’s New in Photos'
+          timeout: 20000
+          optional: true
+      - tapOn:
+          text: 'Continue'
+          optional: true
+      - runFlow:
+          when:
+            notVisible: '1 Photo Selected'
+          commands:
+            - extendedWaitUntil:
+                visible: 'Library'
+                timeout: 10000
+            - assertVisible:
+                id: 'PXGGridLayout-Info'
+            - longPressOn:
+                id: 'PXGGridLayout-Info'
+      - runFlow: './utils/share-file.yaml'
+
+# share files on android
+- runFlow:
+    when: 
+      platform: android
+    commands:
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'image.png'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.mp4'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.mp3'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.ogg'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.wav'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.docx'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.zip'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.txt'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.html'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.pdf'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.heic'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.mov'
+      - runFlow:
+          file: './utils/share-file.yaml'
+          env:
+            fileName: 'test.m4a'
+
+# invalid uri shows a toast and returns to rooms list without crashing
+- openLink:
+    link: 'rocketchat://shareextension?mediaUris=file:///nonexistent.jpg'
+- extendedWaitUntil:
+    visible: 'The shared file could not be found'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
