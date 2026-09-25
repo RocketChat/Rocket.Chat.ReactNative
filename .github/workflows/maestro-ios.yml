@@ -22,6 +22,12 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
+      - name: Set up Xcode
+        # Match the Xcode version e2e-build-ios.yml builds with
+        uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
+        with:
+          xcode-version: '26.2.0'
+
       - name: Configure Simulator
         run: |
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
