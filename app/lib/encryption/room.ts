@@ -576,6 +576,7 @@ export default class EncryptionRoom {
 			];
 
 			const data = EJSON.stringify({
+				msg: file.msg || '',
 				attachments,
 				files,
 				file: files[0]
