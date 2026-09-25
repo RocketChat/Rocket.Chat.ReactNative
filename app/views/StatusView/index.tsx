@@ -28,6 +28,7 @@ import { USER_STATUS_TEXT_MAX_LENGTH } from '~/lib/constants/maxLength';
 import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
 import ClearAfterPicker, { type ClearAfterValue, computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
 import FooterComponent from './FooterComponent';
+import { GlassBackground, supportsLiquidGlass } from './GlassBackground';
 
 const validationSchema = yup.object().shape({
 	statusText: yup
@@ -69,6 +70,11 @@ const styles = StyleSheet.create({
 		borderRadius: 0,
 		borderTopWidth: 1,
 		borderBottomWidth: 1
+	},
+	glassInputStyle: {
+		borderWidth: 0,
+		borderRadius: 999,
+		backgroundColor: 'transparent'
 	}
 });
 
@@ -189,9 +195,9 @@ const StatusView = (): ReactElement => {
 			label={I18n.t('Status')}
 			value={statusText}
 			containerStyle={styles.inputContainer}
-			inputStyle={styles.inputStyle}
+			inputStyle={supportsLiquidGlass ? styles.glassInputStyle : styles.inputStyle}
+			left={supportsLiquidGlass ? <GlassBackground /> : undefined}
 			testID='status-view-input'
-			glass
 			error={errors.statusText?.message}
 		/>
 	);
@@ -223,7 +229,7 @@ const StatusView = (): ReactElement => {
 		return (
 			<SafeAreaView testID='status-view' style={{ backgroundColor: listBackgroundColor, paddingBottom: bottom }}>
 				{statusInput}
-				<List.Container>
+				<List.Container backgroundHidden>
 					<List.Section>
 						{statusType.map(status => (
 							<Fragment key={status.id}>{renderStatus(status)}</Fragment>

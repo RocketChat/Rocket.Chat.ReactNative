@@ -12,10 +12,17 @@ const capsuleModifiers = [
 	glassEffect({ glass: { variant: 'regular', interactive: true }, shape: 'capsule' })
 ];
 
+const styles = StyleSheet.create({
+	background: {
+		...StyleSheet.absoluteFill,
+		zIndex: -1
+	}
+});
+
 export const GlassBackground = () => {
 	const { theme } = useTheme();
 	return (
-		<Host pointerEvents='none' style={StyleSheet.absoluteFill} colorScheme={theme === 'light' ? 'light' : 'dark'}>
+		<Host pointerEvents='none' style={styles.background} colorScheme={theme === 'light' ? 'light' : 'dark'}>
 			<Capsule modifiers={capsuleModifiers} />
 		</Host>
 	);

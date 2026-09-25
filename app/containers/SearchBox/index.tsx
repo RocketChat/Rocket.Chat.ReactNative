@@ -4,7 +4,6 @@ import { StyleSheet, type TextInputProps, View } from 'react-native';
 import { useTheme } from '~/theme';
 import I18n from '~/i18n';
 import { FormTextInput } from '../TextInput';
-import { supportsLiquidGlass } from '../TextInput/GlassBackground';
 import { useListBackgroundColor } from '../NativeListRow/useListBackgroundColor';
 
 const styles = StyleSheet.create({
@@ -40,9 +39,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps) =>
 				value={text}
 				testID={testID}
 				onClearInput={() => internalOnChangeText('')}
-				iconLeft={supportsLiquidGlass ? 'search' : undefined}
-				iconRight={supportsLiquidGlass ? undefined : 'search'}
-				glass
+				iconRight={'search'}
 			/>
 		</View>
 	);

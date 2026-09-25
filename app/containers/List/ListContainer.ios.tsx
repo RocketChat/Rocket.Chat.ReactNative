@@ -2,7 +2,15 @@ import { useState, type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Host } from '@expo/ui';
 import { Group, List, RNHostView } from '@expo/ui/swift-ui';
-import { alignmentGuide, frame, listRowInsets, listStyle, onGeometryChange, tag } from '@expo/ui/swift-ui/modifiers';
+import {
+	alignmentGuide,
+	frame,
+	listRowInsets,
+	listStyle,
+	onGeometryChange,
+	scrollContentBackground,
+	tag
+} from '@expo/ui/swift-ui/modifiers';
 
 import { useTheme } from '~/theme';
 import ListSection from './ListSection';
@@ -21,6 +29,7 @@ const styles = StyleSheet.create({
 
 const insetGroupedModifiers = [listStyle('insetGrouped')];
 const sidebarModifiers = [listStyle('sidebar')];
+const hiddenBackgroundModifiers = [scrollContentBackground('hidden')];
 
 export interface IListSelection {
 	selectedTag: string | null;
@@ -30,6 +39,7 @@ interface IListContainer {
 	children: (ReactElement | null)[] | ReactElement | null;
 	testID?: string;
 	selection?: IListSelection;
+	backgroundHidden?: boolean;
 }
 
 const isSection = (element: ReactElement) => element.type === ListSection || isNativeListSection(element.type);
@@ -43,7 +53,7 @@ const rowSelectionTag = (element: ReactElement) => {
 
 const selectedTags = ({ selectedTag }: IListSelection) => (selectedTag ? [selectedTag] : []);
 
-const ListContainer = ({ children, testID, selection }: IListContainer) => {
+const ListContainer = ({ children, testID, selection, backgroundHidden }: IListContainer) => {
 	const { theme } = useTheme();
 	const [rowWidth, setRowWidth] = useState(0);
 
@@ -82,7 +92,10 @@ const ListContainer = ({ children, testID, selection }: IListContainer) => {
 		<NativeListContext.Provider value={{ mode: 'native', renderRow }}>
 			<Host style={styles.host} colorScheme={theme === 'light' ? 'light' : 'dark'}>
 				<List
-					modifiers={selection ? sidebarModifiers : insetGroupedModifiers}
+					modifiers={[
+						...(selection ? sidebarModifiers : insetGroupedModifiers),
+						...(backgroundHidden ? hiddenBackgroundModifiers : [])
+					]}
 					selection={selection ? selectedTags(selection) : undefined}
 					testID={testID}>
 					{flattenListChildren(children)
