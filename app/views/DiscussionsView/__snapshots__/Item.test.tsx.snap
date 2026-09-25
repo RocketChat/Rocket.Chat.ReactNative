@@ -71,7 +71,6 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             },
           ]
         }
-        testID="discussions-view-Message content"
         underlayColor="#E4E7EA"
       >
         <View
@@ -95,6 +94,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
         />
         <View
           style={{}}
+          testID="discussions-view-Message content"
         >
           <View
             style={
@@ -139,6 +139,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -156,6 +157,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -469,7 +472,6 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             },
           ]
         }
-        testID="discussions-view-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         underlayColor="#E4E7EA"
       >
         <View
@@ -493,6 +495,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
         />
         <View
           style={{}}
+          testID="discussions-view-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         >
           <View
             style={
@@ -537,6 +540,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -554,6 +558,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -867,7 +873,6 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             },
           ]
         }
-        testID="discussions-view-Message content"
         underlayColor="#E4E7EA"
       >
         <View
@@ -891,6 +896,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
         />
         <View
           style={{}}
+          testID="discussions-view-Message content"
         >
           <View
             style={
@@ -935,6 +941,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -952,6 +959,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -1267,7 +1276,6 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             },
           ]
         }
-        testID="discussions-view-"
         underlayColor="#E4E7EA"
       >
         <View
@@ -1291,6 +1299,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
         />
         <View
           style={{}}
+          testID="discussions-view-"
         >
           <View
             style={
@@ -1335,6 +1344,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -1352,6 +1362,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -1665,7 +1677,6 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             },
           ]
         }
-        testID="discussions-view-Message content"
         underlayColor="#E4E7EA"
       >
         <View
@@ -1689,6 +1700,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
         />
         <View
           style={{}}
+          testID="discussions-view-Message content"
         >
           <View
             style={
@@ -1733,6 +1745,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -1750,6 +1763,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -2083,7 +2098,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             },
           ]
         }
-        testID="discussions-view-Message content"
         underlayColor="#E4E7EA"
       >
         <View
@@ -2107,6 +2121,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         />
         <View
           style={{}}
+          testID="discussions-view-Message content"
         >
           <View
             style={
@@ -2151,6 +2166,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -2168,6 +2184,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -2468,7 +2486,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             },
           ]
         }
-        testID="discussions-view-Message content"
         underlayColor="#2D3039"
       >
         <View
@@ -2492,6 +2509,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         />
         <View
           style={{}}
+          testID="discussions-view-Message content"
         >
           <View
             style={
@@ -2536,6 +2554,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -2553,6 +2572,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -2853,7 +2874,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             },
           ]
         }
-        testID="discussions-view-Message content"
         underlayColor="#16181a"
       >
         <View
@@ -2877,6 +2897,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         />
         <View
           style={{}}
+          testID="discussions-view-Message content"
         >
           <View
             style={
@@ -2921,6 +2942,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -2938,6 +2960,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />

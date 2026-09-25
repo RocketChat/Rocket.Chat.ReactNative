@@ -154,11 +154,11 @@ const makeInstance = ({
 	return shareView;
 };
 
-describe('ShareView', () => {
-	afterEach(() => {
-		jest.useRealTimers();
-	});
+afterEach(() => {
+	jest.useRealTimers();
+});
 
+describe('ShareView', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockGetSubscriptionByRoomId.mockResolvedValue({

@@ -18,27 +18,27 @@ const setup = () => {
 
 afterEach(() => jest.restoreAllMocks());
 
-test('a tap that never starts dragging preserves the paused position', () => {
+test('a tap that never starts dragging preserves the paused position', async () => {
 	const { gesture, currentTime, onChangeTime } = setup();
-	act(() => fireGestureHandler(gesture, [{ state: State.BEGAN }, { state: State.FAILED }]));
+	await act(() => fireGestureHandler(gesture, [{ state: State.BEGAN }, { state: State.FAILED }]));
 	expect(currentTime.value).toBe(30);
 	expect(onChangeTime).not.toHaveBeenCalled();
 });
 
-test('a cancelled drag restores its starting position without seeking', () => {
+test('a cancelled drag restores its starting position without seeking', async () => {
 	const { gesture, currentTime, onChangeTime } = setup();
-	act(() => fireGestureHandler(gesture, [{ state: State.BEGAN }, { state: State.ACTIVE }, { state: State.CANCELLED }]));
+	await act(() => fireGestureHandler(gesture, [{ state: State.BEGAN }, { state: State.ACTIVE }, { state: State.CANCELLED }]));
 	expect(currentTime.value).toBe(30);
 	expect(onChangeTime).not.toHaveBeenCalled();
 
 	currentTime.value = 45;
-	act(() => fireGestureHandler(gesture, [{ state: State.BEGAN }, { state: State.FAILED }]));
+	await act(() => fireGestureHandler(gesture, [{ state: State.BEGAN }, { state: State.FAILED }]));
 	expect(currentTime.value).toBe(45);
 });
 
-test('a completed drag seeks in seconds', () => {
+test('a completed drag seeks in seconds', async () => {
 	const { gesture, onChangeTime } = setup();
-	act(() => fireGestureHandler(gesture, [{ state: State.BEGAN }, { state: State.ACTIVE }, { state: State.END }]));
+	await act(() => fireGestureHandler(gesture, [{ state: State.BEGAN }, { state: State.ACTIVE }, { state: State.END }]));
 	expect(onChangeTime).toHaveBeenCalledTimes(1);
 	expect(onChangeTime).toHaveBeenCalledWith(30);
 });

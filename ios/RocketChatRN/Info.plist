@@ -4,11 +4,6 @@
 <dict>
 	<key>AppGroupIdentifier</key>
 	<string>group.ios.chat.rocket</string>
-	<key>bugsnag</key>
-	<dict>
-		<key>apiKey</key>
-		<string>apiKeyValue</string>
-	</dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -75,6 +70,10 @@
 	<string>Give $(PRODUCT_NAME) permission to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Upload photos to share with other users or to change your avatar</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>INSendMessageIntent</string>
+	</array>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UIAppFonts</key>
@@ -86,6 +85,18 @@
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneConfigurationName</key>
+					<string>Default Configuration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+				</dict>
+			</array>
+		</dict>
 	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
@@ -108,9 +119,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSUserActivityTypes</key>
-	<array>
-		<string>INSendMessageIntent</string>
-	</array>
+	<key>bugsnag</key>
+	<dict>
+		<key>apiKey</key>
+		<string>apiKeyValue</string>
+	</dict>
 </dict>
 </plist>

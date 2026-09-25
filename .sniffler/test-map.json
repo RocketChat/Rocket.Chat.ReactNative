@@ -1,7 +1,7 @@
 [
 	{
 		"test": ".maestro/tests/accessibilityAndAppearance/ToastsAndDialogs.yml",
-		"dependsOn": ["app/views/StatusView/**"]
+		"dependsOn": ["app/views/StatusView/**", "app/views/SidebarView/**"]
 	},
 	{
 		"test": ".maestro/tests/assorted/accessibility-and-appearance.yaml",

@@ -37,6 +37,7 @@ const Touch = forwardRef<any, ITouchProps>(
 			accessibilityHint,
 			accessibilityActions,
 			onAccessibilityAction,
+			testID,
 			style,
 			rectButtonStyle,
 			disabled,
@@ -88,6 +89,7 @@ const Touch = forwardRef<any, ITouchProps>(
 				{...props}
 				enabled={!disabled}>
 				<View
+					testID={testID}
 					accessible={accessible}
 					accessibilityRole={props.accessibilityRole}
 					accessibilityLabel={accessibilityLabel}

@@ -19,10 +19,13 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: Run Oxlint
-        run: pnpm lint
+        run: pnpm exec oxlint
+
+      - name: Run TypeScript
+        run: pnpm exec tsc
 
       - name: Run Tests
-        run: pnpm test --runInBand
+        run: pnpm test
 
       - name: Validate sniffler test-map freshness
         run: node .github/scripts/validate-test-map.js

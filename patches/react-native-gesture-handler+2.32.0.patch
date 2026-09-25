@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm b/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
-index 2296c39..0a872ba 100644
+index 6b9fa9c..6d2ccea 100644
 --- a/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
 +++ b/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
-@@ -89,6 +89,52 @@
+@@ -83,6 +83,52 @@ - (BOOL)shouldHandleTouch:(RNGHUIView *)view
  }
  
  #if !TARGET_OS_OSX

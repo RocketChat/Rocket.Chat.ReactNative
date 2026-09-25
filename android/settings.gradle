@@ -1,6 +1,14 @@
-pluginManagement { includeBuild("../node_modules/@react-native/gradle-plugin") }
-plugins { id("com.facebook.react.settings") }
-extensions.configure(com.facebook.react.ReactSettingsExtension){ ex -> ex.autolinkLibrariesFromCommand() }
+pluginManagement {
+    includeBuild("../node_modules/@react-native/gradle-plugin")
+    includeBuild("../node_modules/expo-modules-autolinking/android/expo-gradle-plugin")
+}
+plugins {
+    id("com.facebook.react.settings")
+    id("expo-autolinking-settings")
+}
+extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
+    ex.autolinkLibrariesFromCommand(expoAutolinking.rnConfigCommand)
+}
 rootProject.name = 'RocketChatRN'
 include ':watermelondb-jsi'
 project(':watermelondb-jsi').projectDir = new File(rootProject.projectDir, '../node_modules/@nozbe/watermelondb/native/android-jsi')
@@ -8,5 +16,4 @@ include ':app'
 
 includeBuild('../node_modules/@react-native/gradle-plugin')
 
-apply from: new File(["node", "--print", "require.resolve('expo/package.json')"].execute(null, rootDir).text.trim(), "../scripts/autolinking.gradle");
-useExpoModules()
+expoAutolinking.useExpoModules()

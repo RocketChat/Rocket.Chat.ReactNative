@@ -1,8 +1,20 @@
+Object.defineProperty(globalThis, 'fetch', { value: globalThis.fetch, writable: true, configurable: true });
+
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 import { Image } from 'expo-image';
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
+
+const resolveExpoLazyFetchBeforeReactNativeMocks = () => globalThis.fetch;
+resolveExpoLazyFetchBeforeReactNativeMocks();
+
+jest.mock('./app/lib/methods/handleMediaDownload', () => ({
+	...jest.requireActual('./app/lib/methods/handleMediaDownload'),
+	getMediaCache: jest.fn(() => Promise.resolve({ exists: false })),
+	downloadMediaFile: jest.fn(() => Promise.resolve('')),
+	isDownloadActive: jest.fn(() => false)
+}));
 
 jest.mock('react-native-safe-area-context', () => {
 	const inset = { top: 0, right: 0, bottom: 0, left: 0 };
@@ -18,22 +30,13 @@ jest.mock('react-native-safe-area-context', () => {
 const loadAsyncMock = jest.spyOn(Image, 'loadAsync');
 loadAsyncMock.mockImplementation(() => Promise.resolve({ width: 200, height: 300 }));
 
-jest.mock('react-native-worklets', () => ({
-	RuntimeKind: { ReactNative: 1, UI: 2, Worker: 3 },
-	getRuntimeKind: jest.fn(() => 1),
-	createSerializable: jest.fn(value => value),
-	isWorkletFunction: jest.fn(() => false),
-	runOnUI: jest.fn(fn => fn),
-	runOnJS: jest.fn(fn => fn),
-	makeShareable: jest.fn(value => value),
-	callMicrotasks: jest.fn(),
-	executeOnUIRuntimeSync: jest.fn(fn => fn()),
-	serializableMappingCache: { get: jest.fn(), set: jest.fn(), has: jest.fn(() => false), delete: jest.fn() },
-	scheduleOnRN: jest.fn((fn, ...args) => fn(...args))
+jest.mock('react-native-worklets', () => jest.requireActual('react-native-worklets/lib/module/mock'));
+
+jest.mock('react-native-reanimated/src/css/native/proxy', () => ({
+	...jest.requireActual('react-native-reanimated/src/css/native/proxy'),
+	setCSSEventHandler: jest.fn()
 }));
 
-// @ts-ignore
-global.__reanimatedWorkletInit = () => {};
 jest.mock('react-native-reanimated', () => {
 	const actual = jest.requireActual('react-native-reanimated/mock');
 	return {
