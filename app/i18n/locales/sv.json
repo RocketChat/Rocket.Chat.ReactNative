@@ -257,6 +257,7 @@
   "E2E_How_It_Works_info2": "Det här görs med *end-to-end-kryptering*, så nyckeln för att koda/avkoda meddelanden sparas inte på servern. Därför *måste du lagra lösenordet på en säker plats* där du kan åtkomma det senare om du behöver.",
   "E2E_How_It_Works_info3": "Om du fortsätter genereras ett E2E-lösenord automatiskt",
   "E2E_How_It_Works_info4": "Du kan när som helst ställa in ett nytt lösenord för krypteringsnyckeln i en webbläsare där du har angett det befintliga E2E-lösenordet.",
+  "E2E_Key_Error": "Det här meddelandet är end-to-end-krypterat och kan inte dekrypteras på grund av en felaktig krypteringsnyckel",
   "E2EE_password": "E2EE-lösenord",
   "Edit": "Redigera",
   "Edit_attachment_options": "Redigera alternativ för bilaga",

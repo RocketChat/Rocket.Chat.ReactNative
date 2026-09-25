@@ -277,6 +277,7 @@
   "E2E_How_It_Works_info2": "Ez egy *végtől-végig titkosítás*, így az üzenetek kódolásának/dekódolásának kulcsa nem kerül elmentésre a munkaterületre. Ezért *ezt a jelszót valahol biztonságban kell tárolnia*, amelyhez később hozzáférhet, ha szüksége van rá.",
   "E2E_How_It_Works_info3": "Ha folytatja, automatikusan generál egy E2E jelszót.",
   "E2E_How_It_Works_info4": "A titkosítási kulcshoz bármikor beállíthat egy új jelszót is, bármelyik böngészőből, ahová a meglévő E2E jelszót beírta.",
+  "E2E_Key_Error": "Ez az üzenet végponttól végpontig titkosított, és hibás titkosítási kulcs miatt nem fejthető vissza",
   "E2EE_password": "E2EE jelszó",
   "Edit": "Szerkesztés",
   "Edit_attachment_options": "Melléklet beállításainak szerkesztése",

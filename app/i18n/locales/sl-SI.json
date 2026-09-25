@@ -236,6 +236,7 @@
   "E2E_How_It_Works_info2": "To je *šifriranje na obeh straneh* in ključ za kodiranje/dekodiranje sporočil ne bo shranjen na strežniku. Zaradi tega *morate to geslo varno shraniti*, da do njega lahko dostopate kasneje, če boste morda potrebovali.",
   "E2E_How_It_Works_info3": "Če nadaljujete, bo to samodejno ustvarilo geslo E2E.",
   "E2E_How_It_Works_info4": "Novo geslo za šifrirni ključ lahko nastavite tudi kadar koli iz katerega koli brskalnika, ki ste ga vnesli obstoječe geslo E2E.",
+  "E2E_Key_Error": "To sporočilo je šifrirano od konca do konca in ga ni mogoče dešifrirati zaradi nepravilnega šifrirnega ključa",
   "E2EE_password": "Geslo E2EE",
   "Edit": "Uredi",
   "Edit_attachment_options": "Uredi možnosti priloge",

@@ -193,6 +193,7 @@
   "E2E_How_It_Works_info2": "Bu, *Uçtan Uca Şifreleme'dir (E2E)*, böylece iletilerinizi şifrelemek / çözmek için anahtar ve bunlar sunucuya kaydedilmez. Bu nedenle *bu şifreyi daha sonra ihtiyaç duyduğunuzda erişebileceğiniz güvenli bir yerde* saklamanız gerekir.",
   "E2E_How_It_Works_info3": "Devam ederseniz, otomatik olarak bir Uçtan Uca Şifreleme (E2E) şifresi oluşturulacaktır.",
   "E2E_How_It_Works_info4": "Mevcut Uçtan Uca Şifreleme (E2E) şifresini, herhangi bir tarayıcıdan istediğiniz zaman girdiğiniz şifreleme anahtarınız için yeni bir şifre de ayarlayabilirsiniz.",
+  "E2E_Key_Error": "Bu mesaj uçtan uca şifrelenmiştir ve yanlış şifreleme anahtarı nedeniyle şifresi çözülemez",
   "E2EE_password": "E2EE şifresi",
   "Edit": "Düzenle",
   "Edit_attachment_options": "Ek seçeneklerini düzenle",

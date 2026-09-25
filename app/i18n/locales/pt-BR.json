@@ -300,6 +300,7 @@
   "E2E_How_It_Works_info2": "Esta é a criptografia *ponta a ponta (E2E)*, portanto, a chave para codificar/decodificar suas mensagens e elas não serão salvas na workspace. Por esse motivo *você precisa armazenar esta senha em algum lugar seguro* que você pode acessar mais tarde se precisar.",
   "E2E_How_It_Works_info3": "Se você continuar, será gerada automaticamente uma senha E2E.",
   "E2E_How_It_Works_info4": "Você também pode configurar uma nova senha para sua chave de criptografia a qualquer momento em qualquer navegador em que tenha inserido a senha E2E existente.",
+  "E2E_Key_Error": "Esta mensagem é criptografada de ponta a ponta e não pode ser descriptografada devido a uma chave de criptografia incorreta",
   "E2EE_password": "Senha E2EE",
   "Edit": "Editar",
   "Edit_attachment_options": "Editar opções do anexo",

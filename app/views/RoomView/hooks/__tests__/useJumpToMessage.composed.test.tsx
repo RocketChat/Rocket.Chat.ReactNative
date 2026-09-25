@@ -316,7 +316,7 @@ describe('useJumpToMessage composed entry points', () => {
 		mockGetMessageInfo.mockResolvedValue({ id: 'reply-4', rid: 'rid-1', tmid: 'thread-4', t: 'e2e', e2e: 'pending' });
 		const { result } = renderNavigation();
 		await act(async () => await result.current.jumpToMessageByUrl('https://open.rocket.chat/room?msg=reply-4'));
-		expect(mockNavigation.push).toHaveBeenCalledWith('RoomView', expect.objectContaining({ name: 'Encrypted_message' }));
+		expect(mockNavigation.push).toHaveBeenCalledWith('RoomView', expect.objectContaining({ name: 'E2E_Key_Error' }));
 	});
 
 	it('keeps overlapping cross-Room lookups observable when the older Room resolves late', async () => {

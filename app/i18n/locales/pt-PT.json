@@ -175,6 +175,7 @@
   "E2E_How_It_Works_info2": "Isto é  *criptografia ponto a ponto* portanto a chave para codificar/descodificar as suas mensagens não será salva no servidor. Por essa razão *você precisa armazenar esta palavra-passe em algum lugar seguro* que você posa aceder mais tarde, se precisar.",
   "E2E_How_It_Works_info3": "Se você prosseguir, uma palavra-passe E2E será gerada automaticamente.",
   "E2E_How_It_Works_info4": "Você também pode configurar uma nova palavra-passe para sua chave de criptografia a qualquer momento a partir de qualquer navegador que você tenha inserido a palavra-passe existente do E2E.",
+  "E2E_Key_Error": "Esta mensagem é encriptada de ponta a ponta e não pode ser desencriptada devido a uma chave de encriptação incorreta",
   "E2EE_password": "Palavra-passe E2EE",
   "Edit": "Editar",
   "Edit_attachment_options": "Editar opções do anexo",

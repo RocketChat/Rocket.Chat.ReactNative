@@ -290,6 +290,7 @@
   "E2E_How_It_Works_info2": "Dette er *ende-til-ende-kryptering*, så nøkkelen til å kode/dekode meldingene dine og de vil ikke bli lagret på arbeidsområdet. Av den grunn *må du lagre dette passordet et trygt sted* som du kan få tilgang til senere hvis du trenger det.",
   "E2E_How_It_Works_info3": "Hvis du fortsetter, vil det bli automatisk generert et E2E-passord.",
   "E2E_How_It_Works_info4": "Du kan også sette opp et nytt passord for krypteringsnøkkelen din når som helst fra hvilken som helst nettleser du har angitt det eksisterende E2E-passordet.",
+  "E2E_Key_Error": "Denne meldingen er ende-til-ende-kryptert og kan ikke dekrypteres på grunn av feil krypteringsnøkkel",
   "e2ee_disabled": "End-to-end-kryptering er deaktivert",
   "e2ee_enabled": "End-to-end-kryptering er aktivert",
   "E2EE_password": "E2EE passord",

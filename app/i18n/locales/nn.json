@@ -147,6 +147,7 @@
   "Documentation": "Dokumentasjon",
   "E2E_Encryption": "Ende-til-ende-kryptering",
   "E2E_encryption_change_password_title": "Endre krypteringspassord",
+  "E2E_Key_Error": "Denne meldinga er ende-til-ende-kryptert og kan ikkje dekrypterast på grunn av feil krypteringsnøkkel",
   "e2ee_enabled": "Ende-til-ende-kryptering er aktivert",
   "E2EE_password": "E2EE-passord",
   "Edit": "Rediger",

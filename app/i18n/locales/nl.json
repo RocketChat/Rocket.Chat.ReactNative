@@ -226,6 +226,7 @@
   "E2E_How_It_Works_info2": "Dit is *end-to-end codering*, dus de sleutel om jouw berichten te coderen/decoderen en deze wordt niet op de server opgeslagen. Daarom *moet je dit wachtwoord op een veilige plaats opslaan* waar je later toegang hebt als je dat nodig hebt.",
   "E2E_How_It_Works_info3": "Als je doorgaat, wordt er automatisch een E2E-wachtwoord gegenereerd.",
   "E2E_How_It_Works_info4": "Je kan ook op elk moment een nieuw wachtwoord voor uw coderingssleutel instellen vanuit elke browser waarin u het bestaande E2E-wachtwoord hebt ingevoerd.",
+  "E2E_Key_Error": "Dit bericht is end-to-end versleuteld en kan niet worden ontsleuteld vanwege een onjuiste versleutelingssleutel",
   "E2EE_password": "E2EE-wachtwoord",
   "Edit": "Bewerk",
   "Edit_attachment_options": "Bijlageopties bewerken",
