@@ -16,6 +16,8 @@ import Quote from './components/Quote';
 import Paragraph from './components/Paragraph';
 import { Code } from './components/code';
 import Heading from './components/Heading';
+import HorizontalRule from './components/HorizontalRule';
+import Table from './components/Table';
 import log from '~/lib/methods/helpers/log';
 import styles from './styles';
 
@@ -92,6 +94,10 @@ const MarkdownBlockView = ({ block }: { block: MarkdownBlock }) => {
 		// 	return <View />;
 		case 'KATEX':
 			return <KaTeX value={block.value} />;
+		case 'TABLE':
+			return <Table value={block.value} />;
+		case 'HORIZONTAL_RULE':
+			return <HorizontalRule />;
 		default:
 			return null;
 	}
