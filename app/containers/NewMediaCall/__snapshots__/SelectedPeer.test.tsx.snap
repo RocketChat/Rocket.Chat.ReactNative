@@ -167,6 +167,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="Alice Johnson"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -343,6 +346,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="+55 11 99999-9999"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -584,6 +590,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="Long display name to validate text truncation behavior for SelectedPeer in narrow widths"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -838,6 +847,9 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="Long display name to validate text truncation behavior for SelectedPeer in narrow widths"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1027,6 +1039,9 @@ exports[`Story Snapshots: Sip should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="+55 11 99999-9999"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1281,6 +1296,9 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="Alice Johnson"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [

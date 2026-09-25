@@ -1,4 +1,4 @@
-import { Text } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { type ReactElement } from 'react';
 
@@ -28,9 +28,9 @@ export function BaseButton({
 		return (
 			<BorderlessButton enabled={enabled} testID={`room-info-view-${iconName}`} onPress={onPress} style={styles.roomButton}>
 				<CustomIcon name={iconName} size={30} color={color} />
-				<Text numberOfLines={1} style={[styles.roomButtonText, { color }]}>
+				<PlainText numberOfLines={1} style={[styles.roomButtonText, { color }]}>
 					{label}
-				</Text>
+				</PlainText>
 			</BorderlessButton>
 		);
 	return null;

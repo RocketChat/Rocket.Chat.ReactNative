@@ -1,5 +1,6 @@
 import { type ReactNode, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { Image } from 'expo-image';
 
 import { type IAttachment } from '~/definitions';
@@ -95,12 +96,12 @@ const Title = ({ attachment }: { attachment: IAttachment }) => {
 	return (
 		<View style={styles.authorContainer}>
 			{attachment.author_name ? (
-				<Text numberOfLines={1} style={[styles.author, { color: colors.fontHint }]}>
+				<PlainText numberOfLines={1} style={[styles.author, { color: colors.fontHint }]}>
 					{attachment.author_name}
-				</Text>
+				</PlainText>
 			) : null}
-			{time ? <Text style={[messageStyles.time, { color: colors.fontSecondaryInfo }]}>{time}</Text> : null}
-			{attachment.title ? <Text style={[styles.title, { color: colors.fontDefault }]}>{attachment.title}</Text> : null}
+			{time ? <PlainText style={[messageStyles.time, { color: colors.fontSecondaryInfo }]}>{time}</PlainText> : null}
+			{attachment.title ? <PlainText style={[styles.title, { color: colors.fontDefault }]}>{attachment.title}</PlainText> : null}
 		</View>
 	);
 };
@@ -150,7 +151,7 @@ const Fields = ({ attachment }: { attachment: IAttachment }) => {
 		<View style={styles.fieldsContainer}>
 			{attachment.fields.map(field => (
 				<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
-					<Text style={[styles.fieldTitle, { color: colors.fontDefault }]}>{field.title}</Text>
+					<PlainText style={[styles.fieldTitle, { color: colors.fontDefault }]}>{field.title}</PlainText>
 					<Markdown msg={field?.value || ''} username={user?.username} />
 				</View>
 			))}

@@ -4,12 +4,12 @@ import {
 	PixelRatio,
 	type StyleProp,
 	StyleSheet,
-	Text,
 	type TextStyle,
 	View,
 	type AccessibilityRole,
 	type ViewStyle
 } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import Touch from '../Touch';
 import sharedStyles from '~/views/Styles';
@@ -75,9 +75,9 @@ const ListTitle = ({ title, color, styleTitle, translateTitle, numberOfLines }: 
 	switch (typeof title) {
 		case 'string':
 			return (
-				<Text numberOfLines={numberOfLines} style={[styles.title, styleTitle, { color: color || colors.fontDefault }]}>
+				<PlainText numberOfLines={numberOfLines} style={[styles.title, styleTitle, { color: color || colors.fontDefault }]}>
 					{translateTitle && title ? I18n.t(title) : title}
-				</Text>
+				</PlainText>
 			);
 		case 'function':
 			return title();
@@ -196,9 +196,9 @@ const Content = memo(
 							) : null}
 						</View>
 						{subtitle ? (
-							<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+							<PlainText style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
 								{translateSubtitle ? I18n.t(subtitle) : subtitle}
-							</Text>
+							</PlainText>
 						) : null}
 					</View>
 				) : null}

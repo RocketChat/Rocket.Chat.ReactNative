@@ -1,5 +1,6 @@
 import { memo, type ReactElement } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { KeyboardFocusView } from 'react-native-external-keyboard';
 
@@ -141,9 +142,9 @@ const HeaderTitle = memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeade
 	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.fontTitlesLabels };
 	if (!tmid && !prid) {
 		return (
-			<Text style={[styles.title, titleStyle]} numberOfLines={isLargeFontScale ? 2 : 1} testID={testID}>
+			<PlainText style={[styles.title, titleStyle]} numberOfLines={isLargeFontScale ? 2 : 1} testID={testID}>
 				{title}
-			</Text>
+			</PlainText>
 		);
 	}
 
@@ -215,9 +216,9 @@ const Header = ({
 					teamMain={teamMain}
 					abacAttributes={abacAttributes}
 				/>
-				<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+				<PlainText style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
 					{parentTitle}
-				</Text>
+				</PlainText>
 			</View>
 		);
 	}

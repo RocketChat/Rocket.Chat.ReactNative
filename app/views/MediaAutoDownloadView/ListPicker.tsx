@@ -1,5 +1,6 @@
 import { Fragment, type ReactElement } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import { useActionSheet } from '~/containers/ActionSheet';
 import * as List from '~/containers/List';
@@ -99,12 +100,12 @@ const ListPicker = ({
 			onPress={() => showActionSheet({ children: getOptions() })}
 			title={() => (
 				<View style={styles.leftTitleContainer}>
-					<Text style={[styles.leftTitle, { color: colors.fontDefault }]}>{title}</Text>
+					<PlainText style={[styles.leftTitle, { color: colors.fontDefault }]}>{title}</PlainText>
 				</View>
 			)}
 			right={() => (
 				<View style={styles.rightTitleContainer}>
-					<Text style={[styles.rightTitle, { color: colors.fontHint }]}>{label}</Text>
+					<PlainText style={[styles.rightTitle, { color: colors.fontHint }]}>{label}</PlainText>
 				</View>
 			)}
 			rightContainerStyle={styles.rightContainer}

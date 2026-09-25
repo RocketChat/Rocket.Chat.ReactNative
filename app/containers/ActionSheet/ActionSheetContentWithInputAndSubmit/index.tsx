@@ -1,5 +1,6 @@
 import { useState, useRef, createRef, type ReactElement } from 'react';
-import { StyleSheet, Text, type TextInputProps, View } from 'react-native';
+import { StyleSheet, type TextInputProps, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import i18n from '~/i18n';
@@ -167,9 +168,13 @@ const ActionSheetContentWithInputAndSubmit = ({
 			<>
 				<View accessible accessibilityLabel={title} style={styles.titleContainer}>
 					{iconName ? <CustomIcon name={iconName} size={32} color={iconColor || colors.buttonBackgroundDangerDefault} /> : null}
-					<Text style={[styles.titleContainerText, { color: colors.fontDefault, paddingLeft: iconName ? 12 : 0 }]}>{title}</Text>
+					<PlainText style={[styles.titleContainerText, { color: colors.fontDefault, paddingLeft: iconName ? 12 : 0 }]}>
+						{title}
+					</PlainText>
 				</View>
-				{description ? <Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>{description}</Text> : null}
+				{description ? (
+					<PlainText style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>{description}</PlainText>
+				) : null}
 				{customText}
 			</>
 			{showInput ? renderInputs() : null}

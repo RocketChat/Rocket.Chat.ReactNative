@@ -1,6 +1,6 @@
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { useEffect, useState, type ReactElement } from 'react';
-import { Text } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
@@ -67,7 +67,9 @@ const RenderListPicker = ({
 			title={title}
 			testID={testID}
 			onPress={() => showActionSheet({ options })}
-			right={() => <Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.fontHint }]}>{label}</Text>}
+			right={() => (
+				<PlainText style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.fontHint }]}>{label}</PlainText>
+			)}
 			additionalAccessibilityLabel={label}
 		/>
 	);

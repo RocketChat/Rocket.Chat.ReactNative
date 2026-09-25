@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import { CustomIcon } from '~/containers/CustomIcon';
 import sharedStyles from '../Styles';
@@ -53,9 +54,9 @@ const DiscussionDetails = ({ item, date }: IDiscussionDetails): ReactElement => 
 
 				<View style={styles.detailContainer}>
 					<CustomIcon name={'clock'} size={24} color={colors.fontSecondaryInfo} />
-					<Text style={[styles.detailText, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+					<PlainText style={[styles.detailText, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
 						{date}
-					</Text>
+					</PlainText>
 				</View>
 			</View>
 		</View>

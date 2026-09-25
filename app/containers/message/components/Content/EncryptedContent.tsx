@@ -1,4 +1,4 @@
-import { Text } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import I18n from '~/i18n';
 import styles from '~/containers/message/styles';
@@ -10,12 +10,12 @@ const EncryptedContent = () => {
 
 	return (
 		<ContentWrapper>
-			<Text
+			<PlainText
 				style={[styles.textInfo, { color: colors.fontSecondaryInfo }]}
 				accessibilityLabel={I18n.t('Encrypted_message')}
 				testID='message-encrypted'>
 				{I18n.t('Encrypted_message')}
-			</Text>
+			</PlainText>
 		</ContentWrapper>
 	);
 };

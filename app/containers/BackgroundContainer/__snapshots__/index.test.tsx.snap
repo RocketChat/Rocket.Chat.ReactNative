@@ -153,6 +153,9 @@ exports[`Story Snapshots: BlackThemeText should match snapshot 1`] = `
     />
   </View>
   <Text
+    accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {
@@ -289,6 +292,9 @@ exports[`Story Snapshots: DarkThemeText should match snapshot 1`] = `
     />
   </View>
   <Text
+    accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {
@@ -425,6 +431,9 @@ exports[`Story Snapshots: LongText should match snapshot 1`] = `
     />
   </View>
   <Text
+    accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {
@@ -496,6 +505,9 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
     />
   </View>
   <Text
+    accessibilityLabel="Text here"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {

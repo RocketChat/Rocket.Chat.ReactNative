@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { View, Text, Linking } from 'react-native';
+import { View, Linking } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { useDispatch } from 'react-redux';
 
 import I18n from '~/i18n';
@@ -50,10 +51,12 @@ export const SupportedVersionsExpired = () => {
 			<View accessible accessibilityLabel={I18n.t('Attention')} style={styles.iconContainer}>
 				<CustomIcon name='warning' size={36} color={colors.buttonBackgroundDangerDefault} />
 			</View>
-			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>
+			<PlainText style={[styles.title, { color: colors.fontTitlesLabels }]}>
 				{I18n.t('Supported_versions_expired_title', { workspace_name: name })}
-			</Text>
-			<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Supported_versions_expired_description')}</Text>
+			</PlainText>
+			<PlainText style={[styles.description, { color: colors.fontDefault }]}>
+				{I18n.t('Supported_versions_expired_description')}
+			</PlainText>
 			<Button title={I18n.t('Check_again')} type='primary' onPress={checkAgain} loading={checking} />
 			<Button
 				title={I18n.t('Learn_more')}

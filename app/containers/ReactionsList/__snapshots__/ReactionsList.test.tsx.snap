@@ -75,6 +75,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
             testID="reactions-tab-all"
           >
             <Text
+              accessibilityLabel="All"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -460,6 +463,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
             testID="reactions-tab-:grinning:"
           >
             <Text
+              accessibilityLabel="😀"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 {
                   "color": "#fff",
@@ -543,6 +549,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
             testID="reactions-tab-:tada:"
           >
             <Text
+              accessibilityLabel="🎉"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 {
                   "color": "#fff",
@@ -729,6 +738,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="2 people reacted"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -750,6 +762,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                     2 people reacted
                   </Text>
                   <Text
+                    accessibilityLabel="you and Diego Mello"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -832,6 +847,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="2 people reacted"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -853,6 +871,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                     2 people reacted
                   </Text>
                   <Text
+                    accessibilityLabel="you and Diego Mello"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -935,6 +956,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="1 person reacted"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -956,6 +980,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                     1 person reacted
                   </Text>
                   <Text
+                    accessibilityLabel="you"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -994,6 +1021,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="😀"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     {
                       "color": "#fff",
@@ -1015,6 +1045,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="1 person reacted"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -1036,6 +1069,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                     1 person reacted
                   </Text>
                   <Text
+                    accessibilityLabel="Diego Mello"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -1074,6 +1110,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="🎉"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     {
                       "color": "#fff",
@@ -1095,6 +1134,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="1 person reacted"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -1116,6 +1158,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                     1 person reacted
                   </Text>
                   <Text
+                    accessibilityLabel="Diego Mello"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -1222,6 +1267,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
             testID="reactions-tab-all"
           >
             <Text
+              accessibilityLabel="All"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -1607,6 +1655,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
             testID="reactions-tab-:grinning:"
           >
             <Text
+              accessibilityLabel="😀"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 {
                   "color": "#fff",
@@ -1690,6 +1741,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
             testID="reactions-tab-:tada:"
           >
             <Text
+              accessibilityLabel="🎉"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 {
                   "color": "#fff",
@@ -1876,6 +1930,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="2 people reacted"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -1897,6 +1954,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                     2 people reacted
                   </Text>
                   <Text
+                    accessibilityLabel="you and diego.mello"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -1979,6 +2039,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="2 people reacted"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -2000,6 +2063,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                     2 people reacted
                   </Text>
                   <Text
+                    accessibilityLabel="you and diego.mello"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -2082,6 +2148,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="1 person reacted"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -2103,6 +2172,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                     1 person reacted
                   </Text>
                   <Text
+                    accessibilityLabel="you"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -2141,6 +2213,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="😀"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     {
                       "color": "#fff",
@@ -2162,6 +2237,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="1 person reacted"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -2183,6 +2261,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                     1 person reacted
                   </Text>
                   <Text
+                    accessibilityLabel="diego.mello"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -2221,6 +2302,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="🎉"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     {
                       "color": "#fff",
@@ -2242,6 +2326,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                   }
                 >
                   <Text
+                    accessibilityLabel="1 person reacted"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {
@@ -2263,6 +2350,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                     1 person reacted
                   </Text>
                   <Text
+                    accessibilityLabel="diego.mello"
+                    accessibilityRole="text"
+                    accessible={true}
                     style={
                       [
                         {

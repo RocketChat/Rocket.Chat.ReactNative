@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { type DrawerNavigationProp } from '@react-navigation/drawer';
-import { Text, TouchableWithoutFeedback, View } from 'react-native';
+import { TouchableWithoutFeedback, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { shallowEqual } from 'react-redux';
 
 import Avatar from '~/containers/Avatar';
@@ -35,16 +36,16 @@ const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamL
 					<Avatar text={username} style={styles.avatar} size={30} />
 					<View style={styles.headerTextContainer}>
 						<View style={styles.headerUsername}>
-							<Text numberOfLines={1} style={[styles.username, { color: colors.fontTitlesLabels }]}>
+							<PlainText numberOfLines={1} style={[styles.username, { color: colors.fontTitlesLabels }]}>
 								{useRealName ? name : username}
-							</Text>
+							</PlainText>
 						</View>
-						<Text
+						<PlainText
 							style={[styles.currentServerText, { color: colors.fontTitlesLabels }]}
 							numberOfLines={1}
 							accessibilityLabel={`Connected to ${server}`}>
 							{siteName}
-						</Text>
+						</PlainText>
 					</View>
 				</View>
 			</TouchableWithoutFeedback>

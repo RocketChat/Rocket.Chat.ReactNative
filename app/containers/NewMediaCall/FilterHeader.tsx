@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { useSelector } from 'react-redux';
 import { type ReactElement, useCallback } from 'react';
 
@@ -40,7 +41,7 @@ export const FilterHeader = (): ReactElement => {
 
 	return (
 		<>
-			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('New_call')}</Text>
+			<PlainText style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('New_call')}</PlainText>
 
 			<View style={styles.searchContainer}>
 				<FormTextInput
@@ -52,7 +53,7 @@ export const FilterHeader = (): ReactElement => {
 					value={filter}
 				/>
 			</View>
-			<Text style={[styles.inputLabel, { color: colors.fontDefault }]}>{I18n.t('Enter_username_or_number')}</Text>
+			<PlainText style={[styles.inputLabel, { color: colors.fontDefault }]}>{I18n.t('Enter_username_or_number')}</PlainText>
 		</>
 	);
 };

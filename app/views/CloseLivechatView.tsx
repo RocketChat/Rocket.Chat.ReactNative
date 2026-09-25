@@ -1,5 +1,6 @@
 import { useState, useLayoutEffect } from 'react';
-import { StyleSheet, ScrollView, Text } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -93,7 +94,7 @@ const CloseLivechatView = () => {
 
 					{requestTags ? (
 						<>
-							<Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>{I18n.t('Tags')}</Text>
+							<PlainText style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>{I18n.t('Tags')}</PlainText>
 							<MultiSelect
 								options={tagsList?.map(({ name }) => ({ text: { text: name }, value: name }))}
 								onChange={({ value }: { value: string[] }) => {

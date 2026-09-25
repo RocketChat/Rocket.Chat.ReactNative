@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, Keyboard, Text, type TextInput, View } from 'react-native';
+import { AccessibilityInfo, Keyboard, type TextInput, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import parse from 'url-parse';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -179,9 +180,9 @@ const RegisterView = ({ route }: RegisterViewProps) => {
 			<FormContainerInner accessibilityLabel={I18n.t('Sign_Up')}>
 				<LoginServices separator />
 				<View accessible accessibilityLabel={I18n.t('Sign_Up')}>
-					<Text accessible accessibilityLabel={I18n.t('Sign_Up')} style={[styles.title, { color: colors.fontTitlesLabels }]}>
+					<PlainText accessible accessibilityLabel={I18n.t('Sign_Up')} style={[styles.title, { color: colors.fontTitlesLabels }]}>
 						{I18n.t('Sign_Up')}
-					</Text>
+					</PlainText>
 				</View>
 
 				<View style={styles.inputs}>
@@ -296,9 +297,9 @@ const RegisterView = ({ route }: RegisterViewProps) => {
 
 				{showLoginButton ? (
 					<View style={styles.bottomContainer}>
-						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>
+						<PlainText style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>
 							{I18n.t('Already_have_an_account')}
-						</Text>
+						</PlainText>
 						<Button title={I18n.t('Login')} type='secondary' onPress={login} style={styles.loginButton} />
 					</View>
 				) : null}

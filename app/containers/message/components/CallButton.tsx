@@ -1,4 +1,5 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import MessageActionTouchable from './Touchable/MessageActionTouchable';
 import { BUTTON_HIT_SLOP } from '../utils';
@@ -19,7 +20,7 @@ const CallButton = () => {
 				hitSlop={BUTTON_HIT_SLOP}>
 				<View style={styles.buttonInnerContainer}>
 					<CustomIcon name='video' size={16} color={colors.fontWhite} />
-					<Text style={[styles.buttonText, { color: colors.fontWhite }]}>{I18n.t('Click_to_join')}</Text>
+					<PlainText style={[styles.buttonText, { color: colors.fontWhite }]}>{I18n.t('Click_to_join')}</PlainText>
 				</View>
 			</MessageActionTouchable>
 		</View>

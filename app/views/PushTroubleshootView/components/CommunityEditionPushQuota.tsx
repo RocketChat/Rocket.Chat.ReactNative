@@ -1,4 +1,5 @@
-import { Alert, StyleSheet, Text } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { type ReactElement } from 'react';
 
 import * as List from '~/containers/List';
@@ -40,7 +41,7 @@ export default function CommunityEditionPushQuota(): ReactElement | null {
 				title='Workspace_consumption'
 				testID='push-troubleshoot-view-workspace-consumption'
 				onPress={alertWorkspaceConsumption}
-				right={() => <Text style={[styles.pickerText, { color: percentageColor }]}>{percentage}</Text>}
+				right={() => <PlainText style={[styles.pickerText, { color: percentageColor }]}>{percentage}</PlainText>}
 				additionalAccessibilityLabel={percentage}
 			/>
 			<List.Separator />

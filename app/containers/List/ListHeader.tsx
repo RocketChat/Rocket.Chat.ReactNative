@@ -1,5 +1,6 @@
 import { memo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import sharedStyles from '~/views/Styles';
 import { themes } from '~/lib/constants/colors';
@@ -29,9 +30,12 @@ const ListHeader = memo(({ title, translateTitle = true, numberOfLines }: IListH
 
 	return (
 		<View style={styles.container}>
-			<Text accessibilityRole='header' style={[styles.title, { color: themes[theme].fontHint }]} numberOfLines={numberOfLines}>
+			<PlainText
+				accessibilityRole='header'
+				style={[styles.title, { color: themes[theme].fontHint }]}
+				numberOfLines={numberOfLines}>
 				{translateTitle ? I18n.t(title) : title}
-			</Text>
+			</PlainText>
 		</View>
 	);
 });

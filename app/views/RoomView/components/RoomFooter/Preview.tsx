@@ -1,4 +1,5 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '~/theme';
@@ -11,7 +12,7 @@ export const Preview = ({ message }: IFooterPreviewProps) => {
 
 	return (
 		<View style={[styles.readOnly, { paddingBottom: bottom }]}>
-			<Text style={[styles.previewMode, { color: colors.fontTitlesLabels }]}>{message}</Text>
+			<PlainText style={[styles.previewMode, { color: colors.fontTitlesLabels }]}>{message}</PlainText>
 		</View>
 	);
 };

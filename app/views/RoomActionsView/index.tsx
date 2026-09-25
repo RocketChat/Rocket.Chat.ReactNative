@@ -2,7 +2,8 @@
 import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import isEmpty from 'lodash/isEmpty';
-import { Share, Text, View } from 'react-native';
+import { Share, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { connect } from 'react-redux';
 import { type Observable, type Subscription } from 'rxjs';
 import { type CompositeNavigationProp } from '@react-navigation/native';
@@ -795,9 +796,9 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 						<Avatar text={avatar} style={styles.avatar} size={50 * fontScale} type={t} rid={rid} />
 						<View style={styles.roomTitleContainer}>
 							{room.t === 'd' ? (
-								<Text style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+								<PlainText style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 									{room.fname}
-								</Text>
+								</PlainText>
 							) : (
 								<View style={styles.roomTitleRow}>
 									<RoomTypeIcon
@@ -807,9 +808,9 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 										sourceType={source}
 										abacAttributes={room.abacAttributes}
 									/>
-									<Text style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+									<PlainText style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 										{getRoomTitle(room)}
-									</Text>
+									</PlainText>
 								</View>
 							)}
 							<MarkdownPreview

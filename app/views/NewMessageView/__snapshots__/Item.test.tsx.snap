@@ -130,6 +130,9 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
       }
     >
       <Text
+        accessibilityLabel="John Doe"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -297,6 +300,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="John Doe"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -526,6 +532,9 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Very Long Display Name That Might Get Truncated"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -755,6 +764,9 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="John Doe"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [

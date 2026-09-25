@@ -1,6 +1,7 @@
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
@@ -269,7 +270,9 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		const { theme } = this.props;
 		return (
 			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceRoom }]}>
-				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
+				<PlainText style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>
+					{I18n.t('No_results_found')}
+				</PlainText>
 			</View>
 		);
 	};

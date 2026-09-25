@@ -1,4 +1,5 @@
-import { FlatList, Text, View, type ViewProps } from 'react-native';
+import { FlatList, View, type ViewProps } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { memo, type ReactElement } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -49,7 +50,7 @@ const BottomSheetContent = memo(
 					onPress={hide}
 					style={[styles.button, { backgroundColor: colors.surfaceHover, height }]}
 					accessibilityLabel={I18n.t('Cancel')}>
-					<Text style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Cancel')}</Text>
+					<PlainText style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Cancel')}</PlainText>
 				</Touch>
 			) : null;
 

@@ -50,6 +50,9 @@ exports[`MessageComposer Audio tap record 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="00:00"
+        accessibilityRole="text"
+        accessible={true}
         style={
           {
             "backgroundColor": "transparent",
@@ -160,6 +163,9 @@ exports[`MessageComposer Audio tap record 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Recording audio message"
+          accessibilityRole="text"
+          accessible={true}
           style={
             {
               "backgroundColor": "transparent",
@@ -564,6 +570,9 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel=""
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     {
@@ -583,6 +592,9 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                   }
                 />
                 <Text
+                  accessibilityLabel=""
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     {
                       "backgroundColor": "transparent",
@@ -673,6 +685,8 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
             </View>
             <Text
               accessibilityLabel="Message abc"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [
@@ -1030,6 +1044,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel=""
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     {
@@ -1049,6 +1066,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                   }
                 />
                 <Text
+                  accessibilityLabel=""
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     {
                       "backgroundColor": "transparent",
@@ -1139,6 +1159,8 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
             </View>
             <Text
               accessibilityLabel="Message abc"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [
@@ -1225,6 +1247,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel=""
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     {
@@ -1244,6 +1269,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                   }
                 />
                 <Text
+                  accessibilityLabel=""
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     {
                       "backgroundColor": "transparent",
@@ -1334,6 +1362,8 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
             </View>
             <Text
               accessibilityLabel="Message def"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [
@@ -1691,6 +1721,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel=""
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     {
@@ -1710,6 +1743,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                   }
                 />
                 <Text
+                  accessibilityLabel=""
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     {
                       "backgroundColor": "transparent",
@@ -1800,6 +1836,8 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
             </View>
             <Text
               accessibilityLabel="Message abc"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [
@@ -1886,6 +1924,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel=""
+                  accessibilityRole="text"
+                  accessible={true}
                   numberOfLines={1}
                   style={
                     {
@@ -1905,6 +1946,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                   }
                 />
                 <Text
+                  accessibilityLabel=""
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     {
                       "backgroundColor": "transparent",
@@ -1995,6 +2039,8 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
             </View>
             <Text
               accessibilityLabel="Message def"
+              accessibilityRole="text"
+              accessible={true}
               numberOfLines={1}
               style={
                 [

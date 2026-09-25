@@ -100,6 +100,9 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Reply"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -227,6 +230,9 @@ exports[`Story Snapshots: CallButton should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Click to join!"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -441,6 +447,9 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
   }
 >
   <Text
+    accessibilityLabel="Started a discussion:"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {
@@ -464,6 +473,9 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
     Started a discussion:
   </Text>
   <Text
+    accessibilityLabel="Discussion topic message"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {
@@ -612,6 +624,9 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
       </View>
     </View>
     <Text
+      accessibilityLabel="January 1, 2024"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -679,6 +694,9 @@ exports[`Story Snapshots: EditedHidden should match snapshot 1`] = `null`;
 
 exports[`Story Snapshots: Emoji should match snapshot 1`] = `
 <Text
+  accessibilityLabel="😀"
+  accessibilityRole="text"
+  accessible={true}
   style={
     {
       "fontSize": 30,
@@ -924,6 +942,9 @@ exports[`Story Snapshots: GIF should match snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="GIF"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -1040,6 +1061,9 @@ exports[`Story Snapshots: Item should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="Engineering (9 today)"
+            accessibilityRole="text"
+            accessible={true}
             style={
               [
                 {
@@ -1681,6 +1705,9 @@ exports[`Story Snapshots: MultipleImagesNewServer should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="ALT"
+          accessibilityRole="text"
+          accessible={true}
           style={
             [
               {
@@ -1923,6 +1950,9 @@ exports[`Story Snapshots: MultipleImagesNewServer should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="ALT"
+          accessibilityRole="text"
+          accessible={true}
           style={
             [
               {
@@ -2165,6 +2195,9 @@ exports[`Story Snapshots: MultipleImagesNewServer should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="ALT"
+          accessibilityRole="text"
+          accessible={true}
           style={
             [
               {
@@ -2407,6 +2440,9 @@ exports[`Story Snapshots: MultipleImagesNewServer should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="ALT"
+          accessibilityRole="text"
+          accessible={true}
           style={
             [
               {
@@ -2649,6 +2685,9 @@ exports[`Story Snapshots: MultipleImagesNewServer should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="ALT"
+          accessibilityRole="text"
+          accessible={true}
           style={
             [
               {
@@ -3733,6 +3772,9 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="😂"
+        accessibilityRole="text"
+        accessible={true}
         style={
           {
             "color": "#ffffff",
@@ -3839,6 +3881,9 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="❤️"
+        accessibilityRole="text"
+        accessible={true}
         style={
           {
             "color": "#ffffff",
@@ -4091,6 +4136,8 @@ exports[`Story Snapshots: RepliedThread should match snapshot 1`] = `
   </View>
   <Text
     accessibilityLabel="Original thread message"
+    accessibilityRole="text"
+    accessible={true}
     numberOfLines={1}
     style={
       [
@@ -4404,6 +4451,9 @@ exports[`Story Snapshots: SingleImageNewServer should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="ALT"
+          accessibilityRole="text"
+          accessible={true}
           style={
             [
               {
@@ -4921,6 +4971,9 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
     testID="message-thread-button-Thread parent message"
   >
     <Text
+      accessibilityLabel="View thread"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -5210,6 +5263,9 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
 
 exports[`Story Snapshots: Time should match snapshot 1`] = `
 <Text
+  accessibilityLabel="10:20 AM"
+  accessibilityRole="text"
+  accessible={true}
   style={
     [
       {
@@ -5332,6 +5388,9 @@ exports[`Story Snapshots: Urls should match snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="Rocket.Chat"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={2}
       style={
         [
@@ -5354,6 +5413,9 @@ exports[`Story Snapshots: Urls should match snapshot 1`] = `
       Rocket.Chat
     </Text>
     <Text
+      accessibilityLabel="Have your own chat service on-premises or in the cloud"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={2}
       style={
         [
@@ -5455,6 +5517,9 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
       rocket.cat
     </Text>
     <Text
+      accessibilityLabel="10:20 AM"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {

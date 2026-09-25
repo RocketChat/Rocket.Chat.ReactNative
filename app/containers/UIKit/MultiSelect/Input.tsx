@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import { CustomIcon } from '~/containers/CustomIcon';
 import ActivityIndicator from '~/containers/ActivityIndicator';
@@ -27,7 +28,11 @@ const Input = ({ children, onPress, loading, inputStyle, placeholder, disabled, 
 			style={[{ backgroundColor: colors.surfaceRoom }, styles.inputBorder, inputStyle]}
 			enabled={!disabled}>
 			<View style={[styles.input, styles.inputBorder, { borderColor: colors.strokeMedium }, innerInputStyle]}>
-				{placeholder ? <Text style={[styles.pickerText, { color: colors.fontSecondaryInfo }]}>{placeholder}</Text> : children}
+				{placeholder ? (
+					<PlainText style={[styles.pickerText, { color: colors.fontSecondaryInfo }]}>{placeholder}</PlainText>
+				) : (
+					children
+				)}
 				{loading ? (
 					<ActivityIndicator style={styles.icon} />
 				) : (

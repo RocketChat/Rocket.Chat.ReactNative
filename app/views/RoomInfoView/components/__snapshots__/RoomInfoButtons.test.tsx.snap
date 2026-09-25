@@ -73,6 +73,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Message"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -144,6 +147,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Voice call"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -215,6 +221,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Video call"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -286,6 +295,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="More"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -378,6 +390,9 @@ exports[`Story Snapshots: ItsMe should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Message"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -449,6 +464,9 @@ exports[`Story Snapshots: ItsMe should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Video call"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -541,6 +559,9 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Message"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -612,6 +633,9 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Voice call"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -683,6 +707,9 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Video call"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -754,6 +781,9 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="More"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -846,6 +876,9 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Message"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -917,6 +950,9 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Voice call"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -988,6 +1024,9 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Video call"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1059,6 +1098,9 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Block"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1151,6 +1193,9 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Message"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1222,6 +1267,9 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Voice call"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1293,6 +1341,9 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Video call"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1364,6 +1415,9 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="More"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1456,6 +1510,9 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Message"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1527,6 +1584,9 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Voice call"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1598,6 +1658,9 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Block"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1669,6 +1732,9 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
         
       </Text>
       <Text
+        accessibilityLabel="Report"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [

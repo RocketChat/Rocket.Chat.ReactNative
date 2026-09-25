@@ -205,6 +205,9 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
       }
     />
     <Text
+      accessibilityLabel="Edit"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {

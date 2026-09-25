@@ -1,5 +1,6 @@
 import { type ReactElement, useLayoutEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, type TextInputProps } from 'react-native';
+import { FlatList, StyleSheet, type TextInputProps } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { textInputDebounceTime } from '../lib/constants/debounceConfig';
@@ -111,7 +112,7 @@ const PickerView = (): ReactElement => {
 				contentContainerStyle={{ paddingBottom: bottom }}
 				ListFooterComponent={List.Separator}
 				ListEmptyComponent={() => (
-					<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
+					<PlainText style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_results_found')}</PlainText>
 				)}
 			/>
 		</SafeAreaView>

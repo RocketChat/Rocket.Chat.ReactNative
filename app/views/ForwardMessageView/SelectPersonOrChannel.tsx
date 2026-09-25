@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactElement } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { getAvatarURL } from '~/lib/methods/helpers/getAvatarUrl';
@@ -56,7 +57,7 @@ const SelectPersonOrChannel = ({
 
 	return (
 		<View style={styles.inputContainer}>
-			<Text style={[styles.label, { color: colors.fontDefault }]}>{I18n.t('Person_or_channel')}</Text>
+			<PlainText style={[styles.label, { color: colors.fontDefault }]}>{I18n.t('Person_or_channel')}</PlainText>
 			<MultiSelect
 				onSearch={getRooms}
 				onChange={onRoomSelect}

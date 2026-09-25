@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -97,12 +98,13 @@ const SetUsernameView = () => {
 		<KeyboardView backgroundColor={colors.surfaceHover}>
 			<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 				<SafeAreaView testID='set-username-view'>
-					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle, { color: colors.fontTitlesLabels }]}>
+					<PlainText
+						style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle, { color: colors.fontTitlesLabels }]}>
 						{I18n.t('Username')}
-					</Text>
-					<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, { color: colors.fontTitlesLabels }]}>
+					</PlainText>
+					<PlainText style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, { color: colors.fontTitlesLabels }]}>
 						{I18n.t('Set_username_subtitle')}
-					</Text>
+					</PlainText>
 					<ControlledFormTextInput
 						control={control}
 						name='username'
@@ -114,7 +116,7 @@ const SetUsernameView = () => {
 						clearButtonMode='while-editing'
 						containerStyle={sharedStyles.inputLastChild}
 					/>
-					<Text
+					<PlainText
 						style={[
 							sharedStyles.loginTitle,
 							sharedStyles.textBold,
@@ -122,7 +124,7 @@ const SetUsernameView = () => {
 							{ color: colors.fontTitlesLabels, marginBottom: 10 }
 						]}>
 						{I18n.t('Name')}
-					</Text>
+					</PlainText>
 					<ControlledFormTextInput
 						control={control}
 						name='name'

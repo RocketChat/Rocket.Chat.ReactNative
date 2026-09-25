@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { A11y } from 'react-native-a11y-order';
 
@@ -42,7 +43,7 @@ export const ServersHistoryActionSheetContent = ({
 	return (
 		<View style={{ paddingBottom: bottom, backgroundColor: colors.surfaceLight }}>
 			<View style={[styles.header, { borderColor: colors.strokeLight }]}>
-				<Text style={[styles.headerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Workspaces')}</Text>
+				<PlainText style={[styles.headerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Workspaces')}</PlainText>
 			</View>
 			<List.Separator />
 			{serversHistory.map(item => (

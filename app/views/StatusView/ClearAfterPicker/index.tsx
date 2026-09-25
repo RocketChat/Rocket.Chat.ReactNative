@@ -1,5 +1,5 @@
 import { type ReactElement } from 'react';
-import { Text } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import { useActionSheet } from '~/containers/ActionSheet';
 import * as List from '~/containers/List';
@@ -46,7 +46,7 @@ const ClearAfterPicker = ({ value, customDate, onChange }: IClearAfterPickerProp
 				title='Status_clear_after'
 				testID='status-view-clear-after'
 				onPress={handlePress}
-				right={() => <Text style={[styles.pickerText, { color: colors.fontInfo }]}>{getDisplayLabel()}</Text>}
+				right={() => <PlainText style={[styles.pickerText, { color: colors.fontInfo }]}>{getDisplayLabel()}</PlainText>}
 				additionalAccessibilityLabel={getDisplayLabel()}
 				style={styles.listItem}
 			/>

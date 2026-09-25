@@ -1,4 +1,4 @@
-import { Text } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import useShortnameToUnicode from '~/lib/hooks/useShortnameToUnicode';
 import { useCustomEmoji } from '~/lib/hooks/useCustomEmoji';
@@ -13,7 +13,7 @@ const Emoji = ({ content, standardEmojiStyle, customEmojiStyle }: IMessageEmoji)
 	if (emoji) {
 		return <CustomEmoji key={content} style={customEmojiStyle} emoji={emoji} />;
 	}
-	return <Text style={standardEmojiStyle}>{formatShortnameToUnicode(content)}</Text>;
+	return <PlainText style={standardEmojiStyle}>{formatShortnameToUnicode(content)}</PlainText>;
 };
 
 export default Emoji;

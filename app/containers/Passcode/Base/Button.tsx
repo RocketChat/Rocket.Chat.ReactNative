@@ -1,5 +1,6 @@
 import { memo } from 'react';
-import { Text, type StyleProp, type ViewStyle } from 'react-native';
+import { type StyleProp, type ViewStyle } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import styles from './styles';
 import Touch from '~/containers/Touch';
@@ -31,7 +32,7 @@ const Button = memo(({ style, text, disabled, onPress, icon, testID }: IPasscode
 			{icon ? (
 				<CustomIcon name={icon} size={36} />
 			) : (
-				<Text style={[styles.buttonText, { color: colors.fontDefault }]}>{text}</Text>
+				<PlainText style={[styles.buttonText, { color: colors.fontDefault }]}>{text}</PlainText>
 			)}
 		</Touch>
 	);
