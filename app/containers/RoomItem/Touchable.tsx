@@ -1,4 +1,4 @@
-import { useRef, memo, type ReactElement } from 'react';
+import { useRef, useEffect, memo, type ReactElement } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import {
 	Gesture,
@@ -9,8 +9,10 @@ import {
 import { scheduleOnRN } from 'react-native-worklets';
 
 import Touch from '../Touch';
-import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
+import { getOpenWidth, getActionWidth, getFullSwipeThreshold, SWIPE_SPRING_CONFIG } from './styles';
 import { LeftActions, RightActions } from './Actions';
+import { getSwipeRelease, type TRowState } from './swipeRelease';
+import { registerOpenSwipeItem, unregisterOpenSwipeItem, closeOpenSwipeItem, resetSwipeRow } from './openSwipeItem';
 import { type ITouchableProps } from './interfaces';
 import { useTheme } from '~/theme';
 import I18n from '~/i18n';
@@ -18,6 +20,11 @@ import { toggleFav } from '~/lib/methods/toggleFav';
 import { toggleRead } from '~/lib/methods/toggleRead';
 import { hideRoom } from '~/lib/methods/hideRoom';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
+
+const rubberband = (overshoot: number, dimension: number, constant = 0.55) => {
+	'worklet';
+	return (overshoot * dimension * constant) / (dimension + constant * Math.abs(overshoot));
+};
 
 const Touchable = ({
 	children,
@@ -36,137 +43,77 @@ const Touchable = ({
 	const serverVersion = useAppSelector(state => state.server.version);
 	const rowOffSet = useSharedValue(0);
 	const transX = useSharedValue(0);
-	const rowState = useSharedValue(0); // 0: closed, 1: right opened, -1: left opened
-	const valueRef = useRef(0);
+	const rowState = useSharedValue<TRowState>(0);
+	const gestureActive = useSharedValue(false);
+	const consumedTouchRef = useRef(false);
+
+	const handleTouchBegin = (closedOtherRow: boolean) => {
+		consumedTouchRef.current = closedOtherRow;
+	};
 
 	const close = () => {
-		rowState.value = 0;
-		transX.value = withSpring(0, { overshootClamping: true });
-		rowOffSet.value = 0;
-		valueRef.current = 0;
+		resetSwipeRow({ transX, rowState, rowOffSet });
+		unregisterOpenSwipeItem(rid);
 	};
+
+	useEffect(() => () => unregisterOpenSwipeItem(rid), [rid]);
 
 	const handleToggleFav = () => {
 		toggleFav(rid, favorite);
 		close();
 	};
 
-	const handleToggleRead = () => {
-		toggleRead(rid, isRead, serverVersion);
-	};
+	const toggleReadRoom = () => toggleRead(rid, isRead, serverVersion);
 
-	const handleHideChannel = () => {
-		hideRoom(rid, type);
-	};
+	const hideChannel = () => hideRoom(rid, type);
 
 	const onToggleReadPress = () => {
-		handleToggleRead();
+		toggleReadRoom();
 		close();
 	};
 
 	const onHidePress = () => {
-		handleHideChannel();
+		hideChannel();
 		close();
 	};
 
-	const handlePress = () => {
+	const guardTouch = (action?: () => void) => () => {
 		if (rowState.value !== 0) {
 			close();
 			return;
 		}
-		if (onPress) {
-			onPress();
-		}
-	};
-
-	const handleLongPress = () => {
-		if (rowState.value !== 0) {
-			close();
+		if (consumedTouchRef.current) {
+			consumedTouchRef.current = false;
 			return;
 		}
-
-		if (onLongPress) {
-			onLongPress();
-		}
+		action?.();
 	};
+
+	const handlePress = guardTouch(onPress);
+
+	const handleLongPress = guardTouch(onLongPress);
 
 	const handleRelease = (event: GestureUpdateEvent<PanGestureHandlerEventPayload>) => {
-		const { translationX } = event;
-		valueRef.current += translationX;
-		let toValue = 0;
-		if (rowState.value === 0) {
-			// if no option is opened
-			if (translationX > 0 && translationX < LONG_SWIPE) {
-				if (I18n.isRTL) {
-					toValue = 2 * ACTION_WIDTH;
-				} else {
-					toValue = ACTION_WIDTH;
-				}
-				rowState.value = -1;
-			} else if (translationX >= LONG_SWIPE) {
-				toValue = 0;
-				if (I18n.isRTL) {
-					handleHideChannel();
-				} else {
-					handleToggleRead();
-				}
-			} else if (translationX < 0 && translationX > -LONG_SWIPE) {
-				// open trailing option if he swipe left
-				if (I18n.isRTL) {
-					toValue = -ACTION_WIDTH;
-				} else {
-					toValue = -2 * ACTION_WIDTH;
-				}
-				rowState.value = 1;
-			} else if (translationX <= -LONG_SWIPE) {
-				toValue = 0;
-				rowState.value = 1;
-				if (I18n.isRTL) {
-					handleToggleRead();
-				} else {
-					handleHideChannel();
-				}
-			} else {
-				toValue = 0;
-			}
-		} else if (rowState.value === -1) {
-			// if left option is opened
-			if (valueRef.current < SMALL_SWIPE) {
-				toValue = 0;
-				rowState.value = 0;
-			} else if (valueRef.current > LONG_SWIPE) {
-				toValue = 0;
-				rowState.value = 0;
-				if (I18n.isRTL) {
-					handleHideChannel();
-				} else {
-					handleToggleRead();
-				}
-			} else if (I18n.isRTL) {
-				toValue = 2 * ACTION_WIDTH;
-			} else {
-				toValue = ACTION_WIDTH;
-			}
-		} else if (rowState.value === 1) {
-			// if right option is opened
-			if (valueRef.current > -2 * SMALL_SWIPE) {
-				toValue = 0;
-				rowState.value = 0;
-			} else if (valueRef.current < -LONG_SWIPE) {
-				if (I18n.isRTL) {
-					handleToggleRead();
-				} else {
-					handleHideChannel();
-				}
-			} else if (I18n.isRTL) {
-				toValue = -ACTION_WIDTH;
-			} else {
-				toValue = -2 * ACTION_WIDTH;
-			}
+		const release = getSwipeRelease({
+			rowState: rowState.value,
+			offset: rowOffSet.value + event.translationX,
+			actionWidth: getActionWidth(width),
+			openWidth: getOpenWidth(width),
+			fullSwipeThreshold: getFullSwipeThreshold(width)
+		});
+		if (release.fullSwipe === (I18n.isRTL ? 'left' : 'right')) {
+			hideChannel();
+		} else if (release.fullSwipe) {
+			toggleReadRoom();
 		}
-		transX.value = withSpring(toValue, { overshootClamping: true });
-		rowOffSet.value = toValue;
-		valueRef.current = toValue;
+		rowState.value = release.rowState;
+		transX.value = withSpring(release.toValue, { ...SWIPE_SPRING_CONFIG, velocity: event.velocityX });
+		rowOffSet.value = release.toValue;
+		if (release.rowState !== 0) {
+			registerOpenSwipeItem({ rid, transX, rowState, rowOffSet });
+		} else {
+			unregisterOpenSwipeItem(rid);
+		}
 	};
 
 	const longPressGesture = Gesture.LongPress()
@@ -179,12 +126,27 @@ const Touchable = ({
 		.activeOffsetX([-10, 10]) // More sensitive horizontal detection
 		.failOffsetY([-20, 20]) // Fail on vertical movement to distinguish scrolling
 		.enabled(swipeEnabled)
+		.onBegin(() => {
+			gestureActive.set(true);
+			const closedOtherRow = closeOpenSwipeItem(rid);
+			scheduleOnRN(handleTouchBegin, closedOtherRow);
+		})
 		.onUpdate(event => {
-			transX.value = event.translationX + rowOffSet.value;
-			if (transX.value > 2 * width) transX.value = 2 * width;
+			const next = event.translationX + rowOffSet.value;
+			const boundary = getFullSwipeThreshold(width);
+			transX.value =
+				next > boundary
+					? boundary + rubberband(next - boundary, width)
+					: next < -boundary
+						? -boundary - rubberband(-next - boundary, width)
+						: next;
 		})
 		.onEnd(event => {
+			gestureActive.set(false);
 			scheduleOnRN(handleRelease, event);
+		})
+		.onFinalize(() => {
+			gestureActive.set(false);
 		});
 
 	// Use Race instead of Simultaneous to prevent conflicts
@@ -200,6 +162,7 @@ const Touchable = ({
 			<Animated.View>
 				<LeftActions
 					transX={transX}
+					gestureActive={gestureActive}
 					isRead={isRead}
 					width={width}
 					onToggleReadPress={onToggleReadPress}
@@ -207,6 +170,7 @@ const Touchable = ({
 				/>
 				<RightActions
 					transX={transX}
+					gestureActive={gestureActive}
 					favorite={favorite}
 					width={width}
 					toggleFav={handleToggleFav}

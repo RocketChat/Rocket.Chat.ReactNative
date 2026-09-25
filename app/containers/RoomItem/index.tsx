@@ -1,5 +1,4 @@
-import { useEffect, useReducer, useRef, memo } from 'react';
-import { type Subscription } from 'rxjs';
+import { memo } from 'react';
 import { AccessibilityInfo } from 'react-native';
 
 import { useActionSheet } from '../ActionSheet';
@@ -11,8 +10,7 @@ import RoomItem from './RoomItem';
 import { getRoomActionsOptions } from './getRoomActionsOptions';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
-
-const attrs = ['width', 'isFocused', 'showLastMessage', 'autoJoin', 'showAvatar', 'displayMode'];
+import { useRoomSnapshot } from './useRoomSnapshot';
 
 const RoomItemContainer = memo(
 	({
@@ -33,32 +31,18 @@ const RoomItemContainer = memo(
 		getIsRead = () => false,
 		swipeEnabled = true
 	}: IRoomItemContainerProps) => {
+		const room = useRoomSnapshot(item);
 		const { showActionSheet } = useActionSheet();
 		const serverVersion = useAppSelector(state => state.server.version);
-		const name = getRoomTitle(item);
+		const name = getRoomTitle(room);
 		const testID = `rooms-list-view-item-${name}`;
-		const avatar = getRoomAvatar(item);
-		const isRead = getIsRead(item);
-		const date = item.roomUpdatedAt && formatDate(item.roomUpdatedAt);
-		const alert = item.alert || item.tunread?.length;
-		const [_, forceUpdate] = useReducer(x => x + 1, 1);
-		const roomSubscription = useRef<Subscription | null>(null);
-		const userId = item.t === 'd' && id && !isGroupChat(item) ? id : null;
-		const accessibilityDate = formatDateAccessibility(item.roomUpdatedAt);
-
-		useEffect(() => {
-			const init = () => {
-				if (item?.observe) {
-					const observable = item.observe();
-					roomSubscription.current = observable?.subscribe?.(() => {
-						if (_) forceUpdate();
-					});
-				}
-			};
-			init();
-
-			return () => roomSubscription.current?.unsubscribe();
-		}, []);
+		const avatar = getRoomAvatar(room);
+		const isRead = getIsRead(room);
+		const isInvited = isInviteSubscription(room);
+		const date = room.roomUpdatedAt && formatDate(room.roomUpdatedAt);
+		const alert = room.alert || room.tunread?.length;
+		const userId = room.t === 'd' && id && !isGroupChat(room) ? id : null;
+		const accessibilityDate = formatDateAccessibility(room.roomUpdatedAt);
 
 		const handleOnPress = () => onPress(item);
 
@@ -75,10 +59,10 @@ const RoomItemContainer = memo(
 			}
 			showActionSheet({
 				options: getRoomActionsOptions({
-					rid: item.rid,
-					type: item.t,
+					rid: room.rid,
+					type: room.t,
 					isRead,
-					favorite: !!item.f,
+					favorite: !!room.f,
 					serverVersion
 				})
 			});
@@ -88,46 +72,45 @@ const RoomItemContainer = memo(
 			<RoomItem
 				name={name}
 				avatar={avatar}
-				isGroupChat={isGroupChat(item)}
-				isInvited={isInviteSubscription(item)}
+				isGroupChat={isGroupChat(room)}
+				isInvited={isInvited}
 				isRead={isRead}
 				onPress={handleOnPress}
 				onLongPress={handleOnLongPress}
 				date={date}
 				accessibilityDate={accessibilityDate}
 				width={width}
-				favorite={item.f}
-				rid={item.rid}
+				favorite={room.f}
+				rid={room.rid}
 				userId={userId}
 				testID={testID}
-				type={item.t}
+				type={room.t}
 				isFocused={isFocused}
-				prid={item.prid}
-				hideUnreadStatus={item.hideUnreadStatus}
-				hideMentionStatus={item.hideMentionStatus}
+				prid={room.prid}
+				hideUnreadStatus={room.hideUnreadStatus}
+				hideMentionStatus={room.hideMentionStatus}
 				alert={alert}
-				lastMessage={item.lastMessage}
+				lastMessage={room.lastMessage}
 				showLastMessage={showLastMessage}
 				username={username}
 				useRealName={useRealName}
-				unread={item.unread}
-				userMentions={item.userMentions}
-				groupMentions={item.groupMentions}
-				tunread={item.tunread}
-				tunreadUser={item.tunreadUser}
-				tunreadGroup={item.tunreadGroup}
+				unread={room.unread}
+				userMentions={room.userMentions}
+				groupMentions={room.groupMentions}
+				tunread={room.tunread}
+				tunreadUser={room.tunreadUser}
+				tunreadGroup={room.tunreadGroup}
 				swipeEnabled={swipeEnabled}
-				teamMain={item.teamMain}
+				teamMain={room.teamMain}
 				autoJoin={autoJoin}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
-				status={item.t === 'l' ? item?.visitor?.status : null}
-				sourceType={item.t === 'l' ? item.source : null}
-				abacAttributes={item.abacAttributes}
+				status={room.t === 'l' ? room?.visitor?.status : null}
+				sourceType={room.t === 'l' ? room.source : null}
+				abacAttributes={room.abacAttributes}
 			/>
 		);
-	},
-	(props, nextProps) => attrs.every(key => props[key] === nextProps[key])
+	}
 );
 
 export default RoomItemContainer;

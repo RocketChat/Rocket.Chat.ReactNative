@@ -98,7 +98,7 @@ const RoomsListView = memo(function RoomsListView() {
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}
 				getIsRead={isRead}
-				isFocused={subscribedRoom === item.rid}
+				isFocused={isMasterDetail && subscribedRoom === item.rid}
 				swipeEnabled={swipeEnabled}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
