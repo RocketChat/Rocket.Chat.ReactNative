@@ -21,6 +21,15 @@ describe('getGroupOrder', () => {
 		expect(order).toEqual(['Favorites', 'Teams', 'Discussions', 'Channels', 'work', 'Direct_Messages', 'Conversations']);
 	});
 
+	it('keeps a custom category the user moved below every system group', () => {
+		const order = getGroupOrder([
+			...DEFAULT_GROUP_ORDER.map(key => ({ _id: key, name: key, default: true })),
+			{ _id: 'work', name: 'Work' }
+		]);
+
+		expect(order).toEqual([...DEFAULT_GROUP_ORDER, 'work']);
+	});
+
 	it('inserts a system group missing from storage before its first stored successor', () => {
 		const order = getGroupOrder([
 			{ _id: 'Channels', name: 'Channels', default: true },
