@@ -283,6 +283,9 @@ const handleUserData = ({ diff, unset }: { diff: any; unset: any }) => {
 	if (diff?.['settings.preferences.sidebarCategories'] !== undefined) {
 		store.dispatch(setUser({ sidebarCategories: diff['settings.preferences.sidebarCategories'] }));
 	}
+	if (unset?.['settings.preferences.sidebarCategories']) {
+		store.dispatch(setUser({ sidebarCategories: [] }));
+	}
 	if (diff?.avatarETag) {
 		store.dispatch(setUser({ avatarETag: diff.avatarETag }));
 	}
