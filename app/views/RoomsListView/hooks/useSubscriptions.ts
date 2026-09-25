@@ -29,7 +29,10 @@ export const useSubscriptions = () => {
 	const roles = useAppSelector(state => getUserSelector(state).roles, shallowEqual);
 	const { sortBy, showUnread, showFavorites, groupByType } = useAppSelector(state => state.sortPreferences, shallowEqual);
 	const hasCustomCategoriesLicense = useAppSelector(state => state.enterpriseModules.includes(CUSTOM_CATEGORIES_LICENSE_MODULE));
-	const sidebarCategories = useAppSelector(state => getUserSelector(state).sidebarCategories ?? NO_CATEGORIES);
+	const sidebarCategories = useAppSelector(state => {
+		const { sidebarCategories: userCategories } = getUserSelector(state);
+		return Array.isArray(userCategories) ? userCategories : NO_CATEGORIES;
+	});
 	const categories = hasCustomCategoriesLicense ? sidebarCategories : NO_CATEGORIES;
 	const customCategoryNames = useMemo(
 		() => new Map(categories.filter(category => !category.default).map(category => [category._id, category.name])),
