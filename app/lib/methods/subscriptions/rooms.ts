@@ -280,6 +280,9 @@ const handleUserData = ({ diff, unset }: { diff: any; unset: any }) => {
 	if (diff?.['settings.preferences.alsoSendThreadToChannel'] !== undefined) {
 		store.dispatch(setUser({ alsoSendThreadToChannel: diff['settings.preferences.alsoSendThreadToChannel'] }));
 	}
+	if (diff?.['settings.preferences.sidebarCategories'] !== undefined) {
+		store.dispatch(setUser({ sidebarCategories: diff['settings.preferences.sidebarCategories'] }));
+	}
 	if (diff?.avatarETag) {
 		store.dispatch(setUser({ avatarETag: diff.avatarETag }));
 	}
