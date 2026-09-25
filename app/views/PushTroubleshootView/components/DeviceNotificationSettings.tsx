@@ -6,9 +6,10 @@ import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { isIOS, showErrorAlert } from '~/lib/methods/helpers';
 import { useTheme } from '~/theme';
-import CustomListSection from './CustomListSection';
+import { CustomIcon } from '~/containers/CustomIcon';
+import { asNativeListSection } from '~/containers/List/native/rowMarkers';
 
-export default function DeviceNotificationSettings(): ReactElement {
+function DeviceNotificationSettings(): ReactElement {
 	const { colors } = useTheme();
 	const { deviceNotificationEnabled } = useAppSelector(state => ({
 		deviceNotificationEnabled: state.troubleshootingNotification.deviceNotificationEnabled
@@ -32,17 +33,24 @@ export default function DeviceNotificationSettings(): ReactElement {
 	};
 
 	return (
-		<CustomListSection
-			title='Device_notification_settings'
-			statusColor={!deviceNotificationEnabled ? colors.userPresenceBusy : colors.userPresenceOnline}>
+		<List.Section title='Device_notification_settings'>
 			<List.Separator />
 			<List.Item
 				title={!deviceNotificationEnabled ? 'Allow_push_notifications_for_rocket_chat' : 'No_further_action_is_needed'}
 				onPress={alertDeviceNotificationSettings}
 				testID='push-troubleshoot-view-allow-push-notifications'
 				disabled={deviceNotificationEnabled}
+				right={() => (
+					<CustomIcon
+						name='status-online'
+						size={16}
+						color={!deviceNotificationEnabled ? colors.userPresenceBusy : colors.userPresenceOnline}
+					/>
+				)}
 			/>
 			<List.Separator />
-		</CustomListSection>
+		</List.Section>
 	);
 }
+
+export default asNativeListSection(DeviceNotificationSettings);

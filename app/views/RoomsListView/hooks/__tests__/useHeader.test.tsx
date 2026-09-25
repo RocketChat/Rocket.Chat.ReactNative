@@ -108,7 +108,6 @@ describe('RoomsListView useHeader', () => {
 		expect(typeof options.headerTitle).toBe('string');
 		expect(options.headerTitle).toBe('Rocket.Chat');
 		expect(options.headerSubtitle).toBe('open.rocket.chat');
-		expect(options.headerLargeTitle).toBe(true);
 	});
 
 	it.each([
@@ -273,7 +272,6 @@ describe('RoomsListView useHeader', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		expect(options.headerLargeTitle).toBe(true);
 		expect(options.headerTitle).toBe('Rocket.Chat');
 	});
 });

@@ -1,6 +1,5 @@
-import { I18nManager } from 'react-native';
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
-import NativeListIcon from '~/containers/List/native/Icon.ios';
+import NativeListIndicator from '~/containers/List/native/Indicator.ios';
 import NativeListRow from '~/containers/NativeListRow';
 import { PlainSeparator } from '~/containers/NativeListRow/Separator';
 import I18n from '~/i18n';
@@ -14,8 +13,6 @@ interface IButton {
 	isFirst?: boolean;
 	isLast?: boolean;
 }
-
-const CHEVRON = I18nManager.isRTL ? 'chevron-left' : 'chevron-right';
 
 const ButtonCreate = ({ onPress, testID, title, icon, isFirst, isLast }: IButton) => {
 	const { colors } = useTheme();
@@ -31,7 +28,7 @@ const ButtonCreate = ({ onPress, testID, title, icon, isFirst, isLast }: IButton
 				isFirst={isFirst}
 				isLast={isLast}
 				leading={<CustomIcon name={icon} size={24} color={colors.fontDefault} />}
-				trailing={<NativeListIcon name={CHEVRON} color={colors.fontDefault} />}
+				trailing={<NativeListIndicator indicator='disclosure' />}
 			/>
 			{isLast ? null : <PlainSeparator />}
 		</>

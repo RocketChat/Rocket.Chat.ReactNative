@@ -233,7 +233,6 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 
 		if (hasNativeHeaderBar) {
 			const options: NativeStackNavigationOptions = {
-				headerLargeTitle: true,
 				headerLeft: undefined,
 				headerTitle: getRoomTitle(team),
 				headerSubtitle: team.topic,

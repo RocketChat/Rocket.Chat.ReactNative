@@ -214,7 +214,6 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	const getHeader = (): NativeStackNavigationOptions => {
 		if (hasNativeHeaderBar) {
 			return {
-				headerLargeTitle: true,
 				headerLeft: () => null,
 				headerTitle: I18n.t('Canned_Responses'),
 				headerSearchBarOptions: {

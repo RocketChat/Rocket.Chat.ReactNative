@@ -162,7 +162,7 @@ const NotificationPreferencesView = (): ReactElement => {
 	};
 
 	return (
-		<SafeAreaView testID='notification-preference-view'>
+		<SafeAreaView testID='notification-preference-view' style={{ paddingTop: 16 }}>
 			<List.Container testID='notification-preference-view-list'>
 				<List.Section>
 					<List.Separator />

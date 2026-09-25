@@ -199,7 +199,6 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 
 		if (hasNativeHeaderBar) {
 			navigation.setOptions({
-				headerLargeTitle: true,
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={this.closeShareExtension} testID='share-extension-close' />

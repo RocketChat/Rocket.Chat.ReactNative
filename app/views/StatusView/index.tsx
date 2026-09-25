@@ -28,7 +28,6 @@ import { USER_STATUS_TEXT_MAX_LENGTH } from '~/lib/constants/maxLength';
 import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
 import ClearAfterPicker, { type ClearAfterValue, computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
 import FooterComponent from './FooterComponent';
-import { GlassBackground, supportsLiquidGlass } from './GlassBackground';
 
 const validationSchema = yup.object().shape({
 	statusText: yup
@@ -71,9 +70,11 @@ const styles = StyleSheet.create({
 		borderTopWidth: 1,
 		borderBottomWidth: 1
 	},
-	glassInputStyle: {
+	rowInputContainer: {
+		marginBottom: 0
+	},
+	rowInputStyle: {
 		borderWidth: 0,
-		borderRadius: 999,
 		backgroundColor: 'transparent'
 	}
 });
@@ -195,8 +196,20 @@ const StatusView = (): ReactElement => {
 			label={I18n.t('Status')}
 			value={statusText}
 			containerStyle={styles.inputContainer}
-			inputStyle={supportsLiquidGlass ? styles.glassInputStyle : styles.inputStyle}
-			left={supportsLiquidGlass ? <GlassBackground /> : undefined}
+			inputStyle={styles.inputStyle}
+			testID='status-view-input'
+			error={errors.statusText?.message}
+		/>
+	);
+
+	const statusRowInput = (
+		<ControlledFormTextInput
+			name='statusText'
+			control={control}
+			accessibilityLabel={I18n.t('Status')}
+			value={statusText}
+			containerStyle={styles.rowInputContainer}
+			inputStyle={styles.rowInputStyle}
 			testID='status-view-input'
 			error={errors.statusText?.message}
 		/>
@@ -227,9 +240,9 @@ const StatusView = (): ReactElement => {
 
 	if (isIOS) {
 		return (
-			<SafeAreaView testID='status-view' style={{ backgroundColor: listBackgroundColor, paddingBottom: bottom }}>
-				{statusInput}
+			<SafeAreaView testID='status-view' style={{ backgroundColor: listBackgroundColor, paddingTop: 16, paddingBottom: bottom }}>
 				<List.Container backgroundHidden>
+					<List.Section title='Status'>{statusRowInput}</List.Section>
 					<List.Section>
 						{statusType.map(status => (
 							<Fragment key={status.id}>{renderStatus(status)}</Fragment>

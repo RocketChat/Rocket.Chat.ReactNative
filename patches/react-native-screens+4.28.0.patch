@@ -79,10 +79,10 @@ index 64beb49..14bb54a 100644
        size:imageSource.size
        scale:imageSource.scale
 diff --git a/node_modules/react-native-screens/ios/RNSBarButtonItem.mm b/node_modules/react-native-screens/ios/RNSBarButtonItem.mm
-index 76a39d4..a545974 100644
+index 76a39d4..fc43d6c 100644
 --- a/node_modules/react-native-screens/ios/RNSBarButtonItem.mm
 +++ b/node_modules/react-native-screens/ios/RNSBarButtonItem.mm
-@@ -126,10 +126,28 @@ static UIMenuOptions RNSMakeUIMenuOptionsFromConfig(NSDictionary *config);
+@@ -126,10 +126,32 @@ static UIMenuOptions RNSMakeUIMenuOptionsFromConfig(NSDictionary *config);
      self.action = @selector(handleBarButtonItemPress:);
      _itemAction = action;
      _buttonId = buttonId;
@@ -99,9 +99,13 @@ index 76a39d4..a545974 100644
 +  configuration.image = self.image;
 +  configuration.title = self.title;
 +  configuration.imagePadding = 6;
++  if (self.tintColor != nil) {
++    configuration.baseForegroundColor = self.tintColor;
++  }
 +  configuration.preferredSymbolConfigurationForImage =
 +      [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleBody scale:UIImageSymbolScaleLarge];
 +  UIButton *button = [UIButton buttonWithConfiguration:configuration primaryAction:nil];
++  button.automaticallyUpdatesConfiguration = NO;
 +  [button addTarget:self action:@selector(handleBarButtonItemPress:) forControlEvents:UIControlEventPrimaryActionTriggered];
 +  button.accessibilityLabel = self.accessibilityLabel;
 +  [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];

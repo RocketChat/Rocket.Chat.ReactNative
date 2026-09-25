@@ -109,7 +109,6 @@ const DiscussionsView = () => {
 
 		if (hasNativeHeaderBar) {
 			options = {
-				headerLargeTitle: true,
 				headerLeft: undefined,
 				headerTitle: I18n.t('Discussions'),
 				headerSearchBarOptions: {

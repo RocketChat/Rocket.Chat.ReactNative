@@ -193,10 +193,8 @@ export const useHeader = () => {
 			).filter(action => action.present);
 
 			navigation.setOptions({
-				headerLargeTitle: true,
 				headerTransparent: true,
 				headerStyle: { backgroundColor: `${colors.surfaceNeutral}B3` },
-				headerLargeStyle: { backgroundColor: 'transparent' },
 				headerBlurEffect: 'regular',
 				headerTitle: serverName,
 				headerSubtitle: nativeHeaderSubtitle,
