@@ -660,6 +660,29 @@ describe('encryptFile', () => {
 		expect(content).toBe('encrypted-content');
 	});
 
+	it('embeds the file caption in the encrypted getContent payload when one is provided', async () => {
+		const room = createRoom();
+		jest.spyOn(room, 'encryptText').mockResolvedValue('c' as any);
+		const fileWithCaption = { ...baseFile, msg: 'check this out' };
+
+		const { getContent } = await room.encryptFile('room1', fileWithCaption);
+		await getContent!('id', 'url');
+
+		const parsed = EJSON.parse(lastEncryptTextCall(room));
+		expect(parsed.msg).toBe('check this out');
+	});
+
+	it('embeds an empty string as msg in the encrypted getContent payload when there is no caption', async () => {
+		const room = createRoom();
+		jest.spyOn(room, 'encryptText').mockResolvedValue('c' as any);
+
+		const { getContent } = await room.encryptFile('room1', baseFile);
+		await getContent!('id', 'url');
+
+		const parsed = EJSON.parse(lastEncryptTextCall(room));
+		expect(parsed.msg).toBe('');
+	});
+
 	it('builds an audio attachment via getContent for audio files', async () => {
 		const room = createRoom();
 		jest.spyOn(room, 'encryptText').mockResolvedValue('c' as any);
