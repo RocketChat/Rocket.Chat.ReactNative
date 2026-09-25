@@ -876,11 +876,13 @@ describe('MessageComposer', () => {
 			await screen.findByTestId('message-composer-attachment-0');
 			await screen.findByTestId('composer-quote-abc');
 			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
-			const sendPromise = user.press(screen.getByTestId('message-composer-send'));
+			await user.press(screen.getByTestId('message-composer-send'));
 			await waitFor(() => expect(sendFileMessage).toHaveBeenCalled());
 			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'typed while uploading');
-			resolveUpload();
-			await sendPromise;
+			await act(() => {
+				resolveUpload();
+				return Promise.resolve();
+			});
 
 			await waitFor(() => expect(composerRef.current?.getText()).toBe(''));
 			expect(screen.queryByTestId('composer-quote-abc')).not.toBeOnTheScreen();

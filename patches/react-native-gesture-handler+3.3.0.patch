@@ -1,9 +1,9 @@
 diff --git a/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm b/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
-index 6b9fa9c..6d2ccea 100644
+index 994b3d3..c46411b 100644
 --- a/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
 +++ b/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
-@@ -83,6 +83,52 @@ - (BOOL)shouldHandleTouch:(RNGHUIView *)view
- }
+@@ -1274,6 +1274,52 @@ static CATransform3D RNGHCenterScaleTransform(NSRect bounds, CGFloat scale)
+ #endif
  
  #if !TARGET_OS_OSX
 +- (BOOL)canBecomeFocused

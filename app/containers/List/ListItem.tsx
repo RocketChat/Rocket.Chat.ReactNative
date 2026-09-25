@@ -242,7 +242,7 @@ const Button = memo(({ onPress, backgroundColor, underlayColor, style, ...props 
 			onPress={handlePress}
 			style={[{ backgroundColor: backgroundColor || colors.surfaceRoom }, style]}
 			underlayColor={underlayColor}
-			enabled={!props.disabled || !!props.disabledReason}>
+			disabled={props.disabled && !props.disabledReason}>
 			<Content {...props} />
 		</Touch>
 	);
