@@ -5,8 +5,8 @@ import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import { createChannelRequest } from '~/actions/createChannel';
-import { themes } from '~/lib/constants/colors';
 import SearchBox from '~/containers/SearchBox';
+import { type TIconsName } from '~/containers/CustomIcon';
 import I18n from '~/i18n';
 import Navigation from '~/lib/navigation/appNavigation';
 import { useTheme } from '~/theme';
@@ -15,6 +15,7 @@ import { type NewMessageStackParamList } from '~/stacks/types';
 import { compareServerVersion } from '~/lib/methods/helpers';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { usePermissions } from '~/lib/hooks/usePermissions';
+import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
 import ButtonCreate from './ButtonCreate';
 
 const styles = StyleSheet.create({
@@ -23,10 +24,19 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface IButtonConfig {
+	visible: boolean;
+	onPress: () => void;
+	title: string;
+	icon: TIconsName;
+	testID: string;
+}
+
 const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChangeText: (text: string) => void }) => {
 	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
 	const dispatch = useDispatch();
-	const { theme } = useTheme();
+	const { colors } = useTheme();
+	const listBackgroundColor = useListBackgroundColor(colors.surfaceTint);
 
 	const serverVersion = useAppSelector(state => state.server.version as string);
 
@@ -68,39 +78,52 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 		});
 	}, [navigation]);
 
+	const buttons = [
+		{
+			visible: createPublicChannelPermission || createPrivateChannelPermission,
+			onPress: createChannel,
+			title: 'Channel',
+			icon: 'channel-public',
+			testID: 'new-message-view-create-channel'
+		},
+		{
+			visible: compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.13.0') && createTeamPermission,
+			onPress: createTeam,
+			title: 'Team',
+			icon: 'teams',
+			testID: 'new-message-view-create-team'
+		},
+		{
+			visible: maxUsers > 2 && createDirectMessagePermission,
+			onPress: createGroupChat,
+			title: 'Direct_message',
+			icon: 'message',
+			testID: 'new-message-view-create-direct-message'
+		},
+		{
+			visible: createDiscussionPermission,
+			onPress: createDiscussion,
+			title: 'Discussion',
+			icon: 'discussions',
+			testID: 'new-message-view-create-discussion'
+		}
+	].filter((button): button is IButtonConfig => Boolean(button.visible));
+
 	return (
-		<>
-			<View style={[styles.container, { backgroundColor: themes[theme].surfaceTint }]}>
-				{createPublicChannelPermission || createPrivateChannelPermission ? (
-					<ButtonCreate
-						onPress={createChannel}
-						title={'Channel'}
-						icon={'channel-public'}
-						testID={'new-message-view-create-channel'}
-					/>
-				) : null}
-				{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.13.0') && createTeamPermission ? (
-					<ButtonCreate onPress={createTeam} title={'Team'} icon={'teams'} testID={'new-message-view-create-team'} />
-				) : null}
-				{maxUsers > 2 && createDirectMessagePermission ? (
-					<ButtonCreate
-						onPress={createGroupChat}
-						title={'Direct_message'}
-						icon={'message'}
-						testID={'new-message-view-create-direct-message'}
-					/>
-				) : null}
-				{createDiscussionPermission ? (
-					<ButtonCreate
-						onPress={createDiscussion}
-						title={'Discussion'}
-						icon={'discussions'}
-						testID={'new-message-view-create-discussion'}
-					/>
-				) : null}
-				<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='new-message-view-search' />
-			</View>
-		</>
+		<View style={[styles.container, { backgroundColor: listBackgroundColor }]}>
+			{buttons.map((button, index) => (
+				<ButtonCreate
+					key={button.testID}
+					onPress={button.onPress}
+					title={button.title}
+					icon={button.icon}
+					testID={button.testID}
+					isFirst={index === 0}
+					isLast={index === buttons.length - 1}
+				/>
+			))}
+			<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='new-message-view-search' />
+		</View>
 	);
 };
 

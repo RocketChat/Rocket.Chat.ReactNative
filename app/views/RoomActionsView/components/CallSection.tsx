@@ -1,13 +1,14 @@
 import { type ReactElement, useEffect, useState } from 'react';
 
 import * as List from '~/containers/List';
+import { asNativeListSection } from '~/containers/List/native/rowMarkers';
 import { useVideoConf } from '~/lib/hooks/useVideoConf';
 import type { TSubscriptionModel } from '~/definitions';
 import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall';
 import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
 import { videoConferenceGetCapabilities } from '~/lib/services/restApi';
 
-export default function CallSection({
+function CallSection({
 	room,
 	disabled,
 	itsMe
@@ -69,3 +70,5 @@ export default function CallSection({
 		</List.Section>
 	);
 }
+
+export default asNativeListSection(CallSection);

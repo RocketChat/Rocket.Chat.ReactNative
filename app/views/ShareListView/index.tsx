@@ -13,6 +13,7 @@ import { Component, createRef } from 'react';
 import database from '~/lib/database';
 import I18n from '~/i18n';
 import DirectoryItem, { ROW_HEIGHT } from '~/containers/DirectoryItem';
+import RowSeparator from '~/containers/NativeListRow/Separator';
 import ServerItem from '~/containers/ServerItem';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import ActivityIndicator from '~/containers/ActivityIndicator';
@@ -405,8 +406,9 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		);
 	};
 
-	renderItem = ({ item }: { item: TSubscriptionModel }) => {
-		const { serverInfo } = this.state;
+	renderItem = ({ item, index }: { item: TSubscriptionModel; index: number }) => {
+		const { serverInfo, chats, searchResults, searching } = this.state;
+		const rowCount = searching ? searchResults.length : chats.length;
 		let description;
 		switch (item.t) {
 			case 'c':
@@ -431,6 +433,8 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 				onPress={() => this.shareMessage(item)}
 				testID={`share-extension-item-${item.name}`}
 				teamMain={item.teamMain}
+				isFirst={index === 0}
+				isLast={index === rowCount - 1}
 			/>
 		);
 	};
@@ -524,7 +528,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 					contentContainerStyle={{ paddingBottom: insets.bottom }}
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
-					ItemSeparatorComponent={List.Separator}
+					ItemSeparatorComponent={RowSeparator}
 					ListHeaderComponent={this.renderHeader}
 					ListFooterComponent={!searching || searchResults.length > 0 ? <List.Separator /> : null}
 					ListEmptyComponent={this.renderEmptyComponent}

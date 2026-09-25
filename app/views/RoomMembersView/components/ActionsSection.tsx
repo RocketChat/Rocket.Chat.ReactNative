@@ -66,7 +66,7 @@ export default function ActionsSection({ rid, t, joined, abacAttributes }: IActi
 	};
 
 	return (
-		<View style={{ paddingTop: canAddUser || canInviteUser ? 16 : 0, paddingBottom: canAddUser || canInviteUser ? 16 : 0 }}>
+		<View style={{ paddingTop: canAddUser || canInviteUser ? 16 : 0 }}>
 			{['c', 'p'].includes(t) && canAddUser ? (
 				<>
 					<List.Separator />

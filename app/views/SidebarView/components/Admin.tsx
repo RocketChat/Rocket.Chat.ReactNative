@@ -6,9 +6,7 @@ import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useTheme } from '~/theme';
 import { sidebarNavigate } from '../methods/sidebarNavigate';
 
-const Admin = ({ currentScreen }: { currentScreen: string | null }) => {
-	const isMasterDetail = useMasterDetail();
-	const { colors } = useTheme();
+export const useIsAdmin = () => {
 	const [
 		viewStatisticsPermission,
 		viewRoomAdministrationPermission,
@@ -32,10 +30,19 @@ const Admin = ({ currentScreen }: { currentScreen: string | null }) => {
 		]
 	);
 
+	return isAdmin;
+};
+
+export const useAdminRoute = () => (useMasterDetail() ? 'AdminPanelView' : 'AdminPanelStackNavigator');
+
+const Admin = ({ currentScreen }: { currentScreen: string | null }) => {
+	const routeName = useAdminRoute();
+	const { colors } = useTheme();
+	const isAdmin = useIsAdmin();
+
 	if (!isAdmin) {
 		return null;
 	}
-	const routeName = isMasterDetail ? 'AdminPanelView' : 'AdminPanelStackNavigator';
 	return (
 		<>
 			<List.Item

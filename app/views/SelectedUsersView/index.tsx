@@ -14,6 +14,8 @@ import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import * as List from '~/containers/List';
 import { sendLoadingEvent } from '~/containers/Loading';
 import SafeAreaView from '~/containers/SafeAreaView';
+import RowSeparator from '~/containers/NativeListRow/Separator';
+import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
 import I18n from '~/i18n';
 import database from '~/lib/database';
 import UserItem from '~/containers/UserItem';
@@ -47,6 +49,7 @@ const SelectedUsersView = () => {
 	const navigation = useNavigation<TNavigation>();
 
 	const { colors } = useTheme();
+	const listBackgroundColor = useListBackgroundColor(colors.surfaceRoom);
 	const dispatch = useDispatch();
 	const { bottom } = useSafeAreaInsets();
 
@@ -186,7 +189,7 @@ const SelectedUsersView = () => {
 			<FlatList
 				data={data}
 				keyExtractor={item => item._id}
-				renderItem={({ item }) => {
+				renderItem={({ item, index }) => {
 					const name = useRealName && item.fname ? item.fname : item.name;
 					const username = item.search ? (item.username as string) : item.name;
 					return (
@@ -198,13 +201,15 @@ const SelectedUsersView = () => {
 							icon={isChecked(username) ? 'checkbox-checked' : 'checkbox-unchecked'}
 							iconColor={isChecked(username) ? colors.fontHint : colors.strokeLight}
 							isChecked={isChecked(username)}
+							isFirst={index === 0}
+							isLast={index === data.length - 1}
 						/>
 					);
 				}}
-				ItemSeparatorComponent={List.Separator}
+				ItemSeparatorComponent={RowSeparator}
 				ListFooterComponent={searching ? <ActivityIndicator /> : <List.Separator />}
 				ListHeaderComponent={<Header useRealName={useRealName} onChangeText={handleSearch} onPressItem={toggleUser} />}
-				contentContainerStyle={{ backgroundColor: colors.surfaceRoom, paddingBottom: bottom }}
+				contentContainerStyle={{ backgroundColor: listBackgroundColor, paddingBottom: bottom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>
