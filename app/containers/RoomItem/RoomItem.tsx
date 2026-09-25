@@ -92,6 +92,7 @@ const RoomItem = ({
 			<Wrapper
 				accessibilityLabel={accessibilityLabel}
 				accessibilityHint={I18n.t('Long_press_for_more_actions')}
+				onLongPress={onLongPress}
 				avatar={avatar}
 				type={type}
 				userId={userId}
