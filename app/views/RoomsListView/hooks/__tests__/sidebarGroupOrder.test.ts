@@ -49,4 +49,19 @@ describe('getGroupOrder', () => {
 
 		expect(order).toEqual(['work', ...DEFAULT_GROUP_ORDER]);
 	});
+
+	it('follows a system group the user moved on web, as web stores it', () => {
+		const order = getGroupOrder([
+			{ _id: 'Incoming_Calls', name: 'Incoming_Calls', default: true },
+			{ _id: 'Incoming_Livechats', name: 'Incoming_Livechats', default: true },
+			{ _id: 'Open_Livechats', name: 'Open_Livechats', default: true },
+			{ _id: 'On_Hold_Chats', name: 'On_Hold_Chats', default: true },
+			{ _id: 'Unread', name: 'Unread', default: true },
+			{ _id: 'Direct_Messages', name: 'Direct_Messages', default: true },
+			{ _id: 'work', name: 'Work' },
+			{ _id: 'Favorites', name: 'Favorites', default: true }
+		]);
+
+		expect(order).toEqual(['Teams', 'Discussions', 'Channels', 'Direct_Messages', 'work', 'Favorites', 'Conversations']);
+	});
 });
