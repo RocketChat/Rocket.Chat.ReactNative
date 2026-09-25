@@ -46,4 +46,13 @@ describe('getUploadErrorMessage', () => {
 			})
 		).toBe('error-too-many-requests({"seconds":"37"})');
 	});
+
+	it('does not let unrelated digits in the message corrupt the wait time', () => {
+		expect(
+			getUploadErrorMessage({
+				errorStatus: 429,
+				errorMessage: 'Error 42: too many requests. You must wait 5 seconds before trying again. [error-too-many-requests]'
+			})
+		).toBe('error-too-many-requests({"seconds":"5"})');
+	});
 });

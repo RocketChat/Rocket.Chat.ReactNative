@@ -3,7 +3,12 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { type IUser, type TSendFileMessageFileInfo, type TUploadModel } from '~/definitions';
 import database from '~/lib/database';
 import FileUpload from '../helpers/fileUpload';
-import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
+import {
+	copyFileToCacheDirectoryIfNeeded,
+	createUploadProgressCallback,
+	createUploadRecord,
+	finalizeFailedUpload
+} from './utils';
 import { uploadWithRetry } from './uploadWithRetry';
 import { type IFormData } from '../helpers/fileUpload/definitions';
 
@@ -70,28 +75,12 @@ export async function sendFileMessage(
 
 		await uploadWithRetry(
 			uploadPath,
-			() =>
-				new FileUpload(uploadUrl, headers, formData, async (loaded, total) => {
-					try {
-						await db.write(async () => {
-							await uploadRecord?.update(u => {
-								u.progress = Math.floor((loaded / total) * 100);
-							});
-						});
-					} catch (e) {
-						console.error(e);
-					}
-				})
+			() => new FileUpload(uploadUrl, headers, formData, createUploadProgressCallback(db, uploadRecord))
 		);
 		await db.write(async () => {
 			await uploadRecord?.destroyPermanently();
 		});
 	} catch (e) {
-		if (uploadPath && !uploadQueue[uploadPath]) {
-			console.log('Upload cancelled');
-		} else {
-			await persistUploadError(uploadRecordPath, rid, e);
-			throw e;
-		}
+		await finalizeFailedUpload(uploadPath ?? '', uploadRecordPath, rid, e);
 	}
 }

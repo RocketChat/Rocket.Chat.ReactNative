@@ -3,7 +3,12 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '~/definitions';
 import database from '~/lib/database';
 import { Encryption } from '~/lib/encryption';
-import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
+import {
+	copyFileToCacheDirectoryIfNeeded,
+	createUploadProgressCallback,
+	createUploadRecord,
+	finalizeFailedUpload
+} from './utils';
 import { uploadWithRetry } from './uploadWithRetry';
 import FileUpload from '../helpers/fileUpload';
 import { type IFormData } from '../helpers/fileUpload/definitions';
@@ -54,17 +59,7 @@ export async function sendFileMessageV2(
 		const response = await uploadWithRetry(
 			uploadPath,
 			() =>
-				new FileUpload(`${server}/api/v1/rooms.media/${rid}`, headers, formData, async (loaded, total) => {
-					try {
-						await db.write(async () => {
-							await uploadRecord?.update(u => {
-								u.progress = Math.floor((loaded / total) * 100);
-							});
-						});
-					} catch (e) {
-						console.error(e);
-					}
-				})
+				new FileUpload(`${server}/api/v1/rooms.media/${rid}`, headers, formData, createUploadProgressCallback(db, uploadRecord))
 		);
 
 		let content;
@@ -90,11 +85,6 @@ export async function sendFileMessageV2(
 		});
 	} catch (e: any) {
 		console.error(e);
-		if (uploadPath && !uploadQueue[uploadPath]) {
-			console.log('Upload cancelled');
-		} else {
-			await persistUploadError(uploadRecordPath, rid, e);
-			throw e;
-		}
+		await finalizeFailedUpload(uploadPath ?? '', uploadRecordPath, rid, e);
 	}
 }

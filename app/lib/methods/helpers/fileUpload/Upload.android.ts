@@ -48,7 +48,7 @@ export class Upload {
 		return new Promise(async (resolve, reject) => {
 			try {
 				if (!this.file) {
-					return reject();
+					return reject(new Error('No file to upload'));
 				}
 				this.uploadTask = FileSystem.createUploadTask(
 					this.uploadUrl,

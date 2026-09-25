@@ -1,4 +1,5 @@
 import I18n from '~/i18n';
+import { parseRetryAfterFromMessage } from './fileUpload/definitions';
 
 const STATUS_MESSAGES: Record<number, string> = {
 	413: 'error-file-too-large'
@@ -22,7 +23,8 @@ export const getUploadErrorMessage = ({
 		return I18n.t('error-file-too-large');
 	}
 	if (errorMessage.includes('[error-too-many-requests]')) {
-		return I18n.t('error-too-many-requests', { seconds: errorMessage.replace(/\D/g, '') });
+		const seconds = parseRetryAfterFromMessage(errorMessage);
+		return I18n.t('error-too-many-requests', { seconds: seconds !== undefined ? String(seconds) : undefined });
 	}
 	return I18n.isTranslated(errorMessage) ? I18n.t(errorMessage) : errorMessage;
 };

@@ -34,6 +34,20 @@ describe('parseUploadErrorBody', () => {
 	it('truncates a long body', () => {
 		expect(parseUploadErrorBody('x'.repeat(600)).body).toHaveLength(500);
 	});
+
+	it('truncates a long server message the same way as the body', () => {
+		const result = parseUploadErrorBody(JSON.stringify({ error: 'x'.repeat(600) }));
+		expect(result.serverMessage).toHaveLength(500);
+	});
+
+	it('skips JSON parsing for a body that is clearly not JSON', () => {
+		const parseSpy = jest.spyOn(JSON, 'parse');
+
+		parseUploadErrorBody('<html>Bad Gateway</html>');
+
+		expect(parseSpy).not.toHaveBeenCalled();
+		parseSpy.mockRestore();
+	});
 });
 
 describe('parseRetryAfter', () => {

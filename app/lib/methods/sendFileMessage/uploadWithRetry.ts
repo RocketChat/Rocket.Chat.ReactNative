@@ -1,6 +1,6 @@
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
 import { type IFileUpload, UploadHttpError, parseRetryAfterFromMessage } from '../helpers/fileUpload/definitions';
-import { uploadQueue } from './utils';
+import { UploadSupersededError, uploadQueue } from './utils';
 
 export const MAX_UPLOAD_ATTEMPTS = 4;
 
@@ -18,19 +18,37 @@ export const getUploadRetryDelay = (error: unknown, attempt: number): number | u
 	return delay <= MAX_RETRY_DELAY ? delay : undefined;
 };
 
+// A queue entry that is missing means this attempt was cancelled; one that points elsewhere means a
+// newer attempt took over the same path. Only the latter should be hidden behind UploadSupersededError -
+// callers still need to see a real cancellation to short-circuit their own cleanup.
+const isSupersededByNewerAttempt = (uploadPath: string, upload: IFileUpload) => {
+	const current = uploadQueue[uploadPath];
+	return current !== undefined && current !== upload;
+};
+
 export const uploadWithRetry = async (uploadPath: string, createUpload: () => IFileUpload): Promise<TRoomsMediaResponse> => {
 	for (let attempt = 1; ; attempt += 1) {
 		const upload = createUpload();
 		uploadQueue[uploadPath] = upload;
 		try {
-			return await upload.send();
+			const response = await upload.send();
+			if (isSupersededByNewerAttempt(uploadPath, upload)) {
+				throw new UploadSupersededError();
+			}
+			return response;
 		} catch (error) {
+			if (error instanceof UploadSupersededError || isSupersededByNewerAttempt(uploadPath, upload)) {
+				throw error instanceof UploadSupersededError ? error : new UploadSupersededError();
+			}
 			const delay = getUploadRetryDelay(error, attempt);
-			if (delay === undefined || uploadQueue[uploadPath] !== upload) {
+			if (delay === undefined || uploadQueue[uploadPath] === undefined) {
 				throw error;
 			}
 			await sleep(delay);
-			if (uploadQueue[uploadPath] !== upload) {
+			if (isSupersededByNewerAttempt(uploadPath, upload)) {
+				throw new UploadSupersededError();
+			}
+			if (uploadQueue[uploadPath] === undefined) {
 				throw error;
 			}
 		}

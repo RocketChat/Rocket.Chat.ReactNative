@@ -53,4 +53,11 @@ describe('Upload (android)', () => {
 
 		await expect(send()).rejects.toMatchObject({ status: 0 });
 	});
+
+	it('rejects with an Error, not undefined, when no file was appended', async () => {
+		const upload = new Upload();
+		upload.setupRequest('https://open.rocket.chat/api/v1/rooms.media/rid', {});
+
+		await expect(upload.send()).rejects.toBeInstanceOf(Error);
+	});
 });

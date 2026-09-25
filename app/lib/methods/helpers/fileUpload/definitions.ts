@@ -47,11 +47,15 @@ export const parseUploadErrorBody = (responseText: string | undefined): { server
 		return {};
 	}
 	const body = responseText.slice(0, MAX_ERROR_BODY_LENGTH);
+	const looksLikeJson = /^[[{]/.test(responseText.trimStart());
+	if (!looksLikeJson) {
+		return { body };
+	}
 	try {
 		const parsed = JSON.parse(responseText);
 		const serverMessage = parsed?.error ?? parsed?.message;
 		if (typeof serverMessage === 'string' && serverMessage.length > 0) {
-			return { serverMessage, body };
+			return { serverMessage: serverMessage.slice(0, MAX_ERROR_BODY_LENGTH), body };
 		}
 	} catch {}
 	return { body };

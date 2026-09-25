@@ -1,8 +1,11 @@
 import { Alert } from 'react-native';
 
 import {
+	UploadSupersededError,
+	createUploadProgressCallback,
 	createUploadRecord,
 	copyFileToCacheDirectoryIfNeeded,
+	finalizeFailedUpload,
 	getUploadPath,
 	isUploadActive,
 	persistUploadError,
@@ -187,5 +190,69 @@ describe('persistUploadError', () => {
 		(getUploadByPath as jest.Mock).mockResolvedValue(null);
 
 		await expect(persistUploadError('/tmp/pic.jpg', 'GENERAL', new Error('boom'))).resolves.toBeUndefined();
+	});
+});
+
+describe('finalizeFailedUpload', () => {
+	const { getUploadByPath } = require('~/lib/database/services/Upload');
+
+	beforeEach(() => {
+		(getUploadByPath as jest.Mock).mockReset();
+	});
+
+	it('does nothing when the upload was superseded by a newer attempt, and leaves its queue entry alone', async () => {
+		uploadQueue[uploadPath] = {} as any;
+
+		await expect(
+			finalizeFailedUpload(uploadPath, fileInfo.path, 'GENERAL', new UploadSupersededError())
+		).resolves.toBeUndefined();
+
+		expect(getUploadByPath).not.toHaveBeenCalled();
+		expect(uploadQueue[uploadPath]).toBeDefined();
+	});
+
+	it('does nothing when the upload was cancelled (its queue entry is already gone)', async () => {
+		await expect(finalizeFailedUpload(uploadPath, fileInfo.path, 'GENERAL', new Error('boom'))).resolves.toBeUndefined();
+
+		expect(getUploadByPath).not.toHaveBeenCalled();
+	});
+
+	it('persists the error, clears the queue entry, and rethrows for a genuine terminal failure', async () => {
+		uploadQueue[uploadPath] = {} as any;
+		(getUploadByPath as jest.Mock).mockResolvedValue({ update: jest.fn((cb: (u: any) => void) => cb({})) });
+		const error = new UploadHttpError(413);
+
+		await expect(finalizeFailedUpload(uploadPath, fileInfo.path, 'GENERAL', error)).rejects.toBe(error);
+
+		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
+		expect(uploadQueue[uploadPath]).toBeUndefined();
+	});
+});
+
+describe('createUploadProgressCallback', () => {
+	it('writes the rounded percentage to the upload record', async () => {
+		const record: any = {};
+		const update = jest.fn((cb: (u: any) => void) => cb(record));
+		const db = { write: jest.fn((cb: () => Promise<void>) => cb()) } as any;
+
+		await createUploadProgressCallback(db, { update } as any)(50, 200);
+
+		expect(record.progress).toBe(25);
+	});
+
+	it('does nothing when there is no upload record', async () => {
+		const db = { write: jest.fn((cb: () => Promise<void>) => cb()) } as any;
+
+		await expect(createUploadProgressCallback(db, null)(50, 200)).resolves.toBeUndefined();
+	});
+
+	it('swallows a write failure instead of throwing', async () => {
+		const db = { write: jest.fn(() => Promise.reject(new Error('db down'))) } as any;
+		const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+		await expect(createUploadProgressCallback(db, {} as any)(50, 200)).resolves.toBeUndefined();
+
+		expect(consoleErrorSpy).toHaveBeenCalled();
+		consoleErrorSpy.mockRestore();
 	});
 });

@@ -1,8 +1,11 @@
 import { MAX_UPLOAD_ATTEMPTS, getUploadRetryDelay, uploadWithRetry } from './uploadWithRetry';
-import { uploadQueue } from './utils';
+import { UploadSupersededError, uploadQueue } from './utils';
 import { UploadHttpError } from '../helpers/fileUpload/definitions';
 
-jest.mock('./utils', () => ({ uploadQueue: {} }));
+jest.mock('./utils', () => {
+	class UploadSupersededError extends Error {}
+	return { uploadQueue: {}, UploadSupersededError };
+});
 
 const PATH = '/tmp/pic.jpg-GENERAL';
 const RESPONSE = { file: { _id: 'abc', url: '/file/abc' } } as any;
@@ -117,7 +120,7 @@ describe('uploadWithRetry', () => {
 		expect(createUpload).toHaveBeenCalledTimes(1);
 	});
 
-	it('stops when a new upload reused the path while backing off', async () => {
+	it('stops when a new upload reused the path while backing off, without leaking the old error', async () => {
 		const createUpload = uploadThat(jest.fn().mockRejectedValue(new UploadHttpError(429)));
 
 		const pending = uploadWithRetry(PATH, createUpload).catch(e => e);
@@ -125,8 +128,17 @@ describe('uploadWithRetry', () => {
 		uploadQueue[PATH] = { send: jest.fn().mockResolvedValue(RESPONSE), cancel: jest.fn() };
 		await jest.advanceTimersByTimeAsync(1000);
 
-		await expect(pending).resolves.toMatchObject({ status: 429 });
+		await expect(pending).resolves.toBeInstanceOf(UploadSupersededError);
 		expect(createUpload).toHaveBeenCalledTimes(1);
+	});
+
+	it('does not resolve as successful when a newer attempt has already taken over the queue entry', async () => {
+		const createUpload = uploadThat(jest.fn().mockResolvedValue(RESPONSE));
+
+		const pending = uploadWithRetry(PATH, createUpload).catch(e => e);
+		uploadQueue[PATH] = { send: jest.fn().mockResolvedValue(RESPONSE), cancel: jest.fn() };
+
+		await expect(pending).resolves.toBeInstanceOf(UploadSupersededError);
 	});
 
 	it('stops when the upload is cancelled during the request', async () => {

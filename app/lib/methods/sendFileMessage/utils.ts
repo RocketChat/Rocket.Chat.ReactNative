@@ -1,3 +1,4 @@
+import { type Database } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import isEmpty from 'lodash/isEmpty';
 import { Alert } from 'react-native';
@@ -14,6 +15,13 @@ import { isRetryableUploadError } from '../helpers/isRetryableUploadError';
 import { type IFileUpload, UploadHttpError } from '../helpers/fileUpload/definitions';
 
 export const uploadQueue: { [index: string]: IFileUpload } = {};
+
+export class UploadSupersededError extends Error {
+	constructor() {
+		super('Upload superseded by a newer attempt on the same path');
+		this.name = 'UploadSupersededError';
+	}
+}
 
 export const getUploadPath = (path: string, rid: string) => `${path}-${rid}`;
 
@@ -67,6 +75,40 @@ export const persistUploadError = async (path: string, rid: string, error?: unkn
 		// Do nothing
 	}
 };
+
+export const finalizeFailedUpload = async (
+	uploadPath: string,
+	uploadRecordPath: string,
+	rid: string,
+	error: unknown
+): Promise<void> => {
+	if (error instanceof UploadSupersededError) {
+		return;
+	}
+	if (uploadPath && !uploadQueue[uploadPath]) {
+		console.log('Upload cancelled');
+		return;
+	}
+	if (uploadPath) {
+		delete uploadQueue[uploadPath];
+	}
+	await persistUploadError(uploadRecordPath, rid, error);
+	throw error;
+};
+
+export const createUploadProgressCallback =
+	(db: Database, uploadRecord: TUploadModel | null) =>
+	async (loaded: number, total: number): Promise<void> => {
+		try {
+			await db.write(async () => {
+				await uploadRecord?.update(u => {
+					u.progress = Math.floor((loaded / total) * 100);
+				});
+			});
+		} catch (e) {
+			console.error(e);
+		}
+	};
 
 export const createUploadRecord = async ({
 	rid,
