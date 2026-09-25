@@ -1,11 +1,13 @@
 import { Platform } from 'react-native';
 
+import { SubscriptionType } from '~/definitions';
 import type * as SdkIntegration from '../testUtils/sdkIntegration';
 import { mediaCallsStateSignals } from './restApi';
 
 const mockSdkGet = jest.fn();
 const mockSdkPost = jest.fn();
 const mockSdkDel = jest.fn();
+const mockSdkMethodCallWrapper = jest.fn();
 let mockSdk!: SdkIntegration.IMockSdk;
 
 jest.mock('./sdk', () => {
@@ -15,7 +17,8 @@ jest.mock('./sdk', () => {
 		makeSdkMock({
 			get: (...args: unknown[]) => mockSdkGet(...args),
 			post: (...args: unknown[]) => mockSdkPost(...args),
-			del: (...args: unknown[]) => mockSdkDel(...args)
+			del: (...args: unknown[]) => mockSdkDel(...args),
+			methodCallWrapper: (...args: unknown[]) => mockSdkMethodCallWrapper(...args)
 		});
 	return { __esModule: true, default: mockSdk };
 });
@@ -310,5 +313,100 @@ describe('removePushToken', () => {
 		await registerPushToken();
 
 		expect(mockSdkPost).toHaveBeenCalledTimes(2);
+	});
+});
+
+function loadGetRoomMembers(mockServerVersion: string) {
+	jest.resetModules();
+	jest.doMock('../store/auxStore', () => ({
+		store: {
+			getState: () => ({
+				server: { version: mockServerVersion }
+			})
+		}
+	}));
+	// eslint-disable-next-line @typescript-eslint/no-require-imports
+	const { getRoomMembers } = require('./restApi');
+	// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+	return getRoomMembers as typeof import('./restApi').getRoomMembers;
+}
+
+describe('getRoomMembers', () => {
+	const members = [{ _id: 'owner-id', username: 'owner', roles: ['owner'] }];
+	const baseParams = {
+		rid: 'room-id',
+		allUsers: true,
+		type: 'all' as const,
+		filter: '',
+		skip: 0,
+		limit: 25
+	};
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockSdkGet.mockResolvedValue({ success: true, members });
+		mockSdkMethodCallWrapper.mockResolvedValue({ records: members });
+	});
+
+	it.each([SubscriptionType.CHANNEL, SubscriptionType.GROUP])(
+		'uses rooms.membersOrderedByRole for room type %s on 7.3.0',
+		async roomType => {
+			const getRoomMembers = loadGetRoomMembers('7.3.0');
+
+			const result = await getRoomMembers({ ...baseParams, roomType });
+
+			expect(mockSdkGet).toHaveBeenCalledTimes(1);
+			expect(mockSdkGet).toHaveBeenCalledWith('rooms.membersOrderedByRole', { roomId: 'room-id', offset: 0, count: 25 });
+			expect(result).toEqual(members);
+		}
+	);
+
+	it('passes status and filter to rooms.membersOrderedByRole', async () => {
+		const getRoomMembers = loadGetRoomMembers('8.0.0');
+
+		await getRoomMembers({
+			...baseParams,
+			roomType: SubscriptionType.CHANNEL,
+			type: 'online',
+			allUsers: false,
+			filter: 'john',
+			skip: 50
+		});
+
+		expect(mockSdkGet).toHaveBeenCalledWith('rooms.membersOrderedByRole', {
+			roomId: 'room-id',
+			offset: 50,
+			count: 25,
+			'status[]': 'online',
+			filter: 'john'
+		});
+	});
+
+	it('keeps using im.members for direct messages', async () => {
+		const getRoomMembers = loadGetRoomMembers('8.0.0');
+
+		await getRoomMembers({ ...baseParams, roomType: SubscriptionType.DIRECT });
+
+		expect(mockSdkGet).toHaveBeenCalledTimes(1);
+		expect(mockSdkGet).toHaveBeenCalledWith('im.members', { roomId: 'room-id', offset: 0, count: 25 });
+	});
+
+	it('uses channels.members on servers older than 7.3.0', async () => {
+		const getRoomMembers = loadGetRoomMembers('7.2.0');
+
+		await getRoomMembers({ ...baseParams, roomType: SubscriptionType.CHANNEL });
+
+		expect(mockSdkGet).toHaveBeenCalledTimes(1);
+		expect(mockSdkGet).toHaveBeenCalledWith('channels.members', { roomId: 'room-id', offset: 0, count: 25 });
+	});
+
+	it('uses getUsersOfRoom on servers older than 3.16.0', async () => {
+		const getRoomMembers = loadGetRoomMembers('3.15.0');
+
+		const result = await getRoomMembers({ ...baseParams, roomType: SubscriptionType.CHANNEL });
+
+		expect(mockSdkGet).not.toHaveBeenCalled();
+		expect(mockSdkMethodCallWrapper).toHaveBeenCalledWith('getUsersOfRoom', 'room-id', true, { skip: 0, limit: 25 });
+		expect(result).toEqual(members);
 	});
 });
