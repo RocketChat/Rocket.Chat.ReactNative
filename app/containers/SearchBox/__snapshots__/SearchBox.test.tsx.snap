@@ -83,7 +83,6 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                   },
                   {},
                   undefined,
-                  false,
                 ],
                 {
                   "textAlign": "auto",

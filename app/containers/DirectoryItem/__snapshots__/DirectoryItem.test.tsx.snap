@@ -197,7 +197,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
                         },
                         {
                           "$type": "font",
-                          "size": 16,
+                          "textStyle": "body",
                           "weight": "medium",
                         },
                         {
@@ -223,7 +223,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
                       },
                       {
                         "$type": "font",
-                        "size": 14,
+                        "textStyle": "subheadline",
                       },
                       {
                         "$type": "foregroundStyle",
@@ -445,7 +445,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         },
                         {
                           "$type": "font",
-                          "size": 16,
+                          "textStyle": "body",
                           "weight": "medium",
                         },
                         {
@@ -471,7 +471,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                       },
                       {
                         "$type": "font",
-                        "size": 14,
+                        "textStyle": "subheadline",
                       },
                       {
                         "$type": "foregroundStyle",
@@ -653,7 +653,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
                       },
                       {
                         "$type": "font",
-                        "size": 16,
+                        "textStyle": "body",
                         "weight": "medium",
                       },
                       {
@@ -678,7 +678,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
                       },
                       {
                         "$type": "font",
-                        "size": 14,
+                        "textStyle": "subheadline",
                       },
                       {
                         "$type": "foregroundStyle",
@@ -900,7 +900,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
                         },
                         {
                           "$type": "font",
-                          "size": 16,
+                          "textStyle": "body",
                           "weight": "medium",
                         },
                         {
@@ -926,7 +926,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
                       },
                       {
                         "$type": "font",
-                        "size": 14,
+                        "textStyle": "subheadline",
                       },
                       {
                         "$type": "foregroundStyle",
@@ -1118,7 +1118,7 @@ exports[`Story Snapshots: OnlyTitle should match snapshot 1`] = `
                         },
                         {
                           "$type": "font",
-                          "size": 16,
+                          "textStyle": "body",
                           "weight": "medium",
                         },
                         {
@@ -1342,7 +1342,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
                         },
                         {
                           "$type": "font",
-                          "size": 16,
+                          "textStyle": "body",
                           "weight": "medium",
                         },
                         {
@@ -1368,7 +1368,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
                       },
                       {
                         "$type": "font",
-                        "size": 14,
+                        "textStyle": "subheadline",
                       },
                       {
                         "$type": "foregroundStyle",
@@ -1590,7 +1590,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
                         },
                         {
                           "$type": "font",
-                          "size": 16,
+                          "textStyle": "body",
                           "weight": "medium",
                         },
                         {
@@ -1616,7 +1616,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
                       },
                       {
                         "$type": "font",
-                        "size": 14,
+                        "textStyle": "subheadline",
                       },
                       {
                         "$type": "foregroundStyle",
@@ -1866,7 +1866,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
                         },
                         {
                           "$type": "font",
-                          "size": 16,
+                          "textStyle": "body",
                           "weight": "medium",
                         },
                         {

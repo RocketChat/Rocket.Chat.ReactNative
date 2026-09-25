@@ -189,7 +189,7 @@ export const FormTextInput = ({
 										}
 									: {},
 								inputStyle,
-								showGlass && styles.glassInput
+								...(showGlass ? [styles.glassInput] : [])
 							]}
 							// @ts-ignore ref error
 							ref={inputRef}
