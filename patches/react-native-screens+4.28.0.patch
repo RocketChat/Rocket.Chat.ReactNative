@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfigViewManager.kt b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfigViewManager.kt
-index fa1b773..41866aa 100644
+index fa1b77317f..41866aa0ee 100644
 --- a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfigViewManager.kt
 +++ b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfigViewManager.kt
 @@ -3,6 +3,7 @@ package com.swmansion.rnscreens
@@ -43,7 +43,7 @@ index fa1b773..41866aa 100644
          view: ScreenStackHeaderConfig?,
          value: String?,
 diff --git a/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm b/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
-index 64beb49..14bb54a 100644
+index 64beb499a6..14bb54aa48 100644
 --- a/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
 +++ b/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
 @@ -13,6 +13,15 @@
@@ -79,10 +79,10 @@ index 64beb49..14bb54a 100644
        size:imageSource.size
        scale:imageSource.scale
 diff --git a/node_modules/react-native-screens/ios/RNSBarButtonItem.mm b/node_modules/react-native-screens/ios/RNSBarButtonItem.mm
-index 76a39d4..fc43d6c 100644
+index 76a39d4df4..160a373016 100644
 --- a/node_modules/react-native-screens/ios/RNSBarButtonItem.mm
 +++ b/node_modules/react-native-screens/ios/RNSBarButtonItem.mm
-@@ -126,10 +126,32 @@ static UIMenuOptions RNSMakeUIMenuOptionsFromConfig(NSDictionary *config);
+@@ -126,10 +126,34 @@ static UIMenuOptions RNSMakeUIMenuOptionsFromConfig(NSDictionary *config);
      self.action = @selector(handleBarButtonItemPress:);
      _itemAction = action;
      _buttonId = buttonId;
@@ -102,8 +102,10 @@ index 76a39d4..fc43d6c 100644
 +  if (self.tintColor != nil) {
 +    configuration.baseForegroundColor = self.tintColor;
 +  }
-+  configuration.preferredSymbolConfigurationForImage =
-+      [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleBody scale:UIImageSymbolScaleLarge];
++  configuration.preferredSymbolConfigurationForImage = [[UIImageSymbolConfiguration
++      configurationWithTextStyle:UIFontTextStyleBody
++                           scale:UIImageSymbolScaleLarge]
++      configurationByApplyingConfiguration:[UIImageSymbolConfiguration configurationWithWeight:UIImageSymbolWeightSemibold]];
 +  UIButton *button = [UIButton buttonWithConfiguration:configuration primaryAction:nil];
 +  button.automaticallyUpdatesConfiguration = NO;
 +  [button addTarget:self action:@selector(handleBarButtonItemPress:) forControlEvents:UIControlEventPrimaryActionTriggered];
@@ -116,7 +118,7 @@ index 76a39d4..fc43d6c 100644
                     imageLoader:(RCTImageLoader *)imageLoader
                 completionBlock:(void (^)(UIImage *_Nullable))completionBlock
 diff --git a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
-index 8a41697..c6f3c20 100644
+index 8a41697223..c6f3c20ce4 100644
 --- a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
 +++ b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
 @@ -8,10 +8,14 @@
@@ -151,7 +153,7 @@ index 8a41697..c6f3c20 100644
  @property (nonatomic, retain) NSString *backTitleFontFamily;
  @property (nonatomic, retain) NSNumber *backTitleFontSize;
 diff --git a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
-index a54cb63..592a6c2 100644
+index a54cb632e7..592a6c2fbd 100644
 --- a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
 +++ b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
 @@ -1,4 +1,5 @@
@@ -860,7 +862,7 @@ index a54cb63..592a6c2 100644
    _color = RCTUIColorFromSharedColor(newScreenProps.color);
    _backgroundColor = RCTUIColorFromSharedColor(newScreenProps.backgroundColor);
 diff --git a/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts b/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts
-index da28c51..0803e9e 100644
+index da28c51c6f..0803e9e879 100644
 --- a/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts
 +++ b/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts
 @@ -4,6 +4,7 @@ import { codegenNativeComponent } from 'react-native';
@@ -897,7 +899,7 @@ index da28c51..0803e9e 100644
    backButtonDisplayMode?: CT.WithDefault<BackButtonDisplayMode, 'default'>;
    hideBackButton?: boolean | undefined;
 diff --git a/node_modules/react-native-screens/src/types.tsx b/node_modules/react-native-screens/src/types.tsx
-index 8594b73..5afaf41 100644
+index 8594b733fa..5afaf41504 100644
 --- a/node_modules/react-native-screens/src/types.tsx
 +++ b/node_modules/react-native-screens/src/types.tsx
 @@ -827,10 +827,65 @@ export interface ScreenStackHeaderConfigProps extends ViewProps {
@@ -967,7 +969,7 @@ index 8594b73..5afaf41 100644
     * Customize font family to be used for the title.
     */
 diff --git a/node_modules/react-native-screens/ios/RNSScreenStack.mm b/node_modules/react-native-screens/ios/RNSScreenStack.mm
-index c233036..5d3e28d 100644
+index c233036b56..5d3e28d3d6 100644
 --- a/node_modules/react-native-screens/ios/RNSScreenStack.mm
 +++ b/node_modules/react-native-screens/ios/RNSScreenStack.mm
 @@ -38,6 +38,58 @@ namespace react = facebook::react;
