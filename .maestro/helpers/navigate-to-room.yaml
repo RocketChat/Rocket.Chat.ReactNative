@@ -11,7 +11,7 @@ tags:
 - waitForAnimationToEnd
 - tapOn:
     id: 'rooms-list-view-item-${ROOM}'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${ROOM}'
-    timeout: 60000
+- runFlow:
+    file: 'assert-room-title.yaml'
+    env:
+      ROOM: ${ROOM}

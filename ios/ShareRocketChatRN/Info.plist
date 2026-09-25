@@ -67,6 +67,8 @@
 		<string>custom.ttf</string>
 		<string>Inter.ttf</string>
 	</array>
+	<key>UIDesignRequiresCompatibility</key>
+	<false/>
 	<key>bugsnag</key>
 	<dict>
 		<key>apiKey</key>

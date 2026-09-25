@@ -7,6 +7,7 @@ import { setUser } from '~/actions/login';
 import { addSettings } from '~/actions/settings';
 import { selectServerSuccess } from '~/actions/server';
 import { initStore } from '~/lib/store/auxStore';
+import { type INativeListPicker } from '~/containers/List/NativeListPicker';
 import StatusView from './index';
 
 const mockNavigationSetOptions = jest.fn();
@@ -52,6 +53,20 @@ const mockHideActionSheet = jest.fn();
 jest.mock('~/containers/ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet, hideActionSheet: mockHideActionSheet })
 }));
+
+const mockPicker = jest.fn();
+jest.mock('~/containers/List/NativeListPicker', () => {
+	const { View } = require('react-native');
+	return {
+		__esModule: true,
+		default: (props: INativeListPicker) => {
+			mockPicker(props);
+			return <View testID={props.testID} />;
+		}
+	};
+});
+
+const latestPicker = (): INativeListPicker => mockPicker.mock.calls[mockPicker.mock.calls.length - 1][0];
 
 const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
@@ -267,12 +282,7 @@ describe('StatusView', () => {
 
 				renderStatusView();
 
-				fireEvent.press(screen.getByTestId('status-view-clear-after'));
-
-				expect(mockShowActionSheet).toHaveBeenCalled();
-				const { children } = mockShowActionSheet.mock.calls[0][0] as { children: any };
-				const { onConfirm } = children.props;
-				act(() => onConfirm('30', null));
+				act(() => latestPicker().onSelectionChange('30'));
 
 				fireEvent.press(screen.getByTestId('status-view-submit'));
 
@@ -280,6 +290,19 @@ describe('StatusView', () => {
 			} finally {
 				jest.useRealTimers();
 			}
+		});
+
+		it('should open the date picker sheet when custom is selected', () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+
+			renderStatusView();
+
+			act(() => latestPicker().onSelectionChange('custom'));
+
+			expect(mockShowActionSheet).toHaveBeenCalledTimes(1);
+			expect(latestPicker().selection).toBe('');
 		});
 	});
 });

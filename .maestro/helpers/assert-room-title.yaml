@@ -1,0 +1,25 @@
+appId: ${APP_ID}
+name: Assert room title
+tags:
+  - 'util'
+
+---
+# On iOS 26+ the room title is the native stack's headerTitle text with no accessibilityIdentifier,
+# so it is matched by its visible text there. Android keeps the JS-rendered title, matched by testID.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'room-view-title-${ROOM}'
+          timeout: 60000
+
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: '${ROOM}'
+          timeout: 60000

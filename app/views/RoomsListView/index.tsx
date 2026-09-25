@@ -30,6 +30,7 @@ import { useSubscriptions } from './hooks/useSubscriptions';
 import styles from './styles';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
+const BOTTOM_SEARCH_TOOLBAR_HEIGHT = isIOS ? 44 : 0;
 
 const RoomsListView = memo(function RoomsListView() {
 	useHeader();
@@ -64,7 +65,7 @@ const RoomsListView = memo(function RoomsListView() {
 	}, [searchEnabled]);
 
 	const onPressItem = (item = {} as IRoomItem) => {
-		if (!navigation.isFocused()) {
+		if (!isMasterDetail && !navigation.isFocused()) {
 			return;
 		}
 		if (item.rid === subscribedRoom) {
@@ -98,7 +99,7 @@ const RoomsListView = memo(function RoomsListView() {
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}
 				getIsRead={isRead}
-				isFocused={subscribedRoom === item.rid}
+				isFocused={isMasterDetail && subscribedRoom === item.rid}
 				swipeEnabled={swipeEnabled}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
@@ -131,11 +132,12 @@ const RoomsListView = memo(function RoomsListView() {
 			extraData={searchEnabled ? searchResults : subscriptions}
 			keyExtractor={item => `${item.rid}-${searchEnabled}`}
 			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
-			contentContainerStyle={{ paddingBottom: bottom }}
+			contentContainerStyle={{ paddingBottom: bottom + BOTTOM_SEARCH_TOOLBAR_HEIGHT }}
 			renderItem={renderItem}
 			ListHeaderComponent={ListHeader}
 			ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}
 			getItemLayout={getItemLayout}
+			contentInsetAdjustmentBehavior={isIOS ? 'automatic' : undefined}
 			keyboardShouldPersistTaps='always'
 			initialNumToRender={INITIAL_NUM_TO_RENDER}
 			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}

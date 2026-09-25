@@ -1,0 +1,186 @@
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { type RouteProp } from '@react-navigation/native';
+import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
+import { Component } from 'react';
+
+import { type ChatsStackParamList } from '~/stacks/types';
+import log from '~/lib/methods/helpers/log';
+import I18n from '~/i18n';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { themes } from '~/lib/constants/colors';
+import { type TSupportedThemes, withTheme } from '~/theme';
+import SafeAreaView from '~/containers/SafeAreaView';
+import SearchBox from '~/containers/SearchBox';
+import sharedStyles from '../Styles';
+import Item from './Item';
+import { isIOS } from '~/lib/methods/helpers';
+import { type TDataSelect } from '~/definitions/IDataSelect';
+import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
+
+const styles = StyleSheet.create({
+	buttonText: {
+		fontSize: 16,
+		margin: 16,
+		...sharedStyles.textRegular
+	}
+});
+
+interface ISelectListViewState {
+	data?: TDataSelect[];
+	dataFiltered?: TDataSelect[];
+	isSearching: boolean;
+	selected: string[];
+}
+
+interface ISelectListViewProps {
+	navigation: NativeStackNavigationProp<ChatsStackParamList, 'SelectListView'>;
+	route: RouteProp<ChatsStackParamList, 'SelectListView'>;
+	theme: TSupportedThemes;
+	isMasterDetail: boolean;
+	insets: EdgeInsets;
+}
+
+class SelectListView extends Component<ISelectListViewProps, ISelectListViewState> {
+	private title: string;
+
+	private infoText: string;
+
+	private nextAction: (selected: string[]) => void;
+
+	private showAlert: () => void;
+
+	private isSearch: boolean;
+
+	private onSearch?: (text: string) => Promise<TDataSelect[] | any>;
+
+	private isRadio?: boolean;
+
+	constructor(props: ISelectListViewProps) {
+		super(props);
+		const data = props.route?.params?.data;
+		this.title = props.route?.params?.title;
+		this.infoText = props.route?.params?.infoText || '';
+		this.nextAction = props.route?.params?.nextAction;
+		this.showAlert = props.route?.params?.showAlert || (() => {});
+		this.isSearch = props.route?.params?.isSearch || false;
+		this.onSearch = props.route?.params?.onSearch;
+		this.isRadio = props.route?.params?.isRadio;
+		this.state = {
+			data,
+			dataFiltered: [],
+			isSearching: false,
+			selected: []
+		};
+		this.setHeader();
+	}
+
+	setHeader = () => {
+		const { navigation, isMasterDetail } = this.props;
+		const { selected } = this.state;
+
+		const options: NativeStackNavigationOptions = {
+			headerTitle: I18n.t(this.title)
+		};
+
+		if (isMasterDetail) {
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+		}
+
+		options.headerRight = () => (
+			<HeaderButton.Container>
+				<HeaderButton.Item title={I18n.t('Next')} onPress={() => this.nextAction(selected)} testID='select-list-view-submit' />
+			</HeaderButton.Container>
+		);
+
+		navigation.setOptions(options);
+	};
+
+	renderInfoText = () => {
+		const { theme } = this.props;
+		return (
+			<View style={{ backgroundColor: themes[theme].surfaceRoom }}>
+				<Text style={[styles.buttonText, { color: themes[theme].fontDefault }]}>{I18n.t(this.infoText)}</Text>
+			</View>
+		);
+	};
+
+	renderSearch = () => <SearchBox onChangeText={(text: string) => this.search(text)} testID='select-list-view-search' />;
+
+	search = async (text: string) => {
+		try {
+			this.setState({ isSearching: true });
+			const result = await this.onSearch?.(text);
+			this.setState({ dataFiltered: result });
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	isChecked = (rid: string) => {
+		const { selected } = this.state;
+		return selected.includes(rid);
+	};
+
+	toggleItem = (rid: string) => {
+		const { selected } = this.state;
+
+		if (this.isRadio) {
+			if (!this.isChecked(rid)) {
+				this.setState({ selected: [rid] }, () => this.setHeader());
+			}
+		} else if (!this.isChecked(rid)) {
+			this.setState({ selected: [...selected, rid] }, () => this.setHeader());
+		} else {
+			const filterSelected = selected.filter(el => el !== rid);
+			this.setState({ selected: filterSelected }, () => this.setHeader());
+		}
+	};
+
+	renderItem = ({ item, index }: { item: TDataSelect; index: number }) => {
+		const { isSearching, data, dataFiltered } = this.state;
+		const rowCount = (isSearching ? dataFiltered : data)?.length ?? 0;
+		const channelIcon = item.t === 'p' ? 'channel-private' : 'channel-public';
+		const teamIcon = item.t === 'p' ? 'teams-private' : 'teams';
+		const isChecked = this.isChecked(item.rid);
+		const checkedLabel = isChecked ? I18n.t('Checked') : I18n.t('Unchecked');
+		const radioLabel = isChecked ? I18n.t('Selected') : I18n.t('Unselected');
+
+		return (
+			<Item
+				name={item.name || ''}
+				icon={item.teamMain ? teamIcon : channelIcon}
+				alert={item.alert}
+				isRadio={this.isRadio}
+				isChecked={isChecked}
+				accessibilityState={this.isRadio ? radioLabel : checkedLabel}
+				onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid))}
+				isFirst={index === 0}
+				isLast={index === rowCount - 1}
+			/>
+		);
+	};
+
+	render() {
+		const { data, isSearching, dataFiltered } = this.state;
+		const { theme, insets } = this.props;
+		return (
+			<SafeAreaView testID='select-list-view'>
+				<FlatList
+					data={!isSearching ? data : dataFiltered}
+					extraData={this.state}
+					keyExtractor={item => item.rid}
+					renderItem={this.renderItem}
+					ListHeaderComponent={this.isSearch ? this.renderSearch : this.renderInfoText}
+					contentContainerStyle={{
+						backgroundColor: isIOS ? themes[theme].surfaceHover : themes[theme].surfaceRoom,
+						paddingBottom: insets.bottom
+					}}
+					keyboardShouldPersistTaps='always'
+				/>
+			</SafeAreaView>
+		);
+	}
+}
+
+export default withTheme(withMasterDetail(withSafeAreaInsets(SelectListView)));

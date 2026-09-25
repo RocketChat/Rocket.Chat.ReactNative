@@ -1,11 +1,13 @@
 import { useLayoutEffect } from 'react';
 import { PixelRatio, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { type NativeStackHeaderItem } from '@react-navigation/native-stack';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from 'zustand';
 
 import RoomHeader from '~/containers/RoomHeader';
-import { getRoomTitle, isGroupChat } from '~/lib/methods/helpers';
+import { getRoomTitle, hasNativeHeaderBar, isGroupChat } from '~/lib/methods/helpers';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { type IOmnichannelSource, type ISubscription, type IVisitor } from '~/definitions';
 import LeftButtons from '../components/LeftButtons';
@@ -14,6 +16,9 @@ import { type IRoomViewProps } from '../definitions';
 import { type RoomStore } from '../definitions';
 import { fromSubscription } from '../stores/RoomStoreContext';
 import { useGoRoomActionsView } from './useGoRoomActionsView';
+import { useNativeRoomHeader } from './useNativeRoomHeader';
+import { useNativeBackButton } from './useNativeBackButton';
+import { useRoomHeaderRightItems } from './useRoomHeaderRightItems';
 
 interface IUseHeaderParams {
 	rid?: string;
@@ -23,7 +28,7 @@ interface IUseHeaderParams {
 	roomStore: RoomStore;
 }
 
-interface IHeaderFields {
+export interface IHeaderFields {
 	prid?: string;
 	title: string;
 	parentTitle: string;
@@ -66,21 +71,44 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 	);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const goRoomActionsView = useGoRoomActionsView(roomStore);
+	useNativeRoomHeader(!!rid && hasNativeHeaderBar, headerFields, tmid, roomUserId, goRoomActionsView);
+	useNativeBackButton(!!rid && hasNativeHeaderBar, rid);
+	const nativeRightItems = useRoomHeaderRightItems(hasNativeHeaderBar ? rid : undefined, tmid, roomStore);
+	const isMasterDetail = useMasterDetail();
 
 	useLayoutEffect(() => {
+		if (!rid && hasNativeHeaderBar) {
+			return;
+		}
+
 		if (!rid) {
 			const height = 37 * PixelRatio.getFontScale();
 			navigation.setOptions({ headerLeft: () => <View style={{ height }} /> });
 			return;
 		}
+
+		if (hasNativeHeaderBar) {
+			const avatarItem: NativeStackHeaderItem = {
+				type: 'custom',
+				element: <LeftButtons rid={rid} tmid={tmid} roomStore={roomStore} />,
+				hidesSharedBackground: true
+			};
+			navigation.setOptions(
+				isMasterDetail && !tmid
+					? { unstable_headerLeftItems: () => [avatarItem], unstable_headerRightItems: () => nativeRightItems }
+					: { unstable_headerRightItems: () => nativeRightItems }
+			);
+			return;
+		}
+
 		navigation.setOptions({
 			headerLeft: () => <LeftButtons rid={rid} tmid={tmid} roomStore={roomStore} />,
 			headerRight: () => <RightButtons rid={rid} tmid={tmid} roomStore={roomStore} />
 		});
-	}, [rid, tmid, navigation, roomStore]);
+	}, [rid, tmid, navigation, roomStore, nativeRightItems, isMasterDetail]);
 
 	useLayoutEffect(() => {
-		if (!rid) {
+		if (!rid || hasNativeHeaderBar) {
 			return;
 		}
 

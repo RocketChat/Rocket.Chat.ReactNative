@@ -141,8 +141,7 @@ tags:
     timeout: 60000
 
 # should reset form
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - tapOn:
     id: room-info-view-edit-button
 - extendedWaitUntil:
@@ -278,8 +277,7 @@ tags:
     id: 'room-info-edit-view-react-when-ro'
 
 # should change room name
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - tapOn:
     id: room-info-view-edit-button
 - evalScript: ${output.newroomname = output.room.name + 'new'}
@@ -305,8 +303,7 @@ tags:
           visible:
             text: '.*Settings succesfully changed.*'
           timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-info-view'
@@ -367,8 +364,7 @@ tags:
           visible:
             text: '.*Settings succesfully changed.*'
           timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-info-view'

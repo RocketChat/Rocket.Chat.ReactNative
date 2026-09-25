@@ -5,7 +5,8 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { type Observable, type Subscription } from 'rxjs';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
-import { Component } from 'react';
+import { type SearchBarCommands } from 'react-native-screens';
+import { Component, createRef } from 'react';
 
 import { showActionSheetRef } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
@@ -38,7 +39,7 @@ import {
 	type TSubscriptionModel,
 	type TThreadModel
 } from '~/definitions';
-import { getUidDirectMessage, debounce, isIOS } from '~/lib/methods/helpers';
+import { getUidDirectMessage, debounce, hasNativeHeaderBar, isIOS } from '~/lib/methods/helpers';
 import { getSyncThreadsList, getThreadsList } from '~/lib/services/restApi';
 import { toggleFollowThread as toggleFollowThreadService } from '~/lib/methods/toggleFollowThread';
 import UserPreferences from '~/lib/methods/userPreferences';
@@ -80,6 +81,8 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 
 	private messagesObservable?: Observable<TThreadModel[]>;
 
+	private searchBarRef = createRef<SearchBarCommands>();
+
 	constructor(props: IThreadMessagesViewProps) {
 		super(props);
 		this.mounted = false;
@@ -118,6 +121,39 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 	getHeader = (): NativeStackNavigationOptions => {
 		const { isSearching, currentFilter } = this.state;
 		const { navigation, isMasterDetail, theme } = this.props;
+
+		if (hasNativeHeaderBar) {
+			const options: NativeStackNavigationOptions = {
+				headerLargeTitle: true,
+				headerTitle: I18n.t('Threads'),
+				headerSearchBarOptions: {
+					ref: this.searchBarRef,
+					placement: 'stacked',
+					placeholder: I18n.t('Search'),
+					onFocus: this.onSearchPress,
+					onChangeText: (event: { nativeEvent: { text: string } }) => this.onSearchChangeText(event.nativeEvent.text),
+					onCancelButtonPress: this.onCancelSearchPress
+				},
+				headerRight: () => (
+					<HeaderButton.Container>
+						<HeaderButton.Item
+							accessibilityLabel={I18n.t('Filter')}
+							iconName='filter'
+							onPress={this.showFilters}
+							badge={() =>
+								currentFilter !== Filter.All ? (
+									<HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} />
+								) : null
+							}
+						/>
+					</HeaderButton.Container>
+				)
+			};
+			if (isMasterDetail) {
+				options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+			}
+			return options;
+		}
 
 		if (isSearching) {
 			return {
@@ -380,14 +416,21 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 	};
 
 	onSearchPress = () => {
-		this.setState({ isSearching: true }, () => this.setHeader());
+		this.setState({ isSearching: true }, () => {
+			if (!hasNativeHeaderBar) {
+				this.setHeader();
+			}
+		});
 	};
 
 	onCancelSearchPress = () => {
 		this.setState({ isSearching: false, searchText: '' }, () => {
 			const { subscription } = this.state;
-			this.setHeader();
+			if (!hasNativeHeaderBar) {
+				this.setHeader();
+			}
 			this.subscribeMessages(subscription);
+			this.searchBarRef.current?.clearText();
 		});
 	};
 

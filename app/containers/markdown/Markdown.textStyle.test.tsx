@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { fireEvent, render } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
+import { EnrichedMarkdownText } from 'react-native-enriched-markdown';
 
 import Markdown from '.';
 
@@ -12,11 +12,11 @@ jest.mock('~/lib/methods/userPreferences', () => ({
 }));
 
 describe('Markdown textStyle integration', () => {
-	it('propagates textStyle to link, mention, hashtag and plain text while preserving link interaction', () => {
+	it('serializes mentions, hashtags and links into scheme-encoded markdown and propagates textStyle', () => {
 		const onLinkPress = jest.fn();
 		const textStyle = { fontSize: 17 };
 
-		const { getByLabelText, getByText } = render(
+		const { UNSAFE_getByType } = render(
 			<Markdown
 				msg='hello [my link](https://rocket.chat) @rocket.cat #general'
 				textStyle={textStyle}
@@ -27,17 +27,14 @@ describe('Markdown textStyle integration', () => {
 			/>
 		);
 
-		const plainTextNode = getByLabelText('hello ');
-		const linkNode = getByText('my link');
-		const mentionNode = getByText('@rocket.cat');
-		const hashtagNode = getByText('#general');
+		const markdownText = UNSAFE_getByType(EnrichedMarkdownText);
 
-		expect(StyleSheet.flatten(plainTextNode.props.style)).toEqual(expect.objectContaining({ fontSize: 17 }));
-		expect(StyleSheet.flatten(linkNode.props.style)).toEqual(expect.objectContaining({ fontSize: 17 }));
-		expect(StyleSheet.flatten(mentionNode.props.style)).toEqual(expect.objectContaining({ fontSize: 17 }));
-		expect(StyleSheet.flatten(hashtagNode.props.style)).toEqual(expect.objectContaining({ fontSize: 17 }));
+		expect(markdownText.props.markdown).toContain('[my link](<https://rocket.chat>)');
+		expect(markdownText.props.markdown).toContain('[**@rocket\\.cat**](<user://u1>)');
+		expect(markdownText.props.markdown).toContain('[**\\#general**](<channel://r1>)');
+		expect(markdownText.props.containerStyle).toEqual(textStyle);
 
-		fireEvent.press(linkNode);
+		markdownText.props.onLinkPress({ url: 'https://rocket.chat' });
 
 		expect(onLinkPress).toHaveBeenCalledWith('https://rocket.chat');
 	});

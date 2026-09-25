@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useContext } from 'react';
 import { type DrawerNavigationProp } from '@react-navigation/drawer';
 import { Text, TouchableWithoutFeedback, View } from 'react-native';
 import { shallowEqual } from 'react-redux';
@@ -11,10 +11,12 @@ import { type DrawerParamList } from '~/stacks/types';
 import * as List from '~/containers/List';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { NativeListContext } from '~/containers/List/NativeListContext';
 
 const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
 	const { colors } = useTheme();
 	const isMasterDetail = useMasterDetail();
+	const isInNativeList = useContext(NativeListContext);
 	const { username, name } = useAppSelector(getUserSelector, shallowEqual);
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const server = useAppSelector(state => state.server.server);
@@ -31,7 +33,7 @@ const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamL
 		<>
 			<List.Separator />
 			<TouchableWithoutFeedback onPress={onPressUser} testID='sidebar-close-drawer'>
-				<View style={[styles.header, { backgroundColor: colors.surfaceRoom }]}>
+				<View style={[styles.header, { backgroundColor: isInNativeList ? 'transparent' : colors.surfaceRoom }]}>
 					<Avatar text={username} style={styles.avatar} size={30} />
 					<View style={styles.headerTextContainer}>
 						<View style={styles.headerUsername}>

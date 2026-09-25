@@ -3,7 +3,6 @@ import { useStore } from 'zustand';
 import { useNavigation } from '@react-navigation/native';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import i18n from '~/i18n';
 import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
@@ -17,6 +16,7 @@ import { useCanPlaceLivechatOnHold } from '~/views/RoomView/hooks/useCanPlaceLiv
 import { navigateToScreen, type TRoomStackNavigation } from '~/views/RoomView/services/navigateToScreen';
 import { closeLivechat } from '~/views/RoomView/services/closeLivechat';
 import { placeLivechatOnHold } from '~/views/RoomView/services/placeLivechatOnHold';
+import { OmnichannelRightButtonsLegacy } from './OmnichannelRightButtonsLegacy';
 
 interface IOmnichannelRightButtonsProps {
 	rid: string;
@@ -91,9 +91,5 @@ export const OmnichannelRightButtons = ({ rid, roomStore }: IOmnichannelRightBut
 		showActionSheet({ options });
 	};
 
-	return (
-		<HeaderButton.Container>
-			<HeaderButton.Item iconName='kebab' onPress={showMoreActions} testID='room-view-header-omnichannel-kebab' />
-		</HeaderButton.Container>
-	);
+	return <OmnichannelRightButtonsLegacy onShowMoreActions={showMoreActions} />;
 };

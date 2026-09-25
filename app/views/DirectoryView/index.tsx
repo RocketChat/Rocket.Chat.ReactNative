@@ -27,6 +27,8 @@ import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useDirectorySearch } from './hooks/useDirectorySearch';
+import RowSeparator from '~/containers/NativeListRow/Separator';
+import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
 
 interface IDirectoryViewProps {
 	navigation: CompositeNavigationProp<
@@ -37,6 +39,7 @@ interface IDirectoryViewProps {
 
 const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 	const { colors } = useTheme();
+	const listBackgroundColor = useListBackgroundColor(colors.surfaceRoom);
 	const { bottom } = useSafeAreaInsets();
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 
@@ -154,7 +157,9 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 			onPress: () => onPressItem(item),
 			testID: `directory-view-item-${item.name}`,
 			style,
-			rid: item._id
+			rid: item._id,
+			isFirst: index === 0,
+			isLast: index === data.length - 1
 		};
 
 		if (type === 'users') {
@@ -193,7 +198,7 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 	};
 
 	return (
-		<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='directory-view'>
+		<SafeAreaView style={{ backgroundColor: listBackgroundColor }} testID='directory-view'>
 			<SearchBox onChangeText={onSearchChangeText} onSubmitEditing={search} testID='directory-view-search' />
 			<List.Separator />
 
@@ -204,7 +209,7 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 				extraData={type}
 				keyExtractor={item => item._id}
 				renderItem={renderItem}
-				ItemSeparatorComponent={List.Separator}
+				ItemSeparatorComponent={RowSeparator}
 				keyboardShouldPersistTaps='always'
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				onEndReached={() => loadMore()}

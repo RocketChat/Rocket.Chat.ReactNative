@@ -1,10 +1,8 @@
 import { reloadAppAsync } from 'expo';
-import { useLayoutEffect } from 'react';
-import { FlatList } from 'react-native';
+import { Fragment, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ListRadio from '~/containers/List/ListRadio';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -30,10 +28,6 @@ const LanguageView = () => {
 
 	const dispatch = useDispatch();
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'LanguageView'>>();
-	const { bottom } = useSafeAreaInsets();
-
-	const paddingBottom = Math.max(16, bottom);
-
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Change_Language')
@@ -94,24 +88,24 @@ const LanguageView = () => {
 
 	return (
 		<SafeAreaView testID='language-view'>
-			<FlatList
-				data={LANGUAGES}
-				keyExtractor={item => item.value}
-				ListHeaderComponent={List.Separator}
-				ListFooterComponent={List.Separator}
-				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom }]}
-				renderItem={({ item }) => (
-					<ListRadio
-						testID={`language-view-${item.value}`}
-						title={item.label}
-						value={item.value}
-						translateTitle={false}
-						isSelected={item.value === (language || languageDefault)}
-						onPress={() => submit(item.value)}
-					/>
-				)}
-				ItemSeparatorComponent={List.Separator}
-			/>
+			<List.Container>
+				<List.Section>
+					<List.Separator />
+					{LANGUAGES.map(item => (
+						<Fragment key={item.value}>
+							<ListRadio
+								testID={`language-view-${item.value}`}
+								title={item.label}
+								value={item.value}
+								translateTitle={false}
+								isSelected={item.value === language}
+								onPress={() => submit(item.value)}
+							/>
+							<List.Separator />
+						</Fragment>
+					))}
+				</List.Section>
+			</List.Container>
 		</SafeAreaView>
 	);
 };

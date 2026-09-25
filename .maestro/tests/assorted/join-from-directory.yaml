@@ -22,14 +22,13 @@ tags:
       PASSWORD: ${output.user.password}
 
 # should tap directory
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-directory'
-    timeout: 60000
 - waitForAnimationToEnd:
     timeout: 10000
-- tapOn:
-    id: 'rooms-list-view-directory'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-directory'
+      IOS_LABEL: 'Directory'
 - extendedWaitUntil:
     visible:
       id: 'directory-view'
@@ -53,38 +52,46 @@ tags:
     visible:
       id: 'room-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-join-from-directory'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: 'join-from-directory'
 
 # should navigate to thread messages view and load messages
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-header-threads'
-    timeout: 60000
-- tapOn:
-    id: 'room-view-header-threads'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'room-view-header-threads'
+      IOS_LABEL: 'Threads'
 - extendedWaitUntil:
     visible:
       id: 'thread-messages-view-${output.thread}'
     timeout: 60000
-- tapOn:
-    id: 'custom-header-back'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-header-threads'
-    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'room-view-header-threads'
+          timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: 'Threads'
+          timeout: 60000
 
 # should search user and navigate
-- tapOn:
-    id: 'header-back'
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-directory'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-view-directory'
+- runFlow: '../../helpers/go-back.yaml'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-directory'
+      IOS_LABEL: 'Directory'
 - extendedWaitUntil:
     visible:
       id: 'directory-view'
@@ -119,20 +126,18 @@ tags:
     visible:
       id: 'room-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.otherUser.username}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.otherUser.username}
 
 # should search team and navigate
-- tapOn:
-    id: 'header-back'
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-directory'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-view-directory'
+- runFlow: '../../helpers/go-back.yaml'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-directory'
+      IOS_LABEL: 'Directory'
 - extendedWaitUntil:
     visible:
       id: 'directory-view'
@@ -162,7 +167,7 @@ tags:
     visible:
       id: 'room-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.team}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.team}

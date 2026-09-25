@@ -11,6 +11,12 @@ import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 
 const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
 
+let mockHasNativeHeaderBar = false;
+jest.mock('~/lib/methods/helpers/deviceInfo', () => {
+	const actual = jest.requireActual('~/lib/methods/helpers/deviceInfo');
+	return Object.defineProperty({ ...actual }, 'hasNativeHeaderBar', { get: () => mockHasNativeHeaderBar });
+});
+
 jest.mock('~/lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
 }));
@@ -92,6 +98,19 @@ describe('MediaCallHeader', () => {
 		expect(queryByTestId('media-call-header-collapse')).toBeNull();
 		expect(queryByTestId('media-call-header-content')).toBeNull();
 		expect(queryByTestId('media-call-header-end')).toBeNull();
+	});
+
+	it('should render nothing on the native header bar when there is no call', () => {
+		mockHasNativeHeaderBar = true;
+		useCallStore.setState({ call: null });
+		const { toJSON } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		expect(toJSON()).toBeNull();
+		mockHasNativeHeaderBar = false;
 	});
 
 	it('should render empty placeholder when native accepted but call not bound yet (before answerCall completes)', () => {

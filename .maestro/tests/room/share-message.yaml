@@ -89,10 +89,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'forward-message-view-send'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}
 
 # should go to otherUser DM and verify if exist both messages
 - runFlow: '../../helpers/go-back.yaml'
