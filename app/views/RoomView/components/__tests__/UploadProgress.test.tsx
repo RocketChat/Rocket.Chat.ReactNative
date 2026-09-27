@@ -1,7 +1,8 @@
-import { render, screen, waitFor } from '@testing-library/react-native';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { BehaviorSubject } from 'rxjs';
 
 import UploadProgress from '../UploadProgress';
+import { sendFileMessage } from '~/lib/methods/sendFileMessage';
 import { isUploadActive } from '~/lib/methods/sendFileMessage/utils';
 
 const mockUploads = new BehaviorSubject<any[]>([]);
@@ -26,11 +27,13 @@ jest.mock('~/lib/methods/sendFileMessage/utils', () => ({
 
 const upload = (overrides: Record<string, unknown>) => {
 	const record: any = {
+		id: 'upload-1',
 		path: '/tmp/pic.jpg',
 		name: 'pic.jpg',
 		progress: 0,
 		error: false,
 		update: jest.fn(async (cb: (u: any) => void) => cb(record)),
+		asPlain: jest.fn(() => ({ path: '/tmp/pic.jpg', name: 'pic.jpg' })),
 		destroyPermanently: jest.fn(),
 		...overrides
 	};
@@ -66,6 +69,16 @@ describe('UploadProgress', () => {
 
 		expect(screen.getByText('Storage quota exceeded')).toBeOnTheScreen();
 		expect(screen.getByText('Try_again')).toBeOnTheScreen();
+	});
+
+	it('ignores a second tap on Try again while the retry is starting', async () => {
+		show([upload({ error: true, errorStatus: 503 })]);
+		const retry = screen.getByRole('button', { name: 'Try_again' });
+
+		fireEvent.press(retry);
+		fireEvent.press(retry);
+
+		await waitFor(() => expect(sendFileMessage).toHaveBeenCalledTimes(1));
 	});
 
 	it('falls back to a plain retry when nothing is known about the failure', () => {

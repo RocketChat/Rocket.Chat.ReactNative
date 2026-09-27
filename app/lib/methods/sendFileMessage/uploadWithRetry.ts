@@ -9,6 +9,8 @@ const MAX_RETRY_DELAY = 30000;
 
 const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms));
 
+// Auto-retry is intentionally narrower than isRetryableUploadError (manual "Try again" eligibility) - only a 429 is worth
+// retrying blind, the other retryable statuses need the user to decide (e.g. a network error might need a different file/network).
 export const getUploadRetryDelay = (error: unknown, attempt: number): number | undefined => {
 	if (!(error instanceof UploadHttpError) || error.status !== 429 || attempt >= MAX_UPLOAD_ATTEMPTS) {
 		return undefined;
@@ -18,13 +20,14 @@ export const getUploadRetryDelay = (error: unknown, attempt: number): number | u
 	return delay <= MAX_RETRY_DELAY ? delay : undefined;
 };
 
-// A queue entry that is missing means this attempt was cancelled; one that points elsewhere means a
-// newer attempt took over the same path. Only the latter should be hidden behind UploadSupersededError -
-// callers still need to see a real cancellation to short-circuit their own cleanup.
 const isSupersededByNewerAttempt = (uploadPath: string, upload: IFileUpload) => {
 	const current = uploadQueue[uploadPath];
 	return current !== undefined && current !== upload;
 };
+
+// Unlike isSupersededByNewerAttempt, this also catches cancellation (queue entry deleted, not replaced) -
+// a successful response must never be treated as success once this attempt is no longer the owner.
+const isNoLongerCurrentAttempt = (uploadPath: string, upload: IFileUpload) => uploadQueue[uploadPath] !== upload;
 
 export const uploadWithRetry = async (uploadPath: string, createUpload: () => IFileUpload): Promise<TRoomsMediaResponse> => {
 	for (let attempt = 1; ; attempt += 1) {
@@ -32,7 +35,7 @@ export const uploadWithRetry = async (uploadPath: string, createUpload: () => IF
 		uploadQueue[uploadPath] = upload;
 		try {
 			const response = await upload.send();
-			if (isSupersededByNewerAttempt(uploadPath, upload)) {
+			if (isNoLongerCurrentAttempt(uploadPath, upload)) {
 				throw new UploadSupersededError();
 			}
 			return response;

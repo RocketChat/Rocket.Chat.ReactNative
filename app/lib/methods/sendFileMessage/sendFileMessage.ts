@@ -10,18 +10,18 @@ import {
 	finalizeFailedUpload
 } from './utils';
 import { uploadWithRetry } from './uploadWithRetry';
-import { type IFormData } from '../helpers/fileUpload/definitions';
+import { type IFileUpload, type IFormData } from '../helpers/fileUpload/definitions';
 
 export async function sendFileMessage(
 	rid: string,
 	fileInfo: TSendFileMessageFileInfo,
 	tmid: string | undefined,
 	server: string,
-	user: Partial<Pick<IUser, 'id' | 'token'>>,
-	isForceTryAgain?: boolean
+	user: Partial<Pick<IUser, 'id' | 'token'>>
 ): Promise<void> {
-	const uploadRecordPath = fileInfo.path;
+	const originalFilePath = fileInfo.path;
 	let uploadPath: string | null = '';
+	let upload: IFileUpload | null = null;
 	let uploadRecord: TUploadModel | null;
 	try {
 		const { id, token } = user;
@@ -30,7 +30,7 @@ export async function sendFileMessage(
 
 		const db = database.active;
 
-		[uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid, isForceTryAgain });
+		[uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid });
 		if (!uploadPath || !uploadRecord) {
 			return;
 		}
@@ -73,14 +73,14 @@ export async function sendFileMessage(
 			'X-User-Id': id
 		};
 
-		await uploadWithRetry(
-			uploadPath,
-			() => new FileUpload(uploadUrl, headers, formData, createUploadProgressCallback(db, uploadRecord))
-		);
+		await uploadWithRetry(uploadPath, () => {
+			upload = new FileUpload(uploadUrl, headers, formData, createUploadProgressCallback(db, uploadRecord));
+			return upload;
+		});
 		await db.write(async () => {
 			await uploadRecord?.destroyPermanently();
 		});
 	} catch (e) {
-		await finalizeFailedUpload(uploadPath ?? '', uploadRecordPath, rid, e);
+		await finalizeFailedUpload({ queueKey: uploadPath ?? '', filePath: originalFilePath, rid, error: e, upload });
 	}
 }

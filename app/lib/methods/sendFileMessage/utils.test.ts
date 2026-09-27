@@ -104,16 +104,15 @@ describe('createUploadRecord', () => {
 		expect(record).toBe(stale);
 	});
 
-	it('reuses the existing record when force-retry', async () => {
+	it('blocks a retry too when the record is genuinely still active, not just stale', async () => {
 		const existing: any = { id: uploadPath, update: jest.fn((cb: (u: any) => void) => cb(existing)) };
 		mockFind.mockResolvedValue(existing);
 		uploadQueue[uploadPath] = {} as any;
 
-		const [path, record] = await createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined, isForceTryAgain: true });
+		const result = await createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined });
 
-		expect(Alert.alert).not.toHaveBeenCalled();
-		expect(path).toBe(uploadPath);
-		expect(record).toBe(existing);
+		expect(result).toEqual([null, null]);
+		expect(Alert.alert).toHaveBeenCalled();
 	});
 
 	it('creates a new record when none exists', async () => {
@@ -204,7 +203,13 @@ describe('finalizeFailedUpload', () => {
 		uploadQueue[uploadPath] = {} as any;
 
 		await expect(
-			finalizeFailedUpload(uploadPath, fileInfo.path, 'GENERAL', new UploadSupersededError())
+			finalizeFailedUpload({
+				queueKey: uploadPath,
+				filePath: fileInfo.path,
+				rid: 'GENERAL',
+				error: new UploadSupersededError(),
+				upload: null
+			})
 		).resolves.toBeUndefined();
 
 		expect(getUploadByPath).not.toHaveBeenCalled();
@@ -212,17 +217,59 @@ describe('finalizeFailedUpload', () => {
 	});
 
 	it('does nothing when the upload was cancelled (its queue entry is already gone)', async () => {
-		await expect(finalizeFailedUpload(uploadPath, fileInfo.path, 'GENERAL', new Error('boom'))).resolves.toBeUndefined();
+		const attempt = {} as any;
+
+		await expect(
+			finalizeFailedUpload({
+				queueKey: uploadPath,
+				filePath: fileInfo.path,
+				rid: 'GENERAL',
+				error: new Error('boom'),
+				upload: attempt
+			})
+		).resolves.toBeUndefined();
 
 		expect(getUploadByPath).not.toHaveBeenCalled();
 	});
 
+	it('persists and rethrows a failure that happened before the upload was ever queued, instead of mistaking it for a cancellation', async () => {
+		(getUploadByPath as jest.Mock).mockResolvedValue({ update: jest.fn((cb: (u: any) => void) => cb({})) });
+		const error = new Error('encryption failed');
+
+		await expect(
+			finalizeFailedUpload({ queueKey: uploadPath, filePath: fileInfo.path, rid: 'GENERAL', error, upload: null })
+		).rejects.toBe(error);
+
+		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
+	});
+
+	it('leaves a newer attempt alone instead of clobbering its queue entry', async () => {
+		const newerAttempt = {} as any;
+		uploadQueue[uploadPath] = newerAttempt;
+
+		await expect(
+			finalizeFailedUpload({
+				queueKey: uploadPath,
+				filePath: fileInfo.path,
+				rid: 'GENERAL',
+				error: new Error('boom'),
+				upload: {} as any
+			})
+		).resolves.toBeUndefined();
+
+		expect(uploadQueue[uploadPath]).toBe(newerAttempt);
+		expect(getUploadByPath).not.toHaveBeenCalled();
+	});
+
 	it('persists the error, clears the queue entry, and rethrows for a genuine terminal failure', async () => {
-		uploadQueue[uploadPath] = {} as any;
+		const attempt = {} as any;
+		uploadQueue[uploadPath] = attempt;
 		(getUploadByPath as jest.Mock).mockResolvedValue({ update: jest.fn((cb: (u: any) => void) => cb({})) });
 		const error = new UploadHttpError(413);
 
-		await expect(finalizeFailedUpload(uploadPath, fileInfo.path, 'GENERAL', error)).rejects.toBe(error);
+		await expect(
+			finalizeFailedUpload({ queueKey: uploadPath, filePath: fileInfo.path, rid: 'GENERAL', error, upload: attempt })
+		).rejects.toBe(error);
 
 		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
 		expect(uploadQueue[uploadPath]).toBeUndefined();

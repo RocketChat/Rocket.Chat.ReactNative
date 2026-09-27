@@ -77,6 +77,7 @@ interface IUploadProgressState {
 class UploadProgress extends Component<IUploadProgressProps, IUploadProgressState> {
 	private mounted = false;
 	private ranInitialUploadCheck = false;
+	private retryingUploads = new Set<string>();
 	private uploadsObservable?: Observable<TUploadModel[]>;
 	private uploadsSubscription?: Subscription;
 
@@ -166,6 +167,10 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 	};
 
 	tryAgain = async (item: TUploadModel) => {
+		if (this.retryingUploads.has(item.id)) {
+			return;
+		}
+		this.retryingUploads.add(item.id);
 		const { rid, baseUrl: server, user } = this.props;
 
 		try {
@@ -177,9 +182,11 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					item.errorMessage = undefined;
 				});
 			});
-			await sendFileMessage(rid, item.asPlain() as TSendFileMessageFileInfo, item.tmid, server, user, true);
+			await sendFileMessage(rid, item.asPlain() as TSendFileMessageFileInfo, item.tmid, server, user);
 		} catch (e) {
 			log(e);
+		} finally {
+			this.retryingUploads.delete(item.id);
 		}
 	};
 

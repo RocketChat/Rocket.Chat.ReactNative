@@ -11,7 +11,7 @@ import {
 } from './utils';
 import { uploadWithRetry } from './uploadWithRetry';
 import FileUpload from '../helpers/fileUpload';
-import { type IFormData } from '../helpers/fileUpload/definitions';
+import { type IFileUpload, type IFormData } from '../helpers/fileUpload/definitions';
 import fetch from '../helpers/fetch';
 
 export async function sendFileMessageV2(
@@ -19,11 +19,11 @@ export async function sendFileMessageV2(
 	fileInfo: TSendFileMessageFileInfo,
 	tmid: string | undefined,
 	server: string,
-	user: Partial<Pick<IUser, 'id' | 'token'>>,
-	isForceTryAgain?: boolean
+	user: Partial<Pick<IUser, 'id' | 'token'>>
 ): Promise<void> {
-	const uploadRecordPath = fileInfo.path;
+	const originalFilePath = fileInfo.path;
 	let uploadPath: string | null = '';
+	let upload: IFileUpload | null = null;
 	let uploadRecord: TUploadModel | null;
 	try {
 		const { id, token } = user;
@@ -35,9 +35,9 @@ export async function sendFileMessageV2(
 		};
 		const db = database.active;
 
-		[uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid, isForceTryAgain });
+		[uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid });
 		if (!uploadPath || !uploadRecord) {
-			throw new Error("Couldn't create upload record");
+			return;
 		}
 		const { file, getContent, fileContent } = await Encryption.encryptFile(rid, fileInfo);
 		file.path = await copyFileToCacheDirectoryIfNeeded(file.path, file.name);
@@ -56,11 +56,15 @@ export async function sendFileMessageV2(
 			});
 		}
 
-		const response = await uploadWithRetry(
-			uploadPath,
-			() =>
-				new FileUpload(`${server}/api/v1/rooms.media/${rid}`, headers, formData, createUploadProgressCallback(db, uploadRecord))
-		);
+		const response = await uploadWithRetry(uploadPath, () => {
+			upload = new FileUpload(
+				`${server}/api/v1/rooms.media/${rid}`,
+				headers,
+				formData,
+				createUploadProgressCallback(db, uploadRecord)
+			);
+			return upload;
+		});
 
 		let content;
 		if (getContent) {
@@ -85,6 +89,6 @@ export async function sendFileMessageV2(
 		});
 	} catch (e: any) {
 		console.error(e);
-		await finalizeFailedUpload(uploadPath ?? '', uploadRecordPath, rid, e);
+		await finalizeFailedUpload({ queueKey: uploadPath ?? '', filePath: originalFilePath, rid, error: e, upload });
 	}
 }

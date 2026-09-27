@@ -2,10 +2,22 @@ import { MAX_UPLOAD_ATTEMPTS, getUploadRetryDelay, uploadWithRetry } from './upl
 import { UploadSupersededError, uploadQueue } from './utils';
 import { UploadHttpError } from '../helpers/fileUpload/definitions';
 
-jest.mock('./utils', () => {
-	class UploadSupersededError extends Error {}
-	return { uploadQueue: {}, UploadSupersededError };
-});
+jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
+jest.mock('~/i18n', () => ({ t: (k: string) => k, isTranslated: () => false }));
+jest.mock('../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../helpers/showToast', () => ({ showToast: jest.fn() }));
+jest.mock('~/lib/database/services/Upload', () => ({ getUploadByPath: jest.fn() }));
+jest.mock('@nozbe/watermelondb/RawRecord', () => ({ sanitizedRaw: (raw: unknown) => raw }));
+jest.mock('expo-file-system/legacy', () => ({ cacheDirectory: 'file://cache', copyAsync: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/database', () => ({
+	__esModule: true,
+	default: {
+		active: {
+			get: () => ({ find: jest.fn(), create: jest.fn(), schema: {} }),
+			write: (cb: () => Promise<unknown>) => cb()
+		}
+	}
+}));
 
 const PATH = '/tmp/pic.jpg-GENERAL';
 const RESPONSE = { file: { _id: 'abc', url: '/file/abc' } } as any;
@@ -139,6 +151,17 @@ describe('uploadWithRetry', () => {
 		uploadQueue[PATH] = { send: jest.fn().mockResolvedValue(RESPONSE), cancel: jest.fn() };
 
 		await expect(pending).resolves.toBeInstanceOf(UploadSupersededError);
+	});
+
+	it('does not resolve as successful when the upload was cancelled just before the response arrived', async () => {
+		const createUpload = uploadThat(
+			jest.fn(() => {
+				delete uploadQueue[PATH];
+				return Promise.resolve(RESPONSE);
+			})
+		);
+
+		await expect(uploadWithRetry(PATH, createUpload)).rejects.toBeInstanceOf(UploadSupersededError);
 	});
 
 	it('stops when the upload is cancelled during the request', async () => {
