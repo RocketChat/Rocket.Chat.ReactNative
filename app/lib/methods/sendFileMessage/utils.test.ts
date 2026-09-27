@@ -1,10 +1,22 @@
 import { Alert } from 'react-native';
 
-import { createUploadRecord, copyFileToCacheDirectoryIfNeeded, getUploadPath, isUploadActive, uploadQueue } from './utils';
+import {
+	UploadSupersededError,
+	createUploadProgressCallback,
+	createUploadRecord,
+	copyFileToCacheDirectoryIfNeeded,
+	finalizeFailedUpload,
+	getUploadPath,
+	isUploadActive,
+	persistUploadError,
+	uploadQueue
+} from './utils';
+import { UploadHttpError } from '../helpers/fileUpload/definitions';
 
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
-jest.mock('~/i18n', () => ({ t: (k: string) => k }));
+jest.mock('~/i18n', () => ({ t: (k: string) => k, isTranslated: () => false }));
 jest.mock('../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../helpers/showToast', () => ({ showToast: jest.fn() }));
 jest.mock('~/lib/database/services/Upload', () => ({ getUploadByPath: jest.fn() }));
 jest.mock('@nozbe/watermelondb/RawRecord', () => ({ sanitizedRaw: (raw: unknown) => raw }));
 jest.mock('expo-file-system/legacy', () => ({ cacheDirectory: 'file://cache', copyAsync: jest.fn(() => Promise.resolve()) }));
@@ -30,6 +42,7 @@ beforeEach(() => {
 	mockCreate.mockReset();
 	(Alert.alert as jest.Mock).mockReset();
 	(require('expo-file-system/legacy').copyAsync as jest.Mock).mockClear();
+	(require('../helpers/showToast').showToast as jest.Mock).mockClear();
 	Object.keys(uploadQueue).forEach(k => delete uploadQueue[k]);
 });
 
@@ -91,16 +104,15 @@ describe('createUploadRecord', () => {
 		expect(record).toBe(stale);
 	});
 
-	it('reuses the existing record when force-retry', async () => {
+	it('blocks a retry too when the record is genuinely still active, not just stale', async () => {
 		const existing: any = { id: uploadPath, update: jest.fn((cb: (u: any) => void) => cb(existing)) };
 		mockFind.mockResolvedValue(existing);
 		uploadQueue[uploadPath] = {} as any;
 
-		const [path, record] = await createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined, isForceTryAgain: true });
+		const result = await createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined });
 
-		expect(Alert.alert).not.toHaveBeenCalled();
-		expect(path).toBe(uploadPath);
-		expect(record).toBe(existing);
+		expect(result).toEqual([null, null]);
+		expect(Alert.alert).toHaveBeenCalled();
 	});
 
 	it('creates a new record when none exists', async () => {
@@ -116,5 +128,178 @@ describe('createUploadRecord', () => {
 
 		expect(path).toBe(uploadPath);
 		expect(record).toBe(created);
+	});
+});
+
+describe('persistUploadError', () => {
+	const { getUploadByPath } = require('~/lib/database/services/Upload');
+	const { showToast } = require('../helpers/showToast');
+
+	const persist = async (error: unknown) => {
+		const updated: any = {};
+		(getUploadByPath as jest.Mock).mockResolvedValue({
+			update: jest.fn((cb: (u: any) => void) => {
+				cb(updated);
+			})
+		});
+		await persistUploadError('/tmp/pic.jpg', 'GENERAL', error);
+		return updated;
+	};
+
+	beforeEach(() => {
+		(getUploadByPath as jest.Mock).mockReset();
+	});
+
+	it('stores the HTTP status and server message from an UploadHttpError', async () => {
+		const updated = await persist(new UploadHttpError(413, { serverMessage: 'File is too large' }));
+
+		expect(getUploadByPath).toHaveBeenCalledWith('/tmp/pic.jpg-GENERAL');
+		expect(updated).toMatchObject({ error: true, errorStatus: 413, errorMessage: 'File is too large' });
+		expect(showToast).toHaveBeenCalledWith('error-file-too-large');
+	});
+
+	it('keeps a raw response body out of the record', async () => {
+		const updated = await persist(new UploadHttpError(413, { body: '<html>413 Request Entity Too Large</html>' }));
+
+		expect(updated).toMatchObject({ error: true, errorStatus: 413, errorMessage: undefined });
+		expect(showToast).toHaveBeenCalledWith('error-file-too-large');
+	});
+
+	it('stores only the error flag for unknown failures', async () => {
+		const updated = await persist(new Error('boom'));
+
+		expect(updated).toMatchObject({ error: true, errorStatus: undefined, errorMessage: undefined });
+		expect(showToast).not.toHaveBeenCalled();
+	});
+
+	it('announces a failure the user cannot retry away', async () => {
+		await persist(new UploadHttpError(415, { serverMessage: 'Not allowed' }));
+
+		expect(showToast).toHaveBeenCalledWith('Not allowed');
+	});
+
+	it('stays quiet about a failure that may still resolve itself', async () => {
+		const updated = await persist(new UploadHttpError(429, { serverMessage: 'error-too-many-requests' }));
+
+		expect(updated).toMatchObject({ errorStatus: 429 });
+		expect(showToast).not.toHaveBeenCalled();
+	});
+
+	it('does nothing when the record is gone', async () => {
+		(getUploadByPath as jest.Mock).mockResolvedValue(null);
+
+		await expect(persistUploadError('/tmp/pic.jpg', 'GENERAL', new Error('boom'))).resolves.toBeUndefined();
+	});
+});
+
+describe('finalizeFailedUpload', () => {
+	const { getUploadByPath } = require('~/lib/database/services/Upload');
+
+	beforeEach(() => {
+		(getUploadByPath as jest.Mock).mockReset();
+	});
+
+	it('does nothing when the upload was superseded by a newer attempt, and leaves its queue entry alone', async () => {
+		uploadQueue[uploadPath] = {} as any;
+
+		await expect(
+			finalizeFailedUpload({
+				queueKey: uploadPath,
+				filePath: fileInfo.path,
+				rid: 'GENERAL',
+				error: new UploadSupersededError(),
+				upload: null
+			})
+		).resolves.toBeUndefined();
+
+		expect(getUploadByPath).not.toHaveBeenCalled();
+		expect(uploadQueue[uploadPath]).toBeDefined();
+	});
+
+	it('does nothing when the upload was cancelled (its queue entry is already gone)', async () => {
+		const attempt = {} as any;
+
+		await expect(
+			finalizeFailedUpload({
+				queueKey: uploadPath,
+				filePath: fileInfo.path,
+				rid: 'GENERAL',
+				error: new Error('boom'),
+				upload: attempt
+			})
+		).resolves.toBeUndefined();
+
+		expect(getUploadByPath).not.toHaveBeenCalled();
+	});
+
+	it('persists and rethrows a failure that happened before the upload was ever queued, instead of mistaking it for a cancellation', async () => {
+		(getUploadByPath as jest.Mock).mockResolvedValue({ update: jest.fn((cb: (u: any) => void) => cb({})) });
+		const error = new Error('encryption failed');
+
+		await expect(
+			finalizeFailedUpload({ queueKey: uploadPath, filePath: fileInfo.path, rid: 'GENERAL', error, upload: null })
+		).rejects.toBe(error);
+
+		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
+	});
+
+	it('leaves a newer attempt alone instead of clobbering its queue entry', async () => {
+		const newerAttempt = {} as any;
+		uploadQueue[uploadPath] = newerAttempt;
+
+		await expect(
+			finalizeFailedUpload({
+				queueKey: uploadPath,
+				filePath: fileInfo.path,
+				rid: 'GENERAL',
+				error: new Error('boom'),
+				upload: {} as any
+			})
+		).resolves.toBeUndefined();
+
+		expect(uploadQueue[uploadPath]).toBe(newerAttempt);
+		expect(getUploadByPath).not.toHaveBeenCalled();
+	});
+
+	it('persists the error, clears the queue entry, and rethrows for a genuine terminal failure', async () => {
+		const attempt = {} as any;
+		uploadQueue[uploadPath] = attempt;
+		(getUploadByPath as jest.Mock).mockResolvedValue({ update: jest.fn((cb: (u: any) => void) => cb({})) });
+		const error = new UploadHttpError(413);
+
+		await expect(
+			finalizeFailedUpload({ queueKey: uploadPath, filePath: fileInfo.path, rid: 'GENERAL', error, upload: attempt })
+		).rejects.toBe(error);
+
+		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
+		expect(uploadQueue[uploadPath]).toBeUndefined();
+	});
+});
+
+describe('createUploadProgressCallback', () => {
+	it('writes the rounded percentage to the upload record', async () => {
+		const record: any = {};
+		const update = jest.fn((cb: (u: any) => void) => cb(record));
+		const db = { write: jest.fn((cb: () => Promise<void>) => cb()) } as any;
+
+		await createUploadProgressCallback(db, { update } as any)(50, 200);
+
+		expect(record.progress).toBe(25);
+	});
+
+	it('does nothing when there is no upload record', async () => {
+		const db = { write: jest.fn((cb: () => Promise<void>) => cb()) } as any;
+
+		await expect(createUploadProgressCallback(db, null)(50, 200)).resolves.toBeUndefined();
+	});
+
+	it('swallows a write failure instead of throwing', async () => {
+		const db = { write: jest.fn(() => Promise.reject(new Error('db down'))) } as any;
+		const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+		await expect(createUploadProgressCallback(db, {} as any)(50, 200)).resolves.toBeUndefined();
+
+		expect(consoleErrorSpy).toHaveBeenCalled();
+		consoleErrorSpy.mockRestore();
 	});
 });
