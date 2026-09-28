@@ -1,5 +1,5 @@
 import { Q } from '@nozbe/watermelondb';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import type { Subscription } from 'rxjs';
 
@@ -17,8 +17,7 @@ const NO_CATEGORIES: ISidebarCategory[] = [];
 export const useSubscriptions = () => {
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const server = useAppSelector(state => state.server);
-	const subscriptionRef = useRef<Subscription>(null);
-	const [subscriptions, setSubscriptions] = useState<TSubscriptionModel[]>([]);
+	const [rows, setRows] = useState<TSubscriptionModel[]>([]);
 	const [loading, setLoading] = useState(true);
 	const roles = useAppSelector(state => getUserSelector(state).roles, shallowEqual);
 	const { sortBy, showUnread, showFavorites, groupByType } = useAppSelector(state => state.sortPreferences, shallowEqual);
@@ -35,6 +34,9 @@ export const useSubscriptions = () => {
 	const isOmnichannelAgent = roles?.includes('livechat-agent') ?? false;
 
 	useEffect(() => {
+		let cancelled = false;
+		let subscription: Subscription | undefined;
+
 		const getSubscriptions = async () => {
 			setLoading(true);
 			const db = database.active;
@@ -53,17 +55,12 @@ export const useSubscriptions = () => {
 				.query(...whereClause)
 				.observeWithColumns(observeWithColumns);
 
-			subscriptionRef.current = observable.subscribe(data => {
-				setSubscriptions(
-					buildRoomList(data, {
-						groupOrder,
-						customCategoryNames,
-						showUnread,
-						showFavorites,
-						groupByType,
-						isOmnichannelAgent
-					})
-				);
+			if (cancelled) {
+				return;
+			}
+
+			subscription = observable.subscribe(data => {
+				setRows(data);
 				setLoading(false);
 			});
 		};
@@ -71,21 +68,23 @@ export const useSubscriptions = () => {
 		getSubscriptions();
 
 		return () => {
-			subscriptionRef.current?.unsubscribe();
+			cancelled = true;
+			subscription?.unsubscribe();
 		};
-	}, [
-		isGrouping,
-		sortBy,
-		useRealName,
-		showUnread,
-		showFavorites,
-		groupByType,
-		isOmnichannelAgent,
-		server,
-		customCategoryNames,
-		hasCustomCategories,
-		groupOrder
-	]);
+	}, [isGrouping, sortBy, useRealName, server]);
+
+	const subscriptions = useMemo(
+		() =>
+			buildRoomList(rows, {
+				groupOrder,
+				customCategoryNames,
+				showUnread,
+				showFavorites,
+				groupByType,
+				isOmnichannelAgent
+			}),
+		[rows, groupOrder, customCategoryNames, showUnread, showFavorites, groupByType, isOmnichannelAgent]
+	);
 
 	return {
 		subscriptions,

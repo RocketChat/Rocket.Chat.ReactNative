@@ -18,14 +18,11 @@ const filterIsUnread = (subscription: TSubscriptionModel) =>
 
 const filterIsOmnichannel = (subscription: TSubscriptionModel) => subscription.t === 'l';
 
-export const addRoomsGroup = (data: TSubscriptionModel[], header: string, allData: TSubscriptionModel[], title?: string) => {
-	if (data.length > 0) {
-		if (header) {
-			allData.push({ rid: header, separator: true, name: title } as TSubscriptionModel);
-		}
-		allData = allData.concat(data);
+const roomsGroup = (rooms: TSubscriptionModel[], header: string, title?: string) => {
+	if (!rooms.length) {
+		return [];
 	}
-	return allData;
+	return header ? [{ rid: header, separator: true, name: title } as TSubscriptionModel, ...rooms] : rooms;
 };
 
 const getRoomGroup = (subscription: TSubscriptionModel, groups: Map<string, TSubscriptionModel[]>) => {
@@ -89,12 +86,10 @@ const groupRooms = (
 		}
 	});
 
-	let groupedChats = [] as TSubscriptionModel[];
-	visibleGroups.forEach(key => {
+	return visibleGroups.flatMap(key => {
 		const header = key === CONVERSATIONS_GROUP ? (hasChatsHeader ? CHATS_HEADER : '') : key;
-		groupedChats = addRoomsGroup(groups.get(key) ?? [], header, groupedChats, customCategoryNames.get(key));
+		return roomsGroup(groups.get(key) ?? [], header, customCategoryNames.get(key));
 	});
-	return groupedChats;
 };
 
 type BuildRoomListOptions = Omit<GroupRoomsOptions, 'hasChatsHeader'> & {
@@ -105,27 +100,27 @@ type BuildRoomListOptions = Omit<GroupRoomsOptions, 'hasChatsHeader'> & {
 export const buildRoomList = (subscriptions: TSubscriptionModel[], options: BuildRoomListOptions) => {
 	const { groupOrder, customCategoryNames, showUnread, showFavorites, groupByType, isOmnichannelAgent } = options;
 	let remainingSubscriptions = subscriptions;
-	let roomList: TSubscriptionModel[] = [];
+	const roomList: TSubscriptionModel[] = [];
 
 	if (isOmnichannelAgent) {
 		const omnichannel = remainingSubscriptions.filter(filterIsOmnichannel);
 		remainingSubscriptions = remainingSubscriptions.filter(subscription => !filterIsOmnichannel(subscription));
-		roomList = addRoomsGroup(
-			omnichannel.filter(subscription => !subscription.onHold),
-			OMNICHANNEL_HEADER_IN_PROGRESS,
-			roomList
-		);
-		roomList = addRoomsGroup(
-			omnichannel.filter(subscription => subscription.onHold),
-			OMNICHANNEL_HEADER_ON_HOLD,
-			roomList
+		roomList.push(
+			...roomsGroup(
+				omnichannel.filter(subscription => !subscription.onHold),
+				OMNICHANNEL_HEADER_IN_PROGRESS
+			),
+			...roomsGroup(
+				omnichannel.filter(subscription => subscription.onHold),
+				OMNICHANNEL_HEADER_ON_HOLD
+			)
 		);
 	}
 
 	if (showUnread) {
 		const unread = remainingSubscriptions.filter(filterIsUnread);
 		remainingSubscriptions = remainingSubscriptions.filter(subscription => !filterIsUnread(subscription));
-		roomList = addRoomsGroup(unread, UNREAD_HEADER, roomList);
+		roomList.push(...roomsGroup(unread, UNREAD_HEADER));
 	}
 
 	return roomList.concat(
