@@ -1,6 +1,7 @@
 /* eslint-disable complexity */
 import { type IAttachment, type IMessageTranslations } from '~/definitions';
 import { type MessageTypesValues, type TAnyMessageModel, type TMessageModel } from '~/definitions/IMessage';
+import { decodeFilename } from '~/lib/methods/helpers/decodeFilename';
 import I18n from '~/i18n';
 import dayjs from '~/lib/dayjs';
 import { DISCUSSION } from './constants';
@@ -250,5 +251,8 @@ export const getPreviewMessageFromAttachment = (attachment: IAttachment, transla
 			return translated;
 		}
 	}
-	return attachment.description ?? attachment.title;
+	if (attachment.description) {
+		return attachment.description;
+	}
+	return decodeFilename(attachment.title) ?? attachment.title;
 };

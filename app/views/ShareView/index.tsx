@@ -7,6 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 import { type Dispatch } from 'redux';
 
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
+import { getFilenameFromUri } from '~/lib/methods/helpers/decodeFilename';
 import { getRoomTitle } from '~/lib/methods/helpers/helpers';
 import { type IMessageComposerRef, ComposerProvider, MessageComposerContainer } from '~/containers/MessageComposer';
 import { type InsideStackParamList } from '~/stacks/types';
@@ -221,7 +222,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 				// Set a filename, if there isn't any
 				if (!item.filename) {
-					item.filename = item?.path?.split('/')?.pop();
+					item.filename = getFilenameFromUri(item?.path) ?? item?.path?.split('/')?.pop();
 				}
 				return item;
 			})
