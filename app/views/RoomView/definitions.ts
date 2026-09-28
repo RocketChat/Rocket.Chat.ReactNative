@@ -97,8 +97,6 @@ export type IRoomMessageHandlersInput = {
 
 export interface IRoomScreenContextValue {
 	loading: boolean;
-	failed: boolean;
-	retry: () => void;
 	lastSeen: Date | null;
 	clearLastSeen: () => void;
 }

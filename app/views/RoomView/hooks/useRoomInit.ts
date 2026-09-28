@@ -17,7 +17,6 @@ interface IUseRoomInitParams {
 interface IRunInitSetters {
 	setSettled: (settled: boolean) => void;
 	setLastSeen: (lastSeen: Date | null) => void;
-	setFailed: (failed: boolean) => void;
 }
 
 // Marks the screen unsettled for the duration of one init() run. init() resolves on the invite
@@ -32,7 +31,7 @@ const runInit = async (
 	tmid: string | undefined,
 	onLoadedRef: RefObject<() => void>,
 	controller: AbortController,
-	{ setSettled, setLastSeen, setFailed }: IRunInitSetters
+	{ setSettled, setLastSeen }: IRunInitSetters
 ): Promise<void> => {
 	setSettled(false);
 	try {
@@ -41,17 +40,11 @@ const runInit = async (
 			onThreadMessagesLoaded: () => onLoadedRef.current?.(),
 			signal: controller.signal
 		});
-		if (!controller.signal.aborted) {
-			if (result.status === 'loaded') {
-				setLastSeen(result.lastSeen);
-			}
-			setFailed(result.status === 'failed');
+		if (!controller.signal.aborted && result.status === 'loaded') {
+			setLastSeen(result.lastSeen);
 		}
 	} catch (e) {
 		log(e);
-		if (!controller.signal.aborted) {
-			setFailed(true);
-		}
 	} finally {
 		if (!controller.signal.aborted) {
 			setSettled(true);
@@ -76,7 +69,6 @@ export function useRoomInit({
 	// `settled` tracks the init run, and only the init run. A screen that has no rid or no auth never
 	// starts one, so `loading` is derived from both: no work pending means idle, never a stuck flag.
 	const [settled, setSettled] = useState(false);
-	const [failed, setFailed] = useState(false);
 	const hasInitWork = !!rid && isAuthenticated && ready;
 	const loading = hasInitWork && !settled;
 	// One controller per init() run. A new run aborts the one it supersedes and never resets it, so a
@@ -87,8 +79,7 @@ export function useRoomInit({
 		initControllerRef.current?.abort();
 		const controller = new AbortController();
 		initControllerRef.current = controller;
-		setFailed(false);
-		return runInit(roomStore, tmid, onLoadedRef, controller, { setSettled, setLastSeen, setFailed });
+		return runInit(roomStore, tmid, onLoadedRef, controller, { setSettled, setLastSeen });
 	}, [roomStore, tmid, onLoadedRef]);
 
 	const clearLastSeen = useCallback(() => setLastSeen(null), []);
@@ -109,5 +100,5 @@ export function useRoomInit({
 		// rid and isAuthenticated stay in the deps: hasInitWork alone would not re-fire on a rid swap.
 	}, [rid, isAuthenticated, ready, hasInitWork, init]);
 
-	return { loading, failed: hasInitWork && failed && !loading, retry: init, lastSeen, clearLastSeen };
+	return { loading, lastSeen, clearLastSeen };
 }
