@@ -75,13 +75,6 @@ export function useRoomInit({
 	// still-in-flight predecessor can no longer un-cancel itself and write for a screen that moved on.
 	const initControllerRef = useRef<AbortController | null>(null);
 
-	const init = useCallback(() => {
-		initControllerRef.current?.abort();
-		const controller = new AbortController();
-		initControllerRef.current = controller;
-		return runInit(roomStore, tmid, onLoadedRef, controller, { setSettled, setLastSeen });
-	}, [roomStore, tmid, onLoadedRef]);
-
 	const clearLastSeen = useCallback(() => setLastSeen(null), []);
 
 	useEffect(() => {
@@ -92,13 +85,18 @@ export function useRoomInit({
 		// before this effect, so leaving the previous run's `settled` in place would show an enabled
 		// footer for one frame on a room that has not loaded yet.
 		setSettled(false);
-		const task = InteractionManager.runAfterInteractions(() => init());
+		const task = InteractionManager.runAfterInteractions(() => {
+			initControllerRef.current?.abort();
+			const controller = new AbortController();
+			initControllerRef.current = controller;
+			return runInit(roomStore, tmid, onLoadedRef, controller, { setSettled, setLastSeen });
+		});
 		return () => {
 			initControllerRef.current?.abort();
 			task.cancel();
 		};
 		// rid and isAuthenticated stay in the deps: hasInitWork alone would not re-fire on a rid swap.
-	}, [rid, isAuthenticated, ready, hasInitWork, init]);
+	}, [rid, isAuthenticated, ready, hasInitWork, roomStore, tmid, onLoadedRef]);
 
 	return { loading, lastSeen, clearLastSeen };
 }

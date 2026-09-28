@@ -175,7 +175,26 @@ describe('useRoomInit', () => {
 		expect(result.current.loading).toBe(false);
 	});
 
-	it.each([['failed'], ['skipped']] as const)('leaves lastSeen untouched when init reports %s', async status => {
+	it('stops loading when the first init run does not load the room', async () => {
+		const { roomStore, resolveInitWith } = makeDeferredRoomStore();
+		const { result } = renderRoomInit({}, roomStore);
+
+		await resolveInitWith(0, { status: 'skipped' });
+
+		expect(result.current.loading).toBe(false);
+		expect(result.current.lastSeen).toBeNull();
+	});
+
+	it('stops loading when init throws', async () => {
+		const roomStore = makeRoomStore();
+		roomStore.setState({ init: jest.fn(() => Promise.reject(new Error('init failed'))) });
+		const { result } = renderRoomInit({}, roomStore);
+
+		await waitFor(() => expect(result.current.loading).toBe(false));
+		expect(result.current.lastSeen).toBeNull();
+	});
+
+	it('leaves lastSeen untouched when a later init run does not load the room', async () => {
 		const loaded = new Date('2026-01-01T00:00:00.000Z');
 		const { roomStore, resolveInit, resolveInitWith } = makeDeferredRoomStore();
 		const { result, rerender } = renderRoomInit({}, roomStore);
@@ -185,7 +204,7 @@ describe('useRoomInit', () => {
 
 		rerender({ isAuthenticated: false });
 		rerender({ isAuthenticated: true });
-		await resolveInitWith(1, { status });
+		await resolveInitWith(1, { status: 'skipped' });
 
 		expect(result.current.lastSeen).toBe(loaded);
 		expect(result.current.loading).toBe(false);

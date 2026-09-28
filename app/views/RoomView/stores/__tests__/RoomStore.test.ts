@@ -383,7 +383,7 @@ describe('RoomStore', () => {
 			expect(mockGetMessages).toHaveBeenCalledTimes(2);
 		});
 
-		it('gives up after three attempts and resolves as failed', async () => {
+		it('gives up after three attempts and resolves as skipped', async () => {
 			setupPresentRow();
 			mockGetMessages.mockRejectedValue(new Error('boom'));
 			const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
@@ -391,7 +391,7 @@ describe('RoomStore', () => {
 			const initPromise = store.getState().init();
 			await jest.advanceTimersByTimeAsync(10000);
 
-			await expect(initPromise).resolves.toEqual({ status: 'failed' });
+			await expect(initPromise).resolves.toEqual({ status: 'skipped' });
 			expect(mockGetMessages).toHaveBeenCalledTimes(3);
 		});
 
