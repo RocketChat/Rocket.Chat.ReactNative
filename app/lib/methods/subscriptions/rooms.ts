@@ -110,7 +110,8 @@ export const createOrUpdateSubscription = async (subscription: ISubscription, ro
 					E2ESuggestedKey: s.E2ESuggestedKey,
 					avatarETag: s.avatarETag,
 					onHold: s.onHold,
-					hideMentionStatus: s.hideMentionStatus
+					hideMentionStatus: s.hideMentionStatus,
+					category: s.category
 				} as ISubscription;
 			} catch (error) {
 				try {
