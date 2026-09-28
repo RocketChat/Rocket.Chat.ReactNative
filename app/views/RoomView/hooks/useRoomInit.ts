@@ -19,8 +19,8 @@ interface IRunInitSetters {
 	setLastSeen: (lastSeen: Date | null) => void;
 }
 
-// Marks the screen unsettled for the duration of one init() run. init() resolves on the invite
-// early-return and on failure alike, so the finally is the only place that settles it; awaiting it is
+// Marks the screen unsettled for the duration of one init() run. init() resolves whether or not it
+// loads the room, so the finally is the only place that settles it; awaiting it is
 // what keeps the footer from flickering. Lives outside the hook because the React Compiler cannot
 // lower a try/finally inside a hook body.
 //

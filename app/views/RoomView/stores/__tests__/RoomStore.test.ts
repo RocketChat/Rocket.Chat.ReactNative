@@ -383,7 +383,7 @@ describe('RoomStore', () => {
 			expect(mockGetMessages).toHaveBeenCalledTimes(2);
 		});
 
-		it('gives up after three attempts and resolves as skipped', async () => {
+		it('gives up after three attempts without loading', async () => {
 			setupPresentRow();
 			mockGetMessages.mockRejectedValue(new Error('boom'));
 			const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
