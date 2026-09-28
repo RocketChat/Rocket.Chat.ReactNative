@@ -1,4 +1,4 @@
-import { I18nManager, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { PADDING_HORIZONTAL } from '~/containers/List/constants';
 import { isIOS26OrLater } from '~/lib/methods/helpers/deviceInfo';
@@ -29,8 +29,5 @@ export default StyleSheet.create({
 		paddingRight: 16,
 		flexDirection: 'row',
 		alignItems: 'center'
-	},
-	actionIndicator: {
-		...(I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {})
 	}
 });
