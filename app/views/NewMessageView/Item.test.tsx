@@ -58,12 +58,12 @@ describe('NewMessageView Item', () => {
 	});
 
 	it('should display the name', () => {
-		const { UNSAFE_getByProps } = render(
+		const { getByText } = render(
 			<Wrapper>
 				<Item userId='user123' name='John Doe' username='john.doe' onPress={() => {}} testID='new-message-view-item-john.doe' />
 			</Wrapper>
 		);
-		expect(UNSAFE_getByProps({ text: 'John Doe' })).toBeTruthy();
+		expect(getByText('John Doe')).toBeTruthy();
 	});
 
 	it('should call onPress when main item is pressed', () => {
@@ -150,9 +150,7 @@ describe('NewMessageView Item', () => {
 				<Item userId='user123' name='John Doe' username='john.doe' onPress={() => {}} testID='new-message-view-item-john.doe' />
 			</Wrapper>
 		);
-		expect(getByTestId('new-message-view-item-john.doe').props.modifiers).toContainEqual(
-			expect.objectContaining({ $type: 'accessibilityLabel', label: 'John Doe' })
-		);
+		expect(getByTestId('new-message-view-item-john.doe')).toHaveAccessibleName('John Doe');
 	});
 
 	it('should match snapshot when hasMediaCallPermission is false', () => {

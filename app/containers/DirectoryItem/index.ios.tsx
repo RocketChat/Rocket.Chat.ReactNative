@@ -51,10 +51,12 @@ const DirectoryItem = ({
 			isFirst={isFirst}
 			isLast={isLast}
 			leading={<Avatar accessible={false} text={avatar} size={AVATAR_SIZE} type={type} rid={rid} />}
-			titleLeading={type !== 'd' ? <RoomTypeIcon type={type} teamMain={teamMain} /> : undefined}
+			titleLeading={type !== 'd' ? <RoomTypeIcon type={type} teamMain={teamMain} style={styles.titleIcon} /> : undefined}
 			trailing={
 				rightLabel ? (
-					<Text style={[styles.directoryItemLabel, { color: colors.fontSecondaryInfo }]}>{rightLabel}</Text>
+					<Text style={[styles.directoryItemLabel, styles.nativeRowLabel, { color: colors.fontSecondaryInfo }]}>
+						{rightLabel}
+					</Text>
 				) : undefined
 			}
 		/>

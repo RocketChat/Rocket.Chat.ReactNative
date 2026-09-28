@@ -1,5 +1,5 @@
-import { useLayoutEffect, type ReactElement } from 'react';
-import { FlatList, type ListRenderItem } from 'react-native';
+import { useCallback, useLayoutEffect, type ReactElement } from 'react';
+import { FlashList, type ListRenderItem } from '@shopify/flash-list';
 import { shallowEqual } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
@@ -12,8 +12,6 @@ import { type CompositeNavigationProp } from '@react-navigation/native';
 import { useActionSheet } from '~/containers/ActionSheet';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
-import DirectoryItem from '~/containers/DirectoryItem';
-import sharedStyles from '../Styles';
 import I18n from '~/i18n';
 import SearchBox from '~/containers/SearchBox';
 import ActivityIndicator from '~/containers/ActivityIndicator';
@@ -24,6 +22,7 @@ import { goRoom as goRoomMethod, type TGoRoomItem } from '~/lib/methods/helpers/
 import { type IServerRoom, SubscriptionType } from '~/definitions';
 import styles from './styles';
 import Options from './Options';
+import DirectoryRow from './DirectoryRow';
 import { getRoomByTypeAndName } from '~/lib/services/restApi';
 import { createDirectMessage } from '~/lib/methods/createDirectMessage';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
@@ -164,103 +163,55 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 		search
 	]);
 
-	const goRoom = (item: TGoRoomItem) => {
-		goRoomMethod({ item, isMasterDetail });
-	};
-
-	const onPressItem = async (item: IServerRoom) => {
-		try {
-			if (type === 'users') {
-				const result = await createDirectMessage(item.username as string);
-				if (result.success) {
-					goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
+	const onPressItem = useCallback(
+		async (item: IServerRoom) => {
+			const goRoom = (goRoomItem: TGoRoomItem) => {
+				goRoomMethod({ item: goRoomItem, isMasterDetail });
+			};
+			try {
+				if (type === 'users') {
+					const result = await createDirectMessage(item.username as string);
+					if (result.success) {
+						goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
+					}
+					return;
 				}
-				return;
-			}
-			const subscription = await getSubscriptionByRoomId(item._id);
-			if (subscription) {
-				goRoom(subscription);
-				return;
-			}
-			if (['p', 'c'].includes(item.t) && !item.teamMain) {
-				const result = await getRoomByTypeAndName(item.t, item.name || item.fname);
-				if (result) {
+				const subscription = await getSubscriptionByRoomId(item._id);
+				if (subscription) {
+					goRoom(subscription);
+					return;
+				}
+				if (['p', 'c'].includes(item.t) && !item.teamMain) {
+					const result = await getRoomByTypeAndName(item.t, item.name || item.fname);
+					if (result) {
+						goRoom({
+							rid: item._id,
+							name: item.name,
+							joinCodeRequired: result.joinCodeRequired,
+							t: item.t as SubscriptionType,
+							search: true
+						});
+					}
+				} else {
 					goRoom({
 						rid: item._id,
 						name: item.name,
-						joinCodeRequired: result.joinCodeRequired,
 						t: item.t as SubscriptionType,
-						search: true
+						search: true,
+						teamMain: item.teamMain,
+						teamId: item.teamId
 					});
 				}
-			} else {
-				goRoom({
-					rid: item._id,
-					name: item.name,
-					t: item.t as SubscriptionType,
-					search: true,
-					teamMain: item.teamMain,
-					teamId: item.teamId
-				});
+			} catch {
+				// do nothing
 			}
-		} catch {
-			// do nothing
-		}
-	};
+		},
+		[type, isMasterDetail]
+	);
 
-	const renderItem: ListRenderItem<IServerRoom> = ({ item, index }) => {
-		let style;
-		if (index === data.length - 1) {
-			style = {
-				...sharedStyles.separatorBottom,
-				borderColor: colors.strokeLight
-			};
-		}
-
-		const commonProps = {
-			title: item.name as string,
-			onPress: () => onPressItem(item),
-			testID: `directory-view-item-${item.name}`,
-			style,
-			rid: item._id,
-			isFirst: index === 0,
-			isLast: index === data.length - 1
-		};
-
-		if (type === 'users') {
-			return (
-				<DirectoryItem
-					avatar={item.username}
-					description={item.username}
-					rightLabel={item.federation && item.federation.peer}
-					type='d'
-					{...commonProps}
-				/>
-			);
-		}
-
-		if (type === 'teams') {
-			return (
-				<DirectoryItem
-					avatar={item.name}
-					description={item.name}
-					rightLabel={I18n.t('N_channels', { n: item.roomsCount })}
-					type={item.t}
-					teamMain={item.teamMain}
-					{...commonProps}
-				/>
-			);
-		}
-		return (
-			<DirectoryItem
-				avatar={item.name}
-				description={item.topic}
-				rightLabel={I18n.t('N_users', { n: item.usersCount })}
-				type={item.t}
-				{...commonProps}
-			/>
-		);
-	};
+	const renderItem: ListRenderItem<IServerRoom> = ({ item, index }) => (
+		<DirectoryRow item={item} type={type} isFirst={index === 0} isLast={index === data.length - 1} onPressItem={onPressItem} />
+	);
 
 	return (
 		<SafeAreaView style={{ backgroundColor: listBackgroundColor }} testID='directory-view'>
@@ -268,7 +219,7 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 				<SearchBox onChangeText={onSearchChangeText} onSubmitEditing={search} testID='directory-view-search' />
 			)}
 
-			<FlatList
+			<FlashList
 				data={data}
 				contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
 				style={styles.list}
@@ -279,7 +230,8 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 				ItemSeparatorComponent={RowSeparator}
 				keyboardShouldPersistTaps='always'
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}
-				onEndReached={() => loadMore()}
+				onEndReached={loadMore}
+				onEndReachedThreshold={2}
 			/>
 		</SafeAreaView>
 	);

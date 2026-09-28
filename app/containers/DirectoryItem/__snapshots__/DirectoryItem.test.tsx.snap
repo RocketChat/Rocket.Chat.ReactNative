@@ -14,6 +14,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
         [
           {
             "marginHorizontal": 16,
+            "overflow": "hidden",
           },
           {
             "backgroundColor": "#FFFFFF",
@@ -23,226 +24,211 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
         ]
       }
     >
-      <ViewManagerAdapter_ExpoUI
-        colorScheme="light"
-        ignoreSafeArea="all"
-        layoutDirection="leftToRight"
+      <View
+        accessibilityLabel="Styled Room "
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
             {
-              "width": "100%",
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 12,
+              "paddingHorizontal": 16,
             },
             {
               "height": 54,
             },
           ]
         }
+        testID="directory-item-style"
       >
-        <ViewManagerAdapter_ExpoUI
-          modifiers={
+        <View
+          style={
             [
               {
-                "$type": "padding",
-                "horizontal": 16,
+                "alignItems": "center",
+                "alignSelf": "stretch",
+                "flex": 1,
+                "flexDirection": "row",
+                "gap": 12,
               },
+              false,
+              undefined,
             ]
           }
-          onGlobalEvent={[Function]}
-          spacing={12}
         >
-          <ViewManagerAdapter_ExpoUI
-            modifiers={
+          <View
+            accessibilityLabel="S's avatar"
+            accessible={false}
+            style={
               [
                 {
-                  "$type": "buttonStyle",
-                  "style": "plain",
+                  "borderRadius": 4,
+                  "height": 30,
+                  "width": 30,
                 },
-                {
-                  "$type": "accessibilityLabel",
-                  "label": "Styled Room ",
-                },
+                undefined,
               ]
             }
-            onButtonPress={[Function]}
-            onGlobalEvent={[Function]}
-            testID="directory-item-style"
+            testID="avatar"
           >
-            <ViewManagerAdapter_ExpoUI
-              modifiers={
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={4}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={30}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
                 [
                   {
-                    "$type": "contentShape",
-                    "kind": undefined,
-                    "shape": "rectangle",
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/@S?format=png&size=60",
                   },
                 ]
               }
-              onGlobalEvent={[Function]}
-              spacing={12}
+              style={
+                {
+                  "borderRadius": 4,
+                  "height": 30,
+                  "width": 30,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={30}
+            />
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginRight": 20,
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 4,
+                }
+              }
             >
-              <ViewManagerAdapter_ExpoUI
-                expoInternalSizeFromChildren={true}
-                layoutRoot={false}
-                matchContents={true}
-              >
-                <View
-                  accessibilityLabel="S's avatar"
-                  accessible={false}
-                  style={
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#1F2329",
+                      "fontSize": 16,
+                    },
                     [
                       {
-                        "borderRadius": 4,
-                        "height": 30,
-                        "width": 30,
+                        "lineHeight": 16,
                       },
-                      undefined,
-                    ]
-                  }
-                  testID="avatar"
-                >
-                  <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
-                    containerViewRef={{"current":"Object"}}
-                    contentFit="cover"
-                    contentPosition={
-                      {
-                        "left": "50%",
-                        "top": "50%",
-                      }
-                    }
-                    height={30}
-                    nativeViewRef={{"current":"NativeComponent"}}
-                    onError={[Function]}
-                    onLoad={[Function]}
-                    onLoadStart={[Function]}
-                    onProgress={[Function]}
-                    placeholder={[]}
-                    priority="high"
-                    sfEffect={null}
-                    source={
                       [
                         {
-                          "headers": {
-                            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                          },
-                          "uri": "https://open.rocket.chat/avatar/@S?format=png&size=60",
+                          "marginRight": 4,
                         },
-                      ]
-                    }
-                    style={
-                      {
-                        "borderRadius": 4,
-                        "height": 30,
-                        "width": 30,
-                      }
-                    }
-                    symbolSize={null}
-                    symbolWeight={null}
-                    transition={null}
-                    width={30}
-                  />
-                </View>
-              </ViewManagerAdapter_ExpoUI>
-              <ViewManagerAdapter_ExpoUI
-                alignment="leading"
-                spacing={2}
+                        {
+                          "marginRight": 0,
+                        },
+                      ],
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
               >
-                <ViewManagerAdapter_ExpoUI
-                  spacing={4}
-                >
-                  <ViewManagerAdapter_ExpoUI
-                    expoInternalSizeFromChildren={true}
-                    layoutRoot={false}
-                    matchContents={true}
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#1F2329",
-                            "fontSize": 16,
-                          },
-                          [
-                            {
-                              "lineHeight": 16,
-                            },
-                            [
-                              {
-                                "marginRight": 4,
-                              },
-                              undefined,
-                            ],
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </ViewManagerAdapter_ExpoUI>
-                  <ViewManagerAdapter_ExpoUI
-                    modifiers={
-                      [
-                        {
-                          "$type": "lineLimit",
-                          "limit": 1,
-                          "reservesSpace": undefined,
-                        },
-                        {
-                          "$type": "font",
-                          "textStyle": "body",
-                          "weight": "medium",
-                        },
-                        {
-                          "$type": "foregroundStyle",
-                          "style": {
-                            "color": "#2F343D",
-                            "type": "color",
-                          },
-                        },
-                      ]
-                    }
-                    onGlobalEvent={[Function]}
-                    text="Styled Room"
-                  />
-                </ViewManagerAdapter_ExpoUI>
-                <ViewManagerAdapter_ExpoUI
-                  modifiers={
-                    [
-                      {
-                        "$type": "lineLimit",
-                        "limit": 1,
-                        "reservesSpace": undefined,
-                      },
-                      {
-                        "$type": "font",
-                        "textStyle": "subheadline",
-                      },
-                      {
-                        "$type": "foregroundStyle",
-                        "style": {
-                          "color": "#6C727A",
-                          "type": "color",
-                        },
-                      },
-                    ]
-                  }
-                  onGlobalEvent={[Function]}
-                  text="Custom style applied"
-                />
-              </ViewManagerAdapter_ExpoUI>
-              <ViewManagerAdapter_ExpoUI />
-            </ViewManagerAdapter_ExpoUI>
-          </ViewManagerAdapter_ExpoUI>
-        </ViewManagerAdapter_ExpoUI>
-      </ViewManagerAdapter_ExpoUI>
+                
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 17,
+                      "fontWeight": "500",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Styled Room
+              </Text>
+            </View>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "fontSize": 15,
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              Custom style applied
+            </Text>
+          </View>
+        </View>
+      </View>
     </View>
   </View>
 </RCTScrollView>
@@ -262,6 +248,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         [
           {
             "marginHorizontal": 16,
+            "overflow": "hidden",
           },
           {
             "backgroundColor": "#FFFFFF",
@@ -271,226 +258,211 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         ]
       }
     >
-      <ViewManagerAdapter_ExpoUI
-        colorScheme="light"
-        ignoreSafeArea="all"
-        layoutDirection="leftToRight"
+      <View
+        accessibilityLabel="General "
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
             {
-              "width": "100%",
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 12,
+              "paddingHorizontal": 16,
             },
             {
               "height": 54,
             },
           ]
         }
+        testID="directory-item"
       >
-        <ViewManagerAdapter_ExpoUI
-          modifiers={
+        <View
+          style={
             [
               {
-                "$type": "padding",
-                "horizontal": 16,
+                "alignItems": "center",
+                "alignSelf": "stretch",
+                "flex": 1,
+                "flexDirection": "row",
+                "gap": 12,
               },
+              false,
+              undefined,
             ]
           }
-          onGlobalEvent={[Function]}
-          spacing={12}
         >
-          <ViewManagerAdapter_ExpoUI
-            modifiers={
+          <View
+            accessibilityLabel="G's avatar"
+            accessible={false}
+            style={
               [
                 {
-                  "$type": "buttonStyle",
-                  "style": "plain",
+                  "borderRadius": 4,
+                  "height": 30,
+                  "width": 30,
                 },
-                {
-                  "$type": "accessibilityLabel",
-                  "label": "General ",
-                },
+                undefined,
               ]
             }
-            onButtonPress={[Function]}
-            onGlobalEvent={[Function]}
-            testID="directory-item"
+            testID="avatar"
           >
-            <ViewManagerAdapter_ExpoUI
-              modifiers={
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={4}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={30}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
                 [
                   {
-                    "$type": "contentShape",
-                    "kind": undefined,
-                    "shape": "rectangle",
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/@G?format=png&size=60",
                   },
                 ]
               }
-              onGlobalEvent={[Function]}
-              spacing={12}
+              style={
+                {
+                  "borderRadius": 4,
+                  "height": 30,
+                  "width": 30,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={30}
+            />
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginRight": 20,
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 4,
+                }
+              }
             >
-              <ViewManagerAdapter_ExpoUI
-                expoInternalSizeFromChildren={true}
-                layoutRoot={false}
-                matchContents={true}
-              >
-                <View
-                  accessibilityLabel="G's avatar"
-                  accessible={false}
-                  style={
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#1F2329",
+                      "fontSize": 16,
+                    },
                     [
                       {
-                        "borderRadius": 4,
-                        "height": 30,
-                        "width": 30,
+                        "lineHeight": 16,
                       },
-                      undefined,
-                    ]
-                  }
-                  testID="avatar"
-                >
-                  <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
-                    containerViewRef={{"current":"Object"}}
-                    contentFit="cover"
-                    contentPosition={
-                      {
-                        "left": "50%",
-                        "top": "50%",
-                      }
-                    }
-                    height={30}
-                    nativeViewRef={{"current":"NativeComponent"}}
-                    onError={[Function]}
-                    onLoad={[Function]}
-                    onLoadStart={[Function]}
-                    onProgress={[Function]}
-                    placeholder={[]}
-                    priority="high"
-                    sfEffect={null}
-                    source={
                       [
                         {
-                          "headers": {
-                            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                          },
-                          "uri": "https://open.rocket.chat/avatar/@G?format=png&size=60",
+                          "marginRight": 4,
                         },
-                      ]
-                    }
-                    style={
-                      {
-                        "borderRadius": 4,
-                        "height": 30,
-                        "width": 30,
-                      }
-                    }
-                    symbolSize={null}
-                    symbolWeight={null}
-                    transition={null}
-                    width={30}
-                  />
-                </View>
-              </ViewManagerAdapter_ExpoUI>
-              <ViewManagerAdapter_ExpoUI
-                alignment="leading"
-                spacing={2}
+                        {
+                          "marginRight": 0,
+                        },
+                      ],
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
               >
-                <ViewManagerAdapter_ExpoUI
-                  spacing={4}
-                >
-                  <ViewManagerAdapter_ExpoUI
-                    expoInternalSizeFromChildren={true}
-                    layoutRoot={false}
-                    matchContents={true}
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#1F2329",
-                            "fontSize": 16,
-                          },
-                          [
-                            {
-                              "lineHeight": 16,
-                            },
-                            [
-                              {
-                                "marginRight": 4,
-                              },
-                              undefined,
-                            ],
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </ViewManagerAdapter_ExpoUI>
-                  <ViewManagerAdapter_ExpoUI
-                    modifiers={
-                      [
-                        {
-                          "$type": "lineLimit",
-                          "limit": 1,
-                          "reservesSpace": undefined,
-                        },
-                        {
-                          "$type": "font",
-                          "textStyle": "body",
-                          "weight": "medium",
-                        },
-                        {
-                          "$type": "foregroundStyle",
-                          "style": {
-                            "color": "#2F343D",
-                            "type": "color",
-                          },
-                        },
-                      ]
-                    }
-                    onGlobalEvent={[Function]}
-                    text="General"
-                  />
-                </ViewManagerAdapter_ExpoUI>
-                <ViewManagerAdapter_ExpoUI
-                  modifiers={
-                    [
-                      {
-                        "$type": "lineLimit",
-                        "limit": 1,
-                        "reservesSpace": undefined,
-                      },
-                      {
-                        "$type": "font",
-                        "textStyle": "subheadline",
-                      },
-                      {
-                        "$type": "foregroundStyle",
-                        "style": {
-                          "color": "#6C727A",
-                          "type": "color",
-                        },
-                      },
-                    ]
-                  }
-                  onGlobalEvent={[Function]}
-                  text="A public room"
-                />
-              </ViewManagerAdapter_ExpoUI>
-              <ViewManagerAdapter_ExpoUI />
-            </ViewManagerAdapter_ExpoUI>
-          </ViewManagerAdapter_ExpoUI>
-        </ViewManagerAdapter_ExpoUI>
-      </ViewManagerAdapter_ExpoUI>
+                
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 17,
+                      "fontWeight": "500",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                General
+              </Text>
+            </View>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "fontSize": 15,
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              A public room
+            </Text>
+          </View>
+        </View>
+      </View>
     </View>
   </View>
 </RCTScrollView>
@@ -510,6 +482,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
         [
           {
             "marginHorizontal": 16,
+            "overflow": "hidden",
           },
           {
             "backgroundColor": "#FFFFFF",
@@ -519,185 +492,178 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
         ]
       }
     >
-      <ViewManagerAdapter_ExpoUI
-        colorScheme="light"
-        ignoreSafeArea="all"
-        layoutDirection="leftToRight"
+      <View
+        accessibilityLabel="Alice Johnson "
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
             {
-              "width": "100%",
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 12,
+              "paddingHorizontal": 16,
             },
             {
               "height": 54,
             },
           ]
         }
+        testID="directory-item-dm"
       >
-        <ViewManagerAdapter_ExpoUI
-          modifiers={
+        <View
+          style={
             [
               {
-                "$type": "padding",
-                "horizontal": 16,
+                "alignItems": "center",
+                "alignSelf": "stretch",
+                "flex": 1,
+                "flexDirection": "row",
+                "gap": 12,
               },
+              false,
+              undefined,
             ]
           }
-          onGlobalEvent={[Function]}
-          spacing={12}
         >
-          <ViewManagerAdapter_ExpoUI
-            modifiers={
+          <View
+            accessibilityLabel="A's avatar"
+            accessible={false}
+            style={
               [
                 {
-                  "$type": "buttonStyle",
-                  "style": "plain",
+                  "borderRadius": 4,
+                  "height": 30,
+                  "width": 30,
                 },
-                {
-                  "$type": "accessibilityLabel",
-                  "label": "Alice Johnson ",
-                },
+                undefined,
               ]
             }
-            onButtonPress={[Function]}
-            onGlobalEvent={[Function]}
-            testID="directory-item-dm"
+            testID="avatar"
           >
-            <ViewManagerAdapter_ExpoUI
-              modifiers={
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={4}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={30}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
                 [
                   {
-                    "$type": "contentShape",
-                    "kind": undefined,
-                    "shape": "rectangle",
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/A?format=png&size=60",
                   },
                 ]
               }
-              onGlobalEvent={[Function]}
-              spacing={12}
+              style={
+                {
+                  "borderRadius": 4,
+                  "height": 30,
+                  "width": 30,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={30}
+            />
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginRight": 20,
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 4,
+                }
+              }
             >
-              <ViewManagerAdapter_ExpoUI
-                expoInternalSizeFromChildren={true}
-                layoutRoot={false}
-                matchContents={true}
+              <Text
+                numberOfLines={1}
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 17,
+                      "fontWeight": "500",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
               >
-                <View
-                  accessibilityLabel="A's avatar"
-                  accessible={false}
-                  style={
-                    [
-                      {
-                        "borderRadius": 4,
-                        "height": 30,
-                        "width": 30,
-                      },
-                      undefined,
-                    ]
-                  }
-                  testID="avatar"
-                >
-                  <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
-                    containerViewRef={{"current":"Object"}}
-                    contentFit="cover"
-                    contentPosition={
-                      {
-                        "left": "50%",
-                        "top": "50%",
-                      }
-                    }
-                    height={30}
-                    nativeViewRef={{"current":"NativeComponent"}}
-                    onError={[Function]}
-                    onLoad={[Function]}
-                    onLoadStart={[Function]}
-                    onProgress={[Function]}
-                    placeholder={[]}
-                    priority="high"
-                    sfEffect={null}
-                    source={
-                      [
-                        {
-                          "headers": {
-                            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                          },
-                          "uri": "https://open.rocket.chat/avatar/A?format=png&size=60",
-                        },
-                      ]
-                    }
-                    style={
-                      {
-                        "borderRadius": 4,
-                        "height": 30,
-                        "width": 30,
-                      }
-                    }
-                    symbolSize={null}
-                    symbolWeight={null}
-                    transition={null}
-                    width={30}
-                  />
-                </View>
-              </ViewManagerAdapter_ExpoUI>
-              <ViewManagerAdapter_ExpoUI
-                alignment="leading"
-                spacing={2}
-              >
-                <ViewManagerAdapter_ExpoUI
-                  modifiers={
-                    [
-                      {
-                        "$type": "lineLimit",
-                        "limit": 1,
-                        "reservesSpace": undefined,
-                      },
-                      {
-                        "$type": "font",
-                        "textStyle": "body",
-                        "weight": "medium",
-                      },
-                      {
-                        "$type": "foregroundStyle",
-                        "style": {
-                          "color": "#2F343D",
-                          "type": "color",
-                        },
-                      },
-                    ]
-                  }
-                  onGlobalEvent={[Function]}
-                  text="Alice Johnson"
-                />
-                <ViewManagerAdapter_ExpoUI
-                  modifiers={
-                    [
-                      {
-                        "$type": "lineLimit",
-                        "limit": 1,
-                        "reservesSpace": undefined,
-                      },
-                      {
-                        "$type": "font",
-                        "textStyle": "subheadline",
-                      },
-                      {
-                        "$type": "foregroundStyle",
-                        "style": {
-                          "color": "#6C727A",
-                          "type": "color",
-                        },
-                      },
-                    ]
-                  }
-                  onGlobalEvent={[Function]}
-                  text="Hey there!"
-                />
-              </ViewManagerAdapter_ExpoUI>
-              <ViewManagerAdapter_ExpoUI />
-            </ViewManagerAdapter_ExpoUI>
-          </ViewManagerAdapter_ExpoUI>
-        </ViewManagerAdapter_ExpoUI>
-      </ViewManagerAdapter_ExpoUI>
+                Alice Johnson
+              </Text>
+            </View>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "fontSize": 15,
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              Hey there!
+            </Text>
+          </View>
+        </View>
+      </View>
     </View>
   </View>
 </RCTScrollView>
@@ -717,6 +683,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
         [
           {
             "marginHorizontal": 16,
+            "overflow": "hidden",
           },
           {
             "backgroundColor": "#FFFFFF",
@@ -726,254 +693,236 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
         ]
       }
     >
-      <ViewManagerAdapter_ExpoUI
-        colorScheme="light"
-        ignoreSafeArea="all"
-        layoutDirection="leftToRight"
+      <View
+        accessibilityLabel="This is a very very very very very very very long room name that should be truncated 9999 members"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
             {
-              "width": "100%",
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 12,
+              "paddingHorizontal": 16,
             },
             {
               "height": 54,
             },
           ]
         }
+        testID="directory-item-long"
       >
-        <ViewManagerAdapter_ExpoUI
-          modifiers={
+        <View
+          style={
             [
               {
-                "$type": "padding",
-                "horizontal": 16,
+                "alignItems": "center",
+                "alignSelf": "stretch",
+                "flex": 1,
+                "flexDirection": "row",
+                "gap": 12,
               },
+              false,
+              undefined,
             ]
           }
-          onGlobalEvent={[Function]}
-          spacing={12}
         >
-          <ViewManagerAdapter_ExpoUI
-            modifiers={
+          <View
+            accessibilityLabel="L's avatar"
+            accessible={false}
+            style={
               [
                 {
-                  "$type": "buttonStyle",
-                  "style": "plain",
+                  "borderRadius": 4,
+                  "height": 30,
+                  "width": 30,
                 },
-                {
-                  "$type": "accessibilityLabel",
-                  "label": "This is a very very very very very very very long room name that should be truncated 9999 members",
-                },
+                undefined,
               ]
             }
-            onButtonPress={[Function]}
-            onGlobalEvent={[Function]}
-            testID="directory-item-long"
+            testID="avatar"
           >
-            <ViewManagerAdapter_ExpoUI
-              modifiers={
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={4}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={30}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
                 [
                   {
-                    "$type": "contentShape",
-                    "kind": undefined,
-                    "shape": "rectangle",
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/@L?format=png&size=60",
                   },
                 ]
               }
-              onGlobalEvent={[Function]}
-              spacing={12}
+              style={
+                {
+                  "borderRadius": 4,
+                  "height": 30,
+                  "width": 30,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={30}
+            />
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginRight": 20,
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 4,
+                }
+              }
             >
-              <ViewManagerAdapter_ExpoUI
-                expoInternalSizeFromChildren={true}
-                layoutRoot={false}
-                matchContents={true}
-              >
-                <View
-                  accessibilityLabel="L's avatar"
-                  accessible={false}
-                  style={
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#1F2329",
+                      "fontSize": 16,
+                    },
                     [
                       {
-                        "borderRadius": 4,
-                        "height": 30,
-                        "width": 30,
+                        "lineHeight": 16,
                       },
-                      undefined,
-                    ]
-                  }
-                  testID="avatar"
-                >
-                  <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
-                    containerViewRef={{"current":"Object"}}
-                    contentFit="cover"
-                    contentPosition={
-                      {
-                        "left": "50%",
-                        "top": "50%",
-                      }
-                    }
-                    height={30}
-                    nativeViewRef={{"current":"NativeComponent"}}
-                    onError={[Function]}
-                    onLoad={[Function]}
-                    onLoadStart={[Function]}
-                    onProgress={[Function]}
-                    placeholder={[]}
-                    priority="high"
-                    sfEffect={null}
-                    source={
                       [
                         {
-                          "headers": {
-                            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                          },
-                          "uri": "https://open.rocket.chat/avatar/@L?format=png&size=60",
+                          "marginRight": 4,
                         },
-                      ]
-                    }
-                    style={
-                      {
-                        "borderRadius": 4,
-                        "height": 30,
-                        "width": 30,
-                      }
-                    }
-                    symbolSize={null}
-                    symbolWeight={null}
-                    transition={null}
-                    width={30}
-                  />
-                </View>
-              </ViewManagerAdapter_ExpoUI>
-              <ViewManagerAdapter_ExpoUI
-                alignment="leading"
-                spacing={2}
+                        {
+                          "marginRight": 0,
+                        },
+                      ],
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
               >
-                <ViewManagerAdapter_ExpoUI
-                  spacing={4}
-                >
-                  <ViewManagerAdapter_ExpoUI
-                    expoInternalSizeFromChildren={true}
-                    layoutRoot={false}
-                    matchContents={true}
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#1F2329",
-                            "fontSize": 16,
-                          },
-                          [
-                            {
-                              "lineHeight": 16,
-                            },
-                            [
-                              {
-                                "marginRight": 4,
-                              },
-                              undefined,
-                            ],
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </ViewManagerAdapter_ExpoUI>
-                  <ViewManagerAdapter_ExpoUI
-                    modifiers={
-                      [
-                        {
-                          "$type": "lineLimit",
-                          "limit": 1,
-                          "reservesSpace": undefined,
-                        },
-                        {
-                          "$type": "font",
-                          "textStyle": "body",
-                          "weight": "medium",
-                        },
-                        {
-                          "$type": "foregroundStyle",
-                          "style": {
-                            "color": "#2F343D",
-                            "type": "color",
-                          },
-                        },
-                      ]
-                    }
-                    onGlobalEvent={[Function]}
-                    text="This is a very very very very very very very long room name that should be truncated"
-                  />
-                </ViewManagerAdapter_ExpoUI>
-                <ViewManagerAdapter_ExpoUI
-                  modifiers={
-                    [
-                      {
-                        "$type": "lineLimit",
-                        "limit": 1,
-                        "reservesSpace": undefined,
-                      },
-                      {
-                        "$type": "font",
-                        "textStyle": "subheadline",
-                      },
-                      {
-                        "$type": "foregroundStyle",
-                        "style": {
-                          "color": "#6C727A",
-                          "type": "color",
-                        },
-                      },
-                    ]
-                  }
-                  onGlobalEvent={[Function]}
-                  text="Long name test"
-                />
-              </ViewManagerAdapter_ExpoUI>
-              <ViewManagerAdapter_ExpoUI />
-              <ViewManagerAdapter_ExpoUI
-                expoInternalSizeFromChildren={true}
-                layoutRoot={false}
-                matchContents={true}
+                
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 17,
+                      "fontWeight": "500",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
               >
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "paddingLeft": 10,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  9999 members
-                </Text>
-              </ViewManagerAdapter_ExpoUI>
-            </ViewManagerAdapter_ExpoUI>
-          </ViewManagerAdapter_ExpoUI>
-        </ViewManagerAdapter_ExpoUI>
-      </ViewManagerAdapter_ExpoUI>
+                This is a very very very very very very very long room name that should be truncated
+              </Text>
+            </View>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "fontSize": 15,
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              Long name test
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "400",
+                  "paddingLeft": 10,
+                  "textAlign": "left",
+                },
+                {
+                  "marginTop": 0.5,
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            9999 members
+          </Text>
+        </View>
+      </View>
     </View>
   </View>
 </RCTScrollView>
@@ -993,6 +942,7 @@ exports[`Story Snapshots: OnlyTitle should match snapshot 1`] = `
         [
           {
             "marginHorizontal": 16,
+            "overflow": "hidden",
           },
           {
             "backgroundColor": "#FFFFFF",
@@ -1002,144 +952,139 @@ exports[`Story Snapshots: OnlyTitle should match snapshot 1`] = `
         ]
       }
     >
-      <ViewManagerAdapter_ExpoUI
-        colorScheme="light"
-        ignoreSafeArea="all"
-        layoutDirection="leftToRight"
+      <View
+        accessibilityLabel="Just a title "
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
             {
-              "width": "100%",
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 12,
+              "paddingHorizontal": 16,
             },
             {
               "height": 54,
             },
           ]
         }
+        testID="directory-item-title"
       >
-        <ViewManagerAdapter_ExpoUI
-          modifiers={
+        <View
+          style={
             [
               {
-                "$type": "padding",
-                "horizontal": 16,
+                "alignItems": "center",
+                "alignSelf": "stretch",
+                "flex": 1,
+                "flexDirection": "row",
+                "gap": 12,
               },
+              false,
+              undefined,
             ]
           }
-          onGlobalEvent={[Function]}
-          spacing={12}
         >
-          <ViewManagerAdapter_ExpoUI
-            modifiers={
-              [
-                {
-                  "$type": "buttonStyle",
-                  "style": "plain",
-                },
-                {
-                  "$type": "accessibilityLabel",
-                  "label": "Just a title ",
-                },
-              ]
-            }
-            onButtonPress={[Function]}
-            onGlobalEvent={[Function]}
-            testID="directory-item-title"
-          >
-            <ViewManagerAdapter_ExpoUI
-              modifiers={
-                [
-                  {
-                    "$type": "contentShape",
-                    "kind": undefined,
-                    "shape": "rectangle",
-                  },
-                ]
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginRight": 20,
               }
-              onGlobalEvent={[Function]}
-              spacing={12}
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 4,
+                }
+              }
             >
-              <ViewManagerAdapter_ExpoUI
-                expoInternalSizeFromChildren={true}
-                layoutRoot={false}
-                matchContents={true}
-              />
-              <ViewManagerAdapter_ExpoUI
-                alignment="leading"
-                spacing={2}
-              >
-                <ViewManagerAdapter_ExpoUI
-                  spacing={4}
-                >
-                  <ViewManagerAdapter_ExpoUI
-                    expoInternalSizeFromChildren={true}
-                    layoutRoot={false}
-                    matchContents={true}
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#1F2329",
-                            "fontSize": 16,
-                          },
-                          [
-                            {
-                              "lineHeight": 16,
-                            },
-                            [
-                              {
-                                "marginRight": 4,
-                              },
-                              undefined,
-                            ],
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </ViewManagerAdapter_ExpoUI>
-                  <ViewManagerAdapter_ExpoUI
-                    modifiers={
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#1F2329",
+                      "fontSize": 16,
+                    },
+                    [
+                      {
+                        "lineHeight": 16,
+                      },
                       [
                         {
-                          "$type": "lineLimit",
-                          "limit": 1,
-                          "reservesSpace": undefined,
+                          "marginRight": 4,
                         },
                         {
-                          "$type": "font",
-                          "textStyle": "body",
-                          "weight": "medium",
+                          "marginRight": 0,
                         },
-                        {
-                          "$type": "foregroundStyle",
-                          "style": {
-                            "color": "#2F343D",
-                            "type": "color",
-                          },
-                        },
-                      ]
-                    }
-                    onGlobalEvent={[Function]}
-                    text="Just a title"
-                  />
-                </ViewManagerAdapter_ExpoUI>
-              </ViewManagerAdapter_ExpoUI>
-              <ViewManagerAdapter_ExpoUI />
-            </ViewManagerAdapter_ExpoUI>
-          </ViewManagerAdapter_ExpoUI>
-        </ViewManagerAdapter_ExpoUI>
-      </ViewManagerAdapter_ExpoUI>
+                      ],
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 17,
+                      "fontWeight": "500",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Just a title
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
     </View>
   </View>
 </RCTScrollView>
@@ -1159,6 +1104,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
         [
           {
             "marginHorizontal": 16,
+            "overflow": "hidden",
           },
           {
             "backgroundColor": "#FFFFFF",
@@ -1168,226 +1114,211 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
         ]
       }
     >
-      <ViewManagerAdapter_ExpoUI
-        colorScheme="light"
-        ignoreSafeArea="all"
-        layoutDirection="leftToRight"
+      <View
+        accessibilityLabel="Engineering Team "
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
             {
-              "width": "100%",
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 12,
+              "paddingHorizontal": 16,
             },
             {
               "height": 54,
             },
           ]
         }
+        testID="directory-item-team"
       >
-        <ViewManagerAdapter_ExpoUI
-          modifiers={
+        <View
+          style={
             [
               {
-                "$type": "padding",
-                "horizontal": 16,
+                "alignItems": "center",
+                "alignSelf": "stretch",
+                "flex": 1,
+                "flexDirection": "row",
+                "gap": 12,
               },
+              false,
+              undefined,
             ]
           }
-          onGlobalEvent={[Function]}
-          spacing={12}
         >
-          <ViewManagerAdapter_ExpoUI
-            modifiers={
+          <View
+            accessibilityLabel="E's avatar"
+            accessible={false}
+            style={
               [
                 {
-                  "$type": "buttonStyle",
-                  "style": "plain",
+                  "borderRadius": 4,
+                  "height": 30,
+                  "width": 30,
                 },
-                {
-                  "$type": "accessibilityLabel",
-                  "label": "Engineering Team ",
-                },
+                undefined,
               ]
             }
-            onButtonPress={[Function]}
-            onGlobalEvent={[Function]}
-            testID="directory-item-team"
+            testID="avatar"
           >
-            <ViewManagerAdapter_ExpoUI
-              modifiers={
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={4}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={30}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
                 [
                   {
-                    "$type": "contentShape",
-                    "kind": undefined,
-                    "shape": "rectangle",
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/@E?format=png&size=60",
                   },
                 ]
               }
-              onGlobalEvent={[Function]}
-              spacing={12}
+              style={
+                {
+                  "borderRadius": 4,
+                  "height": 30,
+                  "width": 30,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={30}
+            />
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginRight": 20,
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 4,
+                }
+              }
             >
-              <ViewManagerAdapter_ExpoUI
-                expoInternalSizeFromChildren={true}
-                layoutRoot={false}
-                matchContents={true}
-              >
-                <View
-                  accessibilityLabel="E's avatar"
-                  accessible={false}
-                  style={
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#1F2329",
+                      "fontSize": 16,
+                    },
                     [
                       {
-                        "borderRadius": 4,
-                        "height": 30,
-                        "width": 30,
+                        "lineHeight": 16,
                       },
-                      undefined,
-                    ]
-                  }
-                  testID="avatar"
-                >
-                  <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
-                    containerViewRef={{"current":"Object"}}
-                    contentFit="cover"
-                    contentPosition={
-                      {
-                        "left": "50%",
-                        "top": "50%",
-                      }
-                    }
-                    height={30}
-                    nativeViewRef={{"current":"NativeComponent"}}
-                    onError={[Function]}
-                    onLoad={[Function]}
-                    onLoadStart={[Function]}
-                    onProgress={[Function]}
-                    placeholder={[]}
-                    priority="high"
-                    sfEffect={null}
-                    source={
                       [
                         {
-                          "headers": {
-                            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                          },
-                          "uri": "https://open.rocket.chat/avatar/@E?format=png&size=60",
+                          "marginRight": 4,
                         },
-                      ]
-                    }
-                    style={
-                      {
-                        "borderRadius": 4,
-                        "height": 30,
-                        "width": 30,
-                      }
-                    }
-                    symbolSize={null}
-                    symbolWeight={null}
-                    transition={null}
-                    width={30}
-                  />
-                </View>
-              </ViewManagerAdapter_ExpoUI>
-              <ViewManagerAdapter_ExpoUI
-                alignment="leading"
-                spacing={2}
+                        {
+                          "marginRight": 0,
+                        },
+                      ],
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
               >
-                <ViewManagerAdapter_ExpoUI
-                  spacing={4}
-                >
-                  <ViewManagerAdapter_ExpoUI
-                    expoInternalSizeFromChildren={true}
-                    layoutRoot={false}
-                    matchContents={true}
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#1F2329",
-                            "fontSize": 16,
-                          },
-                          [
-                            {
-                              "lineHeight": 16,
-                            },
-                            [
-                              {
-                                "marginRight": 4,
-                              },
-                              undefined,
-                            ],
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </ViewManagerAdapter_ExpoUI>
-                  <ViewManagerAdapter_ExpoUI
-                    modifiers={
-                      [
-                        {
-                          "$type": "lineLimit",
-                          "limit": 1,
-                          "reservesSpace": undefined,
-                        },
-                        {
-                          "$type": "font",
-                          "textStyle": "body",
-                          "weight": "medium",
-                        },
-                        {
-                          "$type": "foregroundStyle",
-                          "style": {
-                            "color": "#2F343D",
-                            "type": "color",
-                          },
-                        },
-                      ]
-                    }
-                    onGlobalEvent={[Function]}
-                    text="Engineering Team"
-                  />
-                </ViewManagerAdapter_ExpoUI>
-                <ViewManagerAdapter_ExpoUI
-                  modifiers={
-                    [
-                      {
-                        "$type": "lineLimit",
-                        "limit": 1,
-                        "reservesSpace": undefined,
-                      },
-                      {
-                        "$type": "font",
-                        "textStyle": "subheadline",
-                      },
-                      {
-                        "$type": "foregroundStyle",
-                        "style": {
-                          "color": "#6C727A",
-                          "type": "color",
-                        },
-                      },
-                    ]
-                  }
-                  onGlobalEvent={[Function]}
-                  text="Main team room"
-                />
-              </ViewManagerAdapter_ExpoUI>
-              <ViewManagerAdapter_ExpoUI />
-            </ViewManagerAdapter_ExpoUI>
-          </ViewManagerAdapter_ExpoUI>
-        </ViewManagerAdapter_ExpoUI>
-      </ViewManagerAdapter_ExpoUI>
+                
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 17,
+                      "fontWeight": "500",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Engineering Team
+              </Text>
+            </View>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "fontSize": 15,
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              Main team room
+            </Text>
+          </View>
+        </View>
+      </View>
     </View>
   </View>
 </RCTScrollView>
@@ -1407,6 +1338,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
         [
           {
             "marginHorizontal": 16,
+            "overflow": "hidden",
           },
           {
             "backgroundColor": "#FFFFFF",
@@ -1416,254 +1348,236 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
         ]
       }
     >
-      <ViewManagerAdapter_ExpoUI
-        colorScheme="light"
-        ignoreSafeArea="all"
-        layoutDirection="leftToRight"
+      <View
+        accessibilityLabel="General 123 members"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
             {
-              "width": "100%",
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 12,
+              "paddingHorizontal": 16,
             },
             {
               "height": 54,
             },
           ]
         }
+        testID="directory-item-label"
       >
-        <ViewManagerAdapter_ExpoUI
-          modifiers={
+        <View
+          style={
             [
               {
-                "$type": "padding",
-                "horizontal": 16,
+                "alignItems": "center",
+                "alignSelf": "stretch",
+                "flex": 1,
+                "flexDirection": "row",
+                "gap": 12,
               },
+              false,
+              undefined,
             ]
           }
-          onGlobalEvent={[Function]}
-          spacing={12}
         >
-          <ViewManagerAdapter_ExpoUI
-            modifiers={
+          <View
+            accessibilityLabel="G's avatar"
+            accessible={false}
+            style={
               [
                 {
-                  "$type": "buttonStyle",
-                  "style": "plain",
+                  "borderRadius": 4,
+                  "height": 30,
+                  "width": 30,
                 },
-                {
-                  "$type": "accessibilityLabel",
-                  "label": "General 123 members",
-                },
+                undefined,
               ]
             }
-            onButtonPress={[Function]}
-            onGlobalEvent={[Function]}
-            testID="directory-item-label"
+            testID="avatar"
           >
-            <ViewManagerAdapter_ExpoUI
-              modifiers={
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={4}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={30}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
                 [
                   {
-                    "$type": "contentShape",
-                    "kind": undefined,
-                    "shape": "rectangle",
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/@G?format=png&size=60",
                   },
                 ]
               }
-              onGlobalEvent={[Function]}
-              spacing={12}
+              style={
+                {
+                  "borderRadius": 4,
+                  "height": 30,
+                  "width": 30,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={30}
+            />
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginRight": 20,
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 4,
+                }
+              }
             >
-              <ViewManagerAdapter_ExpoUI
-                expoInternalSizeFromChildren={true}
-                layoutRoot={false}
-                matchContents={true}
-              >
-                <View
-                  accessibilityLabel="G's avatar"
-                  accessible={false}
-                  style={
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#1F2329",
+                      "fontSize": 16,
+                    },
                     [
                       {
-                        "borderRadius": 4,
-                        "height": 30,
-                        "width": 30,
+                        "lineHeight": 16,
                       },
-                      undefined,
-                    ]
-                  }
-                  testID="avatar"
-                >
-                  <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
-                    containerViewRef={{"current":"Object"}}
-                    contentFit="cover"
-                    contentPosition={
-                      {
-                        "left": "50%",
-                        "top": "50%",
-                      }
-                    }
-                    height={30}
-                    nativeViewRef={{"current":"NativeComponent"}}
-                    onError={[Function]}
-                    onLoad={[Function]}
-                    onLoadStart={[Function]}
-                    onProgress={[Function]}
-                    placeholder={[]}
-                    priority="high"
-                    sfEffect={null}
-                    source={
                       [
                         {
-                          "headers": {
-                            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                          },
-                          "uri": "https://open.rocket.chat/avatar/@G?format=png&size=60",
+                          "marginRight": 4,
                         },
-                      ]
-                    }
-                    style={
-                      {
-                        "borderRadius": 4,
-                        "height": 30,
-                        "width": 30,
-                      }
-                    }
-                    symbolSize={null}
-                    symbolWeight={null}
-                    transition={null}
-                    width={30}
-                  />
-                </View>
-              </ViewManagerAdapter_ExpoUI>
-              <ViewManagerAdapter_ExpoUI
-                alignment="leading"
-                spacing={2}
+                        {
+                          "marginRight": 0,
+                        },
+                      ],
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
               >
-                <ViewManagerAdapter_ExpoUI
-                  spacing={4}
-                >
-                  <ViewManagerAdapter_ExpoUI
-                    expoInternalSizeFromChildren={true}
-                    layoutRoot={false}
-                    matchContents={true}
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#1F2329",
-                            "fontSize": 16,
-                          },
-                          [
-                            {
-                              "lineHeight": 16,
-                            },
-                            [
-                              {
-                                "marginRight": 4,
-                              },
-                              undefined,
-                            ],
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </ViewManagerAdapter_ExpoUI>
-                  <ViewManagerAdapter_ExpoUI
-                    modifiers={
-                      [
-                        {
-                          "$type": "lineLimit",
-                          "limit": 1,
-                          "reservesSpace": undefined,
-                        },
-                        {
-                          "$type": "font",
-                          "textStyle": "body",
-                          "weight": "medium",
-                        },
-                        {
-                          "$type": "foregroundStyle",
-                          "style": {
-                            "color": "#2F343D",
-                            "type": "color",
-                          },
-                        },
-                      ]
-                    }
-                    onGlobalEvent={[Function]}
-                    text="General"
-                  />
-                </ViewManagerAdapter_ExpoUI>
-                <ViewManagerAdapter_ExpoUI
-                  modifiers={
-                    [
-                      {
-                        "$type": "lineLimit",
-                        "limit": 1,
-                        "reservesSpace": undefined,
-                      },
-                      {
-                        "$type": "font",
-                        "textStyle": "subheadline",
-                      },
-                      {
-                        "$type": "foregroundStyle",
-                        "style": {
-                          "color": "#6C727A",
-                          "type": "color",
-                        },
-                      },
-                    ]
-                  }
-                  onGlobalEvent={[Function]}
-                  text="Room with label"
-                />
-              </ViewManagerAdapter_ExpoUI>
-              <ViewManagerAdapter_ExpoUI />
-              <ViewManagerAdapter_ExpoUI
-                expoInternalSizeFromChildren={true}
-                layoutRoot={false}
-                matchContents={true}
+                
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 17,
+                      "fontWeight": "500",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
               >
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "paddingLeft": 10,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  123 members
-                </Text>
-              </ViewManagerAdapter_ExpoUI>
-            </ViewManagerAdapter_ExpoUI>
-          </ViewManagerAdapter_ExpoUI>
-        </ViewManagerAdapter_ExpoUI>
-      </ViewManagerAdapter_ExpoUI>
+                General
+              </Text>
+            </View>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "fontSize": 15,
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              Room with label
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "400",
+                  "paddingLeft": 10,
+                  "textAlign": "left",
+                },
+                {
+                  "marginTop": 0.5,
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            123 members
+          </Text>
+        </View>
+      </View>
     </View>
   </View>
 </RCTScrollView>
@@ -1683,6 +1597,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
         [
           {
             "marginHorizontal": 16,
+            "overflow": "hidden",
           },
           {
             "backgroundColor": "#FFFFFF",
@@ -1692,202 +1607,196 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
         ]
       }
     >
-      <ViewManagerAdapter_ExpoUI
-        colorScheme="light"
-        ignoreSafeArea="all"
-        layoutDirection="leftToRight"
+      <View
+        accessibilityLabel="No description room "
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
             {
-              "width": "100%",
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 12,
+              "paddingHorizontal": 16,
             },
             {
               "height": 54,
             },
           ]
         }
+        testID="directory-item-no-desc"
       >
-        <ViewManagerAdapter_ExpoUI
-          modifiers={
+        <View
+          style={
             [
               {
-                "$type": "padding",
-                "horizontal": 16,
+                "alignItems": "center",
+                "alignSelf": "stretch",
+                "flex": 1,
+                "flexDirection": "row",
+                "gap": 12,
               },
+              false,
+              undefined,
             ]
           }
-          onGlobalEvent={[Function]}
-          spacing={12}
         >
-          <ViewManagerAdapter_ExpoUI
-            modifiers={
+          <View
+            accessibilityLabel="N's avatar"
+            accessible={false}
+            style={
               [
                 {
-                  "$type": "buttonStyle",
-                  "style": "plain",
+                  "borderRadius": 4,
+                  "height": 30,
+                  "width": 30,
                 },
-                {
-                  "$type": "accessibilityLabel",
-                  "label": "No description room ",
-                },
+                undefined,
               ]
             }
-            onButtonPress={[Function]}
-            onGlobalEvent={[Function]}
-            testID="directory-item-no-desc"
+            testID="avatar"
           >
-            <ViewManagerAdapter_ExpoUI
-              modifiers={
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={4}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={30}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
                 [
                   {
-                    "$type": "contentShape",
-                    "kind": undefined,
-                    "shape": "rectangle",
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/@N?format=png&size=60",
                   },
                 ]
               }
-              onGlobalEvent={[Function]}
-              spacing={12}
+              style={
+                {
+                  "borderRadius": 4,
+                  "height": 30,
+                  "width": 30,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={30}
+            />
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginRight": 20,
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 4,
+                }
+              }
             >
-              <ViewManagerAdapter_ExpoUI
-                expoInternalSizeFromChildren={true}
-                layoutRoot={false}
-                matchContents={true}
-              >
-                <View
-                  accessibilityLabel="N's avatar"
-                  accessible={false}
-                  style={
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#1F2329",
+                      "fontSize": 16,
+                    },
                     [
                       {
-                        "borderRadius": 4,
-                        "height": 30,
-                        "width": 30,
+                        "lineHeight": 16,
                       },
-                      undefined,
-                    ]
-                  }
-                  testID="avatar"
-                >
-                  <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
-                    containerViewRef={{"current":"Object"}}
-                    contentFit="cover"
-                    contentPosition={
-                      {
-                        "left": "50%",
-                        "top": "50%",
-                      }
-                    }
-                    height={30}
-                    nativeViewRef={{"current":"NativeComponent"}}
-                    onError={[Function]}
-                    onLoad={[Function]}
-                    onLoadStart={[Function]}
-                    onProgress={[Function]}
-                    placeholder={[]}
-                    priority="high"
-                    sfEffect={null}
-                    source={
                       [
                         {
-                          "headers": {
-                            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                          },
-                          "uri": "https://open.rocket.chat/avatar/@N?format=png&size=60",
+                          "marginRight": 4,
                         },
-                      ]
-                    }
-                    style={
-                      {
-                        "borderRadius": 4,
-                        "height": 30,
-                        "width": 30,
-                      }
-                    }
-                    symbolSize={null}
-                    symbolWeight={null}
-                    transition={null}
-                    width={30}
-                  />
-                </View>
-              </ViewManagerAdapter_ExpoUI>
-              <ViewManagerAdapter_ExpoUI
-                alignment="leading"
-                spacing={2}
+                        {
+                          "marginRight": 0,
+                        },
+                      ],
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
               >
-                <ViewManagerAdapter_ExpoUI
-                  spacing={4}
-                >
-                  <ViewManagerAdapter_ExpoUI
-                    expoInternalSizeFromChildren={true}
-                    layoutRoot={false}
-                    matchContents={true}
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#1F2329",
-                            "fontSize": 16,
-                          },
-                          [
-                            {
-                              "lineHeight": 16,
-                            },
-                            [
-                              {
-                                "marginRight": 4,
-                              },
-                              undefined,
-                            ],
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </ViewManagerAdapter_ExpoUI>
-                  <ViewManagerAdapter_ExpoUI
-                    modifiers={
-                      [
-                        {
-                          "$type": "lineLimit",
-                          "limit": 1,
-                          "reservesSpace": undefined,
-                        },
-                        {
-                          "$type": "font",
-                          "textStyle": "body",
-                          "weight": "medium",
-                        },
-                        {
-                          "$type": "foregroundStyle",
-                          "style": {
-                            "color": "#2F343D",
-                            "type": "color",
-                          },
-                        },
-                      ]
-                    }
-                    onGlobalEvent={[Function]}
-                    text="No description room"
-                  />
-                </ViewManagerAdapter_ExpoUI>
-              </ViewManagerAdapter_ExpoUI>
-              <ViewManagerAdapter_ExpoUI />
-            </ViewManagerAdapter_ExpoUI>
-          </ViewManagerAdapter_ExpoUI>
-        </ViewManagerAdapter_ExpoUI>
-      </ViewManagerAdapter_ExpoUI>
+                
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 17,
+                      "fontWeight": "500",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                No description room
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
     </View>
   </View>
 </RCTScrollView>

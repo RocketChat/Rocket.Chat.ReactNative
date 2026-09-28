@@ -1,6 +1,6 @@
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
-import NativeListIndicator from '~/containers/List/native/Indicator.ios';
 import NativeListRow from '~/containers/NativeListRow';
+import Disclosure from '~/containers/NativeListRow/Disclosure.ios';
 import { PlainSeparator } from '~/containers/NativeListRow/Separator';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
@@ -28,7 +28,7 @@ const ButtonCreate = ({ onPress, testID, title, icon, isFirst, isLast }: IButton
 				isFirst={isFirst}
 				isLast={isLast}
 				leading={<CustomIcon name={icon} size={24} color={colors.fontDefault} />}
-				trailing={<NativeListIndicator indicator='disclosure' />}
+				trailing={<Disclosure />}
 			/>
 			{isLast ? null : <PlainSeparator />}
 		</>

@@ -2,8 +2,8 @@ import { View } from 'react-native';
 import { type ReactElement } from 'react';
 
 import NativeListRow from '~/containers/NativeListRow';
-import NativeListIcon from '~/containers/List/native/Icon.ios';
-import NativeListIndicator from '~/containers/List/native/Indicator.ios';
+import { CustomIcon } from '~/containers/CustomIcon';
+import Disclosure from '~/containers/NativeListRow/Disclosure.ios';
 import RowSeparator from '~/containers/NativeListRow/Separator';
 import i18n from '~/i18n';
 import { useTheme } from '~/theme';
@@ -30,8 +30,8 @@ export default function ActionsSection(props: IActionsSection): ReactElement | n
 						disabled={action.disabled}
 						isFirst={index === 0}
 						isLast={index === actions.length - 1}
-						leading={<NativeListIcon name={action.icon} color={colors.fontDefault} />}
-						trailing={<NativeListIndicator indicator='disclosure' />}
+						leading={<CustomIcon name={action.icon} size={24} color={colors.fontDefault} />}
+						trailing={<Disclosure />}
 					/>
 				</View>
 			))}

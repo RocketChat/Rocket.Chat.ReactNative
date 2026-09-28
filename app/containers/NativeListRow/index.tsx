@@ -1,29 +1,18 @@
 import { type ReactElement, type ReactNode } from 'react';
-import { PixelRatio, StyleSheet, View } from 'react-native';
-import { Host, ListItem } from '@expo/ui';
-import { Button, HStack, RNHostView, Text } from '@expo/ui/swift-ui';
-import {
-	accessibilityAddTraits,
-	accessibilityLabel as accessibilityLabelModifier,
-	buttonStyle,
-	disabled as disabledModifier,
-	font,
-	foregroundStyle,
-	lineLimit,
-	onLongPressGesture,
-	opacity,
-	padding
-} from '@expo/ui/swift-ui/modifiers';
+import { PixelRatio, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { type TIconsName } from '~/containers/CustomIcon';
-import NativeListIcon from '~/containers/List/native/Icon.ios';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import { useTheme } from '~/theme';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { CONTENT_SPACING, ROW_HEIGHT, ROW_MARGIN_HORIZONTAL, ROW_PADDING_HORIZONTAL, ROW_RADIUS } from './constants';
 
+const TRAILING_ACTION_HIT_SLOP = 12;
+const SPACER_MIN_LENGTH = 8;
+
 const styles = StyleSheet.create({
 	card: {
-		marginHorizontal: ROW_MARGIN_HORIZONTAL
+		marginHorizontal: ROW_MARGIN_HORIZONTAL,
+		overflow: 'hidden'
 	},
 	firstCard: {
 		borderTopLeftRadius: ROW_RADIUS,
@@ -33,8 +22,41 @@ const styles = StyleSheet.create({
 		borderBottomLeftRadius: ROW_RADIUS,
 		borderBottomRightRadius: ROW_RADIUS
 	},
-	host: {
-		width: '100%'
+	row: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		paddingHorizontal: ROW_PADDING_HORIZONTAL,
+		gap: CONTENT_SPACING
+	},
+	pressable: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		alignSelf: 'stretch',
+		gap: CONTENT_SPACING
+	},
+	pressed: {
+		opacity: 0.75
+	},
+	disabled: {
+		opacity: 0.3
+	},
+	texts: {
+		flex: 1,
+		marginRight: SPACER_MIN_LENGTH + CONTENT_SPACING
+	},
+	titleRow: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 4
+	},
+	title: {
+		flexShrink: 1,
+		fontSize: 17,
+		fontWeight: '500'
+	},
+	subtitle: {
+		fontSize: 15
 	}
 });
 
@@ -79,65 +101,58 @@ const NativeListRow = ({
 	isLast,
 	disabled
 }: INativeListRow) => {
-	const { colors, theme } = useTheme();
+	const { colors } = useTheme();
 	const { fontScale } = useResponsiveLayout();
 	const height = PixelRatio.roundToNearestPixel(ROW_HEIGHT * fontScale);
-	const rowModifiers = [
-		accessibilityLabelModifier(accessibilityLabel),
-		...(isSelected ? [accessibilityAddTraits(['isSelected'])] : []),
-		...(onLongPress ? [onLongPressGesture(onLongPress)] : []),
-		...(disabled ? [disabledModifier(true), opacity(0.3)] : [])
-	];
-	const titleText = (
-		<Text modifiers={[lineLimit(1), font({ textStyle: 'body', weight: 'medium' }), foregroundStyle(colors.fontDefault)]}>
-			{title}
-		</Text>
-	);
 
 	return (
 		<View style={[styles.card, { backgroundColor: colors.surfaceLight }, isFirst && styles.firstCard, isLast && styles.lastCard]}>
-			<Host style={[styles.host, { height }]} colorScheme={theme === 'light' ? 'light' : 'dark'} ignoreSafeArea='all'>
-				<HStack spacing={CONTENT_SPACING} modifiers={[padding({ horizontal: ROW_PADDING_HORIZONTAL })]}>
-					<ListItem
-						onPress={onPress}
-						testID={testID}
-						modifiers={rowModifiers}
-						leading={leading}
-						trailing={trailing}
-						supportingText={
-							subtitle ? (
-								<Text modifiers={[lineLimit(1), font({ textStyle: 'subheadline' }), foregroundStyle(colors.fontSecondaryInfo)]}>
-									{subtitle}
-								</Text>
-							) : undefined
-						}>
-						{titleLeading ? (
-							<HStack spacing={4}>
-								<RNHostView matchContents>{titleLeading}</RNHostView>
-								{titleText}
-							</HStack>
-						) : (
-							titleText
-						)}
-					</ListItem>
-					{trailingAction ? (
-						<Button
-							onPress={trailingAction.onPress}
-							testID={trailingAction.testID}
-							modifiers={[
-								buttonStyle('borderless'),
-								disabledModifier(Boolean(trailingAction.disabled)),
-								accessibilityLabelModifier(trailingAction.accessibilityLabel)
-							]}>
-							<NativeListIcon
-								name={trailingAction.icon}
-								size={20}
-								color={trailingAction.disabled ? colors.fontDisabled : colors.fontDefault}
-							/>
-						</Button>
-					) : null}
-				</HStack>
-			</Host>
+			<Pressable
+				onPress={onPress}
+				onLongPress={onLongPress}
+				disabled={disabled}
+				testID={testID}
+				accessibilityRole='button'
+				accessibilityLabel={accessibilityLabel}
+				accessibilityState={{ selected: isSelected, disabled }}
+				style={[styles.row, { height }]}>
+				{({ pressed }) => (
+					<>
+						<View style={[styles.pressable, pressed && styles.pressed, disabled && styles.disabled]}>
+							{leading}
+							<View style={styles.texts}>
+								<View style={styles.titleRow}>
+									{titleLeading}
+									<Text numberOfLines={1} style={[styles.title, { color: colors.fontDefault }]}>
+										{title}
+									</Text>
+								</View>
+								{subtitle ? (
+									<Text numberOfLines={1} style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}>
+										{subtitle}
+									</Text>
+								) : null}
+							</View>
+							{trailing}
+						</View>
+						{trailingAction ? (
+							<Pressable
+								onPress={trailingAction.onPress}
+								disabled={trailingAction.disabled}
+								testID={trailingAction.testID}
+								accessibilityRole='button'
+								accessibilityLabel={trailingAction.accessibilityLabel}
+								hitSlop={TRAILING_ACTION_HIT_SLOP}>
+								<CustomIcon
+									name={trailingAction.icon}
+									size={20}
+									color={trailingAction.disabled ? colors.fontDisabled : colors.fontDefault}
+								/>
+							</Pressable>
+						) : null}
+					</>
+				)}
+			</Pressable>
 		</View>
 	);
 };
