@@ -9,6 +9,14 @@ import {
 } from './sidebarGroupOrder';
 
 const CHATS_HEADER = 'Chats';
+const UNREAD_HEADER = 'Unread';
+const OMNICHANNEL_HEADER_IN_PROGRESS = 'Open_Livechats';
+const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
+
+const filterIsUnread = (subscription: TSubscriptionModel) =>
+	(subscription.alert || subscription.unread) && !subscription.hideUnreadStatus;
+
+const filterIsOmnichannel = (subscription: TSubscriptionModel) => subscription.t === 'l';
 
 export const addRoomsGroup = (data: TSubscriptionModel[], header: string, allData: TSubscriptionModel[], title?: string) => {
 	if (data.length > 0) {
@@ -53,7 +61,7 @@ type GroupRoomsOptions = {
 	hasChatsHeader: boolean;
 };
 
-export const groupRooms = (
+const groupRooms = (
 	chats: TSubscriptionModel[],
 	{ groupOrder, customCategoryNames, showFavorites, groupByType, hasChatsHeader }: GroupRoomsOptions
 ) => {
@@ -87,4 +95,46 @@ export const groupRooms = (
 		groupedChats = addRoomsGroup(groups.get(key) ?? [], header, groupedChats, customCategoryNames.get(key));
 	});
 	return groupedChats;
+};
+
+type BuildRoomListOptions = Omit<GroupRoomsOptions, 'hasChatsHeader'> & {
+	showUnread: boolean;
+	isOmnichannelAgent: boolean;
+};
+
+export const buildRoomList = (subscriptions: TSubscriptionModel[], options: BuildRoomListOptions) => {
+	const { groupOrder, customCategoryNames, showUnread, showFavorites, groupByType, isOmnichannelAgent } = options;
+	let remainingSubscriptions = subscriptions;
+	let roomList: TSubscriptionModel[] = [];
+
+	if (isOmnichannelAgent) {
+		const omnichannel = remainingSubscriptions.filter(filterIsOmnichannel);
+		remainingSubscriptions = remainingSubscriptions.filter(subscription => !filterIsOmnichannel(subscription));
+		roomList = addRoomsGroup(
+			omnichannel.filter(subscription => !subscription.onHold),
+			OMNICHANNEL_HEADER_IN_PROGRESS,
+			roomList
+		);
+		roomList = addRoomsGroup(
+			omnichannel.filter(subscription => subscription.onHold),
+			OMNICHANNEL_HEADER_ON_HOLD,
+			roomList
+		);
+	}
+
+	if (showUnread) {
+		const unread = remainingSubscriptions.filter(filterIsUnread);
+		remainingSubscriptions = remainingSubscriptions.filter(subscription => !filterIsUnread(subscription));
+		roomList = addRoomsGroup(unread, UNREAD_HEADER, roomList);
+	}
+
+	return roomList.concat(
+		groupRooms(remainingSubscriptions, {
+			groupOrder,
+			customCategoryNames,
+			showFavorites,
+			groupByType,
+			hasChatsHeader: showUnread || showFavorites || isOmnichannelAgent || customCategoryNames.size > 0
+		})
+	);
 };
