@@ -2,7 +2,7 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { useNavigation } from '@react-navigation/native';
 
-import { type ISubscription, type SubscriptionType, type TSubscriptionModel, type TUserStatus } from '~/definitions';
+import { type SubscriptionType, type TUserStatus } from '~/definitions';
 import { isSubscriptionModel } from '~/definitions/TRoom';
 import i18n from '~/i18n';
 import getRoomAccessibilityLabel from '~/lib/helpers/getRoomAccessibilityLabel';
@@ -37,10 +37,10 @@ export const useRoomRightButtonsData = (rid: string, roomStore: RoomStore) => {
 				t: room.t as SubscriptionType,
 				status: fromSubscription(r => r.status, undefined)(s),
 				roomName: getRoomTitle(room),
-				roomIsGroupChat: isGroupChat(room as ISubscription),
+				roomIsGroupChat: isGroupChat(room),
 				teamMain: fromSubscription(r => !!r.teamMain, false)(s),
 				encrypted: fromSubscription(r => r.encrypted, undefined)(s),
-				disableNotifications: (room as ISubscription).disableNotifications
+				disableNotifications: fromSubscription(r => r.disableNotifications, undefined)(s)
 			};
 		})
 	);
@@ -63,7 +63,7 @@ export const useRoomRightButtonsData = (rid: string, roomStore: RoomStore) => {
 				navigation,
 				isMasterDetail,
 				screen: 'NotificationPrefView',
-				params: { rid, room: room as TSubscriptionModel }
+				params: { rid, room }
 			});
 		} else {
 			navigateToScreen({ navigation, isMasterDetail, screen: 'PushTroubleshootView' });

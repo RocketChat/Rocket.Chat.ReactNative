@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: ROW_PADDING_HORIZONTAL,
 		gap: CONTENT_SPACING
 	},
-	pressable: {
+	content: {
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -106,7 +106,14 @@ const NativeListRow = ({
 	const height = PixelRatio.roundToNearestPixel(ROW_HEIGHT * fontScale);
 
 	return (
-		<View style={[styles.card, { backgroundColor: colors.surfaceLight }, isFirst && styles.firstCard, isLast && styles.lastCard]}>
+		<View
+			style={[
+				styles.card,
+				styles.row,
+				{ height, backgroundColor: colors.surfaceLight },
+				isFirst && styles.firstCard,
+				isLast && styles.lastCard
+			]}>
 			<Pressable
 				onPress={onPress}
 				onLongPress={onLongPress}
@@ -115,44 +122,38 @@ const NativeListRow = ({
 				accessibilityRole='button'
 				accessibilityLabel={accessibilityLabel}
 				accessibilityState={{ selected: isSelected, disabled }}
-				style={[styles.row, { height }]}>
-				{({ pressed }) => (
-					<>
-						<View style={[styles.pressable, pressed && styles.pressed, disabled && styles.disabled]}>
-							{leading}
-							<View style={styles.texts}>
-								<View style={styles.titleRow}>
-									{titleLeading}
-									<Text numberOfLines={1} style={[styles.title, { color: colors.fontDefault }]}>
-										{title}
-									</Text>
-								</View>
-								{subtitle ? (
-									<Text numberOfLines={1} style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}>
-										{subtitle}
-									</Text>
-								) : null}
-							</View>
-							{trailing}
-						</View>
-						{trailingAction ? (
-							<Pressable
-								onPress={trailingAction.onPress}
-								disabled={trailingAction.disabled}
-								testID={trailingAction.testID}
-								accessibilityRole='button'
-								accessibilityLabel={trailingAction.accessibilityLabel}
-								hitSlop={TRAILING_ACTION_HIT_SLOP}>
-								<CustomIcon
-									name={trailingAction.icon}
-									size={20}
-									color={trailingAction.disabled ? colors.fontDisabled : colors.fontDefault}
-								/>
-							</Pressable>
-						) : null}
-					</>
-				)}
+				style={({ pressed }) => [styles.content, pressed && styles.pressed, disabled && styles.disabled]}>
+				{leading}
+				<View style={styles.texts}>
+					<View style={styles.titleRow}>
+						{titleLeading}
+						<Text numberOfLines={1} style={[styles.title, { color: colors.fontDefault }]}>
+							{title}
+						</Text>
+					</View>
+					{subtitle ? (
+						<Text numberOfLines={1} style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}>
+							{subtitle}
+						</Text>
+					) : null}
+				</View>
+				{trailing}
 			</Pressable>
+			{trailingAction ? (
+				<Pressable
+					onPress={trailingAction.onPress}
+					disabled={trailingAction.disabled}
+					testID={trailingAction.testID}
+					accessibilityRole='button'
+					accessibilityLabel={trailingAction.accessibilityLabel}
+					hitSlop={TRAILING_ACTION_HIT_SLOP}>
+					<CustomIcon
+						name={trailingAction.icon}
+						size={20}
+						color={trailingAction.disabled ? colors.fontDisabled : colors.fontDefault}
+					/>
+				</Pressable>
+			) : null}
 		</View>
 	);
 };

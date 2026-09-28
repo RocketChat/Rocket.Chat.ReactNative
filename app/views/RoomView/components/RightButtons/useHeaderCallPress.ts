@@ -41,7 +41,6 @@ export const useHeaderCallPress = (rid: string) => {
 	if (hasMediaCallPermission) {
 		return {
 			callPresent: true,
-			hasMediaCallPermission,
 			isCallDisabled: isInActiveCall,
 			onPressCall: onPressMediaCall
 		};
@@ -50,7 +49,6 @@ export const useHeaderCallPress = (rid: string) => {
 	if (callEnabled) {
 		return {
 			callPresent: true,
-			hasMediaCallPermission,
 			isCallDisabled: disabledTooltip || isInActiveCall,
 			onPressCall: showInitCallActionSheet
 		};
@@ -58,7 +56,6 @@ export const useHeaderCallPress = (rid: string) => {
 
 	return {
 		callPresent: false,
-		hasMediaCallPermission,
 		isCallDisabled: true,
 		onPressCall: () => {}
 	};

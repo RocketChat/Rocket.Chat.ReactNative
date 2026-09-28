@@ -14,6 +14,16 @@ interface IDirectoryRow {
 	onPressItem: (item: IServerRoom) => void;
 }
 
+const getRowDetails = (item: IServerRoom, type: string) => {
+	if (type === 'users') {
+		return { avatar: item.username, description: item.username, rightLabel: item.federation?.peer };
+	}
+	if (type === 'teams') {
+		return { avatar: item.name, description: item.name, rightLabel: I18n.t('N_channels', { n: item.roomsCount }) };
+	}
+	return { avatar: item.name, description: item.topic, rightLabel: I18n.t('N_users', { n: item.usersCount }) };
+};
+
 const DirectoryRow = ({ item, type, isFirst, isLast, onPressItem }: IDirectoryRow) => {
 	const { colors } = useTheme();
 	const title = item.name as string;
@@ -21,42 +31,7 @@ const DirectoryRow = ({ item, type, isFirst, isLast, onPressItem }: IDirectoryRo
 	const testID = `directory-view-item-${item.name}`;
 	const style = isLast ? { ...sharedStyles.separatorBottom, borderColor: colors.strokeLight } : undefined;
 
-	if (type === 'users') {
-		return (
-			<DirectoryItem
-				title={title}
-				onPress={onPress}
-				testID={testID}
-				style={style}
-				rid={item._id}
-				isFirst={isFirst}
-				isLast={isLast}
-				avatar={item.username}
-				description={item.username}
-				rightLabel={item.federation && item.federation.peer}
-				type='d'
-			/>
-		);
-	}
-
-	if (type === 'teams') {
-		return (
-			<DirectoryItem
-				title={title}
-				onPress={onPress}
-				testID={testID}
-				style={style}
-				rid={item._id}
-				isFirst={isFirst}
-				isLast={isLast}
-				avatar={item.name}
-				description={item.name}
-				rightLabel={I18n.t('N_channels', { n: item.roomsCount })}
-				type={item.t}
-				teamMain={item.teamMain}
-			/>
-		);
-	}
+	const { avatar, description, rightLabel } = getRowDetails(item, type);
 
 	return (
 		<DirectoryItem
@@ -67,10 +42,11 @@ const DirectoryRow = ({ item, type, isFirst, isLast, onPressItem }: IDirectoryRo
 			rid={item._id}
 			isFirst={isFirst}
 			isLast={isLast}
-			avatar={item.name}
-			description={item.topic}
-			rightLabel={I18n.t('N_users', { n: item.usersCount })}
-			type={item.t}
+			avatar={avatar}
+			description={description}
+			rightLabel={rightLabel}
+			type={type === 'users' ? 'd' : item.t}
+			teamMain={type === 'teams' ? item.teamMain : undefined}
 		/>
 	);
 };

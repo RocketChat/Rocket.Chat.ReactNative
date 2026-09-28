@@ -4,6 +4,7 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
 import i18n from '~/i18n';
+import { type TIconsName } from '~/containers/CustomIcon';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useCanReturnQueue } from '~/ee/omnichannel/hooks/useCanReturnQueue';
@@ -28,6 +29,16 @@ import { useRoomRightButtonsData } from '../components/RightButtons/useRoomRight
 import { useHeaderCallPress } from '../components/RightButtons/useHeaderCallPress';
 
 const EMPTY_ITEMS: NativeStackHeaderItem[] = [];
+const VISIBLE_ORDER: TRoomHeaderActionKey[] = ['encryption', 'notifications', 'call', 'threads'];
+
+interface IRoomHeaderAction {
+	label: string;
+	icon: TIconsName;
+	disabled: boolean;
+	badge?: { value: number; style: { backgroundColor: string } };
+	tintColor?: string;
+	onPress: () => void;
+}
 
 const getTunreadBadgeColor = (
 	tunreadUser: string[],
@@ -168,32 +179,46 @@ const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean):
 		encryption: hasE2EEWarning,
 		notifications: issuesWithNotifications || disableNotifications
 	});
-	const isVisible = (key: TRoomHeaderActionKey) => visibleKeys.includes(key);
 
 	const tunreadBadge =
 		threadsEnabled && tunread.length
 			? { value: tunread.length, style: { backgroundColor: getTunreadBadgeColor(tunreadUser ?? [], tunreadGroup ?? [], colors) } }
 			: undefined;
 
+	const actions: Record<TRoomHeaderActionKey, IRoomHeaderAction> = {
+		threads: {
+			label: threadsAccessibilityLabel,
+			icon: 'threads',
+			disabled: hasE2EEWarning,
+			badge: tunreadBadge,
+			onPress: goThreadsView
+		},
+		call: {
+			label: callAccessibilityLabel,
+			icon: 'phone',
+			disabled: hasE2EEWarning || isCallDisabled,
+			onPress: onPressCall
+		},
+		encryption: {
+			label: i18n.t('Encrypted'),
+			icon: 'encrypted',
+			disabled: !canToggleEncryption,
+			onPress: goE2EEToggleRoomView
+		},
+		notifications: {
+			label: i18n.t('Troubleshooting'),
+			icon: 'notification-disabled',
+			tintColor: issuesWithNotifications ? colors.fontDanger : undefined,
+			disabled: hasE2EEWarning,
+			onPress: navigateToNotificationOrPushTroubleshoot
+		}
+	};
+
 	const overflowActions: NativeStackHeaderItemMenuAction[] = [
-		...overflowKeys.map(
-			(key): NativeStackHeaderItemMenuAction =>
-				key === 'encryption'
-					? {
-							type: 'action',
-							label: i18n.t('Encrypted'),
-							icon: headerIcon('encrypted'),
-							disabled: !canToggleEncryption,
-							onPress: goE2EEToggleRoomView
-						}
-					: {
-							type: 'action',
-							label: i18n.t('Troubleshooting'),
-							icon: headerIcon('notification-disabled'),
-							disabled: hasE2EEWarning,
-							onPress: navigateToNotificationOrPushTroubleshoot
-						}
-		),
+		...overflowKeys.map((key): NativeStackHeaderItemMenuAction => {
+			const { label, icon, disabled, onPress } = actions[key];
+			return { type: 'action', label, icon: headerIcon(icon), disabled, onPress };
+		}),
 		{
 			type: 'action',
 			label: i18n.t('Search_Messages'),
@@ -207,49 +232,19 @@ const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean):
 		return EMPTY_ITEMS;
 	}
 
-	const items: NativeStackHeaderItem[] = [];
-	if (isVisible('encryption')) {
-		items.push({
+	const items: NativeStackHeaderItem[] = VISIBLE_ORDER.filter(key => visibleKeys.includes(key)).map(key => {
+		const { label, icon, disabled, badge, tintColor, onPress } = actions[key];
+		return {
 			type: 'button',
-			label: i18n.t('Encrypted'),
-			accessibilityLabel: i18n.t('Encrypted'),
-			icon: headerIcon('encrypted'),
-			disabled: !canToggleEncryption,
-			onPress: goE2EEToggleRoomView
-		});
-	}
-	if (isVisible('notifications')) {
-		items.push({
-			type: 'button',
-			label: i18n.t('Troubleshooting'),
-			accessibilityLabel: i18n.t('Troubleshooting'),
-			icon: headerIcon('notification-disabled'),
-			tintColor: issuesWithNotifications ? colors.fontDanger : undefined,
-			disabled: hasE2EEWarning,
-			onPress: navigateToNotificationOrPushTroubleshoot
-		});
-	}
-	if (isVisible('call')) {
-		items.push({
-			type: 'button',
-			label: callAccessibilityLabel,
-			accessibilityLabel: callAccessibilityLabel,
-			icon: headerIcon('phone'),
-			disabled: hasE2EEWarning || isCallDisabled,
-			onPress: onPressCall
-		});
-	}
-	if (isVisible('threads')) {
-		items.push({
-			type: 'button',
-			label: threadsAccessibilityLabel,
-			accessibilityLabel: threadsAccessibilityLabel,
-			icon: headerIcon('threads'),
-			disabled: hasE2EEWarning,
-			badge: tunreadBadge,
-			onPress: goThreadsView
-		});
-	}
+			label,
+			accessibilityLabel: label,
+			icon: headerIcon(icon),
+			disabled,
+			badge,
+			tintColor,
+			onPress
+		};
+	});
 	items.push({
 		type: 'menu',
 		label: i18n.t('More'),
