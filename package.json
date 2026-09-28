@@ -149,7 +149,6 @@
 			"ua-parser-js": "1.0.2",
 			"jpeg-js": "0.4.4",
 			"typescript": "7.0.2",
-			"react-native-keyboard-controller": "1.18.5",
 			"react-native-nitro-modules": "^0.37.1"
 		},
 		"onlyBuiltDependencies": [
