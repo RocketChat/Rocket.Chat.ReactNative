@@ -3,6 +3,11 @@ import { shallowEqual } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import { hasIcon, type TIconsName } from '~/containers/CustomIcon';
+import {
+	getOmnichannelIconName,
+	getOmnichannelSidebarIconUri,
+	getRoomTypeIconName
+} from '~/containers/RoomTypeIcon/roomTypeIconName';
 import { STATUS_I18N_KEYS, type TUserStatus } from '~/definitions';
 import { type IActiveUser } from '~/reducers/activeUsers';
 import I18n from '~/i18n';
@@ -19,34 +24,21 @@ import { useHeaderIconImage, useHeaderRemoteImage } from './useHeaderImage';
 const TITLE_FONT_SIZE = 17;
 const SUBTITLE_FONT_SIZE = 12;
 
-const sourceIcons: Record<string, TIconsName> = {
-	widget: 'livechat-monochromatic',
-	email: 'mail',
-	sms: 'sms',
-	app: 'omnichannel',
-	api: 'omnichannel',
-	other: 'omnichannel'
-};
-
 const getRoomIcon = (fields: IHeaderFields, isDirectMessage: boolean, status: TUserStatus): TIconsName => {
-	let roomIcon: TIconsName = 'channel-private';
 	if (isDirectMessage) {
 		const statusIcon = `status-${status}`;
-		roomIcon = hasIcon(statusIcon) ? (statusIcon as TIconsName) : 'status-offline';
-	} else if (fields.type === 'l' && !fields.prid) {
-		roomIcon = sourceIcons[fields.sourceType?.type ?? 'other'] ?? 'omnichannel';
-	} else if (fields.abacAttributes?.length) {
-		roomIcon = fields.teamMain ? 'team-shield' : 'hash-shield';
-	} else if (fields.teamMain) {
-		roomIcon = fields.type === 'p' ? 'teams-private' : 'teams';
-	} else if (fields.prid) {
-		roomIcon = 'discussions';
-	} else if (fields.type === 'c') {
-		roomIcon = 'channel-public';
-	} else if (fields.type === 'd' && fields.isGroupChat) {
-		roomIcon = 'message';
+		return hasIcon(statusIcon) ? (statusIcon as TIconsName) : 'status-offline';
 	}
-	return roomIcon;
+	if (fields.type === 'l' && !fields.prid) {
+		return getOmnichannelIconName(fields.sourceType);
+	}
+	return getRoomTypeIconName({
+		type: fields.type,
+		teamMain: fields.teamMain,
+		isDiscussion: !!fields.prid,
+		isGroupChat: fields.isGroupChat,
+		abacAttributes: fields.abacAttributes
+	});
 };
 
 const getSubtitle = ({
@@ -71,17 +63,20 @@ const getSubtitle = ({
 		const names = usersTyping.join(usersTyping.length === 2 ? ` ${I18n.t('and')} ` : ', ');
 		return `${names} ${I18n.t(usersTyping.length > 1 ? 'are_typing' : 'is_typing')}...`;
 	}
+	if (connecting) {
+		return I18n.t('Connecting');
+	}
+	if (!connected) {
+		return I18n.t('Waiting_for_network');
+	}
 	if (fields.type === 'd') {
-		if (!connected || !activeUser) {
+		if (!activeUser) {
 			return undefined;
 		}
 		const presenceKey = STATUS_I18N_KEYS[activeUser.status];
 		return activeUser.statusText || (presenceKey ? I18n.t(presenceKey) : undefined);
 	}
-	if (connecting) {
-		return I18n.t('Connecting');
-	}
-	return connected ? fields.subtitle : I18n.t('Waiting_for_network');
+	return fields.subtitle;
 };
 
 const useRoomHeaderPresence = (enabled: boolean, fields: IHeaderFields, roomUserId?: string | null) => {
@@ -142,11 +137,8 @@ export const useNativeRoomHeader = (
 		TITLE_FONT_SIZE
 	);
 	const server = useAppSelector(state => state.server.server);
-	const source = fields.sourceType;
 	const remoteUri =
-		enabled && connected && fields.type === 'l' && source?.type === 'app' && source.id && source.sidebarIcon
-			? `${server}/api/apps/public/${source.id}/get-sidebar-icon?icon=${source.sidebarIcon}`
-			: undefined;
+		enabled && connected && fields.type === 'l' ? getOmnichannelSidebarIconUri(server, fields.sourceType) : undefined;
 	const remoteImage = useHeaderRemoteImage(remoteUri);
 	const roomImage = remoteImage ?? glyphImage;
 	const clockImage = useHeaderIconImage(enabled && showClock ? 'clock' : undefined, colors.fontSecondaryInfo, SUBTITLE_FONT_SIZE);

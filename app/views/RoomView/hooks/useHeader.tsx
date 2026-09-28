@@ -72,9 +72,10 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const goRoomActionsView = useGoRoomActionsView(roomStore);
 	useNativeRoomHeader(!!rid && hasNativeHeaderBar, headerFields, tmid, roomUserId, goRoomActionsView);
-	useNativeBackButton(!!rid && hasNativeHeaderBar, rid);
-	const nativeRightItems = useRoomHeaderRightItems(hasNativeHeaderBar ? rid : undefined, tmid, roomStore);
 	const isMasterDetail = useMasterDetail();
+	const showsAvatar = isMasterDetail && !tmid;
+	useNativeBackButton(!!rid && hasNativeHeaderBar && !showsAvatar, rid);
+	const nativeRightItems = useRoomHeaderRightItems(hasNativeHeaderBar ? rid : undefined, tmid, roomStore);
 
 	useLayoutEffect(() => {
 		if (!rid && hasNativeHeaderBar) {
@@ -94,7 +95,7 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 				hidesSharedBackground: true
 			};
 			navigation.setOptions(
-				isMasterDetail && !tmid
+				showsAvatar
 					? { unstable_headerLeftItems: () => [avatarItem], unstable_headerRightItems: () => nativeRightItems }
 					: { unstable_headerRightItems: () => nativeRightItems }
 			);
@@ -105,7 +106,7 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 			headerLeft: () => <LeftButtons rid={rid} tmid={tmid} roomStore={roomStore} />,
 			headerRight: () => <RightButtons rid={rid} tmid={tmid} roomStore={roomStore} />
 		});
-	}, [rid, tmid, navigation, roomStore, nativeRightItems, isMasterDetail]);
+	}, [rid, tmid, navigation, roomStore, nativeRightItems, showsAvatar]);
 
 	useLayoutEffect(() => {
 		if (!rid || hasNativeHeaderBar) {

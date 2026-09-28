@@ -85,17 +85,7 @@ export const useHeader = () => {
 
 	const disabled = supportedVersionsStatus === 'expired' || requirePasswordChange;
 
-	const getBadge = useCallback(() => {
-		if (supportedVersionsStatus === 'warn') {
-			return <HeaderButton.BadgeWarn color={colors.buttonBackgroundDangerDefault} />;
-		}
-		if (notificationPresenceCap) {
-			return <HeaderButton.BadgeWarn color={colors.userPresenceDisabled} />;
-		}
-		return null;
-	}, [supportedVersionsStatus, notificationPresenceCap, colors]);
-
-	const nativeBadgeColor =
+	const badgeColor =
 		supportedVersionsStatus === 'warn'
 			? colors.buttonBackgroundDangerDefault
 			: notificationPresenceCap
@@ -140,7 +130,7 @@ export const useHeader = () => {
 						? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
 						: () => navigation.toggleDrawer()
 				}
-				badge={getBadge}
+				badge={() => (badgeColor ? <HeaderButton.BadgeWarn color={badgeColor} /> : null)}
 				disabled={disabled}
 			/>
 		);
@@ -215,7 +205,7 @@ export const useHeader = () => {
 						accessibilityLabel: i18n.t('Menu'),
 						icon: headerIcon('hamburguer'),
 						disabled,
-						badge: nativeBadgeColor ? { value: '', style: { backgroundColor: nativeBadgeColor } } : undefined,
+						badge: badgeColor ? { value: '', style: { backgroundColor: badgeColor } } : undefined,
 						onPress: isMasterDetail
 							? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
 							: () => navigation.toggleDrawer()
@@ -298,14 +288,13 @@ export const useHeader = () => {
 		searchEnabled,
 		goDirectory,
 		navigateToPushTroubleshootView,
-		getBadge,
 		goToNewMessage,
 		startSearch,
 		stopSearch,
 		search,
 		serverName,
 		nativeHeaderSubtitle,
-		nativeBadgeColor
+		badgeColor
 	]);
 
 	useEffect(() => {

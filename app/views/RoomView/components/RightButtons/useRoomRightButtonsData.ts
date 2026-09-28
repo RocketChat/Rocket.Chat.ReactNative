@@ -13,17 +13,28 @@ import { useSetting } from '~/lib/hooks/useSetting';
 import { getRoomTitle, isGroupChat } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
-import { useTheme } from '~/theme';
 import { type RoomStore } from '~/views/RoomView/definitions';
 import { useE2EEStatus } from '~/views/RoomView/hooks/useE2EEStatus';
 import { useSubscriptionUnreads } from '~/views/RoomView/hooks/useSubscriptionUnreads';
 import { fromSubscription } from '~/views/RoomView/stores/RoomStoreContext';
 import { navigateToScreen, type TRoomStackNavigation } from '~/views/RoomView/services/navigateToScreen';
 
+const getThreadsAccessibilityLabel = (tunread: string[], tunreadUser?: string[], tunreadGroup?: string[]) => {
+	if (!tunread.length) {
+		return i18n.t('Threads');
+	}
+	if (tunreadUser?.length) {
+		return i18n.t('Threads_dm_unread', { unread: tunreadUser.length });
+	}
+	if (tunreadGroup?.length) {
+		return i18n.t('Threads_group_unread', { unread: tunreadGroup.length });
+	}
+	return i18n.t('Threads_unread', { unread: tunread.length });
+};
+
 export const useRoomRightButtonsData = (rid: string, roomStore: RoomStore) => {
 	const navigation = useNavigation<TRoomStackNavigation>();
 	const isMasterDetail = useMasterDetail();
-	const { colors } = useTheme();
 
 	const userId = useAppSelector(state => getUserSelector(state).id);
 	const threadsEnabled = useSetting('Threads_enabled') as boolean;
@@ -54,19 +65,18 @@ export const useRoomRightButtonsData = (rid: string, roomStore: RoomStore) => {
 	};
 
 	const navigateToNotificationOrPushTroubleshoot = () => {
-		const room = roomStore.getState().room;
-		if (!isSubscriptionModel(room)) {
+		if (issuesWithNotifications) {
+			navigateToScreen({ navigation, isMasterDetail, screen: 'PushTroubleshootView' });
 			return;
 		}
-		if (!issuesWithNotifications) {
+		const room = roomStore.getState().room;
+		if (isSubscriptionModel(room)) {
 			navigateToScreen({
 				navigation,
 				isMasterDetail,
 				screen: 'NotificationPrefView',
 				params: { rid, room }
 			});
-		} else {
-			navigateToScreen({ navigation, isMasterDetail, screen: 'PushTroubleshootView' });
 		}
 	};
 
@@ -85,19 +95,6 @@ export const useRoomRightButtonsData = (rid: string, roomStore: RoomStore) => {
 		navigateToScreen({ navigation, isMasterDetail, screen: 'E2EEToggleRoomView', params: { rid } });
 	};
 
-	const threadsAccessibilityLabel = () => {
-		if (!tunread.length) {
-			return i18n.t('Threads');
-		}
-		if (tunreadUser?.length) {
-			return i18n.t('Threads_dm_unread', { unread: tunreadUser?.length });
-		}
-		if (tunreadGroup?.length) {
-			return i18n.t('Threads_group_unread', { unread: tunreadGroup?.length });
-		}
-		return i18n.t('Threads_unread', { unread: tunread?.length });
-	};
-
 	const accessibilityRoomName =
 		!roomIsGroupChat && t === 'd' && !!userId
 			? roomName
@@ -105,7 +102,6 @@ export const useRoomRightButtonsData = (rid: string, roomStore: RoomStore) => {
 	const callAccessibilityLabel = i18n.t('Call_room_name', { roomName: accessibilityRoomName });
 
 	return {
-		colors,
 		threadsEnabled,
 		issuesWithNotifications,
 		disableNotifications,
@@ -120,6 +116,6 @@ export const useRoomRightButtonsData = (rid: string, roomStore: RoomStore) => {
 		navigateToNotificationOrPushTroubleshoot,
 		goSearchView,
 		goE2EEToggleRoomView,
-		threadsAccessibilityLabel: threadsAccessibilityLabel()
+		threadsAccessibilityLabel: getThreadsAccessibilityLabel(tunread, tunreadUser, tunreadGroup)
 	};
 };

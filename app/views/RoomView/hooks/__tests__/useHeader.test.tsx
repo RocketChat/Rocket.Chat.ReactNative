@@ -5,6 +5,7 @@ import { createStore } from 'zustand';
 import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
 import { useHeader } from '../useHeader';
 import { useNativeRoomHeader } from '../useNativeRoomHeader';
+import { useNativeBackButton } from '../useNativeBackButton';
 
 jest.mock('../useNativeRoomHeader', () => ({ useNativeRoomHeader: jest.fn() }));
 jest.mock('../useNativeBackButton', () => ({ useNativeBackButton: jest.fn() }));
@@ -157,6 +158,12 @@ describe('useHeader', () => {
 			expect(avatarItem.type).toBe('custom');
 			expect(avatarItem.hidesSharedBackground).toBe(true);
 			expect(avatarItem.element.type).toBe('LeftButtons');
+		});
+
+		it('disables the native back button while the avatar holds the left slot', () => {
+			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
+
+			expect(useNativeBackButton).toHaveBeenLastCalledWith(false, 'rid-1');
 		});
 
 		it('keeps the native back button on a thread', () => {

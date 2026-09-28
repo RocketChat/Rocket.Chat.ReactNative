@@ -23,6 +23,7 @@ import { withDimensions } from '../lib/hooks/withDimensions';
 import { withMasterDetail } from '../lib/hooks/useMasterDetail';
 import { BASE_ROW_HEIGHT, BASE_ROW_HEIGHT_CONDENSED } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import I18n from '../i18n';
+import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
 import database from '../lib/database';
 import { CustomIcon } from '../containers/CustomIcon';
 import RoomItem from '../containers/RoomItem';
@@ -237,14 +238,12 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 				headerTitle: getRoomTitle(team),
 				headerSubtitle: team.topic,
 				onHeaderTitlePress: () => this.goRoomActionsView(),
-				headerSearchBarOptions: {
+				headerSearchBarOptions: stackedSearchBarOptions({
 					ref: this.searchBarRef,
-					placement: 'stacked',
-					placeholder: I18n.t('Search'),
 					onFocus: this.onSearchPress,
-					onChangeText: (event: { nativeEvent: { text: string } }) => this.onSearchChangeText(event.nativeEvent.text),
-					onCancelButtonPress: this.onCancelSearchPress
-				},
+					onChangeText: this.onSearchChangeText,
+					onCancel: this.onCancelSearchPress
+				}),
 				headerRight: () => (
 					<HeaderButton.Container>
 						{showCreate ? (

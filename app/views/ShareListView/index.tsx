@@ -12,6 +12,7 @@ import { Component, createRef } from 'react';
 
 import database from '~/lib/database';
 import I18n from '~/i18n';
+import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
 import DirectoryItem, { ROW_HEIGHT } from '~/containers/DirectoryItem';
 import RowSeparator from '~/containers/NativeListRow/Separator';
 import ServerItem from '~/containers/ServerItem';
@@ -207,14 +208,12 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 				headerTitle: I18n.t('Send_to'),
 				headerSearchBarOptions: this.airGappedReadOnly
 					? undefined
-					: {
+					: stackedSearchBarOptions({
 							ref: this.searchBarRef,
-							placement: 'stacked',
-							placeholder: I18n.t('Search'),
 							onFocus: this.initSearch,
-							onChangeText: (event: { nativeEvent: { text: string } }) => this.search(event.nativeEvent.text),
-							onCancelButtonPress: this.cancelSearch
-						},
+							onChangeText: this.search,
+							onCancel: this.cancelSearch
+						}),
 				headerRight: () => null
 			});
 			return;

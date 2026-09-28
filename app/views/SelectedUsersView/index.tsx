@@ -17,6 +17,7 @@ import SafeAreaView from '~/containers/SafeAreaView';
 import RowSeparator from '~/containers/NativeListRow/Separator';
 import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
 import I18n from '~/i18n';
+import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
 import database from '~/lib/database';
 import UserItem from '~/containers/UserItem';
 import { type ISelectedUser } from '~/reducers/selectedUsers';
@@ -123,12 +124,7 @@ const SelectedUsersView = () => {
 			...(hasNativeHeaderBar
 				? {
 						headerTransparent: true,
-						headerSearchBarOptions: {
-							placement: 'stacked' as const,
-							placeholder: I18n.t('Search'),
-							onChangeText: (event: { nativeEvent: { text: string } }) => handleSearch(event.nativeEvent.text),
-							onCancelButtonPress: () => handleSearch('')
-						}
+						headerSearchBarOptions: stackedSearchBarOptions({ onChangeText: handleSearch })
 					}
 				: {})
 		});

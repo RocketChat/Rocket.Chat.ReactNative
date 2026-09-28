@@ -8,8 +8,6 @@ tags:
     when:
       platform: iOS
     commands:
-      # The native header's overflow ("More") item carries only a label, no accessibilityIdentifier.
-      # It opens a JS action sheet whose "Actions" entry navigates to Room Actions.
       - tapOn:
           text: 'More'
           retryTapIfNoChange: true

@@ -20,7 +20,11 @@ export const useNativeBackButton = (enabled: boolean, rid?: string) => {
 	const unreadsLabel = formatUnreadsCount(useUnreadsCount(enabled ? rid : undefined));
 
 	useLayoutEffect(() => {
-		if (!enabled || !navigation.canGoBack()) {
+		if (!enabled) {
+			return;
+		}
+		if (!navigation.canGoBack()) {
+			navigation.setOptions({ unstable_headerLeftItems: undefined });
 			return;
 		}
 		const backItem: NativeStackHeaderItem = {

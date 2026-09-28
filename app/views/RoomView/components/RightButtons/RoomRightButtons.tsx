@@ -2,6 +2,7 @@ import { type ReactElement } from 'react';
 
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import i18n from '~/i18n';
+import { useTheme } from '~/theme';
 import { type RoomStore } from '~/views/RoomView/definitions';
 import { HeaderCallButton } from './HeaderCallButton';
 import { useRoomRightButtonsData } from './useRoomRightButtonsData';
@@ -12,8 +13,8 @@ interface IRoomRightButtonsProps {
 }
 
 export const RoomRightButtons = ({ rid, roomStore }: IRoomRightButtonsProps): ReactElement => {
+	const { colors } = useTheme();
 	const {
-		colors,
 		threadsEnabled,
 		issuesWithNotifications,
 		disableNotifications,

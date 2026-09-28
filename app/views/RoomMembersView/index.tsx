@@ -17,6 +17,7 @@ import UserItem from '~/containers/UserItem';
 import Radio from '~/containers/Radio';
 import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '~/definitions';
 import I18n from '~/i18n';
+import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
@@ -258,12 +259,7 @@ const RoomMembersView = (): ReactElement => {
 				title: I18n.t('Members'),
 				headerRight: undefined,
 				headerTransparent: true,
-				headerSearchBarOptions: {
-					placement: 'stacked',
-					placeholder: I18n.t('Search'),
-					onChangeText: (event: { nativeEvent: { text: string } }) => debounceFilterChange(event.nativeEvent.text),
-					onCancelButtonPress: () => debounceFilterChange('')
-				},
+				headerSearchBarOptions: stackedSearchBarOptions({ onChangeText: debounceFilterChange }),
 				unstable_headerRightItems: () => [
 					{
 						type: 'menu',

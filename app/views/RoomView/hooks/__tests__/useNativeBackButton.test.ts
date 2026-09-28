@@ -58,8 +58,8 @@ it('does nothing when disabled', () => {
 	expect(mockSetOptions).not.toHaveBeenCalled();
 });
 
-it('keeps the default header when it cannot go back', () => {
+it('clears custom left items when it cannot go back', () => {
 	mockCanGoBack = false;
 	renderHook(() => useNativeBackButton(true, 'rid'));
-	expect(mockSetOptions).not.toHaveBeenCalled();
+	expect(mockSetOptions).toHaveBeenCalledWith({ unstable_headerLeftItems: undefined });
 });

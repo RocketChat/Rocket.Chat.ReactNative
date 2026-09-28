@@ -7,6 +7,7 @@ import { type SearchBarCommands } from 'react-native-screens';
 
 import database from '~/lib/database';
 import I18n from '~/i18n';
+import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
 import { hideActionSheetRef, showActionSheetRef } from '~/containers/ActionSheet';
 import SafeAreaView from '~/containers/SafeAreaView';
 import ActivityIndicator from '~/containers/ActivityIndicator';
@@ -216,16 +217,14 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			return {
 				headerLeft: () => null,
 				headerTitle: I18n.t('Canned_Responses'),
-				headerSearchBarOptions: {
+				headerSearchBarOptions: stackedSearchBarOptions({
 					ref: searchBarRef,
-					placement: 'stacked',
-					placeholder: I18n.t('Search'),
-					onChangeText: (event: { nativeEvent: { text: string } }) => onChangeText(event.nativeEvent.text),
-					onCancelButtonPress: () => {
+					onChangeText,
+					onCancel: () => {
 						onChangeText('');
 						searchBarRef.current?.clearText();
 					}
-				},
+				}),
 				headerRight: () => (
 					<HeaderButton.Container>
 						<HeaderButton.Item iconName='filter' onPress={showFilters} />

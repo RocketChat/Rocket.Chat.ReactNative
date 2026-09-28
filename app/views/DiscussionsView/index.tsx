@@ -10,6 +10,7 @@ import { type IMessageFromServer, type TThreadModel } from '~/definitions';
 import { type ChatsStackParamList } from '~/stacks/types';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';
+import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
 import log from '~/lib/methods/helpers/log';
 import { hasNativeHeaderBar, isIOS, useDebounce } from '~/lib/methods/helpers';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -111,14 +112,12 @@ const DiscussionsView = () => {
 			options = {
 				headerLeft: undefined,
 				headerTitle: I18n.t('Discussions'),
-				headerSearchBarOptions: {
+				headerSearchBarOptions: stackedSearchBarOptions({
 					ref: searchBarRef,
-					placement: 'stacked',
-					placeholder: I18n.t('Search'),
 					onFocus: onSearchPress,
-					onChangeText: (event: { nativeEvent: { text: string } }) => onSearchChangeText(event.nativeEvent.text),
-					onCancelButtonPress: onCancelSearchPress
-				},
+					onChangeText: onSearchChangeText,
+					onCancel: onCancelSearchPress
+				}),
 				headerRight: () => null
 			};
 			if (isMasterDetail) {

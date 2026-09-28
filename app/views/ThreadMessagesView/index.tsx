@@ -12,6 +12,7 @@ import { showActionSheetRef } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';
+import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
 import database from '~/lib/database';
 import { sanitizeLikeString } from '~/lib/database/utils';
 import buildMessage from '~/lib/methods/helpers/buildMessage';
@@ -127,14 +128,12 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 			const options: NativeStackNavigationOptions = {
 				headerTransparent: true,
 				headerTitle: I18n.t('Threads'),
-				headerSearchBarOptions: {
+				headerSearchBarOptions: stackedSearchBarOptions({
 					ref: this.searchBarRef,
-					placement: 'stacked',
-					placeholder: I18n.t('Search'),
 					onFocus: this.onSearchPress,
-					onChangeText: (event: { nativeEvent: { text: string } }) => this.onSearchChangeText(event.nativeEvent.text),
-					onCancelButtonPress: this.onCancelSearchPress
-				},
+					onChangeText: this.onSearchChangeText,
+					onCancel: this.onCancelSearchPress
+				}),
 				unstable_headerRightItems: () => [
 					{
 						type: 'menu',

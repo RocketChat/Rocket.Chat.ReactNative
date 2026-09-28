@@ -15,9 +15,6 @@ tags:
     when:
       platform: iOS
     commands:
-      # The native stack's back button carries no accessibilityIdentifier, only
-      # the "Back" accessibility label (headerBackButtonDisplayMode: 'minimal'
-      # hides the title text but keeps that label for VoiceOver/XCUITest).
       - tapOn:
           text: 'Back'
           retryTapIfNoChange: true

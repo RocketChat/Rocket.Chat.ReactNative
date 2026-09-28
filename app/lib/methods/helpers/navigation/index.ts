@@ -1,6 +1,7 @@
-import { createElement, type ReactElement } from 'react';
+import { createElement, type ReactElement, type RefObject } from 'react';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { type NativeStackHeaderProps, type NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { type SearchBarCommands, type SearchBarProps } from 'react-native-screens';
 
 import { themes } from '~/lib/constants/colors';
 import { type TSupportedThemes } from '~/theme';
@@ -38,6 +39,30 @@ export const outsideHeaderRightLegal = (
 		: {
 				headerRight: (): ReactElement => createElement(HeaderButton.Legal, { testID, navigation })
 			};
+
+interface IStackedSearchBarOptions {
+	ref?: RefObject<SearchBarCommands | null>;
+	onFocus?: () => void;
+	onChangeText: (text: string) => void;
+	onCancel?: () => void;
+	onSearch?: () => void;
+}
+
+export const stackedSearchBarOptions = ({
+	ref,
+	onFocus,
+	onChangeText,
+	onCancel,
+	onSearch
+}: IStackedSearchBarOptions): SearchBarProps => ({
+	ref,
+	placement: 'stacked',
+	placeholder: I18n.t('Search'),
+	onFocus,
+	onChangeText: event => onChangeText(event.nativeEvent.text),
+	onSearchButtonPress: onSearch,
+	onCancelButtonPress: onCancel ?? (() => onChangeText(''))
+});
 
 export const outsideHeaderLeftClose = (onPress: () => void, testID: string): NativeStackNavigationOptions =>
 	hasNativeHeaderBar

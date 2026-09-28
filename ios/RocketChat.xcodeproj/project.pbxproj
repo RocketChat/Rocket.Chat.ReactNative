@@ -216,7 +216,6 @@
 		7AVR00022F5F5900002A6BDE /* VoipRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AVR00002F5F5900002A6BDE /* VoipRegion.swift */; };
 		85160EB6C143E0493FE5F014 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194D9A8897F4A486C2C6F89A /* ExpoModulesProvider.swift */; };
 		A1C0E0022F90000000C0FFEE /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = A1C0E0012F90000000C0FFEE /* AppIcon.icon */; };
-		A1C0E0032F90000000C0FFEE /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = A1C0E0012F90000000C0FFEE /* AppIcon.icon */; };
 		A48B46DA2D3FFBD200945489 /* A11yFlowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A48B46D82D3FFBD200945489 /* A11yFlowModule.m */; };
 		B1E1F0022F03A00000EXT002 /* ExternalInputModule.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E1F0042F03A00000EXT004 /* ExternalInputModule.m */; };
 		B1E1F0062F03A00000EXT006 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1E1F0072F03A00000EXT007 /* GameController.framework */; };
@@ -1206,7 +1205,6 @@
 				1ED038982B507B4D00C007D4 /* Preview Assets.xcassets in Resources */,
 				1E044F992B92798E00BCA2FD /* Localizable.xcstrings in Resources */,
 				65AD383B2BFBDF4A00271B39 /* PrivacyInfo.xcprivacy in Resources */,
-				A1C0E0032F90000000C0FFEE /* AppIcon.icon in Resources */,
 				1ED038952B507B4D00C007D4 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

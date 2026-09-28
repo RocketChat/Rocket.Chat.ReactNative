@@ -4,8 +4,6 @@ tags:
   - 'util'
 
 ---
-# On iOS 26+ the room title is the native stack's headerTitle text with no accessibilityIdentifier,
-# so it is matched by its visible text there. Android keeps the JS-rendered title, matched by testID.
 - runFlow:
     when:
       platform: Android
