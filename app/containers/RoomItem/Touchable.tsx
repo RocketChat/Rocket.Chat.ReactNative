@@ -1,5 +1,5 @@
-import { useRef, useEffect, memo, type ReactElement } from 'react';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import { useRef, useEffect, useState, memo, type ReactElement } from 'react';
+import Animated, { useSharedValue, useAnimatedStyle, useAnimatedReaction, withSpring } from 'react-native-reanimated';
 import {
 	Gesture,
 	GestureDetector,
@@ -46,6 +46,16 @@ const Touchable = ({
 	const rowState = useSharedValue<TRowState>(0);
 	const gestureActive = useSharedValue(false);
 	const consumedTouchRef = useRef(false);
+	const [actionsMounted, setActionsMounted] = useState(false);
+
+	useAnimatedReaction(
+		() => transX.value !== 0,
+		(moved, previouslyMoved) => {
+			if (moved !== previouslyMoved) {
+				scheduleOnRN(setActionsMounted, moved);
+			}
+		}
+	);
 
 	const handleTouchBegin = (closedOtherRow: boolean) => {
 		consumedTouchRef.current = closedOtherRow;
@@ -131,6 +141,9 @@ const Touchable = ({
 			const closedOtherRow = closeOpenSwipeItem(rid);
 			scheduleOnRN(handleTouchBegin, closedOtherRow);
 		})
+		.onStart(() => {
+			scheduleOnRN(setActionsMounted, true);
+		})
 		.onUpdate(event => {
 			const next = event.translationX + rowOffSet.value;
 			const boundary = getFullSwipeThreshold(width);
@@ -160,23 +173,27 @@ const Touchable = ({
 	return (
 		<GestureDetector gesture={composedGesture}>
 			<Animated.View>
-				<LeftActions
-					transX={transX}
-					gestureActive={gestureActive}
-					isRead={isRead}
-					width={width}
-					onToggleReadPress={onToggleReadPress}
-					displayMode={displayMode}
-				/>
-				<RightActions
-					transX={transX}
-					gestureActive={gestureActive}
-					favorite={favorite}
-					width={width}
-					toggleFav={handleToggleFav}
-					onHidePress={onHidePress}
-					displayMode={displayMode}
-				/>
+				{actionsMounted ? (
+					<>
+						<LeftActions
+							transX={transX}
+							gestureActive={gestureActive}
+							isRead={isRead}
+							width={width}
+							onToggleReadPress={onToggleReadPress}
+							displayMode={displayMode}
+						/>
+						<RightActions
+							transX={transX}
+							gestureActive={gestureActive}
+							favorite={favorite}
+							width={width}
+							toggleFav={handleToggleFav}
+							onHidePress={onHidePress}
+							displayMode={displayMode}
+						/>
+					</>
+				) : null}
 				<Animated.View style={animatedStyles}>
 					<Touch
 						onPress={handlePress}
