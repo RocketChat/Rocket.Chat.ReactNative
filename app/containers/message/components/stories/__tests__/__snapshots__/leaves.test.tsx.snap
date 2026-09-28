@@ -266,57 +266,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
     }
   >
     <Text
-      style={
-        [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 16,
-            "fontVariant": [
-              "tabular-nums",
-            ],
-            "fontWeight": "400",
-            "lineHeight": 22,
-            "textAlign": "left",
-          },
-          {
-            "color": "#2F343D",
-          },
-        ]
-      }
+      accessibilityLabel="This is a plain text message"
     >
-      <Text
-        style={
-          {
-            "backgroundColor": "transparent",
-            "flexShrink": 1,
-            "fontFamily": "Inter",
-            "fontVariant": [
-              "tabular-nums",
-            ],
-            "fontWeight": "400",
-            "textAlign": "left",
-          }
-        }
-      >
-        <Text
-          accessibilityLabel="This is a plain text message"
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-          This is a plain text message
-        </Text>
-      </Text>
+      This is a plain text message
     </Text>
   </View>
 </View>
@@ -2707,57 +2659,9 @@ exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
         }
       >
         <Text
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
+          accessibilityLabel="Image 1"
         >
-          <Text
-            style={
-              {
-                "backgroundColor": "transparent",
-                "flexShrink": 1,
-                "fontFamily": "Inter",
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "400",
-                "textAlign": "left",
-              }
-            }
-          >
-            <Text
-              accessibilityLabel="Image 1"
-              style={
-                [
-                  {
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
-                  },
-                ]
-              }
-            >
-              Image 1
-            </Text>
-          </Text>
+          Image 1
         </Text>
       </View>
       <View
@@ -2937,57 +2841,9 @@ exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
         }
       >
         <Text
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
+          accessibilityLabel="Image 2"
         >
-          <Text
-            style={
-              {
-                "backgroundColor": "transparent",
-                "flexShrink": 1,
-                "fontFamily": "Inter",
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "400",
-                "textAlign": "left",
-              }
-            }
-          >
-            <Text
-              accessibilityLabel="Image 2"
-              style={
-                [
-                  {
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
-                  },
-                ]
-              }
-            >
-              Image 2
-            </Text>
-          </Text>
+          Image 2
         </Text>
       </View>
       <View
@@ -3167,57 +3023,9 @@ exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
         }
       >
         <Text
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
+          accessibilityLabel="Image 3"
         >
-          <Text
-            style={
-              {
-                "backgroundColor": "transparent",
-                "flexShrink": 1,
-                "fontFamily": "Inter",
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "400",
-                "textAlign": "left",
-              }
-            }
-          >
-            <Text
-              accessibilityLabel="Image 3"
-              style={
-                [
-                  {
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
-                  },
-                ]
-              }
-            >
-              Image 3
-            </Text>
-          </Text>
+          Image 3
         </Text>
       </View>
       <View
@@ -3397,57 +3205,9 @@ exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
         }
       >
         <Text
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
+          accessibilityLabel="Image 4"
         >
-          <Text
-            style={
-              {
-                "backgroundColor": "transparent",
-                "flexShrink": 1,
-                "fontFamily": "Inter",
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "400",
-                "textAlign": "left",
-              }
-            }
-          >
-            <Text
-              accessibilityLabel="Image 4"
-              style={
-                [
-                  {
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
-                  },
-                ]
-              }
-            >
-              Image 4
-            </Text>
-          </Text>
+          Image 4
         </Text>
       </View>
       <View
@@ -4643,57 +4403,9 @@ exports[`Story Snapshots: SingleImageOldServer should match snapshot 1`] = `
         }
       >
         <Text
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
+          accessibilityLabel="A wavy orange and black pattern, designed to be used as a wallpaper"
         >
-          <Text
-            style={
-              {
-                "backgroundColor": "transparent",
-                "flexShrink": 1,
-                "fontFamily": "Inter",
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "400",
-                "textAlign": "left",
-              }
-            }
-          >
-            <Text
-              accessibilityLabel="A wavy orange and black pattern, designed to be used as a wallpaper"
-              style={
-                [
-                  {
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
-                  },
-                ]
-              }
-            >
-              A wavy orange and black pattern, designed to be used as a wallpaper
-            </Text>
-          </Text>
+          A wavy orange and black pattern, designed to be used as a wallpaper
         </Text>
       </View>
       <View
