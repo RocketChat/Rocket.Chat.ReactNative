@@ -251,8 +251,5 @@ export const getPreviewMessageFromAttachment = (attachment: IAttachment, transla
 			return translated;
 		}
 	}
-	if (attachment.description) {
-		return attachment.description;
-	}
-	return decodeFilename(attachment.title) ?? attachment.title;
+	return attachment.description || decodeFilename(attachment.title);
 };

@@ -25,7 +25,7 @@ import styles from './styles';
 import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '~/definitions';
 import { type ShareInsideStackParamList } from '~/definitions/navigationTypes';
 import { getRoomAvatar, isAndroid, isIOS } from '~/lib/methods/helpers';
-import { getFilenameFromUri } from '~/lib/methods/helpers/decodeFilename';
+import { getFilenameFromUri } from '~/lib/methods/helpers/getFilenameFromUri';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { shareSetParams } from '~/actions/share';
 import { appStart } from '~/actions/app';

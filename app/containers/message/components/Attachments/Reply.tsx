@@ -93,7 +93,7 @@ const Title = ({ attachment }: { attachment: IAttachment }) => {
 	const { colors } = useTheme();
 	const timeFormat = useTimeFormat();
 	const time = attachment.message_link && attachment.ts ? dayjs(attachment.ts).format(timeFormat) : null;
-	const title = decodeFilename(attachment.title) ?? attachment.title;
+	const title = decodeFilename(attachment.title);
 	return (
 		<View style={styles.authorContainer}>
 			{attachment.author_name ? (
@@ -109,7 +109,7 @@ const Title = ({ attachment }: { attachment: IAttachment }) => {
 
 const Description = ({ attachment }: { attachment: IAttachment }) => {
 	const user = useMessageUser();
-	const text = attachment.text || decodeFilename(attachment.title) || attachment.title;
+	const text = attachment.text || decodeFilename(attachment.title);
 
 	if (!text) {
 		return null;

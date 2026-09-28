@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { type IAttachment } from '~/definitions/IAttachment';
 import { CustomIcon } from '~/containers/CustomIcon';
+import { decodeFilename } from '~/lib/methods/helpers/decodeFilename';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import Markdown from '~/containers/markdown';
@@ -145,7 +146,7 @@ const CollapsibleQuote = ({ attachment }: IMessageReply) => {
 			<View style={styles.touchableContainer}>
 				<View style={styles.attachmentContainer}>
 					<View style={styles.authorContainer}>
-						<Text style={[styles.title, { color: colors.fontSecondaryInfo }]}>{attachment.title}</Text>
+						<Text style={[styles.title, { color: colors.fontSecondaryInfo }]}>{decodeFilename(attachment.title)}</Text>
 					</View>
 					{!collapsed && <AttText text={attachment.text} />}
 					{!collapsed && <Fields attachment={attachment} />}

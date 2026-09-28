@@ -69,6 +69,21 @@ describe('CollapsibleQuote', () => {
 		expect(collapsibleQuoteTitle.props.children).toEqual(testAttachment.title);
 	});
 
+	test('decodes a percent-encoded Cyrillic title', async () => {
+		const encodedAttachment = { ...testAttachment, title: '%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80.pdf' };
+		const { findByText, queryByText } = render(
+			<Provider store={mockedStore}>
+				<MessageRoomProvider {...contextValue}>
+					<MessageProvider item={item}>
+						<CollapsibleQuote attachment={encodedAttachment} />
+					</MessageProvider>
+				</MessageRoomProvider>
+			</Provider>
+		);
+		expect(await findByText('Пример.pdf')).toBeTruthy();
+		expect(queryByText('%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80.pdf')).toBeNull();
+	});
+
 	test('text exists and is correct', async () => {
 		const collapsibleQuote = render(<Render />);
 		const collapsibleQuoteTouchable = await collapsibleQuote.findByTestId(touchableTestID);

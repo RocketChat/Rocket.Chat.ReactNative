@@ -42,6 +42,10 @@ describe('getPreviewMessageFromAttachment', () => {
 		);
 	});
 
+	test('falls back to the title when the description is an empty string', () => {
+		expect(getPreviewMessageFromAttachment({ title: 'example.png', description: '' })).toBe('example.png');
+	});
+
 	test('translation wins over an encoded title', () => {
 		expect(
 			getPreviewMessageFromAttachment(

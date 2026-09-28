@@ -11,15 +11,15 @@ import { decodeFilename } from './decodeFilename';
 import { headers } from './fetch';
 
 export const getLocalFilePathFromFile = (localPath: string, attachment: IAttachment): string =>
-	`${localPath}${decodeFilename(attachment.title) ?? attachment.title}`;
+	`${localPath}${decodeFilename(attachment.title)}`;
 
 export const fileDownload = async (url: string, attachment?: IAttachment, fileName?: string): Promise<string> => {
 	let path = `${FileSystem.documentDirectory}`;
 	if (fileName) {
-		path = `${path}${sanitizeFileName(decodeFilename(fileName) ?? fileName)}`;
+		path = `${path}${sanitizeFileName(decodeFilename(fileName))}`;
 	}
 	if (attachment?.title) {
-		path = `${path}${sanitizeFileName(decodeFilename(attachment.title) ?? attachment.title)}`;
+		path = `${path}${sanitizeFileName(decodeFilename(attachment.title))}`;
 	}
 	const file = await FileSystem.downloadAsync(url, path, { headers: headers as Record<string, string> });
 	return file.uri;

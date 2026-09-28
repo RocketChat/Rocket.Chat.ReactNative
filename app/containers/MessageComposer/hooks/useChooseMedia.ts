@@ -17,19 +17,17 @@ import {
 } from '~/containers/message/stores/MessageActionStore';
 import { type IShareAttachment } from '~/definitions';
 import ImagePicker, { type ImageOrVideo } from '~/lib/methods/helpers/ImagePicker/ImagePicker';
-import { decodeFilename, stripUuidPrefix } from '~/lib/methods/helpers/decodeFilename';
+import { decodeFilename } from '~/lib/methods/helpers/decodeFilename';
 import { MessageInnerContext, useMessageComposerApi } from '../context';
 import { useAltTextSupported } from '~/lib/hooks/useAltTextSupported';
 
 const normalizeAttachment = (item: IShareAttachment) => {
 	if (item.filename) {
-		const decoded = decodeFilename(item.filename) ?? item.filename;
-		const stripped = stripUuidPrefix(decoded);
-		return stripped === item.filename ? item : { ...item, filename: stripped };
+		const decoded = decodeFilename(item.filename);
+		return decoded === item.filename ? item : { ...item, filename: decoded };
 	}
 	const basename = item.path ? item.path.split('/').pop() : undefined;
-	const filename = basename ? stripUuidPrefix(decodeFilename(basename) ?? basename) : undefined;
-	return { ...item, filename };
+	return { ...item, filename: basename ? decodeFilename(basename) : undefined };
 };
 
 export const useChooseMedia = ({

@@ -7,7 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 import { type Dispatch } from 'redux';
 
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
-import { getFilenameFromUri } from '~/lib/methods/helpers/decodeFilename';
+import { getFilenameFromUri } from '~/lib/methods/helpers/getFilenameFromUri';
 import { getRoomTitle } from '~/lib/methods/helpers/helpers';
 import { type IMessageComposerRef, ComposerProvider, MessageComposerContainer } from '~/containers/MessageComposer';
 import { type InsideStackParamList } from '~/stacks/types';
