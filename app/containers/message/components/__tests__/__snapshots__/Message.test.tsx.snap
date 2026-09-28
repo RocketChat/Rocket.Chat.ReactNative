@@ -43118,6 +43118,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-This message has error and is encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -47428,6 +47429,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-This message has error and is encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -48657,6 +48659,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-This message has error"
                 >
                   <Text
                     allowFontScaling={false}
@@ -49099,6 +49102,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-This message has error too"
                 >
                   <Text
                     allowFontScaling={false}
@@ -49532,6 +49536,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-This message has error"
                 >
                   <Text
                     allowFontScaling={false}
@@ -49974,6 +49979,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-This message has error too"
                 >
                   <Text
                     allowFontScaling={false}
@@ -71732,6 +71738,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-Error message"
                 >
                   <Text
                     allowFontScaling={false}
@@ -73275,6 +73282,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-Untranslated message"
                 >
                   <Text
                     allowFontScaling={false}
@@ -73849,6 +73857,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-Untranslated message"
                 >
                   <Text
                     allowFontScaling={false}
@@ -74423,6 +74432,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-Untranslated message"
                 >
                   <Text
                     allowFontScaling={false}
@@ -76787,6 +76797,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-Error message"
                 >
                   <Text
                     allowFontScaling={false}
@@ -78330,6 +78341,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-Untranslated message"
                 >
                   <Text
                     allowFontScaling={false}
@@ -78904,6 +78916,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-Untranslated message"
                 >
                   <Text
                     allowFontScaling={false}
@@ -79478,6 +79491,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-Untranslated message"
                 >
                   <Text
                     allowFontScaling={false}
@@ -112783,6 +112797,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-Untranslated message"
                 >
                   <Text
                     allowFontScaling={false}
@@ -113836,6 +113851,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-Untranslated message"
                 >
                   <Text
                     allowFontScaling={false}
@@ -114889,6 +114905,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-Untranslated message"
                 >
                   <Text
                     allowFontScaling={false}
@@ -156137,6 +156154,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-Untranslated message"
                 >
                   <Text
                     allowFontScaling={false}
@@ -157190,6 +157208,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-Untranslated message"
                 >
                   <Text
                     allowFontScaling={false}
@@ -158243,6 +158262,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-error-Untranslated message"
                 >
                   <Text
                     allowFontScaling={false}
