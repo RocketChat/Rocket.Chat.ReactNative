@@ -31,4 +31,23 @@ describe('getPreviewMessageFromAttachment', () => {
 	test('returns the Attachment title when only title is set even if translateLanguage is provided', () => {
 		expect(getPreviewMessageFromAttachment({ title: 'example.png' }, 'pt-BR')).toBe('example.png');
 	});
+
+	test('decodes a percent-encoded Cyrillic title', () => {
+		expect(getPreviewMessageFromAttachment({ title: '%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80.pdf' })).toBe('Пример.pdf');
+	});
+
+	test('does not decode the description', () => {
+		expect(getPreviewMessageFromAttachment({ title: '%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80.pdf', description: '100% sure' })).toBe(
+			'100% sure'
+		);
+	});
+
+	test('translation wins over an encoded title', () => {
+		expect(
+			getPreviewMessageFromAttachment(
+				{ title: '%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80.pdf', translations: { 'pt-BR': 'Uma bela foto' } },
+				'pt-BR'
+			)
+		).toBe('Uma bela foto');
+	});
 });
