@@ -17,10 +17,11 @@ tags:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
 
-- assertVisible:
-    id: 'rooms-list-view-create-channel'
-- tapOn:
-    id: 'rooms-list-view-create-channel'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-create-channel'
+      IOS_LABEL: 'Create new channel, team, direct message or discussion'
 - assertVisible:
     id: 'new-message-view-create-team'
 - tapOn:
@@ -39,10 +40,11 @@ tags:
     id: 'create-channel-submit'
 - assertVisible:
     id: 'room-view-messages'
-- assertVisible:
-    id: 'room-view-title-${output.teamname}'
-- tapOn:
-    id: 'room-header'
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.teamname}
+- runFlow: '../../helpers/open-room-actions.yaml'
 - assertVisible:
     id: 'room-actions-info'
 - tapOn:

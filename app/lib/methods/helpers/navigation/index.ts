@@ -1,26 +1,94 @@
-import { createElement, type ReactElement } from 'react';
+import { createElement, type ReactElement, type RefObject } from 'react';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { type NativeStackHeaderProps, type NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { type SearchBarCommands, type SearchBarProps } from 'react-native-screens';
 
 import { themes } from '~/lib/constants/colors';
 import { type TSupportedThemes } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import Header from '~/containers/Header';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import I18n from '~/i18n';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers';
+import { headerIcon } from './headerIcon';
 
-export const defaultHeader: NativeStackNavigationOptions = {
-	header: (props: NativeStackHeaderProps): ReactElement => createElement(Header, props)
-};
+export const defaultHeader: NativeStackNavigationOptions = hasNativeHeaderBar
+	? {
+			headerBackButtonDisplayMode: 'minimal'
+		}
+	: {
+			header: (props: NativeStackHeaderProps): ReactElement => createElement(Header, props)
+		};
 
-export const drawerStyle = {
-	width: 320
-};
+export const outsideHeaderRightLegal = (
+	navigation: { navigate: (screen: 'LegalView') => void },
+	testID: string
+): NativeStackNavigationOptions =>
+	hasNativeHeaderBar
+		? {
+				unstable_headerRightItems: () => [
+					{
+						type: 'button',
+						label: I18n.t('More'),
+						accessibilityLabel: I18n.t('More'),
+						icon: headerIcon('kebab'),
+						onPress: () => navigation.navigate('LegalView')
+					}
+				]
+			}
+		: {
+				headerRight: (): ReactElement => createElement(HeaderButton.Legal, { testID, navigation })
+			};
+
+interface IStackedSearchBarOptions {
+	ref?: RefObject<SearchBarCommands | null>;
+	onFocus?: () => void;
+	onChangeText: (text: string) => void;
+	onCancel?: () => void;
+	onSearch?: () => void;
+}
+
+export const stackedSearchBarOptions = ({
+	ref,
+	onFocus,
+	onChangeText,
+	onCancel,
+	onSearch
+}: IStackedSearchBarOptions): SearchBarProps => ({
+	ref,
+	placement: 'stacked',
+	placeholder: I18n.t('Search'),
+	onFocus,
+	onChangeText: event => onChangeText(event.nativeEvent.text),
+	onSearchButtonPress: onSearch,
+	onCancelButtonPress: onCancel ?? (() => onChangeText(''))
+});
+
+export const outsideHeaderLeftClose = (onPress: () => void, testID: string): NativeStackNavigationOptions =>
+	hasNativeHeaderBar
+		? {
+				unstable_headerLeftItems: () => [
+					{
+						type: 'button',
+						label: I18n.t('Close'),
+						accessibilityLabel: I18n.t('Close'),
+						icon: headerIcon('close'),
+						onPress
+					}
+				]
+			}
+		: {
+				headerLeft: (): ReactElement => createElement(HeaderButton.CloseModal, { onPress, testID })
+			};
 
 export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions => ({
 	headerStyle: {
 		backgroundColor: themes[theme].surfaceNeutral
 	},
-	headerTintColor: themes[theme].fontDefault,
-	headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 }
+	...(!hasNativeHeaderBar && {
+		headerTintColor: themes[theme].fontDefault,
+		headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 }
+	})
 });
 
 export const navigationTheme = (theme: TSupportedThemes) => {

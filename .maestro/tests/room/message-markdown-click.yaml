@@ -57,14 +57,13 @@ tags:
     text: '.*detox-public.*'
 
 # Go back to room
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # Wait for room view to be visible again
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-maestro-message-clickable-test'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: maestro-message-clickable-test
 
 # Tap on the URL link to open alert
 - runFlow:
@@ -137,61 +136,58 @@ tags:
     text: '.*e2e_admin.*'
 
 # Go back to room
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # Wait for room view to be visible again
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-maestro-message-clickable-test'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: maestro-message-clickable-test
 
 # Tap on message with thread to open thread room
 - tapOn:
     text: '.*Message with thread*.'
 
 # Verify thread room view is opened with the correct id
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-message with thread'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: message with thread
 
 # Go back to main room
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # Wait for room view to be visible again
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-maestro-message-clickable-test'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: maestro-message-clickable-test
 
 # Tap on "View thread" button
 - tapOn:
     id: 'message-thread-button-message with thread'
 
 # Verify thread room view is opened
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-message with thread'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: message with thread
 
 # Go back to main room
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # Wait for room view to be visible again
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-maestro-message-clickable-test'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: maestro-message-clickable-test
 
 # Now tap on a message within the thread
 - tapOn:
     text: '.*a message in thread*.'
 
 # Verify thread room view remains (clicking message in thread stays in thread)
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-message with thread'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: message with thread

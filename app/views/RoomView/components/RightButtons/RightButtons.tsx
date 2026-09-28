@@ -4,6 +4,7 @@ import { useShallow } from 'zustand/react/shallow';
 
 import { type RoomStore } from '~/views/RoomView/definitions';
 import { fromSubscription } from '~/views/RoomView/stores/RoomStoreContext';
+import { getRoomHeaderMode } from '~/views/RoomView/helpers/getRoomHeaderMode';
 import { OmnichannelRightButtons } from './OmnichannelRightButtons';
 import { RoomRightButtons } from './RoomRightButtons';
 import { ThreadRightButtons } from './ThreadRightButtons';
@@ -24,22 +25,15 @@ const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElemen
 		}))
 	);
 
-	if (!rid) {
+	const mode = getRoomHeaderMode({ rid, tmid, t, status, membership });
+
+	if (!rid || mode === 'none') {
 		return null;
 	}
-
-	if (membership === 'invited') {
-		return null;
-	}
-
-	if (t === 'l') {
-		if (status === 'queued' || membership !== 'subscribed') {
-			return null;
-		}
+	if (mode === 'omnichannel') {
 		return <OmnichannelRightButtons rid={rid} roomStore={roomStore} />;
 	}
-
-	if (tmid) {
+	if (mode === 'thread' && tmid) {
 		return <ThreadRightButtons tmid={tmid} />;
 	}
 

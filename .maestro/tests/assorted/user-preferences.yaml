@@ -89,8 +89,7 @@ tags:
     id: push-troubleshoot-view-push-gateway-connection
 - assertVisible:
     id: push-troubleshoot-view-notification-delay
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # should have alert in Email
 - assertVisible:
@@ -105,8 +104,7 @@ tags:
     id: notification-preferences-emailNotificationMode-nothing
 - tapOn:
     id: action-sheet-handle
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # ASCII should not be converted to emoji (Android only)
 - runFlow:
@@ -114,8 +112,7 @@ tags:
     when:
       platform: Android
     commands:
-      - tapOn:
-          id: 'custom-header-back'
+      - runFlow: '../../helpers/go-back.yaml'
       - extendedWaitUntil:
           visible:
             id: 'profile-view'
@@ -162,8 +159,7 @@ tags:
     when:
       platform: Android
     commands:
-      - tapOn:
-          id: 'header-back'
+      - runFlow: '../../helpers/go-back.yaml'
       - runFlow:
           file: './utils/go-to-user-preference.yaml'
       - extendedWaitUntil:
@@ -172,8 +168,7 @@ tags:
           timeout: 60000
       - tapOn:
           id: 'preferences-view-convert-ascii-to-emoji'
-      - tapOn:
-          id: 'custom-header-back'
+      - runFlow: '../../helpers/go-back.yaml'
       - extendedWaitUntil:
           visible:
             id: 'profile-view'

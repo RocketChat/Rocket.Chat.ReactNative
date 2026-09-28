@@ -10,11 +10,11 @@ import { inviteLinksClear } from '~/actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '~/actions/server';
 import Button from '~/containers/Button';
 import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import { type TServerHistoryModel } from '~/definitions';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import { isAndroid, isTablet } from '~/lib/methods/helpers';
+import { outsideHeaderLeftClose } from '~/lib/methods/helpers/navigation';
 import EventEmitter from '~/lib/methods/helpers/events';
 import ServerInput from './components/ServerInput';
 import { getServerById } from '~/lib/database/services/Server';
@@ -99,8 +99,9 @@ const NewServerView = () => {
 		if (previousServer) {
 			return navigation.setOptions({
 				headerTitle: I18n.t('Add_Server'),
-				headerLeft: () =>
-					!connecting ? <HeaderButton.CloseModal navigation={navigation} onPress={close} testID='new-server-view-close' /> : null
+				...(connecting
+					? { headerLeft: () => null, unstable_headerLeftItems: () => [] }
+					: outsideHeaderLeftClose(close, 'new-server-view-close'))
 			});
 		}
 		return navigation.setOptions({

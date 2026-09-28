@@ -3,12 +3,11 @@ tags:
   - 'util'
 
 ---
-- extendedWaitUntil:
-    visible:
-      id: rooms-list-view-create-channel
-    timeout: 60000
-- tapOn:
-    id: rooms-list-view-create-channel
+- runFlow:
+    file: '../../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-create-channel'
+      IOS_LABEL: 'Create new channel, team, direct message or discussion'
 - extendedWaitUntil:
     visible:
       id: new-message-view
@@ -54,10 +53,10 @@ tags:
     visible:
       id: room-view
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: room-view-title-${channelName}
-    timeout: 60000
+- runFlow:
+    file: '../../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${channelName}
 - runFlow: ../../../helpers/go-back.yaml
 - extendedWaitUntil:
     visible:

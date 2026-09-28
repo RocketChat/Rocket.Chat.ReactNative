@@ -26,6 +26,8 @@ interface IDirectoryItem {
 	rightLabel?: string;
 	rid?: string;
 	teamMain?: boolean;
+	isFirst?: boolean;
+	isLast?: boolean;
 }
 
 const DirectoryItemLabel = memo(({ text, color }: IDirectoryItemLabel) => {

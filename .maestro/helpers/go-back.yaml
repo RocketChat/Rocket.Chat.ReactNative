@@ -6,16 +6,15 @@ tags:
 ---
 - runFlow:
     when:
-      visible:
-        id: 'custom-header-back'
+      platform: Android
     commands:
       - tapOn:
-          id: 'custom-header-back'
+          id: '(custom-)?header-back'
 
 - runFlow:
     when:
-      visible:
-        id: 'header-back'
+      platform: iOS
     commands:
       - tapOn:
-          id: 'header-back'
+          text: 'Back'
+          retryTapIfNoChange: true

@@ -30,18 +30,44 @@ tags:
     label: 'Should have room item'
 
 # should have create channel button
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-create-channel'
-    timeout: 60000
-    label: 'Should have create channel button'
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-view-create-channel'
+          timeout: 60000
+          label: 'Should have create channel button'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: 'Create new channel, team, direct message or discussion'
+          timeout: 60000
+          label: 'Should have create channel button'
 
 # should have sidebar button
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-sidebar'
-    timeout: 60000
-    label: 'Should have sidebar button'
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-view-sidebar'
+          timeout: 60000
+          label: 'Should have sidebar button'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: 'Menu'
+          timeout: 60000
+          label: 'Should have sidebar button'
 
 # should go to Display Preferences
 - runFlow:

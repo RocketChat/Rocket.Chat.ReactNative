@@ -3,9 +3,12 @@ import { Text } from 'react-native';
 
 import { useActionSheet } from '~/containers/ActionSheet';
 import * as List from '~/containers/List';
+import { asNativeListSection } from '~/containers/List/native/rowMarkers';
+import { useNativeListMode } from '~/containers/List/native/context';
 import I18n from '~/i18n';
 import dayjs from '~/lib/dayjs';
 import { useTheme } from '~/theme';
+import ClearAfterNativeRow from './ClearAfterNativeRow';
 import ClearAfterSheetContent from './ClearAfterSheetContent';
 import styles from './styles';
 import { CLEAR_AFTER_OPTIONS, type ClearAfterValue } from './types';
@@ -22,10 +25,12 @@ interface IClearAfterPickerProps {
 const ClearAfterPicker = ({ value, customDate, onChange }: IClearAfterPickerProps): ReactElement => {
 	const { showActionSheet } = useActionSheet();
 	const { colors } = useTheme();
+	const nativeListMode = useNativeListMode();
+	const customDateLabel = customDate ? dayjs(customDate).format('LL LT') : null;
 
 	const getDisplayLabel = (): string => {
-		if (value === 'custom' && customDate) {
-			return dayjs(customDate).format('LL LT');
+		if (value === 'custom' && customDateLabel) {
+			return customDateLabel;
 		}
 		if (value === 'custom' && !customDate) {
 			return I18n.t('Status_dont_clear');
@@ -39,6 +44,15 @@ const ClearAfterPicker = ({ value, customDate, onChange }: IClearAfterPickerProp
 			children: <ClearAfterSheetContent initialValue={value} initialDate={customDate} onConfirm={onChange} />
 		});
 	};
+
+	if (nativeListMode === 'native') {
+		return (
+			<List.Section>
+				<ClearAfterNativeRow value={value} customDate={customDate} customDateLabel={customDateLabel} onChange={onChange} />
+				<List.Info info='Status_clear_after_hint' />
+			</List.Section>
+		);
+	}
 
 	return (
 		<>
@@ -56,4 +70,4 @@ const ClearAfterPicker = ({ value, customDate, onChange }: IClearAfterPickerProp
 	);
 };
 
-export default ClearAfterPicker;
+export default asNativeListSection(ClearAfterPicker);

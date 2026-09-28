@@ -4,6 +4,9 @@ import { StyleSheet, Text } from 'react-native';
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
+import { asNativeListRow } from '~/containers/List/native/rowMarkers';
+import { useNativeListMode } from '~/containers/List/native/context';
+import NativeListPicker from '~/containers/List/native/Picker';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
@@ -49,22 +52,40 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
+	const nativeListMode = useNativeListMode();
 	const [option, setOption] = useState(
 		value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0]
 	);
+
+	const selectOption = (selectedValue: string) => {
+		const previous = option;
+		onChangeValue({ [preference]: selectedValue }, () => setOption(previous));
+		setOption(OPTIONS[preference].find(i => i.value === selectedValue));
+	};
 
 	const getOptions = (): TActionSheetOptionsItem[] =>
 		OPTIONS[preference].map(i => ({
 			title: I18n.t(i.label, { defaultValue: i.label }),
 			onPress: () => {
 				hideActionSheet();
-				onChangeValue({ [preference]: i.value.toString() }, () => setOption(option));
-				setOption(i);
+				selectOption(i.value);
 			},
 			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.fontHint} /> : undefined
 		}));
 
 	const label = option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label;
+
+	if (nativeListMode === 'native') {
+		return (
+			<NativeListPicker
+				title={I18n.t(title)}
+				testID={testID}
+				options={OPTIONS[preference].map(i => ({ label: I18n.t(i.label, { defaultValue: i.label }), value: i.value }))}
+				selection={option?.value ?? ''}
+				onSelectionChange={selectOption}
+			/>
+		);
+	}
 
 	return (
 		<List.Item
@@ -77,4 +98,4 @@ const ListPicker = ({
 	);
 };
 
-export default ListPicker;
+export default asNativeListRow(ListPicker);

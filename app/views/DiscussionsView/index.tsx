@@ -3,14 +3,16 @@ import { FlatList, StyleSheet } from 'react-native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { type SearchBarCommands } from 'react-native-screens';
 
 import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
 import { type IMessageFromServer, type TThreadModel } from '~/definitions';
 import { type ChatsStackParamList } from '~/stacks/types';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';
+import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
 import log from '~/lib/methods/helpers/log';
-import { isIOS, useDebounce } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar, isIOS, useDebounce } from '~/lib/methods/helpers';
 import SafeAreaView from '~/containers/SafeAreaView';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import * as List from '~/containers/List';
@@ -49,6 +51,7 @@ const DiscussionsView = () => {
 	const total = useRef(0);
 	const searchText = useRef('');
 	const offset = useRef(0);
+	const searchBarRef = useRef<SearchBarCommands>(null);
 
 	const { colors } = useTheme();
 
@@ -95,6 +98,7 @@ const DiscussionsView = () => {
 		setSearch([]);
 		searchText.current = '';
 		offset.current = 0;
+		searchBarRef.current?.clearText();
 	};
 
 	const onSearchPress = () => {
@@ -103,6 +107,25 @@ const DiscussionsView = () => {
 
 	const setHeader = () => {
 		let options: Partial<NativeStackNavigationOptions>;
+
+		if (hasNativeHeaderBar) {
+			options = {
+				headerLeft: undefined,
+				headerTitle: I18n.t('Discussions'),
+				headerSearchBarOptions: stackedSearchBarOptions({
+					ref: searchBarRef,
+					onFocus: onSearchPress,
+					onChangeText: onSearchChangeText,
+					onCancel: onCancelSearchPress
+				}),
+				headerRight: () => null
+			};
+			if (isMasterDetail) {
+				options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+			}
+			return options;
+		}
+
 		if (isSearching) {
 			options = {
 				headerLeft: () => (

@@ -23,7 +23,8 @@ export type MasterDetailChatsStackParamList = {
 	};
 };
 
-export type MasterDetailDrawerParamList = {
+export type MasterDetailSplitParamList = {
+	RoomsListStackNavigator: NavigatorScreenParams<{ RoomsListView: undefined }>;
 	ChatsStackNavigator: NavigatorScreenParams<MasterDetailChatsStackParamList>;
 };
 
@@ -206,7 +207,7 @@ export type ModalStackParamList = {
 };
 
 export type MasterDetailInsideStackParamList = {
-	DrawerNavigator: NavigatorScreenParams<Partial<MasterDetailDrawerParamList>>; // TODO: Change
+	DrawerNavigator: NavigatorScreenParams<Partial<MasterDetailSplitParamList>>; // TODO: Change
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
 	ModalBlockView: {
 		data: any; // TODO: Change

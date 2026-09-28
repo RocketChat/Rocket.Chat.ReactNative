@@ -1,4 +1,4 @@
-import { type ReactElement, useLayoutEffect } from 'react';
+import { Fragment, type ReactElement, useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import * as List from '../containers/List';
@@ -56,19 +56,6 @@ interface ITheme {
 	group: string;
 }
 
-const Item = ({ onPress, item, isSelected }: { onPress: () => void; item: ITheme; isSelected: boolean }) => (
-	<>
-		<List.Radio
-			isSelected={isSelected}
-			title={item.label}
-			value={item.value}
-			onPress={onPress}
-			testID={`theme-view-${item.value}`}
-		/>
-		<List.Separator />
-	</>
-);
-
 const ThemeView = (): ReactElement => {
 	const { themePreferences, setTheme } = useTheme();
 	const { setOptions } = useNavigation();
@@ -120,7 +107,16 @@ const ThemeView = (): ReactElement => {
 					<List.Separator />
 					<>
 						{themeGroup.map(theme => (
-							<Item onPress={() => onClick(theme)} item={theme} isSelected={!!isSelected(theme)} key={theme.label} />
+							<Fragment key={theme.label}>
+								<List.Radio
+									isSelected={!!isSelected(theme)}
+									title={theme.label}
+									value={theme.value}
+									onPress={() => onClick(theme)}
+									testID={`theme-view-${theme.value}`}
+								/>
+								<List.Separator />
+							</Fragment>
 						))}
 					</>
 				</List.Section>
@@ -128,7 +124,16 @@ const ThemeView = (): ReactElement => {
 					<List.Separator />
 					<>
 						{darkGroup.map(theme => (
-							<Item onPress={() => onClick(theme)} item={theme} isSelected={!!isSelected(theme)} key={theme.label} />
+							<Fragment key={theme.label}>
+								<List.Radio
+									isSelected={!!isSelected(theme)}
+									title={theme.label}
+									value={theme.value}
+									onPress={() => onClick(theme)}
+									testID={`theme-view-${theme.value}`}
+								/>
+								<List.Separator />
+							</Fragment>
 						))}
 					</>
 				</List.Section>

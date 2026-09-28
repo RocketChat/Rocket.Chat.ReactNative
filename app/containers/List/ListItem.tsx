@@ -17,6 +17,8 @@ import { useTheme } from '~/theme';
 import I18n from '~/i18n';
 import Icon from './ListIcon';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
+import { useNativeListMode } from './native/context';
+import NativeListItem from './native/Item';
 import { CustomIcon } from '../CustomIcon';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import EventEmitter from '~/lib/methods/helpers/events';
@@ -256,13 +258,19 @@ export interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListIt
 
 const ListItem = memo(({ ...props }: IListItem) => {
 	const { colors } = useTheme();
+	const nativeListMode = useNativeListMode();
+	const backgroundColor = props.backgroundColor || (nativeListMode ? 'transparent' : colors.surfaceRoom);
+
+	if (nativeListMode === 'native') {
+		return <NativeListItem item={props} />;
+	}
 
 	if (props.onPress) {
 		const { onPress } = props;
-		return <Button {...props} onPress={onPress} />;
+		return <Button {...props} onPress={onPress} backgroundColor={backgroundColor} />;
 	}
 	return (
-		<View style={{ backgroundColor: props.backgroundColor || colors.surfaceRoom }}>
+		<View style={{ backgroundColor }}>
 			<Content {...props} />
 		</View>
 	);

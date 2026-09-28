@@ -95,8 +95,7 @@ tags:
     timeout: 60000
 
 # should disable mentions with @ symbol
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: './utils/go-to-accessibility-appearance.yaml'
 
@@ -134,8 +133,7 @@ tags:
     timeout: 60000
 
 # should enable rooms with # symbol
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: './utils/go-to-accessibility-appearance.yaml'
 
@@ -169,8 +167,7 @@ tags:
     timeout: 60000
 
 # should disable mentions with # symbol
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: './utils/go-to-accessibility-appearance.yaml'
 

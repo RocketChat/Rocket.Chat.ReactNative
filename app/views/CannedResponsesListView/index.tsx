@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FlatList } from 'react-native';
 import { type RouteProp } from '@react-navigation/native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { type SearchBarCommands } from 'react-native-screens';
 
 import database from '~/lib/database';
 import I18n from '~/i18n';
+import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
 import { hideActionSheetRef, showActionSheetRef } from '~/containers/ActionSheet';
 import SafeAreaView from '~/containers/SafeAreaView';
 import ActivityIndicator from '~/containers/ActivityIndicator';
@@ -22,7 +24,7 @@ import DepartmentFilter from './DepartmentFilter';
 import styles from './styles';
 import { type ICannedResponse } from '~/definitions/ICannedResponse';
 import { type ChatsStackParamList } from '~/stacks/types';
-import { useDebounce } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar, useDebounce } from '~/lib/methods/helpers';
 import { getListCannedResponse, getDepartments } from '~/lib/services/restApi';
 import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -69,6 +71,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	const { theme } = useTheme();
 	const isMasterDetail = useMasterDetail();
 	const { bottom } = useSafeAreaInsets();
+	const searchBarRef = useRef<SearchBarCommands>(null);
 
 	const getRoomFromDb = async () => {
 		const { rid } = route.params;
@@ -209,7 +212,27 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		await handleGetListCannedResponse({ text: searchText, department: scope, depId: departmentId, debounced: false });
 	};
 
-	const getHeader = () => {
+	const getHeader = (): NativeStackNavigationOptions => {
+		if (hasNativeHeaderBar) {
+			return {
+				headerLeft: () => null,
+				headerTitle: I18n.t('Canned_Responses'),
+				headerSearchBarOptions: stackedSearchBarOptions({
+					ref: searchBarRef,
+					onChangeText,
+					onCancel: () => {
+						onChangeText('');
+						searchBarRef.current?.clearText();
+					}
+				}),
+				headerRight: () => (
+					<HeaderButton.Container>
+						<HeaderButton.Item iconName='filter' onPress={showFilters} />
+					</HeaderButton.Container>
+				)
+			};
+		}
+
 		if (isSearching) {
 			return {
 				headerLeft: () => (

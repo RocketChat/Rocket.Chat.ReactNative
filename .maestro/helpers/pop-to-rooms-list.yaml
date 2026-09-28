@@ -1,0 +1,30 @@
+appId: ${APP_ID}
+name: Pop to rooms list
+tags:
+  - 'util'
+
+---
+- repeat:
+    times: 4
+    while:
+      notVisible:
+        id: 'rooms-list-view'
+    commands:
+      - runFlow:
+          when:
+            platform: Android
+            visible:
+              id: '(custom-)?header-back'
+          commands:
+            - tapOn:
+                id: '(custom-)?header-back'
+      - runFlow:
+          when:
+            platform: iOS
+            visible:
+              text: 'Back'
+          commands:
+            - tapOn:
+                text: 'Back'
+      - waitForAnimationToEnd:
+          timeout: 5000

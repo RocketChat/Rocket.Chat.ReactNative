@@ -6,7 +6,6 @@ import { Q } from '@nozbe/watermelondb';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
-import * as List from '~/containers/List';
 import database from '~/lib/database';
 import I18n from '~/i18n';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
@@ -23,6 +22,9 @@ import { addRoomsToTeam } from '~/lib/services/restApi';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import Navigation from '~/lib/navigation/appNavigation';
+import RowSeparator from '~/containers/NativeListRow/Separator';
+import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
+import ChannelItem from './ChannelItem';
 
 type TNavigation = NativeStackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;
 type TRoute = RouteProp<ChatsStackParamList, 'AddExistingChannelView'>;
@@ -34,6 +36,7 @@ const AddExistingChannelView = () => {
 	const [selected, setSelected] = useState<string[]>([]);
 
 	const { colors } = useTheme();
+	const listBackgroundColor = useListBackgroundColor(colors.surfaceRoom);
 
 	const navigation = useNavigation<TNavigation>();
 	const {
@@ -160,24 +163,23 @@ const AddExistingChannelView = () => {
 				ListHeaderComponent={
 					<SearchBox onChangeText={(text: string) => onSearchChangeText(text)} testID='add-existing-channel-view-search' />
 				}
-				renderItem={({ item }: { item: TSubscriptionModel }) => {
+				renderItem={({ item, index }: { item: TSubscriptionModel; index: number }) => {
 					// TODO: reuse logic inside RoomTypeIcon
 					const icon = item.t === SubscriptionType.GROUP && !item?.teamId ? 'channel-private' : 'channel-public';
 					return (
-						<List.Item
+						<ChannelItem
 							title={getRoomTitle(item)}
-							translateTitle={false}
+							icon={icon}
+							isChecked={isChecked(item.rid)}
 							onPress={() => toggleChannel(item.rid)}
 							testID={`add-existing-channel-view-item-${item.name}`}
-							left={() => <List.Icon name={icon} />}
-							right={() => (isChecked(item.rid) ? <List.Icon name='check' color={colors.fontHint} /> : null)}
-							additionalAccessibilityLabel={isChecked(item.rid)}
-							additionalAccessibilityLabelCheck
+							isFirst={index === 0}
+							isLast={index === channels.length - 1}
 						/>
 					);
 				}}
-				ItemSeparatorComponent={List.Separator}
-				contentContainerStyle={{ backgroundColor: colors.surfaceRoom, paddingBottom: bottom }}
+				ItemSeparatorComponent={RowSeparator}
+				contentContainerStyle={{ backgroundColor: listBackgroundColor, paddingBottom: bottom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

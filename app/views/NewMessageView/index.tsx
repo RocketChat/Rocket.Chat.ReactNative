@@ -20,6 +20,8 @@ import { type NewMessageStackParamList } from '~/stacks/types';
 import { search as runSearch } from '~/lib/methods/search';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import RowSeparator from '~/containers/NativeListRow/Separator';
+import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
 import Item from './Item';
 import HeaderNewMessage from './HeaderNewMessage';
 import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
@@ -37,6 +39,7 @@ const NewMessageView = () => {
 	const searchId = useRef(0);
 
 	const { colors } = useTheme();
+	const listBackgroundColor = useListBackgroundColor(colors.surfaceTint);
 
 	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
 	const { bottom } = useSafeAreaInsets();
@@ -110,13 +113,15 @@ const NewMessageView = () => {
 		[isMasterDetail, navigation]
 	);
 
+	const data = search.length > 0 ? search : chats;
+
 	return (
 		<SafeAreaView testID='new-message-view'>
 			<FlatList
-				data={search.length > 0 ? search : chats}
+				data={data}
 				keyExtractor={item => item._id || item.rid}
 				ListHeaderComponent={<HeaderNewMessage maxUsers={maxUsers} onChangeText={handleSearch} />}
-				renderItem={({ item }) => {
+				renderItem={({ item, index }) => {
 					const itemSearch = item as ISearch;
 					const itemModel = item as TSubscriptionModel;
 					const userId = itemSearch.search ? itemSearch._id : getUidDirectMessage(itemModel);
@@ -128,12 +133,14 @@ const NewMessageView = () => {
 							username={itemSearch.search ? itemSearch.username : itemModel.name}
 							onPress={() => goRoom(itemModel)}
 							testID={`new-message-view-item-${item.name}`}
+							isFirst={index === 0}
+							isLast={index === data.length - 1}
 						/>
 					);
 				}}
-				ItemSeparatorComponent={List.Separator}
+				ItemSeparatorComponent={RowSeparator}
 				ListFooterComponent={searching ? () => <ActivityIndicator /> : List.Separator}
-				style={{ backgroundColor: colors.surfaceTint }}
+				style={{ backgroundColor: listBackgroundColor }}
 				contentContainerStyle={{ paddingBottom: bottom }}
 				keyboardShouldPersistTaps='always'
 			/>

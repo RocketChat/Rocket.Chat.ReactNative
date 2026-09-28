@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { type ReactElement, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, type ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -21,11 +21,12 @@ import I18n from '~/i18n';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { setUserStatus } from '~/lib/services/restApi';
 import { getUserSelector } from '~/selectors/login';
-import { showErrorAlertWithEMessage, compareServerVersion } from '~/lib/methods/helpers';
+import { showErrorAlertWithEMessage, compareServerVersion, isIOS } from '~/lib/methods/helpers';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { useTheme } from '~/theme';
 import { USER_STATUS_TEXT_MAX_LENGTH } from '~/lib/constants/maxLength';
-import { type ClearAfterValue, computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
+import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
+import ClearAfterPicker, { type ClearAfterValue, computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
 import FooterComponent from './FooterComponent';
 
 const validationSchema = yup.object().shape({
@@ -68,40 +69,15 @@ const styles = StyleSheet.create({
 		borderRadius: 0,
 		borderTopWidth: 1,
 		borderBottomWidth: 1
+	},
+	rowInputContainer: {
+		marginBottom: 0
+	},
+	rowInputStyle: {
+		borderWidth: 0,
+		backgroundColor: 'transparent'
 	}
 });
-
-const Status = ({
-	statusType,
-	status,
-	setStatus
-}: {
-	statusType: IStatus;
-	status: TUserStatus;
-	setStatus: (status: TUserStatus) => void;
-}) => {
-	const { id, name } = statusType;
-	return (
-		<>
-			<List.Radio
-				isSelected={status === id}
-				additionalAccessibilityLabel={`${status === id ? I18n.t('Current_Status') : ''}`}
-				title={name}
-				onPress={() => {
-					const key = `STATUS_${id.toUpperCase()}` as keyof typeof events;
-					logEvent(events[key]);
-					if (status !== id) {
-						setStatus(id);
-					}
-				}}
-				testID={`status-view-${id}`}
-				value={statusType.id}
-				left={() => <StatusIcon size={24} status={statusType.id} />}
-			/>
-			<List.Separator />
-		</>
-	);
-};
 
 const StatusView = (): ReactElement => {
 	const user = useSelector((state: IApplicationState) => getUserSelector(state));
@@ -135,6 +111,7 @@ const StatusView = (): ReactElement => {
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
 	const { colors } = useTheme();
+	const listBackgroundColor = useListBackgroundColor(colors.surfaceTint);
 	const { bottom } = useSafeAreaInsets();
 
 	const submit = async () => {
@@ -160,8 +137,11 @@ const StatusView = (): ReactElement => {
 		setHeader();
 	}, [isMasterDetail]);
 
-	const setStatus = (updatedStatus: TUserStatus) => {
-		setValue('status', updatedStatus);
+	const selectStatus = (id: TUserStatus) => {
+		logEvent(events[`STATUS_${id.toUpperCase()}` as keyof typeof events]);
+		if (inputValues.status !== id) {
+			setValue('status', id);
+		}
 	};
 
 	const setCustomStatus = async (status: TUserStatus, statusText: string, expiresAt?: string | null) => {
@@ -209,37 +189,92 @@ const StatusView = (): ReactElement => {
 		if (date) setClearAfterDate(date);
 	};
 
+	const statusInput = (
+		<ControlledFormTextInput
+			name='statusText'
+			control={control}
+			label={I18n.t('Status')}
+			value={statusText}
+			containerStyle={styles.inputContainer}
+			inputStyle={styles.inputStyle}
+			testID='status-view-input'
+			error={errors.statusText?.message}
+		/>
+	);
+
+	const statusRowInput = (
+		<ControlledFormTextInput
+			name='statusText'
+			control={control}
+			accessibilityLabel={I18n.t('Status')}
+			value={statusText}
+			containerStyle={styles.rowInputContainer}
+			inputStyle={styles.rowInputStyle}
+			testID='status-view-input'
+			error={errors.statusText?.message}
+		/>
+	);
+
+	const renderStatus = ({ id, name }: IStatus) => (
+		<List.Radio
+			isSelected={inputValues.status === id}
+			additionalAccessibilityLabel={inputValues.status === id ? I18n.t('Current_Status') : ''}
+			title={name}
+			onPress={() => selectStatus(id)}
+			testID={`status-view-${id}`}
+			value={id}
+			left={() => <StatusIcon size={24} status={id} />}
+		/>
+	);
+
+	const renderFooter = (showClearAfterPicker: boolean) => (
+		<FooterComponent
+			supportsStatusExpiry={showClearAfterPicker}
+			clearAfter={clearAfter}
+			clearAfterDate={clearAfterDate}
+			onClearAfterChange={handleClearAfterChange}
+			disabled={isStatusChanged()}
+			onSubmit={submit}
+		/>
+	);
+
+	if (isIOS) {
+		return (
+			<SafeAreaView testID='status-view' style={{ backgroundColor: listBackgroundColor, paddingTop: 16, paddingBottom: bottom }}>
+				<List.Container backgroundHidden>
+					<List.Section title='Status'>{statusRowInput}</List.Section>
+					<List.Section>
+						{statusType.map(status => (
+							<Fragment key={status.id}>{renderStatus(status)}</Fragment>
+						))}
+					</List.Section>
+					{supportsStatusExpiry ? (
+						<ClearAfterPicker value={clearAfter} customDate={clearAfterDate} onChange={handleClearAfterChange} />
+					) : null}
+				</List.Container>
+				{renderFooter(false)}
+			</SafeAreaView>
+		);
+	}
+
 	return (
 		<SafeAreaView testID='status-view'>
 			<FlatList
 				data={statusType}
 				keyExtractor={item => item.id}
-				renderItem={({ item }) => <Status statusType={item} status={inputValues.status} setStatus={setStatus} />}
+				renderItem={({ item }) => (
+					<>
+						{renderStatus(item)}
+						<List.Separator />
+					</>
+				)}
 				ListHeaderComponent={
 					<>
-						<ControlledFormTextInput
-							name='statusText'
-							control={control}
-							label={I18n.t('Status')}
-							value={statusText}
-							containerStyle={styles.inputContainer}
-							inputStyle={styles.inputStyle}
-							testID='status-view-input'
-							error={errors.statusText?.message}
-						/>
+						{statusInput}
 						<List.Separator />
 					</>
 				}
-				ListFooterComponent={
-					<FooterComponent
-						supportsStatusExpiry={supportsStatusExpiry}
-						clearAfter={clearAfter}
-						clearAfterDate={clearAfterDate}
-						onClearAfterChange={handleClearAfterChange}
-						disabled={isStatusChanged()}
-						onSubmit={submit}
-					/>
-				}
+				ListFooterComponent={renderFooter(supportsStatusExpiry)}
 				style={{ backgroundColor: colors.surfaceTint }}
 				contentContainerStyle={{ paddingBottom: bottom }}
 			/>

@@ -9,6 +9,7 @@ import EndCall from './components/EndCall';
 import { useCallStore, useControlsVisible } from '~/lib/services/voip/useCallStore';
 import { Content } from './components/Content';
 import { CONTROLS_ANIMATION_DURATION } from '~/views/CallView/styles';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 
 const styles = StyleSheet.create({
 	header: {
@@ -49,6 +50,9 @@ const MediaCallHeader = () => {
 	};
 
 	if (!call) {
+		if (hasNativeHeaderBar) {
+			return null;
+		}
 		return <View style={defaultHeaderStyle} testID='media-call-header-empty' />;
 	}
 

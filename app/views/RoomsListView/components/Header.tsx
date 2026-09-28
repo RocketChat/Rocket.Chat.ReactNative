@@ -53,7 +53,7 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 	}
 	let subtitle;
 	if (supportedVersionsStatus === 'expired') {
-		subtitle = 'Cannot connect';
+		subtitle = I18n.t('Cannot_connect');
 	} else if (connecting || isLoggingIn) {
 		subtitle = I18n.t('Connecting');
 	} else if (isFetching) {

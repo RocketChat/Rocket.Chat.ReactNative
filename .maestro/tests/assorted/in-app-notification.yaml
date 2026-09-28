@@ -28,10 +28,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'in-app-notification-Message in DM'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.sender.username}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.sender.username}
 - runFlow: '../../helpers/go-back.yaml'
 
 # receive in another room
@@ -46,10 +46,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'in-app-notification-Another msg'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.sender.username}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.sender.username}
 
 # should tap back and go back to RoomsListView
 - runFlow: '../../helpers/go-back.yaml'

@@ -15,12 +15,11 @@ tags:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
 
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-create-channel'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-view-create-channel'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-create-channel'
+      IOS_LABEL: 'Create new channel, team, direct message or discussion'
 
 # should have new message screen
 - extendedWaitUntil:
@@ -45,8 +44,11 @@ tags:
     visible:
       id: 'rooms-list-view'
     timeout: 60000
-- tapOn:
-    id: 'rooms-list-view-create-channel'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-create-channel'
+      IOS_LABEL: 'Create new channel, team, direct message or discussion'
 - extendedWaitUntil:
     visible:
       id: 'new-message-view'
@@ -70,10 +72,10 @@ tags:
     visible:
       id: 'room-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-rocket.cat'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: 'rocket.cat'
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
@@ -81,12 +83,11 @@ tags:
     timeout: 60000
 
 # should navigate to select users
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-create-channel'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-view-create-channel'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-create-channel'
+      IOS_LABEL: 'Create new channel, team, direct message or discussion'
 - extendedWaitUntil:
     visible:
       id: 'new-message-view'
@@ -103,12 +104,10 @@ tags:
     timeout: 60000
 
 # should search users
-- extendedWaitUntil:
-    visible:
-      id: 'select-users-view-search'
-    timeout: 60000
-- tapOn:
-    id: 'select-users-view-search'
+- runFlow:
+    file: '../../helpers/tap-search-field.yaml'
+    env:
+      SEARCH_ID: 'select-users-view-search'
 - inputText: 'rocket.cat'
 - extendedWaitUntil:
     visible:
@@ -203,10 +202,10 @@ tags:
     visible:
       id: 'room-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: ${'room-view-title-' + output.publicRoomName}
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.publicRoomName}
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
@@ -223,12 +222,11 @@ tags:
     visible:
       id: 'rooms-list-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-create-channel'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-view-create-channel'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-create-channel'
+      IOS_LABEL: 'Create new channel, team, direct message or discussion'
 - extendedWaitUntil:
     visible:
       id: 'new-message-view'
@@ -269,10 +267,10 @@ tags:
     visible:
       id: 'room-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: ${'room-view-title-' + output.privateRoomName}
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.privateRoomName}
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
@@ -289,12 +287,11 @@ tags:
     visible:
       id: 'rooms-list-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-create-channel'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-view-create-channel'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-create-channel'
+      IOS_LABEL: 'Create new channel, team, direct message or discussion'
 - extendedWaitUntil:
     visible:
       id: 'new-message-view'
@@ -333,10 +330,10 @@ tags:
     visible:
       id: 'room-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: ${'room-view-title-' + output.emptyRoomName}
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.emptyRoomName}
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
