@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useMemo } from 'react';
 
 import { useDebounce } from '~/lib/methods/helpers';
 import EmptyRoom from './components/EmptyRoom';
@@ -9,7 +9,7 @@ import { useMessages } from './hooks/useMessages';
 import { useScroll } from './hooks/useScroll';
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
-	({ rid, tmid, t, onLongPress, showMessageInMainThread, hideSystemMessages, flatListRef, serverVersion }, ref) => {
+	({ rid, tmid, t, onLongPress, showMessageInMainThread, hideSystemMessages, listRef, serverVersion }, ref) => {
 		const [messages, messagesIds, fetchMessages, { highTs, setHighTs }] = useMessages({
 			rid,
 			tmid,
@@ -18,21 +18,21 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			t,
 			serverVersion
 		});
-		const { jumpToBottom, jumpToMessage, cancelJumpToMessage, handleScrollToIndexFailed, highlightedMessageId, isReleasing } =
-			useScroll({
-				flatListRef,
-				messages,
-				messagesIds,
-				highTs,
-				setHighTs,
-				fetchMessages
-			});
+		const { jumpToBottom, jumpToMessage, cancelJumpToMessage, highlightedMessageId } = useScroll({
+			listRef,
+			messages,
+			messagesIds,
+			highTs,
+			setHighTs,
+			fetchMessages
+		});
+		const oldestFirstMessages = useMemo(() => messages.toReversed(), [messages]);
 
-		const onEndReached = useDebounce(() => {
+		const onStartReached = useDebounce(() => {
 			fetchMessages();
 		}, 300);
 
-		useEffect(() => onEndReached.cancel, [onEndReached]);
+		useEffect(() => onStartReached.cancel, [onStartReached]);
 
 		useImperativeHandle(ref, () => ({
 			jumpToMessage,
@@ -43,7 +43,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 		const renderItem: IListProps['renderItem'] = ({ item, index }) => (
 			<MessageRow
 				item={item}
-				previousItem={messages[index + 1]}
+				previousItem={oldestFirstMessages[index - 1]}
 				highlightedMessage={highlightedMessageId ?? undefined}
 				onLongPress={onLongPress}
 			/>
@@ -53,21 +53,13 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			<>
 				<EmptyRoom rid={rid} length={messages.length} />
 				<List
-					flatListRef={flatListRef}
-					data={messages}
+					listRef={listRef}
+					data={oldestFirstMessages}
+					extraData={highlightedMessageId}
 					renderItem={renderItem}
-					onEndReached={onEndReached}
-					onScrollToIndexFailed={handleScrollToIndexFailed}
+					onStartReached={onStartReached}
 					jumpToBottom={jumpToBottom}
 					isAnchored={highTs != null}
-					maintainVisibleContentPosition={
-						isReleasing
-							? undefined
-							: {
-									minIndexForVisible: 0,
-									autoscrollToTopThreshold: 0
-								}
-					}
 				/>
 			</>
 		);

@@ -29,7 +29,7 @@ export function useRoomMessaging({ rid, t, tmid, roomStore, ready, roomUserId, q
 
 	const messageComposerRef = useRef<IMessageComposerRef | null>(null);
 	const listContainerRef = useRef<IListContainerRef | null>(null);
-	const flatListRef: TListRef = useRef(null);
+	const listRef: TListRef = useRef(null);
 	const messageActionsRef = useRef<IMessageActions | null>(null);
 	const messageErrorActionsRef = useRef<IMessageErrorActions | null>(null);
 
@@ -91,7 +91,7 @@ export function useRoomMessaging({ rid, t, tmid, roomStore, ready, roomUserId, q
 		roomScreen,
 		messageComposerRef,
 		listContainerRef,
-		flatListRef,
+		listRef,
 		messageActionsRef,
 		messageErrorActionsRef,
 		onThreadPress,

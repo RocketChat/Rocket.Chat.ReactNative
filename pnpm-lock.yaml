@@ -27,6 +27,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^2.9.10
         version: 2.9.11(react-hook-form@7.34.2(react@19.2.3))
+      '@legendapp/list':
+        specifier: 3.4.0
+        version: 3.4.0(react-dom@19.2.3(react@19.2.3))(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
       '@lodev09/react-native-true-sheet':
         specifier: ~3.7.0
         version: 3.7.3(559152e7857b125189ca42b7a151d6a4)
@@ -2149,6 +2152,18 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@legendapp/list@3.4.0':
+    resolution: {integrity: sha512-Tlx7Uf9pRP/JbrekuWdKf1+42C9MTfl1wGkP8Lvmg2E2T9rCWQphYOs8aOkcvgbAkJ2S+WR+RTXHS2+6U+nROw==}
+    peerDependencies:
+      react: '*'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
 
   '@lodev09/react-native-true-sheet@3.7.3':
     resolution: {integrity: sha512-vX/3F6lD3qH0GZfSVXL+JD/bjFPZtJa35Vyr9KCv94szOHXsjoEyCyi/52r5jw6jmq/KRALCqwidt9A15qq9gw==}
@@ -10548,6 +10563,14 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@legendapp/list@3.4.0(react-dom@19.2.3(react@19.2.3))(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      react: 19.2.3
+      use-sync-external-store: 1.6.0(react@19.2.3)
+    optionalDependencies:
+      react-dom: 19.2.3(react@19.2.3)
+      react-native: 0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
 
   '@lodev09/react-native-true-sheet@3.7.3(559152e7857b125189ca42b7a151d6a4)':
     dependencies:

@@ -1,6 +1,5 @@
 import { type Ref, type RefObject } from 'react';
-import { type FlatListProps } from 'react-native';
-import { type FlatList } from 'react-native-gesture-handler';
+import { type LegendListProps, type LegendListRef } from '@legendapp/list/react-native';
 import { type StoreApi } from 'zustand';
 
 import { type ChatsStackParamList } from '~/stacks/types';
@@ -58,15 +57,15 @@ export interface IUseE2EEStatusResult {
 	hasE2EEWarning: boolean;
 }
 
-export type TListRef = RefObject<FlatList<TAnyMessageModel> | null>;
+export type TListRef = RefObject<LegendListRef | null>;
 
 export type TMessagesIdsRef = RefObject<string[]>;
 
-export interface IListProps extends Omit<
-	FlatListProps<TAnyMessageModel>,
-	'onScroll' | 'viewabilityConfigCallbackPairs' | 'onViewableItemsChanged' | 'viewabilityConfig'
+export interface IListProps extends Pick<
+	LegendListProps<TAnyMessageModel>,
+	'data' | 'renderItem' | 'onStartReached' | 'extraData'
 > {
-	flatListRef: TListRef;
+	listRef: TListRef;
 	jumpToBottom: () => void;
 	isAnchored?: boolean;
 }
@@ -82,7 +81,7 @@ export interface IListContainerProps {
 	rid: string;
 	t: RoomType;
 	tmid?: string;
-	flatListRef: TListRef;
+	listRef: TListRef;
 	hideSystemMessages: string[];
 	showMessageInMainThread: boolean;
 	serverVersion: string | null;
@@ -217,7 +216,7 @@ export interface IRoomMessageListProps
 		Pick<IRoomMessageHandlersInput, 'onThreadPress' | 'onReactionPress' | 'sendMessage'> {
 	tmid?: string;
 	listContainerRef: RefObject<IListContainerRef | null>;
-	flatListRef: TListRef;
+	listRef: TListRef;
 	onLongPress: IListContainerProps['onLongPress'];
 }
 

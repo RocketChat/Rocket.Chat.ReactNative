@@ -10,8 +10,8 @@ const makeListRef = () => {
 	const scrollToIndex = jest.fn();
 	const scrollToOffset = jest.fn();
 	const scrollToEnd = jest.fn();
-	const flatListRef = { current: { scrollToIndex, scrollToOffset, scrollToEnd } } as unknown as TListRef;
-	return { flatListRef, scrollToIndex, scrollToOffset, scrollToEnd };
+	const listRef = { current: { scrollToIndex, scrollToOffset, scrollToEnd } } as unknown as TListRef;
+	return { listRef, scrollToIndex, scrollToOffset, scrollToEnd };
 };
 
 const makeMessagesIdsRef = (ids: string[]): TMessagesIdsRef => ({ current: ids });
@@ -22,7 +22,7 @@ const renderUseScroll = (
 	fetchMessages = jest.fn(() => Promise.resolve()),
 	initialHighTs: number | null = null
 ) => {
-	const { flatListRef, scrollToIndex, scrollToOffset, scrollToEnd } = makeListRef();
+	const { listRef, scrollToIndex, scrollToOffset, scrollToEnd } = makeListRef();
 	const idsRef = makeMessagesIdsRef(initialRows.map(r => r.id));
 
 	const utils = renderHook(
@@ -30,7 +30,7 @@ const renderUseScroll = (
 			// Keep the ids ref in sync the same way useMessages does (before paint).
 			idsRef.current = rows.map(r => r.id);
 			return useScroll({
-				flatListRef,
+				listRef,
 				messages: rows as unknown as TAnyMessageModel[],
 				messagesIds: idsRef,
 				highTs,
@@ -41,7 +41,7 @@ const renderUseScroll = (
 		{ initialProps: { rows: initialRows, highTs: initialHighTs } }
 	);
 
-	return { ...utils, flatListRef, scrollToIndex, scrollToOffset, scrollToEnd, idsRef, setHighTs, fetchMessages };
+	return { ...utils, listRef, scrollToIndex, scrollToOffset, scrollToEnd, idsRef, setHighTs, fetchMessages };
 };
 
 describe('useScroll', () => {
@@ -89,30 +89,6 @@ describe('useScroll', () => {
 			await Promise.resolve();
 		});
 		await waitFor(() => expect(jumpResolved).toBe(true));
-	});
-
-	it('re-scrolls to the target after measurement so an undershot estimate cannot leave it hidden', async () => {
-		const setHighTs = jest.fn();
-		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs);
-
-		act(() => {
-			result.current.jumpToMessage('target', 1500);
-		});
-		act(() => {
-			rerender({ rows: [{ id: 'older' }, { id: 'target' }, { id: 'newer' }] });
-		});
-
-		// First pass: a single scroll toward the target on an ESTIMATED offset (inverted list, no getItemLayout).
-		await waitFor(() => expect(scrollToIndex).toHaveBeenCalledTimes(1));
-		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 1, viewPosition: 0.5, viewOffset: 100 }));
-
-		// Second pass: once the row has been measured, a corrective scroll re-centers it to the same spot so an
-		// undershooting estimate cannot leave the target hidden above the viewport.
-		act(() => {
-			jest.advanceTimersByTime(100);
-		});
-		expect(scrollToIndex).toHaveBeenCalledTimes(2);
-		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 1, viewPosition: 0.5, viewOffset: 100 }));
 	});
 
 	it('grows the window (bounded) for a deep anchored target, then scrolls once it appears', async () => {
@@ -258,183 +234,6 @@ describe('useScroll', () => {
 		expect(fetchMessages).not.toHaveBeenCalled();
 	});
 
-	it('scroll-to-index-failed steps to the measured frontier first, then lands on the actual target index', async () => {
-		const setHighTs = jest.fn();
-		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs);
-
-		act(() => {
-			result.current.jumpToMessage('target', 1500);
-		});
-
-		// Re-observe with the target sitting at a mid-window index (far past the initially-rendered rows).
-		const rows = [{ id: 'm0' }, { id: 'm1' }, { id: 'm2' }, { id: 'target' }, { id: 'm4' }, { id: 'm5' }];
-		act(() => {
-			rerender({ rows });
-		});
-		// The reactive scroll already fired once toward index 3.
-		await waitFor(() => expect(scrollToIndex).toHaveBeenCalledTimes(1));
-		// It also schedules a corrective re-scroll (undershoot fix); drain it so the failure-retry below is isolated.
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		scrollToIndex.mockClear();
-
-		// Simulate the inverted list failing to measure the target's frame: it only measured up to index 1.
-		act(() => {
-			result.current.handleScrollToIndexFailed({
-				index: 3,
-				highestMeasuredFrameIndex: 1,
-				averageItemLength: 50
-			});
-		});
-
-		// The retry is deferred one frame to break the synchronous onScrollToIndexFailed recursion, so
-		// nothing scrolls within this stack frame.
-		expect(scrollToIndex).not.toHaveBeenCalled();
-
-		// First frame: a straight scroll to the unmeasured target would fail without moving the viewport, so
-		// the retry steps to the measured frontier (1) — which DOES advance the render window.
-		act(() => {
-			jest.advanceTimersByTime(50);
-		});
-		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 1 }));
-
-		// Next frame: re-attempt the ACTUAL target index (3).
-		act(() => {
-			jest.advanceTimersByTime(50);
-		});
-		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 3 }));
-	});
-
-	it('keeps the header-clearing view offset on a scroll-to-index-failed retry so the target is not hidden behind the header', async () => {
-		const setHighTs = jest.fn();
-		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs);
-
-		act(() => {
-			result.current.jumpToMessage('target', 1500);
-		});
-
-		const rows = [{ id: 'm0' }, { id: 'm1' }, { id: 'm2' }, { id: 'target' }, { id: 'm4' }, { id: 'm5' }];
-		act(() => {
-			rerender({ rows });
-		});
-		// The reactive scroll already landed once, centered and clear of the header.
-		await waitFor(() => expect(scrollToIndex).toHaveBeenCalledTimes(1));
-		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ viewPosition: 0.5, viewOffset: 100 }));
-		// Drain the corrective re-scroll the reactive effect schedules (undershoot fix) so the retry below stands alone.
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		scrollToIndex.mockClear();
-
-		// The inverted list could not measure the target's frame on that first attempt.
-		act(() => {
-			result.current.handleScrollToIndexFailed({ index: 3, highestMeasuredFrameIndex: 1, averageItemLength: 50 });
-		});
-		act(() => {
-			jest.advanceTimersByTime(100);
-		});
-
-		// The landing on the actual target (after the frontier step) must re-apply the same centering +
-		// header-clearing offset; otherwise the target lands flush at the top edge and sits hidden behind
-		// the room header.
-		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 3, viewPosition: 0.5, viewOffset: 100 }));
-	});
-
-	it('defers a scroll-to-index-failed retry and caps it so an unmeasurable target cannot recurse into a stack overflow', () => {
-		const setHighTs = jest.fn();
-		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs);
-
-		act(() => {
-			result.current.jumpToMessage('target', 1500);
-		});
-
-		// Target sits at a mid-window index whose frame the inverted list cannot measure yet.
-		const rows = [{ id: 'm0' }, { id: 'm1' }, { id: 'm2' }, { id: 'target' }, { id: 'm4' }];
-		act(() => {
-			rerender({ rows });
-		});
-		scrollToIndex.mockClear();
-
-		// Model a real VirtualizedList: a scrollToIndex toward an unmeasurable frame re-invokes
-		// onScrollToIndexFailed. A synchronous retry would recurse until the call stack overflows; the
-		// mock caps its own re-entry so a regression reports a bounded count instead of crashing the worker.
-		const info = { index: 3, highestMeasuredFrameIndex: 1, averageItemLength: 50 };
-		let reentry = 0;
-		scrollToIndex.mockImplementation(() => {
-			reentry += 1;
-			if (reentry > 100) {
-				return;
-			}
-			result.current.handleScrollToIndexFailed(info);
-		});
-
-		// One failure from the list. The fix must defer the retry, so NOTHING scrolls in this stack frame
-		// (a synchronous retry would have already recursed here).
-		act(() => {
-			result.current.handleScrollToIndexFailed(info);
-		});
-		expect(scrollToIndex).not.toHaveBeenCalled();
-
-		// Drain the deferred retries: each tick may schedule at most one more, and the retry cap guarantees
-		// the chain terminates well below the mock's runaway-recursion ceiling.
-		for (let i = 0; i < 20; i++) {
-			act(() => {
-				jest.runOnlyPendingTimers();
-			});
-		}
-		expect(scrollToIndex.mock.calls.length).toBeLessThan(50);
-	});
-
-	it('climbs the measured frontier across repeated failures until a deep target lands', () => {
-		const setHighTs = jest.fn();
-		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs);
-
-		act(() => {
-			result.current.jumpToMessage('target', 1500);
-		});
-
-		// A deep target: index 8, many rows past the frame the inverted list can initially measure (1).
-		const rows = Array.from({ length: 8 }, (_, i) => ({ id: `m${i}` })).concat([{ id: 'target' }]);
-		act(() => {
-			rerender({ rows });
-		});
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		scrollToIndex.mockClear();
-
-		// Model a real inverted VirtualizedList: scrolling straight to the still-unmeasured target re-invokes
-		// onScrollToIndexFailed with the unchanged frontier, while a scroll to the frontier renders the next
-		// batch and advances it. Landing on the target only succeeds once the frontier has climbed to it.
-		let frontier = 1;
-		let landed = false;
-		scrollToIndex.mockImplementation(({ index }: { index: number }) => {
-			if (index === 8) {
-				if (frontier >= 8) {
-					landed = true;
-					return;
-				}
-				result.current.handleScrollToIndexFailed({ index: 8, highestMeasuredFrameIndex: frontier, averageItemLength: 50 });
-				return;
-			}
-			frontier = Math.min(8, frontier + 2);
-		});
-
-		act(() => {
-			result.current.handleScrollToIndexFailed({ index: 8, highestMeasuredFrameIndex: frontier, averageItemLength: 50 });
-		});
-		for (let i = 0; i < 40; i++) {
-			act(() => {
-				jest.runOnlyPendingTimers();
-			});
-		}
-
-		// Stepping straight to the target every retry (the pre-fix behavior) would exhaust the cap with the
-		// frontier still at 1; climbing the frontier first gets the deep target rendered and landed.
-		expect(landed).toBe(true);
-	});
-
 	it('aborts cleanly and releases the anchor when the target never re-observes within the safety window', async () => {
 		const setHighTs = jest.fn();
 		const { result, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs);
@@ -461,9 +260,9 @@ describe('useScroll', () => {
 		expect(scrollToIndex).not.toHaveBeenCalled();
 	});
 
-	it('jump-to-bottom from an anchored window pins offset 0 before the release swap, then re-pins on the live emit', () => {
+	it('jump-to-bottom from an anchored window releases the anchor, then scrolls to the end once the live window emits', () => {
 		const setHighTs = jest.fn();
-		const { result, rerender, scrollToOffset } = renderUseScroll(
+		const { result, rerender, scrollToEnd } = renderUseScroll(
 			[{ id: 'anchored-1' }, { id: 'anchored-2' }],
 			setHighTs,
 			undefined,
@@ -474,74 +273,40 @@ describe('useScroll', () => {
 			result.current.jumpToBottom();
 		});
 
-		// Pin the viewport to offset 0 (newest) on the still-settled anchored content BEFORE releasing: the
-		// live emit swaps these rows for a disjoint, shorter key set, and a deep offset would then sit past the
-		// short content (blank list). offset 0 is valid for any non-empty window, so the swap can't strand it.
-		// The release flag is raised so the caller suppresses MVCP across the swap.
 		expect(setHighTs).toHaveBeenCalledWith(null);
-		expect(scrollToOffset).toHaveBeenCalledTimes(1);
-		expect(scrollToOffset).toHaveBeenLastCalledWith({ offset: 0, animated: false });
-		expect(result.current.isReleasing).toBe(true);
+		expect(scrollToEnd).not.toHaveBeenCalled();
 
-		// Live window emits (disjoint rows, anchor now null): re-pin offset 0 in case the swap nudged it, and
-		// drop the release flag so MVCP resumes for normal live-tail following.
 		act(() => {
 			rerender({ rows: [{ id: 'live-1' }, { id: 'live-2' }], highTs: null });
 		});
-		expect(scrollToOffset).toHaveBeenCalledTimes(2);
-		expect(scrollToOffset).toHaveBeenLastCalledWith({ offset: 0, animated: false });
-		expect(result.current.isReleasing).toBe(false);
+		expect(scrollToEnd).toHaveBeenCalledTimes(1);
+		expect(scrollToEnd).toHaveBeenLastCalledWith({ animated: false });
 	});
 
-	it('jump-to-bottom in a live window scrolls to the tail immediately without re-anchoring', () => {
+	it('jump-to-bottom in a live window scrolls to the end immediately without re-anchoring', () => {
 		const setHighTs = jest.fn();
-		const { result, scrollToOffset } = renderUseScroll([{ id: 'a' }, { id: 'b' }], setHighTs, undefined, null);
+		const { result, scrollToEnd } = renderUseScroll([{ id: 'a' }, { id: 'b' }], setHighTs, undefined, null);
 
 		act(() => {
 			result.current.jumpToBottom();
 		});
 
-		// Already live (FAB shown only because scrolled past the limit): no anchor churn, scroll straight to the
-		// tail, and no release transition — MVCP stays on throughout.
 		expect(setHighTs).not.toHaveBeenCalled();
-		expect(scrollToOffset).toHaveBeenCalledWith({ offset: -100 });
-		expect(result.current.isReleasing).toBe(false);
+		expect(scrollToEnd).toHaveBeenCalledWith({ animated: true });
 	});
 
-	it("does not let a completed jump's deferred re-scroll fire after a newer jump supersedes it", () => {
+	it('scrolls to the oldest-first list index of a newest-first message id', () => {
 		const setHighTs = jest.fn();
-		// Both targets start present so each jump resolves synchronously (contiguous, non-anchored).
-		const { result, rerender, scrollToIndex } = renderUseScroll(
-			[{ id: 'a' }, { id: 'target-a' }, { id: 'b' }, { id: 'target-b' }],
+		const { result, scrollToIndex } = renderUseScroll(
+			[{ id: 'newest' }, { id: 'target' }, { id: 'mid' }, { id: 'oldest' }],
 			setHighTs
 		);
 
-		// Jump A: resolves synchronously; its deferred re-scroll is now queued.
 		act(() => {
-			result.current.jumpToMessage('target-a', null);
-		});
-		// Immediate scroll fired once toward A's index (1).
-		expect(scrollToIndex).toHaveBeenCalledTimes(1);
-		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 1 }));
-
-		// Jump B: starts before the 50 ms timer fires, updating lastJumpTargetId to 'target-b'.
-		act(() => {
-			rerender({ rows: [{ id: 'a' }, { id: 'target-a' }, { id: 'b' }, { id: 'target-b' }] });
-			result.current.jumpToMessage('target-b', null);
-		});
-		// Immediate scroll for B fired (target-b is at index 3).
-		const callCountAfterBJump = scrollToIndex.mock.calls.length;
-		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 3 }));
-
-		// Advance past 50 ms: A's deferred re-scroll timer fires. The guard must suppress it.
-		act(() => {
-			jest.advanceTimersByTime(100);
+			result.current.jumpToMessage('target', null);
 		});
 
-		// Only B's own deferred re-scroll may have fired (also at index 3), never a call to A's index (1).
-		const aIndex = 1;
-		const staleCallsToA = scrollToIndex.mock.calls.slice(callCountAfterBJump).filter(args => args[0] && args[0].index === aIndex);
-		expect(staleCallsToA).toHaveLength(0);
+		expect(scrollToIndex).toHaveBeenCalledWith(expect.objectContaining({ index: 2, viewPosition: 0.5, viewOffset: 100 }));
 	});
 
 	it('performs a single scroll for a contiguous target already present (no anchor)', async () => {
