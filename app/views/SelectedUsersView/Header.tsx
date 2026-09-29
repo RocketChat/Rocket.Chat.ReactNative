@@ -1,5 +1,6 @@
 import { useRef } from 'react';
-import { FlatList, View, Text, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import SearchBox from '~/containers/SearchBox';
 import I18n from '~/i18n';
@@ -49,9 +50,9 @@ const Header = ({
 			)}
 			{users.length === 0 ? null : (
 				<View>
-					<Text style={[styles.selectedText, { color: colors.fontHint }]}>
+					<PlainText style={[styles.selectedText, { color: colors.fontHint }]}>
 						{I18n.t('N_Selected_members', { n: users.length })}
-					</Text>
+					</PlainText>
 					<FlatList
 						data={users}
 						ref={(ref: FlatList<ISelectedUser> | null) => {

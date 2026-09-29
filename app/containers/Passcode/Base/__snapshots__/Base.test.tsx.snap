@@ -89,6 +89,9 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="Create Passcode"
+            accessibilityRole="text"
+            accessible={true}
             style={
               [
                 {
@@ -386,6 +389,9 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
                 testID="passcode-button-1"
               >
                 <Text
+                  accessibilityLabel="1"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -514,6 +520,9 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
                 testID="passcode-button-2"
               >
                 <Text
+                  accessibilityLabel="2"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -642,6 +651,9 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
                 testID="passcode-button-3"
               >
                 <Text
+                  accessibilityLabel="3"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -782,6 +794,9 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
                 testID="passcode-button-4"
               >
                 <Text
+                  accessibilityLabel="4"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -910,6 +925,9 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
                 testID="passcode-button-5"
               >
                 <Text
+                  accessibilityLabel="5"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -1038,6 +1056,9 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
                 testID="passcode-button-6"
               >
                 <Text
+                  accessibilityLabel="6"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -1178,6 +1199,9 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
                 testID="passcode-button-7"
               >
                 <Text
+                  accessibilityLabel="7"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -1306,6 +1330,9 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
                 testID="passcode-button-8"
               >
                 <Text
+                  accessibilityLabel="8"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -1434,6 +1461,9 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
                 testID="passcode-button-9"
               >
                 <Text
+                  accessibilityLabel="9"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -1587,6 +1617,9 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
                 testID="passcode-button-0"
               >
                 <Text
+                  accessibilityLabel="0"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -1839,6 +1872,9 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="Confirm Passcode"
+            accessibilityRole="text"
+            accessible={true}
             style={
               [
                 {
@@ -2136,6 +2172,9 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
                 testID="passcode-button-1"
               >
                 <Text
+                  accessibilityLabel="1"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -2264,6 +2303,9 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
                 testID="passcode-button-2"
               >
                 <Text
+                  accessibilityLabel="2"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -2392,6 +2434,9 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
                 testID="passcode-button-3"
               >
                 <Text
+                  accessibilityLabel="3"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -2532,6 +2577,9 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
                 testID="passcode-button-4"
               >
                 <Text
+                  accessibilityLabel="4"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -2660,6 +2708,9 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
                 testID="passcode-button-5"
               >
                 <Text
+                  accessibilityLabel="5"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -2788,6 +2839,9 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
                 testID="passcode-button-6"
               >
                 <Text
+                  accessibilityLabel="6"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -2928,6 +2982,9 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
                 testID="passcode-button-7"
               >
                 <Text
+                  accessibilityLabel="7"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -3056,6 +3113,9 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
                 testID="passcode-button-8"
               >
                 <Text
+                  accessibilityLabel="8"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -3184,6 +3244,9 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
                 testID="passcode-button-9"
               >
                 <Text
+                  accessibilityLabel="9"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -3337,6 +3400,9 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
                 testID="passcode-button-0"
               >
                 <Text
+                  accessibilityLabel="0"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -3589,6 +3655,9 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="Enter Passcode"
+            accessibilityRole="text"
+            accessible={true}
             style={
               [
                 {
@@ -3886,6 +3955,9 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
                 testID="passcode-button-1"
               >
                 <Text
+                  accessibilityLabel="1"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -4014,6 +4086,9 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
                 testID="passcode-button-2"
               >
                 <Text
+                  accessibilityLabel="2"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -4142,6 +4217,9 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
                 testID="passcode-button-3"
               >
                 <Text
+                  accessibilityLabel="3"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -4282,6 +4360,9 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
                 testID="passcode-button-4"
               >
                 <Text
+                  accessibilityLabel="4"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -4410,6 +4491,9 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
                 testID="passcode-button-5"
               >
                 <Text
+                  accessibilityLabel="5"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -4538,6 +4622,9 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
                 testID="passcode-button-6"
               >
                 <Text
+                  accessibilityLabel="6"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -4678,6 +4765,9 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
                 testID="passcode-button-7"
               >
                 <Text
+                  accessibilityLabel="7"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -4806,6 +4896,9 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
                 testID="passcode-button-8"
               >
                 <Text
+                  accessibilityLabel="8"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -4934,6 +5027,9 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
                 testID="passcode-button-9"
               >
                 <Text
+                  accessibilityLabel="9"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -5087,6 +5183,9 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
                 testID="passcode-button-0"
               >
                 <Text
+                  accessibilityLabel="0"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -5339,6 +5438,9 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
           }
         >
           <Text
+            accessibilityLabel="Unlock App"
+            accessibilityRole="text"
+            accessible={true}
             style={
               [
                 {
@@ -5379,6 +5481,9 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
           }
         >
           <Text
+            accessibilityLabel="Authentication required"
+            accessibilityRole="text"
+            accessible={true}
             style={
               [
                 {
@@ -5676,6 +5781,9 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
                 testID="passcode-button-1"
               >
                 <Text
+                  accessibilityLabel="1"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -5804,6 +5912,9 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
                 testID="passcode-button-2"
               >
                 <Text
+                  accessibilityLabel="2"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -5932,6 +6043,9 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
                 testID="passcode-button-3"
               >
                 <Text
+                  accessibilityLabel="3"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -6072,6 +6186,9 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
                 testID="passcode-button-4"
               >
                 <Text
+                  accessibilityLabel="4"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -6200,6 +6317,9 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
                 testID="passcode-button-5"
               >
                 <Text
+                  accessibilityLabel="5"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -6328,6 +6448,9 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
                 testID="passcode-button-6"
               >
                 <Text
+                  accessibilityLabel="6"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -6468,6 +6591,9 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
                 testID="passcode-button-7"
               >
                 <Text
+                  accessibilityLabel="7"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -6596,6 +6722,9 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
                 testID="passcode-button-8"
               >
                 <Text
+                  accessibilityLabel="8"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -6724,6 +6853,9 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
                 testID="passcode-button-9"
               >
                 <Text
+                  accessibilityLabel="9"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -6997,6 +7129,9 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
                 testID="passcode-button-0"
               >
                 <Text
+                  accessibilityLabel="0"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -7249,6 +7384,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="Enter Passcode"
+            accessibilityRole="text"
+            accessible={true}
             style={
               [
                 {
@@ -7546,6 +7684,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
                 testID="passcode-button-1"
               >
                 <Text
+                  accessibilityLabel="1"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -7674,6 +7815,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
                 testID="passcode-button-2"
               >
                 <Text
+                  accessibilityLabel="2"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -7802,6 +7946,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
                 testID="passcode-button-3"
               >
                 <Text
+                  accessibilityLabel="3"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -7942,6 +8089,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
                 testID="passcode-button-4"
               >
                 <Text
+                  accessibilityLabel="4"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -8070,6 +8220,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
                 testID="passcode-button-5"
               >
                 <Text
+                  accessibilityLabel="5"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -8198,6 +8351,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
                 testID="passcode-button-6"
               >
                 <Text
+                  accessibilityLabel="6"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -8338,6 +8494,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
                 testID="passcode-button-7"
               >
                 <Text
+                  accessibilityLabel="7"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -8466,6 +8625,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
                 testID="passcode-button-8"
               >
                 <Text
+                  accessibilityLabel="8"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -8594,6 +8756,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
                 testID="passcode-button-9"
               >
                 <Text
+                  accessibilityLabel="9"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -8867,6 +9032,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
                 testID="passcode-button-0"
               >
                 <Text
+                  accessibilityLabel="0"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -9119,6 +9287,9 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="Create Passcode"
+            accessibilityRole="text"
+            accessible={true}
             style={
               [
                 {
@@ -9159,6 +9330,9 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="This passcode will protect your data"
+            accessibilityRole="text"
+            accessible={true}
             style={
               [
                 {
@@ -9456,6 +9630,9 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
                 testID="passcode-button-1"
               >
                 <Text
+                  accessibilityLabel="1"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -9584,6 +9761,9 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
                 testID="passcode-button-2"
               >
                 <Text
+                  accessibilityLabel="2"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -9712,6 +9892,9 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
                 testID="passcode-button-3"
               >
                 <Text
+                  accessibilityLabel="3"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -9852,6 +10035,9 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
                 testID="passcode-button-4"
               >
                 <Text
+                  accessibilityLabel="4"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -9980,6 +10166,9 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
                 testID="passcode-button-5"
               >
                 <Text
+                  accessibilityLabel="5"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -10108,6 +10297,9 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
                 testID="passcode-button-6"
               >
                 <Text
+                  accessibilityLabel="6"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -10248,6 +10440,9 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
                 testID="passcode-button-7"
               >
                 <Text
+                  accessibilityLabel="7"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -10376,6 +10571,9 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
                 testID="passcode-button-8"
               >
                 <Text
+                  accessibilityLabel="8"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -10504,6 +10702,9 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
                 testID="passcode-button-9"
               >
                 <Text
+                  accessibilityLabel="9"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -10657,6 +10858,9 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
                 testID="passcode-button-0"
               >
                 <Text
+                  accessibilityLabel="0"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {

@@ -10,6 +10,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="Title"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -675,6 +678,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="Description"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -901,6 +907,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="Primary Action"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -974,6 +983,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="Secondary"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -1047,6 +1059,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="Danger Action"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -1120,6 +1135,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="Button 4"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -1193,6 +1211,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="Button 5"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -1273,6 +1294,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="Button 6 - Hidden"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -1353,6 +1377,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="Button 7 - Hidden"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -1433,6 +1460,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="Button 8 - Hidden"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -1509,6 +1539,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     underlayColor="black"
   >
     <Text
+      accessibilityLabel="Show more"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -1582,6 +1615,8 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
   >
     <Text
       accessibilityLabel="Due today"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={0}
       style={
         [
@@ -2110,6 +2145,9 @@ exports[`Story Snapshots: ModalDatePickerWithError should match snapshot 1`] = `
   }
 >
   <Text
+    accessibilityLabel="Label"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {
@@ -2231,6 +2269,9 @@ exports[`Story Snapshots: ModalDatePickerWithError should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="Invalid Date"
+            accessibilityRole="text"
+            accessible={true}
             style={
               [
                 {
@@ -2285,6 +2326,9 @@ exports[`Story Snapshots: ModalDatePickerWithError should match snapshot 1`] = `
     </View>
   </ExternalKeyboardView>
   <Text
+    accessibilityLabel="error test"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {
@@ -2407,6 +2451,9 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="Outgoing Title"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -2509,6 +2556,9 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <Text
+      accessibilityLabel="Pick something unique!"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -2538,6 +2588,9 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="Set a date"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -2659,6 +2712,9 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="Invalid Date"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -2729,6 +2785,8 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
   >
     <Text
       accessibilityLabel="Task: ZOL-994"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={0}
       style={
         [
@@ -2839,6 +2897,9 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="Change"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -2885,6 +2946,9 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="Notes"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -2907,6 +2971,9 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
       Notes
     </Text>
     <Text
+      accessibilityLabel="Describe your update"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -3012,6 +3079,9 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <Text
+      accessibilityLabel="Please take the time to compose something short"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -3290,6 +3360,8 @@ exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
     </View>
     <Text
       accessibilityLabel="November 25, 2019"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={0}
       style={
         [
@@ -3368,6 +3440,9 @@ exports[`Story Snapshots: ModalInputWithAddField should match snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="First field"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -3478,6 +3553,9 @@ exports[`Story Snapshots: ModalInputWithAddField should match snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="Second field"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -3650,6 +3728,9 @@ exports[`Story Snapshots: ModalInputWithError should match snapshot 1`] = `
   }
 >
   <Text
+    accessibilityLabel="Label"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {
@@ -3752,6 +3833,9 @@ exports[`Story Snapshots: ModalInputWithError should match snapshot 1`] = `
     </A11yIndexView>
   </A11yOrderView>
   <Text
+    accessibilityLabel="error test"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {
@@ -3786,6 +3870,9 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="Share with..."
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -3911,6 +3998,9 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="Search"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -3966,6 +4056,9 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
       </View>
     </ExternalKeyboardView>
     <Text
+      accessibilityLabel="Initial Value Undefined"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -3995,6 +4088,9 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="Share with..."
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -4220,6 +4316,9 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
                     testID="multi-select-chip-1"
                   >
                     <Text
+                      accessibilityLabel="John"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={1}
                       style={
                         [
@@ -4307,6 +4406,9 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
       </View>
     </ExternalKeyboardView>
     <Text
+      accessibilityLabel="Initial Value as John"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -4340,6 +4442,9 @@ exports[`Story Snapshots: ModalMultilneWithError should match snapshot 1`] = `
   }
 >
   <Text
+    accessibilityLabel="Label"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {
@@ -4445,6 +4550,9 @@ exports[`Story Snapshots: ModalMultilneWithError should match snapshot 1`] = `
     </A11yIndexView>
   </A11yOrderView>
   <Text
+    accessibilityLabel="error test"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {

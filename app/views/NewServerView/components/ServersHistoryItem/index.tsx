@@ -1,5 +1,6 @@
 import { memo } from 'react';
-import { PixelRatio, Text, View } from 'react-native';
+import { PixelRatio, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { Image } from 'expo-image';
 
 import styles, { ROW_HEIGHT } from './styles';
@@ -39,12 +40,12 @@ const ServersHistoryItem = memo(({ item, onPress, onDeletePress }: IServersHisto
 				<Image source={item.iconURL ? { uri: item.iconURL } : defaultLogo} style={styles.serverIcon} contentFit='contain' />
 
 				<View style={styles.textContainer}>
-					<Text numberOfLines={1} style={[styles.title, { color: colors.fontTitlesLabels }]}>
+					<PlainText numberOfLines={1} style={[styles.title, { color: colors.fontTitlesLabels }]}>
 						{item.url}
-					</Text>
-					<Text numberOfLines={1} style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}>
+					</PlainText>
+					<PlainText numberOfLines={1} style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}>
 						{item.username}
-					</Text>
+					</PlainText>
 				</View>
 			</View>
 		</Touchable>

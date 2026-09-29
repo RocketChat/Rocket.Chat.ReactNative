@@ -59,6 +59,9 @@ exports[`Story Snapshots: CustomButton should match snapshot 1`] = `
   underlayColor="black"
 >
   <Text
+    accessibilityLabel="Press me!"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {
@@ -144,6 +147,9 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
   underlayColor="black"
 >
   <Text
+    accessibilityLabel="Press me!"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {
@@ -359,6 +365,9 @@ exports[`Story Snapshots: PrimaryButton should match snapshot 1`] = `
   underlayColor="black"
 >
   <Text
+    accessibilityLabel="Press me!"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {
@@ -440,6 +449,9 @@ exports[`Story Snapshots: SecondaryButton should match snapshot 1`] = `
   underlayColor="black"
 >
   <Text
+    accessibilityLabel="Press me!"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {
@@ -521,6 +533,9 @@ exports[`Story Snapshots: SmallButton should match snapshot 1`] = `
   underlayColor="black"
 >
   <Text
+    accessibilityLabel="Press me!"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {

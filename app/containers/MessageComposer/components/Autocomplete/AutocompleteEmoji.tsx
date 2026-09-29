@@ -1,4 +1,5 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import { type IAutocompleteEmoji } from '~/containers/MessageComposer/interfaces';
 import { Emoji } from '~/containers/EmojiPicker/Emoji';
@@ -11,9 +12,9 @@ export const AutocompleteEmoji = ({ item }: { item: IAutocompleteEmoji }) => {
 			<Emoji emoji={item.emoji} />
 			<View style={styles.emoji}>
 				<View style={styles.emojiTitle}>
-					<Text style={styles.emojiText} numberOfLines={1}>
+					<PlainText style={styles.emojiText} numberOfLines={1}>
 						{typeof item.emoji === 'string' ? `:${item.emoji}:` : `:${item.emoji.name}:`}
-					</Text>
+					</PlainText>
 				</View>
 			</View>
 		</>

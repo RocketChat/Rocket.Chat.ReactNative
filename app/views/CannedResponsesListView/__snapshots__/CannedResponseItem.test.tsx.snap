@@ -131,6 +131,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
               !FAQ4
             </Text>
             <Text
+              accessibilityLabel="Private"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -219,6 +222,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
             underlayColor="black"
           >
             <Text
+              accessibilityLabel="Use"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -410,6 +416,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
               test4mobilePrivate
             </Text>
             <Text
+              accessibilityLabel="Private"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -498,6 +507,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
             underlayColor="black"
           >
             <Text
+              accessibilityLabel="Use"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -573,6 +585,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="HQ"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -613,6 +628,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="Closed"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -653,6 +671,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="HQ"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -693,6 +714,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="Problem in Product Y"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -733,6 +757,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="HQ"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -773,6 +800,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="Closed"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -813,6 +843,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="Problem in Product Y"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {

@@ -1,5 +1,6 @@
 import { memo } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import i18n from '~/i18n';
 import { useTheme } from '~/theme';
@@ -9,7 +10,7 @@ const SectionHeader = ({ header, title }: { header: string; title?: string }) =>
 	const { colors } = useTheme();
 	return (
 		<View style={[styles.groupTitleContainer, { backgroundColor: colors.surfaceRoom }]}>
-			<Text style={[styles.groupTitle, { color: colors.fontHint }]}>{title ?? i18n.t(header)}</Text>
+			<PlainText style={[styles.groupTitle, { color: colors.fontHint }]}>{title ?? i18n.t(header)}</PlainText>
 		</View>
 	);
 };

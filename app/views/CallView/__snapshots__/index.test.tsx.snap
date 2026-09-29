@@ -160,6 +160,9 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Bob Burnquist"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -308,6 +311,9 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Speaker"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -418,6 +424,9 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Hold"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -528,6 +537,9 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Mute"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -649,6 +661,9 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Message"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -759,6 +774,9 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="End"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -869,6 +887,9 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Dialpad"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1058,6 +1079,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Bob Burnquist"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -1206,6 +1230,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Speaker"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1318,6 +1345,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Hold"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1430,6 +1460,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Mute"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1551,6 +1584,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Message"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1661,6 +1697,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Cancel"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1773,6 +1812,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Dialpad"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1962,6 +2004,9 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Bob Burnquist"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -2110,6 +2155,9 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Speaker"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -2220,6 +2268,9 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Unhold"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -2330,6 +2381,9 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Unmute"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -2451,6 +2505,9 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Message"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -2561,6 +2618,9 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="End"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -2671,6 +2731,9 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Dialpad"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -2860,6 +2923,9 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Bob Burnquist"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -3008,6 +3074,9 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Speaker"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -3118,6 +3187,9 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Hold"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -3228,6 +3300,9 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Unmute"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -3349,6 +3424,9 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Message"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -3459,6 +3537,9 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="End"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -3569,6 +3650,9 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Dialpad"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -3758,6 +3842,9 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Bob Burnquist"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -3906,6 +3993,9 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Speaker"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -4016,6 +4106,9 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Unhold"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -4126,6 +4219,9 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Mute"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -4247,6 +4343,9 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Message"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -4357,6 +4456,9 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="End"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -4467,6 +4569,9 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Dialpad"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -4656,6 +4761,9 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Bob Burnquist"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -4804,6 +4912,9 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Speaker"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -4914,6 +5025,9 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Hold"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -5024,6 +5138,9 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Mute"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -5145,6 +5262,9 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Message"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -5255,6 +5375,9 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="End"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -5365,6 +5488,9 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Dialpad"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -5537,6 +5663,9 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Bob Burnquist"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -5685,6 +5814,9 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Speaker"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -5795,6 +5927,9 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Hold"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -5905,6 +6040,9 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Mute"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -6015,6 +6153,9 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Message"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -6125,6 +6266,9 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="End"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -6235,6 +6379,9 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Dialpad"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -6407,6 +6554,9 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Bob Burnquist"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -6555,6 +6705,9 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Speaker"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -6667,6 +6820,9 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Hold"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -6779,6 +6935,9 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Mute"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -6889,6 +7048,9 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Message"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -6999,6 +7161,9 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Cancel"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -7111,6 +7276,9 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Dialpad"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -7283,6 +7451,9 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Bob Burnquist"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -7431,6 +7602,9 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Speaker"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -7541,6 +7715,9 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Unhold"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -7651,6 +7828,9 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Unmute"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -7761,6 +7941,9 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Message"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -7871,6 +8054,9 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="End"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -7981,6 +8167,9 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Dialpad"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -8153,6 +8342,9 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Bob Burnquist"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -8301,6 +8493,9 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Speaker"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -8411,6 +8606,9 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Hold"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -8521,6 +8719,9 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Unmute"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -8631,6 +8832,9 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Message"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -8741,6 +8945,9 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="End"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -8851,6 +9058,9 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Dialpad"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -9023,6 +9233,9 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Bob Burnquist"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -9171,6 +9384,9 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Speaker"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -9281,6 +9497,9 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Unhold"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -9391,6 +9610,9 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Mute"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -9501,6 +9723,9 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Message"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -9611,6 +9836,9 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="End"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -9721,6 +9949,9 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Dialpad"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -9893,6 +10124,9 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Bob Burnquist"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -10041,6 +10275,9 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Speaker"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -10151,6 +10388,9 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Hold"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -10261,6 +10501,9 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Mute"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -10371,6 +10614,9 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Message"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -10481,6 +10727,9 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="End"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -10591,6 +10840,9 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Dialpad"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -10763,6 +11015,9 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Bob Burnquist"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -10911,6 +11166,9 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Speaker"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -11021,6 +11279,9 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Hold"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -11131,6 +11392,9 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Mute"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -11241,6 +11505,9 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Message"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -11351,6 +11618,9 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="End"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -11461,6 +11731,9 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Dialpad"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -11650,6 +11923,9 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Bob Burnquist"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -11798,6 +12074,9 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Speaker"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -11908,6 +12187,9 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Hold"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -12018,6 +12300,9 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Mute"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -12139,6 +12424,9 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Message"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -12249,6 +12537,9 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="End"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -12359,6 +12650,9 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Dialpad"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [

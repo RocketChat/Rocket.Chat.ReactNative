@@ -2,7 +2,8 @@ import { memo, useRef, useState } from 'react';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { useEventListener } from 'expo';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import prettyBytes from 'pretty-bytes';
 import { useHeaderHeight } from '@react-navigation/elements';
 
@@ -78,8 +79,8 @@ const IconPreview = memo(({ iconName, title, description, theme, width, height, 
 			size={56}
 			color={danger ? themes[theme].buttonBackgroundDangerDefault : themes[theme].badgeBackgroundLevel2}
 		/>
-		<Text style={[styles.fileName, { color: themes[theme].fontTitlesLabels }]}>{title}</Text>
-		{description ? <Text style={[styles.fileSize, { color: themes[theme].fontDefault }]}>{description}</Text> : null}
+		<PlainText style={[styles.fileName, { color: themes[theme].fontTitlesLabels }]}>{title}</PlainText>
+		{description ? <PlainText style={[styles.fileSize, { color: themes[theme].fontDefault }]}>{description}</PlainText> : null}
 	</ScrollView>
 ));
 

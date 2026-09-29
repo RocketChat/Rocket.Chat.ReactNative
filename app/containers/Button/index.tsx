@@ -1,5 +1,6 @@
 import { type FC } from 'react';
-import { type Insets, type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
+import { type Insets, type StyleProp, StyleSheet, type TextStyle, type ViewStyle } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
@@ -101,7 +102,11 @@ const Button: FC<IButtonProps> = ({
 			hitSlop={hitSlop}
 			accessibilityLabel={accessibilityLabel ?? title}
 			accessibilityRole='button'>
-			{loading ? <ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} /> : <Text style={textStyle}>{title}</Text>}
+			{loading ? (
+				<ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} />
+			) : (
+				<PlainText style={textStyle}>{title}</PlainText>
+			)}
 		</RectButton>
 	);
 };

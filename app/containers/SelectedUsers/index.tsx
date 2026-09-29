@@ -1,4 +1,5 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import { useTheme } from '~/theme';
 import { type ISelectedUser } from '~/reducers/selectedUsers';
@@ -40,9 +41,9 @@ const SelectedUsers = ({ users, useRealName, onPress }: ISelectedUsers) => {
 	return (
 		<>
 			<View style={styles.invitedHeader}>
-				<Text style={[styles.invitedCount, { color: colors.fontSecondaryInfo }]}>
+				<PlainText style={[styles.invitedCount, { color: colors.fontSecondaryInfo }]}>
 					{I18n.t('N_Selected_members', { n: users.length })}
-				</Text>
+				</PlainText>
 			</View>
 			<FlatList
 				data={users}

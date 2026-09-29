@@ -1,5 +1,5 @@
 import { type ReactElement } from 'react';
-import { Text } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import useShortnameToUnicode from '~/lib/hooks/useShortnameToUnicode';
 import { useCustomEmoji } from '~/lib/hooks/useCustomEmoji';
@@ -15,5 +15,5 @@ export const Emoji = ({ emoji }: IEmojiProps): ReactElement => {
 	if (customEmoji) {
 		return <CustomEmoji style={styles.customCategoryEmoji} emoji={customEmoji} />;
 	}
-	return <Text style={styles.categoryEmoji}>{formatShortnameToUnicode(`:${emoji}:`)}</Text>;
+	return <PlainText style={styles.categoryEmoji}>{formatShortnameToUnicode(`:${emoji}:`)}</PlainText>;
 };

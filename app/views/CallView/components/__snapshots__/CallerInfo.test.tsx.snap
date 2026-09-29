@@ -132,6 +132,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="Bob Burnquist"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -293,6 +296,9 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="john.doe"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [

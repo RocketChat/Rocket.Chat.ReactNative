@@ -1,4 +1,5 @@
 import { View, Text } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import sharedStyles from '~/views/Styles';
 import { type IAutocompleteCannedResponse } from '~/containers/MessageComposer/interfaces';
@@ -24,13 +25,13 @@ export const AutocompleteCannedResponse = ({ item }: { item: IAutocompleteCanned
 	return (
 		<View style={styles.canned}>
 			<View style={styles.cannedTitle}>
-				<Text style={styles.cannedTitleText} numberOfLines={1}>
+				<PlainText style={styles.cannedTitleText} numberOfLines={1}>
 					{item.title}
-				</Text>
+				</PlainText>
 			</View>
 			{item.subtitle ? (
 				<View style={styles.cannedSubtitle}>
-					<Text style={styles.cannedSubtitleText}>{item.subtitle}</Text>
+					<PlainText style={styles.cannedSubtitleText}>{item.subtitle}</PlainText>
 				</View>
 			) : null}
 		</View>

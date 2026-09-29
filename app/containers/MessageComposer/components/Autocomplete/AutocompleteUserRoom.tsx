@@ -1,4 +1,5 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import { type IAutocompleteUserRoom } from '~/containers/MessageComposer/interfaces';
 import Avatar from '~/containers/Avatar';
@@ -20,15 +21,15 @@ export const AutocompleteUserRoom = ({ item }: { item: IAutocompleteUserRoom }) 
 						<RoomTypeIcon userId={item.id} type={item.t} status={item.status} size={16} teamMain={item.teamMain} />
 					) : null}
 					<View style={{ paddingLeft: isAllOrHere ? 0 : 2 }}>
-						<Text style={styles.userRoomTitleText} numberOfLines={1}>
+						<PlainText style={styles.userRoomTitleText} numberOfLines={1}>
 							{isAllOrHere ? `@${item.title}` : item.title}
-						</Text>
+						</PlainText>
 					</View>
 				</View>
 				{item.type === '#' ? null : (
 					<View style={styles.userRoomSubtitle}>
-						<Text style={styles.userRoomSubtitleText}>{item.subtitle}</Text>
-						{item.outside ? <Text style={styles.userRoomOutsideText}>{I18n.t('Not_in_channel')}</Text> : null}
+						<PlainText style={styles.userRoomSubtitleText}>{item.subtitle}</PlainText>
+						{item.outside ? <PlainText style={styles.userRoomOutsideText}>{I18n.t('Not_in_channel')}</PlainText> : null}
 					</View>
 				)}
 			</View>

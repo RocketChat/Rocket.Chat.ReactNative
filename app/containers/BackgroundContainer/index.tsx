@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
-import { ActivityIndicator, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, ImageBackground, ScrollView, StyleSheet, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
@@ -37,7 +38,7 @@ const BackgroundContainer = ({ text, loading }: IBackgroundContainer): ReactElem
 		<View style={styles.container}>
 			<ImageBackground source={{ uri: `message_empty_${theme}` }} style={styles.image} />
 			<ScrollView contentContainerStyle={styles.container} contentInsetAdjustmentBehavior='automatic'>
-				{text && !loading ? <Text style={[styles.text, { color: themes[theme].fontHint }]}>{text}</Text> : null}
+				{text && !loading ? <PlainText style={[styles.text, { color: themes[theme].fontHint }]}>{text}</PlainText> : null}
 				{/* @ts-ignore */}
 				{loading ? <ActivityIndicator style={styles.text} color={themes[theme].fontHint} /> : null}
 			</ScrollView>

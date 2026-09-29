@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import { formatLongDate } from '~/lib/dayjs';
 import sharedStyles from '~/views/Styles';
@@ -26,7 +27,7 @@ export const DateSeparatorLabel = ({ ts }: { ts: Date | string }): ReactElement 
 
 	return (
 		<View style={[styles.label, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}>
-			<Text style={[styles.text, { color: colors.buttonFontSecondary }]}>{formatLongDate(ts)}</Text>
+			<PlainText style={[styles.text, { color: colors.buttonFontSecondary }]}>{formatLongDate(ts)}</PlainText>
 		</View>
 	);
 };

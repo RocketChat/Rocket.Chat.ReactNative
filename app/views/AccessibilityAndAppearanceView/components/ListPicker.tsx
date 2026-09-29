@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
@@ -97,7 +98,7 @@ const ListPicker = ({
 			translateTitle={false}
 			right={() => (
 				<View style={styles.rightTitleContainer}>
-					<Text style={[styles.rightTitle, { color: colors.fontInfo }]}>{option?.label}</Text>
+					<PlainText style={[styles.rightTitle, { color: colors.fontInfo }]}>{option?.label}</PlainText>
 				</View>
 			)}
 			rightContainerStyle={styles.rightContainer}

@@ -1,5 +1,6 @@
 import { type FC } from 'react';
-import { Pressable, StyleSheet, Text, type StyleProp, type ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
@@ -45,7 +46,7 @@ const UIKitButton: FC<IUIKitButtonProps> = ({ title, onPress, type = 'primary', 
 			{loading ? (
 				<ActivityIndicator color={color} style={{ padding: 0 }} />
 			) : (
-				<Text style={[styles.text, { color }]}>{title}</Text>
+				<PlainText style={[styles.text, { color }]}>{title}</PlainText>
 			)}
 		</Pressable>
 	);

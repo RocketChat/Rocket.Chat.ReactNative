@@ -1,4 +1,5 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { useEffect, useState, type ReactElement } from 'react';
 import { requestRecordingPermissionsAsync, setAudioModeAsync, useAudioRecorder } from 'expo-audio';
 import { getInfoAsync } from 'expo-file-system/legacy';
@@ -143,7 +144,7 @@ export const RecordAudio = (): ReactElement | null => {
 			<View style={styles.buttons}>
 				<CancelButton onPress={cancelRecording} cancelAndDelete />
 				<View accessible accessibilityLabel={i18n.t('Recording_audio_in_progress')} style={styles.recordingNote}>
-					<Text style={styles.recordingNoteText}>{i18n.t('Recording_audio_in_progress')}</Text>
+					<PlainText style={styles.recordingNoteText}>{i18n.t('Recording_audio_in_progress')}</PlainText>
 				</View>
 				<ReviewButton onPress={goReview} />
 			</View>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { StyleSheet, Text, unstable_batchedUpdates, View } from 'react-native';
+import { StyleSheet, unstable_batchedUpdates, View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import DateTimePicker, { type BaseProps } from '@react-native-community/datetimepicker';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
@@ -68,9 +69,9 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 						styles.input,
 						{ borderColor: error ? themes[theme].buttonBackgroundDangerDefault : themes[theme].strokeLight }
 					]}>
-					<Text style={[styles.inputText, { color: error ? themes[theme].fontDanger : themes[theme].fontTitlesLabels }]}>
+					<PlainText style={[styles.inputText, { color: error ? themes[theme].fontDanger : themes[theme].fontTitlesLabels }]}>
 						{currentDate.toLocaleDateString(language)}
-					</Text>
+					</PlainText>
 					{loading ? (
 						<ActivityIndicator style={[styles.loading, styles.icon]} />
 					) : (

@@ -1,5 +1,6 @@
 import { memo, type ReactElement } from 'react';
-import { PixelRatio, Text, View, type ViewStyle } from 'react-native';
+import { PixelRatio, View, type ViewStyle } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import Touch from '../Touch';
 import Avatar from '../Avatar';
@@ -34,7 +35,7 @@ const DirectoryItemLabel = memo(({ text, color }: IDirectoryItemLabel) => {
 	if (!text) {
 		return null;
 	}
-	return <Text style={[styles.directoryItemLabel, { color }]}>{text}</Text>;
+	return <PlainText style={[styles.directoryItemLabel, { color }]}>{text}</PlainText>;
 });
 
 const DirectoryItem = ({
@@ -61,9 +62,9 @@ const DirectoryItem = ({
 					<View style={styles.directoryItemTextContainer}>
 						<View style={styles.directoryItemTextTitle}>
 							{type !== 'd' ? <RoomTypeIcon type={type} teamMain={teamMain} /> : null}
-							<Text style={[styles.directoryItemName, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+							<PlainText style={[styles.directoryItemName, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 								{title}
-							</Text>
+							</PlainText>
 						</View>
 						{description ? (
 							<MarkdownPreview

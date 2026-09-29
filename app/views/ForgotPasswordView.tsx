@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState, type ReactElement } from 'react';
-import { Text } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
@@ -69,12 +69,12 @@ const ForgotPasswordView = ({ route }: ForgotPasswordViewProps): ReactElement =>
 	return (
 		<FormContainer testID='forgot-password-view'>
 			<FormContainerInner>
-				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: colors.fontTitlesLabels, fontSize: 24 }]}>
+				<PlainText style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: colors.fontTitlesLabels, fontSize: 24 }]}>
 					{I18n.t('Reset_password')}
-				</Text>
-				<Text style={[sharedStyles.textMedium, { color: colors.fontTitlesLabels, lineHeight: 22, fontSize: 16 }]}>
+				</PlainText>
+				<PlainText style={[sharedStyles.textMedium, { color: colors.fontTitlesLabels, lineHeight: 22, fontSize: 16 }]}>
 					{I18n.t('Email')}
-				</Text>
+				</PlainText>
 				<ControlledFormTextInput
 					name='email'
 					control={control}

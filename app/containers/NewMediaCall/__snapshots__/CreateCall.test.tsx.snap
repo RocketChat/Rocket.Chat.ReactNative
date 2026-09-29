@@ -78,6 +78,9 @@ exports[`Story Snapshots: Disabled should match snapshot 1`] = `
     
   </Text>
   <Text
+    accessibilityLabel="Call"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {
@@ -180,6 +183,9 @@ exports[`Story Snapshots: Enabled should match snapshot 1`] = `
     
   </Text>
   <Text
+    accessibilityLabel="Call"
+    accessibilityRole="text"
+    accessible={true}
     style={
       [
         {

@@ -1,4 +1,5 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import * as List from '~/containers/List';
 import styles from '../styles';
@@ -29,12 +30,14 @@ export const RoomInfoABAC = ({
 					<RoomInfoTag name={I18n.t('ABAC_managed')} icon={teamMain ? 'team-shield' : 'hash-shield'} />
 				</RoomInfoTagContainer>
 
-				<Text style={[styles.abacDescription, { color: colors.fontSecondaryInfo }]}>{I18n.t('ABAC_managed_description')}</Text>
+				<PlainText style={[styles.abacDescription, { color: colors.fontSecondaryInfo }]}>
+					{I18n.t('ABAC_managed_description')}
+				</PlainText>
 
 				<ItemLabel label={I18n.t('ABAC_room_attributes')} />
 				{abacAttributes.map(attribute => (
 					<View key={attribute.key} style={{ gap: 8 }}>
-						<Text style={[styles.abacDescription, { color: colors.fontDefault }]}>{attribute.key}</Text>
+						<PlainText style={[styles.abacDescription, { color: colors.fontDefault }]}>{attribute.key}</PlainText>
 						<RoomInfoTagContainer>
 							{attribute.values.map(value => (
 								<RoomInfoTag name={value} key={value} />

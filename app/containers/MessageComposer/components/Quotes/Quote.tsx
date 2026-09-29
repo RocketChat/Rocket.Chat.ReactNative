@@ -1,4 +1,5 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import { PlainText } from '~/containers/PlainText';
 
 import dayjs from '~/lib/dayjs';
 import { useTheme } from '~/theme';
@@ -34,10 +35,10 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 		<View style={styles.root} testID={`composer-quote-${message.id}`}>
 			<View style={styles.header}>
 				<View style={styles.title}>
-					<Text style={styles.username} numberOfLines={1}>
+					<PlainText style={styles.username} numberOfLines={1}>
 						{username}
-					</Text>
-					<Text style={styles.time}>{time}</Text>
+					</PlainText>
+					<PlainText style={styles.time}>{time}</PlainText>
 				</View>
 				<BaseButton
 					icon='close'
