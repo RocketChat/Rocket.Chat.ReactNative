@@ -1,7 +1,6 @@
 import fetch from '../methods/helpers/fetch';
 import sdk from './sdk';
 
-// The Apps REST API lives under /api/apps, outside the /api/v1 prefix the sdk adds.
 export const appsApiFetch = async (
 	path: string,
 	init: { method: 'GET' | 'POST'; body?: unknown } = { method: 'GET' }

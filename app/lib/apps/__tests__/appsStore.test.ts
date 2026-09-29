@@ -7,7 +7,7 @@ const mockGetAppActionButtons = jest.fn(() =>
 	])
 );
 const mockGetAppsLanguages = jest.fn(() =>
-	Promise.resolve({ apps: [{ id: 'app-id', languages: { en: { summarize: 'Summarize' } } }] })
+	Promise.resolve({ apps: [{ id: 'app-id', languages: { en: { summarize: 'Summarize' }, pt_BR: { summarize: 'Resumir' } } }] })
 );
 jest.mock('~/lib/services/restApi', () => ({
 	getAppActionButtons: () => mockGetAppActionButtons(),
@@ -32,7 +32,9 @@ describe('appsStore', () => {
 		await useAppsStore.getState().fetchTranslations();
 
 		expect(useAppsStore.getState().actionButtons).toHaveLength(1);
-		expect(useAppsStore.getState().translations).toEqual({ 'app-id': { en: { summarize: 'Summarize' } } });
+		expect(useAppsStore.getState().translations).toEqual({
+			'app-id': { en: { summarize: 'Summarize' }, 'pt-br': { summarize: 'Resumir' } }
+		});
 	});
 
 	it('drops responses that resolve after reset', async () => {

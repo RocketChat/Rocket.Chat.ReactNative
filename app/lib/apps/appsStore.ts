@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 
 import { type IAppActionButton } from './definitions';
+import { normalizeLanguage } from './translations';
 import log from '~/lib/methods/helpers/log';
 import { getAppActionButtons, getAppsLanguages } from '~/lib/services/restApi';
 
-export type TAppTranslations = {
-	// appId -> language -> key -> translation
-	[appId: string]: { [language: string]: { [key: string]: string } };
-};
+type TTranslationsByKey = { [key: string]: string };
+type TTranslationsByLanguage = { [language: string]: TTranslationsByKey };
+export type TAppTranslations = { [appId: string]: TTranslationsByLanguage };
 
 type TAppsState = {
 	actionButtons: IAppActionButton[];
@@ -46,7 +46,7 @@ export const useAppsStore = create<TAppsState & TAppsActions>(set => ({
 		try {
 			const { apps } = await getAppsLanguages();
 			const translations = apps.reduce<TAppTranslations>((acc, { id, languages }) => {
-				acc[id] = languages;
+				acc[id] = Object.fromEntries(Object.entries(languages).map(([language, keys]) => [normalizeLanguage(language), keys]));
 				return acc;
 			}, {});
 			if (current === generation) set({ translations });
