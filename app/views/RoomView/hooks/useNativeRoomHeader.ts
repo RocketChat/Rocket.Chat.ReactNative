@@ -153,6 +153,7 @@ export const useNativeRoomHeader = (
 				headerSubtitleImageSource: subtitleImage,
 				headerTitleStyle: { color: colors.fontTitlesLabels },
 				headerSubtitleColor: colors.fontSecondaryInfo,
+				headerTitleTestID: 'room-header',
 				onHeaderTitlePress: onTitlePress && !fields.disabled ? () => onTitlePress() : undefined
 			});
 		}

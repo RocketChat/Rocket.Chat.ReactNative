@@ -4,30 +4,14 @@ tags:
   - 'util'
 
 ---
-- runFlow:
-    when:
-      platform: iOS
-    commands:
-      - tapOn:
-          text: 'More'
-          retryTapIfNoChange: true
-      - extendedWaitUntil:
-          visible:
-            text: 'Actions'
-          timeout: 60000
-      - tapOn:
-          text: 'Actions'
-- runFlow:
-    when:
-      platform: Android
-    commands:
-      - assertVisible:
-          id: 'room-header'
-          index: 0
-      - tapOn:
-          id: 'room-header'
-          index: 0
-          retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'room-header'
+    timeout: 60000
+- tapOn:
+    id: 'room-header'
+    index: 0
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'

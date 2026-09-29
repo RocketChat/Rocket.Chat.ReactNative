@@ -1,8 +1,8 @@
 diff --git a/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js b/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
-index a56cb12..6d4b38e 100644
+index a56cb12..3b65c3a 100644
 --- a/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
 +++ b/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
-@@ -149,7 +149,12 @@ export function useHeaderConfigProps({
+@@ -149,7 +149,13 @@ export function useHeaderConfigProps({
    headerStyle,
    headerBlurEffect,
    headerTintColor,
@@ -12,10 +12,11 @@ index a56cb12..6d4b38e 100644
    headerTitle,
 +  headerTitleImageSource,
 +  onHeaderTitlePress,
++  headerTitleTestID,
    headerTitleAlign,
    headerTitleStyle,
    headerTransparent,
-@@ -230,6 +235,15 @@ export function useHeaderConfigProps({
+@@ -230,6 +236,15 @@ export function useHeaderConfigProps({
      tintColor,
      children: titleText
    }) : null;
@@ -31,7 +32,7 @@ index a56cb12..6d4b38e 100644
    const supportsHeaderSearchBar = typeof isSearchBarAvailableForCurrentPlatform === 'boolean' ? isSearchBarAvailableForCurrentPlatform :
    // Fallback for older versions of react-native-screens
    Platform.OS === 'ios' && SearchBar != null;
-@@ -356,7 +370,13 @@ export function useHeaderConfigProps({
+@@ -356,7 +371,14 @@ export function useHeaderConfigProps({
      largeTitleFontSize,
      largeTitleFontWeight,
      largeTitleHideShadow: headerLargeTitleShadowVisible === false,
@@ -42,14 +43,15 @@ index a56cb12..6d4b38e 100644
 +    titleImageSource,
 +    titlePressEnabled: titlePress != null,
 +    onTitlePress: titlePress,
++    titleTestID: headerTitleTestID,
      titleColor,
      titleFontFamily,
      titleFontSize,
 diff --git a/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts b/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
-index c32d1da..7109bb9 100644
+index c32d1da..c011b9b 100644
 --- a/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
 +++ b/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
-@@ -321,6 +321,64 @@ export type NativeStackNavigationOptions = {
+@@ -321,6 +321,74 @@ export type NativeStackNavigationOptions = {
           */
          tintColor?: string;
      }) => React.ReactNode);
@@ -111,10 +113,20 @@ index c32d1da..7109bb9 100644
 +     * @supported iOS 26 or higher
 +     */
 +    onHeaderTitlePress?: () => void;
++    /**
++     * Accessibility identifier of the native header title, for e2e tests.
++     *
++     * Only supported on iOS.
++     *
++     * @platform ios
++     *
++     * @supported iOS 26 or higher
++     */
++    headerTitleTestID?: string;
      /**
       * How to align the the header title.
       * Defaults to `left` on platforms other than iOS.
-@@ -937,6 +995,7 @@ export type NativeStackHeaderItemButton = SharedHeaderItem & {
+@@ -937,6 +1005,7 @@ export type NativeStackHeaderItemButton = SharedHeaderItem & {
       * Read more: https://developer.apple.com/documentation/uikit/uibarbuttonitem/isselected
       */
      selected?: boolean;
@@ -123,10 +135,10 @@ index c32d1da..7109bb9 100644
  /**
   * An action item in a menu.
 diff --git a/node_modules/@react-navigation/native-stack/src/types.tsx b/node_modules/@react-navigation/native-stack/src/types.tsx
-index aeb4939..7016cb9 100644
+index aeb4939..3e02d47 100644
 --- a/node_modules/@react-navigation/native-stack/src/types.tsx
 +++ b/node_modules/@react-navigation/native-stack/src/types.tsx
-@@ -371,6 +371,64 @@ export type NativeStackNavigationOptions = {
+@@ -371,6 +371,74 @@ export type NativeStackNavigationOptions = {
           */
          tintColor?: string;
        }) => React.ReactNode);
@@ -188,10 +200,20 @@ index aeb4939..7016cb9 100644
 +   * @supported iOS 26 or higher
 +   */
 +  onHeaderTitlePress?: () => void;
++  /**
++   * Accessibility identifier of the native header title, for e2e tests.
++   *
++   * Only supported on iOS.
++   *
++   * @platform ios
++   *
++   * @supported iOS 26 or higher
++   */
++  headerTitleTestID?: string;
    /**
     * How to align the the header title.
     * Defaults to `left` on platforms other than iOS.
-@@ -994,6 +1052,7 @@ export type NativeStackHeaderItemButton = SharedHeaderItem & {
+@@ -994,6 +1062,7 @@ export type NativeStackHeaderItemButton = SharedHeaderItem & {
     * Read more: https://developer.apple.com/documentation/uikit/uibarbuttonitem/isselected
     */
    selected?: boolean;
@@ -200,10 +222,10 @@ index aeb4939..7016cb9 100644
  
  /**
 diff --git a/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx b/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx
-index a7e3004..c57096f 100644
+index a7e3004..180964c 100644
 --- a/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx
 +++ b/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx
-@@ -210,7 +210,12 @@ export function useHeaderConfigProps({
+@@ -210,7 +210,13 @@ export function useHeaderConfigProps({
    headerStyle,
    headerBlurEffect,
    headerTintColor,
@@ -213,10 +235,11 @@ index a7e3004..c57096f 100644
    headerTitle,
 +  headerTitleImageSource,
 +  onHeaderTitlePress,
++  headerTitleTestID,
    headerTitleAlign,
    headerTitleStyle,
    headerTransparent,
-@@ -330,6 +335,22 @@ export function useHeaderConfigProps({
+@@ -330,6 +336,22 @@ export function useHeaderConfigProps({
          })
        : null;
  
@@ -239,7 +262,7 @@ index a7e3004..c57096f 100644
    const supportsHeaderSearchBar =
      typeof isSearchBarAvailableForCurrentPlatform === 'boolean'
        ? isSearchBarAvailableForCurrentPlatform
-@@ -522,7 +543,13 @@ export function useHeaderConfigProps({
+@@ -522,7 +544,14 @@ export function useHeaderConfigProps({
      largeTitleFontSize,
      largeTitleFontWeight,
      largeTitleHideShadow: headerLargeTitleShadowVisible === false,
@@ -250,6 +273,7 @@ index a7e3004..c57096f 100644
 +    titleImageSource,
 +    titlePressEnabled: titlePress != null,
 +    onTitlePress: titlePress,
++    titleTestID: headerTitleTestID,
      titleColor,
      titleFontFamily,
      titleFontSize,
