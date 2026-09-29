@@ -1,0 +1,1217 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="This is block quote"
+    >
+      &gt; This is block quote
+    </Text>
+    <Text
+      accessibilityLabel="this is a normal line"
+    >
+      this is a normal line
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Code should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="This is inline code"
+    >
+      This is \`inline code\`
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Inline code has back-ticks around it."
+    >
+      Inline \`code\` has \`back-ticks around\` it\\.
+    </Text>
+    <Text
+      accessibilityLabel="Code block"
+    >
+      \`\`\`
+Code block
+\`\`\`
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Emoji should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Unicode: 😃😇👍"
+    >
+      Unicode: 😃😇👍
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Shortnames: 😂 👍️"
+    >
+      Shortnames: 😂 👍️
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Custom emojis: :react_rocket: :nyan_rocket: :marioparty:"
+    >
+      Custom emojis: ⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png) ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png) ⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="😃 👍️ :marioparty:"
+    >
+      😃👍️⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif)
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Hashtag should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="test-channel #unknown"
+    >
+      [**test\\-channel**](&lt;channel://123&gt;) \\#unknown
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Headers should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Header 1"
+    >
+      # Header 1
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Header 2"
+    >
+      ## Header 2
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Header 3"
+    >
+      ### Header 3
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Header 4"
+    >
+      #### Header 4
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="H1 bold italic strike code 🚀 rocket.cat test-channel https://rocket.chat"
+    >
+      # H1 **bold** _italic_ ~~strike~~ \`code\` 🚀 [**rocket\\.cat**](&lt;user://random?me=1&gt;) [**test\\-channel**](&lt;channel://123&gt;) [https://rocket\\.chat](&lt;https://rocket.chat&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="H2 bold italic strike code 🚀 rocket.cat test-channel https://rocket.chat"
+    >
+      ## H2 **bold** _italic_ ~~strike~~ \`code\` 🚀 [**rocket\\.cat**](&lt;user://random?me=1&gt;) [**test\\-channel**](&lt;channel://123&gt;) [https://rocket\\.chat](&lt;https://rocket.chat&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="H3 bold italic strike code 🚀 rocket.cat test-channel https://rocket.chat"
+    >
+      ### H3 **bold** _italic_ ~~strike~~ \`code\` 🚀 [**rocket\\.cat**](&lt;user://random?me=1&gt;) [**test\\-channel**](&lt;channel://123&gt;) [https://rocket\\.chat](&lt;https://rocket.chat&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="H4 bold italic strike code 🚀 rocket.cat test-channel https://rocket.chat"
+    >
+      #### H4 **bold** _italic_ ~~strike~~ \`code\` 🚀 [**rocket\\.cat**](&lt;user://random?me=1&gt;) [**test\\-channel**](&lt;channel://123&gt;) [https://rocket\\.chat](&lt;https://rocket.chat&gt;)
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Image should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel=""
+    >
+      ![](&lt;https://play.google.com/intl/en_us/badges/images/badge_new.png&gt;)
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Links should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Markdown link: [description](url)"
+    >
+      [Markdown link](&lt;https://rocket.chat&gt;): \`[description](url)\`
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Formatted Link: <url|description>"
+    >
+      [Formatted Link](&lt;https://rocket.chat&gt;): \`&lt;url|description&gt;\`
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Markdown link and the text with default style"
+    >
+      [Markdown link](&lt;https://rocket.chat&gt;) and the text with default style
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Markdown link and the text continues on the next line"
+    >
+      [Markdown link](&lt;https://rocket.chat&gt;) and the text continues on the next line
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Lists should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Open Source
+Rocket.Chat"
+    >
+      - Open Source
+- [Rocket\\.Chat](&lt;//Rocket.Chat&gt;)
+    </Text>
+    <Text
+      accessibilityLabel="  - nodejs"
+    >
+        \\- nodejs
+    </Text>
+    <Text
+      accessibilityLabel="  - ReactNative"
+    >
+        \\- ReactNative
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Open Source
+Rocket.Chat"
+    >
+      1. Open Source
+2. [Rocket\\.Chat](&lt;//Rocket.Chat&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="bold 
+italic 
+strikethrough 
+bold italic 
+bold strikethrough 
+italic strikethrough 
+bold italic strikethrough"
+    >
+      - **bold** 
+- _italic_ 
+- ~~strikethrough~~ 
+- _**bold italic**_ 
+- **~~bold strikethrough~~** 
+- _~~italic strikethrough~~_ 
+- _**~~bold italic strikethrough~~**_
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Mentions should match snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        accessibilityLabel="rocket.cat name1 all here @unknown team"
+      >
+        [**rocket\\.cat**](&lt;user://random?me=1&gt;) [**name1**](&lt;user://random2&gt;) [**all**](&lt;user://all&gt;) [**here**](&lt;user://here&gt;) @unknown [**team**](&lt;user://team?team=1&gt;)
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        accessibilityLabel="Rocket Cat Name all here @unknown team"
+      >
+        [**Rocket Cat**](&lt;user://random?me=1&gt;) [**Name**](&lt;user://random2&gt;) [**all**](&lt;user://all&gt;) [**here**](&lt;user://here&gt;) @unknown [**team**](&lt;user://team?team=1&gt;)
+      </Text>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        accessibilityLabel="Normal: rocket.cat name1 all here test-channel"
+      >
+        Normal: [**rocket\\.cat**](&lt;user://random?me=1&gt;) [**name1**](&lt;user://random2&gt;) [**all**](&lt;user://all&gt;) [**here**](&lt;user://here&gt;) [**test\\-channel**](&lt;channel://123&gt;)
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        accessibilityLabel="Bold: rocket.cat name1 all here test-channel"
+      >
+        Bold: **[**rocket\\.cat**](&lt;user://random?me=1&gt;)** **[**name1**](&lt;user://random2&gt;)** **[**all**](&lt;user://all&gt;)** **[**here**](&lt;user://here&gt;)** **[**test\\-channel**](&lt;channel://123&gt;)**
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        accessibilityLabel="Italic:  rocket.cat   name1   all   here   test-channel "
+      >
+        Italic: _ [**rocket\\.cat**](&lt;user://random?me=1&gt;) _ _ [**name1**](&lt;user://random2&gt;) _ _ [**all**](&lt;user://all&gt;) _ _ [**here**](&lt;user://here&gt;) _ _ [**test\\-channel**](&lt;channel://123&gt;) _
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        accessibilityLabel="Strikethrough: rocket.cat name1 all here test-channel"
+      >
+        Strikethrough: ~~[**rocket\\.cat**](&lt;user://random?me=1&gt;)~~ ~~[**name1**](&lt;user://random2&gt;)~~ ~~[**all**](&lt;user://all&gt;)~~ ~~[**here**](&lt;user://here&gt;)~~ ~~[**test\\-channel**](&lt;channel://123&gt;)~~
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        accessibilityLabel="Italic + Bold + Strikethrough: rocket.cat name1 all here test-channel"
+      >
+        Italic \\+ Bold \\+ Strikethrough: _~~**[**rocket\\.cat**](&lt;user://random?me=1&gt;)**~~_ _~~**[**name1**](&lt;user://random2&gt;)**~~_ _~~**[**all**](&lt;user://all&gt;)**~~_ _~~**[**here**](&lt;user://here&gt;)**~~_ _~~**[**test\\-channel**](&lt;channel://123&gt;)**~~_
+      </Text>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: Preview should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <Text
+    accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    numberOfLines={1}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "400",
+          "lineHeight": 22,
+          "textAlign": "left",
+        },
+        {
+          "color": "#2F343D",
+          "lineHeight": undefined,
+        },
+      ]
+    }
+    testID="markdown-preview-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  >
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+  </Text>
+  <Text
+    accessibilityLabel="a b c d e"
+    numberOfLines={1}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "400",
+          "lineHeight": 22,
+          "textAlign": "left",
+        },
+        {
+          "color": "#2F343D",
+          "lineHeight": undefined,
+        },
+      ]
+    }
+    testID="markdown-preview-a b c d e"
+  >
+    a b c d e
+  </Text>
+  <Text
+    accessibilityLabel="a b c"
+    numberOfLines={1}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "400",
+          "lineHeight": 22,
+          "textAlign": "left",
+        },
+        {
+          "color": "#2F343D",
+          "lineHeight": undefined,
+        },
+      ]
+    }
+    testID="markdown-preview-a b c"
+  >
+    a b c
+  </Text>
+  <Text
+    accessibilityLabel="@rocket.cat @name1 @all @here @unknown #general #unknown"
+    numberOfLines={1}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "400",
+          "lineHeight": 22,
+          "textAlign": "left",
+        },
+        {
+          "color": "#2F343D",
+          "lineHeight": undefined,
+        },
+      ]
+    }
+    testID="markdown-preview-@rocket.cat @name1 @all @here @unknown #general #unknown"
+  >
+    @rocket.cat @name1 @all @here @unknown #general #unknown
+  </Text>
+  <Text
+    accessibilityLabel="Testing: 😃 👍️ :marioparty:"
+    numberOfLines={1}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "400",
+          "lineHeight": 22,
+          "textAlign": "left",
+        },
+        {
+          "color": "#2F343D",
+          "lineHeight": undefined,
+        },
+      ]
+    }
+    testID="markdown-preview-Testing: 😃 👍️ :marioparty:"
+  >
+    Testing: 😃 👍️ :marioparty:
+  </Text>
+  <Text
+    accessibilityLabel="Fallback from new md to old"
+    numberOfLines={1}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "400",
+          "lineHeight": 22,
+          "textAlign": "left",
+        },
+        {
+          "color": "#2F343D",
+          "lineHeight": undefined,
+        },
+      ]
+    }
+    testID="markdown-preview-Fallback from new md to old"
+  >
+    Fallback from new md to old
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: Text should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="This is Rocket.Chat"
+    >
+      This is [Rocket\\.Chat](&lt;//Rocket.Chat&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    >
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua\\.
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="a"
+    >
+      a
+    </Text>
+    <Text
+      accessibilityLabel="b"
+    >
+      b
+    </Text>
+    <Text
+      accessibilityLabel="c"
+    >
+      c
+    </Text>
+    <View
+      style={
+        {
+          "height": 8,
+        }
+      }
+    />
+    <Text
+      accessibilityLabel="d"
+    >
+      d
+    </Text>
+    <View
+      style={
+        {
+          "height": 8,
+        }
+      }
+    />
+    <View
+      style={
+        {
+          "height": 8,
+        }
+      }
+    />
+    <Text
+      accessibilityLabel="e"
+    >
+      e
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="a       b                                                                             c"
+    >
+      a       b                                                                             c
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Emphasis: bold italic strikethrough bold with italic bold with strike bold with italic and strike italic with strike"
+    >
+      Emphasis: **bold** _italic_ ~~strikethrough~~ **_bold with italic_** **~~bold with strike~~** **_~~bold with italic and strike~~_** _~~italic with strike~~_
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Emphasis: bold italic strikethrough bold with italic bold with strike bold with italic and strike italic with strike"
+      style={
+        {
+          "color": "red",
+          "fontSize": 10,
+        }
+      }
+    >
+      Emphasis: **bold** _italic_ ~~strikethrough~~ **_bold with italic_** **~~bold with strike~~** **_~~bold with italic and strike~~_** _~~italic with strike~~_
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="rocket.cat name1 all here @unknown team"
+      style={
+        {
+          "color": "red",
+          "fontSize": 10,
+        }
+      }
+    >
+      [**rocket\\.cat**](&lt;user://random?me=1&gt;) [**name1**](&lt;user://random2&gt;) [**all**](&lt;user://all&gt;) [**here**](&lt;user://here&gt;) @unknown [**team**](&lt;user://team?team=1&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="test-channel #unknown"
+      style={
+        {
+          "color": "red",
+          "fontSize": 10,
+        }
+      }
+    >
+      [**test\\-channel**](&lt;channel://123&gt;) \\#unknown
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="This is block quote"
+      style={
+        {
+          "color": "red",
+          "fontSize": 10,
+        }
+      }
+    >
+      &gt; This is block quote
+    </Text>
+    <Text
+      accessibilityLabel="this is a normal line"
+      style={
+        {
+          "color": "red",
+          "fontSize": 10,
+        }
+      }
+    >
+      this is a normal line
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Markdown link"
+      style={
+        {
+          "color": "red",
+          "fontSize": 10,
+        }
+      }
+    >
+      [Markdown link](&lt;https://rocket.chat&gt;)
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Unix timestamp formats"
+    >
+      Unix timestamp formats
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="t - Short time: 12:00 AM"
+    >
+      t \\- Short time: [ 12:00 AM ](&lt;timestamp://1735689600&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="T - Long time: 12:00:00 AM"
+    >
+      T \\- Long time: [ 12:00:00 AM ](&lt;timestamp://1735689600&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="d - Short date: 01/01/2025"
+    >
+      d \\- Short date: [ 01/01/2025 ](&lt;timestamp://1735689600&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="D - Long date: Wednesday, Jan 01, 2025"
+    >
+      D \\- Long date: [ Wednesday, Jan 01, 2025 ](&lt;timestamp://1735689600&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="f - Short date/time: Wednesday, Jan 01, 2025 12:00 AM"
+    >
+      f \\- Short date/time: [ Wednesday, Jan 01, 2025 12:00 AM ](&lt;timestamp://1735689600&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="F - Long date/time: Wednesday, Jan 01, 2025 12:00:00 AM"
+    >
+      F \\- Long date/time: [ Wednesday, Jan 01, 2025 12:00:00 AM ](&lt;timestamp://1735689600&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="R - Relative time: a year ago"
+    >
+      R \\- Relative time: [ a year ago ](&lt;timestamp://1735689600&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="ISO timestamp formats"
+    >
+      ISO timestamp formats
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="t - Short time: 12:00 AM"
+    >
+      t \\- Short time: [ 12:00 AM ](&lt;timestamp://1735689600&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="T - Long time: 12:00:00 AM"
+    >
+      T \\- Long time: [ 12:00:00 AM ](&lt;timestamp://1735689600&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="d - Short date: 01/01/2025"
+    >
+      d \\- Short date: [ 01/01/2025 ](&lt;timestamp://1735689600&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="D - Long date: Wednesday, Jan 01, 2025"
+    >
+      D \\- Long date: [ Wednesday, Jan 01, 2025 ](&lt;timestamp://1735689600&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="f - Short date/time: Wednesday, Jan 01, 2025 12:00 AM"
+    >
+      f \\- Short date/time: [ Wednesday, Jan 01, 2025 12:00 AM ](&lt;timestamp://1735689600&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="F - Long date/time: Wednesday, Jan 01, 2025 12:00:00 AM"
+    >
+      F \\- Long date/time: [ Wednesday, Jan 01, 2025 12:00:00 AM ](&lt;timestamp://1735689600&gt;)
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="R - Relative time: a year ago"
+    >
+      R \\- Relative time: [ a year ago ](&lt;timestamp://1735689600&gt;)
+    </Text>
+  </View>
+</View>
+`;

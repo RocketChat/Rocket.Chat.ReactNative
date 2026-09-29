@@ -36,6 +36,11 @@ tags:
             visible: ".*isn't responding.*"
           commands:
             - tapOn: 'Wait'
+      - runFlow:
+          when:
+            visible: 'Sign in to this workspace?'
+          commands:
+            - tapOn: '(?i)login'
       - extendedWaitUntil:
           visible:
             id: 'rooms-list-view'
