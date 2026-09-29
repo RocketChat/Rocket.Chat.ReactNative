@@ -1,52 +1,48 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NewMessageView Item should match snapshot when hasMediaCallPermission is false 1`] = `
-<RNGestureHandlerButton
+<View
   accessibilityLabel="John Doe"
   accessibilityRole="button"
-  activeOpacity={0.105}
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  activeUnderlayOpacity={0.105}
+  animationDuration={0}
   collapsable={false}
-  delayLongPress={600}
-  handlerTag={-1}
-  handlerType="NativeViewGestureHandler"
-  innerRef={null}
-  onActiveStateChange={[Function]}
-  onGestureHandlerEvent={[Function]}
-  onGestureHandlerStateChange={[Function]}
-  onPress={[Function]}
-  rippleColor="#D7DBE0"
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
-    [
-      {
-        "backgroundColor": "#FFFFFF",
-      },
-      {
-        "cursor": undefined,
-      },
-    ]
+    {
+      "backgroundColor": "#FFFFFF",
+    }
   }
   testID="new-message-view-item-john.doe"
   underlayColor="#D7DBE0"
 >
-  <View
-    collapsable={false}
-    style={
-      {
-        "backgroundColor": "#D7DBE0",
-        "borderBottomLeftRadius": undefined,
-        "borderBottomRightRadius": undefined,
-        "borderRadius": undefined,
-        "borderTopLeftRadius": undefined,
-        "borderTopRightRadius": undefined,
-        "bottom": 0,
-        "left": 0,
-        "opacity": 0,
-        "position": "absolute",
-        "right": 0,
-        "top": 0,
-      }
-    }
-  />
   <View
     style={
       [
@@ -154,7 +150,7 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
       </Text>
     </View>
   </View>
-</RNGestureHandlerButton>
+</View>
 `;
 
 exports[`Story Snapshots: Default should match snapshot 1`] = `
@@ -167,53 +163,48 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     }
   }
 >
-  <RNGestureHandlerButton
+  <View
     accessibilityLabel="John Doe"
     accessibilityRole="button"
-    activeOpacity={0.105}
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    activeUnderlayOpacity={0.105}
+    animationDuration={0}
     collapsable={false}
-    delayLongPress={600}
-    handlerTag={-1}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onLongPress={[Function]}
-    onPress={[Function]}
-    rippleColor="#D7DBE0"
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
-      [
-        {
-          "backgroundColor": "#FFFFFF",
-        },
-        {
-          "cursor": undefined,
-        },
-      ]
+      {
+        "backgroundColor": "#FFFFFF",
+      }
     }
     testID="new-message-view-item-john.doe"
     underlayColor="#D7DBE0"
   >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "#D7DBE0",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": undefined,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
     <View
       style={
         [
@@ -320,38 +311,45 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           John Doe
         </Text>
       </View>
-      <RNGestureHandlerButton
+      <View
         accessibilityLabel="Voice call"
         accessibilityRole="button"
         accessibilityState={
           {
+            "busy": undefined,
+            "checked": undefined,
             "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
           }
         }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
         activeOpacity={0.3}
-        borderless={true}
+        animationDuration={0}
         collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#D7DBE0"
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
-          [
-            {
-              "alignSelf": "center",
-              "opacity": 1,
-              "paddingHorizontal": 15,
-            },
-            {
-              "cursor": undefined,
-            },
-          ]
+          {
+            "alignSelf": "center",
+            "paddingHorizontal": 15,
+          }
         }
         testID="new-message-view-item-john.doe-call"
       >
@@ -381,9 +379,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         >
           
         </Text>
-      </RNGestureHandlerButton>
+      </View>
     </View>
-  </RNGestureHandlerButton>
+  </View>
 </View>
 `;
 
@@ -397,52 +395,48 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
     }
   }
 >
-  <RNGestureHandlerButton
+  <View
     accessibilityLabel="Very Long Display Name That Might Get Truncated"
     accessibilityRole="button"
-    activeOpacity={0.105}
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    activeUnderlayOpacity={0.105}
+    animationDuration={0}
     collapsable={false}
-    delayLongPress={600}
-    handlerTag={-1}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="#D7DBE0"
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
-      [
-        {
-          "backgroundColor": "#FFFFFF",
-        },
-        {
-          "cursor": undefined,
-        },
-      ]
+      {
+        "backgroundColor": "#FFFFFF",
+      }
     }
     testID="new-message-view-item-long.name"
     underlayColor="#D7DBE0"
   >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "#D7DBE0",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": undefined,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
     <View
       style={
         [
@@ -549,38 +543,45 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
           Very Long Display Name That Might Get Truncated
         </Text>
       </View>
-      <RNGestureHandlerButton
+      <View
         accessibilityLabel="Voice call"
         accessibilityRole="button"
         accessibilityState={
           {
+            "busy": undefined,
+            "checked": undefined,
             "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
           }
         }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
         activeOpacity={0.3}
-        borderless={true}
+        animationDuration={0}
         collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#D7DBE0"
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
-          [
-            {
-              "alignSelf": "center",
-              "opacity": 1,
-              "paddingHorizontal": 15,
-            },
-            {
-              "cursor": undefined,
-            },
-          ]
+          {
+            "alignSelf": "center",
+            "paddingHorizontal": 15,
+          }
         }
         testID="new-message-view-item-long.name-call"
       >
@@ -610,9 +611,9 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
         >
           
         </Text>
-      </RNGestureHandlerButton>
+      </View>
     </View>
-  </RNGestureHandlerButton>
+  </View>
 </View>
 `;
 
@@ -626,52 +627,48 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
     }
   }
 >
-  <RNGestureHandlerButton
+  <View
     accessibilityLabel="John Doe"
     accessibilityRole="button"
-    activeOpacity={0.105}
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    activeUnderlayOpacity={0.105}
+    animationDuration={0}
     collapsable={false}
-    delayLongPress={600}
-    handlerTag={-1}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="#D7DBE0"
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
-      [
-        {
-          "backgroundColor": "#FFFFFF",
-        },
-        {
-          "cursor": undefined,
-        },
-      ]
+      {
+        "backgroundColor": "#FFFFFF",
+      }
     }
     testID="new-message-view-item-john.doe"
     underlayColor="#D7DBE0"
   >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "#D7DBE0",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": undefined,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
     <View
       style={
         [
@@ -778,38 +775,45 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
           John Doe
         </Text>
       </View>
-      <RNGestureHandlerButton
+      <View
         accessibilityLabel="Voice call"
         accessibilityRole="button"
         accessibilityState={
           {
+            "busy": undefined,
+            "checked": undefined,
             "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
           }
         }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
         activeOpacity={0.3}
-        borderless={true}
+        animationDuration={0}
         collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#D7DBE0"
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
-          [
-            {
-              "alignSelf": "center",
-              "opacity": 1,
-              "paddingHorizontal": 15,
-            },
-            {
-              "cursor": undefined,
-            },
-          ]
+          {
+            "alignSelf": "center",
+            "paddingHorizontal": 15,
+          }
         }
         testID="new-message-view-item-john.doe-call"
       >
@@ -839,8 +843,8 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
         >
           
         </Text>
-      </RNGestureHandlerButton>
+      </View>
     </View>
-  </RNGestureHandlerButton>
+  </View>
 </View>
 `;

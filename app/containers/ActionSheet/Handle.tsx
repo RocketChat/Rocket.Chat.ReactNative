@@ -1,7 +1,7 @@
-import { forwardRef, type ComponentType, type Ref } from 'react';
+import { forwardRef } from 'react';
 import { View } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
 
+import { RectButton } from '~/containers/GestureButtons';
 import styles from './styles';
 import { themes } from '~/lib/constants/colors';
 import { useTheme } from '~/theme';
@@ -13,7 +13,7 @@ export const Handle = forwardRef<View, { onPress: () => void }>(({ onPress }, re
 	// We should use RectButton from gesture-handler to avoid issues with the keyboard
 	return (
 		<RectButton
-			ref={ref as Ref<ComponentType>}
+			ref={ref}
 			onPress={onPress}
 			style={styles.handle}
 			testID='action-sheet-handle'

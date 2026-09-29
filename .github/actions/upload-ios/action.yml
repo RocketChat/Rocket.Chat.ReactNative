@@ -61,6 +61,11 @@ runs:
         restore-keys: |
           pods-v2-
 
+    - name: Set up Xcode
+      uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
+      with:
+        xcode-version: '26.6'
+
     - name: Set up Ruby
       uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
       with:
