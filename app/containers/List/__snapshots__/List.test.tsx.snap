@@ -470,7 +470,9 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="Chats"
               accessibilityRole="header"
+              accessible={true}
               style={
                 [
                   {
@@ -543,7 +545,9 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
               accessibilityRole="header"
+              accessible={true}
               style={
                 [
                   {
@@ -843,6 +847,9 @@ exports[`Story Snapshots: ListItemWithRightContainerStyle should match snapshot 
             }
           >
             <Text
+              accessibilityLabel="Chats"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -868,6 +875,9 @@ exports[`Story Snapshots: ListItemWithRightContainerStyle should match snapshot 
             </Text>
           </View>
           <Text
+            accessibilityLabel="All"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -2765,6 +2775,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                             }
                           >
                             <Text
+                              accessibilityLabel="Chats"
+                              accessibilityRole="text"
+                              accessible={true}
                               style={
                                 [
                                   {
@@ -2790,6 +2803,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                             </Text>
                           </View>
                           <Text
+                            accessibilityLabel="All"
+                            accessibilityRole="text"
+                            accessible={true}
                             numberOfLines={1}
                             style={
                               [
@@ -3073,6 +3089,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                             }
                           >
                             <Text
+                              accessibilityLabel="Chats"
+                              accessibilityRole="text"
+                              accessible={true}
                               style={
                                 [
                                   {
@@ -3098,6 +3117,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                             </Text>
                           </View>
                           <Text
+                            accessibilityLabel="All"
+                            accessibilityRole="text"
+                            accessible={true}
                             numberOfLines={1}
                             style={
                               [
@@ -3394,6 +3416,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                             }
                           >
                             <Text
+                              accessibilityLabel="Chats"
+                              accessibilityRole="text"
+                              accessible={true}
                               style={
                                 [
                                   {
@@ -3419,6 +3444,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                             </Text>
                           </View>
                           <Text
+                            accessibilityLabel="All"
+                            accessibilityRole="text"
+                            accessible={true}
                             numberOfLines={1}
                             style={
                               [
@@ -3702,6 +3730,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                             }
                           >
                             <Text
+                              accessibilityLabel="Chats"
+                              accessibilityRole="text"
+                              accessible={true}
                               style={
                                 [
                                   {
@@ -3727,6 +3758,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                             </Text>
                           </View>
                           <Text
+                            accessibilityLabel="All"
+                            accessibilityRole="text"
+                            accessible={true}
                             numberOfLines={1}
                             style={
                               [
@@ -4071,6 +4105,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                             }
                           >
                             <Text
+                              accessibilityLabel="Chats"
+                              accessibilityRole="text"
+                              accessible={true}
                               style={
                                 [
                                   {
@@ -4096,6 +4133,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                             </Text>
                           </View>
                           <Text
+                            accessibilityLabel="All"
+                            accessibilityRole="text"
+                            accessible={true}
                             numberOfLines={1}
                             style={
                               [
@@ -4379,6 +4419,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                             }
                           >
                             <Text
+                              accessibilityLabel="Chats"
+                              accessibilityRole="text"
+                              accessible={true}
                               style={
                                 [
                                   {
@@ -4404,6 +4447,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                             </Text>
                           </View>
                           <Text
+                            accessibilityLabel="All"
+                            accessibilityRole="text"
+                            accessible={true}
                             numberOfLines={1}
                             style={
                               [
@@ -4700,6 +4746,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                             }
                           >
                             <Text
+                              accessibilityLabel="Chats"
+                              accessibilityRole="text"
+                              accessible={true}
                               style={
                                 [
                                   {
@@ -4725,6 +4774,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                             </Text>
                           </View>
                           <Text
+                            accessibilityLabel="All"
+                            accessibilityRole="text"
+                            accessible={true}
                             numberOfLines={1}
                             style={
                               [
@@ -5008,6 +5060,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                             }
                           >
                             <Text
+                              accessibilityLabel="Chats"
+                              accessibilityRole="text"
+                              accessible={true}
                               style={
                                 [
                                   {
@@ -5033,6 +5088,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                             </Text>
                           </View>
                           <Text
+                            accessibilityLabel="All"
+                            accessibilityRole="text"
+                            accessible={true}
                             numberOfLines={1}
                             style={
                               [
@@ -5545,6 +5603,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                             }
                           >
                             <Text
+                              accessibilityLabel="Chats"
+                              accessibilityRole="text"
+                              accessible={true}
                               style={
                                 [
                                   {
@@ -5570,6 +5631,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                             </Text>
                           </View>
                           <Text
+                            accessibilityLabel="All"
+                            accessibilityRole="text"
+                            accessible={true}
                             numberOfLines={1}
                             style={
                               [
@@ -5853,6 +5917,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                             }
                           >
                             <Text
+                              accessibilityLabel="Chats"
+                              accessibilityRole="text"
+                              accessible={true}
                               style={
                                 [
                                   {
@@ -5878,6 +5945,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                             </Text>
                           </View>
                           <Text
+                            accessibilityLabel="All"
+                            accessibilityRole="text"
+                            accessible={true}
                             numberOfLines={1}
                             style={
                               [
@@ -6174,6 +6244,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                             }
                           >
                             <Text
+                              accessibilityLabel="Chats"
+                              accessibilityRole="text"
+                              accessible={true}
                               style={
                                 [
                                   {
@@ -6199,6 +6272,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                             </Text>
                           </View>
                           <Text
+                            accessibilityLabel="All"
+                            accessibilityRole="text"
+                            accessible={true}
                             numberOfLines={1}
                             style={
                               [
@@ -6482,6 +6558,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                             }
                           >
                             <Text
+                              accessibilityLabel="Chats"
+                              accessibilityRole="text"
+                              accessible={true}
                               style={
                                 [
                                   {
@@ -6507,6 +6586,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                             </Text>
                           </View>
                           <Text
+                            accessibilityLabel="All"
+                            accessibilityRole="text"
+                            accessible={true}
                             numberOfLines={1}
                             style={
                               [
@@ -6758,6 +6840,9 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="0"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -6847,6 +6932,9 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="1"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -6936,6 +7024,9 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="2"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -7025,6 +7116,9 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="3"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -7114,6 +7208,9 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="4"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -7203,6 +7300,9 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="5"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -7292,6 +7392,9 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="6"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -7381,6 +7484,9 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="7"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -7470,6 +7576,9 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="8"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -7559,6 +7668,9 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="9"
+                  accessibilityRole="text"
+                  accessible={true}
                   style={
                     [
                       {
@@ -8290,6 +8402,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                             }
                           >
                             <Text
+                              accessibilityLabel="Chats"
+                              accessibilityRole="text"
+                              accessible={true}
                               style={
                                 [
                                   {
@@ -8315,6 +8430,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                             </Text>
                           </View>
                           <Text
+                            accessibilityLabel="All"
+                            accessibilityRole="text"
+                            accessible={true}
                             numberOfLines={1}
                             style={
                               [
@@ -8598,6 +8716,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                             }
                           >
                             <Text
+                              accessibilityLabel="Chats"
+                              accessibilityRole="text"
+                              accessible={true}
                               style={
                                 [
                                   {
@@ -8623,6 +8744,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                             </Text>
                           </View>
                           <Text
+                            accessibilityLabel="All"
+                            accessibilityRole="text"
+                            accessible={true}
                             numberOfLines={1}
                             style={
                               [
@@ -8919,6 +9043,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                             }
                           >
                             <Text
+                              accessibilityLabel="Chats"
+                              accessibilityRole="text"
+                              accessible={true}
                               style={
                                 [
                                   {
@@ -8944,6 +9071,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                             </Text>
                           </View>
                           <Text
+                            accessibilityLabel="All"
+                            accessibilityRole="text"
+                            accessible={true}
                             numberOfLines={1}
                             style={
                               [
@@ -9227,6 +9357,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                             }
                           >
                             <Text
+                              accessibilityLabel="Chats"
+                              accessibilityRole="text"
+                              accessible={true}
                               style={
                                 [
                                   {
@@ -9252,6 +9385,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                             </Text>
                           </View>
                           <Text
+                            accessibilityLabel="All"
+                            accessibilityRole="text"
+                            accessible={true}
                             numberOfLines={1}
                             style={
                               [
