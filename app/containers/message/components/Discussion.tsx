@@ -1,5 +1,5 @@
-import { Text, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { View } from 'react-native';
+import { Text } from 'react-native-plain-text';
 
 import MessageActionTouchable from './Touchable/MessageActionTouchable';
 import { BUTTON_HIT_SLOP, formatMessageCount } from '../utils';
@@ -25,10 +25,8 @@ const Discussion = () => {
 	const onDiscussionPress = useOnDiscussionPress();
 	return (
 		<View style={{ gap: 4 }}>
-			<PlainText style={[styles.startedDiscussion, { color: colors.fontSecondaryInfo }]}>
-				{I18n.t('Started_discussion')}
-			</PlainText>
-			<PlainText style={[styles.discussionText, { color: colors.fontDefault }]}>{messageText}</PlainText>
+			<Text style={[styles.startedDiscussion, { color: colors.fontSecondaryInfo }]}>{I18n.t('Started_discussion')}</Text>
+			<Text style={[styles.discussionText, { color: colors.fontDefault }]}>{messageText}</Text>
 			<View style={[styles.buttonContainer, { gap: 8 }]}>
 				<MessageActionTouchable
 					onPress={() => onDiscussionPress?.(drid)}
@@ -39,7 +37,7 @@ const Discussion = () => {
 						<Text style={[styles.buttonText, { color: colors.fontWhite }]}>{buttonText}</Text>
 					</View>
 				</MessageActionTouchable>
-				<PlainText style={[styles.time, { color: colors.fontSecondaryInfo }]}>{time}</PlainText>
+				<Text style={[styles.time, { color: colors.fontSecondaryInfo }]}>{time}</Text>
 			</View>
 		</View>
 	);

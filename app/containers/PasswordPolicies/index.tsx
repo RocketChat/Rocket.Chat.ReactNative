@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { type IPasswordPolicy } from '~/lib/hooks/useVerifyPassword';
 import Tip from './components/Tip';
@@ -33,12 +33,12 @@ const PasswordPolicies = ({ isDirty, password, policies }: IPasswordTips) => {
 
 	return (
 		<View>
-			<PlainText
+			<Text
 				accessibilityLabel={i18n.t('Your_Password_Must_Have')}
 				accessible
 				style={[styles.passwordPoliciesTitle, { color: colors.fontDefault }]}>
 				{i18n.t('Your_Password_Must_Have')}
-			</PlainText>
+			</Text>
 			<View style={styles.policies}>
 				{policies.map(item => (
 					<Tip iconType={selectTipIconType(item.name, item.regex)} description={item.label} />

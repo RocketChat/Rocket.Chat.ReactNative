@@ -1,5 +1,5 @@
 import { type ReactElement } from 'react';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { type IUser } from '~/definitions';
 import { type VideoConferenceType } from '~/definitions/IVideoConference';
@@ -35,18 +35,18 @@ export default function VideoConferenceEnded({
 			{type === 'direct' ? (
 				<>
 					<Touch style={style.callToActionCallBack} onPress={showInitCallActionSheet} disabled={isInActiveVoipCall}>
-						<PlainText style={style.callToActionCallBackText}>
+						<Text style={style.callToActionCallBackText}>
 							{createdBy.username === username ? i18n.t('Call_again') : i18n.t('Call_back')}
-						</PlainText>
+						</Text>
 					</Touch>
-					<PlainText style={style.callBack}>{i18n.t('Call_was_not_answered')}</PlainText>
+					<Text style={style.callBack}>{i18n.t('Call_was_not_answered')}</Text>
 				</>
 			) : (
 				<>
 					{users.length && !onlyAuthorOnCall ? (
 						<CallParticipants users={users} />
 					) : (
-						<PlainText style={style.notAnswered}>{i18n.t('Call_was_not_answered')}</PlainText>
+						<Text style={style.notAnswered}>{i18n.t('Call_was_not_answered')}</Text>
 					)}
 				</>
 			)}

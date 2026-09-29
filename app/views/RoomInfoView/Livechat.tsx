@@ -1,6 +1,6 @@
 import { type ReactElement, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { type ISubscription } from '~/definitions';
 import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 
 const Title = ({ title }: { title: string }) => {
 	const { colors } = useTheme();
-	return <PlainText style={[styles.title, { color: colors.fontTitlesLabels }]}>{title}</PlainText>;
+	return <Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{title}</Text>;
 };
 
 const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechatVisitorModified }): ReactElement => {

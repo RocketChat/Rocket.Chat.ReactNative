@@ -1,5 +1,5 @@
-import { Text, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { View } from 'react-native';
+import { Text } from 'react-native-plain-text';
 
 import { type IReaction } from '~/definitions';
 import I18n from '~/i18n';
@@ -66,7 +66,7 @@ const ReactionsList = ({ reactions }: IReactionsListProps) => {
 		if (tab.key === 'all') {
 			return (
 				<View style={styles.tabBarItem} testID='reactions-tab-all'>
-					<PlainText style={[styles.allTabItem, { color }]}>{I18n.t('All')}</PlainText>
+					<Text style={[styles.allTabItem, { color }]}>{I18n.t('All')}</Text>
 				</View>
 			);
 		}

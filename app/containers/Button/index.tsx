@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 import { type StyleProp, StyleSheet, type TextStyle, type ViewStyle } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
 
 import { useTheme } from '~/theme';
@@ -96,11 +96,7 @@ const Button: FC<IButtonProps> = ({
 			accessibilityLabel={title}
 			accessibilityRole='button'
 			{...otherProps}>
-			{loading ? (
-				<ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} />
-			) : (
-				<PlainText style={textStyle}>{title}</PlainText>
-			)}
+			{loading ? <ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} /> : <Text style={textStyle}>{title}</Text>}
 		</RectButton>
 	);
 };

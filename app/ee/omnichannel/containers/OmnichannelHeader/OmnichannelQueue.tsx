@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { useTheme } from '~/theme';
 import { themes } from '~/lib/constants/colors';
@@ -36,7 +36,7 @@ const OmnichannelQueue = ({ queueSize, onPress }: IOmnichannelQueue) => {
 								<CustomIcon name='chevron-right' style={styles.actionIndicator} color={themes[theme].fontDefault} size={24} />
 							</>
 						) : (
-							<PlainText style={[styles.emptyText, { color: themes[theme].fontHint }]}>{i18n.t('Empty')}</PlainText>
+							<Text style={[styles.emptyText, { color: themes[theme].fontHint }]}>{i18n.t('Empty')}</Text>
 						)}
 					</View>
 				)}

@@ -1,7 +1,7 @@
 import { type Dispatch } from 'redux';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BackHandler, FlatList, Keyboard, type NativeEventSubscription, PixelRatio, StyleSheet, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import * as FileSystem from 'expo-file-system/legacy';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
@@ -369,7 +369,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		return (
 			<>
 				<View style={[styles.headerContainer, { backgroundColor: themes[theme].surfaceHover }]}>
-					<PlainText style={[styles.headerText, { color: themes[theme].fontTitlesLabels }]}>{I18n.t(header)}</PlainText>
+					<Text style={[styles.headerText, { color: themes[theme].fontTitlesLabels }]}>{I18n.t(header)}</Text>
 				</View>
 				<List.Separator />
 			</>
@@ -427,7 +427,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		if (searching && searchText) {
 			return (
 				<View style={[styles.container, styles.emptyContainer, { backgroundColor: themes[theme].surfaceHover }]}>
-					<PlainText style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('No_results_found')}</PlainText>
+					<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
 				</View>
 			);
 		}
@@ -475,12 +475,12 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 								...(serversCount > 1 ? { justifyContent: 'center' } : { paddingTop: 250 })
 							}
 						]}>
-						<PlainText style={[styles.readOnlyTitle, { color: themes[theme].fontDefault }]}>
+						<Text style={[styles.readOnlyTitle, { color: themes[theme].fontDefault }]}>
 							{I18n.t('AirGapped_workspace_read_only_share_extension_title')}
-						</PlainText>
-						<PlainText style={[styles.readOnlyDescription, { color: themes[theme].fontDefault }]}>
+						</Text>
+						<Text style={[styles.readOnlyDescription, { color: themes[theme].fontDefault }]}>
 							{I18n.t('AirGapped_workspace_read_only_description')}
-						</PlainText>
+						</Text>
 					</View>
 				</SafeAreaView>
 			);

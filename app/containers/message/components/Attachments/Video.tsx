@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { type IUserMessage } from '~/definitions';
 import { type IAttachment } from '~/definitions/IAttachment';
@@ -46,7 +46,7 @@ const CancelIndicator = () => {
 	const { colors } = useTheme();
 	return (
 		<View style={styles.cancelContainer}>
-			<PlainText style={[styles.text, { color: colors.fontSecondaryInfo }]}>{I18n.t('Cancel')}</PlainText>
+			<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{I18n.t('Cancel')}</Text>
 		</View>
 	);
 };

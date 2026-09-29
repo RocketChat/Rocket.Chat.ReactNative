@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { useTheme } from '~/theme';
 import type { TPeerItem } from '~/lib/services/voip/getPeerAutocompleteOptions';
@@ -24,9 +24,9 @@ export const PeerItemInner = ({ item }: { item: TPeerItem }) => {
 			</View>
 			<View style={styles.nameContainer}>
 				{!isSip ? <Status id={item.value} size={20} /> : null}
-				<PlainText style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
+				<Text style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
 					{item.label}
-				</PlainText>
+				</Text>
 			</View>
 		</View>
 	);

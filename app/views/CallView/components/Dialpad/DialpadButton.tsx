@@ -1,5 +1,5 @@
 import { Pressable, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import * as Haptics from 'expo-haptics';
 import type { ReactElement } from 'react';
 
@@ -38,10 +38,8 @@ const DialpadButton = ({ digit, letters, testID }: IDialpadButton): ReactElement
 				{ backgroundColor: pressed ? colors.buttonBackgroundSecondaryPress : colors.buttonBackgroundSecondaryDefault }
 			]}>
 			<View style={styles.digitContainer}>
-				<PlainText style={[styles.digit, isLargeDigit && styles.digitLarge, { color: colors.fontDefault }]}>{digit}</PlainText>
-				{!isLargeDigit ? (
-					<PlainText style={[styles.letters, { color: colors.fontSecondaryInfo }]}>{letters || ''}</PlainText>
-				) : null}
+				<Text style={[styles.digit, isLargeDigit && styles.digitLarge, { color: colors.fontDefault }]}>{digit}</Text>
+				{!isLargeDigit ? <Text style={[styles.letters, { color: colors.fontSecondaryInfo }]}>{letters || ''}</Text> : null}
 			</View>
 		</Pressable>
 	);

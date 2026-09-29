@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import sharedStyles from '~/views/Styles';
@@ -35,15 +35,11 @@ const styles = StyleSheet.create({
 export const Input = ({ element, parser, label, description, error, hint, theme }: IInput) => (
 	<View style={styles.container}>
 		{label ? (
-			<PlainText style={[styles.label, { color: error ? themes[theme].fontDanger : themes[theme].fontTitlesLabels }]}>
-				{label}
-			</PlainText>
+			<Text style={[styles.label, { color: error ? themes[theme].fontDanger : themes[theme].fontTitlesLabels }]}>{label}</Text>
 		) : null}
-		{description ? (
-			<PlainText style={[styles.description, { color: themes[theme].fontSecondaryInfo }]}>{description}</PlainText>
-		) : null}
+		{description ? <Text style={[styles.description, { color: themes[theme].fontSecondaryInfo }]}>{description}</Text> : null}
 		{parser.renderInputs({ ...element }, BlockContext.FORM)}
-		{error ? <PlainText style={[styles.error, { color: themes[theme].fontDanger }]}>{error}</PlainText> : null}
-		{hint ? <PlainText style={[styles.hint, { color: themes[theme].fontSecondaryInfo }]}>{hint}</PlainText> : null}
+		{error ? <Text style={[styles.error, { color: themes[theme].fontDanger }]}>{error}</Text> : null}
+		{hint ? <Text style={[styles.hint, { color: themes[theme].fontSecondaryInfo }]}>{hint}</Text> : null}
 	</View>
 );

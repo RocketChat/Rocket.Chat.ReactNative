@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 import { ActivityIndicator, ImageBackground, StyleSheet, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
@@ -37,7 +37,7 @@ const BackgroundContainer = ({ text, loading }: IBackgroundContainer): ReactElem
 	return (
 		<View style={styles.container}>
 			<ImageBackground source={{ uri: `message_empty_${theme}` }} style={styles.image} />
-			{text && !loading ? <PlainText style={[styles.text, { color: themes[theme].fontHint }]}>{text}</PlainText> : null}
+			{text && !loading ? <Text style={[styles.text, { color: themes[theme].fontHint }]}>{text}</Text> : null}
 			{/* @ts-ignore */}
 			{loading ? <ActivityIndicator style={styles.text} color={themes[theme].fontHint} /> : null}
 		</View>

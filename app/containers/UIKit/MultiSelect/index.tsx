@@ -1,6 +1,6 @@
 import { useEffect, useState, memo } from 'react';
 import { type TextStyle } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import Button from '~/containers/Button';
@@ -128,9 +128,9 @@ export const MultiSelect = memo(
 				inputStyle={inputStyle}
 				innerInputStyle={innerInputStyle}
 				testID={testID}>
-				<PlainText style={[styles.pickerText, { color: currentValue ? colors.fontTitlesLabels : colors.fontSecondaryInfo }]}>
+				<Text style={[styles.pickerText, { color: currentValue ? colors.fontTitlesLabels : colors.fontSecondaryInfo }]}>
 					{currentValue || placeholder.text}
-				</PlainText>
+				</Text>
 			</Input>
 		);
 
@@ -146,7 +146,7 @@ export const MultiSelect = memo(
 					{selected.length ? (
 						<Chips items={selected} onSelect={(item: any) => (disabled ? {} : onSelect(item))} />
 					) : (
-						<PlainText style={[styles.pickerText, { color: colors.fontSecondaryInfo }]}>{placeholder.text}</PlainText>
+						<Text style={[styles.pickerText, { color: colors.fontSecondaryInfo }]}>{placeholder.text}</Text>
 					)}
 				</Input>
 			);

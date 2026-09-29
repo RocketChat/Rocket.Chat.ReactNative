@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { type TextInput, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import { useTheme } from '~/theme';
@@ -88,12 +88,10 @@ const ChangePassword = () => {
 
 	return (
 		<View style={{ gap: 8 }}>
-			<PlainText style={[styles.title, { color: colors.fontTitlesLabels }]}>
-				{I18n.t('E2E_encryption_change_password_title')}
-			</PlainText>
-			<PlainText style={[styles.description, { color: colors.fontDefault }]}>
+			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_change_password_title')}</Text>
+			<Text style={[styles.description, { color: colors.fontDefault }]}>
 				{I18n.t('E2E_encryption_change_password_description')}
-			</PlainText>
+			</Text>
 			<FormTextInput
 				inputRef={newPasswordInputRef}
 				placeholder={I18n.t('New_Password')}

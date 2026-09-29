@@ -1,5 +1,5 @@
-import { View, Text } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { View } from 'react-native';
+import { Text } from 'react-native-plain-text';
 
 import Touch from '~/containers/Touch';
 import { type TSupportedThemes } from '~/theme';
@@ -32,7 +32,7 @@ const CannedResponseItem = ({
 			<View style={styles.cannedRow}>
 				<View style={styles.cannedWrapShortcutScope}>
 					<Text style={[styles.cannedShortcut, { color: themes[theme].fontTitlesLabels }]}>!{shortcut}</Text>
-					<PlainText style={[styles.cannedScope, { color: themes[theme].fontHint }]}>{scope}</PlainText>
+					<Text style={[styles.cannedScope, { color: themes[theme].fontHint }]}>{scope}</Text>
 				</View>
 
 				<Button
@@ -51,7 +51,7 @@ const CannedResponseItem = ({
 				{tags?.length > 0
 					? tags.map(t => (
 							<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].strokeExtraLight }]}>
-								<PlainText style={[styles.cannedTag, { color: themes[theme].fontHint }]}>{t}</PlainText>
+								<Text style={[styles.cannedTag, { color: themes[theme].fontHint }]}>{t}</Text>
 							</View>
 						))
 					: null}

@@ -1,4 +1,4 @@
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useTheme } from '~/theme';
@@ -16,7 +16,7 @@ const RegisterDisabledComponent = () => {
 		return null;
 	}
 
-	return <PlainText style={[styles.registrationText, { color: colors.fontSecondaryInfo }]}>{registrationText}</PlainText>;
+	return <Text style={[styles.registrationText, { color: colors.fontSecondaryInfo }]}>{registrationText}</Text>;
 };
 
 export default RegisterDisabledComponent;

@@ -1,6 +1,6 @@
 import { memo, type ReactElement } from 'react';
 import { View, FlatList } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import Emoji from '../message/components/Emoji';
 import { useTheme } from '~/theme';
@@ -48,10 +48,10 @@ const AllReactionsListItem = ({ item }: IAllReactionsListItemProps) => {
 				customEmojiStyle={styles.allTabCustomEmojiStyle}
 			/>
 			<View style={styles.textContainer}>
-				<PlainText style={[styles.allListNPeopleReacted, { color: colors.fontDefault }]}>
+				<Text style={[styles.allListNPeopleReacted, { color: colors.fontDefault }]}>
 					{count === 1 ? I18n.t('1_person_reacted') : I18n.t('N_people_reacted', { n: count })}
-				</PlainText>
-				<PlainText style={[styles.allListWhoReacted, { color: colors.fontSecondaryInfo }]}>{displayNames}</PlainText>
+				</Text>
+				<Text style={[styles.allListWhoReacted, { color: colors.fontSecondaryInfo }]}>{displayNames}</Text>
 			</View>
 		</View>
 	);

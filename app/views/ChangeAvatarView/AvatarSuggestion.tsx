@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { type IAvatar } from '~/definitions';
 import { getAvatarSuggestion } from '~/lib/services/restApi';
@@ -47,7 +47,7 @@ const AvatarSuggestion = ({
 
 	return (
 		<View style={styles.containerImagesUploaded}>
-			<PlainText style={[styles.itemLabel, { color: colors.fontTitlesLabels }]}>{I18n.t('Images_uploaded')}</PlainText>
+			<Text style={[styles.itemLabel, { color: colors.fontTitlesLabels }]}>{I18n.t('Images_uploaded')}</Text>
 			<View style={styles.containerAvatarSuggestion}>
 				{username && resetAvatar ? (
 					<AvatarSuggestionItem

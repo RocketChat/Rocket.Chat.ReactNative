@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { Fragment, type ReactElement } from 'react';
 
 import * as List from '~/containers/List';
@@ -66,7 +66,7 @@ const ListPicker = ({
 			title={title}
 			testID={testID}
 			onPress={() => showActionSheet({ children: getOptions() })}
-			right={() => <PlainText style={[styles.pickerText, { color: colors.fontInfo }]}>{label}</PlainText>}
+			right={() => <Text style={[styles.pickerText, { color: colors.fontInfo }]}>{label}</Text>}
 			additionalAccessibilityLabel={label}
 		/>
 	);

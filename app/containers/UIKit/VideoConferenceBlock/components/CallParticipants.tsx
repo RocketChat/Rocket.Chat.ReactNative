@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 import { View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import i18n from '~/i18n';
 import useStyle from './styles';
@@ -19,10 +19,10 @@ export const CallParticipants = ({ users }: { users: TCallUsers }): ReactElement
 			)}
 			{users.length > MAX_USERS ? (
 				<View style={style.plusUsers}>
-					<PlainText style={style.plusUsersText}>{users.length > 9 ? '+9' : `+${users.length}`}</PlainText>
+					<Text style={style.plusUsersText}>{users.length > 9 ? '+9' : `+${users.length}`}</Text>
 				</View>
 			) : null}
-			<PlainText style={style.joined}>{i18n.t('Joined')}</PlainText>
+			<Text style={style.joined}>{i18n.t('Joined')}</Text>
 		</>
 	);
 };

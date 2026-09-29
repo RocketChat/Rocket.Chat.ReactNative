@@ -1,6 +1,6 @@
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { StyleSheet } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { useEffect, useRef, type ReactElement } from 'react';
 import { type Subscription } from 'rxjs';
 import { Q } from '@nozbe/watermelondb';
@@ -79,7 +79,7 @@ export const SendThreadToChannel = (): ReactElement | null => {
 				size={24}
 				color={alsoSendThreadToChannel ? colors.buttonBackgroundPrimaryDefault : colors.fontDefault}
 			/>
-			<PlainText style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Message_composer_Send_to_channel')}</PlainText>
+			<Text style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Message_composer_Send_to_channel')}</Text>
 		</TouchableWithoutFeedback>
 	);
 };

@@ -2685,7 +2685,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - RNPlainText (0.8.2):
+  - RNPlainText (0.9.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -3633,7 +3633,7 @@ SPEC CHECKSUMS:
   RNImageCropPicker: 5c9c8bef4c72d3f451b499aa0ecd90a644ea1bbd
   RNKeychain: d57edf101a72acf3ae85fe4d796eed1d951d2a90
   RNLocalize: 17bce0556e2d33fe1201c8cef53b3b7786e07612
-  RNPlainText: 3b6117ad475ad861bc45988e133b465b2e335c2a
+  RNPlainText: 8320cbde3f2399b9119719f06e0b2f23c2d482a6
   RNReanimated: c57ef141c7843c2849531e7556236d7223b7db1a
   RNScreens: 8708989f700bdc3dc5abc3c77aa3b5f3e73ce2b2
   RNSVG: 68c366b996064ea99cee1e55da62b8feafb33a78

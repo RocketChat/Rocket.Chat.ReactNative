@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
@@ -72,7 +72,7 @@ const ListPicker = ({
 			title={title}
 			testID={testID}
 			onPress={() => showActionSheet({ options: getOptions() })}
-			right={() => <PlainText style={[styles.title, { color: colors.fontHint }]}>{label}</PlainText>}
+			right={() => <Text style={[styles.title, { color: colors.fontHint }]}>{label}</Text>}
 			additionalAccessibilityLabel={label}
 		/>
 	);

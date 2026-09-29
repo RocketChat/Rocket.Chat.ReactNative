@@ -1,6 +1,6 @@
 import { memo, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { batch, useDispatch } from 'react-redux';
 import { type Subscription } from 'rxjs';
 
@@ -131,7 +131,7 @@ const ServersList = () => {
 			}}
 			testID='rooms-list-header-servers-list'>
 			<View style={[styles.serversListContainerHeader, styles.serverHeader, { borderColor: colors.strokeLight }]}>
-				<PlainText style={[styles.serverHeaderText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Workspaces')}</PlainText>
+				<Text style={[styles.serverHeaderText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Workspaces')}</Text>
 			</View>
 			<FlatList
 				style={{ maxHeight: MAX_ROWS * ROW_HEIGHT }}

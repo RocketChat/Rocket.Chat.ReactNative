@@ -1,6 +1,6 @@
 import { useContext, useEffect, useLayoutEffect, useState, type ReactElement } from 'react';
 import { StyleSheet, View, type ViewStyle } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { Image } from 'expo-image';
 import axios from 'axios';
@@ -50,14 +50,14 @@ const UrlContent = ({ title, description }: { title: string; description: string
 	return (
 		<View style={styles.textContainer}>
 			{title ? (
-				<PlainText style={[styles.title, { color: colors.fontInfo }]} numberOfLines={2}>
+				<Text style={[styles.title, { color: colors.fontInfo }]} numberOfLines={2}>
 					{title}
-				</PlainText>
+				</Text>
 			) : null}
 			{description ? (
-				<PlainText style={[styles.description, { color: colors.fontSecondaryInfo }]} numberOfLines={2}>
+				<Text style={[styles.description, { color: colors.fontSecondaryInfo }]} numberOfLines={2}>
 					{description}
-				</PlainText>
+				</Text>
 			) : null}
 		</View>
 	);

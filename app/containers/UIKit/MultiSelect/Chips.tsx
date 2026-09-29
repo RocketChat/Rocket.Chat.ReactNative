@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { Image } from 'expo-image';
 
 import { textParser } from '../utils';
@@ -33,9 +33,9 @@ const Chip = ({ item, onSelect, style }: IChip) => {
 			testID={`multi-select-chip-${item.value}`}>
 			<>
 				{item.imageUrl ? <Image style={styles.chipImage} source={{ uri: item.imageUrl }} /> : null}
-				<PlainText numberOfLines={1} style={[styles.chipText, { color: colors.fontTitlesLabels }]}>
+				<Text numberOfLines={1} style={[styles.chipText, { color: colors.fontTitlesLabels }]}>
 					{textParser([item.text])}
-				</PlainText>
+				</Text>
 				<CustomIcon name='close' size={16} color={colors.fontSecondaryInfo} />
 			</>
 		</Touch>

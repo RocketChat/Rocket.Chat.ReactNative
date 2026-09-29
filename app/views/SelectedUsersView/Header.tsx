@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { themes } from '~/lib/constants/colors';
 import SearchBox from '~/containers/SearchBox';
@@ -46,9 +46,9 @@ const Header = ({
 			<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='select-users-view-search' />
 			{users.length === 0 ? null : (
 				<View>
-					<PlainText style={[styles.selectedText, { color: themes[theme].fontHint }]}>
+					<Text style={[styles.selectedText, { color: themes[theme].fontHint }]}>
 						{I18n.t('N_Selected_members', { n: users.length })}
-					</PlainText>
+					</Text>
 					<FlatList
 						data={users}
 						ref={(ref: FlatList<ISelectedUser> | null) => {

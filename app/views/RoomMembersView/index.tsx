@@ -1,7 +1,7 @@
 import { type NavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type ReactElement, useCallback, useEffect, useReducer, useRef } from 'react';
 import { FlatList, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { shallowEqual } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -460,7 +460,7 @@ const RoomMembersView = (): ReactElement => {
 				onEndReached={() => fetchMembers()}
 				ListEmptyComponent={() =>
 					state.end ? (
-						<PlainText style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_members_found')}</PlainText>
+						<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_members_found')}</Text>
 					) : null
 				}
 				{...scrollPersistTaps}

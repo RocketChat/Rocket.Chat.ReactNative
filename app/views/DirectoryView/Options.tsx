@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
@@ -64,10 +64,10 @@ const DirectoryOptions = ({
 					<List.Separator />
 					<View style={[styles.filterItemContainer, styles.globalUsersContainer]}>
 						<View style={styles.globalUsersTextContainer}>
-							<PlainText style={[styles.filterItemText, { color: colors.fontHint }]}>{I18n.t('Search_global_users')}</PlainText>
-							<PlainText style={[styles.filterItemDescription, { color: colors.fontHint }]}>
+							<Text style={[styles.filterItemText, { color: colors.fontHint }]}>{I18n.t('Search_global_users')}</Text>
+							<Text style={[styles.filterItemDescription, { color: colors.fontHint }]}>
 								{I18n.t('Search_global_users_description')}
-							</PlainText>
+							</Text>
 						</View>
 						<Switch value={globalUsers} onValueChange={toggleWorkspace} testID='directory-switch-global-users' />
 					</View>

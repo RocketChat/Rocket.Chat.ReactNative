@@ -1,7 +1,7 @@
 import { transparentize } from 'color2k';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { type IAttachment } from '~/definitions/IAttachment';
 import { CustomIcon } from '~/containers/CustomIcon';
@@ -91,9 +91,9 @@ const Fields = ({ attachment }: IMessageFields) => {
 		<>
 			{attachment.fields.map(field => (
 				<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
-					<PlainText testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: colors.fontDefault }]}>
+					<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: colors.fontDefault }]}>
 						{field.title}
-					</PlainText>
+					</Text>
 					<Markdown msg={field?.value || ''} username={user?.username} />
 				</View>
 			))}
@@ -146,7 +146,7 @@ const CollapsibleQuote = ({ attachment }: IMessageReply) => {
 			<View style={styles.touchableContainer}>
 				<View style={styles.attachmentContainer}>
 					<View style={styles.authorContainer}>
-						<PlainText style={[styles.title, { color: colors.fontSecondaryInfo }]}>{attachment.title}</PlainText>
+						<Text style={[styles.title, { color: colors.fontSecondaryInfo }]}>{attachment.title}</Text>
 					</View>
 					{!collapsed && <AttText text={attachment.text} />}
 					{!collapsed && <Fields attachment={attachment} />}

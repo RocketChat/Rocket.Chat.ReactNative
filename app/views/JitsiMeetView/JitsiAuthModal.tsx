@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { type Dispatch, type SetStateAction, type ReactElement } from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import Modal from 'react-native-modal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -51,22 +51,20 @@ const JitsiAuthModal = ({
 	return (
 		<Modal isVisible>
 			<GestureHandlerRootView style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
-				<PlainText style={[styles.title, { color: colors.fontTitlesLabels }]}>
-					{i18n.t('Jitsi_may_require_authentication')}
-				</PlainText>
+				<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{i18n.t('Jitsi_may_require_authentication')}</Text>
 				{isAdmin ? (
-					<PlainText style={[styles.regular, { color: colors.fontTitlesLabels }]}>
+					<Text style={[styles.regular, { color: colors.fontTitlesLabels }]}>
 						{i18n.t('Jitsi_authentication_before_making_calls_admin')}
-					</PlainText>
+					</Text>
 				) : (
-					<PlainText style={[styles.regular, { color: colors.fontTitlesLabels }]}>
+					<Text style={[styles.regular, { color: colors.fontTitlesLabels }]}>
 						{i18n.t('Jitsi_authentication_before_making_calls')}
-					</PlainText>
+					</Text>
 				)}
 				{!isAdmin ? (
-					<PlainText style={[styles.min, { color: colors.fontSecondaryInfo }]}>
+					<Text style={[styles.min, { color: colors.fontSecondaryInfo }]}>
 						{i18n.t('Jitsi_authentication_before_making_calls_ask_admin')}
-					</PlainText>
+					</Text>
 				) : null}
 				<View style={styles.buttonContainer}>
 					<Button title={i18n.t('Cancel')} type='secondary' onPress={() => setAuthModal(false)} />

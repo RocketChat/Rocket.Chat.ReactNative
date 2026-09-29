@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { FlatList, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -324,7 +324,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		const { theme } = this.props;
 		return (
 			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceRoom }]} testID={this.content.testID}>
-				<PlainText style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{this.content.noDataMsg}</PlainText>
+				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{this.content.noDataMsg}</Text>
 			</View>
 		);
 	};

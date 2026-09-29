@@ -1,6 +1,6 @@
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { type RouteProp } from '@react-navigation/native';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
@@ -102,7 +102,7 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 		const { theme } = this.props;
 		return (
 			<View style={{ backgroundColor: themes[theme].surfaceRoom }}>
-				<PlainText style={[styles.buttonText, { color: themes[theme].fontDefault }]}>{I18n.t(this.infoText)}</PlainText>
+				<Text style={[styles.buttonText, { color: themes[theme].fontDefault }]}>{I18n.t(this.infoText)}</Text>
 			</View>
 		);
 	};

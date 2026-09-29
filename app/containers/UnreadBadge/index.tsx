@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { type StyleProp, StyleSheet, useWindowDimensions, View, type ViewStyle } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import sharedStyles from '~/views/Styles';
 import { getUnreadStyle } from './getUnreadStyle';
@@ -119,9 +119,9 @@ const UnreadBadge = memo(
 					style
 				]}
 				testID={testId}>
-				<PlainText style={[styles.unreadText, small && styles.textSmall, { color }]} numberOfLines={1}>
+				<Text style={[styles.unreadText, small && styles.textSmall, { color }]} numberOfLines={1}>
 					{text}
-				</PlainText>
+				</Text>
 			</View>
 		);
 	}

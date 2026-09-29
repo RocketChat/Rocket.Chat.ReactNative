@@ -1,5 +1,5 @@
 import { type StyleProp, type TextStyle } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { themes } from '~/lib/constants/colors';
 import { useTheme } from '~/theme';
@@ -22,7 +22,7 @@ const MarkdownPreview = ({ msg, numberOfLines = 1, style = [], testID }: IMarkdo
 	}
 	const m = formattedText;
 	return (
-		<PlainText
+		<Text
 			accessibilityLabel={m}
 			style={[
 				styles.text,
@@ -32,7 +32,7 @@ const MarkdownPreview = ({ msg, numberOfLines = 1, style = [], testID }: IMarkdo
 			numberOfLines={numberOfLines}
 			testID={testID || `markdown-preview-${m}`}>
 			{m}
-		</PlainText>
+		</Text>
 	);
 };
 

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StyleSheet, View, ScrollView } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import I18n from '../i18n';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -75,9 +75,9 @@ interface IItem {
 const Item = ({ label, content, theme, testID }: IItem) =>
 	content ? (
 		<View style={styles.item} testID={testID}>
-			<PlainText accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].fontTitlesLabels }]}>
+			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].fontTitlesLabels }]}>
 				{label}
-			</PlainText>
+			</Text>
 			<Markdown msg={content} />
 		</View>
 	) : null;
@@ -113,16 +113,16 @@ const CannedResponseDetail = () => {
 					<Item label={I18n.t('Sharing')} content={cannedResponse?.scopeName} theme={theme} />
 
 					<View style={styles.item}>
-						<PlainText style={[styles.itemLabel, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Tags')}</PlainText>
+						<Text style={[styles.itemLabel, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Tags')}</Text>
 						<View style={styles.cannedTagContainer}>
 							{cannedResponse?.tags?.length > 0 ? (
 								cannedResponse.tags.map(t => (
 									<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].strokeExtraLight }]}>
-										<PlainText style={[styles.cannedTag, { color: themes[theme].fontHint }]}>{t}</PlainText>
+										<Text style={[styles.cannedTag, { color: themes[theme].fontHint }]}>{t}</Text>
 									</View>
 								))
 							) : (
-								<PlainText style={[styles.cannedText, { color: themes[theme].fontHint }]}>-</PlainText>
+								<Text style={[styles.cannedText, { color: themes[theme].fontHint }]}>-</Text>
 							)}
 						</View>
 					</View>

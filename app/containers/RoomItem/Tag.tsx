@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { themes } from '~/lib/constants/colors';
 import { useTheme } from '~/theme';
@@ -16,9 +16,9 @@ const Tag = memo(({ name, testID }: ITag) => {
 
 	return (
 		<View style={[styles.tagContainer, { backgroundColor: themes[theme].strokeLight }]}>
-			<PlainText style={[styles.tagText, { color: themes[theme].fontHint }]} numberOfLines={1} testID={testID}>
+			<Text style={[styles.tagText, { color: themes[theme].fontHint }]} numberOfLines={1} testID={testID}>
 				{name}
-			</PlainText>
+			</Text>
 		</View>
 	);
 });

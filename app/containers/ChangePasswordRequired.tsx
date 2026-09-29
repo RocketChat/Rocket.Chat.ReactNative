@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { useDispatch } from 'react-redux';
 import { type NavigationProp, type NavigationState } from '@react-navigation/native';
 
@@ -29,10 +29,8 @@ export const ChangePasswordRequired = ({ navigation }: IChangePasswordRequired) 
 			<View style={styles.iconContainer}>
 				<CustomIcon name='info' size={36} color={colors.statusFontWarning} />
 			</View>
-			<PlainText style={[styles.title, { color: colors.fontTitlesLabels }]}>
-				{I18n.t('You_need_to_change_your_password')}
-			</PlainText>
-			<PlainText style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('To_continue_using_RocketChat')}</PlainText>
+			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('You_need_to_change_your_password')}</Text>
+			<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('To_continue_using_RocketChat')}</Text>
 			<Button
 				testID='change-password-required-button'
 				title={I18n.t('Change_password')}

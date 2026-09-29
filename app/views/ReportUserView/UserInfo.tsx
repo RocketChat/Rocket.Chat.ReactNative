@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import Avatar from '~/containers/Avatar';
 import styles from './styles';
@@ -11,9 +11,9 @@ const UserInfo = ({ username, name }: { username: string; name: string }) => {
 	return (
 		<View style={styles.containerAvatarAndName}>
 			<Avatar text={username} size={32} />
-			<PlainText style={[styles.nameText, { color: colors.fontDefault }]} numberOfLines={1}>
+			<Text style={[styles.nameText, { color: colors.fontDefault }]} numberOfLines={1}>
 				{name || username}
-			</PlainText>
+			</Text>
 		</View>
 	);
 };

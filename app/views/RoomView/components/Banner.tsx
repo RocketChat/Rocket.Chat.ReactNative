@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { BorderlessButton, GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
 
@@ -41,7 +41,7 @@ const Banner = memo(({ text, title, bannerClosed, closeBanner }: IBannerProps) =
 					animationIn='fadeIn'
 					animationOut='fadeOut'>
 					<GestureHandlerRootView style={[styles.modalView, { backgroundColor: colors.surfaceNeutral }]}>
-						<PlainText style={[styles.bannerModalTitle, { color: colors.fontSecondaryInfo }]}>{title}</PlainText>
+						<Text style={[styles.bannerModalTitle, { color: colors.fontSecondaryInfo }]}>{title}</Text>
 						<ScrollView style={styles.modalScrollView}>
 							<Markdown msg={text} />
 						</ScrollView>

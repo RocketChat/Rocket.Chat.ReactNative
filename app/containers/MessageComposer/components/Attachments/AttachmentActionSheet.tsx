@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Image, StyleSheet, TextInput, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 import Button from '~/containers/Button';
@@ -102,16 +102,16 @@ export const AttachmentActionSheet = ({ attachment, onSave }: AttachmentActionSh
 			contentContainerStyle={styles.contentContainer}
 			keyboardShouldPersistTaps='handled'
 			showsVerticalScrollIndicator={false}>
-			<PlainText numberOfLines={1} style={[styles.title, { color: colors.fontDefault }]}>
+			<Text numberOfLines={1} style={[styles.title, { color: colors.fontDefault }]}>
 				{attachment.filename}
-			</PlainText>
+			</Text>
 			<View style={[styles.preview, { backgroundColor: colors.surfaceNeutral }]}>
 				<Preview attachment={attachment} />
 			</View>
 			{showAltTextInput ? (
 				<>
-					<PlainText style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Alt_text')}</PlainText>
-					<PlainText style={[styles.helper, { color: colors.fontSecondaryInfo }]}>{I18n.t('Alt_text_description')}</PlainText>
+					<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Alt_text')}</Text>
+					<Text style={[styles.helper, { color: colors.fontSecondaryInfo }]}>{I18n.t('Alt_text_description')}</Text>
 					<TextInput
 						accessibilityLabel={I18n.t('Alt_text')}
 						multiline

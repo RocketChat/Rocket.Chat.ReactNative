@@ -1,5 +1,5 @@
-import { View, StyleSheet, Text, type ViewStyle } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { View, StyleSheet, type ViewStyle } from 'react-native';
+import { Text } from 'react-native-plain-text';
 
 import sharedStyles from '../views/Styles';
 import { useTheme } from '../theme';
@@ -39,15 +39,15 @@ const UGCRules = ({ styleContainer }: { styleContainer?: ViewStyle }) => {
 	};
 	return (
 		<View style={[styles.bottomContainer, styleContainer]}>
-			<PlainText style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>
-				{I18n.t('Onboarding_agree_terms')}
-			</PlainText>
+			<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Onboarding_agree_terms')}</Text>
 			<Text
+				deopt
 				style={[styles.bottomContainerTextUnderline, styles.bottomContainerText, { color: colors.fontInfo }]}
 				onPress={() => openContract('terms-of-service')}>
 				{I18n.t('Terms_of_Service')}
 			</Text>
 			<Text
+				deopt
 				style={[styles.bottomContainerTextUnderline, styles.bottomContainerText, { color: colors.fontInfo }]}
 				onPress={() => openContract('privacy-policy')}>
 				{I18n.t('Privacy_Policy')}

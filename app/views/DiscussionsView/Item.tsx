@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import dayjs from '~/lib/dayjs';
 import { useTheme } from '~/theme';
@@ -69,10 +69,10 @@ const Item = ({ item, onPress }: IItem): ReactElement => {
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} />
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
-						<PlainText style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+						<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 							{username}
-						</PlainText>
-						{messageTime ? <PlainText style={[styles.time, { color: colors.fontSecondaryInfo }]}>{messageTime}</PlainText> : null}
+						</Text>
+						{messageTime ? <Text style={[styles.time, { color: colors.fontSecondaryInfo }]}>{messageTime}</Text> : null}
 					</View>
 					<View style={styles.messageContainer}>
 						{username ? <MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={styles.markdown} /> : null}

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, memo } from 'react';
 import { AccessibilityInfo, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
 import Modal from 'react-native-modal';
@@ -167,8 +167,8 @@ const TwoFactor = memo(() => {
 						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
 						{ backgroundColor: colors.surfaceTint }
 					]}>
-					<PlainText style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</PlainText>
-					{method?.text ? <PlainText style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</PlainText> : null}
+					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
+					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
 					<ControlledFormTextInput
 						name='code'
 						control={control}

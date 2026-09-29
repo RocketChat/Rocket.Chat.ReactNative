@@ -1,5 +1,5 @@
 import { Pressable, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import type { ReactElement } from 'react';
 
@@ -36,9 +36,9 @@ const CallerInfo = (): ReactElement => {
 				<AvatarContainer text={avatarText} size={120} borderRadius={2} />
 			</View>
 			<Animated.View style={[styles.callerRow, callerRowStyle]}>
-				<PlainText style={[styles.caller, { color: colors.fontDefault }]} numberOfLines={1} testID='caller-info-name'>
+				<Text style={[styles.caller, { color: colors.fontDefault }]} numberOfLines={1} testID='caller-info-name'>
 					{name}
-				</PlainText>
+				</Text>
 			</Animated.View>
 		</Pressable>
 	);

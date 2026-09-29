@@ -1,5 +1,5 @@
-import { Text, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { View } from 'react-native';
+import { Text } from 'react-native-plain-text';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { type ReactElement } from 'react';
 
@@ -85,9 +85,9 @@ const RoomInfoViewTitle = ({
 				sourceType={room?.source}
 				abacAttributes={room?.abacAttributes}
 			/>
-			<PlainText testID='room-info-view-name' style={[styles.roomTitle, { color: colors.fontTitlesLabels }]} key='room-info-name'>
+			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: colors.fontTitlesLabels }]} key='room-info-name'>
 				{getRoomTitle(room)}
-			</PlainText>
+			</Text>
 		</View>
 	);
 };

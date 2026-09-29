@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
@@ -22,7 +22,7 @@ const ImageBadge = ({ title }: IImageBadge) => {
 	const { colors } = useTheme();
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surfaceNeutral }]}>
-			<PlainText style={[styles.title, { color: colors.fontTitlesLabels }]}>{title}</PlainText>
+			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{title}</Text>
 		</View>
 	);
 };

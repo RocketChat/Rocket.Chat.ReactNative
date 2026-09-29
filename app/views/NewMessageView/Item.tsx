@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 
 import Avatar from '~/containers/Avatar';
@@ -54,9 +54,9 @@ const Item = ({ userId, name, username, onPress, testID, onLongPress }: IItem) =
 			<View style={[styles.container, styles.button]}>
 				<Avatar text={username} size={30} style={styles.avatar} />
 				<View style={styles.textContainer}>
-					<PlainText style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
+					<Text style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
 						{name}
-					</PlainText>
+					</Text>
 				</View>
 				{hasMediaCallPermission && !isSelf ? (
 					<BorderlessButton

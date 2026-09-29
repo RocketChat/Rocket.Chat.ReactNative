@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import styles from '../styles';
 import ThreadDetails from '~/containers/ThreadDetails';
@@ -36,7 +36,7 @@ const Thread = () => {
 				accessibilityLabel={I18n.t('View_Thread')}
 				style={[styles.button, { backgroundColor }]}
 				testID={`message-thread-button-${messageText}`}>
-				<PlainText style={[styles.buttonText, { color: textColor }]}>{I18n.t('View_Thread')}</PlainText>
+				<Text style={[styles.buttonText, { color: textColor }]}>{I18n.t('View_Thread')}</Text>
 			</MessageActionTouchable>
 			<ThreadDetails
 				item={{

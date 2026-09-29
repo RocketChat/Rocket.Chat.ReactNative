@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import sharedStyles from '~/views/Styles';
 import { themes } from '~/lib/constants/colors';
@@ -29,7 +29,7 @@ const ListInfo = memo(({ info, translateInfo = true }: IListInfo) => {
 	const { theme } = useTheme();
 	return (
 		<View style={styles.container}>
-			<PlainText style={[styles.text, { color: themes[theme].fontHint }]}>{translateInfo ? I18n.t(info) : info}</PlainText>
+			<Text style={[styles.text, { color: themes[theme].fontHint }]}>{translateInfo ? I18n.t(info) : info}</Text>
 		</View>
 	);
 });

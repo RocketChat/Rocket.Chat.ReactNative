@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import styles from './styles';
 import { capitalize } from '~/lib/methods/helpers/room';
@@ -13,7 +13,7 @@ const UpdatedAt = memo(({ date, hideUnreadStatus, alert }: IUpdatedAtProps) => {
 		return null;
 	}
 	return (
-		<PlainText
+		<Text
 			style={[
 				styles.date,
 				{
@@ -30,7 +30,7 @@ const UpdatedAt = memo(({ date, hideUnreadStatus, alert }: IUpdatedAtProps) => {
 			ellipsizeMode='tail'
 			numberOfLines={1}>
 			{capitalize(date)}
-		</PlainText>
+		</Text>
 	);
 });
 

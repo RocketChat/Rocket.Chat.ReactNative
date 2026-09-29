@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { useTheme } from '~/theme';
 import { CustomIcon } from '../CustomIcon';
@@ -64,9 +64,9 @@ const Chip = ({ avatar, text, onPress, testID, style, fullWidth }: IChip) => {
 			<View style={styles.container}>
 				{avatar ? <Avatar text={avatar} size={28} style={styles.avatar} /> : null}
 				<View style={[styles.textContainer, fullWidth && { maxWidth: undefined }]}>
-					<PlainText style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
+					<Text style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
 						{text}
-					</PlainText>
+					</Text>
 				</View>
 				{onPress ? <CustomIcon name='close' size={16} /> : null}
 			</View>

@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { useForm } from 'react-hook-form';
 import { type ReactElement } from 'react';
 
@@ -92,13 +92,11 @@ const ConfirmEmailChangeActionSheetContent = ({
 	return (
 		<View style={sharedStyles.containerScrollView} testID='profile-view-enter-password-sheet'>
 			<View accessible accessibilityLabel={I18n.t('Please_enter_your_password')} style={styles.titleContainer}>
-				<PlainText style={[styles.titleContainerText, { color: colors.fontDefault }]}>
-					{I18n.t('Please_enter_your_password')}
-				</PlainText>
+				<Text style={[styles.titleContainerText, { color: colors.fontDefault }]}>{I18n.t('Please_enter_your_password')}</Text>
 			</View>
-			<PlainText style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>
+			<Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>
 				{I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
-			</PlainText>
+			</Text>
 			<ControlledFormTextInput
 				control={control}
 				name='password'

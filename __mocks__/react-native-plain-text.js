@@ -1,3 +1,3 @@
 const { Text } = require('react-native');
 
-module.exports = { PlainText: Text };
+module.exports = { PlainText: Text, Text };

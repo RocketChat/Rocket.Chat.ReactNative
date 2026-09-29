@@ -1,7 +1,7 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { useDispatch } from 'react-redux';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -111,14 +111,12 @@ const E2ESaveYourPasswordView = () => {
 				contentContainerStyle={[sharedStyles.containerScrollView, { flexGrow: 1, paddingBottom: bottom }]}>
 				<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
 					<View style={{ flex: 1, gap: 64 }}>
-						<PlainText style={[styles.warning, { color: colors.fontDanger }]}>
-							{I18n.t('Save_Your_Encryption_Password_warning')}
-						</PlainText>
+						<Text style={[styles.warning, { color: colors.fontDanger }]}>{I18n.t('Save_Your_Encryption_Password_warning')}</Text>
 						<View style={styles.content}>
-							<PlainText style={[styles.passwordText, { color: colors.fontDefault }]}>{I18n.t('Your_password_is')}</PlainText>
-							<PlainText style={[styles.password, { color: colors.fontDefault, backgroundColor: colors.surfaceHover }]}>
+							<Text style={[styles.passwordText, { color: colors.fontDefault }]}>{I18n.t('Your_password_is')}</Text>
+							<Text style={[styles.password, { color: colors.fontDefault, backgroundColor: colors.surfaceHover }]}>
 								{password}
-							</PlainText>
+							</Text>
 							<Button
 								onPress={onCopy}
 								style={[styles.copyButton, { backgroundColor: colors.surfaceHover }]}
@@ -127,9 +125,7 @@ const E2ESaveYourPasswordView = () => {
 								fontSize={14}
 							/>
 						</View>
-						<PlainText style={[styles.info, { color: colors.fontDefault }]}>
-							{I18n.t('Save_Your_Encryption_Password_info')}
-						</PlainText>
+						<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Save_Your_Encryption_Password_info')}</Text>
 					</View>
 					<View style={{ gap: 8, flex: 1, justifyContent: 'flex-end' }}>
 						<Button

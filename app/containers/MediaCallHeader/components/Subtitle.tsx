@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { useTheme } from '~/theme';
 import { useCallStore } from '~/lib/services/voip/useCallStore';
@@ -41,12 +41,12 @@ const Subtitle = () => {
 	}
 
 	return (
-		<PlainText
+		<Text
 			style={[styles.headerSubtitle, { color: colors.fontSecondaryInfo }]}
 			testID='call-view-header-subtitle'
 			numberOfLines={1}>
 			{subtitle}
-		</PlainText>
+		</Text>
 	);
 };
 

@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, type StyleProp, type TextStyle, View, type ViewStyle } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import Status from '.';
 import { CustomIcon } from '../CustomIcon';
@@ -55,14 +55,14 @@ const StatusRows = ({
 					{renderStatusText ? (
 						renderStatusText(statusText)
 					) : (
-						<PlainText style={[textStyle, { color: statusTextColor }]}>{statusText}</PlainText>
+						<Text style={[textStyle, { color: statusTextColor }]}>{statusText}</Text>
 					)}
 				</View>
 			) : null}
 			{presenceLabel ? (
 				<View style={[styles.row, rowStyle]}>
 					{userId ? <Status size={12} id={userId} /> : null}
-					<PlainText style={[textStyle, { color: statusTextColor }]}>{I18n.t(presenceLabel)}</PlainText>
+					<Text style={[textStyle, { color: statusTextColor }]}>{I18n.t(presenceLabel)}</Text>
 				</View>
 			) : null}
 			{formattedExpiry ? (
@@ -74,7 +74,7 @@ const StatusRows = ({
 						accessibilityElementsHidden
 						importantForAccessibility='no'
 					/>
-					<PlainText style={[secondaryTextStyle, { color: fontSecondaryInfo }]}>{formattedExpiry}</PlainText>
+					<Text style={[secondaryTextStyle, { color: fontSecondaryInfo }]}>{formattedExpiry}</Text>
 				</View>
 			) : null}
 		</>

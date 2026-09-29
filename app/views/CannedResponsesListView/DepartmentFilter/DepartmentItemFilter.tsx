@@ -1,5 +1,5 @@
 import { PixelRatio, StyleSheet, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
 import { useTheme } from '~/theme';
@@ -39,7 +39,7 @@ const DepartmentItemFilter = ({ currentDepartment, value, onPress }: IDepartment
 	return (
 		<Touch onPress={() => onPress(value)} style={{ backgroundColor: colors.surfaceRoom }}>
 			<View style={[styles.container, { height }]}>
-				<PlainText style={[styles.text, { color: colors.fontSecondaryInfo }]}>{value?.name}</PlainText>
+				<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{value?.name}</Text>
 				{iconName ? <CustomIcon name={iconName} size={22} color={colors.fontSecondaryInfo} /> : null}
 			</View>
 		</Touch>

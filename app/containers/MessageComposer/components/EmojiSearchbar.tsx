@@ -1,6 +1,6 @@
 import { useContext, useState, type ReactElement } from 'react';
 import { View, Pressable, FlatList, StyleSheet } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
 import { MessageInnerContext } from '../context';
@@ -49,7 +49,7 @@ export const EmojiSearchbar = (): ReactElement => {
 				showsHorizontalScrollIndicator={false}
 				ListEmptyComponent={() => (
 					<View style={styles.emptyContainer} testID='no-results-found'>
-						<PlainText style={[styles.emptyText, { color: colors.fontHint }]}>{I18n.t('No_results_found')}</PlainText>
+						<Text style={[styles.emptyText, { color: colors.fontHint }]}>{I18n.t('No_results_found')}</Text>
 					</View>
 				)}
 				keyExtractor={item => (typeof item === 'string' ? item : item.name)}

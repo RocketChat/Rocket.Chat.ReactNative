@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { View, Alert, Keyboard } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -103,7 +103,7 @@ const UserForm = () => {
 
 	return (
 		<>
-			<PlainText style={[styles.title, sharedStyles.textBold, { color: colors.fontTitlesLabels }]}>{I18n.t('Login')}</PlainText>
+			<Text style={[styles.title, sharedStyles.textBold, { color: colors.fontTitlesLabels }]}>{I18n.t('Login')}</Text>
 			<View style={styles.credentialsContainer}>
 				<ControlledFormTextInput
 					name='user'
@@ -141,9 +141,7 @@ const UserForm = () => {
 			<View style={styles.bottomContainer}>
 				{Accounts_PasswordReset && (
 					<View style={styles.bottomContainerGroup}>
-						<PlainText style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>
-							{I18n.t('Forgot_password')}
-						</PlainText>
+						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Forgot_password')}</Text>
 						<Button
 							title={I18n.t('Reset_password')}
 							type='secondary'
@@ -154,15 +152,15 @@ const UserForm = () => {
 				)}
 				{showRegistrationButton ? (
 					<View style={styles.bottomContainerGroup}>
-						<PlainText style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>
+						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>
 							{I18n.t('You_dont_have_account')}
-						</PlainText>
+						</Text>
 						<Button title={I18n.t('Create_account')} onPress={register} type='secondary' testID='login-view-register' />
 					</View>
 				) : (
-					<PlainText style={[styles.registerDisabled, { color: colors.fontSecondaryInfo }]}>
+					<Text style={[styles.registerDisabled, { color: colors.fontSecondaryInfo }]}>
 						{Accounts_RegistrationForm_LinkReplacementText}
-					</PlainText>
+					</Text>
 				)}
 				<UGCRules />
 			</View>

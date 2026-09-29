@@ -1,6 +1,6 @@
 import { type FC, memo, type ReactElement } from 'react';
 import { type TextStyle, View, type ViewStyle } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { useTheme } from '~/theme';
 import styles from './styles';
@@ -40,13 +40,13 @@ const SwitchContainer: FC<ISwitchContainer> = memo(
 							accessible
 							accessibilityLabel={`${leftLabelPrimary}. ${leftLabelSecondary ?? ''}. `}
 							style={[styles.switchLabelContainer, labelContainerStyle]}>
-							<PlainText style={[styles.switchLabelPrimary, { color: colors.fontTitlesLabels }, leftLabelStyle]}>
+							<Text style={[styles.switchLabelPrimary, { color: colors.fontTitlesLabels }, leftLabelStyle]}>
 								{leftLabelPrimary}
-							</PlainText>
+							</Text>
 							{leftLabelSecondary && (
-								<PlainText style={[styles.switchLabelSecondary, { color: colors.fontSecondaryInfo }, leftLabelStyle]}>
+								<Text style={[styles.switchLabelSecondary, { color: colors.fontSecondaryInfo }, leftLabelStyle]}>
 									{leftLabelSecondary}
-								</PlainText>
+								</Text>
 							)}
 						</View>
 					)}

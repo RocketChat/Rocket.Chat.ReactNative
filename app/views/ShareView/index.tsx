@@ -2,7 +2,7 @@ import { Component, createRef, type RefObject } from 'react';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp } from '@react-navigation/native';
 import { Keyboard, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { type Dispatch } from 'redux';
@@ -441,9 +441,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		if (readOnly || isBlocked(room)) {
 			return (
 				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].surfaceHover }]} testID='share-view'>
-					<PlainText style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>
+					<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>
 						{isBlocked(room) ? I18n.t('This_room_is_blocked') : I18n.t('This_room_is_read_only')}
-					</PlainText>
+					</Text>
 				</View>
 			);
 		}

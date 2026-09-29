@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react';
 import { View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -60,11 +60,9 @@ const E2EEncryptionSecurityView = () => {
 				<View style={styles.container}>
 					<ChangePassword />
 
-					<PlainText style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_reset_title')}</PlainText>
+					<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_reset_title')}</Text>
 					<View style={styles.content}>
-						<PlainText style={[styles.description, { color: colors.fontDefault }]}>
-							{I18n.t('Reset_E2EE_Password_Description')}
-						</PlainText>
+						<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Reset_E2EE_Password_Description')}</Text>
 						<Button
 							onPress={resetOwnKey}
 							title={I18n.t('E2E_encryption_reset_button')}

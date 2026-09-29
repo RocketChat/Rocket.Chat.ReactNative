@@ -1,4 +1,4 @@
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import dayjs from '~/lib/dayjs';
 import { useTheme } from '~/theme';
@@ -13,7 +13,7 @@ const MessageTime = () => {
 
 	const time = dayjs(ts).format(timeFormat);
 
-	return <PlainText style={[messageStyles.time, { color: colors.fontSecondaryInfo }]}>{time}</PlainText>;
+	return <Text style={[messageStyles.time, { color: colors.fontSecondaryInfo }]}>{time}</Text>;
 };
 
 export default MessageTime;

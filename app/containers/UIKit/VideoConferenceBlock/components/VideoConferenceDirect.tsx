@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import i18n from '~/i18n';
 import useStyle from './styles';
@@ -10,7 +10,7 @@ const VideoConferenceDirect = memo(() => {
 
 	return (
 		<VideoConferenceBaseContainer variant='incoming'>
-			<PlainText style={style.callBack}>{i18n.t('Waiting_for_answer')}</PlainText>
+			<Text style={style.callBack}>{i18n.t('Waiting_for_answer')}</Text>
 		</VideoConferenceBaseContainer>
 	);
 });

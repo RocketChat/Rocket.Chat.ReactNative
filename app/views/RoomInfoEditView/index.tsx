@@ -2,7 +2,7 @@ import { useLayoutEffect, useState } from 'react';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import { AccessibilityInfo, Alert, Keyboard, ScrollView, View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useForm } from 'react-hook-form';
 import { type SetValueConfig } from 'react-hook-form';
@@ -453,7 +453,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 						) : null}
 						{room.broadcast
 							? [
-									<PlainText style={styles.broadcast}>{I18n.t('Broadcast')}</PlainText>,
+									<Text style={styles.broadcast}>{I18n.t('Broadcast')}</Text>,
 									<View style={[styles.divider, { borderColor: colors.strokeLight }]} />
 								]
 							: null}

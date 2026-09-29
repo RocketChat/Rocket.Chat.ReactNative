@@ -1,5 +1,5 @@
 import { StyleSheet, type TextStyle } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
@@ -20,7 +20,7 @@ interface IAlertText {
 
 const AlertText = ({ text, style }: IAlertText) => {
 	const { colors } = useTheme();
-	return <PlainText style={[styles.text, { color: colors.fontDanger }, style]}>{text}</PlainText>;
+	return <Text style={[styles.text, { color: colors.fontDanger }, style]}>{text}</Text>;
 };
 
 export default AlertText;

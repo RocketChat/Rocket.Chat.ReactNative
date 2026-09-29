@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 import { View } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import i18n from '~/i18n';
 import { useTheme } from '~/theme';
@@ -53,7 +53,7 @@ export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMes
 					}}>
 					<CustomIcon name={iconStyle[variant].icon} size={24} color={iconStyle[variant].color} />
 				</View>
-				<PlainText style={style.infoContainerText}>{iconStyle[variant].label}</PlainText>
+				<Text style={style.infoContainerText}>{iconStyle[variant].label}</Text>
 			</View>
 			<View style={style.callToActionContainer}>{children}</View>
 		</View>

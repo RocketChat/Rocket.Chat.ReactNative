@@ -1,4 +1,4 @@
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { useTheme } from '~/theme';
 import styles from '../styles';
@@ -11,8 +11,8 @@ interface IItemLabel {
 export const ItemLabel = ({ label, testID }: IItemLabel) => {
 	const { colors } = useTheme();
 	return (
-		<PlainText accessibilityLabel={label} style={[styles.itemLabel, { color: colors.fontTitlesLabels }]} testID={testID}>
+		<Text accessibilityLabel={label} style={[styles.itemLabel, { color: colors.fontTitlesLabels }]} testID={testID}>
 			{label}
-		</PlainText>
+		</Text>
 	);
 };

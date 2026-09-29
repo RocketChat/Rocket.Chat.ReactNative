@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { FlatList, StyleSheet, View, useWindowDimensions } from 'react-native';
-import { PlainText } from '~/containers/PlainText';
+import { Text } from 'react-native-plain-text';
 
 import { type TSupportedThemes, useTheme } from '~/theme';
 import { themes } from '~/lib/constants/colors';
@@ -81,7 +81,7 @@ const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => {
 			{customEmoji ? (
 				<CustomEmoji style={styles.customEmoji} emoji={customEmoji} />
 			) : (
-				<PlainText style={styles.headerIcon}>{formatShortnameToUnicode(`:${emojiName}:`)}</PlainText>
+				<Text style={styles.headerIcon}>{formatShortnameToUnicode(`:${emojiName}:`)}</Text>
 			)}
 		</Touch>
 	);
