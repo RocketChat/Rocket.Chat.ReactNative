@@ -1,11 +1,6 @@
 import { useRef, memo, type ReactElement } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import {
-	Gesture,
-	GestureDetector,
-	type GestureUpdateEvent,
-	type PanGestureHandlerEventPayload
-} from 'react-native-gesture-handler';
+import { GestureDetector, type PanGestureActiveEvent, usePanGesture } from 'react-native-gesture-handler';
 import { View, type AccessibilityActionEvent } from 'react-native';
 import { scheduleOnRN } from 'react-native-worklets';
 
@@ -81,7 +76,7 @@ const SwipeableDeleteTouchable = ({
 		}
 	};
 
-	const handleRelease = (event: GestureUpdateEvent<PanGestureHandlerEventPayload>) => {
+	const handleRelease = (event: PanGestureActiveEvent) => {
 		const { translationX } = event;
 		valueRef.current += translationX;
 		let toValue = 0;
@@ -147,10 +142,10 @@ const SwipeableDeleteTouchable = ({
 		valueRef.current = toValue;
 	};
 
-	const panGesture = Gesture.Pan()
-		.activeOffsetX([-10, 10]) // More sensitive horizontal detection
-		.failOffsetY([-20, 20]) // Fail on vertical movement to distinguish scrolling
-		.onUpdate(event => {
+	const panGesture = usePanGesture({
+		activeOffsetX: [-10, 10], // More sensitive horizontal detection
+		failOffsetY: [-20, 20], // Fail on vertical movement to distinguish scrolling
+		onUpdate: event => {
 			const newValue = event.translationX + rowOffSet.value;
 
 			if (I18n.isRTL) {
@@ -171,10 +166,11 @@ const SwipeableDeleteTouchable = ({
 				// Limit how far left it can stretch
 				if (transX.value < -width) transX.value = -width;
 			}
-		})
-		.onEnd(event => {
+		},
+		onDeactivate: event => {
 			scheduleOnRN(handleRelease, event);
-		});
+		}
+	});
 
 	const animatedStyles = useAnimatedStyle(() => ({
 		transform: [{ translateX: transX.value }]
