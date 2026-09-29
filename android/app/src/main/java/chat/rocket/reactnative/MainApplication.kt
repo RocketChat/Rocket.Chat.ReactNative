@@ -111,8 +111,13 @@ open class MainApplication : Application(), ReactApplication {
           }
         }
         target.delete()
-        legacy.renameTo(target)
+        if (!legacy.renameTo(target)) {
+          throw IllegalStateException("Failed to migrate ${legacy.name} to ${target.name}")
+        }
       }
+    } catch (e: IllegalStateException) {
+      // Starting with a fresh DB at `target` would strand the legacy data, since later launches skip a non-empty target.
+      throw e
     } catch (e: Exception) {
     }
   }
