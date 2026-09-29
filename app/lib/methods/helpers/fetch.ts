@@ -47,11 +47,5 @@ export default (url: string, options: IOptions = {}): Promise<Response> => {
 		...options,
 		headers: withoutEmptyValues({ ...options.headers, ...RocketChatSettings.customHeaders })
 	};
-	// TODO: Check if this really works and if anyone else has complained about this problem.
-	// if (RocketChat.controller) {
-	// 	// @ts-ignore
-	// 	const { signal } = RocketChat.controller;
-	// 	customOptions = { ...customOptions, signal };
-	// }
 	return fetch(url, customOptions);
 };

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 
+import { BorderlessButton, RectButton } from '~/containers/GestureButtons';
 import Avatar from '~/containers/Avatar';
 import { CustomIcon } from '~/containers/CustomIcon';
 import sharedStyles from '../Styles';
@@ -50,7 +50,7 @@ const Item = ({ userId, name, username, onPress, testID, onLongPress }: IItem) =
 				{hasMediaCallPermission && !isSelf ? (
 					<BorderlessButton
 						onPress={handleCallPress}
-						enabled={!isInActiveCall}
+						disabled={isInActiveCall}
 						testID={`${testID}-call`}
 						rippleColor={colors.surfaceSelected}
 						style={styles.iconContainer}

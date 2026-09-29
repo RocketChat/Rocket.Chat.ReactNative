@@ -10,7 +10,6 @@ import { RoomProviders } from './components/RoomProviders';
 import { RoomAnnouncementBanner } from './components/RoomAnnouncementBanner';
 import { RoomBodyFocusAnchor } from './components/RoomBodyFocusAnchor';
 import { RoomFooter } from './components/RoomFooter/RoomFooter';
-import { RoomLoadFailed } from './components/RoomLoadFailed';
 import { RoomMessageActions } from './components/RoomMessageActions';
 import { RoomMessageList } from './components/RoomMessageList';
 import { RoomUploadProgress } from './components/RoomUploadProgress';
@@ -74,10 +73,6 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 	const onJoin = () => {
 		roomStore.getState().join();
 	};
-
-	if (roomScreen.failed) {
-		return <RoomLoadFailed onRetry={roomScreen.retry} />;
-	}
 
 	return (
 		<RoomStoreContext.Provider value={roomStore}>

@@ -1,6 +1,6 @@
 import { memo, type ReactElement } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Touchable } from 'react-native-gesture-handler';
 import { KeyboardFocusView } from 'react-native-external-keyboard';
 
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
@@ -233,7 +233,9 @@ const Header = ({
 			focusable={!disabled}
 			canBeFocused={!disabled}
 			style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}>
-			<TouchableOpacity
+			<Touchable
+				activeOpacity={0.2}
+				animationDuration={{ in: 0, out: 150 }}
 				testID='room-header'
 				onPress={handleOnPress}
 				disabled={disabled}
@@ -261,7 +263,7 @@ const Header = ({
 					renderFunc={renderFunc}
 					scale={scale}
 				/>
-			</TouchableOpacity>
+			</Touchable>
 		</KeyboardFocusView>
 	);
 };
