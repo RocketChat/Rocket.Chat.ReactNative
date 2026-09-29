@@ -53,6 +53,7 @@ tags:
     visible:
       id: 'selected-user-${output.otherUser.username}'
     timeout: 60000
+- runFlow: '../../helpers/close-search.yaml'
 - assertVisible:
     id: 'selected-users-view-submit'
 - tapOn:

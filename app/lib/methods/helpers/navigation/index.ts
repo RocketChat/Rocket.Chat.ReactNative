@@ -57,6 +57,7 @@ export const stackedSearchBarOptions = ({
 }: IStackedSearchBarOptions): SearchBarProps => ({
 	ref,
 	placement: 'stacked',
+	hideWhenScrolling: false,
 	placeholder: I18n.t('Search'),
 	onFocus,
 	onChangeText: event => onChangeText(event.nativeEvent.text),
