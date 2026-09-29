@@ -66,9 +66,10 @@ open class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
-    migrateLegacyExperimentalDatabases()
 
     Bugsnag.start(this)
+    
+    migrateLegacyExperimentalDatabases()
     
     // Initialize MMKV encryption - reads existing key or generates new one
     // Must run before React Native starts to avoid race conditions
