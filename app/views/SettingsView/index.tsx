@@ -30,13 +30,14 @@ import { onReviewPress } from '~/lib/methods/helpers/review';
 import { type SettingsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
 import { disconnect } from '~/lib/services/connect';
-import SidebarView from '../SidebarView';
+import { useSidebarSections } from '../SidebarView/useSidebarSections';
 
 type TLogScreenName = 'SE_GO_LANGUAGE' | 'SE_GO_DEFAULTBROWSER' | 'SE_GO_THEME' | 'SE_GO_PROFILE' | 'SE_GO_SECURITYPRIVACY';
 
 const SettingsView = (): ReactElement => {
 	const { colors, theme } = useTheme();
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'SettingsView'>>();
+	const { sections: sidebarSections } = useSidebarSections(navigation as any);
 	const dispatch = useDispatch();
 	const isMasterDetail = useMasterDetail();
 	const { server, version } = useAppSelector(state => state.server);
@@ -137,9 +138,7 @@ const SettingsView = (): ReactElement => {
 			<List.Container>
 				{isMasterDetail ? (
 					<>
-						<List.Section>
-							<SidebarView navigation={navigation as any} />
-						</List.Section>
+						{sidebarSections}
 						<List.Section>
 							<List.Separator />
 							<List.Item
