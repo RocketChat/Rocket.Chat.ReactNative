@@ -100,7 +100,12 @@ public class AppDelegate: ExpoAppDelegate {
         }
       }
       try? fileManager.removeItem(at: target)
-      try? fileManager.moveItem(at: legacy, to: target)
+      do {
+        try fileManager.moveItem(at: legacy, to: target)
+      } catch {
+        // Starting with a fresh DB at `target` would strand the legacy data, since later launches skip a non-empty target.
+        fatalError("Failed to migrate \(name) to \(target.lastPathComponent): \(error)")
+      }
     }
   }
 
