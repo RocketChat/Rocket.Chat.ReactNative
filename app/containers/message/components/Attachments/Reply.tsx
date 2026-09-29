@@ -4,7 +4,6 @@ import { Image } from 'expo-image';
 
 import { type IAttachment } from '~/definitions';
 import { fileDownloadAndPreview } from '~/lib/methods/helpers/fileDownload';
-import { decodeFilename } from '~/lib/methods/helpers/decodeFilename';
 import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import openLink from '~/lib/methods/helpers/openLink';
 import { useTheme } from '~/theme';
@@ -93,7 +92,6 @@ const Title = ({ attachment }: { attachment: IAttachment }) => {
 	const { colors } = useTheme();
 	const timeFormat = useTimeFormat();
 	const time = attachment.message_link && attachment.ts ? dayjs(attachment.ts).format(timeFormat) : null;
-	const title = decodeFilename(attachment.title);
 	return (
 		<View style={styles.authorContainer}>
 			{attachment.author_name ? (
@@ -102,14 +100,14 @@ const Title = ({ attachment }: { attachment: IAttachment }) => {
 				</Text>
 			) : null}
 			{time ? <Text style={[messageStyles.time, { color: colors.fontSecondaryInfo }]}>{time}</Text> : null}
-			{attachment.title ? <Text style={[styles.title, { color: colors.fontDefault }]}>{title}</Text> : null}
+			{attachment.title ? <Text style={[styles.title, { color: colors.fontDefault }]}>{attachment.title}</Text> : null}
 		</View>
 	);
 };
 
 const Description = ({ attachment }: { attachment: IAttachment }) => {
 	const user = useMessageUser();
-	const text = attachment.text || decodeFilename(attachment.title);
+	const text = attachment.text || attachment.title;
 
 	if (!text) {
 		return null;

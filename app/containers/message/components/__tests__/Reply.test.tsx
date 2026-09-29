@@ -156,23 +156,9 @@ describe('Reply', () => {
 			expect(preview.props.children).toBe('script.py');
 		});
 
-		it('decodes a percent-encoded Cyrillic filename in the preview', () => {
-			const { getByTestId } = renderReply({
-				attachment: { type: 'file', title: '%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80.pdf', author_name: 'Alice' }
-			});
-			expect(getByTestId('reply-markdown-preview').props.children).toBe('Пример.pdf');
-		});
-
 		it('uses Markdown when the attachment has explicit text', () => {
 			const { getByTestId } = renderReply({ attachment: { type: 'file', text: '**bold**', author_name: 'Alice' } });
 			expect(getByTestId('reply-markdown').props.children).toBe('**bold**');
-		});
-
-		it('does not decode explicit text', () => {
-			const { getByTestId } = renderReply({
-				attachment: { type: 'file', text: '100% sure', title: '%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80.pdf', author_name: 'Alice' }
-			});
-			expect(getByTestId('reply-markdown').props.children).toBe('100% sure');
 		});
 	});
 
@@ -189,14 +175,6 @@ describe('Reply', () => {
 				attachment: { ts: '2021-01-01T13:45:00.000Z', author_name: 'Alice', text: 'Hi' }
 			});
 			expect(queryByText('13:45')).toBeNull();
-		});
-
-		it('decodes a percent-encoded Cyrillic title', () => {
-			const { getAllByText, queryByText } = renderReply({
-				attachment: { title: '%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80.pdf', author_name: 'Alice' }
-			});
-			expect(getAllByText('Пример.pdf').length).toBeGreaterThan(0);
-			expect(queryByText('%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80.pdf')).toBeNull();
 		});
 	});
 
