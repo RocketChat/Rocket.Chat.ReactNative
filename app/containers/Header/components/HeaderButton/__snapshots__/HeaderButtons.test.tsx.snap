@@ -98,14 +98,29 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
           ]
         }
       >
-        <RNGestureHandlerButton
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
           activeOpacity={0.3}
-          borderless={true}
+          animationDuration={0}
           collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={-1}
-          handlerType="NativeViewGestureHandler"
+          focusable={true}
           hitSlop={
             {
               "bottom": 5,
@@ -114,20 +129,19 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               "top": 5,
             }
           }
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
-            [
-              {
-                "opacity": 1,
-                "padding": 6,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
+            {
+              "padding": 6,
+            }
           }
         >
           <View
@@ -219,15 +233,30 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               </Text>
             </View>
           </View>
-        </RNGestureHandlerButton>
-        <RNGestureHandlerButton
+        </View>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
           activeOpacity={0.3}
-          borderless={true}
+          animationDuration={0}
           collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={-1}
-          handlerType="NativeViewGestureHandler"
+          focusable={true}
           hitSlop={
             {
               "bottom": 5,
@@ -236,20 +265,19 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               "top": 5,
             }
           }
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
-            [
-              {
-                "opacity": 1,
-                "padding": 6,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
+            {
+              "padding": 6,
+            }
           }
         >
           <View
@@ -341,15 +369,30 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               </Text>
             </View>
           </View>
-        </RNGestureHandlerButton>
-        <RNGestureHandlerButton
+        </View>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
           activeOpacity={0.3}
-          borderless={true}
+          animationDuration={0}
           collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={-1}
-          handlerType="NativeViewGestureHandler"
+          focusable={true}
           hitSlop={
             {
               "bottom": 5,
@@ -358,20 +401,19 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               "top": 5,
             }
           }
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
-            [
-              {
-                "opacity": 1,
-                "padding": 6,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
+            {
+              "padding": 6,
+            }
           }
         >
           <View
@@ -463,7 +505,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               </Text>
             </View>
           </View>
-        </RNGestureHandlerButton>
+        </View>
         <View
           style={
             [
@@ -503,14 +545,29 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               ]
             }
           >
-            <RNGestureHandlerButton
+            <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
               activeOpacity={0.3}
-              borderless={true}
+              animationDuration={0}
               collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
+              focusable={true}
               hitSlop={
                 {
                   "bottom": 5,
@@ -519,21 +576,19 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   "top": 5,
                 }
               }
-              innerRef={null}
-              onActiveStateChange={[Function]}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
-              onPress={[Function]}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
-                [
-                  {
-                    "opacity": 1,
-                    "padding": 6,
-                  },
-                  {
-                    "cursor": undefined,
-                  },
-                ]
+                {
+                  "padding": 6,
+                }
               }
             >
               <View
@@ -595,7 +650,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   }
                 />
               </View>
-            </RNGestureHandlerButton>
+            </View>
           </ExternalKeyboardView>
         </View>
       </View>
@@ -767,14 +822,29 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
               ]
             }
           >
-            <RNGestureHandlerButton
+            <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
               activeOpacity={0.3}
-              borderless={true}
+              animationDuration={0}
               collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
+              focusable={true}
               hitSlop={
                 {
                   "bottom": 5,
@@ -783,21 +853,19 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                   "top": 5,
                 }
               }
-              innerRef={null}
-              onActiveStateChange={[Function]}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
-              onPress={[Function]}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
-                [
-                  {
-                    "opacity": 1,
-                    "padding": 6,
-                  },
-                  {
-                    "cursor": undefined,
-                  },
-                ]
+                {
+                  "padding": 6,
+                }
               }
             >
               <View
@@ -839,7 +907,7 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                   
                 </Text>
               </View>
-            </RNGestureHandlerButton>
+            </View>
           </ExternalKeyboardView>
         </View>
       </View>
@@ -983,14 +1051,29 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -999,21 +1082,19 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
-            onPress={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -1052,7 +1133,7 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                 
               </Text>
             </View>
-          </RNGestureHandlerButton>
+          </View>
         </View>
       </View>
       <View
@@ -1195,14 +1276,29 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -1211,20 +1307,19 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -1257,7 +1352,7 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                 Cancel
               </Text>
             </View>
-          </RNGestureHandlerButton>
+          </View>
         </View>
       </View>
       <View
@@ -1440,14 +1535,29 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -1456,20 +1566,19 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -1507,7 +1616,7 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                 
               </Text>
             </View>
-          </RNGestureHandlerButton>
+          </View>
         </View>
       </View>
     </View>
@@ -1649,14 +1758,29 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -1665,20 +1789,19 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -1716,7 +1839,7 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                 
               </Text>
             </View>
-          </RNGestureHandlerButton>
+          </View>
         </View>
       </View>
     </View>
@@ -1858,14 +1981,29 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -1874,20 +2012,19 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -1925,7 +2062,7 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                 
               </Text>
             </View>
-          </RNGestureHandlerButton>
+          </View>
         </View>
       </View>
     </View>
@@ -2067,14 +2204,29 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -2083,21 +2235,19 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
-            onPress={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -2136,7 +2286,7 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                 
               </Text>
             </View>
-          </RNGestureHandlerButton>
+          </View>
         </View>
       </View>
     </View>
@@ -2243,14 +2393,29 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -2259,20 +2424,19 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -2310,7 +2474,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 
               </Text>
             </View>
-          </RNGestureHandlerButton>
+          </View>
         </View>
       </View>
       <View
@@ -2369,14 +2533,29 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -2385,20 +2564,19 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -2436,7 +2614,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 
               </Text>
             </View>
-          </RNGestureHandlerButton>
+          </View>
         </View>
       </View>
     </View>
@@ -2538,14 +2716,29 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -2554,20 +2747,19 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -2605,15 +2797,30 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 
               </Text>
             </View>
-          </RNGestureHandlerButton>
-          <RNGestureHandlerButton
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -2622,20 +2829,19 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -2673,7 +2879,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 
               </Text>
             </View>
-          </RNGestureHandlerButton>
+          </View>
         </View>
       </View>
       <View
@@ -2732,14 +2938,29 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -2748,20 +2969,19 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -2799,15 +3019,30 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 
               </Text>
             </View>
-          </RNGestureHandlerButton>
-          <RNGestureHandlerButton
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -2816,20 +3051,19 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -2867,7 +3101,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 
               </Text>
             </View>
-          </RNGestureHandlerButton>
+          </View>
         </View>
       </View>
     </View>
@@ -3020,14 +3254,29 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   ]
                 }
               >
-                <RNGestureHandlerButton
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
                   activeOpacity={0.3}
-                  borderless={true}
+                  animationDuration={0}
                   collapsable={false}
-                  delayLongPress={600}
-                  enabled={true}
-                  handlerTag={-1}
-                  handlerType="NativeViewGestureHandler"
+                  focusable={true}
                   hitSlop={
                     {
                       "bottom": 5,
@@ -3036,21 +3285,19 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       "top": 5,
                     }
                   }
-                  innerRef={null}
-                  onActiveStateChange={[Function]}
-                  onGestureHandlerEvent={[Function]}
-                  onGestureHandlerStateChange={[Function]}
-                  onPress={[Function]}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
-                    [
-                      {
-                        "opacity": 1,
-                        "padding": 6,
-                      },
-                      {
-                        "cursor": undefined,
-                      },
-                    ]
+                    {
+                      "padding": 6,
+                    }
                   }
                 >
                   <View
@@ -3112,17 +3359,32 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       }
                     />
                   </View>
-                </RNGestureHandlerButton>
+                </View>
               </ExternalKeyboardView>
             </View>
-            <RNGestureHandlerButton
+            <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
               activeOpacity={0.3}
-              borderless={true}
+              animationDuration={0}
               collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
+              focusable={true}
               hitSlop={
                 {
                   "bottom": 5,
@@ -3131,20 +3393,19 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   "top": 5,
                 }
               }
-              innerRef={null}
-              onActiveStateChange={[Function]}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
-                [
-                  {
-                    "opacity": 1,
-                    "padding": 6,
-                  },
-                  {
-                    "cursor": undefined,
-                  },
-                ]
+                {
+                  "padding": 6,
+                }
               }
             >
               <View
@@ -3182,7 +3443,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   
                 </Text>
               </View>
-            </RNGestureHandlerButton>
+            </View>
           </View>
         </View>
         <View
@@ -3241,14 +3502,29 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               ]
             }
           >
-            <RNGestureHandlerButton
+            <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
               activeOpacity={0.3}
-              borderless={true}
+              animationDuration={0}
               collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
+              focusable={true}
               hitSlop={
                 {
                   "bottom": 5,
@@ -3257,20 +3533,19 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   "top": 5,
                 }
               }
-              innerRef={null}
-              onActiveStateChange={[Function]}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
-                [
-                  {
-                    "opacity": 1,
-                    "padding": 6,
-                  },
-                  {
-                    "cursor": undefined,
-                  },
-                ]
+                {
+                  "padding": 6,
+                }
               }
             >
               <View
@@ -3303,15 +3578,30 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   Threads
                 </Text>
               </View>
-            </RNGestureHandlerButton>
-            <RNGestureHandlerButton
+            </View>
+            <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
               activeOpacity={0.3}
-              borderless={true}
+              animationDuration={0}
               collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
+              focusable={true}
               hitSlop={
                 {
                   "bottom": 5,
@@ -3320,20 +3610,19 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   "top": 5,
                 }
               }
-              innerRef={null}
-              onActiveStateChange={[Function]}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
-                [
-                  {
-                    "opacity": 1,
-                    "padding": 6,
-                  },
-                  {
-                    "cursor": undefined,
-                  },
-                ]
+                {
+                  "padding": 6,
+                }
               }
             >
               <View
@@ -3425,7 +3714,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   </Text>
                 </View>
               </View>
-            </RNGestureHandlerButton>
+            </View>
           </View>
         </View>
       </View>
@@ -3574,14 +3863,29 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   ]
                 }
               >
-                <RNGestureHandlerButton
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
                   activeOpacity={0.3}
-                  borderless={true}
+                  animationDuration={0}
                   collapsable={false}
-                  delayLongPress={600}
-                  enabled={true}
-                  handlerTag={-1}
-                  handlerType="NativeViewGestureHandler"
+                  focusable={true}
                   hitSlop={
                     {
                       "bottom": 5,
@@ -3590,21 +3894,19 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       "top": 5,
                     }
                   }
-                  innerRef={null}
-                  onActiveStateChange={[Function]}
-                  onGestureHandlerEvent={[Function]}
-                  onGestureHandlerStateChange={[Function]}
-                  onPress={[Function]}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
-                    [
-                      {
-                        "opacity": 1,
-                        "padding": 6,
-                      },
-                      {
-                        "cursor": undefined,
-                      },
-                    ]
+                    {
+                      "padding": 6,
+                    }
                   }
                 >
                   <View
@@ -3666,17 +3968,32 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       }
                     />
                   </View>
-                </RNGestureHandlerButton>
+                </View>
               </ExternalKeyboardView>
             </View>
-            <RNGestureHandlerButton
+            <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
               activeOpacity={0.3}
-              borderless={true}
+              animationDuration={0}
               collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
+              focusable={true}
               hitSlop={
                 {
                   "bottom": 5,
@@ -3685,20 +4002,19 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   "top": 5,
                 }
               }
-              innerRef={null}
-              onActiveStateChange={[Function]}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
-                [
-                  {
-                    "opacity": 1,
-                    "padding": 6,
-                  },
-                  {
-                    "cursor": undefined,
-                  },
-                ]
+                {
+                  "padding": 6,
+                }
               }
             >
               <View
@@ -3736,7 +4052,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   
                 </Text>
               </View>
-            </RNGestureHandlerButton>
+            </View>
           </View>
         </View>
         <View
@@ -3795,14 +4111,29 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               ]
             }
           >
-            <RNGestureHandlerButton
+            <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
               activeOpacity={0.3}
-              borderless={true}
+              animationDuration={0}
               collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
+              focusable={true}
               hitSlop={
                 {
                   "bottom": 5,
@@ -3811,20 +4142,19 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   "top": 5,
                 }
               }
-              innerRef={null}
-              onActiveStateChange={[Function]}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
-                [
-                  {
-                    "opacity": 1,
-                    "padding": 6,
-                  },
-                  {
-                    "cursor": undefined,
-                  },
-                ]
+                {
+                  "padding": 6,
+                }
               }
             >
               <View
@@ -3857,15 +4187,30 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   Threads
                 </Text>
               </View>
-            </RNGestureHandlerButton>
-            <RNGestureHandlerButton
+            </View>
+            <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
               activeOpacity={0.3}
-              borderless={true}
+              animationDuration={0}
               collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
+              focusable={true}
               hitSlop={
                 {
                   "bottom": 5,
@@ -3874,20 +4219,19 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   "top": 5,
                 }
               }
-              innerRef={null}
-              onActiveStateChange={[Function]}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
-                [
-                  {
-                    "opacity": 1,
-                    "padding": 6,
-                  },
-                  {
-                    "cursor": undefined,
-                  },
-                ]
+                {
+                  "padding": 6,
+                }
               }
             >
               <View
@@ -3979,7 +4323,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   </Text>
                 </View>
               </View>
-            </RNGestureHandlerButton>
+            </View>
           </View>
         </View>
       </View>
@@ -4128,14 +4472,29 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   ]
                 }
               >
-                <RNGestureHandlerButton
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
                   activeOpacity={0.3}
-                  borderless={true}
+                  animationDuration={0}
                   collapsable={false}
-                  delayLongPress={600}
-                  enabled={true}
-                  handlerTag={-1}
-                  handlerType="NativeViewGestureHandler"
+                  focusable={true}
                   hitSlop={
                     {
                       "bottom": 5,
@@ -4144,21 +4503,19 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       "top": 5,
                     }
                   }
-                  innerRef={null}
-                  onActiveStateChange={[Function]}
-                  onGestureHandlerEvent={[Function]}
-                  onGestureHandlerStateChange={[Function]}
-                  onPress={[Function]}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
-                    [
-                      {
-                        "opacity": 1,
-                        "padding": 6,
-                      },
-                      {
-                        "cursor": undefined,
-                      },
-                    ]
+                    {
+                      "padding": 6,
+                    }
                   }
                 >
                   <View
@@ -4220,17 +4577,32 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       }
                     />
                   </View>
-                </RNGestureHandlerButton>
+                </View>
               </ExternalKeyboardView>
             </View>
-            <RNGestureHandlerButton
+            <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
               activeOpacity={0.3}
-              borderless={true}
+              animationDuration={0}
               collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
+              focusable={true}
               hitSlop={
                 {
                   "bottom": 5,
@@ -4239,20 +4611,19 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   "top": 5,
                 }
               }
-              innerRef={null}
-              onActiveStateChange={[Function]}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
-                [
-                  {
-                    "opacity": 1,
-                    "padding": 6,
-                  },
-                  {
-                    "cursor": undefined,
-                  },
-                ]
+                {
+                  "padding": 6,
+                }
               }
             >
               <View
@@ -4290,7 +4661,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   
                 </Text>
               </View>
-            </RNGestureHandlerButton>
+            </View>
           </View>
         </View>
         <View
@@ -4349,14 +4720,29 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               ]
             }
           >
-            <RNGestureHandlerButton
+            <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
               activeOpacity={0.3}
-              borderless={true}
+              animationDuration={0}
               collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
+              focusable={true}
               hitSlop={
                 {
                   "bottom": 5,
@@ -4365,20 +4751,19 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   "top": 5,
                 }
               }
-              innerRef={null}
-              onActiveStateChange={[Function]}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
-                [
-                  {
-                    "opacity": 1,
-                    "padding": 6,
-                  },
-                  {
-                    "cursor": undefined,
-                  },
-                ]
+                {
+                  "padding": 6,
+                }
               }
             >
               <View
@@ -4411,15 +4796,30 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   Threads
                 </Text>
               </View>
-            </RNGestureHandlerButton>
-            <RNGestureHandlerButton
+            </View>
+            <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
               activeOpacity={0.3}
-              borderless={true}
+              animationDuration={0}
               collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
+              focusable={true}
               hitSlop={
                 {
                   "bottom": 5,
@@ -4428,20 +4828,19 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   "top": 5,
                 }
               }
-              innerRef={null}
-              onActiveStateChange={[Function]}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
-                [
-                  {
-                    "opacity": 1,
-                    "padding": 6,
-                  },
-                  {
-                    "cursor": undefined,
-                  },
-                ]
+                {
+                  "padding": 6,
+                }
               }
             >
               <View
@@ -4533,7 +4932,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   </Text>
                 </View>
               </View>
-            </RNGestureHandlerButton>
+            </View>
           </View>
         </View>
       </View>
@@ -4641,14 +5040,29 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -4657,20 +5071,19 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -4703,7 +5116,7 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
                 threads
               </Text>
             </View>
-          </RNGestureHandlerButton>
+          </View>
         </View>
       </View>
       <View
@@ -4762,14 +5175,29 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -4778,20 +5206,19 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -4824,7 +5251,7 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
                 threads
               </Text>
             </View>
-          </RNGestureHandlerButton>
+          </View>
         </View>
       </View>
     </View>
@@ -4926,14 +5353,29 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -4942,20 +5384,19 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -4988,15 +5429,30 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
                 threads
               </Text>
             </View>
-          </RNGestureHandlerButton>
-          <RNGestureHandlerButton
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -5005,20 +5461,19 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -5051,7 +5506,7 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
                 search
               </Text>
             </View>
-          </RNGestureHandlerButton>
+          </View>
         </View>
       </View>
       <View
@@ -5110,14 +5565,29 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -5126,20 +5596,19 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -5172,15 +5641,30 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
                 threads
               </Text>
             </View>
-          </RNGestureHandlerButton>
-          <RNGestureHandlerButton
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
             activeOpacity={0.3}
-            borderless={true}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
+            focusable={true}
             hitSlop={
               {
                 "bottom": 5,
@@ -5189,20 +5673,19 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
                 "top": 5,
               }
             }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
-              ]
+              {
+                "padding": 6,
+              }
             }
           >
             <View
@@ -5235,7 +5718,7 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
                 search
               </Text>
             </View>
-          </RNGestureHandlerButton>
+          </View>
         </View>
       </View>
     </View>

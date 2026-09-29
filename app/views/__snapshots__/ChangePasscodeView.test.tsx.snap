@@ -423,60 +423,63 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -513,7 +516,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         1
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
               <View
@@ -551,60 +554,63 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -641,7 +647,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         2
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
               <View
@@ -679,60 +685,63 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -769,7 +778,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         3
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
             </View>
@@ -819,60 +828,63 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -909,7 +921,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         4
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
               <View
@@ -947,60 +959,63 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -1037,7 +1052,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         5
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
               <View
@@ -1075,60 +1090,63 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -1165,7 +1183,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         6
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
             </View>
@@ -1215,60 +1233,63 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -1305,7 +1326,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         7
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
               <View
@@ -1343,60 +1364,63 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -1433,7 +1457,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         8
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
               <View
@@ -1471,60 +1495,63 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -1561,7 +1588,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         9
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
             </View>
@@ -1624,60 +1651,63 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -1714,7 +1744,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         0
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
               <View
@@ -1752,60 +1782,63 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -1844,7 +1877,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
             </View>
@@ -1872,60 +1905,63 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
-            activeOpacity={1}
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            activeUnderlayOpacity={1}
+            animationDuration={0}
             collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
-            onPress={[Function]}
-            rippleColor="#E4E7EA"
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
               [
-                {
-                  "backgroundColor": undefined,
-                  "borderRadius": undefined,
-                  "margin": undefined,
-                  "marginBottom": undefined,
-                  "marginEnd": undefined,
-                  "marginHorizontal": undefined,
-                  "marginLeft": undefined,
-                  "marginRight": undefined,
-                  "marginStart": undefined,
-                  "marginTop": undefined,
-                  "marginVertical": undefined,
-                },
-                {
-                  "cursor": undefined,
-                },
+                [
+                  undefined,
+                  {
+                    "margin": undefined,
+                    "marginBottom": undefined,
+                    "marginEnd": undefined,
+                    "marginHorizontal": undefined,
+                    "marginLeft": undefined,
+                    "marginRight": undefined,
+                    "marginStart": undefined,
+                    "marginTop": undefined,
+                    "marginVertical": undefined,
+                  },
+                  {
+                    "backgroundColor": undefined,
+                    "borderRadius": undefined,
+                  },
+                ],
+                undefined,
               ]
             }
             underlayColor="#E4E7EA"
           >
-            <View
-              collapsable={false}
-              style={
-                {
-                  "backgroundColor": "#E4E7EA",
-                  "borderBottomLeftRadius": undefined,
-                  "borderBottomRightRadius": undefined,
-                  "borderRadius": undefined,
-                  "borderTopLeftRadius": undefined,
-                  "borderTopRightRadius": undefined,
-                  "bottom": 0,
-                  "left": 0,
-                  "opacity": 0,
-                  "position": "absolute",
-                  "right": 0,
-                  "top": 0,
-                }
-              }
-            />
             <View
               style={
                 {
@@ -1962,7 +1998,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                 
               </Text>
             </View>
-          </RNGestureHandlerButton>
+          </View>
         </ExternalKeyboardView>
       </View>
     </View>
@@ -2436,60 +2472,63 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -2526,7 +2565,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         1
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
               <View
@@ -2564,60 +2603,63 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -2654,7 +2696,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         2
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
               <View
@@ -2692,60 +2734,63 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -2782,7 +2827,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         3
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
             </View>
@@ -2832,60 +2877,63 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -2922,7 +2970,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         4
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
               <View
@@ -2960,60 +3008,63 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -3050,7 +3101,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         5
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
               <View
@@ -3088,60 +3139,63 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -3178,7 +3232,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         6
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
             </View>
@@ -3228,60 +3282,63 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -3318,7 +3375,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         7
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
               <View
@@ -3356,60 +3413,63 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -3446,7 +3506,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         8
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
               <View
@@ -3484,60 +3544,63 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -3574,7 +3637,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         9
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
             </View>
@@ -3637,60 +3700,63 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -3727,7 +3793,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         0
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
               <View
@@ -3765,60 +3831,63 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <RNGestureHandlerButton
-                    activeOpacity={1}
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    activeUnderlayOpacity={1}
+                    animationDuration={0}
                     collapsable={false}
-                    delayLongPress={600}
-                    enabled={true}
-                    handlerTag={-1}
-                    handlerType="NativeViewGestureHandler"
-                    innerRef={null}
-                    onActiveStateChange={[Function]}
-                    onGestureHandlerEvent={[Function]}
-                    onGestureHandlerStateChange={[Function]}
-                    onPress={[Function]}
-                    rippleColor="#9EA2A8"
+                    focusable={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       [
-                        {
-                          "backgroundColor": "transparent",
-                          "borderRadius": 4,
-                          "margin": undefined,
-                          "marginBottom": undefined,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": undefined,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "cursor": undefined,
-                        },
+                        [
+                          undefined,
+                          {
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "backgroundColor": "transparent",
+                            "borderRadius": 4,
+                          },
+                        ],
+                        undefined,
                       ]
                     }
                     underlayColor="#E4E7EA"
                   >
-                    <View
-                      collapsable={false}
-                      style={
-                        {
-                          "backgroundColor": "#E4E7EA",
-                          "borderBottomLeftRadius": undefined,
-                          "borderBottomRightRadius": undefined,
-                          "borderRadius": 4,
-                          "borderTopLeftRadius": undefined,
-                          "borderTopRightRadius": undefined,
-                          "bottom": 0,
-                          "left": 0,
-                          "opacity": 0,
-                          "position": "absolute",
-                          "right": 0,
-                          "top": 0,
-                        }
-                      }
-                    />
                     <View
                       style={
                         {
@@ -3857,7 +3926,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         
                       </Text>
                     </View>
-                  </RNGestureHandlerButton>
+                  </View>
                 </ExternalKeyboardView>
               </View>
             </View>

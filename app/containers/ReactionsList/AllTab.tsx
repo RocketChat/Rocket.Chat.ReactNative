@@ -6,6 +6,7 @@ import Emoji from '../message/components/Emoji';
 import { useTheme } from '~/theme';
 import { type IReaction } from '~/definitions';
 import I18n from '~/i18n';
+import { isAndroid } from '~/lib/methods/helpers';
 import styles from './styles';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 
@@ -62,6 +63,7 @@ const AllTab = ({ reactions }: IAllTabProps): ReactElement => (
 		<FlatList
 			data={reactions}
 			contentContainerStyle={styles.listContainer}
+			nestedScrollEnabled={isAndroid}
 			renderItem={({ item }) => <AllReactionsListItem item={item} />}
 			keyExtractor={item => item.emoji}
 		/>

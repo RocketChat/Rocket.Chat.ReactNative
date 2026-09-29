@@ -17,32 +17,45 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       }
     }
   >
-    <RNGestureHandlerButton
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-message"
     >
@@ -90,33 +103,46 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       >
         Message
       </Text>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-phone"
     >
@@ -164,33 +190,46 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       >
         Voice call
       </Text>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[MockFunction]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-video"
     >
@@ -238,33 +277,46 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       >
         Video call
       </Text>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-kebab"
     >
@@ -312,7 +364,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       >
         More
       </Text>
-    </RNGestureHandlerButton>
+    </View>
   </View>
 </View>
 `;
@@ -334,32 +386,45 @@ exports[`Story Snapshots: ItsMe should match snapshot 1`] = `
       }
     }
   >
-    <RNGestureHandlerButton
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-message"
     >
@@ -407,33 +472,46 @@ exports[`Story Snapshots: ItsMe should match snapshot 1`] = `
       >
         Message
       </Text>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[MockFunction]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-video"
     >
@@ -481,7 +559,7 @@ exports[`Story Snapshots: ItsMe should match snapshot 1`] = `
       >
         Video call
       </Text>
-    </RNGestureHandlerButton>
+    </View>
   </View>
 </View>
 `;
@@ -503,32 +581,45 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
       }
     }
   >
-    <RNGestureHandlerButton
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-message"
     >
@@ -576,33 +667,46 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
       >
         Message
       </Text>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-phone"
     >
@@ -650,33 +754,46 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
       >
         Voice call
       </Text>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[MockFunction]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-video"
     >
@@ -724,33 +841,46 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
       >
         Video call
       </Text>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-kebab"
     >
@@ -798,7 +928,7 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
       >
         More
       </Text>
-    </RNGestureHandlerButton>
+    </View>
   </View>
 </View>
 `;
@@ -820,32 +950,45 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
       }
     }
   >
-    <RNGestureHandlerButton
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-message"
     >
@@ -893,33 +1036,46 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
       >
         Message
       </Text>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-phone"
     >
@@ -967,33 +1123,46 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
       >
         Voice call
       </Text>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[MockFunction]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-video"
     >
@@ -1041,33 +1210,46 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
       >
         Video call
       </Text>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-ignore"
     >
@@ -1115,7 +1297,7 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
       >
         Block
       </Text>
-    </RNGestureHandlerButton>
+    </View>
   </View>
 </View>
 `;
@@ -1137,32 +1319,45 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
       }
     }
   >
-    <RNGestureHandlerButton
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-message"
     >
@@ -1210,33 +1405,46 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
       >
         Message
       </Text>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-phone"
     >
@@ -1284,33 +1492,46 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
       >
         Voice call
       </Text>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[MockFunction]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-video"
     >
@@ -1358,33 +1579,46 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
       >
         Video call
       </Text>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-kebab"
     >
@@ -1432,7 +1666,7 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
       >
         More
       </Text>
-    </RNGestureHandlerButton>
+    </View>
   </View>
 </View>
 `;
@@ -1454,32 +1688,45 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
       }
     }
   >
-    <RNGestureHandlerButton
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-message"
     >
@@ -1527,33 +1774,46 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
       >
         Message
       </Text>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-phone"
     >
@@ -1601,33 +1861,46 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
       >
         Voice call
       </Text>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-ignore"
     >
@@ -1675,33 +1948,46 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
       >
         Block
       </Text>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       activeOpacity={0.3}
-      borderless={true}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "space-between",
-            "marginHorizontal": 4,
-            "opacity": 1,
-            "width": 80,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "marginHorizontal": 4,
+          "width": 80,
+        }
       }
       testID="room-info-view-warning"
     >
@@ -1749,7 +2035,7 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
       >
         Report
       </Text>
-    </RNGestureHandlerButton>
+    </View>
   </View>
 </View>
 `;

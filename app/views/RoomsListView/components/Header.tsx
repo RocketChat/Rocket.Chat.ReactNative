@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { Text } from 'react-native-plain-text';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Touchable } from 'react-native-gesture-handler';
 
 import { showActionSheetRef } from '~/containers/ActionSheet';
 import SearchHeader from '~/containers/SearchHeader';
@@ -66,7 +66,9 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 	}
 	return (
 		<View style={styles.container}>
-			<TouchableOpacity
+			<Touchable
+				activeOpacity={0.2}
+				animationDuration={{ in: 0, out: 150 }}
 				onPress={onPress}
 				testID='rooms-list-header-servers-list-button'
 				accessibilityLabel={`${serverName} ${subtitle}`}
@@ -84,7 +86,7 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 						{subtitle}
 					</Text>
 				) : null}
-			</TouchableOpacity>
+			</Touchable>
 		</View>
 	);
 };
