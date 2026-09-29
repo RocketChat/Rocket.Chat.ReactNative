@@ -49,6 +49,10 @@ export const newThemeState = (prevState: { themePreferences: IThemePreference },
 };
 
 export const setNativeTheme = (themePreferences: IThemePreference) => {
+	const isAutomatic = themePreferences.currentTheme === 'automatic';
+	if (!isAndroid && isAutomatic) {
+		Appearance.setColorScheme('unspecified');
+	}
 	const theme = getTheme(themePreferences);
 	const isLightTheme = theme === 'light';
 	if (isAndroid) {
@@ -57,10 +61,8 @@ export const setNativeTheme = (themePreferences: IThemePreference) => {
 		} catch (error) {
 			// Do nothing
 		}
-	} else {
-		Appearance.setColorScheme(
-			themePreferences.currentTheme === 'automatic' ? 'unspecified' : theme === 'light' ? 'light' : 'dark'
-		);
+	} else if (!isAutomatic) {
+		Appearance.setColorScheme(isLightTheme ? 'light' : 'dark');
 	}
 	SystemUI.setBackgroundColorAsync(themes[theme].surfaceNeutral);
 };
