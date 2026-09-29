@@ -118,7 +118,7 @@ describe('ShareListView', () => {
 		expect(dispatch).toHaveBeenCalledTimes(1);
 	});
 
-	it('decodes a Cyrillic filename and strips the share-collision UUID prefix on mount', async () => {
+	it('decodes a Cyrillic filename and keeps the share-collision UUID prefix on mount', async () => {
 		const uri = 'file:///group/550e8400-e29b-41d4-a716-446655440000-%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80.pdf';
 		ExpoFileSystem.getInfoAsync.mockResolvedValue({ exists: true, uri, size: 10 });
 		ExpoFileSystem.readAsStringAsync.mockResolvedValue('');
@@ -130,7 +130,9 @@ describe('ShareListView', () => {
 
 		expect(showToast).not.toHaveBeenCalled();
 		expect(setStateSpy).toHaveBeenCalledWith(
-			expect.objectContaining({ attachments: [expect.objectContaining({ filename: 'Пример.pdf', path: uri })] })
+			expect.objectContaining({
+				attachments: [expect.objectContaining({ filename: '550e8400-e29b-41d4-a716-446655440000-Пример.pdf', path: uri })]
+			})
 		);
 	});
 });
