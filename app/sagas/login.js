@@ -362,7 +362,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			avatarETag: user.avatarETag,
 			bio: user.bio,
 			nickname: user.nickname,
-			requirePasswordChange: user.requirePasswordChange
+			requirePasswordChange: user.requirePasswordChange,
+			sidebarCategories: user.sidebarCategories
 		};
 		yield serversDB.write(async () => {
 			try {

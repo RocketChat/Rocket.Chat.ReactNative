@@ -236,7 +236,7 @@ export const createRoomStore = ({
 					}
 				}
 			}
-			return { status: 'failed' };
+			return { status: 'skipped' };
 		},
 
 		join: () => set({ membership: 'subscribed' }),
