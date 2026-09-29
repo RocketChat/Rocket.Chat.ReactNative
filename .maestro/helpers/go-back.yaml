@@ -16,5 +16,5 @@ tags:
       platform: iOS
     commands:
       - tapOn:
-          text: 'Back'
+          text: 'Back(, .*)?'
           retryTapIfNoChange: true

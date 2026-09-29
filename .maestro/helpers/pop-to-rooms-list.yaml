@@ -22,9 +22,9 @@ tags:
           when:
             platform: iOS
             visible:
-              text: 'Back'
+              text: 'Back(, .*)?'
           commands:
             - tapOn:
-                text: 'Back'
+                text: 'Back(, .*)?'
       - waitForAnimationToEnd:
           timeout: 5000

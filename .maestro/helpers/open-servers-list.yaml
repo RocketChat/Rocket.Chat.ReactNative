@@ -8,14 +8,17 @@ tags:
     when:
       platform: iOS
     commands:
-      - tapOn:
-          text: 'Menu'
       - extendedWaitUntil:
           visible:
-            id: 'sidebar-workspaces'
+            text: 'Menu'
           timeout: 60000
       - tapOn:
-          id: 'sidebar-workspaces'
+          text: '(?!\d{1,2}:\d{2}).+'
+          rightOf:
+            text: 'Menu'
+          leftOf:
+            text: 'Create new channel.*'
+          index: 0
 
 - runFlow:
     when:
