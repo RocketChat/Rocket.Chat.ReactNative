@@ -29,6 +29,7 @@
 		"@bugsnag/react-native": "8.4.0",
 		"@expo/vector-icons": "^15.0.3",
 		"@hookform/resolvers": "^2.9.10",
+		"@legendapp/list": "3.4.0",
 		"@lodev09/react-native-true-sheet": "~3.7.0",
 		"@magrinj/expo-quick-look": "0.4.0",
 		"@nozbe/watermelondb": "^0.28.1-0",
