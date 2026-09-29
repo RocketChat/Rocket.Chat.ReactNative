@@ -2,10 +2,6 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '~/views/Styles';
 
-export const ACTION_WIDTH = 80;
-export const SMALL_SWIPE = ACTION_WIDTH / 2;
-export const LONG_SWIPE = ACTION_WIDTH * 2.5;
-
 export default StyleSheet.create({
 	flex: {
 		flex: 1
@@ -80,7 +76,7 @@ export default StyleSheet.create({
 		position: 'absolute',
 		justifyContent: 'center',
 		top: 0,
-		right: 0
+		left: 0
 	},
 	actionRightButtonContainer: {
 		position: 'absolute',
@@ -88,7 +84,15 @@ export default StyleSheet.create({
 		top: 0
 	},
 	actionButton: {
-		width: ACTION_WIDTH,
+		width: '100%',
+		height: '100%',
+		flexDirection: 'row',
+		overflow: 'hidden'
+	},
+	actionButtonContentEnd: {
+		justifyContent: 'flex-end'
+	},
+	actionIconSlot: {
 		height: '100%',
 		alignItems: 'center',
 		justifyContent: 'center'
