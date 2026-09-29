@@ -2,7 +2,7 @@ import { render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
-import RoomMembersView from './index';
+import RoomMembersView from '../index';
 import { mockedStore } from '~/reducers/mockedStore';
 import { initStore } from '~/lib/store/auxStore';
 import { setUser } from '~/actions/login';
@@ -37,7 +37,7 @@ jest.mock('~/containers/Header/components/HeaderButton', () => ({
 	Item: () => null
 }));
 
-jest.mock('./components/ActionsSection', () => () => null);
+jest.mock('../components/ActionsSection', () => () => null);
 
 const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
