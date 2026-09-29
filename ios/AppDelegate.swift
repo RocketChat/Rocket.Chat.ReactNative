@@ -70,7 +70,7 @@ public class AppDelegate: ExpoAppDelegate {
     return result
   }
 
-  // Renames <=4.73.0 `-experimental.db` files; a 0-byte target is one NotificationService created.
+  // Renames <=4.72.0 `-experimental.db` files; a 0-byte target is one NotificationService created.
   private func migrateLegacyExperimentalDatabases() {
     let fileManager = FileManager.default
     guard let suite = Bundle.main.object(forInfoDictionaryKey: "AppGroupIdentifier") as? String,

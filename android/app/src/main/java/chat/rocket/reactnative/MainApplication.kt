@@ -86,7 +86,7 @@ open class MainApplication : Application(), ReactApplication {
     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
   }
 
-  // Renames <=4.73.0 `-experimental.db.db` files.
+  // Renames <=4.72.0 `-experimental.db.db` files.
   private fun migrateLegacyExperimentalDatabases() {
     try {
       val dir = getDatabasePath("probe").parentFile?.parentFile ?: return
