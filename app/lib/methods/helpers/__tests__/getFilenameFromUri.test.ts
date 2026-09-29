@@ -1,10 +1,10 @@
 import { getFilenameFromUri } from '../getFilenameFromUri';
 
 describe('getFilenameFromUri', () => {
-	it('extracts and decodes basename and strips UUID', () => {
+	it('extracts and decodes basename keeping UUID prefix', () => {
 		expect(
 			getFilenameFromUri('file:///group/550e8400-e29b-41d4-a716-446655440000-%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80.pdf')
-		).toBe('Пример.pdf');
+		).toBe('550e8400-e29b-41d4-a716-446655440000-Пример.pdf');
 	});
 
 	it('extracts plain basename', () => {
