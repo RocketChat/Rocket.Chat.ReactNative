@@ -3,10 +3,9 @@ import { type ServerInteraction } from '@rocket.chat/ui-kit';
 import { type ITriggerAction, ModalActions, type TModalAction } from '~/containers/UIKit/interfaces';
 import { toServerModalInteractionType, toUserInteraction } from '~/containers/UIKit/interactionAdapters';
 import EventEmitter from '~/lib/methods/helpers/events';
-import fetch from '~/lib/methods/helpers/fetch';
 import { random } from '~/lib/methods/helpers';
 import Navigation from '~/lib/navigation/appNavigation';
-import sdk from '~/lib/services/sdk';
+import { appsApiFetch } from '~/lib/services/appsApiFetch';
 
 const triggersId = new Map();
 
@@ -109,11 +108,6 @@ export async function triggerAction({
 	const payload = rest.payload ?? rest.value;
 
 	try {
-		const { host, currentLogin } = sdk;
-		if (!host || !currentLogin) {
-			throw new Error('triggerAction requires an initialized, authenticated session');
-		}
-		const { userId, authToken } = currentLogin;
 		const interaction = toUserInteraction({
 			type,
 			actionId,
@@ -131,21 +125,7 @@ export async function triggerAction({
 			triggerId
 		});
 
-		// we need to use fetch because this.sdk.post add /v1 to url
-		const result = await fetch(`${host}/api/apps/ui.interaction/${appId}/`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-Auth-Token': authToken,
-				'X-User-Id': userId
-			},
-			body: JSON.stringify(interaction)
-		});
-
-		if (!result.ok) {
-			throw new Error(`Failed to trigger action: ${result.status}`);
-		}
-
+		const result = await appsApiFetch(`ui.interaction/${appId}/`, { method: 'POST', body: interaction });
 		const text = await result.text();
 		if (!text || text.trim() === '') {
 			// modal.close has no body, but returns ok status

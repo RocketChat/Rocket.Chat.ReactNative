@@ -30,6 +30,7 @@ import NativeVoipModule from '../native/NativeVoip';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import fetch from '../methods/helpers/fetch';
+import { appsApiFetch } from './appsApiFetch';
 import log from '../methods/helpers/log';
 
 export const createChannel = ({
@@ -1283,28 +1284,7 @@ export const mediaCallsStateSignals = async (contractId: string): Promise<{ sign
 	}
 };
 
-const appsApiGet = async <T>(path: string): Promise<T> => {
-	const { host, currentLogin } = sdk;
-	if (!host || !currentLogin) {
-		throw new Error('The Apps REST API requires an initialized, authenticated session');
-	}
-	const { userId, authToken } = currentLogin;
-
-	const response = await fetch(`${host}/api/apps/${path}`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			'X-Auth-Token': authToken,
-			'X-User-Id': userId
-		}
-	});
-
-	if (!response.ok) {
-		throw new Error(`Failed to GET /api/apps/${path}: ${response.status}`);
-	}
-
-	return response.json();
-};
+const appsApiGet = async <T>(path: string): Promise<T> => (await appsApiFetch(path)).json();
 
 export const getAppActionButtons = (): Promise<IAppActionButton[]> => appsApiGet<IAppActionButton[]>('actionButtons');
 

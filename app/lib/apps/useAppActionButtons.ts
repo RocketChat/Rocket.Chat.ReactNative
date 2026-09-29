@@ -3,7 +3,7 @@ import { Q } from '@nozbe/watermelondb';
 import { shallowEqual } from 'react-redux';
 import { useShallow } from 'zustand/react/shallow';
 
-import { subscribeToApps, useAppsStore } from './appsStore';
+import { useAppsStore } from './appsStore';
 import {
 	getIdForActionButton,
 	type IAppActionButton,
@@ -69,8 +69,6 @@ export const useAppActionButtons = ({
 	const userRoles = useAppSelector(state => getUserSelector(state).roles || [], shallowEqual);
 
 	const [filterContext, setContext] = useState<IAppActionButtonContext | null>(null);
-
-	useEffect(subscribeToApps, []);
 
 	const permissionIds = useMemo(() => collectPermissions(buttons), [buttons]);
 	const permissionsKey = permissionIds.join(',');

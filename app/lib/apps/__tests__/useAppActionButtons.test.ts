@@ -5,9 +5,7 @@ import { useAppActionButtons } from '../useAppActionButtons';
 
 let mockActionButtons: IAppActionButton[] = [];
 const mockTranslations = { 'app-id': { en: { summarize: 'Summarize thread' } } };
-const mockSubscribeToApps = jest.fn(() => jest.fn());
 jest.mock('../appsStore', () => ({
-	subscribeToApps: () => mockSubscribeToApps(),
 	useAppsStore: (selector: (state: unknown) => unknown) =>
 		selector({ actionButtons: mockActionButtons, translations: mockTranslations })
 }));
@@ -51,17 +49,6 @@ describe('useAppActionButtons', () => {
 		mockSubscription = { t: 'c', roles: ['owner'] };
 		mockPermissionRecords = [];
 		mockUserRoles = ['user'];
-	});
-
-	it('subscribes to the apps stream while mounted', () => {
-		const unsubscribe = jest.fn();
-		mockSubscribeToApps.mockReturnValueOnce(unsubscribe);
-
-		const { unmount } = renderHook(() => useAppActionButtons({ context: UIActionButtonContext.MESSAGE_BOX_ACTION, rid: 'rid' }));
-
-		expect(mockSubscribeToApps).toHaveBeenCalledTimes(1);
-		unmount();
-		expect(unsubscribe).toHaveBeenCalledTimes(1);
 	});
 
 	it('returns nothing until the room is resolved', () => {

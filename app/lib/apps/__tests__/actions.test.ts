@@ -196,7 +196,7 @@ describe('actions', () => {
 				status: 500
 			} as Response);
 
-			await expect(triggerAction(actionInput)).rejects.toThrow('Failed to trigger action: 500');
+			await expect(triggerAction(actionInput)).rejects.toThrow('Failed to POST /api/apps/ui.interaction/app-id/: 500');
 		});
 
 		it('throws when response body is malformed JSON', async () => {
