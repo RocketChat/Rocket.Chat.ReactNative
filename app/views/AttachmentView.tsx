@@ -19,8 +19,6 @@ import { useAltTextSupported } from '../lib/hooks/useAltTextSupported';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
 import { encodeAttachmentUrl, formatAttachmentUrl, isAndroid } from '../lib/methods/helpers';
-import { decodeFilename } from '../lib/methods/helpers/decodeFilename';
-import { getFilenameFromUri } from '../lib/methods/helpers/getFilenameFromUri';
 import { fileDownload } from '../lib/methods/helpers/fileDownload';
 import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
@@ -92,13 +90,18 @@ const AttachmentView = (): ReactElement => {
 		const { image_url, video_url, title_link, title } = attachment;
 
 		if (title) {
-			return decodeFilename(title);
+			try {
+				return decodeURI(title);
+			} catch {
+				return title;
+			}
 		}
 
 		const url = image_url ?? video_url ?? title_link;
 		if (!url) return '';
 
-		return getFilenameFromUri(url) ?? url.substring(url.lastIndexOf('/') + 1);
+		const parts = url.split('/');
+		return parts.at(-1);
 	}, [attachment]);
 
 	const handleSave = useCallback(async () => {

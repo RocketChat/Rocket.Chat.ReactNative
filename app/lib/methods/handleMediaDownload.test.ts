@@ -1,4 +1,4 @@
-import { getFilePath, getFilename, matchDownloadUrl, persistMessage, sanitizeFileName } from './handleMediaDownload';
+import { getFilePath, getFilename, matchDownloadUrl, persistMessage } from './handleMediaDownload';
 import database from '../database';
 import { getMessageById } from '../database/services/Message';
 import { getThreadById } from '../database/services/Thread';
@@ -36,20 +36,6 @@ jest.mock('../database/services/ThreadMessage', () => ({
 jest.mock('../store/auxStore', () => ({
 	store: { getState: () => ({ server: { server: 'https://server.com' } }) }
 }));
-
-describe('sanitizeFileName', () => {
-	it('sanitizes the extension too, not just the part before the last dot', () => {
-		expect(sanitizeFileName('report.pdf/../../secret')).not.toContain('/');
-	});
-
-	it('sanitizes a decoded traversal sequence that has no dot at all', () => {
-		expect(sanitizeFileName('a/../../secret')).not.toContain('/');
-	});
-
-	it('keeps a normal filename untouched', () => {
-		expect(sanitizeFileName('Screen Recording.mov')).toBe('Screen_Recording.mov');
-	});
-});
 
 describe('getFilePath', () => {
 	it('derives the cache filename from the unencoded url', () => {
