@@ -313,6 +313,15 @@
 		]
 	},
 	{
+		"test": ".maestro/tests/room/send-message-while-offline.yaml",
+		"dependsOn": [
+			"app/views/RoomView/**",
+			"app/containers/message/components/RightIcons/MessageError.tsx",
+			"app/lib/methods/sendMessage.ts",
+			"app/sagas/messages.js"
+		]
+	},
+	{
 		"test": ".maestro/tests/room/message-markdown-click.yaml",
 		"dependsOn": ["app/views/RoomView/**", "app/containers/markdown/**", "app/sagas/room.js"]
 	},
