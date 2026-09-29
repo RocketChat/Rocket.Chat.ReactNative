@@ -1,30 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { ReduceMotion } from 'react-native-reanimated';
 
 import sharedStyles from '~/views/Styles';
-
-export const OPEN_RATIO = 0.375;
-export const FULL_SWIPE_RATIO = 0.53;
-
-export const getOpenWidth = (width: number) => {
-	'worklet';
-	return width * OPEN_RATIO;
-};
-export const getActionWidth = (width: number) => {
-	'worklet';
-	return getOpenWidth(width) / 2;
-};
-export const getFullSwipeThreshold = (width: number) => {
-	'worklet';
-	return width * FULL_SWIPE_RATIO;
-};
-
-export const SWIPE_SPRING_CONFIG = {
-	mass: 1,
-	stiffness: 150,
-	damping: 24.5,
-	reduceMotion: ReduceMotion.System
-};
 
 export default StyleSheet.create({
 	flex: {
@@ -100,7 +76,7 @@ export default StyleSheet.create({
 		position: 'absolute',
 		justifyContent: 'center',
 		top: 0,
-		right: 0
+		left: 0
 	},
 	actionRightButtonContainer: {
 		position: 'absolute',

@@ -1,22 +1,16 @@
-import { useRef, useEffect, useState, memo, type ReactElement } from 'react';
-import Animated, { useSharedValue, useAnimatedStyle, useAnimatedReaction, withSpring } from 'react-native-reanimated';
-import {
-	GestureDetector,
-	type PanGestureActiveEvent,
-	useCompetingGestures,
-	useLongPressGesture,
-	usePanGesture
-} from 'react-native-gesture-handler';
+import { useEffect, useState, memo, type ReactElement } from 'react';
+import { I18nManager } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, useAnimatedReaction } from 'react-native-reanimated';
+import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
 import { scheduleOnRN } from 'react-native-worklets';
+import * as Haptics from 'expo-haptics';
 
 import Touch from '../Touch';
-import { getOpenWidth, getActionWidth, getFullSwipeThreshold, SWIPE_SPRING_CONFIG } from './styles';
 import { LeftActions, RightActions } from './Actions';
-import { getSwipeRelease, type TRowState } from './swipeRelease';
-import { registerOpenSwipeItem, unregisterOpenSwipeItem, closeOpenSwipeItem, resetSwipeRow } from './openSwipeItem';
+import { getFullSwipeThreshold, getSwipeRelease } from './swipeRelease';
+import { unregisterOpenSwipeItem, closeOpenSwipeItem, settleSwipeRow } from './openSwipeItem';
 import { type ITouchableProps } from './interfaces';
 import { useTheme } from '~/theme';
-import I18n from '~/i18n';
 import { toggleFav } from '~/lib/methods/toggleFav';
 import { toggleRead } from '~/lib/methods/toggleRead';
 import { hideRoom } from '~/lib/methods/hideRoom';
@@ -25,6 +19,10 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 const rubberband = (overshoot: number, dimension: number, constant = 0.55) => {
 	'worklet';
 	return (overshoot * dimension * constant) / (dimension + constant * Math.abs(overshoot));
+};
+
+const triggerThresholdHaptic = () => {
+	Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 };
 
 const Touchable = ({
@@ -42,30 +40,24 @@ const Touchable = ({
 }: ITouchableProps): ReactElement => {
 	const { colors } = useTheme();
 	const serverVersion = useAppSelector(state => state.server.version);
+	const direction = I18nManager.isRTL ? -1 : 1;
 	const rowOffSet = useSharedValue(0);
 	const transX = useSharedValue(0);
-	const rowState = useSharedValue<TRowState>(0);
-	const gestureActive = useSharedValue(false);
-	const consumedTouchRef = useRef(false);
+	const crossedFullSwipe = useSharedValue(false);
+	const touchClosedOtherRow = useSharedValue(false);
 	const [actionsMounted, setActionsMounted] = useState(false);
+	const row = { rid, transX, rowOffSet };
 
 	useAnimatedReaction(
 		() => transX.value !== 0,
 		(moved, previouslyMoved) => {
-			if (moved !== previouslyMoved) {
+			if (previouslyMoved !== null && moved !== previouslyMoved) {
 				scheduleOnRN(setActionsMounted, moved);
 			}
 		}
 	);
 
-	const handleTouchBegin = (closedOtherRow: boolean) => {
-		consumedTouchRef.current = closedOtherRow;
-	};
-
-	const close = () => {
-		resetSwipeRow({ transX, rowState, rowOffSet });
-		unregisterOpenSwipeItem(rid);
-	};
+	const close = () => settleSwipeRow(row, 0);
 
 	useEffect(() => () => unregisterOpenSwipeItem(rid), [rid]);
 
@@ -89,12 +81,12 @@ const Touchable = ({
 	};
 
 	const guardTouch = (action?: () => void) => () => {
-		if (rowState.value !== 0) {
+		if (rowOffSet.value !== 0) {
 			close();
 			return;
 		}
-		if (consumedTouchRef.current) {
-			consumedTouchRef.current = false;
+		if (touchClosedOtherRow.value) {
+			touchClosedOtherRow.value = false;
 			return;
 		}
 		action?.();
@@ -104,83 +96,54 @@ const Touchable = ({
 
 	const handleLongPress = guardTouch(onLongPress);
 
-	const handleRelease = (event: PanGestureActiveEvent) => {
-		const release = getSwipeRelease({
-			rowState: rowState.value,
-			offset: rowOffSet.value + event.translationX,
-			actionWidth: getActionWidth(width),
-			openWidth: getOpenWidth(width),
-			fullSwipeThreshold: getFullSwipeThreshold(width)
-		});
-		if (release.fullSwipe === (I18n.isRTL ? 'left' : 'right')) {
-			hideChannel();
-		} else if (release.fullSwipe) {
-			toggleReadRoom();
-		}
-		rowState.value = release.rowState;
-		transX.value = withSpring(release.toValue, { ...SWIPE_SPRING_CONFIG, velocity: event.velocityX });
-		rowOffSet.value = release.toValue;
-		if (release.rowState !== 0) {
-			registerOpenSwipeItem({ rid, transX, rowState, rowOffSet });
-		} else {
-			unregisterOpenSwipeItem(rid);
-		}
-	};
-
-	const longPressGesture = useLongPressGesture({
-		minDuration: 500,
-		onActivate: () => {
-			scheduleOnRN(handleLongPress);
-		}
-	});
-
 	const panGesture = usePanGesture({
 		activeOffsetX: [-10, 10], // More sensitive horizontal detection
 		failOffsetY: [-20, 20], // Fail on vertical movement to distinguish scrolling
 		enabled: swipeEnabled,
 		onBegin: () => {
-			gestureActive.set(true);
-			const closedOtherRow = closeOpenSwipeItem(rid);
-			scheduleOnRN(handleTouchBegin, closedOtherRow);
+			crossedFullSwipe.value = false;
+			touchClosedOtherRow.value = closeOpenSwipeItem(rid);
 		},
 		onActivate: () => {
 			scheduleOnRN(setActionsMounted, true);
 		},
 		onUpdate: event => {
-			const next = event.translationX + rowOffSet.value;
-			const boundary = getFullSwipeThreshold(width);
-			transX.value =
-				next > boundary
-					? boundary + rubberband(next - boundary, width)
-					: next < -boundary
-						? -boundary - rubberband(-next - boundary, width)
-						: next;
+			const next = rowOffSet.value + direction * event.translationX;
+			const threshold = getFullSwipeThreshold(width);
+			const overshoot = Math.abs(next) - threshold;
+			transX.value = overshoot > 0 ? Math.sign(next) * (threshold + rubberband(overshoot, width)) : next;
+			const crossed = overshoot >= 0;
+			if (crossed !== crossedFullSwipe.value) {
+				crossedFullSwipe.value = crossed;
+				scheduleOnRN(triggerThresholdHaptic);
+			}
 		},
 		onDeactivate: event => {
-			gestureActive.set(false);
-			scheduleOnRN(handleRelease, event);
-		},
-		onFinalize: () => {
-			gestureActive.set(false);
+			const release = getSwipeRelease({
+				restingOffset: rowOffSet.value,
+				offset: rowOffSet.value + direction * event.translationX,
+				width
+			});
+			settleSwipeRow(row, release.restingOffset, direction * event.velocityX);
+			if (release.fullSwipe === 'left') {
+				scheduleOnRN(toggleReadRoom);
+			} else if (release.fullSwipe === 'right') {
+				scheduleOnRN(hideChannel);
+			}
 		}
 	});
 
-	// Use competing gestures instead of simultaneous to prevent conflicts
-	// Pan gesture will take priority over long press for horizontal swipes
-	const composedGesture = useCompetingGestures(panGesture, longPressGesture);
-
 	const animatedStyles = useAnimatedStyle(() => ({
-		transform: [{ translateX: transX.value }]
+		transform: [{ translateX: direction * transX.value }]
 	}));
 
 	return (
-		<GestureDetector gesture={composedGesture}>
+		<GestureDetector gesture={panGesture}>
 			<Animated.View>
 				{actionsMounted ? (
 					<>
 						<LeftActions
 							transX={transX}
-							gestureActive={gestureActive}
 							isRead={isRead}
 							width={width}
 							onToggleReadPress={onToggleReadPress}
@@ -188,7 +151,6 @@ const Touchable = ({
 						/>
 						<RightActions
 							transX={transX}
-							gestureActive={gestureActive}
 							favorite={favorite}
 							width={width}
 							toggleFav={handleToggleFav}

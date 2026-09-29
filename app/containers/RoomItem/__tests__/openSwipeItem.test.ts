@@ -1,56 +1,60 @@
 import { makeMutable } from 'react-native-reanimated';
 
-import { type TRowState } from '../swipeRelease';
-import { registerOpenSwipeItem, unregisterOpenSwipeItem, closeOpenSwipeItem } from '../openSwipeItem';
+import { settleSwipeRow, unregisterOpenSwipeItem, closeOpenSwipeItem } from '../openSwipeItem';
 
-const createItem = (rid: string) => ({
+const createRow = (rid: string) => ({
 	rid,
-	transX: makeMutable(80),
-	rowState: makeMutable<TRowState>(1),
-	rowOffSet: makeMutable(80)
+	transX: makeMutable(0),
+	rowOffSet: makeMutable(0)
 });
 
-describe('closeOpenSwipeItem', () => {
+describe('openSwipeItem', () => {
 	afterEach(() => {
 		unregisterOpenSwipeItem('roomA');
 		unregisterOpenSwipeItem('roomB');
 	});
 
-	it('closes the open item and reports it was consumed', () => {
-		const item = createItem('roomA');
-		registerOpenSwipeItem(item);
+	it('closes the open row and reports it was consumed', () => {
+		const row = createRow('roomA');
+		settleSwipeRow(row, 80);
 
 		const consumed = closeOpenSwipeItem('roomB');
 
-		expect(item.rowState.value).toBe(0);
-		expect(item.rowOffSet.value).toBe(0);
-		expect(item.transX.value).toBe(0);
+		expect(row.rowOffSet.value).toBe(0);
+		expect(row.transX.value).toBe(0);
 		expect(consumed).toBe(true);
 	});
 
-	it('reports nothing was consumed when no item is open', () => {
-		const consumed = closeOpenSwipeItem('roomB');
-
-		expect(consumed).toBe(false);
+	it('reports nothing was consumed when no row is open', () => {
+		expect(closeOpenSwipeItem('roomB')).toBe(false);
 	});
 
 	it('reports nothing was consumed when closing the same room that is open', () => {
-		const item = createItem('roomA');
-		registerOpenSwipeItem(item);
+		const row = createRow('roomA');
+		settleSwipeRow(row, 80);
 
 		const consumed = closeOpenSwipeItem('roomA');
 
-		expect(item.rowState.value).toBe(1);
+		expect(row.rowOffSet.value).toBe(80);
 		expect(consumed).toBe(false);
 	});
 
-	it('closes the previously open item when another one registers', () => {
-		const previous = createItem('roomA');
-		registerOpenSwipeItem(previous);
+	it('closes the previously open row when another one opens', () => {
+		const previous = createRow('roomA');
+		settleSwipeRow(previous, 80);
 
-		registerOpenSwipeItem(createItem('roomB'));
+		settleSwipeRow(createRow('roomB'), -160);
 
-		expect(previous.rowState.value).toBe(0);
+		expect(previous.rowOffSet.value).toBe(0);
 		expect(previous.transX.value).toBe(0);
+	});
+
+	it('forgets a row once it settles closed', () => {
+		const row = createRow('roomA');
+		settleSwipeRow(row, 80);
+
+		settleSwipeRow(row, 0);
+
+		expect(closeOpenSwipeItem('roomB')).toBe(false);
 	});
 });

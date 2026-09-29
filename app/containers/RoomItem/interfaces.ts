@@ -12,7 +12,6 @@ import {
 
 export interface ILeftActionsProps {
 	transX: SharedValue<number>;
-	gestureActive: SharedValue<boolean>;
 	isRead: boolean;
 	width: number;
 	onToggleReadPress(): void;
@@ -21,7 +20,6 @@ export interface ILeftActionsProps {
 
 export interface IRightActionsProps {
 	transX: SharedValue<number>;
-	gestureActive: SharedValue<boolean>;
 	favorite: boolean;
 	width: number;
 	toggleFav(): void;

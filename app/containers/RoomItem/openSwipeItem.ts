@@ -1,22 +1,19 @@
 import { makeMutable, withSpring, type SharedValue } from 'react-native-reanimated';
 
-import { SWIPE_SPRING_CONFIG } from './styles';
-import { type TRowState } from './swipeRelease';
+import { SWIPE_SPRING_CONFIG } from './swipeRelease';
 
-type OpenSwipeItem = {
+export type SwipeRow = {
 	rid: string;
 	transX: SharedValue<number>;
-	rowState: SharedValue<TRowState>;
 	rowOffSet: SharedValue<number>;
 };
 
-export const openSwipeItem = makeMutable<OpenSwipeItem | null>(null);
+export const openSwipeItem = makeMutable<SwipeRow | null>(null);
 
-export const resetSwipeRow = ({ transX, rowState, rowOffSet }: Omit<OpenSwipeItem, 'rid'>) => {
+const springRow = ({ transX, rowOffSet }: SwipeRow, restingOffset: number, velocity: number) => {
 	'worklet';
-	rowState.value = 0;
-	transX.value = withSpring(0, SWIPE_SPRING_CONFIG);
-	rowOffSet.value = 0;
+	transX.value = withSpring(restingOffset, { ...SWIPE_SPRING_CONFIG, velocity });
+	rowOffSet.value = restingOffset;
 };
 
 export const unregisterOpenSwipeItem = (rid: string) => {
@@ -28,17 +25,22 @@ export const unregisterOpenSwipeItem = (rid: string) => {
 
 export const closeOpenSwipeItem = (exceptRid?: string) => {
 	'worklet';
-	const item = openSwipeItem.value;
-	if (item && item.rid !== exceptRid) {
-		resetSwipeRow(item);
-		openSwipeItem.value = null;
-		return true;
+	const row = openSwipeItem.value;
+	if (!row || row.rid === exceptRid) {
+		return false;
 	}
-	return false;
+	springRow(row, 0, 0);
+	openSwipeItem.value = null;
+	return true;
 };
 
-export const registerOpenSwipeItem = (item: OpenSwipeItem) => {
+export const settleSwipeRow = (row: SwipeRow, restingOffset: number, velocity = 0) => {
 	'worklet';
-	closeOpenSwipeItem(item.rid);
-	openSwipeItem.value = item;
+	springRow(row, restingOffset, velocity);
+	if (restingOffset === 0) {
+		unregisterOpenSwipeItem(row.rid);
+		return;
+	}
+	closeOpenSwipeItem(row.rid);
+	openSwipeItem.value = row;
 };

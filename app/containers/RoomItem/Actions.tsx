@@ -4,16 +4,16 @@ import Animated, {
 	type SharedValue,
 	useAnimatedStyle,
 	useAnimatedReaction,
+	useDerivedValue,
 	useSharedValue,
 	withTiming
 } from 'react-native-reanimated';
-import * as Haptics from 'expo-haptics';
-import { scheduleOnRN } from 'react-native-worklets';
 
 import { RectButton } from '~/containers/GestureButtons';
 import { CustomIcon } from '../CustomIcon';
 import { DisplayMode } from '~/lib/constants/constantDisplayMode';
-import styles, { getActionWidth, getFullSwipeThreshold } from './styles';
+import styles from './styles';
+import { getActionWidth, getFullSwipeThreshold } from './swipeRelease';
 import { type ILeftActionsProps, type IRightActionsProps } from './interfaces';
 import { useTheme } from '~/theme';
 import I18n from '~/i18n';
@@ -23,29 +23,15 @@ const CONDENSED_ICON_SIZE = 24;
 const EXPANDED_ICON_SIZE = 28;
 const EXPAND_DURATION = 300;
 
-const triggerThresholdHaptic = () => {
-	Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-};
-
-const useFullSwipeProgress = (
-	transX: SharedValue<number>,
-	gestureActive: SharedValue<boolean>,
-	width: number,
-	direction: 1 | -1
-) => {
+const useHideExpandProgress = (transX: SharedValue<number>, width: number) => {
 	const fullSwipeThreshold = getFullSwipeThreshold(width);
-	const crossedThreshold = useSharedValue(false);
 	const expandProgress = useSharedValue(0);
 
 	useAnimatedReaction(
-		() => direction * transX.value >= fullSwipeThreshold,
-		isCrossed => {
-			if (isCrossed !== crossedThreshold.value) {
-				crossedThreshold.value = isCrossed;
+		() => -transX.value >= fullSwipeThreshold,
+		(isCrossed, wasCrossed) => {
+			if (isCrossed !== wasCrossed) {
 				expandProgress.value = withTiming(isCrossed ? 1 : 0, { duration: EXPAND_DURATION });
-				if (gestureActive.value) {
-					scheduleOnRN(triggerThresholdHaptic);
-				}
 			}
 		}
 	);
@@ -53,14 +39,12 @@ const useFullSwipeProgress = (
 	return expandProgress;
 };
 
-export const LeftActions = memo(({ transX, gestureActive, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
+export const LeftActions = memo(({ transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
 	const { colors } = useTheme();
 
 	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 
 	const actionWidth = getActionWidth(width);
-
-	useFullSwipeProgress(transX, gestureActive, width, 1);
 
 	const animatedButtonStyles = useAnimatedStyle(() => ({
 		width: Math.max(transX.value, 0)
@@ -78,7 +62,7 @@ export const LeftActions = memo(({ transX, gestureActive, isRead, width, onToggl
 			<Animated.View
 				style={[
 					styles.actionLeftButtonContainer,
-					{ left: 0, backgroundColor: colors.badgeBackgroundLevel2 },
+					{ backgroundColor: colors.badgeBackgroundLevel2 },
 					viewHeight,
 					animatedButtonStyles
 				]}>
@@ -100,75 +84,71 @@ export const LeftActions = memo(({ transX, gestureActive, isRead, width, onToggl
 	);
 });
 
-export const RightActions = memo(
-	({ transX, gestureActive, favorite, width, toggleFav, onHidePress, displayMode }: IRightActionsProps) => {
-		const { colors } = useTheme();
+export const RightActions = memo(({ transX, favorite, width, toggleFav, onHidePress, displayMode }: IRightActionsProps) => {
+	const { colors } = useTheme();
 
-		const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
+	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 
-		const actionWidth = getActionWidth(width);
-		const expandProgress = useFullSwipeProgress(transX, gestureActive, width, -1);
+	const actionWidth = getActionWidth(width);
+	const expandProgress = useHideExpandProgress(transX, width);
 
-		const animatedFavStyles = useAnimatedStyle(() => {
-			const reveal = Math.max(-transX.value, 0);
-			const favoriteWidth = (reveal / 2) * (1 - expandProgress.value);
-			return { width: favoriteWidth, right: reveal - favoriteWidth };
-		});
+	const buttonWidths = useDerivedValue(() => {
+		const reveal = Math.max(-transX.value, 0);
+		const favorite = (reveal / 2) * (1 - expandProgress.value);
+		return { favorite, hide: reveal - favorite };
+	});
 
-		const animatedHideStyles = useAnimatedStyle(() => {
-			const reveal = Math.max(-transX.value, 0);
-			const favoriteWidth = (reveal / 2) * (1 - expandProgress.value);
-			return { width: reveal - favoriteWidth };
-		});
+	const animatedFavStyles = useAnimatedStyle(() => ({
+		width: buttonWidths.value.favorite,
+		right: buttonWidths.value.hide
+	}));
 
-		const isCondensed = displayMode === DisplayMode.Condensed;
-		const viewHeight = { height: isCondensed ? rowHeightCondensed : rowHeight };
+	const animatedHideStyles = useAnimatedStyle(() => ({
+		width: buttonWidths.value.hide
+	}));
 
-		return (
-			<View
-				style={[styles.actionsLeftContainer, viewHeight]}
-				pointerEvents='box-none'
-				accessibilityElementsHidden
-				importantForAccessibility='no'>
-				<Animated.View
-					style={[
-						styles.actionRightButtonContainer,
-						{ backgroundColor: colors.statusFontWarning },
-						viewHeight,
-						animatedFavStyles
-					]}>
-					<RectButton
-						accessible={false}
-						accessibilityLabel={I18n.t(favorite ? 'Unfavorite' : 'Favorite')}
-						style={styles.actionButton}
-						onPress={toggleFav}>
-						<View style={[styles.actionIconSlot, { width: actionWidth }]}>
-							<CustomIcon
-								size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
-								name={favorite ? 'star-filled' : 'star'}
-								color={colors.fontWhite}
-							/>
-						</View>
-					</RectButton>
-				</Animated.View>
-				<Animated.View
-					style={[
-						styles.actionRightButtonContainer,
-						{ right: 0, backgroundColor: colors.buttonBackgroundSecondaryPress },
-						viewHeight,
-						animatedHideStyles
-					]}>
-					<RectButton accessible={false} accessibilityLabel={I18n.t('Hide')} style={styles.actionButton} onPress={onHidePress}>
-						<View style={[styles.actionIconSlot, { width: actionWidth }]}>
-							<CustomIcon
-								size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
-								name='unread-on-top-disabled'
-								color={colors.fontWhite}
-							/>
-						</View>
-					</RectButton>
-				</Animated.View>
-			</View>
-		);
-	}
-);
+	const isCondensed = displayMode === DisplayMode.Condensed;
+	const viewHeight = { height: isCondensed ? rowHeightCondensed : rowHeight };
+
+	return (
+		<View
+			style={[styles.actionsLeftContainer, viewHeight]}
+			pointerEvents='box-none'
+			accessibilityElementsHidden
+			importantForAccessibility='no'>
+			<Animated.View
+				style={[styles.actionRightButtonContainer, { backgroundColor: colors.statusFontWarning }, viewHeight, animatedFavStyles]}>
+				<RectButton
+					accessible={false}
+					accessibilityLabel={I18n.t(favorite ? 'Unfavorite' : 'Favorite')}
+					style={styles.actionButton}
+					onPress={toggleFav}>
+					<View style={[styles.actionIconSlot, { width: actionWidth }]}>
+						<CustomIcon
+							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
+							name={favorite ? 'star-filled' : 'star'}
+							color={colors.fontWhite}
+						/>
+					</View>
+				</RectButton>
+			</Animated.View>
+			<Animated.View
+				style={[
+					styles.actionRightButtonContainer,
+					{ right: 0, backgroundColor: colors.buttonBackgroundSecondaryPress },
+					viewHeight,
+					animatedHideStyles
+				]}>
+				<RectButton accessible={false} accessibilityLabel={I18n.t('Hide')} style={styles.actionButton} onPress={onHidePress}>
+					<View style={[styles.actionIconSlot, { width: actionWidth }]}>
+						<CustomIcon
+							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
+							name='unread-on-top-disabled'
+							color={colors.fontWhite}
+						/>
+					</View>
+				</RectButton>
+			</Animated.View>
+		</View>
+	);
+});

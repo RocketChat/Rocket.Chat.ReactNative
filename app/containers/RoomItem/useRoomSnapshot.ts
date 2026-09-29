@@ -1,18 +1,17 @@
 import { useCallback, useRef, useSyncExternalStore } from 'react';
-import { type Observable } from 'rxjs';
+import { skip } from 'rxjs';
 
-type TObservableRoom<TRoom> = TRoom & {
-	observe?: () => Observable<unknown>;
-	asPlain?: () => TRoom;
-};
+import { type IRoomItemContainerProps } from './interfaces';
 
-const takeSnapshot = <TRoom extends object>(item: TObservableRoom<TRoom>): TRoom => (item.asPlain ? item.asPlain() : { ...item });
+type TRoomItem = IRoomItemContainerProps['item'];
 
-export const useRoomSnapshot = <TRoom extends object>(item: TObservableRoom<TRoom>): TRoom => {
-	const cache = useRef<{ source: TObservableRoom<TRoom>; room: TRoom } | null>(null);
+const takeSnapshot = (item: TRoomItem): TRoomItem => item.asPlain?.() ?? item;
+
+export const useRoomSnapshot = (item: TRoomItem): TRoomItem => {
+	const cache = useRef<{ source: TRoomItem; room: TRoomItem } | null>(null);
 
 	const getSnapshot = () => {
-		if (cache.current?.source !== item) {
+		if (!cache.current || cache.current.source !== item) {
 			cache.current = { source: item, room: takeSnapshot(item) };
 		}
 		return cache.current.room;
@@ -20,10 +19,13 @@ export const useRoomSnapshot = <TRoom extends object>(item: TObservableRoom<TRoo
 
 	const subscribe = useCallback(
 		(onStoreChange: () => void) => {
-			const subscription = item.observe?.().subscribe(() => {
-				cache.current = { source: item, room: takeSnapshot(item) };
-				onStoreChange();
-			});
+			const subscription = item
+				.observe?.()
+				.pipe(skip(1))
+				.subscribe(() => {
+					cache.current = { source: item, room: takeSnapshot(item) };
+					onStoreChange();
+				});
 			return () => subscription?.unsubscribe();
 		},
 		[item]

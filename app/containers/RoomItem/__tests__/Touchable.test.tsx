@@ -2,11 +2,10 @@ import { act, fireEvent, render } from '@testing-library/react-native';
 import { Text } from 'react-native';
 import { State, usePanGesture } from 'react-native-gesture-handler';
 import { fireGestureHandler } from 'react-native-gesture-handler/jest-utils';
-import { makeMutable, useSharedValue } from 'react-native-reanimated';
+import { makeMutable } from 'react-native-reanimated';
 
 import Touchable from '../Touchable';
-import { type TRowState } from '../swipeRelease';
-import { registerOpenSwipeItem, unregisterOpenSwipeItem } from '../openSwipeItem';
+import { settleSwipeRow, unregisterOpenSwipeItem } from '../openSwipeItem';
 import { SubscriptionType } from '~/definitions';
 
 jest.mock('~/lib/hooks/useAppSelector', () => ({ useAppSelector: () => '7.0.0' }));
@@ -16,10 +15,6 @@ jest.mock('react-native-gesture-handler', () => {
 });
 
 const setup = () => {
-	jest.mocked(useSharedValue).mockImplementation(init => {
-		const shared = { value: init, set: (next: typeof init) => (shared.value = next) };
-		return shared as unknown as ReturnType<typeof useSharedValue>;
-	});
 	const onPress = jest.fn();
 	const { getByText } = render(
 		<Touchable
@@ -39,6 +34,8 @@ const setup = () => {
 	return { gesture: results[results.length - 1].value, onPress, pressRow: () => fireEvent.press(getByText('row')) };
 };
 
+const openOtherRow = () => settleSwipeRow({ rid: 'roomA', transX: makeMutable(0), rowOffSet: makeMutable(0) }, 80);
+
 const touchWithoutSwipe = [
 	{ state: State.BEGAN, translationX: 0, velocityX: 0 },
 	{ state: State.FAILED, translationX: 0, velocityX: 0 }
@@ -51,12 +48,7 @@ afterEach(() => {
 
 test('a tap after a touch that closed another row without pressing still opens the room', async () => {
 	const { gesture, onPress, pressRow } = setup();
-	registerOpenSwipeItem({
-		rid: 'roomA',
-		transX: makeMutable(80),
-		rowState: makeMutable<TRowState>(1),
-		rowOffSet: makeMutable(80)
-	});
+	openOtherRow();
 	await act(() => fireGestureHandler(gesture, touchWithoutSwipe));
 
 	await act(() => fireGestureHandler(gesture, touchWithoutSwipe));
@@ -67,15 +59,27 @@ test('a tap after a touch that closed another row without pressing still opens t
 
 test('a tap that closed another row does not open the room', async () => {
 	const { gesture, onPress, pressRow } = setup();
-	registerOpenSwipeItem({
-		rid: 'roomA',
-		transX: makeMutable(80),
-		rowState: makeMutable<TRowState>(1),
-		rowOffSet: makeMutable(80)
-	});
+	openOtherRow();
 
 	await act(() => fireGestureHandler(gesture, touchWithoutSwipe));
 	pressRow();
 
 	expect(onPress).not.toHaveBeenCalled();
+});
+
+test('a tap on a swiped-open row closes it instead of opening the room', async () => {
+	const { gesture, onPress, pressRow } = setup();
+	await act(() =>
+		fireGestureHandler(gesture, [
+			{ state: State.BEGAN, translationX: 0, velocityX: 0 },
+			{ state: State.ACTIVE, translationX: 60, velocityX: 0 },
+			{ state: State.END, translationX: 60, velocityX: 0 }
+		])
+	);
+
+	pressRow();
+	expect(onPress).not.toHaveBeenCalled();
+
+	pressRow();
+	expect(onPress).toHaveBeenCalledTimes(1);
 });

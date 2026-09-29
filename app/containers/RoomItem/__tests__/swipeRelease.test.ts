@@ -1,37 +1,37 @@
-import { getSwipeRelease, type TRowState } from '../swipeRelease';
+import { getActionWidth, getFullSwipeThreshold, getOpenWidth, getSwipeRelease } from '../swipeRelease';
 
-const actionWidth = 80;
-const openWidth = 160;
-const fullSwipeThreshold = 240;
+const width = 400;
+const actionWidth = getActionWidth(width);
+const openWidth = getOpenWidth(width);
+const fullSwipeThreshold = getFullSwipeThreshold(width);
 
-const release = (rowState: TRowState, offset: number) =>
-	getSwipeRelease({ rowState, offset, actionWidth, openWidth, fullSwipeThreshold });
+const release = (restingOffset: number, offset: number) => getSwipeRelease({ restingOffset, offset, width });
 
-const closed = { toValue: 0, rowState: 0, fullSwipe: null };
-const leftOpen = { toValue: actionWidth, rowState: -1, fullSwipe: null };
-const rightOpen = { toValue: -openWidth, rowState: 1, fullSwipe: null };
+const closed = { restingOffset: 0, fullSwipe: null };
+const leftOpen = { restingOffset: actionWidth, fullSwipe: null };
+const rightOpen = { restingOffset: -openWidth, fullSwipe: null };
 
 describe('getSwipeRelease', () => {
 	it.each([
-		[0, 39, closed],
-		[0, 40, leftOpen],
-		[0, -39, closed],
-		[0, -40, rightOpen],
+		[0, 37, closed],
+		[0, 38, leftOpen],
+		[0, -37, closed],
+		[0, -38, rightOpen],
 		[0, 0, closed],
-		[-1, 1, leftOpen],
-		[-1, 200, leftOpen],
-		[-1, 0, closed],
-		[-1, -30, closed],
-		[1, -1, rightOpen],
-		[1, -200, rightOpen],
-		[1, 0, closed],
-		[1, 30, closed]
-	] as [TRowState, number, object][])('from row state %i releasing at %i', (rowState, offset, expected) => {
-		expect(release(rowState, offset)).toEqual(expected);
+		[actionWidth, 1, leftOpen],
+		[actionWidth, 200, leftOpen],
+		[actionWidth, 0, closed],
+		[actionWidth, -30, closed],
+		[-openWidth, -1, rightOpen],
+		[-openWidth, -200, rightOpen],
+		[-openWidth, 0, closed],
+		[-openWidth, 30, closed]
+	])('from resting offset %d releasing at %d', (restingOffset, offset, expected) => {
+		expect(release(restingOffset, offset)).toEqual(expected);
 	});
 
-	it.each([-1, 0, 1] as TRowState[])('commits a full swipe from row state %i and closes', rowState => {
-		expect(release(rowState, fullSwipeThreshold)).toEqual({ ...closed, fullSwipe: 'left' });
-		expect(release(rowState, -fullSwipeThreshold)).toEqual({ ...closed, fullSwipe: 'right' });
+	it.each([0, actionWidth, -openWidth])('commits a full swipe from resting offset %d and closes', restingOffset => {
+		expect(release(restingOffset, fullSwipeThreshold)).toEqual({ ...closed, fullSwipe: 'left' });
+		expect(release(restingOffset, -fullSwipeThreshold)).toEqual({ ...closed, fullSwipe: 'right' });
 	});
 });

@@ -1,5 +1,5 @@
 import { act, render } from '@testing-library/react-native';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import RoomItemContainer from '..';
 import { isRead } from '~/lib/methods/helpers';
@@ -14,7 +14,7 @@ jest.mock('../../ActionSheet', () => ({ useActionSheet: () => ({ showActionSheet
 jest.mock('~/lib/hooks/useAppSelector', () => ({ useAppSelector: () => '7.0.0' }));
 
 const createRecord = () => {
-	const changes = new Subject<void>();
+	const changes = new BehaviorSubject<void>(undefined);
 	const record = {
 		rid: 'rid',
 		t: 'c',
@@ -25,7 +25,8 @@ const createRecord = () => {
 		alert: true,
 		unread: 3,
 		tunread: [],
-		observe: () => changes
+		observe: () => changes,
+		asPlain: () => ({ ...record })
 	};
 	return { record, changes };
 };
