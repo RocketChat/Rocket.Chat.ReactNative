@@ -6,16 +6,6 @@ import { Image } from 'expo-image';
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
-const resolveExpoLazyFetchBeforeReactNativeMocks = () => globalThis.fetch;
-resolveExpoLazyFetchBeforeReactNativeMocks();
-
-jest.mock('./app/lib/methods/handleMediaDownload', () => ({
-	...jest.requireActual('./app/lib/methods/handleMediaDownload'),
-	getMediaCache: jest.fn(() => Promise.resolve({ exists: false })),
-	downloadMediaFile: jest.fn(() => Promise.resolve('')),
-	isDownloadActive: jest.fn(() => false)
-}));
-
 jest.mock('react-native-safe-area-context', () => {
 	const inset = { top: 0, right: 0, bottom: 0, left: 0 };
 	return {
@@ -78,20 +68,14 @@ jest.mock('expo-haptics', () => ({
 	}
 }));
 
-jest.mock('react-native-gesture-handler', () => {
-	const { forwardRef } = require('react');
-	const { View } = require('react-native');
-	const GestureHandlerRootView = forwardRef(({ children, ...props }, ref) => (
-		<View ref={ref} {...props}>
-			{children}
-		</View>
-	));
-	GestureHandlerRootView.displayName = 'GestureHandlerRootView';
-	return {
-		...jest.requireActual('react-native-gesture-handler'),
-		GestureHandlerRootView,
-		gestureHandlerRootHOC: Component => Component
-	};
+jest.mock('react-native-gesture-handler/lib/module/v3/detectors/useEnsureGestureHandlerRootView', () => ({
+	useEnsureGestureHandlerRootView: () => {}
+}));
+
+jest.mock('react-native-gesture-handler/lib/module/v3/components/Touchable/Touchable', () => {
+	const { Pressable } = require('react-native');
+	const Touchable = ({ children, ...props }) => <Pressable {...props}>{children}</Pressable>;
+	return { Touchable };
 });
 
 jest.mock('expo-font', () => ({

@@ -1,8 +1,9 @@
 import { memo, useState } from 'react';
 import { Text } from 'react-native';
-import { BorderlessButton, GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
+import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
 
+import { BorderlessButton } from '~/containers/GestureButtons';
 import Markdown, { MarkdownPreview } from '~/containers/markdown';
 import { CustomIcon } from '~/containers/CustomIcon';
 import styles from '../styles';

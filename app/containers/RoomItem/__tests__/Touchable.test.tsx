@@ -1,6 +1,6 @@
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { Text } from 'react-native';
-import { Gesture, State } from 'react-native-gesture-handler';
+import { State, usePanGesture } from 'react-native-gesture-handler';
 import { fireGestureHandler } from 'react-native-gesture-handler/jest-utils';
 import { makeMutable, useSharedValue } from 'react-native-reanimated';
 
@@ -10,13 +10,16 @@ import { registerOpenSwipeItem, unregisterOpenSwipeItem } from '../openSwipeItem
 import { SubscriptionType } from '~/definitions';
 
 jest.mock('~/lib/hooks/useAppSelector', () => ({ useAppSelector: () => '7.0.0' }));
+jest.mock('react-native-gesture-handler', () => {
+	const actual = jest.requireActual('react-native-gesture-handler');
+	return { ...actual, usePanGesture: jest.fn(actual.usePanGesture) };
+});
 
 const setup = () => {
 	jest.mocked(useSharedValue).mockImplementation(init => {
 		const shared = { value: init, set: (next: typeof init) => (shared.value = next) };
 		return shared as unknown as ReturnType<typeof useSharedValue>;
 	});
-	const pan = jest.spyOn(Gesture, 'Pan');
 	const onPress = jest.fn();
 	const { getByText } = render(
 		<Touchable
@@ -32,7 +35,8 @@ const setup = () => {
 			<Text>row</Text>
 		</Touchable>
 	);
-	return { gesture: pan.mock.results[0].value, onPress, pressRow: () => fireEvent.press(getByText('row')) };
+	const { results } = jest.mocked(usePanGesture).mock;
+	return { gesture: results[results.length - 1].value, onPress, pressRow: () => fireEvent.press(getByText('row')) };
 };
 
 const touchWithoutSwipe = [

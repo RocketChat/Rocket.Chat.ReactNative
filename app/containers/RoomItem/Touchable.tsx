@@ -1,10 +1,11 @@
 import { useRef, useEffect, useState, memo, type ReactElement } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, useAnimatedReaction, withSpring } from 'react-native-reanimated';
 import {
-	Gesture,
 	GestureDetector,
-	type GestureUpdateEvent,
-	type PanGestureHandlerEventPayload
+	type PanGestureActiveEvent,
+	useCompetingGestures,
+	useLongPressGesture,
+	usePanGesture
 } from 'react-native-gesture-handler';
 import { scheduleOnRN } from 'react-native-worklets';
 
@@ -103,7 +104,7 @@ const Touchable = ({
 
 	const handleLongPress = guardTouch(onLongPress);
 
-	const handleRelease = (event: GestureUpdateEvent<PanGestureHandlerEventPayload>) => {
+	const handleRelease = (event: PanGestureActiveEvent) => {
 		const release = getSwipeRelease({
 			rowState: rowState.value,
 			offset: rowOffSet.value + event.translationX,
@@ -126,25 +127,26 @@ const Touchable = ({
 		}
 	};
 
-	const longPressGesture = Gesture.LongPress()
-		.minDuration(500)
-		.onStart(() => {
+	const longPressGesture = useLongPressGesture({
+		minDuration: 500,
+		onActivate: () => {
 			scheduleOnRN(handleLongPress);
-		});
+		}
+	});
 
-	const panGesture = Gesture.Pan()
-		.activeOffsetX([-10, 10]) // More sensitive horizontal detection
-		.failOffsetY([-20, 20]) // Fail on vertical movement to distinguish scrolling
-		.enabled(swipeEnabled)
-		.onBegin(() => {
+	const panGesture = usePanGesture({
+		activeOffsetX: [-10, 10], // More sensitive horizontal detection
+		failOffsetY: [-20, 20], // Fail on vertical movement to distinguish scrolling
+		enabled: swipeEnabled,
+		onBegin: () => {
 			gestureActive.set(true);
 			const closedOtherRow = closeOpenSwipeItem(rid);
 			scheduleOnRN(handleTouchBegin, closedOtherRow);
-		})
-		.onStart(() => {
+		},
+		onActivate: () => {
 			scheduleOnRN(setActionsMounted, true);
-		})
-		.onUpdate(event => {
+		},
+		onUpdate: event => {
 			const next = event.translationX + rowOffSet.value;
 			const boundary = getFullSwipeThreshold(width);
 			transX.value =
@@ -153,18 +155,19 @@ const Touchable = ({
 					: next < -boundary
 						? -boundary - rubberband(-next - boundary, width)
 						: next;
-		})
-		.onEnd(event => {
+		},
+		onDeactivate: event => {
 			gestureActive.set(false);
 			scheduleOnRN(handleRelease, event);
-		})
-		.onFinalize(() => {
+		},
+		onFinalize: () => {
 			gestureActive.set(false);
-		});
+		}
+	});
 
-	// Use Race instead of Simultaneous to prevent conflicts
+	// Use competing gestures instead of simultaneous to prevent conflicts
 	// Pan gesture will take priority over long press for horizontal swipes
-	const composedGesture = Gesture.Race(panGesture, longPressGesture);
+	const composedGesture = useCompetingGestures(panGesture, longPressGesture);
 
 	const animatedStyles = useAnimatedStyle(() => ({
 		transform: [{ translateX: transX.value }]

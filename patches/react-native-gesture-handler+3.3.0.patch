@@ -1,16 +1,15 @@
 diff --git a/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt b/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt
-index e4114c4..41544da 100644
+index f964945..8df6494 100644
 --- a/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt
 +++ b/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt
-@@ -504,10 +504,22 @@ class RNGestureHandlerButtonViewManager :
-     }
+@@ -1459,9 +1459,21 @@ class RNGestureHandlerButtonViewManager :
  
      override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-+      if (isActivationKey(keyCode) && !isChildTouched() && !context.isScreenReaderOn()) {
-+        findGestureHandlerRootView()?.activateNativeHandlers(this)
+       receivedKeyEvent = true
++      if (isActivationKey(keyCode) && isEnabled && event?.isCanceled != true) {
++        performClick()
 +        return true
 +      }
-       receivedKeyEvent = true
        return super.onKeyUp(keyCode, event)
      }
  
@@ -23,14 +22,14 @@ index e4114c4..41544da 100644
 +    }
 +
      override fun performClick(): Boolean {
-       // don't preform click when a child button is pressed (mainly to prevent sound effect of
+       // don't perform click when a child button is pressed (mainly to prevent sound effect of
        // a parent button from playing)
 diff --git a/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm b/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
-index 6b9fa9c..6d2ccea 100644
+index 994b3d3..c46411b 100644
 --- a/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
 +++ b/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
-@@ -83,6 +83,52 @@ - (BOOL)shouldHandleTouch:(RNGHUIView *)view
- }
+@@ -1274,6 +1274,52 @@ static CATransform3D RNGHCenterScaleTransform(NSRect bounds, CGFloat scale)
+ #endif
  
  #if !TARGET_OS_OSX
 +- (BOOL)canBecomeFocused
