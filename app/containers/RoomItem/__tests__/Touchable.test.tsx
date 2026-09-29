@@ -14,7 +14,7 @@ jest.mock('react-native-gesture-handler', () => {
 	return { ...actual, usePanGesture: jest.fn(actual.usePanGesture) };
 });
 
-const setup = () => {
+const setup = ({ swipeEnabled = true } = {}) => {
 	const onPress = jest.fn();
 	const { getByText } = render(
 		<Touchable
@@ -25,7 +25,7 @@ const setup = () => {
 			isRead
 			rid='roomB'
 			isFocused={false}
-			swipeEnabled
+			swipeEnabled={swipeEnabled}
 			displayMode='expanded'>
 			<Text>row</Text>
 		</Touchable>
@@ -76,6 +76,17 @@ test('a tap on a swiped-open row closes it instead of opening the room', async (
 			{ state: State.END, translationX: 60, velocityX: 0 }
 		])
 	);
+
+	pressRow();
+	expect(onPress).not.toHaveBeenCalled();
+
+	pressRow();
+	expect(onPress).toHaveBeenCalledTimes(1);
+});
+
+test('a tap on a row that cannot swipe closes the open row instead of opening the room', () => {
+	const { onPress, pressRow } = setup({ swipeEnabled: false });
+	openOtherRow();
 
 	pressRow();
 	expect(onPress).not.toHaveBeenCalled();

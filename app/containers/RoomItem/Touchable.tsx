@@ -2,7 +2,7 @@ import { useEffect, useState, memo, type ReactElement } from 'react';
 import { I18nManager } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, useAnimatedReaction } from 'react-native-reanimated';
 import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
-import { scheduleOnRN } from 'react-native-worklets';
+import { runOnUISync, scheduleOnRN } from 'react-native-worklets';
 import * as Haptics from 'expo-haptics';
 
 import Touch from '../Touch';
@@ -85,7 +85,7 @@ const Touchable = ({
 			close();
 			return;
 		}
-		if (touchClosedOtherRow.value) {
+		if (touchClosedOtherRow.value || runOnUISync(closeOpenSwipeItem, rid)) {
 			touchClosedOtherRow.value = false;
 			return;
 		}
