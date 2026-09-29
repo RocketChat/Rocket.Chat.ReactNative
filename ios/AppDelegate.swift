@@ -18,15 +18,14 @@ public class AppDelegate: ExpoAppDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
-    migrateLegacyExperimentalDatabases()
-
     // IMPORTANT: Initialize MMKV encryption FIRST, before any other initialization
     // This reads existing encryption key or generates a new one for fresh installs
     // Must run before Firebase, Bugsnag, and React Native start
     MMKVKeyManager.initialize()
-    
+
     FirebaseApp.configure()
     Bugsnag.start()
+    migrateLegacyExperimentalDatabases()
     ReplyNotification.configure()
     if !VoipRegion.isChina() {
       VoipService.voipRegistration()
@@ -104,6 +103,7 @@ public class AppDelegate: ExpoAppDelegate {
         try fileManager.moveItem(at: legacy, to: target)
       } catch {
         // Starting with a fresh DB at `target` would strand the legacy data, since later launches skip a non-empty target.
+        Bugsnag.notifyError(error)
         fatalError("Failed to migrate \(name) to \(target.lastPathComponent): \(error)")
       }
     }
