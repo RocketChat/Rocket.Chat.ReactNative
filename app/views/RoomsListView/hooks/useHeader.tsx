@@ -188,6 +188,7 @@ export const useHeader = () => {
 				headerBlurEffect: 'regular',
 				headerTitle: serverName,
 				headerSubtitle: nativeHeaderSubtitle,
+				headerTitleTestID: 'rooms-list-header-servers-list-button',
 				onHeaderTitlePress: () => showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false }),
 				headerSearchBarOptions: {
 					ref: searchBarRef,
