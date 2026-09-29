@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '~/views/RoomView/definitions';
+import { type IListContainerRef, type TListRef, type TMessagesIdsRef } from '~/views/RoomView/definitions';
 import { type TAnyMessageModel } from '~/definitions';
 
 // Abort a jump whose target never re-observes within this window: release the anchor, drop to the Live
@@ -11,13 +11,6 @@ const HIGHLIGHT_TIMEOUT = 5000;
 // A target deeper than the Anchored Window's initial QUERY_SIZE rows needs the window grown by QUERY_SIZE per retry to pull it in.
 // Capped so a target that never materialises aborts via the safety net instead of looping.
 const MAX_JUMP_GROWTH_RETRIES = 5;
-
-// VirtualizedList re-fires onScrollToIndexFailed synchronously, so defer each retry one frame to break
-// the recursion.
-const SCROLL_TO_INDEX_RETRY_DELAY = 50;
-// A deep target can sit ~30 rows past the measured frontier; each retry climbs ~one render batch, so the
-// cap must cover the distance (5 stalled short). Bounded so an unreachable target aborts, not loops.
-const MAX_SCROLL_TO_INDEX_RETRIES = 20;
 
 // animated:false snaps straight to the target instead of smooth-scrolling through every row between here
 // and a deep index — the latter reads as the list "hunting" for the message across several visible scrolls.
@@ -37,14 +30,14 @@ interface IPendingJump {
 }
 
 export const useScroll = ({
-	flatListRef,
+	listRef,
 	messages,
 	messagesIds,
 	highTs,
 	setHighTs,
 	fetchMessages
 }: {
-	flatListRef: TListRef;
+	listRef: TListRef;
 	messages: TAnyMessageModel[];
 	messagesIds: TMessagesIdsRef;
 	highTs: number | null;
@@ -54,18 +47,10 @@ export const useScroll = ({
 	const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null);
 	const highlightTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const pendingJump = useRef<IPendingJump | null>(null);
-	// Most recent jump target. onScrollToIndexFailed can fire after completeJump clears pendingJump, so
-	// the retry handler reads this for the target index.
-	const lastJumpTargetId = useRef<string | null>(null);
-	// Bounds the onScrollToIndexFailed retry chain per jump (reset when a new jump starts).
-	const scrollFailRetries = useRef(0);
 	// Bounds the window-growth retries while waiting for a deep Anchored target to re-observe (reset per jump).
 	const jumpGrowthRetries = useRef(0);
 	// A jump-to-bottom deferred until the released live window emits (set when releasing an Anchored Window).
 	const pendingBottom = useRef(false);
-	// True across an Anchored → Live release: suppresses maintainVisibleContentPosition so the disjoint
-	// data swap can't apply a native offset adjustment that drags the pre-pinned viewport off-content.
-	const [isReleasing, setIsReleasing] = useState(false);
 
 	useEffect(
 		() => () => {
@@ -79,22 +64,14 @@ export const useScroll = ({
 		[]
 	);
 
-	// Back to live from an Anchored Window. The release swaps the (tall) anchored rows for the disjoint,
-	// shorter live tail in a single emit; a scroll offset deep enough for the tall content then sits past
-	// the short content, and an inverted list renders that as a blank wedge with the FAB stuck visible.
-	// Park the viewport at offset 0 (newest) BEFORE the swap: offset 0 is valid for any non-empty window,
-	// so the shorter tail cannot strand it, and scrolling the already-settled anchored content sidesteps
-	// the post-shrink layout race a deferred correction loses to. Suppress MVCP across the swap so its
-	// offset adjustment for the disjoint key set cannot drag the viewport back off-content.
+	// Back to live from an Anchored Window: release the bound, then scroll to the end once the live tail emits.
 	const jumpToBottom = () => {
 		if (highTs != null) {
-			flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
 			pendingBottom.current = true;
-			setIsReleasing(true);
 			setHighTs(null);
 			return;
 		}
-		flatListRef.current?.scrollToOffset({ offset: -100 });
+		listRef.current?.scrollToEnd({ animated: true });
 	};
 
 	const setHighlightTimeout = () => {
@@ -143,47 +120,24 @@ export const useScroll = ({
 		}, JUMP_SAFETY_TIMEOUT);
 	};
 
-	const indexOfMessage = (messageId: string | null | undefined) =>
-		messageId ? (messagesIds.current?.findIndex(id => id === messageId) ?? -1) : -1;
-
-	// Re-scroll once the target's row has settled into the measured window. No-op until it has.
-	const reScrollWhenSettled = (targetId: string | null | undefined) => {
-		const index = indexOfMessage(targetId);
-		if (index !== -1) {
-			flatListRef.current?.scrollToIndex({
-				index,
-				...JUMP_SCROLL_POSITION
-			});
-		}
+	// messagesIds is newest-first; the list renders oldest-first.
+	const listIndexOfMessage = (messageId: string) => {
+		const ids = messagesIds.current ?? [];
+		const newestFirstIndex = ids.indexOf(messageId);
+		return newestFirstIndex === -1 ? -1 : ids.length - 1 - newestFirstIndex;
 	};
 
-	// No getItemLayout for these variable-height rows, so the first scroll uses an estimated offset and
-	// can undershoot while the target is unmeasured. It renders the row; a second scroll lands precisely.
-	// Re-read the index in case the window shifted a row between.
-	const scrollToTarget = (messageId: string, index: number) => {
-		flatListRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
-		setTimeout(() => {
-			// A newer jump may now own the scroll; re-reading this old target would yank the list off it.
-			if (lastJumpTargetId.current !== messageId) {
-				return;
-			}
-			reScrollWhenSettled(messageId);
-		}, SCROLL_TO_INDEX_RETRY_DELAY);
+	const scrollToTarget = (index: number) => {
+		listRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
 	};
 
-	// Release settled: the live tail has emitted (keyed on messages so this runs on the first live emit)
-	// and the viewport is already pinned at offset 0 from the pre-swap scroll. Re-pin in case the swap
-	// nudged it, then restore maintainVisibleContentPosition for normal live-tail following (safe at
-	// offset 0 — minIndexForVisible:0 keeps the newest row stable).
 	useLayoutEffect(() => {
 		if (!pendingBottom.current) {
 			return;
 		}
 		pendingBottom.current = false;
-		flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
-		// eslint-disable-next-line react-hooks/set-state-in-effect -- the cascade is the fix: the swap render must paint with MVCP suppressed, the follow-up render restores it
-		setIsReleasing(false);
-	}, [messages, flatListRef]);
+		listRef.current?.scrollToEnd({ animated: false });
+	}, [messages, listRef]);
 
 	// On every re-observe, check whether the pending target has appeared; the first time it has, scroll
 	// once and complete.
@@ -192,7 +146,7 @@ export const useScroll = ({
 		if (!jump || jump.scrolled) {
 			return;
 		}
-		const index = indexOfMessage(jump.messageId);
+		const index = listIndexOfMessage(jump.messageId);
 		if (index === -1) {
 			// Anchored target deeper than the window: grow it by QUERY_SIZE (bounded) to pull it in; the safety
 			// net aborts if it never materialises.
@@ -205,7 +159,7 @@ export const useScroll = ({
 			return;
 		}
 		jump.scrolled = true;
-		scrollToTarget(jump.messageId, index);
+		scrollToTarget(index);
 		completeJump(jump);
 	};
 
@@ -221,42 +175,6 @@ export const useScroll = ({
 		onReObserveRef.current();
 	}, [messages]);
 
-	// The list could not measure the target's frame yet. VirtualizedList re-fires this synchronously with
-	// no getItemLayout, so an inline retry recurses; defer one frame to render more rows, capped so an
-	// unmeasurable target gives up.
-	const handleScrollToIndexFailed: IListProps['onScrollToIndexFailed'] = params => {
-		// Per-jump cap, reset only at jump start; resetting here would let a later failure defeat it.
-		if (scrollFailRetries.current >= MAX_SCROLL_TO_INDEX_RETRIES) {
-			return;
-		}
-		scrollFailRetries.current += 1;
-		setTimeout(() => {
-			// Re-read at fire time so a retry queued by a previous jump can't scroll to a stale index.
-			const targetId = pendingJump.current?.messageId ?? lastJumpTargetId.current;
-			const targetIndex = indexOfMessage(targetId);
-			if (targetIndex === -1) {
-				return;
-			}
-			// Scrolling straight to an unmeasured target doesn't move the viewport, so the window plateaus
-			// short. Step to the measured frontier first (that renders the next batch, advancing
-			// highestMeasuredFrameIndex), then re-attempt — it lands once measured, or re-fires to climb on.
-			if (targetIndex > params.highestMeasuredFrameIndex) {
-				flatListRef.current?.scrollToIndex({
-					index: params.highestMeasuredFrameIndex,
-					animated: false
-				});
-				setTimeout(() => {
-					reScrollWhenSettled(pendingJump.current?.messageId ?? lastJumpTargetId.current);
-				}, SCROLL_TO_INDEX_RETRY_DELAY);
-				return;
-			}
-			flatListRef.current?.scrollToIndex({
-				index: targetIndex,
-				...JUMP_SCROLL_POSITION
-			});
-		}, SCROLL_TO_INDEX_RETRY_DELAY);
-	};
-
 	const jumpToMessage: IListContainerRef['jumpToMessage'] = (messageId, highTsMs) =>
 		new Promise<void>(resolve => {
 			// Cancel any previous in-flight jump before starting a new one.
@@ -269,8 +187,6 @@ export const useScroll = ({
 				previous.resolve();
 			}
 
-			lastJumpTargetId.current = messageId;
-			scrollFailRetries.current = 0;
 			jumpGrowthRetries.current = 0;
 			const anchored = typeof highTsMs === 'number' && Number.isFinite(highTsMs);
 			const jump: IPendingJump = {
@@ -293,10 +209,10 @@ export const useScroll = ({
 			}
 
 			// Target may already be present (contiguous / local): resolve synchronously, still one scroll.
-			const index = indexOfMessage(messageId);
+			const index = listIndexOfMessage(messageId);
 			if (index !== -1 && !anchored) {
 				jump.scrolled = true;
-				scrollToTarget(messageId, index);
+				scrollToTarget(index);
 				completeJump(jump);
 			}
 		});
@@ -317,8 +233,6 @@ export const useScroll = ({
 		jumpToBottom,
 		jumpToMessage,
 		cancelJumpToMessage,
-		handleScrollToIndexFailed,
-		highlightedMessageId,
-		isReleasing
+		highlightedMessageId
 	};
 };

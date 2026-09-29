@@ -66,7 +66,6 @@ const LoadMore = memo(
 
 		return (
 			<>
-				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 				<Touch onPress={handleLoad} style={styles.button} disabled={loading}>
 					{loading ? (
 						<ActivityIndicator color={colors.fontSecondaryInfo} />
@@ -74,6 +73,7 @@ const LoadMore = memo(
 						<PlainText style={[styles.text, { color: colors.fontTitlesLabels }]}>{I18n.t(text)}</PlainText>
 					)}
 				</Touch>
+				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 			</>
 		);
 	}

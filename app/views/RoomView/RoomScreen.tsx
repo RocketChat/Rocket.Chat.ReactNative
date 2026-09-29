@@ -37,7 +37,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 		roomScreen,
 		messageComposerRef,
 		listContainerRef,
-		flatListRef,
+		listRef,
 		messageActionsRef,
 		messageErrorActionsRef,
 		onThreadPress,
@@ -104,7 +104,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 								<RoomMessageList
 									tmid={tmid}
 									listContainerRef={listContainerRef}
-									flatListRef={flatListRef}
+									listRef={listRef}
 									onLongPress={onMessageLongPress}
 									onThreadPress={onThreadPress}
 									onReactionPress={onReactionPress}

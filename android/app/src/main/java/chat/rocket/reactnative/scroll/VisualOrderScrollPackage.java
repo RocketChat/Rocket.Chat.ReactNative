@@ -7,7 +7,7 @@ import com.facebook.react.uimanager.ViewManager;
 import java.util.Collections;
 import java.util.List;
 
-public class InvertedScrollPackage implements ReactPackage {
+public class VisualOrderScrollPackage implements ReactPackage {
 
   @Override
   public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
@@ -16,9 +16,6 @@ public class InvertedScrollPackage implements ReactPackage {
 
   @Override
   public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-    List<ViewManager> managers = new java.util.ArrayList<>();
-    managers.add(new InvertedScrollViewManager());
-    managers.add(new InvertedScrollContentViewManager());
-    return managers;
+    return Collections.singletonList(new VisualOrderScrollViewManager());
   }
 }

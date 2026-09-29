@@ -8,23 +8,20 @@ import android.view.ViewParent;
 import androidx.annotation.Nullable;
 import com.facebook.react.uimanager.util.ReactFindViewUtil;
 import com.facebook.react.views.scroll.ReactScrollView;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-/**
- * Custom ScrollView for inverted FlatLists that corrects keyboard navigation so it follows
- * the visual order instead of the inverted view-tree order.
- *
- * Both Tab/Shift+Tab and DPAD arrows navigate between FlatList cells (direct children of the
- * content view) to avoid loops caused by inner focusable elements within a single message.
- * Boundary exit uses ReactFindViewUtil to find a tagged exit-target view by nativeID.
- */
-public class InvertedScrollView extends ReactScrollView {
+public class VisualOrderScrollView extends ReactScrollView {
+
+  private static final Comparator<View> TOP_TO_BOTTOM = Comparator.comparingInt(VisualOrderScrollView::screenTop);
 
   private final Map<Integer, Boolean> mKeyConsumedMap = new HashMap<>();
   private volatile @Nullable String mExitFocusNativeId;
 
-  public InvertedScrollView(Context context) {
+  public VisualOrderScrollView(Context context) {
     super(context);
   }
 
@@ -56,32 +53,23 @@ public class InvertedScrollView extends ReactScrollView {
     return super.dispatchKeyEvent(event);
   }
 
-  /**
-   * Shared navigation logic for Tab and DPAD.
-   * @param isForward true = visual down (Tab / DPAD_DOWN), false = visual up (Shift+Tab / DPAD_UP)
-   */
   private boolean handleCellNavigation(boolean isForward) {
     View focused = findFocus();
     if (focused == null || getChildCount() == 0) {
       return false;
     }
 
-    View firstChild = getChildAt(0);
-    if (!(firstChild instanceof ViewGroup)) {
-      return false;
-    }
-    ViewGroup contentView = (ViewGroup) firstChild;
-    int cellIndex = findContainingCellIndex(contentView, focused);
-    if (cellIndex < 0) {
+    View cell = findContainingCell(getChildAt(0), focused);
+    if (cell == null) {
       return false;
     }
 
-    int step = isForward ? -1 : 1;
-    int focusDir = isForward ? View.FOCUS_UP : View.FOCUS_DOWN;
+    List<View> cells = visibleCellsTopToBottom((ViewGroup) cell.getParent());
+    int step = isForward ? 1 : -1;
+    int focusDirection = isForward ? View.FOCUS_DOWN : View.FOCUS_UP;
 
-    for (int i = cellIndex + step; i >= 0 && i < contentView.getChildCount(); i += step) {
-      View cell = contentView.getChildAt(i);
-      if (cell != null && cell.getVisibility() == VISIBLE && cell.requestFocus(focusDir)) {
+    for (int i = cells.indexOf(cell) + step; i >= 0 && i < cells.size(); i += step) {
+      if (cells.get(i).requestFocus(focusDirection)) {
         return true;
       }
     }
@@ -95,23 +83,43 @@ public class InvertedScrollView extends ReactScrollView {
     return false;
   }
 
-  private int findContainingCellIndex(ViewGroup contentView, View focused) {
+  private @Nullable View findContainingCell(View contentView, View focused) {
     View current = focused;
-    while (current != null && current.getParent() != contentView) {
-      ViewParent p = current.getParent();
-      if (p instanceof View) {
-        current = (View) p;
-      } else {
-        return -1;
+    while (current != null) {
+      ViewParent parent = current.getParent();
+      if (!(parent instanceof View)) {
+        return null;
       }
+      if (parent.getParent() == contentView) {
+        return current;
+      }
+      current = (View) parent;
     }
-    return current != null ? contentView.indexOfChild(current) : -1;
+    return null;
   }
 
-  private View findExitTarget() {
+  private List<View> visibleCellsTopToBottom(ViewGroup cellsParent) {
+    List<View> cells = new ArrayList<>();
+    for (int i = 0; i < cellsParent.getChildCount(); i++) {
+      View child = cellsParent.getChildAt(i);
+      if (child.getVisibility() == VISIBLE) {
+        cells.add(child);
+      }
+    }
+    cells.sort(TOP_TO_BOTTOM);
+    return cells;
+  }
+
+  private @Nullable View findExitTarget() {
     if (mExitFocusNativeId != null) {
       return ReactFindViewUtil.findView(getRootView(), mExitFocusNativeId);
     }
     return null;
+  }
+
+  private static int screenTop(View view) {
+    int[] location = new int[2];
+    view.getLocationOnScreen(location);
+    return location[1];
   }
 }

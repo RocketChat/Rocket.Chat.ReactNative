@@ -34,8 +34,8 @@ const MessageContainer = (props: IMessageContainerProps) => {
 			onLongPress={props.onLongPress}
 			threadBadgeColor={props.threadBadgeColor}
 			isIgnored={props.isIgnored}>
-			<MessageTouchable isPreview={props.isPreview} highlighted={props.highlighted} />
 			{withSeparators ? <MessageSeparators /> : null}
+			<MessageTouchable isPreview={props.isPreview} highlighted={props.highlighted} />
 		</MessageProvider>
 	);
 };

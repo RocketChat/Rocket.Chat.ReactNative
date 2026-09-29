@@ -22,7 +22,7 @@ import chat.rocket.reactnative.storage.SecureStoragePackage;
 import chat.rocket.reactnative.notification.VideoConfTurboPackage
 import chat.rocket.reactnative.notification.PushNotificationTurboPackage
 import chat.rocket.reactnative.VoipTurboPackage
-import chat.rocket.reactnative.scroll.InvertedScrollPackage
+import chat.rocket.reactnative.scroll.VisualOrderScrollPackage
 import chat.rocket.reactnative.input.ExternalInputPackage
 import chat.rocket.reactnative.biometric.BiometricEnrollmentPackage
 
@@ -50,7 +50,7 @@ open class MainApplication : Application(), ReactApplication {
               add(PushNotificationTurboPackage())
               add(VoipTurboPackage())
               add(SecureStoragePackage())
-              add(InvertedScrollPackage())
+              add(VisualOrderScrollPackage())
               add(ExternalInputPackage())
               add(BiometricEnrollmentPackage())
             }

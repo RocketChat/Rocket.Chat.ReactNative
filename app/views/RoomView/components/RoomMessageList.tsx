@@ -27,7 +27,7 @@ const getHideSystemMessages = (room: TRoomOrPreview, Hide_System_Messages?: stri
 export const RoomMessageList = ({
 	tmid,
 	listContainerRef,
-	flatListRef,
+	listRef,
 	onLongPress,
 	onThreadPress,
 	onReactionPress,
@@ -73,7 +73,7 @@ export const RoomMessageList = ({
 				autoTranslateLanguage={autoTranslateLanguage}>
 				<List
 					ref={listContainerRef}
-					flatListRef={flatListRef}
+					listRef={listRef}
 					rid={rid}
 					t={t}
 					tmid={tmid}
