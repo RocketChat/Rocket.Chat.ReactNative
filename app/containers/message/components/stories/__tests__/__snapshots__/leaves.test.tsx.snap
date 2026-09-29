@@ -600,6 +600,9 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
           
         </Text>
         <Text
+          accessibilityLabel="5 messages"
+          accessibilityRole="text"
+          accessible={true}
           style={
             [
               {

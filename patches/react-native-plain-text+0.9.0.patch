@@ -20,43 +20,37 @@ index e893ee0..f363fc9 100644
  {
      const auto &oldViewProps = *std::static_pointer_cast<RNPlainTextProps const>(_props);
 diff --git a/node_modules/react-native-plain-text/lib/module/PlainText.js b/node_modules/react-native-plain-text/lib/module/PlainText.js
-index 4862849..edde51c 100644
+index 4862849..684e347 100644
 --- a/node_modules/react-native-plain-text/lib/module/PlainText.js
 +++ b/node_modules/react-native-plain-text/lib/module/PlainText.js
-@@ -1,6 +1,6 @@
- "use strict";
- 
--import { StyleSheet } from 'react-native';
-+import { Platform, StyleSheet } from 'react-native';
- import PlainTextViewNativeComponent from './PlainTextViewNativeComponent';
- import { joinTextChildren, normalizeFontVariant, warnOnUnsupportedChildren } from "./utils.js";
- 
-@@ -81,6 +81,9 @@ export function mapPlainTextProps({
+@@ -81,6 +81,13 @@ export function mapPlainTextProps({
    if (unstable_lineHeightClippingCompat !== undefined) {
      nativeProps.lineHeightClippingCompat = unstable_lineHeightClippingCompat;
    }
-+  if (Platform.OS === 'ios') {
-+    nativeProps.accessible = nativeProps.accessible !== false;
++  nativeProps.accessible = nativeProps.accessible !== false;
++  if (nativeProps.accessibilityRole === undefined) {
++    nativeProps.accessibilityRole = 'text';
++  }
++  if (nativeProps.accessibilityLabel === undefined && nativeProps.text !== undefined) {
++    nativeProps.accessibilityLabel = nativeProps.text;
 +  }
  
    // No null guard: `for...in` over a missing style runs zero times.
    const flatStyle = StyleSheet.flatten(style);
 diff --git a/node_modules/react-native-plain-text/src/PlainText.tsx b/node_modules/react-native-plain-text/src/PlainText.tsx
-index f898d74..5e9cd28 100644
+index f898d74..79d589d 100644
 --- a/node_modules/react-native-plain-text/src/PlainText.tsx
 +++ b/node_modules/react-native-plain-text/src/PlainText.tsx
-@@ -1,4 +1,5 @@
- import {
-+  Platform,
-   StyleSheet,
-   type AccessibilityProps,
-   type StyleProp,
-@@ -134,6 +135,9 @@ export function mapPlainTextProps({
+@@ -134,6 +134,13 @@ export function mapPlainTextProps({
    if (unstable_lineHeightClippingCompat !== undefined) {
      nativeProps.lineHeightClippingCompat = unstable_lineHeightClippingCompat;
    }
-+  if (Platform.OS === 'ios') {
-+    nativeProps.accessible = nativeProps.accessible !== false;
++  nativeProps.accessible = nativeProps.accessible !== false;
++  if (nativeProps.accessibilityRole === undefined) {
++    nativeProps.accessibilityRole = 'text';
++  }
++  if (nativeProps.accessibilityLabel === undefined && nativeProps.text !== undefined) {
++    nativeProps.accessibilityLabel = nativeProps.text;
 +  }
  
    // No null guard: `for...in` over a missing style runs zero times.

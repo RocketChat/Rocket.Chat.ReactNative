@@ -27956,6 +27956,9 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                             
                           </Text>
                           <Text
+                            accessibilityLabel="No messages yet"
+                            accessibilityRole="text"
+                            accessible={true}
                             style={
                               [
                                 {
@@ -27980,8 +27983,6 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                         </View>
                       </View>
                       <Text
-                        accessibilityRole="text"
-                        accessible={true}
                         style={
                           [
                             {
@@ -28549,6 +28550,9 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                             
                           </Text>
                           <Text
+                            accessibilityLabel="1 message"
+                            accessibilityRole="text"
+                            accessible={true}
                             style={
                               [
                                 {
@@ -29145,6 +29149,9 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                             
                           </Text>
                           <Text
+                            accessibilityLabel="10 messages"
+                            accessibilityRole="text"
+                            accessible={true}
                             style={
                               [
                                 {
@@ -29741,6 +29748,9 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                             
                           </Text>
                           <Text
+                            accessibilityLabel="+999 messages"
+                            accessibilityRole="text"
+                            accessible={true}
                             style={
                               [
                                 {
@@ -30350,6 +30360,9 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                             
                           </Text>
                           <Text
+                            accessibilityLabel="No messages yet"
+                            accessibilityRole="text"
+                            accessible={true}
                             style={
                               [
                                 {
@@ -30374,8 +30387,6 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                         </View>
                       </View>
                       <Text
-                        accessibilityRole="text"
-                        accessible={true}
                         style={
                           [
                             {
@@ -30943,6 +30954,9 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                             
                           </Text>
                           <Text
+                            accessibilityLabel="1 message"
+                            accessibilityRole="text"
+                            accessible={true}
                             style={
                               [
                                 {
@@ -31539,6 +31553,9 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                             
                           </Text>
                           <Text
+                            accessibilityLabel="10 messages"
+                            accessibilityRole="text"
+                            accessible={true}
                             style={
                               [
                                 {
@@ -32135,6 +32152,9 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                             
                           </Text>
                           <Text
+                            accessibilityLabel="+999 messages"
+                            accessibilityRole="text"
+                            accessible={true}
                             style={
                               [
                                 {

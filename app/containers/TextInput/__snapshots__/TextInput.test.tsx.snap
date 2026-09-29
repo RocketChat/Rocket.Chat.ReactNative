@@ -29,6 +29,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Right icon "
+          accessibilityRole="text"
           accessible={false}
           style={
             [
@@ -168,6 +170,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Left icon "
+          accessibilityRole="text"
           accessible={false}
           style={
             [
@@ -306,6 +310,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Both icons "
+          accessibilityRole="text"
           accessible={false}
           style={
             [
@@ -480,6 +486,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Icon and touchable clear input "
+          accessibilityRole="text"
           accessible={false}
           style={
             [
@@ -728,6 +736,8 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Loading false "
+          accessibilityRole="text"
           accessible={false}
           style={
             [
@@ -831,6 +841,8 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Loading true "
+          accessibilityRole="text"
           accessible={false}
           style={
             [
@@ -958,6 +970,8 @@ exports[`Story Snapshots: Multiline should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Multiline text "
+          accessibilityRole="text"
           accessible={false}
           style={
             [
@@ -1079,6 +1093,8 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Secure text disabled "
+          accessibilityRole="text"
           accessible={false}
           style={
             [
@@ -1182,6 +1198,8 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Secure text enabled "
+          accessibilityRole="text"
           accessible={false}
           style={
             [
@@ -1429,6 +1447,8 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Short Text "
+          accessibilityRole="text"
           accessible={false}
           style={
             [
@@ -1532,6 +1552,8 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Long Text "
+          accessibilityRole="text"
           accessible={false}
           style={
             [

@@ -587,6 +587,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -627,6 +630,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -1259,6 +1265,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="unread"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -1299,6 +1308,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -1357,6 +1369,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         testID="unread-badge-1"
                       >
                         <Text
+                          accessibilityLabel="1"
+                          accessibilityRole="text"
+                          accessible={true}
                           numberOfLines={1}
                           style={
                             [
@@ -1975,6 +1990,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="unread"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -2015,6 +2033,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -2073,6 +2094,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         testID="unread-badge-+999"
                       >
                         <Text
+                          accessibilityLabel="+999"
+                          accessibilityRole="text"
+                          accessible={true}
                           numberOfLines={1}
                           style={
                             [
@@ -2691,6 +2715,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="user mentions"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -2731,6 +2758,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -2789,6 +2819,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         testID="mention-badge-1"
                       >
                         <Text
+                          accessibilityLabel="1"
+                          accessibilityRole="text"
+                          accessible={true}
                           numberOfLines={1}
                           style={
                             [
@@ -3407,6 +3440,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="group mentions"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -3447,6 +3483,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -3505,6 +3544,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         testID="group-mention-badge-1"
                       >
                         <Text
+                          accessibilityLabel="1"
+                          accessibilityRole="text"
+                          accessible={true}
                           numberOfLines={1}
                           style={
                             [
@@ -4123,6 +4165,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="thread unread"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -4163,6 +4208,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -4221,6 +4269,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         testID="unread-badge-1"
                       >
                         <Text
+                          accessibilityLabel="1"
+                          accessibilityRole="text"
+                          accessible={true}
                           numberOfLines={1}
                           style={
                             [
@@ -4839,6 +4890,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="thread unread user"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -4879,6 +4933,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -4937,6 +4994,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         testID="unread-badge-1"
                       >
                         <Text
+                          accessibilityLabel="1"
+                          accessibilityRole="text"
+                          accessible={true}
                           numberOfLines={1}
                           style={
                             [
@@ -5555,6 +5615,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="thread unread group"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -5595,6 +5658,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -5653,6 +5719,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         testID="unread-badge-1"
                       >
                         <Text
+                          accessibilityLabel="1"
+                          accessibilityRole="text"
+                          accessible={true}
                           numberOfLines={1}
                           style={
                             [
@@ -6271,6 +6340,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="user mentions priority 1"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -6311,6 +6383,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -6369,6 +6444,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         testID="mention-badge-1"
                       >
                         <Text
+                          accessibilityLabel="1"
+                          accessibilityRole="text"
+                          accessible={true}
                           numberOfLines={1}
                           style={
                             [
@@ -6987,6 +7065,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="group mentions priority 2"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -7027,6 +7108,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -7085,6 +7169,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         testID="group-mention-badge-1"
                       >
                         <Text
+                          accessibilityLabel="1"
+                          accessibilityRole="text"
+                          accessible={true}
                           numberOfLines={1}
                           style={
                             [
@@ -7703,6 +7790,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="thread unread priority 3"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -7743,6 +7833,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -7801,6 +7894,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         testID="unread-badge-1"
                       >
                         <Text
+                          accessibilityLabel="1"
+                          accessibilityRole="text"
+                          accessible={true}
                           numberOfLines={1}
                           style={
                             [
@@ -8423,6 +8519,9 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                     
                   </Text>
                   <Text
+                    accessibilityLabel="rocket.cat"
+                    accessibilityRole="text"
+                    accessible={true}
                     ellipsizeMode="tail"
                     numberOfLines={1}
                     style={
@@ -8455,6 +8554,9 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                     }
                   >
                     <Text
+                      accessibilityLabel="10:00"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -9078,6 +9180,9 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -9118,6 +9223,9 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -9176,6 +9284,9 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                         testID="unread-badge-1"
                       >
                         <Text
+                          accessibilityLabel="1"
+                          accessibilityRole="text"
+                          accessible={true}
                           numberOfLines={1}
                           style={
                             [
@@ -9794,6 +9905,9 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="unread"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -9834,6 +9948,9 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -9892,6 +10009,9 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                         testID="unread-badge-+999"
                       >
                         <Text
+                          accessibilityLabel="+999"
+                          accessibilityRole="text"
+                          accessible={true}
                           numberOfLines={1}
                           style={
                             [
@@ -10510,6 +10630,9 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -10550,6 +10673,9 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="Auto-join"
+                        accessibilityRole="text"
+                        accessible={true}
                         numberOfLines={1}
                         style={
                           [
@@ -10581,6 +10707,9 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -11146,6 +11275,9 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -11186,6 +11318,9 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -11244,6 +11379,9 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                         testID="unread-badge-1"
                       >
                         <Text
+                          accessibilityLabel="1"
+                          accessibilityRole="text"
+                          accessible={true}
                           numberOfLines={1}
                           style={
                             [
@@ -11803,6 +11941,9 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -11835,6 +11976,9 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -12395,6 +12539,9 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                       
                     </Text>
                     <Text
+                      accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -12435,6 +12582,9 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                       }
                     >
                       <Text
+                        accessibilityLabel="Auto-join"
+                        accessibilityRole="text"
+                        accessible={true}
                         numberOfLines={1}
                         style={
                           [
@@ -12466,6 +12616,9 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -13039,6 +13192,9 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                     }
                   >
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -13072,6 +13228,9 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                       rocket.cat
                     </Text>
                     <Text
+                      accessibilityLabel="10:00"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -13122,6 +13281,8 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                   >
                     <Text
                       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={2}
                       style={
                         [
@@ -13182,6 +13343,9 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                       testID="unread-badge-1"
                     >
                       <Text
+                        accessibilityLabel="1"
+                        accessibilityRole="text"
+                        accessible={true}
                         numberOfLines={1}
                         style={
                           [
@@ -13748,6 +13912,9 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                     }
                   >
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -13781,6 +13948,9 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                       rocket.cat
                     </Text>
                     <Text
+                      accessibilityLabel="10:00"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -13831,6 +14001,8 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                   >
                     <Text
                       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={2}
                       style={
                         [
@@ -13891,6 +14063,9 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                       testID="unread-badge-1"
                     >
                       <Text
+                        accessibilityLabel="1"
+                        accessibilityRole="text"
+                        accessible={true}
                         numberOfLines={1}
                         style={
                           [
@@ -14457,6 +14632,9 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                     }
                   >
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -14490,6 +14668,9 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                       rocket.cat
                     </Text>
                     <Text
+                      accessibilityLabel="10:00"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -14540,6 +14721,8 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                   >
                     <Text
                       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={2}
                       style={
                         [
@@ -15178,6 +15361,9 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -15238,6 +15424,9 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -15857,6 +16046,9 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -15917,6 +16109,9 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -16534,6 +16729,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -16559,6 +16757,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       rocket.cat
                     </Text>
                     <Text
+                      accessibilityLabel="10:00"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -16596,6 +16797,8 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   >
                     <Text
                       accessibilityLabel="No message"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={2}
                       style={
                         [
@@ -17222,6 +17425,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -17247,6 +17453,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       rocket.cat
                     </Text>
                     <Text
+                      accessibilityLabel="10:00"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -17284,6 +17493,8 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   >
                     <Text
                       accessibilityLabel="2"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={2}
                       style={
                         [
@@ -17910,6 +18121,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -17935,6 +18149,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       rocket.cat
                     </Text>
                     <Text
+                      accessibilityLabel="10:00"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -17972,6 +18189,8 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   >
                     <Text
                       accessibilityLabel="You: 1"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={2}
                       style={
                         [
@@ -18598,6 +18817,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -18623,6 +18845,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       rocket.cat
                     </Text>
                     <Text
+                      accessibilityLabel="10:00"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -18660,6 +18885,8 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   >
                     <Text
                       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={2}
                       style={
                         [
@@ -19286,6 +19513,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -19319,6 +19549,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       rocket.cat
                     </Text>
                     <Text
+                      accessibilityLabel="10:00"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -19369,6 +19602,8 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   >
                     <Text
                       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={2}
                       style={
                         [
@@ -19429,6 +19664,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       testID="unread-badge-1"
                     >
                       <Text
+                        accessibilityLabel="1"
+                        accessibilityRole="text"
+                        accessible={true}
                         numberOfLines={1}
                         style={
                           [
@@ -20039,6 +20277,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -20072,6 +20313,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       rocket.cat
                     </Text>
                     <Text
+                      accessibilityLabel="10:00"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -20122,6 +20366,8 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   >
                     <Text
                       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={2}
                       style={
                         [
@@ -20182,6 +20428,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       testID="unread-badge-+999"
                     >
                       <Text
+                        accessibilityLabel="+999"
+                        accessibilityRole="text"
+                        accessible={true}
                         numberOfLines={1}
                         style={
                           [
@@ -20792,6 +21041,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -20825,6 +21077,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       rocket.cat
                     </Text>
                     <Text
+                      accessibilityLabel="10:00"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -20875,6 +21130,8 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   >
                     <Text
                       accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={2}
                       style={
                         [
@@ -20935,6 +21192,9 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       testID="unread-badge-1"
                     >
                       <Text
+                        accessibilityLabel="1"
+                        accessibilityRole="text"
+                        accessible={true}
                         numberOfLines={1}
                         style={
                           [
@@ -21557,6 +21817,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -21589,6 +21852,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -22208,6 +22474,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -22240,6 +22509,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -22859,6 +23131,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -22891,6 +23166,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -23510,6 +23788,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -23542,6 +23823,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -24161,6 +24445,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -24193,6 +24480,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -24812,6 +25102,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -24844,6 +25137,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -25463,6 +25759,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -25495,6 +25794,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -26114,6 +26416,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -26146,6 +26451,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -26765,6 +27073,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -26797,6 +27108,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -27416,6 +27730,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -27448,6 +27765,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -28072,6 +28392,9 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -28112,6 +28435,9 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="Auto-join"
+                        accessibilityRole="text"
+                        accessible={true}
                         numberOfLines={1}
                         style={
                           [
@@ -28143,6 +28469,9 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -28755,6 +29084,9 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -28795,6 +29127,9 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="Auto-join"
+                        accessibilityRole="text"
+                        accessible={true}
                         numberOfLines={1}
                         style={
                           [
@@ -28820,6 +29155,9 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       </Text>
                     </View>
                     <Text
+                      accessibilityLabel="10:00"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -28857,6 +29195,8 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   >
                     <Text
                       accessibilityLabel="No message"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={2}
                       style={
                         [
@@ -29490,6 +29830,9 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -29530,6 +29873,9 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="Auto-join"
+                        accessibilityRole="text"
+                        accessible={true}
                         numberOfLines={1}
                         style={
                           [
@@ -29561,6 +29907,9 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -30173,6 +30522,9 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -30213,6 +30565,9 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="Auto-join"
+                        accessibilityRole="text"
+                        accessible={true}
                         numberOfLines={1}
                         style={
                           [
@@ -30238,6 +30593,9 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       </Text>
                     </View>
                     <Text
+                      accessibilityLabel="10:00"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -30275,6 +30633,8 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   >
                     <Text
                       accessibilityLabel="No message"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={2}
                       style={
                         [
@@ -30912,6 +31272,9 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                     
                   </Text>
                   <Text
+                    accessibilityLabel="rocket.cat"
+                    accessibilityRole="text"
+                    accessible={true}
                     ellipsizeMode="tail"
                     numberOfLines={1}
                     style={
@@ -30944,6 +31307,9 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                     }
                   >
                     <Text
+                      accessibilityLabel="10:00"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -31575,6 +31941,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -31607,6 +31976,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -32226,6 +32598,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -32258,6 +32633,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -32877,6 +33255,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -32909,6 +33290,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -33528,6 +33912,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -33560,6 +33947,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -34179,6 +34569,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -34211,6 +34604,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -34830,6 +35226,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -34862,6 +35261,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -35481,6 +35883,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -35513,6 +35918,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -36132,6 +36540,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -36164,6 +36575,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -36783,6 +37197,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="rocket.cat"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -36815,6 +37232,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -37447,6 +37867,9 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="diego.mello"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -37479,6 +37902,9 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={
@@ -38106,6 +38532,9 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                      accessibilityRole="text"
+                      accessible={true}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                       style={
@@ -38138,6 +38567,9 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                       }
                     >
                       <Text
+                        accessibilityLabel="10:00"
+                        accessibilityRole="text"
+                        accessible={true}
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={

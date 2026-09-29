@@ -1158,6 +1158,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                       
                     </Text>
                     <Text
+                      accessibilityLabel="+999"
+                      accessibilityRole="text"
+                      accessible={true}
                       numberOfLines={1}
                       style={
                         [

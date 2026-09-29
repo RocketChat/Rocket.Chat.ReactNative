@@ -139,6 +139,9 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="John Doe"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -165,6 +168,8 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         </View>
         <Text
           accessibilityLabel="Online"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -343,6 +348,9 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="John Doe"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -369,6 +377,8 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         </View>
         <Text
           accessibilityLabel="Away"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -547,6 +557,9 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="John Doe"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -573,6 +586,8 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         </View>
         <Text
           accessibilityLabel="Busy"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -751,6 +766,9 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="John Doe"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -777,6 +795,8 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         </View>
         <Text
           accessibilityLabel="Offline"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -955,6 +975,9 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="John Doe"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -981,6 +1004,8 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         </View>
         <Text
           accessibilityLabel="In a meeting"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -1159,6 +1184,9 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="John Doe"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1221,6 +1249,8 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
           </Text>
           <Text
             accessibilityLabel="In a meeting"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1400,6 +1430,9 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="John Doe"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1462,6 +1495,8 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
           </Text>
           <Text
             accessibilityLabel="having lunch (clock icon should be visible)"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1641,6 +1676,9 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="John Doe"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1667,6 +1705,8 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         </View>
         <Text
           accessibilityLabel="In a meeting (past expiry — clock icon should be hidden)"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -1842,6 +1882,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="private channel"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -1998,6 +2041,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="public channel"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -2155,6 +2201,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </Text>
           <Text
             accessibilityLabel="discussion"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -2326,6 +2374,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="omnichannel"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -2482,6 +2533,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="private team"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -2638,6 +2692,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="public team"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -2794,6 +2851,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="group dm"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -2950,6 +3010,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="online dm"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -3106,6 +3169,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="away dm"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -3262,6 +3328,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="busy dm"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -3418,6 +3487,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="loading dm"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -3574,6 +3646,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="offline dm"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -3730,6 +3805,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="classified"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -3886,6 +3964,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="classified"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -4047,6 +4128,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="title"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -4072,6 +4156,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         </View>
         <Text
           accessibilityLabel="subtitle"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -4242,6 +4328,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="title"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -4267,6 +4356,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         </View>
         <Text
           accessibilityLabel="subtitle"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -4437,6 +4528,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="title"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -4462,6 +4556,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         </View>
         <Text
           accessibilityLabel="subtitle"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -4607,6 +4703,8 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
         >
           <Text
             accessibilityLabel="title"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -4686,6 +4784,9 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="parent title"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -4814,6 +4915,8 @@ preview
         >
           <Text
             accessibilityLabel="markdown preview #3 4 5"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -4897,6 +5000,9 @@ preview
             
           </Text>
           <Text
+            accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -5056,6 +5162,9 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="title"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -5212,6 +5321,9 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -5368,6 +5480,9 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="title"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -5393,6 +5508,8 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         </View>
         <Text
           accessibilityLabel="subtitle"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -5563,6 +5680,9 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="title"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -5588,6 +5708,8 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         </View>
         <Text
           accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -5758,6 +5880,9 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -5784,6 +5909,8 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         </View>
         <Text
           accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+          accessibilityRole="text"
+          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -5959,6 +6086,9 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="title"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -6004,6 +6134,9 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="user 1 "
+            accessibilityRole="text"
+            accessible={true}
             style={
               {
                 "backgroundColor": "transparent",
@@ -6154,6 +6287,9 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="title"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -6199,6 +6335,9 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="user 1 and user 2 "
+            accessibilityRole="text"
+            accessible={true}
             style={
               {
                 "backgroundColor": "transparent",
@@ -6349,6 +6488,9 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
             
           </Text>
           <Text
+            accessibilityLabel="title"
+            accessibilityRole="text"
+            accessible={true}
             numberOfLines={1}
             style={
               [
@@ -6394,6 +6536,9 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityLabel="user 1, user 2, user 3, user 4, user 5 "
+            accessibilityRole="text"
+            accessible={true}
             style={
               {
                 "backgroundColor": "transparent",

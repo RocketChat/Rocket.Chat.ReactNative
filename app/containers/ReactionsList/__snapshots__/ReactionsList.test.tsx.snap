@@ -183,6 +183,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
               width={24}
             />
             <Text
+              accessibilityLabel="2"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -288,6 +291,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
               width={24}
             />
             <Text
+              accessibilityLabel="2"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -393,6 +399,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
               width={24}
             />
             <Text
+              accessibilityLabel="1"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -479,6 +488,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
               😀
             </Text>
             <Text
+              accessibilityLabel="1"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -565,6 +577,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
               🎉
             </Text>
             <Text
+              accessibilityLabel="1"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -1376,6 +1391,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
               width={24}
             />
             <Text
+              accessibilityLabel="2"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -1481,6 +1499,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
               width={24}
             />
             <Text
+              accessibilityLabel="2"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -1586,6 +1607,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
               width={24}
             />
             <Text
+              accessibilityLabel="1"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -1672,6 +1696,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
               😀
             </Text>
             <Text
+              accessibilityLabel="1"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -1758,6 +1785,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
               🎉
             </Text>
             <Text
+              accessibilityLabel="1"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {

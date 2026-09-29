@@ -106,6 +106,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="!!FAQ4"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -249,6 +252,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
           </View>
         </View>
         <Text
+          accessibilityLabel="“ZCVXZVXCZVZXVZXCVZXCVXZCVZX”"
+          accessibilityRole="text"
+          accessible={true}
           ellipsizeMode="tail"
           numberOfLines={2}
           style={
@@ -391,6 +397,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="!test4mobilePrivate"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -534,6 +543,9 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
           </View>
         </View>
         <Text
+          accessibilityLabel="“test for mobile private”"
+          accessibilityRole="text"
+          accessible={true}
           ellipsizeMode="tail"
           numberOfLines={2}
           style={
