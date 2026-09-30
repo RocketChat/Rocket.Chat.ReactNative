@@ -12,7 +12,7 @@ import { leaveRoom } from '~/actions/room';
 import Avatar from '~/containers/Avatar';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import * as List from '~/containers/List';
-import Disclosure from '~/containers/NativeListRow/Disclosure';
+import Disclosure from '~/containers/NativeListRow/components/Disclosure';
 import { MarkdownPreview } from '~/containers/markdown';
 import RoomTypeIcon from '~/containers/RoomTypeIcon';
 import SafeAreaView from '~/containers/SafeAreaView';

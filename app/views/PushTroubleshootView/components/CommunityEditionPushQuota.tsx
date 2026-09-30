@@ -2,7 +2,7 @@ import { Alert, StyleSheet, Text } from 'react-native';
 import { type ReactElement } from 'react';
 
 import * as List from '~/containers/List';
-import { asNativeListSection } from '~/containers/List/native/rowMarkers';
+import { asNativeListSection } from '~/containers/List/native/utils/rowMarkers';
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useTheme } from '~/theme';

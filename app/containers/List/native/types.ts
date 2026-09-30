@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 
-import { type IListItem } from '../ListItem';
+import { type IListItem } from '../components/ListItem';
 
 export interface INativeListItem {
 	item: IListItem;

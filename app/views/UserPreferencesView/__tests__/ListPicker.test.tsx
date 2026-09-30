@@ -5,7 +5,7 @@ import { type INativeListPicker } from '~/containers/List/native/types';
 import ListPicker from '../ListPicker';
 
 const mockPicker = jest.fn();
-jest.mock('~/containers/List/native/Picker', () => ({
+jest.mock('~/containers/List/native/components/Picker', () => ({
 	__esModule: true,
 	default: (props: INativeListPicker) => {
 		mockPicker(props);

@@ -55,7 +55,7 @@ jest.mock('~/containers/ActionSheet', () => ({
 }));
 
 const mockPicker = jest.fn();
-jest.mock('~/containers/List/native/Picker', () => {
+jest.mock('~/containers/List/native/components/Picker', () => {
 	const { View } = require('react-native');
 	return {
 		__esModule: true,

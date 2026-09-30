@@ -1,7 +1,7 @@
 import * as List from '~/containers/List';
 import { ICON_SIZE } from '~/containers/List/constants';
 import NativeListRow from '~/containers/NativeListRow';
-import RowSeparator from '~/containers/NativeListRow/Separator';
+import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import { AVATAR_SIZE } from '~/containers/NativeListRow/constants';
 import Radio from '~/containers/Radio';
 import { useTheme } from '~/theme';

@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import { useActionSheet } from '~/containers/ActionSheet';
 import * as List from '~/containers/List';
-import { asNativeListSection } from '~/containers/List/native/rowMarkers';
+import { asNativeListSection } from '~/containers/List/native/utils/rowMarkers';
 import { useNativeListMode } from '~/containers/List/native/context';
 import I18n from '~/i18n';
 import dayjs from '~/lib/dayjs';

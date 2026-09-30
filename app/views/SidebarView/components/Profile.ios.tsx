@@ -6,7 +6,7 @@ import Avatar from '~/containers/Avatar';
 import { getUserSelector } from '~/selectors/login';
 import { type DrawerParamList } from '~/stacks/types';
 import * as List from '~/containers/List';
-import { asNativeListRow } from '~/containers/List/native/rowMarkers';
+import { asNativeListRow } from '~/containers/List/native/utils/rowMarkers';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 

@@ -1,7 +1,7 @@
 import { type DrawerNavigationProp } from '@react-navigation/drawer';
 import { View } from 'react-native';
 
-import ListContainer from '~/containers/List/ListContainer.ios';
+import ListContainer from '~/containers/List/components/ListContainer.ios';
 import styles from './styles';
 import { type DrawerParamList } from '~/stacks/types';
 import { useSidebarSections } from './useSidebarSections.ios';

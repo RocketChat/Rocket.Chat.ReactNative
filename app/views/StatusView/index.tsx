@@ -25,7 +25,7 @@ import { showErrorAlertWithEMessage, compareServerVersion, isIOS } from '~/lib/m
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { useTheme } from '~/theme';
 import { USER_STATUS_TEXT_MAX_LENGTH } from '~/lib/constants/maxLength';
-import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
+import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import ClearAfterPicker, { type ClearAfterValue, computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
 import FooterComponent from './FooterComponent';
 

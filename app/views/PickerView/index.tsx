@@ -12,8 +12,8 @@ import { useDebounce } from '~/lib/methods/helpers';
 import { type TNavigation } from '~/stacks/stackType';
 import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
-import { PlainSeparator } from '~/containers/NativeListRow/Separator';
-import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
+import { PlainSeparator } from '~/containers/NativeListRow/components/Separator';
+import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import Item from './Item';
 
 const styles = StyleSheet.create({

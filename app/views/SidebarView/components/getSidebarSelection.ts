@@ -1,4 +1,4 @@
-import { type IListSelection } from '~/containers/List/ListContainer.ios';
+import { type IListSelection } from '~/containers/List/components/ListContainer.ios';
 import { type IStackItem } from './useStackItems';
 
 export const ADMIN_SELECTION_TAG = 'sidebar-admin';

@@ -7,7 +7,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { isIOS, showErrorAlert } from '~/lib/methods/helpers';
 import { useTheme } from '~/theme';
 import { CustomIcon } from '~/containers/CustomIcon';
-import { asNativeListSection } from '~/containers/List/native/rowMarkers';
+import { asNativeListSection } from '~/containers/List/native/utils/rowMarkers';
 
 function DeviceNotificationSettings(): ReactElement {
 	const { colors } = useTheme();

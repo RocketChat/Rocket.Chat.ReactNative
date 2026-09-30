@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import ListRadio from '~/containers/List/ListRadio';
+import ListRadio from '~/containers/List/components/ListRadio';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { appStart } from '~/actions/app';
 import { setUser } from '~/actions/login';

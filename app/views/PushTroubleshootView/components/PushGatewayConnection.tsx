@@ -9,7 +9,7 @@ import { compareServerVersion, showErrorAlertWithEMessage } from '~/lib/methods/
 import { pushTest } from '~/lib/services/restApi';
 import { useTheme } from '~/theme';
 import { CustomIcon } from '~/containers/CustomIcon';
-import { asNativeListSection } from '~/containers/List/native/rowMarkers';
+import { asNativeListSection } from '~/containers/List/native/utils/rowMarkers';
 
 function PushGatewayConnection(): ReactElement | null {
 	const [loading, setLoading] = useState(false);

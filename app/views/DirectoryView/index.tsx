@@ -32,8 +32,8 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useDirectorySearch } from './hooks/useDirectorySearch';
 import { hasNativeHeaderBar } from '~/lib/methods/helpers';
 import { headerIcon } from '~/lib/methods/helpers/navigation/headerIcon';
-import RowSeparator from '~/containers/NativeListRow/Separator';
-import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
+import RowSeparator from '~/containers/NativeListRow/components/Separator';
+import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 
 interface IDirectoryViewProps {
 	navigation: CompositeNavigationProp<

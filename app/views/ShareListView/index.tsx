@@ -14,7 +14,7 @@ import database from '~/lib/database';
 import I18n from '~/i18n';
 import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
 import DirectoryItem, { ROW_HEIGHT } from '~/containers/DirectoryItem';
-import RowSeparator from '~/containers/NativeListRow/Separator';
+import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import ServerItem from '~/containers/ServerItem';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import ActivityIndicator from '~/containers/ActivityIndicator';

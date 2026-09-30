@@ -22,8 +22,8 @@ import { addRoomsToTeam } from '~/lib/services/restApi';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import Navigation from '~/lib/navigation/appNavigation';
-import RowSeparator from '~/containers/NativeListRow/Separator';
-import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
+import RowSeparator from '~/containers/NativeListRow/components/Separator';
+import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import ChannelItem from './ChannelItem';
 
 type TNavigation = NativeStackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;

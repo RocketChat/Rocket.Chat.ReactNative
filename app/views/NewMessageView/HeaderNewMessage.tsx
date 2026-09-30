@@ -15,7 +15,7 @@ import { type NewMessageStackParamList } from '~/stacks/types';
 import { compareServerVersion } from '~/lib/methods/helpers';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { usePermissions } from '~/lib/hooks/usePermissions';
-import { useListBackgroundColor } from '~/containers/NativeListRow/useListBackgroundColor';
+import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import ButtonCreate from './ButtonCreate';
 
 const styles = StyleSheet.create({
