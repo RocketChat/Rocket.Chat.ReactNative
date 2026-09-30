@@ -1,24 +1,3 @@
-diff --git a/node_modules/react-native-plain-text/ios/RNPlainText.mm b/node_modules/react-native-plain-text/ios/RNPlainText.mm
-index e893ee0..f363fc9 100644
---- a/node_modules/react-native-plain-text/ios/RNPlainText.mm
-+++ b/node_modules/react-native-plain-text/ios/RNPlainText.mm
-@@ -244,6 +244,16 @@ using namespace plaintext;
-     }
- }
- 
-+- (NSString *)accessibilityLabel
-+{
-+    return _label.accessibilityLabel;
-+}
-+
-+- (UIAccessibilityTraits)accessibilityTraits
-+{
-+    return [super accessibilityTraits] | UIAccessibilityTraitStaticText;
-+}
-+
- - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
- {
-     const auto &oldViewProps = *std::static_pointer_cast<RNPlainTextProps const>(_props);
 diff --git a/node_modules/react-native-plain-text/lib/module/PlainText.js b/node_modules/react-native-plain-text/lib/module/PlainText.js
 index 4862849..684e347 100644
 --- a/node_modules/react-native-plain-text/lib/module/PlainText.js
