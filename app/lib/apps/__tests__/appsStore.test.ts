@@ -207,3 +207,22 @@ describe('subscribeToApps', () => {
 		expect(mockUnsubscribe).toHaveBeenCalledTimes(1);
 	});
 });
+
+describe('useAppsStore reset', () => {
+	it('drops responses that resolve after a reset', async () => {
+		let resolveButtons: (value: unknown) => void = () => {};
+		let resolveLanguages: (value: unknown) => void = () => {};
+		mockGetAppActionButtons.mockImplementationOnce(() => new Promise(resolve => (resolveButtons = resolve)) as never);
+		mockGetAppsLanguages.mockImplementationOnce(() => new Promise(resolve => (resolveLanguages = resolve)) as never);
+
+		const buttons = useAppsStore.getState().fetchActionButtons();
+		const translations = useAppsStore.getState().fetchTranslations();
+		useAppsStore.getState().reset();
+		resolveButtons([{ appId: 'stale', actionId: 'a' }]);
+		resolveLanguages({ apps: [{ id: 'stale', languages: { en: { k: 'v' } } }] });
+		await Promise.all([buttons, translations]);
+
+		expect(useAppsStore.getState().actionButtons).toEqual([]);
+		expect(useAppsStore.getState().translations).toEqual({});
+	});
+});

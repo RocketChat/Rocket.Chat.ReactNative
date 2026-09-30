@@ -28,33 +28,50 @@ const initialState: TAppsState = {
 	translations: {}
 };
 
+let storeVersion = 0;
+
 export const useAppsStore = create<TAppsState & TAppsActions>(set => ({
 	...initialState,
 
 	fetchActionButtons: async () => {
+		const version = storeVersion;
 		try {
-			set({ actionButtons: await getAppActionButtons() });
+			const actionButtons = await getAppActionButtons();
+			if (version === storeVersion) {
+				set({ actionButtons });
+			}
 		} catch (e) {
-			set({ actionButtons: [] });
+			if (version === storeVersion) {
+				set({ actionButtons: [] });
+			}
 			log(e);
 		}
 	},
 
 	fetchTranslations: async () => {
+		const version = storeVersion;
 		try {
 			const { apps } = await getAppsLanguages();
+			if (version !== storeVersion) {
+				return;
+			}
 			const translations = apps.reduce<TAppTranslations>((acc, { id, languages }) => {
 				acc[id] = languages;
 				return acc;
 			}, {});
 			set({ translations });
 		} catch (e) {
-			set({ translations: {} });
+			if (version === storeVersion) {
+				set({ translations: {} });
+			}
 			log(e);
 		}
 	},
 
-	reset: () => set(initialState)
+	reset: () => {
+		storeVersion += 1;
+		set(initialState);
+	}
 }));
 
 const APPS_STREAM = 'stream-apps';
