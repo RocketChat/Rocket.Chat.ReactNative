@@ -67,7 +67,7 @@ const JoinCode = memo(({ rid, t, onJoin, ref }: IJoinCodeProps) => {
 	useImperativeHandle(ref, () => ({ show }));
 
 	return (
-		<Modal avoidKeyboard isVisible={visible}>
+		<Modal avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
 			<GestureHandlerRootView style={styles.container} testID='join-code'>
 				<View
 					style={[
