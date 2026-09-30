@@ -185,7 +185,7 @@ const availableLanguages = Object.keys(translations);
 const { languageTag } = RNLocalize.findBestLanguageTag(availableLanguages) || defaultLanguage;
 
 // @ts-ignore
-i18n.isTranslated = (text?: string) => !!text && Object.prototype.hasOwnProperty.call(englishJson, text);
+i18n.isTranslated = (text?: string) => text in englishJson;
 
 setLanguage(languageTag);
 i18n.fallbacks = true;
