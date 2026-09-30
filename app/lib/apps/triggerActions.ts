@@ -10,7 +10,7 @@ import { showToast } from '~/lib/methods/helpers/showToast';
 import Navigation from '~/lib/navigation/appNavigation';
 import { triggerAction } from './actions';
 
-const notifyUnsupported = <T>(result: T): T => {
+export const notifyUnsupported = <T>(result: T): T => {
 	if (result === ModalActions.UNSUPPORTED) {
 		showToast(I18n.t('App_action_unsupported'));
 	}
