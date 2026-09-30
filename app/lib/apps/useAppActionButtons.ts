@@ -101,7 +101,7 @@ const usePermissionRoles = (permissionsKey: string): { [permission: string]: str
 	return state?.key === permissionsKey ? state.roles : null;
 };
 
-/** Returns one list of buttons per filter, in the same order. */
+/** Returns one list of buttons per filter, in the same order. `filters` must be a stable reference. */
 export const useAppActionButtons = ({
 	filters,
 	rid
@@ -109,12 +109,8 @@ export const useAppActionButtons = ({
 	filters: IAppActionButtonFilter[];
 	rid?: string;
 }): IAppActionButtonItem[][] => {
-	const contextsKey = filters.map(({ context }) => context).join(',');
 	const buttons = useAppsStore(
-		useShallow(state => {
-			const contexts = splitKey(contextsKey);
-			return state.actionButtons.filter(button => contexts.includes(button.context));
-		})
+		useShallow(state => state.actionButtons.filter(button => filters.some(({ context }) => context === button.context)))
 	);
 	const translations = useAppsStore(state => state.translations);
 	const userRoles = useAppSelector(state => getUserSelector(state).roles || [], shallowEqual);
@@ -128,21 +124,16 @@ export const useAppActionButtons = ({
 	const permissionsKey = useMemo(() => collectPermissions(buttons).join(','), [buttons]);
 	const roomContext = useRoomContext(rid, hasButtons);
 	const permissions = usePermissionRoles(permissionsKey);
-	const filtersKey = filters.map(({ context, category }) => `${context}:${category ?? ''}`).join(',');
 
 	return useMemo(() => {
-		const parsedFilters = splitKey(filtersKey).map(entry => {
-			const [context, category] = entry.split(':');
-			return { context, category: (category || undefined) as TAppActionButtonCategory | undefined };
-		});
 		if (!hasButtons || !permissions || (rid && !roomContext)) {
-			return parsedFilters.map(() => []);
+			return filters.map(() => []);
 		}
 		const roles = [...new Set([...(roomContext?.roles ?? []), ...userRoles])];
 		const room = roomContext?.room ?? {};
 		const visible = buttons.filter(button => applyRoomFilter(button, room) && applyAuthFilter(button, { roles, permissions }));
 
-		return parsedFilters.map(({ context, category }) =>
+		return filters.map(({ context, category }) =>
 			visible
 				.filter(button => button.context === context && (!category || applyCategoryFilter(button, category)))
 				.map(button => ({
@@ -151,5 +142,5 @@ export const useAppActionButtons = ({
 					button
 				}))
 		);
-	}, [buttons, filtersKey, hasButtons, locale, permissions, rid, roomContext, translations, userRoles]);
+	}, [buttons, filters, hasButtons, locale, permissions, rid, roomContext, translations, userRoles]);
 };

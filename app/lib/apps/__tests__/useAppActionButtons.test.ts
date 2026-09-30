@@ -141,6 +141,20 @@ describe('useAppActionButtons', () => {
 		expect(result.current[0].button.actionId).toBe('channel-only');
 	});
 
+	it('hides a room-type button when there is no room', async () => {
+		mockActionButtons = [
+			button({ context: UIActionButtonContext.USER_DROPDOWN_ACTION }),
+			button({ actionId: 'room-only', context: UIActionButtonContext.USER_DROPDOWN_ACTION, when: { roomTypes: ['direct'] } })
+		];
+
+		const { result } = renderHook(
+			() => useAppActionButtons({ filters: [{ context: UIActionButtonContext.USER_DROPDOWN_ACTION }] })[0]
+		);
+
+		await waitFor(() => expect(result.current).toHaveLength(1));
+		expect(result.current[0].button.actionId).toBe('summarize');
+	});
+
 	it('resolves a permission against the roles the subscription and the user hold', async () => {
 		mockActionButtons = [button({ when: { hasOnePermission: ['pin-message'] } })];
 		mockPermissionRecords.next([{ id: 'pin-message', roles: ['owner'] }]);

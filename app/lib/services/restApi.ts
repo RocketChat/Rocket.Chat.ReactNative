@@ -18,7 +18,7 @@ import {
 import { type TParams } from '~/definitions/ILivechatEditView';
 import { type ILivechatTag } from '~/definitions/ILivechatTag';
 import { type ISpotlight } from '~/definitions/ISpotlight';
-import { type IAppActionButton, type IAppLanguages } from '../apps/definitions';
+import { type IAppActionButton, type IAppLanguages } from '~/lib/apps/definitions';
 import { TEAM_TYPE } from '~/definitions/ITeam';
 import { type OperationParams, type ResultFor } from '~/definitions/rest/helpers';
 import { type SubscriptionsEndpoints } from '~/definitions/rest/v1/subscriptions';

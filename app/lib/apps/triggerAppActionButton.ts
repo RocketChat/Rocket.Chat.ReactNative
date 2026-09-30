@@ -1,10 +1,10 @@
+import { triggerAction } from './actions';
 import { type IAppActionButton } from './definitions';
+import { notifyUnsupported } from './triggerActions';
 import { ActionTypes } from '~/containers/UIKit/interfaces';
 import I18n from '~/i18n';
-import { triggerAction } from './actions';
-import { notifyUnsupported } from './triggerActions';
-import { showToast } from '~/lib/methods/helpers/showToast';
 import log from '~/lib/methods/helpers/log';
+import { showToast } from '~/lib/methods/helpers/showToast';
 
 interface ITriggerAppActionButton {
 	button: IAppActionButton;
@@ -24,7 +24,7 @@ export const triggerAppActionButton = async ({ button, rid, tmid, mid, message }
 				rid,
 				tmid,
 				mid,
-				payload: { context: button.context, ...(message !== undefined ? { message } : {}) }
+				payload: { context: button.context, message }
 			})
 		);
 	} catch (e) {

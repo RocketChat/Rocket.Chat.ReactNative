@@ -1,17 +1,12 @@
 import { create } from 'zustand';
 
-import { type IAppActionButton } from './definitions';
+import { type IAppActionButton, type TAppTranslations } from './definitions';
 import { normalizeLanguage } from './translations';
 import log from '~/lib/methods/helpers/log';
 import { getAppActionButtons, getAppsLanguages } from '~/lib/services/restApi';
 import sdk from '~/lib/services/sdk';
 import { isLoginReady } from '~/lib/services/waitForLoginReady';
 import { store } from '~/lib/store/auxStore';
-
-export type TAppTranslations = {
-	// appId -> language -> key -> translation
-	[appId: string]: { [language: string]: { [key: string]: string } };
-};
 
 type TAppsState = {
 	actionButtons: IAppActionButton[];
@@ -42,7 +37,7 @@ export const useAppsStore = create<TAppsState & TAppsActions>(set => ({
 				set({ actionButtons });
 			}
 		} catch {
-			// Servers without the Apps framework reject this; keep whatever was already loaded.
+			// Servers without the Apps framework reject this.
 		}
 	},
 
@@ -62,7 +57,7 @@ export const useAppsStore = create<TAppsState & TAppsActions>(set => ({
 			}, {});
 			set({ translations });
 		} catch {
-			// Servers without the Apps framework reject this; keep whatever was already loaded.
+			// Servers without the Apps framework reject this.
 		}
 	},
 
@@ -99,11 +94,10 @@ const handleStreamData = (ddpMessage: { fields?: { args?: [[string, unknown[]]] 
 	const [event] = ddpMessage?.fields?.args?.[0] || [];
 	const { fetchActionButtons, fetchTranslations } = useAppsStore.getState();
 	if (event === 'actions/changed') {
-		fetchActionButtons().catch(log);
+		fetchActionButtons();
 	}
-	// Translations ship with an app, so any install, update or removal can change them.
 	if (typeof event === 'string' && event.startsWith('app/')) {
-		fetchTranslations().catch(log);
+		fetchTranslations();
 	}
 };
 
@@ -114,8 +108,8 @@ const subscribeToStream = () => {
 	subscribed = true;
 	const current = (generation += 1);
 	const { fetchActionButtons, fetchTranslations } = useAppsStore.getState();
-	fetchActionButtons().catch(log);
-	fetchTranslations().catch(log);
+	fetchActionButtons();
+	fetchTranslations();
 	let listener: typeof streamListener = null;
 	const fail = (e: unknown) => {
 		log(e);
@@ -166,8 +160,6 @@ const unsubscribeFromStream = () => {
 	streamSubscription = null;
 };
 
-// The composer can mount before the first connection, and `disconnect()` drops both the SDK and the
-// store, so setup follows the connection rather than the mount.
 const handleStoreChange = () => {
 	const ready = isLoginReady();
 	if (ready === loginReady) {

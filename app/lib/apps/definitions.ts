@@ -63,3 +63,8 @@ export interface IAppLanguages {
 }
 
 export const getIdForActionButton = ({ appId, actionId }: IAppActionButton): string => `${appId}/${actionId}`;
+
+export type TAppTranslations = {
+	// appId -> language -> key -> translation
+	[appId: string]: { [language: string]: { [key: string]: string } };
+};
