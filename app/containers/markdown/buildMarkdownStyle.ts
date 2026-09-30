@@ -8,21 +8,29 @@ const codeFontFamily = Platform.select({ ios: 'Courier New', android: 'monospace
 
 export const buildMarkdownStyle = (colors: TColors, isBigEmojiOnly: boolean, fontScale: number): MarkdownStyle => ({
 	paragraph: {
+		fontFamily: 'Inter',
 		fontSize: isBigEmojiOnly ? 30 : 16,
 		lineHeight: isBigEmojiOnly ? 43 : 22,
 		color: colors.fontDefault
 	},
-	h1: { fontSize: 24, lineHeight: 30, fontWeight: 'bold', color: colors.fontDefault },
-	h2: { fontSize: 22, lineHeight: 28, fontWeight: 'bold', color: colors.fontDefault },
-	h3: { fontSize: 20, lineHeight: 26, fontWeight: '600', color: colors.fontDefault },
-	h4: { fontSize: 18, lineHeight: 24, fontWeight: '600', color: colors.fontDefault },
+	h1: { fontFamily: 'Inter', fontWeight: 'bold', fontSize: 24, lineHeight: 30, color: colors.fontDefault },
+	h2: { fontFamily: 'Inter', fontWeight: 'bold', fontSize: 22, lineHeight: 28, color: colors.fontDefault },
+	h3: { fontFamily: 'Inter', fontWeight: '600', fontSize: 20, lineHeight: 26, color: colors.fontDefault },
+	h4: { fontFamily: 'Inter', fontWeight: '600', fontSize: 18, lineHeight: 24, color: colors.fontDefault },
 	blockquote: {
+		fontFamily: 'Inter',
+		fontSize: 16,
+		lineHeight: 22,
+		color: colors.fontDefault,
 		borderColor: colors.strokeLight,
 		backgroundColor: colors.strokeLight,
 		borderWidth: 0,
 		padding: 4
 	},
 	list: {
+		fontFamily: 'Inter',
+		fontSize: 16,
+		lineHeight: 22,
 		color: colors.fontDefault
 	},
 	code: {
@@ -33,6 +41,8 @@ export const buildMarkdownStyle = (colors: TColors, isBigEmojiOnly: boolean, fon
 	},
 	codeBlock: {
 		fontFamily: codeFontFamily,
+		fontSize: 16,
+		lineHeight: 22,
 		color: colors.fontDefault,
 		backgroundColor: colors.surfaceNeutral,
 		borderColor: colors.strokeLight,

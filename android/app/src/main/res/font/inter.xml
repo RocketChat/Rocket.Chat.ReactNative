@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <font
+        android:font="@font/inter_regular"
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        app:font="@font/inter_regular"
+        app:fontStyle="normal"
+        app:fontWeight="400" />
+    <font
+        android:font="@font/inter_regular_italic"
+        android:fontStyle="italic"
+        android:fontWeight="400"
+        app:font="@font/inter_regular_italic"
+        app:fontStyle="italic"
+        app:fontWeight="400" />
+    <font
+        android:font="@font/inter_medium"
+        android:fontStyle="normal"
+        android:fontWeight="500"
+        app:font="@font/inter_medium"
+        app:fontStyle="normal"
+        app:fontWeight="500" />
+    <font
+        android:font="@font/inter_medium_italic"
+        android:fontStyle="italic"
+        android:fontWeight="500"
+        app:font="@font/inter_medium_italic"
+        app:fontStyle="italic"
+        app:fontWeight="500" />
+    <font
+        android:font="@font/inter_semibold"
+        android:fontStyle="normal"
+        android:fontWeight="600"
+        app:font="@font/inter_semibold"
+        app:fontStyle="normal"
+        app:fontWeight="600" />
+    <font
+        android:font="@font/inter_semibold_italic"
+        android:fontStyle="italic"
+        android:fontWeight="600"
+        app:font="@font/inter_semibold_italic"
+        app:fontStyle="italic"
+        app:fontWeight="600" />
+    <font
+        android:font="@font/inter_bold"
+        android:fontStyle="normal"
+        android:fontWeight="700"
+        app:font="@font/inter_bold"
+        app:fontStyle="normal"
+        app:fontWeight="700" />
+    <font
+        android:font="@font/inter_bold_italic"
+        android:fontStyle="italic"
+        android:fontWeight="700"
+        app:font="@font/inter_bold_italic"
+        app:fontStyle="italic"
+        app:fontWeight="700" />
+</font-family>
