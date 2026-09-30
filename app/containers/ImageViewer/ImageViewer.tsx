@@ -1,6 +1,12 @@
 import { useRef, useState, type ReactElement } from 'react';
 import { type LayoutChangeEvent, StyleSheet, type StyleProp, type ViewStyle, View } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import {
+	GestureDetector,
+	usePanGesture,
+	usePinchGesture,
+	useSimultaneousGestures,
+	useTapGesture
+} from 'react-native-gesture-handler';
 import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { Image, type ImageStyle } from 'expo-image';
 
@@ -91,36 +97,38 @@ export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...p
 		return Math.max(Math.min(value, max), min);
 	};
 
-	const pinchGesture = Gesture.Pinch()
-		.onUpdate(event => {
+	const pinchGesture = usePinchGesture({
+		onUpdate: event => {
 			scale.value = clamp(scaleOffset.value * (event.scale > 0 ? event.scale : 1), 1, 4);
-		})
-		.onEnd(() => {
+		},
+		onDeactivate: () => {
 			scaleOffset.value = scale.value > 0 ? scale.value : 1;
-		});
+		}
+	});
 
-	const panGesture = Gesture.Pan()
-		.maxPointers(2)
-		.onStart(() => {
+	const panGesture = usePanGesture({
+		maxPointers: 2,
+		onActivate: () => {
 			translationX.value = offsetX.value;
 			translationY.value = offsetY.value;
-		})
-		.onUpdate(event => {
+		},
+		onUpdate: event => {
 			const scaleFactor = scale.value - 1;
 			translationX.value = clamp(event.translationX + offsetX.value, -scaleFactor * centerX, scaleFactor * centerX);
 			translationY.value = clamp(event.translationY + offsetY.value, -scaleFactor * centerY, scaleFactor * centerY);
-		})
-		.onEnd(() => {
+		},
+		onDeactivate: () => {
 			offsetX.value = translationX.value;
 			offsetY.value = translationY.value;
 			if (scale.value === 1) resetScaleAnimation();
-		});
+		}
+	});
 
-	const doubleTapGesture = Gesture.Tap()
-		.numberOfTaps(2)
-		.maxDelay(120)
-		.maxDistance(70)
-		.onEnd(event => {
+	const doubleTapGesture = useTapGesture({
+		numberOfTaps: 2,
+		maxDelay: 120,
+		maxDistance: 70,
+		onDeactivate: event => {
 			if (scaleOffset.value > 1) resetScaleAnimation();
 			else {
 				scale.value = withTiming(2, { duration: 200 });
@@ -128,9 +136,10 @@ export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...p
 				offsetX.value = centerX - event.x;
 				scaleOffset.value = 2;
 			}
-		});
+		}
+	});
 
-	const gesture = Gesture.Simultaneous(pinchGesture, panGesture, doubleTapGesture);
+	const gesture = useSimultaneousGestures(pinchGesture, panGesture, doubleTapGesture);
 
 	const { colors } = useTheme();
 
