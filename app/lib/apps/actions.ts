@@ -127,8 +127,7 @@ export async function triggerAction({
 
 		const result = await appsApiFetch(`ui.interaction/${appId}/`, { method: 'POST', body: interaction });
 		const text = await result.text();
-		if (!text || text.trim() === '') {
-			// modal.close has no body, but returns ok status
+		if (!text.trim()) {
 			return ModalActions.CLOSE;
 		}
 

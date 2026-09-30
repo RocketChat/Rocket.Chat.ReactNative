@@ -12,7 +12,7 @@ import { useCanUploadFile, useChooseMedia } from '~/containers/MessageComposer/h
 import { useComposerRid, useComposerTmid, useComposerType } from '~/containers/MessageComposer/ComposerStore';
 import { UIActionButtonContext } from '~/lib/apps/definitions';
 import { useAppActionButtons } from '~/lib/apps/useAppActionButtons';
-import { triggerAppActionButton } from '~/lib/apps/triggerAppActionButton';
+import { triggerAppActionButton } from '~/lib/apps/triggerActions';
 
 export const ActionsButton = () => {
 	const rid = useComposerRid();
@@ -107,7 +107,7 @@ export const ActionsButton = () => {
 				danger: button.variant === 'danger',
 				testID: `message-composer-ai-action-${id}`,
 				onPress: () => {
-					triggerAppActionButton({ button, rid, tmid });
+					triggerAppActionButton({ button, rid });
 				}
 			});
 		});

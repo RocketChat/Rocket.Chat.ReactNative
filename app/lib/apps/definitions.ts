@@ -1,7 +1,4 @@
-/**
- * Mirror of `@rocket.chat/apps-engine/definition/ui`, which isn't a dependency here.
- * Keep in sync with the server: packages/apps-engine/src/definition/ui.
- */
+// https://github.com/RocketChat/Rocket.Chat/tree/develop/packages/apps-engine/src/definition/ui
 
 export const UIActionButtonContext = {
 	MESSAGE_ACTION: 'messageAction',

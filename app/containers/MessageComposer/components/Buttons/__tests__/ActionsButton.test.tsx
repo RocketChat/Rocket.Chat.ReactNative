@@ -9,7 +9,7 @@ jest.mock('~/lib/apps/useAppActionButtons', () => ({
 }));
 
 const mockTriggerAppActionButton = jest.fn();
-jest.mock('~/lib/apps/triggerAppActionButton', () => ({
+jest.mock('~/lib/apps/triggerActions', () => ({
 	triggerAppActionButton: (params: unknown) => mockTriggerAppActionButton(params)
 }));
 
@@ -111,7 +111,7 @@ describe('ActionsButton', () => {
 		});
 	});
 
-	it('sends the thread but not the composer draft with an ai action', () => {
+	it('sends neither the thread nor the composer draft with an ai action', () => {
 		const aiItem = item('summarize', { context: 'roomAction', category: 'ai' });
 		mockUseAppActionButtons.mockImplementation(params =>
 			(params as { context: string }).context === 'roomAction' ? [aiItem] : []
@@ -119,6 +119,6 @@ describe('ActionsButton', () => {
 
 		openSheet()[1].onPress();
 
-		expect(mockTriggerAppActionButton).toHaveBeenCalledWith({ button: aiItem.button, rid: 'rid-1', tmid: 'tmid-1' });
+		expect(mockTriggerAppActionButton).toHaveBeenCalledWith({ button: aiItem.button, rid: 'rid-1' });
 	});
 });

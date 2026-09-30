@@ -25,39 +25,39 @@ const initialState: TAppsState = {
 	translations: {}
 };
 
-let generation = 0;
+let actionButtonsRequest = 0;
+let translationsRequest = 0;
 
 export const useAppsStore = create<TAppsState & TAppsActions>(set => ({
 	...initialState,
 
 	fetchActionButtons: async () => {
-		const current = generation;
+		const current = ++actionButtonsRequest;
 		try {
 			const actionButtons = await getAppActionButtons();
-			if (current === generation) set({ actionButtons });
+			if (current === actionButtonsRequest) set({ actionButtons });
 		} catch (e) {
-			if (current === generation) set({ actionButtons: [] });
 			log(e);
 		}
 	},
 
 	fetchTranslations: async () => {
-		const current = generation;
+		const current = ++translationsRequest;
 		try {
 			const { apps } = await getAppsLanguages();
 			const translations = apps.reduce<TAppTranslations>((acc, { id, languages }) => {
 				acc[id] = Object.fromEntries(Object.entries(languages).map(([language, keys]) => [normalizeLanguage(language), keys]));
 				return acc;
 			}, {});
-			if (current === generation) set({ translations });
+			if (current === translationsRequest) set({ translations });
 		} catch (e) {
-			if (current === generation) set({ translations: {} });
 			log(e);
 		}
 	},
 
 	reset: () => {
-		generation += 1;
+		actionButtonsRequest += 1;
+		translationsRequest += 1;
 		set(initialState);
 	}
 }));
@@ -68,7 +68,7 @@ export const onAppsStreamData = (ddpMessage: { fields?: { args?: [[string, unkno
 	if (event === 'actions/changed') {
 		fetchActionButtons().catch(log);
 	}
-	if (event === 'app/added') {
+	if (event === 'app/added' || event === 'app/updated' || event === 'app/removed') {
 		fetchTranslations().catch(log);
 	}
 };

@@ -218,8 +218,7 @@ const findAppActionButton = (username, password, context, actionId) => {
     return button;
 };
 
-// App labels ship with the app, not with the mobile bundle, so resolve them from the server.
-const getAppTranslation = (username, password, appId, key) => {
+const getServerAppTranslation = (username, password, appId, key) => {
     login(username, password);
 
     const app = appsApiGet('languages').apps.find(a => a.id === appId);
@@ -332,7 +331,7 @@ output.utils = {
     getDeepLink,
     createDM,
     findAppActionButton,
-    getAppTranslation,
+    getServerAppTranslation,
     sleep,
     groupMessageCount
 };

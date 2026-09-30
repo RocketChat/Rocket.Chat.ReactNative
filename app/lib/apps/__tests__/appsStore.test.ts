@@ -55,8 +55,8 @@ describe('appsStore', () => {
 		expect(mockGetAppsLanguages).not.toHaveBeenCalled();
 	});
 
-	it('refetches only the translations on app/added', async () => {
-		onAppsStreamData({ fields: { args: [['app/added', ['app-id']]] } });
+	it.each(['app/added', 'app/updated', 'app/removed'])('refetches only the translations on %s', async event => {
+		onAppsStreamData({ fields: { args: [[event, ['app-id']]] } });
 		await flush();
 
 		expect(mockGetAppsLanguages).toHaveBeenCalledTimes(1);
