@@ -23,13 +23,6 @@
         app:fontStyle="normal"
         app:fontWeight="500" />
     <font
-        android:font="@font/inter_medium_italic"
-        android:fontStyle="italic"
-        android:fontWeight="500"
-        app:font="@font/inter_medium_italic"
-        app:fontStyle="italic"
-        app:fontWeight="500" />
-    <font
         android:font="@font/inter_semibold"
         android:fontStyle="normal"
         android:fontWeight="600"
