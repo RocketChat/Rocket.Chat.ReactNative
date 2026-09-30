@@ -14,7 +14,7 @@ interface IAvatarImage {
 
 const styles = StyleSheet.create({
 	skeleton: {
-		...StyleSheet.absoluteFillObject
+		...StyleSheet.absoluteFill
 	}
 });
 
