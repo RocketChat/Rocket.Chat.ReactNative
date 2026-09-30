@@ -19,7 +19,7 @@ const Wrapper = ({
 }: IWrapperProps): ReactElement => {
 	const { colors } = useTheme();
 	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
-	const accessibilityActions = useRoomItemAccessibilityActions();
+	const accessibilityActions = useRoomItemAccessibilityActions(!!onLongPress);
 
 	const onAccessibilityAction = (event: AccessibilityActionEvent) => {
 		if (event.nativeEvent.actionName === 'showActions') {
