@@ -11,7 +11,7 @@ import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useCanUploadFile, useChooseMedia } from '~/containers/MessageComposer/hooks';
 import { useComposerRid, useComposerTmid, useComposerType } from '~/containers/MessageComposer/ComposerStore';
 import { UIActionButtonContext } from '~/lib/apps/definitions';
-import { useAppActionButtons } from '~/lib/apps/useAppActionButtons';
+import { selectAppActionButtons, useAppActionButtons } from '~/lib/apps/useAppActionButtons';
 import { triggerAppActionButton } from '~/lib/apps/triggerActions';
 
 export const ActionsButton = () => {
@@ -28,8 +28,9 @@ export const ActionsButton = () => {
 	});
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useMasterDetail();
-	const appActions = useAppActionButtons({ context: UIActionButtonContext.MESSAGE_BOX_ACTION, rid });
-	const aiActions = useAppActionButtons({ context: UIActionButtonContext.ROOM_ACTION, category: 'ai', rid });
+	const appButtons = useAppActionButtons(rid);
+	const appActions = selectAppActionButtons(appButtons, UIActionButtonContext.MESSAGE_BOX_ACTION);
+	const aiActions = selectAppActionButtons(appButtons, UIActionButtonContext.ROOM_ACTION, 'ai');
 
 	const createDiscussion = async () => {
 		if (!rid) return;

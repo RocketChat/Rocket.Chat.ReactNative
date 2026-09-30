@@ -21,7 +21,7 @@ const notifyUnsupported = (result: Awaited<ReturnType<typeof triggerAction>>) =>
 export async function triggerSubmitView({ viewId, ...options }: ITriggerSubmitView) {
 	const result = await triggerAction({ type: ActionTypes.SUBMIT, viewId, ...options });
 	notifyUnsupported(result);
-	if (!result || ModalActions.CLOSE === result || ModalActions.UNSUPPORTED === result) {
+	if (ModalActions.CLOSE === result) {
 		Navigation.back();
 	}
 }

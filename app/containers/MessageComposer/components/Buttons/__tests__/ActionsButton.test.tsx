@@ -5,6 +5,7 @@ import { ActionsButton } from '../ActionsButton';
 
 const mockUseAppActionButtons = jest.fn((_params: unknown): IAppActionButtonItem[] => []);
 jest.mock('~/lib/apps/useAppActionButtons', () => ({
+	...jest.requireActual('~/lib/apps/useAppActionButtons'),
 	useAppActionButtons: (params: unknown) => mockUseAppActionButtons(params)
 }));
 
@@ -75,11 +76,11 @@ describe('ActionsButton', () => {
 	});
 
 	it('lists ai room actions then message box actions after the built-in ones', () => {
-		mockUseAppActionButtons.mockImplementation(params =>
-			(params as { context: string }).context === 'messageBoxAction'
-				? [item('translate')]
-				: [item('summarize', { context: 'roomAction', category: 'ai' })]
-		);
+		mockUseAppActionButtons.mockImplementation(() => [
+			item('translate'),
+			item('summarize', { context: 'roomAction', category: 'ai' }),
+			item('room-default', { context: 'roomAction' })
+		]);
 
 		const options = openSheet();
 
@@ -88,18 +89,15 @@ describe('ActionsButton', () => {
 		expect(options[2].testID).toBe('message-composer-app-action-translate');
 	});
 
-	it('asks for the ai category of the room action context', () => {
+	it('resolves the app buttons of the composer room', () => {
 		openSheet();
 
-		expect(mockUseAppActionButtons).toHaveBeenCalledWith({ context: 'messageBoxAction', rid: 'rid-1' });
-		expect(mockUseAppActionButtons).toHaveBeenCalledWith({ context: 'roomAction', category: 'ai', rid: 'rid-1' });
+		expect(mockUseAppActionButtons).toHaveBeenCalledWith('rid-1');
 	});
 
 	it('sends the thread and the composer draft with a message box action', () => {
 		const messageBoxItem = item('translate');
-		mockUseAppActionButtons.mockImplementation(params =>
-			(params as { context: string }).context === 'messageBoxAction' ? [messageBoxItem] : []
-		);
+		mockUseAppActionButtons.mockImplementation(() => [messageBoxItem]);
 
 		openSheet()[1].onPress();
 
@@ -113,9 +111,7 @@ describe('ActionsButton', () => {
 
 	it('sends neither the thread nor the composer draft with an ai action', () => {
 		const aiItem = item('summarize', { context: 'roomAction', category: 'ai' });
-		mockUseAppActionButtons.mockImplementation(params =>
-			(params as { context: string }).context === 'roomAction' ? [aiItem] : []
-		);
+		mockUseAppActionButtons.mockImplementation(() => [aiItem]);
 
 		openSheet()[1].onPress();
 

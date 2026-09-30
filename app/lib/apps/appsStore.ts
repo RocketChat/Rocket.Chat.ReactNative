@@ -4,6 +4,7 @@ import { type IAppActionButton } from './definitions';
 import { normalizeLanguage } from './translations';
 import log from '~/lib/methods/helpers/log';
 import { getAppActionButtons, getAppsLanguages } from '~/lib/services/restApi';
+import { AppsApiError } from '~/lib/services/appsApiFetch';
 
 type TTranslationsByKey = { [key: string]: string };
 type TTranslationsByLanguage = { [language: string]: TTranslationsByKey };
@@ -25,6 +26,13 @@ const initialState: TAppsState = {
 	translations: {}
 };
 
+const logUnlessAppsUnavailable = (e: unknown) => {
+	if (e instanceof AppsApiError && e.status === 404) {
+		return;
+	}
+	log(e);
+};
+
 let actionButtonsRequest = 0;
 let translationsRequest = 0;
 
@@ -37,7 +45,7 @@ export const useAppsStore = create<TAppsState & TAppsActions>(set => ({
 			const actionButtons = await getAppActionButtons();
 			if (current === actionButtonsRequest) set({ actionButtons });
 		} catch (e) {
-			log(e);
+			logUnlessAppsUnavailable(e);
 		}
 	},
 
@@ -46,12 +54,14 @@ export const useAppsStore = create<TAppsState & TAppsActions>(set => ({
 		try {
 			const { apps } = await getAppsLanguages();
 			const translations = apps.reduce<TAppTranslations>((acc, { id, languages }) => {
-				acc[id] = Object.fromEntries(Object.entries(languages ?? {}).map(([language, keys]) => [normalizeLanguage(language), keys]));
+				acc[id] = Object.fromEntries(
+					Object.entries(languages ?? {}).map(([language, keys]) => [normalizeLanguage(language), keys])
+				);
 				return acc;
 			}, {});
 			if (current === translationsRequest) set({ translations });
 		} catch (e) {
-			log(e);
+			logUnlessAppsUnavailable(e);
 		}
 	},
 

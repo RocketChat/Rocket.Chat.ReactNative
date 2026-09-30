@@ -1,6 +1,15 @@
 import fetch from '../methods/helpers/fetch';
 import sdk from './sdk';
 
+export class AppsApiError extends Error {
+	constructor(
+		message: string,
+		readonly status: number
+	) {
+		super(message);
+	}
+}
+
 export const appsApiFetch = async (
 	path: string,
 	init: { method: 'GET' | 'POST'; body?: unknown } = { method: 'GET' }
@@ -22,7 +31,7 @@ export const appsApiFetch = async (
 	});
 
 	if (!response.ok) {
-		throw new Error(`Failed to ${init.method} /api/apps/${path}: ${response.status}`);
+		throw new AppsApiError(`Failed to ${init.method} /api/apps/${path}: ${response.status}`, response.status);
 	}
 
 	return response;

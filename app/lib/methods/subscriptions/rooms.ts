@@ -8,6 +8,9 @@ import protectedFunction from '../helpers/protectedFunction';
 import log from '../helpers/log';
 import { store } from '~/lib/store/auxStore';
 import { handlePayloadUserInteraction } from '~/lib/apps/actions';
+import { ModalActions } from '~/containers/UIKit/interfaces';
+import { showToast } from '~/lib/methods/helpers/showToast';
+import I18n from '~/i18n';
 import buildMessage from '../helpers/buildMessage';
 import EventEmitter from '../helpers/events';
 import { removedRoom } from '~/actions/room';
@@ -428,7 +431,9 @@ export default function subscribeRooms() {
 		}
 		if (/uiInteraction/.test(ev)) {
 			const { type: eventType, ...args } = type;
-			handlePayloadUserInteraction(eventType, args);
+			if (handlePayloadUserInteraction(eventType, args) === ModalActions.UNSUPPORTED) {
+				showToast(I18n.t('App_action_unsupported'));
+			}
 		}
 		if (/e2ekeyRequest/.test(ev)) {
 			const [roomId, keyId] = ddpMessage.fields.args;

@@ -7,6 +7,8 @@ import { random } from '~/lib/methods/helpers';
 import Navigation from '~/lib/navigation/appNavigation';
 import { appsApiFetch } from '~/lib/services/appsApiFetch';
 
+const TRIGGER_TIMEOUT = 5000;
+
 const triggersId = new Map();
 
 const invalidateTriggerId = (id: string) => {
@@ -18,11 +20,13 @@ const invalidateTriggerId = (id: string) => {
 export const generateTriggerId = (appId?: string): string => {
 	const triggerId = random(17);
 	triggersId.set(triggerId, appId);
+	setTimeout(() => triggersId.delete(triggerId), TRIGGER_TIMEOUT);
 
 	return triggerId;
 };
 
 type THandledServerInteractionType = Extract<ServerInteraction, { type: 'modal.open' | 'modal.update' | 'errors' }>['type'];
+const handledServerInteractionTypes: string[] = [ModalActions.OPEN, ModalActions.UPDATE, ModalActions.ERRORS, ModalActions.CLOSE];
 type THandledServerPayload = {
 	triggerId: string;
 	viewId?: string;
@@ -32,7 +36,7 @@ type THandledServerPayload = {
 };
 
 export const handlePayloadUserInteraction = (
-	type: THandledServerInteractionType,
+	type: THandledServerInteractionType | string,
 	{ triggerId, ...data }: THandledServerPayload
 ): TModalAction | undefined => {
 	if (!triggersId.has(triggerId)) {
@@ -40,6 +44,9 @@ export const handlePayloadUserInteraction = (
 	}
 
 	const triggerAppId = invalidateTriggerId(triggerId);
+	if (!handledServerInteractionTypes.includes(type)) {
+		return ModalActions.UNSUPPORTED;
+	}
 	const payloadAppId = data.appId ?? triggerAppId;
 	if (!payloadAppId) {
 		return;
@@ -152,8 +159,7 @@ export async function triggerAction({
 
 		return handlePayloadUserInteraction(modalType, data as THandledServerPayload);
 	} catch (e) {
-		throw e instanceof Error ? e : new Error('Failed to trigger action');
-	} finally {
 		invalidateTriggerId(triggerId);
+		throw e instanceof Error ? e : new Error('Failed to trigger action');
 	}
 }

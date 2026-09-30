@@ -48,12 +48,12 @@ describe('triggerActions wrappers', () => {
 			});
 		});
 
-		it('goes back when triggerAction returns undefined', async () => {
+		it('keeps the modal open when triggerAction returns undefined', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(undefined);
 
 			await triggerSubmitView(submitInput as any);
 
-			expect(mockedBack).toHaveBeenCalledTimes(1);
+			expect(mockedBack).not.toHaveBeenCalled();
 		});
 
 		it('goes back when triggerAction returns modal.close', async () => {
@@ -64,12 +64,12 @@ describe('triggerActions wrappers', () => {
 			expect(mockedBack).toHaveBeenCalledTimes(1);
 		});
 
-		it('goes back and shows a toast when the interaction is unsupported', async () => {
+		it('keeps the modal open and shows a toast when the interaction is unsupported', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(ModalActions.UNSUPPORTED);
 
 			await triggerSubmitView(submitInput as any);
 
-			expect(mockedBack).toHaveBeenCalledTimes(1);
+			expect(mockedBack).not.toHaveBeenCalled();
 			expect(mockedShowToast).toHaveBeenCalledTimes(1);
 		});
 
