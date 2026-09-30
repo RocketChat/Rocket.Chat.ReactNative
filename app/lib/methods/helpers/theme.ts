@@ -22,7 +22,7 @@ export const initialTheme = (): IThemePreference => {
 
 export const defaultTheme = (): TThemeMode => {
 	const systemTheme = Appearance.getColorScheme();
-	if (systemTheme) {
+	if (systemTheme === 'light' || systemTheme === 'dark') {
 		return systemTheme;
 	}
 	return 'light';
