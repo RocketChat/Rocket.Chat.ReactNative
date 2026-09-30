@@ -48,10 +48,26 @@ describe('Upload (android)', () => {
 		await expect(send()).rejects.toMatchObject({ status: 429, retryAfterSeconds: 12 });
 	});
 
-	it('falls back to status 0 when there is no response', async () => {
+	it('rejects with a plain error instead of a bogus status when there is no response', async () => {
 		mockUpload(undefined);
 
-		await expect(send()).rejects.toMatchObject({ status: 0 });
+		const error = await send().catch(e => e);
+
+		expect(error).toBeInstanceOf(Error);
+		expect(error).not.toHaveProperty('status');
+		expect(error.message).toBe('Upload failed: no response');
+	});
+
+	it('rejects when a 2xx response has no parseable body', async () => {
+		mockUpload({ status: 200, body: 'not json' });
+
+		await expect(send()).rejects.toThrow('Upload failed: invalid server response');
+	});
+
+	it('rejects a 3xx as an HTTP error instead of treating it as success', async () => {
+		mockUpload({ status: 302, body: '<html>Found</html>' });
+
+		await expect(send()).rejects.toMatchObject({ name: 'UploadHttpError', status: 302 });
 	});
 
 	it('rejects with an Error, not undefined, when no file was appended', async () => {

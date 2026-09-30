@@ -178,6 +178,13 @@ describe('persistUploadError', () => {
 		expect(showToast).toHaveBeenCalledWith('Not allowed');
 	});
 
+	it('announces a permanent failure even when the server sent no usable message', async () => {
+		const updated = await persist(new UploadHttpError(405));
+
+		expect(updated).toMatchObject({ errorStatus: 405 });
+		expect(showToast).toHaveBeenCalledWith('FileUpload_Error');
+	});
+
 	it('stays quiet about a failure that may still resolve itself', async () => {
 		const updated = await persist(new UploadHttpError(429, { serverMessage: 'error-too-many-requests' }));
 

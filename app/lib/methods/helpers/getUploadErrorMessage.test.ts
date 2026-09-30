@@ -29,6 +29,16 @@ describe('getUploadErrorMessage', () => {
 		expect(getUploadErrorMessage({ errorStatus: 500 })).toBeUndefined();
 	});
 
+	it('falls back to a generic notice for a permanent failure with no usable message', () => {
+		expect(getUploadErrorMessage({ errorStatus: 405 })).toBe('FileUpload_Error');
+		expect(getUploadErrorMessage({ errorStatus: 400, errorMessage: '' })).toBe('FileUpload_Error');
+	});
+
+	it('stays quiet for a retryable failure with no usable message', () => {
+		expect(getUploadErrorMessage({ errorStatus: 429 })).toBeUndefined();
+		expect(getUploadErrorMessage({ errorStatus: 503, errorMessage: '' })).toBeUndefined();
+	});
+
 	it('translates a server message that is a known key', () => {
 		expect(getUploadErrorMessage({ errorStatus: 400, errorMessage: 'error-file-too-large' })).toBe('error-file-too-large');
 	});

@@ -58,6 +58,13 @@ describe('UploadProgress', () => {
 		expect(screen.queryByText('Try_again')).toBeNull();
 	});
 
+	it('names a permanent failure with no server message instead of leaving it blank', () => {
+		show([upload({ error: true, errorStatus: 405 })]);
+
+		expect(screen.getByText('FileUpload_Error')).toBeOnTheScreen();
+		expect(screen.queryByText('Try_again')).toBeNull();
+	});
+
 	it('offers a retry for a failure that may succeed later', () => {
 		show([upload({ error: true, errorStatus: 503 })]);
 

@@ -93,6 +93,17 @@ describe('Upload', () => {
 		expect(error.body).toBe('<html>413 Request Entity Too Large</html>');
 	});
 
+	it('rejects when a 2xx response has no parseable body', async () => {
+		await expect(send({ status: 200, responseText: 'not json' })).rejects.toThrow('Upload failed: invalid server response');
+	});
+
+	it('rejects a 3xx as an HTTP error instead of treating it as success', async () => {
+		const error = await send({ status: 302, responseText: '<html>Found</html>' }).catch(e => e);
+
+		expect(error).toBeInstanceOf(UploadHttpError);
+		expect(error.status).toBe(302);
+	});
+
 	it('rejects with a network error', async () => {
 		const upload = new Upload();
 		upload.setupRequest('https://open.rocket.chat/api/v1/rooms.media/rid', {});

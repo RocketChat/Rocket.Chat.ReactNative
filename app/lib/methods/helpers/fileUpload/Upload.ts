@@ -42,8 +42,12 @@ export class Upload {
 	public send(): Promise<TRoomsMediaResponse> {
 		return new Promise((resolve, reject) => {
 			this.xhr.onload = () => {
-				if (this.xhr.status >= 200 && this.xhr.status < 400) {
-					resolve(JSON.parse(this.xhr.responseText));
+				if (this.xhr.status >= 200 && this.xhr.status < 300) {
+					try {
+						resolve(JSON.parse(this.xhr.responseText));
+					} catch {
+						reject(new Error('Upload failed: invalid server response'));
+					}
 				} else {
 					const { serverMessage, body } = parseUploadErrorBody(this.xhr.responseText);
 					const retryAfterSeconds = parseRetryAfter(this.xhr.getResponseHeader('Retry-After'));
