@@ -174,14 +174,6 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 		const { rid, baseUrl: server, user } = this.props;
 
 		try {
-			const db = database.active;
-			await db.write(async () => {
-				await item.update(() => {
-					item.error = false;
-					item.errorStatus = undefined;
-					item.errorMessage = undefined;
-				});
-			});
 			await sendFileMessage(rid, item.asPlain() as TSendFileMessageFileInfo, item.tmid, server, user);
 		} catch (e) {
 			log(e);

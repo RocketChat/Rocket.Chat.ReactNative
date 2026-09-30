@@ -1,4 +1,4 @@
-const PERMANENT_UPLOAD_ERRORS = [400, 404, 413, 415, 422];
+const RETRYABLE_CLIENT_ERRORS = [401, 403, 408, 429];
 
 export const isRetryableUploadError = (status?: number): boolean =>
-	status === undefined || !PERMANENT_UPLOAD_ERRORS.includes(status);
+	status === undefined || status < 400 || status >= 500 || RETRYABLE_CLIENT_ERRORS.includes(status);
