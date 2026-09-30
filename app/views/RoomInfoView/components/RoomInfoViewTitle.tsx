@@ -46,6 +46,7 @@ const RoomInfoViewTitle = ({
 		return (
 			<View style={styles.roomInfoViewTitleContainer}>
 				<Text
+					deopt
 					onLongPress={() => (name ? copyInfoToClipboard(name) : {})}
 					testID='room-info-view-name'
 					style={[styles.roomTitle, { color: colors.fontTitlesLabels }]}>
@@ -53,6 +54,7 @@ const RoomInfoViewTitle = ({
 				</Text>
 				{username && (
 					<Text
+						deopt
 						onLongPress={() => copyInfoToClipboard(username)}
 						testID='room-info-view-username'
 						style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}>{`@${username}`}</Text>
