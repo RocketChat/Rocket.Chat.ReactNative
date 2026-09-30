@@ -422,10 +422,15 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 
 		return (
 			<>
-				<View style={[styles.headerContainer, { backgroundColor: themes[theme].surfaceHover }]}>
+				<View
+					style={[
+						styles.headerContainer,
+						hasNativeHeaderBar && styles.nativeHeaderContainer,
+						{ backgroundColor: themes[theme].surfaceHover }
+					]}>
 					<Text style={[styles.headerText, { color: themes[theme].fontTitlesLabels }]}>{I18n.t(header)}</Text>
 				</View>
-				<List.Separator />
+				{hasNativeHeaderBar ? null : <List.Separator />}
 			</>
 		);
 	};
@@ -473,7 +478,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 			<>
 				{this.renderSectionHeader('Select_Server')}
 				<ServerItem onPress={() => navigation.navigate('SelectServerView')} item={serverInfo} />
-				<List.Separator />
+				{hasNativeHeaderBar ? null : <List.Separator />}
 			</>
 		);
 	};
@@ -549,12 +554,13 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 					data={searching ? searchResults : chats}
 					keyExtractor={keyExtractor}
 					style={[styles.flatlist, { backgroundColor: themes[theme].surfaceHover }]}
-					contentContainerStyle={{ paddingBottom: insets.bottom }}
+					contentContainerStyle={hasNativeHeaderBar ? searching && styles.nativeSearchContent : { paddingBottom: insets.bottom }}
+					contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
 					ItemSeparatorComponent={RowSeparator}
 					ListHeaderComponent={this.renderHeader}
-					ListFooterComponent={!searching || searchResults.length > 0 ? <List.Separator /> : null}
+					ListFooterComponent={!hasNativeHeaderBar && (!searching || searchResults.length > 0) ? <List.Separator /> : null}
 					ListEmptyComponent={this.renderEmptyComponent}
 					removeClippedSubviews
 					keyboardShouldPersistTaps='always'
