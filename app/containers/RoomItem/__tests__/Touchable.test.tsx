@@ -5,7 +5,7 @@ import { fireGestureHandler } from 'react-native-gesture-handler/jest-utils';
 import { makeMutable } from 'react-native-reanimated';
 
 import Touchable from '../Touchable';
-import { settleSwipeRow, unregisterOpenSwipeItem } from '../openSwipeItem';
+import { settleSwipeRow, unregisterOpenSwipeItem } from '../utils/openSwipeItem';
 import { SubscriptionType } from '~/definitions';
 
 jest.mock('~/lib/hooks/useAppSelector', () => ({ useAppSelector: () => '7.0.0' }));

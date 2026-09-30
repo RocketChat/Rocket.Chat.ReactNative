@@ -10,7 +10,7 @@ import RoomItem from './RoomItem';
 import { getRoomActionsOptions } from './getRoomActionsOptions';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
-import { useRoomSnapshot } from './useRoomSnapshot';
+import { useRoomSnapshot } from './hooks/useRoomSnapshot';
 
 const RoomItemContainer = memo(
 	({

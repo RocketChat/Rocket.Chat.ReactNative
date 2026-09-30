@@ -13,7 +13,7 @@ import { RectButton } from '~/containers/GestureButtons';
 import { CustomIcon } from '../CustomIcon';
 import { DisplayMode } from '~/lib/constants/constantDisplayMode';
 import styles from './styles';
-import { getActionWidth, getFullSwipeThreshold } from './swipeRelease';
+import { getActionWidth, getFullSwipeThreshold } from './utils/swipeRelease';
 import { type ILeftActionsProps, type IRightActionsProps } from './interfaces';
 import { useTheme } from '~/theme';
 import I18n from '~/i18n';

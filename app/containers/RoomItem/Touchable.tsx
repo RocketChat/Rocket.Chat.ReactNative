@@ -7,8 +7,8 @@ import * as Haptics from 'expo-haptics';
 
 import Touch from '../Touch';
 import { LeftActions, RightActions } from './Actions';
-import { getFullSwipeThreshold, getSwipeRelease } from './swipeRelease';
-import { unregisterOpenSwipeItem, closeOpenSwipeItem, settleSwipeRow } from './openSwipeItem';
+import { getFullSwipeThreshold, getSwipeRelease } from './utils/swipeRelease';
+import { unregisterOpenSwipeItem, closeOpenSwipeItem, settleSwipeRow } from './utils/openSwipeItem';
 import { type ITouchableProps } from './interfaces';
 import { useTheme } from '~/theme';
 import { toggleFav } from '~/lib/methods/toggleFav';

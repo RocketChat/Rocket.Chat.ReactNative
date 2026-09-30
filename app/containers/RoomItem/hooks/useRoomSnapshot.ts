@@ -1,7 +1,7 @@
 import { useCallback, useRef, useSyncExternalStore } from 'react';
 import { skip } from 'rxjs';
 
-import { type IRoomItemContainerProps } from './interfaces';
+import { type IRoomItemContainerProps } from '../interfaces';
 
 type TRoomItem = IRoomItemContainerProps['item'];
 
