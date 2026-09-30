@@ -1,5 +1,5 @@
 diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioModule.kt b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioModule.kt
-index c9fd366..5c74acf 100644
+index 992239b..df504ce 100644
 --- a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioModule.kt
 +++ b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioModule.kt
 @@ -26,6 +26,7 @@ import androidx.media3.datasource.okhttp.OkHttpDataSource
@@ -10,7 +10,7 @@ index c9fd366..5c74acf 100644
  import androidx.media3.exoplayer.source.MediaSource
  import androidx.media3.exoplayer.source.ProgressiveMediaSource
  import expo.modules.interfaces.permissions.Permissions
-@@ -553,7 +554,10 @@ class AudioModule : Module() {
+@@ -931,7 +932,10 @@ class AudioModule : Module() {
        CONTENT_TYPE_SS -> SsMediaSource.Factory(factory)
        CONTENT_TYPE_DASH -> DashMediaSource.Factory(factory)
        CONTENT_TYPE_HLS -> HlsMediaSource.Factory(factory)

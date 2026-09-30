@@ -41,6 +41,7 @@ export interface IUpdatedAtProps {
 
 export interface IWrapperProps {
 	accessibilityLabel: string;
+	testID?: string;
 	accessibilityHint?: string;
 	onLongPress?: () => void;
 	avatar: string;
@@ -143,7 +144,6 @@ export interface ILastMessageProps {
 export interface ITouchableProps extends IRoomItemTouchables {
 	children: ReactElement;
 	type: SubscriptionType;
-	testID: string;
 	width: number;
 	favorite: boolean;
 	isRead: boolean;

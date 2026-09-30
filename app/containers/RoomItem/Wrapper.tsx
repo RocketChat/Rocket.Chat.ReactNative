@@ -15,6 +15,7 @@ const Wrapper = ({
 	onLongPress,
 	children,
 	displayMode,
+	testID,
 	...props
 }: IWrapperProps): ReactElement => {
 	const { colors } = useTheme();
@@ -31,6 +32,7 @@ const Wrapper = ({
 			style={[styles.container, { height: displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight }]}
 			accessibilityLabel={accessibilityLabel}
 			accessibilityHint={accessibilityHint}
+			testID={testID}
 			accessible
 			accessibilityRole='button'
 			accessibilityActions={accessibilityActions}
