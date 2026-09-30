@@ -182,6 +182,96 @@ index 7a2071e4d8..746ef5f9df 100644
                  decodeDownsampled(bytes, maxTargetWidth)
                } catch (_: OutOfMemoryError) {
                  Log.e(TAG, "OOM decoding image: $url")
+diff --git a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdownText.mm b/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdownText.mm
+index e3f1c31..e62e223 100644
+--- a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdownText.mm
++++ b/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdownText.mm
+@@ -10,6 +10,7 @@
+ #import "ENRMSpoilerOverlayManager.h"
+ #import "ENRMSpoilerTapUtils.h"
+ #import "ENRMTailFadeInAnimator.h"
++#import "ENRMTextHitTest.h"
+ #import "ENRMTextInteractionUtils.h"
+ #import "ENRMTextRenderer.h"
+ #import "ENRMTextViewSetup.h"
+@@ -47,7 +48,7 @@ typedef NS_OPTIONS(NSUInteger, ENRMDirtyFlags) {
+   ENRMDirtyRender = 1 << 0,
+ };
+ 
+-@interface EnrichedMarkdownText () <RCTEnrichedMarkdownTextViewProtocol, UITextViewDelegate, ENRMImageLayoutObserver>
++@interface EnrichedMarkdownText () <RCTEnrichedMarkdownTextViewProtocol, UITextViewDelegate, UIGestureRecognizerDelegate, ENRMImageLayoutObserver>
+ + (ENRMMd4cFlags *)flagsFromProps:(const EnrichedMarkdownTextMd4cFlagsStruct &)props;
+ - (void)setupTextView;
+ - (void)renderMarkdownContent:(NSString *)markdownString;
+@@ -303,6 +304,13 @@ typedef NS_OPTIONS(NSUInteger, ENRMDirtyFlags) {
+   ENRMTapRecognizer *tapRecognizer = [[ENRMTapRecognizer alloc] initWithTarget:self action:@selector(textTapped:)];
+   [_textView addGestureRecognizer:tapRecognizer];
+ 
++#if !TARGET_OS_OSX
++  UILongPressGestureRecognizer *linkLongPressRecognizer =
++      [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(textLongPressed:)];
++  linkLongPressRecognizer.delegate = self;
++  [_textView addGestureRecognizer:linkLongPressRecognizer];
++#endif
++
+   self.contentView = _textView;
+ }
+ 
+@@ -774,6 +782,54 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownTextCls(void)
+   ENRMHandleTapOnTextView(textView, recognizer, ^(NSString *url) { [self emitLinkPress:url]; });
+ }
+ 
++#pragma mark - Link Long Press (non-selectable text)
++
++#if !TARGET_OS_OSX
++- (NSString *)linkURLAtPoint:(CGPoint)point
++{
++  NSUInteger characterIndex = ENRMCharacterIndexAtPoint(_textView, point);
++  if (characterIndex == NSNotFound) {
++    return nil;
++  }
++  return [ENRMGetAttributedText(_textView) attribute:@"linkURL" atIndex:characterIndex effectiveRange:NULL];
++}
++
++- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
++{
++  if (_textView.selectable || _enableLinkPreview) {
++    return NO;
++  }
++  return [self linkURLAtPoint:[touch locationInView:_textView]] != nil;
++}
++
++- (void)textLongPressed:(UILongPressGestureRecognizer *)recognizer
++{
++  if (recognizer.state != UIGestureRecognizerStateBegan) {
++    return;
++  }
++  NSString *url = [self linkURLAtPoint:[recognizer locationInView:_textView]];
++  if (!url) {
++    return;
++  }
++  [self cancelReactTouches];
++  [self emitLinkLongPress:url];
++}
++
++- (void)cancelReactTouches
++{
++  Class touchHandlerClass = NSClassFromString(@"RCTSurfaceTouchHandler");
++  for (UIView *view = self.superview; view != nil; view = view.superview) {
++    for (UIGestureRecognizer *recognizer in view.gestureRecognizers) {
++      if ([recognizer isKindOfClass:touchHandlerClass]) {
++        recognizer.enabled = NO;
++        recognizer.enabled = YES;
++        return;
++      }
++    }
++  }
++}
++#endif
++
+ #pragma mark - UITextViewDelegate (Link Interaction)
+ 
+ #if !TARGET_OS_OSX
 diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
 index 3a8f80a1ca..b54a8f95e6 100644
 --- a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
