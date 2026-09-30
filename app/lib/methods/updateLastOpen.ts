@@ -1,7 +1,7 @@
 import database from '../database';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import log from './helpers/log';
-import { type TSubscriptionModel } from '../../definitions';
+import { type TSubscriptionModel } from '~/definitions';
 
 export type TServerTimestamps = { _updatedAt?: string | Date | null }[];
 

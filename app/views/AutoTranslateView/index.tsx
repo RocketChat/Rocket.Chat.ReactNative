@@ -4,14 +4,14 @@ import { type Subscription } from 'rxjs';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import * as List from '../../containers/List';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { type ISubscription } from '../../definitions';
-import I18n from '../../i18n';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import { getSupportedLanguagesAutoTranslate, saveAutoTranslate } from '../../lib/services/restApi';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { useTheme } from '../../theme';
+import * as List from '~/containers/List';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { type ISubscription } from '~/definitions';
+import I18n from '~/i18n';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { getSupportedLanguagesAutoTranslate, saveAutoTranslate } from '~/lib/services/restApi';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { useTheme } from '~/theme';
 
 const styles = StyleSheet.create({
 	list: {

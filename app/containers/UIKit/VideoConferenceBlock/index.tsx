@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 
-import { useEndpointData } from '../../../lib/hooks/useEndpointData';
+import { useEndpointData } from '~/lib/hooks/useEndpointData';
 import VideoConferenceDirect from './components/VideoConferenceDirect';
 import VideoConferenceEnded from './components/VideoConferenceEnded';
 import VideoConferenceOutgoing from './components/VideoConferenceOutgoing';

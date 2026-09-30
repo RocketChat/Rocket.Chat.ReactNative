@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import range from 'lodash/range';
 
 import styles from './styles';
-import { useTheme } from '../../../theme';
+import { useTheme } from '~/theme';
 
 const SIZE_EMPTY = 12;
 const SIZE_FULL = 16;

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 
 export const MIN_TAB_WIDTH = 70;
 

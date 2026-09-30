@@ -1,25 +1,25 @@
 import { prepareQuoteMessage } from './prepareQuoteMessage';
-import { getPermalinkMessage } from '../../../lib/methods/getPermalinks';
-import { getMessageById } from '../../../lib/database/services/Message';
-import { store } from '../../../lib/store/auxStore';
-import { compareServerVersion } from '../../../lib/methods/helpers';
+import { getPermalinkMessage } from '~/lib/methods/getPermalinks';
+import { getMessageById } from '~/lib/database/services/Message';
+import { store } from '~/lib/store/auxStore';
+import { compareServerVersion } from '~/lib/methods/helpers';
 
 // Mock dependencies
-jest.mock('../../../lib/methods/getPermalinks', () => ({
+jest.mock('~/lib/methods/getPermalinks', () => ({
 	getPermalinkMessage: jest.fn()
 }));
 
-jest.mock('../../../lib/database/services/Message', () => ({
+jest.mock('~/lib/database/services/Message', () => ({
 	getMessageById: jest.fn()
 }));
 
-jest.mock('../../../lib/store/auxStore', () => ({
+jest.mock('~/lib/store/auxStore', () => ({
 	store: {
 		getState: jest.fn()
 	}
 }));
 
-jest.mock('../../../lib/methods/helpers/compareServerVersion', () => ({
+jest.mock('~/lib/methods/helpers/compareServerVersion', () => ({
 	compareServerVersion: jest.fn()
 }));
 

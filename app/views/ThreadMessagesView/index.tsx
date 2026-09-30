@@ -7,28 +7,26 @@ import { type Observable, type Subscription } from 'rxjs';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
 
-import { showActionSheetRef } from '../../containers/ActionSheet';
-import { CustomIcon } from '../../containers/CustomIcon';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import I18n from '../../i18n';
-import database from '../../lib/database';
-import { sanitizeLikeString } from '../../lib/database/utils';
-import buildMessage from '../../lib/methods/helpers/buildMessage';
-import log from '../../lib/methods/helpers/log';
-import protectedFunction from '../../lib/methods/helpers/protectedFunction';
-import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
-import { themes, colors } from '../../lib/constants/colors';
-import { type TSupportedThemes, withTheme } from '../../theme';
-import { getUserSelector } from '../../selectors/login';
-import SafeAreaView from '../../containers/SafeAreaView';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import * as List from '../../containers/List';
-import BackgroundContainer from '../../containers/BackgroundContainer';
-import { getBadgeColor, makeThreadName } from '../../lib/methods/helpers/room';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { LISTENER } from '../../containers/Toast';
-import SearchHeader from '../../containers/SearchHeader';
-import { type ChatsStackParamList } from '../../stacks/types';
+import { showActionSheetRef } from '~/containers/ActionSheet';
+import { CustomIcon } from '~/containers/CustomIcon';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import I18n from '~/i18n';
+import database from '~/lib/database';
+import { sanitizeLikeString } from '~/lib/database/utils';
+import buildMessage from '~/lib/methods/helpers/buildMessage';
+import log from '~/lib/methods/helpers/log';
+import protectedFunction from '~/lib/methods/helpers/protectedFunction';
+import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
+import { themes, colors } from '~/lib/constants/colors';
+import { type TSupportedThemes, withTheme } from '~/theme';
+import { getUserSelector } from '~/selectors/login';
+import SafeAreaView from '~/containers/SafeAreaView';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import * as List from '~/containers/List';
+import BackgroundContainer from '~/containers/BackgroundContainer';
+import { getBadgeColor, makeThreadName } from '~/lib/methods/helpers/room';
+import SearchHeader from '~/containers/SearchHeader';
+import { type ChatsStackParamList } from '~/stacks/types';
 import { Filter } from './filters';
 import Item from './Item';
 import styles from './styles';
@@ -39,12 +37,13 @@ import {
 	SubscriptionType,
 	type TSubscriptionModel,
 	type TThreadModel
-} from '../../definitions';
-import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers';
-import { getSyncThreadsList, getThreadsList, toggleFollowMessage } from '../../lib/services/restApi';
-import UserPreferences from '../../lib/methods/userPreferences';
-import Navigation from '../../lib/navigation/appNavigation';
-import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
+} from '~/definitions';
+import { getUidDirectMessage, debounce, isIOS } from '~/lib/methods/helpers';
+import { getSyncThreadsList, getThreadsList } from '~/lib/services/restApi';
+import { toggleFollowThread as toggleFollowThreadService } from '~/lib/methods/toggleFollowThread';
+import UserPreferences from '~/lib/methods/userPreferences';
+import Navigation from '~/lib/navigation/appNavigation';
+import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
 
 const API_FETCH_COUNT = 50;
 const THREADS_FILTER = 'threadsFilter';
@@ -464,14 +463,7 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 		UserPreferences.setString(THREADS_FILTER, filter);
 	};
 
-	toggleFollowThread = async (isFollowingThread: boolean, tmid: string) => {
-		try {
-			await toggleFollowMessage(tmid, !isFollowingThread);
-			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
-		} catch (e) {
-			log(e);
-		}
-	};
+	toggleFollowThread = (isFollowingThread: boolean, tmid: string) => toggleFollowThreadService(tmid, isFollowingThread);
 
 	renderItem = ({ item }: { item: TThreadModel }) => {
 		const { user, navigation, useRealName } = this.props;

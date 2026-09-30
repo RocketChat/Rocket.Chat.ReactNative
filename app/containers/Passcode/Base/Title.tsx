@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { Row } from 'react-native-easy-grid';
 
 import styles from './styles';
-import { useTheme } from '../../../theme';
+import { useTheme } from '~/theme';
 
 interface IPasscodeTitle {
 	text: string;

@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 
-import { type IAutocompleteEmoji } from '../../interfaces';
-import { Emoji } from '../../../EmojiPicker/Emoji';
+import { type IAutocompleteEmoji } from '~/containers/MessageComposer/interfaces';
+import { Emoji } from '~/containers/EmojiPicker/Emoji';
 import { useStyle } from './styles';
 
 export const AutocompleteEmoji = ({ item }: { item: IAutocompleteEmoji }) => {

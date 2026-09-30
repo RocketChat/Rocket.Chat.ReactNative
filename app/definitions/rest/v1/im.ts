@@ -1,7 +1,7 @@
-import type { IMessageFromServer } from '../../IMessage';
-import type { IServerRoom, RoomID, RoomType } from '../../IRoom';
-import type { IUser } from '../../IUser';
-import { type IServerAttachment } from '../../IAttachment';
+import type { IMessageFromServer } from '~/definitions/IMessage';
+import type { IServerRoom, RoomID, RoomType } from '~/definitions/IRoom';
+import type { IUser } from '~/definitions/IUser';
+import { type IServerAttachment } from '~/definitions/IAttachment';
 import { type PaginatedRequest } from '../helpers/PaginatedRequest';
 
 export type ImEndpoints = {

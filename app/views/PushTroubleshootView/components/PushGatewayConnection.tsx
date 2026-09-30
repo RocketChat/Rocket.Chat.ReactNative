@@ -1,13 +1,13 @@
 import { type ReactElement, useState } from 'react';
 import { Alert } from 'react-native';
 
-import * as List from '../../../containers/List';
-import i18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { usePermissions } from '../../../lib/hooks/usePermissions';
-import { compareServerVersion, showErrorAlertWithEMessage } from '../../../lib/methods/helpers';
-import { pushTest } from '../../../lib/services/restApi';
-import { useTheme } from '../../../theme';
+import * as List from '~/containers/List';
+import i18n from '~/i18n';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { usePermissions } from '~/lib/hooks/usePermissions';
+import { compareServerVersion, showErrorAlertWithEMessage } from '~/lib/methods/helpers';
+import { pushTest } from '~/lib/services/restApi';
+import { useTheme } from '~/theme';
 import CustomListSection from './CustomListSection';
 
 export default function PushGatewayConnection(): ReactElement | null {

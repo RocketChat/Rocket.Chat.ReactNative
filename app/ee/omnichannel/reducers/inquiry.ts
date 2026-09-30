@@ -1,5 +1,5 @@
-import { type IOmnichannelRoom, type TApplicationActions } from '../../../definitions';
-import { INQUIRY } from '../../../actions/actionsTypes';
+import { type IOmnichannelRoom, type TApplicationActions } from '~/definitions';
+import { INQUIRY } from '~/actions/actionsTypes';
 
 export interface IInquiry {
 	enabled: boolean;

@@ -4,10 +4,10 @@ import { type NavigationContainerProps } from '@react-navigation/core';
 import { useKeyboard } from '@react-native-community/hooks';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants/colors';
-import { type TSupportedThemes } from '../../theme';
-import { isAndroid } from '../../lib/methods/helpers';
+import sharedStyles from '~/views/Styles';
+import { themes } from '~/lib/constants/colors';
+import { type TSupportedThemes } from '~/theme';
+import { isAndroid } from '~/lib/methods/helpers';
 
 const MODAL_MARGIN = 32;
 

@@ -5,9 +5,9 @@ import { createSelector } from 'reselect';
 import { shallowEqual } from 'react-redux';
 import { orderBy } from 'lodash';
 
-import { type TSupportedPermissions } from '../../reducers/permissions';
-import { type IApplicationState, type TSubscriptionModel } from '../../definitions';
-import { getUserSelector } from '../../selectors/login';
+import { type TSupportedPermissions } from '~/reducers/permissions';
+import { type IApplicationState, type TSubscriptionModel } from '~/definitions';
+import { getUserSelector } from '~/selectors/login';
 import { useAppSelector } from './useAppSelector';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 

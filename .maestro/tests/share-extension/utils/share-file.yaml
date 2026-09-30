@@ -1,0 +1,78 @@
+appId: ${APP_ID}
+name: Share File
+tags:
+  - 'util'
+
+---
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - pressKey: home
+      - launchApp: com.google.android.documentsui
+      - extendedWaitUntil:
+          visible: 'Files in Downloads'
+          timeout: 60000
+      - scrollUntilVisible:
+          element:
+            text: ${fileName}
+          timeout: 60000
+      - longPressOn: ${fileName}
+      - tapOn: 'Share'
+      - tapOn: 'Rocket.Chat'
+
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - runFlow:
+          when:
+            visible: 'Share'
+          commands:
+            - extendedWaitUntil:
+                visible: 'Share'
+                timeout: 10000
+            - tapOn: 'Share'
+      - extendedWaitUntil:
+          visible: '1 Photo Selected'
+          timeout: 15000
+      - scrollUntilVisible:
+          element:
+            text: 'Rocket.Chat'
+          direction: RIGHT
+          timeout: 15000
+      - waitForAnimationToEnd:
+          timeout: 5000
+      - tapOn:
+          id: 'shareCell'
+          text: 'Rocket.Chat'
+      - waitForAnimationToEnd:
+          timeout: 5000
+      - takeScreenshot: share-tapped.png
+
+- extendedWaitUntil:
+    visible: 'Send to...'
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: 'share-list-view'
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: 'share-extension-item-${output.room.name}'
+    timeout: 30000
+- tapOn:
+    id: 'share-extension-item-${output.room.name}'
+- extendedWaitUntil:
+    visible: 'Sending to ${output.room.name}'
+    timeout: 10000
+- tapOn:
+    id: 'message-composer-send'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- evalScript: ${output.newMessageCount = output.utils.groupMessageCount(output.user.username, output.user.password, output.room._id)}
+- assertTrue:
+    condition: ${output.newMessageCount === output.messageCount + 1}
+- evalScript: ${output.messageCount = output.newMessageCount}

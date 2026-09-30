@@ -2,14 +2,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { type ReactElement, useCallback } from 'react';
 
-import I18n from '../../i18n';
-import { useTheme } from '../../theme';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
 import { FormTextInput } from '../TextInput';
-import sharedStyles from '../../views/Styles';
-import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
-import { useDebounce } from '../../lib/methods/helpers';
-import type { IApplicationState } from '../../definitions';
-import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
+import sharedStyles from '~/views/Styles';
+import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
+import { useDebounce } from '~/lib/methods/helpers';
+import type { IApplicationState } from '~/definitions';
+import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
 
 const selectSipEnabled = (state: IApplicationState) => Boolean(state.settings.VoIP_TeamCollab_SIP_Integration_For_Internal_Calls);
 

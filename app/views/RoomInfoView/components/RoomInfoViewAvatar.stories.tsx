@@ -2,7 +2,7 @@ import { type ReactNode } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import RoomInfoViewAvatar from './RoomInfoViewAvatar';
-import { SubscriptionType } from '../../../definitions';
+import { SubscriptionType } from '~/definitions';
 
 const styles = StyleSheet.create({
 	container: {

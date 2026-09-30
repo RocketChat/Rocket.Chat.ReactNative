@@ -1,4 +1,4 @@
-import dayjs from '../../../lib/dayjs';
+import dayjs from '~/lib/dayjs';
 import { type ClearAfterValue } from './types';
 
 export const computeExpiresAt = (value: ClearAfterValue, customDate: Date | null): string | null | undefined => {

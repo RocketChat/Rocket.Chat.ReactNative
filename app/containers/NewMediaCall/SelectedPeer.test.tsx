@@ -3,11 +3,11 @@ import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
 import { SelectedPeer } from './SelectedPeer';
-import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
-import { mockedStore } from '../../reducers/mockedStore';
-import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
+import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
+import { mockedStore } from '~/reducers/mockedStore';
+import type { TPeerItem } from '~/lib/services/voip/getPeerAutocompleteOptions';
 import * as stories from './SelectedPeer.stories';
-import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 
 const setStoreState = (selectedPeer: TPeerItem | null) => {
 	usePeerAutocompleteStore.setState({ selectedPeer });

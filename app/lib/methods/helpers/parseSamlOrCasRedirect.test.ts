@@ -46,11 +46,8 @@ describe('parseSamlOrCasRedirect', () => {
 			expect(parseSamlOrCasRedirect('https://server.example/login', 'cas', 'sso-token')).toBeNull();
 		});
 
-		it('passes credentialToken through as undefined when ssoToken is not provided', () => {
-			expect(parseSamlOrCasRedirect('https://server.example/_cas/validate/xyz', 'cas')).toEqual({
-				kind: 'cas',
-				payload: { cas: { credentialToken: undefined } }
-			});
+		it('returns null when authType is cas and no ssoToken is provided', () => {
+			expect(parseSamlOrCasRedirect('https://server.example/_cas/validate/xyz', 'cas')).toBeNull();
 		});
 
 		it('returns null when authType is cas and the URL only has a SAML-style token', () => {

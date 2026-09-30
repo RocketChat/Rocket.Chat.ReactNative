@@ -1,7 +1,7 @@
 import { fireEvent, render } from '@testing-library/react-native';
 
 import SearchBox from '.';
-import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 import * as stories from './SearchBox.stories';
 
 const onChangeTextMock = jest.fn();

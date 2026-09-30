@@ -1,14 +1,14 @@
 import { Keyboard } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { disconnect } from '../../../lib/services/connect';
-import { events, logEvent } from '../../../lib/methods/helpers/log';
-import { selectServerClear, serverRequest } from '../../../actions/server';
+import { disconnect } from '~/lib/services/connect';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { selectServerClear, serverRequest } from '~/actions/server';
 import completeUrl from '../utils/completeUrl';
 import { type ISubmitParams } from '../definitions';
 import basicAuth from '../methods/basicAuth';
-import userPreferences from '../../../lib/methods/userPreferences';
-import { CERTIFICATE_KEY } from '../../../lib/constants/keys';
+import userPreferences from '~/lib/methods/userPreferences';
+import { CERTIFICATE_KEY } from '~/lib/constants/keys';
 
 type TUseNewServerProps = {
 	workspaceUrl: string;

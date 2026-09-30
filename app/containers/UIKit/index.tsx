@@ -15,8 +15,8 @@ import Markdown, { MarkdownPreview } from '../markdown';
 import Button from './Button';
 import { FormTextInput } from '../TextInput';
 import { textParser, useBlockContext } from './utils';
-import { themes } from '../../lib/constants/colors';
-import sharedStyles from '../../views/Styles';
+import { themes } from '~/lib/constants/colors';
+import sharedStyles from '~/views/Styles';
 import { Divider } from './Divider';
 import { Section } from './Section';
 import { Actions } from './Actions';
@@ -30,7 +30,7 @@ import { Overflow } from './Overflow';
 import { Icon } from './Icon';
 import { IconButton } from './IconButton';
 import { InfoCard } from './InfoCard';
-import { ThemeContext } from '../../theme';
+import { ThemeContext } from '~/theme';
 import {
 	type IActions,
 	type IButton,
@@ -44,7 +44,7 @@ import {
 	type ISection
 } from './interfaces';
 import VideoConferenceBlock from './VideoConferenceBlock';
-import I18n from '../../i18n';
+import I18n from '~/i18n';
 
 const styles = StyleSheet.create({
 	input: {

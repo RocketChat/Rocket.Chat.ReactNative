@@ -2,9 +2,9 @@ import { Text, View, Pressable } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { type ReactElement } from 'react';
 
-import { CustomIcon, type TIconsName } from '../../../containers/CustomIcon';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import { styles } from '../styles';
-import { useTheme } from '../../../theme';
+import { useTheme } from '~/theme';
 
 type TCallActionButtonVariant = 'default' | 'active' | 'danger';
 

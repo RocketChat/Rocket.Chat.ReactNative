@@ -3,20 +3,20 @@ import { type ComponentProps } from 'react';
 import { A11y } from 'react-native-a11y-order';
 import { Provider } from 'react-redux';
 
-import { type TAnyMessageModel } from '../../../../definitions';
-import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { mockedStore } from '../../../../reducers/mockedStore';
+import { type TAnyMessageModel } from '~/definitions';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { mockedStore } from '~/reducers/mockedStore';
 import ImageContainer from '../Attachments/Image/Container';
 
-jest.mock('../../../markdown', () => {
+jest.mock('~/containers/markdown', () => {
 	const React = require('react');
 	const { Text } = require('react-native');
 
 	return ({ msg }: { msg?: string }) => <Text>{msg}</Text>;
 });
 
-jest.mock('../../hooks/useMediaAutoDownload', () => ({
+jest.mock('~/containers/message/hooks/useMediaAutoDownload', () => ({
 	useMediaAutoDownload: jest.fn(() => ({
 		status: 'downloaded',
 		onPress: jest.fn(),
@@ -30,16 +30,13 @@ jest.mock('../Attachments/Image/Image', () => ({
 }));
 
 const mockUseAltTextSupported = jest.fn();
-jest.mock('../../../../lib/hooks/useAltTextSupported', () => ({
+jest.mock('~/lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: () => mockUseAltTextSupported()
 }));
 
 const renderImageContainer = (props?: Partial<ComponentProps<typeof ImageContainer>>) => {
 	const id = 'message-id';
-	const contextValue: Partial<MessageRoomState> = {
-		baseUrl: 'https://open.rocket.chat',
-		user: { id: 'user-id', username: 'rocket.cat', token: 'token' }
-	};
+	const contextValue: Partial<MessageRoomState> = {};
 	const item = { id } as unknown as TAnyMessageModel;
 	return render(
 		<Provider store={mockedStore}>

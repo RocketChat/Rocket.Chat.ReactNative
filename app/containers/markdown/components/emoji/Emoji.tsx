@@ -2,14 +2,14 @@ import { Text, View, useWindowDimensions } from 'react-native';
 import { type Emoji as EmojiProps } from '@rocket.chat/message-parser';
 
 import Plain from '../Plain';
-import useShortnameToUnicode from '../../../../lib/hooks/useShortnameToUnicode';
-import { useTheme } from '../../../../theme';
-import styles from '../../styles';
-import CustomEmoji from '../../../EmojiPicker/CustomEmoji';
-import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
-import { useCustomEmoji } from '../../../../lib/hooks/useCustomEmoji';
-import { getUserSelector } from '../../../../selectors/login';
-import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import useShortnameToUnicode from '~/lib/hooks/useShortnameToUnicode';
+import { useTheme } from '~/theme';
+import styles from '~/containers/markdown/styles';
+import CustomEmoji from '~/containers/EmojiPicker/CustomEmoji';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useCustomEmoji } from '~/lib/hooks/useCustomEmoji';
+import { getUserSelector } from '~/selectors/login';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IEmojiProps {
 	block: EmojiProps;

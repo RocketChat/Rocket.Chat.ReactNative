@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
+import type { TPeerItem } from '~/lib/services/voip/getPeerAutocompleteOptions';
 import { PeerItem } from './PeerItem';
 
 const styles = StyleSheet.create({

@@ -1,8 +1,8 @@
-import Button from '../../../Button';
-import { useOnAnswerButtonPress } from '../../stores/MessageRoomStore';
-import { type IAttachment } from '../../../../definitions';
-import openLink from '../../../../lib/methods/helpers/openLink';
-import Markdown from '../../../markdown';
+import Button from '~/containers/Button';
+import { useOnAnswerButtonPress } from '~/containers/message/stores/MessageRoomStore';
+import { type IAttachment } from '~/definitions';
+import openLink from '~/lib/methods/helpers/openLink';
+import Markdown from '~/containers/markdown';
 
 export type TElement = {
 	type: string;

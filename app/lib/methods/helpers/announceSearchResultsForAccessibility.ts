@@ -1,6 +1,6 @@
 import { AccessibilityInfo } from 'react-native';
 
-import I18n from '../../../i18n';
+import I18n from '~/i18n';
 
 export const announceSearchResultsForAccessibility = (count: number): void => {
 	if (count < 1) {

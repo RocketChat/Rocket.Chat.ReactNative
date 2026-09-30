@@ -11,10 +11,11 @@ import { roomsRequest } from '../actions/rooms';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import I18n, { setLanguage } from '../i18n';
 import database from '../lib/database';
+import { findLoggedInServer } from '../lib/methods/loggedInServer';
 import EventEmitter from '../lib/methods/helpers/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../lib/methods/helpers/info';
-import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
+import { localAuthenticate, UserCanceledError } from '../lib/methods/helpers/localAuthentication';
 import { encryptionInit, encryptionStop } from '../actions/encryption';
 import { initTroubleshootingNotification } from '../actions/troubleshootingNotification';
 import UserPreferences from '../lib/methods/userPreferences';
@@ -22,12 +23,13 @@ import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry'
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CURRENT_SERVER, getServerUserIdKey, getUserTokenKey } from '../lib/constants/keys';
 import { getCustomEmojis } from '../lib/methods/getCustomEmojis';
 import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { getEnterpriseModules, isOmnichannelModuleAvailable, isVoipModuleAvailable } from '../lib/methods/enterpriseModules';
 import { getPermissions } from '../lib/methods/getPermissions';
 import { getRoles } from '../lib/methods/getRoles';
+import { isTwoFactorCancelled } from '../lib/services/twoFactor/twoFactorCancelled';
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
 import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
@@ -45,12 +47,24 @@ import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
 import { isInActiveVoipCall } from '../lib/services/voip/isInActiveVoipCall';
 import { store as reduxStore } from '../lib/store/auxStore';
 
+// eslint-disable-next-line no-restricted-imports
 import appConfig from '../../app.json';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
 const loginCall = credentials => login(credentials);
 const logoutCall = args => logout(args);
+
+const saveCustomFields = function* saveCustomFields(registerCustomFields, user) {
+	try {
+		const updatedUser = yield call(saveUserProfile, {}, { ...registerCustomFields });
+		yield put(setUser({ ...user, ...updatedUser.user }));
+	} catch (e) {
+		if (!isTwoFactorCancelled(e)) {
+			throw e;
+		}
+	}
+};
 
 const showSupportedVersionsWarning = function* showSupportedVersionsWarning(server) {
 	const { status: supportedVersionsStatus } = yield select(state => state.supportedVersions);
@@ -76,6 +90,18 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 	}
 };
 
+// Login already succeeded by the time this runs, so a superseded unlock must not fall through to
+// loginFailure; any other failure still propagates.
+const authenticateIgnoringCancel = function* authenticateIgnoringCancel(server) {
+	try {
+		yield localAuthenticate(server);
+	} catch (e) {
+		if (!(e instanceof UserCanceledError)) {
+			throw e;
+		}
+	}
+};
+
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, registerCustomFields }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
 	try {
@@ -91,7 +117,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			yield put(appStart({ root: RootEnum.ROOT_SET_USERNAME }));
 		} else {
 			const server = yield select(getServer);
-			yield localAuthenticate(server);
+			yield* authenticateIgnoringCancel(server);
 
 			// Saves username on server history
 			const serversDB = database.servers;
@@ -125,8 +151,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			});
 			yield put(loginSuccess(result));
 			if (registerCustomFields) {
-				const updatedUser = yield call(saveUserProfile, {}, { ...registerCustomFields });
-				yield put(setUser({ ...result, ...updatedUser.user }));
+				yield* saveCustomFields(registerCustomFields, result);
 			}
 		}
 	} catch (e) {
@@ -328,7 +353,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			avatarETag: user.avatarETag,
 			bio: user.bio,
 			nickname: user.nickname,
-			requirePasswordChange: user.requirePasswordChange
+			requirePasswordChange: user.requirePasswordChange,
+			sidebarCategories: user.sidebarCategories
 		};
 		yield serversDB.write(async () => {
 			try {
@@ -345,8 +371,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			}
 		});
 
-		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
-		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
+		UserPreferences.setString(getServerUserIdKey(server), user.id);
+		UserPreferences.setString(getUserTokenKey(server, user.id), user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
 		EventEmitter.emit('connected');
 		const currentRoot = yield select(state => state.app.root);
@@ -432,23 +458,11 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 		try {
 			yield call(removeServerData, { server });
 			yield call(removeServerDatabase, { server });
-			const serversDB = database.servers;
-			// all servers
-			const serversCollection = serversDB.get('servers');
-			const servers = yield serversCollection.query().fetch();
-
-			// see if there're other logged in servers and selects first one
-			if (servers.length > 0) {
-				for (let i = 0; i < servers.length; i += 1) {
-					const newServer = servers[i].id;
-					const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-					if (token) {
-						yield put(selectServerRequest(newServer, newServer.version));
-						return;
-					}
-				}
+			const loggedInServer = yield call(findLoggedInServer);
+			if (loggedInServer) {
+				yield put(selectServerRequest(loggedInServer.id, loggedInServer.version));
+				return;
 			}
-			// if there's no servers, go outside
 			disconnect();
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} catch (e) {

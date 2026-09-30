@@ -1,6 +1,6 @@
-import { loadMessagesForRoom } from '../../../lib/methods/loadMessagesForRoom';
-import { loadMissedMessages } from '../../../lib/methods/loadMissedMessages';
-import { type RoomTypes } from '../../../lib/methods/roomTypeToApiType';
+import { loadMessagesForRoom } from '~/lib/methods/loadMessagesForRoom';
+import { loadMissedMessages } from '~/lib/methods/loadMissedMessages';
+import { type RoomTypes } from '~/lib/methods/roomTypeToApiType';
 
 interface IGetMessagesParams {
 	rid: string;

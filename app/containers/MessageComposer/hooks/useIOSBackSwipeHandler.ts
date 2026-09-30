@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { isIOS } from '../../../lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers';
 
 const useIOSBackSwipeHandler = () => {
 	const navigation = useNavigation();

@@ -1,9 +1,9 @@
 import { memo, type ReactElement, type RefObject } from 'react';
 import { type LayoutChangeEvent, StyleSheet, View } from 'react-native';
 
-import { type TMessageAction } from '../../../definitions';
+import { type TMessageAction } from '~/definitions';
 import { type IComposerInput } from '../interfaces';
-import { useTheme } from '../../../theme';
+import { useTheme } from '~/theme';
 import { RecordAudio } from './RecordAudio';
 import { Left, Right } from './Unfocused';
 import { MIN_HEIGHT } from '../constants';
@@ -12,7 +12,7 @@ import { EmojiSearchbar } from './EmojiSearchbar';
 import { Toolbar } from './Toolbar';
 import { Quotes } from './Quotes';
 import { ComposerInput } from './ComposerInput';
-import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../lib/constants/accessibility';
+import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '~/lib/constants/accessibility';
 
 interface MessageComposerContentProps {
 	recordingAudio: boolean;

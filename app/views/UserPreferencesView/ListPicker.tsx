@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-import { type TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
-import { CustomIcon } from '../../containers/CustomIcon';
-import * as List from '../../containers/List';
-import I18n from '../../i18n';
-import { useTheme } from '../../theme';
+import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
+import { CustomIcon } from '~/containers/CustomIcon';
+import * as List from '~/containers/List';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
 
 const styles = StyleSheet.create({

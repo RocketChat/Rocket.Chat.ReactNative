@@ -4,8 +4,8 @@ import Popover from 'react-native-popover-view';
 
 import { CustomIcon } from '../CustomIcon';
 import ActivityIndicator from '../ActivityIndicator';
-import { themes } from '../../lib/constants/colors';
-import { useTheme } from '../../theme';
+import { themes } from '~/lib/constants/colors';
+import { useTheme } from '~/theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import * as List from '../List';
 import { type IOption, type IOptions, type IOverflow } from './interfaces';

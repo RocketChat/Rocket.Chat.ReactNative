@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { type TSubscriptionModel } from '../../definitions';
+import { type TSubscriptionModel } from '~/definitions';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 
 export const useSubscription = (rid?: string): TSubscriptionModel | undefined => {

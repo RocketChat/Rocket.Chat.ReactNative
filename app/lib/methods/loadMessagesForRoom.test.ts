@@ -1,6 +1,6 @@
 import { loadMessagesForRoom } from './loadMessagesForRoom';
 import sdk from '../services/sdk';
-import { ROOM } from '../../actions/actionsTypes';
+import { ROOM } from '~/actions/actionsTypes';
 import { getMessageById } from '../database/services/Message';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import updateMessages from './updateMessages';

@@ -2,9 +2,9 @@ import { dequal } from 'dequal';
 import { memo } from 'react';
 import { type TextStyle } from 'react-native';
 
-import { formatLastMessage } from '../../lib/methods/formatLastMessage';
-import { isAndroid } from '../../lib/methods/helpers';
-import { useTheme } from '../../theme';
+import { formatLastMessage } from '~/lib/methods/formatLastMessage';
+import { isAndroid } from '~/lib/methods/helpers';
+import { useTheme } from '~/theme';
 import { MarkdownPreview } from '../markdown';
 import { type ILastMessageProps } from './interfaces';
 import styles from './styles';

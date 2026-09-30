@@ -2,15 +2,13 @@ import { render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import Thread from '../Thread';
-import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { type TAnyMessageModel } from '../../../../definitions';
-import { mockedStore } from '../../../../reducers/mockedStore';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { type TAnyMessageModel } from '~/definitions';
+import { mockedStore } from '~/reducers/mockedStore';
 
 const baseContextValue: Partial<MessageRoomState> = {
-	toggleFollowThread: jest.fn(),
-	user: { id: 'user1', username: 'user1' },
-	onThreadPress: jest.fn()
+	handlers: { toggleFollowThread: jest.fn(), onThreadPress: jest.fn() }
 };
 
 const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel =>

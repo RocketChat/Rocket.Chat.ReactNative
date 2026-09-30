@@ -1,6 +1,6 @@
 import { Platform, StyleSheet } from 'react-native';
 
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 
 const codeFontFamily = Platform.select({
 	ios: { fontFamily: 'Courier New' },
@@ -26,9 +26,6 @@ export default StyleSheet.create({
 	},
 	emph: {
 		fontStyle: 'italic'
-	},
-	strong: {
-		fontWeight: 'bold'
 	},
 	del: {
 		textDecorationLine: 'line-through'

@@ -1,8 +1,6 @@
 import database from '../database';
-import { DEFAULT_EMOJIS } from '../constants/emojis';
-import migrations from '../database/model/migrations';
-import appSchema from '../database/schema/app';
-import { addFrequentlyUsed, getFrequentlyUsedEmojis } from './emojis';
+import { DEFAULT_EMOJIS } from '../constants/emojis/emojis';
+import { addFrequentlyUsed, getFrequentlyUsedEmojis, searchEmojis } from './emojis';
 
 jest.mock('../database', () => ({
 	__esModule: true,
@@ -116,16 +114,38 @@ describe('getFrequentlyUsedEmojis', () => {
 	});
 });
 
-describe('frequently_used_emojis migration', () => {
-	it('bumps the schema to v29 with a matching migration', () => {
-		expect(appSchema.version).toBe(29);
-		expect((migrations as any).maxVersion).toBe(29);
+describe('searchEmojis', () => {
+	it('matches the listed shortname', async () => {
+		await expect(searchEmojis('ocean')).resolves.toContain('ocean');
 	});
 
-	it('v29 deletes only legacy rows whose id contains a non-printable-ASCII character', () => {
-		const v29 = (migrations as any).sortedMigrations.find((m: any) => m.toVersion === 29);
-		expect(v29).toBeDefined();
-		const sqls = (v29.steps as any[]).filter(s => s.type === 'sql').map(s => s.sql);
-		expect(sqls.some(sql => /DELETE FROM frequently_used_emojis/i.test(sql) && /\[\^ -~\]/.test(sql))).toBe(true);
+	it('matches an alias and returns the listed shortname instead of the alias', async () => {
+		const result = await searchEmojis('water_wave');
+
+		expect(result).toContain('ocean');
+		expect(result).not.toContain('water_wave');
+	});
+
+	it('matches case insensitively, so the picker finds an emoji typed in caps', async () => {
+		await expect(searchEmojis('WATER_WAVE')).resolves.toContain('ocean');
+	});
+
+	it('ranks the exact shortname first, so a short keyword is not buried by longer names', async () => {
+		// The composer's autocomplete only shows the first few, so rank is what makes `fire` reachable.
+		await expect(searchEmojis('fire')).resolves.toHaveProperty('0', 'fire');
+		await expect(searchEmojis('heart')).resolves.toHaveProperty('0', 'heart');
+		await expect(searchEmojis('ok')).resolves.toHaveProperty('0', 'ok');
+	});
+
+	it('ranks an exact alias above a name that merely contains the keyword', async () => {
+		const result = await searchEmojis('cop');
+
+		expect(result.indexOf('police_officer')).toBeLessThan(result.indexOf('helicopter'));
+	});
+
+	it('returns only custom emojis when no shortname matches', async () => {
+		mockFetch.mockResolvedValue([{ name: 'rocketchat', extension: 'png' }]);
+
+		await expect(searchEmojis('notanemoji')).resolves.toEqual([{ name: 'rocketchat', extension: 'png' }]);
 	});
 });

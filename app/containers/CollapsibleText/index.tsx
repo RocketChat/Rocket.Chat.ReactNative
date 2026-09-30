@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { type TextStyle, Text, StyleSheet } from 'react-native';
 
-import sharedStyles from '../../views/Styles';
-import { useTheme } from '../../theme';
-import I18n from '../../i18n';
-import usePreviewFormatText from '../../lib/hooks/usePreviewFormatText';
+import sharedStyles from '~/views/Styles';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
+import usePreviewFormatText from '~/lib/hooks/usePreviewFormatText';
 
 interface ICollapsibleText {
 	msg?: string;

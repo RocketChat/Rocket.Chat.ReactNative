@@ -2,11 +2,11 @@ import { type ReactNode } from 'react';
 import { render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
-import { mockedStore } from '../../reducers/mockedStore';
-import { setActiveUsers } from '../../actions/activeUsers';
-import { connectSuccess, connectRequest, disconnect } from '../../actions/connect';
-import { initStore } from '../../lib/store/auxStore';
-import { selectServerSuccess } from '../../actions/server';
+import { mockedStore } from '~/reducers/mockedStore';
+import { setActiveUsers } from '~/actions/activeUsers';
+import { connectSuccess, connectRequest, disconnect } from '~/actions/connect';
+import { initStore } from '~/lib/store/auxStore';
+import { selectServerSuccess } from '~/actions/server';
 import RoomHeaderContainer from './index';
 
 const mockChild = jest.fn<any, [Record<string, unknown>]>(() => null);

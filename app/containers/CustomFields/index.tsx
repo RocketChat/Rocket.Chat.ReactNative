@@ -3,7 +3,7 @@ import { type TextInput } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 import { FormTextInput } from '../TextInput';
-import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
+import useParsedCustomFields from '~/lib/hooks/useParsedCustomFields';
 
 interface ICustomFields {
 	Accounts_CustomFields: string;

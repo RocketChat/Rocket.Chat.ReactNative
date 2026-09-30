@@ -1,8 +1,8 @@
 import { ScrollView } from 'react-native';
 
-import * as List from '../../containers/List';
-import { colors } from '../../lib/constants/colors';
-import { ThemeContext, type TSupportedThemes } from '../../theme';
+import * as List from '~/containers/List';
+import { colors } from '~/lib/constants/colors';
+import { ThemeContext, type TSupportedThemes } from '~/theme';
 import Item, { type IItem } from './Item';
 
 const author = {

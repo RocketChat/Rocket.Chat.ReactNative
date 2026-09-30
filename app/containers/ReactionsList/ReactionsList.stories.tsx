@@ -1,10 +1,10 @@
 import { View } from 'react-native';
 
-import { type ICustomEmojis } from '../../definitions';
+import { type ICustomEmojis } from '~/definitions';
 import ReactionsList from '.';
-import { mockedStore as store } from '../../reducers/mockedStore';
-import { updateSettings } from '../../actions/settings';
-import { setCustomEmojis } from '../../actions/customEmojis';
+import { mockedStore as store } from '~/reducers/mockedStore';
+import { updateSettings } from '~/actions/settings';
+import { setCustomEmojis } from '~/actions/customEmojis';
 
 const customEmojis: ICustomEmojis = {
 	marioparty: { name: 'marioparty', extension: 'gif' },

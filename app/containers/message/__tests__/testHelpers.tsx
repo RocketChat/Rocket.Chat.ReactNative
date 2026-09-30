@@ -2,14 +2,15 @@ import { type ReactElement, type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { render } from '@testing-library/react-native';
 
-import { type TAnyMessageModel } from '../../../definitions';
-import { mockedStore } from '../../../reducers/mockedStore';
+import { type TAnyMessageModel } from '~/definitions';
+import { mockedStore } from '~/reducers/mockedStore';
 import { MessageProvider } from '../stores/MessageStore';
 import { MessageRoomProvider, type MessageRoomState } from '../stores/MessageRoomStore';
 
 interface IMessageProvidersOptions {
 	item?: TAnyMessageModel;
 	previousItem?: TAnyMessageModel;
+	lastSeen?: Date | null;
 	room?: Partial<MessageRoomState>;
 	withRedux?: boolean;
 }
@@ -17,6 +18,7 @@ interface IMessageProvidersOptions {
 export const MessageProviders = ({
 	item,
 	previousItem,
+	lastSeen,
 	room,
 	withRedux = true,
 	children
@@ -26,7 +28,7 @@ export const MessageProviders = ({
 	let tree: ReactNode = children;
 	if (item) {
 		tree = (
-			<MessageProvider item={item} previousItem={previousItem}>
+			<MessageProvider item={item} previousItem={previousItem} lastSeen={lastSeen}>
 				{tree}
 			</MessageProvider>
 		);

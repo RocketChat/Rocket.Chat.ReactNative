@@ -1,4 +1,4 @@
-import i18n from '../../../i18n';
+import i18n from '~/i18n';
 
 const list = ['frequentlyUsed', 'people', 'nature', 'food', 'activity', 'travel', 'objects', 'symbols', 'flags', 'custom'];
 const tabs = [

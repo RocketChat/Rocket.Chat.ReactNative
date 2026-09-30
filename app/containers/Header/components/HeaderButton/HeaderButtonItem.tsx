@@ -2,9 +2,9 @@ import { memo, type ReactElement } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
-import { CustomIcon, type TIconsName } from '../../../CustomIcon';
-import { useTheme } from '../../../../theme';
-import sharedStyles from '../../../../views/Styles';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
 
 export interface IHeaderButtonItem {
 	title?: string;

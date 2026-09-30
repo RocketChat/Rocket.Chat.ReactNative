@@ -12,8 +12,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Image } from 'expo-image';
 
-import { useTheme } from '../../theme';
-import EventEmitter from '../../lib/methods/helpers/events';
+import { useTheme } from '~/theme';
+import EventEmitter from '~/lib/methods/helpers/events';
 
 const LOADING_EVENT = 'LOADING_EVENT';
 export const LOADING_TEST_ID = 'loading';
@@ -117,7 +117,7 @@ const Loading = (): ReactElement | null => {
 						]}
 					/>
 					<AnimatedImage
-						source={require('../../static/images/logo.png')}
+						source={require('~/static/images/logo.png')}
 						style={[styles.image, animatedScale]}
 						testID={LOADING_IMAGE_TEST_ID}
 						contentFit='contain'

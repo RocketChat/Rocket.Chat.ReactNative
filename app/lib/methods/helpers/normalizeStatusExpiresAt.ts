@@ -1,6 +1,6 @@
 import EJSON from 'ejson';
 
-import dayjs from '../../dayjs';
+import dayjs from '~/lib/dayjs';
 
 export const normalizeStatusExpiresAt = (value: unknown): string | undefined => {
 	if (!value) return undefined;

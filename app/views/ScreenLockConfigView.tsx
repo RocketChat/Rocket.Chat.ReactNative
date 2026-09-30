@@ -10,15 +10,18 @@ import {
 	changePasscode,
 	checkHasPasscode,
 	supportedBiometryLabel,
-	handleLocalAuthentication
+	enableBiometry,
+	handleLocalAuthentication,
+	logUnlessUserCanceled
 } from '../lib/methods/helpers/localAuthentication';
-import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK } from '../lib/constants/localAuthentication';
+import { DEFAULT_AUTO_LOCK } from '../lib/constants/localAuthentication';
+import { biometricTrustStore } from '../lib/biometricTrustStore';
 import { themes } from '../lib/constants/colors';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../lib/methods/helpers/log';
-import userPreferences from '../lib/methods/userPreferences';
 import { type IApplicationState, type TServerModel } from '../definitions';
 import Switch from '../containers/Switch';
+import { showErrorAlert } from '../lib/methods/helpers/info';
 
 const DEFAULT_BIOMETRY = false;
 
@@ -40,6 +43,7 @@ interface IScreenLockConfigViewState {
 	autoLockTime?: number | null;
 	biometry: boolean;
 	biometryLabel: string | null;
+	biometryBusy: boolean;
 }
 
 class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreenLockConfigViewState> {
@@ -57,7 +61,8 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 			autoLock: false,
 			autoLockTime: null,
 			biometry: DEFAULT_BIOMETRY,
-			biometryLabel: null
+			biometryLabel: null,
+			biometryBusy: false
 		};
 		this.init();
 	}
@@ -125,31 +130,59 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 	};
 
 	hasBiometry = () => {
-		const biometry = userPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? DEFAULT_BIOMETRY;
+		const biometry = biometricTrustStore.isEnabled();
 		this.setState({ biometry });
 	};
 
 	changePasscode = async ({ force }: { force: boolean }) => {
 		const { autoLock } = this.state;
 		if (autoLock) {
-			await handleLocalAuthentication(true);
+			try {
+				await handleLocalAuthentication({ canCloseModal: true });
+			} catch (e) {
+				logUnlessUserCanceled(e);
+				return;
+			}
 		}
 		logEvent(events.SLC_CHANGE_PASSCODE);
-		await changePasscode({ force });
+		try {
+			await changePasscode({ force });
+		} catch (e) {
+			logUnlessUserCanceled(e);
+		}
 	};
 
-	toggleAutoLock = () => {
-		logEvent(events.SLC_TOGGLE_AUTOLOCK);
+	// Takes the Switch's target value; the row onPress passes a non-boolean, so it flips instead. The
+	// updater guard makes a double fire from one tap a no-op rather than a toggle back.
+	toggleAutoLock = (value?: boolean) => {
+		if (this.props.Force_Screen_Lock) {
+			return;
+		}
+		const target = typeof value === 'boolean' ? value : !this.state.autoLock;
+		let applied = false;
 		this.setState(
-			({ autoLock }) => ({ autoLock: !autoLock, autoLockTime: DEFAULT_AUTO_LOCK }),
+			({ autoLock }) => {
+				if (autoLock === target) {
+					return null;
+				}
+				applied = true;
+				return { autoLock: target, autoLockTime: DEFAULT_AUTO_LOCK };
+			},
 			async () => {
+				if (!applied) {
+					return;
+				}
+				logEvent(events.SLC_TOGGLE_AUTOLOCK);
 				const { autoLock } = this.state;
 				if (autoLock) {
 					try {
 						await checkHasPasscode({ force: false });
 						this.hasBiometry();
 					} catch {
+						// Revert the toggle; its own callback persists the reverted state, so skip the
+						// save() below — otherwise one canceled toggle issues two writes.
 						this.toggleAutoLock();
+						return;
 					}
 				}
 				this.save();
@@ -158,12 +191,34 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 	};
 
 	toggleBiometry = () => {
+		if (this.state.biometryBusy) {
+			return;
+		}
 		logEvent(events.SLC_TOGGLE_BIOMETRY);
 		this.setState(
-			({ biometry }) => ({ biometry: !biometry }),
-			() => {
+			({ biometry }) => ({ biometry: !biometry, biometryBusy: true }),
+			async () => {
 				const { biometry } = this.state;
-				userPreferences.setBool(BIOMETRY_ENABLED_KEY, biometry);
+				if (!biometry) {
+					// Best-effort teardown that cannot fail; the switch must always be able to go off.
+					await biometricTrustStore.disableBiometry();
+					this.setState({ biometryBusy: false });
+					return;
+				}
+				// Via enableBiometry so a re-bind carries an explicit consent prompt.
+				const result = await enableBiometry();
+				if (result.kind !== 'success') {
+					// enableBiometry always forces the persisted flag off on failure, so the correct UI
+					// state is unconditionally `false`.
+					this.setState({ biometry: false, biometryBusy: false });
+					if (result.kind === 'unavailable') {
+						showErrorAlert(I18n.t('Local_authentication_biometry_unavailable'), I18n.t('Oops'));
+					} else if (result.kind !== 'canceled') {
+						showErrorAlert(I18n.t('Local_authentication_biometry_enable_failed'), I18n.t('Oops'));
+					}
+					return;
+				}
+				this.setState({ biometryBusy: false });
 			}
 		);
 	};
@@ -195,6 +250,7 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 					translateTitle={false}
 					additionalAccessibilityLabel={this.isSelected(value)}
 					additionalAccessibilityLabelCheck
+					testID={`screen-lock-config-view-auto-lock-time-${value}`}
 				/>
 				<List.Separator />
 			</>
@@ -208,8 +264,8 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 	};
 
 	renderBiometrySwitch = () => {
-		const { biometry } = this.state;
-		return <Switch value={biometry} onValueChange={this.toggleBiometry} />;
+		const { biometry, biometryBusy } = this.state;
+		return <Switch value={biometry} onValueChange={this.toggleBiometry} disabled={biometryBusy} />;
 	};
 
 	renderAutoLockItems = () => {
@@ -263,20 +319,30 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 
 	render() {
 		const { autoLock } = this.state;
+		const { Force_Screen_Lock } = this.props;
 		return (
-			<SafeAreaView>
+			<SafeAreaView testID='screen-lock-config-view'>
 				<List.Container>
 					<List.Section>
 						<List.Separator />
 						<List.Item
+							testID='screen-lock-config-view-auto-lock'
 							title='Local_authentication_unlock_option'
 							right={() => this.renderAutoLockSwitch()}
 							additionalAccessibilityLabel={autoLock}
+							onPress={Force_Screen_Lock ? undefined : this.toggleAutoLock}
+							disabled={Force_Screen_Lock}
+							accessibilityRole='switch'
 						/>
 						{autoLock ? (
 							<>
 								<List.Separator />
-								<List.Item title='Local_authentication_change_passcode' onPress={this.changePasscode} showActionIndicator />
+								<List.Item
+									title='Local_authentication_change_passcode'
+									onPress={() => this.changePasscode({ force: false })}
+									showActionIndicator
+									testID='screen-lock-config-view-change-passcode'
+								/>
 							</>
 						) : null}
 						<List.Separator />
