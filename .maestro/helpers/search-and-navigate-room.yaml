@@ -3,14 +3,7 @@ name: Search and navigate room
 tags:
   - 'util'
 ---
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view'
-    timeout: 60000
 - runFlow:
-    when:
-      notVisible:
-        id: 'rooms-list-view-item-${ROOM}'
     file: '../helpers/search-room.yaml'
     env:
       ROOM: ${ROOM}

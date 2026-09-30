@@ -213,9 +213,6 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
     underlayColor="black"
   >
     <Text
-      accessibilityLabel="Edit"
-      accessibilityRole="text"
-      accessible={true}
       style={
         [
           {

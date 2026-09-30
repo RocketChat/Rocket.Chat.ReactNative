@@ -94,9 +94,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 
               </Text>
               <Text
-                accessibilityLabel="ABAC managed"
-                accessibilityRole="text"
-                accessible={true}
                 style={
                   [
                     {
@@ -121,9 +118,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
             </View>
           </View>
           <Text
-            accessibilityLabel="Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access."
-            accessibilityRole="text"
-            accessible={true}
             style={
               [
                 {
@@ -147,8 +141,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
           </Text>
           <Text
             accessibilityLabel="Room attributes"
-            accessibilityRole="text"
-            accessible={true}
             style={
               [
                 {
@@ -177,9 +169,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
             }
           >
             <Text
-              accessibilityLabel="Chat sensitivity"
-              accessibilityRole="text"
-              accessible={true}
               style={
                 [
                   {
@@ -227,9 +216,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Classified"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -269,9 +255,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Top Secret"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -382,9 +365,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 
               </Text>
               <Text
-                accessibilityLabel="ABAC managed"
-                accessibilityRole="text"
-                accessible={true}
                 style={
                   [
                     {
@@ -409,9 +389,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
             </View>
           </View>
           <Text
-            accessibilityLabel="Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access."
-            accessibilityRole="text"
-            accessible={true}
             style={
               [
                 {
@@ -435,8 +412,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
           </Text>
           <Text
             accessibilityLabel="Room attributes"
-            accessibilityRole="text"
-            accessible={true}
             style={
               [
                 {
@@ -465,9 +440,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
             }
           >
             <Text
-              accessibilityLabel="Attribute"
-              accessibilityRole="text"
-              accessible={true}
               style={
                 [
                   {
@@ -515,9 +487,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 1"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -557,9 +526,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 2"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -599,9 +565,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 3"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -641,9 +604,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 4"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -683,9 +643,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 5"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -725,9 +682,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 6"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -767,9 +721,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 7"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -809,9 +760,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 8"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -851,9 +799,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 9"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -893,9 +838,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 10"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -928,9 +870,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
             }
           >
             <Text
-              accessibilityLabel="Chat sensitivity"
-              accessibilityRole="text"
-              accessible={true}
               style={
                 [
                   {
@@ -978,9 +917,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Classified"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -1020,9 +956,6 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Top Secret"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -1148,9 +1081,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 
               </Text>
               <Text
-                accessibilityLabel="ABAC managed"
-                accessibilityRole="text"
-                accessible={true}
                 style={
                   [
                     {
@@ -1175,9 +1105,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
             </View>
           </View>
           <Text
-            accessibilityLabel="Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access."
-            accessibilityRole="text"
-            accessible={true}
             style={
               [
                 {
@@ -1201,8 +1128,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
           </Text>
           <Text
             accessibilityLabel="Room attributes"
-            accessibilityRole="text"
-            accessible={true}
             style={
               [
                 {
@@ -1231,9 +1156,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
             }
           >
             <Text
-              accessibilityLabel="Chat sensitivity"
-              accessibilityRole="text"
-              accessible={true}
               style={
                 [
                   {
@@ -1281,9 +1203,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Classified"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -1323,9 +1242,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Top Secret"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -1436,9 +1352,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 
               </Text>
               <Text
-                accessibilityLabel="ABAC managed"
-                accessibilityRole="text"
-                accessible={true}
                 style={
                   [
                     {
@@ -1463,9 +1376,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
             </View>
           </View>
           <Text
-            accessibilityLabel="Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access."
-            accessibilityRole="text"
-            accessible={true}
             style={
               [
                 {
@@ -1489,8 +1399,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
           </Text>
           <Text
             accessibilityLabel="Room attributes"
-            accessibilityRole="text"
-            accessible={true}
             style={
               [
                 {
@@ -1519,9 +1427,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
             }
           >
             <Text
-              accessibilityLabel="Attribute"
-              accessibilityRole="text"
-              accessible={true}
               style={
                 [
                   {
@@ -1569,9 +1474,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 1"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -1611,9 +1513,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 2"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -1653,9 +1552,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 3"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -1695,9 +1591,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 4"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -1737,9 +1630,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 5"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -1779,9 +1669,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 6"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -1821,9 +1708,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 7"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -1863,9 +1747,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 8"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -1905,9 +1786,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 9"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -1947,9 +1825,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 10"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -1982,9 +1857,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
             }
           >
             <Text
-              accessibilityLabel="Chat sensitivity"
-              accessibilityRole="text"
-              accessible={true}
               style={
                 [
                   {
@@ -2032,9 +1904,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Classified"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -2074,9 +1943,6 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Top Secret"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -2202,9 +2068,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 
               </Text>
               <Text
-                accessibilityLabel="ABAC managed"
-                accessibilityRole="text"
-                accessible={true}
                 style={
                   [
                     {
@@ -2229,9 +2092,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
             </View>
           </View>
           <Text
-            accessibilityLabel="Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access."
-            accessibilityRole="text"
-            accessible={true}
             style={
               [
                 {
@@ -2255,8 +2115,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
           </Text>
           <Text
             accessibilityLabel="Room attributes"
-            accessibilityRole="text"
-            accessible={true}
             style={
               [
                 {
@@ -2285,9 +2143,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
             }
           >
             <Text
-              accessibilityLabel="Chat sensitivity"
-              accessibilityRole="text"
-              accessible={true}
               style={
                 [
                   {
@@ -2335,9 +2190,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Classified"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -2377,9 +2229,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Top Secret"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -2490,9 +2339,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 
               </Text>
               <Text
-                accessibilityLabel="ABAC managed"
-                accessibilityRole="text"
-                accessible={true}
                 style={
                   [
                     {
@@ -2517,9 +2363,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
             </View>
           </View>
           <Text
-            accessibilityLabel="Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access."
-            accessibilityRole="text"
-            accessible={true}
             style={
               [
                 {
@@ -2543,8 +2386,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
           </Text>
           <Text
             accessibilityLabel="Room attributes"
-            accessibilityRole="text"
-            accessible={true}
             style={
               [
                 {
@@ -2573,9 +2414,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
             }
           >
             <Text
-              accessibilityLabel="Attribute"
-              accessibilityRole="text"
-              accessible={true}
               style={
                 [
                   {
@@ -2623,9 +2461,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 1"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -2665,9 +2500,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 2"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -2707,9 +2539,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 3"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -2749,9 +2578,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 4"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -2791,9 +2617,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 5"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -2833,9 +2656,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 6"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -2875,9 +2695,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 7"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -2917,9 +2734,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 8"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -2959,9 +2773,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 9"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -3001,9 +2812,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Value 10"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -3036,9 +2844,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
             }
           >
             <Text
-              accessibilityLabel="Chat sensitivity"
-              accessibilityRole="text"
-              accessible={true}
               style={
                 [
                   {
@@ -3086,9 +2891,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Classified"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {
@@ -3128,9 +2930,6 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="Top Secret"
-                  accessibilityRole="text"
-                  accessible={true}
                   style={
                     [
                       {

@@ -145,12 +145,12 @@ describe('NewMessageView Item', () => {
 	});
 
 	it('should have correct accessibility label', () => {
-		const { getByTestId } = render(
+		const { getByLabelText } = render(
 			<Wrapper>
 				<Item userId='user123' name='John Doe' username='john.doe' onPress={() => {}} testID='new-message-view-item-john.doe' />
 			</Wrapper>
 		);
-		expect(getByTestId('new-message-view-item-john.doe').props.accessibilityLabel).toBe('John Doe');
+		expect(getByLabelText('John Doe')).toBeTruthy();
 	});
 
 	it('should match snapshot when hasMediaCallPermission is false', () => {

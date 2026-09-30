@@ -52,9 +52,6 @@ exports[`Story Snapshots: CustomStyleButton should match snapshot 1`] = `
   }
 >
   <Text
-    accessibilityLabel="Press me!"
-    accessibilityRole="text"
-    accessible={true}
     style={
       [
         {
@@ -187,9 +184,6 @@ exports[`Story Snapshots: PrimaryButton should match snapshot 1`] = `
   }
 >
   <Text
-    accessibilityLabel="Press me!"
-    accessibilityRole="text"
-    accessible={true}
     style={
       [
         {
@@ -262,9 +256,6 @@ exports[`Story Snapshots: SecondaryButton should match snapshot 1`] = `
   }
 >
   <Text
-    accessibilityLabel="Press me!"
-    accessibilityRole="text"
-    accessible={true}
     style={
       [
         {

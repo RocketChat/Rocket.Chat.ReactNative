@@ -24,8 +24,8 @@ describe('UIKitButtonTests', () => {
 	});
 
 	test('find button using accessibilityLabel', () => {
-		const { getByRole } = render(<UIKitButton {...testProps} />);
-		const button = getByRole('button', { name: testProps.title });
+		const { getByLabelText } = render(<UIKitButton {...testProps} />);
+		const button = getByLabelText(testProps.title);
 		expect(button).toBeTruthy();
 	});
 
@@ -42,15 +42,15 @@ describe('UIKitButtonTests', () => {
 	});
 
 	test('onPress is not triggered while loading', () => {
-		const { getByRole } = render(<UIKitButton {...testProps} loading />);
-		const button = getByRole('button', { name: testProps.title });
+		const { getByLabelText } = render(<UIKitButton {...testProps} loading />);
+		const button = getByLabelText(testProps.title);
 		fireEvent.press(button);
 		expect(onPressMock).not.toHaveBeenCalled();
 	});
 
 	test('should trigger onPress function on button press', () => {
-		const { getByRole } = render(<UIKitButton {...testProps} />);
-		const button = getByRole('button', { name: testProps.title });
+		const { getByLabelText } = render(<UIKitButton {...testProps} />);
+		const button = getByLabelText(testProps.title);
 		fireEvent.press(button);
 		expect(onPressMock).toHaveBeenCalled();
 	});

@@ -50,9 +50,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       
     </Text>
     <Text
-      accessibilityLabel="Working from home"
-      accessibilityRole="text"
-      accessible={true}
       style={
         [
           undefined,
@@ -113,9 +110,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       
     </Text>
     <Text
-      accessibilityLabel="Busy"
-      accessibilityRole="text"
-      accessible={true}
       style={
         [
           undefined,
@@ -142,9 +136,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
     }
   >
     <Text
-      accessibilityLabel="Away for lunch"
-      accessibilityRole="text"
-      accessible={true}
       style={
         [
           undefined,
@@ -205,9 +196,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       
     </Text>
     <Text
-      accessibilityLabel="Old status"
-      accessibilityRole="text"
-      accessible={true}
       style={
         [
           undefined,
@@ -268,9 +256,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       
     </Text>
     <Text
-      accessibilityLabel="In a meeting"
-      accessibilityRole="text"
-      accessible={true}
       style={
         [
           undefined,
@@ -325,9 +310,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       
     </Text>
     <Text
-      accessibilityLabel="Until Jun 15, 7:00 PM"
-      accessibilityRole="text"
-      accessible={true}
       style={
         [
           undefined,
@@ -388,9 +370,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       
     </Text>
     <Text
-      accessibilityLabel="Working remotely"
-      accessibilityRole="text"
-      accessible={true}
       style={
         [
           undefined,
@@ -447,9 +426,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       
     </Text>
     <Text
-      accessibilityLabel="Until Jun 15, 7:00 PM"
-      accessibilityRole="text"
-      accessible={true}
       style={
         [
           undefined,

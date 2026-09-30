@@ -54,9 +54,6 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       }
     >
       <Text
-        accessibilityLabel="Approve"
-        accessibilityRole="text"
-        accessible={true}
         style={
           [
             {
@@ -130,9 +127,6 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       }
     >
       <Text
-        accessibilityLabel="Deny"
-        accessibilityRole="text"
-        accessible={true}
         style={
           [
             {
@@ -206,9 +200,6 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       }
     >
       <Text
-        accessibilityLabel="Deny"
-        accessibilityRole="text"
-        accessible={true}
         style={
           [
             {
@@ -282,9 +273,6 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       }
     >
       <Text
-        accessibilityLabel="Deny"
-        accessibilityRole="text"
-        accessible={true}
         style={
           [
             {
@@ -358,9 +346,6 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       }
     >
       <Text
-        accessibilityLabel="Deny"
-        accessibilityRole="text"
-        accessible={true}
         style={
           [
             {
@@ -441,9 +426,6 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       }
     >
       <Text
-        accessibilityLabel="Deny"
-        accessibilityRole="text"
-        accessible={true}
         style={
           [
             {
@@ -524,9 +506,6 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       }
     >
       <Text
-        accessibilityLabel="Deny"
-        accessibilityRole="text"
-        accessible={true}
         style={
           [
             {
@@ -603,9 +582,6 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
     underlayColor="black"
   >
     <Text
-      accessibilityLabel="Show more"
-      accessibilityRole="text"
-      accessible={true}
       style={
         [
           {
@@ -5654,9 +5630,6 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
     }
   >
     <Text
-      accessibilityLabel="button"
-      accessibilityRole="text"
-      accessible={true}
       style={
         [
           {
@@ -5818,9 +5791,6 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
     underlayColor="black"
   >
     <Text
-      accessibilityLabel="Select a date"
-      accessibilityRole="text"
-      accessible={true}
       style={
         [
           {
@@ -6846,9 +6816,6 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
       underlayColor="black"
     >
       <Text
-        accessibilityLabel="2 selecteds"
-        accessibilityRole="text"
-        accessible={true}
         style={
           [
             {
@@ -7009,9 +6976,6 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
       underlayColor="black"
     >
       <Text
-        accessibilityLabel="0 selecteds"
-        accessibilityRole="text"
-        accessible={true}
         style={
           [
             {

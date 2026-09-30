@@ -9,9 +9,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
   }
 >
   <Text
-    accessibilityLabel="New call"
-    accessibilityRole="text"
-    accessible={true}
     style={
       [
         {
@@ -163,9 +160,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     </A11yOrderView>
   </View>
   <Text
-    accessibilityLabel="Enter username or number"
-    accessibilityRole="text"
-    accessible={true}
     style={
       [
         {
@@ -200,9 +194,6 @@ exports[`Story Snapshots: WithFilter should match snapshot 1`] = `
   }
 >
   <Text
-    accessibilityLabel="New call"
-    accessibilityRole="text"
-    accessible={true}
     style={
       [
         {
@@ -354,9 +345,6 @@ exports[`Story Snapshots: WithFilter should match snapshot 1`] = `
     </A11yOrderView>
   </View>
   <Text
-    accessibilityLabel="Enter username or number"
-    accessibilityRole="text"
-    accessible={true}
     style={
       [
         {

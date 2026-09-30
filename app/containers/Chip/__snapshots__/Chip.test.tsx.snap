@@ -80,9 +80,6 @@ exports[`Story Snapshots: ChipFullWidth should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityLabel="Full Width Text With Long Text That Should Be Wrapped"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -248,9 +245,6 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityLabel="Rocket.Cat"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -442,9 +436,6 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityLabel="Short"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -576,9 +567,6 @@ exports[`Story Snapshots: ChipWithoutAvatar should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityLabel="Without Avatar"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -710,9 +698,6 @@ exports[`Story Snapshots: ChipWithoutAvatarAndIcon should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityLabel="Without Avatar and Icon"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -878,9 +863,6 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityLabel="Without Icon"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [

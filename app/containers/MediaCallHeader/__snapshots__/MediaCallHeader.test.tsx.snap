@@ -962,9 +962,6 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           </Text>
         </View>
         <Text
-          accessibilityLabel="Connecting..."
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -1723,9 +1720,6 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
           </Text>
         </View>
         <Text
-          accessibilityLabel="On hold"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -2107,9 +2101,6 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
           </Text>
         </View>
         <Text
-          accessibilityLabel="Muted"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [

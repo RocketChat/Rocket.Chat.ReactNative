@@ -104,9 +104,6 @@ exports[`Story Snapshots: ActiveButton should match snapshot 1`] = `
         </Text>
       </View>
       <Text
-        accessibilityLabel="Unmute"
-        accessibilityRole="text"
-        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -246,9 +243,6 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
-          accessibilityLabel="Speaker"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -359,9 +353,6 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
-          accessibilityLabel="Hold"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -472,9 +463,6 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
-          accessibilityLabel="Mute"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -599,9 +587,6 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
-          accessibilityLabel="Message"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -712,9 +697,6 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
-          accessibilityLabel="End"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -825,9 +807,6 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
-          accessibilityLabel="More"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -960,9 +939,6 @@ exports[`Story Snapshots: DangerButton should match snapshot 1`] = `
         </Text>
       </View>
       <Text
-        accessibilityLabel="End"
-        accessibilityRole="text"
-        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1094,9 +1070,6 @@ exports[`Story Snapshots: DefaultButton should match snapshot 1`] = `
         </Text>
       </View>
       <Text
-        accessibilityLabel="Mute"
-        accessibilityRole="text"
-        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1230,9 +1203,6 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
         </Text>
       </View>
       <Text
-        accessibilityLabel="Hold"
-        accessibilityRole="text"
-        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1373,9 +1343,6 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
-          accessibilityLabel="Speaker"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -1486,9 +1453,6 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
-          accessibilityLabel="Hold"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -1599,9 +1563,6 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
-          accessibilityLabel="Mute"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -1712,9 +1673,6 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
-          accessibilityLabel="Message"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -1825,9 +1783,6 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
-          accessibilityLabel="End"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
@@ -1938,9 +1893,6 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
-          accessibilityLabel="Dialpad"
-          accessibilityRole="text"
-          accessible={true}
           numberOfLines={1}
           style={
             [
