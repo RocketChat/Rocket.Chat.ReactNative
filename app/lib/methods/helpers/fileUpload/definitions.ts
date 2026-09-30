@@ -40,25 +40,22 @@ export class UploadHttpError extends Error {
 	}
 }
 
-const MAX_ERROR_BODY_LENGTH = 500;
-
 export const parseUploadErrorBody = (responseText: string | undefined): { serverMessage?: string; body?: string } => {
 	if (!responseText) {
 		return {};
 	}
-	const body = responseText.slice(0, MAX_ERROR_BODY_LENGTH);
 	const looksLikeJson = /^[[{]/.test(responseText.trimStart());
 	if (!looksLikeJson) {
-		return { body };
+		return { body: responseText };
 	}
 	try {
 		const parsed = JSON.parse(responseText);
 		const serverMessage = parsed?.error ?? parsed?.message;
 		if (typeof serverMessage === 'string' && serverMessage.length > 0) {
-			return { serverMessage: serverMessage.slice(0, MAX_ERROR_BODY_LENGTH), body };
+			return { serverMessage, body: responseText };
 		}
 	} catch {}
-	return { body };
+	return { body: responseText };
 };
 
 export const parseRetryAfter = (value?: string | null): number | undefined => {
