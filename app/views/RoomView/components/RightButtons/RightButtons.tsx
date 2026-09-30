@@ -1,13 +1,8 @@
 import { type ReactElement } from 'react';
-import { useStore } from 'zustand';
-import { useShallow } from 'zustand/react/shallow';
 
+import { HeaderActions } from '~/lib/methods/helpers/navigation/headerActions';
 import { type RoomStore } from '~/views/RoomView/definitions';
-import { fromSubscription } from '~/views/RoomView/stores/RoomStoreContext';
-import { getRoomHeaderMode } from '~/views/RoomView/helpers/getRoomHeaderMode';
-import { OmnichannelRightButtons } from './OmnichannelRightButtons';
-import { RoomRightButtons } from './RoomRightButtons';
-import { ThreadRightButtons } from './ThreadRightButtons';
+import { useRoomHeaderActions } from '~/views/RoomView/hooks/useRoomHeaderActions';
 
 interface IRightButtonsProps {
 	rid?: string;
@@ -16,28 +11,8 @@ interface IRightButtonsProps {
 }
 
 const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElement | null => {
-	const { t, status, membership } = useStore(
-		roomStore,
-		useShallow(s => ({
-			t: s.room.t,
-			status: fromSubscription(room => room.status, undefined)(s),
-			membership: s.membership
-		}))
-	);
-
-	const mode = getRoomHeaderMode({ rid, tmid, t, status, membership });
-
-	if (!rid || mode === 'none') {
-		return null;
-	}
-	if (mode === 'omnichannel') {
-		return <OmnichannelRightButtons rid={rid} roomStore={roomStore} />;
-	}
-	if (mode === 'thread' && tmid) {
-		return <ThreadRightButtons tmid={tmid} />;
-	}
-
-	return <RoomRightButtons rid={rid} roomStore={roomStore} />;
+	const actions = useRoomHeaderActions(rid, tmid, roomStore);
+	return <HeaderActions actions={actions} />;
 };
 
 export default RightButtons;

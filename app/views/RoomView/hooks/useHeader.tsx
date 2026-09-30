@@ -9,6 +9,7 @@ import RoomHeader from '~/containers/RoomHeader';
 import { getRoomTitle, hasNativeHeaderBar, isGroupChat } from '~/lib/methods/helpers';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
+import { nativeHeaderItems } from '~/lib/methods/helpers/navigation/headerActions';
 import { type IOmnichannelSource, type ISubscription, type IVisitor } from '~/definitions';
 import LeftButtons from '../components/LeftButtons';
 import RightButtons from '../components/RightButtons/RightButtons';
@@ -18,7 +19,7 @@ import { fromSubscription } from '../stores/RoomStoreContext';
 import { useGoRoomActionsView } from './useGoRoomActionsView';
 import { useNativeRoomHeader } from './useNativeRoomHeader';
 import { useNativeBackButton } from './useNativeBackButton';
-import { useRoomHeaderRightItems } from './useRoomHeaderRightItems';
+import { useRoomHeaderActions } from './useRoomHeaderActions';
 
 interface IUseHeaderParams {
 	rid?: string;
@@ -75,7 +76,7 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 	const isMasterDetail = useMasterDetail();
 	const showsAvatar = isMasterDetail && !tmid;
 	useNativeBackButton(!!rid && hasNativeHeaderBar && !showsAvatar, rid);
-	const nativeRightItems = useRoomHeaderRightItems(hasNativeHeaderBar ? rid : undefined, tmid, roomStore);
+	const nativeRightActions = useRoomHeaderActions(hasNativeHeaderBar ? rid : undefined, tmid, roomStore);
 
 	useLayoutEffect(() => {
 		if (!rid && hasNativeHeaderBar) {
@@ -96,8 +97,11 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 			};
 			navigation.setOptions(
 				showsAvatar
-					? { unstable_headerLeftItems: () => [avatarItem], unstable_headerRightItems: () => nativeRightItems }
-					: { unstable_headerRightItems: () => nativeRightItems }
+					? {
+							unstable_headerLeftItems: () => [avatarItem],
+							unstable_headerRightItems: () => nativeHeaderItems(nativeRightActions)
+						}
+					: { unstable_headerRightItems: () => nativeHeaderItems(nativeRightActions) }
 			);
 			return;
 		}
@@ -106,7 +110,7 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 			headerLeft: () => <LeftButtons rid={rid} tmid={tmid} roomStore={roomStore} />,
 			headerRight: () => <RightButtons rid={rid} tmid={tmid} roomStore={roomStore} />
 		});
-	}, [rid, tmid, navigation, roomStore, nativeRightItems, showsAvatar]);
+	}, [rid, tmid, navigation, roomStore, nativeRightActions, showsAvatar]);
 
 	useLayoutEffect(() => {
 		if (!rid || hasNativeHeaderBar) {

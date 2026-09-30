@@ -8,11 +8,10 @@ import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-cont
 import { type SearchBarCommands } from 'react-native-screens';
 import { Component, createRef } from 'react';
 
-import { showActionSheetRef } from '~/containers/ActionSheet';
-import { CustomIcon } from '~/containers/CustomIcon';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';
-import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
+import { outsideHeaderLeftClose, stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
+import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import database from '~/lib/database';
 import { sanitizeLikeString } from '~/lib/database/utils';
 import buildMessage from '~/lib/methods/helpers/buildMessage';
@@ -46,7 +45,6 @@ import { toggleFollowThread as toggleFollowThreadService } from '~/lib/methods/t
 import UserPreferences from '~/lib/methods/userPreferences';
 import Navigation from '~/lib/navigation/appNavigation';
 import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { headerIcon } from '~/lib/methods/helpers/navigation/headerIcon';
 
 const API_FETCH_COUNT = 50;
 const THREADS_FILTER = 'threadsFilter';
@@ -124,40 +122,7 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 		const { isSearching, currentFilter } = this.state;
 		const { navigation, isMasterDetail, theme } = this.props;
 
-		if (hasNativeHeaderBar) {
-			const options: NativeStackNavigationOptions = {
-				headerTransparent: true,
-				headerTitle: I18n.t('Threads'),
-				headerSearchBarOptions: stackedSearchBarOptions({
-					ref: this.searchBarRef,
-					onFocus: this.onSearchPress,
-					onChangeText: this.onSearchChangeText,
-					onCancel: this.onCancelSearchPress
-				}),
-				unstable_headerRightItems: () => [
-					{
-						type: 'menu',
-						label: I18n.t('Filter'),
-						accessibilityLabel: I18n.t('Filter'),
-						icon: headerIcon('filter'),
-						menu: {
-							items: [Filter.All, Filter.Following, Filter.Unread].map(filter => ({
-								type: 'action' as const,
-								label: I18n.t(filter),
-								state: currentFilter === filter ? ('on' as const) : ('off' as const),
-								onPress: () => this.onFilterSelected(filter)
-							}))
-						}
-					}
-				]
-			};
-			if (isMasterDetail) {
-				options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-			}
-			return options;
-		}
-
-		if (isSearching) {
+		if (isSearching && !hasNativeHeaderBar) {
 			return {
 				headerLeft: () => (
 					<HeaderButton.Container left>
@@ -171,34 +136,38 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 			};
 		}
 
-		const options: NativeStackNavigationOptions = {
-			headerLeft: undefined,
+		return {
 			headerTitle: I18n.t('Threads'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item
-						accessibilityLabel={I18n.t('Filter')}
-						iconName='filter'
-						onPress={this.showFilters}
-						badge={() =>
-							currentFilter !== Filter.All ? <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} /> : null
-						}
-					/>
-					<HeaderButton.Item
-						accessibilityLabel={I18n.t('Search')}
-						iconName='search'
-						onPress={this.onSearchPress}
-						testID='thread-messages-view-search-icon'
-					/>
-				</HeaderButton.Container>
-			)
+			...(hasNativeHeaderBar && {
+				headerTransparent: true,
+				headerSearchBarOptions: stackedSearchBarOptions({
+					ref: this.searchBarRef,
+					onFocus: this.onSearchPress,
+					onChangeText: this.onSearchChangeText,
+					onCancel: this.onCancelSearchPress
+				})
+			}),
+			...(isMasterDetail ? outsideHeaderLeftClose(() => navigation.pop()) : { headerLeft: undefined }),
+			...headerRightActions([
+				{
+					label: I18n.t('Filter'),
+					icon: 'filter',
+					badge: currentFilter !== Filter.All ? { color: colors[theme].buttonBackgroundDangerDefault } : undefined,
+					menu: [Filter.All, Filter.Following, Filter.Unread].map(filter => ({
+						label: I18n.t(filter),
+						checked: currentFilter === filter,
+						onPress: () => this.onFilterSelected(filter)
+					}))
+				},
+				{
+					label: I18n.t('Search'),
+					icon: 'search',
+					testID: 'thread-messages-view-search-icon',
+					legacyHeaderOnly: true,
+					onPress: this.onSearchPress
+				}
+			])
 		};
-
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		}
-
-		return options;
 	};
 
 	setHeader = () => {
@@ -476,29 +445,6 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 			return messages?.filter(item => subscription?.tunread?.includes(item?.id));
 		}
 		return messages;
-	};
-
-	showFilters = () => {
-		const { currentFilter } = this.state;
-		showActionSheetRef({
-			options: [
-				{
-					title: I18n.t(Filter.All),
-					right: currentFilter === Filter.All ? () => <CustomIcon name='check' size={24} /> : undefined,
-					onPress: () => this.onFilterSelected(Filter.All)
-				},
-				{
-					title: I18n.t(Filter.Following),
-					right: currentFilter === Filter.Following ? () => <CustomIcon name='check' size={24} /> : undefined,
-					onPress: () => this.onFilterSelected(Filter.Following)
-				},
-				{
-					title: I18n.t(Filter.Unread),
-					right: currentFilter === Filter.Unread ? () => <CustomIcon name='check' size={24} /> : undefined,
-					onPress: () => this.onFilterSelected(Filter.Unread)
-				}
-			]
-		});
 	};
 
 	onFilterSelected = (filter: Filter) => {

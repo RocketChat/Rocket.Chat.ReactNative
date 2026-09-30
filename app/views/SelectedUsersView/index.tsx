@@ -10,7 +10,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { addUser, removeUser, reset } from '~/actions/selectedUsers';
 import ActivityIndicator from '~/containers/ActivityIndicator';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import * as List from '~/containers/List';
 import { sendLoadingEvent } from '~/containers/Loading';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -18,6 +17,7 @@ import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import I18n from '~/i18n';
 import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
+import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import database from '~/lib/database';
 import UserItem from '~/containers/UserItem';
 import { type ISelectedUser } from '~/reducers/selectedUsers';
@@ -114,13 +114,9 @@ const SelectedUsersView = () => {
 		const showHeaderButton = (!maxUsers || showButton || (isGroupChat() && users.length > 1)) && !!buttonTitle;
 		navigation.setOptions({
 			title: titleHeader,
-			headerRight: showHeaderButton
-				? () => (
-						<HeaderButton.Container>
-							<HeaderButton.Item title={buttonTitle} onPress={nextActionHeader} testID='selected-users-view-submit' />
-						</HeaderButton.Container>
-					)
-				: () => null,
+			...headerRightActions(
+				showHeaderButton ? [{ label: buttonTitle, testID: 'selected-users-view-submit', onPress: nextActionHeader }] : []
+			),
 			...(hasNativeHeaderBar
 				? {
 						headerTransparent: true,

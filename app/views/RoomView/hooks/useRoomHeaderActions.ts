@@ -1,17 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
-import { type NativeStackHeaderItem, type NativeStackHeaderItemMenuAction } from '@react-navigation/native-stack';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
 import i18n from '~/i18n';
-import { type TIconsName } from '~/containers/CustomIcon';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useCanReturnQueue } from '~/ee/omnichannel/hooks/useCanReturnQueue';
 import { useSetting } from '~/lib/hooks/useSetting';
-import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
-import { headerIcon } from '~/lib/methods/helpers/navigation/headerIcon';
+import { type IHeaderAction, type IHeaderMenuItem } from '~/lib/methods/helpers/navigation/headerActions';
 import { toggleFollowThread } from '~/lib/methods/toggleFollowThread';
 import { returnLivechat } from '~/lib/services/restApi';
 import { getUserSelector } from '~/selectors/login';
@@ -29,19 +27,10 @@ import { useThreadFollowing } from './useThreadFollowing';
 import { useRoomRightButtonsData } from '../components/RightButtons/useRoomRightButtonsData';
 import { useHeaderCallPress } from '../components/RightButtons/useHeaderCallPress';
 
-const EMPTY_ITEMS: NativeStackHeaderItem[] = [];
+const EMPTY_ACTIONS: IHeaderAction[] = [];
 const VISIBLE_ORDER: TRoomHeaderActionKey[] = ['encryption', 'notifications', 'call', 'threads'];
 
-interface IRoomHeaderAction {
-	label: string;
-	icon: TIconsName;
-	disabled: boolean;
-	badge?: { value: number; style: { backgroundColor: string } };
-	tintColor?: string;
-	onPress: () => void;
-}
-
-const useOmnichannelRightItems = (rid: string, roomStore: RoomStore, enabled: boolean): NativeStackHeaderItem[] => {
+const useOmnichannelActions = (rid: string, roomStore: RoomStore, enabled: boolean): IHeaderAction[] => {
 	const navigation = useNavigation<TRoomStackNavigation>();
 	const isMasterDetail = useMasterDetail();
 	const livechatRequestComment = useSetting('Livechat_request_comment_when_closing_conversation') as boolean;
@@ -54,7 +43,11 @@ const useOmnichannelRightItems = (rid: string, roomStore: RoomStore, enabled: bo
 	const canReturnQueue = useCanReturnQueue(enabled);
 	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(roomStore);
 
-	const handleReturnLivechat = () => {
+	if (!enabled) {
+		return EMPTY_ACTIONS;
+	}
+
+	const returnInquiry = () => {
 		showConfirmationAlert({
 			message: i18n.t('Would_you_like_to_return_the_inquiry'),
 			confirmationText: i18n.t('Yes'),
@@ -68,81 +61,65 @@ const useOmnichannelRightItems = (rid: string, roomStore: RoomStore, enabled: bo
 		});
 	};
 
-	const moreActions: NativeStackHeaderItemMenuAction[] = [];
-	if (canPlaceLivechatOnHold) {
-		moreActions.push({
-			type: 'action',
-			label: i18n.t('Place_chat_on_hold'),
-			icon: headerIcon('pause'),
-			onPress: () => placeLivechatOnHold({ rid, navigation })
-		});
-	}
-	if (canForwardGuest) {
-		moreActions.push({
-			type: 'action',
-			label: i18n.t('Forward_Chat'),
-			icon: headerIcon('chat-forward'),
-			onPress: () => navigateToScreen({ navigation, isMasterDetail, screen: 'ForwardLivechatView', params: { rid } })
-		});
-	}
-	if (canReturnQueue) {
-		moreActions.push({
-			type: 'action',
-			label: i18n.t('Return_to_waiting_line'),
-			icon: headerIcon('move-to-the-queue'),
-			onPress: handleReturnLivechat
-		});
-	}
-	moreActions.push({
-		type: 'action',
-		label: i18n.t('Close'),
-		icon: headerIcon('chat-close'),
-		destructive: true,
-		onPress: () => closeLivechat({ rid, departmentId, isMasterDetail, livechatRequestComment, navigation })
-	});
-
-	if (!enabled) {
-		return EMPTY_ITEMS;
-	}
+	const menu: IHeaderMenuItem[] = [
+		...(canPlaceLivechatOnHold
+			? [{ label: i18n.t('Place_chat_on_hold'), icon: 'pause' as const, onPress: () => placeLivechatOnHold({ rid, navigation }) }]
+			: []),
+		...(canForwardGuest
+			? [
+					{
+						label: i18n.t('Forward_Chat'),
+						icon: 'chat-forward' as const,
+						onPress: () => navigateToScreen({ navigation, isMasterDetail, screen: 'ForwardLivechatView', params: { rid } })
+					}
+				]
+			: []),
+		...(canReturnQueue
+			? [{ label: i18n.t('Return_to_waiting_line'), icon: 'move-to-the-queue' as const, onPress: returnInquiry }]
+			: []),
+		{
+			label: i18n.t('Close'),
+			icon: 'chat-close',
+			destructive: true,
+			onPress: () => closeLivechat({ rid, departmentId, isMasterDetail, livechatRequestComment, navigation })
+		}
+	];
 
 	return [
 		{
-			type: 'menu',
 			label: i18n.t('More'),
-			accessibilityLabel: i18n.t('More'),
-			icon: headerIcon('kebab'),
-			menu: { items: moreActions }
+			icon: 'kebab',
+			testID: 'room-view-header-omnichannel-kebab',
+			onPress: () => logEvent(events.ROOM_SHOW_MORE_ACTIONS),
+			menu
 		}
 	];
 };
 
-const useThreadRightItems = (tmid: string | undefined, enabled: boolean): NativeStackHeaderItem[] => {
+const useThreadActions = (tmid: string | undefined, enabled: boolean): IHeaderAction[] => {
 	const userId = useAppSelector(state => getUserSelector(state).id);
 	const isFollowingThread = useThreadFollowing(tmid, userId);
 
-	const onToggleFollowThread = () => {
-		logEvent(events.ROOM_TOGGLE_FOLLOW_THREADS);
-		if (tmid) {
-			toggleFollowThread(tmid, isFollowingThread);
-		}
-	};
-
 	if (!enabled) {
-		return EMPTY_ITEMS;
+		return EMPTY_ACTIONS;
 	}
 
 	return [
 		{
-			type: 'button',
 			label: i18n.t(isFollowingThread ? 'Unfollow_thread' : 'Follow_thread'),
-			accessibilityLabel: i18n.t(isFollowingThread ? 'Unfollow_thread' : 'Follow_thread'),
-			icon: headerIcon(isFollowingThread ? 'notification' : 'notification-disabled'),
-			onPress: onToggleFollowThread
+			icon: isFollowingThread ? 'notification' : 'notification-disabled',
+			testID: isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow',
+			onPress: () => {
+				logEvent(events.ROOM_TOGGLE_FOLLOW_THREADS);
+				if (tmid) {
+					toggleFollowThread(tmid, isFollowingThread);
+				}
+			}
 		}
 	];
 };
 
-const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean): NativeStackHeaderItem[] => {
+const useRoomActions = (rid: string, roomStore: RoomStore, enabled: boolean): IHeaderAction[] => {
 	const { theme, colors } = useTheme();
 	const {
 		threadsEnabled,
@@ -161,100 +138,92 @@ const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean):
 		goE2EEToggleRoomView,
 		threadsAccessibilityLabel
 	} = useRoomRightButtonsData(rid, roomStore);
-	const { callPresent: callPresentRaw, isCallDisabled, onPressCall } = useHeaderCallPress(rid);
-	const callPresent = !isSelfDm && callPresentRaw;
+	const { callPresent, isCallDisabled, onPressCall } = useHeaderCallPress(rid);
 
-	const { visibleKeys, overflowKeys } = splitRoomHeaderActions({
+	if (!enabled) {
+		return EMPTY_ACTIONS;
+	}
+
+	const present: Partial<Record<TRoomHeaderActionKey, boolean>> = {
 		threads: threadsEnabled,
-		call: callPresent,
+		call: !isSelfDm && callPresent,
 		encryption: hasE2EEWarning,
 		notifications: issuesWithNotifications || disableNotifications
-	});
+	};
 
-	const tunreadBadge =
-		threadsEnabled && tunread.length
-			? {
-					value: tunread.length,
-					style: { backgroundColor: getUnreadStyle({ tunread, tunreadUser, tunreadGroup, theme }).backgroundColor as string }
-				}
-			: undefined;
-
-	const actions: Record<TRoomHeaderActionKey, IRoomHeaderAction> = {
+	const actions: Record<TRoomHeaderActionKey, IHeaderAction> = {
 		threads: {
 			label: threadsAccessibilityLabel,
 			icon: 'threads',
+			testID: 'room-view-header-threads',
 			disabled: hasE2EEWarning,
-			badge: tunreadBadge,
+			badge: tunread.length
+				? {
+						value: tunread.length,
+						color: getUnreadStyle({ tunread, tunreadUser, tunreadGroup, theme }).backgroundColor as string
+					}
+				: undefined,
 			onPress: goThreadsView
 		},
 		call: {
 			label: callAccessibilityLabel,
 			icon: 'phone',
+			testID: 'room-view-header-call',
 			disabled: hasE2EEWarning || isCallDisabled,
 			onPress: onPressCall
 		},
 		encryption: {
 			label: i18n.t('Encrypted'),
 			icon: 'encrypted',
+			testID: 'room-view-header-encryption',
 			disabled: !canToggleEncryption,
 			onPress: goE2EEToggleRoomView
 		},
 		notifications: {
 			label: i18n.t('Troubleshooting'),
 			icon: 'notification-disabled',
+			testID: 'room-view-push-troubleshoot',
 			tintColor: issuesWithNotifications ? colors.fontDanger : undefined,
 			disabled: hasE2EEWarning,
 			onPress: navigateToNotificationOrPushTroubleshoot
 		}
 	};
 
-	const overflowActions: NativeStackHeaderItemMenuAction[] = [
-		...overflowKeys.map((key): NativeStackHeaderItemMenuAction => {
-			const { label, icon, disabled, onPress } = actions[key];
-			return { type: 'action', label, icon: headerIcon(icon), disabled, onPress };
-		}),
-		{
-			type: 'action',
-			label: i18n.t('Search_Messages'),
-			icon: headerIcon('search'),
-			disabled: hasE2EEWarning,
-			onPress: goSearchView
-		}
-	];
+	const searchAction: IHeaderAction = {
+		label: i18n.t('Search_Messages'),
+		icon: 'search',
+		testID: 'room-view-search',
+		disabled: hasE2EEWarning,
+		onPress: goSearchView
+	};
 
-	if (!enabled) {
-		return EMPTY_ITEMS;
+	if (!hasNativeHeaderBar) {
+		return [...VISIBLE_ORDER.filter(key => present[key]).map(key => actions[key]), searchAction];
 	}
 
-	const items: NativeStackHeaderItem[] = VISIBLE_ORDER.filter(key => visibleKeys.includes(key)).map(key => {
-		const { label, icon, disabled, badge, tintColor, onPress } = actions[key];
-		return {
-			type: 'button',
-			label,
-			accessibilityLabel: label,
-			icon: headerIcon(icon),
-			disabled,
-			badge,
-			tintColor,
-			onPress
-		};
-	});
-	items.push({
-		type: 'menu',
-		label: i18n.t('More'),
-		accessibilityLabel: i18n.t('More'),
-		icon: headerIcon('kebab'),
-		menu: { items: overflowActions }
+	const { visibleKeys, overflowKeys } = splitRoomHeaderActions(present);
+	const toMenuItem = ({ label, icon, disabled, onPress }: IHeaderAction): IHeaderMenuItem => ({
+		label,
+		icon,
+		disabled,
+		onPress: onPress ?? (() => {})
 	});
 
-	return items;
+	return [
+		...VISIBLE_ORDER.filter(key => visibleKeys.includes(key)).map(key => actions[key]),
+		{
+			label: i18n.t('More'),
+			icon: 'kebab',
+			menu: [...overflowKeys.map(key => toMenuItem(actions[key])), toMenuItem(searchAction)]
+		}
+	];
 };
 
-export const useRoomHeaderRightItems = (
+export const useRoomHeaderActions = (
 	rid: string | undefined,
 	tmid: string | undefined,
 	roomStore: RoomStore
-): NativeStackHeaderItem[] => {
+): IHeaderAction[] => {
 	const { t, status, membership } = useStore(
 		roomStore,
 		useShallow(s => ({
@@ -266,18 +235,18 @@ export const useRoomHeaderRightItems = (
 
 	const mode = getRoomHeaderMode({ rid, tmid, t, status, membership });
 
-	const omnichannelItems = useOmnichannelRightItems(rid ?? '', roomStore, mode === 'omnichannel');
-	const threadItems = useThreadRightItems(tmid, mode === 'thread');
-	const roomItems = useRoomRightItems(rid ?? '', roomStore, mode === 'room');
+	const omnichannelActions = useOmnichannelActions(rid ?? '', roomStore, mode === 'omnichannel');
+	const threadActions = useThreadActions(tmid, mode === 'thread');
+	const roomActions = useRoomActions(rid ?? '', roomStore, mode === 'room');
 
 	if (mode === 'omnichannel') {
-		return omnichannelItems;
+		return omnichannelActions;
 	}
 	if (mode === 'thread') {
-		return threadItems;
+		return threadActions;
 	}
 	if (mode === 'room') {
-		return roomItems;
+		return roomActions;
 	}
-	return EMPTY_ITEMS;
+	return EMPTY_ACTIONS;
 };

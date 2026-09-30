@@ -5,7 +5,6 @@ import { type KeyboardFocus } from 'react-native-external-keyboard';
 import { type SearchBarCommands } from 'react-native-screens';
 
 import { showActionSheetRef } from '~/containers/ActionSheet';
-import { type TIconsName } from '~/containers/CustomIcon';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -14,7 +13,7 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { hasNativeHeaderBar, isTablet } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
-import { headerIcon } from '~/lib/methods/helpers/navigation/headerIcon';
+import { headerLeftActions, headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';
 import RoomsListHeaderView from '../components/Header';
@@ -22,14 +21,58 @@ import ServersList from '../components/ServersList';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
 import { useRoomsListSubtitle } from './useRoomsListSubtitle';
 
-interface IHeaderRightAction {
-	present: boolean;
-	icon: TIconsName;
-	accessibilityLabel: string;
-	tintColor?: string;
+interface IRightActionsParams {
+	issuesWithNotifications?: boolean;
+	canCreateRoom: boolean;
 	disabled?: boolean;
-	onPress: () => void;
+	dangerColor: string;
+	onTroubleshoot: () => void;
+	onCreate: () => void;
+	onSearch: () => void;
+	onDirectory: () => void;
 }
+
+const getRightActions = ({
+	issuesWithNotifications,
+	canCreateRoom,
+	disabled,
+	dangerColor,
+	onTroubleshoot,
+	onCreate,
+	onSearch,
+	onDirectory
+}: IRightActionsParams): IHeaderAction[] => {
+	const troubleshoot: IHeaderAction = {
+		label: i18n.t('Troubleshooting'),
+		icon: 'notification-disabled',
+		tintColor: dangerColor,
+		testID: 'rooms-list-view-push-troubleshoot',
+		onPress: onTroubleshoot
+	};
+	const create: IHeaderAction = {
+		label: i18n.t('Create_new_channel_team_dm_discussion'),
+		icon: hasNativeHeaderBar ? 'create' : 'add',
+		testID: 'rooms-list-view-create-channel',
+		disabled,
+		onPress: onCreate
+	};
+	const search: IHeaderAction = {
+		label: i18n.t('Search'),
+		icon: 'search',
+		testID: 'rooms-list-view-search',
+		disabled,
+		legacyHeaderOnly: true,
+		onPress: onSearch
+	};
+	const directory: IHeaderAction = {
+		label: i18n.t('Directory'),
+		icon: 'directory',
+		testID: 'rooms-list-view-directory',
+		disabled,
+		onPress: onDirectory
+	};
+	return [...(issuesWithNotifications ? [troubleshoot] : []), ...(canCreateRoom ? [create] : []), search, directory];
+};
 
 const getScreenFocusNavigation = (navigation: any, isMasterDetail: boolean) => {
 	if (!isMasterDetail) {
@@ -107,20 +150,9 @@ export const useHeader = () => {
 	}, [isMasterDetail, navigation]);
 
 	useLayoutEffect(() => {
-		const headerLeft = () => (
-			<HeaderButton.Drawer
-				ref={drawerButtonRef}
-				navigation={navigation}
-				testID='rooms-list-view-sidebar'
-				onPress={
-					isMasterDetail
-						? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
-						: () => navigation.toggleDrawer()
-				}
-				badge={() => (badgeColor ? <HeaderButton.BadgeWarn color={badgeColor} /> : null)}
-				disabled={disabled}
-			/>
-		);
+		const onDrawerPress = isMasterDetail
+			? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
+			: () => navigation.toggleDrawer();
 
 		if (searchEnabled && !hasNativeHeaderBar) {
 			const searchOptions = {
@@ -139,33 +171,26 @@ export const useHeader = () => {
 			return;
 		}
 
-		if (hasNativeHeaderBar) {
-			const actions = (
-				[
-					{
-						present: canCreateRoom,
-						icon: 'create',
-						accessibilityLabel: i18n.t('Create_new_channel_team_dm_discussion'),
-						disabled,
-						onPress: goToNewMessage
-					},
-					{
-						present: issuesWithNotifications,
-						icon: 'notification-disabled',
-						accessibilityLabel: i18n.t('Troubleshooting'),
-						tintColor: colors.fontDanger,
-						onPress: navigateToPushTroubleshootView
-					},
-					{
-						present: true,
-						icon: 'directory',
-						accessibilityLabel: i18n.t('Directory'),
-						disabled,
-						onPress: goDirectory
-					}
-				] satisfies IHeaderRightAction[]
-			).filter(action => action.present);
+		const rightActions = getRightActions({
+			issuesWithNotifications,
+			canCreateRoom,
+			disabled,
+			dangerColor: colors.fontDanger,
+			onTroubleshoot: navigateToPushTroubleshootView,
+			onCreate: goToNewMessage,
+			onSearch: startSearch,
+			onDirectory: goDirectory
+		});
 
+		if (hasNativeHeaderBar) {
+			const drawerAction: IHeaderAction = {
+				label: i18n.t('Menu'),
+				icon: 'hamburguer',
+				disabled,
+				badge: badgeColor ? { color: badgeColor } : undefined,
+				onPress: onDrawerPress
+			};
+			const cancelSearchAction: IHeaderAction = { label: i18n.t('Cancel'), onPress: stopSearch };
 			navigation.setOptions({
 				headerTransparent: true,
 				headerStyle: { backgroundColor: `${colors.surfaceNeutral}B3` },
@@ -183,80 +208,25 @@ export const useHeader = () => {
 					onChangeText: (event: { nativeEvent: { text: string } }) => search(event.nativeEvent.text),
 					onCancelButtonPress: stopSearch
 				},
-				unstable_headerLeftItems: () => [
-					{
-						type: 'button',
-						label: i18n.t('Menu'),
-						accessibilityLabel: i18n.t('Menu'),
-						icon: headerIcon('hamburguer'),
-						disabled,
-						badge: badgeColor ? { value: '', style: { backgroundColor: badgeColor } } : undefined,
-						onPress: isMasterDetail
-							? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
-							: () => navigation.toggleDrawer()
-					}
-				],
-				unstable_headerRightItems: () =>
-					isTablet && searchEnabled
-						? [
-								{
-									type: 'button' as const,
-									label: i18n.t('Cancel'),
-									accessibilityLabel: i18n.t('Cancel'),
-									onPress: stopSearch
-								}
-							]
-						: actions.map(action => ({
-								type: 'button' as const,
-								label: action.accessibilityLabel,
-								accessibilityLabel: action.accessibilityLabel,
-								icon: headerIcon(action.icon),
-								tintColor: action.tintColor,
-								disabled: action.disabled,
-								onPress: action.onPress
-							}))
+				...headerLeftActions([drawerAction]),
+				...headerRightActions(isTablet && searchEnabled ? [cancelSearchAction] : rightActions)
 			});
 			return;
 		}
 
 		const options = {
-			headerLeft,
+			headerLeft: () => (
+				<HeaderButton.Drawer
+					ref={drawerButtonRef}
+					navigation={navigation}
+					testID='rooms-list-view-sidebar'
+					onPress={onDrawerPress}
+					badge={() => (badgeColor ? <HeaderButton.BadgeWarn color={badgeColor} /> : null)}
+					disabled={disabled}
+				/>
+			),
 			headerTitle: () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />,
-			headerRight: () => (
-				<HeaderButton.Container>
-					{issuesWithNotifications ? (
-						<HeaderButton.Item
-							iconName='notification-disabled'
-							onPress={navigateToPushTroubleshootView}
-							testID='rooms-list-view-push-troubleshoot'
-							color={colors.fontDanger}
-						/>
-					) : null}
-					{canCreateRoom ? (
-						<HeaderButton.Item
-							iconName='add'
-							accessibilityLabel={i18n.t('Create_new_channel_team_dm_discussion')}
-							onPress={goToNewMessage}
-							testID='rooms-list-view-create-channel'
-							disabled={disabled}
-						/>
-					) : null}
-					<HeaderButton.Item
-						iconName='search'
-						accessibilityLabel={i18n.t('Search')}
-						onPress={startSearch}
-						testID='rooms-list-view-search'
-						disabled={disabled}
-					/>
-					<HeaderButton.Item
-						iconName='directory'
-						accessibilityLabel={i18n.t('Directory')}
-						onPress={goDirectory}
-						testID='rooms-list-view-directory'
-						disabled={disabled}
-					/>
-				</HeaderButton.Container>
-			)
+			...headerRightActions(rightActions)
 		};
 
 		navigation.setOptions(options);

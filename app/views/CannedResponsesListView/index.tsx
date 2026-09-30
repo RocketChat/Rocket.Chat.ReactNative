@@ -8,6 +8,7 @@ import { type SearchBarCommands } from 'react-native-screens';
 import database from '~/lib/database';
 import I18n from '~/i18n';
 import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
+import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import { hideActionSheetRef, showActionSheetRef } from '~/containers/ActionSheet';
 import SafeAreaView from '~/containers/SafeAreaView';
 import ActivityIndicator from '~/containers/ActivityIndicator';
@@ -226,27 +227,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	};
 
 	const getHeader = (): NativeStackNavigationOptions => {
-		if (hasNativeHeaderBar) {
-			return {
-				headerLeft: () => null,
-				headerTitle: I18n.t('Canned_Responses'),
-				headerSearchBarOptions: stackedSearchBarOptions({
-					ref: searchBarRef,
-					onChangeText,
-					onCancel: () => {
-						onChangeText('');
-						searchBarRef.current?.clearText();
-					}
-				}),
-				headerRight: () => (
-					<HeaderButton.Container>
-						<HeaderButton.Item iconName='filter' onPress={showFilters} />
-					</HeaderButton.Container>
-				)
-			};
-		}
-
-		if (isSearching) {
+		if (isSearching && !hasNativeHeaderBar) {
 			return {
 				headerLeft: () => (
 					<HeaderButton.Container left>
@@ -264,18 +245,24 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			};
 		}
 
-		const options: NativeStackNavigationOptions = {
+		return {
 			headerLeft: () => null,
 			headerTitle: I18n.t('Canned_Responses'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item iconName='filter' onPress={showFilters} />
-					<HeaderButton.Item iconName='search' onPress={() => setIsSearching(true)} />
-				</HeaderButton.Container>
-			)
+			...(hasNativeHeaderBar && {
+				headerSearchBarOptions: stackedSearchBarOptions({
+					ref: searchBarRef,
+					onChangeText,
+					onCancel: () => {
+						onChangeText('');
+						searchBarRef.current?.clearText();
+					}
+				})
+			}),
+			...headerRightActions([
+				{ label: I18n.t('Filter'), icon: 'filter', onPress: showFilters },
+				{ label: I18n.t('Search'), icon: 'search', legacyHeaderOnly: true, onPress: () => setIsSearching(true) }
+			])
 		};
-
-		return options;
 	};
 
 	const setHeader = () => {

@@ -10,7 +10,8 @@ import { type IMessageFromServer, type TThreadModel } from '~/definitions';
 import { type ChatsStackParamList } from '~/stacks/types';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';
-import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
+import { outsideHeaderLeftClose, stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
+import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import log from '~/lib/methods/helpers/log';
 import { hasNativeHeaderBar, isIOS, useDebounce } from '~/lib/methods/helpers';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -105,29 +106,9 @@ const DiscussionsView = () => {
 		setIsSearching(true);
 	};
 
-	const setHeader = () => {
-		let options: Partial<NativeStackNavigationOptions>;
-
-		if (hasNativeHeaderBar) {
-			options = {
-				headerLeft: undefined,
-				headerTitle: I18n.t('Discussions'),
-				headerSearchBarOptions: stackedSearchBarOptions({
-					ref: searchBarRef,
-					onFocus: onSearchPress,
-					onChangeText: onSearchChangeText,
-					onCancel: onCancelSearchPress
-				}),
-				headerRight: () => null
-			};
-			if (isMasterDetail) {
-				options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-			}
-			return options;
-		}
-
-		if (isSearching) {
-			options = {
+	const setHeader = (): Partial<NativeStackNavigationOptions> => {
+		if (isSearching && !hasNativeHeaderBar) {
+			return {
 				headerLeft: () => (
 					<HeaderButton.Container style={{ marginLeft: 1 }} left>
 						<HeaderButton.Item iconName='close' onPress={onCancelSearchPress} />
@@ -138,23 +119,21 @@ const DiscussionsView = () => {
 				),
 				headerRight: () => null
 			};
-			return options;
 		}
 
-		options = {
-			headerLeft: undefined,
+		return {
 			headerTitle: I18n.t('Discussions'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item iconName='search' onPress={onSearchPress} />
-				</HeaderButton.Container>
-			)
+			...(hasNativeHeaderBar && {
+				headerSearchBarOptions: stackedSearchBarOptions({
+					ref: searchBarRef,
+					onFocus: onSearchPress,
+					onChangeText: onSearchChangeText,
+					onCancel: onCancelSearchPress
+				})
+			}),
+			...(isMasterDetail ? outsideHeaderLeftClose(() => navigation.pop()) : { headerLeft: undefined }),
+			...headerRightActions([{ label: I18n.t('Search'), icon: 'search', legacyHeaderOnly: true, onPress: onSearchPress }])
 		};
-
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		}
-		return options;
 	};
 
 	useEffect(() => {

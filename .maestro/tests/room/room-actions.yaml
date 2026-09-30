@@ -379,8 +379,11 @@ tags:
     visible:
       id: 'selected-user-${output.otherUser.username}'
     timeout: 60000
-- tapOn:
-    id: selected-users-view-submit
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'selected-users-view-submit'
+      IOS_LABEL: 'Next'
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:

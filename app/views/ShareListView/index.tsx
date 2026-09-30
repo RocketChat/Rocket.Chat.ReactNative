@@ -12,7 +12,8 @@ import { Component, createRef } from 'react';
 
 import database from '~/lib/database';
 import I18n from '~/i18n';
-import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
+import { outsideHeaderLeftClose, stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
+import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import DirectoryItem, { ROW_HEIGHT } from '~/containers/DirectoryItem';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import ServerItem from '~/containers/ServerItem';
@@ -219,28 +220,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		const { searching } = this.state;
 		const { navigation } = this.props;
 
-		if (hasNativeHeaderBar) {
-			navigation.setOptions({
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item iconName='close' onPress={this.closeShareExtension} testID='share-extension-close' />
-					</HeaderButton.Container>
-				),
-				headerTitle: I18n.t('Send_to'),
-				headerSearchBarOptions: this.airGappedReadOnly
-					? undefined
-					: stackedSearchBarOptions({
-							ref: this.searchBarRef,
-							onFocus: this.initSearch,
-							onChangeText: this.search,
-							onCancel: this.cancelSearch
-						}),
-				headerRight: () => null
-			});
-			return;
-		}
-
-		if (searching) {
+		if (searching && !hasNativeHeaderBar) {
 			navigation.setOptions({
 				headerLeft: () => (
 					<HeaderButton.Container left>
@@ -254,18 +234,23 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		}
 
 		navigation.setOptions({
-			headerLeft: () => (
-				<HeaderButton.Container left>
-					<HeaderButton.Item iconName='close' onPress={this.closeShareExtension} testID='share-extension-close' />
-				</HeaderButton.Container>
-			),
+			...outsideHeaderLeftClose(this.closeShareExtension, 'share-extension-close'),
 			headerTitle: I18n.t('Send_to'),
-			headerRight: () =>
-				this.airGappedReadOnly ? null : (
-					<HeaderButton.Container>
-						<HeaderButton.Item iconName='search' onPress={this.initSearch} />
-					</HeaderButton.Container>
-				)
+			...(hasNativeHeaderBar && {
+				headerSearchBarOptions: this.airGappedReadOnly
+					? undefined
+					: stackedSearchBarOptions({
+							ref: this.searchBarRef,
+							onFocus: this.initSearch,
+							onChangeText: this.search,
+							onCancel: this.cancelSearch
+						})
+			}),
+			...headerRightActions(
+				this.airGappedReadOnly
+					? []
+					: [{ label: I18n.t('Search'), icon: 'search', legacyHeaderOnly: true, onPress: this.initSearch }]
+			)
 		});
 	};
 

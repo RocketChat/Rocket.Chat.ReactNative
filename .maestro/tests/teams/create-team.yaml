@@ -28,8 +28,11 @@ tags:
     id: 'new-message-view-create-team'
 - assertVisible:
     id: 'select-users-view'
-- tapOn:
-    id: 'selected-users-view-submit'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'selected-users-view-submit'
+      IOS_LABEL: 'Skip'
 - assertVisible:
     id: 'create-channel-view'
 - tapOn:

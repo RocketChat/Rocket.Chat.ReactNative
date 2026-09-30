@@ -137,12 +137,16 @@ tags:
     timeout: 60000
 
 # should navigate to create channel view
-- extendedWaitUntil:
-    visible:
-      id: 'selected-users-view-submit'
-    timeout: 60000
-- tapOn:
-    id: 'selected-users-view-submit'
+- runFlow:
+    file: '../../helpers/wait-header-item.yaml'
+    env:
+      ANDROID_ID: 'selected-users-view-submit'
+      IOS_LABEL: 'Next'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'selected-users-view-submit'
+      IOS_LABEL: 'Next'
 - extendedWaitUntil:
     visible:
       id: 'create-channel-view'
@@ -247,8 +251,11 @@ tags:
     visible:
       id: 'selected-user-rocket.cat'
     timeout: 60000
-- tapOn:
-    id: 'selected-users-view-submit'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'selected-users-view-submit'
+      IOS_LABEL: 'Next'
 - extendedWaitUntil:
     visible:
       id: 'create-channel-view'
@@ -306,8 +313,11 @@ tags:
     visible:
       id: 'select-users-view'
     timeout: 60000
-- tapOn:
-    id: 'selected-users-view-submit'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'selected-users-view-submit'
+      IOS_LABEL: 'Skip'
 - extendedWaitUntil:
     visible:
       id: 'create-channel-view'

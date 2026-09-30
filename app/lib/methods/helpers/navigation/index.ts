@@ -7,10 +7,9 @@ import { themes } from '~/lib/constants/colors';
 import { type TSupportedThemes } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import Header from '~/containers/Header';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import I18n from '~/i18n';
 import { hasNativeHeaderBar } from '~/lib/methods/helpers';
-import { headerIcon } from './headerIcon';
+import { headerLeftActions, headerRightActions } from './headerActions';
 
 export const defaultHeader: NativeStackNavigationOptions = hasNativeHeaderBar
 	? {
@@ -24,21 +23,7 @@ export const outsideHeaderRightLegal = (
 	navigation: { navigate: (screen: 'LegalView') => void },
 	testID: string
 ): NativeStackNavigationOptions =>
-	hasNativeHeaderBar
-		? {
-				unstable_headerRightItems: () => [
-					{
-						type: 'button',
-						label: I18n.t('More'),
-						accessibilityLabel: I18n.t('More'),
-						icon: headerIcon('kebab'),
-						onPress: () => navigation.navigate('LegalView')
-					}
-				]
-			}
-		: {
-				headerRight: (): ReactElement => createElement(HeaderButton.Legal, { testID, navigation })
-			};
+	headerRightActions([{ label: I18n.t('More'), icon: 'kebab', testID, onPress: () => navigation.navigate('LegalView') }]);
 
 interface IStackedSearchBarOptions {
 	ref?: RefObject<SearchBarCommands | null>;
@@ -65,22 +50,8 @@ export const stackedSearchBarOptions = ({
 	onCancelButtonPress: onCancel ?? (() => onChangeText(''))
 });
 
-export const outsideHeaderLeftClose = (onPress: () => void, testID: string): NativeStackNavigationOptions =>
-	hasNativeHeaderBar
-		? {
-				unstable_headerLeftItems: () => [
-					{
-						type: 'button',
-						label: I18n.t('Close'),
-						accessibilityLabel: I18n.t('Close'),
-						icon: headerIcon('close'),
-						onPress
-					}
-				]
-			}
-		: {
-				headerLeft: (): ReactElement => createElement(HeaderButton.CloseModal, { onPress, testID })
-			};
+export const outsideHeaderLeftClose = (onPress: () => void, testID?: string): NativeStackNavigationOptions =>
+	headerLeftActions([{ label: I18n.t('Close'), icon: 'close', testID, onPress }]);
 
 export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions => ({
 	headerStyle: {

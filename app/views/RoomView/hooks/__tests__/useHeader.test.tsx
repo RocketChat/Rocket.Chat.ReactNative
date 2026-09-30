@@ -9,8 +9,9 @@ import { useNativeBackButton } from '../useNativeBackButton';
 
 jest.mock('../useNativeRoomHeader', () => ({ useNativeRoomHeader: jest.fn() }));
 jest.mock('../useNativeBackButton', () => ({ useNativeBackButton: jest.fn() }));
-const mockNativeRightItems: unknown[] = [];
-jest.mock('../useRoomHeaderRightItems', () => ({ useRoomHeaderRightItems: jest.fn(() => mockNativeRightItems) }));
+const mockThreadsPress = jest.fn();
+const mockRightActions = [{ label: 'Threads', icon: 'threads', onPress: mockThreadsPress }];
+jest.mock('../useRoomHeaderActions', () => ({ useRoomHeaderActions: jest.fn(() => mockRightActions) }));
 
 let mockTestStore: RoomStore;
 let mockIsIOS = false;
@@ -130,8 +131,10 @@ describe('useHeader', () => {
 			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
 
 			const sideOptions = mockSetOptions.mock.calls[0][0];
-			expect(typeof sideOptions.unstable_headerRightItems).toBe('function');
-			expect(sideOptions.unstable_headerRightItems()).toBe(mockNativeRightItems);
+			const [threadsItem] = sideOptions.unstable_headerRightItems();
+			expect(threadsItem).toMatchObject({ type: 'button', label: 'Threads', accessibilityLabel: 'Threads' });
+			threadsItem.onPress();
+			expect(mockThreadsPress).toHaveBeenCalled();
 			expect(sideOptions).not.toHaveProperty('headerLeft');
 			expect(sideOptions).not.toHaveProperty('headerRight');
 		});
@@ -147,7 +150,7 @@ describe('useHeader', () => {
 			renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
 
 			const sideOptions = mockSetOptions.mock.calls[0][0];
-			expect(sideOptions.unstable_headerRightItems()).toBe(mockNativeRightItems);
+			expect(sideOptions.unstable_headerRightItems()).toEqual([expect.objectContaining({ type: 'button', label: 'Threads' })]);
 			expect(sideOptions).not.toHaveProperty('headerRight');
 		});
 

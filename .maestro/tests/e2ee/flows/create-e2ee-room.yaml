@@ -36,8 +36,11 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'selected-user-${USER_TO_ADD}'
-- tapOn:
-    id: 'selected-users-view-submit'
+- runFlow:
+    file: '../../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'selected-users-view-submit'
+      IOS_LABEL: 'Next'
 - extendedWaitUntil:
     visible:
       id: 'create-channel-name'

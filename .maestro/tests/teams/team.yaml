@@ -74,9 +74,20 @@ tags:
       - assertVisible:
           id: room-header
           label: Should have actions button
-- assertVisible:
-    id: team-channels-view-create
-    label: Should have team channels button
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - assertVisible:
+          id: team-channels-view-create
+          label: Should have team channels button
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          text: 'Add channel to team'
+          label: Should have team channels button
 - runFlow:
     when:
       platform: iOS
@@ -93,8 +104,11 @@ tags:
           label: Should have search button
 
 # Team Channels Header Usage
-- tapOn:
-    id: team-channels-view-create
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'team-channels-view-create'
+      IOS_LABEL: 'Add channel to team'
 - extendedWaitUntil:
     visible:
       id: add-channel-team-view
@@ -129,8 +143,11 @@ tags:
     visible:
       id: selected-user-rocket.cat
     timeout: 60000
-- tapOn:
-    id: selected-users-view-submit
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'selected-users-view-submit'
+      IOS_LABEL: 'Next'
 - extendedWaitUntil:
     visible:
       id: create-channel-view
@@ -249,8 +266,11 @@ tags:
       id: team-channels-view
     timeout: 60000
     label: Should navigate to team channels view
-- tapOn:
-    id: team-channels-view-create
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'team-channels-view-create'
+      IOS_LABEL: 'Add channel to team'
 - extendedWaitUntil:
     visible:
       id: add-channel-team-view
@@ -395,10 +415,16 @@ tags:
     visible:
       id: selected-user-${output.secondUser.username}
     timeout: 60000
-- assertVisible:
-    id: selected-users-view-submit
-- tapOn:
-    id: selected-users-view-submit
+- runFlow:
+    file: '../../helpers/wait-header-item.yaml'
+    env:
+      ANDROID_ID: 'selected-users-view-submit'
+      IOS_LABEL: 'Next'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'selected-users-view-submit'
+      IOS_LABEL: 'Next'
 
 - runFlow:
     file: '../../helpers/select-header-filter.yaml'

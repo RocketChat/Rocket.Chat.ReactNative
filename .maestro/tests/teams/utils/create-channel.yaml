@@ -22,10 +22,16 @@ tags:
     visible:
       id: select-users-view
     timeout: 60000
-- assertVisible:
-    id: selected-users-view-submit
-- tapOn:
-    id: selected-users-view-submit
+- runFlow:
+    file: '../../../helpers/wait-header-item.yaml'
+    env:
+      ANDROID_ID: 'selected-users-view-submit'
+      IOS_LABEL: 'Skip'
+- runFlow:
+    file: '../../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'selected-users-view-submit'
+      IOS_LABEL: 'Skip'
 - extendedWaitUntil:
     visible:
       id: create-channel-view

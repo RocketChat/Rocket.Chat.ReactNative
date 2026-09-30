@@ -23,6 +23,16 @@ jest.mock('~/lib/methods/helpers', () =>
 	)
 );
 
+jest.mock('~/lib/methods/helpers/deviceInfo', () =>
+	Object.defineProperties(
+		{ ...jest.requireActual('~/lib/methods/helpers/deviceInfo') },
+		{
+			hasNativeHeaderBar: { get: () => mockIsIOS, configurable: true },
+			isTablet: { get: () => mockIsTablet, configurable: true }
+		}
+	)
+);
+
 jest.mock('~/lib/methods/helpers/navigation/headerIcon', () => ({
 	headerIcon: (name: string) => ({ type: 'image', source: { uri: name } })
 }));
@@ -127,7 +137,7 @@ describe('RoomsListView useHeader', () => {
 		expect(options.headerSubtitle).toBe(expectedSubtitle);
 	});
 
-	it('builds the right cluster in create, push-troubleshoot, directory order', () => {
+	it('builds the right cluster in push-troubleshoot, create, directory order', () => {
 		mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
 
 		renderUseHeader();
@@ -135,7 +145,7 @@ describe('RoomsListView useHeader', () => {
 		const options = mockSetOptions.mock.calls[0][0];
 		const rightItems = options.unstable_headerRightItems();
 		const labels = rightItems.map((item: { accessibilityLabel: string }) => item.accessibilityLabel);
-		expect(labels).toEqual(['Create new channel, team, direct message or discussion', 'Troubleshooting', 'Directory']);
+		expect(labels).toEqual(['Troubleshooting', 'Create new channel, team, direct message or discussion', 'Directory']);
 	});
 
 	it('renders only buttons when push troubleshooting is absent', () => {

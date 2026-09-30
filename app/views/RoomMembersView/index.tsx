@@ -8,21 +8,19 @@ import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/Actio
 import { sendLoadingEvent } from '~/containers/Loading';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import SafeAreaView from '~/containers/SafeAreaView';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import SearchBox from '~/containers/SearchBox';
 import UserItem from '~/containers/UserItem';
-import Radio from '~/containers/Radio';
 import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '~/definitions';
 import I18n from '~/i18n';
 import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
+import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { compareServerVersion, getRoomTitle, hasNativeHeaderBar, isGroupChat, useDebounce } from '~/lib/methods/helpers';
-import { headerIcon } from '~/lib/methods/helpers/navigation/headerIcon';
 import { handleIgnore } from '~/lib/methods/helpers/handleIgnore';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import log from '~/lib/methods/helpers/log';
@@ -254,68 +252,33 @@ const RoomMembersView = (): ReactElement => {
 	};
 
 	const setHeader = (allUsers: boolean) => {
-		if (hasNativeHeaderBar) {
-			navigation.setOptions({
-				title: I18n.t('Members'),
-				headerRight: undefined,
-				headerTransparent: true,
-				headerSearchBarOptions: stackedSearchBarOptions({ onChangeText: debounceFilterChange }),
-				unstable_headerRightItems: () => [
-					{
-						type: 'menu',
-						label: I18n.t('Filter'),
-						accessibilityLabel: I18n.t('Filter'),
-						icon: headerIcon('filter'),
-						menu: {
-							items: [
-								{
-									type: 'action',
-									label: I18n.t('Online'),
-									state: allUsers ? 'off' : 'on',
-									onPress: () => toggleStatus(false)
-								},
-								{
-									type: 'action',
-									label: I18n.t('All'),
-									state: allUsers ? 'on' : 'off',
-									onPress: () => toggleStatus(true)
-								}
-							]
-						}
-					}
-				]
-			});
-			return;
-		}
 		navigation.setOptions({
 			title: I18n.t('Members'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item
-						iconName='filter'
-						onPress={() =>
-							showActionSheet({
-								options: [
-									{
-										title: I18n.t('Online'),
-										onPress: () => toggleStatus(false),
-										right: () => <Radio check={!allUsers} />,
-										testID: 'room-members-view-toggle-status-online'
-									},
-									{
-										title: I18n.t('All'),
-										onPress: () => toggleStatus(true),
-										right: () => <Radio check={allUsers} />,
-										testID: 'room-members-view-toggle-status-all'
-									}
-								],
-								enableContentPanningGesture: false
-							})
+			...(hasNativeHeaderBar && {
+				headerTransparent: true,
+				headerSearchBarOptions: stackedSearchBarOptions({ onChangeText: debounceFilterChange })
+			}),
+			...headerRightActions([
+				{
+					label: I18n.t('Filter'),
+					icon: 'filter',
+					testID: 'room-members-view-filter',
+					menu: [
+						{
+							label: I18n.t('Online'),
+							checked: !allUsers,
+							testID: 'room-members-view-toggle-status-online',
+							onPress: () => toggleStatus(false)
+						},
+						{
+							label: I18n.t('All'),
+							checked: allUsers,
+							testID: 'room-members-view-toggle-status-all',
+							onPress: () => toggleStatus(true)
 						}
-						testID='room-members-view-filter'
-					/>
-				</HeaderButton.Container>
-			)
+					]
+				}
+			])
 		});
 	};
 
