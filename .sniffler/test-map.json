@@ -252,6 +252,10 @@
 		"dependsOn": ["app/views/NewServerView/**", "app/sagas/login.js"]
 	},
 	{
+		"test": ".maestro/tests/performance/scroll-room-to-top.yaml",
+		"dependsOn": ["app/views/RoomView/**", "app/containers/message/**", "app/sagas/room.js"]
+	},
+	{
 		"test": ".maestro/tests/room/create-dm-group.yaml",
 		"dependsOn": [
 			"app/views/NewMessageView/**",

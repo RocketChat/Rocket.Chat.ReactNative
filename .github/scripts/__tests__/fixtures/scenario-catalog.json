@@ -99,10 +99,10 @@
     },
     {
       "id": "C2",
-      "name": "shared view fans wide: RoomView -> nine flows",
+      "name": "shared view fans wide: RoomView -> ten flows",
       "category": "real-domain",
       "input": { "diff": ["app/views/RoomView/index.tsx"] },
-      "expectedShards": [3, 5, 7, 9, 12, 13, 14],
+      "expectedShards": [3, 4, 5, 7, 9, 12, 13, 14],
       "expectedShouldRun": true,
       "assertableIn": ["map", "ci"]
     },
