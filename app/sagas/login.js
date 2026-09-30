@@ -5,7 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
-import { selectServerRequest, serverFinishAdd, serverInitAdd } from '../actions/server';
+import { selectServerRequest, serverFinishAdd, serverRequest } from '../actions/server';
 import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
@@ -46,6 +46,9 @@ import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
 import { isInActiveVoipCall } from '../lib/services/voip/isInActiveVoipCall';
 import { store as reduxStore } from '../lib/store/auxStore';
+
+// eslint-disable-next-line no-restricted-imports
+import appConfig from '../../app.json';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -395,25 +398,17 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 		try {
 			yield call(logoutCall, { server });
 
-			const loggedInServer = yield call(findLoggedInServer);
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+			yield put(serverRequest(appConfig.server));
 
 			// if the user was logged out by the server
 			if (forcedByServer) {
-				if (loggedInServer) {
-					yield put(serverInitAdd(loggedInServer.id));
-				}
-				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+				// yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 				if (message) {
 					showErrorAlert(I18n.t(message), I18n.t('Oops'));
 				}
 				yield delay(300);
 				EventEmitter.emit('NewServer', { server });
-			} else {
-				if (loggedInServer) {
-					yield put(selectServerRequest(loggedInServer.id, loggedInServer.version));
-					return;
-				}
-				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			}
 		} catch (e) {
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));

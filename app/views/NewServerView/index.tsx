@@ -28,7 +28,7 @@ import completeUrl from './utils/completeUrl';
 import styles from './styles';
 
 const NewServerView = () => {
-	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'NewServerView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList>>();
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
 	const { previousServer, connecting, failureMessage } = useAppSelector(state => ({
