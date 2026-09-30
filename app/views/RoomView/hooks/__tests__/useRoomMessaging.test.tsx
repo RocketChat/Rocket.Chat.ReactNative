@@ -38,8 +38,6 @@ jest.mock('../useJumpToMessage', () => ({
 jest.mock('../useRoomInit', () => ({
 	useRoomInit: jest.fn(() => ({
 		loading: false,
-		failed: false,
-		retry: jest.fn(),
 		lastSeen: 'last-seen-message',
 		clearLastSeen: jest.fn()
 	}))

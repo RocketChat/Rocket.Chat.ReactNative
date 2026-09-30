@@ -1,5 +1,5 @@
 import { type LayoutChangeEvent, View, TextInput, type TextInputProps, TouchableNativeFeedback } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
 import Animated, {
 	type SharedValue,
 	useAnimatedProps,
@@ -65,31 +65,32 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		maxWidth.value = width;
 	};
 
-	const panGesture = Gesture.Pan()
-		.enabled(loaded)
-		.activeOffsetX([-ACTIVE_OFFSET_X, ACTIVE_OFFSET_X])
-		.onStart(() => {
+	const panGesture = usePanGesture({
+		enabled: loaded,
+		activeOffsetX: [-ACTIVE_OFFSET_X, ACTIVE_OFFSET_X],
+		onActivate: () => {
 			isPanning.value = true;
 			contextX.value = translateX.value;
 			savedTranslateX.value = translateX.value;
 			savedCurrentTime.value = currentTime.value;
 			scale.value = withTiming(1.3, { duration: 150 });
-		})
-		.onUpdate(event => {
+		},
+		onUpdate: event => {
 			const newX = contextX.value + event.translationX;
 			translateX.value = clamp(newX, 0, maxWidth.value);
-		})
-		.onFinalize((_, didSucceed) => {
+		},
+		onFinalize: event => {
 			if (!isPanning.value) return;
 			isPanning.value = false;
 			scale.value = withTiming(1, { duration: 150 });
-			if (didSucceed) {
-				scheduleOnRN(onChangeTime, currentTime.value);
-			} else {
+			if (event.canceled) {
 				translateX.value = savedTranslateX.value;
 				currentTime.value = savedCurrentTime.value;
+			} else {
+				scheduleOnRN(onChangeTime, currentTime.value);
 			}
-		});
+		}
+	});
 
 	useDerivedValue(() => {
 		if (isPanning.value) {

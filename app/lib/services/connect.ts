@@ -337,7 +337,8 @@ async function login(credentials: ILoginCredentials): Promise<ILoggedUser> {
 		alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel,
 		bio: result.me.bio,
 		nickname: result.me.nickname,
-		requirePasswordChange: result.me.requirePasswordChange
+		requirePasswordChange: result.me.requirePasswordChange,
+		sidebarCategories: result.me.settings?.preferences?.sidebarCategories
 	};
 	return user;
 }

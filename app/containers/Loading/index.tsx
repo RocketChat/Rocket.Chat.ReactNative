@@ -110,7 +110,7 @@ const Loading = (): ReactElement | null => {
 					<Animated.View
 						style={[
 							{
-								...StyleSheet.absoluteFillObject,
+								...StyleSheet.absoluteFill,
 								backgroundColor: colors.backdropColor
 							},
 							animatedOpacity

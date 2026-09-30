@@ -1,7 +1,7 @@
 [
 	{
 		"test": ".maestro/tests/accessibilityAndAppearance/ToastsAndDialogs.yml",
-		"dependsOn": ["app/views/StatusView/**"]
+		"dependsOn": ["app/views/StatusView/**", "app/views/SidebarView/**"]
 	},
 	{
 		"test": ".maestro/tests/assorted/accessibility-and-appearance.yaml",
@@ -310,6 +310,15 @@
 			"app/lib/methods/subscribeRooms.ts",
 			"app/sagas/rooms.js",
 			"app/views/RoomView/**"
+		]
+	},
+	{
+		"test": ".maestro/tests/room/send-message-while-offline.yaml",
+		"dependsOn": [
+			"app/views/RoomView/**",
+			"app/containers/message/components/RightIcons/MessageError.tsx",
+			"app/lib/methods/sendMessage.ts",
+			"app/sagas/messages.js"
 		]
 	},
 	{
