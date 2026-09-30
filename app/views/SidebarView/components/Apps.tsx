@@ -8,8 +8,10 @@ import { type IAppActionButtonItem, useAppActionButtons } from '~/lib/apps/useAp
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { type DrawerParamList } from '~/stacks/types';
 
+const SIDEBAR_APP_FILTERS = [{ context: UIActionButtonContext.USER_DROPDOWN_ACTION }];
+
 const Apps = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
-	const appActions = useAppActionButtons({ context: UIActionButtonContext.USER_DROPDOWN_ACTION });
+	const [appActions] = useAppActionButtons({ filters: SIDEBAR_APP_FILTERS });
 
 	if (!appActions.length) {
 		return null;

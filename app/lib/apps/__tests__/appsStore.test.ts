@@ -189,6 +189,40 @@ describe('subscribeToApps', () => {
 		dispose();
 	});
 
+	it('retries a failed subscribe while the connection stays up', async () => {
+		jest.useFakeTimers({ doNotFake: ['setImmediate'] });
+		try {
+			mockSubscribe.mockImplementationOnce(() => Promise.reject(new Error('nosub')));
+
+			setLoginReady(true);
+			const dispose = subscribeToApps();
+			await flush();
+			expect(mockSubscribe).toHaveBeenCalledTimes(1);
+
+			jest.advanceTimersByTime(2000);
+			await flush();
+			expect(mockSubscribe).toHaveBeenCalledTimes(2);
+
+			dispose();
+		} finally {
+			jest.useRealTimers();
+		}
+	});
+
+	it('refetches the translations when an app is updated', async () => {
+		setLoginReady(true);
+		const dispose = subscribeToApps();
+		await flush();
+		mockGetAppsLanguages.mockClear();
+
+		streamCallback()({ fields: { args: [['app/updated', ['app-id']]] } });
+		await flush();
+
+		expect(mockGetAppsLanguages).toHaveBeenCalledTimes(1);
+
+		dispose();
+	});
+
 	it('keeps a single subscription while more than one consumer is mounted', async () => {
 		setLoginReady(true);
 		const first = subscribeToApps();
@@ -224,5 +258,18 @@ describe('useAppsStore reset', () => {
 
 		expect(useAppsStore.getState().actionButtons).toEqual([]);
 		expect(useAppsStore.getState().translations).toEqual({});
+	});
+
+	it('keeps the loaded data when a refetch fails', async () => {
+		await useAppsStore.getState().fetchActionButtons();
+		await useAppsStore.getState().fetchTranslations();
+		mockGetAppActionButtons.mockImplementationOnce(() => Promise.reject(new Error('503')));
+		mockGetAppsLanguages.mockImplementationOnce(() => Promise.reject(new Error('503')));
+
+		await useAppsStore.getState().fetchActionButtons();
+		await useAppsStore.getState().fetchTranslations();
+
+		expect(useAppsStore.getState().actionButtons).toHaveLength(1);
+		expect(useAppsStore.getState().translations).toEqual({ 'app-id': { en: { summarize: 'Summarize' } } });
 	});
 });

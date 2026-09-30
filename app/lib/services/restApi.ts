@@ -1283,7 +1283,8 @@ export const mediaCallsStateSignals = async (contractId: string): Promise<{ sign
 	}
 };
 
-const appsApiGet = async <T>(path: string): Promise<T> => {
+// The Apps endpoints live outside /v1, which the SDK always prefixes.
+export const fetchAppsApi = async (path: string, init: { method: 'GET' | 'POST'; body?: string }): Promise<Response> => {
 	const { host, currentLogin } = sdk;
 	if (!host || !currentLogin) {
 		throw new Error('The Apps REST API requires an initialized, authenticated session');
@@ -1291,7 +1292,7 @@ const appsApiGet = async <T>(path: string): Promise<T> => {
 	const { userId, authToken } = currentLogin;
 
 	const response = await fetch(`${host}/api/apps/${path}`, {
-		method: 'GET',
+		...init,
 		headers: {
 			'Content-Type': 'application/json',
 			'X-Auth-Token': authToken,
@@ -1300,11 +1301,13 @@ const appsApiGet = async <T>(path: string): Promise<T> => {
 	});
 
 	if (!response.ok) {
-		throw new Error(`Failed to GET /api/apps/${path}: ${response.status}`);
+		throw new Error(`Failed to ${init.method} /api/apps/${path}: ${response.status}`);
 	}
 
-	return response.json();
+	return response;
 };
+
+const appsApiGet = async <T>(path: string): Promise<T> => (await fetchAppsApi(path, { method: 'GET' })).json();
 
 export const getAppActionButtons = (): Promise<IAppActionButton[]> => appsApiGet<IAppActionButton[]>('actionButtons');
 

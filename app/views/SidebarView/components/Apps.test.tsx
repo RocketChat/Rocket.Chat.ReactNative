@@ -18,26 +18,26 @@ describe('Sidebar Apps', () => {
 	beforeEach(() => jest.clearAllMocks());
 
 	it('asks for user dropdown buttons', () => {
-		mockedHook.mockReturnValue([]);
+		mockedHook.mockReturnValue([[]]);
 		render(<Apps navigation={navigation} />);
-		expect(mockedHook).toHaveBeenCalledWith({ context: 'userDropdownAction' });
+		expect(mockedHook).toHaveBeenCalledWith({ filters: [{ context: 'userDropdownAction' }] });
 	});
 
 	it('renders nothing without buttons', () => {
-		mockedHook.mockReturnValue([]);
+		mockedHook.mockReturnValue([[]]);
 		const { toJSON } = render(<Apps navigation={navigation} />);
 		expect(toJSON()).toBeNull();
 	});
 
 	it('renders one item per button with its label', () => {
-		mockedHook.mockReturnValue([item]);
+		mockedHook.mockReturnValue([[item]]);
 		const { getByTestId, getByText } = render(<Apps navigation={navigation} />);
 		expect(getByTestId('sidebar-app-app-1/open-thing')).toBeTruthy();
 		expect(getByText('Open thing')).toBeTruthy();
 	});
 
 	it('closes the drawer and triggers the app action', () => {
-		mockedHook.mockReturnValue([item]);
+		mockedHook.mockReturnValue([[item]]);
 		const { getByTestId } = render(<Apps navigation={navigation} />);
 		fireEvent.press(getByTestId('sidebar-app-app-1/open-thing'));
 

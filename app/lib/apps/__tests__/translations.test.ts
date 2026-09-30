@@ -4,7 +4,7 @@ import { translateAppKey } from '../translations';
 const translations: TAppTranslations = {
 	'app-id': {
 		en: { greeting: 'Summarize' },
-		'pt-BR': { greeting: 'Resumir' },
+		'pt-br': { greeting: 'Resumir' },
 		pt: { greeting: 'Resumo' }
 	}
 };
