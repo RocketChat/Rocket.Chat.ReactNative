@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 import * as Haptics from 'expo-haptics';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import Base, { type IBase } from './Base';
 import { TYPE } from './constants';
@@ -62,4 +61,4 @@ const PasscodeChoose = ({ finishProcess, force = false }: IPasscodeChoose) => {
 	);
 };
 
-export default gestureHandlerRootHOC(PasscodeChoose);
+export default PasscodeChoose;

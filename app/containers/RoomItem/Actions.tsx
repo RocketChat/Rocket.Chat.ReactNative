@@ -7,10 +7,10 @@ import Animated, {
 	useAnimatedReaction,
 	useSharedValue
 } from 'react-native-reanimated';
-import { RectButton } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { scheduleOnRN } from 'react-native-worklets';
 
+import { RectButton } from '~/containers/GestureButtons';
 import { CustomIcon } from '../CustomIcon';
 import { DisplayMode } from '~/lib/constants/constantDisplayMode';
 import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
