@@ -6,7 +6,7 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 tags:
   - 'performance'
-  - 'util'
+  - 'test-4'
 ---
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
@@ -27,12 +27,12 @@ tags:
     times: 50
     while:
       notVisible:
-        text: '.*SYSTEM MESSAGES.*'
+        text: '(?i).*system messages.*'
     commands:
       - swipe:
           start: 50%, 20%
           end: 50%, 95%
           duration: 40
 - assertVisible:
-    text: '.*SYSTEM MESSAGES.*'
+    text: '(?i).*system messages.*'
 - stopRecording
