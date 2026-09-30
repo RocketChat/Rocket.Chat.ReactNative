@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 import { type IAppActionButton } from './definitions';
+import { normalizeLanguage } from './translations';
 import log from '~/lib/methods/helpers/log';
 import { getAppActionButtons, getAppsLanguages } from '~/lib/services/restApi';
 import sdk from '~/lib/services/sdk';
@@ -40,11 +41,8 @@ export const useAppsStore = create<TAppsState & TAppsActions>(set => ({
 			if (version === storeVersion) {
 				set({ actionButtons });
 			}
-		} catch (e) {
-			if (version === storeVersion) {
-				set({ actionButtons: [] });
-			}
-			log(e);
+		} catch {
+			// Servers without the Apps framework reject this; keep whatever was already loaded.
 		}
 	},
 
@@ -56,15 +54,15 @@ export const useAppsStore = create<TAppsState & TAppsActions>(set => ({
 				return;
 			}
 			const translations = apps.reduce<TAppTranslations>((acc, { id, languages }) => {
-				acc[id] = languages;
+				acc[id] = Object.entries(languages).reduce<TAppTranslations[string]>((byLanguage, [language, keys]) => {
+					byLanguage[normalizeLanguage(language)] = keys;
+					return byLanguage;
+				}, {});
 				return acc;
 			}, {});
 			set({ translations });
-		} catch (e) {
-			if (version === storeVersion) {
-				set({ translations: {} });
-			}
-			log(e);
+		} catch {
+			// Servers without the Apps framework reject this; keep whatever was already loaded.
 		}
 	},
 
@@ -84,16 +82,27 @@ let loginReady = false;
 let storeListener: (() => void) | null = null;
 let streamListener: Promise<{ stop: () => void }> | null = null;
 let streamSubscription: { unsubscribe: () => Promise<unknown> } | null = null;
+let retryTimer: ReturnType<typeof setTimeout> | null = null;
+let retryAttempt = 0;
+
+const RETRY_BASE_MS = 2000;
+const RETRY_MAX_MS = 60000;
+
+const clearRetry = () => {
+	if (retryTimer) {
+		clearTimeout(retryTimer);
+		retryTimer = null;
+	}
+};
 
 const handleStreamData = (ddpMessage: { fields?: { args?: [[string, unknown[]]] } }) => {
 	const [event] = ddpMessage?.fields?.args?.[0] || [];
 	const { fetchActionButtons, fetchTranslations } = useAppsStore.getState();
-	// The engine fires `actions/changed` on both register and clear, so it covers the whole button
-	// lifecycle on its own; translations ship with an app and only arrive when one is added.
 	if (event === 'actions/changed') {
 		fetchActionButtons().catch(log);
 	}
-	if (event === 'app/added') {
+	// Translations ship with an app, so any install, update or removal can change them.
+	if (typeof event === 'string' && event.startsWith('app/')) {
 		fetchTranslations().catch(log);
 	}
 };
@@ -114,9 +123,17 @@ const subscribeToStream = () => {
 		if (current !== generation) {
 			return;
 		}
-		// Leaves the next `isLoginReady()` edge free to try again.
 		subscribed = false;
 		streamListener = null;
+		clearRetry();
+		const delay = Math.min(RETRY_BASE_MS * 2 ** retryAttempt, RETRY_MAX_MS);
+		retryAttempt += 1;
+		retryTimer = setTimeout(() => {
+			retryTimer = null;
+			if (current === generation && loginReady) {
+				subscribeToStream();
+			}
+		}, delay);
 	};
 	try {
 		listener = sdk.onStreamData(APPS_STREAM, handleStreamData);
@@ -130,6 +147,7 @@ const subscribeToStream = () => {
 					return;
 				}
 				streamSubscription = subscription ?? null;
+				retryAttempt = 0;
 			})
 			.catch(fail);
 	} catch (e) {
@@ -139,6 +157,8 @@ const subscribeToStream = () => {
 
 const unsubscribeFromStream = () => {
 	generation += 1;
+	clearRetry();
+	retryAttempt = 0;
 	subscribed = false;
 	streamListener?.then(listener => listener.stop()).catch(log);
 	streamListener = null;

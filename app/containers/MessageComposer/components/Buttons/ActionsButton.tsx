@@ -14,6 +14,11 @@ import { UIActionButtonContext } from '~/lib/apps/definitions';
 import { useAppActionButtons } from '~/lib/apps/useAppActionButtons';
 import { triggerAppActionButton } from '~/lib/apps/triggerAppActionButton';
 
+const COMPOSER_APP_FILTERS = [
+	{ context: UIActionButtonContext.ROOM_ACTION, category: 'ai' as const },
+	{ context: UIActionButtonContext.MESSAGE_BOX_ACTION }
+];
+
 export const ActionsButton = () => {
 	const rid = useComposerRid();
 	const tmid = useComposerTmid();
@@ -28,8 +33,7 @@ export const ActionsButton = () => {
 	});
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useMasterDetail();
-	const appActions = useAppActionButtons({ context: UIActionButtonContext.MESSAGE_BOX_ACTION, rid });
-	const aiActions = useAppActionButtons({ context: UIActionButtonContext.ROOM_ACTION, category: 'ai', rid });
+	const [aiActions, appActions] = useAppActionButtons({ filters: COMPOSER_APP_FILTERS, rid });
 
 	const createDiscussion = async () => {
 		if (!rid) return;

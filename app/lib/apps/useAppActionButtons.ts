@@ -14,40 +14,11 @@ import {
 import { applyAuthFilter, applyCategoryFilter, applyRoomFilter, collectPermissions } from './filters';
 import { translateAppKey } from './translations';
 import database from '~/lib/database';
-import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import log from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
-import { type TPermissionModel } from '~/definitions';
-
-const getPermissionRoles = async (ids: string[]): Promise<{ [permission: string]: string[] }> => {
-	if (!ids.length) {
-		return {};
-	}
-	try {
-		const records = (await database.active
-			.get('permissions')
-			.query(Q.where('id', Q.oneOf(ids)))
-			.fetch()) as TPermissionModel[];
-		return records.reduce<{ [permission: string]: string[] }>((acc, record) => {
-			acc[record.id] = record.roles ?? [];
-			return acc;
-		}, {});
-	} catch (e) {
-		log(e);
-		return {};
-	}
-};
-
-const splitKey = (key: string): string[] => (key ? key.split(',') : []);
-
-interface IAppActionButtonContext {
-	/** Inputs this context was resolved for, so a room change can't be filtered against the previous one. */
-	key: string;
-	room: IAppActionButtonRoom;
-	roles: string[];
-	permissions: { [permission: string]: string[] };
-}
+import { type TPermissionModel, type TSubscriptionModel } from '~/definitions';
+import i18n from '~/i18n';
 
 export interface IAppActionButtonItem {
 	id: string;
@@ -55,80 +26,130 @@ export interface IAppActionButtonItem {
 	button: IAppActionButton;
 }
 
+export interface IAppActionButtonFilter {
+	context: TUIActionButtonContext;
+	/** Leave out to accept every category. */
+	category?: TAppActionButtonCategory;
+}
+
+interface IRoomContext {
+	/** The rid this was resolved for, so a room change can't be filtered against the previous one. */
+	rid: string;
+	room: IAppActionButtonRoom;
+	roles: string[];
+}
+
+const splitKey = (key: string): string[] => (key ? key.split(',') : []);
+
+const useRoomContext = (rid?: string, enabled = true): IRoomContext | null => {
+	const [roomContext, setRoomContext] = useState<IRoomContext | null>(null);
+
+	useEffect(() => {
+		if (!rid || !enabled) {
+			return;
+		}
+		// Observing the query rather than one record picks up a subscription created after mount.
+		const subscription = database.active
+			.get('subscriptions')
+			.query(Q.where('id', rid))
+			.observeWithColumns(['roles', 't', 'team_main', 'prid', 'uids'])
+			.subscribe({
+				next: records => {
+					const [sub] = records as TSubscriptionModel[];
+					setRoomContext({
+						rid,
+						room: { t: sub?.t, teamMain: sub?.teamMain, prid: sub?.prid, uids: sub?.uids },
+						roles: sub?.roles ?? []
+					});
+				},
+				error: log
+			});
+		return () => subscription.unsubscribe();
+	}, [rid, enabled]);
+
+	return rid && roomContext?.rid === rid ? roomContext : null;
+};
+
+const usePermissionRoles = (permissionsKey: string): { [permission: string]: string[] } | null => {
+	const [state, setState] = useState<{ key: string; roles: { [permission: string]: string[] } } | null>(null);
+
+	useEffect(() => {
+		const ids = splitKey(permissionsKey);
+		if (!ids.length) {
+			return;
+		}
+		const subscription = database.active
+			.get('permissions')
+			.query(Q.where('id', Q.oneOf(ids)))
+			.observeWithColumns(['roles'])
+			.subscribe({
+				next: records => {
+					const roles = (records as TPermissionModel[]).reduce<{ [permission: string]: string[] }>((acc, record) => {
+						acc[record.id] = record.roles ?? [];
+						return acc;
+					}, {});
+					setState({ key: permissionsKey, roles });
+				},
+				error: log
+			});
+		return () => subscription.unsubscribe();
+	}, [permissionsKey]);
+
+	if (!permissionsKey) {
+		return {};
+	}
+	return state?.key === permissionsKey ? state.roles : null;
+};
+
+/** Returns one list of buttons per filter, in the same order. */
 export const useAppActionButtons = ({
-	context,
-	category = 'default',
+	filters,
 	rid
 }: {
-	context: TUIActionButtonContext;
-	category?: TAppActionButtonCategory;
+	filters: IAppActionButtonFilter[];
 	rid?: string;
-}): IAppActionButtonItem[] => {
-	const buttons = useAppsStore(useShallow(state => state.actionButtons.filter(button => button.context === context)));
+}): IAppActionButtonItem[][] => {
+	const contextsKey = filters.map(({ context }) => context).join(',');
+	const buttons = useAppsStore(
+		useShallow(state => {
+			const contexts = splitKey(contextsKey);
+			return state.actionButtons.filter(button => contexts.includes(button.context));
+		})
+	);
 	const translations = useAppsStore(state => state.translations);
 	const userRoles = useAppSelector(state => getUserSelector(state).roles || [], shallowEqual);
-
-	const [filterContext, setContext] = useState<IAppActionButtonContext | null>(null);
+	// Re-renders on a language change, so `i18n.locale` below is read fresh.
+	useAppSelector(state => getUserSelector(state).language);
+	const { locale } = i18n;
 
 	useEffect(subscribeToApps, []);
 
-	const permissionIds = useMemo(() => collectPermissions(buttons), [buttons]);
-	const permissionsKey = permissionIds.join(',');
-	const userRolesKey = userRoles.join(',');
-	const contextKey = `${rid ?? ''}|${permissionsKey}|${userRolesKey}`;
 	const hasButtons = buttons.length > 0;
-
-	useEffect(() => {
-		if (!hasButtons) {
-			return;
-		}
-
-		let cancelled = false;
-
-		const resolveFilterContext = async (): Promise<void> => {
-			const subscription = rid ? await getSubscriptionByRoomId(rid) : null;
-			const permissionRoles = await getPermissionRoles(splitKey(permissionsKey));
-			if (cancelled) {
-				return;
-			}
-			setContext({
-				key: contextKey,
-				room: {
-					t: subscription?.t,
-					teamMain: subscription?.teamMain,
-					prid: subscription?.prid,
-					uids: subscription?.uids
-				},
-				roles: [...new Set([...(subscription?.roles ?? []), ...splitKey(userRolesKey)])],
-				permissions: permissionRoles
-			});
-		};
-
-		resolveFilterContext().catch(log);
-
-		return () => {
-			cancelled = true;
-		};
-	}, [hasButtons, rid, permissionsKey, userRolesKey, contextKey]);
+	const permissionsKey = useMemo(() => collectPermissions(buttons).join(','), [buttons]);
+	const roomContext = useRoomContext(rid, hasButtons);
+	const permissions = usePermissionRoles(permissionsKey);
+	const filtersKey = filters.map(({ context, category }) => `${context}:${category ?? ''}`).join(',');
 
 	return useMemo(() => {
-		// A resolve for the previous room may still be the latest state; filtering against it would
-		// list buttons this room excludes.
-		if (!filterContext || filterContext.key !== contextKey) {
-			return [];
+		const parsedFilters = splitKey(filtersKey).map(entry => {
+			const [context, category] = entry.split(':');
+			return { context, category: (category || undefined) as TAppActionButtonCategory | undefined };
+		});
+		if (!hasButtons || !permissions || (rid && !roomContext)) {
+			return parsedFilters.map(() => []);
 		}
-		const { room, roles, permissions } = filterContext;
-		return buttons
-			.filter(
-				button =>
-					applyCategoryFilter(button, category) &&
-					applyRoomFilter(button, room) &&
-					applyAuthFilter(button, { roles, permissions })
-			)
-			.map(button => ({
-				id: getIdForActionButton(button),
-				label: translateAppKey({ appId: button.appId, key: button.labelI18n, translations }),
-				button
-			}));
-	}, [buttons, category, contextKey, filterContext, translations]);
+		const roles = [...new Set([...(roomContext?.roles ?? []), ...userRoles])];
+		const room = roomContext?.room ?? {};
+		const visible = buttons.filter(button => applyRoomFilter(button, room) && applyAuthFilter(button, { roles, permissions }));
+
+		return parsedFilters.map(({ context, category }) =>
+			visible
+				.filter(button => button.context === context && (!category || applyCategoryFilter(button, category)))
+				.map(button => ({
+					id: getIdForActionButton(button),
+					label: translateAppKey({ appId: button.appId, key: button.labelI18n, translations, locale }),
+					button
+				}))
+		);
+	}, [buttons, filtersKey, hasButtons, locale, permissions, rid, roomContext, translations, userRoles]);
 };

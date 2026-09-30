@@ -5,7 +5,8 @@ import { ActionsButton } from '../ActionsButton';
 
 const mockUseAppActionButtons = jest.fn((_params: unknown): IAppActionButtonItem[] => []);
 jest.mock('~/lib/apps/useAppActionButtons', () => ({
-	useAppActionButtons: (params: unknown) => mockUseAppActionButtons(params)
+	useAppActionButtons: ({ filters, rid }: { filters: { context: string; category?: string }[]; rid?: string }) =>
+		filters.map(filter => mockUseAppActionButtons({ ...filter, rid }))
 }));
 
 const mockTriggerAppActionButton = jest.fn();
