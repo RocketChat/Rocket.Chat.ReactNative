@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-plain-text/lib/module/PlainText.js b/node_modules/react-native-plain-text/lib/module/PlainText.js
-index 4862849..684e347 100644
+index 4862849..56db308 100644
 --- a/node_modules/react-native-plain-text/lib/module/PlainText.js
 +++ b/node_modules/react-native-plain-text/lib/module/PlainText.js
 @@ -81,6 +81,13 @@ export function mapPlainTextProps({
@@ -10,14 +10,14 @@ index 4862849..684e347 100644
 +  if (nativeProps.accessibilityRole === undefined) {
 +    nativeProps.accessibilityRole = 'text';
 +  }
-+  if (nativeProps.accessibilityLabel === undefined && nativeProps.text !== undefined) {
++  if (nativeProps.accessible && nativeProps.accessibilityLabel === undefined && nativeProps.text !== undefined) {
 +    nativeProps.accessibilityLabel = nativeProps.text;
 +  }
  
    // No null guard: `for...in` over a missing style runs zero times.
    const flatStyle = StyleSheet.flatten(style);
 diff --git a/node_modules/react-native-plain-text/src/PlainText.tsx b/node_modules/react-native-plain-text/src/PlainText.tsx
-index f898d74..79d589d 100644
+index f898d74..f1c374d 100644
 --- a/node_modules/react-native-plain-text/src/PlainText.tsx
 +++ b/node_modules/react-native-plain-text/src/PlainText.tsx
 @@ -134,6 +134,13 @@ export function mapPlainTextProps({
@@ -28,7 +28,7 @@ index f898d74..79d589d 100644
 +  if (nativeProps.accessibilityRole === undefined) {
 +    nativeProps.accessibilityRole = 'text';
 +  }
-+  if (nativeProps.accessibilityLabel === undefined && nativeProps.text !== undefined) {
++  if (nativeProps.accessible && nativeProps.accessibilityLabel === undefined && nativeProps.text !== undefined) {
 +    nativeProps.accessibilityLabel = nativeProps.text;
 +  }
  
