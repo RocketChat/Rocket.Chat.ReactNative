@@ -182,63 +182,61 @@ index 7a2071e4d8..746ef5f9df 100644
                  decodeDownsampled(bytes, maxTargetWidth)
                } catch (_: OutOfMemoryError) {
                  Log.e(TAG, "OOM decoding image: $url")
-diff --git a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdownText.mm b/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdownText.mm
-index e3f1c31..e62e223 100644
---- a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdownText.mm
-+++ b/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdownText.mm
-@@ -10,6 +10,7 @@
- #import "ENRMSpoilerOverlayManager.h"
- #import "ENRMSpoilerTapUtils.h"
+diff --git a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm b/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm
+index ed8b53d..2212ff5 100644
+--- a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm
++++ b/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm
+@@ -6,6 +6,7 @@
+ #import "ENRMImageAttachment.h"
+ #import "ENRMMarkdownParser.h"
  #import "ENRMTailFadeInAnimator.h"
 +#import "ENRMTextHitTest.h"
  #import "ENRMTextInteractionUtils.h"
  #import "ENRMTextRenderer.h"
  #import "ENRMTextViewSetup.h"
-@@ -47,7 +48,7 @@ typedef NS_OPTIONS(NSUInteger, ENRMDirtyFlags) {
-   ENRMDirtyRender = 1 << 0,
- };
+@@ -69,7 +70,8 @@ typedef NS_OPTIONS(NSUInteger, ENRMDirtyFlags) {
  
--@interface EnrichedMarkdownText () <RCTEnrichedMarkdownTextViewProtocol, UITextViewDelegate, ENRMImageLayoutObserver>
-+@interface EnrichedMarkdownText () <RCTEnrichedMarkdownTextViewProtocol, UITextViewDelegate, UIGestureRecognizerDelegate, ENRMImageLayoutObserver>
- + (ENRMMd4cFlags *)flagsFromProps:(const EnrichedMarkdownTextMd4cFlagsStruct &)props;
- - (void)setupTextView;
- - (void)renderMarkdownContent:(NSString *)markdownString;
-@@ -303,6 +304,13 @@ typedef NS_OPTIONS(NSUInteger, ENRMDirtyFlags) {
-   ENRMTapRecognizer *tapRecognizer = [[ENRMTapRecognizer alloc] initWithTarget:self action:@selector(textTapped:)];
-   [_textView addGestureRecognizer:tapRecognizer];
+ static char kENRMSegmentFadeAnimatorKey;
  
-+#if !TARGET_OS_OSX
+-@interface EnrichedMarkdown () <RCTEnrichedMarkdownViewProtocol, UITextViewDelegate, ENRMImageLayoutObserver>
++@interface EnrichedMarkdown () <RCTEnrichedMarkdownViewProtocol, UITextViewDelegate, UIGestureRecognizerDelegate,
++                                 ENRMImageLayoutObserver>
+ + (ENRMMd4cFlags *)flagsFromProps:(const EnrichedMarkdownMd4cFlagsStruct &)props;
+ - (void)emitLinkPress:(NSString *)url;
+ - (void)emitLinkLongPress:(NSString *)url;
+@@ -761,6 +763,11 @@ static char kENRMSegmentFadeAnimatorKey;
+   [view.textView addGestureRecognizer:tapRecognizer];
+ 
+ #if !TARGET_OS_OSX
 +  UILongPressGestureRecognizer *linkLongPressRecognizer =
 +      [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(textLongPressed:)];
 +  linkLongPressRecognizer.delegate = self;
-+  [_textView addGestureRecognizer:linkLongPressRecognizer];
-+#endif
++  [view.textView addGestureRecognizer:linkLongPressRecognizer];
 +
-   self.contentView = _textView;
- }
- 
-@@ -774,6 +782,54 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownTextCls(void)
+   view.textView.delegate = self;
+ #else
+   __weak EnrichedMarkdown *weakSelf = self;
+@@ -1299,6 +1306,54 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
    ENRMHandleTapOnTextView(textView, recognizer, ^(NSString *url) { [self emitLinkPress:url]; });
  }
  
-+#pragma mark - Link Long Press (non-selectable text)
-+
 +#if !TARGET_OS_OSX
-+- (NSString *)linkURLAtPoint:(CGPoint)point
++- (NSString *)linkURLInTextView:(ENRMPlatformTextView *)textView atPoint:(CGPoint)point
 +{
-+  NSUInteger characterIndex = ENRMCharacterIndexAtPoint(_textView, point);
++  NSUInteger characterIndex = ENRMCharacterIndexAtPoint(textView, point);
 +  if (characterIndex == NSNotFound) {
 +    return nil;
 +  }
-+  return [ENRMGetAttributedText(_textView) attribute:@"linkURL" atIndex:characterIndex effectiveRange:NULL];
++  return [ENRMGetAttributedText(textView) attribute:@"linkURL" atIndex:characterIndex effectiveRange:NULL];
 +}
 +
 +- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 +{
-+  if (_textView.selectable || _enableLinkPreview) {
++  ENRMPlatformTextView *textView = (ENRMPlatformTextView *)gestureRecognizer.view;
++  if (textView.selectable || _enableLinkPreview) {
 +    return NO;
 +  }
-+  return [self linkURLAtPoint:[touch locationInView:_textView]] != nil;
++  return [self linkURLInTextView:textView atPoint:[touch locationInView:textView]] != nil;
 +}
 +
 +- (void)textLongPressed:(UILongPressGestureRecognizer *)recognizer
@@ -246,7 +244,8 @@ index e3f1c31..e62e223 100644
 +  if (recognizer.state != UIGestureRecognizerStateBegan) {
 +    return;
 +  }
-+  NSString *url = [self linkURLAtPoint:[recognizer locationInView:_textView]];
++  ENRMPlatformTextView *textView = (ENRMPlatformTextView *)recognizer.view;
++  NSString *url = [self linkURLInTextView:textView atPoint:[recognizer locationInView:textView]];
 +  if (!url) {
 +    return;
 +  }
@@ -269,9 +268,9 @@ index e3f1c31..e62e223 100644
 +}
 +#endif
 +
- #pragma mark - UITextViewDelegate (Link Interaction)
- 
+ // TODO: Remove API_AVAILABLE(ios(16.0)) guard when the minimum iOS deployment target in RN is bumped to 16.
  #if !TARGET_OS_OSX
+ - (UIMenu *)textView:(UITextView *)textView
 diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
 index 3a8f80a1ca..b54a8f95e6 100644
 --- a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
