@@ -107,13 +107,20 @@ const subscribeToStream = () => {
 	const { fetchActionButtons, fetchTranslations } = useAppsStore.getState();
 	fetchActionButtons().catch(log);
 	fetchTranslations().catch(log);
+	let listener: typeof streamListener = null;
 	const fail = (e: unknown) => {
+		log(e);
+		listener?.then(l => l.stop()).catch(log);
+		if (current !== generation) {
+			return;
+		}
 		// Leaves the next `isLoginReady()` edge free to try again.
 		subscribed = false;
-		log(e);
+		streamListener = null;
 	};
 	try {
-		streamListener = sdk.onStreamData(APPS_STREAM, handleStreamData);
+		listener = sdk.onStreamData(APPS_STREAM, handleStreamData);
+		streamListener = listener;
 		sdk
 			.subscribe(APPS_STREAM, APPS_EVENT)
 			.then(subscription => {
