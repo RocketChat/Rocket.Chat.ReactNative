@@ -3,21 +3,21 @@ import { Provider } from 'react-redux';
 import { isValidElement, type ReactNode } from 'react';
 
 import Item from './Item';
-import { mockedStore } from '../../reducers/mockedStore';
-import { setUser } from '../../actions/login';
+import { mockedStore } from '~/reducers/mockedStore';
+import { setUser } from '~/actions/login';
 import * as stories from './Item.stories';
-import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
-import { NewMediaCall } from '../../containers/NewMediaCall';
-import { initStore } from '../../lib/store/auxStore';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
+import { NewMediaCall } from '~/containers/NewMediaCall';
+import { initStore } from '~/lib/store/auxStore';
 
 const mockShowActionSheetRef = jest.fn();
 const mockSetSelectedPeer = jest.fn();
 
-jest.mock('../../containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet', () => ({
 	showActionSheetRef: (params: unknown) => mockShowActionSheetRef(params)
 }));
 
-jest.mock('../../lib/services/voip/usePeerAutocompleteStore', () => ({
+jest.mock('~/lib/services/voip/usePeerAutocompleteStore', () => ({
 	usePeerAutocompleteStore: {
 		getState: () => ({
 			setSelectedPeer: mockSetSelectedPeer
@@ -27,11 +27,11 @@ jest.mock('../../lib/services/voip/usePeerAutocompleteStore', () => ({
 
 const mockUseMediaCallPermission = jest.fn(() => true);
 
-jest.mock('../../lib/hooks/useMediaCallPermission', () => ({
+jest.mock('~/lib/hooks/useMediaCallPermission', () => ({
 	useMediaCallPermission: () => mockUseMediaCallPermission()
 }));
 
-jest.mock('../../containers/NewMediaCall', () => ({
+jest.mock('~/containers/NewMediaCall', () => ({
 	NewMediaCall: jest.fn(() => null)
 }));
 

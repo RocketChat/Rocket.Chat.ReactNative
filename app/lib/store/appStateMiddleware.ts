@@ -2,7 +2,7 @@
 import { AppState } from 'react-native';
 
 import { removeNotificationsAndBadge } from '../notifications';
-import { APP_STATE } from '../../actions/actionsTypes';
+import { APP_STATE } from '~/actions/actionsTypes';
 
 export default () =>
 	(createStore: any) =>

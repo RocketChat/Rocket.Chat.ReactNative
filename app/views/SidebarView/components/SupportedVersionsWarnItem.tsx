@@ -1,13 +1,13 @@
 import { memo } from 'react';
 
-import { useTheme } from '../../../theme';
-import { CustomIcon } from '../../../containers/CustomIcon';
-import * as List from '../../../containers/List';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { showActionSheetRef } from '../../../containers/ActionSheet';
-import Navigation from '../../../lib/navigation/appNavigation';
-import { SupportedVersionsWarning } from '../../../containers/SupportedVersions';
+import { useTheme } from '~/theme';
+import { CustomIcon } from '~/containers/CustomIcon';
+import * as List from '~/containers/List';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { showActionSheetRef } from '~/containers/ActionSheet';
+import Navigation from '~/lib/navigation/appNavigation';
+import { SupportedVersionsWarning } from '~/containers/SupportedVersions';
 
 const SupportedVersionsWarnItem = () => {
 	const { colors } = useTheme();

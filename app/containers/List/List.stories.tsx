@@ -2,10 +2,10 @@ import { FlatList } from 'react-native';
 
 import * as List from '.';
 import SafeAreaView from '../SafeAreaView';
-import { longText } from '../../../.rnstorybook/utils';
-import { ThemeContext, type TSupportedThemes } from '../../theme';
-import { ResponsiveLayoutContext } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { themes } from '../../lib/constants/colors';
+import { longText } from '~/.rnstorybook/utils';
+import { ThemeContext, type TSupportedThemes } from '~/theme';
+import { ResponsiveLayoutContext } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { themes } from '~/lib/constants/colors';
 
 export default {
 	title: 'List'

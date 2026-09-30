@@ -2,9 +2,9 @@ import { StyleSheet, View } from 'react-native';
 import { type ReactElement } from 'react';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
-import i18n from '../../../../i18n';
-import { useTheme } from '../../../../theme';
-import { CustomIcon } from '../../../CustomIcon';
+import i18n from '~/i18n';
+import { useTheme } from '~/theme';
+import { CustomIcon } from '~/containers/CustomIcon';
 import { hitSlop } from '../Buttons';
 
 export const ReviewButton = ({ onPress }: { onPress: Function }): ReactElement => {

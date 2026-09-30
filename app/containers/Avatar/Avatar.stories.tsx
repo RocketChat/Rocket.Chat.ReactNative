@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 
-import { setCustomEmojis } from '../../actions/customEmojis';
-import { mockedStore } from '../../reducers/mockedStore';
+import { setCustomEmojis } from '~/actions/customEmojis';
+import { mockedStore } from '~/reducers/mockedStore';
 import Status from '../Status/Status';
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 import Avatar from './Avatar';
 
 mockedStore.dispatch(setCustomEmojis({ troll: { name: 'troll', extension: 'jpg' } }));

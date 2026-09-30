@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 
-import { useComposerAttachments, useMessageComposerApi } from '../../context';
-import { useActionSheet } from '../../../ActionSheet';
-import Thumbs from '../../../Thumbs';
-import I18n from '../../../../i18n';
-import { type IShareAttachment } from '../../../../definitions';
+import { useComposerAttachments, useMessageComposerApi } from '~/containers/MessageComposer/context';
+import { useActionSheet } from '~/containers/ActionSheet';
+import Thumbs from '~/containers/Thumbs';
+import I18n from '~/i18n';
+import { type IShareAttachment } from '~/definitions';
 import { AttachmentActionSheet } from './AttachmentActionSheet';
 
 const styles = StyleSheet.create({

@@ -1,12 +1,17 @@
 import { View, type ViewStyle } from 'react-native';
 
-import styles from '../../styles';
+import styles from '~/containers/message/styles';
 import RepliedThread from '../RepliedThread';
 import MessageAvatar from '../MessageAvatar';
 import MessageAccessibleIndex from '../MessageAccessibleIndex';
 import Content from '../Content';
 import Attachments from '../Attachments';
-import { useContentData, useIsInfoMessage, useMessageGrouping, useThreadPosition } from '../../stores/MessageStore';
+import {
+	useContentData,
+	useIsInfoMessage,
+	useMessageGrouping,
+	useThreadPosition
+} from '~/containers/message/stores/MessageStore';
 
 const CompactMessage = () => {
 	const isHeader = useMessageGrouping();

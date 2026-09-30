@@ -1,8 +1,8 @@
 import { type ReactElement } from 'react';
 
-import dayjs from '../../lib/dayjs';
-import I18n from '../../i18n';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import dayjs from '~/lib/dayjs';
+import I18n from '~/i18n';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import Item from './Item';
 
 const Timezone = ({ utcOffset }: { utcOffset?: number }): ReactElement | null => {

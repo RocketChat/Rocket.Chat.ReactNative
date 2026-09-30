@@ -1,0 +1,24 @@
+diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioModule.kt b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioModule.kt
+index c9fd366..5c74acf 100644
+--- a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioModule.kt
++++ b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioModule.kt
+@@ -26,6 +26,7 @@ import androidx.media3.datasource.okhttp.OkHttpDataSource
+ import androidx.media3.exoplayer.dash.DashMediaSource
+ import androidx.media3.exoplayer.hls.HlsMediaSource
+ import androidx.media3.exoplayer.smoothstreaming.SsMediaSource
++import androidx.media3.extractor.DefaultExtractorsFactory
+ import androidx.media3.exoplayer.source.MediaSource
+ import androidx.media3.exoplayer.source.ProgressiveMediaSource
+ import expo.modules.interfaces.permissions.Permissions
+@@ -553,7 +554,10 @@ class AudioModule : Module() {
+       CONTENT_TYPE_SS -> SsMediaSource.Factory(factory)
+       CONTENT_TYPE_DASH -> DashMediaSource.Factory(factory)
+       CONTENT_TYPE_HLS -> HlsMediaSource.Factory(factory)
+-      CONTENT_TYPE_OTHER -> ProgressiveMediaSource.Factory(factory)
++      CONTENT_TYPE_OTHER -> ProgressiveMediaSource.Factory(
++        factory,
++        DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
++      )
+       else -> throw IllegalStateException("Unsupported type: $type")
+     }.createMediaSource(mediaItem)
+   }

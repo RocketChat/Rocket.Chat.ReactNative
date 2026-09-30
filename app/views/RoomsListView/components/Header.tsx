@@ -2,12 +2,12 @@ import { memo } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { showActionSheetRef } from '../../../containers/ActionSheet';
-import SearchHeader from '../../../containers/SearchHeader';
-import I18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { useTheme } from '../../../theme';
-import sharedStyles from '../../Styles';
+import { showActionSheetRef } from '~/containers/ActionSheet';
+import SearchHeader from '~/containers/SearchHeader';
+import I18n from '~/i18n';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
 import ServersList from './ServersList';
 
 const styles = StyleSheet.create({

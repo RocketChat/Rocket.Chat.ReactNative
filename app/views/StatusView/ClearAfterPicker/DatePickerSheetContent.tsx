@@ -2,10 +2,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState, type ReactElement } from 'react';
 import { View } from 'react-native';
 
-import { useActionSheet } from '../../../containers/ActionSheet';
-import Button from '../../../containers/Button';
-import I18n from '../../../i18n';
-import { useTheme } from '../../../theme';
+import { useActionSheet } from '~/containers/ActionSheet';
+import Button from '~/containers/Button';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
 import styles from './styles';
 
 interface IDatePickerSheetContentProps {

@@ -1,8 +1,8 @@
 import { put, select, takeLatest } from 'redux-saga/effects';
 
-import * as types from '../../../actions/actionsTypes';
-import { getRoutingConfig } from '../../../lib/services/restApi';
-import EventEmitter from '../../../lib/methods/helpers/events';
+import * as types from '~/actions/actionsTypes';
+import { getRoutingConfig } from '~/lib/services/restApi';
+import EventEmitter from '~/lib/methods/helpers/events';
 import { inquiryFailure, inquirySetEnabled, inquirySuccess } from '../actions/inquiry';
 import { getInquiriesQueued, isOmnichannelStatusAvailable } from '../lib';
 

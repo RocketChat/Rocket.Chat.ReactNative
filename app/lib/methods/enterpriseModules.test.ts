@@ -1,6 +1,6 @@
-import { clearEnterpriseModules, setEnterpriseModules } from '../../actions/enterpriseModules';
+import { clearEnterpriseModules, setEnterpriseModules } from '~/actions/enterpriseModules';
 import { initStore } from '../store/auxStore';
-import { mockedStore } from '../../reducers/mockedStore';
+import { mockedStore } from '~/reducers/mockedStore';
 import { isVoipModuleAvailable } from './enterpriseModules';
 
 describe('isVoipModuleAvailable', () => {

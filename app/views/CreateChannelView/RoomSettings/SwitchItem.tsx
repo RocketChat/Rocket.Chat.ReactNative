@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View, type SwitchProps } from 'react-native';
 
-import I18n from '../../../i18n';
-import { useTheme } from '../../../theme';
-import sharedStyles from '../../Styles';
-import Switch from '../../../containers/Switch';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
+import Switch from '~/containers/Switch';
 
 const styles = StyleSheet.create({
 	switchContainer: {

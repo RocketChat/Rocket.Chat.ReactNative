@@ -1,6 +1,6 @@
-import dayjs from '../../dayjs';
+import dayjs from '~/lib/dayjs';
 import parseUrls from './parseUrls';
-import type { IAttachment, IMessage, IThreadResult } from '../../../definitions';
+import type { IAttachment, IMessage, IThreadResult } from '~/definitions';
 
 type TMsg = IMessage & IAttachment;
 
@@ -44,7 +44,7 @@ export default (msg: any): IMessage | IThreadResult | null => {
 			names: msg.reactions ? msg.reactions[key].names : []
 		}));
 	}
-	if (msg.translations && Object.keys(msg.translations).length) {
+	if (!Array.isArray(msg.translations) && msg.translations && Object.keys(msg.translations).length) {
 		msg.translations = Object.keys(msg.translations).map(key => ({
 			_id: `${msg._id}${key}`,
 			language: key,

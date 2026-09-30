@@ -1,4 +1,4 @@
-import { ActionTypes, ModalActions } from '../../containers/UIKit/interfaces';
+import { ActionTypes, ModalActions } from '~/containers/UIKit/interfaces';
 import { generateTriggerId, handlePayloadUserInteraction, triggerAction } from './actions';
 import EventEmitter from './helpers/events';
 import fetch from './helpers/fetch';
@@ -21,15 +21,11 @@ jest.mock('../navigation/appNavigation', () => ({
 jest.mock('../services/sdk', () => ({
 	__esModule: true,
 	default: {
-		current: {
-			currentLogin: {
-				userId: 'user-id',
-				authToken: 'auth-token'
-			},
-			client: {
-				host: 'https://chat.example.com'
-			}
-		}
+		currentLogin: {
+			userId: 'user-id',
+			authToken: 'auth-token'
+		},
+		host: 'https://chat.example.com'
 	}
 }));
 

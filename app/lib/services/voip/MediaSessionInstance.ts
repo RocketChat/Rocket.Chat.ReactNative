@@ -14,28 +14,28 @@ import { registerGlobals } from 'react-native-webrtc';
 import { getUniqueIdSync } from 'react-native-device-info';
 import { dequal } from 'dequal';
 
-import NativeVoipModule from '../../native/NativeVoip';
+import NativeVoipModule from '~/lib/native/NativeVoip';
 import { mediaSessionStore } from './MediaSessionStore';
 import { pendingHangups } from './pendingHangups';
 import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
 import { MediaCallLogger } from './MediaCallLogger';
 import { isSelfUserId } from './isSelfUserId';
-import { store } from '../../store/auxStore';
-import sdk from '../sdk';
+import { store } from '~/lib/store/auxStore';
+import sdk, { type IStreamDataListener } from '../sdk';
 import { mediaCallsStateSignals } from '../restApi';
-import Navigation, { waitForNavigationReady } from '../../navigation/appNavigation';
+import Navigation, { waitForNavigationReady } from '~/lib/navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
-import type { IceServer } from '../../../definitions/Voip';
-import type { IDDPMessage } from '../../../definitions/IDDPMessage';
-import type { ISubscription, TSubscriptionModel } from '../../../definitions';
-import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
-import { getUidDirectMessage } from '../../methods/helpers/helpers';
-import log from '../../methods/helpers/log';
+import type { IceServer } from '~/definitions/Voip';
+import type { IDDPMessage } from '~/definitions/IDDPMessage';
+import type { ISubscription, TSubscriptionModel } from '~/definitions';
+import { getDMSubscriptionByUsername } from '~/lib/database/services/Subscription';
+import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
+import log from '~/lib/methods/helpers/log';
 import { isInActiveVoipCall } from './isInActiveVoipCall';
-import { requestVoipCallPermissions } from '../../methods/voipCallPermissions';
-import I18n from '../../../i18n';
-import { showErrorAlert } from '../../methods/helpers/info';
+import { requestVoipCallPermissions } from '~/lib/methods/voipCallPermissions';
+import I18n from '~/i18n';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
 import { acceptNativeCallWithReadiness as runAcceptNativeCallGate } from './acceptNativeCall';
 
 const mediaCallLogger = new MediaCallLogger();
@@ -43,7 +43,7 @@ const mediaCallLogger = new MediaCallLogger();
 class MediaSessionInstance {
 	private iceServers: IceServer[] = [];
 	private iceGatheringTimeout: number = 5000;
-	private mediaSignalListener: { stop: () => void } | null = null;
+	private mediaSignalListener: IStreamDataListener | null = null;
 	private instance: MediaSignalingSession | null = null;
 	private mediaSessionStoreChangeUnsubscribe: (() => void) | null = null;
 	private storeTimeoutUnsubscribe: (() => void) | null = null;
@@ -111,6 +111,9 @@ class MediaSessionInstance {
 				})
 		);
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
+			if (!sdk.isInitialized) {
+				return;
+			}
 			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal)).catch(error => {
 				log(error);
 			});
@@ -134,7 +137,7 @@ class MediaSessionInstance {
 			this.instance = mediaSessionStore.getInstance(userId);
 		});
 
-		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', async (ddpMessage: IDDPMessage) => {
+		this.mediaSignalListener = await sdk.onStreamData('stream-notify-user', async (ddpMessage: IDDPMessage) => {
 			if (!this.instance) {
 				return;
 			}

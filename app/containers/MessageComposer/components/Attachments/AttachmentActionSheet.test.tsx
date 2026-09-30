@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
 import { AttachmentActionSheet } from './AttachmentActionSheet';
-import { type IShareAttachment } from '../../../../definitions';
-import { generateSnapshots } from '../../../../../.rnstorybook/generateSnapshots';
+import { type IShareAttachment } from '~/definitions';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 import * as stories from './AttachmentActionSheet.stories';
 
 jest.mock('react-native-keyboard-controller', () => {
@@ -14,16 +14,16 @@ jest.mock('react-native-safe-area-context', () => ({
 	useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 })
 }));
 
-jest.mock('../../../ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet', () => ({
 	useActionSheet: jest.fn()
 }));
 
-jest.mock('../../../../lib/hooks/useAltTextSupported', () => ({
+jest.mock('~/lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: jest.fn()
 }));
 
-const mockUseActionSheet = require('../../../ActionSheet').useActionSheet as jest.Mock;
-const mockUseAltTextSupported = require('../../../../lib/hooks/useAltTextSupported').useAltTextSupported as jest.Mock;
+const mockUseActionSheet = require('~/containers/ActionSheet').useActionSheet as jest.Mock;
+const mockUseAltTextSupported = require('~/lib/hooks/useAltTextSupported').useAltTextSupported as jest.Mock;
 
 const baseAttachment: IShareAttachment = {
 	filename: 'photo.png',

@@ -3,14 +3,14 @@ import { type DrawerNavigationProp } from '@react-navigation/drawer';
 import { Text, TouchableWithoutFeedback, View } from 'react-native';
 import { shallowEqual } from 'react-redux';
 
-import Avatar from '../../../containers/Avatar';
-import { useTheme } from '../../../theme';
-import { getUserSelector } from '../../../selectors/login';
+import Avatar from '~/containers/Avatar';
+import { useTheme } from '~/theme';
+import { getUserSelector } from '~/selectors/login';
 import styles from '../styles';
-import { type DrawerParamList } from '../../../stacks/types';
-import * as List from '../../../containers/List';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
+import { type DrawerParamList } from '~/stacks/types';
+import * as List from '~/containers/List';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 
 const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
 	const { colors } = useTheme();

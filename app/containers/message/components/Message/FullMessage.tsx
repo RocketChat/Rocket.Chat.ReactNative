@@ -1,11 +1,11 @@
 import { View } from 'react-native';
 
-import styles from '../../styles';
+import styles from '~/containers/message/styles';
 import MessageAvatar from '../MessageAvatar';
 import MessageAccessibleIndex from '../MessageAccessibleIndex';
 import RightIcons from '../RightIcons';
 import { Layout } from '../Layout';
-import { useMessageField, useMessageGrouping } from '../../stores/MessageStore';
+import { useMessageField, useMessageGrouping } from '~/containers/message/stores/MessageStore';
 
 const FullMessage = ({ isPreview }: { isPreview?: boolean }) => {
 	const isHeader = useMessageGrouping();

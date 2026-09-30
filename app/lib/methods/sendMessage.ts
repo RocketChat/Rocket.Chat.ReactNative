@@ -5,7 +5,7 @@ import database from '../database';
 import log from './helpers/log';
 import { random } from './helpers';
 import { Encryption } from '../encryption';
-import type { E2EType, IMessage, IUser, MessageType, TMessageModel } from '../../definitions';
+import type { E2EType, IMessage, IUser, MessageType, TMessageModel } from '~/definitions';
 import sdk from '../services/sdk';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
 import { messagesStatus } from '../constants/messagesStatus';

@@ -5,8 +5,8 @@
  */
 import RNCallKeep from 'react-native-callkeep';
 
-import type { VoipPayload } from '../../../definitions/Voip';
-import NativeVoipModule from '../../native/NativeVoip';
+import type { VoipPayload } from '~/definitions/Voip';
+import NativeVoipModule from '~/lib/native/NativeVoip';
 import { registerPushToken } from '../restApi';
 import {
 	getInitialMediaCallEvents,
@@ -57,9 +57,9 @@ jest.mock('react-native', () => ({
 	}
 }));
 
-jest.mock('../../methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers', () => ({
 	isIOS: true,
-	normalizeDeepLinkingServerHost: jest.requireActual('../../methods/helpers/normalizeDeepLinkingServerHost')
+	normalizeDeepLinkingServerHost: jest.requireActual('~/lib/methods/helpers/normalizeDeepLinkingServerHost')
 		.normalizeDeepLinkingServerHost
 }));
 
@@ -69,7 +69,7 @@ jest.mock('./useCallStore', () => ({
 	}
 }));
 
-jest.mock('../../native/NativeVoip', () => ({
+jest.mock('~/lib/native/NativeVoip', () => ({
 	__esModule: true,
 	default: {
 		clearInitialEvents: jest.fn(),

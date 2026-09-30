@@ -1,10 +1,10 @@
-import log from '../../../../lib/methods/helpers/log';
-import { store } from '../../../../lib/store/auxStore';
-import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate, inquiryRequest } from '../../actions/inquiry';
-import sdk from '../../../../lib/services/sdk';
-import { type IOmnichannelRoom } from '../../../../definitions';
-import { hasRole } from '../../../../lib/methods/helpers';
-import { getAgentDepartments } from '../../../../lib/services/restApi';
+import log from '~/lib/methods/helpers/log';
+import { store } from '~/lib/store/auxStore';
+import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate, inquiryRequest } from '~/ee/omnichannel/actions/inquiry';
+import sdk from '~/lib/services/sdk';
+import { type IOmnichannelRoom } from '~/definitions';
+import { hasRole } from '~/lib/methods/helpers';
+import { getAgentDepartments } from '~/lib/services/restApi';
 
 interface IArgsQueueOmnichannel extends IOmnichannelRoom {
 	type: string;

@@ -18,11 +18,6 @@ jest.mock('react-native-safe-area-context', () => ({
 	useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 })
 }));
 
-jest.mock('expo-av', () => ({
-	ResizeMode: { CONTAIN: 'contain' },
-	Video: () => null
-}));
-
 jest.mock('expo-file-system/legacy', () => ({
 	deleteAsync: jest.fn()
 }));
@@ -96,9 +91,13 @@ jest.mock('../lib/hooks/useAppSelector', () => ({
 
 jest.mock('../lib/methods/helpers', () => ({
 	formatAttachmentUrl: (url: string) => url,
+	encodeAttachmentUrl: (url: string) => url,
 	isAndroid: false,
-	fileDownload: jest.fn(),
 	showErrorAlert: jest.fn()
+}));
+
+jest.mock('../lib/methods/helpers/fileDownload', () => ({
+	fileDownload: jest.fn()
 }));
 
 describe('AttachmentView', () => {

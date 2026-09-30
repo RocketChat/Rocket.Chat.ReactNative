@@ -1,8 +1,8 @@
 import { useState, type ReactElement } from 'react';
 
 import { FormTextInput } from '../TextInput/FormTextInput';
-import { useTheme } from '../../theme';
-import I18n from '../../i18n';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
 import { type IEmojiSearchBarProps } from './interfaces';
 import styles from './styles';
 

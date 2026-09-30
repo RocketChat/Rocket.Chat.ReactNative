@@ -4,6 +4,7 @@ import updateMessages from './updateMessages';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { updateLastOpen } from './updateLastOpen';
 import { store } from '../store/auxStore';
+import { loadMessagesForRoom } from './loadMessagesForRoom';
 
 jest.mock('../services/sdk', () => ({
 	__esModule: true,
@@ -29,11 +30,13 @@ jest.mock('./updateLastOpen', () => ({
 	updateLastOpen: jest.fn()
 }));
 jest.mock('./helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('./loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn() }));
 
 const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;
 const mockedUpdateMessages = updateMessages as jest.MockedFunction<typeof updateMessages>;
 const mockedGetSubscriptionByRoomId = getSubscriptionByRoomId as jest.MockedFunction<typeof getSubscriptionByRoomId>;
 const mockedUpdateLastOpen = updateLastOpen as jest.MockedFunction<typeof updateLastOpen>;
+const mockedLoadMessagesForRoom = loadMessagesForRoom as jest.MockedFunction<typeof loadMessagesForRoom>;
 
 const RID = 'ROOM_ID';
 
@@ -41,6 +44,7 @@ describe('loadMissedMessages', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockedUpdateMessages.mockResolvedValue(0);
+		mockedLoadMessagesForRoom.mockResolvedValue(undefined as never);
 		mockedGetSubscriptionByRoomId.mockResolvedValue(null as never);
 		(store.getState as jest.Mock).mockReturnValue({ server: { version: '7.4.0' } });
 	});
@@ -54,6 +58,7 @@ describe('loadMissedMessages', () => {
 
 		await loadMissedMessages({ rid: RID, deletedNext: 1704110400000 });
 
+		expect(mockedLoadMessagesForRoom).not.toHaveBeenCalled();
 		expect(mockedSdkGet).toHaveBeenCalledTimes(1);
 		expect(mockedSdkGet).toHaveBeenCalledWith('chat.syncMessages', expect.objectContaining({ roomId: RID, type: 'DELETED' }));
 		expect(mockedUpdateMessages).toHaveBeenCalledWith(
@@ -65,12 +70,74 @@ describe('loadMissedMessages', () => {
 		);
 	});
 
-	it('fetches nothing when the subscription has no cursor', async () => {
+	it('loads the room history instead of syncing when the subscription has no cursor', async () => {
 		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'p' } as never);
 
 		await loadMissedMessages({ rid: RID });
 
+		expect(mockedLoadMessagesForRoom).toHaveBeenCalledTimes(1);
+		expect(mockedLoadMessagesForRoom).toHaveBeenCalledWith({ rid: RID, t: 'p' });
 		expect(mockedSdkGet).not.toHaveBeenCalled();
+		expect(mockedUpdateMessages).not.toHaveBeenCalled();
+	});
+
+	it('falls through to the sync path when the subscription type is not a room type', async () => {
+		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'not-a-room-type' } as never);
+		mockedSdkGet.mockResolvedValue({ result: { updated: [], deleted: [], cursor: { next: null } } } as never);
+
+		await loadMissedMessages({ rid: RID });
+
+		expect(mockedLoadMessagesForRoom).not.toHaveBeenCalled();
+		expect(mockedUpdateMessages).toHaveBeenCalledWith(expect.objectContaining({ rid: RID, update: [], remove: [] }));
+	});
+
+	it('does nothing when there is no subscription', async () => {
+		mockedGetSubscriptionByRoomId.mockResolvedValue(null as never);
+
+		await expect(loadMissedMessages({ rid: RID })).resolves.toBeUndefined();
+
+		expect(mockedLoadMessagesForRoom).not.toHaveBeenCalled();
+		expect(mockedSdkGet).not.toHaveBeenCalled();
+		expect(mockedUpdateMessages).not.toHaveBeenCalled();
+		expect(mockedUpdateLastOpen).not.toHaveBeenCalled();
+	});
+
+	it('syncs from the cursor when the subscription has one', async () => {
+		const CURSOR = new Date(Date.UTC(2024, 0, 1, 11, 0, 0));
+		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: CURSOR, t: 'c' } as never);
+		mockedSdkGet.mockResolvedValue({ result: { updated: [], deleted: [], cursor: { next: null } } } as never);
+
+		await loadMissedMessages({ rid: RID });
+
+		expect(mockedLoadMessagesForRoom).not.toHaveBeenCalled();
+		expect(mockedSdkGet).toHaveBeenCalledTimes(2);
+		expect(mockedSdkGet).toHaveBeenCalledWith('chat.syncMessages', {
+			roomId: RID,
+			next: CURSOR.getTime(),
+			count: 50,
+			type: 'UPDATED'
+		});
+		expect(mockedSdkGet).toHaveBeenCalledWith('chat.syncMessages', {
+			roomId: RID,
+			next: CURSOR.getTime(),
+			count: 50,
+			type: 'DELETED'
+		});
+	});
+
+	it('never delegates on an updated continuation page, even without a cursor', async () => {
+		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'p' } as never);
+		const UPDATED_NEXT = Date.UTC(2024, 0, 1, 11, 30, 0);
+		mockedSdkGet.mockResolvedValue({ result: { updated: [], deleted: [], cursor: { next: null } } } as never);
+
+		await loadMissedMessages({ rid: RID, updatedNext: UPDATED_NEXT });
+
+		expect(mockedLoadMessagesForRoom).not.toHaveBeenCalled();
+		expect(mockedSdkGet).toHaveBeenCalledTimes(1);
+		expect(mockedSdkGet).toHaveBeenCalledWith(
+			'chat.syncMessages',
+			expect.objectContaining({ next: UPDATED_NEXT, type: 'UPDATED' })
+		);
 	});
 
 	describe('last open', () => {

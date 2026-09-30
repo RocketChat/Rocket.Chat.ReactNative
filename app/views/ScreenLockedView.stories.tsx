@@ -17,19 +17,19 @@ export default {
 
 interface IStoryWrapperProps {
 	hasBiometry?: boolean;
-	force?: boolean;
+	canClose?: boolean;
 }
 
-const StoryWrapper = ({ hasBiometry = false, force = false }: IStoryWrapperProps) => {
+const StoryWrapper = ({ hasBiometry = false, canClose = false }: IStoryWrapperProps) => {
 	useEffect(() => {
 		// Emit the event to show the ScreenLockedView
 		EventEmitter.emit(LOCAL_AUTHENTICATE_EMITTER, {
 			submit: () => {},
 			cancel: () => {},
 			hasBiometry,
-			force
+			canClose
 		});
-	}, [hasBiometry, force]);
+	}, [hasBiometry, canClose]);
 
 	return (
 		<View style={styles.wrapper}>
@@ -42,6 +42,6 @@ export const Default = () => <StoryWrapper />;
 
 export const WithBiometry = () => <StoryWrapper hasBiometry />;
 
-export const WithCloseButton = () => <StoryWrapper force />;
+export const WithCloseButton = () => <StoryWrapper canClose />;
 
-export const WithBiometryAndClose = () => <StoryWrapper hasBiometry force />;
+export const WithBiometryAndClose = () => <StoryWrapper hasBiometry canClose />;

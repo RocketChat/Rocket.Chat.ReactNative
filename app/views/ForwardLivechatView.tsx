@@ -65,7 +65,7 @@ const ForwardLivechatView = (): ReactElement => {
 				term
 			});
 			if (result.success) {
-				const parsedUsers = result.items.map(user => ({ label: user.username, value: user._id }));
+				const parsedUsers = result.items.flatMap(user => (user.username ? [{ label: user.username, value: user._id }] : []));
 				if (!term) {
 					setUsers(parsedUsers);
 				}

@@ -2,11 +2,11 @@ import { useLayoutEffect } from 'react';
 import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import LoginServices from '../../containers/LoginServices';
-import { type OutsideParamList } from '../../stacks/types';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import LoginServices from '~/containers/LoginServices';
+import { type OutsideParamList } from '~/stacks/types';
 import UserForm from './UserForm';
 
 type LoginViewProps = StaticScreenProps<{ title: string; username?: string }>;

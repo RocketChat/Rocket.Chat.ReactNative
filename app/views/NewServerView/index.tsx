@@ -6,24 +6,24 @@ import { useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { inviteLinksClear } from '../../actions/inviteLinks';
-import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actions/server';
-import Button from '../../containers/Button';
-import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import { type TServerHistoryModel } from '../../definitions';
-import I18n from '../../i18n';
-import { useTheme } from '../../theme';
-import { isAndroid, isTablet } from '../../lib/methods/helpers';
-import EventEmitter from '../../lib/methods/helpers/events';
+import { inviteLinksClear } from '~/actions/inviteLinks';
+import { selectServerRequest, serverFinishAdd, serverRequest } from '~/actions/server';
+import Button from '~/containers/Button';
+import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { type TServerHistoryModel } from '~/definitions';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
+import { isAndroid, isTablet } from '~/lib/methods/helpers';
+import EventEmitter from '~/lib/methods/helpers/events';
 import ServerInput from './components/ServerInput';
-import { getServerById } from '../../lib/database/services/Server';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { getServerById } from '~/lib/database/services/Server';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import useServersHistory from './hooks/useServersHistory';
 import useCertificate from './hooks/useCertificate';
 import CertificatePicker from './components/CertificatePicker';
 import useConnectServer from './hooks/useConnectServer';
-import { type OutsideParamList } from '../../stacks/types';
+import { type OutsideParamList } from '~/stacks/types';
 import completeUrl from './utils/completeUrl';
 import styles from './styles';
 
@@ -154,7 +154,7 @@ const NewServerView = () => {
 						...styles.onboardingImage,
 						marginTop
 					}}
-					source={require('../../static/images/logo_with_name.png')}
+					source={require('~/static/images/logo_with_name.png')}
 					contentFit='contain'
 				/>
 				<Text

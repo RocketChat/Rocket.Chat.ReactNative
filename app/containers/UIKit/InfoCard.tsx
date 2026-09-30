@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import { type IIcon, type IIconButton, type IInfoCard, type IInfoCardRow } from './interfaces';
 
 const styles = StyleSheet.create({

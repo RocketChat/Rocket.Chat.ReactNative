@@ -2,12 +2,12 @@ import { View, StyleSheet } from 'react-native';
 import type { ComponentType, ReactNode } from 'react';
 
 import Dialpad from './Dialpad';
-import { useCallStore } from '../../../../lib/services/voip/useCallStore';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
 import {
 	ResponsiveLayoutContext,
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED
-} from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+} from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {

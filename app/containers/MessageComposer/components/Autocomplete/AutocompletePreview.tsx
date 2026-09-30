@@ -1,8 +1,8 @@
 import { RectButton } from 'react-native-gesture-handler';
 import { Image } from 'expo-image';
 
-import { type IAutocompleteItemProps } from '../../interfaces';
-import { CustomIcon } from '../../../CustomIcon';
+import { type IAutocompleteItemProps } from '~/containers/MessageComposer/interfaces';
+import { CustomIcon } from '~/containers/CustomIcon';
 import { AutocompleteItemLoading } from './AutocompleteItemLoading';
 import { useStyle } from './styles';
 

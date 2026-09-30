@@ -15,7 +15,7 @@ import AuthenticationWebView from '../views/AuthenticationWebView';
 
 const Outside = createNativeStackNavigator({
 	screens: {
-		NewServerView,
+		NewServerView: createNativeStackScreen({ screen: NewServerView, options: defaultHeader }),
 		WorkspaceView: createNativeStackScreen({ screen: WorkspaceView, options: defaultHeader }),
 		LoginView: createNativeStackScreen({ screen: LoginView, options: defaultHeader }),
 		ForgotPasswordView: createNativeStackScreen({ screen: ForgotPasswordView, options: defaultHeader }),

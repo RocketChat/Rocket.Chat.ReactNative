@@ -1,7 +1,7 @@
 import { PermissionsAndroid, type Permission } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
-import i18n from '../../i18n';
+import i18n from '~/i18n';
 import navigation from '../navigation/appNavigation';
 import { videoConferenceJoin } from '../services/restApi';
 import { isAndroid, showErrorAlert } from './helpers';

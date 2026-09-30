@@ -1,4 +1,4 @@
-import type { ICustomEmojiDescriptor } from '../../ICustomEmojiDescriptor';
+import type { ICustomEmojiDescriptor } from '~/definitions/ICustomEmojiDescriptor';
 import { type PaginatedRequest } from '../helpers/PaginatedRequest';
 import { type PaginatedResult } from '../helpers/PaginatedResult';
 

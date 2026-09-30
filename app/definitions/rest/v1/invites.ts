@@ -1,5 +1,5 @@
-import type { IInvite } from '../../IInvite';
-import type { IServerRoom } from '../../IRoom';
+import type { IInvite } from '~/definitions/IInvite';
+import type { IServerRoom } from '~/definitions/IRoom';
 
 export type InvitesEndpoints = {
 	listInvites: {

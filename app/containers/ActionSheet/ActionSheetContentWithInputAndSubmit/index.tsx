@@ -1,12 +1,12 @@
 import { useState, useRef, createRef, type ReactElement } from 'react';
 import { StyleSheet, Text, type TextInputProps, View } from 'react-native';
 
-import { CustomIcon, type TIconsName } from '../../CustomIcon';
-import i18n from '../../../i18n';
-import { useTheme } from '../../../theme';
-import sharedStyles from '../../../views/Styles';
-import Button from '../../Button';
-import { FormTextInput } from '../../TextInput/FormTextInput';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import i18n from '~/i18n';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
+import Button from '~/containers/Button';
+import { FormTextInput } from '~/containers/TextInput/FormTextInput';
 import { useActionSheet } from '../Provider';
 
 const styles = StyleSheet.create({

@@ -1,19 +1,19 @@
 import { useContext, useState, type ReactElement } from 'react';
 import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
 
-import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
+import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
 import { MessageInnerContext } from '../context';
-import { useTheme } from '../../../theme';
-import I18n from '../../../i18n';
-import { CustomIcon } from '../../CustomIcon';
-import { type IEmoji } from '../../../definitions';
-import { useFrequentlyUsedEmoji } from '../../../lib/hooks/useFrequentlyUsedEmoji';
-import { addFrequentlyUsed, searchEmojis } from '../../../lib/methods/emojis';
-import { useDebounce } from '../../../lib/methods/helpers/debounce';
-import sharedStyles from '../../../views/Styles';
-import { PressableEmoji } from '../../EmojiPicker/PressableEmoji';
-import { EmojiSearch } from '../../EmojiPicker/EmojiSearch';
-import { EMOJI_BUTTON_SIZE } from '../../EmojiPicker/styles';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
+import { CustomIcon } from '~/containers/CustomIcon';
+import { type IEmoji } from '~/definitions';
+import { useFrequentlyUsedEmoji } from '~/lib/hooks/useFrequentlyUsedEmoji';
+import { addFrequentlyUsed, searchEmojis } from '~/lib/methods/emojis';
+import { useDebounce } from '~/lib/methods/helpers/debounce';
+import sharedStyles from '~/views/Styles';
+import { PressableEmoji } from '~/containers/EmojiPicker/PressableEmoji';
+import { EmojiSearch } from '~/containers/EmojiPicker/EmojiSearch';
+import { EMOJI_BUTTON_SIZE } from '~/containers/EmojiPicker/styles';
 import { useEmojiKeyboard } from '../hooks/useEmojiKeyboard';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };

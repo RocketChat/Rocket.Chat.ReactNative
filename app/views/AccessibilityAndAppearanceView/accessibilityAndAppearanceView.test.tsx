@@ -1,17 +1,17 @@
 import { render, fireEvent } from '@testing-library/react-native';
 
 import AccessibilityAndAppearanceView from './index';
-import { useUserPreferences } from '../../lib/methods/userPreferences';
+import { useUserPreferences } from '~/lib/methods/userPreferences';
 
 jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => ({ setOptions: jest.fn(), navigate: jest.fn() })
 }));
 
-jest.mock('../../lib/methods/userPreferences', () => ({
+jest.mock('~/lib/methods/userPreferences', () => ({
 	useUserPreferences: jest.fn()
 }));
 
-jest.mock('../../lib/hooks/useAppSelector', () => ({
+jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: () => false
 }));
 
