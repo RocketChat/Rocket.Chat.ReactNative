@@ -1,5 +1,5 @@
 import { type ReactElement } from 'react';
-import { Text, type ViewStyle } from 'react-native';
+import { Text } from 'react-native';
 
 import Avatar from '../Avatar';
 import RoomTypeIcon from '../RoomTypeIcon';
@@ -8,23 +8,9 @@ import { AVATAR_SIZE } from '../NativeListRow/constants';
 import styles from './styles';
 import { useTheme } from '~/theme';
 import usePreviewFormatText from '~/lib/hooks/usePreviewFormatText';
+import { type IDirectoryItem } from './index';
 
 export { ROW_HEIGHT } from '../NativeListRow/constants';
-
-interface IDirectoryItem {
-	title: string;
-	description?: string;
-	avatar?: string;
-	type: string;
-	onPress(): void;
-	testID: string;
-	style?: ViewStyle;
-	rightLabel?: string;
-	rid?: string;
-	teamMain?: boolean;
-	isFirst?: boolean;
-	isLast?: boolean;
-}
 
 const DirectoryItem = ({
 	title,

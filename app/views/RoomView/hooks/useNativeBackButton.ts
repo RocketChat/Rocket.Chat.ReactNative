@@ -7,7 +7,7 @@ import { useTheme } from '~/theme';
 import { type IRoomViewProps } from '../definitions';
 import { useUnreadsCount } from './useUnreadsCount';
 
-export const formatUnreadsCount = (unreadsCount: number | null) => {
+const formatUnreadsCount = (unreadsCount: number | null) => {
 	if (!unreadsCount) {
 		return '';
 	}

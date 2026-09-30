@@ -16,6 +16,7 @@ import { toggleFollowThread } from '~/lib/methods/toggleFollowThread';
 import { returnLivechat } from '~/lib/services/restApi';
 import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';
+import { getUnreadStyle } from '~/containers/UnreadBadge/getUnreadStyle';
 import { type RoomStore } from '../definitions';
 import { fromSubscription } from '../stores/RoomStoreContext';
 import { closeLivechat } from '../services/closeLivechat';
@@ -39,16 +40,6 @@ interface IRoomHeaderAction {
 	tintColor?: string;
 	onPress: () => void;
 }
-
-const getTunreadBadgeColor = (
-	tunreadUser: string[],
-	tunreadGroup: string[],
-	colors: { badgeBackgroundLevel4: string; badgeBackgroundLevel3: string; fontInfo: string }
-) => {
-	if (tunreadUser.length) return colors.badgeBackgroundLevel4;
-	if (tunreadGroup.length) return colors.badgeBackgroundLevel3;
-	return colors.fontInfo;
-};
 
 const useOmnichannelRightItems = (rid: string, roomStore: RoomStore, enabled: boolean): NativeStackHeaderItem[] => {
 	const navigation = useNavigation<TRoomStackNavigation>();
@@ -152,7 +143,7 @@ const useThreadRightItems = (tmid: string | undefined, enabled: boolean): Native
 };
 
 const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean): NativeStackHeaderItem[] => {
-	const { colors } = useTheme();
+	const { theme, colors } = useTheme();
 	const {
 		threadsEnabled,
 		issuesWithNotifications,
@@ -182,7 +173,10 @@ const useRoomRightItems = (rid: string, roomStore: RoomStore, enabled: boolean):
 
 	const tunreadBadge =
 		threadsEnabled && tunread.length
-			? { value: tunread.length, style: { backgroundColor: getTunreadBadgeColor(tunreadUser ?? [], tunreadGroup ?? [], colors) } }
+			? {
+					value: tunread.length,
+					style: { backgroundColor: getUnreadStyle({ tunread, tunreadUser, tunreadGroup, theme }).backgroundColor as string }
+				}
 			: undefined;
 
 	const actions: Record<TRoomHeaderActionKey, IRoomHeaderAction> = {

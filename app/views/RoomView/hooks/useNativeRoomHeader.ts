@@ -2,7 +2,8 @@ import { useEffect, useLayoutEffect } from 'react';
 import { shallowEqual } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
-import { hasIcon, type TIconsName } from '~/containers/CustomIcon';
+import { type TIconsName } from '~/containers/CustomIcon';
+import { getStatusIconName } from '~/containers/Status/getStatusIconName';
 import {
 	getOmnichannelIconName,
 	getOmnichannelSidebarIconUri,
@@ -26,8 +27,7 @@ const SUBTITLE_FONT_SIZE = 12;
 
 const getRoomIcon = (fields: IHeaderFields, isDirectMessage: boolean, status: TUserStatus): TIconsName => {
 	if (isDirectMessage) {
-		const statusIcon = `status-${status}`;
-		return hasIcon(statusIcon) ? (statusIcon as TIconsName) : 'status-offline';
+		return getStatusIconName(status);
 	}
 	if (fields.type === 'l' && !fields.prid) {
 		return getOmnichannelIconName(fields.sourceType);

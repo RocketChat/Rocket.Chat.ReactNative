@@ -15,7 +15,7 @@ interface IDirectoryItemLabel {
 	color: string;
 }
 
-interface IDirectoryItem {
+export interface IDirectoryItem {
 	title: string;
 	description?: string;
 	avatar?: string;

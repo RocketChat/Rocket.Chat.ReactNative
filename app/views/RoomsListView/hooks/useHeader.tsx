@@ -20,9 +20,9 @@ import { useTheme } from '~/theme';
 import RoomsListHeaderView from '../components/Header';
 import ServersList from '../components/ServersList';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
+import { useRoomsListSubtitle } from './useRoomsListSubtitle';
 
 interface IHeaderRightAction {
-	key: string;
 	present: boolean;
 	icon: TIconsName;
 	accessibilityLabel: string;
@@ -50,23 +50,10 @@ export const useHeader = () => {
 	const navigation = useNavigation<any>();
 	const issuesWithNotifications = useAppSelector(state => state.troubleshootingNotification.issuesWithNotifications);
 	const notificationPresenceCap = useAppSelector(state => state.app.notificationPresenceCap);
-	const connecting = useAppSelector(state => state.meteor.connecting || state.server.loading || state.login.isFetching);
-	const connected = useAppSelector(state => state.meteor.connected);
-	const isFetchingRooms = useAppSelector(state => state.rooms.isFetching);
 	const serverName = useAppSelector(state => state.settings.Site_Name as string);
-	const server = useAppSelector(state => state.server.server);
 	const { colors } = useTheme();
 
-	const nativeHeaderSubtitle =
-		supportedVersionsStatus === 'expired'
-			? i18n.t('Cannot_connect')
-			: connecting
-				? i18n.t('Connecting')
-				: isFetchingRooms
-					? i18n.t('Updating')
-					: !connected
-						? i18n.t('Waiting_for_network')
-						: server?.replace(/(^\w+:|^)\/\//, '');
+	const nativeHeaderSubtitle = useRoomsListSubtitle();
 	const [
 		createPublicChannelPermission,
 		createPrivateChannelPermission,
@@ -156,7 +143,6 @@ export const useHeader = () => {
 			const actions = (
 				[
 					{
-						key: 'create',
 						present: canCreateRoom,
 						icon: 'create',
 						accessibilityLabel: i18n.t('Create_new_channel_team_dm_discussion'),
@@ -164,7 +150,6 @@ export const useHeader = () => {
 						onPress: goToNewMessage
 					},
 					{
-						key: 'push-troubleshoot',
 						present: issuesWithNotifications,
 						icon: 'notification-disabled',
 						accessibilityLabel: i18n.t('Troubleshooting'),
@@ -172,7 +157,6 @@ export const useHeader = () => {
 						onPress: navigateToPushTroubleshootView
 					},
 					{
-						key: 'directory',
 						present: true,
 						icon: 'directory',
 						accessibilityLabel: i18n.t('Directory'),

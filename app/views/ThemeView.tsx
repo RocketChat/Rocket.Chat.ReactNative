@@ -100,42 +100,33 @@ const ThemeView = (): ReactElement => {
 		}
 	};
 
+	const renderThemeItems = (themes: ITheme[]) => (
+		<>
+			{themes.map(theme => (
+				<Fragment key={theme.label}>
+					<List.Radio
+						isSelected={!!isSelected(theme)}
+						title={theme.label}
+						value={theme.value}
+						onPress={() => onClick(theme)}
+						testID={`theme-view-${theme.value}`}
+					/>
+					<List.Separator />
+				</Fragment>
+			))}
+		</>
+	);
+
 	return (
 		<SafeAreaView testID='theme-view'>
 			<List.Container>
 				<List.Section title='Theme'>
 					<List.Separator />
-					<>
-						{themeGroup.map(theme => (
-							<Fragment key={theme.label}>
-								<List.Radio
-									isSelected={!!isSelected(theme)}
-									title={theme.label}
-									value={theme.value}
-									onPress={() => onClick(theme)}
-									testID={`theme-view-${theme.value}`}
-								/>
-								<List.Separator />
-							</Fragment>
-						))}
-					</>
+					{renderThemeItems(themeGroup)}
 				</List.Section>
 				<List.Section title='Dark_level'>
 					<List.Separator />
-					<>
-						{darkGroup.map(theme => (
-							<Fragment key={theme.label}>
-								<List.Radio
-									isSelected={!!isSelected(theme)}
-									title={theme.label}
-									value={theme.value}
-									onPress={() => onClick(theme)}
-									testID={`theme-view-${theme.value}`}
-								/>
-								<List.Separator />
-							</Fragment>
-						))}
-					</>
+					{renderThemeItems(darkGroup)}
 				</List.Section>
 			</List.Container>
 		</SafeAreaView>

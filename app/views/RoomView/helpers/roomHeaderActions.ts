@@ -1,6 +1,6 @@
-export const ROOM_HEADER_ACTION_PRIORITY = ['threads', 'call', 'encryption', 'notifications'] as const;
+const ROOM_HEADER_ACTION_PRIORITY = ['threads', 'call', 'encryption', 'notifications'] as const;
 export type TRoomHeaderActionKey = (typeof ROOM_HEADER_ACTION_PRIORITY)[number];
-export const MAX_VISIBLE_ROOM_HEADER_ACTIONS = 2;
+const MAX_VISIBLE_ROOM_HEADER_ACTIONS = 2;
 
 export const splitRoomHeaderActions = (
 	present: Partial<Record<TRoomHeaderActionKey, boolean>>

@@ -46,10 +46,7 @@ const isSection = (element: ReactElement) => element.type === ListSection || isN
 const isNativeRow = (element: ReactElement) =>
 	element.type === ListItem || element.type === ListRadio || isNativeListRow(element.type);
 const hasLeftIcon = (element: ReactElement) => Boolean((element.props as { left?: unknown }).left);
-const rowSelectionTag = (element: ReactElement) => {
-	const { selectionTag, testID } = element.props as { selectionTag?: string; testID?: string };
-	return selectionTag ?? testID;
-};
+const rowSelectionTag = (element: ReactElement) => (element.props as { testID?: string }).testID;
 
 const selectedTags = ({ selectedTag }: IListSelection) => (selectedTag ? [selectedTag] : []);
 

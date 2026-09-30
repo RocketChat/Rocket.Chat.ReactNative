@@ -11,7 +11,7 @@ import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
 import { isSelfUserId } from '~/lib/services/voip/isSelfUserId';
 import { useStartMediaCall } from './useStartMediaCall';
 
-interface IItem {
+export interface IItem {
 	userId: string;
 	name: string;
 	username: string;

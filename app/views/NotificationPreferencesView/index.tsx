@@ -54,12 +54,17 @@ const RenderListPicker = ({
 
 	const [option, setOption] = useState(pref);
 
+	const selectOption = (selected: NonNullable<typeof option>) => {
+		const previous = option;
+		onChangeValue(preference, { [preference]: selected.value.toString() }, () => setOption(previous));
+		setOption(selected);
+	};
+
 	const options: TActionSheetOptionsItem[] = OPTIONS[preference as TOptions].map(i => ({
 		title: I18n.t(i.label, { defaultValue: i.label, second: i.second }),
 		onPress: () => {
 			hideActionSheet();
-			onChangeValue(preference, { [preference]: i.value.toString() }, () => setOption(option));
-			setOption(i);
+			selectOption(i);
 		},
 		right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
 	}));
@@ -77,9 +82,10 @@ const RenderListPicker = ({
 				}))}
 				selection={option?.value.toString() ?? ''}
 				onSelectionChange={selected => {
-					const previous = option;
-					onChangeValue(preference, { [preference]: selected }, () => setOption(previous));
-					setOption(OPTIONS[preference as TOptions].find(i => i.value.toString() === selected));
+					const selectedOption = OPTIONS[preference as TOptions].find(i => i.value.toString() === selected);
+					if (selectedOption) {
+						selectOption(selectedOption);
+					}
 				}}
 			/>
 		);

@@ -27,7 +27,9 @@ const HEADER_ICONS: TIconsName[] = [
 
 const headerIconSources = new Map<TIconsName, ImageURISource & { alignmentInset: number }>();
 
-export const preloadHeaderIcons = async () => {
+let preloadPromise: Promise<void> | undefined;
+
+const loadHeaderIcons = async () => {
 	await Promise.all(
 		HEADER_ICONS.map(async name => {
 			const source = await IconSet.getImageSource(name, HEADER_ICON_SIZE, 'black');
@@ -36,6 +38,14 @@ export const preloadHeaderIcons = async () => {
 			}
 		})
 	);
+};
+
+export const preloadHeaderIcons = () => {
+	preloadPromise ??= loadHeaderIcons().catch(error => {
+		preloadPromise = undefined;
+		throw error;
+	});
+	return preloadPromise;
 };
 
 export const headerIcon = (name: TIconsName) => {

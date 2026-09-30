@@ -212,6 +212,19 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		await handleGetListCannedResponse({ text: searchText, department: scope, depId: departmentId, debounced: false });
 	};
 
+	const showFilters = () => {
+		showActionSheetRef({
+			children: (
+				<DepartmentFilter
+					departments={departments}
+					currentDepartment={currentDepartment}
+					onDepartmentSelected={onDepartmentSelect}
+				/>
+			),
+			enableContentPanningGesture: false
+		});
+	};
+
 	const getHeader = (): NativeStackNavigationOptions => {
 		if (hasNativeHeaderBar) {
 			return {
@@ -273,19 +286,6 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	useEffect(() => {
 		setHeader();
 	}, [isSearching, departments, currentDepartment]);
-
-	const showFilters = () => {
-		showActionSheetRef({
-			children: (
-				<DepartmentFilter
-					departments={departments}
-					currentDepartment={currentDepartment}
-					onDepartmentSelected={onDepartmentSelect}
-				/>
-			),
-			enableContentPanningGesture: false
-		});
-	};
 
 	const renderContent = () => {
 		if (!cannedResponsesScopeName.length && !loading) {
