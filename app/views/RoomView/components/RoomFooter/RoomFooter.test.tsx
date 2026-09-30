@@ -72,8 +72,7 @@ const renderFooter = (roomStore: RoomStore, reduxStore = makeReduxStore(), loadi
 	render(
 		<Provider store={reduxStore}>
 			<RoomStoreContext.Provider value={roomStore}>
-				<RoomScreenContext.Provider
-					value={{ loading, failed: false, retry: jest.fn(), lastSeen: null, clearLastSeen: jest.fn() }}>
+				<RoomScreenContext.Provider value={{ loading, lastSeen: null, clearLastSeen: jest.fn() }}>
 					<RoomFooter messageComposerRef={{ current: null }} joinCodeRef={{ current: null }} ready={ready} />
 				</RoomScreenContext.Provider>
 			</RoomStoreContext.Provider>
