@@ -46,7 +46,7 @@ export const useAppsStore = create<TAppsState & TAppsActions>(set => ({
 		try {
 			const { apps } = await getAppsLanguages();
 			const translations = apps.reduce<TAppTranslations>((acc, { id, languages }) => {
-				acc[id] = Object.fromEntries(Object.entries(languages).map(([language, keys]) => [normalizeLanguage(language), keys]));
+				acc[id] = Object.fromEntries(Object.entries(languages ?? {}).map(([language, keys]) => [normalizeLanguage(language), keys]));
 				return acc;
 			}, {});
 			if (current === translationsRequest) set({ translations });

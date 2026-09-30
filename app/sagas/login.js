@@ -208,7 +208,7 @@ const fetchRolesFork = function* fetchRolesFork() {
 
 const fetchAppsFork = function* fetchAppsFork() {
 	try {
-		sdk.subscribe('stream-apps', 'apps');
+		sdk.subscribe('stream-apps', 'apps').catch(log);
 		const { fetchActionButtons, fetchTranslations } = useAppsStore.getState();
 		yield all([call(fetchActionButtons), call(fetchTranslations)]);
 	} catch (e) {
