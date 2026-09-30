@@ -24,6 +24,7 @@ tags:
       id: 'room-view'
     timeout: 60000
 - repeat:
+    times: 50
     while:
       notVisible:
         text: '.*SYSTEM MESSAGES.*'
@@ -32,4 +33,6 @@ tags:
           start: 50%, 20%
           end: 50%, 95%
           duration: 40
+- assertVisible:
+    text: '.*SYSTEM MESSAGES.*'
 - stopRecording

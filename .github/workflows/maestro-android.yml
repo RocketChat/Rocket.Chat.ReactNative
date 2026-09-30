@@ -204,5 +204,4 @@ jobs:
             ~/.maestro/tests/**/*
             maestro-report.xml
             maestro-rerun-round-*.xml
-            *.mp4
           retention-days: 7
