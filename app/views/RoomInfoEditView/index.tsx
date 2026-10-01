@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import { AccessibilityInfo, Alert, Keyboard, ScrollView, Text, View } from 'react-native';
@@ -57,7 +57,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		serverVersion: state.server.version as string,
 		encryptionEnabled: state.encryption.enabled
 	}));
-	const [randomValue, setRandomValue] = useState<string>('');
+	const randomValueRef = useRef('');
 	const {
 		control,
 		clearErrors,
@@ -91,7 +91,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		const sysMes = room.sysMes as string[];
 		const newRandomValue = random(15);
 
-		setRandomValue(newRandomValue);
+		randomValueRef.current = newRandomValue;
 		setValue('archived', room.archived);
 		setValue('name', getRoomTitle(room));
 		setValue('description', description || '');
@@ -184,7 +184,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		}
 
 		// Join Code
-		if (room.joinCodeRequired && randomValue !== joinCode) {
+		if (room.joinCodeRequired && randomValueRef.current !== joinCode) {
 			params.joinCode = joinCode;
 		}
 

@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactElement } from 'react';
+import { useEffect, useRef, useState, type ReactElement } from 'react';
 import { StyleSheet, View, PixelRatio, TouchableWithoutFeedback } from 'react-native';
 import Animated, {
 	cancelAnimation,
@@ -44,7 +44,7 @@ export const sendLoadingEvent = ({ visible, onCancel }: ILoadingEvent): void =>
 
 const Loading = (): ReactElement | null => {
 	const [visible, setVisible] = useState(false);
-	const [onCancel, setOnCancel] = useState<null | Function>(null);
+	const onCancelRef = useRef<null | Function>(null);
 	const opacity = useSharedValue(0);
 	const scale = useSharedValue(1);
 	const { colors } = useTheme();
@@ -53,7 +53,7 @@ const Loading = (): ReactElement | null => {
 		cancelAnimation(scale);
 		cancelAnimation(opacity);
 		setVisible(false);
-		setOnCancel(null);
+		onCancelRef.current = null;
 	};
 
 	const onEventReceived = ({ visible: _visible, onCancel: _onCancel = null }: ILoadingEvent) => {
@@ -74,7 +74,7 @@ const Loading = (): ReactElement | null => {
 
 			// allows to override the onCancel function
 			if (_onCancel) {
-				setOnCancel(() => () => _onCancel());
+				onCancelRef.current = _onCancel;
 			}
 		} else {
 			setVisible(false);
@@ -89,10 +89,10 @@ const Loading = (): ReactElement | null => {
 	}, [visible]);
 
 	const onCancelHandler = () => {
-		if (!onCancel) {
+		if (!onCancelRef.current) {
 			return;
 		}
-		onCancel();
+		onCancelRef.current();
 		setVisible(false);
 		reset();
 	};

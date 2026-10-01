@@ -1,5 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
-import { useEffect, useState, type ReactElement } from 'react';
+import { useEffect, useRef, useState, type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -28,10 +28,10 @@ const ForwardLivechatView = (): ReactElement => {
 	const {
 		params: { rid }
 	} = useAppRoute<TNavigation, 'ForwardLivechatView'>();
-	const [departments, setDepartments] = useState<IOptionsField[]>([]);
+	const departmentsRef = useRef<IOptionsField[]>([]);
 	const [departmentId, setDepartment] = useState('');
-	const [departmentTotal, setDepartmentTotal] = useState(0);
-	const [users, setUsers] = useState<IOptionsField[]>([]);
+	const departmentTotalRef = useRef(0);
+	const usersRef = useRef<IOptionsField[]>([]);
 	const [userId, setUser] = useState();
 	const [room, setRoom] = useState({} as IServerRoom);
 	const dispatch = useDispatch();
@@ -46,8 +46,8 @@ const ForwardLivechatView = (): ReactElement => {
 					value: department._id
 				}));
 				if (!text && !offset) {
-					setDepartments(parsedDepartments);
-					setDepartmentTotal(result?.total);
+					departmentsRef.current = parsedDepartments;
+					departmentTotalRef.current = result?.total;
 				}
 				return { data: parsedDepartments, total: result?.total, offset: result?.offset };
 			}
@@ -67,7 +67,7 @@ const ForwardLivechatView = (): ReactElement => {
 			if (result.success) {
 				const parsedUsers = result.items.flatMap(user => (user.username ? [{ label: user.username, value: user._id }] : []));
 				if (!term) {
-					setUsers(parsedUsers);
+					usersRef.current = parsedUsers;
 				}
 				return { data: parsedUsers };
 			}
@@ -127,18 +127,18 @@ const ForwardLivechatView = (): ReactElement => {
 		navigate('PickerView', {
 			title: I18n.t('Forward_to_department'),
 			value: room?.departmentId,
-			data: departments,
+			data: departmentsRef.current,
 			onChangeValue: setDepartment,
 			onSearch: handleGetDepartments,
 			onEndReached: handleGetDepartments,
-			total: departmentTotal
+			total: departmentTotalRef.current
 		});
 	};
 
 	const onPressUser = () => {
 		navigate('PickerView', {
 			title: I18n.t('Forward_to_user'),
-			data: users,
+			data: usersRef.current,
 			onChangeValue: setUser,
 			onSearch: getUsers
 		});

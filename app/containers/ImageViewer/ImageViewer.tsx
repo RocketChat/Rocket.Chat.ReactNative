@@ -45,16 +45,16 @@ const styles = StyleSheet.create({
 
 export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...props }: ImageViewerProps): ReactElement => {
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
-	const [isPlaying, setIsPlaying] = useState<boolean>(!!autoplayGifs);
+	const isPlayingRef = useRef(!!autoplayGifs);
 	const expoImageRef = useRef<Image>(null);
 
 	const handleGifPlayback = async () => {
-		if (isPlaying) {
-			setIsPlaying(false);
+		if (isPlayingRef.current) {
+			isPlayingRef.current = false;
 			await expoImageRef.current?.stopAnimating();
 			return;
 		}
-		setIsPlaying(true);
+		isPlayingRef.current = true;
 		await expoImageRef.current?.startAnimating();
 	};
 	const [centerX, setCenterX] = useState(0);
