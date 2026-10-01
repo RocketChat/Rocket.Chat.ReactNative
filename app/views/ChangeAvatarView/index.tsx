@@ -90,7 +90,8 @@ const ChangeAvatarView = () => {
 		shallowEqual
 	);
 	const includeBase64ForAvatar = compareServerVersion(serverVersion, 'lowerThan', '8.0.0');
-	const isDirty = useRef<boolean>(false);
+	const [isDirty, setIsDirty] = useState(false);
+	const hasSaved = useRef(false);
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'ChangeAvatarView'>>();
 	const { context, titleHeader, room, t } = useRoute<RouteProp<ChatsStackParamList, 'ChangeAvatarView'>>().params;
 	const includeBase64InImagePicker = context === 'room' || includeBase64ForAvatar;
@@ -103,8 +104,12 @@ const ChangeAvatarView = () => {
 	}, [titleHeader, navigation]);
 
 	useEffect(() => {
-		navigation.addListener('beforeRemove', e => {
-			if (!isDirty.current) {
+		if (!isDirty) {
+			return;
+		}
+
+		return navigation.addListener('beforeRemove', e => {
+			if (hasSaved.current) {
 				return;
 			}
 
@@ -119,10 +124,10 @@ const ChangeAvatarView = () => {
 				}
 			});
 		});
-	}, [navigation]);
+	}, [navigation, isDirty]);
 
 	const dispatchAvatar = (action: IReducerAction) => {
-		isDirty.current = true;
+		setIsDirty(true);
 		dispatch(action);
 	};
 
@@ -159,8 +164,8 @@ const ChangeAvatarView = () => {
 	};
 
 	const submit = async () => {
+		setSaving(true);
 		try {
-			setSaving(true);
 			if (context === 'room' && room?.rid) {
 				// Change Rooms Avatar
 				await changeRoomsAvatar(room.rid, state?.data);
@@ -171,16 +176,16 @@ const ChangeAvatarView = () => {
 				// Change User's Avatar
 				await resetUserAvatar(userId);
 			}
-			isDirty.current = false;
 		} catch (e: any) {
+			setSaving(false);
 			if (isTwoFactorCancelled(e)) {
 				return;
 			}
 			log(e);
 			return showErrorAlert(e.message, I18n.t('Oops'));
-		} finally {
-			setSaving(false);
 		}
+		setSaving(false);
+		hasSaved.current = true;
 		return navigation.goBack();
 	};
 
@@ -314,7 +319,7 @@ const ChangeAvatarView = () => {
 						) : null}
 						<Button
 							title={I18n.t('Save')}
-							disabled={!isDirty.current || saving}
+							disabled={!isDirty || saving}
 							type='primary'
 							loading={saving}
 							onPress={submit}

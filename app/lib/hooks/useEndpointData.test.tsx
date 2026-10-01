@@ -80,4 +80,22 @@ describe('useFetch', () => {
 
 		spy.mockRestore();
 	});
+
+	it('refetches only when params change by value', async () => {
+		jest
+			.mocked(sdk.get)
+			.mockReset()
+			.mockResolvedValue({ success: true, message } as any);
+		const { rerender } = renderHook(({ msgId }: { msgId: string }) => useEndpointData(url, { msgId }), {
+			initialProps: { msgId: message._id }
+		});
+		await waitFor(() => expect(sdk.get).toHaveBeenCalledTimes(1));
+
+		rerender({ msgId: message._id });
+		expect(sdk.get).toHaveBeenCalledTimes(1);
+
+		rerender({ msgId: 'another-message' });
+		await waitFor(() => expect(sdk.get).toHaveBeenCalledTimes(2));
+		expect(sdk.get).toHaveBeenLastCalledWith(url, { msgId: 'another-message' });
+	});
 });

@@ -94,19 +94,13 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 		}
 	};
 
-	const [tagParam, setTags] = useState(livechat?.tags || []);
+	const tagParam = [...new Set([...(livechat?.tags || []), ...availableUserTags])];
 	const [tagParamSelected, setTagParamSelected] = useState(livechat?.tags || []);
 
 	const tagOptions = tagParam.map((tag: string) => ({ text: { text: tag }, value: tag }));
 	const tagValues = Array.isArray(tagParamSelected)
 		? tagOptions.filter((option: any) => tagParamSelected.includes(option.value))
 		: [];
-
-	useEffect(() => {
-		const arr = [...tagParam, ...availableUserTags];
-		const uniqueArray = arr.filter((val, i) => arr.indexOf(val) === i);
-		setTags(uniqueArray);
-	}, [availableUserTags]);
 
 	const handleGetTagsList = async (agentDepartments: string[]) => {
 		const tags = await getTagsList();

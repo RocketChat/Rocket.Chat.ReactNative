@@ -54,7 +54,6 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	const [room, setRoom] = useState<ISubscription | null>(null);
 
 	const [cannedResponses, setCannedResponses] = useState<ICannedResponse[]>([]);
-	const [cannedResponsesScopeName, setCannedResponsesScopeName] = useState<ICannedResponse[]>([]);
 	const [departments, setDepartments] = useState<ILivechatDepartment[]>([]);
 	const [isSearching, setIsSearching] = useState(false);
 	const [currentDepartment, setCurrentDepartment] = useState(fixedScopes[0]);
@@ -138,23 +137,14 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		}
 	};
 
-	useEffect(() => {
-		if (departments.length > 0) {
-			const newCannedResponses = cannedResponses.map(cr => {
-				let scopeName = '';
-
-				if (cr?.departmentId) {
-					scopeName = departments.filter(dep => dep._id === cr.departmentId)[0]?.name || 'Department';
-				} else {
-					scopeName = departments.filter(dep => dep._id === cr.scope)[0]?.name;
-				}
-				cr.scopeName = scopeName;
-
-				return cr;
-			});
-			setCannedResponsesScopeName(newCannedResponses);
-		}
-	}, [departments, cannedResponses]);
+	const cannedResponsesScopeName: ICannedResponse[] = departments.length
+		? cannedResponses.map(cr => ({
+				...cr,
+				scopeName: cr?.departmentId
+					? departments.find(dep => dep._id === cr.departmentId)?.name || 'Department'
+					: (departments.find(dep => dep._id === cr.scope)?.name ?? '')
+			}))
+		: [];
 
 	const searchCallback = useDebounce(async (text = '', department = '', depId = '') => {
 		await handleGetListCannedResponse({ text, department, depId, debounced: true });

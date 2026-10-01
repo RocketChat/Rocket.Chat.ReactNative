@@ -1,5 +1,4 @@
-import isEqual from 'lodash/isEqual';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import {
 	type ErrorResult,
@@ -31,17 +30,13 @@ export const useEndpointData = <TPath extends PathFor<'GET'>>(
 	const [result, setResult] = useState<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>> | undefined>();
 	const [error, setError] = useState<ErrorResult | undefined>();
 
-	const paramsRef = useRef(params);
-
-	if (!isEqual(paramsRef.current, params)) {
-		paramsRef.current = params;
-	}
+	const paramsKey = JSON.stringify(params);
 
 	const fetchData = useCallback(() => {
 		if (!endpoint) return;
 		setLoading(true);
 		sdk
-			.get(endpoint, params as any)
+			.get(endpoint, paramsKey === undefined ? undefined : JSON.parse(paramsKey))
 			.then(e => {
 				setLoading(false);
 				if (e.success) {
@@ -54,7 +49,7 @@ export const useEndpointData = <TPath extends PathFor<'GET'>>(
 				setLoading(false);
 				setError(e);
 			});
-	}, [paramsRef.current]);
+	}, [endpoint, paramsKey]);
 
 	useEffect(() => {
 		fetchData();
