@@ -68,16 +68,16 @@ open class MainApplication : Application(), ReactApplication {
     super.onCreate()
 
     Bugsnag.start(this)
-    
+
     migrateLegacyExperimentalDatabases()
-    
+
     // Initialize MMKV encryption - reads existing key or generates new one
     // Must run before React Native starts to avoid race conditions
     MMKVKeyManager.initialize(this)
 
     // Load the native entry point for the New Architecture
     loadReactNative(this)
-    
+
 		ApplicationLifecycleDispatcher.onApplicationCreate(this)
   }
 
@@ -88,38 +88,27 @@ open class MainApplication : Application(), ReactApplication {
 
   // Renames <=4.72.0 `-experimental.db.db` files.
   private fun migrateLegacyExperimentalDatabases() {
-    try {
-      val dir = getDatabasePath("probe").parentFile?.parentFile ?: return
-      val legacySuffix = "-experimental.db.db"
-      val files = dir.listFiles() ?: return
-      databases@ for (legacy in files) {
-        if (!legacy.isFile || !legacy.name.endsWith(legacySuffix)) {
-          continue
-        }
-        val baseName = legacy.name.removeSuffix(legacySuffix)
-        val target = java.io.File(dir, "$baseName.db.db")
-        if (target.exists() && target.length() > 0) {
-          continue
-        }
-        for (sidecar in listOf("-wal", "-shm", "-journal")) {
-          val legacySidecar = java.io.File(dir, legacy.name + sidecar)
-          if (legacySidecar.exists()) {
-            val targetSidecar = java.io.File(dir, target.name + sidecar)
-            targetSidecar.delete()
-            if (!legacySidecar.renameTo(targetSidecar)) {
-              continue@databases
-            }
-          }
-        }
-        target.delete()
-        if (!legacy.renameTo(target)) {
-          throw IllegalStateException("Failed to migrate ${legacy.name} to ${target.name}")
+    val dir = java.io.File(applicationInfo.dataDir)
+    val legacySuffix = "-experimental.db.db"
+    val files = dir.listFiles() ?: return
+    for (legacy in files) {
+      if (!legacy.isFile || !legacy.name.endsWith(legacySuffix)) {
+        continue
+      }
+      val baseName = legacy.name.removeSuffix(legacySuffix)
+      val target = java.io.File(dir, "$baseName.db.db")
+      if (target.exists() && target.length() > 0) {
+        continue
+      }
+      for (suffix in listOf("-wal", "-shm", "-journal", "")) {
+        val from = java.io.File(dir, legacy.name + suffix)
+        val to = java.io.File(dir, target.name + suffix)
+        to.delete()
+        if (from.exists() && !from.renameTo(to)) {
+          // Starting with a fresh DB at `target` would strand the legacy data, since later launches skip a non-empty target.
+          throw IllegalStateException("Failed to migrate ${from.name} to ${to.name}")
         }
       }
-    } catch (e: IllegalStateException) {
-      // Starting with a fresh DB at `target` would strand the legacy data, since later launches skip a non-empty target.
-      throw e
-    } catch (e: Exception) {
     }
   }
 }
