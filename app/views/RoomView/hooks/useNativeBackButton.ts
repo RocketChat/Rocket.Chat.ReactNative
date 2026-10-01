@@ -14,15 +14,12 @@ const formatUnreadsCount = (unreadsCount: number | null) => {
 	return unreadsCount > 99 ? '+99' : unreadsCount.toString();
 };
 
-export const useNativeBackButton = (enabled: boolean, rid?: string) => {
+export const useNativeBackButton = (rid: string) => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const { colors } = useTheme();
-	const unreadsLabel = formatUnreadsCount(useUnreadsCount(enabled ? rid : undefined));
+	const unreadsLabel = formatUnreadsCount(useUnreadsCount(rid));
 
 	useLayoutEffect(() => {
-		if (!enabled) {
-			return;
-		}
 		if (!navigation.canGoBack()) {
 			navigation.setOptions({ unstable_headerLeftItems: undefined });
 			return;
@@ -37,5 +34,5 @@ export const useNativeBackButton = (enabled: boolean, rid?: string) => {
 			onPress: () => navigation.goBack()
 		};
 		navigation.setOptions({ headerBackVisible: false, unstable_headerLeftItems: () => [backItem] });
-	}, [colors.fontDefault, enabled, navigation, unreadsLabel]);
+	}, [colors.fontDefault, navigation, unreadsLabel]);
 };

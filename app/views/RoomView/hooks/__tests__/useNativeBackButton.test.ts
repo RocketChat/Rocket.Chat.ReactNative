@@ -15,7 +15,7 @@ jest.mock('../useUnreadsCount', () => ({ useUnreadsCount: (rid?: string) => mock
 
 const renderBackItem = (unreads: number | null) => {
 	mockUnreads = unreads;
-	renderHook(() => useNativeBackButton(true, 'rid'));
+	renderHook(() => useNativeBackButton('rid'));
 	const options = mockSetOptions.mock.lastCall[0];
 	expect(options.headerBackVisible).toBe(false);
 	const [backItem] = options.unstable_headerLeftItems();
@@ -51,15 +51,8 @@ it('goes back when pressed', () => {
 	expect(mockGoBack).toHaveBeenCalledTimes(1);
 });
 
-it('does nothing when disabled', () => {
-	mockUnreads = 3;
-	renderHook(() => useNativeBackButton(false, 'rid'));
-	expect(mockUseUnreadsCount).toHaveBeenCalledWith(undefined);
-	expect(mockSetOptions).not.toHaveBeenCalled();
-});
-
 it('clears custom left items when it cannot go back', () => {
 	mockCanGoBack = false;
-	renderHook(() => useNativeBackButton(true, 'rid'));
+	renderHook(() => useNativeBackButton('rid'));
 	expect(mockSetOptions).toHaveBeenCalledWith({ unstable_headerLeftItems: undefined });
 });

@@ -19,7 +19,7 @@ import { getUserPresence } from '~/lib/methods/getUsersPresence';
 import { formatStatusExpiry } from '~/lib/methods/helpers/formatStatusExpiry';
 import { useTheme } from '~/theme';
 import { type IRoomViewProps } from '../definitions';
-import { type IHeaderFields } from './useHeader';
+import { type IHeaderFields } from './useHeaderFields';
 import { useHeaderIconImage, useHeaderRemoteImage } from './useHeaderImage';
 
 const TITLE_FONT_SIZE = 17;
@@ -79,7 +79,7 @@ const getSubtitle = ({
 	return fields.subtitle;
 };
 
-const useRoomHeaderPresence = (enabled: boolean, fields: IHeaderFields, roomUserId?: string | null) => {
+const useRoomHeaderPresence = (fields: IHeaderFields, roomUserId?: string | null) => {
 	const connected = useAppSelector(state => state.meteor.connected);
 	const presenceDisabled = useAppSelector(state => state.settings.Presence_broadcast_disabled);
 	const activeUser = useAppSelector(state => (roomUserId ? state.activeUsers[roomUserId] : undefined), shallowEqual);
@@ -89,10 +89,10 @@ const useRoomHeaderPresence = (enabled: boolean, fields: IHeaderFields, roomUser
 	const statusColor = useUserStatusColor(fields.type === 'l' ? (visitorStatus ?? 'offline') : status);
 
 	useEffect(() => {
-		if (enabled && isDirectMessage && connected && status === 'loading' && roomUserId) {
+		if (isDirectMessage && connected && status === 'loading' && roomUserId) {
 			getUserPresence(roomUserId);
 		}
-	}, [enabled, isDirectMessage, connected, status, roomUserId]);
+	}, [isDirectMessage, connected, status, roomUserId]);
 
 	return { connected, activeUser, isDirectMessage, status, statusColor };
 };
@@ -118,7 +118,6 @@ const useRoomHeaderContent = (
 };
 
 export const useNativeRoomHeader = (
-	enabled: boolean,
 	fields: IHeaderFields,
 	tmid?: string,
 	roomUserId?: string | null,
@@ -126,36 +125,33 @@ export const useNativeRoomHeader = (
 ) => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const { colors } = useTheme();
-	const { connected, activeUser, isDirectMessage, status, statusColor } = useRoomHeaderPresence(enabled, fields, roomUserId);
+	const { connected, activeUser, isDirectMessage, status, statusColor } = useRoomHeaderPresence(fields, roomUserId);
 
 	const { title, subtitle, showClock } = useRoomHeaderContent(fields, tmid, activeUser, connected);
 
 	const roomIcon = getRoomIcon(fields, isDirectMessage, status);
 	const glyphImage = useHeaderIconImage(
-		enabled && fields.type ? roomIcon : undefined,
+		fields.type ? roomIcon : undefined,
 		isDirectMessage || fields.type === 'l' ? statusColor : colors.fontTitlesLabels,
 		TITLE_FONT_SIZE
 	);
 	const server = useAppSelector(state => state.server.server);
-	const remoteUri =
-		enabled && connected && fields.type === 'l' ? getOmnichannelSidebarIconUri(server, fields.sourceType) : undefined;
+	const remoteUri = connected && fields.type === 'l' ? getOmnichannelSidebarIconUri(server, fields.sourceType) : undefined;
 	const remoteImage = useHeaderRemoteImage(remoteUri);
 	const roomImage = remoteImage ?? glyphImage;
-	const clockImage = useHeaderIconImage(enabled && showClock ? 'clock' : undefined, colors.fontSecondaryInfo, SUBTITLE_FONT_SIZE);
+	const clockImage = useHeaderIconImage(showClock ? 'clock' : undefined, colors.fontSecondaryInfo, SUBTITLE_FONT_SIZE);
 	const subtitleImage = tmid ? roomImage : clockImage;
 
 	useLayoutEffect(() => {
-		if (enabled) {
-			navigation.setOptions({
-				headerTitle: title,
-				headerSubtitle: subtitle || undefined,
-				headerTitleImageSource: tmid ? undefined : roomImage,
-				headerSubtitleImageSource: subtitleImage,
-				headerTitleStyle: { color: colors.fontTitlesLabels },
-				headerSubtitleColor: colors.fontSecondaryInfo,
-				headerTitleTestID: 'room-header',
-				onHeaderTitlePress: onTitlePress && !fields.disabled ? () => onTitlePress() : undefined
-			});
-		}
-	}, [enabled, navigation, title, subtitle, tmid, roomImage, subtitleImage, colors, onTitlePress, fields.disabled]);
+		navigation.setOptions({
+			headerTitle: title,
+			headerSubtitle: subtitle || undefined,
+			headerTitleImageSource: tmid ? undefined : roomImage,
+			headerSubtitleImageSource: subtitleImage,
+			headerTitleStyle: { color: colors.fontTitlesLabels },
+			headerSubtitleColor: colors.fontSecondaryInfo,
+			headerTitleTestID: 'room-header',
+			onHeaderTitlePress: onTitlePress && !fields.disabled ? () => onTitlePress() : undefined
+		});
+	}, [navigation, title, subtitle, tmid, roomImage, subtitleImage, colors, onTitlePress, fields.disabled]);
 };

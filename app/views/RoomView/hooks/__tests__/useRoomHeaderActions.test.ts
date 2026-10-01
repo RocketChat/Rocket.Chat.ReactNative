@@ -8,7 +8,7 @@ import { returnLivechat } from '~/lib/services/restApi';
 import { type RoomStore } from '~/views/RoomView/definitions';
 import { closeLivechat } from '~/views/RoomView/services/closeLivechat';
 import { placeLivechatOnHold } from '~/views/RoomView/services/placeLivechatOnHold';
-import { useRoomHeaderActions } from '../useRoomHeaderActions';
+import { useOmnichannelActions, useRoomActions, useRoomHeaderMode, useThreadActions } from '../useRoomHeaderActions';
 
 const mockNavigation = { navigate: jest.fn(), push: jest.fn() };
 jest.mock('@react-navigation/native', () => ({ useNavigation: () => mockNavigation }));
@@ -76,7 +76,9 @@ jest.mock('~/lib/hooks/useNewMediaCall', () => ({ useNewMediaCall: () => mockMed
 
 const roomStore = {} as RoomStore;
 
-const renderActions = (tmid?: string) => renderHook(() => useRoomHeaderActions('rid-1', tmid, roomStore)).result.current;
+const renderRoomActions = () => renderHook(() => useRoomActions('rid-1', roomStore)).result.current;
+const renderThreadActions = (tmid: string) => renderHook(() => useThreadActions(tmid)).result.current;
+const renderOmnichannelActions = () => renderHook(() => useOmnichannelActions('rid-1', roomStore)).result.current;
 
 const labelsOf = (actions: { label: string }[]) => actions.map(action => action.label);
 
@@ -128,21 +130,36 @@ describe('useRoomHeaderActions', () => {
 	});
 
 	it.each([
-		['without a rid', undefined, { room: { t: 'c' }, membership: 'subscribed' }],
-		['for an invited room', 'rid-1', { room: { t: 'c' }, membership: 'invited' }],
-		['for a queued omnichannel room', 'rid-1', { room: { id: 'sub-1', t: 'l', status: 'queued' }, membership: 'subscribed' }],
-		['for an omnichannel room in preview', 'rid-1', { room: { t: 'l' }, membership: 'preview' }]
-	])('returns no actions %s', (_case, rid, state) => {
+		['none without a rid', undefined, undefined, { room: { t: 'c' }, membership: 'subscribed' }, 'none'],
+		['none for an invited room', 'rid-1', undefined, { room: { t: 'c' }, membership: 'invited' }, 'none'],
+		[
+			'none for a queued omnichannel room',
+			'rid-1',
+			undefined,
+			{ room: { id: 'sub-1', t: 'l', status: 'queued' }, membership: 'subscribed' },
+			'none'
+		],
+		['none for an omnichannel room in preview', 'rid-1', undefined, { room: { t: 'l' }, membership: 'preview' }, 'none'],
+		[
+			'omnichannel for an active omnichannel room, even inside a thread',
+			'rid-1',
+			'tmid-1',
+			{ room: { id: 'sub-1', t: 'l' }, membership: 'subscribed' },
+			'omnichannel'
+		],
+		['thread when a tmid is given', 'rid-1', 'tmid-1', { room: { t: 'c' }, membership: 'subscribed' }, 'thread'],
+		['room for a regular channel', 'rid-1', undefined, { room: { t: 'c' }, membership: 'subscribed' }, 'room']
+	])('picks the %s', (_case, rid, tmid, state, mode) => {
 		mockRoomState = { ...state, canForwardGuest: false };
 
-		const { result } = renderHook(() => useRoomHeaderActions(rid, undefined, roomStore));
+		const { result } = renderHook(() => useRoomHeaderMode(rid, tmid, roomStore));
 
-		expect(result.current).toEqual([]);
+		expect(result.current).toBe(mode);
 	});
 
 	describe('room on the native header bar', () => {
 		it('lists search in the more menu and runs the chosen action', () => {
-			const menu = moreMenuOf(renderActions());
+			const menu = moreMenuOf(renderRoomActions());
 
 			expect(labelsOf(menu)).toEqual(['Search messages']);
 			menu[0].onPress();
@@ -153,7 +170,7 @@ describe('useRoomHeaderActions', () => {
 			mockButtonsData = { ...mockButtonsData, threadsEnabled: true, hasE2EEWarning: true, canToggleEncryption: false };
 			mockMediaCall.hasMediaCallPermission = true;
 
-			const actions = renderActions();
+			const actions = renderRoomActions();
 
 			expect(labelsOf(actions)).toEqual(['Call', 'Threads', 'More']);
 			expect(moreMenuOf(actions).map(item => [item.label, !!item.disabled])).toEqual([
@@ -178,7 +195,7 @@ describe('useRoomHeaderActions', () => {
 			};
 			mockMediaCall.hasMediaCallPermission = true;
 
-			const actions = renderActions();
+			const actions = renderRoomActions();
 
 			expect(actions.map(action => action.testID)).toEqual([
 				'room-view-header-encryption',
@@ -193,7 +210,7 @@ describe('useRoomHeaderActions', () => {
 		it('offers encryption while the other actions are disabled by the e2ee warning', () => {
 			mockButtonsData = { ...mockButtonsData, threadsEnabled: true, hasE2EEWarning: true, canToggleEncryption: true };
 
-			const actions = renderActions();
+			const actions = renderRoomActions();
 
 			expect(actionByTestID(actions, 'room-view-header-encryption')?.disabled).toBe(false);
 			expect(actionByTestID(actions, 'room-view-header-threads')?.disabled).toBe(true);
@@ -203,34 +220,34 @@ describe('useRoomHeaderActions', () => {
 		it('disables encryption when the user cannot toggle it', () => {
 			mockButtonsData = { ...mockButtonsData, hasE2EEWarning: true, canToggleEncryption: false };
 
-			expect(actionByTestID(renderActions(), 'room-view-header-encryption')?.disabled).toBe(true);
+			expect(actionByTestID(renderRoomActions(), 'room-view-header-encryption')?.disabled).toBe(true);
 		});
 
 		it('tints the troubleshoot action only when notifications have issues', () => {
 			mockButtonsData = { ...mockButtonsData, issuesWithNotifications: true };
-			expect(actionByTestID(renderActions(), 'room-view-push-troubleshoot')?.tintColor).toBe('#f00');
+			expect(actionByTestID(renderRoomActions(), 'room-view-push-troubleshoot')?.tintColor).toBe('#f00');
 
 			mockButtonsData = { ...mockButtonsData, issuesWithNotifications: false, disableNotifications: true };
-			const troubleshoot = actionByTestID(renderActions(), 'room-view-push-troubleshoot');
+			const troubleshoot = actionByTestID(renderRoomActions(), 'room-view-push-troubleshoot');
 			expect(troubleshoot).toBeDefined();
 			expect(troubleshoot?.tintColor).toBeUndefined();
 		});
 
 		it('hides the threads action when threads are disabled', () => {
-			expect(actionByTestID(renderActions(), 'room-view-header-threads')).toBeUndefined();
+			expect(actionByTestID(renderRoomActions(), 'room-view-header-threads')).toBeUndefined();
 		});
 
 		it('hides the call action on a self DM', () => {
 			mockButtonsData = { ...mockButtonsData, isSelfDm: true };
 			mockMediaCall.hasMediaCallPermission = true;
 
-			expect(actionByTestID(renderActions(), 'room-view-header-call')).toBeUndefined();
+			expect(actionByTestID(renderRoomActions(), 'room-view-header-call')).toBeUndefined();
 		});
 
 		it('badges threads with the unread thread count in the unread style color', () => {
 			mockButtonsData = { ...mockButtonsData, threadsEnabled: true, tunread: ['t1', 't2'], tunreadUser: ['t1'] };
 
-			const threads = actionByTestID(renderActions(), 'room-view-header-threads');
+			const threads = actionByTestID(renderRoomActions(), 'room-view-header-threads');
 
 			expect(threads?.badge?.value).toBe(2);
 			expect(threads?.badge?.color).toEqual(expect.any(String));
@@ -241,7 +258,7 @@ describe('useRoomHeaderActions', () => {
 		it('leaves threads without a badge when nothing is unread', () => {
 			mockButtonsData = { ...mockButtonsData, threadsEnabled: true };
 
-			expect(actionByTestID(renderActions(), 'room-view-header-threads')?.badge).toBeUndefined();
+			expect(actionByTestID(renderRoomActions(), 'room-view-header-threads')?.badge).toBeUndefined();
 		});
 	});
 
@@ -255,7 +272,7 @@ describe('useRoomHeaderActions', () => {
 			jest.useRealTimers();
 		});
 
-		const callAction = () => actionByTestID(renderActions(), 'room-view-header-call');
+		const callAction = () => actionByTestID(renderRoomActions(), 'room-view-header-call');
 
 		it('is absent without media call permission and with calls disabled', () => {
 			expect(callAction()).toBeUndefined();
@@ -322,7 +339,7 @@ describe('useRoomHeaderActions', () => {
 
 	describe('thread', () => {
 		it('offers to follow a thread that is not followed', () => {
-			const [follow] = renderActions('tmid-1');
+			const [follow] = renderThreadActions('tmid-1');
 
 			expect(follow).toMatchObject({
 				label: 'Follow thread',
@@ -337,7 +354,7 @@ describe('useRoomHeaderActions', () => {
 		it('offers to unfollow a followed thread', () => {
 			mockFollowersByThread = { 'tmid-1': ['user-1'] };
 
-			const [unfollow] = renderActions('tmid-1');
+			const [unfollow] = renderThreadActions('tmid-1');
 
 			expect(unfollow).toMatchObject({ label: 'Unfollow thread', icon: 'notification', testID: 'room-view-header-unfollow' });
 			unfollow.onPress?.();
@@ -346,11 +363,11 @@ describe('useRoomHeaderActions', () => {
 
 		it('reflects the follow state of the displayed thread and current user', () => {
 			mockFollowersByThread = { 'tmid-1': ['user-1'] };
-			expect(renderActions('tmid-1')[0].testID).toBe('room-view-header-unfollow');
-			expect(renderActions('tmid-2')[0].testID).toBe('room-view-header-follow');
+			expect(renderThreadActions('tmid-1')[0].testID).toBe('room-view-header-unfollow');
+			expect(renderThreadActions('tmid-2')[0].testID).toBe('room-view-header-follow');
 
 			mockUserId = 'user-2';
-			expect(renderActions('tmid-1')[0].testID).toBe('room-view-header-follow');
+			expect(renderThreadActions('tmid-1')[0].testID).toBe('room-view-header-follow');
 		});
 	});
 
@@ -359,14 +376,14 @@ describe('useRoomHeaderActions', () => {
 			mockRoomState = { ...mockRoomState, room: { id: 'sub-1', t: 'l', departmentId: 'department-1' } };
 		});
 
-		const menuOf = (tmid?: string) => {
-			const actions = renderActions(tmid);
+		const menuOf = () => {
+			const actions = renderOmnichannelActions();
 			expect(actions).toHaveLength(1);
 			return actions[0].menu ?? [];
 		};
 
-		it('shows a single more menu that logs when opened, even inside a thread', () => {
-			const [more] = renderActions('tmid-1');
+		it('shows a single more menu that logs when opened', () => {
+			const [more] = renderOmnichannelActions();
 
 			expect(more).toMatchObject({ label: 'More', icon: 'kebab', testID: 'room-view-header-omnichannel-kebab' });
 			more.onPress?.();

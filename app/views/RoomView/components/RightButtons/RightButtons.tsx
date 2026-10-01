@@ -2,7 +2,7 @@ import { type ReactElement } from 'react';
 
 import { HeaderActions } from '~/lib/methods/helpers/navigation/headerActions';
 import { type RoomStore } from '~/views/RoomView/definitions';
-import { useRoomHeaderActions } from '~/views/RoomView/hooks/useRoomHeaderActions';
+import { RoomHeaderActions } from '~/views/RoomView/components/RoomViewHeader/RoomHeaderActions';
 
 interface IRightButtonsProps {
 	rid?: string;
@@ -10,9 +10,8 @@ interface IRightButtonsProps {
 	roomStore: RoomStore;
 }
 
-const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElement | null => {
-	const actions = useRoomHeaderActions(rid, tmid, roomStore);
-	return <HeaderActions actions={actions} />;
-};
+const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElement => (
+	<RoomHeaderActions rid={rid} tmid={tmid} roomStore={roomStore} Sink={HeaderActions} />
+);
 
 export default RightButtons;

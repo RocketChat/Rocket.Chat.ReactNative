@@ -20,17 +20,17 @@ import { fromSubscription } from '../stores/RoomStoreContext';
 import { closeLivechat } from '../services/closeLivechat';
 import { placeLivechatOnHold } from '../services/placeLivechatOnHold';
 import { navigateToScreen, type TRoomStackNavigation } from '../services/navigateToScreen';
-import { getRoomHeaderMode } from '../helpers/getRoomHeaderMode';
+import { getRoomHeaderMode, type TRoomHeaderMode } from '../helpers/getRoomHeaderMode';
 import { splitRoomHeaderActions, type TRoomHeaderActionKey } from '../helpers/roomHeaderActions';
 import { useCanPlaceLivechatOnHold } from './useCanPlaceLivechatOnHold';
 import { useThreadFollowing } from './useThreadFollowing';
 import { useRoomRightButtonsData } from '../components/RightButtons/useRoomRightButtonsData';
 import { useHeaderCallPress } from '../components/RightButtons/useHeaderCallPress';
 
-const EMPTY_ACTIONS: IHeaderAction[] = [];
+export const EMPTY_ACTIONS: IHeaderAction[] = [];
 const VISIBLE_ORDER: TRoomHeaderActionKey[] = ['encryption', 'notifications', 'call', 'threads'];
 
-const useOmnichannelActions = (rid: string, roomStore: RoomStore, enabled: boolean): IHeaderAction[] => {
+export const useOmnichannelActions = (rid: string, roomStore: RoomStore): IHeaderAction[] => {
 	const navigation = useNavigation<TRoomStackNavigation>();
 	const isMasterDetail = useMasterDetail();
 	const livechatRequestComment = useSetting('Livechat_request_comment_when_closing_conversation') as boolean;
@@ -40,12 +40,8 @@ const useOmnichannelActions = (rid: string, roomStore: RoomStore, enabled: boole
 		fromSubscription(room => room.departmentId, undefined)
 	);
 	const canForwardGuest = useStore(roomStore, s => s.canForwardGuest);
-	const canReturnQueue = useCanReturnQueue(enabled);
+	const canReturnQueue = useCanReturnQueue(true);
 	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(roomStore);
-
-	if (!enabled) {
-		return EMPTY_ACTIONS;
-	}
 
 	const returnInquiry = () => {
 		showConfirmationAlert({
@@ -96,13 +92,9 @@ const useOmnichannelActions = (rid: string, roomStore: RoomStore, enabled: boole
 	];
 };
 
-const useThreadActions = (tmid: string | undefined, enabled: boolean): IHeaderAction[] => {
+export const useThreadActions = (tmid: string): IHeaderAction[] => {
 	const userId = useAppSelector(state => getUserSelector(state).id);
 	const isFollowingThread = useThreadFollowing(tmid, userId);
-
-	if (!enabled) {
-		return EMPTY_ACTIONS;
-	}
 
 	return [
 		{
@@ -111,15 +103,13 @@ const useThreadActions = (tmid: string | undefined, enabled: boolean): IHeaderAc
 			testID: isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow',
 			onPress: () => {
 				logEvent(events.ROOM_TOGGLE_FOLLOW_THREADS);
-				if (tmid) {
-					toggleFollowThread(tmid, isFollowingThread);
-				}
+				toggleFollowThread(tmid, isFollowingThread);
 			}
 		}
 	];
 };
 
-const useRoomActions = (rid: string, roomStore: RoomStore, enabled: boolean): IHeaderAction[] => {
+export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction[] => {
 	const { theme, colors } = useTheme();
 	const {
 		threadsEnabled,
@@ -139,10 +129,6 @@ const useRoomActions = (rid: string, roomStore: RoomStore, enabled: boolean): IH
 		threadsAccessibilityLabel
 	} = useRoomRightButtonsData(rid, roomStore);
 	const { callPresent, isCallDisabled, onPressCall } = useHeaderCallPress(rid);
-
-	if (!enabled) {
-		return EMPTY_ACTIONS;
-	}
 
 	const present: Partial<Record<TRoomHeaderActionKey, boolean>> = {
 		threads: threadsEnabled,
@@ -219,11 +205,7 @@ const useRoomActions = (rid: string, roomStore: RoomStore, enabled: boolean): IH
 	];
 };
 
-export const useRoomHeaderActions = (
-	rid: string | undefined,
-	tmid: string | undefined,
-	roomStore: RoomStore
-): IHeaderAction[] => {
+export const useRoomHeaderMode = (rid: string | undefined, tmid: string | undefined, roomStore: RoomStore): TRoomHeaderMode => {
 	const { t, status, membership } = useStore(
 		roomStore,
 		useShallow(s => ({
@@ -233,20 +215,5 @@ export const useRoomHeaderActions = (
 		}))
 	);
 
-	const mode = getRoomHeaderMode({ rid, tmid, t, status, membership });
-
-	const omnichannelActions = useOmnichannelActions(rid ?? '', roomStore, mode === 'omnichannel');
-	const threadActions = useThreadActions(tmid, mode === 'thread');
-	const roomActions = useRoomActions(rid ?? '', roomStore, mode === 'room');
-
-	if (mode === 'omnichannel') {
-		return omnichannelActions;
-	}
-	if (mode === 'thread') {
-		return threadActions;
-	}
-	if (mode === 'room') {
-		return roomActions;
-	}
-	return EMPTY_ACTIONS;
+	return getRoomHeaderMode({ rid, tmid, t, status, membership });
 };
