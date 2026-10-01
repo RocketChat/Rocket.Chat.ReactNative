@@ -3,7 +3,7 @@ import { AccessibilityInfo, Keyboard, Text, type TextInput, View } from 'react-n
 import parse from 'url-parse';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -62,8 +62,6 @@ const RegisterView = ({ route }: RegisterViewProps) => {
 		handleSubmit,
 		setFocus,
 		setError,
-		getValues,
-		watch,
 		formState: { isValid, dirtyFields, errors }
 	} = useForm({
 		mode: 'onChange',
@@ -76,8 +74,8 @@ const RegisterView = ({ route }: RegisterViewProps) => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
-	const inputValues = watch();
-	const { password, confirmPassword } = inputValues;
+	const formValues = useWatch({ control });
+	const { password = '', confirmPassword = '' } = formValues;
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
 	const [saving, setSaving] = useState(false);
@@ -96,7 +94,7 @@ const RegisterView = ({ route }: RegisterViewProps) => {
 	};
 
 	const validateDefaultFormInfo = () => {
-		const isValid = validationSchema.isValidSync(getValues());
+		const isValid = validationSchema.isValidSync(formValues);
 		if (!parsedCustomFields) {
 			return isValid;
 		}
@@ -147,22 +145,16 @@ const RegisterView = ({ route }: RegisterViewProps) => {
 			}
 		} catch (error: any) {
 			if (error.data?.errorType === 'username-invalid') {
-				return dispatch(loginRequest({ user: email, password }));
-			}
-
-			if (error.data.error === 'Username is already in use') {
+				dispatch(loginRequest({ user: email, password }));
+			} else if (error.data?.error === 'Username is already in use') {
 				setError('username', { message: `${I18n.t('Username_is_already_in_use')}`, type: 'validate' });
 				AccessibilityInfo.announceForAccessibility(I18n.t('Username_is_already_in_use'));
-				return;
-			}
-
-			if (error.data?.error) {
+			} else if (error.data?.error) {
 				logEvent(events.REGISTER_DEFAULT_SIGN_UP_F);
 				showErrorAlert(error.data.error, I18n.t('Oops'));
 			}
-		} finally {
-			setSaving(false);
 		}
+		setSaving(false);
 	};
 
 	useLayoutEffect(() => {

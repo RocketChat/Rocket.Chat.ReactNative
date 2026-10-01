@@ -3,7 +3,7 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import { AccessibilityInfo, Alert, Keyboard, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { type SetValueConfig } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -60,7 +60,6 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 	const [randomValue, setRandomValue] = useState<string>('');
 	const {
 		control,
-		watch,
 		clearErrors,
 		setFocus,
 		setError,
@@ -105,7 +104,10 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		setValue('reactWhenReadOnly', !!reactWhenReadOnly);
 		setValue('encrypted', !!encrypted);
 	};
-	const { archived, enableSysMes, encrypted, reactWhenReadOnly, readOnly, systemMessages, t } = watch();
+	const [archived, enableSysMes, encrypted, reactWhenReadOnly, readOnly, systemMessages, t] = useWatch({
+		control,
+		name: ['archived', 'enableSysMes', 'encrypted', 'reactWhenReadOnly', 'readOnly', 'systemMessages', 't']
+	});
 	const { room } = useRoomSubscription({
 		rid: route.params?.rid,
 		initializeRoomState

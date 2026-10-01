@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { useFocusEffect } from '@react-navigation/native';
 
 import useA11yErrorAnnouncement from '~/lib/hooks/useA11yErrorAnnouncement';
@@ -94,7 +94,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		setValue,
 		reset,
 		setError,
-		watch,
 		formState: { isDirty, errors }
 	} = useForm({
 		mode: 'onChange',
@@ -109,7 +108,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
-	const inputValues = watch();
+	const inputValues = useWatch({ control });
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(user?.customFields ?? {});
 	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
@@ -129,7 +128,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	};
 
 	const validateFormInfo = () => {
-		const isValid = validationSchema.isValidSync(getValues());
+		const isValid = validationSchema.isValidSync(inputValues);
 		if (!parsedCustomFields) {
 			return isValid;
 		}
@@ -213,7 +212,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 			return { status: 'failed', error: e };
 		}
 		try {
-			const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
+			const code = await twoFactor({ method: e.details.method, invalid: !!twoFactorCode });
 			setTwoFactorCode(code as any);
 			await submit();
 			return { status: 'retried' };
@@ -293,7 +292,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	useFocusEffect(
 		useCallback(() => {
 			reset();
-		}, [])
+		}, [reset])
 	);
 
 	return (
@@ -409,7 +408,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 						onPress={handleSubmit(submit)}
 						disabled={!enableSaveChangesButton() && !isCustomFieldsDirty()}
 						testID='profile-view-submit'
-						loading={getValues().saving}
+						loading={inputValues.saving}
 						style={{ marginBottom: 0 }}
 					/>
 

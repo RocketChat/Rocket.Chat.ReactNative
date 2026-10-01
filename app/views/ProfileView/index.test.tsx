@@ -87,10 +87,13 @@ const renderProfile = () => {
 };
 
 // Make the form dirty + valid so the Save button is enabled, then press it.
-const changeNameAndSubmit = (getByTestId: (id: string) => any, newName = 'Jane Doe') => {
-	fireEvent.changeText(getByTestId('profile-view-name'), newName);
+const changeAndSubmit = async (getByTestId: (id: string) => any, inputTestId: string, value: string) => {
+	fireEvent.changeText(getByTestId(inputTestId), value);
+	await waitFor(() => expect(getByTestId('profile-view-submit')).toBeEnabled());
 	fireEvent.press(getByTestId('profile-view-submit'));
 };
+
+const changeNameAndSubmit = (getByTestId: (id: string) => any) => changeAndSubmit(getByTestId, 'profile-view-name', 'Jane Doe');
 
 beforeEach(() => {
 	jest.clearAllMocks();
@@ -103,7 +106,7 @@ describe('ProfileView submit', () => {
 		const emitSpy = jest.spyOn(EventEmitter, 'emit');
 
 		const { getByTestId } = renderProfile();
-		changeNameAndSubmit(getByTestId);
+		await changeNameAndSubmit(getByTestId);
 
 		await waitFor(() => expect(saveUserProfile).toHaveBeenCalledWith({ name: 'Jane Doe' }, {}));
 		expect(dispatch).toHaveBeenCalledWith(setUser({ ...user, name: 'Jane Doe', customFields: {} }));
@@ -114,8 +117,7 @@ describe('ProfileView submit', () => {
 	it('asks for the current password before changing the email', async () => {
 		const { getByTestId } = renderProfile();
 
-		fireEvent.changeText(getByTestId('profile-view-email'), 'jane@rocket.chat');
-		fireEvent.press(getByTestId('profile-view-submit'));
+		await changeAndSubmit(getByTestId, 'profile-view-email', 'jane@rocket.chat');
 
 		await waitFor(() => expect(mockShowActionSheet).toHaveBeenCalled());
 		expect(saveUserProfile).not.toHaveBeenCalled();
@@ -128,7 +130,7 @@ describe('ProfileView submit', () => {
 		(twoFactor as jest.Mock).mockResolvedValue({ twoFactorCode: '123456', twoFactorMethod: 'totp' });
 
 		const { getByTestId } = renderProfile();
-		changeNameAndSubmit(getByTestId);
+		await changeNameAndSubmit(getByTestId);
 
 		await waitFor(() => expect(twoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: false }));
 		await waitFor(() => expect(saveUserProfile).toHaveBeenCalledTimes(2));
@@ -140,7 +142,7 @@ describe('ProfileView submit', () => {
 		(twoFactor as jest.Mock).mockRejectedValue(new TwoFactorCancelledError());
 
 		const { getByTestId } = renderProfile();
-		changeNameAndSubmit(getByTestId);
+		await changeNameAndSubmit(getByTestId);
 
 		await waitFor(() => expect(twoFactor).toHaveBeenCalled());
 		expect(handleSaveUserProfileError).not.toHaveBeenCalled();
@@ -152,7 +154,7 @@ describe('ProfileView submit', () => {
 		(twoFactor as jest.Mock).mockRejectedValue(twoFactorError);
 
 		const { getByTestId } = renderProfile();
-		changeNameAndSubmit(getByTestId);
+		await changeNameAndSubmit(getByTestId);
 
 		await waitFor(() => expect(handleSaveUserProfileError).toHaveBeenCalledWith(twoFactorError, 'saving_profile'));
 	});
@@ -162,7 +164,7 @@ describe('ProfileView submit', () => {
 		(saveUserProfile as jest.Mock).mockRejectedValue(error);
 
 		const { getByTestId } = renderProfile();
-		changeNameAndSubmit(getByTestId);
+		await changeNameAndSubmit(getByTestId);
 
 		await waitFor(() => expect(handleSaveUserProfileError).toHaveBeenCalledWith(error, 'saving_profile'));
 		expect(twoFactor).not.toHaveBeenCalled();
@@ -177,8 +179,7 @@ describe('ProfileView submit', () => {
 		});
 
 		const { getByTestId } = renderProfile();
-		fireEvent.changeText(getByTestId('profile-view-email'), 'jane@rocket.chat');
-		fireEvent.press(getByTestId('profile-view-submit'));
+		await changeAndSubmit(getByTestId, 'profile-view-email', 'jane@rocket.chat');
 
 		await waitFor(() => expect(confirmOnSubmit).toBeDefined());
 		await act(async () => {
