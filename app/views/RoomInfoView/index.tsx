@@ -1,6 +1,6 @@
 import { type CompositeNavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { uniq } from 'lodash';
+import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
 import { type ReactElement, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';

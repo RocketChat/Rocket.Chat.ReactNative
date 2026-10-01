@@ -80,15 +80,17 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 	const handleGetCustomFields = async () => {
 		const result = await getCustomFields();
 		if (result.success && result.customFields?.length) {
-			const visitorCustomFields = result.customFields
-				.filter(field => field.visibility !== 'hidden' && field.scope === 'visitor')
-				.map(field => ({ [field._id]: (visitor.livechatData && visitor.livechatData[field._id]) || '' }))
-				.reduce((ret, field) => ({ ...field, ...ret }), {});
+			const visitorCustomFields = Object.fromEntries(
+				result.customFields
+					.filter(field => field.visibility !== 'hidden' && field.scope === 'visitor')
+					.map(field => [field._id, (visitor.livechatData && visitor.livechatData[field._id]) || ''])
+			);
 
-			const livechatCustomFields = result.customFields
-				.filter(field => field.visibility !== 'hidden' && field.scope === 'room')
-				.map(field => ({ [field._id]: (livechat.livechatData && livechat.livechatData[field._id]) || '' }))
-				.reduce((ret, field) => ({ ...field, ...ret }), {});
+			const livechatCustomFields = Object.fromEntries(
+				result.customFields
+					.filter(field => field.visibility !== 'hidden' && field.scope === 'room')
+					.map(field => [field._id, (livechat.livechatData && livechat.livechatData[field._id]) || ''])
+			);
 
 			return setCustomFields({ visitor: visitorCustomFields, livechat: livechatCustomFields });
 		}

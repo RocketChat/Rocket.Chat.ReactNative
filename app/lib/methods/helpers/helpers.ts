@@ -110,8 +110,8 @@ export async function hasPermission(permissions, rid?: any): Promise<boolean[]> 
 	try {
 		const loginUser = reduxStore.getState().login.user;
 		const userRoles = loginUser?.roles || [];
-		const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-		return permissions.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
+		const mergedRoles = new Set([...roomRoles, ...userRoles]);
+		return permissions.map(permission => permission?.some(r => mergedRoles.has(r)));
 	} catch (e) {
 		log(e);
 	}
