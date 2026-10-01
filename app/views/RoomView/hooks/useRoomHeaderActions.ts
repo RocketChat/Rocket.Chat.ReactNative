@@ -40,7 +40,7 @@ export const useOmnichannelActions = (rid: string, roomStore: RoomStore): IHeade
 		fromSubscription(room => room.departmentId, undefined)
 	);
 	const canForwardGuest = useStore(roomStore, s => s.canForwardGuest);
-	const canReturnQueue = useCanReturnQueue(true);
+	const canReturnQueue = useCanReturnQueue();
 	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(roomStore);
 
 	const returnInquiry = () => {

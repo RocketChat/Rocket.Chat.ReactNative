@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { type IRoomViewProps } from './definitions';
-import { RoomViewContent } from './components/RoomViewContent';
+import { RoomViewContent } from './components/RoomViewContent/RoomViewContent';
 import { RoomViewHeader } from './components/RoomViewHeader/RoomViewHeader';
 import { parseRoomRoute } from './services/parseRoomRoute';
 import { createRoomStore, observeRoom } from './stores/RoomStore';

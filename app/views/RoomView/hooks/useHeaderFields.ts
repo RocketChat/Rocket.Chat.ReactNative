@@ -21,7 +21,6 @@ export interface IHeaderFields {
 	disabled: boolean;
 }
 
-/** `threadName` is only read when `tmid` is set, since the room title is derived from the room. */
 export const useHeaderFields = (roomStore: RoomStore, tmid?: string, threadName?: string): IHeaderFields =>
 	useStore(
 		roomStore,

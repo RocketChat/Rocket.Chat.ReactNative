@@ -19,7 +19,7 @@ const NativeRoomHeader = ({ rid, tmid, name, roomStore }: IRoomViewHeaderProps &
 		<>
 			<NativeRoomTitle tmid={tmid} threadName={name} roomStore={roomStore} />
 			{showsAvatar ? <NativeAvatarItem rid={rid} roomStore={roomStore} /> : <NativeBackButton rid={rid} />}
-			<RoomHeaderActions rid={rid} tmid={tmid} roomStore={roomStore} Sink={NativeRightItems} />
+			<RoomHeaderActions rid={rid} tmid={tmid} roomStore={roomStore} ActionsRenderer={NativeRightItems} />
 		</>
 	);
 };

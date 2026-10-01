@@ -10,41 +10,57 @@ import {
 	useThreadActions
 } from '~/views/RoomView/hooks/useRoomHeaderActions';
 
-type THeaderActionsSink = ComponentType<{ actions: IHeaderAction[] }>;
+type TActionsRenderer = ComponentType<{ actions: IHeaderAction[] }>;
 
 interface IRoomHeaderActionsProps {
 	rid?: string;
 	tmid?: string;
 	roomStore: RoomStore;
-	Sink: THeaderActionsSink;
+	ActionsRenderer: TActionsRenderer;
 }
 
-const OmnichannelActions = ({ rid, roomStore, Sink }: { rid: string; roomStore: RoomStore; Sink: THeaderActionsSink }) => {
+const OmnichannelActions = ({
+	rid,
+	roomStore,
+	ActionsRenderer
+}: {
+	rid: string;
+	roomStore: RoomStore;
+	ActionsRenderer: TActionsRenderer;
+}) => {
 	const actions = useOmnichannelActions(rid, roomStore);
-	return <Sink actions={actions} />;
+	return <ActionsRenderer actions={actions} />;
 };
 
-const ThreadActions = ({ tmid, Sink }: { tmid: string; Sink: THeaderActionsSink }) => {
+const ThreadActions = ({ tmid, ActionsRenderer }: { tmid: string; ActionsRenderer: TActionsRenderer }) => {
 	const actions = useThreadActions(tmid);
-	return <Sink actions={actions} />;
+	return <ActionsRenderer actions={actions} />;
 };
 
-const RoomActions = ({ rid, roomStore, Sink }: { rid: string; roomStore: RoomStore; Sink: THeaderActionsSink }) => {
+const RoomActions = ({
+	rid,
+	roomStore,
+	ActionsRenderer
+}: {
+	rid: string;
+	roomStore: RoomStore;
+	ActionsRenderer: TActionsRenderer;
+}) => {
 	const actions = useRoomActions(rid, roomStore);
-	return <Sink actions={actions} />;
+	return <ActionsRenderer actions={actions} />;
 };
 
-export const RoomHeaderActions = ({ rid, tmid, roomStore, Sink }: IRoomHeaderActionsProps): ReactElement => {
+export const RoomHeaderActions = ({ rid, tmid, roomStore, ActionsRenderer }: IRoomHeaderActionsProps): ReactElement => {
 	const mode = useRoomHeaderMode(rid, tmid, roomStore);
 
 	if (rid && mode === 'omnichannel') {
-		return <OmnichannelActions rid={rid} roomStore={roomStore} Sink={Sink} />;
+		return <OmnichannelActions rid={rid} roomStore={roomStore} ActionsRenderer={ActionsRenderer} />;
 	}
 	if (tmid && mode === 'thread') {
-		return <ThreadActions tmid={tmid} Sink={Sink} />;
+		return <ThreadActions tmid={tmid} ActionsRenderer={ActionsRenderer} />;
 	}
 	if (rid && mode === 'room') {
-		return <RoomActions rid={rid} roomStore={roomStore} Sink={Sink} />;
+		return <RoomActions rid={rid} roomStore={roomStore} ActionsRenderer={ActionsRenderer} />;
 	}
-	return <Sink actions={EMPTY_ACTIONS} />;
+	return <ActionsRenderer actions={EMPTY_ACTIONS} />;
 };

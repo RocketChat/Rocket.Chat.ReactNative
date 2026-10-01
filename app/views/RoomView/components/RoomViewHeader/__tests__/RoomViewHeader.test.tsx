@@ -4,6 +4,7 @@ import { createStore } from 'zustand';
 import { type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
 import { useOmnichannelActions, useRoomActions, useThreadActions } from '~/views/RoomView/hooks/useRoomHeaderActions';
+import { useNativeRoomHeader } from '~/views/RoomView/hooks/useNativeRoomHeader';
 import { RoomViewHeader } from '../RoomViewHeader';
 
 const mockSetOptions = jest.fn();
@@ -28,6 +29,10 @@ jest.mock('~/views/RoomView/hooks/useUnreadsCount', () => ({ useUnreadsCount: ()
 jest.mock('~/views/RoomView/components/LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
 jest.mock('~/views/RoomView/components/RightButtons/RightButtons', () => ({ __esModule: true, default: 'RightButtons' }));
 jest.mock('~/containers/RoomHeader', () => ({ __esModule: true, default: 'RoomHeader' }));
+jest.mock('~/lib/methods/helpers/navigation/headerActions', () => ({
+	...jest.requireActual('~/lib/methods/helpers/navigation/headerActions'),
+	HeaderActions: 'HeaderActions'
+}));
 
 jest.mock('~/views/RoomView/components/RightButtons/useRoomRightButtonsData', () => ({ useRoomRightButtonsData: jest.fn() }));
 jest.mock('~/views/RoomView/components/RightButtons/useHeaderCallPress', () => ({ useHeaderCallPress: jest.fn() }));
@@ -85,16 +90,37 @@ describe('on the JS header', () => {
 		expect(optionsWith('unstable_headerLeftItems')).toHaveLength(0);
 	});
 
-	it('does not mount any header action hook in the screen header', () => {
-		render(<RoomViewHeader rid='rid-1' roomStore={makeRoomStore()} />);
-
-		expect(useRoomActions).not.toHaveBeenCalled();
+	it('renders only the active mode actions in the JS header buttons', () => {
+		const { default: ActualRightButtons } = jest.requireActual('~/views/RoomView/components/RightButtons/RightButtons');
+		render(<RoomViewHeader rid='rid-1' tmid='tmid-1' roomStore={makeRoomStore()} />);
 		expect(useThreadActions).not.toHaveBeenCalled();
+
+		const { props } = lastOptionsWith('headerRight').headerRight();
+		const { toJSON } = render(<ActualRightButtons rid={props.rid} tmid={props.tmid} roomStore={props.roomStore} />);
+
+		expect(useThreadActions).toHaveBeenCalledWith('tmid-1');
+		expect(useRoomActions).not.toHaveBeenCalled();
 		expect(useOmnichannelActions).not.toHaveBeenCalled();
+		expect(toJSON()).toMatchObject({
+			type: 'HeaderActions',
+			props: { actions: [expect.objectContaining({ label: 'Follow_thread' })] }
+		});
 	});
 });
 
 describe('on the native header bar', () => {
+	it('drives the title through the native header instead of a JS title', () => {
+		render(<RoomViewHeader rid='rid-1' roomStore={makeRoomStore()} />);
+
+		expect(useNativeRoomHeader).toHaveBeenCalledWith(
+			expect.objectContaining({ title: 'general' }),
+			undefined,
+			null,
+			expect.any(Function)
+		);
+		expect(optionsWith('headerTitle')).toHaveLength(0);
+	});
+
 	it('leaves the header untouched without a rid', () => {
 		render(<RoomViewHeader roomStore={makeRoomStore()} />);
 

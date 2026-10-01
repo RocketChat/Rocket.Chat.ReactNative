@@ -11,7 +11,7 @@ interface IRightButtonsProps {
 }
 
 const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElement => (
-	<RoomHeaderActions rid={rid} tmid={tmid} roomStore={roomStore} Sink={HeaderActions} />
+	<RoomHeaderActions rid={rid} tmid={tmid} roomStore={roomStore} ActionsRenderer={HeaderActions} />
 );
 
 export default RightButtons;

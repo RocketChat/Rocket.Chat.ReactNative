@@ -6,13 +6,13 @@ import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { getInvitationActions, getInvitationText } from '~/lib/methods/getInvitationData';
 import { type IInviteSubscription } from '~/definitions';
 import { isSubscriptionModel } from '~/definitions/TRoom';
-import { type IRoomViewProps, type RoomStore } from '../definitions';
-import RoomScreen from '../RoomScreen';
-import { useE2EEStatus } from '../hooks/useE2EEStatus';
-import { EncryptedRoom } from './EncryptedRoom';
-import { InvitedRoomScreen } from './InvitedRoomScreen';
-import { MissingRoomE2EEKey } from './MissingRoomE2EEKey';
-import { RoomBackground } from './RoomBackground';
+import { type IRoomViewProps, type RoomStore } from '~/views/RoomView/definitions';
+import RoomScreen from '~/views/RoomView/RoomScreen';
+import { useE2EEStatus } from '~/views/RoomView/hooks/useE2EEStatus';
+import { EncryptedRoom } from '../EncryptedRoom';
+import { InvitedRoomScreen } from '../InvitedRoomScreen';
+import { MissingRoomE2EEKey } from '../MissingRoomE2EEKey';
+import { RoomBackground } from '../RoomBackground';
 
 interface IRoomViewContentProps extends IRoomViewProps {
 	rid?: string;
