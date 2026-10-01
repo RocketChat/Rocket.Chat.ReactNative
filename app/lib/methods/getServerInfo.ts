@@ -17,7 +17,9 @@ import { getServerById } from '../database/services/Server';
 import { compareServerVersion } from './helpers';
 import log from './helpers/log';
 import { getUserSelector } from '~/selectors/login';
-import fetch from './helpers/fetch';
+import fetch, { BASIC_AUTH_KEY } from './helpers/fetch';
+import UserPreferences from './userPreferences';
+import { getServerUserIdKey } from '../constants/keys';
 
 interface IServerInfoFailure {
 	success: false;
@@ -55,13 +57,20 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 		const storeState = store.getState();
 		const user = getUserSelector(storeState);
 
+		// Credentials in the store belong to the currently connected server, so they may only go to a server the
+		// user has already signed in to, never to a host that merely arrived via deep link or the server URL input.
+		const isKnownUser = !!user?.id && UserPreferences.getString(getServerUserIdKey(server)) === user.id;
+		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
+
 		const response = await fetch(`${server}/api/info`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-Auth-Token': user?.token,
-				'X-User-Id': user?.id
-			}
+				'X-Auth-Token': isKnownUser ? user?.token : undefined,
+				'X-User-Id': isKnownUser ? user?.id : undefined,
+				Authorization: basicAuth ? `Basic ${basicAuth}` : undefined
+			},
+			skipCustomHeaders: true
 		});
 		try {
 			const serverInfo: IApiServerInfo = await response.json();
