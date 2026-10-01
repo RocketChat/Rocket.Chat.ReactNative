@@ -176,9 +176,8 @@ export const ComposerInput = memo(
 				saveMessageDraft('');
 			}
 
-			if (text) {
-				inputRef.current?.setNativeProps?.({ text });
-			} else {
+			inputRef.current?.setNativeProps?.({ text });
+			if (!text) {
 				inputRef.current?.clear();
 			}
 
