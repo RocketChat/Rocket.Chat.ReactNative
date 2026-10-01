@@ -57,8 +57,6 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 		const storeState = store.getState();
 		const user = getUserSelector(storeState);
 
-		// Credentials in the store belong to the currently connected server, so they may only go to a server the
-		// user has already signed in to, never to a host that merely arrived via deep link or the server URL input.
 		const isKnownUser = !!user?.id && UserPreferences.getString(getServerUserIdKey(server)) === user.id;
 
 		const response = await fetch(`${server}/api/info`, {
