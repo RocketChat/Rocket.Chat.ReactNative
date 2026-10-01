@@ -19,13 +19,6 @@ interface IRunInitSetters {
 	setLastSeen: (lastSeen: Date | null) => void;
 }
 
-// Settles the screen once one init() run ends. init() resolves whether or not it
-// loads the room, so the finally is the only place that settles it; awaiting it is
-// what keeps the footer from flickering. Lives outside the hook because the React Compiler cannot
-// lower a try/finally inside a hook body.
-//
-// `controller` belongs to this run alone and is never reset by a later one: once a newer run aborts
-// it, this run stops writing for a screen that has already moved on.
 const runInit = async (
 	roomStore: RoomStore,
 	tmid: string | undefined,

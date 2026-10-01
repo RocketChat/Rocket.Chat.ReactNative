@@ -147,7 +147,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 				try {
 					const code = await twoFactor({ method: e.details.method, invalid: !!twoFactorCodeRef.current });
 					twoFactorCodeRef.current = code as any;
-					await handleSetNewPassword();
+					await changePasswordFromProfileView();
 				} catch (twoFactorError) {
 					resetTwoFactorState();
 					if (!isTwoFactorCancelled(twoFactorError)) {
