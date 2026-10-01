@@ -9,6 +9,7 @@ import { getIsMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { RootEnum, type IApplicationState } from '~/definitions';
 import { normalizeDeepLinkingServerHost } from '~/lib/methods/helpers/normalizeDeepLinkingServerHost';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
+import { clearCacheAndReconnect } from '~/lib/methods/clearCache';
 import { store } from '~/lib/store/auxStore';
 
 const isLoggedInto = (server: string, state: IApplicationState) =>
@@ -27,6 +28,14 @@ const waitForState = (isDone: (state: IApplicationState) => boolean, signal: Abo
 			reject(signal.reason);
 		});
 	});
+
+const waitForRoomsSync = (server: string, signal: AbortSignal) => {
+	let roomsSyncStarted = false;
+	return waitForState(state => {
+		roomsSyncStarted ||= state.rooms.isFetching;
+		return roomsSyncStarted && !state.rooms.isFetching && isLoggedInto(server, state);
+	}, signal);
+};
 
 registerTool({
 	name: 'login_with_token',
@@ -50,15 +59,34 @@ registerTool({
 	handler: async ({ host, token }, { signal }) => {
 		const server = normalizeDeepLinkingServerHost(host);
 		if (!isLoggedInto(server, store.getState())) {
-			let roomsSyncStarted = false;
-			const loggedInWithRoomsSynced = waitForState(state => {
-				roomsSyncStarted ||= state.rooms.isFetching;
-				return roomsSyncStarted && !state.rooms.isFetching && isLoggedInto(server, state);
-			}, signal);
+			const loggedInWithRoomsSynced = waitForRoomsSync(server, signal);
 			store.dispatch(deepLinkingOpen({ host, token }, { skipLoginConsent: true }));
 			await loggedInWithRoomsSynced;
 		}
 		return { server, username: store.getState().login.user.username ?? '' };
+	}
+});
+
+registerTool({
+	name: 'clear_cache',
+	description:
+		'Clear the local cache of the current workspace, the same way Settings > Clear cache does, without the confirmation. Resolves once the rooms list has synced again.',
+	timeoutMs: 60_000,
+	inputSchema: jsonSchema<Record<string, never>>({ type: 'object', properties: {}, additionalProperties: false }),
+	outputSchema: jsonSchema<{ server: string }>({
+		type: 'object',
+		properties: { server: { type: 'string' } },
+		required: ['server']
+	}),
+	handler: async (_input, { signal }) => {
+		const { server, version } = store.getState().server;
+		if (!isLoggedInto(server, store.getState())) {
+			throw new Error('Not logged in to a workspace');
+		}
+		const roomsSynced = waitForRoomsSync(server, signal);
+		await clearCacheAndReconnect({ server, version, dispatch: store.dispatch });
+		await roomsSynced;
+		return { server };
 	}
 });
 
