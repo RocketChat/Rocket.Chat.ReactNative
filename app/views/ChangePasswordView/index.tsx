@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { AccessibilityInfo, ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -80,7 +80,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 		serverURL: state.server.server,
 		user: getUserSelector(state)
 	}));
-	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
+	const twoFactorCodeRef = useRef<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
 
 	const {
 		control,
@@ -120,7 +120,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 
 	const resetTwoFactorState = () => {
 		setValue('currentPassword', '');
-		setTwoFactorCode(null);
+		twoFactorCodeRef.current = null;
 	};
 
 	const changePasswordFromProfileView = async () => {
@@ -145,8 +145,8 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 		} catch (e: any) {
 			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
 				try {
-					const code = await twoFactor({ method: e.details.method, invalid: !!twoFactorCode });
-					setTwoFactorCode(code as any);
+					const code = await twoFactor({ method: e.details.method, invalid: !!twoFactorCodeRef.current });
+					twoFactorCodeRef.current = code as any;
 					await handleSetNewPassword();
 				} catch (twoFactorError) {
 					resetTwoFactorState();

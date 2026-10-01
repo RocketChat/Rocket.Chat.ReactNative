@@ -137,6 +137,20 @@ describe('ProfileView submit', () => {
 		expect(handleSaveUserProfileError).not.toHaveBeenCalled();
 	});
 
+	it('flags the next 2FA prompt as invalid when the entered code is rejected', async () => {
+		(saveUserProfile as jest.Mock).mockRejectedValue({ error: 'totp-invalid', details: { method: 'totp' } });
+		(twoFactor as jest.Mock)
+			.mockResolvedValueOnce({ twoFactorCode: '123456', twoFactorMethod: 'totp' })
+			.mockRejectedValue(new TwoFactorCancelledError());
+
+		const { getByTestId } = renderProfile();
+		await changeNameAndSubmit(getByTestId);
+
+		await waitFor(() => expect(twoFactor).toHaveBeenCalledTimes(2));
+		expect(twoFactor).toHaveBeenNthCalledWith(1, { method: 'totp', invalid: false });
+		expect(twoFactor).toHaveBeenNthCalledWith(2, { method: 'totp', invalid: true });
+	});
+
 	it('stays silent when the user cancels the 2FA challenge', async () => {
 		(saveUserProfile as jest.Mock).mockRejectedValue({ error: 'totp-invalid', details: { method: 'totp' } });
 		(twoFactor as jest.Mock).mockRejectedValue(new TwoFactorCancelledError());

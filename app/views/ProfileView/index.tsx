@@ -111,7 +111,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	const inputValues = useWatch({ control });
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(user?.customFields ?? {});
-	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
+	const twoFactorCodeRef = useRef<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
 	const customFieldsRef = useRef<{ [key: string]: TextInput | undefined }>({});
 
 	const isCustomFieldsDirty = () => {
@@ -176,7 +176,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	const resetSavingState = () => {
 		setValue('saving', false);
 		setValue('currentPassword', null);
-		setTwoFactorCode(null);
+		twoFactorCodeRef.current = null;
 	};
 
 	const applySaveSuccess = (params: IProfileParams) => {
@@ -212,8 +212,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 			return { status: 'failed', error: e };
 		}
 		try {
-			const code = await twoFactor({ method: e.details.method, invalid: !!twoFactorCode });
-			setTwoFactorCode(code as any);
+			const code = await twoFactor({ method: e.details.method, invalid: !!twoFactorCodeRef.current });
+			twoFactorCodeRef.current = code as any;
 			await submit();
 			return { status: 'retried' };
 		} catch (twoFactorError) {
@@ -405,7 +405,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 					<Button
 						title={I18n.t('Save_Changes')}
 						type='primary'
-						onPress={handleSubmit(submit)}
+						onPress={() => handleSubmit(submit)()}
 						disabled={!enableSaveChangesButton() && !isCustomFieldsDirty()}
 						testID='profile-view-submit'
 						loading={inputValues.saving}

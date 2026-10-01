@@ -95,6 +95,20 @@ describe('ChangePasswordView two-factor', () => {
 		expect(handleSaveUserProfileError).not.toHaveBeenCalled();
 	});
 
+	it('flags the next 2FA prompt as invalid when the entered code is rejected', async () => {
+		(saveUserProfile as jest.Mock).mockRejectedValue(totpInvalid);
+		(twoFactor as jest.Mock)
+			.mockResolvedValueOnce({ twoFactorCode: '123456', twoFactorMethod: TwoFactorMethods.TOTP })
+			.mockRejectedValue(new TwoFactorCancelledError());
+
+		const { getByTestId } = renderChangePassword();
+		fillAndSubmit(getByTestId);
+
+		await waitFor(() => expect(twoFactor).toHaveBeenCalledTimes(2));
+		expect((twoFactor as jest.Mock).mock.calls[0][0]).toEqual(expect.objectContaining({ invalid: false }));
+		expect((twoFactor as jest.Mock).mock.calls[1][0]).toEqual(expect.objectContaining({ invalid: true }));
+	});
+
 	it('reports the two-factor failure instead of the original totp-invalid error', async () => {
 		const twoFactorFailure = new Error('two-factor prompt blew up');
 		(saveUserProfile as jest.Mock).mockRejectedValue(totpInvalid);
