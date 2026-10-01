@@ -80,31 +80,25 @@ public class AppDelegate: ExpoAppDelegate {
       return
     }
     let legacySuffix = "-experimental.db"
-    databases: for legacy in files {
+    for legacy in files {
       let name = legacy.lastPathComponent
       guard name.hasSuffix(legacySuffix) else { continue }
       let target = containerURL.appendingPathComponent(String(name.dropLast(legacySuffix.count)) + ".db")
       if let targetSize = (try? fileManager.attributesOfItem(atPath: target.path))?[.size] as? Int, targetSize > 0 {
         continue
       }
-      for sidecar in ["-wal", "-shm", "-journal"] {
-        let legacySidecar = URL(fileURLWithPath: legacy.path + sidecar)
-        guard fileManager.fileExists(atPath: legacySidecar.path) else { continue }
-        let targetSidecar = URL(fileURLWithPath: target.path + sidecar)
-        try? fileManager.removeItem(at: targetSidecar)
+      for suffix in ["-wal", "-shm", "-journal", ""] {
+        let from = URL(fileURLWithPath: legacy.path + suffix)
+        let to = URL(fileURLWithPath: target.path + suffix)
+        try? fileManager.removeItem(at: to)
+        guard fileManager.fileExists(atPath: from.path) else { continue }
         do {
-          try fileManager.moveItem(at: legacySidecar, to: targetSidecar)
+          try fileManager.moveItem(at: from, to: to)
         } catch {
-          continue databases
+          // Starting with a fresh DB at `target` would strand the legacy data, since later launches skip a non-empty target.
+          Bugsnag.notifyError(error)
+          fatalError("Failed to migrate \(from.lastPathComponent) to \(to.lastPathComponent): \(error)")
         }
-      }
-      try? fileManager.removeItem(at: target)
-      do {
-        try fileManager.moveItem(at: legacy, to: target)
-      } catch {
-        // Starting with a fresh DB at `target` would strand the legacy data, since later launches skip a non-empty target.
-        Bugsnag.notifyError(error)
-        fatalError("Failed to migrate \(name) to \(target.lastPathComponent): \(error)")
       }
     }
   }
