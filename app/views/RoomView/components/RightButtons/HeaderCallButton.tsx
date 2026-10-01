@@ -1,8 +1,12 @@
 import { type ReactElement, useEffect, useRef } from 'react';
 
+import i18n from '~/i18n';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import { useVideoConf } from '~/lib/hooks/useVideoConf';
 import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall';
+import { useSubscription } from '~/lib/hooks/useSubscription';
+import { useIsInPexipCall } from '~/lib/services/videoConf/usePexipCallStore';
+import { isGroupChat } from '~/lib/methods/helpers/helpers';
 
 const DOUBLE_TAP_WINDOW_MS = 300;
 
@@ -17,6 +21,10 @@ export const HeaderCallButton = ({
 }): ReactElement | null => {
 	const { showInitCallActionSheet, callEnabled, disabledTooltip } = useVideoConf(rid);
 	const { openNewMediaCall, startCallImmediate, hasMediaCallPermission, isInActiveCall } = useNewMediaCall(rid);
+
+	const isInPexipCall = useIsInPexipCall();
+	const room = useSubscription(rid);
+	const isDirect = room?.t === 'd' && !isGroupChat(room);
 
 	const lastTapRef = useRef(0);
 	const pendingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -47,29 +55,30 @@ export const HeaderCallButton = ({
 		}, DOUBLE_TAP_WINDOW_MS);
 	};
 
-	if (hasMediaCallPermission) {
-		return (
-			<HeaderButton.Item
-				accessibilityLabel={accessibilityLabel}
-				disabled={disabled || isInActiveCall}
-				iconName='phone'
-				onPress={handleVoipPress}
-				testID='room-view-header-call'
-			/>
-		);
-	}
+	const showVoiceCall = hasMediaCallPermission && isDirect;
 
-	if (callEnabled) {
-		return (
-			<HeaderButton.Item
-				accessibilityLabel={accessibilityLabel}
-				disabled={disabledTooltip || disabled || isInActiveCall}
-				iconName='phone'
-				onPress={showInitCallActionSheet}
-				testID='room-view-header-call'
-			/>
-		);
-	}
+	if (!showVoiceCall && !callEnabled) return null;
 
-	return null;
+	return (
+		<>
+			{showVoiceCall ? (
+				<HeaderButton.Item
+					accessibilityLabel={accessibilityLabel}
+					disabled={disabled || isInActiveCall}
+					iconName='phone'
+					onPress={handleVoipPress}
+					testID='room-view-header-call'
+				/>
+			) : null}
+			{callEnabled ? (
+				<HeaderButton.Item
+					accessibilityLabel={i18n.t('Video_call')}
+					disabled={disabledTooltip || disabled || isInActiveCall || isInPexipCall}
+					iconName='video'
+					onPress={showInitCallActionSheet}
+					testID='room-view-header-video-call'
+				/>
+			) : null}
+		</>
+	);
 };
