@@ -124,10 +124,22 @@ const RoomsListView = memo(function RoomsListView() {
 		return <ChangePasswordRequired navigation={navigation} />;
 	}
 
+	const rooms = searchEnabled ? searchResults : subscriptions;
+
 	return (
 		<LegendList
-			data={searchEnabled ? searchResults : subscriptions}
-			extraData={searchEnabled ? searchResults : subscriptions}
+			data={rooms}
+			extraData={{
+				rooms,
+				username,
+				useRealName,
+				showLastMessage,
+				displayMode,
+				showAvatar,
+				subscribedRoom,
+				isMasterDetail,
+				width
+			}}
 			keyExtractor={item => `${item.rid}-${searchEnabled}`}
 			getItemType={item => (item.separator ? 'separator' : 'room')}
 			getFixedItemSize={getFixedItemSize}
