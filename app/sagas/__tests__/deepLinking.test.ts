@@ -317,6 +317,32 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		emitSpy.mockRestore();
 	});
 
+	it('logs in without the confirmation prompt when the action skips login consent', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		const { store, dispatchedActions } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken(), { skipLoginConsent: true }));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).not.toHaveBeenCalled();
+		expect(dispatchedActions.some(a => a.type === LOGIN.REQUEST)).toBe(true);
+	});
+
+	it('still shows the confirmation prompt when a link carries skipLoginConsent as a param', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ ...makeParamsWithToken(), skipLoginConsent: 'true' } as any));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+	});
+
 	it('leaves a running app where it was when the login confirmation is declined', async () => {
 		jest.mocked(showConfirmationAlert).mockClear();
 		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());

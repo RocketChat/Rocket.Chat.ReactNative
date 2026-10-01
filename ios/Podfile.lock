@@ -1,4 +1,26 @@
 PODS:
+  - Appduct (0.13.0):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - BugsnagReactNative (8.4.0):
     - hermes-engine
     - RCTRequired
@@ -2994,6 +3016,7 @@ PODS:
     - ZXingObjC/Core
 
 DEPENDENCIES:
+  - "Appduct (from `../node_modules/@appduct/react-native`)"
   - "BugsnagReactNative (from `../node_modules/@bugsnag/react-native`)"
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - EXApplication (from `../node_modules/expo-application/ios`)
@@ -3170,6 +3193,8 @@ SPEC REPOS:
     - ZXingObjC
 
 EXTERNAL SOURCES:
+  Appduct:
+    :path: "../node_modules/@appduct/react-native"
   BugsnagReactNative:
     :path: "../node_modules/@bugsnag/react-native"
   BVLinearGradient:
@@ -3455,6 +3480,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  Appduct: 9c3971867c5ae6f9f7937ff73cfb3de38219365a
   BugsnagReactNative: 33c924422b4d4fac76459ac818500586dd53debf
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   EXApplication: a727f05eb8592f0bc764f6ab8d51eacc158652ec

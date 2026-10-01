@@ -154,8 +154,8 @@ const declineDeepLinkLogin = function* declineDeepLinkLogin() {
 	yield fallbackNavigation();
 };
 
-const ensureDeepLinkLoginConsent = function* ensureDeepLinkLoginConsent(host, params) {
-	if (!params.token) {
+const ensureDeepLinkLoginConsent = function* ensureDeepLinkLoginConsent(host, params, skipLoginConsent = false) {
+	if (!params.token || skipLoginConsent) {
 		return true;
 	}
 	const confirmed = yield call(confirmDeepLinkLogin, host, params);
@@ -290,14 +290,14 @@ const loginWithDeepLinkToken = function* loginWithDeepLinkToken({ params, hostAl
 	yield completeDeepLinkNavigation(params);
 };
 
-const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, user, serverRecord }) {
+const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, user, serverRecord, skipLoginConsent }) {
 	const { host } = params;
 	// search if deep link's server already exists
 	if (user && serverRecord) {
 		yield* handleKnownServerDeepLink({ params, host, version: serverRecord.version });
 		return;
 	}
-	if (!(yield ensureDeepLinkLoginConsent(host, params))) {
+	if (!(yield ensureDeepLinkLoginConsent(host, params, skipLoginConsent))) {
 		return;
 	}
 	const result = yield getServerInfo(host);
@@ -324,7 +324,7 @@ const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, 
 	}
 };
 
-const handleOpen = function* handleOpen({ params }) {
+const handleOpen = function* handleOpen({ params, skipLoginConsent }) {
 	if (params.type === 'shareextension') {
 		yield handleShareExtension({ params });
 		return;
@@ -369,7 +369,7 @@ const handleOpen = function* handleOpen({ params }) {
 		}
 		yield completeDeepLinkNavigation(params);
 	} else {
-		yield handleOpenDifferentServer({ params, server, user, serverRecord });
+		yield handleOpenDifferentServer({ params, server, user, serverRecord, skipLoginConsent });
 	}
 };
 
