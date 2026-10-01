@@ -34,8 +34,8 @@ describe('getServerInfo', () => {
 	it('does not send the session headers to an unknown server', async () => {
 		await getServerInfo(attackerServer);
 
-		expect(requestOptions().headers).not.toHaveProperty('X-Auth-Token', 'secret');
-		expect(requestOptions().headers).not.toHaveProperty('X-User-Id', 'uid');
+		expect(requestOptions().headers).not.toHaveProperty('X-Auth-Token');
+		expect(requestOptions().headers).not.toHaveProperty('X-User-Id');
 	});
 
 	it('does not send the session headers when the stored user id differs', async () => {
@@ -43,6 +43,7 @@ describe('getServerInfo', () => {
 
 		await getServerInfo(attackerServer);
 
-		expect(requestOptions().headers).not.toHaveProperty('X-Auth-Token', 'secret');
+		expect(requestOptions().headers).not.toHaveProperty('X-Auth-Token');
+		expect(requestOptions().headers).not.toHaveProperty('X-User-Id');
 	});
 });
