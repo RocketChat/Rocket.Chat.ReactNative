@@ -24,7 +24,7 @@
 		"storybook:start": "USE_STORYBOOK=true react-native start --reset-cache",
 		"storybook-generate": "sb-rn-get-stories",
 		"bugsnag:upload-android": "bugsnag-cli upload react-native-android",
-		"doctor": "npx react-doctor@latest"
+		"doctor": "react-doctor"
 	},
 	"dependencies": {
 		"@bugsnag/react-native": "8.4.0",
