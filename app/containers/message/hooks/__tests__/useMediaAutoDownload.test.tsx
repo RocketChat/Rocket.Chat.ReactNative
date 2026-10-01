@@ -300,6 +300,12 @@ describe('useMediaAutoDownload', () => {
 			expect(getUrl({ title_link: '/file.png', image_url: URL })).toBe(`${URL}?rc_token=${USER.token}&rc_uid=${USER.id}`);
 		});
 
+		it('returns an untrusted url that already carries rc_token unchanged', () => {
+			const attackerUrl = 'https://evil.example/x.png?rc_token=attacker&rc_uid=attacker';
+			expect(getUrl({ image_url: attackerUrl })).toBe(attackerUrl);
+			expect(getUrl({ title_link: attackerUrl, image_url: URL })).toBe(attackerUrl);
+		});
+
 		it.each([
 			['plain image_url on attacker host', { image_url: 'https://evil.example/pixel.jpg' }],
 			['title_link on attacker host, image_url on the real server', { title_link: 'https://evil.example/x.jpg', image_url: URL }],
