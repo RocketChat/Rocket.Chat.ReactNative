@@ -7,6 +7,7 @@ import { videoConferenceJoin } from '../services/restApi';
 import { isAndroid, showErrorAlert } from './helpers';
 import log from './helpers/log';
 import openLink from './helpers/openLink';
+import { usePexipCallStore } from '../services/videoConf/usePexipCallStore';
 
 const handleBltPermission = async (): Promise<Permission[]> => {
 	const systemVersion = await DeviceInfo.getApiLevel();
@@ -26,13 +27,18 @@ export const handleAndroidBltPermission = async (): Promise<void> => {
 	}
 };
 
-export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean, fromPush?: boolean): Promise<void> => {
+export const videoConfJoin = async (
+	callId: string,
+	{ cam, mic, fromPush, rid }: { cam?: boolean; mic?: boolean; fromPush?: boolean; rid?: string } = {}
+): Promise<void> => {
 	try {
 		const result = await videoConferenceJoin(callId, cam, mic);
 		if (result.success) {
 			const { url, providerName } = result;
 			if (providerName === 'jitsi') {
 				navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });
+			} else if (providerName.toLowerCase().includes('pexip')) {
+				usePexipCallStore.getState().open({ callId, url, rid });
 			} else {
 				openLink(url);
 			}
