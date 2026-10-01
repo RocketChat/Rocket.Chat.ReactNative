@@ -22,9 +22,10 @@ public class AppDelegate: ExpoAppDelegate {
     // This reads existing encryption key or generates a new one for fresh installs
     // Must run before Firebase, Bugsnag, and React Native start
     MMKVKeyManager.initialize()
-    
+
     FirebaseApp.configure()
     Bugsnag.start()
+    migrateLegacyExperimentalDatabases()
     ReplyNotification.configure()
     if !VoipRegion.isChina() {
       VoipService.voipRegistration()
@@ -67,6 +68,39 @@ public class AppDelegate: ExpoAppDelegate {
     watchConnection = WatchConnection(session: WCSession.default)
 
     return result
+  }
+
+  // Renames <=4.72.0 `-experimental.db` files; a 0-byte target is one NotificationService created.
+  private func migrateLegacyExperimentalDatabases() {
+    let fileManager = FileManager.default
+    guard let suite = Bundle.main.object(forInfoDictionaryKey: "AppGroupIdentifier") as? String,
+      let containerURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: suite),
+      let files = try? fileManager.contentsOfDirectory(at: containerURL, includingPropertiesForKeys: nil)
+    else {
+      return
+    }
+    let legacySuffix = "-experimental.db"
+    for legacy in files {
+      let name = legacy.lastPathComponent
+      guard name.hasSuffix(legacySuffix) else { continue }
+      let target = containerURL.appendingPathComponent(String(name.dropLast(legacySuffix.count)) + ".db")
+      if let targetSize = (try? fileManager.attributesOfItem(atPath: target.path))?[.size] as? Int, targetSize > 0 {
+        continue
+      }
+      for suffix in ["-wal", "-shm", "-journal", ""] {
+        let from = URL(fileURLWithPath: legacy.path + suffix)
+        let to = URL(fileURLWithPath: target.path + suffix)
+        try? fileManager.removeItem(at: to)
+        guard fileManager.fileExists(atPath: from.path) else { continue }
+        do {
+          try fileManager.moveItem(at: from, to: to)
+        } catch {
+          // Starting with a fresh DB at `target` would strand the legacy data, since later launches skip a non-empty target.
+          Bugsnag.notifyError(error)
+          fatalError("Failed to migrate \(from.lastPathComponent) to \(to.lastPathComponent): \(error)")
+        }
+      }
+    }
   }
 
   // Linking API

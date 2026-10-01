@@ -68,20 +68,49 @@ open class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
+
     Bugsnag.start(this)
-    
+
+    migrateLegacyExperimentalDatabases()
+
     // Initialize MMKV encryption - reads existing key or generates new one
     // Must run before React Native starts to avoid race conditions
     MMKVKeyManager.initialize(this)
 
     // Load the native entry point for the New Architecture
     loadReactNative(this)
-    
+
 		ApplicationLifecycleDispatcher.onApplicationCreate(this)
   }
 
 	override fun onConfigurationChanged(newConfig: Configuration) {
     super.onConfigurationChanged(newConfig)
     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
+  }
+
+  // Renames <=4.72.0 `-experimental.db.db` files.
+  private fun migrateLegacyExperimentalDatabases() {
+    val dir = java.io.File(applicationInfo.dataDir)
+    val legacySuffix = "-experimental.db.db"
+    val files = dir.listFiles() ?: return
+    for (legacy in files) {
+      if (!legacy.isFile || !legacy.name.endsWith(legacySuffix)) {
+        continue
+      }
+      val baseName = legacy.name.removeSuffix(legacySuffix)
+      val target = java.io.File(dir, "$baseName.db.db")
+      if (target.exists() && target.length() > 0) {
+        continue
+      }
+      for (suffix in listOf("-wal", "-shm", "-journal", "")) {
+        val from = java.io.File(dir, legacy.name + suffix)
+        val to = java.io.File(dir, target.name + suffix)
+        to.delete()
+        if (from.exists() && !from.renameTo(to)) {
+          // Starting with a fresh DB at `target` would strand the legacy data, since later launches skip a non-empty target.
+          throw IllegalStateException("Failed to migrate ${from.name} to ${to.name}")
+        }
+      }
+    }
   }
 }
