@@ -18,6 +18,31 @@ export const encodeAttachmentUrl = (url: string): string => {
 	}
 };
 
+const getOrigin = (url: string | undefined | null): string | null => {
+	if (!url) {
+		return null;
+	}
+	try {
+		const { protocol, username, password, origin } = new URL(url);
+		if ((protocol !== 'http:' && protocol !== 'https:') || username || password) {
+			return null;
+		}
+		return origin;
+	} catch {
+		return null;
+	}
+};
+
+const getCdnPrefix = (): string => {
+	const cdnPrefix = (store?.getState().settings.CDN_PREFIX as string | undefined)?.trim();
+	return cdnPrefix?.startsWith('http') ? cdnPrefix.replace(/\/+$/, '') : '';
+};
+
+const isTrustedUrl = (url: string | undefined | null, server: string): boolean => {
+	const origin = getOrigin(url);
+	return !!origin && (origin === getOrigin(server) || origin === getOrigin(getCdnPrefix()));
+};
+
 export const formatAttachmentUrl = (
 	attachmentUrl: string | undefined,
 	userId: string,
@@ -31,8 +56,13 @@ export const formatAttachmentUrl = (
 		return attachmentUrl;
 	}
 	if (attachmentUrl && attachmentUrl.startsWith('http')) {
-		if (_originalUrl && !_originalUrl.startsWith(server)) {
+		if (_originalUrl && !isTrustedUrl(_originalUrl, server)) {
 			return _originalUrl;
+		}
+
+		// Never send the session credentials to a host other than the workspace (or its CDN).
+		if (!isTrustedUrl(attachmentUrl, server)) {
+			return attachmentUrl;
 		}
 
 		if (attachmentUrl.includes('rc_token')) {
@@ -42,11 +72,11 @@ export const formatAttachmentUrl = (
 		if (protectFiles) return setParamInUrl({ url: attachmentUrl, token, userId });
 		return attachmentUrl;
 	}
-	let cdnPrefix = store?.getState().settings.CDN_PREFIX as string;
-	cdnPrefix = cdnPrefix?.trim();
-	if (cdnPrefix && cdnPrefix.startsWith('http')) {
-		server = cdnPrefix.replace(/\/+$/, '');
+	const cdnPrefix = getCdnPrefix();
+	if (cdnPrefix) {
+		server = cdnPrefix;
 	}
-	if (protectFiles) return setParamInUrl({ url: `${server}${attachmentUrl}`, token, userId });
-	return `${server}${attachmentUrl}`;
+	const url = `${server}${attachmentUrl}`;
+	if (protectFiles && isTrustedUrl(url, server)) return setParamInUrl({ url, token, userId });
+	return url;
 };
