@@ -38,23 +38,34 @@ import { APP, SERVER } from '~/actions/actionsTypes';
 import { RootEnum } from '~/definitions';
 import sdk from '~/lib/services/sdk';
 import { connect } from '~/lib/services/connect';
+import UserPreferences from '~/lib/methods/userPreferences';
+import { getServerUserIdKey, getUserTokenKey } from '~/lib/constants/keys';
 import type { MockConnection } from '~/lib/testUtils/sdkIntegration';
 import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
 
 const HOST = 'https://open.rocket.chat';
+const USER_ID = 'user-open';
+const TOKEN = 'token-open';
 
 describe('selectServer saga — redundant select for the live SDK host', () => {
 	beforeEach(() => {
 		mockConnections.length = 0;
+		jest.clearAllMocks();
+		UserPreferences.removeItem(getServerUserIdKey(HOST));
+		UserPreferences.removeItem(getUserTokenKey(HOST, USER_ID));
 	});
 
 	afterEach(() => {
 		cancelSagaTasks();
 		sdk.disconnect();
+		UserPreferences.removeItem(getServerUserIdKey(HOST));
+		UserPreferences.removeItem(getUserTokenKey(HOST, USER_ID));
 	});
 
 	it('reads the live host off the real SDK client and cancels the select without reconnecting', async () => {
+		UserPreferences.setString(getServerUserIdKey(HOST), USER_ID);
+		UserPreferences.setString(getUserTokenKey(HOST, USER_ID), TOKEN);
 		sdk.initialize(HOST);
 		expect(sdk.host).toBe(HOST);
 
@@ -69,5 +80,22 @@ describe('selectServer saga — redundant select for the live SDK host', () => {
 		expect(insideIndex).toBeGreaterThanOrEqual(0);
 		expect(cancelIndex).toBeGreaterThan(insideIndex);
 		expect(connect).not.toHaveBeenCalled();
+	});
+
+	it('reconnects and stays outside when the same host has no stored credentials (workspace retry)', async () => {
+		sdk.initialize(HOST);
+		expect(sdk.host).toBe(HOST);
+
+		const { store, dispatchedActions } = createRecordingStore(selectServerRoot);
+
+		store.dispatch(selectServerRequest(HOST, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect(connect).toHaveBeenCalledWith({ server: HOST });
+		const outsideIndex = dispatchedActions.findIndex(
+			action => action.type === APP.START && action.root === RootEnum.ROOT_OUTSIDE
+		);
+		expect(outsideIndex).toBeGreaterThanOrEqual(0);
+		expect(dispatchedActions.map(action => action.type)).not.toContain(SERVER.SELECT_CANCEL);
 	});
 });
