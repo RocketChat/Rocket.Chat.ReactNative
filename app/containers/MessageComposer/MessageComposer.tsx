@@ -92,7 +92,7 @@ export const MessageComposer = ({
 
 	const handleLayout = (event: LayoutChangeEvent) => {
 		const { height } = event.nativeEvent.layout;
-		contentHeight.value = height;
+		contentHeight.set(height);
 	};
 
 	const handleSendMessage = async () => {

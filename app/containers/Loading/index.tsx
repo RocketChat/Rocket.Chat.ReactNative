@@ -54,13 +54,15 @@ const Loading = (): ReactElement | null => {
 			// if it's already visible, ignore it
 			if (!visible) {
 				setVisible(_visible);
-				opacity.value = 0;
-				scale.value = 1;
-				opacity.value = withTiming(1, {
-					// 300ms doens't work on expensive navigation animations, like jump to message
-					duration: 500
-				});
-				scale.value = withRepeat(withSequence(withTiming(0, { duration: 1000 }), withTiming(1, { duration: 1000 })), -1);
+				opacity.set(0);
+				scale.set(1);
+				opacity.set(
+					withTiming(1, {
+						// 300ms doens't work on expensive navigation animations, like jump to message
+						duration: 500
+					})
+				);
+				scale.set(withRepeat(withSequence(withTiming(0, { duration: 1000 }), withTiming(1, { duration: 1000 })), -1));
 			}
 
 			// allows to override the onCancel function

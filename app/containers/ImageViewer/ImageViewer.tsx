@@ -83,12 +83,12 @@ export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...p
 	const resetScaleAnimation = () => {
 		'worklet';
 
-		scaleOffset.value = 1;
-		offsetX.value = 0;
-		offsetY.value = 0;
-		scale.value = withSpring(1);
-		translationX.value = withSpring(0, { overshootClamping: true });
-		translationY.value = withSpring(0, { overshootClamping: true });
+		scaleOffset.set(1);
+		offsetX.set(0);
+		offsetY.set(0);
+		scale.set(withSpring(1));
+		translationX.set(withSpring(0, { overshootClamping: true }));
+		translationY.set(withSpring(0, { overshootClamping: true }));
 	};
 
 	const clamp = (value: number, min: number, max: number) => {
@@ -99,28 +99,28 @@ export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...p
 
 	const pinchGesture = usePinchGesture({
 		onUpdate: event => {
-			scale.value = clamp(scaleOffset.value * (event.scale > 0 ? event.scale : 1), 1, 4);
+			scale.set(clamp(scaleOffset.get() * (event.scale > 0 ? event.scale : 1), 1, 4));
 		},
 		onDeactivate: () => {
-			scaleOffset.value = scale.value > 0 ? scale.value : 1;
+			scaleOffset.set(scale.get() > 0 ? scale.get() : 1);
 		}
 	});
 
 	const panGesture = usePanGesture({
 		maxPointers: 2,
 		onActivate: () => {
-			translationX.value = offsetX.value;
-			translationY.value = offsetY.value;
+			translationX.set(offsetX.get());
+			translationY.set(offsetY.get());
 		},
 		onUpdate: event => {
-			const scaleFactor = scale.value - 1;
-			translationX.value = clamp(event.translationX + offsetX.value, -scaleFactor * centerX, scaleFactor * centerX);
-			translationY.value = clamp(event.translationY + offsetY.value, -scaleFactor * centerY, scaleFactor * centerY);
+			const scaleFactor = scale.get() - 1;
+			translationX.set(clamp(event.translationX + offsetX.get(), -scaleFactor * centerX, scaleFactor * centerX));
+			translationY.set(clamp(event.translationY + offsetY.get(), -scaleFactor * centerY, scaleFactor * centerY));
 		},
 		onDeactivate: () => {
-			offsetX.value = translationX.value;
-			offsetY.value = translationY.value;
-			if (scale.value === 1) resetScaleAnimation();
+			offsetX.set(translationX.get());
+			offsetY.set(translationY.get());
+			if (scale.get() === 1) resetScaleAnimation();
 		}
 	});
 
@@ -129,12 +129,12 @@ export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...p
 		maxDelay: 120,
 		maxDistance: 70,
 		onDeactivate: event => {
-			if (scaleOffset.value > 1) resetScaleAnimation();
+			if (scaleOffset.get() > 1) resetScaleAnimation();
 			else {
-				scale.value = withTiming(2, { duration: 200 });
-				translationX.value = withTiming(centerX - event.x, { duration: 200 });
-				offsetX.value = centerX - event.x;
-				scaleOffset.value = 2;
+				scale.set(withTiming(2, { duration: 200 }));
+				translationX.set(withTiming(centerX - event.x, { duration: 200 }));
+				offsetX.set(centerX - event.x);
+				scaleOffset.set(2);
 			}
 		}
 	});

@@ -15,9 +15,11 @@ function Dot({ active }: { active: boolean }) {
 	const scale = useSharedValue(1);
 
 	useEffect(() => {
-		scale.value = withTiming(active ? ANIMATION_SCALE : 1, {
-			duration: ANIMATION_DURATION
-		});
+		scale.set(
+			withTiming(active ? ANIMATION_SCALE : 1, {
+				duration: ANIMATION_DURATION
+			})
+		);
 	}, [active]);
 
 	const animatedStyle = useAnimatedStyle(() => ({

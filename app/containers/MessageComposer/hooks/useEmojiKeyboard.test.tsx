@@ -50,7 +50,7 @@ describe('useEmojiKeyboard', () => {
 		(useSharedValue as jest.Mock)
 			.mockReturnValueOnce(mockSharedValue) // showEmojiPickerSharedValue
 			.mockReturnValueOnce(mockSearchbarSharedValue) // showEmojiSearchbarSharedValue
-			.mockReturnValueOnce({ value: 0 }) // height from useKeyboardAnimation
+			.mockReturnValueOnce({ value: 0, get: () => 0, set: jest.fn() }) // height from useKeyboardAnimation
 			.mockReturnValueOnce(mockKeyboardHeightSharedValue) // keyboardHeight
 			.mockReturnValueOnce(mockKeyboardHeightSharedValue); // previousHeight
 	});
