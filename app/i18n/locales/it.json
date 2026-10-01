@@ -204,6 +204,7 @@
   "E2E_How_It_Works_info2": "Questa è *crittografia end-to-end*, quindi la chiave per cifrare/decifrare i messaggi non verrà salvata sul server. Per questo motivo *devi salvare questa password in un luogo sicuro* dove poterla recuperare in seguito qualora necessario.",
   "E2E_How_It_Works_info3": "Procedendo verrà generata automaticamente una password E2E.",
   "E2E_How_It_Works_info4": "Puoi impostare una nuova password per la chiave di cifratura in qualsiasi momento da uno dei browser dove hai inserito la password E2E esistente.",
+  "E2E_Key_Error": "Questo messaggio è crittografato end-to-end e non può essere decrittografato a causa di una chiave di crittografia non corretta",
   "E2EE_password": "password E2EE",
   "Edit": "Modifica",
   "Edit_attachment_options": "Modifica opzioni allegato",

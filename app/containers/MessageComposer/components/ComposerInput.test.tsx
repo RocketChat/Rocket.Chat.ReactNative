@@ -14,6 +14,7 @@ jest.mock('react-native', () => {
 	const React = jest.requireActual('react');
 	const NativeTextInput = React.forwardRef((props: Record<string, unknown>, ref: unknown) => {
 		const nativeNode = React.useRef({
+			clear: jest.fn(),
 			focus: jest.fn(),
 			setNativeProps: jest.fn(),
 			setSelection: jest.fn()
