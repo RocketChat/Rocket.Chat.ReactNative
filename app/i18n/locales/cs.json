@@ -295,6 +295,7 @@
   "E2E_How_It_Works_info2": "Toto je *šifrování od konce do konce*, takže klíč pro zakódování/dekódování vašich zpráv a nebudou uloženy na pracovní ploše. Z tohoto důvodu *musíte toto heslo uložit někde v bezpečí*, ke kterému budete mít přístup později, pokud budete potřebovat .",
   "E2E_How_It_Works_info3": "Pokud budete pokračovat, bude automaticky vygenerováno heslo E2E.",
   "E2E_How_It_Works_info4": "Nové heslo pro svůj šifrovací klíč můžete také nastavit kdykoli z libovolného prohlížeče, kde jste zadali stávající heslo E2E.",
+  "E2E_Key_Error": "Tato zpráva je šifrována end-to-end a nelze ji dešifrovat kvůli nesprávnému šifrovacímu klíči",
   "E2EE_password": "E2EE heslo",
   "Edit": "Upravit",
   "Edit_attachment_options": "Upravit možnosti přílohy",
