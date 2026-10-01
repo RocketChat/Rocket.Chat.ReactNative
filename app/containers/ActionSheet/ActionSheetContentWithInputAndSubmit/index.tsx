@@ -105,7 +105,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	autoComplete?: TextInputProps['autoComplete'];
 }): ReactElement => {
 	const { colors } = useTheme();
-	const [inputValues, setInputValues] = useState(inputs.map(() => ''));
+	const [inputValues, setInputValues] = useState(() => inputs.map(() => ''));
 	const [inputRefs] = useState(() => inputs.map(() => createRef<TextInput>()));
 
 	const handleInputChange = (value: string, index: number) => {

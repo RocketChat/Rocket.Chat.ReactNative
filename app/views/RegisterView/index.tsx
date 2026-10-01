@@ -77,7 +77,7 @@ const RegisterView = ({ route }: RegisterViewProps) => {
 	const formValues = useWatch({ control });
 	const { password = '', confirmPassword = '' } = formValues;
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
-	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
+	const [customFields, setCustomFields] = useState(() => getCustomFields(parsedCustomFields));
 	const [saving, setSaving] = useState(false);
 	const { passwordPolicies, isPasswordValid } = useVerifyPassword(password, confirmPassword);
 	const customFieldsRef = useRef<{ [key: string]: TextInput | undefined }>({});
