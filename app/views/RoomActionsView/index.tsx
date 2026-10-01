@@ -245,12 +245,15 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 			}
 
 			const canAutoTranslate = canAutoTranslateMethod();
-			const canEdit = await this.canEdit();
-			const canToggleEncryption = await this.canToggleEncryption();
-			const canViewMembers = await this.canViewMembers();
-			const canCreateTeam = await this.canCreateTeam();
-			const canAddChannelToTeam = await this.hasMoveToTeamPermission(room.rid);
-			const canConvertTeam = await this.canConvertTeam();
+			const [canEdit, canToggleEncryption, canViewMembers, canCreateTeam, canAddChannelToTeam, canConvertTeam] =
+				await Promise.all([
+					this.canEdit(),
+					this.canToggleEncryption(),
+					this.canViewMembers(),
+					this.canCreateTeam(),
+					this.hasMoveToTeamPermission(room.rid),
+					this.canConvertTeam()
+				]);
 			const hasE2EEWarning = EncryptionUtils.hasE2EEWarning({
 				encryptionEnabled,
 				E2EKey: room.E2EKey,
