@@ -47,6 +47,14 @@ const mockRoomB = createRecord('etag-room-b');
 const mockUser = createRecord('etag-user', 'john');
 const mockLoggedUser = createRecord('etag-me');
 
+const initialETags = new Map([mockRoomA, mockRoomB, mockUser, mockLoggedUser].map(record => [record, record.avatarETag]));
+
+beforeEach(() => {
+	initialETags.forEach((avatarETag, record) => {
+		record.avatarETag = avatarETag;
+	});
+});
+
 const mockCollections: Record<string, ReturnType<typeof createCollection>> = {
 	subscriptions: createCollection([mockRoomA, mockRoomB], record => (record === mockRoomA ? 'room-a' : 'room-b')),
 	users: createCollection([mockUser], () => 'user-id'),
