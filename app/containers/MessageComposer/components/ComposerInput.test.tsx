@@ -119,6 +119,16 @@ describe('ComposerInput', () => {
 		expect(inputRef.current?.setNativeProps).toHaveBeenCalledWith({ text: '  programmatic text  ' });
 	});
 
+	it('resets the native text prop when clearing so the same text can be set again', () => {
+		const { composerRef, inputRef } = renderInput();
+
+		act(() => composerRef.current?.setInput('edit'));
+		act(() => composerRef.current?.setInput(''));
+
+		expect(inputRef.current?.setNativeProps).toHaveBeenLastCalledWith({ text: '' });
+		expect(inputRef.current?.clear).toHaveBeenCalledTimes(1);
+	});
+
 	it('passes the typed raw value to debounced autocomplete before the input text is trimmed', () => {
 		const { composerRef } = renderInput();
 		const input = screen.getByTestId('message-composer-input');
