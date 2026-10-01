@@ -16,7 +16,7 @@ const NO_CATEGORIES: ISidebarCategory[] = [];
 
 export const useSubscriptions = () => {
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
-	const server = useAppSelector(state => state.server);
+	const server = useAppSelector(state => state.server.server);
 	const [rows, setRows] = useState<TSubscriptionModel[]>([]);
 	const [loading, setLoading] = useState(true);
 	const roles = useAppSelector(state => getUserSelector(state).roles, shallowEqual);
