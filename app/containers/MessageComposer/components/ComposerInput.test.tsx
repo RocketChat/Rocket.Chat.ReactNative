@@ -179,4 +179,17 @@ describe('ComposerInput', () => {
 		expect(room.messageActionStore.getState().action).toEqual({ kind: 'quote', messageIds: ['room-quote'] });
 		expect(room.composerRef.current?.getText()).toBe('room draft');
 	});
+
+	it('shows the room placeholder only while the raw input text is empty', () => {
+		const { composerRef } = renderInput();
+		const input = screen.getByTestId('message-composer-input');
+
+		expect(screen.getByText('Message #Room', { includeHiddenElements: true })).toBeOnTheScreen();
+
+		fireEvent.changeText(input, ' ');
+		expect(screen.queryByText('Message #Room', { includeHiddenElements: true })).not.toBeOnTheScreen();
+
+		act(() => composerRef.current?.setInput(''));
+		expect(screen.getByText('Message #Room', { includeHiddenElements: true })).toBeOnTheScreen();
+	});
 });
