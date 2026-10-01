@@ -86,28 +86,6 @@ const RoomInfoView = (): ReactElement => {
 
 	const { colors } = useTheme();
 
-	// Prevents from flashing RoomInfoView on the header title before fetching actual room data
-	useLayoutEffect(() => {
-		setHeader(false);
-	}, []);
-
-	useEffect(() => {
-		const listener = addListener('focus', () => (isLivechat ? loadVisitor() : null));
-		return () => listener();
-	}, []);
-
-	useEffect(
-		() => () => {
-			subscription.current?.unsubscribe();
-		},
-		[]
-	);
-
-	useEffect(() => {
-		loadRoom();
-		if (isDirect) loadUser();
-	}, []);
-
 	const setHeader = (canEdit?: boolean) => {
 		const HeaderRight = () => (
 			<HeaderButton.Container>
@@ -228,6 +206,28 @@ const RoomInfoView = (): ReactElement => {
 		setShowEdit(canEdit);
 		setHeader(roomType === SubscriptionType.DIRECT ? false : canEdit);
 	};
+
+	// Prevents from flashing RoomInfoView on the header title before fetching actual room data
+	useLayoutEffect(() => {
+		setHeader(false);
+	}, []);
+
+	useEffect(() => {
+		const listener = addListener('focus', () => (isLivechat ? loadVisitor() : null));
+		return () => listener();
+	}, []);
+
+	useEffect(
+		() => () => {
+			subscription.current?.unsubscribe();
+		},
+		[]
+	);
+
+	useEffect(() => {
+		loadRoom();
+		if (isDirect) loadUser();
+	}, []);
 
 	const createDirect = async (): Promise<void | ISubscription> => {
 		if (!isEmpty(member)) return;

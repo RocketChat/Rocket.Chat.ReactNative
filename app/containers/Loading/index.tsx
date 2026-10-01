@@ -49,6 +49,13 @@ const Loading = (): ReactElement | null => {
 	const scale = useSharedValue(1);
 	const { colors } = useTheme();
 
+	const reset = () => {
+		cancelAnimation(scale);
+		cancelAnimation(opacity);
+		setVisible(false);
+		setOnCancel(null);
+	};
+
 	const onEventReceived = ({ visible: _visible, onCancel: _onCancel = null }: ILoadingEvent) => {
 		if (_visible) {
 			// if it's already visible, ignore it
@@ -80,13 +87,6 @@ const Loading = (): ReactElement | null => {
 
 		return () => EventEmitter.removeListener(LOADING_EVENT, listener);
 	}, [visible]);
-
-	const reset = () => {
-		cancelAnimation(scale);
-		cancelAnimation(opacity);
-		setVisible(false);
-		setOnCancel(null);
-	};
 
 	const onCancelHandler = () => {
 		if (!onCancel) {

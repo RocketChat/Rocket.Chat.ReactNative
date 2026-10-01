@@ -69,9 +69,6 @@ const AuthenticationWebView = ({ route }: AuthenticationWebViewProps) => {
 	const oauthRedirectRegex = new RegExp(`(?=.*(${server}))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
 	const iframeRedirectRegex = new RegExp(`(?=.*(${server}))(?=.*(event|loginToken|token))`, 'g');
 
-	// Force 3s delay so the server has time to evaluate the token
-	const debouncedLogin = useDebounce((params: ILoginCredentials) => login(params), 3000);
-
 	const login = async (params: ILoginCredentials) => {
 		if (loggingRef.current) {
 			return;
@@ -86,6 +83,9 @@ const AuthenticationWebView = ({ route }: AuthenticationWebViewProps) => {
 			navigation.pop();
 		}
 	};
+
+	// Force 3s delay so the server has time to evaluate the token
+	const debouncedLogin = useDebounce((params: ILoginCredentials) => login(params), 3000);
 
 	const tryLogin = useDebounce(
 		async () => {

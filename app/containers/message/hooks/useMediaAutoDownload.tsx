@@ -91,35 +91,6 @@ export const useMediaAutoDownload = ({
 	);
 	const isEncrypted = currentFile.e2e === 'pending';
 
-	useEffect(() => {
-		const handleCache = async () => {
-			if (url) {
-				const isCached = await checkCache();
-				if (isCached) {
-					return;
-				}
-				if (isDownloadActive(url)) {
-					resumeDownload();
-					return;
-				}
-				await tryAutoDownload();
-			}
-		};
-		if (fileType === 'image' && isImageBase64(url)) {
-			dispatchDownloadEvent('cache_hit');
-		} else {
-			handleCache();
-		}
-
-		return () => {
-			emitter.off(`downloadMedia${url}`, downloadMediaListener);
-		};
-	}, []);
-
-	const downloadMediaListener = useCallback((uri: string) => {
-		updateCurrentFile(uri);
-	}, []);
-
 	const resumeDownload = () => {
 		dispatchDownloadEvent('download_started');
 		emitter.on(`downloadMedia${url}`, downloadMediaListener);
@@ -173,6 +144,35 @@ export const useMediaAutoDownload = ({
 		}
 		return result?.exists;
 	};
+
+	const downloadMediaListener = useCallback((uri: string) => {
+		updateCurrentFile(uri);
+	}, []);
+
+	useEffect(() => {
+		const handleCache = async () => {
+			if (url) {
+				const isCached = await checkCache();
+				if (isCached) {
+					return;
+				}
+				if (isDownloadActive(url)) {
+					resumeDownload();
+					return;
+				}
+				await tryAutoDownload();
+			}
+		};
+		if (fileType === 'image' && isImageBase64(url)) {
+			dispatchDownloadEvent('cache_hit');
+		} else {
+			handleCache();
+		}
+
+		return () => {
+			emitter.off(`downloadMedia${url}`, downloadMediaListener);
+		};
+	}, []);
 
 	const onPress = () => {
 		if (status === 'loading') {
