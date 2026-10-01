@@ -17,7 +17,6 @@ interface IOptions {
 	signal?: AbortSignal;
 	method?: TMethods;
 	body?: any;
-	skipCustomHeaders?: boolean;
 }
 
 // this form is required by Rocket.Chat's parser in "app/statistics/server/lib/UAParserCustom.js"
@@ -44,10 +43,9 @@ const withoutEmptyValues = (requestHeaders: CustomHeaders): Record<string, strin
 	Object.fromEntries(Object.entries(requestHeaders).filter((entry): entry is [string, string] => typeof entry[1] === 'string'));
 
 export default (url: string, options: IOptions = {}): Promise<Response> => {
-	const { skipCustomHeaders, ...fetchOptions } = options;
 	const customOptions = {
-		...fetchOptions,
-		headers: withoutEmptyValues({ ...options.headers, ...(skipCustomHeaders ? headers : RocketChatSettings.customHeaders) })
+		...options,
+		headers: withoutEmptyValues({ ...options.headers, ...RocketChatSettings.customHeaders })
 	};
 	return fetch(url, customOptions);
 };

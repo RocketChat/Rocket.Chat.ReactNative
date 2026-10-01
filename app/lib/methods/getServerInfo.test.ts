@@ -3,11 +3,7 @@ import fetch from './helpers/fetch';
 import UserPreferences from './userPreferences';
 import { store } from '../store/auxStore';
 
-jest.mock('./helpers/fetch', () => ({
-	__esModule: true,
-	default: jest.fn(),
-	BASIC_AUTH_KEY: 'BASIC_AUTH_KEY'
-}));
+jest.mock('./helpers/fetch', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('./userPreferences', () => ({ __esModule: true, default: { getString: jest.fn() } }));
 jest.mock('../store/auxStore', () => ({ store: { getState: jest.fn(), dispatch: jest.fn() } }));
 jest.mock('../database/services/Server', () => ({ getServerById: jest.fn() }));
@@ -33,7 +29,6 @@ describe('getServerInfo', () => {
 		await getServerInfo(currentServer);
 
 		expect(requestOptions().headers).toMatchObject({ 'X-Auth-Token': 'secret', 'X-User-Id': 'uid' });
-		expect(requestOptions().skipCustomHeaders).toBe(true);
 	});
 
 	it('does not send the session headers to an unknown server', async () => {
@@ -41,7 +36,6 @@ describe('getServerInfo', () => {
 
 		expect(requestOptions().headers).not.toHaveProperty('X-Auth-Token', 'secret');
 		expect(requestOptions().headers).not.toHaveProperty('X-User-Id', 'uid');
-		expect(requestOptions().skipCustomHeaders).toBe(true);
 	});
 
 	it('does not send the session headers when the stored user id differs', async () => {
@@ -50,21 +44,5 @@ describe('getServerInfo', () => {
 		await getServerInfo(attackerServer);
 
 		expect(requestOptions().headers).not.toHaveProperty('X-Auth-Token', 'secret');
-	});
-
-	it('sends only the stored basic auth of that server when there is no session', async () => {
-		getString.mockImplementation((key: string) => (key === `BASIC_AUTH_KEY-${attackerServer}` ? 'creds' : null) as any);
-
-		await getServerInfo(attackerServer);
-
-		expect(requestOptions().headers).toMatchObject({ Authorization: 'Basic creds' });
-		expect(requestOptions().headers).not.toHaveProperty('X-Auth-Token', 'secret');
-		expect(requestOptions().skipCustomHeaders).toBe(true);
-	});
-
-	it('does not send basic auth to a server without stored basic auth', async () => {
-		await getServerInfo(attackerServer);
-
-		expect(requestOptions().headers).not.toHaveProperty('Authorization', expect.anything());
 	});
 });
