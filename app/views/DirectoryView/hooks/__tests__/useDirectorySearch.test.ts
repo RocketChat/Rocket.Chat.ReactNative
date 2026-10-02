@@ -55,6 +55,19 @@ describe('useDirectorySearch', () => {
 		expect(roomIds(result.current.data)).toEqual(['a', 'b', 'c', 'd', 'e']);
 	});
 
+	it('keeps one row per room when a page repeats a room', async () => {
+		respondWith(rooms('a', 'a', 'b'), 5);
+		const { result } = renderHook(() => useDirectorySearch('channels'));
+		await waitFor(() => expect(result.current.data).toHaveLength(2));
+		expect(roomIds(result.current.data)).toEqual(['a', 'b']);
+
+		respondWith(rooms('c', 'd'), 5);
+		await runDebounced(result.current.loadMore);
+
+		expect(mockGetDirectory).toHaveBeenLastCalledWith(expect.objectContaining({ offset: 3 }));
+		expect(roomIds(result.current.data)).toEqual(['a', 'b', 'c', 'd']);
+	});
+
 	it('requests the next page after every row the server returned', async () => {
 		respondWith(rooms('a', 'b', 'c'), 7);
 		const { result } = renderHook(() => useDirectorySearch('channels'));
@@ -116,5 +129,29 @@ describe('useDirectorySearch', () => {
 		});
 
 		expect(roomIds(result.current.data)).toEqual(['x']);
+	});
+
+	it('drops a page that arrives while a newer search waits for its debounce', async () => {
+		respondWith(rooms('a', 'b'), 10);
+		const { result } = renderHook(() => useDirectorySearch('channels'));
+		await waitFor(() => expect(result.current.data).toHaveLength(2));
+
+		const respondToLoadMore = respondLater();
+		await runDebounced(result.current.loadMore);
+
+		act(() => result.current.onSearchChangeText('x'));
+		await act(async () => {
+			respondToLoadMore(rooms('c', 'd'), 10);
+		});
+		expect(roomIds(result.current.data)).toEqual(['a', 'b']);
+
+		respondWith(rooms('x'), 1);
+		await act(async () => {
+			await jest.runOnlyPendingTimersAsync();
+		});
+
+		expect(mockGetDirectory).toHaveBeenLastCalledWith(expect.objectContaining({ text: 'x', offset: 0 }));
+		expect(roomIds(result.current.data)).toEqual(['x']);
+		expect(result.current.loading).toBe(false);
 	});
 });
