@@ -21,6 +21,8 @@ import { videoConfJoin } from '../lib/methods/videoConf';
 import { videoConferenceCancel, notifyUser, videoConferenceStart } from '../lib/services/restApi';
 import { type ICallInfo } from '../reducers/videoConf';
 import { isInActiveVoipCall } from '../lib/services/voip/isInActiveVoipCall';
+import { confirmEndVoipCallForVideoConf, endVoipCallForVideoConf } from '../lib/services/voip/endVoipCallForVideoConf';
+import { ALLOW_CONCURRENT_INCOMING_CALLS } from '../lib/constants/callWaiting';
 
 interface IGenericAction extends Action {
 	type: string;
@@ -48,7 +50,7 @@ const CALL_INTERVAL = 3000;
 const CALL_ATTEMPT_LIMIT = 10;
 
 function* onDirectCall(payload: ICallInfo) {
-	if (isInActiveVoipCall()) return;
+	if (!ALLOW_CONCURRENT_INCOMING_CALLS && isInActiveVoipCall()) return;
 
 	const calls = yield* appSelector(state => state.videoConf.calls);
 	const currentCall = calls.find(c => c.callId === payload.callId);
@@ -258,15 +260,31 @@ function* acceptCall({ payload: { callId } }: { payload: { callId: string } }) {
 	try {
 		const calls = yield* appSelector(state => state.videoConf.calls);
 		const currentCall = calls.find(c => c.callId === callId);
-		if (currentCall && currentCall.action === 'call') {
-			const userId = yield* appSelector(state => state.login.user.id);
-			yield call(notifyUser, `${currentCall.uid}/video-conference`, {
-				action: 'accepted',
-				params: { uid: userId, rid: currentCall.rid, callId: currentCall.callId }
-			});
-			yield put(setVideoConfCall({ ...currentCall, action: 'accepted' }));
-			hideNotification();
+		if (!currentCall || currentCall.action !== 'call') {
+			return;
 		}
+
+		// The conference takes the microphone over, so an ongoing VoIP call has to go first.
+		// Declining leaves both the call and the incoming notification untouched.
+		const confirmed = yield* call(confirmEndVoipCallForVideoConf);
+		if (!confirmed) {
+			return;
+		}
+		// The caller may have given up while the confirmation was on screen — don't drop the VoIP
+		// call for a conference that is no longer ringing.
+		const pendingCalls = yield* appSelector(state => state.videoConf.calls);
+		if (!pendingCalls.some(c => c.callId === callId && c.action === 'call')) {
+			return;
+		}
+		yield* call(endVoipCallForVideoConf);
+
+		const userId = yield* appSelector(state => state.login.user.id);
+		yield call(notifyUser, `${currentCall.uid}/video-conference`, {
+			action: 'accepted',
+			params: { uid: userId, rid: currentCall.rid, callId: currentCall.callId }
+		});
+		yield put(setVideoConfCall({ ...currentCall, action: 'accepted' }));
+		hideNotification();
 	} catch {
 		// do nothing
 	}
