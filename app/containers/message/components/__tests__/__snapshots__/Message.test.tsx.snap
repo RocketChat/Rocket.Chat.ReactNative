@@ -152751,6 +152751,48 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                       <View
                         style={
                           {
+                            "flex": 1,
+                            "height": 150,
+                          }
+                        }
+                      >
+                        <ViewManagerAdapter_ExpoImage
+                          containerViewRef={{"current":"Object"}}
+                          contentFit="contain"
+                          contentPosition={
+                            {
+                              "left": "50%",
+                              "top": "50%",
+                            }
+                          }
+                          flex={1}
+                          nativeViewRef={{"current":"NativeComponent"}}
+                          onError={[Function]}
+                          onLoad={[Function]}
+                          onLoadStart={[Function]}
+                          onProgress={[Function]}
+                          placeholder={[]}
+                          sfEffect={null}
+                          source={
+                            [
+                              {
+                                "uri": "https://open.rocket.chat/assets/logo.png",
+                              },
+                            ]
+                          }
+                          style={
+                            {
+                              "flex": 1,
+                            }
+                          }
+                          symbolSize={null}
+                          symbolWeight={null}
+                          transition={null}
+                        />
+                      </View>
+                      <View
+                        style={
+                          {
                             "alignItems": "flex-start",
                             "flex": 1,
                             "flexDirection": "column",
@@ -156092,6 +156134,48 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                         ]
                       }
                     >
+                      <View
+                        style={
+                          {
+                            "flex": 1,
+                            "height": 150,
+                          }
+                        }
+                      >
+                        <ViewManagerAdapter_ExpoImage
+                          containerViewRef={{"current":"Object"}}
+                          contentFit="contain"
+                          contentPosition={
+                            {
+                              "left": "50%",
+                              "top": "50%",
+                            }
+                          }
+                          flex={1}
+                          nativeViewRef={{"current":"NativeComponent"}}
+                          onError={[Function]}
+                          onLoad={[Function]}
+                          onLoadStart={[Function]}
+                          onProgress={[Function]}
+                          placeholder={[]}
+                          sfEffect={null}
+                          source={
+                            [
+                              {
+                                "uri": "https://open.rocket.chat/assets/logo.png",
+                              },
+                            ]
+                          }
+                          style={
+                            {
+                              "flex": 1,
+                            }
+                          }
+                          symbolSize={null}
+                          symbolWeight={null}
+                          transition={null}
+                        />
+                      </View>
                       <View
                         style={
                           {
