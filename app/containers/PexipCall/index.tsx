@@ -54,6 +54,7 @@ const PexipCall = () => {
 	useEffect(
 		() => () => {
 			stopPexipLoopbackProxy();
+			setProxied(null);
 		},
 		[callId]
 	);
