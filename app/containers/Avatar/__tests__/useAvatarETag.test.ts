@@ -61,6 +61,8 @@ const mockCollections: Record<string, ReturnType<typeof createCollection>> = {
 	loggedUsers: createCollection([mockLoggedUser], () => 'me')
 };
 
+jest.unmock('../useAvatarETag');
+
 jest.mock('~/lib/database', () => ({
 	active: { get: (table: string) => mockCollections[table] },
 	servers: { get: () => mockCollections.loggedUsers }
