@@ -2,11 +2,12 @@ import { type ServerInteraction } from '@rocket.chat/ui-kit';
 
 import { type ITriggerAction, ModalActions, type TModalAction } from '~/containers/UIKit/interfaces';
 import { toServerModalInteractionType, toUserInteraction } from '~/containers/UIKit/interactionAdapters';
-import EventEmitter from './helpers/events';
-import fetch from './helpers/fetch';
-import { random } from './helpers';
-import Navigation from '../navigation/appNavigation';
-import sdk from '../services/sdk';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { random } from '~/lib/methods/helpers';
+import Navigation from '~/lib/navigation/appNavigation';
+import { appsApiFetch } from '~/lib/services/appsApiFetch';
+
+const TRIGGER_TIMEOUT = 5000;
 
 const triggersId = new Map();
 
@@ -19,11 +20,13 @@ const invalidateTriggerId = (id: string) => {
 export const generateTriggerId = (appId?: string): string => {
 	const triggerId = random(17);
 	triggersId.set(triggerId, appId);
+	setTimeout(() => triggersId.delete(triggerId), TRIGGER_TIMEOUT);
 
 	return triggerId;
 };
 
 type THandledServerInteractionType = Extract<ServerInteraction, { type: 'modal.open' | 'modal.update' | 'errors' }>['type'];
+const handledServerInteractionTypes: string[] = [ModalActions.OPEN, ModalActions.UPDATE, ModalActions.ERRORS, ModalActions.CLOSE];
 type THandledServerPayload = {
 	triggerId: string;
 	viewId?: string;
@@ -33,7 +36,7 @@ type THandledServerPayload = {
 };
 
 export const handlePayloadUserInteraction = (
-	type: THandledServerInteractionType,
+	type: THandledServerInteractionType | string,
 	{ triggerId, ...data }: THandledServerPayload
 ): TModalAction | undefined => {
 	if (!triggersId.has(triggerId)) {
@@ -41,6 +44,9 @@ export const handlePayloadUserInteraction = (
 	}
 
 	const triggerAppId = invalidateTriggerId(triggerId);
+	if (!handledServerInteractionTypes.includes(type)) {
+		return ModalActions.UNSUPPORTED;
+	}
 	const payloadAppId = data.appId ?? triggerAppId;
 	if (!payloadAppId) {
 		return;
@@ -100,6 +106,7 @@ export async function triggerAction({
 	appId,
 	rid,
 	mid,
+	tmid,
 	viewId,
 	container,
 	...rest
@@ -108,17 +115,13 @@ export async function triggerAction({
 	const payload = rest.payload ?? rest.value;
 
 	try {
-		const { host, currentLogin } = sdk;
-		if (!host || !currentLogin) {
-			throw new Error('triggerAction requires an initialized, authenticated session');
-		}
-		const { userId, authToken } = currentLogin;
 		const interaction = toUserInteraction({
 			type,
 			actionId,
 			appId,
 			rid,
 			mid,
+			tmid,
 			viewId,
 			container,
 			payload,
@@ -129,24 +132,9 @@ export async function triggerAction({
 			triggerId
 		});
 
-		// we need to use fetch because this.sdk.post add /v1 to url
-		const result = await fetch(`${host}/api/apps/ui.interaction/${appId}/`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-Auth-Token': authToken,
-				'X-User-Id': userId
-			},
-			body: JSON.stringify(interaction)
-		});
-
-		if (!result.ok) {
-			throw new Error(`Failed to trigger action: ${result.status}`);
-		}
-
+		const result = await appsApiFetch(`ui.interaction/${appId}/`, { method: 'POST', body: interaction });
 		const text = await result.text();
-		if (!text || text.trim() === '') {
-			// modal.close has no body, but returns ok status
+		if (!text.trim()) {
 			return ModalActions.CLOSE;
 		}
 
@@ -160,7 +148,10 @@ export async function triggerAction({
 		const { type: interactionType, ...data } = parsed;
 		const modalType = toServerModalInteractionType(interactionType ?? '');
 		if (!modalType) {
-			throw new Error(`Unknown modal interaction type: ${interactionType ?? 'undefined'}`);
+			if (interactionType) {
+				return ModalActions.UNSUPPORTED;
+			}
+			return;
 		}
 		if (modalType === ModalActions.CLOSE) {
 			return ModalActions.CLOSE;
@@ -168,8 +159,7 @@ export async function triggerAction({
 
 		return handlePayloadUserInteraction(modalType, data as THandledServerPayload);
 	} catch (e) {
-		throw e instanceof Error ? e : new Error('Failed to trigger action');
-	} finally {
 		invalidateTriggerId(triggerId);
+		throw e instanceof Error ? e : new Error('Failed to trigger action');
 	}
 }

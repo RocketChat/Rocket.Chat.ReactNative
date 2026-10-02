@@ -1,4 +1,4 @@
-import { call, cancel, delay, fork, put, race, select, spawn, take, takeLatest } from 'redux-saga/effects';
+import { all, call, cancel, delay, fork, put, race, select, spawn, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
@@ -38,6 +38,7 @@ import { disconnect, loginWithPassword, login } from '../lib/services/connect';
 import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
+import { useAppsStore } from '../lib/apps/appsStore';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
@@ -205,6 +206,16 @@ const fetchRolesFork = function* fetchRolesFork() {
 	}
 };
 
+const fetchAppsFork = function* fetchAppsFork() {
+	try {
+		sdk.subscribe('stream-apps', 'apps').catch(log);
+		const { fetchActionButtons, fetchTranslations } = useAppsStore.getState();
+		yield all([call(fetchActionButtons), call(fetchTranslations)]);
+	} catch (e) {
+		log(e);
+	}
+};
+
 const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
 	try {
 		yield getSlashCommands();
@@ -328,6 +339,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield call(fetchEnterpriseModules, { user });
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
+		yield fork(fetchAppsFork);
 		yield fork(fetchSlashCommandsFork);
 		yield fork(registerPushTokenFork);
 		yield fork(fetchUsersPresenceFork);

@@ -13,6 +13,7 @@ import { loginRequest, logout, setLoginServices, setUser } from '~/actions/login
 import { waitForLoginReady } from './waitForLoginReady';
 import sdk, { type IStreamDataListener } from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
+import { onAppsStreamData, useAppsStore } from '../apps/appsStore';
 import { pendingHangups } from './voip/pendingHangups';
 import I18n from '~/i18n';
 import {
@@ -56,6 +57,7 @@ let notifyAllListener: any;
 let rolesListener: any;
 let userPresenceListener: Promise<IStreamDataListener> | undefined;
 let notifyLoggedListener: any;
+let appsListener: Promise<IStreamDataListener> | undefined;
 let logoutListener: any;
 
 function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
@@ -78,6 +80,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			rolesListener,
 			userPresenceListener,
 			notifyLoggedListener,
+			appsListener,
 			logoutListener
 		].forEach(listener => listener?.then(stopListener));
 
@@ -181,6 +184,8 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			'stream-roles',
 			protectedFunction((ddpMessage: any) => onRolesChanged(ddpMessage))
 		);
+
+		appsListener = sdk.onStreamData('stream-apps', protectedFunction(onAppsStreamData));
 
 		// RC 4.1
 		userPresenceListener = sdk.onStreamData('stream-user-presence', (ddpMessage: { fields: { args?: any; uid?: any } }) => {
@@ -421,6 +426,7 @@ function abort(): void {
 function disconnect(): void {
 	sdk.disconnect();
 	mediaSessionInstance.reset();
+	useAppsStore.getState().reset();
 }
 
 async function getWebsocketInfo({

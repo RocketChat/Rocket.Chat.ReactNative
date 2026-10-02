@@ -195,6 +195,42 @@ const reactAsNewUsers = (count, messageId, emoji) => {
     return reactors;
 };
 
+const appsApiGet = (path) => {
+    const response = getWithRetry(`${data.server}/api/apps/${path}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers
+        }
+    });
+
+    return json(response.body);
+};
+
+const findAppActionButton = (username, password, context, actionId) => {
+    login(username, password);
+
+    const button = appsApiGet('actionButtons').find(b => b.context === context && b.actionId === actionId);
+
+    if (!button) {
+        throw new Error(`No ${context} action button "${actionId}" installed on ${data.server}`);
+    }
+
+    return button;
+};
+
+const getServerAppTranslation = (username, password, appId, key) => {
+    login(username, password);
+
+    const app = appsApiGet('languages').apps.find(a => a.id === appId);
+    const translation = app && app.languages && app.languages.en && app.languages.en[key];
+
+    if (!translation) {
+        throw new Error(`App ${appId} has no en translation for "${key}"`);
+    }
+
+    return translation;
+};
+
 const createDM = (username, password, otherUsername) => {
     login(username, password);
 
@@ -294,6 +330,8 @@ output.utils = {
     login,
     getDeepLink,
     createDM,
+    findAppActionButton,
+    getServerAppTranslation,
     sleep,
     groupMessageCount
 };

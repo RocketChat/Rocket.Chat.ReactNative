@@ -24,12 +24,48 @@ export const toUserInteraction = ({
 	container,
 	mid,
 	rid,
+	tmid,
 	triggerId,
 	viewId,
 	payload,
 	view,
 	isCleared
 }: ITriggerAction & { triggerId: string }): UserInteraction => {
+	if (type === ActionTypes.ACTION_BUTTON) {
+		if (!actionId || !payload?.context) {
+			throw new Error('actionId and payload.context are required for actionButton interaction');
+		}
+
+		switch (payload.context) {
+			case 'roomAction':
+				if (!rid) {
+					throw new Error('rid is required for roomAction interaction');
+				}
+				return { type: 'actionButton', actionId, payload: { context: 'roomAction' }, rid, triggerId };
+			case 'messageBoxAction':
+				if (!rid) {
+					throw new Error('rid is required for messageBoxAction interaction');
+				}
+				return {
+					type: 'actionButton',
+					actionId,
+					payload: { context: 'messageBoxAction', message: payload.message ?? '' },
+					tmid,
+					rid,
+					triggerId
+				};
+			case 'messageAction':
+				if (!mid || !rid) {
+					throw new Error('mid and rid are required for messageAction interaction');
+				}
+				return { type: 'actionButton', actionId, payload: { context: 'messageAction' }, mid, tmid, rid, triggerId };
+			case 'userDropdownAction':
+				return { type: 'actionButton', actionId, payload: { context: 'userDropdownAction' }, triggerId };
+			default:
+				throw new Error(`Unsupported actionButton context: ${payload.context}`);
+		}
+	}
+
 	if (type === ActionTypes.ACTION) {
 		if (!actionId || !container) {
 			throw new Error('actionId and container are required for blockAction interaction');
