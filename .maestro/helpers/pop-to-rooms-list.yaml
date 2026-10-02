@@ -26,5 +26,13 @@ tags:
           commands:
             - tapOn:
                 id: 'BackButton'
+      - runFlow:
+          when:
+            platform: iOS
+            visible:
+              text: 'Back(, .*)?'
+          commands:
+            - tapOn:
+                text: 'Back(, .*)?'
       - waitForAnimationToEnd:
           timeout: 5000
