@@ -39,6 +39,7 @@ import TeamChannelsView from '../views/TeamChannelsView';
 import ReadReceiptsView from '../views/ReadReceiptView';
 import CannedResponsesListView from '../views/CannedResponsesListView';
 import CannedResponseDetail from '../views/CannedResponseDetail';
+import ConferenceView from '../views/ConferenceView';
 import JitsiMeetView from '../views/JitsiMeetView';
 import DiscussionsView from '../views/DiscussionsView';
 import ChangeAvatarView from '../views/ChangeAvatarView';
@@ -122,6 +123,7 @@ const AddChannelTeamViewScreen = AddChannelTeamView as any;
 const AddExistingChannelViewScreen = AddExistingChannelView as any;
 const CannedResponseDetailScreen = CannedResponseDetail as any;
 const JitsiMeetViewScreen = JitsiMeetView as any;
+const ConferenceViewScreen = ConferenceView as any;
 const ChangeAvatarViewScreen = ChangeAvatarView as any;
 const UserNotificationPrefViewScreen: ComponentType<StaticScreenProps<undefined>> = UserNotificationPrefView as any;
 const SettingsViewScreen: ComponentType<StaticScreenProps<undefined>> = SettingsView as any;
@@ -357,6 +359,12 @@ const InsideStack = createNativeStackNavigator({
 		CallView: createNativeStackScreen({
 			screen: CallViewScreen,
 			options: { headerShown: false }
+		}),
+		// Lives at the root, not in ChatsStack: the conference header is mounted app-wide, so
+		// "return to call" has to resolve from Settings, Profile and Admin too.
+		ConferenceView: createNativeStackScreen({
+			screen: ConferenceViewScreen,
+			options: { headerShown: false, animation: isIOS ? 'default' : 'none' }
 		})
 	}
 }).with(({ Navigator }) => {

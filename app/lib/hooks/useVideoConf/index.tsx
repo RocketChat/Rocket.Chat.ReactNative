@@ -7,7 +7,8 @@ import { getUserSelector } from '~/selectors/login';
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
 import log from '~/lib/methods/helpers/log';
-import { handleAndroidBltPermission } from '~/lib/methods/videoConf';
+import { openConferenceCall } from '~/lib/methods/openConferenceCall';
+import { requestVoipCallPermissions } from '~/lib/methods/voipCallPermissions';
 import { videoConferenceGetCapabilities } from '~/lib/services/restApi';
 import { useAppSelector } from '../useAppSelector';
 import StartACallActionSheet from './StartACallActionSheet';
@@ -37,45 +38,54 @@ export const useVideoConf = (
 
 	const isServer5OrNewer = useMemo(() => compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0'), [serverVersion]);
 
-	const canInitAnCall = async (): Promise<boolean> => {
-		if (!callEnabled) return false;
+	const checkCallAvailability = async (): Promise<{ canInit: boolean; providerName?: string }> => {
+		if (!callEnabled) return { canInit: false };
 
 		if (isServer5OrNewer) {
 			try {
-				await videoConferenceGetCapabilities();
-				return true;
+				const capabilities = await videoConferenceGetCapabilities();
+				return { canInit: true, providerName: capabilities.success ? capabilities.providerName : undefined };
 			} catch (error: any) {
 				const isAdmin = !!user.roles?.includes('admin');
 				handleErrors(isAdmin, error?.data?.error || availabilityErrors.NOT_CONFIGURED);
-				return false;
+				return { canInit: false };
 			}
 		}
-		return true;
+		return { canInit: true };
 	};
 
 	const showInitCallActionSheet = async () => {
 		try {
-			const canInit = await canInitAnCall();
-			if (canInit) {
-				showActionSheet({
-					children: <StartACallActionSheet rid={rid} roomType={roomType} />,
-					portraitSnaps: ['60%'],
-					landscapeSnaps: ['90%'],
-					enableContentPanningGesture: false,
-					fullContainer: true
-				});
+			const { canInit, providerName } = await checkCallAvailability();
+			if (!canInit) {
+				return;
+			}
 
-				const permission = await Camera.getCameraPermissionsAsync();
+			if (providerName === 'livekit') {
+				await openConferenceCall({ rid });
+				return;
+			}
+
+			showActionSheet({
+				children: <StartACallActionSheet rid={rid} roomType={roomType} />,
+				portraitSnaps: ['60%'],
+				landscapeSnaps: ['90%'],
+				enableContentPanningGesture: false,
+				fullContainer: true
+			});
+
+			const permission = await Camera.getCameraPermissionsAsync();
+			try {
 				if (!permission?.granted) {
-					try {
-						await Camera.requestCameraPermissionsAsync();
-						handleAndroidBltPermission();
-					} catch (error) {
-						log(error);
-					}
+					await Camera.requestCameraPermissionsAsync();
 				}
+				// Legacy Jitsi path is a WebView too, so BT headset audio needs the same grant.
+				await requestVoipCallPermissions();
+			} catch (error) {
+				log(error);
 			}
 		} catch (error) {
+			showErrorAlert(i18n.t('error-init-video-conf'));
 			log(error);
 		}
 	};
