@@ -42,6 +42,14 @@ window.addEventListener('popstate', function() {
 
 const SSO_AUTH_TYPES = ['saml', 'cas', 'iframe'];
 
+const getHostOrUrl = (url: string) => {
+	try {
+		return parse(url, true).host || url;
+	} catch {
+		return url;
+	}
+};
+
 type AuthenticationWebViewProps = StaticScreenProps<{ authType: string; url: string; ssoToken?: string }>;
 
 const AuthenticationWebView = ({ route }: AuthenticationWebViewProps) => {
@@ -78,10 +86,9 @@ const AuthenticationWebView = ({ route }: AuthenticationWebViewProps) => {
 			await loginOAuthOrSso(params);
 		} catch (e) {
 			console.warn(e);
-		} finally {
-			loggingRef.current = false;
-			navigation.pop();
 		}
+		loggingRef.current = false;
+		navigation.pop();
 	};
 
 	// Force 3s delay so the server has time to evaluate the token
@@ -118,12 +125,7 @@ const AuthenticationWebView = ({ route }: AuthenticationWebViewProps) => {
 		const url = decodeURIComponent(webViewState.url);
 
 		if (SSO_AUTH_TYPES.includes(authType)) {
-			try {
-				const parsed = parse(url, true);
-				setHeaderTitle(parsed.host || url);
-			} catch {
-				setHeaderTitle(url);
-			}
+			setHeaderTitle(getHostOrUrl(url));
 		}
 		if (authType === 'saml' || authType === 'cas') {
 			handleSamlOrCasRedirect(url);

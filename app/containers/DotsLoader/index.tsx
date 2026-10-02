@@ -20,7 +20,7 @@ function Dot({ active }: { active: boolean }) {
 				duration: ANIMATION_DURATION
 			})
 		);
-	}, [active]);
+	}, [active, scale]);
 
 	const animatedStyle = useAnimatedStyle(() => ({
 		transform: [{ scale: scale.value }]

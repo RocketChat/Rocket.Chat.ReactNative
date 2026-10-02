@@ -80,7 +80,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 		serverURL: state.server.server,
 		user: getUserSelector(state)
 	}));
-	const twoFactorCodeRef = useRef<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
+	const hasPromptedTwoFactorRef = useRef(false);
 
 	const {
 		control,
@@ -118,11 +118,6 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 		setValue('saving', false);
 	};
 
-	const resetTwoFactorState = () => {
-		setValue('currentPassword', '');
-		twoFactorCodeRef.current = null;
-	};
-
 	const changePasswordFromProfileView = async () => {
 		if (newPassword !== confirmNewPassword) {
 			setError('newPassword', { message: 'Passwords must match', type: 'validate' });
@@ -145,11 +140,11 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 		} catch (e: any) {
 			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
 				try {
-					const code = await twoFactor({ method: e.details.method, invalid: !!twoFactorCodeRef.current });
-					twoFactorCodeRef.current = code as any;
+					await twoFactor({ method: e.details.method, invalid: hasPromptedTwoFactorRef.current });
+					hasPromptedTwoFactorRef.current = true;
 					await changePasswordFromProfileView();
 				} catch (twoFactorError) {
-					resetTwoFactorState();
+					setValue('currentPassword', '');
 					if (!isTwoFactorCancelled(twoFactorError)) {
 						handleSaveUserProfileError(twoFactorError, 'saving_profile');
 					}
@@ -158,7 +153,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 				setError('currentPassword', { message: I18n.t('error-invalid-password'), type: 'validate' });
 				AccessibilityInfo.announceForAccessibility(I18n.t('error-invalid-password'));
 			} else {
-				resetTwoFactorState();
+				setValue('currentPassword', '');
 				handleSaveUserProfileError(e, 'saving_profile');
 			}
 		}
@@ -167,6 +162,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 
 	const handleSetNewPassword = async () => {
 		if (fromProfileView) {
+			hasPromptedTwoFactorRef.current = false;
 			await changePasswordFromProfileView();
 		} else {
 			await changePassword();

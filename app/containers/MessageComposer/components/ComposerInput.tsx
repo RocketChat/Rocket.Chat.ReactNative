@@ -39,7 +39,6 @@ import { executeCommandPreview } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useAltTextSupported } from '~/lib/hooks/useAltTextSupported';
-import { usePrevious } from '~/lib/hooks/usePrevious';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { loadDraftMessage } from '~/lib/methods/draftMessage';
 import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
@@ -75,7 +74,7 @@ export const ComposerInput = memo(
 		}
 		const route = useRoute<RouteProp<ChatsStackParamList, 'RoomView'>>();
 		const usedCannedResponse = route.params?.usedCannedResponse;
-		const prevAction = usePrevious(action);
+		const previousActionRef = useRef(action);
 
 		// subscribe to changes on mic state to update draft after a message is sent
 		useMicOrSend();
@@ -117,9 +116,12 @@ export const ComposerInput = memo(
 				}
 			};
 
+			const previousAction = previousActionRef.current;
+			previousActionRef.current = action;
+
 			if (sharing) return;
 
-			if (prevAction?.kind === 'edit' && action?.kind !== 'edit') {
+			if (previousAction?.kind === 'edit' && action?.kind !== 'edit') {
 				setInput('');
 				return;
 			}

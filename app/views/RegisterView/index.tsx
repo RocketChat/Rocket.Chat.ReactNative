@@ -74,8 +74,8 @@ const RegisterView = ({ route }: RegisterViewProps) => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
-	const formValues = useWatch({ control });
-	const { password = '', confirmPassword = '' } = formValues;
+	const inputValues = useWatch({ control });
+	const { password = '', confirmPassword = '' } = inputValues;
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(() => getCustomFields(parsedCustomFields));
 	const [saving, setSaving] = useState(false);
@@ -94,7 +94,7 @@ const RegisterView = ({ route }: RegisterViewProps) => {
 	};
 
 	const validateDefaultFormInfo = () => {
-		const isValid = validationSchema.isValidSync(formValues);
+		const isValid = validationSchema.isValidSync(inputValues);
 		if (!parsedCustomFields) {
 			return isValid;
 		}

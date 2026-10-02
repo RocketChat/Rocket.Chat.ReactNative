@@ -14,6 +14,11 @@ interface IUseRoomInitParams {
 	onThreadMessagesLoaded: () => void;
 }
 
+interface IInitTarget {
+	rid: string;
+	tmid?: string;
+}
+
 interface IRunInitSetters {
 	settle: () => void;
 	setLastSeen: (lastSeen: Date | null) => void;
@@ -59,9 +64,8 @@ export function useRoomInit({
 	// The unread divider anchor belongs to this screen, not to the room — see stores/RoomScreenContext.
 	const [lastSeen, setLastSeen] = useState<Date | null>(null);
 	const hasInitWork = !!rid && isAuthenticated && ready;
-	const initTarget = hasInitWork ? `${rid}:${tmid}` : null;
-	const [settledTarget, setSettledTarget] = useState<string | null>(null);
-	const loading = initTarget !== null && settledTarget !== initTarget;
+	const [settledTarget, setSettledTarget] = useState<IInitTarget | null>(null);
+	const loading = hasInitWork && (settledTarget?.rid !== rid || settledTarget?.tmid !== tmid);
 	// One controller per init() run. A new run aborts the one it supersedes and never resets it, so a
 	// still-in-flight predecessor can no longer un-cancel itself and write for a screen that moved on.
 	const initControllerRef = useRef<AbortController | null>(null);
@@ -69,7 +73,7 @@ export function useRoomInit({
 	const clearLastSeen = useCallback(() => setLastSeen(null), []);
 
 	useEffect(() => {
-		if (initTarget === null) {
+		if (!hasInitWork) {
 			return;
 		}
 		const task = InteractionManager.runAfterInteractions(() => {
@@ -77,7 +81,7 @@ export function useRoomInit({
 			const controller = new AbortController();
 			initControllerRef.current = controller;
 			return runInit(roomStore, tmid, onLoadedRef, controller, {
-				settle: () => setSettledTarget(initTarget),
+				settle: () => setSettledTarget({ rid, tmid }),
 				setLastSeen
 			});
 		});
@@ -86,7 +90,7 @@ export function useRoomInit({
 			setSettledTarget(null);
 			task.cancel();
 		};
-	}, [initTarget, roomStore, tmid, onLoadedRef]);
+	}, [hasInitWork, rid, tmid, roomStore, onLoadedRef]);
 
 	return { loading, lastSeen, clearLastSeen };
 }

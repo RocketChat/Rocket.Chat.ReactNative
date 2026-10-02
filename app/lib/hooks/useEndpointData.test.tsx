@@ -98,4 +98,23 @@ describe('useFetch', () => {
 		await waitFor(() => expect(sdk.get).toHaveBeenCalledTimes(2));
 		expect(sdk.get).toHaveBeenLastCalledWith(url, { msgId: 'another-message' });
 	});
+
+	it('refetches when the endpoint changes', async () => {
+		jest
+			.mocked(sdk.get)
+			.mockReset()
+			.mockResolvedValue({ success: true, message } as any);
+		const { rerender } = renderHook(
+			({ endpoint }: { endpoint: typeof url | 'chat.getThreadsList' }) =>
+				useEndpointData(endpoint as typeof url, { msgId: message._id }),
+			{
+				initialProps: { endpoint: url }
+			}
+		);
+		await waitFor(() => expect(sdk.get).toHaveBeenCalledTimes(1));
+
+		rerender({ endpoint: 'chat.getThreadsList' });
+		await waitFor(() => expect(sdk.get).toHaveBeenCalledTimes(2));
+		expect(sdk.get).toHaveBeenLastCalledWith('chat.getThreadsList', { msgId: message._id });
+	});
 });

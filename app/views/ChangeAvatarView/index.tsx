@@ -65,6 +65,23 @@ function reducer(state: IState, action: IReducerAction) {
 	return state;
 }
 
+const pickAvatarImage = async (fromCamera: boolean, includeBase64: boolean) => {
+	const options = {
+		cropping: true,
+		compressImageQuality: 0.8,
+		freeStyleCropEnabled: true,
+		cropperAvoidEmptySpaceAroundImage: false,
+		cropperChooseText: I18n.t('Choose'),
+		cropperCancelText: I18n.t('Cancel'),
+		includeBase64
+	};
+	const response: Image = fromCamera
+		? await ImagePicker.openCamera({ ...options, useFrontCamera: true })
+		: await ImagePicker.openPicker(options);
+	const dataUri = includeBase64 && response.data ? `data:image/jpeg;base64,${response.data}` : '';
+	return { url: response.path, data: dataUri };
+};
+
 const ChangeAvatarView = () => {
 	const {
 		control,
@@ -163,51 +180,42 @@ const ChangeAvatarView = () => {
 		setError('rawImageUrl', { message: I18n.t('Invalid_URL'), type: 'validate' });
 	};
 
-	const submit = async () => {
-		setSaving(true);
+	const saveAvatar = async () => {
+		const roomId = context === 'room' ? room?.rid : undefined;
 		try {
-			if (context === 'room' && room?.rid) {
-				// Change Rooms Avatar
-				await changeRoomsAvatar(room.rid, state?.data);
-			} else if (state?.url) {
-				// Change User's Avatar
+			if (roomId) {
+				await changeRoomsAvatar(roomId, state.data);
+			} else if (state.url) {
 				await changeUserAvatar(state);
 			} else if (state.resetUserAvatar) {
-				// Change User's Avatar
 				await resetUserAvatar(userId);
 			}
+			hasSaved.current = true;
+			return true;
 		} catch (e: any) {
-			setSaving(false);
-			if (isTwoFactorCancelled(e)) {
-				return;
+			if (!isTwoFactorCancelled(e)) {
+				log(e);
+				showErrorAlert(e.message, I18n.t('Oops'));
 			}
-			log(e);
-			return showErrorAlert(e.message, I18n.t('Oops'));
+			return false;
 		}
+	};
+
+	const submit = async () => {
+		setSaving(true);
+		const saved = await saveAvatar();
 		setSaving(false);
-		hasSaved.current = true;
-		return navigation.goBack();
+		if (saved) {
+			navigation.goBack();
+		}
 	};
 
 	const pickImage = async (isCam = false) => {
-		const options = {
-			cropping: true,
-			compressImageQuality: 0.8,
-			freeStyleCropEnabled: true,
-			cropperAvoidEmptySpaceAroundImage: false,
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: includeBase64InImagePicker
-		};
 		try {
-			const response: Image =
-				isCam === true
-					? await ImagePicker.openCamera({ ...options, useFrontCamera: true })
-					: await ImagePicker.openPicker(options);
-			const dataUri = includeBase64InImagePicker && response.data ? `data:image/jpeg;base64,${response.data}` : '';
+			const { url, data } = await pickAvatarImage(isCam === true, includeBase64InImagePicker);
 			dispatchAvatar({
 				type: AvatarStateActions.CHANGE_AVATAR,
-				payload: { url: response.path, data: dataUri, service: 'upload' }
+				payload: { url, data, service: 'upload' }
 			});
 		} catch (error: any) {
 			if (error?.code !== 'E_PICKER_CANCELLED') {

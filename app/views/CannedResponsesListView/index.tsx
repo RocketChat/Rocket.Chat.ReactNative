@@ -138,13 +138,15 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		}
 	};
 
+	const getScopeName = (cannedResponse: ICannedResponse) => {
+		if (cannedResponse.departmentId) {
+			return departments.find(department => department._id === cannedResponse.departmentId)?.name || 'Department';
+		}
+		return departments.find(department => department._id === cannedResponse.scope)?.name ?? '';
+	};
+
 	const cannedResponsesScopeName: ICannedResponse[] = departments.length
-		? cannedResponses.map(cr => ({
-				...cr,
-				scopeName: cr?.departmentId
-					? departments.find(dep => dep._id === cr.departmentId)?.name || 'Department'
-					: (departments.find(dep => dep._id === cr.scope)?.name ?? '')
-			}))
+		? cannedResponses.map(cannedResponse => ({ ...cannedResponse, scopeName: getScopeName(cannedResponse) }))
 		: [];
 
 	const searchCallback = useDebounce(async (text = '', department = '', depId = '') => {

@@ -111,7 +111,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	const inputValues = useWatch({ control });
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(user?.customFields ?? {});
-	const twoFactorCodeRef = useRef<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
+	const hasPromptedTwoFactorRef = useRef(false);
 	const customFieldsRef = useRef<{ [key: string]: TextInput | undefined }>({});
 
 	const isCustomFieldsDirty = () => {
@@ -176,7 +176,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	const resetSavingState = () => {
 		setValue('saving', false);
 		setValue('currentPassword', null);
-		twoFactorCodeRef.current = null;
+		hasPromptedTwoFactorRef.current = false;
 	};
 
 	const applySaveSuccess = (params: IProfileParams) => {
@@ -212,8 +212,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 			return { status: 'failed', error: e };
 		}
 		try {
-			const code = await twoFactor({ method: e.details.method, invalid: !!twoFactorCodeRef.current });
-			twoFactorCodeRef.current = code as any;
+			await twoFactor({ method: e.details.method, invalid: hasPromptedTwoFactorRef.current });
+			hasPromptedTwoFactorRef.current = true;
 			await submit();
 			return { status: 'retried' };
 		} catch (twoFactorError) {

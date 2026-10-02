@@ -94,8 +94,6 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 
 	useDerivedValue(() => {
 		if (isPanning.get()) {
-			// When the user is panning, always the currentTime.value is been set different from the currentTime provided by
-			// the audio in progress
 			currentTime.set((translateX.get() * duration.get()) / maxWidth.get() || 0);
 		} else {
 			translateX.set((currentTime.get() * maxWidth.get()) / duration.get() || 0);
