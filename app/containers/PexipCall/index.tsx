@@ -1,5 +1,5 @@
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
@@ -8,6 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import WebView, { type WebViewProps } from 'react-native-webview';
 import { useShallow } from 'zustand/react/shallow';
 
+import ActivityIndicator from '~/containers/ActivityIndicator';
 import { CustomIcon } from '~/containers/CustomIcon';
 import Touch from '~/containers/Touch';
 import i18n from '~/i18n';
@@ -22,7 +23,8 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import { PexipCallTimer } from './PexipCallTimer';
-import { isTlsError, startPexipLoopbackProxy, stopPexipLoopbackProxy } from './pexipLoopbackProxy';
+import { isTlsError } from './pexipLoopbackProxy';
+import { usePexipLoopbackUrl } from './usePexipLoopbackUrl';
 import { usePexipPresenceLease } from './usePexipPresenceLease';
 
 const MINI_WIDTH = 120;
@@ -47,23 +49,10 @@ const PexipCall = () => {
 	const room = useSubscription(call?.rid);
 	const isPersistentChatEnabled = useAppSelector(state => !!state.settings.VideoConf_Enable_Persistent_Chat);
 	usePexipPresenceLease(call?.callId, isPersistentChatEnabled);
-	const callId = call?.callId;
-	const [proxied, setProxied] = useState<{ callId: string; url: string } | null>(null);
-	const proxiedUrl = proxied && proxied.callId === callId ? proxied.url : null;
+	const loopback = usePexipLoopbackUrl(call);
 
-	useEffect(
-		() => () => {
-			stopPexipLoopbackProxy();
-			setProxied(null);
-		},
-		[callId]
-	);
-
-	// iOS: WKWebView cannot be told to accept an untrusted certificate, so the page is re-served from loopback.
-	const onError: WebViewProps['onError'] = async ({ nativeEvent }) => {
-		if (!call || proxiedUrl || !isTlsError(nativeEvent.code)) return;
-		const url = await startPexipLoopbackProxy(call.url);
-		if (url) setProxied({ callId: call.callId, url });
+	const onError: WebViewProps['onError'] = ({ nativeEvent }) => {
+		loopback.onTlsError(nativeEvent.code);
 	};
 
 	const minX = MINI_MARGIN;
@@ -127,6 +116,12 @@ const PexipCall = () => {
 
 	if (!call) return null;
 
+	const loadingView = (
+		<View style={[StyleSheet.absoluteFill, styles.webview]}>
+			<ActivityIndicator absolute size='large' color={colors.fontWhite} />
+		</View>
+	);
+
 	return (
 		<GestureDetector gesture={Gesture.Exclusive(pan, tap)}>
 			<Animated.View style={[styles.container, containerStyle]} testID={minimized ? 'pexip-call-minimized' : 'pexip-call'}>
@@ -163,24 +158,34 @@ const PexipCall = () => {
 					</View>
 				) : null}
 				<View style={[styles.webviewContainer, !minimized && { marginBottom: insets.bottom }]}>
-					<WebView
-						source={{ uri: proxiedUrl ?? call.url }}
-						style={styles.webview}
-						userAgent={userAgent}
-						javaScriptEnabled
-						domStorageEnabled
-						allowsInlineMediaPlayback
-						allowsPictureInPictureMediaPlayback
-						mediaCapturePermissionGrantType='grant'
-						mediaPlaybackRequiresUserAction={false}
-						ignoreSslErrors
-						onError={onError}
-						renderError={(_domain, _code, description) => (
-							<View style={[StyleSheet.absoluteFill, styles.webview, styles.error]}>
-								<Text style={[sharedStyles.textRegular, { color: colors.fontWhite }]}>{description}</Text>
-							</View>
-						)}
-					/>
+					{loopback.loading ? (
+						loadingView
+					) : (
+						<WebView
+							source={{ uri: loopback.url ?? call.url }}
+							style={styles.webview}
+							userAgent={userAgent}
+							javaScriptEnabled
+							domStorageEnabled
+							allowsInlineMediaPlayback
+							allowsPictureInPictureMediaPlayback
+							mediaCapturePermissionGrantType='grant'
+							mediaPlaybackRequiresUserAction={false}
+							ignoreSslErrors
+							onError={onError}
+							startInLoadingState
+							renderLoading={() => loadingView}
+							renderError={(_domain, code, description) =>
+								isTlsError(code) && loopback.loading ? (
+									loadingView
+								) : (
+									<View style={[StyleSheet.absoluteFill, styles.webview, styles.error]}>
+										<Text style={[sharedStyles.textRegular, { color: colors.fontWhite }]}>{description}</Text>
+									</View>
+								)
+							}
+						/>
+					)}
 					{minimized ? (
 						<View
 							style={StyleSheet.absoluteFill}
