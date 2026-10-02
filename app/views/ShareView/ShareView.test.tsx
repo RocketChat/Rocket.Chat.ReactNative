@@ -478,7 +478,7 @@ describe('ShareView', () => {
 		const originStore = createMessageActionStore();
 		act(() => originStore.getState().actions.setQuoteMessageIds(['origin-quote']));
 		const originComposerRef = createRef<IMessageComposerRef>();
-		const { result } = renderOriginChooseMedia(originStore, originComposerRef);
+		const { result, unmount } = renderOriginChooseMedia(originStore, originComposerRef);
 		await act(async () => {
 			await Promise.resolve();
 			fireEvent.changeText(screen.getByTestId('message-composer-input'), 'origin text');
@@ -512,6 +512,8 @@ describe('ShareView', () => {
 		expect(originComposerRef.current?.getText()).toBe('Share text');
 		expect(originStore.getState().action).toEqual({ kind: 'quote', messageIds: ['share-quote'] });
 		act(() => shareRender.unmount());
+		unmount();
+		jest.useRealTimers();
 	});
 
 	it.each(['success', 'failure'] as const)('bridges real callbacks through ShareView send %s', async outcome => {
@@ -525,7 +527,7 @@ describe('ShareView', () => {
 		const originStore = createMessageActionStore();
 		act(() => originStore.getState().actions.setQuoteMessageIds(['origin-quote']));
 		const originComposerRef = createRef<IMessageComposerRef>();
-		const { result } = renderOriginChooseMedia(originStore, originComposerRef);
+		const { result, unmount } = renderOriginChooseMedia(originStore, originComposerRef);
 		await act(async () => {
 			await Promise.resolve();
 			fireEvent.changeText(screen.getByTestId('message-composer-input'), 'origin text');
@@ -589,6 +591,8 @@ describe('ShareView', () => {
 		const expectedOriginAction = outcome === 'failure' ? { kind: 'quote', messageIds: ['share-quote'] } : null;
 		expect(originStore.getState().action).toEqual(expectedOriginAction);
 		uploadSpy.mockRestore();
+		unmount();
+		jest.useRealTimers();
 	});
 
 	it('saves and restores selected attachment text through the rendered composer', () => {
