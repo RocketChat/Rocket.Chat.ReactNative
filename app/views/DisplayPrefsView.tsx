@@ -13,14 +13,12 @@ import Radio from '../containers/Radio';
 import { type IPreferences } from '../definitions';
 import I18n from '../i18n';
 import { type SettingsStackParamList } from '../stacks/types';
-import { useTheme } from '../theme';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { saveSortPreference } from '../lib/methods/userPreferencesMethods';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 
 const DisplayPrefsView = (): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
-	const { colors } = useTheme();
 
 	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useAppSelector(
 		state => state.sortPreferences
@@ -78,8 +76,8 @@ const DisplayPrefsView = (): ReactElement => {
 		setSortPreference({ displayMode: DisplayMode.Condensed });
 	};
 
-	const renderCheckBox = (value: boolean) => (
-		<List.Icon name={value ? 'checkbox-checked' : 'checkbox-unchecked'} color={value ? colors.strokeHighlight : ''} />
+	const renderCheckBox = (value: boolean, onValueChange: () => void) => (
+		<List.Checkbox value={value} onValueChange={onValueChange} />
 	);
 
 	const renderAvatarSwitch = (value: boolean) => (
@@ -156,7 +154,7 @@ const DisplayPrefsView = (): ReactElement => {
 						testID='display-pref-view-unread'
 						left={() => <List.Icon name='flag' />}
 						onPress={toggleUnread}
-						right={() => renderCheckBox(showUnread)}
+						right={() => renderCheckBox(showUnread, toggleUnread)}
 						additionalAccessibilityLabel={showUnread}
 						accessibilityRole='checkbox'
 					/>
@@ -166,7 +164,7 @@ const DisplayPrefsView = (): ReactElement => {
 						testID='display-pref-view-favorites'
 						left={() => <List.Icon name='star' />}
 						onPress={toggleGroupByFavorites}
-						right={() => renderCheckBox(showFavorites)}
+						right={() => renderCheckBox(showFavorites, toggleGroupByFavorites)}
 						additionalAccessibilityLabel={showFavorites}
 						accessibilityRole='checkbox'
 					/>
@@ -176,7 +174,7 @@ const DisplayPrefsView = (): ReactElement => {
 						testID='display-pref-view-types'
 						left={() => <List.Icon name='group-by-type' />}
 						onPress={toggleGroupByType}
-						right={() => renderCheckBox(groupByType)}
+						right={() => renderCheckBox(groupByType, toggleGroupByType)}
 						additionalAccessibilityLabel={groupByType}
 						accessibilityRole='checkbox'
 					/>

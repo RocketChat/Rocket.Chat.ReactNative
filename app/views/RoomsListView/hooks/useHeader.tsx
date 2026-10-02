@@ -1,33 +1,102 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useCallback, useContext, useLayoutEffect, useRef, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { InteractionManager } from 'react-native';
 import { type KeyboardFocus } from 'react-native-external-keyboard';
+import { type SearchBarCommands } from 'react-native-screens';
 
+import { showActionSheetRef } from '~/containers/ActionSheet';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
-import { isTablet } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar, isTablet } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
+import { headerLeftActions, headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';
 import RoomsListHeaderView from '../components/Header';
+import ServersList from '../components/ServersList';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
+import { useRoomsListSubtitle } from './useRoomsListSubtitle';
+
+interface IRightActionsParams {
+	issuesWithNotifications?: boolean;
+	canCreateRoom: boolean;
+	disabled?: boolean;
+	dangerColor: string;
+	onTroubleshoot: () => void;
+	onCreate: () => void;
+	onSearch: () => void;
+	onDirectory: () => void;
+}
+
+const getRightActions = ({
+	issuesWithNotifications,
+	canCreateRoom,
+	disabled,
+	dangerColor,
+	onTroubleshoot,
+	onCreate,
+	onSearch,
+	onDirectory
+}: IRightActionsParams): IHeaderAction[] => {
+	const troubleshoot: IHeaderAction = {
+		label: i18n.t('Troubleshooting'),
+		icon: 'notification-disabled',
+		tintColor: dangerColor,
+		testID: 'rooms-list-view-push-troubleshoot',
+		onPress: onTroubleshoot
+	};
+	const create: IHeaderAction = {
+		label: i18n.t('Create_new_channel_team_dm_discussion'),
+		icon: hasNativeHeaderBar ? 'create' : 'add',
+		testID: 'rooms-list-view-create-channel',
+		disabled,
+		onPress: onCreate
+	};
+	const search: IHeaderAction = {
+		label: i18n.t('Search'),
+		icon: 'search',
+		testID: 'rooms-list-view-search',
+		disabled,
+		legacyHeaderOnly: true,
+		onPress: onSearch
+	};
+	const directory: IHeaderAction = {
+		label: i18n.t('Directory'),
+		icon: 'directory',
+		testID: 'rooms-list-view-directory',
+		disabled,
+		onPress: onDirectory
+	};
+	return [...(issuesWithNotifications ? [troubleshoot] : []), ...(canCreateRoom ? [create] : []), search, directory];
+};
+
+const getScreenFocusNavigation = (navigation: any, isMasterDetail: boolean) => {
+	if (!isMasterDetail) {
+		return navigation;
+	}
+	return navigation.getParent()?.getParent() ?? navigation;
+};
 
 export const useHeader = () => {
 	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsSearchContext);
 	const [options, setOptions] = useState<any>(null);
 	const isAccessibilityNavigationEnabled = useIsAccessibilityNavigationEnabled();
 	const drawerButtonRef = useRef<KeyboardFocus>(null);
+	const searchBarRef = useRef<SearchBarCommands>(null);
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
 	const requirePasswordChange = useAppSelector(state => getUserSelector(state).requirePasswordChange);
 	const isMasterDetail = useMasterDetail();
 	const navigation = useNavigation<any>();
 	const issuesWithNotifications = useAppSelector(state => state.troubleshootingNotification.issuesWithNotifications);
 	const notificationPresenceCap = useAppSelector(state => state.app.notificationPresenceCap);
+	const serverName = useAppSelector(state => state.settings.Site_Name as string);
 	const { colors } = useTheme();
+
+	const nativeHeaderSubtitle = useRoomsListSubtitle();
 	const [
 		createPublicChannelPermission,
 		createPrivateChannelPermission,
@@ -46,15 +115,12 @@ export const useHeader = () => {
 
 	const disabled = supportedVersionsStatus === 'expired' || requirePasswordChange;
 
-	const getBadge = useCallback(() => {
-		if (supportedVersionsStatus === 'warn') {
-			return <HeaderButton.BadgeWarn color={colors.buttonBackgroundDangerDefault} />;
-		}
-		if (notificationPresenceCap) {
-			return <HeaderButton.BadgeWarn color={colors.userPresenceDisabled} />;
-		}
-		return null;
-	}, [supportedVersionsStatus, notificationPresenceCap, colors]);
+	const badgeColor =
+		supportedVersionsStatus === 'warn'
+			? colors.buttonBackgroundDangerDefault
+			: notificationPresenceCap
+				? colors.userPresenceDisabled
+				: undefined;
 
 	const goDirectory = useCallback(() => {
 		logEvent(events.RL_GO_DIRECTORY);
@@ -84,7 +150,11 @@ export const useHeader = () => {
 	}, [isMasterDetail, navigation]);
 
 	useLayoutEffect(() => {
-		if (searchEnabled) {
+		const onDrawerPress = isMasterDetail
+			? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
+			: () => navigation.toggleDrawer();
+
+		if (searchEnabled && !hasNativeHeaderBar) {
 			const searchOptions = {
 				headerLeft: () => (
 					<HeaderButton.Container style={{ marginLeft: 1 }} left>
@@ -101,57 +171,62 @@ export const useHeader = () => {
 			return;
 		}
 
+		const rightActions = getRightActions({
+			issuesWithNotifications,
+			canCreateRoom,
+			disabled,
+			dangerColor: colors.fontDanger,
+			onTroubleshoot: navigateToPushTroubleshootView,
+			onCreate: goToNewMessage,
+			onSearch: startSearch,
+			onDirectory: goDirectory
+		});
+
+		if (hasNativeHeaderBar) {
+			const drawerAction: IHeaderAction = {
+				label: i18n.t('Menu'),
+				icon: 'hamburguer',
+				disabled,
+				badge: badgeColor ? { color: badgeColor } : undefined,
+				onPress: onDrawerPress
+			};
+			const cancelSearchAction: IHeaderAction = { label: i18n.t('Cancel'), onPress: stopSearch };
+			navigation.setOptions({
+				headerTransparent: true,
+				headerStyle: { backgroundColor: `${colors.surfaceNeutral}B3` },
+				headerBlurEffect: 'regular',
+				headerTitle: serverName,
+				headerSubtitle: nativeHeaderSubtitle,
+				headerTitleTestID: 'rooms-list-header-servers-list-button',
+				onHeaderTitlePress: () => showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false }),
+				headerSearchBarOptions: {
+					ref: searchBarRef,
+					placement: isTablet ? 'stacked' : 'automatic',
+					placeholder: i18n.t('Search'),
+					hideNavigationBar: !isTablet,
+					onFocus: startSearch,
+					onChangeText: (event: { nativeEvent: { text: string } }) => search(event.nativeEvent.text),
+					onCancelButtonPress: stopSearch
+				},
+				...headerLeftActions([drawerAction]),
+				...headerRightActions(isTablet && searchEnabled ? [cancelSearchAction] : rightActions)
+			});
+			return;
+		}
+
 		const options = {
 			headerLeft: () => (
 				<HeaderButton.Drawer
 					ref={drawerButtonRef}
 					navigation={navigation}
 					testID='rooms-list-view-sidebar'
-					onPress={
-						isMasterDetail
-							? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
-							: () => navigation.toggleDrawer()
-					}
-					badge={getBadge}
+					onPress={onDrawerPress}
+					badge={() => (badgeColor ? <HeaderButton.BadgeWarn color={badgeColor} /> : null)}
 					disabled={disabled}
 				/>
 			),
 			headerTitle: () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />,
-			headerRight: () => (
-				<HeaderButton.Container>
-					{issuesWithNotifications ? (
-						<HeaderButton.Item
-							iconName='notification-disabled'
-							onPress={navigateToPushTroubleshootView}
-							testID='rooms-list-view-push-troubleshoot'
-							color={colors.fontDanger}
-						/>
-					) : null}
-					{canCreateRoom ? (
-						<HeaderButton.Item
-							iconName='add'
-							accessibilityLabel={i18n.t('Create_new_channel_team_dm_discussion')}
-							onPress={goToNewMessage}
-							testID='rooms-list-view-create-channel'
-							disabled={disabled}
-						/>
-					) : null}
-					<HeaderButton.Item
-						iconName='search'
-						accessibilityLabel={i18n.t('Search')}
-						onPress={startSearch}
-						testID='rooms-list-view-search'
-						disabled={disabled}
-					/>
-					<HeaderButton.Item
-						iconName='directory'
-						accessibilityLabel={i18n.t('Directory')}
-						onPress={goDirectory}
-						testID='rooms-list-view-directory'
-						disabled={disabled}
-					/>
-				</HeaderButton.Container>
-			)
+			...headerRightActions(rightActions)
 		};
 
 		navigation.setOptions(options);
@@ -168,28 +243,48 @@ export const useHeader = () => {
 		searchEnabled,
 		goDirectory,
 		navigateToPushTroubleshootView,
-		getBadge,
 		goToNewMessage,
 		startSearch,
 		stopSearch,
-		search
+		search,
+		serverName,
+		nativeHeaderSubtitle,
+		badgeColor
 	]);
 
-	// The rooms list header persists across native-stack navigation, so autoFocus (mount-only)
-	// won't re-fire on back-return or after the list/banner render asynchronously. Re-assert focus
-	// on the drawer button every time the screen is focused so external-keyboard/screen-reader
-	// navigation always starts from a known element. Regular touch users are left untouched.
-	useFocusEffect(
-		useCallback(() => {
-			if (!isAccessibilityNavigationEnabled) {
-				return;
-			}
-			const task = InteractionManager.runAfterInteractions(() => {
+	useEffect(() => {
+		if (!hasNativeHeaderBar || searchEnabled) {
+			return;
+		}
+		if (isMasterDetail) {
+			searchBarRef.current?.cancelSearch();
+			return;
+		}
+		searchBarRef.current?.clearText();
+	}, [searchEnabled, isMasterDetail]);
+
+	const focusNavigation = getScreenFocusNavigation(navigation, isMasterDetail);
+
+	useEffect(() => {
+		if (!isAccessibilityNavigationEnabled) {
+			return;
+		}
+		let task: ReturnType<typeof InteractionManager.runAfterInteractions> | undefined;
+		const focusDrawerButton = () => {
+			task?.cancel();
+			task = InteractionManager.runAfterInteractions(() => {
 				drawerButtonRef.current?.focus();
 			});
-			return () => task.cancel();
-		}, [isAccessibilityNavigationEnabled])
-	);
+		};
+		if (focusNavigation.isFocused()) {
+			focusDrawerButton();
+		}
+		const unsubscribe = focusNavigation.addListener('focus', focusDrawerButton);
+		return () => {
+			unsubscribe();
+			task?.cancel();
+		};
+	}, [focusNavigation, isAccessibilityNavigationEnabled]);
 
 	return { options };
 };

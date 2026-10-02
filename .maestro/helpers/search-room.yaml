@@ -3,18 +3,31 @@ name: Search room
 tags:
   - 'util'
 ---
+- runFlow: './pop-to-rooms-list.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
     timeout: 60000
 - waitForAnimationToEnd:
     timeout: 5000
-- tapOn:
-    id: 'rooms-list-view-search'
-- tapOn:
-    id: 'rooms-list-view-search-input'
-- inputText:
-    text: ${ROOM}
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          id: 'magnifyingglass'
+      - inputText:
+          text: ${ROOM}
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - tapOn:
+          id: 'rooms-list-view-search'
+      - tapOn:
+          id: 'rooms-list-view-search-input'
+      - inputText:
+          text: ${ROOM}
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-item-${ROOM}'

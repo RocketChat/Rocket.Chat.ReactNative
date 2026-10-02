@@ -1,6 +1,6 @@
 import { I18nManager } from 'react-native';
 
-import ListIcon, { type IListIcon } from './List/ListIcon';
+import ListIcon, { type IListIcon } from './List/components/ListIcon';
 
 const NewWindowIcon = (props: Omit<IListIcon, 'name'>) => (
 	<ListIcon name='new-window' style={I18nManager.isRTL ? { transform: [{ rotateY: '180deg' }] } : null} {...props} />

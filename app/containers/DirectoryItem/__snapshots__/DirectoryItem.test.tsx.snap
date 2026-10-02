@@ -10,288 +10,216 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
 >
   <View>
     <View
-      accessibilityLabel="Styled Room "
-      accessible={true}
-      importantForAccessibility="yes"
-      testID="directory-item-style"
+      style={
+        [
+          {
+            "marginHorizontal": 16,
+            "overflow": "hidden",
+          },
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "gap": 12,
+            "paddingHorizontal": 16,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "height": 54,
+          },
+          undefined,
+          undefined,
+        ]
+      }
     >
-      <ExternalKeyboardView
-        canBeFocused={true}
-        enableA11yFocus={false}
-        enableContextMenu={false}
-        group={false}
-        haloEffect={true}
-        hasKeyDownPress={false}
-        hasKeyUpPress={true}
-        hasOnFocusChanged={true}
-        lockFocus={0}
-        onContextMenuPress={[Function]}
-        onFocusChange={[Function]}
-        onKeyUpPress={[Function]}
-        orderIndex={-1}
-        screenAutoA11yFocusDelay={300}
+      <View
+        accessibilityLabel="Styled Room "
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
-            undefined,
+            {
+              "alignItems": "center",
+              "alignSelf": "stretch",
+              "flex": 1,
+              "flexDirection": "row",
+              "gap": 12,
+            },
+            false,
             undefined,
           ]
         }
+        testID="directory-item-style"
       >
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          activeUnderlayOpacity={1}
-          animationDuration={0}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+          accessibilityLabel="S's avatar"
+          accessible={false}
           style={
             [
-              [
-                undefined,
-                {
-                  "margin": undefined,
-                  "marginBottom": undefined,
-                  "marginEnd": undefined,
-                  "marginHorizontal": undefined,
-                  "marginLeft": undefined,
-                  "marginRight": undefined,
-                  "marginStart": undefined,
-                  "marginTop": undefined,
-                  "marginVertical": undefined,
-                },
-                {
-                  "backgroundColor": "#FFFFFF",
-                  "borderRadius": undefined,
-                },
-              ],
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              },
               undefined,
             ]
           }
-          underlayColor="#E4E7EA"
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={{"current":"Object"}}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={30}
+            nativeViewRef={{"current":"NativeComponent"}}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            sfEffect={null}
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/@S?format=png&size=60",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              }
+            }
+            symbolSize={null}
+            symbolWeight={null}
+            transition={null}
+            width={30}
+          />
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "marginRight": 20,
+            }
+          }
         >
           <View
-            style={{}}
-            testID="directory-item-style"
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 4,
+              }
+            }
           >
-            <View
+            <Text
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 15,
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      {
+                        "marginRight": 0,
+                      },
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 17,
+                    "fontWeight": "500",
                   },
                   {
-                    "height": 54,
-                  },
-                  {
-                    "backgroundColor": "#e0e0e0",
+                    "color": "#2F343D",
                   },
                 ]
               }
             >
-              <View
-                accessibilityLabel="S's avatar"
-                accessible={false}
-                style={
-                  [
-                    {
-                      "borderRadius": 4,
-                      "height": 30,
-                      "width": 30,
-                    },
-                    {
-                      "marginRight": 12,
-                    },
-                  ]
-                }
-                testID="avatar"
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
-                  }
-                  height={30}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/@S?format=png&size=60",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 30,
-                      "width": 30,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={30}
-                />
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "flexDirection": "column",
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#1F2329",
-                          "fontSize": 16,
-                        },
-                        [
-                          {
-                            "lineHeight": 16,
-                          },
-                          [
-                            {
-                              "marginRight": 4,
-                            },
-                            undefined,
-                          ],
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 17,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#1F2329",
-                        },
-                      ]
-                    }
-                  >
-                    Styled Room
-                  </Text>
-                </View>
-                <Text
-                  accessibilityLabel="Custom style applied"
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#2F343D",
-                        "lineHeight": undefined,
-                      },
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                  testID="markdown-preview-Custom style applied"
-                >
-                  Custom style applied
-                </Text>
-              </View>
-            </View>
+              Styled Room
+            </Text>
           </View>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            Custom style applied
+          </Text>
         </View>
-      </ExternalKeyboardView>
+      </View>
     </View>
   </View>
 </RCTScrollView>
@@ -307,286 +235,216 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
 >
   <View>
     <View
-      accessibilityLabel="General "
-      accessible={true}
-      importantForAccessibility="yes"
-      testID="directory-item"
+      style={
+        [
+          {
+            "marginHorizontal": 16,
+            "overflow": "hidden",
+          },
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "gap": 12,
+            "paddingHorizontal": 16,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "height": 54,
+          },
+          undefined,
+          undefined,
+        ]
+      }
     >
-      <ExternalKeyboardView
-        canBeFocused={true}
-        enableA11yFocus={false}
-        enableContextMenu={false}
-        group={false}
-        haloEffect={true}
-        hasKeyDownPress={false}
-        hasKeyUpPress={true}
-        hasOnFocusChanged={true}
-        lockFocus={0}
-        onContextMenuPress={[Function]}
-        onFocusChange={[Function]}
-        onKeyUpPress={[Function]}
-        orderIndex={-1}
-        screenAutoA11yFocusDelay={300}
+      <View
+        accessibilityLabel="General "
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
-            undefined,
+            {
+              "alignItems": "center",
+              "alignSelf": "stretch",
+              "flex": 1,
+              "flexDirection": "row",
+              "gap": 12,
+            },
+            false,
             undefined,
           ]
         }
+        testID="directory-item"
       >
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          activeUnderlayOpacity={1}
-          animationDuration={0}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+          accessibilityLabel="G's avatar"
+          accessible={false}
           style={
             [
-              [
-                undefined,
-                {
-                  "margin": undefined,
-                  "marginBottom": undefined,
-                  "marginEnd": undefined,
-                  "marginHorizontal": undefined,
-                  "marginLeft": undefined,
-                  "marginRight": undefined,
-                  "marginStart": undefined,
-                  "marginTop": undefined,
-                  "marginVertical": undefined,
-                },
-                {
-                  "backgroundColor": "#FFFFFF",
-                  "borderRadius": undefined,
-                },
-              ],
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              },
               undefined,
             ]
           }
-          underlayColor="#E4E7EA"
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={{"current":"Object"}}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={30}
+            nativeViewRef={{"current":"NativeComponent"}}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            sfEffect={null}
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/@G?format=png&size=60",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              }
+            }
+            symbolSize={null}
+            symbolWeight={null}
+            transition={null}
+            width={30}
+          />
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "marginRight": 20,
+            }
+          }
         >
           <View
-            style={{}}
-            testID="directory-item"
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 4,
+              }
+            }
           >
-            <View
+            <Text
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 15,
+                    "color": "#1F2329",
+                    "fontSize": 16,
                   },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      {
+                        "marginRight": 0,
+                      },
+                    ],
+                  ],
                   {
-                    "height": 54,
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
                   },
-                  undefined,
+                  {},
                 ]
               }
             >
-              <View
-                accessibilityLabel="G's avatar"
-                accessible={false}
-                style={
-                  [
-                    {
-                      "borderRadius": 4,
-                      "height": 30,
-                      "width": 30,
-                    },
-                    {
-                      "marginRight": 12,
-                    },
-                  ]
-                }
-                testID="avatar"
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
-                  }
-                  height={30}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/@G?format=png&size=60",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 30,
-                      "width": 30,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={30}
-                />
-              </View>
-              <View
-                style={
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
                   {
-                    "flex": 1,
-                    "flexDirection": "column",
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#1F2329",
-                          "fontSize": 16,
-                        },
-                        [
-                          {
-                            "lineHeight": 16,
-                          },
-                          [
-                            {
-                              "marginRight": 4,
-                            },
-                            undefined,
-                          ],
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 17,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#1F2329",
-                        },
-                      ]
-                    }
-                  >
-                    General
-                  </Text>
-                </View>
-                <Text
-                  accessibilityLabel="A public room"
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#2F343D",
-                        "lineHeight": undefined,
-                      },
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                  testID="markdown-preview-A public room"
-                >
-                  A public room
-                </Text>
-              </View>
-            </View>
+                    "flexShrink": 1,
+                    "fontSize": 17,
+                    "fontWeight": "500",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              General
+            </Text>
           </View>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            A public room
+          </Text>
         </View>
-      </ExternalKeyboardView>
+      </View>
     </View>
   </View>
 </RCTScrollView>
@@ -602,255 +460,183 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
 >
   <View>
     <View
-      accessibilityLabel="Alice Johnson "
-      accessible={true}
-      importantForAccessibility="yes"
-      testID="directory-item-dm"
+      style={
+        [
+          {
+            "marginHorizontal": 16,
+            "overflow": "hidden",
+          },
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "gap": 12,
+            "paddingHorizontal": 16,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "height": 54,
+          },
+          undefined,
+          undefined,
+        ]
+      }
     >
-      <ExternalKeyboardView
-        canBeFocused={true}
-        enableA11yFocus={false}
-        enableContextMenu={false}
-        group={false}
-        haloEffect={true}
-        hasKeyDownPress={false}
-        hasKeyUpPress={true}
-        hasOnFocusChanged={true}
-        lockFocus={0}
-        onContextMenuPress={[Function]}
-        onFocusChange={[Function]}
-        onKeyUpPress={[Function]}
-        orderIndex={-1}
-        screenAutoA11yFocusDelay={300}
+      <View
+        accessibilityLabel="Alice Johnson "
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
-            undefined,
+            {
+              "alignItems": "center",
+              "alignSelf": "stretch",
+              "flex": 1,
+              "flexDirection": "row",
+              "gap": 12,
+            },
+            false,
             undefined,
           ]
         }
+        testID="directory-item-dm"
       >
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          activeUnderlayOpacity={1}
-          animationDuration={0}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+          accessibilityLabel="A's avatar"
+          accessible={false}
           style={
             [
-              [
-                undefined,
-                {
-                  "margin": undefined,
-                  "marginBottom": undefined,
-                  "marginEnd": undefined,
-                  "marginHorizontal": undefined,
-                  "marginLeft": undefined,
-                  "marginRight": undefined,
-                  "marginStart": undefined,
-                  "marginTop": undefined,
-                  "marginVertical": undefined,
-                },
-                {
-                  "backgroundColor": "#FFFFFF",
-                  "borderRadius": undefined,
-                },
-              ],
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              },
               undefined,
             ]
           }
-          underlayColor="#E4E7EA"
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={{"current":"Object"}}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={30}
+            nativeViewRef={{"current":"NativeComponent"}}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            sfEffect={null}
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/A?format=png&size=60",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              }
+            }
+            symbolSize={null}
+            symbolWeight={null}
+            transition={null}
+            width={30}
+          />
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "marginRight": 20,
+            }
+          }
         >
           <View
-            style={{}}
-            testID="directory-item-dm"
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 4,
+              }
+            }
           >
-            <View
+            <Text
+              numberOfLines={1}
               style={
                 [
                   {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 15,
+                    "flexShrink": 1,
+                    "fontSize": 17,
+                    "fontWeight": "500",
                   },
                   {
-                    "height": 54,
+                    "color": "#2F343D",
                   },
-                  undefined,
                 ]
               }
             >
-              <View
-                accessibilityLabel="A's avatar"
-                accessible={false}
-                style={
-                  [
-                    {
-                      "borderRadius": 4,
-                      "height": 30,
-                      "width": 30,
-                    },
-                    {
-                      "marginRight": 12,
-                    },
-                  ]
-                }
-                testID="avatar"
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
-                  }
-                  height={30}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/A?format=png&size=60",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 30,
-                      "width": 30,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={30}
-                />
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "flexDirection": "column",
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 17,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#1F2329",
-                        },
-                      ]
-                    }
-                  >
-                    Alice Johnson
-                  </Text>
-                </View>
-                <Text
-                  accessibilityLabel="Hey there!"
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#2F343D",
-                        "lineHeight": undefined,
-                      },
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                  testID="markdown-preview-Hey there!"
-                >
-                  Hey there!
-                </Text>
-              </View>
-            </View>
+              Alice Johnson
+            </Text>
           </View>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            Hey there!
+          </Text>
         </View>
-      </ExternalKeyboardView>
+      </View>
     </View>
   </View>
 </RCTScrollView>
@@ -866,308 +652,241 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
 >
   <View>
     <View
-      accessibilityLabel="This is a very very very very very very very long room name that should be truncated 9999 members"
-      accessible={true}
-      importantForAccessibility="yes"
-      testID="directory-item-long"
+      style={
+        [
+          {
+            "marginHorizontal": 16,
+            "overflow": "hidden",
+          },
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "gap": 12,
+            "paddingHorizontal": 16,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "height": 54,
+          },
+          undefined,
+          undefined,
+        ]
+      }
     >
-      <ExternalKeyboardView
-        canBeFocused={true}
-        enableA11yFocus={false}
-        enableContextMenu={false}
-        group={false}
-        haloEffect={true}
-        hasKeyDownPress={false}
-        hasKeyUpPress={true}
-        hasOnFocusChanged={true}
-        lockFocus={0}
-        onContextMenuPress={[Function]}
-        onFocusChange={[Function]}
-        onKeyUpPress={[Function]}
-        orderIndex={-1}
-        screenAutoA11yFocusDelay={300}
+      <View
+        accessibilityLabel="This is a very very very very very very very long room name that should be truncated 9999 members"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
-            undefined,
+            {
+              "alignItems": "center",
+              "alignSelf": "stretch",
+              "flex": 1,
+              "flexDirection": "row",
+              "gap": 12,
+            },
+            false,
             undefined,
           ]
         }
+        testID="directory-item-long"
       >
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          activeUnderlayOpacity={1}
-          animationDuration={0}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+          accessibilityLabel="L's avatar"
+          accessible={false}
           style={
             [
-              [
-                undefined,
-                {
-                  "margin": undefined,
-                  "marginBottom": undefined,
-                  "marginEnd": undefined,
-                  "marginHorizontal": undefined,
-                  "marginLeft": undefined,
-                  "marginRight": undefined,
-                  "marginStart": undefined,
-                  "marginTop": undefined,
-                  "marginVertical": undefined,
-                },
-                {
-                  "backgroundColor": "#FFFFFF",
-                  "borderRadius": undefined,
-                },
-              ],
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              },
               undefined,
             ]
           }
-          underlayColor="#E4E7EA"
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={{"current":"Object"}}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={30}
+            nativeViewRef={{"current":"NativeComponent"}}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            sfEffect={null}
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/@L?format=png&size=60",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              }
+            }
+            symbolSize={null}
+            symbolWeight={null}
+            transition={null}
+            width={30}
+          />
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "marginRight": 20,
+            }
+          }
         >
           <View
-            style={{}}
-            testID="directory-item-long"
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 4,
+              }
+            }
           >
-            <View
+            <Text
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 15,
+                    "color": "#1F2329",
+                    "fontSize": 16,
                   },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      {
+                        "marginRight": 0,
+                      },
+                    ],
+                  ],
                   {
-                    "height": 54,
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
                   },
-                  undefined,
+                  {},
                 ]
               }
             >
-              <View
-                accessibilityLabel="L's avatar"
-                accessible={false}
-                style={
-                  [
-                    {
-                      "borderRadius": 4,
-                      "height": 30,
-                      "width": 30,
-                    },
-                    {
-                      "marginRight": 12,
-                    },
-                  ]
-                }
-                testID="avatar"
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
-                  }
-                  height={30}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/@L?format=png&size=60",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 30,
-                      "width": 30,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={30}
-                />
-              </View>
-              <View
-                style={
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
                   {
-                    "flex": 1,
-                    "flexDirection": "column",
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#1F2329",
-                          "fontSize": 16,
-                        },
-                        [
-                          {
-                            "lineHeight": 16,
-                          },
-                          [
-                            {
-                              "marginRight": 4,
-                            },
-                            undefined,
-                          ],
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 17,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#1F2329",
-                        },
-                      ]
-                    }
-                  >
-                    This is a very very very very very very very long room name that should be truncated
-                  </Text>
-                </View>
-                <Text
-                  accessibilityLabel="Long name test"
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#2F343D",
-                        "lineHeight": undefined,
-                      },
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                  testID="markdown-preview-Long name test"
-                >
-                  Long name test
-                </Text>
-              </View>
-              <Text
-                style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "400",
-                      "paddingLeft": 10,
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#6C727A",
-                    },
-                  ]
-                }
-              >
-                9999 members
-              </Text>
-            </View>
+                    "flexShrink": 1,
+                    "fontSize": 17,
+                    "fontWeight": "500",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              This is a very very very very very very very long room name that should be truncated
+            </Text>
           </View>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            Long name test
+          </Text>
         </View>
-      </ExternalKeyboardView>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "paddingLeft": 10,
+                "textAlign": "left",
+              },
+              {
+                "marginTop": 0.5,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          9999 members
+        </Text>
+      </View>
     </View>
   </View>
 </RCTScrollView>
@@ -1183,188 +902,144 @@ exports[`Story Snapshots: OnlyTitle should match snapshot 1`] = `
 >
   <View>
     <View
-      accessibilityLabel="Just a title "
-      accessible={true}
-      importantForAccessibility="yes"
-      testID="directory-item-title"
+      style={
+        [
+          {
+            "marginHorizontal": 16,
+            "overflow": "hidden",
+          },
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "gap": 12,
+            "paddingHorizontal": 16,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "height": 54,
+          },
+          undefined,
+          undefined,
+        ]
+      }
     >
-      <ExternalKeyboardView
-        canBeFocused={true}
-        enableA11yFocus={false}
-        enableContextMenu={false}
-        group={false}
-        haloEffect={true}
-        hasKeyDownPress={false}
-        hasKeyUpPress={true}
-        hasOnFocusChanged={true}
-        lockFocus={0}
-        onContextMenuPress={[Function]}
-        onFocusChange={[Function]}
-        onKeyUpPress={[Function]}
-        orderIndex={-1}
-        screenAutoA11yFocusDelay={300}
+      <View
+        accessibilityLabel="Just a title "
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
-            undefined,
+            {
+              "alignItems": "center",
+              "alignSelf": "stretch",
+              "flex": 1,
+              "flexDirection": "row",
+              "gap": 12,
+            },
+            false,
             undefined,
           ]
         }
+        testID="directory-item-title"
       >
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          activeUnderlayOpacity={1}
-          animationDuration={0}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            [
-              [
-                undefined,
-                {
-                  "margin": undefined,
-                  "marginBottom": undefined,
-                  "marginEnd": undefined,
-                  "marginHorizontal": undefined,
-                  "marginLeft": undefined,
-                  "marginRight": undefined,
-                  "marginStart": undefined,
-                  "marginTop": undefined,
-                  "marginVertical": undefined,
-                },
-                {
-                  "backgroundColor": "#FFFFFF",
-                  "borderRadius": undefined,
-                },
-              ],
-              undefined,
-            ]
+            {
+              "flex": 1,
+              "marginRight": 20,
+            }
           }
-          underlayColor="#E4E7EA"
         >
           <View
-            style={{}}
-            testID="directory-item-title"
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 4,
+              }
+            }
           >
-            <View
+            <Text
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 15,
+                    "color": "#1F2329",
+                    "fontSize": 16,
                   },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      {
+                        "marginRight": 0,
+                      },
+                    ],
+                  ],
                   {
-                    "height": 54,
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
                   },
-                  undefined,
+                  {},
                 ]
               }
             >
-              <View
-                style={
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
                   {
-                    "flex": 1,
-                    "flexDirection": "column",
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#1F2329",
-                          "fontSize": 16,
-                        },
-                        [
-                          {
-                            "lineHeight": 16,
-                          },
-                          [
-                            {
-                              "marginRight": 4,
-                            },
-                            undefined,
-                          ],
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 17,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#1F2329",
-                        },
-                      ]
-                    }
-                  >
-                    Just a title
-                  </Text>
-                </View>
-              </View>
-            </View>
+                    "flexShrink": 1,
+                    "fontSize": 17,
+                    "fontWeight": "500",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Just a title
+            </Text>
           </View>
         </View>
-      </ExternalKeyboardView>
+      </View>
     </View>
   </View>
 </RCTScrollView>
@@ -1380,286 +1055,216 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
 >
   <View>
     <View
-      accessibilityLabel="Engineering Team "
-      accessible={true}
-      importantForAccessibility="yes"
-      testID="directory-item-team"
+      style={
+        [
+          {
+            "marginHorizontal": 16,
+            "overflow": "hidden",
+          },
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "gap": 12,
+            "paddingHorizontal": 16,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "height": 54,
+          },
+          undefined,
+          undefined,
+        ]
+      }
     >
-      <ExternalKeyboardView
-        canBeFocused={true}
-        enableA11yFocus={false}
-        enableContextMenu={false}
-        group={false}
-        haloEffect={true}
-        hasKeyDownPress={false}
-        hasKeyUpPress={true}
-        hasOnFocusChanged={true}
-        lockFocus={0}
-        onContextMenuPress={[Function]}
-        onFocusChange={[Function]}
-        onKeyUpPress={[Function]}
-        orderIndex={-1}
-        screenAutoA11yFocusDelay={300}
+      <View
+        accessibilityLabel="Engineering Team "
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
-            undefined,
+            {
+              "alignItems": "center",
+              "alignSelf": "stretch",
+              "flex": 1,
+              "flexDirection": "row",
+              "gap": 12,
+            },
+            false,
             undefined,
           ]
         }
+        testID="directory-item-team"
       >
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          activeUnderlayOpacity={1}
-          animationDuration={0}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+          accessibilityLabel="E's avatar"
+          accessible={false}
           style={
             [
-              [
-                undefined,
-                {
-                  "margin": undefined,
-                  "marginBottom": undefined,
-                  "marginEnd": undefined,
-                  "marginHorizontal": undefined,
-                  "marginLeft": undefined,
-                  "marginRight": undefined,
-                  "marginStart": undefined,
-                  "marginTop": undefined,
-                  "marginVertical": undefined,
-                },
-                {
-                  "backgroundColor": "#FFFFFF",
-                  "borderRadius": undefined,
-                },
-              ],
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              },
               undefined,
             ]
           }
-          underlayColor="#E4E7EA"
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={{"current":"Object"}}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={30}
+            nativeViewRef={{"current":"NativeComponent"}}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            sfEffect={null}
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/@E?format=png&size=60",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              }
+            }
+            symbolSize={null}
+            symbolWeight={null}
+            transition={null}
+            width={30}
+          />
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "marginRight": 20,
+            }
+          }
         >
           <View
-            style={{}}
-            testID="directory-item-team"
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 4,
+              }
+            }
           >
-            <View
+            <Text
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 15,
+                    "color": "#1F2329",
+                    "fontSize": 16,
                   },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      {
+                        "marginRight": 0,
+                      },
+                    ],
+                  ],
                   {
-                    "height": 54,
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
                   },
-                  undefined,
+                  {},
                 ]
               }
             >
-              <View
-                accessibilityLabel="E's avatar"
-                accessible={false}
-                style={
-                  [
-                    {
-                      "borderRadius": 4,
-                      "height": 30,
-                      "width": 30,
-                    },
-                    {
-                      "marginRight": 12,
-                    },
-                  ]
-                }
-                testID="avatar"
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
-                  }
-                  height={30}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/@E?format=png&size=60",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 30,
-                      "width": 30,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={30}
-                />
-              </View>
-              <View
-                style={
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
                   {
-                    "flex": 1,
-                    "flexDirection": "column",
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#1F2329",
-                          "fontSize": 16,
-                        },
-                        [
-                          {
-                            "lineHeight": 16,
-                          },
-                          [
-                            {
-                              "marginRight": 4,
-                            },
-                            undefined,
-                          ],
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 17,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#1F2329",
-                        },
-                      ]
-                    }
-                  >
-                    Engineering Team
-                  </Text>
-                </View>
-                <Text
-                  accessibilityLabel="Main team room"
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#2F343D",
-                        "lineHeight": undefined,
-                      },
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                  testID="markdown-preview-Main team room"
-                >
-                  Main team room
-                </Text>
-              </View>
-            </View>
+                    "flexShrink": 1,
+                    "fontSize": 17,
+                    "fontWeight": "500",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Engineering Team
+            </Text>
           </View>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            Main team room
+          </Text>
         </View>
-      </ExternalKeyboardView>
+      </View>
     </View>
   </View>
 </RCTScrollView>
@@ -1675,308 +1280,241 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
 >
   <View>
     <View
-      accessibilityLabel="General 123 members"
-      accessible={true}
-      importantForAccessibility="yes"
-      testID="directory-item-label"
+      style={
+        [
+          {
+            "marginHorizontal": 16,
+            "overflow": "hidden",
+          },
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "gap": 12,
+            "paddingHorizontal": 16,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "height": 54,
+          },
+          undefined,
+          undefined,
+        ]
+      }
     >
-      <ExternalKeyboardView
-        canBeFocused={true}
-        enableA11yFocus={false}
-        enableContextMenu={false}
-        group={false}
-        haloEffect={true}
-        hasKeyDownPress={false}
-        hasKeyUpPress={true}
-        hasOnFocusChanged={true}
-        lockFocus={0}
-        onContextMenuPress={[Function]}
-        onFocusChange={[Function]}
-        onKeyUpPress={[Function]}
-        orderIndex={-1}
-        screenAutoA11yFocusDelay={300}
+      <View
+        accessibilityLabel="General 123 members"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
-            undefined,
+            {
+              "alignItems": "center",
+              "alignSelf": "stretch",
+              "flex": 1,
+              "flexDirection": "row",
+              "gap": 12,
+            },
+            false,
             undefined,
           ]
         }
+        testID="directory-item-label"
       >
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          activeUnderlayOpacity={1}
-          animationDuration={0}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+          accessibilityLabel="G's avatar"
+          accessible={false}
           style={
             [
-              [
-                undefined,
-                {
-                  "margin": undefined,
-                  "marginBottom": undefined,
-                  "marginEnd": undefined,
-                  "marginHorizontal": undefined,
-                  "marginLeft": undefined,
-                  "marginRight": undefined,
-                  "marginStart": undefined,
-                  "marginTop": undefined,
-                  "marginVertical": undefined,
-                },
-                {
-                  "backgroundColor": "#FFFFFF",
-                  "borderRadius": undefined,
-                },
-              ],
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              },
               undefined,
             ]
           }
-          underlayColor="#E4E7EA"
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={{"current":"Object"}}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={30}
+            nativeViewRef={{"current":"NativeComponent"}}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            sfEffect={null}
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/@G?format=png&size=60",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              }
+            }
+            symbolSize={null}
+            symbolWeight={null}
+            transition={null}
+            width={30}
+          />
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "marginRight": 20,
+            }
+          }
         >
           <View
-            style={{}}
-            testID="directory-item-label"
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 4,
+              }
+            }
           >
-            <View
+            <Text
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 15,
+                    "color": "#1F2329",
+                    "fontSize": 16,
                   },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      {
+                        "marginRight": 0,
+                      },
+                    ],
+                  ],
                   {
-                    "height": 54,
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
                   },
-                  undefined,
+                  {},
                 ]
               }
             >
-              <View
-                accessibilityLabel="G's avatar"
-                accessible={false}
-                style={
-                  [
-                    {
-                      "borderRadius": 4,
-                      "height": 30,
-                      "width": 30,
-                    },
-                    {
-                      "marginRight": 12,
-                    },
-                  ]
-                }
-                testID="avatar"
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
-                  }
-                  height={30}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/@G?format=png&size=60",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 30,
-                      "width": 30,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={30}
-                />
-              </View>
-              <View
-                style={
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
                   {
-                    "flex": 1,
-                    "flexDirection": "column",
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#1F2329",
-                          "fontSize": 16,
-                        },
-                        [
-                          {
-                            "lineHeight": 16,
-                          },
-                          [
-                            {
-                              "marginRight": 4,
-                            },
-                            undefined,
-                          ],
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 17,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#1F2329",
-                        },
-                      ]
-                    }
-                  >
-                    General
-                  </Text>
-                </View>
-                <Text
-                  accessibilityLabel="Room with label"
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#2F343D",
-                        "lineHeight": undefined,
-                      },
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                  testID="markdown-preview-Room with label"
-                >
-                  Room with label
-                </Text>
-              </View>
-              <Text
-                style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "400",
-                      "paddingLeft": 10,
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#6C727A",
-                    },
-                  ]
-                }
-              >
-                123 members
-              </Text>
-            </View>
+                    "flexShrink": 1,
+                    "fontSize": 17,
+                    "fontWeight": "500",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              General
+            </Text>
           </View>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            Room with label
+          </Text>
         </View>
-      </ExternalKeyboardView>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "paddingLeft": 10,
+                "textAlign": "left",
+              },
+              {
+                "marginTop": 0.5,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          123 members
+        </Text>
+      </View>
     </View>
   </View>
 </RCTScrollView>
@@ -1992,247 +1530,201 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
 >
   <View>
     <View
-      accessibilityLabel="No description room "
-      accessible={true}
-      importantForAccessibility="yes"
-      testID="directory-item-no-desc"
+      style={
+        [
+          {
+            "marginHorizontal": 16,
+            "overflow": "hidden",
+          },
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "gap": 12,
+            "paddingHorizontal": 16,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "height": 54,
+          },
+          undefined,
+          undefined,
+        ]
+      }
     >
-      <ExternalKeyboardView
-        canBeFocused={true}
-        enableA11yFocus={false}
-        enableContextMenu={false}
-        group={false}
-        haloEffect={true}
-        hasKeyDownPress={false}
-        hasKeyUpPress={true}
-        hasOnFocusChanged={true}
-        lockFocus={0}
-        onContextMenuPress={[Function]}
-        onFocusChange={[Function]}
-        onKeyUpPress={[Function]}
-        orderIndex={-1}
-        screenAutoA11yFocusDelay={300}
+      <View
+        accessibilityLabel="No description room "
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
-            undefined,
+            {
+              "alignItems": "center",
+              "alignSelf": "stretch",
+              "flex": 1,
+              "flexDirection": "row",
+              "gap": 12,
+            },
+            false,
             undefined,
           ]
         }
+        testID="directory-item-no-desc"
       >
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          activeUnderlayOpacity={1}
-          animationDuration={0}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+          accessibilityLabel="N's avatar"
+          accessible={false}
           style={
             [
-              [
-                undefined,
-                {
-                  "margin": undefined,
-                  "marginBottom": undefined,
-                  "marginEnd": undefined,
-                  "marginHorizontal": undefined,
-                  "marginLeft": undefined,
-                  "marginRight": undefined,
-                  "marginStart": undefined,
-                  "marginTop": undefined,
-                  "marginVertical": undefined,
-                },
-                {
-                  "backgroundColor": "#FFFFFF",
-                  "borderRadius": undefined,
-                },
-              ],
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              },
               undefined,
             ]
           }
-          underlayColor="#E4E7EA"
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={{"current":"Object"}}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={30}
+            nativeViewRef={{"current":"NativeComponent"}}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            sfEffect={null}
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/@N?format=png&size=60",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              }
+            }
+            symbolSize={null}
+            symbolWeight={null}
+            transition={null}
+            width={30}
+          />
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "marginRight": 20,
+            }
+          }
         >
           <View
-            style={{}}
-            testID="directory-item-no-desc"
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 4,
+              }
+            }
           >
-            <View
+            <Text
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 15,
+                    "color": "#1F2329",
+                    "fontSize": 16,
                   },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      {
+                        "marginRight": 0,
+                      },
+                    ],
+                  ],
                   {
-                    "height": 54,
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
                   },
-                  undefined,
+                  {},
                 ]
               }
             >
-              <View
-                accessibilityLabel="N's avatar"
-                accessible={false}
-                style={
-                  [
-                    {
-                      "borderRadius": 4,
-                      "height": 30,
-                      "width": 30,
-                    },
-                    {
-                      "marginRight": 12,
-                    },
-                  ]
-                }
-                testID="avatar"
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
-                  }
-                  height={30}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/@N?format=png&size=60",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 30,
-                      "width": 30,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={30}
-                />
-              </View>
-              <View
-                style={
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
                   {
-                    "flex": 1,
-                    "flexDirection": "column",
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#1F2329",
-                          "fontSize": 16,
-                        },
-                        [
-                          {
-                            "lineHeight": 16,
-                          },
-                          [
-                            {
-                              "marginRight": 4,
-                            },
-                            undefined,
-                          ],
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 17,
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#1F2329",
-                        },
-                      ]
-                    }
-                  >
-                    No description room
-                  </Text>
-                </View>
-              </View>
-            </View>
+                    "flexShrink": 1,
+                    "fontSize": 17,
+                    "fontWeight": "500",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              No description room
+            </Text>
           </View>
         </View>
-      </ExternalKeyboardView>
+      </View>
     </View>
   </View>
 </RCTScrollView>

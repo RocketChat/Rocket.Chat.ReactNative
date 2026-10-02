@@ -12,6 +12,7 @@ import { leaveRoom } from '~/actions/room';
 import Avatar from '~/containers/Avatar';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import * as List from '~/containers/List';
+import Disclosure from '~/containers/NativeListRow/components/Disclosure';
 import { MarkdownPreview } from '~/containers/markdown';
 import RoomTypeIcon from '~/containers/RoomTypeIcon';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -49,6 +50,7 @@ import {
 	hasPermission,
 	isGroupChat,
 	compareServerVersion,
+	isIOS,
 	isTeamRoom
 } from '~/lib/methods/helpers';
 import {
@@ -787,7 +789,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 							}
 						})
 					}
-					style={{ backgroundColor: themes[theme].surfaceRoom }}
+					style={{ backgroundColor: isIOS ? 'transparent' : themes[theme].surfaceRoom }}
 					accessibilityLabel={I18n.t('Room_Info')}
 					disabled={isGroupChatHandler}
 					testID='room-actions-info'>
@@ -832,7 +834,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 								/>
 							)}
 						</View>
-						{isGroupChatHandler ? null : <List.Icon name='chevron-right' style={styles.actionIndicator} />}
+						{isGroupChatHandler ? null : <Disclosure />}
 					</View>
 				</Touch>
 				<List.Separator />

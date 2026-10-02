@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IUserItem {
+export interface IUserItem {
 	name: string;
 	username: string;
 	onPress(): void;
@@ -44,6 +44,8 @@ interface IUserItem {
 	icon?: TIconsName | null;
 	iconColor?: string;
 	isChecked?: boolean;
+	isFirst?: boolean;
+	isLast?: boolean;
 }
 
 const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, iconColor, isChecked }: IUserItem) => {

@@ -38,7 +38,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import useParsedCustomFields from '~/lib/hooks/useParsedCustomFields';
 import CustomFields from '~/containers/CustomFields';
-import ListSeparator from '~/containers/List/ListSeparator';
+import ListSeparator from '~/containers/List/components/ListSeparator';
 import handleSaveUserProfileError from '~/lib/methods/helpers/handleSaveUserProfileError';
 import logoutOtherLocations from './methods/logoutOtherLocations';
 import buildProfileParams from './methods/buildProfileParams';

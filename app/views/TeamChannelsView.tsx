@@ -3,7 +3,8 @@ import { type NativeStackNavigationOptions } from '@react-navigation/native-stac
 import { Alert, FlatList, Keyboard, PixelRatio } from 'react-native';
 import { connect } from 'react-redux';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
-import { Component } from 'react';
+import { type SearchBarCommands } from 'react-native-screens';
+import { Component, createRef } from 'react';
 
 import { deleteRoom } from '../actions/room';
 import { DisplayMode } from '../lib/constants/constantDisplayMode';
@@ -22,6 +23,8 @@ import { withDimensions } from '../lib/hooks/withDimensions';
 import { withMasterDetail } from '../lib/hooks/useMasterDetail';
 import { BASE_ROW_HEIGHT, BASE_ROW_HEIGHT_CONDENSED } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import I18n from '../i18n';
+import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
+import { headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import database from '../lib/database';
 import { CustomIcon } from '../containers/CustomIcon';
 import RoomItem from '../containers/RoomItem';
@@ -30,7 +33,15 @@ import { withTheme } from '../theme';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
-import { getRoomAvatar, getRoomTitle, hasPermission, debounce, isIOS, compareServerVersion } from '../lib/methods/helpers';
+import {
+	getRoomAvatar,
+	getRoomTitle,
+	hasPermission,
+	debounce,
+	hasNativeHeaderBar,
+	isIOS,
+	compareServerVersion
+} from '../lib/methods/helpers';
 import { getRoomInfo, getTeamListRoom, updateTeamRoom, removeTeamRoom } from '../lib/services/restApi';
 
 const API_FETCH_COUNT = 25;
@@ -95,6 +106,8 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 	private joined: boolean;
 	private teamChannels: TSubscriptionModel[];
 	private team: TSubscriptionModel;
+
+	private searchBarRef = createRef<SearchBarCommands>();
 
 	constructor(props: ITeamChannelsViewProps) {
 		super(props);
@@ -220,7 +233,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 			return;
 		}
 
-		if (isSearching) {
+		if (isSearching && !hasNativeHeaderBar) {
 			const options: NativeStackNavigationOptions = {
 				headerLeft: () => (
 					<HeaderButton.Container left>
@@ -235,33 +248,56 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 			return navigation.setOptions(options);
 		}
 
-		const options: NativeStackNavigationOptions = {
-			headerLeft: undefined,
-			headerTitle: () => (
-				<RoomHeader title={getRoomTitle(team)} subtitle={team.topic} type={team.t} onPress={this.goRoomActionsView} teamMain />
-			),
-			headerRight: () => (
-				<HeaderButton.Container>
-					{showCreate ? (
-						<HeaderButton.Item
-							iconName='create'
-							testID='team-channels-view-create'
-							onPress={() =>
-								navigation.navigate('AddChannelTeamView', { teamId: this.teamId, rid: this.team.rid, t: this.team.t as any })
-							}
-						/>
-					) : null}
-					<HeaderButton.Item iconName='search' testID='team-channels-view-search' onPress={this.onSearchPress} />
-				</HeaderButton.Container>
-			)
+		const createAction: IHeaderAction = {
+			label: I18n.t('Add_Channel_to_Team'),
+			icon: 'create',
+			testID: 'team-channels-view-create',
+			onPress: () => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, rid: this.team.rid, t: this.team.t as any })
+		};
+		const searchAction: IHeaderAction = {
+			label: I18n.t('Search'),
+			icon: 'search',
+			testID: 'team-channels-view-search',
+			legacyHeaderOnly: true,
+			onPress: this.onSearchPress
 		};
 
-		navigation.setOptions(options);
+		navigation.setOptions({
+			headerLeft: undefined,
+			...(hasNativeHeaderBar
+				? {
+						headerTitle: getRoomTitle(team),
+						headerSubtitle: team.topic,
+						onHeaderTitlePress: () => this.goRoomActionsView(),
+						headerSearchBarOptions: stackedSearchBarOptions({
+							ref: this.searchBarRef,
+							onFocus: this.onSearchPress,
+							onChangeText: this.onSearchChangeText,
+							onCancel: this.onCancelSearchPress
+						})
+					}
+				: {
+						headerTitle: () => (
+							<RoomHeader
+								title={getRoomTitle(team)}
+								subtitle={team.topic}
+								type={team.t}
+								onPress={this.goRoomActionsView}
+								teamMain
+							/>
+						)
+					}),
+			...headerRightActions(showCreate ? [createAction, searchAction] : [searchAction])
+		});
 	};
 
 	onSearchPress = () => {
 		logEvent(events.TC_SEARCH);
-		this.setState({ isSearching: true }, () => this.setHeader());
+		this.setState({ isSearching: true }, () => {
+			if (!hasNativeHeaderBar) {
+				this.setHeader();
+			}
+		});
 	};
 
 	onSearchChangeText = debounce((searchText: string) => {
@@ -297,7 +333,10 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 				end: false
 			},
 			() => {
-				this.setHeader();
+				if (!hasNativeHeaderBar) {
+					this.setHeader();
+				}
+				this.searchBarRef.current?.clearText();
 			}
 		);
 	};

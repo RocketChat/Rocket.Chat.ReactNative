@@ -3,14 +3,17 @@ import { FlatList, StyleSheet } from 'react-native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { type SearchBarCommands } from 'react-native-screens';
 
 import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
 import { type IMessageFromServer, type TThreadModel } from '~/definitions';
 import { type ChatsStackParamList } from '~/stacks/types';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';
+import { outsideHeaderLeftClose, stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
+import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import log from '~/lib/methods/helpers/log';
-import { isIOS, useDebounce } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar, isIOS, useDebounce } from '~/lib/methods/helpers';
 import SafeAreaView from '~/containers/SafeAreaView';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import * as List from '~/containers/List';
@@ -49,6 +52,7 @@ const DiscussionsView = () => {
 	const total = useRef(0);
 	const searchText = useRef('');
 	const offset = useRef(0);
+	const searchBarRef = useRef<SearchBarCommands>(null);
 
 	const { colors } = useTheme();
 
@@ -95,16 +99,16 @@ const DiscussionsView = () => {
 		setSearch([]);
 		searchText.current = '';
 		offset.current = 0;
+		searchBarRef.current?.clearText();
 	};
 
 	const onSearchPress = () => {
 		setIsSearching(true);
 	};
 
-	const setHeader = () => {
-		let options: Partial<NativeStackNavigationOptions>;
-		if (isSearching) {
-			options = {
+	const setHeader = (): Partial<NativeStackNavigationOptions> => {
+		if (isSearching && !hasNativeHeaderBar) {
+			return {
 				headerLeft: () => (
 					<HeaderButton.Container style={{ marginLeft: 1 }} left>
 						<HeaderButton.Item iconName='close' onPress={onCancelSearchPress} />
@@ -115,23 +119,21 @@ const DiscussionsView = () => {
 				),
 				headerRight: () => null
 			};
-			return options;
 		}
 
-		options = {
-			headerLeft: undefined,
+		return {
 			headerTitle: I18n.t('Discussions'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item iconName='search' onPress={onSearchPress} />
-				</HeaderButton.Container>
-			)
+			...(hasNativeHeaderBar && {
+				headerSearchBarOptions: stackedSearchBarOptions({
+					ref: searchBarRef,
+					onFocus: onSearchPress,
+					onChangeText: onSearchChangeText,
+					onCancel: onCancelSearchPress
+				})
+			}),
+			...(isMasterDetail ? outsideHeaderLeftClose(() => navigation.pop()) : { headerLeft: undefined }),
+			...headerRightActions([{ label: I18n.t('Search'), icon: 'search', legacyHeaderOnly: true, onPress: onSearchPress }])
 		};
-
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		}
-		return options;
 	};
 
 	useEffect(() => {

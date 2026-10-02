@@ -1,0 +1,18 @@
+appId: ${APP_ID}
+name: Clear search field
+tags:
+  - 'util'
+---
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          id: 'magnifyingglass'
+      - eraseText
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - tapOn:
+          id: clear-text-input

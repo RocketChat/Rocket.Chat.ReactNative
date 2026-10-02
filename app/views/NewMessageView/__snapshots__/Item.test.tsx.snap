@@ -2,58 +2,73 @@
 
 exports[`NewMessageView Item should match snapshot when hasMediaCallPermission is false 1`] = `
 <View
-  accessibilityLabel="John Doe"
-  accessibilityRole="button"
-  accessibilityState={
-    {
-      "busy": undefined,
-      "checked": undefined,
-      "disabled": undefined,
-      "expanded": undefined,
-      "selected": undefined,
-    }
-  }
-  accessibilityValue={
-    {
-      "max": undefined,
-      "min": undefined,
-      "now": undefined,
-      "text": undefined,
-    }
-  }
-  accessible={true}
-  activeUnderlayOpacity={0.105}
-  animationDuration={0}
-  collapsable={false}
-  focusable={true}
-  onBlur={[Function]}
-  onClick={[Function]}
-  onFocus={[Function]}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
   style={
-    {
-      "backgroundColor": "#FFFFFF",
-    }
+    [
+      {
+        "marginHorizontal": 16,
+        "overflow": "hidden",
+      },
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "gap": 12,
+        "paddingHorizontal": 16,
+      },
+      {
+        "backgroundColor": "#FFFFFF",
+        "height": 54,
+      },
+      undefined,
+      undefined,
+    ]
   }
-  testID="new-message-view-item-john.doe"
-  underlayColor="#D7DBE0"
 >
   <View
+    accessibilityLabel="John Doe"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       [
         {
+          "alignItems": "center",
+          "alignSelf": "stretch",
+          "flex": 1,
           "flexDirection": "row",
+          "gap": 12,
         },
-        {
-          "height": 54,
-        },
+        false,
+        undefined,
       ]
     }
+    testID="new-message-view-item-john.doe"
   >
     <View
       accessibilityLabel="john.doe's avatar"
@@ -65,10 +80,7 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
             "height": 30,
             "width": 30,
           },
-          {
-            "marginHorizontal": 12,
-            "marginVertical": 12,
-          },
+          undefined,
         ]
       }
       testID="avatar"
@@ -119,35 +131,37 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
       style={
         {
           "flex": 1,
-          "flexDirection": "column",
-          "justifyContent": "center",
-          "marginRight": 12,
+          "marginRight": 20,
         }
       }
     >
-      <Text
-        numberOfLines={1}
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 18,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "lineHeight": 26,
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "gap": 4,
+          }
         }
       >
-        John Doe
-      </Text>
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 17,
+                "fontWeight": "500",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          John Doe
+        </Text>
+      </View>
     </View>
   </View>
 </View>
@@ -164,58 +178,73 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
   }
 >
   <View
-    accessibilityLabel="John Doe"
-    accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": undefined,
-        "expanded": undefined,
-        "selected": undefined,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    activeUnderlayOpacity={0.105}
-    animationDuration={0}
-    collapsable={false}
-    focusable={true}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
     style={
-      {
-        "backgroundColor": "#FFFFFF",
-      }
+      [
+        {
+          "marginHorizontal": 16,
+          "overflow": "hidden",
+        },
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 12,
+          "paddingHorizontal": 16,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+          "height": 54,
+        },
+        undefined,
+        undefined,
+      ]
     }
-    testID="new-message-view-item-john.doe"
-    underlayColor="#D7DBE0"
   >
     <View
+      accessibilityLabel="John Doe"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
+            "alignItems": "center",
+            "alignSelf": "stretch",
+            "flex": 1,
             "flexDirection": "row",
+            "gap": 12,
           },
-          {
-            "height": 54,
-          },
+          false,
+          undefined,
         ]
       }
+      testID="new-message-view-item-john.doe"
     >
       <View
         accessibilityLabel="john.doe's avatar"
@@ -227,10 +256,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            {
-              "marginHorizontal": 12,
-              "marginVertical": 12,
-            },
+            undefined,
           ]
         }
         testID="avatar"
@@ -281,105 +307,100 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         style={
           {
             "flex": 1,
-            "flexDirection": "column",
-            "justifyContent": "center",
-            "marginRight": 12,
+            "marginRight": 20,
           }
         }
       >
-        <Text
-          numberOfLines={1}
+        <View
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 18,
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "500",
-                "lineHeight": 26,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 4,
+            }
           }
         >
-          John Doe
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="Voice call"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        activeOpacity={0.3}
-        animationDuration={0}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          {
-            "alignSelf": "center",
-            "paddingHorizontal": 15,
-          }
-        }
-        testID="new-message-view-item-john.doe-call"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#2F343D",
-                "fontSize": 22,
-              },
+          <Text
+            numberOfLines={1}
+            style={
               [
                 {
-                  "lineHeight": 22,
+                  "flexShrink": 1,
+                  "fontSize": 17,
+                  "fontWeight": "500",
                 },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            John Doe
+          </Text>
+        </View>
       </View>
+    </View>
+    <View
+      accessibilityLabel="Voice call"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      hitSlop={12}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      testID="new-message-view-item-john.doe-call"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 20,
+            },
+            [
+              {
+                "lineHeight": 20,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
     </View>
   </View>
 </View>
@@ -396,58 +417,73 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
   }
 >
   <View
-    accessibilityLabel="Very Long Display Name That Might Get Truncated"
-    accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": undefined,
-        "expanded": undefined,
-        "selected": undefined,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    activeUnderlayOpacity={0.105}
-    animationDuration={0}
-    collapsable={false}
-    focusable={true}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
     style={
-      {
-        "backgroundColor": "#FFFFFF",
-      }
+      [
+        {
+          "marginHorizontal": 16,
+          "overflow": "hidden",
+        },
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 12,
+          "paddingHorizontal": 16,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+          "height": 54,
+        },
+        undefined,
+        undefined,
+      ]
     }
-    testID="new-message-view-item-long.name"
-    underlayColor="#D7DBE0"
   >
     <View
+      accessibilityLabel="Very Long Display Name That Might Get Truncated"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
+            "alignItems": "center",
+            "alignSelf": "stretch",
+            "flex": 1,
             "flexDirection": "row",
+            "gap": 12,
           },
-          {
-            "height": 54,
-          },
+          false,
+          undefined,
         ]
       }
+      testID="new-message-view-item-long.name"
     >
       <View
         accessibilityLabel="long.name's avatar"
@@ -459,10 +495,7 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            {
-              "marginHorizontal": 12,
-              "marginVertical": 12,
-            },
+            undefined,
           ]
         }
         testID="avatar"
@@ -513,105 +546,100 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
         style={
           {
             "flex": 1,
-            "flexDirection": "column",
-            "justifyContent": "center",
-            "marginRight": 12,
+            "marginRight": 20,
           }
         }
       >
-        <Text
-          numberOfLines={1}
+        <View
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 18,
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "500",
-                "lineHeight": 26,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 4,
+            }
           }
         >
-          Very Long Display Name That Might Get Truncated
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="Voice call"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        activeOpacity={0.3}
-        animationDuration={0}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          {
-            "alignSelf": "center",
-            "paddingHorizontal": 15,
-          }
-        }
-        testID="new-message-view-item-long.name-call"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#2F343D",
-                "fontSize": 22,
-              },
+          <Text
+            numberOfLines={1}
+            style={
               [
                 {
-                  "lineHeight": 22,
+                  "flexShrink": 1,
+                  "fontSize": 17,
+                  "fontWeight": "500",
                 },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Very Long Display Name That Might Get Truncated
+          </Text>
+        </View>
       </View>
+    </View>
+    <View
+      accessibilityLabel="Voice call"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      hitSlop={12}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      testID="new-message-view-item-long.name-call"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 20,
+            },
+            [
+              {
+                "lineHeight": 20,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
     </View>
   </View>
 </View>
@@ -628,58 +656,73 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
   }
 >
   <View
-    accessibilityLabel="John Doe"
-    accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": undefined,
-        "expanded": undefined,
-        "selected": undefined,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    activeUnderlayOpacity={0.105}
-    animationDuration={0}
-    collapsable={false}
-    focusable={true}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
     style={
-      {
-        "backgroundColor": "#FFFFFF",
-      }
+      [
+        {
+          "marginHorizontal": 16,
+          "overflow": "hidden",
+        },
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 12,
+          "paddingHorizontal": 16,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+          "height": 54,
+        },
+        undefined,
+        undefined,
+      ]
     }
-    testID="new-message-view-item-john.doe"
-    underlayColor="#D7DBE0"
   >
     <View
+      accessibilityLabel="John Doe"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
+            "alignItems": "center",
+            "alignSelf": "stretch",
+            "flex": 1,
             "flexDirection": "row",
+            "gap": 12,
           },
-          {
-            "height": 54,
-          },
+          false,
+          undefined,
         ]
       }
+      testID="new-message-view-item-john.doe"
     >
       <View
         accessibilityLabel="john.doe's avatar"
@@ -691,10 +734,7 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            {
-              "marginHorizontal": 12,
-              "marginVertical": 12,
-            },
+            undefined,
           ]
         }
         testID="avatar"
@@ -745,105 +785,100 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
         style={
           {
             "flex": 1,
-            "flexDirection": "column",
-            "justifyContent": "center",
-            "marginRight": 12,
+            "marginRight": 20,
           }
         }
       >
-        <Text
-          numberOfLines={1}
+        <View
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 18,
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "500",
-                "lineHeight": 26,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 4,
+            }
           }
         >
-          John Doe
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="Voice call"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        activeOpacity={0.3}
-        animationDuration={0}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          {
-            "alignSelf": "center",
-            "paddingHorizontal": 15,
-          }
-        }
-        testID="new-message-view-item-john.doe-call"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#2F343D",
-                "fontSize": 22,
-              },
+          <Text
+            numberOfLines={1}
+            style={
               [
                 {
-                  "lineHeight": 22,
+                  "flexShrink": 1,
+                  "fontSize": 17,
+                  "fontWeight": "500",
                 },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            John Doe
+          </Text>
+        </View>
       </View>
+    </View>
+    <View
+      accessibilityLabel="Voice call"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      hitSlop={12}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      testID="new-message-view-item-john.doe-call"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 20,
+            },
+            [
+              {
+                "lineHeight": 20,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
     </View>
   </View>
 </View>

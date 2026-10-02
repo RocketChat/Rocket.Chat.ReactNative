@@ -7,11 +7,15 @@ import * as mime from 'react-native-mime-types';
 import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
-import { Component } from 'react';
+import { type SearchBarCommands } from 'react-native-screens';
+import { Component, createRef } from 'react';
 
 import database from '~/lib/database';
 import I18n from '~/i18n';
+import { outsideHeaderLeftClose, stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
+import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import DirectoryItem, { ROW_HEIGHT } from '~/containers/DirectoryItem';
+import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import ServerItem from '~/containers/ServerItem';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import ActivityIndicator from '~/containers/ActivityIndicator';
@@ -24,7 +28,7 @@ import { getSubscriptionSearchClause } from '~/lib/database/utils';
 import styles from './styles';
 import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '~/definitions';
 import { type ShareInsideStackParamList } from '~/definitions/navigationTypes';
-import { getRoomAvatar, isAndroid, isIOS } from '~/lib/methods/helpers';
+import { getRoomAvatar, hasNativeHeaderBar, isAndroid, isIOS } from '~/lib/methods/helpers';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { shareSetParams } from '~/actions/share';
 import { appStart } from '~/actions/app';
@@ -78,6 +82,8 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 	private unsubscribeBlur: (() => void) | undefined;
 
 	private backHandler: NativeEventSubscription | undefined;
+
+	private searchBarRef = createRef<SearchBarCommands>();
 
 	constructor(props: IShareListViewProps) {
 		super(props);
@@ -166,7 +172,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		if (previousProps.connecting !== connecting && connecting) {
 			this.setState({ chats: [], searchResults: [], searching: false, searchText: '' });
 		}
-		if (previousState.searching !== searching) {
+		if (!hasNativeHeaderBar && previousState.searching !== searching) {
 			this.setHeader();
 		}
 	}
@@ -214,7 +220,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		const { searching } = this.state;
 		const { navigation } = this.props;
 
-		if (searching) {
+		if (searching && !hasNativeHeaderBar) {
 			navigation.setOptions({
 				headerLeft: () => (
 					<HeaderButton.Container left>
@@ -228,18 +234,23 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		}
 
 		navigation.setOptions({
-			headerLeft: () => (
-				<HeaderButton.Container left>
-					<HeaderButton.Item iconName='close' onPress={this.closeShareExtension} testID='share-extension-close' />
-				</HeaderButton.Container>
-			),
+			...outsideHeaderLeftClose(this.closeShareExtension, 'share-extension-close'),
 			headerTitle: I18n.t('Send_to'),
-			headerRight: () =>
-				this.airGappedReadOnly ? null : (
-					<HeaderButton.Container>
-						<HeaderButton.Item iconName='search' onPress={this.initSearch} />
-					</HeaderButton.Container>
-				)
+			...(hasNativeHeaderBar && {
+				headerSearchBarOptions: this.airGappedReadOnly
+					? undefined
+					: stackedSearchBarOptions({
+							ref: this.searchBarRef,
+							onFocus: this.initSearch,
+							onChangeText: this.search,
+							onCancel: this.cancelSearch
+						})
+			}),
+			...headerRightActions(
+				this.airGappedReadOnly
+					? []
+					: [{ label: I18n.t('Search'), icon: 'search', legacyHeaderOnly: true, onPress: this.initSearch }]
+			)
 		});
 	};
 
@@ -361,7 +372,10 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 	};
 
 	cancelSearch = () => {
-		this.setState({ searching: false, searchResults: [], searchText: '' }, () => this.setHeader());
+		this.setState({ searching: false, searchResults: [], searchText: '' }, () => {
+			this.setHeader();
+			this.searchBarRef.current?.clearText();
+		});
 		Keyboard.dismiss();
 	};
 
@@ -393,16 +407,22 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 
 		return (
 			<>
-				<View style={[styles.headerContainer, { backgroundColor: themes[theme].surfaceHover }]}>
+				<View
+					style={[
+						styles.headerContainer,
+						hasNativeHeaderBar && styles.nativeHeaderContainer,
+						{ backgroundColor: themes[theme].surfaceHover }
+					]}>
 					<Text style={[styles.headerText, { color: themes[theme].fontTitlesLabels }]}>{I18n.t(header)}</Text>
 				</View>
-				<List.Separator />
+				{hasNativeHeaderBar ? null : <List.Separator />}
 			</>
 		);
 	};
 
-	renderItem = ({ item }: { item: TSubscriptionModel }) => {
-		const { serverInfo } = this.state;
+	renderItem = ({ item, index }: { item: TSubscriptionModel; index: number }) => {
+		const { serverInfo, chats, searchResults, searching } = this.state;
+		const rowCount = searching ? searchResults.length : chats.length;
 		let description;
 		switch (item.t) {
 			case 'c':
@@ -427,6 +447,8 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 				onPress={() => this.shareMessage(item)}
 				testID={`share-extension-item-${item.name}`}
 				teamMain={item.teamMain}
+				isFirst={index === 0}
+				isLast={index === rowCount - 1}
 			/>
 		);
 	};
@@ -441,7 +463,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 			<>
 				{this.renderSectionHeader('Select_Server')}
 				<ServerItem onPress={() => navigation.navigate('SelectServerView')} item={serverInfo} />
-				<List.Separator />
+				{hasNativeHeaderBar ? null : <List.Separator />}
 			</>
 		);
 	};
@@ -517,12 +539,13 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 					data={searching ? searchResults : chats}
 					keyExtractor={keyExtractor}
 					style={[styles.flatlist, { backgroundColor: themes[theme].surfaceHover }]}
-					contentContainerStyle={{ paddingBottom: insets.bottom }}
+					contentContainerStyle={hasNativeHeaderBar ? searching && styles.nativeSearchContent : { paddingBottom: insets.bottom }}
+					contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
-					ItemSeparatorComponent={List.Separator}
+					ItemSeparatorComponent={RowSeparator}
 					ListHeaderComponent={this.renderHeader}
-					ListFooterComponent={!searching || searchResults.length > 0 ? <List.Separator /> : null}
+					ListFooterComponent={!hasNativeHeaderBar && (!searching || searchResults.length > 0) ? <List.Separator /> : null}
 					ListEmptyComponent={this.renderEmptyComponent}
 					removeClippedSubviews
 					keyboardShouldPersistTaps='always'

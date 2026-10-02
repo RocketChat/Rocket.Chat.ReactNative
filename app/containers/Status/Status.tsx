@@ -3,8 +3,9 @@ import { memo } from 'react';
 import { type StyleProp, type TextStyle, useWindowDimensions } from 'react-native';
 
 import { useTheme } from '~/theme';
-import { CustomIcon, hasIcon, type TIconsName } from '../CustomIcon';
+import { CustomIcon } from '../CustomIcon';
 import { type IStatusComponentProps } from './definition';
+import { getStatusIconName } from './getStatusIconName';
 import { useUserStatusColor } from '~/lib/hooks/useUserStatusColor';
 
 const Status = memo(({ style, status = 'offline', size = 32, ...props }: IStatusComponentProps) => {
@@ -13,9 +14,6 @@ const Status = memo(({ style, status = 'offline', size = 32, ...props }: IStatus
 
 	const { fontScale } = useWindowDimensions();
 
-	const name: TIconsName = `status-${status}`;
-	const isNameValid = hasIcon(name);
-	const iconName = isNameValid ? name : 'status-offline';
 	const calculatedStyle: StyleProp<TextStyle> = [
 		{
 			width: size * fontScale,
@@ -31,7 +29,7 @@ const Status = memo(({ style, status = 'offline', size = 32, ...props }: IStatus
 			{...props}
 			style={calculatedStyle}
 			size={size}
-			name={iconName}
+			name={getStatusIconName(status)}
 			color={userStatusColor ?? colors.userPresenceOffline}
 		/>
 	);

@@ -1,0 +1,68 @@
+{
+  "fill" : {
+    "linear-gradient" : [
+      "display-p3:1.06272,0.30074,0.40032,1.00000",
+      "display-p3:0.96078,0.27059,0.36078,1.00000"
+    ]
+  },
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "blend-mode" : "plus-lighter",
+          "fill-specializations" : [
+            {
+              "value" : {
+                "linear-gradient" : [
+                  "display-p3:1.00000,1.00000,1.00000,1.00000",
+                  "srgb:1.00000,1.00000,1.00000,0.80000"
+                ],
+                "orientation" : {
+                  "start" : {
+                    "x" : 0.8502197265625,
+                    "y" : 0.04061830677339003
+                  },
+                  "stop" : {
+                    "x" : 0.3342950994318182,
+                    "y" : 1
+                  }
+                }
+              }
+            },
+            {
+              "appearance" : "tinted",
+              "value" : {
+                "automatic-gradient" : "extended-srgb:0.00000,0.53333,1.00000,1.00000"
+              }
+            }
+          ],
+          "glass" : true,
+          "image-name" : "Union2.svg",
+          "name" : "Union2",
+          "opacity" : 0.95,
+          "position" : {
+            "scale" : 2,
+            "translation-in-points" : [
+              5,
+              -3.0004841536889444
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.3
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}

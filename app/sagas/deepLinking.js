@@ -28,6 +28,7 @@ import { videoConfJoin } from '../lib/methods/videoConf';
 import { loginOAuthOrSso } from '../lib/services/connect';
 import { notifyUser } from '../lib/services/restApi';
 import sdk from '../lib/services/sdk';
+import { preloadNativeHeaderIcons } from './preloadNativeHeaderIcons';
 import Navigation, { waitForNavigationReady } from '../lib/navigation/appNavigation';
 import { resetVoipState } from '../lib/services/voip/resetVoipState';
 
@@ -325,6 +326,7 @@ const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, 
 };
 
 const handleOpen = function* handleOpen({ params }) {
+	yield call(preloadNativeHeaderIcons);
 	if (params.type === 'shareextension') {
 		yield handleShareExtension({ params });
 		return;

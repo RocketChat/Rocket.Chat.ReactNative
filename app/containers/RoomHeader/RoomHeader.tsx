@@ -88,7 +88,6 @@ interface IRoomHeader {
 	testID?: string;
 	sourceType?: IOmnichannelSource;
 	disabled?: boolean;
-	rightButtonsWidth?: number;
 	abacAttributes?: ISubscription['abacAttributes'];
 }
 
