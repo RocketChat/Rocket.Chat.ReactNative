@@ -137,9 +137,9 @@ export function getUserPresence(uid: string) {
 	}
 }
 
-export const setPresenceCap = async (enabled: boolean) => {
+export const setPresenceCap = (enabled: boolean) => {
 	if (enabled) {
-		const notificationPresenceCap = await userPreferences.getBool(NOTIFICATION_PRESENCE_CAP);
+		const notificationPresenceCap = userPreferences.getBool(NOTIFICATION_PRESENCE_CAP);
 		if (notificationPresenceCap !== false) {
 			userPreferences.setBool(NOTIFICATION_PRESENCE_CAP, true);
 			reduxStore.dispatch(setNotificationPresenceCap(true));
