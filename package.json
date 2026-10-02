@@ -24,7 +24,7 @@
 		"storybook:start": "USE_STORYBOOK=true react-native start --reset-cache",
 		"storybook-generate": "sb-rn-get-stories",
 		"bugsnag:upload-android": "bugsnag-cli upload react-native-android",
-		"doctor": "react-doctor"
+		"doctor": "npx react-doctor@latest"
 	},
 	"dependencies": {
 		"@bugsnag/react-native": "8.4.0",
@@ -210,7 +210,6 @@
 		"oxlint": "^1.75.0",
 		"oxlint-plugin-complexity": "^2.1.8",
 		"patch-package": "~8.0.1",
-		"react-doctor": "0.9.14",
 		"react-dom": "19.2.3",
 		"sniffler": "0.4.0",
 		"storybook": "~9.0.9",
