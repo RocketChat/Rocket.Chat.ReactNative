@@ -8,10 +8,16 @@ tags:
 ---
 - runFlow: '../../helpers/launch-app.yaml'
 - runFlow: '../../helpers/navigate-to-workspace.yaml'
-- assertVisible:
-    id: 'login-view-more'
-- tapOn:
-    id: 'login-view-more'
+- runFlow:
+    file: '../../helpers/wait-header-item.yaml'
+    env:
+      ANDROID_ID: 'login-view-more'
+      IOS_LABEL: 'More'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'login-view-more'
+      IOS_LABEL: 'More'
 - assertVisible:
     id: 'legal-view'
 - runFlow: ../../helpers/go-back.yaml
@@ -19,10 +25,16 @@ tags:
     element:
       text: 'Create an account'
 - tapOn: 'Create an account'
-- assertVisible:
-    id: 'register-view-more'
-- tapOn:
-    id: 'register-view-more'
+- runFlow:
+    file: '../../helpers/wait-header-item.yaml'
+    env:
+      ANDROID_ID: 'register-view-more'
+      IOS_LABEL: 'More'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'register-view-more'
+      IOS_LABEL: 'More'
 - assertVisible:
     id: 'legal-view'
 - assertVisible:
