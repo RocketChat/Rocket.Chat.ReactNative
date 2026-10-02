@@ -174,6 +174,15 @@ export const defaultSettings = {
 	Message_AllowStarring: {
 		type: 'valueAsBoolean'
 	},
+	Message_MaxAllowedSize: {
+		type: 'valueAsNumber'
+	},
+	Message_AllowConvertLongMessagesToAttachment: {
+		type: 'valueAsBoolean'
+	},
+	FileUpload_Enabled: {
+		type: 'valueAsBoolean'
+	},
 	Message_AudioRecorderEnabled: {
 		type: 'valueAsBoolean'
 	},
