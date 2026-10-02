@@ -134,7 +134,9 @@ const UrlImage = ({ image }: { image?: string }) => {
 		return null;
 	}
 
-	image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user?.id ?? ''}&rc_token=${user?.token ?? ''}`;
+	image = image.includes('http')
+		? image
+		: formatAttachmentUrl(`/${image.replace(/^\/+/, '')}`, user?.id ?? '', user?.token ?? '', baseUrl ?? '');
 	return <Image source={{ uri: image }} style={styles.image} contentFit='cover' />;
 };
 

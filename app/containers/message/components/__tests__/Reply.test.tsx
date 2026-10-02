@@ -190,6 +190,32 @@ describe('Reply', () => {
 			const { queryByTestId } = renderReply({ attachment: { author_name: 'Alice', text: 'Hi' } });
 			expect(queryByTestId('reply-url-image')).toBeNull();
 		});
+
+		it('builds a relative thumb_url through formatAttachmentUrl so the origin is checked', () => {
+			renderReply({ attachment: { thumb_url: 'file-upload/1/thumb.png', author_name: 'Alice', text: 'Hi' } });
+			expect(mockFormatAttachmentUrl).toHaveBeenCalledWith(
+				'/file-upload/1/thumb.png',
+				'user-1',
+				'token',
+				'https://open.rocket.chat'
+			);
+		});
+
+		it.each(['@evil.example/x', '.evil.example/x', '//evil.example/x'])(
+			'keeps a host-like relative thumb_url %s as a path on the server',
+			thumb => {
+				renderReply({ attachment: { thumb_url: thumb, author_name: 'Alice', text: 'Hi' } });
+				const [path, , , server] = mockFormatAttachmentUrl.mock.calls[0];
+				expect(path.startsWith('/')).toBe(true);
+				expect(path.startsWith('//')).toBe(false);
+				expect(server).toBe('https://open.rocket.chat');
+			}
+		);
+
+		it('does not add credentials to an absolute thumb_url', () => {
+			renderReply({ attachment: { thumb_url: 'https://evil.example/thumb.png', author_name: 'Alice', text: 'Hi' } });
+			expect(mockFormatAttachmentUrl).not.toHaveBeenCalled();
+		});
 	});
 
 	describe('Fields', () => {

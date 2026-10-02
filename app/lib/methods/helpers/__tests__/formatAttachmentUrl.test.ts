@@ -1,4 +1,99 @@
-import { encodeAttachmentUrl } from '../formatAttachmentUrl';
+import { encodeAttachmentUrl, formatAttachmentUrl } from '../formatAttachmentUrl';
+import { store } from '~/lib/store/auxStore';
+
+jest.mock('~/lib/store/auxStore', () => ({
+	store: { getState: jest.fn() }
+}));
+
+const SERVER = 'https://mobile.qa.rocket.chat';
+const mockSettings = (settings: Record<string, unknown>) =>
+	(store.getState as jest.Mock).mockReturnValue({ settings: { FileUpload_ProtectFiles: true, ...settings } });
+
+describe('formatAttachmentUrl', () => {
+	beforeEach(() => mockSettings({}));
+
+	it('appends credentials to a relative path on the server', () => {
+		expect(formatAttachmentUrl('/file-upload/1/a.png', 'uid', 'tok', SERVER)).toBe(
+			`${SERVER}/file-upload/1/a.png?rc_token=tok&rc_uid=uid`
+		);
+	});
+
+	it('appends credentials to an absolute url on the server origin', () => {
+		expect(formatAttachmentUrl(`${SERVER}/file-upload/1/a.png`, 'uid', 'tok', SERVER)).toBe(
+			`${SERVER}/file-upload/1/a.png?rc_token=tok&rc_uid=uid`
+		);
+	});
+
+	it('appends credentials to the CDN_PREFIX origin', () => {
+		mockSettings({ CDN_PREFIX: 'https://cdn.qa.rocket.chat/' });
+		expect(formatAttachmentUrl('https://cdn.qa.rocket.chat/file-upload/1/a.png', 'uid', 'tok', SERVER)).toBe(
+			'https://cdn.qa.rocket.chat/file-upload/1/a.png?rc_token=tok&rc_uid=uid'
+		);
+	});
+
+	it.each([
+		['third-party host', 'https://evil.example/pixel.jpg'],
+		['look-alike suffix host', 'https://mobile.qa.rocket.chat.evil.com/pixel.jpg'],
+		['userinfo host', 'https://mobile.qa.rocket.chat@evil.com/pixel.jpg'],
+		['different port', 'https://mobile.qa.rocket.chat:8443/pixel.jpg'],
+		['different scheme', 'http://mobile.qa.rocket.chat/pixel.jpg']
+	])('does not leak credentials to %s', (_name, url) => {
+		const result = formatAttachmentUrl(url, 'uid', 'tok', SERVER);
+		expect(result).not.toContain('rc_token');
+		expect(result).not.toContain('rc_uid');
+	});
+
+	it('does not leak when title_link is attacker-controlled but image_url looks trusted', () => {
+		const result = formatAttachmentUrl('https://evil.example/x', 'uid', 'tok', SERVER, `${SERVER}/file-upload/1/a.png`);
+		expect(result).toBe('https://evil.example/x');
+	});
+
+	it('returns the original url when it is on another origin', () => {
+		expect(formatAttachmentUrl(`${SERVER}/a.png`, 'uid', 'tok', SERVER, 'https://mobile.qa.rocket.chat.evil.com/a.png')).toBe(
+			'https://mobile.qa.rocket.chat.evil.com/a.png'
+		);
+	});
+
+	it('does not add credentials to a relative path that escapes the server origin', () => {
+		const result = formatAttachmentUrl('@evil.com/x', 'uid', 'tok', SERVER);
+		expect(result).not.toContain('rc_token');
+	});
+
+	it.each(['.evil.com/x', '\t.evil.com/x', ':8443@evil.com/x'])(
+		'does not add credentials to host-like relative path %j',
+		path => {
+			const result = formatAttachmentUrl(path, 'uid', 'tok', SERVER);
+			expect(result).not.toContain('rc_token');
+			expect(result).not.toContain('rc_uid');
+		}
+	);
+
+	it('keeps a backslash-prefixed relative path on the server origin', () => {
+		// WHATWG parsing turns `\\` into `/`, so this is a path on the server, not a host.
+		const url = new URL(formatAttachmentUrl('\\\\evil.com/x', 'uid', 'tok', SERVER));
+		expect(url.origin).toBe(SERVER);
+	});
+
+	it('does not add credentials (and does not throw) when the server is empty', () => {
+		expect(formatAttachmentUrl('/file-upload/1/a.png', 'uid', 'tok', '')).toBe('/file-upload/1/a.png');
+	});
+
+	it('trusts the CDN_PREFIX origin for an original url', () => {
+		mockSettings({ CDN_PREFIX: 'https://cdn.qa.rocket.chat' });
+		const cdn = 'https://cdn.qa.rocket.chat/file-upload/1/a.png';
+		expect(formatAttachmentUrl(cdn, 'uid', 'tok', SERVER, cdn)).toBe(`${cdn}?rc_token=tok&rc_uid=uid`);
+	});
+
+	it('does not trust the CDN_PREFIX when it is not an http url', () => {
+		mockSettings({ CDN_PREFIX: 'cdn.qa.rocket.chat' });
+		expect(formatAttachmentUrl('https://cdn.qa.rocket.chat/a.png', 'uid', 'tok', SERVER)).not.toContain('rc_token');
+	});
+
+	it('does not add credentials when files are not protected', () => {
+		mockSettings({ FileUpload_ProtectFiles: false });
+		expect(formatAttachmentUrl(`${SERVER}/a.png`, 'uid', 'tok', SERVER)).toBe(`${SERVER}/a.png`);
+	});
+});
 
 describe('encodeAttachmentUrl', () => {
 	it('encodes an unencoded path', () => {
