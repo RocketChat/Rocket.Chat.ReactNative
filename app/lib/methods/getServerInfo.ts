@@ -18,6 +18,8 @@ import { compareServerVersion } from './helpers';
 import log from './helpers/log';
 import { getUserSelector } from '~/selectors/login';
 import fetch from './helpers/fetch';
+import UserPreferences from './userPreferences';
+import { getServerUserIdKey } from '../constants/keys';
 
 interface IServerInfoFailure {
 	success: false;
@@ -55,12 +57,13 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 		const storeState = store.getState();
 		const user = getUserSelector(storeState);
 
+		const isKnownUser = !!user?.id && UserPreferences.getString(getServerUserIdKey(server)) === user.id;
+
 		const response = await fetch(`${server}/api/info`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-Auth-Token': user?.token,
-				'X-User-Id': user?.id
+				...(isKnownUser ? { 'X-Auth-Token': user.token, 'X-User-Id': user.id } : {})
 			}
 		});
 		try {
