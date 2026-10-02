@@ -74,8 +74,8 @@ const DefaultBrowserView = () => {
 
 	const changeDefaultBrowser = useCallback((newBrowser: TValue) => {
 		logEvent(events.DB_CHANGE_DEFAULT_BROWSER, { browser: newBrowser });
+		const browser = newBrowser || 'systemDefault:';
 		try {
-			const browser = newBrowser || 'systemDefault:';
 			UserPreferences.setString(DEFAULT_BROWSER_KEY, browser);
 			setBrowser(browser);
 		} catch {

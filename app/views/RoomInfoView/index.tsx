@@ -39,6 +39,20 @@ type TRoomInfoViewNavigationProp = CompositeNavigationProp<
 
 type TRoomInfoViewRouteProp = RouteProp<ChatsStackParamList, 'RoomInfoView'>;
 
+const fetchVisitorWithUserAgent = async (visitorId: string) => {
+	const result = await getVisitorInfo(visitorId);
+	if (!result.success) return;
+	const { visitor } = result;
+	const params: { os?: string; browser?: string } = {};
+	if (visitor.userAgent) {
+		const ua = new UAParser();
+		ua.setUA(visitor.userAgent);
+		params.os = `${ua.getOS().name} ${ua.getOS().version}`;
+		params.browser = `${ua.getBrowser().name} ${ua.getBrowser().version}`;
+	}
+	return { ...visitor, ...params };
+};
+
 const RoomInfoView = (): ReactElement => {
 	const {
 		params: { rid, t, fromRid, member, room: roomParam, showCloseModal, itsMe }
@@ -111,21 +125,13 @@ const RoomInfoView = (): ReactElement => {
 	};
 
 	const loadVisitor = async () => {
+		const visitorId = room?.visitor?._id;
+		if (!visitorId) return;
 		try {
-			if (room?.visitor?._id) {
-				const result = await getVisitorInfo(room.visitor._id);
-				if (result.success) {
-					const { visitor } = result;
-					const params: { os?: string; browser?: string } = {};
-					if (visitor.userAgent) {
-						const ua = new UAParser();
-						ua.setUA(visitor.userAgent);
-						params.os = `${ua.getOS().name} ${ua.getOS().version}`;
-						params.browser = `${ua.getBrowser().name} ${ua.getBrowser().version}`;
-					}
-					setRoomUser({ ...visitor, ...params });
-					setHeader();
-				}
+			const visitor = await fetchVisitorWithUserAgent(visitorId);
+			if (visitor) {
+				setRoomUser(visitor);
+				setHeader();
 			}
 		} catch (error) {
 			// Do nothing
@@ -157,8 +163,9 @@ const RoomInfoView = (): ReactElement => {
 
 	const loadUser = async () => {
 		if (!roomUser._id) {
+			const roomOrParams = room || { rid, t };
 			try {
-				const roomUserId = getUidDirectMessage({ ...(room || { rid, t }), itsMe });
+				const roomUserId = getUidDirectMessage({ ...roomOrParams, itsMe });
 				const result = await getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
