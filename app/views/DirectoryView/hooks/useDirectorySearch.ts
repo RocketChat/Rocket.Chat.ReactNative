@@ -106,7 +106,6 @@ export const useDirectorySearch = (directoryDefaultView: string) => {
 		search();
 	};
 
-	// Run the initial search when the hook mounts; `search` is stable, so this fires once
 	useEffect(() => {
 		search();
 	}, []);
