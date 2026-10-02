@@ -13,7 +13,7 @@ import {
 	type IInputSelection,
 	type TSetInput
 } from '../interfaces';
-import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
+import { useAutocompleteParams, useFocused, useMessageComposerApi } from '../context';
 import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
 import { useAutoSaveDraft } from '../hooks';
 import sharedStyles from '~/views/Styles';
@@ -76,133 +76,36 @@ export const ComposerInput = memo(
 		const usedCannedResponse = route.params?.usedCannedResponse;
 		const previousActionRef = useRef(action);
 
-		// subscribe to changes on mic state to update draft after a message is sent
-		useMicOrSend();
-		const { saveMessageDraft } = useAutoSaveDraft(textRef.current);
+		const { saveDraft } = useAutoSaveDraft(textRef);
 
 		// workaround to handle issues with iOS back swipe navigation
 		const { iOSBackSwipe } = useIOSBackSwipeHandler();
 
-		// Draft/Canned Responses
-		useEffect(() => {
-			const setDraftMessage = async () => {
-				const draftMessage = await loadDraftMessage({ rid, tmid });
-				if (draftMessage) {
-					const parsedDraft = parseJson(draftMessage);
-					if (parsedDraft?.msg || parsedDraft?.quotes) {
-						if (sharing) return;
-						messageActionStore.getState().actions.setQuoteMessageIds(parsedDraft.quotes || []);
-						setInput(parsedDraft.msg || '');
-					} else {
-						setInput(draftMessage);
-					}
+		const setInput: TSetInput = useCallback(
+			(text, selection, forceUpdateDraftMessage) => {
+				const message = text.trim();
+				textRef.current = message;
+
+				if (forceUpdateDraftMessage) {
+					saveDraft();
 				}
-			};
 
-			if (action?.kind !== 'edit' && firstRender.current) {
-				firstRender.current = false;
-				setDraftMessage();
-			}
-			if (sharing) return;
-			if (usedCannedResponse) setInput(usedCannedResponse);
-		}, [action?.kind, rid, tmid, usedCannedResponse]);
-
-		// Edit/quote
-		useEffect(() => {
-			const fetchMessageAndSetInput = async (messageId: string) => {
-				const message = await getMessageById(messageId);
-				if (message) {
-					setInput(message?.msg || (altTextSupported ? '' : message?.attachments?.[0]?.description || ''));
-				}
-			};
-
-			const previousAction = previousActionRef.current;
-			previousActionRef.current = action;
-
-			if (sharing) return;
-
-			if (previousAction?.kind === 'edit' && action?.kind !== 'edit') {
-				setInput('');
-				return;
-			}
-			if (action?.kind === 'edit') {
-				focus();
-				fetchMessageAndSetInput(action.messageId);
-				return;
-			}
-			if (action?.kind === 'quote' && action.messageIds.length) {
-				focus();
-			}
-		}, [action]);
-
-		useFocusEffect(
-			useCallback(() => {
-				const task = InteractionManager.runAfterInteractions(() => {
-					emitter.on('addMarkdown', ({ style }) => {
-						const { start, end } = selectionRef.current;
-						const text = textRef.current;
-						const markdown = MARKDOWN_STYLES[style];
-						const newText = `${text.substr(0, start)}${markdown}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
-						setInput(newText, {
-							start: start + markdown.length,
-							end: start === end ? start + markdown.length : end + markdown.length
-						});
-					});
-					emitter.on('toolbarMention', () => {
-						if (autocompleteType) {
-							return;
-						}
-						const { start, end } = selectionRef.current;
-						const text = textRef.current;
-						const newText = `${text.substr(0, start)}@${text.substr(start, end - start)}${text.substr(end)}`;
-						setInput(newText, { start: start + 1, end: start === end ? start + 1 : end + 1 });
-						setAutocompleteParams({ text: '', type: '@' });
-					});
-				});
-				return () => {
-					emitter.off('addMarkdown');
-					emitter.off('toolbarMention');
-					task?.cancel();
-				};
-			}, [rid, tmid, autocompleteType])
-		);
-
-		useImperativeHandle(ref, () => ({
-			getTextAndClear: () => {
-				const text = textRef.current;
-				setInput('', undefined, true);
-				return text;
-			},
-			getText: () => textRef.current,
-			getSelection: () => selectionRef.current,
-			setInput,
-			onAutocompleteItemSelected,
-			focus
-		}));
-
-		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
-			const message = text.trim();
-			textRef.current = message;
-
-			if (forceUpdateDraftMessage) {
-				saveMessageDraft('');
-			}
-
-			if (text) {
 				inputRef.current?.setNativeProps?.({ text });
-			} else {
-				inputRef.current?.clear();
-			}
+				if (!text) {
+					inputRef.current?.clear();
+				}
 
-			if (selection) {
-				// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
-				setTimeout(() => {
-					inputRef.current?.setSelection?.(selection.start, selection.end);
-					selectionRef.current = selection;
-				}, 50);
-			}
-			setMicOrSend(message.length === 0 ? 'mic' : 'send');
-		};
+				if (selection) {
+					// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
+					setTimeout(() => {
+						inputRef.current?.setSelection?.(selection.start, selection.end);
+						selectionRef.current = selection;
+					}, 50);
+				}
+				setMicOrSend(message.length === 0 ? 'mic' : 'send');
+			},
+			[saveDraft, inputRef, setMicOrSend]
+		);
 
 		const focus = () => {
 			setTimeout(() => {
@@ -211,6 +114,73 @@ export const ComposerInput = memo(
 				}
 			}, 300);
 		};
+
+		const stopAutocomplete = () => {
+			setAutocompleteParams({ text: '', type: null, params: '' });
+		};
+
+		const handleTyping = (isTyping: boolean) => {
+			if (sharing || !rid) return;
+			dispatch(userTyping(rid, isTyping, tmid ? { tmid } : {}));
+		};
+
+		const debouncedOnChangeText = useDebouncedCallback(async (text: string) => {
+			const isTextEmpty = text.length === 0;
+			handleTyping(!isTextEmpty);
+			if (isTextEmpty || !focused) {
+				stopAutocomplete();
+				return;
+			}
+			const { start, end } = selectionRef.current;
+			const cursor = Math.max(start, end);
+			const whiteSpaceOrBreakLineRegex = /[\s\n]+/;
+			const txt =
+				cursor < text.length ? text.substr(0, cursor).split(whiteSpaceOrBreakLineRegex) : text.split(whiteSpaceOrBreakLineRegex);
+			const lastWord = txt[txt.length - 1];
+			const autocompleteText = lastWord.substring(1);
+
+			if (!lastWord) {
+				stopAutocomplete();
+				return;
+			}
+			if (lastWord.match(/^#/)) {
+				setAutocompleteParams({ text: autocompleteText, type: '#' });
+				return;
+			}
+			if (lastWord.match(/^@/)) {
+				setAutocompleteParams({ text: autocompleteText, type: '@' });
+				return;
+			}
+			if (lastWord.match(/^:/)) {
+				setAutocompleteParams({ text: autocompleteText, type: ':' });
+				return;
+			}
+			if (lastWord.match(/^!/) && t === 'l') {
+				setAutocompleteParams({ text: autocompleteText, type: '!' });
+				return;
+			}
+			if (!sharing && text.match(/^\//)) {
+				const commandParameter = text.match(/^\/([a-z0-9._-]+) (.+)/im);
+				if (commandParameter) {
+					const db = database.active;
+					const [, command, params] = commandParameter;
+					const commandsCollection = db.get('slash_commands');
+					try {
+						const commandRecord = await commandsCollection.find(command);
+						if (commandRecord.providesPreview) {
+							setAutocompleteParams({ params, text: command, type: '/preview' });
+						}
+						return;
+					} catch (e) {
+						// do nothing
+					}
+				}
+				setAutocompleteParams({ text: autocompleteText, type: '/' });
+				return;
+			}
+
+			stopAutocomplete();
+		}, textInputDebounceTime);
 
 		const onChangeText: TextInputProps['onChangeText'] = text => {
 			textRef.current = text;
@@ -314,72 +284,102 @@ export const ComposerInput = memo(
 			});
 		};
 
-		const stopAutocomplete = () => {
-			setAutocompleteParams({ text: '', type: null, params: '' });
-		};
-
-		const debouncedOnChangeText = useDebouncedCallback(async (text: string) => {
-			const isTextEmpty = text.length === 0;
-			handleTyping(!isTextEmpty);
-			if (isTextEmpty || !focused) {
-				stopAutocomplete();
-				return;
-			}
-			const { start, end } = selectionRef.current;
-			const cursor = Math.max(start, end);
-			const whiteSpaceOrBreakLineRegex = /[\s\n]+/;
-			const txt =
-				cursor < text.length ? text.substr(0, cursor).split(whiteSpaceOrBreakLineRegex) : text.split(whiteSpaceOrBreakLineRegex);
-			const lastWord = txt[txt.length - 1];
-			const autocompleteText = lastWord.substring(1);
-
-			if (!lastWord) {
-				stopAutocomplete();
-				return;
-			}
-			if (lastWord.match(/^#/)) {
-				setAutocompleteParams({ text: autocompleteText, type: '#' });
-				return;
-			}
-			if (lastWord.match(/^@/)) {
-				setAutocompleteParams({ text: autocompleteText, type: '@' });
-				return;
-			}
-			if (lastWord.match(/^:/)) {
-				setAutocompleteParams({ text: autocompleteText, type: ':' });
-				return;
-			}
-			if (lastWord.match(/^!/) && t === 'l') {
-				setAutocompleteParams({ text: autocompleteText, type: '!' });
-				return;
-			}
-			if (!sharing && text.match(/^\//)) {
-				const commandParameter = text.match(/^\/([a-z0-9._-]+) (.+)/im);
-				if (commandParameter) {
-					const db = database.active;
-					const [, command, params] = commandParameter;
-					const commandsCollection = db.get('slash_commands');
-					try {
-						const commandRecord = await commandsCollection.find(command);
-						if (commandRecord.providesPreview) {
-							setAutocompleteParams({ params, text: command, type: '/preview' });
-						}
-						return;
-					} catch (e) {
-						// do nothing
+		// Draft/Canned Responses
+		useEffect(() => {
+			const setDraftMessage = async () => {
+				const draftMessage = await loadDraftMessage({ rid, tmid });
+				if (draftMessage) {
+					const parsedDraft = parseJson(draftMessage);
+					if (parsedDraft?.msg || parsedDraft?.quotes) {
+						if (sharing) return;
+						messageActionStore.getState().actions.setQuoteMessageIds(parsedDraft.quotes || []);
+						setInput(parsedDraft.msg || '');
+					} else {
+						setInput(draftMessage);
 					}
 				}
-				setAutocompleteParams({ text: autocompleteText, type: '/' });
+			};
+
+			if (action?.kind !== 'edit' && firstRender.current) {
+				firstRender.current = false;
+				setDraftMessage();
+			}
+			if (sharing) return;
+			if (usedCannedResponse) setInput(usedCannedResponse);
+		}, [action?.kind, rid, tmid, usedCannedResponse]);
+
+		// Edit/quote
+		useEffect(() => {
+			const fetchMessageAndSetInput = async (messageId: string) => {
+				const message = await getMessageById(messageId);
+				if (message) {
+					setInput(message?.msg || (altTextSupported ? '' : message?.attachments?.[0]?.description || ''));
+				}
+			};
+
+			const previousAction = previousActionRef.current;
+			previousActionRef.current = action;
+
+			if (sharing) return;
+
+			if (previousAction?.kind === 'edit' && action?.kind !== 'edit') {
+				setInput('');
 				return;
 			}
+			if (action?.kind === 'edit') {
+				focus();
+				fetchMessageAndSetInput(action.messageId);
+				return;
+			}
+			if (action?.kind === 'quote' && action.messageIds.length) {
+				focus();
+			}
+		}, [action]);
 
-			stopAutocomplete();
-		}, textInputDebounceTime);
+		useFocusEffect(
+			useCallback(() => {
+				const task = InteractionManager.runAfterInteractions(() => {
+					emitter.on('addMarkdown', ({ style }) => {
+						const { start, end } = selectionRef.current;
+						const text = textRef.current;
+						const markdown = MARKDOWN_STYLES[style];
+						const newText = `${text.substr(0, start)}${markdown}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
+						setInput(newText, {
+							start: start + markdown.length,
+							end: start === end ? start + markdown.length : end + markdown.length
+						});
+					});
+					emitter.on('toolbarMention', () => {
+						if (autocompleteType) {
+							return;
+						}
+						const { start, end } = selectionRef.current;
+						const text = textRef.current;
+						const newText = `${text.substr(0, start)}@${text.substr(start, end - start)}${text.substr(end)}`;
+						setInput(newText, { start: start + 1, end: start === end ? start + 1 : end + 1 });
+						setAutocompleteParams({ text: '', type: '@' });
+					});
+				});
+				return () => {
+					emitter.off('addMarkdown');
+					emitter.off('toolbarMention');
+					task?.cancel();
+				};
+			}, [autocompleteType, setInput, setAutocompleteParams])
+		);
 
-		const handleTyping = (isTyping: boolean) => {
-			if (sharing || !rid) return;
-			dispatch(userTyping(rid, isTyping, tmid ? { tmid } : {}));
-		};
+		useImperativeHandle(ref, () => ({
+			getTextAndClear: () => {
+				const text = textRef.current;
+				setInput('', undefined, true);
+				return text;
+			},
+			getText: () => textRef.current,
+			getSelection: () => selectionRef.current,
+			setInput,
+			onAutocompleteItemSelected,
+			focus
+		}));
 
 		return (
 			<TextInput
