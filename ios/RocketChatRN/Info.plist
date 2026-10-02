@@ -80,6 +80,9 @@
 	<array>
 		<string>custom.ttf</string>
 		<string>Inter.ttf</string>
+		<string>Inter-Italic.ttf</string>
+		<string>Inter-SemiBoldItalic.ttf</string>
+		<string>Inter-BoldItalic.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
