@@ -12,8 +12,15 @@ const emptyResults: DirectoryResults = { rooms: [], fetchedCount: 0, total: -1 }
 
 const appendPage = (results: DirectoryResults, page: IServerRoom[], total: number): DirectoryResults => {
 	const ids = new Set(results.rooms.map(room => room._id));
+	const newRooms = page.filter(room => {
+		if (ids.has(room._id)) {
+			return false;
+		}
+		ids.add(room._id);
+		return true;
+	});
 	return {
-		rooms: [...results.rooms, ...page.filter(room => !ids.has(room._id))],
+		rooms: [...results.rooms, ...newRooms],
 		fetchedCount: results.fetchedCount + page.length,
 		total
 	};
@@ -39,7 +46,6 @@ export const useDirectorySearch = (directoryDefaultView: string) => {
 		}
 
 		if (newSearch) {
-			searchGeneration.current += 1;
 			setResults(emptyResults);
 		}
 		const requestGeneration = searchGeneration.current;
@@ -77,6 +83,7 @@ export const useDirectorySearch = (directoryDefaultView: string) => {
 	}, 200);
 
 	const search = () => {
+		searchGeneration.current += 1;
 		newSearchPending.current = true;
 		load();
 	};
