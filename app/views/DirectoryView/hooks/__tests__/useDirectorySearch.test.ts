@@ -143,7 +143,7 @@ describe('useDirectorySearch', () => {
 		await act(async () => {
 			respondToLoadMore(rooms('c', 'd'), 10);
 		});
-		expect(roomIds(result.current.data)).toEqual(['a', 'b']);
+		expect(result.current.data).toEqual([]);
 
 		respondWith(rooms('x'), 1);
 		await act(async () => {
@@ -153,5 +153,36 @@ describe('useDirectorySearch', () => {
 		expect(mockGetDirectory).toHaveBeenLastCalledWith(expect.objectContaining({ text: 'x', offset: 0 }));
 		expect(roomIds(result.current.data)).toEqual(['x']);
 		expect(result.current.loading).toBe(false);
+	});
+
+	it('hides the previous type rows while the new type waits for its debounce', async () => {
+		respondWith(rooms('a', 'b'), 2);
+		const { result } = renderHook(() => useDirectorySearch('channels'));
+		await waitFor(() => expect(result.current.data).toHaveLength(2));
+
+		act(() => result.current.changeType('users'));
+
+		expect(result.current.type).toBe('users');
+		expect(result.current.data).toEqual([]);
+		expect(result.current.loading).toBe(true);
+
+		respondWith(rooms('u'), 1);
+		await act(async () => {
+			await jest.runOnlyPendingTimersAsync();
+		});
+
+		expect(mockGetDirectory).toHaveBeenLastCalledWith(expect.objectContaining({ type: 'users', offset: 0 }));
+		expect(roomIds(result.current.data)).toEqual(['u']);
+		expect(result.current.loading).toBe(false);
+	});
+
+	it('hides the previous search rows while the new text waits for its debounce', async () => {
+		respondWith(rooms('a', 'b'), 2);
+		const { result } = renderHook(() => useDirectorySearch('channels'));
+		await waitFor(() => expect(result.current.data).toHaveLength(2));
+
+		act(() => result.current.onSearchChangeText(''));
+
+		expect(result.current.data).toEqual([]);
 	});
 });
