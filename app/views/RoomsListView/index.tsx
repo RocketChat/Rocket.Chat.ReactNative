@@ -2,13 +2,14 @@ import { useNavigation } from '@react-navigation/native';
 import { memo, useContext, useEffect } from 'react';
 import { BackHandler, FlatList, RefreshControl } from 'react-native';
 import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { shallowEqual } from 'react-redux';
+import { shallowEqual, useStore } from 'react-redux';
 
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { ChangePasswordRequired } from '~/containers/ChangePasswordRequired';
 import RoomItem from '~/containers/RoomItem';
 import { type IRoomItem } from '~/containers/RoomItem/interfaces';
+import { type IApplicationState } from '~/definitions';
 import { SupportedVersionsExpired } from '~/containers/SupportedVersions';
 import i18n from '~/i18n';
 import { MAX_SIDEBAR_WIDTH } from '~/lib/constants/tablet';
@@ -46,7 +47,8 @@ const RoomsListView = memo(function RoomsListView() {
 	const { bottom } = useSafeAreaInsets();
 	const getItemLayout = useGetItemLayout();
 	const { subscriptions, loading } = useSubscriptions();
-	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
+	const store = useStore<IApplicationState>();
+	const focusedRoom = useAppSelector(state => (isMasterDetail ? state.room.subscribedRoom : undefined));
 	const changingServer = useAppSelector(state => state.server.changingServer);
 	const { refreshing, onRefresh } = useRefresh({ searching });
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
@@ -67,7 +69,7 @@ const RoomsListView = memo(function RoomsListView() {
 		if (!navigation.isFocused()) {
 			return;
 		}
-		if (item.rid === subscribedRoom) {
+		if (item.rid === store.getState().room.subscribedRoom) {
 			return;
 		}
 
@@ -98,7 +100,7 @@ const RoomsListView = memo(function RoomsListView() {
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}
 				getIsRead={isRead}
-				isFocused={isMasterDetail && subscribedRoom === item.rid}
+				isFocused={focusedRoom === item.rid}
 				swipeEnabled={swipeEnabled}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
