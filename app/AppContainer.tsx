@@ -18,6 +18,7 @@ import { setCurrentScreen } from './lib/methods/helpers/log';
 import { themes } from './lib/constants/colors';
 import { emitter } from './lib/methods/helpers';
 import MediaCallHeader from './containers/MediaCallHeader/MediaCallHeader';
+import PexipCall from './containers/PexipCall';
 
 const useIsLoading = () =>
 	useSelector(
@@ -98,6 +99,7 @@ const AppContainer = () => {
 					Navigation.routeNameRef.current = currentRouteName;
 				}}
 			/>
+			<PexipCall />
 		</>
 	);
 };
