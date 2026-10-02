@@ -56,7 +56,7 @@
 		"@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#ecf4fedcf8ab6121e62a6b95bb48823afd805afd",
 		"@rocket.chat/ui-kit": "^0.39.0",
 		"@zoontek/react-native-navigation-bar": "^1.1.1",
-		"axios": "0.30.3",
+		"axios": "0.34.0",
 		"bytebuffer": "~5.0.1",
 		"color2k": "1.2.4",
 		"dayjs": "^1.11.18",
