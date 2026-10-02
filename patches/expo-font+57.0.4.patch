@@ -26,7 +26,7 @@ index 2cd51dc..db368ff 100644
 +                val typeface = runCatching { Typeface.createFromAsset(context.assets, candidate) }.getOrNull()
 +                if (typeface != null) {
 +                    ReactFontManager.getInstance().setTypeface(fontFamilyName, Typeface.NORMAL, typeface)
-+                    loadedFonts = loadedFonts.toMutableSet().apply { add(fontFamilyName) }.toList()
++                    loadedFonts = getLoadedFonts().toMutableSet().apply { add(fontFamilyName) }.toList()
 +                    return@AsyncFunction // Exit early if we successfully loaded the font
 +                }
 +            }

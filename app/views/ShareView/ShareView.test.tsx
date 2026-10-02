@@ -154,11 +154,11 @@ const makeInstance = ({
 	return shareView;
 };
 
-describe('ShareView', () => {
-	afterEach(() => {
-		jest.useRealTimers();
-	});
+afterEach(() => {
+	jest.useRealTimers();
+});
 
+describe('ShareView', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockGetSubscriptionByRoomId.mockResolvedValue({
@@ -168,6 +168,47 @@ describe('ShareView', () => {
 			update: jest.fn(),
 			observe: () => ({ subscribe: () => ({ unsubscribe: jest.fn() }) })
 		});
+	});
+
+	it('getAttachments ignores null entries instead of throwing', async () => {
+		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.5.0' });
+		shareView.getPermissionMobileUpload = jest.fn().mockResolvedValue(true);
+		(shareView as any).files = [{ filename: 'image.jpg', path: '/tmp/image.jpg', size: 1, mime: 'image/jpeg' }, null];
+
+		const { attachments, selected } = await shareView.getAttachments();
+
+		expect(attachments).toHaveLength(1);
+		expect(attachments[0].canUpload).toBe(true);
+		expect(selected).toBe(attachments[0]);
+	});
+
+	it('getAttachments derives a decoded filename keeping UUID prefix from a share-extension path', async () => {
+		const shareView = makeInstance({ mime: 'application/pdf', serverVersion: '8.5.0' });
+		shareView.getPermissionMobileUpload = jest.fn().mockResolvedValue(true);
+		(shareView as any).files = [
+			{
+				path: 'file:///group/550e8400-e29b-41d4-a716-446655440000-%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80.pdf',
+				size: 10,
+				mime: 'application/pdf'
+			}
+		];
+
+		const { attachments, selected } = await shareView.getAttachments();
+
+		expect(attachments).toHaveLength(1);
+		expect(attachments[0].filename).toBe('550e8400-e29b-41d4-a716-446655440000-Пример.pdf');
+		expect(selected).toBe(attachments[0]);
+	});
+
+	it('getAttachments returns an empty selected attachment when every file is invalid', async () => {
+		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.5.0' });
+		shareView.getPermissionMobileUpload = jest.fn().mockResolvedValue(true);
+		(shareView as any).files = [null];
+
+		const { attachments, selected } = await shareView.getAttachments();
+
+		expect(attachments).toHaveLength(0);
+		expect(selected).toBeUndefined();
 	});
 
 	it('selectFile selects the attachment and opens the alt text action sheet', () => {
@@ -419,7 +460,6 @@ describe('ShareView', () => {
 	});
 
 	it('bridges real origin media callbacks into ShareView and restores current text and Quotes', async () => {
-		jest.useFakeTimers();
 		const documentPicker = require('expo-document-picker').getDocumentAsync as jest.Mock;
 		const navigate = require('~/lib/navigation/appNavigation').navigate as jest.Mock;
 		const getSubscriptionByRoomId = require('~/lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
@@ -461,7 +501,6 @@ describe('ShareView', () => {
 
 		const initialization = shareView.startShareView();
 		await act(async () => {
-			jest.advanceTimersByTime(100);
 			await initialization;
 		});
 		act(() => fireEvent.changeText(screen.getByTestId('message-composer-input-share'), 'Share text'));
@@ -476,7 +515,6 @@ describe('ShareView', () => {
 	});
 
 	it.each(['success', 'failure'] as const)('bridges real callbacks through ShareView send %s', async outcome => {
-		jest.useFakeTimers();
 		const documentPicker = require('expo-document-picker').getDocumentAsync as jest.Mock;
 		const navigate = require('~/lib/navigation/appNavigation').navigate as jest.Mock;
 		documentPicker.mockResolvedValue({
