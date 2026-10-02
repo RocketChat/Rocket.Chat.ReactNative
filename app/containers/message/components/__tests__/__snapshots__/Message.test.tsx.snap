@@ -40111,7 +40111,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="diego.mello 10:00:00 AM Encrypted message. Encrypted message"
+        accessibilityLabel="diego.mello 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -40539,7 +40539,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       testID="message-content-Message"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -40559,7 +40559,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                   </View>
@@ -40601,7 +40601,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="diego.mello 10:00:00 AM Encrypted message. Encrypted message"
+        accessibilityLabel="diego.mello 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -40706,7 +40706,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       testID="message-content-Message Encrypted without Header"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -40726,7 +40726,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                   </View>
@@ -40847,7 +40847,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="diego.mello 10:00:00 AM Encrypted message. Encrypted message"
+        accessibilityLabel="diego.mello 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -41275,7 +41275,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       testID="message-content-Message Encrypted with Reactions"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -41295,7 +41295,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                     <View
@@ -41790,7 +41790,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="diego.mello 10:00:00 AM Encrypted message. Encrypted message"
+        accessibilityLabel="diego.mello 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -41864,7 +41864,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                   "gap": 10,
                 }
               }
-              testID="message-thread-replied-on-Encrypted message"
+              testID="message-thread-replied-on-This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
             >
               <View
                 style={
@@ -41902,7 +41902,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 </Text>
               </View>
               <Text
-                accessibilityLabel="Encrypted message"
+                accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                 numberOfLines={1}
                 style={
                   [
@@ -41937,9 +41937,9 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                     },
                   ]
                 }
-                testID="markdown-preview-Encrypted message"
+                testID="markdown-preview-This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
               >
-                Encrypted message
+                This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
               </Text>
               <View
                 style={
@@ -42161,7 +42161,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                     testID="message-content-Thread reply encrypted"
                   >
                     <Text
-                      accessibilityLabel="Encrypted message"
+                      accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                       style={
                         [
                           {
@@ -42181,7 +42181,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       }
                       testID="message-encrypted"
                     >
-                      Encrypted message
+                      This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                     </Text>
                   </View>
                 </View>
@@ -42214,7 +42214,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Encrypted message. Encrypted message"
+        accessibilityLabel="diego.mello 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -42646,7 +42646,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       testID="message-content-Temp message encrypted"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -42666,7 +42666,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                   </View>
@@ -42708,7 +42708,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="diego.mello 10:00:00 AM Encrypted message. Encrypted message"
+        accessibilityLabel="diego.mello 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -43136,7 +43136,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       testID="message-content-Message Edited encrypted"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -43156,7 +43156,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                   </View>
@@ -43621,7 +43621,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 testID="message-content-This message has error and is encrypted"
               >
                 <Text
-                  accessibilityLabel="Encrypted message"
+                  accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                   style={
                     [
                       {
@@ -43641,7 +43641,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                   }
                   testID="message-encrypted"
                 >
-                  Encrypted message
+                  This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                 </Text>
               </View>
             </View>
@@ -43680,7 +43680,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="diego.mello 10:00:00 AM Encrypted message. Encrypted message Message was read"
+        accessibilityLabel="diego.mello 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key Message was read"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -44138,7 +44138,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       testID="message-content-Read Receipt encrypted with Header"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -44158,7 +44158,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                   </View>
@@ -44200,7 +44200,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="diego.mello 10:00:00 AM Encrypted message. Encrypted message Message was read"
+        accessibilityLabel="diego.mello 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key Message was read"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -44305,7 +44305,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       testID="message-content-Read Receipt encrypted without Header"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -44325,7 +44325,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                   </View>
@@ -44489,7 +44489,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="diego.mello 10:00:00 AM Encrypted message. Encrypted message"
+        accessibilityLabel="diego.mello 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -44917,7 +44917,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       testID="message-content-Message"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -44937,7 +44937,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                   </View>
@@ -44979,7 +44979,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="diego.mello 10:00:00 AM Encrypted message. Encrypted message"
+        accessibilityLabel="diego.mello 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -45084,7 +45084,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       testID="message-content-Message Encrypted without Header"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -45104,7 +45104,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                   </View>
@@ -45225,7 +45225,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="diego.mello 10:00:00 AM Encrypted message. Encrypted message"
+        accessibilityLabel="diego.mello 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -45653,7 +45653,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       testID="message-content-Message Encrypted with Reactions"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -45673,7 +45673,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                     <View
@@ -46168,7 +46168,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="diego.mello 10:00:00 AM Encrypted message. Encrypted message"
+        accessibilityLabel="diego.mello 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -46242,7 +46242,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                   "gap": 10,
                 }
               }
-              testID="message-thread-replied-on-Encrypted message"
+              testID="message-thread-replied-on-This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
             >
               <View
                 style={
@@ -46280,7 +46280,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                 </Text>
               </View>
               <Text
-                accessibilityLabel="Encrypted message"
+                accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                 numberOfLines={1}
                 style={
                   [
@@ -46315,9 +46315,9 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     },
                   ]
                 }
-                testID="markdown-preview-Encrypted message"
+                testID="markdown-preview-This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
               >
-                Encrypted message
+                This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
               </Text>
               <View
                 style={
@@ -46539,7 +46539,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     testID="message-content-Thread reply encrypted"
                   >
                     <Text
-                      accessibilityLabel="Encrypted message"
+                      accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                       style={
                         [
                           {
@@ -46559,7 +46559,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       }
                       testID="message-encrypted"
                     >
-                      Encrypted message
+                      This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                     </Text>
                   </View>
                 </View>
@@ -46592,7 +46592,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Encrypted message. Encrypted message"
+        accessibilityLabel="diego.mello 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -47024,7 +47024,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       testID="message-content-Temp message encrypted"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -47044,7 +47044,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                   </View>
@@ -47086,7 +47086,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="diego.mello 10:00:00 AM Encrypted message. Encrypted message"
+        accessibilityLabel="diego.mello 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -47514,7 +47514,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       testID="message-content-Message Edited encrypted"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -47534,7 +47534,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                   </View>
@@ -47999,7 +47999,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                 testID="message-content-This message has error and is encrypted"
               >
                 <Text
-                  accessibilityLabel="Encrypted message"
+                  accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                   style={
                     [
                       {
@@ -48019,7 +48019,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                   }
                   testID="message-encrypted"
                 >
-                  Encrypted message
+                  This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                 </Text>
               </View>
             </View>
@@ -48058,7 +48058,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="diego.mello 10:00:00 AM Encrypted message. Encrypted message Message was read"
+        accessibilityLabel="diego.mello 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key Message was read"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -48516,7 +48516,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       testID="message-content-Read Receipt encrypted with Header"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -48536,7 +48536,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                   </View>
@@ -48578,7 +48578,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="diego.mello 10:00:00 AM Encrypted message. Encrypted message Message was read"
+        accessibilityLabel="diego.mello 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key Message was read"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -48683,7 +48683,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       testID="message-content-Read Receipt encrypted without Header"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -48703,7 +48703,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                   </View>
@@ -71702,7 +71702,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Encrypted message. Encrypted message"
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -72130,7 +72130,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       testID="message-content-Encrypted message"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -72150,7 +72150,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                   </View>
@@ -73128,7 +73128,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Encrypted message. Encrypted message Message was read"
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key Message was read"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -73586,7 +73586,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       testID="message-content-Message with read receipt"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -73606,7 +73606,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                   </View>
@@ -74170,7 +74170,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 testID="message-content-Show all icons "
               >
                 <Text
-                  accessibilityLabel="Encrypted message"
+                  accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                   style={
                     [
                       {
@@ -74190,7 +74190,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                   }
                   testID="message-encrypted"
                 >
-                  Encrypted message
+                  This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                 </Text>
               </View>
             </View>
@@ -74751,7 +74751,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 testID="message-content-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
               >
                 <Text
-                  accessibilityLabel="Encrypted message"
+                  accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                   style={
                     [
                       {
@@ -74771,7 +74771,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                   }
                   testID="message-encrypted"
                 >
-                  Encrypted message
+                  This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                 </Text>
               </View>
             </View>
@@ -75332,7 +75332,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 testID="message-content-small message"
               >
                 <Text
-                  accessibilityLabel="Encrypted message"
+                  accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                   style={
                     [
                       {
@@ -75352,7 +75352,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                   }
                   testID="message-encrypted"
                 >
-                  Encrypted message
+                  This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                 </Text>
               </View>
             </View>
@@ -76843,7 +76843,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Encrypted message. Encrypted message"
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -77271,7 +77271,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       testID="message-content-Encrypted message"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -77291,7 +77291,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                   </View>
@@ -78269,7 +78269,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
             },
           ]
         }
-        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Encrypted message. Encrypted message Message was read"
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key Message was read"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -78727,7 +78727,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       testID="message-content-Message with read receipt"
                     >
                       <Text
-                        accessibilityLabel="Encrypted message"
+                        accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                         style={
                           [
                             {
@@ -78747,7 +78747,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         }
                         testID="message-encrypted"
                       >
-                        Encrypted message
+                        This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                       </Text>
                     </View>
                   </View>
@@ -79311,7 +79311,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                 testID="message-content-Show all icons "
               >
                 <Text
-                  accessibilityLabel="Encrypted message"
+                  accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                   style={
                     [
                       {
@@ -79331,7 +79331,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                   }
                   testID="message-encrypted"
                 >
-                  Encrypted message
+                  This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                 </Text>
               </View>
             </View>
@@ -79892,7 +79892,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                 testID="message-content-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
               >
                 <Text
-                  accessibilityLabel="Encrypted message"
+                  accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                   style={
                     [
                       {
@@ -79912,7 +79912,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                   }
                   testID="message-encrypted"
                 >
-                  Encrypted message
+                  This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                 </Text>
               </View>
             </View>
@@ -80473,7 +80473,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                 testID="message-content-small message"
               >
                 <Text
-                  accessibilityLabel="Encrypted message"
+                  accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                   style={
                     [
                       {
@@ -80493,7 +80493,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                   }
                   testID="message-encrypted"
                 >
-                  Encrypted message
+                  This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                 </Text>
               </View>
             </View>
@@ -114130,7 +114130,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                 testID="message-content-Small name with icons"
               >
                 <Text
-                  accessibilityLabel="Encrypted message"
+                  accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                   style={
                     [
                       {
@@ -114150,7 +114150,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                   }
                   testID="message-encrypted"
                 >
-                  Encrypted message
+                  This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                 </Text>
               </View>
             </View>
@@ -115196,7 +115196,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                 testID="message-content-Medium name with icons"
               >
                 <Text
-                  accessibilityLabel="Encrypted message"
+                  accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                   style={
                     [
                       {
@@ -115216,7 +115216,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                   }
                   testID="message-encrypted"
                 >
-                  Encrypted message
+                  This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                 </Text>
               </View>
             </View>
@@ -116262,7 +116262,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                 testID="message-content-Long name with icons - timestamp visible"
               >
                 <Text
-                  accessibilityLabel="Encrypted message"
+                  accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                   style={
                     [
                       {
@@ -116282,7 +116282,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                   }
                   testID="message-encrypted"
                 >
-                  Encrypted message
+                  This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                 </Text>
               </View>
             </View>
@@ -158169,7 +158169,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                 testID="message-content-Small username with icons"
               >
                 <Text
-                  accessibilityLabel="Encrypted message"
+                  accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                   style={
                     [
                       {
@@ -158189,7 +158189,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                   }
                   testID="message-encrypted"
                 >
-                  Encrypted message
+                  This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                 </Text>
               </View>
             </View>
@@ -159235,7 +159235,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                 testID="message-content-Medium username with icons"
               >
                 <Text
-                  accessibilityLabel="Encrypted message"
+                  accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                   style={
                     [
                       {
@@ -159255,7 +159255,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                   }
                   testID="message-encrypted"
                 >
-                  Encrypted message
+                  This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                 </Text>
               </View>
             </View>
@@ -160301,7 +160301,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                 testID="message-content-Long username with icons - timestamp visible"
               >
                 <Text
-                  accessibilityLabel="Encrypted message"
+                  accessibilityLabel="This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key"
                   style={
                     [
                       {
@@ -160321,7 +160321,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                   }
                   testID="message-encrypted"
                 >
-                  Encrypted message
+                  This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key
                 </Text>
               </View>
             </View>
