@@ -280,6 +280,82 @@ const postWithRetry = (url, options) => retryRequest(() => http.post(url, option
 
 const getWithRetry = (url, options) => retryRequest(() => http.get(url, options));
 
+const getServerVersion = () => {
+    const result = getWithRetry(`${data.server}/api/info`, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    return json(result.body)?.version;
+};
+
+const normalizeVersion = version =>
+    String(version || '')
+        .split('.')
+        .map(part => parseInt(part, 10) || 0);
+
+const isServerAtLeast = required => {
+    const current = normalizeVersion(getServerVersion());
+    const wanted = normalizeVersion(required);
+    const length = Math.max(current.length, wanted.length);
+
+    for (let i = 0; i < length; i++) {
+        const c = current[i] || 0;
+        const r = wanted[i] || 0;
+        if (c > r) {
+            return true;
+        }
+        if (c < r) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
+const isImageMessage = message =>
+    Boolean(
+        message &&
+            ((Array.isArray(message.files) && message.files.some(file => String(file?.type || '').startsWith('image/'))) ||
+                (Array.isArray(message.attachments) && message.attachments.some(attachment => attachment?.image_url)))
+    );
+
+const getRoomHistory = roomId => {
+    const result = getWithRetry(`${data.server}/api/v1/channels.history?roomId=${roomId}&count=20`, {
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers
+        }
+    });
+
+    return json(result.body)?.messages || [];
+};
+
+const waitFor = (predicate, { timeoutMs = 60000, intervalMs = 2000, label = 'condition' } = {}) => {
+    const deadline = Date.now() + timeoutMs;
+
+    while (Date.now() < deadline) {
+        const result = predicate();
+        if (result) {
+            return result;
+        }
+        sleep(intervalMs);
+    }
+
+    console.log(JSON.stringify({ waitForTimeout: true, label }));
+    return null;
+};
+
+const waitForImageMessage = (roomId, username, password, timeoutMs = 60000) => {
+    login(username, password);
+
+    return waitFor(
+        () => getRoomHistory(roomId).find(message => message?.u?.username === username && isImageMessage(message)) || null,
+        { timeoutMs, label: `image message in ${roomId}` }
+    );
+};
+
 output.utils = {
     createUser,
     createUserWithPasswordChange,
@@ -289,6 +365,9 @@ output.utils = {
     createRandomRoom,
     sendMessage,
     getProfileInfo,
+    getServerVersion,
+    isServerAtLeast,
+    waitForImageMessage,
     post,
     reactAsNewUsers,
     login,
