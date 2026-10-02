@@ -30,7 +30,7 @@ const hasMore = (results: DirectoryResults) => results.fetchedCount < results.to
 
 export const useDirectorySearch = (directoryDefaultView: string) => {
 	const [results, setResults] = useState(emptyResults);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [text, setText] = useState('');
 	const [globalUsers, setGlobalUsers] = useState(true);
 	const [type, setType] = useState(directoryDefaultView);
@@ -45,9 +45,6 @@ export const useDirectorySearch = (directoryDefaultView: string) => {
 			return;
 		}
 
-		if (newSearch) {
-			setResults(emptyResults);
-		}
 		const requestGeneration = searchGeneration.current;
 		const isStale = () => requestGeneration !== searchGeneration.current;
 		setLoading(true);
@@ -82,10 +79,15 @@ export const useDirectorySearch = (directoryDefaultView: string) => {
 		}
 	}, 200);
 
-	const search = () => {
+	const startSearch = () => {
 		searchGeneration.current += 1;
 		newSearchPending.current = true;
 		load();
+	};
+	const search = () => {
+		setResults(emptyResults);
+		setLoading(true);
+		startSearch();
 	};
 	const loadMore = () => load();
 
@@ -114,7 +116,7 @@ export const useDirectorySearch = (directoryDefaultView: string) => {
 	};
 
 	useEffect(() => {
-		search();
+		startSearch();
 	}, []);
 
 	return {
