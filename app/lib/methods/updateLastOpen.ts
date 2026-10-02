@@ -28,6 +28,9 @@ export async function updateLastOpen(rid: string, payload: TServerTimestamps): P
 
 		const db = database.active;
 		await db.write(async () => {
+			if (subscription.syncStatus === 'deleted') {
+				return;
+			}
 			await subscription.update((s: TSubscriptionModel) => {
 				s.lastOpen = lastOpen;
 			});
