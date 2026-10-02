@@ -33,10 +33,18 @@ index 0000000..122755b
 +	</filteredResources>
 +</projectDescription>
 diff --git a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebView.java b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebView.java
-index 80c6803..97df1fa 100644
+index 80c6803..4c6fff6 100644
 --- a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebView.java
 +++ b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebView.java
-@@ -219,6 +219,7 @@ public class RNCWebView extends WebView implements LifecycleEventListener {
+@@ -77,6 +77,7 @@ public class RNCWebView extends WebView implements LifecycleEventListener {
+     private OnScrollDispatchHelper mOnScrollDispatchHelper;
+     protected boolean hasScrollEvent = false;
+     protected boolean nestedScrollEnabled = false;
++    public boolean ignoreSslErrors = false;
+     protected ProgressChangedFilter progressChangedFilter;
+ 
+     /**
+@@ -219,6 +220,7 @@ public class RNCWebView extends WebView implements LifecycleEventListener {
      public void setWebViewClient(WebViewClient client) {
          super.setWebViewClient(client);
          if (client instanceof RNCWebViewClient) {
@@ -45,7 +53,7 @@ index 80c6803..97df1fa 100644
              mRNCWebViewClient.setProgressChangedFilter(progressChangedFilter);
          }
 diff --git a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewClient.java b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewClient.java
-index 0287e1c..65174cc 100644
+index 0287e1c..a44ddf4 100644
 --- a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewClient.java
 +++ b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewClient.java
 @@ -35,6 +35,11 @@ import com.reactnativecommunity.webview.events.TopShouldStartLoadWithRequestEven
@@ -121,6 +129,32 @@ index 0287e1c..65174cc 100644
      @Override
      public void onPageFinished(WebView webView, String url) {
          super.onPageFinished(webView, url);
+@@ -157,6 +212,10 @@ public class RNCWebViewClient extends WebViewClient {
+ 
+     @Override
+     public void onReceivedSslError(final WebView webView, final SslErrorHandler handler, final SslError error) {
++        if (webView instanceof RNCWebView && ((RNCWebView) webView).ignoreSslErrors) {
++            handler.proceed();
++            return;
++        }
+         // onReceivedSslError is called for most requests, per Android docs: https://developer.android.com/reference/android/webkit/WebViewClient#onReceivedSslError(android.webkit.WebView,%2520android.webkit.SslErrorHandler,%2520android.net.http.SslError)
+         // WebView.getUrl() will return the top-level window URL.
+         // If a top-level navigation triggers this error handler, the top-level URL will be the failing URL (not the URL of the currently-rendered page).
+diff --git a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewManagerImpl.kt b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewManagerImpl.kt
+index f83033b..8a98930 100644
+--- a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewManagerImpl.kt
++++ b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewManagerImpl.kt
+@@ -637,6 +637,10 @@ class RNCWebViewManagerImpl(private val newArch: Boolean = false) {
+         view.settings.minimumFontSize = value
+     }
+ 
++    fun setIgnoreSslErrors(viewWrapper: RNCWebViewWrapper, value: Boolean) {
++        viewWrapper.webView.ignoreSslErrors = value
++    }
++
+     fun setAllowsProtectedMedia(viewWrapper: RNCWebViewWrapper, enabled: Boolean) {
+       val view = viewWrapper.webView
+       // This variable is used to keep consistency
 diff --git a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewModuleImpl.java b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewModuleImpl.java
 index 951749c..05792b8 100644
 --- a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewModuleImpl.java
@@ -136,7 +170,7 @@ index 951749c..05792b8 100644
  }
 \ No newline at end of file
 diff --git a/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewManager.java b/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewManager.java
-index 4709e28..0144ef9 100644
+index 4709e28..86696fe 100644
 --- a/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewManager.java
 +++ b/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewManager.java
 @@ -45,6 +45,10 @@ public class RNCWebViewManager extends ViewGroupManager<RNCWebViewWrapper>
@@ -150,6 +184,19 @@ index 4709e28..0144ef9 100644
      @Nullable
      @Override
      protected ViewManagerDelegate<RNCWebViewWrapper> getDelegate() {
+@@ -88,6 +92,12 @@ public class RNCWebViewManager extends ViewGroupManager<RNCWebViewWrapper>
+         mRNCWebViewManagerImpl.setAllowsFullscreenVideo(view, value);
+     }
+ 
++    @Override
++    @ReactProp(name = "ignoreSslErrors")
++    public void setIgnoreSslErrors(RNCWebViewWrapper view, boolean value) {
++        mRNCWebViewManagerImpl.setIgnoreSslErrors(view, value);
++    }
++
+     @Override
+     @ReactProp(name = "allowsProtectedMedia")
+     public void setAllowsProtectedMedia(RNCWebViewWrapper view, boolean value) {
 diff --git a/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewModule.java b/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewModule.java
 index 4df0aae..867aa73 100644
 --- a/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewModule.java
@@ -166,7 +213,7 @@ index 4df0aae..867aa73 100644
      @Override
      public String getName() {
 diff --git a/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewManager.java b/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewManager.java
-index 974337f..0099677 100644
+index 974337f..d5814ab 100644
 --- a/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewManager.java
 +++ b/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewManager.java
 @@ -32,6 +32,10 @@ public class RNCWebViewManager extends ViewGroupManager<RNCWebViewWrapper> {
@@ -180,6 +227,18 @@ index 974337f..0099677 100644
      @Override
      public String getName() {
          return RNCWebViewManagerImpl.NAME;
+@@ -67,6 +71,11 @@ public class RNCWebViewManager extends ViewGroupManager<RNCWebViewWrapper> {
+         mRNCWebViewManagerImpl.setAllowsFullscreenVideo(view, value);
+     }
+ 
++    @ReactProp(name = "ignoreSslErrors")
++    public void setIgnoreSslErrors(RNCWebViewWrapper view, boolean value) {
++        mRNCWebViewManagerImpl.setIgnoreSslErrors(view, value);
++    }
++
+     @ReactProp(name = "allowsProtectedMedia")
+     public void setAllowsProtectedMedia(RNCWebViewWrapper view, boolean value) {
+         mRNCWebViewManagerImpl.setAllowsProtectedMedia(view, value);
 diff --git a/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewModule.java b/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewModule.java
 index 526cc16..8f3318d 100644
 --- a/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewModule.java
@@ -195,3 +254,98 @@ index 526cc16..8f3318d 100644
      @NonNull
      @Override
      public String getName() {
+diff --git a/node_modules/react-native-webview/apple/RNCWebView.mm b/node_modules/react-native-webview/apple/RNCWebView.mm
+index c0816b6..d841550 100644
+--- a/node_modules/react-native-webview/apple/RNCWebView.mm
++++ b/node_modules/react-native-webview/apple/RNCWebView.mm
+@@ -301,6 +301,7 @@ static inline std::string nullSafeStringWithLength(id value) {
+     REMAP_WEBVIEW_PROP(allowUniversalAccessFromFileURLs)
+     REMAP_WEBVIEW_PROP(allowsInlineMediaPlayback)
+     REMAP_WEBVIEW_PROP(allowsPictureInPictureMediaPlayback)
++    REMAP_WEBVIEW_PROP(ignoreSslErrors)
+     REMAP_WEBVIEW_PROP(webviewDebuggingEnabled)
+     REMAP_WEBVIEW_PROP(allowsAirPlayForMediaPlayback)
+     REMAP_WEBVIEW_PROP(mediaPlaybackRequiresUserAction)
+diff --git a/node_modules/react-native-webview/apple/RNCWebViewImpl.h b/node_modules/react-native-webview/apple/RNCWebViewImpl.h
+index 1f6bbfd..be381db 100644
+--- a/node_modules/react-native-webview/apple/RNCWebViewImpl.h
++++ b/node_modules/react-native-webview/apple/RNCWebViewImpl.h
+@@ -81,6 +81,7 @@ shouldStartLoadForRequest:(NSMutableDictionary<NSString *, id> *)request
+ @property (nonatomic, assign) CGFloat decelerationRate;
+ @property (nonatomic, assign) BOOL allowsInlineMediaPlayback;
+ @property (nonatomic, assign) BOOL allowsPictureInPictureMediaPlayback;
++@property (nonatomic, assign) BOOL ignoreSslErrors;
+ @property (nonatomic, assign) BOOL webviewDebuggingEnabled;
+ @property (nonatomic, assign) BOOL allowsAirPlayForMediaPlayback;
+ @property (nonatomic, assign) BOOL bounces;
+diff --git a/node_modules/react-native-webview/apple/RNCWebViewImpl.m b/node_modules/react-native-webview/apple/RNCWebViewImpl.m
+index 7f5c24d..e75f31f 100644
+--- a/node_modules/react-native-webview/apple/RNCWebViewImpl.m
++++ b/node_modules/react-native-webview/apple/RNCWebViewImpl.m
+@@ -1161,6 +1161,26 @@ RCTAutoInsetsProtocol>
+     completionHandler(NSURLSessionAuthChallengeUseCredential, clientAuthenticationCredential);
+     return;
+   }
++  if (_ignoreSslErrors && [[[challenge protectionSpace] authenticationMethod] isEqualToString:NSURLAuthenticationMethodServerTrust] && [[challenge protectionSpace] serverTrust] != nil) {
++    SecTrustRef trust = [[challenge protectionSpace] serverTrust];
++    CFRetain(trust);
++    // WebKit re-evaluates this trust in its networking process, so it has to carry exceptions
++    // for the current failures. SecTrustCopyExceptions evaluates and must stay off the main thread.
++    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
++      CFDataRef exceptions = SecTrustCopyExceptions(trust);
++      if (exceptions != NULL) {
++        SecTrustSetExceptions(trust, exceptions);
++        CFRelease(exceptions);
++      }
++      SecTrustEvaluateWithError(trust, NULL);
++      NSURLCredential *credential = [NSURLCredential credentialForTrust:trust];
++      CFRelease(trust);
++      dispatch_async(dispatch_get_main_queue(), ^{
++        completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
++      });
++    });
++    return;
++  }
+   if ([[challenge protectionSpace] serverTrust] != nil && customCertificatesForHost != nil && host != nil) {
+     SecCertificateRef localCertificate = (__bridge SecCertificateRef)([customCertificatesForHost objectForKey:host]);
+     if (localCertificate != nil) {
+diff --git a/node_modules/react-native-webview/apple/RNCWebViewManager.mm b/node_modules/react-native-webview/apple/RNCWebViewManager.mm
+index f8f375f..41dcf69 100644
+--- a/node_modules/react-native-webview/apple/RNCWebViewManager.mm
++++ b/node_modules/react-native-webview/apple/RNCWebViewManager.mm
+@@ -63,6 +63,7 @@ RCT_EXPORT_VIEW_PROPERTY(allowFileAccessFromFileURLs, BOOL)
+ RCT_EXPORT_VIEW_PROPERTY(allowUniversalAccessFromFileURLs, BOOL)
+ RCT_EXPORT_VIEW_PROPERTY(allowsInlineMediaPlayback, BOOL)
+ RCT_EXPORT_VIEW_PROPERTY(allowsPictureInPictureMediaPlayback, BOOL)
++RCT_EXPORT_VIEW_PROPERTY(ignoreSslErrors, BOOL)
+ RCT_EXPORT_VIEW_PROPERTY(webviewDebuggingEnabled, BOOL)
+ RCT_EXPORT_VIEW_PROPERTY(allowsAirPlayForMediaPlayback, BOOL)
+ RCT_EXPORT_VIEW_PROPERTY(mediaPlaybackRequiresUserAction, BOOL)
+diff --git a/node_modules/react-native-webview/src/RNCWebViewNativeComponent.ts b/node_modules/react-native-webview/src/RNCWebViewNativeComponent.ts
+index 7f4e6c4..ab1db2f 100644
+--- a/node_modules/react-native-webview/src/RNCWebViewNativeComponent.ts
++++ b/node_modules/react-native-webview/src/RNCWebViewNativeComponent.ts
+@@ -143,6 +143,7 @@ type WebViewDownloadEvent = Readonly<{
+ // type MenuItem = Readonly<{label: string, key: string}>;
+ 
+ export interface NativeProps extends ViewProps {
++  ignoreSslErrors?: boolean;
+   // Android only
+   allowFileAccess?: boolean;
+   allowsProtectedMedia?: boolean;
+diff --git a/node_modules/react-native-webview/src/WebViewTypes.ts b/node_modules/react-native-webview/src/WebViewTypes.ts
+index eca8141..1ca3f17 100644
+--- a/node_modules/react-native-webview/src/WebViewTypes.ts
++++ b/node_modules/react-native-webview/src/WebViewTypes.ts
+@@ -1171,6 +1171,11 @@ export interface AndroidWebViewProps extends WebViewSharedProps {
+ }
+ 
+ export interface WebViewSharedProps extends ViewProps {
++  /**
++   * Accept invalid or self-signed TLS certificates. Use only for trusted hosts.
++   */
++  ignoreSslErrors?: boolean;
++
+   /**
+    * Loads static html or a uri (with optional headers) in the WebView.
+    */
