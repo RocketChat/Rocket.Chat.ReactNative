@@ -127,8 +127,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		customFieldsRef.current[firstCustomFieldKey]?.focus();
 	};
 
-	const validateFormInfo = () => {
-		const isValid = validationSchema.isValidSync(inputValues);
+	const validateFormInfo = (values: typeof inputValues) => {
+		const isValid = validationSchema.isValidSync(values);
 		if (!parsedCustomFields) {
 			return isValid;
 		}
@@ -142,7 +142,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	};
 
 	const enableSaveChangesButton = () => {
-		const isFormInfoValid = validateFormInfo();
+		const isFormInfoValid = validateFormInfo(inputValues);
 		return isFormInfoValid && isDirty;
 	};
 
@@ -208,7 +208,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	};
 
 	const handleTwoFactorChallenge = async (e: any): Promise<TwoFactorChallengeOutcome> => {
-		if (e?.error !== 'totp-invalid' || e?.details.method === TwoFactorMethods.PASSWORD) {
+		if (e?.error !== 'totp-invalid' || e?.details?.method === TwoFactorMethods.PASSWORD) {
 			return { status: 'failed', error: e };
 		}
 		try {
@@ -227,7 +227,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	const submit = async (): Promise<void> => {
 		Keyboard.dismiss();
 
-		if (!validateFormInfo()) {
+		if (!validateFormInfo(getValues())) {
 			return;
 		}
 

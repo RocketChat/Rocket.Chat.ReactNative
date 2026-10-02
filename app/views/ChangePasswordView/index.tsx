@@ -138,9 +138,10 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 				navigation.goBack();
 			}
 		} catch (e: any) {
-			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
+			const twoFactorMethod = e?.details?.method;
+			if (e?.error === 'totp-invalid' && twoFactorMethod !== TwoFactorMethods.PASSWORD) {
 				try {
-					await twoFactor({ method: e.details.method, invalid: hasPromptedTwoFactorRef.current });
+					await twoFactor({ method: twoFactorMethod, invalid: hasPromptedTwoFactorRef.current });
 					hasPromptedTwoFactorRef.current = true;
 					await changePasswordFromProfileView();
 				} catch (twoFactorError) {
@@ -149,7 +150,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 						handleSaveUserProfileError(twoFactorError, 'saving_profile');
 					}
 				}
-			} else if (e?.error === 'totp-invalid' && e?.details.method === TwoFactorMethods.PASSWORD) {
+			} else if (e?.error === 'totp-invalid' && twoFactorMethod === TwoFactorMethods.PASSWORD) {
 				setError('currentPassword', { message: I18n.t('error-invalid-password'), type: 'validate' });
 				AccessibilityInfo.announceForAccessibility(I18n.t('error-invalid-password'));
 			} else {
