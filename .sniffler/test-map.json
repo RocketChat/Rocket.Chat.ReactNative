@@ -1,7 +1,7 @@
 [
 	{
 		"test": ".maestro/tests/accessibilityAndAppearance/ToastsAndDialogs.yml",
-		"dependsOn": ["app/views/StatusView/**"]
+		"dependsOn": ["app/views/StatusView/**", "app/views/SidebarView/**"]
 	},
 	{
 		"test": ".maestro/tests/assorted/accessibility-and-appearance.yaml",
@@ -313,6 +313,15 @@
 		]
 	},
 	{
+		"test": ".maestro/tests/room/send-message-while-offline.yaml",
+		"dependsOn": [
+			"app/views/RoomView/**",
+			"app/containers/message/components/RightIcons/MessageError.tsx",
+			"app/lib/methods/sendMessage.ts",
+			"app/sagas/messages.js"
+		]
+	},
+	{
 		"test": ".maestro/tests/room/message-markdown-click.yaml",
 		"dependsOn": ["app/views/RoomView/**", "app/containers/markdown/**", "app/sagas/room.js"]
 	},
@@ -379,6 +388,19 @@
 	{
 		"test": ".maestro/tests/room/unread-badge.yaml",
 		"dependsOn": ["app/views/RoomsListView/**", "app/sagas/rooms.js"]
+	},
+	{
+		"test": ".maestro/tests/share-extension/share-extension-deeplink.yaml",
+		"dependsOn": [
+			"app/views/ShareListView/**",
+			"app/views/ShareView/**",
+			"app/views/SelectServerView.tsx",
+			"app/views/NewServerView/**",
+			"app/views/RoomsListView/**",
+			"app/sagas/deepLinking.js",
+			"android/app/src/main/java/chat/rocket/reactnative/share/**",
+			"ios/ShareRocketChatRN/**"
+		]
 	},
 	{
 		"test": ".maestro/tests/teams/convert-team.yaml",

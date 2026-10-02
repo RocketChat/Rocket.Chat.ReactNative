@@ -186,7 +186,11 @@ export const ComposerInput = memo(
 				saveMessageDraft('');
 			}
 
-			inputRef.current?.setNativeProps?.({ text });
+			if (text) {
+				inputRef.current?.setNativeProps?.({ text });
+			} else {
+				inputRef.current?.clear();
+			}
 
 			if (selection) {
 				// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set

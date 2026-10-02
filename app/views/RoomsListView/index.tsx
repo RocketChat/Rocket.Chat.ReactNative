@@ -78,7 +78,7 @@ const RoomsListView = memo(function RoomsListView() {
 
 	const renderItem = ({ item }: { item: IRoomItem }) => {
 		if (item.separator) {
-			return <SectionHeader header={item.rid} />;
+			return <SectionHeader header={item.rid} title={item.name} />;
 		}
 
 		const id = item.search && item.t === 'd' ? item._id : getUidDirectMessage(item);
@@ -98,7 +98,7 @@ const RoomsListView = memo(function RoomsListView() {
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}
 				getIsRead={isRead}
-				isFocused={subscribedRoom === item.rid}
+				isFocused={isMasterDetail && subscribedRoom === item.rid}
 				swipeEnabled={swipeEnabled}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
