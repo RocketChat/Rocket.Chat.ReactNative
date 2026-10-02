@@ -432,7 +432,7 @@ const RoomMembersView = (): ReactElement => {
 				contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
 				renderItem={({ item, index }) => (
 					<UserItem
-						name={item.name || item.username}
+						name={getUserDisplayName(item)}
 						username={item.username}
 						onPress={() => onPressUser(item)}
 						testID={`room-members-view-item-${item.username}`}
