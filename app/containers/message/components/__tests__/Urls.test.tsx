@@ -23,7 +23,7 @@ store.dispatch(updateSettings('API_Embed', true));
 store.dispatch(setUser({ id: 'reader-id', username: 'reader', token: 'token' }));
 store.dispatch(selectServerSuccess({ server: 'https://open.rocket.chat', version: '', name: '' }));
 
-const renderUrl = (url: Partial<IUrl>) => {
+const renderUrl = (url: Partial<IUrl>, measuredWidth = 300) => {
 	const item = {
 		id: 'msg-id',
 		msg: '',
@@ -35,7 +35,7 @@ const renderUrl = (url: Partial<IUrl>) => {
 		<Provider store={store}>
 			<MessageRoomProvider>
 				<MessageProvider item={item}>
-					<WidthAwareContext.Provider value={300}>
+					<WidthAwareContext.Provider value={measuredWidth}>
 						<Urls />
 					</WidthAwareContext.Provider>
 				</MessageProvider>
@@ -62,6 +62,20 @@ describe('Urls', () => {
 
 		expect(getImageStyle()).toMatchObject({ width: '100%', maxWidth: 1200, aspectRatio: 2, maxHeight: 300 });
 		expect(mockedHead).not.toHaveBeenCalled();
+	});
+
+	it('bounds the height of a tall preview image before the width is measured', () => {
+		renderUrl(
+			{
+				url: 'https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/7707',
+				image: 'https://opengraph.githubassets.com/tall.png',
+				imageWidth: 600,
+				imageHeight: 1200
+			},
+			0
+		);
+
+		expect(getImageStyle()).toMatchObject({ width: '100%', maxWidth: 600, aspectRatio: 1 });
 	});
 
 	it('reserves no image space when the url has no preview image', async () => {

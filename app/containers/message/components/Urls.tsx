@@ -68,11 +68,13 @@ const UrlContent = ({ title, description }: { title: string; description: string
 type ImageDimensions = { width: number; height: number };
 
 const getImageStyles = (dimensions: ImageDimensions, maxSize: number) => {
+	const aspectRatio = dimensions.width / dimensions.height;
+	const isWidthMeasured = maxSize > 0;
 	const imageStyle: ImageStyle = {
 		width: '100%',
 		maxWidth: dimensions.width,
-		aspectRatio: dimensions.width / dimensions.height,
-		...(maxSize > 0 && { maxHeight: maxSize })
+		aspectRatio: isWidthMeasured ? aspectRatio : Math.max(aspectRatio, 1),
+		...(isWidthMeasured && { maxHeight: maxSize })
 	};
 	const containerStyle: ViewStyle = {
 		overflow: 'hidden',
