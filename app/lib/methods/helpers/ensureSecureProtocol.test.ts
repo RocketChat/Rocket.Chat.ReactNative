@@ -17,6 +17,10 @@ describe('Add the protocol https at the begin of the URL', () => {
 		const linkWithDoubleSlashAtBegin = '//www.google.com';
 		expect(ensureSecureProtocol(linkWithDoubleSlashAtBegin)).toBe('https://www.google.com');
 	});
+	it('preserves double slashes that are part of the path', () => {
+		const linkWithDoubleSlashInPath = 'www.google.com/docs//api';
+		expect(ensureSecureProtocol(linkWithDoubleSlashInPath)).toBe('https://www.google.com/docs//api');
+	});
 	it('return the link as original when sent with rocketchat protocol', () => {
 		const linkRocketChat = 'rocketchat://www.google.com';
 		expect(ensureSecureProtocol(linkRocketChat)).toBe(linkRocketChat);
