@@ -115,6 +115,125 @@ describe('useScroll', () => {
 		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 1, viewPosition: 0.5, viewOffset: 100 }));
 	});
 
+	it('re-reads the target index on each re-scroll as rows shift under it, then stops', async () => {
+		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], jest.fn());
+
+		act(() => {
+			result.current.jumpToMessage('target', 1500);
+		});
+		act(() => {
+			rerender({ rows: [{ id: 'older' }, { id: 'target' }, { id: 'newer' }] });
+		});
+		await waitFor(() => expect(scrollToIndex).toHaveBeenCalledTimes(1));
+		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 1 }));
+
+		act(() => {
+			rerender({ rows: [{ id: 'newest' }, { id: 'older' }, { id: 'target' }, { id: 'newer' }] });
+		});
+		act(() => {
+			jest.advanceTimersByTime(300);
+		});
+		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 2 }));
+
+		act(() => {
+			rerender({ rows: [{ id: 'newest-2' }, { id: 'newest' }, { id: 'older' }, { id: 'target' }, { id: 'newer' }] });
+		});
+		act(() => {
+			jest.advanceTimersByTime(700);
+		});
+		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 3 }));
+
+		const callsAfterLastRescroll = scrollToIndex.mock.calls.length;
+		act(() => {
+			jest.advanceTimersByTime(10000);
+		});
+		expect(scrollToIndex).toHaveBeenCalledTimes(callsAfterLastRescroll);
+	});
+
+	it('stops re-scrolling to the target once the user drags the list', async () => {
+		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], jest.fn());
+
+		act(() => {
+			result.current.jumpToMessage('target', 1500);
+		});
+		act(() => {
+			rerender({ rows: [{ id: 'older' }, { id: 'target' }, { id: 'newer' }] });
+		});
+		await waitFor(() => expect(scrollToIndex).toHaveBeenCalledTimes(1));
+
+		act(() => {
+			result.current.handleDragStart();
+			jest.advanceTimersByTime(1000);
+		});
+		expect(scrollToIndex).toHaveBeenCalledTimes(1);
+	});
+
+	it('stops re-scrolling to the target once the user jumps to the bottom', async () => {
+		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], jest.fn());
+
+		act(() => {
+			result.current.jumpToMessage('target', 1500);
+		});
+		act(() => {
+			rerender({ rows: [{ id: 'older' }, { id: 'target' }, { id: 'newer' }] });
+		});
+		await waitFor(() => expect(scrollToIndex).toHaveBeenCalledTimes(1));
+
+		act(() => {
+			result.current.jumpToBottom();
+			jest.advanceTimersByTime(1000);
+		});
+		expect(scrollToIndex).toHaveBeenCalledTimes(1);
+	});
+
+	it('abandons a jump still waiting for its target once the user jumps to the bottom', async () => {
+		const setHighTs = jest.fn();
+		const fetchMessages = jest.fn(() => Promise.resolve());
+		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs, fetchMessages);
+
+		let jumpPromise: Promise<void> = Promise.resolve();
+		act(() => {
+			jumpPromise = result.current.jumpToMessage('target', 1500);
+		});
+		act(() => {
+			result.current.jumpToBottom();
+		});
+		await expect(jumpPromise).resolves.toBeUndefined();
+		expect(setHighTs).toHaveBeenLastCalledWith(null);
+
+		act(() => {
+			rerender({ rows: [{ id: 'live-1' }, { id: 'live-2' }, { id: 'live-3' }] });
+		});
+		act(() => {
+			rerender({ rows: [{ id: 'older' }, { id: 'target' }, { id: 'newer' }] });
+		});
+		act(() => {
+			jest.advanceTimersByTime(10000);
+		});
+		expect(fetchMessages).not.toHaveBeenCalled();
+		expect(scrollToIndex).not.toHaveBeenCalled();
+	});
+
+	it('abandons a jump still waiting for its target once the user drags the list', async () => {
+		const setHighTs = jest.fn();
+		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs);
+
+		let jumpPromise: Promise<void> = Promise.resolve();
+		act(() => {
+			jumpPromise = result.current.jumpToMessage('target', 1500);
+		});
+		act(() => {
+			result.current.handleDragStart();
+		});
+		await jumpPromise;
+		act(() => {
+			rerender({ rows: [{ id: 'older' }, { id: 'target' }, { id: 'newer' }] });
+		});
+
+		expect(scrollToIndex).not.toHaveBeenCalled();
+		expect(setHighTs).toHaveBeenLastCalledWith(null);
+	});
+
 	it('grows the window (bounded) for a deep anchored target, then scrolls once it appears', async () => {
 		const setHighTs = jest.fn();
 		const fetchMessages = jest.fn(() => Promise.resolve());

@@ -18,6 +18,7 @@ const SCROLL_TO_INDEX_RETRY_DELAY = 50;
 // A deep target can sit ~30 rows past the measured frontier; each retry climbs ~one render batch, so the
 // cap must cover the distance (5 stalled short). Bounded so an unreachable target aborts, not loops.
 const MAX_SCROLL_TO_INDEX_RETRIES = 20;
+const JUMP_RESCROLL_DELAYS = [SCROLL_TO_INDEX_RETRY_DELAY, 300, 1000];
 
 // animated:false snaps straight to the target instead of smooth-scrolling through every row between here
 // and a deep index — the latter reads as the list "hunting" for the message across several visible scrolls.
@@ -63,9 +64,15 @@ export const useScroll = ({
 	const jumpGrowthRetries = useRef(0);
 	// A jump-to-bottom deferred until the released live window emits (set when releasing an Anchored Window).
 	const pendingBottom = useRef(false);
+	const rescrollTimeouts = useRef<ReturnType<typeof setTimeout>[]>([]);
 	// True across an Anchored → Live release: suppresses maintainVisibleContentPosition so the disjoint
 	// data swap can't apply a native offset adjustment that drags the pre-pinned viewport off-content.
 	const [isReleasing, setIsReleasing] = useState(false);
+
+	const clearRescrolls = () => {
+		rescrollTimeouts.current.forEach(clearTimeout);
+		rescrollTimeouts.current = [];
+	};
 
 	useEffect(
 		() => () => {
@@ -75,9 +82,16 @@ export const useScroll = ({
 			if (pendingJump.current?.safety) {
 				clearTimeout(pendingJump.current.safety);
 			}
+			clearRescrolls();
 		},
 		[]
 	);
+
+	const releaseJumpTarget = () => {
+		lastJumpTargetId.current = null;
+		clearRescrolls();
+		cancelJumpToMessage();
+	};
 
 	// Back to live from an Anchored Window. The release swaps the (tall) anchored rows for the disjoint,
 	// shorter live tail in a single emit; a scroll offset deep enough for the tall content then sits past
@@ -87,6 +101,7 @@ export const useScroll = ({
 	// the post-shrink layout race a deferred correction loses to. Suppress MVCP across the swap so its
 	// offset adjustment for the disjoint key set cannot drag the viewport back off-content.
 	const jumpToBottom = () => {
+		releaseJumpTarget();
 		if (highTs != null) {
 			flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
 			pendingBottom.current = true;
@@ -162,13 +177,16 @@ export const useScroll = ({
 	// Re-read the index in case the window shifted a row between.
 	const scrollToTarget = (messageId: string, index: number) => {
 		flatListRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
-		setTimeout(() => {
-			// A newer jump may now own the scroll; re-reading this old target would yank the list off it.
-			if (lastJumpTargetId.current !== messageId) {
-				return;
-			}
-			reScrollWhenSettled(messageId);
-		}, SCROLL_TO_INDEX_RETRY_DELAY);
+		clearRescrolls();
+		rescrollTimeouts.current = JUMP_RESCROLL_DELAYS.map(rescrollDelay =>
+			setTimeout(() => {
+				// A newer jump may now own the scroll; re-reading this old target would yank the list off it.
+				if (lastJumpTargetId.current !== messageId) {
+					return;
+				}
+				reScrollWhenSettled(messageId);
+			}, rescrollDelay)
+		);
 	};
 
 	// Release settled: the live tail has emitted (keyed on messages so this runs on the first live emit)
@@ -313,11 +331,14 @@ export const useScroll = ({
 		abortJump(jump);
 	};
 
+	const handleDragStart = releaseJumpTarget;
+
 	return {
 		jumpToBottom,
 		jumpToMessage,
 		cancelJumpToMessage,
 		handleScrollToIndexFailed,
+		handleDragStart,
 		highlightedMessageId,
 		isReleasing
 	};

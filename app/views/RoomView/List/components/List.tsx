@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const List = ({ flatListRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
+const List = ({ flatListRef, jumpToBottom, onDragStart, isAnchored, ...props }: IListProps) => {
 	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
 	const isAutocompleteVisible = useIsAutocompleteVisible();
 	const wasScrolledPastLimit = useSharedValue(false);
@@ -41,7 +41,10 @@ const List = ({ flatListRef, jumpToBottom, isAnchored, ...props }: IListProps) =
 
 	// Spelled out rather than spread: the worklets babel plugin has to see an object hook's properties statically.
 	const scrollHandler = useAnimatedScrollHandler({
-		onBeginDrag,
+		onBeginDrag: () => {
+			onBeginDrag();
+			scheduleOnRN(onDragStart);
+		},
 		onMomentumBegin,
 		onEndDrag,
 		onMomentumEnd,
