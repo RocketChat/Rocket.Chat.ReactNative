@@ -10,7 +10,8 @@ import {
 	pressKeys,
 	restoreKeyboardSettings,
 	switchToSystemInputMethod,
-	typeIntoFocusedField
+	typeIntoFocusedField,
+	typeIntoField
 } from '~e2e/support/keyboard';
 
 afterEach(deleteCreatedUsers);
@@ -27,14 +28,14 @@ test(
 		await switchToSystemInputMethod();
 
 		await expect(screen.getByTestId('new-server-view')).toBeVisible({ timeout: LONG_TIMEOUT });
-		await typeIntoFocusedField(data.server);
+		await typeIntoField(screen.getByTestId('new-server-view-input'), data.server);
 		await pressKeys('tab', 'enter');
 		await expect(screen.getByText('Login')).toBeVisible({ timeout: LONG_TIMEOUT });
 		await pressKeys('enter');
 
 		await expect(screen.getByTestId('login-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 		await moveFocusTo(fixtures, 'login-view-email');
-		await typeIntoFocusedField(user.email);
+		await typeIntoField(screen.getByTestId('login-view-email'), user.email);
 		await pressKeys('enter');
 		await moveFocusTo(fixtures, 'login-view-password');
 		await typeIntoFocusedField(user.password);

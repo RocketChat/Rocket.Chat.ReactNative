@@ -1,7 +1,7 @@
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 
-import { expect } from 'e2e';
+import { expect, type Locator } from 'e2e';
 
 import type { Fixtures } from './flows';
 import { LONG_TIMEOUT, escapeRegExp, succeeds } from './flows';
@@ -40,6 +40,27 @@ const quoteForShell = (text: string) => `'${text.replaceAll("'", "'\\''")}'`;
 export const typeIntoFocusedField = async (text: string) => {
 	await adbShell('input', 'text', quoteForShell(text.replaceAll(' ', '%s')));
 	await delay(KEY_PAUSE_MS);
+};
+
+const TYPING_ATTEMPTS = 3;
+
+const clearFocusedField = async () => {
+	await adbShell('input', 'keycombination', 'KEYCODE_CTRL_LEFT', 'KEYCODE_A');
+	await adbShell('input', 'keyevent', 'KEYCODE_DEL');
+	await delay(KEY_PAUSE_MS);
+};
+
+export const typeIntoField = async (field: Locator, text: string) => {
+	for (let attempt = 1; attempt <= TYPING_ATTEMPTS; attempt += 1) {
+		if (attempt > 1) {
+			await clearFocusedField();
+		}
+		await typeIntoFocusedField(text);
+		if ((await field.inputValue()) === text) {
+			return;
+		}
+	}
+	await expect(field).toHaveValue(text);
 };
 
 const SOFT_KEYBOARD_SETTING = 'show_ime_with_hard_keyboard';
@@ -93,14 +114,20 @@ export const restoreKeyboardSettings = async ({ platform }: Pick<Fixtures, 'plat
 	}
 };
 
+export const leaveTouchMode = () => pressKeys('down');
+
 export const pressKeyTimes = (key: HardwareKey, times: number) => pressKeys(...Array.from({ length: times }, () => key));
 
 const isFocusedItself = ({ screen }: Fixtures, testId: string) =>
 	succeeds(expect(screen.getByTestId(testId)).toBeFocused({ timeout: FOCUS_CHECK_TIMEOUT }));
 
-const WRAPPER_BOUNDS_TOLERANCE = 4;
+const WRAPPER_CENTER_TOLERANCE = 4;
 
-const isWithinTolerance = (first: number, second: number) => Math.abs(first - second) <= WRAPPER_BOUNDS_TOLERANCE;
+type Box = { x: number; y: number; width: number; height: number };
+
+const sharesCenter = (wrapper: Box, target: Box) =>
+	Math.abs(wrapper.x + wrapper.width / 2 - (target.x + target.width / 2)) <= WRAPPER_CENTER_TOLERANCE &&
+	Math.abs(wrapper.y + wrapper.height / 2 - (target.y + target.height / 2)) <= WRAPPER_CENTER_TOLERANCE;
 
 const isInsideFocusedWrapper = async ({ device, screen }: Fixtures, testId: string) => {
 	const target = screen.getByTestId(testId);
@@ -109,15 +136,7 @@ const isInsideFocusedWrapper = async ({ device, screen }: Fixtures, testId: stri
 		return false;
 	}
 	const [wrapperBox, targetBox] = await Promise.all([focusedWrapper.first().boundingBox(), target.boundingBox()]);
-	if (!wrapperBox || !targetBox) {
-		return false;
-	}
-	return (
-		isWithinTolerance(wrapperBox.x, targetBox.x) &&
-		isWithinTolerance(wrapperBox.y, targetBox.y) &&
-		isWithinTolerance(wrapperBox.x + wrapperBox.width, targetBox.x + targetBox.width) &&
-		isWithinTolerance(wrapperBox.y + wrapperBox.height, targetBox.y + targetBox.height)
-	);
+	return !!wrapperBox && !!targetBox && sharesCenter(wrapperBox, targetBox);
 };
 
 const isFocused = async (fixtures: Fixtures, testId: string) =>

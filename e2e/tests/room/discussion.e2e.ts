@@ -13,7 +13,8 @@ import {
 	tapUntilHidden,
 	tapUntilVisible,
 	tapWhenVisible,
-	expectVisible
+	expectVisible,
+	fillWhenUncovered
 } from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
 import { openNewMessage, selectUser } from '~e2e/support/room';
@@ -24,7 +25,7 @@ const roomActions = ['info', 'members', 'files', 'mentioned', 'starred', 'share'
 const scrolledRoomActions = ['pinned', 'notifications', 'leave-channel'].map(action => `room-actions-${action}`);
 
 const submitDiscussion = async (fixtures: Fixtures, name: string) => {
-	await fixtures.screen.getByTestId('multi-select-discussion-name').fill(name);
+	await fillWhenUncovered(fixtures.screen.getByTestId('multi-select-discussion-name'), name);
 	await tapWhenVisible(fixtures, 'create-discussion-submit');
 	await expectVisible(fixtures, 'room-view');
 	await expectVisible(fixtures, `room-view-title-${name}`);

@@ -96,9 +96,10 @@ const boundsWhenSettled = async (target: Locator) => {
 	return previous;
 };
 
-const tapCenterUntilVisible = async ({ screen }: Fixtures, target: Locator, expectedTestId: string) => {
+const tapCenterUntilVisible = async ({ screen }: Fixtures, target: Locator, expectedTestId: string, direction: 'up' | 'down') => {
 	const expected = screen.getByTestId(expectedTestId);
 	for (let attempt = 1; attempt <= LOAD_TAP_ATTEMPTS; attempt += 1) {
+		await screen.getByTestId('room-view-messages').swipe({ direction });
 		const box = await boundsWhenSettled(target);
 		if (box) {
 			await screen.tapAt({ x: box.x + box.width / 2, y: box.y + box.height / 2 });
@@ -138,14 +139,14 @@ test('jumps to messages', { tags: ['test-5'], timeout: 900_000 }, async fixtures
 	const loadOlder = screen.getByText('Load older', { visible: true });
 	await scrollUntilLoaded(fixtures, loadOlder, 'up');
 	await expectVisible(fixtures, 'message-content-5');
-	await tapCenterUntilVisible(fixtures, loadOlder, 'message-content-4');
+	await tapCenterUntilVisible(fixtures, loadOlder, 'message-content-4', 'up');
 	await scrollUntilLoaded(fixtures, screen.getByTestId('message-content-1'), 'up');
 	await scrollUntilLoaded(fixtures, screen.getByTestId('message-content-50'), 'down');
 	const loadNewer = screen.getByText('Load newer', { visible: true });
 	await scrollUntilLoaded(fixtures, loadNewer, 'down');
 	for (const lastLoaded of [104, 154, 202]) {
 		await expect(loadNewer).toBeVisible({ timeout: LONG_TIMEOUT });
-		await tapCenterUntilVisible(fixtures, loadNewer, `message-content-${lastLoaded}`);
+		await tapCenterUntilVisible(fixtures, loadNewer, `message-content-${lastLoaded}`, 'down');
 	}
 	await screen.getByTestId('header-back').tap();
 

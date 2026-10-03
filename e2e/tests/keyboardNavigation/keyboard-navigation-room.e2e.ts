@@ -5,6 +5,7 @@ import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/a
 import { loginWithDeepLink, LONG_TIMEOUT } from '~e2e/support/flows';
 import {
 	hideSoftKeyboardWithHardwareKeyboard,
+	leaveTouchMode,
 	moveFocusTo,
 	pressKeys,
 	restoreKeyboardSettings,
@@ -26,6 +27,7 @@ test(
 		const message = `keyboard-room-${random(6)}`;
 
 		await hideSoftKeyboardWithHardwareKeyboard();
+		await leaveTouchMode();
 		await loginWithDeepLink(fixtures, user);
 		await expect(screen.getByText(room.name)).toBeVisible({ timeout: LONG_TIMEOUT });
 		await expect(screen.getByText('Save your encryption password')).toBeVisible({ timeout: LONG_TIMEOUT });

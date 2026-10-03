@@ -16,7 +16,8 @@ import {
 	expectVisible,
 	goBackUntil,
 	openMessageActions,
-	tapUntilVisible
+	tapUntilVisible,
+	fillWhenUncovered
 } from '~e2e/support/flows';
 import { deleteMessage } from '~e2e/support/room';
 
@@ -95,7 +96,7 @@ const editMessage = async (fixtures: Fixtures) => {
 	await sendMessage(fixtures, 'edit');
 	await hideKeyboard(fixtures);
 	await startMessageAction(fixtures, 'edit', 'edit');
-	await composer(fixtures).fill('edited');
+	await fillWhenUncovered(composer(fixtures), 'edited');
 	await tapWhenVisible(fixtures, 'message-composer-send');
 	await expectVisible(fixtures, 'message-content-edited');
 	await expectVisible(fixtures, 'edited-edited');
@@ -130,7 +131,7 @@ const replyInDirectMessage = async (fixtures: Fixtures) => {
 	const { author } = await openRoomWithOthersMessage(fixtures, original);
 	await startMessageAction(fixtures, original, 'reply-in-dm');
 	await expectVisible(fixtures, `room-view-title-${author.username}`);
-	await composer(fixtures).fill(reply);
+	await fillWhenUncovered(composer(fixtures), reply);
 	await hideKeyboard(fixtures);
 	await tapWhenVisible(fixtures, 'message-composer-send');
 	await expect(fixtures.screen.getByTestId(new RegExp(`^message-content-.*${reply}$`, 's'))).toBeVisible({
@@ -145,7 +146,7 @@ const leaveAndReopenRoom = async (fixtures: Fixtures, roomName: string) => {
 };
 
 const typeDraft = async (fixtures: Fixtures, text: string) => {
-	await composer(fixtures).fill(text);
+	await fillWhenUncovered(composer(fixtures), text);
 	await hideKeyboard(fixtures);
 };
 
@@ -163,7 +164,7 @@ const replaceDraftKeepingQuote = async (fixtures: Fixtures, roomName: string, or
 	await leaveAndReopenRoom(fixtures, roomName);
 	await expectVisible(fixtures, `markdown-preview-${original}`);
 	await composer(fixtures).clear();
-	await composer(fixtures).fill(text);
+	await fillWhenUncovered(composer(fixtures), text);
 	await expect(composer(fixtures)).toHaveValue(text, { timeout: LONG_TIMEOUT });
 };
 

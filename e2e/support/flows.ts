@@ -141,23 +141,29 @@ export const loginWithForm = async (fixtures: Fixtures, credentials: Credentials
 
 const COVERED_ERROR = 'is covered by another visible element';
 const OFF_SCREEN_ERROR = 'is off-screen and not safe to press';
-const RETRYABLE_TAP_ERRORS = [COVERED_ERROR, OFF_SCREEN_ERROR];
+const NO_INPUT_AT_POINT_ERROR = 'no text input found at the provided coordinates';
+const RETRYABLE_ACTION_ERRORS = [COVERED_ERROR, OFF_SCREEN_ERROR, NO_INPUT_AT_POINT_ERROR];
 
-export const tapWhenUncovered = async (locator: Locator, timeout = LONG_TIMEOUT) => {
+const retryWhileUnreachable = async (action: () => Promise<unknown>, timeout: number) => {
 	const deadline = Date.now() + timeout;
 	for (;;) {
 		try {
-			await locator.tap();
+			await action();
 			return;
 		} catch (error) {
 			const message = String(error);
-			if (Date.now() > deadline || !RETRYABLE_TAP_ERRORS.some(retryable => message.includes(retryable))) {
+			if (Date.now() > deadline || !RETRYABLE_ACTION_ERRORS.some(retryable => message.includes(retryable))) {
 				throw error;
 			}
 			await delay(500);
 		}
 	}
 };
+
+export const tapWhenUncovered = (locator: Locator, timeout = LONG_TIMEOUT) => retryWhileUnreachable(() => locator.tap(), timeout);
+
+export const fillWhenUncovered = (locator: Locator, text: string, timeout = LONG_TIMEOUT) =>
+	retryWhileUnreachable(() => locator.fill(text), timeout);
 
 export const tapWhenVisible = async ({ screen }: Fixtures, testIdOrTarget: string | Locator) => {
 	const target = typeof testIdOrTarget === 'string' ? screen.getByTestId(testIdOrTarget).first() : testIdOrTarget;
@@ -368,7 +374,7 @@ export const navigateToRoomActions = async (fixtures: Fixtures, room: string) =>
 };
 
 export const sendMessage = async ({ screen }: Fixtures, message: string, { inThread = false } = {}) => {
-	await screen.getByTestId(inThread ? 'message-composer-input-thread' : 'message-composer-input').fill(message);
+	await fillWhenUncovered(screen.getByTestId(inThread ? 'message-composer-input-thread' : 'message-composer-input'), message);
 	await expect(screen.getByTestId('message-composer-send')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByTestId('message-composer-send').tap();
 	await expect(screen.getByTestId(`message-content-${message}`)).toBeVisible({ timeout: LONG_TIMEOUT });

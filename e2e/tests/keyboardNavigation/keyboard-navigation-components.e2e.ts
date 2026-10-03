@@ -7,6 +7,7 @@ import {
 	expectLabel,
 	expectText,
 	hideSoftKeyboardWithHardwareKeyboard,
+	leaveTouchMode,
 	moveFocusTo,
 	pressKeys,
 	pressKeyTimes,
@@ -30,6 +31,7 @@ test(
 		const { screen } = fixtures;
 		const user = await createUser();
 		await hideSoftKeyboardWithHardwareKeyboard();
+		await leaveTouchMode();
 		await loginWithDeepLink(fixtures, user);
 
 		await expect(screen.getByText('Save your encryption password')).toBeVisible({ timeout: LONG_TIMEOUT });

@@ -2,7 +2,15 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { expectAllVisible, goBack, loginWithDeepLink, type Fixtures, LONG_TIMEOUT, tapWhenVisible } from '~e2e/support/flows';
+import {
+	expectAllVisible,
+	goBack,
+	loginWithDeepLink,
+	type Fixtures,
+	LONG_TIMEOUT,
+	tapWhenUncovered,
+	tapWhenVisible
+} from '~e2e/support/flows';
 import { openSettings } from '~e2e/support/settings';
 
 afterEach(deleteCreatedUsers);
@@ -11,7 +19,7 @@ const MEDIA_TYPES = ['image', 'video', 'audio'] as const;
 
 const checkMediaAutoDownloadOptions = async (fixtures: Fixtures, mediaType: (typeof MEDIA_TYPES)[number]) => {
 	const prefix = `media-auto-download-${mediaType}`;
-	await fixtures.screen.getByTestId(prefix).tap();
+	await tapWhenUncovered(fixtures.screen.getByTestId(prefix));
 	await expectAllVisible(fixtures, [`${prefix}-wifi_mobile_data`, `${prefix}-wifi`, `${prefix}-never`]);
 	await fixtures.screen.getByTestId('action-sheet-handle').tap();
 };
