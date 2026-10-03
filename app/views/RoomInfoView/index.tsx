@@ -61,7 +61,7 @@ const RoomInfoView = (): ReactElement => {
 
 	const [room, setRoom] = useState(roomParam || ({ rid, t } as ISubscription));
 	const [roomFromRid, setRoomFromRid] = useState<ISubscription | undefined>();
-	const [roomUser, setRoomUser] = useState(member || {});
+	const [roomUserData, setRoomUserData] = useState(member || {});
 	const [showEdit, setShowEdit] = useState(false);
 
 	const roomType = room?.t || t;
@@ -96,7 +96,7 @@ const RoomInfoView = (): ReactElement => {
 
 	const roomUserId = isDirect ? getUidDirectMessage({ ...(room || { rid, t }), itsMe }) : undefined;
 	const activeUserStatus = useAppSelector(state => (roomUserId ? state.activeUsers[roomUserId] : undefined), shallowEqual);
-	const userStatus = activeUserStatus || roomUser;
+	const userStatus = activeUserStatus || roomUserData;
 
 	const { colors } = useTheme();
 
@@ -131,7 +131,7 @@ const RoomInfoView = (): ReactElement => {
 		try {
 			const visitor = await fetchVisitorWithUserAgent(visitorId);
 			if (visitor) {
-				setRoomUser(visitor);
+				setRoomUserData(visitor);
 				setHeader();
 			}
 		} catch (error) {
@@ -155,6 +155,8 @@ const RoomInfoView = (): ReactElement => {
 		}
 	};
 
+	const roomUser = isDirect ? { ...roomUserData, roles: handleRoles(roomUserData) } : roomUserData;
+
 	// member may arrive without _id (RoomActionsView forwards it before its own fetch resolves)
 	const resolveRoomUserId = (r?: ISubscription) => {
 		if (roomUser._id) return roomUser._id;
@@ -163,22 +165,18 @@ const RoomInfoView = (): ReactElement => {
 	};
 
 	const loadUser = async () => {
-		if (!roomUser._id) {
-			const roomOrParams = room || { rid, t };
-			try {
-				const roomUserId = getUidDirectMessage({ ...roomOrParams, itsMe });
-				const result = await getUserInfo(roomUserId);
-				if (result.success) {
-					const { user } = result;
-					const r = handleRoles(user);
-					setRoomUser({ ...roomUser, ...user, roles: r });
-				}
-			} catch {
-				// do nothing
+		if (roomUserData._id) {
+			return;
+		}
+		const roomOrParams = room || { rid, t };
+		try {
+			const roomUserId = getUidDirectMessage({ ...roomOrParams, itsMe });
+			const result = await getUserInfo(roomUserId);
+			if (result.success) {
+				setRoomUserData({ ...roomUserData, ...result.user });
 			}
-		} else {
-			const r = handleRoles(roomUser);
-			if (r) setRoomUser({ ...roomUser, roles: r });
+		} catch {
+			// do nothing
 		}
 	};
 
