@@ -1,5 +1,5 @@
 import { createRef, type ReactElement, type RefObject } from 'react';
-import { act, fireEvent, render, renderHook, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { initStore } from '~/lib/store/auxStore';
@@ -324,8 +324,7 @@ describe('ShareView', () => {
 			.mockImplementationOnce(() => new Promise<void>((_, reject) => (rejectUpload = reject)));
 
 		const sendPromise = shareView.send();
-		await Promise.resolve();
-		await Promise.resolve();
+		await waitFor(() => expect(uploadSpy).toHaveBeenCalled());
 		shareView.componentWillUnmount();
 		(shareView as any).messageComposerRef = { current: null };
 		rejectUpload(new Error('upload failed'));
