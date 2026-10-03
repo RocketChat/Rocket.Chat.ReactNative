@@ -101,26 +101,27 @@ const RoomInfoView = (): ReactElement => {
 	const { colors } = useTheme();
 
 	const setHeader = (canEdit?: boolean) => {
-		const HeaderRight = () => (
-			<HeaderButton.Container>
-				<HeaderButton.Item
-					accessibilityLabel={I18n.t('Room_Info_Edit')}
-					iconName='edit'
-					onPress={() => {
-						if (!room) return;
-						logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
-						const navigationProps = { room, roomUser };
-						if (isLivechat) navigate('LivechatEditView', navigationProps);
-						else navigate('RoomInfoEditView', { rid, ...navigationProps });
-					}}
-					testID='room-info-view-edit-button'
-				/>
-			</HeaderButton.Container>
-		);
 		setOptions({
 			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal /> : undefined,
 			title: isDirect ? I18n.t('User_Info') : I18n.t('Room_Info'),
-			headerRight: canEdit ? () => <HeaderRight /> : undefined
+			headerRight: canEdit
+				? () => (
+						<HeaderButton.Container>
+							<HeaderButton.Item
+								accessibilityLabel={I18n.t('Room_Info_Edit')}
+								iconName='edit'
+								onPress={() => {
+									if (!room) return;
+									logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
+									const navigationProps = { room, roomUser };
+									if (isLivechat) navigate('LivechatEditView', navigationProps);
+									else navigate('RoomInfoEditView', { rid, ...navigationProps });
+								}}
+								testID='room-info-view-edit-button'
+							/>
+						</HeaderButton.Container>
+					)
+				: undefined
 		});
 	};
 
