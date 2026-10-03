@@ -154,7 +154,7 @@ describe('select-impacted-shards.sh', () => {
 
 	describe('happy path', () => {
 		test('single impacted flow maps to its shard', () => {
-			const flowPath = path.join(REPO_ROOT, '.maestro/tests/assorted/i18n.yaml'); // tags: test-6
+			const flowPath = path.join(REPO_ROOT, 'e2e/tests/assorted/i18n.e2e.ts'); // tags: test-6
 			const result = runScript(SCRIPT, {
 				env: BASE_ENV,
 				stubs: {
@@ -169,9 +169,9 @@ describe('select-impacted-shards.sh', () => {
 
 		test('multiple impacted flows map to the sorted unique shard union', () => {
 			const flows = [
-				path.join(REPO_ROOT, '.maestro/tests/assorted/i18n.yaml'), // test-6
-				path.join(REPO_ROOT, '.maestro/tests/e2ee/e2e-encryption.yaml'), // test-3
-				path.join(REPO_ROOT, '.maestro/tests/room/search.yaml') // test-13
+				path.join(REPO_ROOT, 'e2e/tests/assorted/i18n.e2e.ts'), // test-6
+				path.join(REPO_ROOT, 'e2e/tests/onboarding/login/login.e2e.ts'), // test-2
+				path.join(REPO_ROOT, 'e2e/tests/room/search-member.e2e.ts') // test-13
 			];
 			const json = JSON.stringify({ recommendedTests: flows.map(test => ({ test })) });
 			const result = runScript(SCRIPT, {
@@ -179,7 +179,21 @@ describe('select-impacted-shards.sh', () => {
 				stubs: { git: gitStub(), pnpm: pnpmStub(json) }
 			});
 			expect(result.status).toBe(0);
-			expect(JSON.parse(result.shards)).toEqual([3, 6, 13]);
+			expect(JSON.parse(result.shards)).toEqual([2, 6, 13]);
+			expect(result.should_run).toBe('true');
+		});
+
+		test('a test-N literal outside the tags option is not a shard', () => {
+			const testPath = path.join(REPO_ROOT, '.github/scripts/__tests__/fixtures/flows/stray-tag-literal.txt');
+			const result = runScript(SCRIPT, {
+				env: BASE_ENV,
+				stubs: {
+					git: gitStub(),
+					pnpm: pnpmStub(`{"recommendedTests":[{"test":"${testPath}"}]}`)
+				}
+			});
+			expect(result.status).toBe(0);
+			expect(JSON.parse(result.shards)).toEqual([4]);
 			expect(result.should_run).toBe('true');
 		});
 	});

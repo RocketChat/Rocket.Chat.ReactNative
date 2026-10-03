@@ -1,0 +1,139 @@
+name: E2E Tests on iOS
+
+on:
+  workflow_call:
+    inputs:
+      shard:
+        required: true
+        type: string
+    secrets:
+      E2E_ACCOUNT:
+        required: true
+      CLAUDE_CODE_OAUTH_TOKEN:
+        required: true
+
+permissions: {}
+
+jobs:
+  ios-test:
+    runs-on: macos-26
+    permissions:
+      contents: read
+    timeout-minutes: 80
+    env:
+      E2E_TELEMETRY_DISABLED: '1'
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Set up Xcode (same version e2e-build-ios.yml builds with)
+        uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
+        with:
+          xcode-version: '26.6'
+
+      - name: Configure Simulator
+        run: |
+          defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
+          defaults write com.apple.iphonesimulator SlowAnimations -bool false
+          defaults write com.apple.iphonesimulator ShowDeviceBezels -bool false
+          defaults write com.apple.iphonesimulator DisableShadows -bool true
+          defaults write com.apple.iphonesimulator AllowFullscreenMode -bool false
+          defaults write com.apple.iphonesimulator PasteboardAutomaticSync -bool false
+          defaults write com.apple.iphonesimulator ShowChrome -bool false
+          defaults write com.apple.iphonesimulator DeviceFramebufferOnly -bool true
+
+      - name: Start Simulator Boot (async; resolved by device family, smallest iPhone for shard 14)
+        env:
+          SHARD: ${{ inputs.shard }}
+        run: |
+          DEVICES_JSON=$(xcrun simctl list devices available --json)
+          if [[ "$SHARD" == "14" ]]; then
+            SIM_NAME=$(jq -r '[.devices | to_entries[] | .value[] | select(.name | test("^iPhone SE"))] | first | .name' <<< "$DEVICES_JSON")
+            if [[ -z "$SIM_NAME" || "$SIM_NAME" == "null" ]]; then
+              SIM_NAME=$(jq -r '[.devices | to_entries[] | .value[] | select(.name | test("^iPhone [0-9]+( mini)?$"))] | sort_by(.name | capture("(?<n>[0-9]+)").n | tonumber) | first | .name' <<< "$DEVICES_JSON")
+            fi
+            SIM_CRITERION="smallest iPhone (small-screen shard)"
+          else
+            SIM_NAME=$(jq -r '[.devices | to_entries[] | .value[] | select(.name | test("^iPhone [0-9]+ Pro$"))] | sort_by(.name | capture("(?<n>[0-9]+)").n | tonumber) | last | .name' <<< "$DEVICES_JSON")
+            SIM_CRITERION="largest iPhone N Pro"
+          fi
+
+          if [[ -z "$SIM_NAME" || "$SIM_NAME" == "null" ]]; then
+            echo "::error::No simulator matched criterion: ${SIM_CRITERION}"
+            xcrun simctl list devices available
+            exit 1
+          fi
+
+          SIM_UDID=$(jq -r --arg name "$SIM_NAME" '[.devices | to_entries[] | .value[] | select(.name == $name)] | first | .udid' <<< "$DEVICES_JSON")
+
+          echo "Starting boot for simulator: $SIM_NAME ($SIM_UDID)"
+          echo "SIM_UDID=$SIM_UDID" >> "$GITHUB_ENV"
+          echo "E2E_IOS_DEVICE=$SIM_UDID" >> "$GITHUB_ENV"
+
+          xcrun simctl boot "$SIM_UDID" || true
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Download App
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: ios-simulator-app
+          path: ios-simulator-app/Rocket.Chat.app
+
+      - name: Setup E2E Account
+        uses: ./.github/actions/e2e-account
+        with:
+          E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
+
+      - name: Restore agent-device runner (rebuilt on a mismatch)
+        id: agent-device-cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.agent-device
+          key: agent-device-${{ runner.os }}-xcode-26.6-${{ hashFiles('node_modules/agent-device/package.json') }}
+          restore-keys: |
+            agent-device-${{ runner.os }}-xcode-26.6-
+
+      - name: Wait for Simulator Ready
+        timeout-minutes: 15
+        run: |
+          echo "Waiting for simulator to finish booting: $SIM_UDID"
+          xcrun simctl bootstatus "$SIM_UDID" -b
+
+          echo "Disabling animations"
+          xcrun simctl spawn "$SIM_UDID" defaults write -g UIAnimationDragCoefficient -float 0.0001
+
+          echo "Booted devices:"
+          xcrun simctl list devices | grep Booted
+
+      - name: Run E2E Tests
+        timeout-minutes: 45
+        env:
+          E2E_IOS_APP_PATH: ${{ github.workspace }}/ios-simulator-app/Rocket.Chat.app
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          SHARD: ${{ inputs.shard }}
+        run: bash .github/scripts/run-e2e.sh ios "$SHARD"
+
+      - name: Save agent-device runner
+        if: ${{ always() && steps.agent-device-cache.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.agent-device
+          key: agent-device-${{ runner.os }}-xcode-26.6-${{ hashFiles('node_modules/agent-device/package.json') }}
+
+      - name: Redact E2E Report
+        if: always()
+        run: bash .github/scripts/redact-e2e-output.sh
+
+      - name: Upload E2E Report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: iOS E2E Report - Shard ${{ inputs.shard }}
+          path: |
+            .e2e/report.json
+            .e2e/junit.xml
+            .e2e/artifacts
+          retention-days: 7

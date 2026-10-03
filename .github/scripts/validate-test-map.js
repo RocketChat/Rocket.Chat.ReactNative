@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Validates the sniffler test-map against the repo so it cannot silently rot.
 // Five checks:
-//   Orphan flow    ERROR   — a `test-N`-tagged YAML under .maestro/tests/ with
-//                            no test-map entry (sniffler never selects it).
+//   Orphan test    ERROR   — a `test-N`-tagged test under e2e/tests/ with no
+//                            test-map entry (sniffler never selects it).
 //   Dangling glob  ERROR   — a dependsOn glob that matches zero files on disk.
 //   Uncovered view WARNING — an app/views/ directory no dependsOn glob anchors
 //                            (a nudge; not every view needs a flow). `__*` dirs
@@ -24,7 +24,7 @@ const fg = require('fast-glob');
 const ROOT = process.env.TESTMAP_ROOT || path.resolve(__dirname, '..', '..');
 const TEST_MAP_PATH = path.join(ROOT, '.sniffler', 'test-map.json');
 const CONFIG_PATH = path.join(ROOT, '.sniffler', 'config.json');
-const FLOWS_DIR = path.join(ROOT, '.maestro', 'tests');
+const TESTS_DIR = path.join(ROOT, 'e2e', 'tests');
 const VIEWS_DIR = path.join(ROOT, 'app', 'views');
 
 const ann = (level, file, msg) => console.log(`::${level} file=${file}::${msg}`);
@@ -35,16 +35,16 @@ let warnCount = 0;
 const testMap = JSON.parse(fs.readFileSync(TEST_MAP_PATH, 'utf8'));
 const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
 
-// Orphan flows: test-N-tagged YAML with no test-map entry.
-const taggedFlows = fg
-	.sync(['**/*.yaml', '**/*.yml'], { cwd: FLOWS_DIR, absolute: true })
-	.filter(f => /^\s*-\s*['"]?test-\d+/m.test(fs.readFileSync(f, 'utf8')))
+// Orphan tests: test-N-tagged e2e test with no test-map entry.
+const taggedTests = fg
+	.sync(['**/*.e2e.ts'], { cwd: TESTS_DIR, absolute: true })
+	.filter(f => /tags:\s*\[[^\]]*['"]test-\d+['"]/.test(fs.readFileSync(f, 'utf8')))
 	.map(f => path.relative(ROOT, f).replace(/\\/g, '/'));
 
 const mappedTests = new Set(testMap.map(e => e.test));
-const orphans = taggedFlows.filter(f => !mappedTests.has(f));
+const orphans = taggedTests.filter(f => !mappedTests.has(f));
 for (const f of orphans) {
-	ann('error', f, `Orphan flow: "${f}" has a test-N tag but no test-map entry — sniffler will never select it.`);
+	ann('error', f, `Orphan test: "${f}" has a test-N tag but no test-map entry — sniffler will never select it.`);
 	errorCount++;
 }
 
@@ -69,7 +69,7 @@ const viewDirs = fs
 const allDependsOn = testMap.flatMap(e => e.dependsOn || []);
 const uncovered = viewDirs.filter(dir => !allDependsOn.some(g => g.startsWith(`${dir}/`)));
 for (const dir of uncovered) {
-	ann('warning', dir, `Uncovered view: "${dir}" has no dependsOn anchor in any test-map entry — new screen with no Maestro flow?`);
+	ann('warning', dir, `Uncovered view: "${dir}" has no dependsOn anchor in any test-map entry — new screen with no e2e test?`);
 	warnCount++;
 }
 
@@ -101,7 +101,7 @@ for (const f of uncoveredDecoupled) {
 }
 
 console.log('\n── test-map freshness ──');
-console.log(`  Flows scanned:    ${taggedFlows.length}`);
+console.log(`  Tests scanned:    ${taggedTests.length}`);
 console.log(`  Test-map entries: ${testMap.length}`);
 console.log(`  Orphans:          ${orphans.length}`);
 console.log(`  Dangling globs:   ${dangling.length}`);

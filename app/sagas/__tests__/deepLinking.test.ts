@@ -342,7 +342,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 
 	// Marker decision behind the login-confirmation bypass (vuln fix): deleting or
 	// inverting the forceLoginPrompt check must fail here. Env wiring itself is
-	// compile-time inlined, so it's covered by Maestro deeplink.yaml instead.
+	// compile-time inlined, so it's covered by the deeplink.e2e.ts e2e test instead.
 	describe('shouldAutoConfirmDeepLinkLogin', () => {
 		it('auto-confirms when isE2E with no marker', () => {
 			expect(shouldAutoConfirmDeepLinkLogin(true, {})).toBe(true);

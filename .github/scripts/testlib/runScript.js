@@ -1,7 +1,7 @@
 // Shared harness for the selection-logic tests: run a shell script under test
 // with stubbed executables on $PATH and a scratch $GITHUB_OUTPUT, then read back
 // the emitted key=value pairs. Real jq/grep/sort/paste are used (they are correct
-// tools, not the unit under test); only external deps like sniffler/git/maestro
+// tools, not the unit under test); only external deps like sniffler/git/pnpm
 // are stubbed via the `stubs` map.
 'use strict';
 

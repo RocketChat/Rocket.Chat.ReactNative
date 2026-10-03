@@ -1,0 +1,40 @@
+diff --git a/node_modules/@e2e-dev/mobile/dist/surface.js b/node_modules/@e2e-dev/mobile/dist/surface.js
+index 8ad99de..acbe7c1 100644
+--- a/node_modules/@e2e-dev/mobile/dist/surface.js
++++ b/node_modules/@e2e-dev/mobile/dist/surface.js
+@@ -556,7 +556,7 @@ export class AgentDeviceSurface {
+         }
+     }
+     async permission(permission, state, signal) {
+-        await this.command(`permission ${permission} ${state}`, (client) => client.settings.update({ setting: 'permission', permission, state }), signal);
++        await this.command(`permission ${permission} ${state}`, (client) => client.settings.update({ ...this.selection(), setting: 'permission', permission, state }), signal);
+     }
+     /**
+      * Opens a link on the device, into `app` (the pinned app when none is
+@@ -614,7 +614,7 @@ export class AgentDeviceSurface {
+      */
+     async closeApp(signal) {
+         const app = this.appIdentity ?? this.pinnedApp;
+-        await this.command('device.closeApp', (client) => client.apps.close(app === undefined ? {} : { app }), signal);
++        await this.command('device.closeApp', (client) => client.apps.close({ ...this.selection(), ...(app === undefined ? {} : { app }) }), signal);
+         this.sessionApp = undefined;
+         this.screenReplaced();
+     }
+@@ -1141,7 +1141,7 @@ export class AgentDeviceSurface {
+         const app = this.pinnedApp;
+         if (app === undefined)
+             throw unsupported(`app.clearState needs the target's \`app.bundleId\`, or ${UNINSTALLED_BUILD}`);
+-        await this.command('clear app state', (client) => client.settings.update({ setting: 'clear-app-state', state: 'clear', app }), operation.signal);
++        await this.command('clear app state', (client) => client.settings.update({ ...this.selection(), setting: 'clear-app-state', state: 'clear', app }), operation.signal);
+         await this.openApp(app, { relaunch: true }, operation.signal);
+     }
+     /**
+@@ -1153,7 +1153,7 @@ export class AgentDeviceSurface {
+         if (this.options.platform !== 'ios') {
+             throw unsupported('device.clearKeychain resets an iOS simulator keychain; Android has none to reset');
+         }
+-        await this.command('device.clearKeychain', (client) => client.settings.update({ setting: 'reset-keychain', state: 'clear' }), signal);
++        await this.command('device.clearKeychain', (client) => client.settings.update({ ...this.selection(), setting: 'reset-keychain', state: 'clear' }), signal);
+     }
+     /**
+      * A redacted screenshot artifact. The device paints secure fields as dots,

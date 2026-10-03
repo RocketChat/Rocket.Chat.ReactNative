@@ -21,10 +21,10 @@ function runValidator(fixture) {
 }
 
 describe('validate-test-map', () => {
-	it('flags an orphan flow: test-N-tagged YAML with no test-map entry', () => {
+	it('flags an orphan test: test-N-tagged e2e test with no test-map entry', () => {
 		const { status, stdout } = runValidator('orphan-flow');
 		expect(status).toBe(1);
-		expect(stdout).toContain('::error file=.maestro/tests/orphan.yaml::Orphan flow');
+		expect(stdout).toContain('::error file=e2e/tests/orphan.e2e.ts::Orphan test');
 	});
 
 	it('flags a dangling glob: dependsOn glob matching zero files on disk', () => {

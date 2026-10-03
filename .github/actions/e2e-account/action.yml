@@ -1,8 +1,8 @@
 name: Setup E2E Account
-description: Setup E2E Account
+description: Decode the E2E account secret into masked E2E_* environment variables (requires Node)
 inputs:
   E2E_ACCOUNT:
-    description: 'E2E Account'
+    description: 'Base64 of the e2e_account.js account definition'
     required: true
 
 runs:
@@ -10,6 +10,22 @@ runs:
   steps:
     - name: Setup Account
       shell: bash
+      env:
+        E2E_ACCOUNT: ${{ inputs.E2E_ACCOUNT }}
       run: |
-        echo "${{ inputs.E2E_ACCOUNT }}" | base64 --decode | tee .maestro/scripts/e2e_account.js > /dev/null
-        sed '$s/.*/output.account = account;/' .maestro/scripts/e2e_account.js > tmp && mv tmp .maestro/scripts/e2e_account.js
+        set -euo pipefail
+        if ! account_env="$(printf '%s' "$E2E_ACCOUNT" | base64 --decode 2>/dev/null \
+          | grep -vE '^[[:space:]]*(output\.account|module\.exports|export[[:space:]]+default)[[:space:]=]' \
+          | node e2e/scripts/account-env.mjs 2>/dev/null)"; then
+          echo "::error title=E2E account invalid::The E2E_ACCOUNT secret could not be decoded or evaluated."
+          exit 1
+        fi
+        if ! grep -q '^E2E_ADMIN_USER=' <<< "$account_env"; then
+          echo "::error title=E2E account invalid::The E2E_ACCOUNT secret did not yield E2E_ADMIN_USER."
+          exit 1
+        fi
+        while IFS= read -r line; do
+          [ -n "$line" ] || continue
+          echo "::add-mask::${line#*=}"
+          echo "$line" >> "$GITHUB_ENV"
+        done <<< "$account_env"

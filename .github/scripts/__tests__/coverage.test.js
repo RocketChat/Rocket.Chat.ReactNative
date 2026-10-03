@@ -17,8 +17,8 @@ const config = require('../../../.sniffler/config.json');
 const testMap = require('../../../.sniffler/test-map.json');
 const catalog = require('./fixtures/scenario-catalog.json');
 
-// Mirrors the grep pattern in select-impacted-shards.sh: `^\s*-\s*['"]?test-N`.
-const TEST_N_PATTERN = /^[ \t]*-[ \t]*['"]?test-(\d+)/gm;
+// Mirrors the e2e test tag pattern in select-impacted-shards.sh: `'test-N'`.
+const TEST_N_PATTERN = /['"]test-(\d+)['"]/g;
 
 function extractShardsFromFlow(flowPath) {
 	const contents = fs.readFileSync(path.join(REPO_ROOT, flowPath), 'utf8');

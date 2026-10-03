@@ -69,7 +69,7 @@ jobs:
     with:
       trigger: "pr"
 
-  # Runs first (cheap, secret-free): validates flow tags, then narrows the shard
+  # Runs first (cheap, secret-free): validates test tags, then narrows the shard
   # list to the shards sniffler flags as impacted. `should_run=false` is a
   # confident zero (no source touched) that skips the whole e2e stage below.
   e2e-shards:
@@ -91,9 +91,9 @@ jobs:
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
 
-      - name: Assert Maestro shard coverage
+      - name: Assert E2E shard coverage
         id: full
-        run: bash .github/scripts/assert-maestro-shards.sh
+        run: bash .github/scripts/assert-e2e-shards.sh
 
       # Read labels live rather than from the event payload: the payload is frozen
       # at push time (a label added afterwards, or a re-run, would never see it),
@@ -144,7 +144,7 @@ jobs:
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' && needs.e2e-shards.outputs.should_run == 'true' }}
     permissions:
       contents: read
-    uses: ./.github/workflows/maestro-android.yml
+    uses: ./.github/workflows/e2e-android.yml
     needs: [e2e-build-android, e2e-shards]
     secrets: inherit
     strategy:
@@ -168,7 +168,7 @@ jobs:
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' && needs.e2e-shards.outputs.should_run == 'true' }}
     permissions:
       contents: read
-    uses: ./.github/workflows/maestro-ios.yml
+    uses: ./.github/workflows/e2e-ios.yml
     needs: [e2e-build-ios, e2e-shards]
     secrets: inherit
     strategy:
@@ -200,7 +200,7 @@ jobs:
             exit 1
           fi
           if [ "$SHOULD_RUN" != "true" ]; then
-            echo "### E2E skipped — 0 impacted flows (no source touched)" >> "$GITHUB_STEP_SUMMARY"
+            echo "### E2E skipped — 0 impacted tests (no source touched)" >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
           {
@@ -211,5 +211,5 @@ jobs:
           if [ "$ANDROID" = "success" ] && [ "$IOS" = "success" ]; then
             exit 0
           fi
-          echo "::error title=E2E failed::One or more Maestro shards failed (android=$ANDROID ios=$IOS)."
+          echo "::error title=E2E failed::One or more E2E shards failed (android=$ANDROID ios=$IOS)."
           exit 1
