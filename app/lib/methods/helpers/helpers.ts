@@ -71,8 +71,8 @@ export function canAutoTranslate() {
 			return false;
 		}
 		const autoTranslatePermission = reduxStore.getState().permissions['auto-translate'];
-		const userRoles = reduxStore.getState().login?.user?.roles ?? [];
-		return autoTranslatePermission?.some(role => userRoles.includes(role)) ?? false;
+		const userRoles = new Set(reduxStore.getState().login?.user?.roles);
+		return autoTranslatePermission?.some(role => userRoles.has(role)) ?? false;
 	} catch (e) {
 		log(e);
 		return false;

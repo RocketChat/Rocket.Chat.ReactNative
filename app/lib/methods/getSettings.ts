@@ -15,7 +15,7 @@ import { parseSettings, _prepareSettings } from './parseSettings';
 import { setPresenceCap } from './getUsersPresence';
 import { compareServerVersion } from './helpers';
 
-const serverInfoKeys = [
+const serverInfoKeys = new Set([
 	'Site_Name',
 	'UI_Use_Real_Name',
 	'FileUpload_MediaTypeWhiteList',
@@ -25,7 +25,7 @@ const serverInfoKeys = [
 	'uniqueID',
 	'E2E_Enable',
 	'E2E_Enabled_Default_PrivateRooms'
-];
+]);
 
 // these settings are used only on onboarding process
 const loginSettings = [
@@ -152,7 +152,8 @@ type IData = ISettingsIcon | IPreparedSettings;
 export async function getSettings(server: string): Promise<void> {
 	try {
 		const db = database.active;
-		const settingsParams = Object.keys(defaultSettings).filter(key => !loginSettings.includes(key));
+		const loginSettingKeys = new Set(loginSettings);
+		const settingsParams = Object.keys(defaultSettings).filter(key => !loginSettingKeys.has(key));
 		// RC 0.60.0
 		let offset = 0;
 		let remaining;
@@ -188,7 +189,7 @@ export async function getSettings(server: string): Promise<void> {
 		setPresenceCap(parsedSettings.Presence_broadcast_disabled);
 
 		// filter server info
-		const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
+		const serverInfo = filteredSettings.filter(setting => serverInfoKeys.has(setting._id));
 		const iconSetting = data.find(icon => icon._id === 'Assets_favicon_512');
 		try {
 			await serverInfoUpdate(serverInfo, iconSetting as ISettingsIcon);

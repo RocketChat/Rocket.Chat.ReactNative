@@ -100,15 +100,18 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 	const [tagParamSelected, setTagParamSelected] = useState(livechat?.tags || []);
 
 	const tagOptions = tagParam.map((tag: string) => ({ text: { text: tag }, value: tag }));
-	const tagValues = Array.isArray(tagParamSelected)
-		? tagOptions.filter((option: any) => tagParamSelected.includes(option.value))
-		: [];
+	const selectedTags = new Set(Array.isArray(tagParamSelected) ? tagParamSelected : []);
+	const tagValues = tagOptions.filter((option: any) => selectedTags.has(option.value));
 
 	const handleGetTagsList = async (agentDepartments: string[]) => {
 		const tags = await getTagsList();
 		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles?.includes(role));
+		const agentDepartmentIds = new Set(agentDepartments);
 		const availableTags = tags
-			.filter(({ departments }) => isAdmin || departments.length === 0 || departments.some(i => agentDepartments.indexOf(i) > -1))
+			.filter(
+				({ departments }) =>
+					isAdmin || departments.length === 0 || departments.some(departmentId => agentDepartmentIds.has(departmentId))
+			)
 			.map(({ name }) => name);
 		setAvailableUserTags(availableTags);
 	};
