@@ -20,7 +20,8 @@ class DDPClient {
     companion object {
         private const val TAG = "RocketChat.DDPClient"
         private val sharedClient: OkHttpClient by lazy {
-            SSLPinningTurboModule.getSharedOkHttpClient() ?: OkHttpClient.Builder()
+            SSLPinningTurboModule.getSharedOkHttpClient()
+                .newBuilder()
                 .pingInterval(30, TimeUnit.SECONDS)
                 .build()
         }
@@ -348,5 +349,9 @@ class DDPClient {
 
     internal fun testSetActiveWebSocket(ws: WebSocket?) {
         this.webSocket = ws
+    }
+
+    internal fun testPingIntervalMillis(): Int {
+        return client.pingIntervalMillis
     }
 }

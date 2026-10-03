@@ -29,6 +29,13 @@ private class StubWebSocket : WebSocket {
 class DDPClientTest {
 
     @Test
+    fun `shared client preserves websocket ping interval`() {
+        val client = DDPClient()
+
+        assertEquals(TimeUnit.SECONDS.toMillis(30).toInt(), client.testPingIntervalMillis())
+    }
+
+    @Test
     fun `connected before connect timeout invokes callback exactly once`() {
         val client = DDPClient()
         val outcomes = mutableListOf<Boolean>()
