@@ -69,12 +69,7 @@ export class Upload {
 					}
 				);
 
-				const task = this.uploadTask;
-				if (!task) {
-					reject(new Error('Upload failed: no response'));
-					return;
-				}
-				task
+				this.uploadTask
 					.uploadAsync()
 					.then(response => {
 						if (!response || response.status === undefined || response.status === null) {
