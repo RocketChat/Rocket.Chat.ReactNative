@@ -1,5 +1,7 @@
 import { addColumns, createTable, schemaMigrations, unsafeExecuteSql } from '@nozbe/watermelondb/Schema/migrations';
 
+import { FULL_ROOMS_SYNC_KEY } from '../utils';
+
 export default schemaMigrations({
 	migrations: [
 		{
@@ -356,6 +358,16 @@ export default schemaMigrations({
 		},
 		{
 			toVersion: 30,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'category', type: 'string', isOptional: true }]
+				}),
+				unsafeExecuteSql(`INSERT OR REPLACE INTO local_storage (key, value) VALUES ('${FULL_ROOMS_SYNC_KEY}', 'true');`)
+			]
+		},
+		{
+			toVersion: 31,
 			steps: [
 				addColumns({
 					table: 'uploads',

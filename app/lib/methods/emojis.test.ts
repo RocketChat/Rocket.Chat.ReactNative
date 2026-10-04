@@ -153,9 +153,9 @@ describe('searchEmojis', () => {
 });
 
 describe('frequently_used_emojis migration', () => {
-	it('bumps the schema to v30 with a matching migration', () => {
-		expect(appSchema.version).toBe(30);
-		expect((migrations as any).maxVersion).toBe(30);
+	it('bumps the schema to v31 with a matching migration', () => {
+		expect(appSchema.version).toBe(31);
+		expect((migrations as any).maxVersion).toBe(31);
 	});
 
 	it('v29 deletes only legacy rows whose id contains a non-printable-ASCII character', () => {

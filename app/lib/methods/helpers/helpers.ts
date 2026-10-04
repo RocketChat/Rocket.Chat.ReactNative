@@ -81,7 +81,7 @@ export function canAutoTranslate() {
 
 export function isRead(item) {
 	let isUnread = item.archived !== true && item.open === true; // item is not archived and not opened
-	isUnread = isUnread && (item.unread > 0 || item.alert === true); // either its unread count > 0 or its alert
+	isUnread = isUnread && (item.unread > 0 || item.alert === true || item.tunread?.length > 0);
 	return !isUnread;
 }
 

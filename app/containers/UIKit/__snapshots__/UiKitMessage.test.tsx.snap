@@ -527,56 +527,60 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       </Text>
     </View>
   </View>,
-  <RNGestureHandlerButton
+  <View
     accessibilityLabel="Show more"
     accessibilityRole="button"
-    activeOpacity={0.105}
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    activeUnderlayOpacity={0.105}
+    animationDuration={0}
     collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={-1}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       [
         {
-          "backgroundColor": "#156FF5",
-          "borderRadius": 4,
           "justifyContent": "center",
-          "marginBottom": 12,
           "paddingHorizontal": 16,
           "paddingVertical": 14,
         },
         {
-          "cursor": undefined,
+          "borderRadius": 4,
+          "marginBottom": 12,
         },
+        {
+          "backgroundColor": "#156FF5",
+        },
+        {},
+        undefined,
       ]
     }
     underlayColor="black"
   >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "black",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": 4,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
     <Text
       style={
         [
@@ -599,7 +603,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
     >
       Show more
     </Text>
-  </RNGestureHandlerButton>,
+  </View>,
 ]
 `;
 
@@ -5732,56 +5736,60 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
       </Text>
     </View>
   </View>
-  <RNGestureHandlerButton
+  <View
     accessibilityLabel="Select a date"
     accessibilityRole="button"
-    activeOpacity={0.105}
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    activeUnderlayOpacity={0.105}
+    animationDuration={0}
     collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={-1}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       [
         {
-          "backgroundColor": "#156FF5",
-          "borderRadius": 4,
           "justifyContent": "center",
-          "marginBottom": 12,
           "paddingHorizontal": 16,
           "paddingVertical": 14,
         },
         {
-          "cursor": undefined,
+          "borderRadius": 4,
+          "marginBottom": 12,
         },
+        {
+          "backgroundColor": "#156FF5",
+        },
+        {},
+        undefined,
       ]
     }
     underlayColor="black"
   >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "black",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": 4,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
     <Text
       style={
         [
@@ -5804,7 +5812,7 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
     >
       Select a date
     </Text>
-  </RNGestureHandlerButton>
+  </View>
 </View>
 `;
 
@@ -6753,56 +6761,60 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
         </Text>
       </View>
     </View>
-    <RNGestureHandlerButton
+    <View
       accessibilityLabel="2 selecteds"
       accessibilityRole="button"
-      activeOpacity={0.105}
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      activeUnderlayOpacity={0.105}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
-            "backgroundColor": "#156FF5",
-            "borderRadius": 4,
             "justifyContent": "center",
-            "marginBottom": 12,
             "paddingHorizontal": 16,
             "paddingVertical": 14,
           },
           {
-            "cursor": undefined,
+            "borderRadius": 4,
+            "marginBottom": 12,
           },
+          {
+            "backgroundColor": "#156FF5",
+          },
+          {},
+          undefined,
         ]
       }
       underlayColor="black"
     >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "black",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
       <Text
         style={
           [
@@ -6825,7 +6837,7 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
       >
         2 selecteds
       </Text>
-    </RNGestureHandlerButton>
+    </View>
   </View>,
   <View
     style={
@@ -6909,56 +6921,60 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
         </Text>
       </View>
     </View>
-    <RNGestureHandlerButton
+    <View
       accessibilityLabel="0 selecteds"
       accessibilityRole="button"
-      activeOpacity={0.105}
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      activeUnderlayOpacity={0.105}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
-            "backgroundColor": "#156FF5",
-            "borderRadius": 4,
             "justifyContent": "center",
-            "marginBottom": 12,
             "paddingHorizontal": 16,
             "paddingVertical": 14,
           },
           {
-            "cursor": undefined,
+            "borderRadius": 4,
+            "marginBottom": 12,
           },
+          {
+            "backgroundColor": "#156FF5",
+          },
+          {},
+          undefined,
         ]
       }
       underlayColor="black"
     >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "black",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
       <Text
         style={
           [
@@ -6981,7 +6997,7 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
       >
         0 selecteds
       </Text>
-    </RNGestureHandlerButton>
+    </View>
   </View>,
 ]
 `;
@@ -7091,13 +7107,29 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
       ]
     }
   >
-    <RNGestureHandlerButton
-      activeOpacity={1}
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      activeUnderlayOpacity={1}
+      animationDuration={0}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
+      focusable={true}
       hitSlop={
         {
           "bottom": 4,
@@ -7106,53 +7138,40 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
           "top": 4,
         }
       }
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#E4E7EA"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
+          [
+            undefined,
+            {
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+            },
+          ],
+          undefined,
         ]
       }
       underlayColor="#E4E7EA"
     >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
       <View
         style={
           {
@@ -7187,7 +7206,7 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
           
         </Text>
       </View>
-    </RNGestureHandlerButton>
+    </View>
   </ExternalKeyboardView>
 </View>
 `;

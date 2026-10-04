@@ -61,7 +61,7 @@ const VideoPlayer = ({ attachment, user, baseUrl, setLoading }: IVideoPlayerProp
 				style={styles.container}
 				contentFit='contain'
 				nativeControls
-				allowsFullscreen
+				fullscreenOptions={{ enable: true }}
 				allowsPictureInPicture
 			/>
 		</View>
