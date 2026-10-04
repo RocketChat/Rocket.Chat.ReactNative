@@ -290,19 +290,22 @@ const getServerVersion = () => {
     return json(result.body)?.version;
 };
 
-const normalizeVersion = version =>
-    String(version || '')
-        .split('.')
-        .map(part => parseInt(part, 10) || 0);
+const parseVersion = version => {
+    const [core, ...prerelease] = String(version || '').split('-');
+    return {
+        numbers: core.split('.').map(part => parseInt(part, 10) || 0),
+        isPrerelease: prerelease.length > 0
+    };
+};
 
 const isServerAtLeast = required => {
-    const current = normalizeVersion(getServerVersion());
-    const wanted = normalizeVersion(required);
-    const length = Math.max(current.length, wanted.length);
+    const current = parseVersion(getServerVersion());
+    const wanted = parseVersion(required);
+    const length = Math.max(current.numbers.length, wanted.numbers.length);
 
     for (let i = 0; i < length; i++) {
-        const c = current[i] || 0;
-        const r = wanted[i] || 0;
+        const c = current.numbers[i] || 0;
+        const r = wanted.numbers[i] || 0;
         if (c > r) {
             return true;
         }
@@ -311,7 +314,8 @@ const isServerAtLeast = required => {
         }
     }
 
-    return true;
+    // Same core version: a prerelease (8.4.0-rc.1) precedes the stable release (8.4.0)
+    return !current.isPrerelease || wanted.isPrerelease;
 };
 
 const isImageMessage = message =>
@@ -351,7 +355,17 @@ const waitForImageMessage = (roomId, username, password, timeoutMs = 60000) => {
     login(username, password);
 
     return waitFor(
-        () => getRoomHistory(roomId).find(message => message?.u?.username === username && isImageMessage(message)) || null,
+        () => {
+            try {
+                return getRoomHistory(roomId).find(message => message?.u?.username === username && isImageMessage(message)) || null;
+            } catch (err) {
+                if (String(err?.message).startsWith('Non-retryable error')) {
+                    throw err;
+                }
+                console.log(`channels.history failed, polling again: ${err?.message}`);
+                return null;
+            }
+        },
         { timeoutMs, label: `image message in ${roomId}` }
     );
 };
