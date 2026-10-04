@@ -272,6 +272,7 @@
   "E2E_How_It_Works_info2": "Dies ist *Ende-zu-Ende-Verschlüsselung*, daher wird der Schlüssel um die Nachrichten zu ver-/entschlüsseln nicht auf dem Server gespeichert. Aus diesem Grund müssen Sie dieses Passwort an einem sicheren Ort speichern, sodass Sie später bei Bedarf darauf zugreifen können.",
   "E2E_How_It_Works_info3": "Wenn Sie fortfahren, wird automatisch ein ein E2E-Passwort erzeugt.",
   "E2E_How_It_Works_info4": "Sie können außerdem jederzeit, in jedem Browser, in dem Sie das bestehende Passwort eingegeben haben, ein neues Passwort setzen.",
+  "E2E_Key_Error": "Diese Nachricht ist Ende-zu-Ende-verschlüsselt und kann aufgrund eines falschen Verschlüsselungsschlüssels nicht entschlüsselt werden",
   "E2EE_password": "E2EE-Passwort",
   "Edit": "Bearbeiten",
   "Edit_attachment_options": "Anhangoptionen bearbeiten",

@@ -305,6 +305,7 @@
   "E2E_How_It_Works_info2": "This is *end to end encryption* so the key to encode/decode your messages and they will not be saved on the workspace. For that reason *you need to store this password somewhere safe* which you can access later if you may need.",
   "E2E_How_It_Works_info3": "If you proceed, it will be auto generated an E2E password.",
   "E2E_How_It_Works_info4": "You can also setup a new password for your encryption key any time from any browser you have entered the existing E2E password.",
+  "E2E_Key_Error": "This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key",
   "e2ee_disabled": "End-to-end encryption is disabled",
   "e2ee_enabled": "End-to-end encryption is enabled",
   "E2EE_password": "E2EE password",
