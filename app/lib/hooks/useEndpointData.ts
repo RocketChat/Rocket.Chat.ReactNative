@@ -38,16 +38,24 @@ export const useEndpointData = <TPath extends PathFor<'GET'>>(
 
 	useEffect(() => {
 		if (!endpoint) return;
+		let ignore = false;
 		sdk
 			.get(endpoint, paramsKey === undefined ? undefined : JSON.parse(paramsKey))
-			.then(e =>
+			.then(e => {
+				if (ignore) return;
 				setResponse(previous =>
 					e.success
 						? { requestKey, result: e, error: previous?.error }
 						: { requestKey, result: previous?.result, error: e as ErrorResult }
-				)
-			)
-			.catch((e: ErrorResult) => setResponse(previous => ({ requestKey, result: previous?.result, error: e })));
+				);
+			})
+			.catch((e: ErrorResult) => {
+				if (ignore) return;
+				setResponse(previous => ({ requestKey, result: previous?.result, error: e }));
+			});
+		return () => {
+			ignore = true;
+		};
 	}, [endpoint, paramsKey, requestKey]);
 
 	const reload = () => setReloadCount(count => count + 1);
