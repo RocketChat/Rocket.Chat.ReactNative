@@ -3,6 +3,7 @@ import { expect } from 'e2e';
 import type { Credentials } from './api';
 import { data } from './data';
 import {
+	fillWhenUncovered,
 	firstVisible,
 	type Fixtures,
 	hideKeyboard,
@@ -126,7 +127,7 @@ export const quoteMessage = async (fixtures: Fixtures, message: string, quote: s
 	await expect(screen.getByTestId('action-sheet-handle')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await tapTextWhenVisible(fixtures, 'Quote');
 	await tapWhenVisible(fixtures, 'message-composer-input');
-	await screen.getByTestId('message-composer-input').fill(quote);
+	await fillWhenUncovered(screen.getByTestId('message-composer-input'), quote);
 	await tapWhenVisible(fixtures, 'message-composer-send');
 	await expect(screen.getByText(new RegExp(quote)).first()).toBeVisible({ timeout: LONG_TIMEOUT });
 };
@@ -135,8 +136,8 @@ export const editMessage = async (fixtures: Fixtures, message: string, edited: s
 	const { screen } = fixtures;
 	await openMessageActions(fixtures, message);
 	await tapTextWhenVisible(fixtures, 'Edit');
-	await screen.getByTestId('message-composer-input').fill(edited);
-	await screen.getByTestId('message-composer-send').tap();
+	await fillWhenUncovered(screen.getByTestId('message-composer-input'), edited);
+	await tapWhenVisible(fixtures, 'message-composer-send');
 };
 
 export const resetRoomKey = async (fixtures: Fixtures) => {

@@ -112,6 +112,7 @@ const quoteMessage = async (fixtures: Fixtures, authorName: string) => {
 const joinRoom = async (fixtures: Fixtures) => {
 	await tapWhenVisible(fixtures, 'room-view-join-button');
 	await expectHidden(fixtures, 'room-view-join-button');
+	await expect(fixtures.screen.getByText(/joined the channel/)).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
 const openRoomWithOthersMessage = async (fixtures: Fixtures, message: string) => {

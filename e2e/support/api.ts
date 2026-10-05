@@ -96,8 +96,10 @@ export const login = async ({ username, password }: Credentials): Promise<Sessio
 
 const sessions = new Map<string, Promise<Session>>();
 
+const sessionKey = ({ username, password }: Credentials) => `${username}\n${password}`;
+
 const sessionFor = (credentials: Credentials) => {
-	const key = `${credentials.username}\n${credentials.password}`;
+	const key = sessionKey(credentials);
 	if (!sessions.has(key)) {
 		sessions.set(
 			key,
@@ -110,11 +112,23 @@ const sessionFor = (credentials: Credentials) => {
 	return sessions.get(key)!;
 };
 
-const post = async (endpoint: string, credentials: Credentials, body: unknown) =>
-	request('POST', endpoint, body, await sessionFor(credentials));
+const isUnauthorized = (error: unknown) => error instanceof HttpError && error.status === 401;
 
-export const get = async (endpoint: string, credentials: Credentials) =>
-	request('GET', endpoint, undefined, await sessionFor(credentials));
+const requestAs = async (method: Method, endpoint: string, credentials: Credentials, body?: unknown) => {
+	try {
+		return await request(method, endpoint, body, await sessionFor(credentials));
+	} catch (error) {
+		if (!isUnauthorized(error)) {
+			throw error;
+		}
+		sessions.delete(sessionKey(credentials));
+		return request(method, endpoint, body, await sessionFor(credentials));
+	}
+};
+
+const post = (endpoint: string, credentials: Credentials, body: unknown) => requestAs('POST', endpoint, credentials, body);
+
+export const get = (endpoint: string, credentials: Credentials) => requestAs('GET', endpoint, credentials);
 
 export const trackUserForCleanup = ({ username, password }: Credentials) => {
 	createdUsers.push({ username, password });

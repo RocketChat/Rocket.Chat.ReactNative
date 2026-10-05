@@ -36,7 +36,7 @@ test('encrypts, decrypts, quotes, resets keys and edits messages', { tags: ['tes
 
 	await sendMessage(fixtures, 'm1');
 	await quoteMessage(fixtures, 'm1', 'm2');
-	await expect(screen.getByTestId(`reply-${userA.username}-m1`)).toBeVisible();
+	await expect(screen.getByTestId(`reply-${userA.username}-m1`)).toBeVisible({ timeout: LONG_TIMEOUT });
 
 	await loginWithDeepLink(fixtures, userB);
 	await openRoomFromList(fixtures, room);

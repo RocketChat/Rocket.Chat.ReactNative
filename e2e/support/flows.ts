@@ -382,6 +382,5 @@ export const sendMessage = async ({ screen }: Fixtures, message: string, { inThr
 
 export const openMessageActions = async (fixtures: Fixtures, message: string) => {
 	await expectVisible(fixtures, `message-content-${message}`);
-	await fixtures.screen.getByTestId(`message-content-${message}`).longPress();
-	await expectVisible(fixtures, 'action-sheet');
+	await tapUntilVisible(fixtures, fixtures.screen.getByTestId(`message-content-${message}`), 'action-sheet', 'longPress');
 };
