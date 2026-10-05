@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, memo } from 'react';
-import { AccessibilityInfo, Text, View } from 'react-native';
+import { AccessibilityInfo, Text, View, type TextInput as RNTextInput } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
 import Modal from 'react-native-modal';
@@ -70,6 +70,7 @@ const TwoFactor = memo(() => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<EventListenerMethod>({});
 	const pendingCancel = useRef<EventListenerMethod['cancel']>(undefined);
+	const inputRef = useRef<RNTextInput>(null);
 	const {
 		control,
 		setValue,
@@ -154,13 +155,19 @@ const TwoFactor = memo(() => {
 	};
 
 	const color = colors.fontTitlesLabels;
+
+	const handleModalShow = () => {
+		inputRef.current?.focus();
+	};
+
 	return (
 		<Modal
 			customBackdrop={<View aria-hidden style={[styles.overlay, { backgroundColor: colors.overlayBackground }]} />}
 			avoidKeyboard
 			useNativeDriver
 			isVisible={visible}
-			hideModalContentWhileAnimating>
+			hideModalContentWhileAnimating
+			onModalShow={handleModalShow}>
 			<GestureHandlerRootView style={styles.container} testID='two-factor'>
 				<View
 					style={[
@@ -173,7 +180,7 @@ const TwoFactor = memo(() => {
 					<ControlledFormTextInput
 						name='code'
 						control={control}
-						autoFocus
+						inputRef={inputRef}
 						returnKeyType='send'
 						autoCapitalize='none'
 						testID='two-factor-input'
