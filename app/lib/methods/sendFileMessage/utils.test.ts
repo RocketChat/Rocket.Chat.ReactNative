@@ -1,6 +1,14 @@
 import { Alert } from 'react-native';
 
-import { createUploadRecord, copyFileToCacheDirectoryIfNeeded, getUploadPath, isUploadActive, uploadQueue } from './utils';
+import { getUploadByPath } from '~/lib/database/services/Upload';
+import {
+	cancelAllUploads,
+	createUploadRecord,
+	copyFileToCacheDirectoryIfNeeded,
+	getUploadPath,
+	isUploadActive,
+	uploadQueue
+} from './utils';
 
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
 jest.mock('~/i18n', () => ({ t: (k: string) => k }));
@@ -116,5 +124,37 @@ describe('createUploadRecord', () => {
 
 		expect(path).toBe(uploadPath);
 		expect(record).toBe(created);
+	});
+});
+
+describe('cancelAllUploads', () => {
+	it('cancels every queued upload and removes its record', async () => {
+		const cancelA = jest.fn();
+		const cancelB = jest.fn();
+		const destroyA = jest.fn();
+		const destroyB = jest.fn();
+		uploadQueue[getUploadPath('/a.mp4', 'RID1')] = { cancel: cancelA, send: jest.fn() } as any;
+		uploadQueue[getUploadPath('/b.mp4', 'RID2')] = { cancel: cancelB, send: jest.fn() } as any;
+		(getUploadByPath as jest.Mock).mockImplementation((path: string) =>
+			Promise.resolve(
+				path === getUploadPath('/a.mp4', 'RID1')
+					? { id: 'a', path: '/a.mp4', rid: 'RID1', destroyPermanently: destroyA }
+					: { id: 'b', path: '/b.mp4', rid: 'RID2', destroyPermanently: destroyB }
+			)
+		);
+
+		await cancelAllUploads();
+
+		expect(cancelA).toHaveBeenCalledTimes(1);
+		expect(cancelB).toHaveBeenCalledTimes(1);
+		expect(destroyA).toHaveBeenCalledTimes(1);
+		expect(destroyB).toHaveBeenCalledTimes(1);
+		expect(Object.keys(uploadQueue)).toHaveLength(0);
+	});
+
+	it('does nothing when no upload is active', async () => {
+		(getUploadByPath as jest.Mock).mockClear();
+		await expect(cancelAllUploads()).resolves.toBeUndefined();
+		expect(getUploadByPath).not.toHaveBeenCalled();
 	});
 });

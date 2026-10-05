@@ -1,88 +1,99 @@
+import * as LegacyFileSystem from 'expo-file-system/legacy';
+import { File, UploadType } from 'expo-file-system';
+
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
 import { type IFormData } from './definitions';
 
+const sanitizeFilename = (name: string) => name.replace(/[/\r\n]/g, '_').replace(/"/g, '%22');
+
+const hasFilename = (uri: string, name: string) => {
+	try {
+		return decodeURIComponent(uri.split('/').pop() || '') === sanitizeFilename(name);
+	} catch {
+		return false;
+	}
+};
+
+const STAGING_DIR = `${LegacyFileSystem.cacheDirectory}upload-staging/`;
+const STALE_AFTER_MS = 24 * 60 * 60 * 1000;
+
+const removeStaleStaging = async () => {
+	try {
+		const names = await LegacyFileSystem.readDirectoryAsync(STAGING_DIR);
+		const stale = names.filter(name => Date.now() - Number(name.split('-')[0]) > STALE_AFTER_MS);
+		await Promise.all(stale.map(name => LegacyFileSystem.deleteAsync(`${STAGING_DIR}${name}`, { idempotent: true })));
+	} catch {}
+};
+
+const assertEnoughStorage = async (uri: string) => {
+	const info = await LegacyFileSystem.getInfoAsync(uri);
+	if (info.exists && info.size * 2 > (await LegacyFileSystem.getFreeDiskStorageAsync())) {
+		throw new Error('Not enough storage');
+	}
+};
+
 export class Upload {
-	private xhr: XMLHttpRequest;
-	private formData: FormData;
-	private isCancelled: boolean;
-
-	constructor() {
-		this.xhr = new XMLHttpRequest();
-		this.formData = new FormData();
-		this.keepRawFilenames();
-		this.isCancelled = false;
-	}
-
-	// React Native's FormData runs filenames through encodeURIComponent, which the server never decodes
-	private keepRawFilenames(): void {
-		const formData = this.formData as any;
-		const getParts = formData.getParts.bind(formData);
-		formData.getParts = () =>
-			getParts().map((part: any) => {
-				if (typeof part.name !== 'string') {
-					return part;
-				}
-				const filename = part.name.replace(/[/\r\n]/g, '_').replace(/"/g, '%22');
-				return {
-					...part,
-					headers: { ...part.headers, 'content-disposition': `form-data; name="${part.fieldName}"; filename="${filename}"` }
-				};
-			});
-	}
+	private uploadUrl = '';
+	private headers: Record<string, string> = {};
+	private file: IFormData | null = null;
+	private parameters: Record<string, string> = {};
+	private progressCallback?: (loaded: number, total: number) => void;
+	private abortController = new AbortController();
 
 	public setupRequest(
 		url: string,
 		headers: Record<string, string>,
 		progressCallback?: (loaded: number, total: number) => void
 	): void {
-		this.xhr.open('POST', url);
-		Object.keys(headers).forEach(key => {
-			this.xhr.setRequestHeader(key, headers[key]);
-		});
-
-		if (progressCallback) {
-			this.xhr.upload.onprogress = ({ loaded, total }) => progressCallback(loaded, total);
-		}
+		this.uploadUrl = url;
+		this.headers = headers;
+		this.progressCallback = progressCallback;
 	}
 
 	public appendFile(item: IFormData): void {
 		if (item.uri) {
-			this.formData.append(item.name, {
-				uri: item.uri,
-				type: item.type,
-				name: item.filename
-			} as any);
+			this.file = item;
 		} else {
-			this.formData.append(item.name, item.data);
+			this.parameters[item.name] = String(item.data);
 		}
 	}
 
-	public send(): Promise<TRoomsMediaResponse> {
-		return new Promise((resolve, reject) => {
-			this.xhr.onload = () => {
-				if (this.xhr.status >= 200 && this.xhr.status < 400) {
-					resolve(JSON.parse(this.xhr.responseText));
-				} else {
-					reject(new Error(`Error: ${this.xhr.statusText}`));
-				}
-			};
-
-			this.xhr.onerror = () => {
-				reject(new Error('Network Error'));
-			};
-
-			this.xhr.onabort = () => {
-				if (this.isCancelled) {
-					reject(new Error('Upload Cancelled'));
-				}
-			};
-
-			this.xhr.send(this.formData);
-		});
+	public async send(): Promise<TRoomsMediaResponse> {
+		if (!this.file?.uri) {
+			throw new Error('No file to upload');
+		}
+		const { uri, filename, name: fieldName, type: mimeType } = this.file;
+		const stagingDir = `${STAGING_DIR}${Date.now()}-${Math.random().toString(36).slice(2)}/`;
+		try {
+			let stagedUri = uri;
+			if (filename && !hasFilename(uri, filename)) {
+				await assertEnoughStorage(uri);
+				removeStaleStaging();
+				stagedUri = `${stagingDir}${encodeURIComponent(sanitizeFilename(filename))}`;
+				await LegacyFileSystem.makeDirectoryAsync(stagingDir, { intermediates: true });
+				await LegacyFileSystem.copyAsync({ from: uri, to: stagedUri });
+			}
+			const response = await new File(stagedUri).upload(this.uploadUrl, {
+				uploadType: UploadType.MULTIPART,
+				headers: this.headers,
+				fieldName,
+				mimeType,
+				parameters: this.parameters,
+				signal: this.abortController.signal,
+				onProgress: ({ bytesSent, totalBytes }) => this.progressCallback?.(bytesSent, totalBytes)
+			});
+			if (response.status < 200 || response.status >= 400) {
+				throw new Error(`Error: ${response.status}`);
+			}
+			return JSON.parse(response.body);
+		} catch (error) {
+			throw this.abortController.signal.aborted ? new Error('Upload Cancelled') : error;
+		} finally {
+			LegacyFileSystem.deleteAsync(stagingDir, { idempotent: true }).catch(() => {});
+		}
 	}
 
 	public cancel(): void {
-		this.isCancelled = true;
-		this.xhr.abort();
+		this.abortController.abort();
 	}
 }

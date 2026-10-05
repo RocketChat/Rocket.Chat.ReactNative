@@ -40,6 +40,17 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 	}
 }
 
+export async function cancelAllUploads(): Promise<void> {
+	await Promise.all(
+		Object.keys(uploadQueue).map(async uploadPath => {
+			const item = await getUploadByPath(uploadPath);
+			if (item?.rid) {
+				await cancelUpload(item, item.rid);
+			}
+		})
+	);
+}
+
 export const persistUploadError = async (path: string, rid: string) => {
 	try {
 		const db = database.active;

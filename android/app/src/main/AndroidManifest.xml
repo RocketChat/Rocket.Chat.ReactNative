@@ -21,6 +21,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <!-- maxSdkVersion=29: on Android 11+ non-dialer apps cannot obtain this grant; native AudioManager fallback covers the detection path on API 30+. -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" android:maxSdkVersion="29" />
     <!-- Strip restricted permissions inherited from react-native-callkeep. The app uses self-managed Telecom (MANAGE_OWN_CALLS) and does not need dialer or phone-number access. -->
@@ -98,6 +99,10 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
+        <service
+            android:name="chat.rocket.reactnative.upload.UploadForegroundService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
         <!-- Custom Firebase Messaging Service for Rocket.Chat notifications -->
         <service
             android:name="chat.rocket.reactnative.notification.RCFirebaseMessagingService"
