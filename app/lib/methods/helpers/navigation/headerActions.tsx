@@ -1,5 +1,5 @@
 import { type ReactElement } from 'react';
-import { DrawerActions, type NavigationProp, type ParamListBase } from '@react-navigation/native';
+import { DrawerActions, StackActions, type NavigationProp, type ParamListBase } from '@react-navigation/native';
 import {
 	type NativeStackHeaderItem,
 	type NativeStackHeaderItemMenuAction,
@@ -139,3 +139,9 @@ export const headerLeftDrawer = (
 		? headerLeftActions([{ label: I18n.t('Menu'), icon: 'hamburguer', onPress: toggleDrawer }])
 		: { headerLeft: () => <HeaderButton.Drawer testID={testID} onPress={toggleDrawer} /> };
 };
+
+export const headerLeftCloseModal = (
+	navigation: Pick<NavigationProp<ParamListBase>, 'dispatch'>,
+	testID?: string
+): NativeStackNavigationOptions =>
+	headerLeftActions([{ label: I18n.t('Close'), icon: 'close', testID, onPress: () => navigation.dispatch(StackActions.pop()) }]);

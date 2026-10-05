@@ -34,12 +34,16 @@ tags:
     timeout: 60000
 
 # should back to rooms list
-- extendedWaitUntil:
-    visible:
-      id: 'new-message-view-close'
-    timeout: 60000
-- tapOn:
-    id: 'new-message-view-close'
+- runFlow:
+    file: '../../helpers/wait-header-item.yaml'
+    env:
+      ANDROID_ID: 'new-message-view-close'
+      IOS_LABEL: 'Close'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'new-message-view-close'
+      IOS_LABEL: 'Close'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'

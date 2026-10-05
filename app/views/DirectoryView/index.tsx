@@ -17,6 +17,7 @@ import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
 import SearchBox from '~/containers/SearchBox';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import { useTheme } from '~/theme';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { goRoom as goRoomMethod, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
@@ -140,7 +141,7 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 					)
 				};
 		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;
+			Object.assign(options, headerLeftCloseModal(navigation, 'directory-view-close'));
 		}
 
 		navigation.setOptions(options);

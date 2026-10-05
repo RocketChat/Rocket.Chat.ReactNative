@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ActivityIndicator from '~/containers/ActivityIndicator';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import * as List from '~/containers/List';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { type ISearch, type TSubscriptionModel } from '~/definitions';
@@ -55,7 +55,7 @@ const NewMessageView = () => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='new-message-view-close' />,
+			...headerLeftCloseModal(navigation, 'new-message-view-close'),
 			title: I18n.t('Create_New')
 		});
 	}, [navigation]);
