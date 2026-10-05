@@ -4,7 +4,7 @@ import { cancelAllUploads } from '~/lib/methods/sendFileMessage/utils';
 import { beginUploadService, endUploadService, updateUploadService } from './uploadService';
 
 jest.mock('~/i18n', () => ({ __esModule: true, default: { t: (key: string) => key } }));
-jest.mock('~/lib/methods/sendFileMessage/utils', () => ({ cancelAllUploads: jest.fn() }));
+jest.mock('~/lib/methods/sendFileMessage/utils', () => ({ cancelAllUploads: jest.fn(() => Promise.resolve()) }));
 
 let onAppStateChange: (state: string) => void = () => {};
 const mockRemove = jest.fn();
@@ -34,7 +34,7 @@ describe('uploadService', () => {
 		const id = beginUploadService(noop);
 		expect(mockService.start).not.toHaveBeenCalled();
 		setAppState('background');
-		expect(mockService.start).toHaveBeenCalledWith('Uploading', 'Cancel');
+		expect(mockService.start).toHaveBeenCalledWith('Uploading', 'Cancel', 0);
 		setAppState('active');
 		expect(mockService.stop).toHaveBeenCalledTimes(1);
 		endUploadService(id);
@@ -64,10 +64,32 @@ describe('uploadService', () => {
 		endUploadService(b);
 	});
 
+	it('starts with the current percentage and republishes it when an upload ends', () => {
+		const a = beginUploadService(noop);
+		updateUploadService(a, 100, 100);
+		const b = beginUploadService(noop);
+		setAppState('background');
+		expect(mockService.start).toHaveBeenCalledWith('Uploading', 'Cancel', 100);
+		updateUploadService(b, 0, 100);
+		endUploadService(b);
+		expect(mockService.updateProgress.mock.calls).toEqual([[50], [100]]);
+		endUploadService(a);
+	});
+
 	it('does not report progress while in the foreground', () => {
 		const id = beginUploadService(noop);
 		updateUploadService(id, 50, 100);
 		expect(mockService.updateProgress).not.toHaveBeenCalled();
+		endUploadService(id);
+	});
+
+	it('still cancels registered uploads when clearing queued uploads fails', async () => {
+		(cancelAllUploads as jest.Mock).mockRejectedValueOnce(new Error('db'));
+		const cancel = jest.fn();
+		const id = beginUploadService(cancel);
+		DeviceEventEmitter.emit('UploadServiceCancel');
+		await new Promise(resolve => setImmediate(resolve));
+		expect(cancel).toHaveBeenCalledTimes(1);
 		endUploadService(id);
 	});
 

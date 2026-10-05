@@ -11,9 +11,9 @@ class UploadServiceModule(private val context: ReactApplicationContext) : ReactC
     override fun getName(): String = "UploadService"
 
     @ReactMethod
-    fun start(title: String, cancelLabel: String) {
+    fun start(title: String, cancelLabel: String, percent: Int) {
         try {
-            ContextCompat.startForegroundService(context, UploadForegroundService.intent(context, title, cancelLabel))
+            ContextCompat.startForegroundService(context, UploadForegroundService.intent(context, title, cancelLabel, percent.coerceIn(0, 100)))
         } catch (e: Exception) {
             Log.w("UploadService", "Could not start the upload foreground service", e)
         }

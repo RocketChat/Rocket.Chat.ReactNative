@@ -19,20 +19,27 @@ const percent = () => {
 	return total ? Math.floor((loaded / total) * 100) : 0;
 };
 
+const publishProgress = () => {
+	if (running && percent() !== lastPercent) {
+		lastPercent = percent();
+		service()?.updateProgress(lastPercent);
+	}
+};
+
 const sync = () => {
 	const shouldRun = uploads.size > 0 && AppState.currentState === 'background';
 	if (shouldRun && !running) {
 		lastPercent = percent();
-		service()?.start(I18n.t('Uploading'), I18n.t('Cancel'));
-		service()?.updateProgress(lastPercent);
+		service()?.start(I18n.t('Uploading'), I18n.t('Cancel'), lastPercent);
 	} else if (!shouldRun && running) {
 		service()?.stop();
 	}
 	running = shouldRun;
+	publishProgress();
 };
 
 const cancelAll = async () => {
-	await cancelAllUploads();
+	await cancelAllUploads().catch(() => {});
 	uploads.forEach(({ cancel }) => cancel());
 };
 
@@ -51,10 +58,7 @@ export const updateUploadService = (id: number, loaded: number, total: number): 
 		return;
 	}
 	Object.assign(upload, { loaded, total });
-	if (running && percent() !== lastPercent) {
-		lastPercent = percent();
-		service()?.updateProgress(lastPercent);
-	}
+	publishProgress();
 };
 
 export const endUploadService = (id: number): void => {
