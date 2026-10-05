@@ -23,7 +23,7 @@
 ## Checklist
 <!-- Put an `x` in the boxes that apply. You can also fill these out after creating the PR. If you're unsure about any of them, don't hesitate to ask. We're here to help! This is simply a reminder of what we are going to look for before merging your code. -->
 
-- [ ] I have read the [CONTRIBUTING](https://github.com/RocketChat/Rocket.Chat/blob/develop/.github/CONTRIBUTING.md#contributing-to-rocketchat) doc
+- [ ] I have read the [CONTRIBUTING](https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/CONTRIBUTING.md) doc
 - [ ] I have signed the [CLA](https://cla-assistant.io/RocketChat/Rocket.Chat.ReactNative)
 - [ ] Lint and unit tests pass locally with my changes
 - [ ] I have added tests that prove my fix is effective or that my feature works (if applicable)
