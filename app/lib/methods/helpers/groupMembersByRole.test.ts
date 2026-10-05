@@ -19,7 +19,7 @@ describe('groupMembersByRole', () => {
 		expect(groupMembersByRole([])).toEqual([]);
 	});
 
-	it('inserts a header with the loaded member count before each role group', () => {
+	it('inserts a header before each role group', () => {
 		const owner = { _id: '1', roles: ['owner'] };
 		const leader = { _id: '2', roles: ['leader'] };
 		const moderatorA = { _id: '3', roles: ['moderator'] };
@@ -27,14 +27,14 @@ describe('groupMembersByRole', () => {
 		const member: { _id: string; roles?: string[] } = { _id: '5' };
 
 		expect(groupMembersByRole([owner, leader, moderatorA, moderatorB, member])).toEqual([
-			{ type: 'header', group: 'owner', count: 1 },
+			{ type: 'header', group: 'owner' },
 			{ type: 'member', member: owner },
-			{ type: 'header', group: 'leader', count: 1 },
+			{ type: 'header', group: 'leader' },
 			{ type: 'member', member: leader },
-			{ type: 'header', group: 'moderator', count: 2 },
+			{ type: 'header', group: 'moderator' },
 			{ type: 'member', member: moderatorA },
 			{ type: 'member', member: moderatorB },
-			{ type: 'header', group: 'member', count: 1 },
+			{ type: 'header', group: 'member' },
 			{ type: 'member', member }
 		]);
 	});
@@ -44,9 +44,9 @@ describe('groupMembersByRole', () => {
 		const member = { _id: '2', roles: [] };
 
 		expect(groupMembersByRole([owner, member])).toEqual([
-			{ type: 'header', group: 'owner', count: 1 },
+			{ type: 'header', group: 'owner' },
 			{ type: 'member', member: owner },
-			{ type: 'header', group: 'member', count: 1 },
+			{ type: 'header', group: 'member' },
 			{ type: 'member', member }
 		]);
 	});

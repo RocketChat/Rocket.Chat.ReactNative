@@ -1,5 +1,5 @@
 import { compareServerVersion } from './compareServerVersion';
 
-// rooms.membersOrderedByRole (RC 7.3.0) only accepts public and private rooms
+// rooms.membersOrderedByRole (RC 7.4.0) only accepts public and private rooms
 export const isMembersOrderedByRoleSupported = (serverVersion: string | null | undefined, roomType: string): boolean =>
-	(roomType === 'c' || roomType === 'p') && !!compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.3.0');
+	(roomType === 'c' || roomType === 'p') && !!compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.4.0');

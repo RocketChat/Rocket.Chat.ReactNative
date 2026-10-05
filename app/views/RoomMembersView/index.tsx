@@ -447,7 +447,7 @@ const RoomMembersView = (): ReactElement => {
 				data={listItems}
 				renderItem={({ item }) =>
 					item.type === 'header' ? (
-						<RoleGroupHeader group={item.group} count={item.count} />
+						<RoleGroupHeader group={item.group} />
 					) : (
 						<View style={{ backgroundColor: colors.surfaceRoom }}>
 							<UserItem

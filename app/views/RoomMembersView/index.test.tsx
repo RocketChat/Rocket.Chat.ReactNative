@@ -81,14 +81,14 @@ describe('RoomMembersView roles', () => {
 	});
 
 	describe('on servers with rooms.membersOrderedByRole', () => {
-		beforeEach(() => setServerVersion('7.3.0'));
+		beforeEach(() => setServerVersion('7.4.0'));
 
-		it('shows a header with the loaded count for each role group', async () => {
+		it('shows a header for each role group', async () => {
 			const { getByTestId, queryByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
 
 			const ownersHeader = await waitFor(() => getByTestId('room-members-view-header-owner'));
-			expect(ownersHeader).toHaveAccessibleName('Owners, 1');
-			expect(getByTestId('room-members-view-header-member')).toHaveAccessibleName('Members, 1');
+			expect(ownersHeader).toHaveAccessibleName('Owners');
+			expect(getByTestId('room-members-view-header-member')).toHaveAccessibleName('Members');
 			expect(queryByTestId('room-members-view-header-leader')).toBeNull();
 			expect(queryByTestId('room-members-view-header-moderator')).toBeNull();
 		});
@@ -124,9 +124,9 @@ describe('RoomMembersView roles', () => {
 		});
 	});
 
-	describe('on servers older than 7.3.0', () => {
+	describe('on servers older than 7.4.0', () => {
 		beforeEach(() => {
-			setServerVersion('7.2.0');
+			setServerVersion('7.3.0');
 			jest.mocked(getRoomRoles).mockResolvedValue({
 				success: true,
 				roles: [{ _id: 'sub-id', rid: 'room-id', u: { _id: 'member-id', username: 'member.user' }, roles: ['owner'] }]

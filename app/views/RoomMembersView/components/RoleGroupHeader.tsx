@@ -14,8 +14,6 @@ const ROLE_GROUP_TITLES: Record<TMemberRoleGroup, string> = {
 
 const styles = StyleSheet.create({
 	container: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
 		paddingVertical: 8,
 		paddingHorizontal: 16,
 		borderBottomWidth: StyleSheet.hairlineWidth
@@ -26,7 +24,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const RoleGroupHeader = ({ group, count }: { group: TMemberRoleGroup; count: number }) => {
+const RoleGroupHeader = ({ group }: { group: TMemberRoleGroup }) => {
 	const { colors } = useTheme();
 	const title = I18n.t(ROLE_GROUP_TITLES[group]);
 
@@ -35,10 +33,9 @@ const RoleGroupHeader = ({ group, count }: { group: TMemberRoleGroup; count: num
 			testID={`room-members-view-header-${group}`}
 			accessible
 			accessibilityRole='header'
-			accessibilityLabel={`${title}, ${count}`}
+			accessibilityLabel={title}
 			style={[styles.container, { backgroundColor: colors.surfaceHover, borderBottomColor: colors.strokeExtraLight }]}>
 			<Text style={[styles.text, { color: colors.fontDefault }]}>{title}</Text>
-			<Text style={[styles.text, { color: colors.fontDefault }]}>{count}</Text>
 		</View>
 	);
 };

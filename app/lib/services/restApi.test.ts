@@ -349,9 +349,9 @@ describe('getRoomMembers', () => {
 	});
 
 	it.each([SubscriptionType.CHANNEL, SubscriptionType.GROUP])(
-		'uses rooms.membersOrderedByRole for room type %s on 7.3.0',
+		'uses rooms.membersOrderedByRole for room type %s on 7.4.0',
 		async roomType => {
-			const getRoomMembers = loadGetRoomMembers('7.3.0');
+			const getRoomMembers = loadGetRoomMembers('7.4.0');
 
 			const result = await getRoomMembers({ ...baseParams, roomType });
 
@@ -391,8 +391,19 @@ describe('getRoomMembers', () => {
 		expect(mockSdkGet).toHaveBeenCalledWith('im.members', { roomId: 'room-id', offset: 0, count: 25 });
 	});
 
-	it('uses channels.members on servers older than 7.3.0', async () => {
-		const getRoomMembers = loadGetRoomMembers('7.2.0');
+	it('does not fall back when rooms.membersOrderedByRole fails', async () => {
+		const getRoomMembers = loadGetRoomMembers('8.0.0');
+		mockSdkGet.mockResolvedValueOnce({ success: false });
+
+		const result = await getRoomMembers({ ...baseParams, roomType: SubscriptionType.CHANNEL });
+
+		expect(mockSdkGet).toHaveBeenCalledTimes(1);
+		expect(mockSdkGet).toHaveBeenCalledWith('rooms.membersOrderedByRole', { roomId: 'room-id', offset: 0, count: 25 });
+		expect(result).toBeUndefined();
+	});
+
+	it('uses channels.members on servers older than 7.4.0', async () => {
+		const getRoomMembers = loadGetRoomMembers('7.3.0');
 
 		await getRoomMembers({ ...baseParams, roomType: SubscriptionType.CHANNEL });
 
