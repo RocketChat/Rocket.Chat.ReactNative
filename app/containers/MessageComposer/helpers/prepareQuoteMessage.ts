@@ -14,7 +14,7 @@ export const prepareQuoteMessage = async (textFromInput: string, selectedMessage
 		})
 	);
 	const quoteText = permalinks
-		.filter(permalink => permalink !== undefined)
+		.filter((permalink): permalink is string => !!permalink)
 		.map(permalink => `[ ](${permalink}) ${connectionString}`)
 		.join('');
 	return `${quoteText}${textFromInput}`;
