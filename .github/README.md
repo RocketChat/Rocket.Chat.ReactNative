@@ -52,6 +52,7 @@ flowchart TD
     PR --> BUILDAND
     PR --> BUILDIOS
     PR --> ESHARD
+    PR --> SN
 
     ESHARD -->|should_run| E2EAND
     ESHARD -->|should_run| E2EIOS
@@ -66,6 +67,7 @@ flowchart TD
     DEV --> CHANGELOG
     DEV --> BUILDAND
     DEV --> BUILDIOS
+    DEV --> PREAND
 
     PRET --> SN
 
