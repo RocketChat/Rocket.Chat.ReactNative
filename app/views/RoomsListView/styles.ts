@@ -16,9 +16,14 @@ export default StyleSheet.create({
 		flexDirection: 'row'
 	},
 	groupTitleContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
 		paddingHorizontal: 12,
 		paddingTop: 17,
 		paddingBottom: 10
+	},
+	groupToggleIcon: {
+		marginLeft: 8
 	},
 	groupTitle: {
 		fontSize: 16,

@@ -33,6 +33,7 @@ import ListHeader from './components/ListHeader';
 import NewMessageButton from './components/NewMessageButton';
 import SectionHeader from './components/SectionHeader';
 import RoomsSearchProvider, { RoomsSearchContext } from './contexts/RoomsSearchProvider';
+import { useCollapsedGroups } from './hooks/useCollapsedGroups';
 import { useGetItemLayout } from './hooks/useGetItemLayout';
 import { useHeader } from './hooks/useHeader';
 import { useNewMessage } from './hooks/useNewMessage';
@@ -56,7 +57,8 @@ const RoomsListView = memo(function RoomsListView() {
 	const { width } = useSafeAreaFrame();
 	const { bottom } = useSafeAreaInsets();
 	const getItemLayout = useGetItemLayout();
-	const { subscriptions, loading } = useSubscriptions();
+	const { collapsedGroups, toggleGroup } = useCollapsedGroups();
+	const { subscriptions, loading } = useSubscriptions(collapsedGroups);
 	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
 	const changingServer = useAppSelector(state => state.server.changingServer);
 	const { refreshing, onRefresh } = useRefresh({ searching });
@@ -91,7 +93,20 @@ const RoomsListView = memo(function RoomsListView() {
 
 	const renderItem = ({ item }: { item: IRoomItem }) => {
 		if (item.separator) {
-			return <SectionHeader header={item.rid} title={item.name} />;
+			return (
+				<SectionHeader
+					header={item.rid}
+					title={item.name}
+					collapsed={item.collapsed ?? false}
+					unread={item.unread}
+					userMentions={item.userMentions}
+					groupMentions={item.groupMentions}
+					tunread={item.tunread}
+					tunreadUser={item.tunreadUser}
+					tunreadGroup={item.tunreadGroup}
+					onToggle={toggleGroup}
+				/>
+			);
 		}
 
 		const id = item.search && item.t === 'd' ? item._id : getUidDirectMessage(item);

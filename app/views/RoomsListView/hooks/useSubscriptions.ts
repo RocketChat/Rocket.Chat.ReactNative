@@ -13,8 +13,9 @@ import { getGroupOrder } from './sidebarGroupOrder';
 
 const CUSTOM_CATEGORIES_LICENSE_MODULE = 'experimental-enterprise-features';
 const NO_CATEGORIES: ISidebarCategory[] = [];
+const SECTION_BADGE_COLUMNS = ['unread', 'user_mentions', 'group_mentions', 'tunread', 'tunread_user', 'tunread_group'];
 
-export const useSubscriptions = () => {
+export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const server = useAppSelector(state => state.server);
 	const [rows, setRows] = useState<TSubscriptionModel[]>([]);
@@ -48,7 +49,7 @@ export const useSubscriptions = () => {
 				whereClause.push(Q.sortBy('room_updated_at', Q.desc));
 			}
 
-			const observeWithColumns = isGrouping ? ['alert', 'on_hold', 'f', 'category'] : ['on_hold'];
+			const observeWithColumns = isGrouping ? ['alert', 'on_hold', 'f', 'category', ...SECTION_BADGE_COLUMNS] : ['on_hold'];
 
 			const observable = await db
 				.get('subscriptions')
@@ -81,9 +82,10 @@ export const useSubscriptions = () => {
 				showUnread,
 				showFavorites,
 				groupByType,
-				isOmnichannelAgent
+				isOmnichannelAgent,
+				collapsedGroups
 			}),
-		[rows, groupOrder, customCategoryNames, showUnread, showFavorites, groupByType, isOmnichannelAgent]
+		[rows, groupOrder, customCategoryNames, showUnread, showFavorites, groupByType, isOmnichannelAgent, collapsedGroups]
 	);
 
 	return {

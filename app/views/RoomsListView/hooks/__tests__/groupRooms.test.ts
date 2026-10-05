@@ -13,7 +13,8 @@ const options = {
 	showUnread: false,
 	showFavorites: true,
 	groupByType: false,
-	isOmnichannelAgent: false
+	isOmnichannelAgent: false,
+	collapsedGroups: new Set<string>()
 };
 
 const layout = (chats: TSubscriptionModel[]) => chats.map(chat => (chat.separator ? `# ${chat.name ?? chat.rid}` : chat.rid));
@@ -70,5 +71,31 @@ describe('groupRooms', () => {
 			'# Chats',
 			'regular'
 		]);
+	});
+
+	it('keeps the header of a collapsed group and hides its rooms', () => {
+		const chats = [room({ rid: 'general', category: 'work' }), room({ rid: 'dm', t: SubscriptionType.DIRECT })];
+
+		expect(layout(buildRoomList(chats, { ...options, collapsedGroups: new Set(['work']) }))).toEqual(['# Work', '# Chats', 'dm']);
+	});
+
+	it('marks a collapsed header with the badge totals of its rooms, skipping rooms that hide unread status', () => {
+		const chats = [
+			room({ rid: 'general', category: 'work', unread: 3, userMentions: 1 }),
+			room({ rid: 'random', category: 'work', unread: 4, groupMentions: 2 }),
+			room({ rid: 'thread-only', category: 'work', unread: 0, tunread: ['thread'], tunreadUser: ['thread'] }),
+			room({ rid: 'muted', category: 'work', unread: 10, hideUnreadStatus: true })
+		];
+
+		const [header] = buildRoomList(chats, { ...options, collapsedGroups: new Set(['work']) });
+
+		expect(header).toMatchObject({
+			collapsed: true,
+			unread: 8,
+			userMentions: 1,
+			groupMentions: 2,
+			tunread: ['thread'],
+			tunreadUser: ['thread']
+		});
 	});
 });
