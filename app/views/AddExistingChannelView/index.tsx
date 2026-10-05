@@ -10,7 +10,7 @@ import database from '~/lib/database';
 import I18n from '~/i18n';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import SearchBox from '~/containers/SearchBox';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerLeftCloseModal, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import { useTheme } from '~/theme';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { sendLoadingEvent } from '~/containers/Loading';
@@ -61,19 +61,15 @@ const AddExistingChannelView = () => {
 
 	const setHeader = () => {
 		const options: NativeStackNavigationOptions = {
-			headerTitle: I18n.t('Add_Existing_Channel')
+			headerTitle: I18n.t('Add_Existing_Channel'),
+			...headerRightActions(
+				selected.length > 0 ? [{ label: I18n.t('Next'), testID: 'add-existing-channel-view-submit', onPress: submit }] : []
+			)
 		};
 
 		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+			Object.assign(options, headerLeftCloseModal(navigation));
 		}
-
-		options.headerRight = () =>
-			selected.length > 0 && (
-				<HeaderButton.Container>
-					<HeaderButton.Item title={I18n.t('Next')} onPress={submit} testID='add-existing-channel-view-submit' />
-				</HeaderButton.Container>
-			);
 
 		navigation.setOptions(options);
 	};

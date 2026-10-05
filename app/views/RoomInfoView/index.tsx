@@ -8,7 +8,7 @@ import { type Subscription } from 'rxjs';
 import UAParser from 'ua-parser-js';
 import { shallowEqual } from 'react-redux';
 
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerLeftCloseModal, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { type ISubscription, type IUser, SubscriptionType } from '~/definitions';
 import I18n from '~/i18n';
@@ -43,7 +43,7 @@ const RoomInfoView = (): ReactElement => {
 	const {
 		params: { rid, t, fromRid, member, room: roomParam, showCloseModal, itsMe }
 	} = useRoute<TRoomInfoViewRouteProp>();
-	const { addListener, setOptions, navigate } = useNavigation<TRoomInfoViewNavigationProp>();
+	const { addListener, setOptions, navigate, dispatch } = useNavigation<TRoomInfoViewNavigationProp>();
 
 	const [room, setRoom] = useState(roomParam || ({ rid, t } as ISubscription));
 	const [roomFromRid, setRoomFromRid] = useState<ISubscription | undefined>();
@@ -109,26 +109,22 @@ const RoomInfoView = (): ReactElement => {
 	}, []);
 
 	const setHeader = (canEdit?: boolean) => {
-		const HeaderRight = () => (
-			<HeaderButton.Container>
-				<HeaderButton.Item
-					accessibilityLabel={I18n.t('Room_Info_Edit')}
-					iconName='edit'
-					onPress={() => {
-						if (!room) return;
-						logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
-						const navigationProps = { room, roomUser };
-						if (isLivechat) navigate('LivechatEditView', navigationProps);
-						else navigate('RoomInfoEditView', { rid, ...navigationProps });
-					}}
-					testID='room-info-view-edit-button'
-				/>
-			</HeaderButton.Container>
-		);
+		const editAction = {
+			label: I18n.t('Room_Info_Edit'),
+			icon: 'edit' as const,
+			testID: 'room-info-view-edit-button',
+			onPress: () => {
+				if (!room) return;
+				logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
+				const navigationProps = { room, roomUser };
+				if (isLivechat) navigate('LivechatEditView', navigationProps);
+				else navigate('RoomInfoEditView', { rid, ...navigationProps });
+			}
+		};
 		setOptions({
-			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal /> : undefined,
+			...(showCloseModal ? headerLeftCloseModal({ dispatch }) : { headerLeft: undefined }),
 			title: isDirect ? I18n.t('User_Info') : I18n.t('Room_Info'),
-			headerRight: canEdit ? () => <HeaderRight /> : undefined
+			...headerRightActions(canEdit ? [editAction] : [])
 		});
 	};
 

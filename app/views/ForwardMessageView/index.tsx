@@ -6,7 +6,7 @@ import { getPermalinkMessage } from '~/lib/methods/getPermalinks';
 import KeyboardView from '~/containers/KeyboardView';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 import I18n from '~/i18n';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerLeftCloseModal, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import { useTheme } from '~/theme';
 import { getUserSelector } from '~/selectors/login';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -40,18 +40,15 @@ const ForwardMessageView = () => {
 		const isSendButtonEnabled = rooms.length && !sending;
 		navigation.setOptions({
 			title: I18n.t('Forward_message'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item
-						title={I18n.t('Send')}
-						color={isSendButtonEnabled ? colors.fontHint : colors.fontSecondaryInfo}
-						disabled={!isSendButtonEnabled}
-						onPress={handlePostMessage}
-						testID='forward-message-view-send'
-					/>
-				</HeaderButton.Container>
-			),
-			headerLeft: () => <HeaderButton.CloseModal />
+			...headerRightActions([
+				{
+					label: I18n.t('Send'),
+					disabled: !isSendButtonEnabled,
+					onPress: handlePostMessage,
+					testID: 'forward-message-view-send'
+				}
+			]),
+			...headerLeftCloseModal(navigation)
 		});
 	}, [rooms.length, navigation, sending]);
 

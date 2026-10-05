@@ -52,10 +52,16 @@ tags:
     id: 'room-actions-info'
 - tapOn:
     id: 'room-actions-info'
-- assertVisible:
-    id: 'room-info-view-edit-button'
-- tapOn:
-    id: 'room-info-view-edit-button'
+- runFlow:
+    file: '../../helpers/wait-header-item.yaml'
+    env:
+      ANDROID_ID: 'room-info-view-edit-button'
+      IOS_LABEL: 'Room info edit'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'room-info-view-edit-button'
+      IOS_LABEL: 'Room info edit'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-delete'

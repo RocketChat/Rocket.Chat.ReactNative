@@ -83,12 +83,16 @@ tags:
     notVisible:
       id: 'multi-select-search'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'forward-message-view-send'
-    timeout: 60000
-- tapOn:
-    id: 'forward-message-view-send'
+- runFlow:
+    file: '../../helpers/wait-header-item.yaml'
+    env:
+      ANDROID_ID: 'forward-message-view-send'
+      IOS_LABEL: 'Send'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'forward-message-view-send'
+      IOS_LABEL: 'Send'
 - runFlow:
     file: '../../helpers/assert-room-title.yaml'
     env:

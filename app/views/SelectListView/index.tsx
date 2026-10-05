@@ -7,7 +7,7 @@ import { Component } from 'react';
 import { type ChatsStackParamList } from '~/stacks/types';
 import log from '~/lib/methods/helpers/log';
 import I18n from '~/i18n';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerLeftCloseModal, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import { themes } from '~/lib/constants/colors';
 import { type TSupportedThemes, withTheme } from '~/theme';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -80,18 +80,15 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 		const { selected } = this.state;
 
 		const options: NativeStackNavigationOptions = {
-			headerTitle: I18n.t(this.title)
+			headerTitle: I18n.t(this.title),
+			...headerRightActions([
+				{ label: I18n.t('Next'), testID: 'select-list-view-submit', onPress: () => this.nextAction(selected) }
+			])
 		};
 
 		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+			Object.assign(options, headerLeftCloseModal(navigation));
 		}
-
-		options.headerRight = () => (
-			<HeaderButton.Container>
-				<HeaderButton.Item title={I18n.t('Next')} onPress={() => this.nextAction(selected)} testID='select-list-view-submit' />
-			</HeaderButton.Container>
-		);
 
 		navigation.setOptions(options);
 	};

@@ -11,6 +11,8 @@ const HEADER_ICONS: TIconsName[] = [
 	'close',
 	'create',
 	'directory',
+	'download',
+	'edit',
 	'encrypted',
 	'filter',
 	'hamburguer',

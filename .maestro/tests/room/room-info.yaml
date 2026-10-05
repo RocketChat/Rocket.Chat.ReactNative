@@ -52,17 +52,22 @@ tags:
     timeout: 60000
 
 # should have edit button
-- extendedWaitUntil:
-    visible:
-      id: 'room-info-view-edit-button'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/wait-header-item.yaml'
+    env:
+      ANDROID_ID: 'room-info-view-edit-button'
+      IOS_LABEL: 'Room info edit'
 
-- extendedWaitUntil:
-    visible:
-      id: 'room-info-view-edit-button'
-    timeout: 60000
-- tapOn:
-    id: 'room-info-view-edit-button'
+- runFlow:
+    file: '../../helpers/wait-header-item.yaml'
+    env:
+      ANDROID_ID: 'room-info-view-edit-button'
+      IOS_LABEL: 'Room info edit'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'room-info-view-edit-button'
+      IOS_LABEL: 'Room info edit'
 - extendedWaitUntil:
     visible:
       id: 'room-info-edit-view'
@@ -142,8 +147,11 @@ tags:
 
 # should reset form
 - runFlow: '../../helpers/go-back.yaml'
-- tapOn:
-    id: room-info-view-edit-button
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'room-info-view-edit-button'
+      IOS_LABEL: 'Room info edit'
 - extendedWaitUntil:
     visible:
       id: 'room-info-edit-view-name'
@@ -278,8 +286,11 @@ tags:
 
 # should change room name
 - runFlow: '../../helpers/go-back.yaml'
-- tapOn:
-    id: room-info-view-edit-button
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'room-info-view-edit-button'
+      IOS_LABEL: 'Room info edit'
 - evalScript: ${output.newroomname = output.room.name + 'new'}
 - tapOn:
     id: 'room-info-edit-view-name'
@@ -310,8 +321,11 @@ tags:
     timeout: 60000
 - assertVisible:
     text: '.*${output.newroomname}.*'
-- tapOn:
-    id: room-info-view-edit-button
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'room-info-view-edit-button'
+      IOS_LABEL: 'Room info edit'
 - extendedWaitUntil:
     visible:
       id: 'room-info-edit-view'
@@ -375,8 +389,11 @@ tags:
     text: '.*new topic.*'
 - assertVisible:
     text: '.*new announcement.*'
-- tapOn:
-    id: room-info-view-edit-button
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'room-info-view-edit-button'
+      IOS_LABEL: 'Room info edit'
 - extendedWaitUntil:
     visible:
       id: 'room-info-edit-view'
