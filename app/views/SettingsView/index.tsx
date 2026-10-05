@@ -9,7 +9,6 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { appStart } from '~/actions/app';
 import { logout } from '~/actions/login';
 import { selectServerRequest } from '~/actions/server';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import NewWindowIcon from '~/containers/NewWindowIcon';
 import * as List from '~/containers/List';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -23,6 +22,8 @@ import { clearCache } from '~/lib/methods/clearCache';
 import { deleteMediaFiles } from '~/lib/methods/handleMediaDownload';
 import { getDeviceModel, getReadableVersion, isAndroid } from '~/lib/methods/helpers';
 import EventEmitter from '~/lib/methods/helpers/events';
+import { outsideHeaderLeftClose } from '~/lib/methods/helpers/navigation';
+import { headerLeftDrawer } from '~/lib/methods/helpers/navigation/headerActions';
 import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/info';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import openLink from '~/lib/methods/helpers/openLink';
@@ -44,12 +45,9 @@ const SettingsView = (): ReactElement => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			headerLeft: () =>
-				isMasterDetail ? (
-					<HeaderButton.CloseModal navigation={navigation} testID='settings-view-close' />
-				) : (
-					<HeaderButton.Drawer navigation={navigation} testID='settings-view-drawer' />
-				),
+			...(isMasterDetail
+				? outsideHeaderLeftClose(() => navigation.pop(), 'settings-view-close')
+				: headerLeftDrawer(navigation, 'settings-view-drawer')),
 			title: I18n.t('Settings')
 		});
 	}, [navigation, isMasterDetail]);

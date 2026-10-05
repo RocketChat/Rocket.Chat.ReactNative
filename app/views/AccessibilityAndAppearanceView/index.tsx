@@ -3,13 +3,13 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
 import Switch from '~/containers/Switch';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import * as List from '~/containers/List';
 import SafeAreaView from '~/containers/SafeAreaView';
 import I18n from '~/i18n';
 import { type AccessibilityStackParamList } from '~/stacks/types';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useUserPreferences } from '~/lib/methods/userPreferences';
+import { headerLeftDrawer } from '~/lib/methods/helpers/navigation/headerActions';
 import {
 	USER_MENTIONS_PREFERENCES_KEY,
 	ROOM_MENTIONS_PREFERENCES_KEY,
@@ -53,9 +53,7 @@ const AccessibilityAndAppearanceView = () => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Accessibility_and_Appearance'),
-			headerLeft: isMasterDetail
-				? undefined
-				: () => <HeaderButton.Drawer navigation={navigation} testID='accessibility-view-drawer' />
+			...(isMasterDetail ? { headerLeft: undefined } : headerLeftDrawer(navigation, 'accessibility-view-drawer'))
 		});
 	}, [navigation, isMasterDetail]);
 	return (

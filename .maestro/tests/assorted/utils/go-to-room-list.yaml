@@ -7,12 +7,16 @@ tags:
 - waitForAnimationToEnd:
     timeout: 10000
 - runFlow: '../../../helpers/go-back.yaml'
-- extendedWaitUntil:
-    visible:
-      id: 'accessibility-view-drawer'
-    timeout: 60000
-- tapOn:
-    id: 'accessibility-view-drawer'
+- runFlow:
+    file: '../../../helpers/wait-header-item.yaml'
+    env:
+      ANDROID_ID: 'accessibility-view-drawer'
+      IOS_LABEL: 'Menu'
+- runFlow:
+    file: '../../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'accessibility-view-drawer'
+      IOS_LABEL: 'Menu'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-chats'

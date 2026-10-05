@@ -1,4 +1,5 @@
 import { type ReactElement } from 'react';
+import { DrawerActions, type NavigationProp, type ParamListBase } from '@react-navigation/native';
 import {
 	type NativeStackHeaderItem,
 	type NativeStackHeaderItemMenuAction,
@@ -10,6 +11,7 @@ import { type TIconsName } from '~/containers/CustomIcon';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import Radio from '~/containers/Radio';
 import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
+import I18n from '~/i18n';
 import { headerIcon } from './headerIcon';
 
 export interface IHeaderMenuItem {
@@ -127,3 +129,13 @@ export const headerLeftActions = (actions: IHeaderAction[]): NativeStackNavigati
 	hasNativeHeaderBar
 		? { headerLeft: undefined, unstable_headerLeftItems: () => nativeHeaderItems(actions) }
 		: { headerLeft: () => <HeaderActions actions={actions} left /> };
+
+export const headerLeftDrawer = (
+	navigation: Pick<NavigationProp<ParamListBase>, 'dispatch'>,
+	testID?: string
+): NativeStackNavigationOptions => {
+	const toggleDrawer = () => navigation.dispatch(DrawerActions.toggleDrawer());
+	return hasNativeHeaderBar
+		? headerLeftActions([{ label: I18n.t('Menu'), icon: 'hamburguer', onPress: toggleDrawer }])
+		: { headerLeft: () => <HeaderButton.Drawer testID={testID} onPress={toggleDrawer} /> };
+};

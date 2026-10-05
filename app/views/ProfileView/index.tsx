@@ -6,14 +6,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { DrawerActions, useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 
 import useA11yErrorAnnouncement from '~/lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '~/actions/login';
 import { useActionSheet } from '~/containers/ActionSheet';
 import { AvatarWithEdit } from '~/containers/Avatar';
 import Button from '~/containers/Button';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import KeyboardView from '~/containers/KeyboardView';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { ControlledFormTextInput } from '~/containers/TextInput';
@@ -21,8 +20,8 @@ import { LISTENER } from '~/containers/Toast';
 import { type IProfileParams } from '~/definitions';
 import { TwoFactorMethods } from '~/definitions/ITotp';
 import I18n from '~/i18n';
-import { compareServerVersion, hasNativeHeaderBar } from '~/lib/methods/helpers';
-import { headerLeftActions, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
+import { compareServerVersion } from '~/lib/methods/helpers';
+import { headerLeftDrawer, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
@@ -280,22 +279,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 			])
 		};
 		if (!isMasterDetail) {
-			Object.assign(
-				options,
-				hasNativeHeaderBar
-					? headerLeftActions([
-							{ label: I18n.t('Menu'), icon: 'hamburguer', onPress: () => navigation.dispatch(DrawerActions.toggleDrawer()) }
-						])
-					: {
-							headerLeft: () => (
-								<HeaderButton.Drawer
-									testID='profile-view-open-sidebar'
-									accessibilityLabel={I18n.t('Open_sidebar')}
-									navigation={navigation}
-								/>
-							)
-						}
-			);
+			Object.assign(options, headerLeftDrawer(navigation, 'profile-view-open-sidebar'));
 		}
 
 		navigation.setOptions(options);
