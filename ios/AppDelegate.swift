@@ -90,10 +90,12 @@ public class AppDelegate: ExpoAppDelegate {
       for suffix in ["-wal", "-shm", "-journal", ""] {
         let from = URL(fileURLWithPath: legacy.path + suffix)
         let to = URL(fileURLWithPath: target.path + suffix)
-        try? fileManager.removeItem(at: to)
-        guard fileManager.fileExists(atPath: from.path) else { continue }
+        guard fileManager.fileExists(atPath: from.path) else {
+          try? fileManager.removeItem(at: to)
+          continue
+        }
         do {
-          try fileManager.moveItem(at: from, to: to)
+          _ = try fileManager.replaceItemAt(to, withItemAt: from)
         } catch {
           // Starting with a fresh DB at `target` would strand the legacy data, since later launches skip a non-empty target.
           Bugsnag.notifyError(error)
