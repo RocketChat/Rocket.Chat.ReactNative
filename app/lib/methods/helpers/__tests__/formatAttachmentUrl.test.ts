@@ -43,28 +43,22 @@ describe('formatAttachmentUrl', () => {
 		expect(result).not.toContain('rc_uid');
 	});
 
-	it('does not leak when title_link is attacker-controlled but image_url looks trusted', () => {
-		const result = formatAttachmentUrl('https://evil.example/x', 'uid', 'tok', SERVER, `${SERVER}/file-upload/1/a.png`);
-		expect(result).toBe('https://evil.example/x');
-	});
-
-	it('returns the original url when it is on another origin', () => {
+	it('returns the untrusted url without credentials when origins disagree', () => {
+		expect(formatAttachmentUrl('https://evil.example/x', 'uid', 'tok', SERVER, `${SERVER}/file-upload/1/a.png`)).toBe(
+			'https://evil.example/x'
+		);
 		expect(formatAttachmentUrl(`${SERVER}/a.png`, 'uid', 'tok', SERVER, 'https://mobile.qa.rocket.chat.evil.com/a.png')).toBe(
 			'https://mobile.qa.rocket.chat.evil.com/a.png'
 		);
 	});
 
-	it('does not add credentials to a relative path that escapes the server origin', () => {
-		const result = formatAttachmentUrl('@evil.com/x', 'uid', 'tok', SERVER);
-		expect(result).not.toContain('rc_token');
-	});
-
-	it.each(['.evil.com/x', '\t.evil.com/x', ':8443@evil.com/x'])(
-		'does not add credentials to host-like relative path %j',
+	it.each(['@evil.com/x', '.evil.com/x', '\t.evil.com/x', ':8443@evil.com/x'])(
+		'keeps host-like relative path %j on the server origin',
 		path => {
 			const result = formatAttachmentUrl(path, 'uid', 'tok', SERVER);
-			expect(result).not.toContain('rc_token');
-			expect(result).not.toContain('rc_uid');
+			expect(new URL(result).origin).toBe(SERVER);
+			expect(result).toContain('rc_token');
+			expect(result).toContain('rc_uid');
 		}
 	);
 

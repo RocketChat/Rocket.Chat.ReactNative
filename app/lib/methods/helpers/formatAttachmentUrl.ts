@@ -18,27 +18,21 @@ export const encodeAttachmentUrl = (url: string): string => {
 	}
 };
 
-const getOrigin = (url: string | undefined | null): string | null => {
-	if (!url) {
-		return null;
-	}
+const getOrigin = (url: string): string | null => {
 	try {
-		const { protocol, username, password, origin } = new URL(url);
-		if ((protocol !== 'http:' && protocol !== 'https:') || username || password) {
-			return null;
-		}
-		return origin;
+		const { protocol, origin } = new URL(url);
+		return protocol === 'http:' || protocol === 'https:' ? origin : null;
 	} catch {
 		return null;
 	}
 };
 
 const getCdnPrefix = (): string => {
-	const cdnPrefix = (store?.getState().settings.CDN_PREFIX as string | undefined)?.trim();
+	const cdnPrefix = (store.getState().settings.CDN_PREFIX as string | undefined)?.trim();
 	return cdnPrefix?.startsWith('http') ? cdnPrefix.replace(/\/+$/, '') : '';
 };
 
-const isTrustedUrl = (url: string | undefined | null, server: string): boolean => {
+const isTrustedUrl = (url: string, server: string): boolean => {
 	const origin = getOrigin(url);
 	return !!origin && (origin === getOrigin(server) || origin === getOrigin(getCdnPrefix()));
 };
@@ -55,28 +49,18 @@ export const formatAttachmentUrl = (
 	if ((attachmentUrl && isImageBase64(attachmentUrl)) || attachmentUrl?.startsWith('file://')) {
 		return attachmentUrl;
 	}
-	if (attachmentUrl && attachmentUrl.startsWith('http')) {
-		if (_originalUrl && !isTrustedUrl(_originalUrl, server)) {
-			return _originalUrl;
-		}
-
-		// Never send the session credentials to a host other than the workspace (or its CDN).
-		if (!isTrustedUrl(attachmentUrl, server)) {
-			return attachmentUrl;
-		}
-
-		if (attachmentUrl.includes('rc_token')) {
-			return encodeAttachmentUrl(attachmentUrl);
-		}
-
-		if (protectFiles) return setParamInUrl({ url: attachmentUrl, token, userId });
-		return attachmentUrl;
+	const isAbsolute = !!attachmentUrl?.startsWith('http');
+	if (isAbsolute && _originalUrl && !isTrustedUrl(_originalUrl, server)) {
+		return _originalUrl;
 	}
-	const cdnPrefix = getCdnPrefix();
-	if (cdnPrefix) {
-		server = cdnPrefix;
+	const url =
+		isAbsolute && attachmentUrl ? attachmentUrl : `${getCdnPrefix() || server}/${(attachmentUrl ?? '').replace(/^\/+/, '')}`;
+	if (!isTrustedUrl(url, server)) {
+		return url;
 	}
-	const url = `${server}${attachmentUrl}`;
-	if (protectFiles && isTrustedUrl(url, server)) return setParamInUrl({ url, token, userId });
+	if (isAbsolute && url.includes('rc_token')) {
+		return encodeAttachmentUrl(url);
+	}
+	if (protectFiles) return setParamInUrl({ url, token, userId });
 	return url;
 };

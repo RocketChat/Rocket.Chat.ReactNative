@@ -134,10 +134,8 @@ const UrlImage = ({ image }: { image?: string }) => {
 		return null;
 	}
 
-	image = image.includes('http')
-		? image
-		: formatAttachmentUrl(`/${image.replace(/^\/+/, '')}`, user?.id ?? '', user?.token ?? '', baseUrl ?? '');
-	return <Image source={{ uri: image }} style={styles.image} contentFit='cover' />;
+	const uri = formatAttachmentUrl(image, user?.id ?? '', user?.token ?? '', baseUrl ?? '');
+	return <Image source={{ uri }} style={styles.image} contentFit='cover' />;
 };
 
 const Fields = ({ attachment }: { attachment: IAttachment }) => {

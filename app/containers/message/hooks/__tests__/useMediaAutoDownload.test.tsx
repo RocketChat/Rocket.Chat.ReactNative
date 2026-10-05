@@ -15,7 +15,6 @@ import { isImageBase64 } from '~/lib/methods/isImageBase64';
 import { emitter } from '~/lib/methods/helpers/emitter';
 import { store } from '~/lib/store/auxStore';
 
-// formatAttachmentUrl runs for real in these tests, so only its settings store is mocked.
 jest.mock('~/lib/store/auxStore', () => ({
 	store: { getState: jest.fn() }
 }));

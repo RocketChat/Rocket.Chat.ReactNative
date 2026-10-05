@@ -129,9 +129,7 @@ const Url = ({ url }: { url: IUrl }) => {
 				const rawImageUrl = url.image || url.url;
 				if (!rawImageUrl || !API_Embed) return;
 
-				const _imageUrl = rawImageUrl.startsWith('http')
-					? rawImageUrl
-					: formatAttachmentUrl(`/${rawImageUrl.replace(/^\/+/, '')}`, user?.id ?? '', user?.token ?? '', baseUrl ?? '');
+				const _imageUrl = formatAttachmentUrl(rawImageUrl, user?.id ?? '', user?.token ?? '', baseUrl ?? '');
 
 				const response = await axios.head(_imageUrl);
 				const contentType = response.headers['content-type'];

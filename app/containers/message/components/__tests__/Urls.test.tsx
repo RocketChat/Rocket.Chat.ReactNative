@@ -12,7 +12,6 @@ import { addSettings } from '~/actions/settings';
 import { type TAnyMessageModel } from '~/definitions';
 import { store } from '~/lib/store/auxStore';
 
-// Real formatAttachmentUrl on purpose: this guards that link-preview images never send credentials off-origin.
 jest.mock('~/lib/store/auxStore', () => ({
 	store: { getState: jest.fn() }
 }));
