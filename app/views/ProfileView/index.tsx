@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { useFocusEffect } from '@react-navigation/native';
+import { DrawerActions, useFocusEffect } from '@react-navigation/native';
 
 import useA11yErrorAnnouncement from '~/lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '~/actions/login';
@@ -21,7 +21,8 @@ import { LISTENER } from '~/containers/Toast';
 import { type IProfileParams } from '~/definitions';
 import { TwoFactorMethods } from '~/definitions/ITotp';
 import I18n from '~/i18n';
-import { compareServerVersion } from '~/lib/methods/helpers';
+import { compareServerVersion, hasNativeHeaderBar } from '~/lib/methods/helpers';
+import { headerLeftActions, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
@@ -268,24 +269,34 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 
 	useLayoutEffect(() => {
 		const options: NativeStackNavigationOptions = {
-			title: I18n.t('Profile')
+			title: I18n.t('Profile'),
+			...headerRightActions([
+				{
+					label: I18n.t('Preferences'),
+					icon: 'settings',
+					testID: 'preferences-view-open',
+					onPress: () => navigation.navigate('UserPreferencesView')
+				}
+			])
 		};
 		if (!isMasterDetail) {
-			options.headerLeft = () => (
-				<HeaderButton.Drawer
-					testID='profile-view-open-sidebar'
-					accessibilityLabel={I18n.t('Open_sidebar')}
-					navigation={navigation}
-				/>
+			Object.assign(
+				options,
+				hasNativeHeaderBar
+					? headerLeftActions([
+							{ label: I18n.t('Menu'), icon: 'hamburguer', onPress: () => navigation.dispatch(DrawerActions.toggleDrawer()) }
+						])
+					: {
+							headerLeft: () => (
+								<HeaderButton.Drawer
+									testID='profile-view-open-sidebar'
+									accessibilityLabel={I18n.t('Open_sidebar')}
+									navigation={navigation}
+								/>
+							)
+						}
 			);
 		}
-		options.headerRight = () => (
-			<HeaderButton.Preferences
-				accessibilityLabel={I18n.t('Preferences')}
-				onPress={() => navigation?.navigate('UserPreferencesView')}
-				testID='preferences-view-open'
-			/>
-		);
 
 		navigation.setOptions(options);
 	}, [navigation, isMasterDetail]);
