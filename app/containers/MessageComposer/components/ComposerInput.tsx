@@ -1,5 +1,5 @@
-import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
-import { TextInput, StyleSheet, type TextInputProps, InteractionManager } from 'react-native';
+import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { TextInput, StyleSheet, type TextInputProps, InteractionManager, Text, View } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
@@ -20,14 +20,7 @@ import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
 import { userTyping } from '~/actions/room';
 import { parseJson } from '~/lib/methods/helpers/parseJson';
-import { isTablet } from '~/lib/methods/helpers/deviceInfo';
-import {
-	MAX_HEIGHT,
-	MIN_HEIGHT,
-	NO_CANNED_RESPONSES,
-	MARKDOWN_STYLES,
-	COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH
-} from '../constants';
+import { MAX_HEIGHT, MIN_HEIGHT, NO_CANNED_RESPONSES, MARKDOWN_STYLES } from '../constants';
 import database from '~/lib/database';
 import Navigation from '~/lib/navigation/appNavigation';
 import { emitter } from '~/lib/methods/helpers/emitter';
@@ -65,13 +58,10 @@ export const ComposerInput = memo(
 		const dispatch = useDispatch();
 		const isMasterDetail = useMasterDetail();
 		const altTextSupported = useAltTextSupported();
-		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
-		if (!tmid) {
-			placeholder = I18n.t('Message_roomname', { roomName: (t === 'd' ? '@' : '#') + roomTitle });
-			if (!isTablet && placeholder.length > COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH) {
-				placeholder = `${placeholder.slice(0, COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH)}...`;
-			}
-		}
+		const [isEmpty, setIsEmpty] = useState(true);
+		const placeholder = tmid
+			? I18n.t('Add_thread_reply')
+			: I18n.t('Message_roomname', { roomName: (t === 'd' ? '@' : '#') + roomTitle });
 		const route = useRoute<RouteProp<ChatsStackParamList, 'RoomView'>>();
 		const usedCannedResponse = route.params?.usedCannedResponse;
 		const previousActionRef = useRef(action);
@@ -103,6 +93,7 @@ export const ComposerInput = memo(
 					}, 50);
 				}
 				setMicOrSend(message.length === 0 ? 'mic' : 'send');
+				setIsEmpty(text.length === 0);
 			},
 			[saveDraft, inputRef, setMicOrSend]
 		);
@@ -382,41 +373,66 @@ export const ComposerInput = memo(
 		}));
 
 		return (
-			<TextInput
-				style={[styles.textInput, { color: colors.fontDefault }]}
-				placeholder={placeholder}
-				placeholderTextColor={colors.fontAnnotation}
-				ref={component => {
-					inputRef.current = component;
-				}}
-				blurOnSubmit={false}
-				onChangeText={onChangeText}
-				onTouchStart={onTouchStart}
-				onSelectionChange={onSelectionChange}
-				onFocus={onFocus}
-				onBlur={onBlur}
-				underlineColorAndroid='transparent'
-				defaultValue=''
-				multiline
-				{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
-				keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
-				// eslint-disable-next-line no-nested-ternary
-				testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
-			/>
+			<View style={styles.container}>
+				<TextInput
+					style={[styles.textInput, { color: colors.fontDefault }]}
+					accessibilityLabel={placeholder}
+					ref={component => {
+						inputRef.current = component;
+					}}
+					blurOnSubmit={false}
+					onChangeText={onChangeText}
+					onTouchStart={onTouchStart}
+					onSelectionChange={onSelectionChange}
+					onFocus={onFocus}
+					onBlur={onBlur}
+					underlineColorAndroid='transparent'
+					defaultValue=''
+					multiline
+					{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
+					keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
+					// eslint-disable-next-line no-nested-ternary
+					testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
+				/>
+				{isEmpty ? (
+					<Text
+						style={[styles.placeholder, { color: colors.fontAnnotation }]}
+						numberOfLines={1}
+						pointerEvents='none'
+						accessibilityElementsHidden
+						importantForAccessibility='no-hide-descendants'>
+						{placeholder}
+					</Text>
+				) : null}
+			</View>
 		);
 	})
 );
 
+const composerText = {
+	fontSize: 16,
+	...sharedStyles.textRegular,
+	lineHeight: 22
+};
+
 const styles = StyleSheet.create({
+	container: {
+		flex: 1
+	},
 	textInput: {
-		flex: 1,
 		minHeight: MIN_HEIGHT,
 		maxHeight: MAX_HEIGHT,
 		paddingTop: 12,
 		paddingBottom: 12,
-		fontSize: 16,
+		paddingHorizontal: 0,
 		textAlignVertical: 'center',
-		...sharedStyles.textRegular,
-		lineHeight: 22
+		...composerText
+	},
+	placeholder: {
+		position: 'absolute',
+		top: 12,
+		left: 0,
+		right: 0,
+		...composerText
 	}
 });
