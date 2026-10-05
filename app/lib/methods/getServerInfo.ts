@@ -52,18 +52,19 @@ const verifyJWT = (jwt?: string): ISupportedVersionsData | null => {
 	}
 };
 
+const getSessionHeaders = (server: string) => {
+	const user = getUserSelector(store.getState());
+	const isSignedInToServer = !!user?.id && UserPreferences.getString(getServerUserIdKey(server)) === user.id;
+	return isSignedInToServer ? { 'X-Auth-Token': user.token, 'X-User-Id': user.id } : {};
+};
+
 export async function getServerInfo(server: string): Promise<TServerInfoResult> {
 	try {
-		const storeState = store.getState();
-		const user = getUserSelector(storeState);
-
-		const isKnownUser = !!user?.id && UserPreferences.getString(getServerUserIdKey(server)) === user.id;
-
 		const response = await fetch(`${server}/api/info`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
-				...(isKnownUser ? { 'X-Auth-Token': user.token, 'X-User-Id': user.id } : {})
+				...getSessionHeaders(server)
 			}
 		});
 		try {

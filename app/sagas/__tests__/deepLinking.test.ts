@@ -867,6 +867,52 @@ describe('deepLinking saga — unknown host hands off to the add-server flow', (
 		expect(emit).toHaveBeenCalledWith('NewServer', { server: HOST });
 		emit.mockRestore();
 	});
+
+	it('asks for confirmation before the first request to a new host without a token', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' }) as any));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(getServerInfo)).toHaveBeenCalledWith(HOST);
+	});
+
+	it('does not contact a new host when the confirmation is declined', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
+		const { store, dispatchedActions } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' }) as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
+		expect(emitSpy).not.toHaveBeenCalledWith('NewServer', expect.anything());
+		expect(dispatchedActions.some(a => a.type === SERVER.INIT_ADD)).toBe(false);
+		emitSpy.mockRestore();
+	});
+
+	it('does not ask for confirmation for a known host without a token', async () => {
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === 'currentServer') return PREVIOUS_SERVER;
+			if (key === getServerUserIdKey(HOST)) return TOKEN;
+			return null;
+		});
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		jest.mocked(showConfirmationAlert).mockClear();
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' }) as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).not.toHaveBeenCalled();
+		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
+	});
 });
 
 describe('deepLinking saga — handleShareExtension user-facing roots', () => {

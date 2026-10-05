@@ -156,7 +156,14 @@ const declineDeepLinkLogin = function* declineDeepLinkLogin() {
 
 const ensureDeepLinkLoginConsent = function* ensureDeepLinkLoginConsent(host, params) {
 	if (!params.token) {
-		return true;
+		const storedUser = UserPreferences.getString(getServerUserIdKey(host));
+		if (storedUser) {
+			return true;
+		}
+		const serverRecord = yield getServerById(host);
+		if (serverRecord) {
+			return true;
+		}
 	}
 	const confirmed = yield call(confirmDeepLinkLogin, host, params);
 	if (!confirmed) {
