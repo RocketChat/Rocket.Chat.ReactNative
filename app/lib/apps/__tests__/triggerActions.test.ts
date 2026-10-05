@@ -42,16 +42,16 @@ describe('triggerActions wrappers', () => {
 			});
 		});
 
-		it('keeps the modal open when triggerAction returns undefined', async () => {
-			mockedTriggerAction.mockResolvedValueOnce(undefined);
+		it('goes back when triggerAction returns modal.close', async () => {
+			mockedTriggerAction.mockResolvedValueOnce(ModalActions.CLOSE);
 
 			await triggerSubmitView(submitInput as any);
 
-			expect(mockedBack).not.toHaveBeenCalled();
+			expect(mockedBack).toHaveBeenCalledTimes(1);
 		});
 
-		it('goes back when triggerAction returns modal.close', async () => {
-			mockedTriggerAction.mockResolvedValueOnce(ModalActions.CLOSE);
+		it('goes back when triggerAction returns nothing', async () => {
+			mockedTriggerAction.mockResolvedValueOnce(undefined);
 
 			await triggerSubmitView(submitInput as any);
 

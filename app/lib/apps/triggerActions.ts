@@ -14,7 +14,7 @@ import { triggerAction } from './actions';
 
 export async function triggerSubmitView({ viewId, ...options }: ITriggerSubmitView) {
 	const result = await triggerAction({ type: ActionTypes.SUBMIT, viewId, ...options });
-	if (ModalActions.CLOSE === result) {
+	if (!result || ModalActions.CLOSE === result) {
 		Navigation.back();
 	}
 }

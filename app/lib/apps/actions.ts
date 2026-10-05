@@ -17,9 +17,14 @@ const invalidateTriggerId = (id: string) => {
 	return appId;
 };
 
-export const generateTriggerId = (appId?: string): string => {
+const registerTriggerId = (appId?: string): string => {
 	const triggerId = random(17);
 	triggersId.set(triggerId, appId);
+	return triggerId;
+};
+
+export const generateTriggerId = (appId?: string): string => {
+	const triggerId = registerTriggerId(appId);
 	setTimeout(() => triggersId.delete(triggerId), TRIGGER_TIMEOUT);
 
 	return triggerId;
@@ -111,7 +116,7 @@ export async function triggerAction({
 	container,
 	...rest
 }: ITriggerAction): Promise<TModalAction | undefined | void> {
-	const triggerId = generateTriggerId(appId);
+	const triggerId = registerTriggerId(appId);
 	const payload = rest.payload ?? rest.value;
 
 	try {
@@ -159,7 +164,8 @@ export async function triggerAction({
 
 		return handlePayloadUserInteraction(modalType, data as THandledServerPayload);
 	} catch (e) {
-		invalidateTriggerId(triggerId);
 		throw e instanceof Error ? e : new Error('Failed to trigger action');
+	} finally {
+		invalidateTriggerId(triggerId);
 	}
 }
