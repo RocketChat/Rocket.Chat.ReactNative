@@ -48,6 +48,11 @@ export type ChatEndpoints = {
 			total: number;
 		}>;
 	};
+	'chat.getThreadMessages': {
+		GET: (params: { tmid: IMessage['_id']; offset?: number; count?: number; sort?: string }) => PaginatedResult<{
+			messages: IMessage[];
+		}>;
+	};
 	'chat.syncThreadsList': {
 		GET: (params: { rid: IServerRoom['_id']; updatedSince: string }) => {
 			threads: {

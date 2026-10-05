@@ -10,6 +10,7 @@ import { useLiveRef } from '~/lib/hooks/useLiveRef';
 import log from '~/lib/methods/helpers/log';
 import { type TAnyMessageModel } from '~/definitions';
 import { loadSurroundingMessages } from '~/lib/methods/loadSurroundingMessages';
+import { loadAllThreadMessages } from '~/lib/methods/loadThreadMessages';
 import {
 	type IRoomViewProps,
 	type IUseJumpToMessageParams,
@@ -132,7 +133,12 @@ export function useJumpToMessage({
 			await openRoom(message, { isMasterDetail });
 			return false;
 		}
-		const inWindow = listContainerRef.current?.isMessageInWindow(message.id) ?? false;
+		let inWindow = listContainerRef.current?.isMessageInWindow(message.id) ?? false;
+		if (inThisThread && tmid && rid && !inWindow) {
+			await loadAllThreadMessages({ tmid, rid });
+			if (!isCurrentJump(generation)) return false;
+			inWindow = listContainerRef.current?.isMessageInWindow(message.id) ?? false;
+		}
 		const highTsMs = await resolveJumpAnchor(rid, message, inWindow, { loadSurroundingMessages, getLocalAnchorTs });
 		if (!isCurrentJump(generation)) return false;
 		await waitForFabricCommit();

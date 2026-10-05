@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle } from 'react';
 
 import { useDebounce } from '~/lib/methods/helpers';
+import { loadMoreThreadMessages } from '~/lib/methods/loadThreadMessages';
 import EmptyRoom from './components/EmptyRoom';
 import List from './components/List';
 import { MessageRow } from '../components/MessageRow';
@@ -30,6 +31,9 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 
 		const onEndReached = useDebounce(() => {
 			fetchMessages();
+			if (tmid) {
+				loadMoreThreadMessages({ tmid, rid });
+			}
 		}, 300);
 
 		useEffect(() => onEndReached.cancel, [onEndReached]);

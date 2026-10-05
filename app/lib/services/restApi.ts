@@ -1,9 +1,11 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { getUniqueId } from 'react-native-device-info';
+import EJSON from 'ejson';
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 
 import {
 	type IAvatarSuggestion,
+	type IMessage,
 	type IMessagePreferences,
 	type INotificationPreferences,
 	type IPreviewItem,
@@ -889,6 +891,31 @@ export const getThreadsList = ({ rid, count, offset, text }: { rid: string; coun
 
 	// RC 1.0
 	return sdk.get('chat.getThreadsList', params);
+};
+
+const THREAD_MESSAGES_PAGE_SIZE = 50;
+
+// RC 8.8.0
+export const isThreadMessagesPaginated = () =>
+	compareServerVersion(reduxStore.getState().server.version, 'greaterThanOrEqualTo', '8.8.0');
+
+export const getThreadMessagesPage = async ({ tmid, offset }: { tmid: string; offset: number }) => {
+	const page = await sdk.get('chat.getThreadMessages', {
+		tmid,
+		count: THREAD_MESSAGES_PAGE_SIZE,
+		offset,
+		sort: '{"ts":-1}'
+	});
+	if (!page.success) {
+		throw new Error('Unable to load thread messages');
+	}
+	return { messages: page.messages, total: page.total };
+};
+
+export const getThreadMessagesDdp = async (tmid: string): Promise<IMessage[]> => {
+	// RC 1.0
+	const result = await sdk.methodCallWrapper('getThreadMessages', { tmid });
+	return result ? EJSON.fromJSONValue(result) : [];
 };
 
 export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }) =>

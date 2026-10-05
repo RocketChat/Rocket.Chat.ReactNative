@@ -9,6 +9,7 @@ import database from '~/lib/database';
 import { getMessageById } from '~/lib/database/services/Message';
 import { getThreadById } from '~/lib/database/services/Thread';
 import { MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
+import { hasMoreThreadMessages } from '~/lib/methods/loadThreadMessages';
 import { readThreads } from '~/lib/services/restApi';
 import { mockedStore } from '~/reducers/mockedStore';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '~/views/RoomView/List/constants';
@@ -33,6 +34,10 @@ jest.mock('~/lib/database/services/Thread', () => ({
 	getThreadById: jest.fn(() => Promise.resolve(null))
 }));
 
+jest.mock('~/lib/methods/loadThreadMessages', () => ({
+	hasMoreThreadMessages: jest.fn(() => false)
+}));
+
 jest.mock('~/lib/services/restApi', () => ({
 	readThreads: jest.fn(() => Promise.resolve())
 }));
@@ -49,6 +54,7 @@ const mockDbGet = database.active.get as unknown as jest.Mock;
 const mockGetThreadById = jest.mocked(getThreadById);
 const mockGetMessageById = jest.mocked(getMessageById);
 const mockReadThreads = jest.mocked(readThreads);
+const mockHasMoreThreadMessages = jest.mocked(hasMoreThreadMessages);
 
 const baseArgs = {
 	rid: 'ROOM_ID',
@@ -373,6 +379,21 @@ describe('useMessages', () => {
 			expect(ids).toContain('parent-thread');
 			expect(ids).toContain('tm1');
 		});
+	});
+
+	it('hides the thread parent while older replies are still to be loaded', async () => {
+		const parent = {
+			...msg({ id: 'parent-thread', t: undefined }),
+			collection: { table: 'threads' }
+		} as TAnyMessageModel;
+		mockGetThreadById.mockResolvedValueOnce(parent);
+		mockHasMoreThreadMessages.mockReturnValueOnce(true);
+		emittedRows = [msg({ id: 'tm1', tmid: 'THREAD_ID' })];
+		const { result } = renderUseMessages({ tmid: 'THREAD_ID' });
+		await waitFor(() => {
+			expect(result.current[0].map(m => m.id)).toContain('tm1');
+		});
+		expect(result.current[0].map(m => m.id)).not.toContain('parent-thread');
 	});
 
 	it('falls back to getMessageById when thread record is missing', async () => {

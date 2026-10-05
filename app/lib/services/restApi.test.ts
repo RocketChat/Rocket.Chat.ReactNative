@@ -6,6 +6,7 @@ import { mediaCallsStateSignals } from './restApi';
 const mockSdkGet = jest.fn();
 const mockSdkPost = jest.fn();
 const mockSdkDel = jest.fn();
+const mockSdkMethodCallWrapper = jest.fn();
 let mockSdk!: SdkIntegration.IMockSdk;
 
 jest.mock('./sdk', () => {
@@ -15,7 +16,8 @@ jest.mock('./sdk', () => {
 		makeSdkMock({
 			get: (...args: unknown[]) => mockSdkGet(...args),
 			post: (...args: unknown[]) => mockSdkPost(...args),
-			del: (...args: unknown[]) => mockSdkDel(...args)
+			del: (...args: unknown[]) => mockSdkDel(...args),
+			methodCallWrapper: (...args: unknown[]) => mockSdkMethodCallWrapper(...args)
 		});
 	return { __esModule: true, default: mockSdk };
 });
@@ -310,5 +312,59 @@ describe('removePushToken', () => {
 		await registerPushToken();
 
 		expect(mockSdkPost).toHaveBeenCalledTimes(2);
+	});
+});
+
+describe('thread messages', () => {
+	function loadApi(serverVersion: string) {
+		jest.resetModules();
+		jest.doMock('../store/auxStore', () => ({
+			store: { getState: () => ({ server: { version: serverVersion } }) }
+		}));
+		// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/consistent-type-imports
+		return require('./restApi') as typeof import('./restApi');
+	}
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('paginates thread messages from 8.8.0', () => {
+		expect(loadApi('8.8.0').isThreadMessagesPaginated()).toBe(true);
+		expect(loadApi('8.7.9').isThreadMessagesPaginated()).toBe(false);
+	});
+
+	it('requests a newest-first page and returns its messages and total', async () => {
+		const { getThreadMessagesPage } = loadApi('8.8.0');
+		mockSdkGet.mockResolvedValueOnce({ messages: [{ _id: 'r1' }], count: 1, offset: 50, total: 80, success: true });
+
+		const result = await getThreadMessagesPage({ tmid: 'root', offset: 50 });
+
+		expect(mockSdkGet).toHaveBeenCalledWith('chat.getThreadMessages', { tmid: 'root', count: 50, offset: 50, sort: '{"ts":-1}' });
+		expect(result).toEqual({ messages: [{ _id: 'r1' }], total: 80 });
+	});
+
+	it('throws when the page request is not successful', async () => {
+		const { getThreadMessagesPage } = loadApi('8.8.0');
+		mockSdkGet.mockResolvedValueOnce({ success: false });
+
+		await expect(getThreadMessagesPage({ tmid: 'root', offset: 0 })).rejects.toThrow();
+	});
+
+	it('calls the DDP method for the legacy full load', async () => {
+		const { getThreadMessagesDdp } = loadApi('8.7.0');
+		mockSdkMethodCallWrapper.mockResolvedValueOnce([{ _id: 'root' }, { _id: 'r1' }]);
+
+		const result = await getThreadMessagesDdp('root');
+
+		expect(mockSdkMethodCallWrapper).toHaveBeenCalledWith('getThreadMessages', { tmid: 'root' });
+		expect(result).toEqual([{ _id: 'root' }, { _id: 'r1' }]);
+	});
+
+	it('returns an empty list when the DDP method returns nothing', async () => {
+		const { getThreadMessagesDdp } = loadApi('8.7.0');
+		mockSdkMethodCallWrapper.mockResolvedValueOnce(null);
+
+		expect(await getThreadMessagesDdp('root')).toEqual([]);
 	});
 });

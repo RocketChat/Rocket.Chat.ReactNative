@@ -9,6 +9,7 @@ import { getMessageById } from '~/lib/database/services/Message';
 import { getThreadById } from '~/lib/database/services/Thread';
 import { tsToMs } from '~/lib/dayjs';
 import { compareServerVersion, useDebounce } from '~/lib/methods/helpers';
+import { hasMoreThreadMessages } from '~/lib/methods/loadThreadMessages';
 import { readThreads } from '~/lib/services/restApi';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
 import { buildVisibleSystemTypesClause, isHiddenSystemMessage, isLoaderMessage } from '../visibleSystemMessages';
@@ -166,7 +167,9 @@ export const useMessages = ({
 
 		subscription.current = observable.subscribe(result => {
 			const visibleThreadParent =
-				tmid && thread.current && !isHiddenSystemMessage(thread.current, hideSystemMessages) ? thread.current : null;
+				tmid && thread.current && !hasMoreThreadMessages(tmid) && !isHiddenSystemMessage(thread.current, hideSystemMessages)
+					? thread.current
+					: null;
 			const newMessages: TAnyMessageModel[] = visibleThreadParent ? [...result, visibleThreadParent] : result;
 
 			// Thread / local windows are never anchored, so rejoin only applies to the bounded main room.

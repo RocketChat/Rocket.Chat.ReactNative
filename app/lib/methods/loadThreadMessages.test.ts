@@ -1,16 +1,18 @@
-import { loadThreadMessages } from './loadThreadMessages';
+import { hasMoreThreadMessages, loadAllThreadMessages, loadMoreThreadMessages, loadThreadMessages } from './loadThreadMessages';
 import { type IReaction } from '~/definitions';
 import database from '../database';
 import { getThreadById } from '../database/services/Thread';
 import { Encryption } from '../encryption';
-import sdk from '../services/sdk';
+import { getSingleMessage, getThreadMessagesDdp, getThreadMessagesPage, isThreadMessagesPaginated } from '../services/restApi';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import buildMessage from './helpers/buildMessage';
 import log from './helpers/log';
 
-jest.mock('../services/sdk', () => ({
-	__esModule: true,
-	default: { methodCallWrapper: jest.fn() }
+jest.mock('../services/restApi', () => ({
+	getSingleMessage: jest.fn(),
+	getThreadMessagesDdp: jest.fn(),
+	getThreadMessagesPage: jest.fn(),
+	isThreadMessagesPaginated: jest.fn(() => false)
 }));
 
 jest.mock('../database', () => ({
@@ -48,12 +50,10 @@ jest.mock('@nozbe/watermelondb/RawRecord', () => ({
 	sanitizedRaw: jest.fn((raw: any) => raw)
 }));
 
-jest.mock('ejson', () => ({
-	__esModule: true,
-	default: { fromJSONValue: (value: any) => value }
-}));
-
-const mockedMethodCall = sdk.methodCallWrapper as jest.MockedFunction<typeof sdk.methodCallWrapper>;
+const mockedMethodCall = getThreadMessagesDdp as jest.MockedFunction<typeof getThreadMessagesDdp>;
+const mockedGetSingleMessage = getSingleMessage as jest.Mock;
+const mockedGetPage = getThreadMessagesPage as jest.Mock;
+const mockedIsPaginated = isThreadMessagesPaginated as jest.Mock;
 const mockedGetThreadById = getThreadById as jest.MockedFunction<typeof getThreadById>;
 const mockedBuildMessage = buildMessage as jest.MockedFunction<typeof buildMessage>;
 const mockedDecryptMessages = Encryption.decryptMessages as jest.Mock;
@@ -604,5 +604,183 @@ describe('loadThreadMessages thread_messages unit', () => {
 
 		expect(mockedLog).toHaveBeenCalledWith(dbError);
 		expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ _id: 'R1' })]));
+	});
+});
+
+describe('thread message pagination', () => {
+	const reply = (id: string) => ({ _id: id, rid: RID, tmid: TMID, msg: id, _updatedAt: new Date() });
+	const parent = () => buildParent(new Date('2026-01-02'), []);
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		setupDatabase();
+		mockedIsPaginated.mockReturnValue(true);
+		mockedGetThreadById.mockResolvedValue(null);
+		mockedGetSingleMessage.mockResolvedValue({ success: true, message: parent() });
+	});
+
+	afterEach(() => {
+		mockedIsPaginated.mockReturnValue(false);
+	});
+
+	it('loads the root and only the first page when opening a thread', async () => {
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1'), reply('R2')], total: 5 });
+
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(mockedGetPage).toHaveBeenCalledTimes(1);
+		expect(mockedGetPage).toHaveBeenCalledWith({ tmid: TMID, offset: 0 });
+		expect(threadsCreated).toHaveLength(1);
+		expect(hasMoreThreadMessages(TMID)).toBe(true);
+	});
+
+	it('reports no more messages when the first page holds the whole thread', async () => {
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 1 });
+
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(hasMoreThreadMessages(TMID)).toBe(false);
+	});
+
+	it('fetches the next page from the number of replies already fetched', async () => {
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1'), reply('R2')], total: 3 });
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R3')], total: 3 });
+
+		await loadMoreThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(mockedGetPage).toHaveBeenLastCalledWith({ tmid: TMID, offset: 2 });
+		expect(threadsCreated).toHaveLength(1);
+		expect(hasMoreThreadMessages(TMID)).toBe(false);
+	});
+
+	it('does not request another page while one is in flight', async () => {
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R2')], total: 3 });
+
+		await Promise.all([loadMoreThreadMessages({ tmid: TMID, rid: RID }), loadMoreThreadMessages({ tmid: TMID, rid: RID })]);
+
+		expect(mockedGetPage).toHaveBeenCalledTimes(2);
+	});
+
+	it('does not call the server when there is nothing more to load', async () => {
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 1 });
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		await loadMoreThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(mockedGetPage).toHaveBeenCalledTimes(1);
+	});
+
+	it('keeps more messages available and logs when a page request fails', async () => {
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+		mockedGetPage.mockRejectedValueOnce(new Error('boom'));
+
+		await loadMoreThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(mockedLog).toHaveBeenCalled();
+		expect(hasMoreThreadMessages(TMID)).toBe(true);
+	});
+
+	it('stops when the server returns an empty page', async () => {
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 5 });
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+		mockedGetPage.mockResolvedValueOnce({ messages: [], total: 5 });
+
+		await loadMoreThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(hasMoreThreadMessages(TMID)).toBe(false);
+	});
+
+	it('loads every remaining page when asked to load all', async () => {
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+		mockedGetPage
+			.mockResolvedValueOnce({ messages: [reply('R2')], total: 3 })
+			.mockResolvedValueOnce({ messages: [reply('R3')], total: 3 });
+
+		await loadAllThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(mockedGetPage).toHaveBeenCalledTimes(3);
+		expect(hasMoreThreadMessages(TMID)).toBe(false);
+	});
+
+	it('gives up on load all when a page request fails', async () => {
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+		mockedGetPage.mockRejectedValue(new Error('boom'));
+
+		await loadAllThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(mockedGetPage).toHaveBeenCalledTimes(2);
+	});
+
+	it('reports more messages by the time the first page is written to the database', async () => {
+		let hasMoreWhenWritten: boolean | undefined;
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
+		dbBatch().mockImplementationOnce(() => {
+			hasMoreWhenWritten = hasMoreThreadMessages(TMID);
+		});
+
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(hasMoreWhenWritten).toBe(true);
+	});
+
+	it('reports the advanced page state by the time a later page is written to the database', async () => {
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 2 });
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+		let hasMoreWhenWritten: boolean | undefined;
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R2')], total: 2 });
+		dbBatch().mockImplementationOnce(() => {
+			hasMoreWhenWritten = hasMoreThreadMessages(TMID);
+		});
+
+		await loadMoreThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(hasMoreWhenWritten).toBe(false);
+	});
+
+	it('does not adopt the pagination state of a first page that failed to save', async () => {
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 1 });
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
+		dbBatch().mockImplementationOnce(() => {
+			throw new Error('db');
+		});
+
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(mockedLog).toHaveBeenCalled();
+		expect(hasMoreThreadMessages(TMID)).toBe(false);
+	});
+
+	it('requests the same page again after saving it failed', async () => {
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R2')], total: 3 });
+		dbBatch().mockImplementationOnce(() => {
+			throw new Error('db');
+		});
+		await loadMoreThreadMessages({ tmid: TMID, rid: RID });
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R2')], total: 3 });
+
+		await loadMoreThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(mockedGetPage).toHaveBeenNthCalledWith(2, { tmid: TMID, offset: 1 });
+		expect(mockedGetPage).toHaveBeenNthCalledWith(3, { tmid: TMID, offset: 1 });
+		expect(hasMoreThreadMessages(TMID)).toBe(true);
+	});
+
+	it('loads the whole thread over DDP and reports no more on older servers', async () => {
+		mockedIsPaginated.mockReturnValue(false);
+		mockedMethodCall.mockResolvedValue([parent(), reply('R1')] as any);
+
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(mockedGetPage).not.toHaveBeenCalled();
+		expect(hasMoreThreadMessages(TMID)).toBe(false);
 	});
 });
