@@ -2,7 +2,7 @@
 
 - **Supported server versions:** 0.70.0+
 - **Supported iOS versions**: 16.4+
-- **Supported Android versions**: 6.0+
+- **Supported Android versions**: 7.0+
 
 ## Download
 
