@@ -1,8 +1,8 @@
-import { type ServerInteraction } from '@rocket.chat/ui-kit';
-
 import { type ITriggerAction, ModalActions, type TModalAction } from '~/containers/UIKit/interfaces';
 import { toServerModalInteractionType, toUserInteraction } from '~/containers/UIKit/interactionAdapters';
+import I18n from '~/i18n';
 import EventEmitter from '~/lib/methods/helpers/events';
+import { showToast } from '~/lib/methods/helpers/showToast';
 import { random } from '~/lib/methods/helpers';
 import Navigation from '~/lib/navigation/appNavigation';
 import { appsApiFetch } from '~/lib/services/appsApiFetch';
@@ -25,8 +25,6 @@ export const generateTriggerId = (appId?: string): string => {
 	return triggerId;
 };
 
-type THandledServerInteractionType = Extract<ServerInteraction, { type: 'modal.open' | 'modal.update' | 'errors' }>['type'];
-const handledServerInteractionTypes: string[] = [ModalActions.OPEN, ModalActions.UPDATE, ModalActions.ERRORS, ModalActions.CLOSE];
 type THandledServerPayload = {
 	triggerId: string;
 	viewId?: string;
@@ -36,7 +34,7 @@ type THandledServerPayload = {
 };
 
 export const handlePayloadUserInteraction = (
-	type: THandledServerInteractionType | string,
+	type: string,
 	{ triggerId, ...data }: THandledServerPayload
 ): TModalAction | undefined => {
 	if (!triggersId.has(triggerId)) {
@@ -44,8 +42,10 @@ export const handlePayloadUserInteraction = (
 	}
 
 	const triggerAppId = invalidateTriggerId(triggerId);
-	if (!handledServerInteractionTypes.includes(type)) {
-		return ModalActions.UNSUPPORTED;
+	const modalType = toServerModalInteractionType(type);
+	if (!modalType) {
+		showToast(I18n.t('App_action_unsupported'));
+		return;
 	}
 	const payloadAppId = data.appId ?? triggerAppId;
 	if (!payloadAppId) {
@@ -63,29 +63,29 @@ export const handlePayloadUserInteraction = (
 		return;
 	}
 
-	if (type === ModalActions.ERRORS) {
+	if (modalType === ModalActions.ERRORS) {
 		EventEmitter.emit(viewId, {
 			...data,
 			appId: payloadAppId,
-			type,
+			type: modalType,
 			triggerId,
 			viewId
 		} as any);
 		return ModalActions.ERRORS;
 	}
 
-	if (type === ModalActions.UPDATE) {
+	if (modalType === ModalActions.UPDATE) {
 		EventEmitter.emit(viewId, {
 			...data,
 			appId: payloadAppId,
-			type,
+			type: modalType,
 			triggerId,
 			viewId
 		} as any);
 		return ModalActions.UPDATE;
 	}
 
-	if (type === ModalActions.OPEN) {
+	if (modalType === ModalActions.OPEN) {
 		Navigation.navigate('ModalBlockView', {
 			data: {
 				...data,
@@ -149,7 +149,7 @@ export async function triggerAction({
 		const modalType = toServerModalInteractionType(interactionType ?? '');
 		if (!modalType) {
 			if (interactionType) {
-				return ModalActions.UNSUPPORTED;
+				showToast(I18n.t('App_action_unsupported'));
 			}
 			return;
 		}

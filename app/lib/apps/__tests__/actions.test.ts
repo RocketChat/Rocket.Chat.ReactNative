@@ -3,6 +3,7 @@ import { generateTriggerId, handlePayloadUserInteraction, triggerAction } from '
 import EventEmitter from '~/lib/methods/helpers/events';
 import fetch from '~/lib/methods/helpers/fetch';
 import Navigation from '~/lib/navigation/appNavigation';
+import { showToast } from '~/lib/methods/helpers/showToast';
 
 jest.mock('~/lib/methods/helpers', () => ({
 	random: jest.fn(() => 'trigger-fixed-id')
@@ -12,6 +13,10 @@ jest.mock('~/lib/methods/helpers/fetch', () => jest.fn());
 
 jest.mock('~/lib/methods/helpers/events', () => ({
 	emit: jest.fn()
+}));
+
+jest.mock('~/lib/methods/helpers/showToast', () => ({
+	showToast: jest.fn()
 }));
 
 jest.mock('~/lib/navigation/appNavigation', () => ({
@@ -208,7 +213,7 @@ describe('actions', () => {
 			await expect(triggerAction(actionInput)).rejects.toThrow('Invalid JSON response from server');
 		});
 
-		it('reports an unsupported surface this client cannot render', async () => {
+		it('shows a toast for an unsupported surface this client cannot render', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
 				text: () =>
@@ -220,7 +225,8 @@ describe('actions', () => {
 					)
 			} as Response);
 
-			await expect(triggerAction(actionInput)).resolves.toBe(ModalActions.UNSUPPORTED);
+			await expect(triggerAction(actionInput)).resolves.toBeUndefined();
+			expect(showToast).toHaveBeenCalledTimes(1);
 		});
 
 		it('reports no action when an app only acknowledges the interaction', async () => {

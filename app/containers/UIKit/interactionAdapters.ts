@@ -54,13 +54,6 @@ export const toUserInteraction = ({
 					rid,
 					triggerId
 				};
-			case 'messageAction':
-				if (!mid || !rid) {
-					throw new Error('mid and rid are required for messageAction interaction');
-				}
-				return { type: 'actionButton', actionId, payload: { context: 'messageAction' }, mid, tmid, rid, triggerId };
-			case 'userDropdownAction':
-				return { type: 'actionButton', actionId, payload: { context: 'userDropdownAction' }, triggerId };
 			default:
 				throw new Error(`Unsupported actionButton context: ${payload.context}`);
 		}

@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { shallowEqual } from 'react-redux';
-import { combineLatest, of } from 'rxjs';
+import { combineLatest, EMPTY, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 import { useAppsStore } from './appsStore';
 import {
@@ -15,13 +16,12 @@ import { applyAuthFilter, applyCategoryFilter, applyRoomFilter, collectPermissio
 import { translateAppKey } from './translations';
 import database from '~/lib/database';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useObservable } from '~/lib/hooks/useObservable';
 import log from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
 import { type TPermissionModel, type TSubscriptionModel } from '~/definitions';
 
 interface IAppActionButtonContext {
-	rid?: string;
-	permissionKey: string;
 	room: IAppActionButtonRoom;
 	roomRoles: string[];
 	permissions: { [permission: string]: string[] };
@@ -44,14 +44,12 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 	const translations = useAppsStore(state => state.translations);
 	const userRoles = useAppSelector(state => getUserSelector(state).roles || [], shallowEqual);
 
-	const [filterContext, setContext] = useState<IAppActionButtonContext | null>(null);
-
 	const permissionKey = collectPermissions(buttons).join(',');
 	const hasButtons = buttons.length > 0;
 
-	useEffect(() => {
+	const context$ = useMemo(() => {
 		if (!hasButtons) {
-			return;
+			return undefined;
 		}
 
 		const db = database.active;
@@ -66,28 +64,28 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 					.observeWithColumns(['roles'])
 			: of([]);
 
-		const subscription = combineLatest([subscription$, permissions$]).subscribe({
-			next: ([subscriptions, permissionRecords]) => {
+		return combineLatest([subscription$, permissions$]).pipe(
+			map(([subscriptions, permissionRecords]): IAppActionButtonContext => {
 				const [sub] = subscriptions as TSubscriptionModel[];
-				setContext({
-					rid,
-					permissionKey,
+				return {
 					room: { t: sub?.t, teamMain: sub?.teamMain, prid: sub?.prid, uids: sub?.uids },
 					roomRoles: sub?.roles ?? [],
 					permissions: (permissionRecords as TPermissionModel[]).reduce<{ [permission: string]: string[] }>((acc, record) => {
 						acc[record.id] = record.roles ?? [];
 						return acc;
 					}, {})
-				});
-			},
-			error: log
-		});
-
-		return () => subscription.unsubscribe();
+				};
+			}),
+			catchError(e => {
+				log(e);
+				return EMPTY;
+			})
+		);
 	}, [hasButtons, rid, permissionKey]);
+	const filterContext = useObservable(context$);
 
 	return useMemo(() => {
-		if (!filterContext || filterContext.rid !== rid || filterContext.permissionKey !== permissionKey) {
+		if (!filterContext) {
 			return [];
 		}
 		const { room, roomRoles, permissions } = filterContext;
@@ -99,5 +97,5 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 				label: translateAppKey({ appId: button.appId, key: button.labelI18n, translations }),
 				button
 			}));
-	}, [buttons, filterContext, permissionKey, rid, translations, userRoles]);
+	}, [buttons, filterContext, translations, userRoles]);
 };

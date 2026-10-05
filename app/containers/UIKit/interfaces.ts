@@ -32,8 +32,7 @@ export const ModalActions = {
 	OPEN: 'modal.open',
 	CLOSE: 'modal.close',
 	UPDATE: 'modal.update',
-	ERRORS: 'errors',
-	UNSUPPORTED: 'unsupported'
+	ERRORS: 'errors'
 } as const;
 
 export type TActionType = (typeof ActionTypes)[keyof typeof ActionTypes];

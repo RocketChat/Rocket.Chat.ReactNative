@@ -1,5 +1,4 @@
 import { ActionTypes, ModalActions } from '~/containers/UIKit/interfaces';
-import { showToast } from '~/lib/methods/helpers/showToast';
 import Navigation from '~/lib/navigation/appNavigation';
 import { triggerAction } from '../actions';
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../triggerActions';
@@ -8,17 +7,12 @@ jest.mock('~/lib/navigation/appNavigation', () => ({
 	back: jest.fn()
 }));
 
-jest.mock('~/lib/methods/helpers/showToast', () => ({
-	showToast: jest.fn()
-}));
-
 jest.mock('../actions', () => ({
 	triggerAction: jest.fn()
 }));
 
 const mockedTriggerAction = triggerAction as jest.MockedFunction<typeof triggerAction>;
 const mockedBack = Navigation.back as jest.MockedFunction<typeof Navigation.back>;
-const mockedShowToast = showToast as jest.Mock;
 
 describe('triggerActions wrappers', () => {
 	beforeEach(() => {
@@ -64,15 +58,6 @@ describe('triggerActions wrappers', () => {
 			expect(mockedBack).toHaveBeenCalledTimes(1);
 		});
 
-		it('keeps the modal open and shows a toast when the interaction is unsupported', async () => {
-			mockedTriggerAction.mockResolvedValueOnce(ModalActions.UNSUPPORTED);
-
-			await triggerSubmitView(submitInput as any);
-
-			expect(mockedBack).not.toHaveBeenCalled();
-			expect(mockedShowToast).toHaveBeenCalledTimes(1);
-		});
-
 		it('does not go back for modal.update', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(ModalActions.UPDATE);
 
@@ -104,14 +89,6 @@ describe('triggerActions wrappers', () => {
 			type: ActionTypes.CLOSED,
 			...input
 		});
-	});
-
-	it('shows a toast when a block action interaction is unsupported', async () => {
-		mockedTriggerAction.mockResolvedValueOnce(ModalActions.UNSUPPORTED);
-
-		await triggerBlockAction({ actionId: 'action-id', appId: 'app-id' } as any);
-
-		expect(mockedShowToast).toHaveBeenCalledTimes(1);
 	});
 
 	it('passes block action payload to triggerAction', () => {
