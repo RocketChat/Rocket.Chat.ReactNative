@@ -18,10 +18,8 @@ pnpm pod-install           # Required before any iOS build
 
 Everything else is a standard `package.json` script.
 
-## Code Style
+## Workflow
 
-- **Oxfmt**: config in `.oxfmtrc.json` (tabs, single quotes, 130 char width, no trailing commas, arrow parens avoid, bracket same line)
-- **Oxlint**: config in `.oxlintrc.json` (import, react, jest, typescript plugins; `eslint-plugin-react-native` and `oxlint-plugin-complexity` loaded via `jsPlugins`)
 - **Before committing**: Run `pnpm format-lint` (repo-wide; takes no file list) and `pnpm test <paths>` for modified files. Nothing enforces this locally — CI is the only gate.
 - **Reviewing**: apply `CODING_STANDARDS.md`.
 
@@ -32,4 +30,4 @@ Everything else is a standard `package.json` script.
 
 ## Continuous Integration
 
-CI triggers, call graph, and manual gates: see `.github/README.md`.
+CI triggers and manual gates: see `.github/README.md`.

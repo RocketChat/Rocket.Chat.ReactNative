@@ -19,3 +19,5 @@ Test files are exempt. List the warnings for changed files with `pnpm exec oxlin
 ## Tests
 
 New test files go in a `__tests__/` folder beside the source, named `*.test.ts(x)`. Existing co-located tests stay where they are until their source is otherwise touched.
+
+Each test must be able to fail when the behavior under test breaks. Flag tautological tests: asserting a value the test itself set, checking a mock was called with what it was just given, or a snapshot standing in for any assertion about behavior.
