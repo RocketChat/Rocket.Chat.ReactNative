@@ -2,7 +2,7 @@ import { expect } from 'e2e';
 
 import { groupMessageCount, type Credentials } from './api';
 import type { Fixtures } from './flows';
-import { firstVisible, LONG_TIMEOUT, succeeds, tapIfVisible, tapWhenUncovered } from './flows';
+import { firstVisible, LONG_TIMEOUT, succeeds, tapIfVisible, tapUntilVisible } from './flows';
 
 const PHOTOS_APP = 'com.apple.mobileslideshow';
 const ANDROID_FILES_APP = 'com.google.android.documentsui';
@@ -84,12 +84,13 @@ export const shareDownloadedFileToRocketChat = async (fixtures: Fixtures, fileNa
 	await expect(shareList).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
-export const sendSharedFileToRoom = async ({ screen }: Fixtures, room: string) => {
+export const sendSharedFileToRoom = async (fixtures: Fixtures, room: string) => {
+	const { screen } = fixtures;
 	await expect(screen.getByText('Send to...')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expect(screen.getByTestId('share-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 	const roomItem = screen.getByTestId(`share-extension-item-${room}`).first();
 	await expect(roomItem).toBeVisible({ timeout: LONG_TIMEOUT });
-	await tapWhenUncovered(roomItem);
+	await tapUntilVisible(fixtures, roomItem, 'share-view');
 	await expect(screen.getByText(`Sending to ${room}`)).toBeVisible({ timeout: SHORT_TIMEOUT });
 	await screen.getByTestId('message-composer-send').tap();
 	await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });

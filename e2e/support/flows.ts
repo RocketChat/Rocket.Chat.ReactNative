@@ -42,7 +42,7 @@ export const firstVisible = async (candidates: readonly Locator[], timeout = LON
 
 export const tapIfVisible = async (target: Locator) => {
 	if (await isVisibleNow(target)) {
-		await target.tap();
+		await tapWhenUncovered(target);
 	}
 };
 
