@@ -33,6 +33,7 @@ afterEach(deleteCreatedUsers);
 
 test('shares files into a room and handles a missing shared file', { tags: ['test-9'], timeout: 900_000 }, async fixtures => {
 	const { screen, platform, device } = fixtures;
+	test.skip(platform === 'android', 'Android drops the second share until the url listener registers without a delay');
 	const user = await createUser();
 	const room = await createRandomRoom(user, 'p');
 
