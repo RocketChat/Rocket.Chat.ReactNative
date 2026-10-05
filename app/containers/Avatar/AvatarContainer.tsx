@@ -1,11 +1,36 @@
 import { type ReactElement } from 'react';
-import { shallowEqual } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
+import { type IApplicationState, type IUser } from '~/definitions';
 import { getUserSelector } from '~/selectors/login';
 import Avatar from './Avatar';
 import { type IAvatar } from './interfaces';
 import { useAvatarETag } from './useAvatarETag';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
+
+interface IAvatarConfig {
+	server: string;
+	serverVersion: string;
+	id: IUser['id'];
+	token: IUser['token'];
+	username: IUser['username'];
+	avatarExternalProviderUrl: string;
+	roomAvatarExternalProviderUrl: string;
+	cdnPrefix: string;
+	blockUnauthenticatedAccess: boolean;
+}
+
+const selectAvatarConfig = createStructuredSelector<IApplicationState, IAvatarConfig>({
+	server: state => state.server.server,
+	serverVersion: state => state.server.version,
+	id: state => getUserSelector(state).id,
+	token: state => getUserSelector(state).token,
+	username: state => getUserSelector(state).username,
+	avatarExternalProviderUrl: state => state.settings.Accounts_AvatarExternalProviderUrl as string,
+	roomAvatarExternalProviderUrl: state => state.settings.Accounts_RoomAvatarExternalProviderUrl as string,
+	cdnPrefix: state => state.settings.CDN_PREFIX as string,
+	blockUnauthenticatedAccess: state => (state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true) as boolean
+});
 
 const AvatarContainer = ({
 	style,
@@ -22,28 +47,17 @@ const AvatarContainer = ({
 	accessibilityLabel,
 	accessible
 }: IAvatar): ReactElement => {
-	const server = useAppSelector(state => state.server.server);
-	const serverVersion = useAppSelector(state => state.server.version);
-	const { id, token, username } = useAppSelector(
-		state => ({
-			id: getUserSelector(state).id,
-			token: getUserSelector(state).token,
-			username: getUserSelector(state).username
-		}),
-		shallowEqual
-	);
-
-	const { avatarExternalProviderUrl, roomAvatarExternalProviderUrl, cdnPrefix } = useAppSelector(
-		state => ({
-			avatarExternalProviderUrl: state.settings.Accounts_AvatarExternalProviderUrl as string,
-			roomAvatarExternalProviderUrl: state.settings.Accounts_RoomAvatarExternalProviderUrl as string,
-			cdnPrefix: state.settings.CDN_PREFIX as string
-		}),
-		shallowEqual
-	);
-	const blockUnauthenticatedAccess = useAppSelector(
-		state => state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true
-	) as boolean;
+	const {
+		server,
+		serverVersion,
+		id,
+		token,
+		username,
+		avatarExternalProviderUrl,
+		roomAvatarExternalProviderUrl,
+		cdnPrefix,
+		blockUnauthenticatedAccess
+	} = useAppSelector(selectAvatarConfig);
 
 	const { avatarETag } = useAvatarETag({ username, text, type, rid, id });
 
