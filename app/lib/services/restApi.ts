@@ -1003,6 +1003,10 @@ export const inviteToken = (token: string): any =>
 
 export const readThreads = (tmid: string): Promise<void> => {
 	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.8.0')) {
+		// RC 8.8.0
+		return sdk.post('chat.readThread', { tmid }).then(() => undefined);
+	}
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
 		// RC 3.4.0
 		return sdk.methodCallWrapper('readThreads', tmid);
