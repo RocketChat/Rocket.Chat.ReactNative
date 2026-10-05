@@ -17,7 +17,7 @@ import { getServerById } from '../database/services/Server';
 import { compareServerVersion } from './helpers';
 import log from './helpers/log';
 import { getUserSelector } from '~/selectors/login';
-import fetch from './helpers/fetch';
+import fetch, { BASIC_AUTH_KEY } from './helpers/fetch';
 import UserPreferences from './userPreferences';
 import { getServerUserIdKey } from '../constants/keys';
 
@@ -58,14 +58,21 @@ const getSessionHeaders = (server: string) => {
 	return isSignedInToServer ? { 'X-Auth-Token': user.token, 'X-User-Id': user.id } : {};
 };
 
+const getBasicAuthHeaders = (server: string) => {
+	const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
+	return basicAuth ? { Authorization: `Basic ${basicAuth}` } : {};
+};
+
 export async function getServerInfo(server: string): Promise<TServerInfoResult> {
 	try {
 		const response = await fetch(`${server}/api/info`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
-				...getSessionHeaders(server)
-			}
+				...getSessionHeaders(server),
+				...getBasicAuthHeaders(server)
+			},
+			skipCustomHeaders: true
 		});
 		try {
 			const serverInfo: IApiServerInfo = await response.json();

