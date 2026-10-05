@@ -183,6 +183,8 @@ jobs:
 
       - name: Redact E2E Report
         if: always()
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: bash .github/scripts/redact-e2e-output.sh
 
       - name: Upload E2E Report
