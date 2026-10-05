@@ -10,7 +10,6 @@ import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { usePermissions } from '~/lib/hooks/usePermissions';
 import { hasNativeHeaderBar, isTablet } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { headerLeftActions, headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
@@ -19,26 +18,23 @@ import { useTheme } from '~/theme';
 import RoomsListHeaderView from '../components/Header';
 import ServersList from '../components/ServersList';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
+import { useNewMessage } from './useNewMessage';
 import { useRoomsListSubtitle } from './useRoomsListSubtitle';
 
 interface IRightActionsParams {
 	issuesWithNotifications?: boolean;
-	canCreateRoom: boolean;
 	disabled?: boolean;
 	dangerColor: string;
 	onTroubleshoot: () => void;
-	onCreate: () => void;
 	onSearch: () => void;
 	onDirectory: () => void;
 }
 
 const getRightActions = ({
 	issuesWithNotifications,
-	canCreateRoom,
 	disabled,
 	dangerColor,
 	onTroubleshoot,
-	onCreate,
 	onSearch,
 	onDirectory
 }: IRightActionsParams): IHeaderAction[] => {
@@ -48,13 +44,6 @@ const getRightActions = ({
 		tintColor: dangerColor,
 		testID: 'rooms-list-view-push-troubleshoot',
 		onPress: onTroubleshoot
-	};
-	const create: IHeaderAction = {
-		label: i18n.t('Create_new_channel_team_dm_discussion'),
-		icon: hasNativeHeaderBar ? 'create' : 'add',
-		testID: 'rooms-list-view-create-channel',
-		disabled,
-		onPress: onCreate
 	};
 	const search: IHeaderAction = {
 		label: i18n.t('Search'),
@@ -71,7 +60,7 @@ const getRightActions = ({
 		disabled,
 		onPress: onDirectory
 	};
-	return [...(issuesWithNotifications ? [troubleshoot] : []), ...(canCreateRoom ? [create] : []), search, directory];
+	return [...(issuesWithNotifications ? [troubleshoot] : []), search, directory];
 };
 
 const getScreenFocusNavigation = (navigation: any, isMasterDetail: boolean) => {
@@ -97,22 +86,7 @@ export const useHeader = () => {
 	const { colors } = useTheme();
 
 	const nativeHeaderSubtitle = useRoomsListSubtitle();
-	const [
-		createPublicChannelPermission,
-		createPrivateChannelPermission,
-		createTeamPermission,
-		createDirectMessagePermission,
-		createDiscussionPermission
-	] = usePermissions(['create-c', 'create-p', 'create-team', 'create-d', 'start-discussion']);
-	const canCreateRoom =
-		[
-			createPublicChannelPermission,
-			createPrivateChannelPermission,
-			createTeamPermission,
-			createDirectMessagePermission,
-			createDiscussionPermission
-		].filter((r: boolean) => r === true).length > 0;
-
+	const { canCreateRoom, goToNewMessage } = useNewMessage();
 	const disabled = supportedVersionsStatus === 'expired' || requirePasswordChange;
 
 	const badgeColor =
@@ -136,16 +110,6 @@ export const useHeader = () => {
 			navigation.navigate('ModalStackNavigator', { screen: 'PushTroubleshootView' });
 		} else {
 			navigation.navigate('PushTroubleshootView');
-		}
-	}, [isMasterDetail, navigation]);
-
-	const goToNewMessage = useCallback(() => {
-		logEvent(events.RL_GO_NEW_MSG);
-
-		if (isMasterDetail) {
-			navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' });
-		} else {
-			navigation.navigate('NewMessageStackNavigator');
 		}
 	}, [isMasterDetail, navigation]);
 
@@ -173,11 +137,9 @@ export const useHeader = () => {
 
 		const rightActions = getRightActions({
 			issuesWithNotifications,
-			canCreateRoom,
 			disabled,
 			dangerColor: colors.fontDanger,
 			onTroubleshoot: navigateToPushTroubleshootView,
-			onCreate: goToNewMessage,
 			onSearch: startSearch,
 			onDirectory: goDirectory
 		});
@@ -191,6 +153,15 @@ export const useHeader = () => {
 				onPress: onDrawerPress
 			};
 			const cancelSearchAction: IHeaderAction = { label: i18n.t('Cancel'), onPress: stopSearch };
+			const newMessageAction: IHeaderAction = {
+				label: i18n.t('Create_new_channel_team_dm_discussion'),
+				icon: 'add',
+				tintColor: colors.buttonBackgroundPrimaryDefault,
+				variant: 'prominent',
+				placement: 'toolbar',
+				disabled,
+				onPress: goToNewMessage
+			};
 			navigation.setOptions({
 				headerTransparent: true,
 				headerStyle: { backgroundColor: `${colors.surfaceNeutral}B3` },
@@ -209,7 +180,9 @@ export const useHeader = () => {
 					onCancelButtonPress: stopSearch
 				},
 				...headerLeftActions([drawerAction]),
-				...headerRightActions(isTablet && searchEnabled ? [cancelSearchAction] : rightActions)
+				...headerRightActions(
+					isTablet && searchEnabled ? [cancelSearchAction] : [...rightActions, ...(canCreateRoom ? [newMessageAction] : [])]
+				)
 			});
 			return;
 		}
@@ -239,11 +212,11 @@ export const useHeader = () => {
 		navigation,
 		isMasterDetail,
 		colors,
-		canCreateRoom,
 		searchEnabled,
+		canCreateRoom,
+		goToNewMessage,
 		goDirectory,
 		navigateToPushTroubleshootView,
-		goToNewMessage,
 		startSearch,
 		stopSearch,
 		search,

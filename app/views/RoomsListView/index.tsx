@@ -7,6 +7,7 @@ import { shallowEqual } from 'react-redux';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { ChangePasswordRequired } from '~/containers/ChangePasswordRequired';
+import { FLOATING_ACTION_BUTTON_CLEARANCE } from '~/containers/FloatingActionButton';
 import RoomItem from '~/containers/RoomItem';
 import { type IRoomItem } from '~/containers/RoomItem/interfaces';
 import { SupportedVersionsExpired } from '~/containers/SupportedVersions';
@@ -14,17 +15,27 @@ import i18n from '~/i18n';
 import { MAX_SIDEBAR_WIDTH } from '~/lib/constants/tablet';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isRead, isTablet } from '~/lib/methods/helpers';
+import {
+	getRoomAvatar,
+	getRoomTitle,
+	getUidDirectMessage,
+	hasNativeHeaderBar,
+	isIOS,
+	isRead,
+	isTablet
+} from '~/lib/methods/helpers';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';
 import Container from './components/Container';
 import ListHeader from './components/ListHeader';
+import NewMessageButton from './components/NewMessageButton';
 import SectionHeader from './components/SectionHeader';
 import RoomsSearchProvider, { RoomsSearchContext } from './contexts/RoomsSearchProvider';
 import { useGetItemLayout } from './hooks/useGetItemLayout';
 import { useHeader } from './hooks/useHeader';
+import { useNewMessage } from './hooks/useNewMessage';
 import { useRefresh } from './hooks/useRefresh';
 import { useSubscriptions } from './hooks/useSubscriptions';
 import styles from './styles';
@@ -50,6 +61,8 @@ const RoomsListView = memo(function RoomsListView() {
 	const changingServer = useAppSelector(state => state.server.changingServer);
 	const { refreshing, onRefresh } = useRefresh({ searching });
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
+	const { canCreateRoom, goToNewMessage } = useNewMessage();
+	const showNewMessageButton = !hasNativeHeaderBar && canCreateRoom && !searchEnabled;
 
 	useEffect(() => {
 		const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -126,24 +139,30 @@ const RoomsListView = memo(function RoomsListView() {
 	}
 
 	return (
-		<FlatList
-			data={searchEnabled ? searchResults : subscriptions}
-			extraData={searchEnabled ? searchResults : subscriptions}
-			keyExtractor={item => `${item.rid}-${searchEnabled}`}
-			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
-			contentContainerStyle={{ paddingBottom: Platform.select({ ios: 0, default: bottom }) }}
-			renderItem={renderItem}
-			ListHeaderComponent={ListHeader}
-			ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}
-			getItemLayout={getItemLayout}
-			contentInsetAdjustmentBehavior={isIOS ? 'automatic' : undefined}
-			keyboardShouldPersistTaps='always'
-			initialNumToRender={INITIAL_NUM_TO_RENDER}
-			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}
-			windowSize={9}
-			onEndReachedThreshold={0.5}
-			keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
-		/>
+		<>
+			<FlatList
+				data={searchEnabled ? searchResults : subscriptions}
+				extraData={searchEnabled ? searchResults : subscriptions}
+				keyExtractor={item => `${item.rid}-${searchEnabled}`}
+				style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
+				contentContainerStyle={{
+					paddingBottom:
+						Platform.select({ ios: 0, default: bottom }) + (showNewMessageButton ? FLOATING_ACTION_BUTTON_CLEARANCE : 0)
+				}}
+				renderItem={renderItem}
+				ListHeaderComponent={ListHeader}
+				ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}
+				getItemLayout={getItemLayout}
+				contentInsetAdjustmentBehavior={isIOS ? 'automatic' : undefined}
+				keyboardShouldPersistTaps='always'
+				initialNumToRender={INITIAL_NUM_TO_RENDER}
+				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}
+				windowSize={9}
+				onEndReachedThreshold={0.5}
+				keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
+			/>
+			{showNewMessageButton ? <NewMessageButton onPress={goToNewMessage} /> : null}
+		</>
 	);
 });
 
