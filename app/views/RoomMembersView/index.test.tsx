@@ -93,6 +93,16 @@ describe('RoomMembersView roles', () => {
 			expect(queryByTestId('room-members-view-header-moderator')).toBeNull();
 		});
 
+		it('does not crash when the ordered endpoint fails', async () => {
+			jest.mocked(getRoomMembers).mockResolvedValue(undefined as any);
+			const { queryByTestId, queryByText } = render(<RoomMembersView />, { wrapper: Wrapper });
+
+			await waitFor(() => expect(getRoomMembers).toHaveBeenCalled());
+			expect(queryByTestId('room-members-view-header-owner')).toBeNull();
+			expect(queryByTestId('room-members-view-header-member')).toBeNull();
+			expect(queryByText('No members found')).toBeNull();
+		});
+
 		it('does not fetch room roles separately', async () => {
 			const { getByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
 			await waitFor(() => getByTestId('room-members-view-item-owner.user'));

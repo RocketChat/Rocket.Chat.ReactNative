@@ -181,6 +181,11 @@ const RoomMembersView = (): ReactElement => {
 				return;
 			}
 
+			if (!membersResult) {
+				updateState({ isLoading: false });
+				return;
+			}
+
 			const existingIds = new Set(members.map(m => m._id));
 			const membersResultFiltered = membersResult?.filter((member: TUserModel) => !existingIds.has(member._id));
 
