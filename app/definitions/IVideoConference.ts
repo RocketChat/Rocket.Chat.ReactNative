@@ -34,7 +34,6 @@ export interface IVideoConferenceUser extends Pick<Required<IUser>, '_id' | 'use
 	joined?: boolean;
 }
 
-// Absent `joined` predates the flag, and entries were only written on join then
 export const hasJoinedVideoConference = (user: Pick<IVideoConferenceUser, 'joined'>): boolean => user.joined !== false;
 export interface IVideoConference extends IRocketChatRecord {
 	type: VideoConferenceType;

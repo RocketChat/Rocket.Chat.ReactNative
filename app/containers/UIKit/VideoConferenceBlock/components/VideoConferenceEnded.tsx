@@ -12,6 +12,9 @@ import useStyle from './styles';
 import { VideoConferenceBaseContainer } from './VideoConferenceBaseContainer';
 import Touch from '~/containers/Touch';
 
+const VIDEO_CONFERENCE_STATUS_EXPIRED: VideoConferenceStatus = 2;
+const VIDEO_CONFERENCE_STATUS_DECLINED: VideoConferenceStatus = 4;
+
 export default function VideoConferenceEnded({
 	users,
 	type,
@@ -30,8 +33,7 @@ export default function VideoConferenceEnded({
 	const { showInitCallActionSheet } = useVideoConf(rid);
 	const isInActiveVoipCall = useIsInActiveVoipCall();
 
-	// VideoConferenceStatus is a declare enum: EXPIRED = 2, DECLINED = 4
-	const notAnswered = status === 2 || status === 4;
+	const notAnswered = status === VIDEO_CONFERENCE_STATUS_EXPIRED || status === VIDEO_CONFERENCE_STATUS_DECLINED;
 
 	return (
 		<VideoConferenceBaseContainer variant='ended'>
