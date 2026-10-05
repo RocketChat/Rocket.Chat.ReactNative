@@ -157,7 +157,6 @@ const RoomsListView = memo(function RoomsListView() {
 		<>
 			<FlatList
 				data={searchEnabled ? searchResults : subscriptions}
-				extraData={searchEnabled ? searchResults : subscriptions}
 				keyExtractor={item => `${item.rid}-${searchEnabled}`}
 				style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
 				contentContainerStyle={{
