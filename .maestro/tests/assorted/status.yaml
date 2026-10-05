@@ -15,6 +15,11 @@ tags:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
 - runFlow:
+    file: '../../helpers/wait-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-sidebar'
+      IOS_LABEL: 'Menu'
+- runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
       ANDROID_ID: 'rooms-list-view-sidebar'
@@ -82,8 +87,17 @@ tags:
 - tapOn:
     id: 'status-view-input'
 - inputText: 'status-text-new'
-- tapOn:
-    id: 'status-view'
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - tapOn:
+          id: 'status-view'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - pressKey: enter
 - tapOn:
     id: 'status-view-submit'
 - extendedWaitUntil:
