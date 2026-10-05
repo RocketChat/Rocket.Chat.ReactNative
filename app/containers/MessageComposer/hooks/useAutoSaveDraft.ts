@@ -35,16 +35,13 @@ export const useAutoSaveDraft = (textRef: RefObject<string>) => {
 	}, [routeName, textRef, composerStore, messageActionStore]);
 
 	useEffect(() => {
-		if (!focused) return;
-		const interval = setInterval(saveDraft, AUTO_SAVE_INTERVAL);
+		const interval = focused ? setInterval(saveDraft, AUTO_SAVE_INTERVAL) : undefined;
 
 		return () => {
 			clearInterval(interval);
 			saveDraft();
 		};
 	}, [focused, saveDraft]);
-
-	useEffect(() => saveDraft, [saveDraft]);
 
 	return { saveDraft };
 };
