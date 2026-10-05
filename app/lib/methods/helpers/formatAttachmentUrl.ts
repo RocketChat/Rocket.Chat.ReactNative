@@ -28,8 +28,8 @@ const getOrigin = (url: string): string | null => {
 };
 
 const getCdnPrefix = (): string => {
-	const cdnPrefix = (store.getState().settings.CDN_PREFIX as string | undefined)?.trim();
-	return cdnPrefix?.startsWith('http') ? cdnPrefix.replace(/\/+$/, '') : '';
+	const cdnPrefix = (store.getState().settings.CDN_PREFIX as string | undefined)?.trim()?.replace(/\/+$/, '');
+	return cdnPrefix && getOrigin(cdnPrefix) ? cdnPrefix : '';
 };
 
 const isTrustedUrl = (url: string, server: string): boolean => {

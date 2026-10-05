@@ -83,6 +83,13 @@ describe('formatAttachmentUrl', () => {
 		expect(formatAttachmentUrl('https://cdn.qa.rocket.chat/a.png', 'uid', 'tok', SERVER)).not.toContain('rc_token');
 	});
 
+	it('falls back to the server when the CDN_PREFIX starts with http but is not a valid url', () => {
+		mockSettings({ CDN_PREFIX: 'https-not-a-url' });
+		expect(formatAttachmentUrl('/file-upload/1/a.png', 'uid', 'tok', SERVER)).toBe(
+			`${SERVER}/file-upload/1/a.png?rc_token=tok&rc_uid=uid`
+		);
+	});
+
 	it('does not add credentials when files are not protected', () => {
 		mockSettings({ FileUpload_ProtectFiles: false });
 		expect(formatAttachmentUrl(`${SERVER}/a.png`, 'uid', 'tok', SERVER)).toBe(`${SERVER}/a.png`);
