@@ -124,11 +124,22 @@ export const spotlight = (
 	usernames: string[],
 	type: { users: boolean; rooms: boolean; mentions: boolean },
 	rid?: string
-): Promise<ISpotlight> =>
+): Promise<ISpotlight> => {
+	const serverVersion = reduxStore.getState().server.version;
+	// RC 8.6.0 added the usernames, type and rid query params to GET spotlight
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+		return sdk.get('spotlight', {
+			query: search,
+			type: JSON.stringify(type),
+			...(usernames.length ? { usernames: usernames.join(',') } : {}),
+			...(rid ? { rid } : {})
+		}) as Promise<ISpotlight>;
+	}
 	// RC 0.51.0
-	rid
+	return rid
 		? sdk.methodCallWrapper('spotlight', search, usernames, type, rid)
 		: sdk.methodCallWrapper('spotlight', search, usernames, type);
+};
 
 export const createDirectMessage = (username: string) =>
 	// RC 0.59.0
