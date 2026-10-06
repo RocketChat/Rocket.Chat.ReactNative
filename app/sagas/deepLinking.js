@@ -55,15 +55,12 @@ const consentCopy = {
 	}
 };
 
-const getConsentMode = (params = {}) => (params.token ? 'login' : 'open');
-
-const confirmDeepLinkLogin = (host, params = {}) =>
+const confirmDeepLinkConsent = (host, params, copy) =>
 	new Promise(resolve => {
 		if (shouldAutoConfirmDeepLinkLogin(process.env.RUNNING_E2E_TESTS === 'true', params)) {
 			resolve(true);
 			return;
 		}
-		const copy = consentCopy[getConsentMode(params)];
 		showConfirmationAlert({
 			title: I18n.t(copy.title),
 			message: I18n.t(copy.description, { server: host }),
@@ -164,21 +161,22 @@ const fallbackNavigation = function* fallbackNavigation() {
 	yield put(appInit());
 };
 
-const declineDeepLinkLogin = function* declineDeepLinkLogin(mode) {
+const declineDeepLinkConsent = function* declineDeepLinkConsent(copy) {
 	const currentRoot = yield select(state => state.app.root);
 	if (currentRoot) {
-		showToast(I18n.t(consentCopy[mode].declined));
+		showToast(I18n.t(copy.declined));
 	}
 	yield fallbackNavigation();
 };
 
-const ensureDeepLinkConsent = function* ensureDeepLinkConsent(host, params, isKnownHost) {
-	if (!params.token && isKnownHost) {
+const ensureDeepLinkConsent = function* ensureDeepLinkConsent(host, params, serverRecord) {
+	if (!params.token && serverRecord) {
 		return true;
 	}
-	const confirmed = yield call(confirmDeepLinkLogin, host, params);
+	const copy = consentCopy[params.token ? 'login' : 'open'];
+	const confirmed = yield call(confirmDeepLinkConsent, host, params, copy);
 	if (!confirmed) {
-		yield declineDeepLinkLogin(getConsentMode(params));
+		yield declineDeepLinkConsent(copy);
 		return false;
 	}
 	return true;
@@ -315,7 +313,7 @@ const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, 
 		yield* handleKnownServerDeepLink({ params, host, version: serverRecord.version });
 		return;
 	}
-	if (!(yield ensureDeepLinkConsent(host, params, !!serverRecord))) {
+	if (!(yield ensureDeepLinkConsent(host, params, serverRecord))) {
 		return;
 	}
 	const result = yield getServerInfo(host);
@@ -456,7 +454,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 		return;
 	}
 
-	if (!(yield ensureDeepLinkConsent(host, params, !!serverRecord))) {
+	if (!(yield ensureDeepLinkConsent(host, params, serverRecord))) {
 		return;
 	}
 	// if deep link is from a different server

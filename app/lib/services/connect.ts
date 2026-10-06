@@ -36,10 +36,8 @@ import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { isIOS } from '../methods/helpers/deviceInfo';
 import { isSsl } from '../methods/helpers/isSsl';
 import { normalizeStatusExpiresAt } from '../methods/helpers/normalizeStatusExpiresAt';
-import fetch, { setBasicAuth } from '../methods/helpers/fetch';
-import { getBasicAuthHeader } from '../methods/getBasicAuthHeader';
-import UserPreferences from '../methods/userPreferences';
-import { getBasicAuthKey } from '../constants/keys';
+import fetch from '../methods/helpers/fetch';
+import { applyBasicAuth, getBasicAuthHeader } from '../methods/getBasicAuthHeader';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -428,7 +426,7 @@ function disconnect(): void {
 
 function connectWithBasicAuth(client: RocketchatClient, server: string) {
 	const previousHeaders = RocketChatSettings.customHeaders;
-	setBasicAuth(UserPreferences.getString(getBasicAuthKey(server)));
+	applyBasicAuth(server);
 	try {
 		return client.connect();
 	} finally {

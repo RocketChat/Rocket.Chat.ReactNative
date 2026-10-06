@@ -22,14 +22,14 @@ import { clearActiveUsers } from '../actions/activeUsers';
 import database from '../lib/database';
 import log, { logServerVersion } from '../lib/methods/helpers/log';
 import I18n from '../i18n';
-import { setBasicAuth } from '../lib/methods/helpers/fetch';
+import { applyBasicAuth } from '../lib/methods/getBasicAuthHeader';
 import { appStart } from '../actions/app';
 import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER, getBasicAuthKey } from '../lib/constants/keys';
+import { CERTIFICATE_KEY, CURRENT_SERVER } from '../lib/constants/keys';
 import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
 import { getStoredSession } from '../lib/methods/loggedInServer';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
@@ -60,8 +60,6 @@ const getServerVersion = function (version: string | null) {
 	}
 	throw new Error('Server version not found');
 };
-
-const applyBasicAuth = (server: string) => setBasicAuth(UserPreferences.getString(getBasicAuthKey(server)));
 
 const upsertServer = async function ({ server, serverInfo }: { server: string; serverInfo: IServerInfo }): Promise<TServerModel> {
 	const serversDB = database.servers;
