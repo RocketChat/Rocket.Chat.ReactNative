@@ -1,10 +1,8 @@
-import { shallowEqual, useDispatch } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 
-import { setUser } from '~/actions/login';
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import log from '~/lib/methods/helpers/log';
-import { saveSidebarCategories } from '~/lib/services/restApi';
 import {
 	CONVERSATIONS_GROUP,
 	isVisibleGroup,
@@ -12,6 +10,7 @@ import {
 	toSidebarCategories
 } from '~/views/RoomsListView/utils/sidebarGroupOrder';
 import { useSidebarCategories } from '~/views/RoomsListView/hooks/useSidebarCategories';
+import { useSaveSidebarCategories } from '~/views/RoomsListView/hooks/useSaveSidebarCategories';
 
 export interface ICategoryOrderGroup {
 	id: string;
@@ -19,7 +18,7 @@ export interface ICategoryOrderGroup {
 }
 
 export const useCategoryOrder = () => {
-	const dispatch = useDispatch();
+	const saveOptimistically = useSaveSidebarCategories();
 	const { storedCategories, customCategoryNames, sectionsOrder, groupOrder } = useSidebarCategories();
 	const { showFavorites, groupByType } = useAppSelector(state => state.sortPreferences, shallowEqual);
 	const visibleGroups = groupOrder.filter(key => isVisibleGroup(key, { customCategoryNames, showFavorites, groupByType }));
@@ -35,11 +34,9 @@ export const useCategoryOrder = () => {
 	const saveOrder = async (orderedIds: string[]) => {
 		const reorderedGroups = showsConversations ? [...orderedIds, CONVERSATIONS_GROUP] : orderedIds;
 		const sidebarCategories = toSidebarCategories(storedCategories, reorderGroups(groupOrder, reorderedGroups), sectionsOrder);
-		dispatch(setUser({ sidebarCategories }));
 		try {
-			await saveSidebarCategories(sidebarCategories);
+			await saveOptimistically(sidebarCategories, storedCategories);
 		} catch (error) {
-			dispatch(setUser({ sidebarCategories: storedCategories }));
 			log(error);
 		}
 	};
