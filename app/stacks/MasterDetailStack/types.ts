@@ -7,6 +7,8 @@ import { type IMessage, type TAnyMessageModel } from '~/definitions/IMessage';
 import { type ISubscription, type SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
 import { type TChangeAvatarViewContext } from '~/definitions/TChangeAvatarViewContext';
 import { type CategoryViewParams } from '~/views/CategoryView';
+import { type CategoryRoomsViewParams } from '~/views/CreateCategoryView/CategoryRoomsView';
+import { type ConfirmCategoryViewParams } from '~/views/CreateCategoryView/ConfirmCategoryView';
 
 export type MasterDetailChatsStackParamList = {
 	RoomView: {
@@ -176,6 +178,9 @@ export type ModalStackParamList = {
 	CategoryOrderView: undefined;
 	AdminPanelView: undefined;
 	NewMessageView: undefined;
+	CreateCategoryView: undefined;
+	CategoryRoomsView: CategoryRoomsViewParams;
+	ConfirmCategoryView: ConfirmCategoryViewParams;
 	CreateChannelView: {
 		isTeam?: boolean; // TODO: To check
 		teamId?: string;

@@ -697,6 +697,25 @@ export const saveUserPreferences = (data: Partial<INotificationPreferences & IMe
 export const saveSidebarCategories = (sidebarCategories: ISidebarCategory[]) =>
 	sdk.post('users.setPreferences', { data: { sidebarCategories } });
 
+export const setRoomsCategory = async (roomIds: string[], category: string) => {
+	const { login, server } = reduxStore.getState();
+	const { user } = login;
+	const response = await fetch(`${server.server}/api/experimental/rooms.setCategory`, {
+		method: 'POST',
+		headers: {
+			...RocketChatSettings.customHeaders,
+			'Content-Type': 'application/json',
+			'X-Auth-Token': user.token,
+			'X-User-Id': user.id
+		},
+		body: JSON.stringify({ roomIds, category })
+	});
+	if (!response.ok) {
+		const errorBody = await response.json().catch(() => undefined);
+		throw new Error(errorBody?.error || `${response.status} ${response.statusText}`);
+	}
+};
+
 export const saveNotificationSettings = (roomId: string, notifications: IRoomNotifications) =>
 	// RC 0.63.0
 	sdk.post('rooms.saveNotification', { roomId, notifications });

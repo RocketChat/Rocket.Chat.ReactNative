@@ -66,6 +66,8 @@ export const reorderGroups = (groupOrder: string[], reorderedGroups: string[]) =
 
 const DYNAMIC_GROUPS: readonly string[] = ['Incoming_Calls', 'Incoming_Livechats', 'Open_Livechats', 'On_Hold_Chats', 'Unread'];
 
+export const SYSTEM_GROUPS: readonly string[] = [...DYNAMIC_GROUPS, ...DEFAULT_GROUP_ORDER];
+
 export const toSidebarCategories = (storedCategories: ISidebarCategory[], groupOrder: string[]): ISidebarCategory[] => {
 	const storedById = new Map(storedCategories.map(category => [category._id, category]));
 	const storedDynamicGroups = storedCategories.map(category => category._id).filter(id => DYNAMIC_GROUPS.includes(id));

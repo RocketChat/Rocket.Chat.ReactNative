@@ -55,6 +55,9 @@ import ScreenLockConfigView from '~/views/ScreenLockConfigView';
 import AdminPanelView from '~/views/AdminPanelView';
 import NewMessageView from '~/views/NewMessageView';
 import CreateChannelView from '~/views/CreateChannelView';
+import CreateCategoryView from '~/views/CreateCategoryView';
+import CategoryRoomsView from '~/views/CreateCategoryView/CategoryRoomsView';
+import ConfirmCategoryView from '~/views/CreateCategoryView/ConfirmCategoryView';
 import UserPreferencesView from '~/views/UserPreferencesView';
 import UserNotificationPrefView from '~/views/UserNotificationPreferencesView';
 import LegalView from '~/views/LegalView';
@@ -253,6 +256,9 @@ const ModalStack = createNativeStackNavigator({
 		CategoryOrderView,
 		AdminPanelView,
 		NewMessageView,
+		CreateCategoryView,
+		CategoryRoomsView,
+		ConfirmCategoryView,
 		CreateChannelView,
 		CreateDiscussionView: CreateDiscussionViewScreen,
 		E2ESaveYourPasswordView,

@@ -68,6 +68,9 @@ import ThemeView from '../views/ThemeView';
 import AdminPanelView from '../views/AdminPanelView';
 import NewMessageView from '../views/NewMessageView';
 import CreateChannelView from '../views/CreateChannelView';
+import CreateCategoryView from '../views/CreateCategoryView';
+import CategoryRoomsView from '../views/CreateCategoryView/CategoryRoomsView';
+import ConfirmCategoryView from '../views/CreateCategoryView/ConfirmCategoryView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
 import ForwardMessageView from '../views/ForwardMessageView';
 import E2ESaveYourPasswordView from '../views/E2ESaveYourPasswordView';
@@ -308,7 +311,10 @@ const NewMessageStack = createNativeStackNavigator({
 		SelectedUsersView: SelectedUsersViewScreen,
 		CreateChannelView: CreateChannelViewScreen,
 		CreateDiscussionView: CreateDiscussionViewScreen,
-		ForwardMessageView: ForwardMessageViewScreen
+		ForwardMessageView: ForwardMessageViewScreen,
+		CreateCategoryView,
+		CategoryRoomsView,
+		ConfirmCategoryView
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);

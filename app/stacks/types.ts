@@ -18,6 +18,8 @@ import {
 	type IVisitor
 } from '../definitions';
 import { type CategoryViewParams } from '../views/CategoryView';
+import { type CategoryRoomsViewParams } from '../views/CreateCategoryView/CategoryRoomsView';
+import { type ConfirmCategoryViewParams } from '../views/CreateCategoryView/ConfirmCategoryView';
 import { type ModalStackParamList } from './MasterDetailStack/types';
 import { type TNavigation } from './stackType';
 
@@ -274,6 +276,9 @@ export type NewMessageStackParamList = {
 	ForwardMessageView: {
 		message: TAnyMessageModel;
 	};
+	CreateCategoryView: undefined;
+	CategoryRoomsView: CategoryRoomsViewParams;
+	ConfirmCategoryView: ConfirmCategoryViewParams;
 };
 
 export type E2ESaveYourPasswordStackParamList = {

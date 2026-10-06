@@ -31,6 +31,7 @@ interface IStackedSearchBarOptions {
 	onChangeText: (text: string) => void;
 	onCancel?: () => void;
 	onSearch?: () => void;
+	placeholder?: string;
 }
 
 export const stackedSearchBarOptions = ({
@@ -38,12 +39,13 @@ export const stackedSearchBarOptions = ({
 	onFocus,
 	onChangeText,
 	onCancel,
-	onSearch
+	onSearch,
+	placeholder = I18n.t('Search')
 }: IStackedSearchBarOptions): SearchBarProps => ({
 	ref,
 	placement: 'stacked',
 	hideWhenScrolling: false,
-	placeholder: I18n.t('Search'),
+	placeholder,
 	onFocus,
 	onChangeText: event => onChangeText(event.nativeEvent.text),
 	onSearchButtonPress: onSearch,
