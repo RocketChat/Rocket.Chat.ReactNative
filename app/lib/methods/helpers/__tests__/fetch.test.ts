@@ -16,6 +16,10 @@ describe('fetch helper', () => {
 		global.fetch = fetchMock as unknown as typeof global.fetch;
 	});
 
+	afterEach(() => {
+		RocketChatSettings.customHeaders = headers;
+	});
+
 	it('drops headers whose value is undefined or null', async () => {
 		await fetchWithHeaders('https://open.rocket.chat/api/info', {
 			method: 'GET',
@@ -53,7 +57,5 @@ describe('fetch helper', () => {
 				'User-Agent': headers['User-Agent']
 			}
 		});
-
-		RocketChatSettings.customHeaders = headers;
 	});
 });
