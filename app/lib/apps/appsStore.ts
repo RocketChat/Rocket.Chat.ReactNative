@@ -13,7 +13,6 @@ export type TAppTranslations = { [appId: string]: TTranslationsByLanguage };
 type TAppsState = {
 	actionButtons: IAppActionButton[];
 	translations: TAppTranslations;
-	loaded: boolean;
 };
 
 type TAppsActions = {
@@ -24,8 +23,7 @@ type TAppsActions = {
 
 const initialState: TAppsState = {
 	actionButtons: [],
-	translations: {},
-	loaded: false
+	translations: {}
 };
 
 const logUnlessAppsUnavailable = (e: unknown) => {
@@ -45,7 +43,7 @@ export const useAppsStore = create<TAppsState & TAppsActions>(set => ({
 		const current = ++actionButtonsRequest;
 		try {
 			const actionButtons = await getAppActionButtons();
-			if (current === actionButtonsRequest) set({ actionButtons, loaded: true });
+			if (current === actionButtonsRequest) set({ actionButtons });
 		} catch (e) {
 			logUnlessAppsUnavailable(e);
 		}

@@ -281,13 +281,26 @@ describe('actions', () => {
 			expect(showToast).toHaveBeenCalledTimes(1);
 		});
 
-		it('reports no action when an app only acknowledges the interaction', async () => {
+		it('closes when an app only acknowledges the interaction', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
 				text: () => Promise.resolve(JSON.stringify({ success: true }))
 			} as Response);
 
-			await expect(triggerAction(actionInput)).resolves.toBeUndefined();
+			await expect(triggerAction(actionInput)).resolves.toBe(ModalActions.CLOSE);
+		});
+
+		it('keeps the stream reply when the HTTP body repeats it', async () => {
+			mockedFetch.mockImplementationOnce(async () => {
+				handlePayloadUserInteraction(ModalActions.UPDATE, { triggerId: 'trigger-fixed-id', viewId: 'view-id' });
+				return {
+					ok: true,
+					text: () =>
+						Promise.resolve(JSON.stringify({ type: ModalActions.UPDATE, triggerId: 'trigger-fixed-id', viewId: 'view-id' }))
+				} as Response;
+			});
+
+			await expect(triggerAction(actionInput)).resolves.toBe(ModalActions.UPDATE);
 		});
 
 		it('reports the stream reply when the app acknowledged after answering over the stream', async () => {

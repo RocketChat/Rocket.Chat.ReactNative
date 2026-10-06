@@ -18,8 +18,6 @@ const invalidateTriggerId = (id: string) => {
 	return appId;
 };
 
-// The trigger stays valid while the request is in flight and for TRIGGER_TIMEOUT after it settles,
-// so a reply the app sends over the stream is still accepted when it lands after the HTTP response.
 export const withTriggerId = async <T>(appId: string | undefined, request: (triggerId: string) => Promise<T>): Promise<T> => {
 	const triggerId = random(17);
 	triggersId.set(triggerId, appId);
@@ -83,19 +81,15 @@ export const handlePayloadUserInteraction = (
 		return modalType;
 	}
 
-	if (modalType === ModalActions.OPEN) {
-		Navigation.navigate('ModalBlockView', {
-			data: {
-				...data,
-				appId: payloadAppId,
-				triggerId,
-				viewId
-			}
-		});
-		return ModalActions.OPEN;
-	}
-
-	return modalType;
+	Navigation.navigate('ModalBlockView', {
+		data: {
+			...data,
+			appId: payloadAppId,
+			triggerId,
+			viewId
+		}
+	});
+	return ModalActions.OPEN;
 };
 
 export function triggerAction({
@@ -149,15 +143,12 @@ export function triggerAction({
 				showToast(I18n.t('App_action_unsupported'));
 				return;
 			}
-			// The app may have already answered over the stream (e.g. updated or replaced the modal)
-			return handledTriggers.get(triggerId);
+			return handledTriggers.get(triggerId) ?? ModalActions.CLOSE;
 		}
 		if (modalType === ModalActions.CLOSE) {
 			return ModalActions.CLOSE;
 		}
 
-		return handlePayloadUserInteraction(modalType, data as THandledServerPayload);
-	}).catch(e => {
-		throw e instanceof Error ? e : new Error('Failed to trigger action');
+		return handlePayloadUserInteraction(modalType, data as THandledServerPayload) ?? handledTriggers.get(triggerId);
 	});
 }
