@@ -15,7 +15,7 @@ const displayPreferenceOptions = [
 	'display-pref-view-name',
 	'display-pref-view-unread',
 	'display-pref-view-favorites',
-	'display-pref-view-types'
+	'display-pref-view-categories'
 ];
 
 test('changes the rooms list display preferences', { tags: ['test-8'] }, async fixtures => {
