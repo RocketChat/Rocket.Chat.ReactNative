@@ -17,13 +17,36 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
           "$type": "listStyle",
           "style": "insetGrouped",
         },
+        {
+          "$type": "scrollContentBackground",
+          "visible": "hidden",
+        },
+        {
+          "$type": "background",
+          "style": {
+            "color": "#F7F8FA",
+            "type": "color",
+          },
+        },
       ]
     }
     onGlobalEvent={[Function]}
     onSelectionChange={[Function]}
   >
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -106,7 +129,19 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -189,7 +224,19 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -293,7 +340,19 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -417,6 +476,17 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
           "$type": "listStyle",
           "style": "insetGrouped",
         },
+        {
+          "$type": "scrollContentBackground",
+          "visible": "hidden",
+        },
+        {
+          "$type": "background",
+          "style": {
+            "color": "#F7F8FA",
+            "type": "color",
+          },
+        },
       ]
     }
     onGlobalEvent={[Function]}
@@ -444,6 +514,15 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
             "leading": 0,
             "top": 0,
             "trailing": 0,
+          },
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
           },
         ]
       }
@@ -518,6 +597,15 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
             "top": 0,
             "trailing": 0,
           },
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
         ]
       }
       onGlobalEvent={[Function]}
@@ -589,6 +677,17 @@ exports[`Story Snapshots: Icon should match snapshot 1`] = `
           "$type": "listStyle",
           "style": "insetGrouped",
         },
+        {
+          "$type": "scrollContentBackground",
+          "visible": "hidden",
+        },
+        {
+          "$type": "background",
+          "style": {
+            "color": "#F7F8FA",
+            "type": "color",
+          },
+        },
       ]
     }
     onGlobalEvent={[Function]}
@@ -616,6 +715,15 @@ exports[`Story Snapshots: Icon should match snapshot 1`] = `
             "leading": 0,
             "top": 0,
             "trailing": 0,
+          },
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
           },
         ]
       }
@@ -965,13 +1073,36 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
           "$type": "listStyle",
           "style": "insetGrouped",
         },
+        {
+          "$type": "scrollContentBackground",
+          "visible": "hidden",
+        },
+        {
+          "$type": "background",
+          "style": {
+            "color": "#F7F8FA",
+            "type": "color",
+          },
+        },
       ]
     }
     onGlobalEvent={[Function]}
     onSelectionChange={[Function]}
   >
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -1051,7 +1182,19 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -1155,13 +1298,36 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
           "$type": "listStyle",
           "style": "insetGrouped",
         },
+        {
+          "$type": "scrollContentBackground",
+          "visible": "hidden",
+        },
+        {
+          "$type": "background",
+          "style": {
+            "color": "#F7F8FA",
+            "type": "color",
+          },
+        },
       ]
     }
     onGlobalEvent={[Function]}
     onSelectionChange={[Function]}
   >
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -1261,7 +1427,19 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -1341,7 +1519,19 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -1421,7 +1611,19 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -1586,6 +1788,17 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
             "$type": "listStyle",
             "style": "insetGrouped",
           },
+          {
+            "$type": "scrollContentBackground",
+            "visible": "hidden",
+          },
+          {
+            "$type": "background",
+            "style": {
+              "color": "#F7F8FA",
+              "type": "color",
+            },
+          },
         ]
       }
       onGlobalEvent={[Function]}
@@ -1596,7 +1809,19 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           name="content"
         >
           <ViewManagerAdapter_ExpoUI
-            modifiers={[]}
+            modifiers={
+              [
+                {
+                  "$type": "listRowBackground",
+                  "color": "#FFFFFF",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#EBECEF",
+                  "edges": undefined,
+                },
+              ]
+            }
             onGlobalEvent={[Function]}
           >
             <ViewManagerAdapter_ExpoUI
@@ -1658,7 +1883,19 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
             </ViewManagerAdapter_ExpoUI>
           </ViewManagerAdapter_ExpoUI>
           <ViewManagerAdapter_ExpoUI
-            modifiers={[]}
+            modifiers={
+              [
+                {
+                  "$type": "listRowBackground",
+                  "color": "#FFFFFF",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#EBECEF",
+                  "edges": undefined,
+                },
+              ]
+            }
             onGlobalEvent={[Function]}
           >
             <ViewManagerAdapter_ExpoUI
@@ -1726,7 +1963,19 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           name="content"
         >
           <ViewManagerAdapter_ExpoUI
-            modifiers={[]}
+            modifiers={
+              [
+                {
+                  "$type": "listRowBackground",
+                  "color": "#FFFFFF",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#EBECEF",
+                  "edges": undefined,
+                },
+              ]
+            }
             onGlobalEvent={[Function]}
           >
             <ViewManagerAdapter_ExpoUI
@@ -1788,7 +2037,19 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
             </ViewManagerAdapter_ExpoUI>
           </ViewManagerAdapter_ExpoUI>
           <ViewManagerAdapter_ExpoUI
-            modifiers={[]}
+            modifiers={
+              [
+                {
+                  "$type": "listRowBackground",
+                  "color": "#FFFFFF",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#EBECEF",
+                  "edges": undefined,
+                },
+              ]
+            }
             onGlobalEvent={[Function]}
           >
             <ViewManagerAdapter_ExpoUI
@@ -1865,7 +2126,19 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           name="content"
         >
           <ViewManagerAdapter_ExpoUI
-            modifiers={[]}
+            modifiers={
+              [
+                {
+                  "$type": "listRowBackground",
+                  "color": "#FFFFFF",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#EBECEF",
+                  "edges": undefined,
+                },
+              ]
+            }
             onGlobalEvent={[Function]}
           >
             <ViewManagerAdapter_ExpoUI
@@ -1927,7 +2200,19 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
             </ViewManagerAdapter_ExpoUI>
           </ViewManagerAdapter_ExpoUI>
           <ViewManagerAdapter_ExpoUI
-            modifiers={[]}
+            modifiers={
+              [
+                {
+                  "$type": "listRowBackground",
+                  "color": "#FFFFFF",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#EBECEF",
+                  "edges": undefined,
+                },
+              ]
+            }
             onGlobalEvent={[Function]}
           >
             <ViewManagerAdapter_ExpoUI
@@ -2004,7 +2289,19 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           name="content"
         >
           <ViewManagerAdapter_ExpoUI
-            modifiers={[]}
+            modifiers={
+              [
+                {
+                  "$type": "listRowBackground",
+                  "color": "#FFFFFF",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#EBECEF",
+                  "edges": undefined,
+                },
+              ]
+            }
             onGlobalEvent={[Function]}
           >
             <ViewManagerAdapter_ExpoUI
@@ -2066,7 +2363,19 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
             </ViewManagerAdapter_ExpoUI>
           </ViewManagerAdapter_ExpoUI>
           <ViewManagerAdapter_ExpoUI
-            modifiers={[]}
+            modifiers={
+              [
+                {
+                  "$type": "listRowBackground",
+                  "color": "#FFFFFF",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#EBECEF",
+                  "edges": undefined,
+                },
+              ]
+            }
             onGlobalEvent={[Function]}
           >
             <ViewManagerAdapter_ExpoUI
@@ -2151,6 +2460,17 @@ exports[`Story Snapshots: Separator should match snapshot 1`] = `
           "$type": "listStyle",
           "style": "insetGrouped",
         },
+        {
+          "$type": "scrollContentBackground",
+          "visible": "hidden",
+        },
+        {
+          "$type": "background",
+          "style": {
+            "color": "#F7F8FA",
+            "type": "color",
+          },
+        },
       ]
     }
     onGlobalEvent={[Function]}
@@ -2176,13 +2496,36 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
           "$type": "listStyle",
           "style": "insetGrouped",
         },
+        {
+          "$type": "scrollContentBackground",
+          "visible": "hidden",
+        },
+        {
+          "$type": "background",
+          "style": {
+            "color": "#F7F8FA",
+            "type": "color",
+          },
+        },
       ]
     }
     onGlobalEvent={[Function]}
     onSelectionChange={[Function]}
   >
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -2244,7 +2587,19 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -2330,7 +2685,19 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -2417,7 +2784,19 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -2544,6 +2923,17 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
             "$type": "listStyle",
             "style": "insetGrouped",
           },
+          {
+            "$type": "scrollContentBackground",
+            "visible": "hidden",
+          },
+          {
+            "$type": "background",
+            "style": {
+              "color": "#F7F8FA",
+              "type": "color",
+            },
+          },
         ]
       }
       onGlobalEvent={[Function]}
@@ -2584,6 +2974,15 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   "leading": 0,
                   "top": 0,
                   "trailing": 0,
+                },
+                {
+                  "$type": "listRowBackground",
+                  "color": "#FFFFFF",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#EBECEF",
+                  "edges": undefined,
                 },
               ]
             }
@@ -2890,6 +3289,15 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   "leading": 0,
                   "top": 0,
                   "trailing": 0,
+                },
+                {
+                  "$type": "listRowBackground",
+                  "color": "#FFFFFF",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#EBECEF",
+                  "edges": undefined,
                 },
               ]
             }
@@ -3214,6 +3622,15 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   "top": 0,
                   "trailing": 0,
                 },
+                {
+                  "$type": "listRowBackground",
+                  "color": "#FFFFFF",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#EBECEF",
+                  "edges": undefined,
+                },
               ]
             }
             onGlobalEvent={[Function]}
@@ -3519,6 +3936,15 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   "leading": 0,
                   "top": 0,
                   "trailing": 0,
+                },
+                {
+                  "$type": "listRowBackground",
+                  "color": "#FFFFFF",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#EBECEF",
+                  "edges": undefined,
                 },
               ]
             }
@@ -3850,6 +4276,17 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             "$type": "listStyle",
             "style": "insetGrouped",
           },
+          {
+            "$type": "scrollContentBackground",
+            "visible": "hidden",
+          },
+          {
+            "$type": "background",
+            "style": {
+              "color": "#16181a",
+              "type": "color",
+            },
+          },
         ]
       }
       onGlobalEvent={[Function]}
@@ -3890,6 +4327,15 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   "leading": 0,
                   "top": 0,
                   "trailing": 0,
+                },
+                {
+                  "$type": "listRowBackground",
+                  "color": "#262931",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#2F343D",
+                  "edges": undefined,
                 },
               ]
             }
@@ -3984,7 +4430,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                         undefined,
                       ]
                     }
-                    underlayColor="#16181a"
+                    underlayColor="#2D3039"
                   >
                     <View
                       style={{}}
@@ -4032,7 +4478,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                               style={
                                 [
                                   {
-                                    "color": "#E4E7EA",
+                                    "color": "#C1C7D0",
                                     "fontSize": 24,
                                   },
                                   [
@@ -4087,7 +4533,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                                   },
                                   undefined,
                                   {
-                                    "color": "#E4E7EA",
+                                    "color": "#C1C7D0",
                                   },
                                 ]
                               }
@@ -4145,7 +4591,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                               style={
                                 [
                                   {
-                                    "color": "#E4E7EA",
+                                    "color": "#C1C7D0",
                                     "fontSize": 24,
                                   },
                                   [
@@ -4196,6 +4642,15 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   "leading": 0,
                   "top": 0,
                   "trailing": 0,
+                },
+                {
+                  "$type": "listRowBackground",
+                  "color": "#262931",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#2F343D",
+                  "edges": undefined,
                 },
               ]
             }
@@ -4290,7 +4745,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                         undefined,
                       ]
                     }
-                    underlayColor="#16181a"
+                    underlayColor="#2D3039"
                   >
                     <View
                       style={{}}
@@ -4340,7 +4795,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                               style={
                                 [
                                   {
-                                    "color": "#E4E7EA",
+                                    "color": "#C1C7D0",
                                     "fontSize": 24,
                                   },
                                   [
@@ -4395,7 +4850,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                                   },
                                   undefined,
                                   {
-                                    "color": "#E4E7EA",
+                                    "color": "#C1C7D0",
                                   },
                                 ]
                               }
@@ -4453,7 +4908,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                               style={
                                 [
                                   {
-                                    "color": "#E4E7EA",
+                                    "color": "#C1C7D0",
                                     "fontSize": 24,
                                   },
                                   [
@@ -4520,6 +4975,15 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   "top": 0,
                   "trailing": 0,
                 },
+                {
+                  "$type": "listRowBackground",
+                  "color": "#262931",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#2F343D",
+                  "edges": undefined,
+                },
               ]
             }
             onGlobalEvent={[Function]}
@@ -4613,7 +5077,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                         undefined,
                       ]
                     }
-                    underlayColor="#16181a"
+                    underlayColor="#2D3039"
                   >
                     <View
                       style={{}}
@@ -4661,7 +5125,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                               style={
                                 [
                                   {
-                                    "color": "#E4E7EA",
+                                    "color": "#C1C7D0",
                                     "fontSize": 24,
                                   },
                                   [
@@ -4716,7 +5180,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                                   },
                                   undefined,
                                   {
-                                    "color": "#E4E7EA",
+                                    "color": "#C1C7D0",
                                   },
                                 ]
                               }
@@ -4774,7 +5238,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                               style={
                                 [
                                   {
-                                    "color": "#E4E7EA",
+                                    "color": "#C1C7D0",
                                     "fontSize": 24,
                                   },
                                   [
@@ -4825,6 +5289,15 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   "leading": 0,
                   "top": 0,
                   "trailing": 0,
+                },
+                {
+                  "$type": "listRowBackground",
+                  "color": "#262931",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#2F343D",
+                  "edges": undefined,
                 },
               ]
             }
@@ -4919,7 +5392,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                         undefined,
                       ]
                     }
-                    underlayColor="#16181a"
+                    underlayColor="#2D3039"
                   >
                     <View
                       style={{}}
@@ -4969,7 +5442,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                               style={
                                 [
                                   {
-                                    "color": "#E4E7EA",
+                                    "color": "#C1C7D0",
                                     "fontSize": 24,
                                   },
                                   [
@@ -5024,7 +5497,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                                   },
                                   undefined,
                                   {
-                                    "color": "#E4E7EA",
+                                    "color": "#C1C7D0",
                                   },
                                 ]
                               }
@@ -5082,7 +5555,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                               style={
                                 [
                                   {
-                                    "color": "#E4E7EA",
+                                    "color": "#C1C7D0",
                                     "fontSize": 24,
                                   },
                                   [
@@ -5135,13 +5608,36 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
           "$type": "listStyle",
           "style": "insetGrouped",
         },
+        {
+          "$type": "scrollContentBackground",
+          "visible": "hidden",
+        },
+        {
+          "$type": "background",
+          "style": {
+            "color": "#F7F8FA",
+            "type": "color",
+          },
+        },
       ]
     }
     onGlobalEvent={[Function]}
     onSelectionChange={[Function]}
   >
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -5203,7 +5699,19 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -5324,6 +5832,17 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             "$type": "listStyle",
             "style": "insetGrouped",
           },
+          {
+            "$type": "scrollContentBackground",
+            "visible": "hidden",
+          },
+          {
+            "$type": "background",
+            "style": {
+              "color": "#1F2329",
+              "type": "color",
+            },
+          },
         ]
       }
       onGlobalEvent={[Function]}
@@ -5364,6 +5883,15 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   "leading": 0,
                   "top": 0,
                   "trailing": 0,
+                },
+                {
+                  "$type": "listRowBackground",
+                  "color": "#262931",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#2F343D",
+                  "edges": undefined,
                 },
               ]
             }
@@ -5670,6 +6198,15 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   "leading": 0,
                   "top": 0,
                   "trailing": 0,
+                },
+                {
+                  "$type": "listRowBackground",
+                  "color": "#262931",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#2F343D",
+                  "edges": undefined,
                 },
               ]
             }
@@ -5994,6 +6531,15 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   "top": 0,
                   "trailing": 0,
                 },
+                {
+                  "$type": "listRowBackground",
+                  "color": "#262931",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#2F343D",
+                  "edges": undefined,
+                },
               ]
             }
             onGlobalEvent={[Function]}
@@ -6299,6 +6845,15 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   "leading": 0,
                   "top": 0,
                   "trailing": 0,
+                },
+                {
+                  "$type": "listRowBackground",
+                  "color": "#262931",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#2F343D",
+                  "edges": undefined,
                 },
               ]
             }
@@ -7646,13 +8201,36 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
           "$type": "listStyle",
           "style": "insetGrouped",
         },
+        {
+          "$type": "scrollContentBackground",
+          "visible": "hidden",
+        },
+        {
+          "$type": "background",
+          "style": {
+            "color": "#F7F8FA",
+            "type": "color",
+          },
+        },
       ]
     }
     onGlobalEvent={[Function]}
     onSelectionChange={[Function]}
   >
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -7735,7 +8313,19 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -7818,7 +8408,19 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -7946,7 +8548,19 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       </ViewManagerAdapter_ExpoUI>
     </ViewManagerAdapter_ExpoUI>
     <ViewManagerAdapter_ExpoUI
-      modifiers={[]}
+      modifiers={
+        [
+          {
+            "$type": "listRowBackground",
+            "color": "#FFFFFF",
+          },
+          {
+            "$type": "listRowSeparatorTint",
+            "color": "#EBECEF",
+            "edges": undefined,
+          },
+        ]
+      }
       onGlobalEvent={[Function]}
     >
       <ViewManagerAdapter_ExpoUI
@@ -8069,6 +8683,17 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
             "$type": "listStyle",
             "style": "insetGrouped",
           },
+          {
+            "$type": "scrollContentBackground",
+            "visible": "hidden",
+          },
+          {
+            "$type": "background",
+            "style": {
+              "color": "#F7F8FA",
+              "type": "color",
+            },
+          },
         ]
       }
       onGlobalEvent={[Function]}
@@ -8109,6 +8734,15 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   "leading": 0,
                   "top": 0,
                   "trailing": 0,
+                },
+                {
+                  "$type": "listRowBackground",
+                  "color": "#FFFFFF",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#EBECEF",
+                  "edges": undefined,
                 },
               ]
             }
@@ -8415,6 +9049,15 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   "leading": 0,
                   "top": 0,
                   "trailing": 0,
+                },
+                {
+                  "$type": "listRowBackground",
+                  "color": "#FFFFFF",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#EBECEF",
+                  "edges": undefined,
                 },
               ]
             }
@@ -8739,6 +9382,15 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   "top": 0,
                   "trailing": 0,
                 },
+                {
+                  "$type": "listRowBackground",
+                  "color": "#FFFFFF",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#EBECEF",
+                  "edges": undefined,
+                },
               ]
             }
             onGlobalEvent={[Function]}
@@ -9044,6 +9696,15 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   "leading": 0,
                   "top": 0,
                   "trailing": 0,
+                },
+                {
+                  "$type": "listRowBackground",
+                  "color": "#FFFFFF",
+                },
+                {
+                  "$type": "listRowSeparatorTint",
+                  "color": "#EBECEF",
+                  "edges": undefined,
                 },
               ]
             }

@@ -123,6 +123,7 @@ export type ChatsStackParamList = {
 		room: TSubscriptionModel;
 	};
 	DirectoryView: undefined;
+	DisplayPrefsView: undefined;
 	E2EEToggleRoomView: {
 		rid: string;
 	};

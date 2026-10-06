@@ -1,38 +1,56 @@
 import { useNavigation } from '@react-navigation/native';
 import { memo, useContext, useEffect } from 'react';
-import { BackHandler, FlatList, Platform, RefreshControl } from 'react-native';
+import { BackHandler, Platform, RefreshControl } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { shallowEqual } from 'react-redux';
+import { shallowEqual, useStore } from 'react-redux';
 
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { ChangePasswordRequired } from '~/containers/ChangePasswordRequired';
-import RoomItem from '~/containers/RoomItem';
+import { FLOATING_ACTION_BUTTON_CLEARANCE } from '~/containers/FloatingActionButton';
 import { type IRoomItem } from '~/containers/RoomItem/interfaces';
+import { type IApplicationState } from '~/definitions';
 import { SupportedVersionsExpired } from '~/containers/SupportedVersions';
 import i18n from '~/i18n';
 import { MAX_SIDEBAR_WIDTH } from '~/lib/constants/tablet';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isRead, isTablet } from '~/lib/methods/helpers';
+import {
+	getRoomAvatar,
+	getRoomTitle,
+	getUidDirectMessage,
+	hasNativeHeaderBar,
+	isIOS,
+	isRead,
+	isTablet
+} from '~/lib/methods/helpers';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';
 import Container from './components/Container';
 import ListHeader from './components/ListHeader';
+import NewMessageButton from './components/NewMessageButton';
 import SectionHeader from './components/SectionHeader';
+import SectionRevealFooter from './components/SectionRevealFooter';
+import SectionRoomItem from './components/SectionRoomItem';
 import RoomsSearchProvider, { RoomsSearchContext } from './contexts/RoomsSearchProvider';
+import { useCollapsedGroups } from './hooks/useCollapsedGroups';
 import { useGetItemLayout } from './hooks/useGetItemLayout';
 import { useHeader } from './hooks/useHeader';
+import { useNewMessage } from './hooks/useNewMessage';
 import { useRefresh } from './hooks/useRefresh';
+import { SECTION_REFLOW, useSectionToggleAnimation } from './hooks/useSectionToggleAnimation';
 import { useSubscriptions } from './hooks/useSubscriptions';
+import { useWarmUpMessageBlocks } from './hooks/useWarmUpMessageBlocks';
 import styles from './styles';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const RoomsListView = memo(function RoomsListView() {
 	useHeader();
+	useWarmUpMessageBlocks();
 	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsSearchContext);
 	const { colors } = useTheme();
 	const username = useAppSelector(state => getUserSelector(state).username);
@@ -45,11 +63,17 @@ const RoomsListView = memo(function RoomsListView() {
 	const { width } = useSafeAreaFrame();
 	const { bottom } = useSafeAreaInsets();
 	const getItemLayout = useGetItemLayout();
-	const { subscriptions, loading } = useSubscriptions();
-	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
+	const { collapsedGroups, toggleGroup } = useCollapsedGroups();
+	const { subscriptions, loading } = useSubscriptions(collapsedGroups);
+	const { onToggle, rowEntering, rowExiting, badgeEntering, badgeExiting, revealKey, coverEntering, coverExiting } =
+		useSectionToggleAnimation(collapsedGroups, toggleGroup, subscriptions.length);
+	const store = useStore<IApplicationState>();
+	const focusedRoom = useAppSelector(state => (isMasterDetail ? state.room.subscribedRoom : undefined));
 	const changingServer = useAppSelector(state => state.server.changingServer);
 	const { refreshing, onRefresh } = useRefresh({ searching });
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
+	const { canCreateRoom, goToNewMessage } = useNewMessage();
+	const showNewMessageButton = !hasNativeHeaderBar && canCreateRoom && !searchEnabled;
 
 	useEffect(() => {
 		const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -67,7 +91,7 @@ const RoomsListView = memo(function RoomsListView() {
 		if (!isMasterDetail && !navigation.isFocused()) {
 			return;
 		}
-		if (item.rid === subscribedRoom) {
+		if (item.rid === store.getState().room.subscribedRoom) {
 			return;
 		}
 
@@ -78,7 +102,22 @@ const RoomsListView = memo(function RoomsListView() {
 
 	const renderItem = ({ item }: { item: IRoomItem }) => {
 		if (item.separator) {
-			return <SectionHeader header={item.rid} title={item.name} />;
+			return (
+				<SectionHeader
+					header={item.rid}
+					title={item.name}
+					collapsed={item.collapsed ?? false}
+					unread={item.unread}
+					userMentions={item.userMentions}
+					groupMentions={item.groupMentions}
+					tunread={item.tunread}
+					tunreadUser={item.tunreadUser}
+					tunreadGroup={item.tunreadGroup}
+					onToggle={onToggle}
+					badgeEntering={badgeEntering}
+					badgeExiting={badgeExiting}
+				/>
+			);
 		}
 
 		const id = item.search && item.t === 'd' ? item._id : getUidDirectMessage(item);
@@ -86,7 +125,9 @@ const RoomsListView = memo(function RoomsListView() {
 		const swipeEnabled = !(item?.search || item?.joinCodeRequired || item?.outside);
 
 		return (
-			<RoomItem
+			<SectionRoomItem
+				entering={rowEntering}
+				exiting={rowExiting}
 				item={item}
 				id={id}
 				username={username}
@@ -98,7 +139,7 @@ const RoomsListView = memo(function RoomsListView() {
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}
 				getIsRead={isRead}
-				isFocused={isMasterDetail && subscribedRoom === item.rid}
+				isFocused={focusedRoom === item.rid}
 				swipeEnabled={swipeEnabled}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
@@ -126,24 +167,37 @@ const RoomsListView = memo(function RoomsListView() {
 	}
 
 	return (
-		<FlatList
-			data={searchEnabled ? searchResults : subscriptions}
-			extraData={searchEnabled ? searchResults : subscriptions}
-			keyExtractor={item => `${item.rid}-${searchEnabled}`}
-			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
-			contentContainerStyle={{ paddingBottom: Platform.select({ ios: 0, default: bottom }) }}
-			renderItem={renderItem}
-			ListHeaderComponent={ListHeader}
-			ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}
-			getItemLayout={getItemLayout}
-			contentInsetAdjustmentBehavior={isIOS ? 'automatic' : undefined}
-			keyboardShouldPersistTaps='always'
-			initialNumToRender={INITIAL_NUM_TO_RENDER}
-			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}
-			windowSize={9}
-			onEndReachedThreshold={0.5}
-			keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
-		/>
+		<>
+			<Animated.FlatList
+				data={searchEnabled ? searchResults : subscriptions}
+				keyExtractor={item => `${item.rid}-${searchEnabled}`}
+				style={[styles.list, { backgroundColor: colors.surfaceTint }]}
+				contentContainerStyle={{
+					paddingBottom:
+						Platform.select({ ios: 0, default: bottom }) + (showNewMessageButton ? FLOATING_ACTION_BUTTON_CLEARANCE : 0)
+				}}
+				renderItem={renderItem}
+				itemLayoutAnimation={SECTION_REFLOW}
+				ListHeaderComponent={ListHeader}
+				ListFooterComponent={
+					searching ? (
+						<ActivityIndicator />
+					) : (
+						<SectionRevealFooter revealKey={revealKey} entering={coverEntering} exiting={coverExiting} />
+					)
+				}
+				removeClippedSubviews={false}
+				getItemLayout={getItemLayout}
+				contentInsetAdjustmentBehavior={isIOS ? 'automatic' : undefined}
+				keyboardShouldPersistTaps='always'
+				initialNumToRender={INITIAL_NUM_TO_RENDER}
+				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}
+				windowSize={9}
+				onEndReachedThreshold={0.5}
+				keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
+			/>
+			{showNewMessageButton ? <NewMessageButton onPress={goToNewMessage} /> : null}
+		</>
 	);
 });
 

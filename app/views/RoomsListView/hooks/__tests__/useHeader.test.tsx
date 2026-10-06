@@ -141,7 +141,23 @@ describe('RoomsListView useHeader', () => {
 		expect(options.headerSubtitle).toBe(expectedSubtitle);
 	});
 
-	it('builds the right cluster in push-troubleshoot, create, directory order', () => {
+	it('builds the right cluster in push-troubleshoot, directory, display order, then the toolbar create item', () => {
+		const originalDev = __DEV__;
+		// @ts-expect-error __DEV__ is not writable but we need to test
+		global.__DEV__ = false;
+		mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
+
+		renderUseHeader();
+
+		// @ts-expect-error __DEV__ is not writable but we need to test
+		global.__DEV__ = originalDev;
+		const options = mockSetOptions.mock.calls[0][0];
+		const rightItems = options.unstable_headerRightItems();
+		const labels = rightItems.map((item: { accessibilityLabel: string }) => item.accessibilityLabel);
+		expect(labels).toEqual(['Troubleshooting', 'Directory', 'Display', 'Create new channel, team, direct message or discussion']);
+	});
+
+	it('hides push troubleshooting in development builds', () => {
 		mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
 
 		renderUseHeader();
@@ -149,7 +165,23 @@ describe('RoomsListView useHeader', () => {
 		const options = mockSetOptions.mock.calls[0][0];
 		const rightItems = options.unstable_headerRightItems();
 		const labels = rightItems.map((item: { accessibilityLabel: string }) => item.accessibilityLabel);
-		expect(labels).toEqual(['Troubleshooting', 'Create new channel, team, direct message or discussion', 'Directory']);
+		expect(labels).not.toContain('Troubleshooting');
+	});
+
+	it('places only the create item in the toolbar, as a prominent button', () => {
+		renderUseHeader();
+
+		const options = mockSetOptions.mock.calls[0][0];
+		const toolbarItems = options
+			.unstable_headerRightItems()
+			.filter((item: { placement?: string }) => item.placement === 'toolbar');
+		expect(toolbarItems).toEqual([
+			expect.objectContaining({
+				accessibilityLabel: 'Create new channel, team, direct message or discussion',
+				type: 'button',
+				variant: 'prominent'
+			})
+		]);
 	});
 
 	it('renders only buttons when push troubleshooting is absent', () => {
@@ -158,7 +190,7 @@ describe('RoomsListView useHeader', () => {
 		const options = mockSetOptions.mock.calls[0][0];
 		const rightItems = options.unstable_headerRightItems();
 		const labels = rightItems.map((item: { accessibilityLabel: string }) => item.accessibilityLabel);
-		expect(labels).toEqual(['Create new channel, team, direct message or discussion', 'Directory']);
+		expect(labels).toEqual(['Directory', 'Display', 'Create new channel, team, direct message or discussion']);
 		expect(rightItems.every((item: { type: string }) => item.type === 'button')).toBe(true);
 	});
 

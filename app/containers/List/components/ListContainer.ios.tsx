@@ -4,8 +4,11 @@ import { Host } from '@expo/ui';
 import { Group, List, RNHostView } from '@expo/ui/swift-ui';
 import {
 	alignmentGuide,
+	background,
 	frame,
+	listRowBackground,
 	listRowInsets,
+	listRowSeparatorTint,
 	listStyle,
 	onGeometryChange,
 	scrollContentBackground,
@@ -29,7 +32,7 @@ const styles = StyleSheet.create({
 
 const insetGroupedModifiers = [listStyle('insetGrouped')];
 const sidebarModifiers = [listStyle('sidebar')];
-const hiddenBackgroundModifiers = [scrollContentBackground('hidden')];
+const hiddenBackgroundModifier = scrollContentBackground('hidden');
 
 export interface IListSelection {
 	selectedTag: string | null;
@@ -51,7 +54,7 @@ const rowSelectionTag = (element: ReactElement) => (element.props as { testID?: 
 const selectedTags = ({ selectedTag }: IListSelection) => (selectedTag ? [selectedTag] : []);
 
 const ListContainer = ({ children, testID, selection, backgroundHidden }: IListContainer) => {
-	const { theme } = useTheme();
+	const { theme, colors } = useTheme();
 	const [rowWidth, setRowWidth] = useState(0);
 
 	const selectionTag = (row: ReactElement) => {
@@ -59,11 +62,19 @@ const ListContainer = ({ children, testID, selection, backgroundHidden }: IListC
 		return rowTag && selection ? [tag(rowTag)] : [];
 	};
 
+	const isSelectedRow = (row: ReactElement) => Boolean(selection?.selectedTag) && rowSelectionTag(row) === selection?.selectedTag;
+
+	const rowColorModifiers = (row: ReactElement) => [
+		listRowBackground(isSelectedRow(row) ? colors.surfaceSelected : colors.surfaceLight),
+		listRowSeparatorTint(colors.strokeExtraLight)
+	];
+
 	const rowModifiers = (row: ReactElement) => [
 		frame({ maxWidth: Number.MAX_SAFE_INTEGER }),
 		alignmentGuide('listRowSeparatorLeading', hasLeftIcon(row) ? PADDING_HORIZONTAL * 2 + ICON_SIZE : PADDING_HORIZONTAL),
 		onGeometryChange(({ width }) => setRowWidth(current => (current === width ? current : width))),
 		listRowInsets({ top: 0, leading: 0, bottom: 0, trailing: 0 }),
+		...rowColorModifiers(row),
 		...selectionTag(row)
 	];
 
@@ -78,7 +89,7 @@ const ListContainer = ({ children, testID, selection, backgroundHidden }: IListC
 	);
 
 	const renderNativeRow = (row: ReactElement) => (
-		<Group key={row.key} modifiers={selectionTag(row)}>
+		<Group key={row.key} modifiers={[...rowColorModifiers(row), ...selectionTag(row)]}>
 			{row}
 		</Group>
 	);
@@ -87,11 +98,12 @@ const ListContainer = ({ children, testID, selection, backgroundHidden }: IListC
 
 	return (
 		<NativeListContext.Provider value={{ mode: 'native', renderRow }}>
-			<Host style={styles.host} colorScheme={theme === 'light' ? 'light' : 'dark'}>
+			<Host key={theme} style={styles.host} colorScheme={theme === 'light' ? 'light' : 'dark'}>
 				<List
 					modifiers={[
 						...(selection ? sidebarModifiers : insetGroupedModifiers),
-						...(backgroundHidden ? hiddenBackgroundModifiers : [])
+						hiddenBackgroundModifier,
+						...(backgroundHidden ? [] : [background(colors.surfaceTint)])
 					]}
 					selection={selection ? selectedTags(selection) : undefined}
 					testID={testID}>

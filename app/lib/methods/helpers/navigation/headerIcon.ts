@@ -6,6 +6,7 @@ const HEADER_ICON_SIZE = 30;
 const HEADER_ICON_GLYPH_PADDING = HEADER_ICON_SIZE / 12;
 
 const HEADER_ICONS: TIconsName[] = [
+	'add',
 	'chat-close',
 	'chat-forward',
 	'close',
@@ -24,6 +25,7 @@ const HEADER_ICONS: TIconsName[] = [
 	'phone',
 	'search',
 	'settings',
+	'sort',
 	'threads',
 	'workspaces'
 ];

@@ -1,5 +1,5 @@
 diff --git a/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js b/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
-index a56cb12..3b65c3a 100644
+index a56cb12fc83995973fad7d9e851d6fdbaf999a17..3b65c3a1a0d63c92788acb6b3c4d3fee7138b0c3 100644
 --- a/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
 +++ b/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
 @@ -149,7 +149,13 @@ export function useHeaderConfigProps({
@@ -48,7 +48,7 @@ index a56cb12..3b65c3a 100644
      titleFontFamily,
      titleFontSize,
 diff --git a/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts b/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
-index c32d1da..c011b9b 100644
+index c32d1da73d44f5820fbd3272551e5f42c3e6c1dc..55d9210725faf7d14e57fb0f399cf74137488596 100644
 --- a/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
 +++ b/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
 @@ -321,6 +321,74 @@ export type NativeStackNavigationOptions = {
@@ -126,16 +126,24 @@ index c32d1da..c011b9b 100644
      /**
       * How to align the the header title.
       * Defaults to `left` on platforms other than iOS.
-@@ -937,6 +1005,7 @@ export type NativeStackHeaderItemButton = SharedHeaderItem & {
+@@ -937,6 +1005,15 @@ export type NativeStackHeaderItemButton = SharedHeaderItem & {
       * Read more: https://developer.apple.com/documentation/uikit/uibarbuttonitem/isselected
       */
      selected?: boolean;
 +    showsLabelWithIcon?: boolean;
++    /**
++     * Places the item in the bottom toolbar, beside the search field when it is integrated there.
++     *
++     * @platform ios
++     *
++     * @supported iOS 26 or higher
++     */
++    placement?: 'toolbar';
  };
  /**
   * An action item in a menu.
 diff --git a/node_modules/@react-navigation/native-stack/src/types.tsx b/node_modules/@react-navigation/native-stack/src/types.tsx
-index aeb4939..3e02d47 100644
+index aeb4939eccbc210d570f978dddbdb45205ad6e66..0eeef43fc092a0fc9897c01b4d11e10a8e5208b5 100644
 --- a/node_modules/@react-navigation/native-stack/src/types.tsx
 +++ b/node_modules/@react-navigation/native-stack/src/types.tsx
 @@ -371,6 +371,74 @@ export type NativeStackNavigationOptions = {
@@ -213,16 +221,24 @@ index aeb4939..3e02d47 100644
    /**
     * How to align the the header title.
     * Defaults to `left` on platforms other than iOS.
-@@ -994,6 +1062,7 @@ export type NativeStackHeaderItemButton = SharedHeaderItem & {
+@@ -994,6 +1062,15 @@ export type NativeStackHeaderItemButton = SharedHeaderItem & {
     * Read more: https://developer.apple.com/documentation/uikit/uibarbuttonitem/isselected
     */
    selected?: boolean;
 +  showsLabelWithIcon?: boolean;
++  /**
++   * Places the item in the bottom toolbar, beside the search field when it is integrated there.
++   *
++   * @platform ios
++   *
++   * @supported iOS 26 or higher
++   */
++  placement?: 'toolbar';
  };
  
  /**
 diff --git a/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx b/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx
-index a7e3004..180964c 100644
+index a7e3004318753aa0757b038da1e7fbc8663a7f02..180964cab76821c847a42358df94498fa71a500a 100644
 --- a/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx
 +++ b/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx
 @@ -210,7 +210,13 @@ export function useHeaderConfigProps({

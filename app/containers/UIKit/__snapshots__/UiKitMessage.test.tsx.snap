@@ -3138,7 +3138,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                 "padding": 16,
               },
               {
-                "backgroundColor": "#0d0d0d",
+                "backgroundColor": "#262931",
               },
             ]
           }
@@ -3233,7 +3233,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#E4E7EA",
+                        "color": "#C1C7D0",
                       },
                     ]
                   }
@@ -3289,7 +3289,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                                 "lineHeight": 22,
                               },
                               {
-                                "color": "#E4E7EA",
+                                "color": "#C1C7D0",
                               },
                               {
                                 "backgroundColor": "transparent",
@@ -3366,7 +3366,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#E4E7EA",
+                        "color": "#C1C7D0",
                       },
                     ]
                   }
@@ -3422,7 +3422,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                                 "lineHeight": 22,
                               },
                               {
-                                "color": "#E4E7EA",
+                                "color": "#C1C7D0",
                               },
                               {
                                 "backgroundColor": "transparent",
@@ -3471,7 +3471,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                 "padding": 16,
               },
               {
-                "backgroundColor": "#0d0d0d",
+                "backgroundColor": "#262931",
               },
             ]
           }
@@ -3566,7 +3566,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#E4E7EA",
+                        "color": "#C1C7D0",
                       },
                     ]
                   }
@@ -3622,7 +3622,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                                 "lineHeight": 22,
                               },
                               {
-                                "color": "#E4E7EA",
+                                "color": "#C1C7D0",
                               },
                               {
                                 "backgroundColor": "transparent",
@@ -3699,7 +3699,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#E4E7EA",
+                        "color": "#C1C7D0",
                       },
                     ]
                   }
@@ -3755,7 +3755,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                                 "lineHeight": 22,
                               },
                               {
-                                "color": "#E4E7EA",
+                                "color": "#C1C7D0",
                               },
                               {
                                 "backgroundColor": "transparent",
@@ -3804,7 +3804,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                 "padding": 16,
               },
               {
-                "backgroundColor": "#0d0d0d",
+                "backgroundColor": "#262931",
               },
             ]
           }
@@ -3899,7 +3899,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#E4E7EA",
+                        "color": "#C1C7D0",
                       },
                     ]
                   }
@@ -3955,7 +3955,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                                 "lineHeight": 22,
                               },
                               {
-                                "color": "#E4E7EA",
+                                "color": "#C1C7D0",
                               },
                               {
                                 "backgroundColor": "transparent",
@@ -4004,7 +4004,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                 "padding": 16,
               },
               {
-                "backgroundColor": "#0d0d0d",
+                "backgroundColor": "#262931",
               },
             ]
           }
@@ -4099,7 +4099,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#E4E7EA",
+                        "color": "#C1C7D0",
                       },
                     ]
                   }
@@ -4155,7 +4155,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                                 "lineHeight": 22,
                               },
                               {
-                                "color": "#E4E7EA",
+                                "color": "#C1C7D0",
                               },
                               {
                                 "backgroundColor": "transparent",
