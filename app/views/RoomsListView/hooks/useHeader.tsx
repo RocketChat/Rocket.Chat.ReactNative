@@ -154,7 +154,7 @@ export const useHeader = () => {
 		}
 
 		const rightActions = getRightActions({
-			issuesWithNotifications,
+			issuesWithNotifications: issuesWithNotifications && !__DEV__,
 			disabled,
 			dangerColor: colors.fontDanger,
 			onTroubleshoot: navigateToPushTroubleshootView,
