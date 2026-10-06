@@ -28,6 +28,11 @@ describe('getSidebarSelection', () => {
 		});
 	});
 
+	it('never selects a row without a route', () => {
+		const items = [item('sidebar-media-call', true)];
+		expect(getSidebarSelection(items, null, null).selectedTag).toBeNull();
+	});
+
 	it('selects nothing when the current route has no row', () => {
 		const items = stackItems.map(stackItem => ({ ...stackItem, selected: false }));
 		expect(getSidebarSelection(items, null, 'Other').selectedTag).toBeNull();
