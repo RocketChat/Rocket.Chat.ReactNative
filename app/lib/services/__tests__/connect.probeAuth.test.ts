@@ -116,6 +116,25 @@ describe('getWebsocketInfo — handshake-only global auth', () => {
 		expect(RocketChatSettings.customHeaders).toMatchObject({ Authorization: 'Basic active-workspace' });
 	});
 
+	it('hands the active headers back before the handshake settles', async () => {
+		RocketChatSettings.customHeaders = { ...headers, Authorization: 'Basic active-workspace' };
+		UserPreferences.setString(getBasicAuthKey(PROBED_SERVER), 'probed-credentials');
+		let settleHandshake = () => {};
+		connectMock.mockImplementationOnce(() => {
+			handshakeHeaders = { ...(RocketChatSettings.customHeaders as Record<string, string>) };
+			return new Promise<void>(resolve => {
+				settleHandshake = resolve;
+			});
+		});
+
+		const pending = getWebsocketInfo({ server: PROBED_SERVER });
+
+		expect(handshakeHeaders).toMatchObject({ Authorization: 'Basic probed-credentials' });
+		expect(RocketChatSettings.customHeaders).toMatchObject({ Authorization: 'Basic active-workspace' });
+		settleHandshake();
+		await expect(pending).resolves.toEqual({ success: true });
+	});
+
 	it('sends no basic auth on the handshake when the probed server has none stored', async () => {
 		RocketChatSettings.customHeaders = { ...headers, Authorization: 'Basic active-workspace' };
 		UserPreferences.setString(getBasicAuthKey(ACTIVE_SERVER), 'active-workspace');

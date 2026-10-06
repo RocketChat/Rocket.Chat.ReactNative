@@ -426,6 +426,16 @@ function disconnect(): void {
 	mediaSessionInstance.reset();
 }
 
+function connectWithBasicAuth(client: RocketchatClient, server: string) {
+	const previousHeaders = RocketChatSettings.customHeaders;
+	setBasicAuth(UserPreferences.getString(getBasicAuthKey(server)));
+	try {
+		return client.connect();
+	} finally {
+		RocketChatSettings.customHeaders = previousHeaders;
+	}
+}
+
 async function getWebsocketInfo({
 	server
 }: {
@@ -433,10 +443,8 @@ async function getWebsocketInfo({
 }): Promise<{ success: true } | { success: false; message: string }> {
 	const websocketSdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 
-	const previousHeaders = RocketChatSettings.customHeaders;
-	setBasicAuth(UserPreferences.getString(getBasicAuthKey(server)));
 	try {
-		await websocketSdk.connect();
+		await connectWithBasicAuth(websocketSdk, server);
 	} catch (err: any) {
 		if (err.message && err.message.includes('400')) {
 			return {
@@ -444,8 +452,6 @@ async function getWebsocketInfo({
 				message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
 			};
 		}
-	} finally {
-		RocketChatSettings.customHeaders = previousHeaders;
 	}
 
 	websocketSdk.disconnect();
