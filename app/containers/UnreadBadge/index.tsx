@@ -103,7 +103,7 @@ const UnreadBadge = memo(
 		}
 		text = text.toString();
 
-		let minWidth = 16;
+		let minWidth = 18;
 		if (small) {
 			minWidth = 11 + text.length * 5;
 		}
