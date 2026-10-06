@@ -19,6 +19,9 @@ export const encodeAttachmentUrl = (url: string): string => {
 };
 
 const getOrigin = (url: string): string | null => {
+	if (!url) {
+		return null;
+	}
 	try {
 		const { protocol, origin } = new URL(url);
 		return protocol === 'http:' || protocol === 'https:' ? origin.toLowerCase() : null;
@@ -28,7 +31,7 @@ const getOrigin = (url: string): string | null => {
 };
 
 const getCdnPrefix = (): string => {
-	const cdnPrefix = (store.getState().settings.CDN_PREFIX as string | undefined)?.trim()?.replace(/\/+$/, '');
+	const cdnPrefix = (store.getState().settings.CDN_PREFIX as string | undefined)?.trim().replace(/\/+$/, '');
 	return cdnPrefix && getOrigin(cdnPrefix) ? cdnPrefix : '';
 };
 
