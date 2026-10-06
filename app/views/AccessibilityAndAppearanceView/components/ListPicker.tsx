@@ -3,8 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
-import { asNativeListRow } from '~/containers/List/native/utils/rowMarkers';
-import { useNativeListMode } from '~/containers/List/native/context';
+import { useIsNativeList } from '~/containers/List/native/context';
 import NativeListPicker from '~/containers/List/native/components/Picker';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
@@ -43,7 +42,7 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const nativeListMode = useNativeListMode();
+	const isNativeList = useIsNativeList();
 
 	const OPTIONS: TOPTIONS = [
 		{
@@ -74,7 +73,7 @@ const ListPicker = ({
 			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
 		}));
 
-	if (nativeListMode === 'native') {
+	if (isNativeList) {
 		return (
 			<NativeListPicker
 				title={title}
@@ -106,4 +105,4 @@ const ListPicker = ({
 	);
 };
 
-export default asNativeListRow(ListPicker);
+export default ListPicker;

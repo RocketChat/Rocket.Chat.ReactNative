@@ -17,7 +17,7 @@ import { useTheme } from '~/theme';
 import I18n from '~/i18n';
 import Icon from './ListIcon';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from '../constants';
-import { useNativeListMode } from '../native/context';
+import { useIsNativeList } from '../native/context';
 import NativeListItem from '../native/components/Item';
 import { CustomIcon } from '~/containers/CustomIcon';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
@@ -261,10 +261,10 @@ export interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListIt
 
 const ListItem = memo(({ ...props }: IListItem) => {
 	const { colors } = useTheme();
-	const nativeListMode = useNativeListMode();
-	const backgroundColor = props.backgroundColor || (nativeListMode ? 'transparent' : colors.surfaceRoom);
+	const isNativeList = useIsNativeList();
+	const backgroundColor = props.backgroundColor || colors.surfaceRoom;
 
-	if (nativeListMode === 'native') {
+	if (isNativeList) {
 		return <NativeListItem item={props} />;
 	}
 

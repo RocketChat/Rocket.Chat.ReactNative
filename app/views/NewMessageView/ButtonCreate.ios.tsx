@@ -1,6 +1,6 @@
 import { CustomIcon } from '~/containers/CustomIcon';
 import NativeListRow from '~/containers/NativeListRow';
-import Disclosure from '~/containers/NativeListRow/components/Disclosure.ios';
+import Disclosure from '~/containers/NativeListRow/components/Disclosure';
 import { PlainSeparator } from '~/containers/NativeListRow/components/Separator';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';

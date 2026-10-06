@@ -5,21 +5,23 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
   style={
     [
       {
-        "marginHorizontal": 16,
-        "overflow": "hidden",
-      },
-      {
         "alignItems": "center",
         "flexDirection": "row",
         "gap": 12,
-        "paddingHorizontal": 16,
       },
-      {
-        "backgroundColor": "#FFFFFF",
-        "height": 54,
-      },
-      undefined,
-      undefined,
+      [
+        {
+          "marginHorizontal": 16,
+          "overflow": "hidden",
+          "paddingHorizontal": 16,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+          "height": 54,
+        },
+        undefined,
+        undefined,
+      ],
     ]
   }
 >
@@ -129,10 +131,15 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
     </View>
     <View
       style={
-        {
-          "flex": 1,
-          "marginRight": 20,
-        }
+        [
+          {
+            "flex": 1,
+            "marginRight": 20,
+          },
+          {
+            "gap": undefined,
+          },
+        ]
       }
     >
       <View
@@ -156,6 +163,7 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -181,21 +189,23 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     style={
       [
         {
-          "marginHorizontal": 16,
-          "overflow": "hidden",
-        },
-        {
           "alignItems": "center",
           "flexDirection": "row",
           "gap": 12,
-          "paddingHorizontal": 16,
         },
-        {
-          "backgroundColor": "#FFFFFF",
-          "height": 54,
-        },
-        undefined,
-        undefined,
+        [
+          {
+            "marginHorizontal": 16,
+            "overflow": "hidden",
+            "paddingHorizontal": 16,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "height": 54,
+          },
+          undefined,
+          undefined,
+        ],
       ]
     }
   >
@@ -305,10 +315,15 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "flex": 1,
-            "marginRight": 20,
-          }
+          [
+            {
+              "flex": 1,
+              "marginRight": 20,
+            },
+            {
+              "gap": undefined,
+            },
+          ]
         }
       >
         <View
@@ -332,6 +347,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -420,21 +436,23 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
     style={
       [
         {
-          "marginHorizontal": 16,
-          "overflow": "hidden",
-        },
-        {
           "alignItems": "center",
           "flexDirection": "row",
           "gap": 12,
-          "paddingHorizontal": 16,
         },
-        {
-          "backgroundColor": "#FFFFFF",
-          "height": 54,
-        },
-        undefined,
-        undefined,
+        [
+          {
+            "marginHorizontal": 16,
+            "overflow": "hidden",
+            "paddingHorizontal": 16,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "height": 54,
+          },
+          undefined,
+          undefined,
+        ],
       ]
     }
   >
@@ -544,10 +562,15 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "flex": 1,
-            "marginRight": 20,
-          }
+          [
+            {
+              "flex": 1,
+              "marginRight": 20,
+            },
+            {
+              "gap": undefined,
+            },
+          ]
         }
       >
         <View
@@ -571,6 +594,7 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -659,21 +683,23 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
     style={
       [
         {
-          "marginHorizontal": 16,
-          "overflow": "hidden",
-        },
-        {
           "alignItems": "center",
           "flexDirection": "row",
           "gap": 12,
-          "paddingHorizontal": 16,
         },
-        {
-          "backgroundColor": "#FFFFFF",
-          "height": 54,
-        },
-        undefined,
-        undefined,
+        [
+          {
+            "marginHorizontal": 16,
+            "overflow": "hidden",
+            "paddingHorizontal": 16,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "height": 54,
+          },
+          undefined,
+          undefined,
+        ],
       ]
     }
   >
@@ -783,10 +809,15 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "flex": 1,
-            "marginRight": 20,
-          }
+          [
+            {
+              "flex": 1,
+              "marginRight": 20,
+            },
+            {
+              "gap": undefined,
+            },
+          ]
         }
       >
         <View
@@ -810,6 +841,7 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >

@@ -1,16 +1,11 @@
 import { type ComponentType } from 'react';
 
-const createComponentMarker = () => {
-	const markedTypes = new WeakSet<object>();
-	const mark = <Component extends ComponentType<any>>(component: Component): Component => {
-		markedTypes.add(component);
-		return component;
-	};
-	const isMarked = (type: unknown) =>
-		(typeof type === 'function' || (typeof type === 'object' && type !== null)) && markedTypes.has(type);
-	return [mark, isMarked] as const;
+const markedSections = new WeakSet<object>();
+
+export const asNativeListSection = <Component extends ComponentType<any>>(component: Component): Component => {
+	markedSections.add(component);
+	return component;
 };
 
-export const [asNativeListRow, isNativeListRow] = createComponentMarker();
-
-export const [asNativeListSection, isNativeListSection] = createComponentMarker();
+export const isNativeListSection = (type: unknown) =>
+	(typeof type === 'function' || (typeof type === 'object' && type !== null)) && markedSections.has(type);

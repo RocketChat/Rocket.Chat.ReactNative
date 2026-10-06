@@ -1,38 +1,12 @@
-import { useState, type ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Host } from '@expo/ui';
-import { Group, List, RNHostView } from '@expo/ui/swift-ui';
-import {
-	alignmentGuide,
-	background,
-	frame,
-	listRowBackground,
-	listRowInsets,
-	listRowSeparatorTint,
-	listStyle,
-	onGeometryChange,
-	scrollContentBackground,
-	tag
-} from '@expo/ui/swift-ui/modifiers';
+import { type ReactElement } from 'react';
+import { ScrollView } from 'react-native';
 
 import { useTheme } from '~/theme';
 import ListSection from './ListSection';
-import ListItem from './ListItem';
-import ListRadio from './ListRadio';
-import { isNativeListRow, isNativeListSection } from '../native/utils/rowMarkers';
+import { isNativeListSection } from '../native/utils/rowMarkers';
 import { flattenListChildren, isListSeparator } from '../utils/listChildren';
 import { NativeListContext } from '../native/context';
-import { ICON_SIZE, PADDING_HORIZONTAL } from '../constants';
-
-const styles = StyleSheet.create({
-	host: {
-		flex: 1
-	}
-});
-
-const insetGroupedModifiers = [listStyle('insetGrouped')];
-const sidebarModifiers = [listStyle('sidebar')];
-const hiddenBackgroundModifier = scrollContentBackground('hidden');
+import styles from '../native/styles';
 
 export interface IListSelection {
 	selectedTag: string | null;
@@ -46,73 +20,47 @@ interface IListContainer {
 }
 
 const isSection = (element: ReactElement) => element.type === ListSection || isNativeListSection(element.type);
-const isNativeRow = (element: ReactElement) =>
-	element.type === ListItem || element.type === ListRadio || isNativeListRow(element.type);
-const hasLeftIcon = (element: ReactElement) => Boolean((element.props as { left?: unknown }).left);
-const rowSelectionTag = (element: ReactElement) => (element.props as { testID?: string }).testID;
 
-const selectedTags = ({ selectedTag }: IListSelection) => (selectedTag ? [selectedTag] : []);
+const groupIntoSections = (elements: ReactElement[]) => {
+	const sections: ReactElement[] = [];
+	let rows: ReactElement[] = [];
+	const closeRowsSection = () => {
+		if (rows.length) {
+			sections.push(<ListSection key={rows[0].key}>{rows}</ListSection>);
+			rows = [];
+		}
+	};
+	elements.forEach(element => {
+		if (isSection(element)) {
+			closeRowsSection();
+			sections.push(element);
+		} else {
+			rows.push(element);
+		}
+	});
+	closeRowsSection();
+	return sections;
+};
 
 const ListContainer = ({ children, testID, selection, backgroundHidden }: IListContainer) => {
-	const { theme, colors } = useTheme();
-	const [rowWidth, setRowWidth] = useState(0);
-
-	const selectionTag = (row: ReactElement) => {
-		const rowTag = rowSelectionTag(row);
-		return rowTag && selection ? [tag(rowTag)] : [];
-	};
-
-	const isSelectedRow = (row: ReactElement) => Boolean(selection?.selectedTag) && rowSelectionTag(row) === selection?.selectedTag;
-
-	const rowColorModifiers = (row: ReactElement) => [
-		listRowBackground(isSelectedRow(row) ? colors.surfaceSelected : colors.surfaceLight),
-		listRowSeparatorTint(colors.strokeExtraLight)
-	];
-
-	const rowModifiers = (row: ReactElement) => [
-		frame({ maxWidth: Number.MAX_SAFE_INTEGER }),
-		alignmentGuide('listRowSeparatorLeading', hasLeftIcon(row) ? PADDING_HORIZONTAL * 2 + ICON_SIZE : PADDING_HORIZONTAL),
-		onGeometryChange(({ width }) => setRowWidth(current => (current === width ? current : width))),
-		listRowInsets({ top: 0, leading: 0, bottom: 0, trailing: 0 }),
-		...rowColorModifiers(row),
-		...selectionTag(row)
-	];
-
-	const renderHostedRow = (row: ReactElement) => (
-		<Group key={row.key} modifiers={rowModifiers(row)}>
-			<RNHostView matchContents>
-				<NativeListContext.Provider value={{ mode: 'hosted', renderRow }}>
-					<View style={{ width: rowWidth }}>{row}</View>
-				</NativeListContext.Provider>
-			</RNHostView>
-		</Group>
-	);
-
-	const renderNativeRow = (row: ReactElement) => (
-		<Group key={row.key} modifiers={[...rowColorModifiers(row), ...selectionTag(row)]}>
-			{row}
-		</Group>
-	);
-
-	const renderRow = (row: ReactElement) => (isNativeRow(row) ? renderNativeRow(row) : renderHostedRow(row));
+	const { colors } = useTheme();
+	const selectedTag = selection?.selectedTag ?? null;
+	const sections = groupIntoSections(flattenListChildren(children).filter(element => !isListSeparator(element)));
 
 	return (
-		<NativeListContext.Provider value={{ mode: 'native', renderRow }}>
-			<Host key={theme} style={styles.host} colorScheme={theme === 'light' ? 'light' : 'dark'}>
-				<List
-					modifiers={[
-						...(selection ? sidebarModifiers : insetGroupedModifiers),
-						hiddenBackgroundModifier,
-						...(backgroundHidden ? [] : [background(colors.surfaceTint)])
-					]}
-					selection={selection ? selectedTags(selection) : undefined}
-					testID={testID}>
-					{flattenListChildren(children)
-						.filter(element => !isListSeparator(element))
-						.map(element => (isSection(element) ? element : renderRow(element)))}
-				</List>
-			</Host>
-		</NativeListContext.Provider>
+		<ScrollView
+			testID={testID}
+			style={backgroundHidden ? undefined : { backgroundColor: colors.surfaceTint }}
+			contentContainerStyle={styles.content}
+			contentInsetAdjustmentBehavior='automatic'
+			keyboardShouldPersistTaps='handled'
+			keyboardDismissMode='interactive'>
+			{sections.map((section, sectionIndex) => (
+				<NativeListContext.Provider key={section.key} value={{ selectedTag, sectionIndex }}>
+					{section}
+				</NativeListContext.Provider>
+			))}
+		</ScrollView>
 	);
 };
 

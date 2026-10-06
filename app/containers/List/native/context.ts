@@ -1,12 +1,12 @@
-import { createContext, useContext, type ReactElement } from 'react';
-
-export type TNativeListMode = false | 'native' | 'hosted';
+import { createContext, useContext } from 'react';
 
 interface INativeListContext {
-	mode: TNativeListMode;
-	renderRow: (row: ReactElement) => ReactElement;
+	selectedTag: string | null;
+	sectionIndex: number;
 }
 
-export const NativeListContext = createContext<INativeListContext>({ mode: false, renderRow: row => row });
+export const NativeListContext = createContext<INativeListContext | null>(null);
 
-export const useNativeListMode = () => useContext(NativeListContext).mode;
+export const useIsNativeList = () => useContext(NativeListContext) !== null;
+
+export const useNativeListContext = () => useContext(NativeListContext);
