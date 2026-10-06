@@ -82,11 +82,7 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 		const options: NativeStackNavigationOptions = {
 			headerTitle: I18n.t(this.title),
 			...headerRightActions([
-				{
-					label: I18n.t('Next'),
-					testID: 'select-list-view-submit',
-					onPress: () => this.nextAction(selected)
-				}
+				{ label: I18n.t('Next'), testID: 'select-list-view-submit', onPress: () => this.nextAction(selected) }
 			])
 		};
 
