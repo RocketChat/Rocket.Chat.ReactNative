@@ -66,7 +66,7 @@ const RoomsListView = memo(function RoomsListView() {
 	const { collapsedGroups, toggleGroup } = useCollapsedGroups();
 	const { subscriptions, loading } = useSubscriptions(collapsedGroups);
 	const { onToggle, rowEntering, rowExiting, badgeEntering, badgeExiting, revealKey, coverEntering, coverExiting } =
-		useSectionToggleAnimation(toggleGroup);
+		useSectionToggleAnimation(collapsedGroups, toggleGroup, subscriptions.length);
 	const store = useStore<IApplicationState>();
 	const focusedRoom = useAppSelector(state => (isMasterDetail ? state.room.subscribedRoom : undefined));
 	const changingServer = useAppSelector(state => state.server.changingServer);
@@ -107,7 +107,6 @@ const RoomsListView = memo(function RoomsListView() {
 					header={item.rid}
 					title={item.name}
 					collapsed={item.collapsed ?? false}
-					roomCount={item.sectionRoomCount ?? 0}
 					unread={item.unread}
 					userMentions={item.userMentions}
 					groupMentions={item.groupMentions}

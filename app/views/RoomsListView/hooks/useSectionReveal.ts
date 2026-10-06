@@ -3,16 +3,25 @@ import { useWindowDimensions } from 'react-native';
 
 import { useRowHeight } from './useGetItemLayout';
 
-export const useSectionReveal = () => {
+export const useSectionReveal = (collapsedGroups: ReadonlySet<string>, rowCount: number) => {
 	const rowHeight = useRowHeight();
 	const { height } = useWindowDimensions();
-	const [cover, setCover] = useState({ distance: 0, travel: 0, revealKey: 0 });
+	const [headerBottom, setHeaderBottom] = useState(0);
+	const [cover, setCover] = useState({ collapsedGroups, rowCount, distance: 0, travel: 0, revealKey: 0 });
 
-	const reveal = (headerBottom: number, revealedRows: number) => {
-		const distance = revealedRows * rowHeight;
+	if (cover.collapsedGroups !== collapsedGroups) {
+		const distance = (rowCount - cover.rowCount) * rowHeight;
 		const travel = Math.min(Math.abs(distance), Math.max(height - headerBottom, 0));
-		setCover(previous => ({ distance, travel, revealKey: previous.revealKey + 1 }));
-	};
+		setCover({
+			collapsedGroups,
+			rowCount,
+			distance,
+			travel,
+			revealKey: cover.revealKey + 1
+		});
+	} else if (cover.rowCount !== rowCount) {
+		setCover({ ...cover, rowCount });
+	}
 
-	return { cover, reveal };
+	return { cover, setHeaderBottom };
 };

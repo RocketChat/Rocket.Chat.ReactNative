@@ -31,7 +31,6 @@ const sectionHeader = (rooms: TSubscriptionModel[], header: string, title: strin
 		separator: true,
 		name: title,
 		collapsed,
-		sectionRoomCount: rooms.length,
 		unread: sumOf(badgedRooms, room => room.unread || room.tunread?.length),
 		userMentions: sumOf(badgedRooms, room => room.userMentions),
 		groupMentions: sumOf(badgedRooms, room => room.groupMentions),

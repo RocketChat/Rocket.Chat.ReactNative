@@ -106,7 +106,6 @@ export interface ISubscription {
 	unsubscribe: () => Promise<any>;
 	separator?: boolean;
 	collapsed?: boolean;
-	sectionRoomCount?: number;
 	onHold?: boolean;
 	source?: IOmnichannelSource;
 	hideMentionStatus?: boolean;
