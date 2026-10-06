@@ -20,7 +20,7 @@ export interface ICategoryOrderGroup {
 
 export const useCategoryOrder = () => {
 	const dispatch = useDispatch();
-	const { storedCategories, customCategoryNames, groupOrder } = useSidebarCategories();
+	const { storedCategories, customCategoryNames, sectionsOrder, groupOrder } = useSidebarCategories();
 	const { showFavorites, groupByType } = useAppSelector(state => state.sortPreferences, shallowEqual);
 	const visibleGroups = groupOrder.filter(key => isVisibleGroup(key, { customCategoryNames, showFavorites, groupByType }));
 	const showsConversations = visibleGroups.includes(CONVERSATIONS_GROUP);
@@ -34,7 +34,7 @@ export const useCategoryOrder = () => {
 
 	const saveOrder = async (orderedIds: string[]) => {
 		const reorderedGroups = showsConversations ? [...orderedIds, CONVERSATIONS_GROUP] : orderedIds;
-		const sidebarCategories = toSidebarCategories(storedCategories, reorderGroups(groupOrder, reorderedGroups));
+		const sidebarCategories = toSidebarCategories(storedCategories, reorderGroups(groupOrder, reorderedGroups), sectionsOrder);
 		dispatch(setUser({ sidebarCategories }));
 		try {
 			await saveSidebarCategories(sidebarCategories);

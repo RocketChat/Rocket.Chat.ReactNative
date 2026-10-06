@@ -1,6 +1,6 @@
 import { SubscriptionType, type TSubscriptionModel } from '~/definitions';
-import { buildRoomList, roomsInSection } from '../groupRooms';
-import { DEFAULT_GROUP_ORDER } from '../sidebarGroupOrder';
+import { buildRoomList, categoryIdOfHeader, roomsInSection } from '../groupRooms';
+import { DEFAULT_GROUP_ORDER, SYSTEM_GROUPS } from '../sidebarGroupOrder';
 
 const room = (fields: Partial<TSubscriptionModel>) => ({ t: SubscriptionType.CHANNEL, ...fields }) as TSubscriptionModel;
 
@@ -11,6 +11,7 @@ const options = {
 		['empty', 'Empty']
 	]),
 	categoryUnreadOptions: new Map(),
+	sectionsOrder: SYSTEM_GROUPS,
 	showUnread: false,
 	showFavorites: true,
 	groupByType: false,
@@ -141,6 +142,43 @@ describe('groupRooms', () => {
 		const [header] = buildRoomList(chats, { ...options, collapsedGroups: new Set(['work']) });
 
 		expect(header).toMatchObject({ collapsed: true, unread: 1 });
+	});
+	it('applies the unread toggles of a system category, as web stores them', () => {
+		const chats = [room({ rid: 'read', f: true }), room({ rid: 'unread', f: true, unread: 1 })];
+		const categoryUnreadOptions = new Map([['Favorites', { showUnreads: true, keepUnreadsOnTop: true }]]);
+
+		expect(layout(buildRoomList(chats, { ...options, categoryUnreadOptions }))).toEqual(['# Favorites', 'unread', 'read']);
+		expect(layout(buildRoomList(chats, { ...options, categoryUnreadOptions, collapsedGroups: new Set(['Favorites']) }))).toEqual([
+			'# Favorites',
+			'unread'
+		]);
+	});
+
+	it('keeps unread rooms visible in the collapsed Unread section that always displays them', () => {
+		const chats = [room({ rid: 'unread', unread: 1 })];
+		const categoryUnreadOptions = new Map([['Unread', { showUnreads: true, keepUnreadsOnTop: false }]]);
+
+		expect(
+			layout(buildRoomList(chats, { ...options, showUnread: true, categoryUnreadOptions, collapsedGroups: new Set(['Unread']) }))
+		).toEqual(['# Unread', 'unread']);
+	});
+
+	it('leaves out the sections the admin removed from the sections order', () => {
+		const chats = [room({ rid: 'unread', unread: 1 }), room({ rid: 'livechat', t: SubscriptionType.OMNICHANNEL })];
+		const sectionsOrder = SYSTEM_GROUPS.filter(key => key !== 'Unread' && key !== 'Open_Livechats');
+
+		expect(layout(buildRoomList(chats, { ...options, sectionsOrder, showUnread: true, isOmnichannelAgent: true }))).toEqual([
+			'# Chats',
+			'unread'
+		]);
+	});
+});
+
+describe('categoryIdOfHeader', () => {
+	it('maps the list headers that differ from their stored category ids', () => {
+		expect(categoryIdOfHeader('Chats')).toBe('Conversations');
+		expect(categoryIdOfHeader('On_hold_Livechats')).toBe('On_Hold_Chats');
+		expect(categoryIdOfHeader('Favorites')).toBe('Favorites');
 	});
 });
 

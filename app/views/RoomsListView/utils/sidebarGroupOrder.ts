@@ -16,13 +16,21 @@ export const DEFAULT_GROUP_ORDER: readonly string[] = [
 	CONVERSATIONS_GROUP
 ];
 
-const mergeWithDefaultOrder = (storedIds: string[]): string[] => {
+const DYNAMIC_GROUPS: readonly string[] = ['Incoming_Calls', 'Incoming_Livechats', 'Open_Livechats', 'On_Hold_Chats', 'Unread'];
+
+export const SYSTEM_GROUPS: readonly string[] = [...DYNAMIC_GROUPS, ...DEFAULT_GROUP_ORDER];
+
+export const getSectionsOrder = (adminSectionsOrder: string[] | undefined): readonly string[] =>
+	adminSectionsOrder ? adminSectionsOrder.filter(key => SYSTEM_GROUPS.includes(key)) : SYSTEM_GROUPS;
+
+const mergeWithSectionsOrder = (storedIds: string[], staticSectionsOrder: readonly string[]): string[] => {
 	const merged = [...storedIds];
-	DEFAULT_GROUP_ORDER.forEach((key, index) => {
+	staticSectionsOrder.forEach((key, index) => {
 		if (merged.includes(key)) {
 			return;
 		}
-		const successorPosition = DEFAULT_GROUP_ORDER.slice(index + 1)
+		const successorPosition = staticSectionsOrder
+			.slice(index + 1)
 			.map(successor => merged.indexOf(successor))
 			.find(position => position !== -1);
 		merged.splice(successorPosition ?? merged.length, 0, key);
@@ -30,11 +38,12 @@ const mergeWithDefaultOrder = (storedIds: string[]): string[] => {
 	return merged;
 };
 
-export const getGroupOrder = (sidebarCategories: ISidebarCategory[]): string[] => {
+export const getGroupOrder = (sidebarCategories: ISidebarCategory[], sectionsOrder: readonly string[]): string[] => {
 	const storedIds = sidebarCategories
 		.filter(category => !category.default || DEFAULT_GROUP_ORDER.includes(category._id))
 		.map(category => category._id);
-	return mergeWithDefaultOrder([...new Set(storedIds)]);
+	const staticSectionsOrder = sectionsOrder.filter(key => DEFAULT_GROUP_ORDER.includes(key));
+	return mergeWithSectionsOrder([...new Set(storedIds)], staticSectionsOrder);
 };
 
 type GroupVisibility = {
@@ -64,13 +73,14 @@ export const reorderGroups = (groupOrder: string[], reorderedGroups: string[]) =
 	return groupOrder.map(key => (reorderedGroups.includes(key) ? (remainingGroups.shift() ?? key) : key));
 };
 
-const DYNAMIC_GROUPS: readonly string[] = ['Incoming_Calls', 'Incoming_Livechats', 'Open_Livechats', 'On_Hold_Chats', 'Unread'];
-
-export const SYSTEM_GROUPS: readonly string[] = [...DYNAMIC_GROUPS, ...DEFAULT_GROUP_ORDER];
-
-export const toSidebarCategories = (storedCategories: ISidebarCategory[], groupOrder: string[]): ISidebarCategory[] => {
+export const toSidebarCategories = (
+	storedCategories: ISidebarCategory[],
+	groupOrder: string[],
+	sectionsOrder: readonly string[]
+): ISidebarCategory[] => {
 	const storedById = new Map(storedCategories.map(category => [category._id, category]));
 	const storedDynamicGroups = storedCategories.map(category => category._id).filter(id => DYNAMIC_GROUPS.includes(id));
-	const dynamicGroups = [...new Set([...storedDynamicGroups, ...DYNAMIC_GROUPS])];
+	const dynamicSections = sectionsOrder.filter(key => DYNAMIC_GROUPS.includes(key));
+	const dynamicGroups = [...new Set([...storedDynamicGroups, ...dynamicSections])];
 	return [...dynamicGroups, ...groupOrder].map(id => storedById.get(id) ?? { _id: id, name: id, default: true });
 };

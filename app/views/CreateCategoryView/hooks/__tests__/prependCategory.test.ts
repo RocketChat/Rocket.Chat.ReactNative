@@ -1,4 +1,4 @@
-import { DEFAULT_GROUP_ORDER, getGroupOrder } from '~/views/RoomsListView/utils/sidebarGroupOrder';
+import { DEFAULT_GROUP_ORDER, getGroupOrder, SYSTEM_GROUPS } from '~/views/RoomsListView/utils/sidebarGroupOrder';
 import { prependCategory } from '../useCreateCategory';
 
 describe('prependCategory', () => {
@@ -9,15 +9,25 @@ describe('prependCategory', () => {
 		];
 		const design = { _id: 'design', name: 'Design' };
 
-		const sidebarCategories = prependCategory(storedCategories, getGroupOrder(storedCategories), design);
+		const sidebarCategories = prependCategory(
+			storedCategories,
+			getGroupOrder(storedCategories, SYSTEM_GROUPS),
+			SYSTEM_GROUPS,
+			design
+		);
 
-		expect(getGroupOrder(sidebarCategories)).toEqual(['design', 'Favorites', 'work', ...DEFAULT_GROUP_ORDER.slice(1)]);
+		expect(getGroupOrder(sidebarCategories, SYSTEM_GROUPS)).toEqual([
+			'design',
+			'Favorites',
+			'work',
+			...DEFAULT_GROUP_ORDER.slice(1)
+		]);
 	});
 
 	it('keeps the stored custom categories and their names', () => {
 		const storedCategories = [{ _id: 'work', name: 'Work' }];
 
-		const sidebarCategories = prependCategory(storedCategories, getGroupOrder(storedCategories), {
+		const sidebarCategories = prependCategory(storedCategories, getGroupOrder(storedCategories, SYSTEM_GROUPS), SYSTEM_GROUPS, {
 			_id: 'design',
 			name: 'Design'
 		});

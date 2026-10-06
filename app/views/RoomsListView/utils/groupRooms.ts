@@ -13,6 +13,16 @@ const CHATS_HEADER = 'Chats';
 const UNREAD_HEADER = 'Unread';
 const OMNICHANNEL_HEADER_IN_PROGRESS = 'Open_Livechats';
 const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
+const UNREAD_GROUP = 'Unread';
+const OMNICHANNEL_IN_PROGRESS_GROUP = 'Open_Livechats';
+const OMNICHANNEL_ON_HOLD_GROUP = 'On_Hold_Chats';
+
+const CATEGORY_ID_BY_HEADER: Record<string, string> = {
+	[CHATS_HEADER]: CONVERSATIONS_GROUP,
+	[OMNICHANNEL_HEADER_ON_HOLD]: OMNICHANNEL_ON_HOLD_GROUP
+};
+
+export const categoryIdOfHeader = (header: string) => CATEGORY_ID_BY_HEADER[header] ?? header;
 
 const filterIsUnread = (subscription: TSubscriptionModel) =>
 	(subscription.alert || subscription.unread || subscription.tunread?.length) && !subscription.hideUnreadStatus;
@@ -148,6 +158,7 @@ const groupRooms = (
 };
 
 type BuildRoomListOptions = Omit<GroupRoomsOptions, 'hasChatsHeader'> & {
+	sectionsOrder: readonly string[];
 	showUnread: boolean;
 	isOmnichannelAgent: boolean;
 };
@@ -157,36 +168,46 @@ export const buildRoomList = (subscriptions: TSubscriptionModel[], options: Buil
 		groupOrder,
 		customCategoryNames,
 		categoryUnreadOptions,
+		sectionsOrder,
 		showUnread,
 		showFavorites,
 		groupByType,
 		isOmnichannelAgent,
 		collapsedGroups
 	} = options;
+	const showsSection = (key: string) => sectionsOrder.includes(key);
 	let remainingSubscriptions = subscriptions;
 	const roomList: TSubscriptionModel[] = [];
 
 	if (isOmnichannelAgent) {
 		const omnichannel = remainingSubscriptions.filter(filterIsOmnichannel);
 		remainingSubscriptions = remainingSubscriptions.filter(subscription => !filterIsOmnichannel(subscription));
-		roomList.push(
-			...roomsGroup(
-				omnichannel.filter(subscription => !subscription.onHold),
-				OMNICHANNEL_HEADER_IN_PROGRESS,
-				{ collapsedGroups }
-			),
-			...roomsGroup(
-				omnichannel.filter(subscription => subscription.onHold),
-				OMNICHANNEL_HEADER_ON_HOLD,
-				{ collapsedGroups }
-			)
-		);
+		if (showsSection(OMNICHANNEL_IN_PROGRESS_GROUP)) {
+			roomList.push(
+				...roomsGroup(
+					omnichannel.filter(subscription => !subscription.onHold),
+					OMNICHANNEL_HEADER_IN_PROGRESS,
+					{ collapsedGroups, unreadOptions: categoryUnreadOptions.get(OMNICHANNEL_IN_PROGRESS_GROUP) }
+				)
+			);
+		}
+		if (showsSection(OMNICHANNEL_ON_HOLD_GROUP)) {
+			roomList.push(
+				...roomsGroup(
+					omnichannel.filter(subscription => subscription.onHold),
+					OMNICHANNEL_HEADER_ON_HOLD,
+					{ collapsedGroups, unreadOptions: categoryUnreadOptions.get(OMNICHANNEL_ON_HOLD_GROUP) }
+				)
+			);
+		}
 	}
 
-	if (showUnread) {
+	if (showUnread && showsSection(UNREAD_GROUP)) {
 		const unread = remainingSubscriptions.filter(filterIsUnread);
 		remainingSubscriptions = remainingSubscriptions.filter(subscription => !filterIsUnread(subscription));
-		roomList.push(...roomsGroup(unread, UNREAD_HEADER, { collapsedGroups }));
+		roomList.push(
+			...roomsGroup(unread, UNREAD_HEADER, { collapsedGroups, unreadOptions: categoryUnreadOptions.get(UNREAD_GROUP) })
+		);
 	}
 
 	return roomList.concat(

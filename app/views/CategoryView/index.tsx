@@ -35,7 +35,7 @@ const CategoryView = ({ route }: StaticScreenProps<CategoryViewParams>) => {
 	const isMasterDetail = useMasterDetail();
 	const { width } = useSafeAreaFrame();
 	const { bottom } = useSafeAreaInsets();
-	const { showNewMessageButton, goToNewMessage } = useCategoryHeader(route.params.header);
+	const { showNewMessageButton, goToNewMessage } = useCategoryHeader(route.params.header, route.params.title);
 
 	const onPressItem = (item = {} as IRoomItem) => {
 		if (item.rid === subscribedRoom) {

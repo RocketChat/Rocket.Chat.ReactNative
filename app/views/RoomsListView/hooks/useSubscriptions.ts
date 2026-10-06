@@ -28,7 +28,7 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 	const [loading, setLoading] = useState(true);
 	const roles = useAppSelector(state => getUserSelector(state).roles, shallowEqual);
 	const { sortBy, showUnread, showFavorites, groupByType } = useAppSelector(state => state.sortPreferences, shallowEqual);
-	const { customCategoryNames, categoryUnreadOptions, groupOrder } = useSidebarCategories();
+	const { customCategoryNames, categoryUnreadOptions, sectionsOrder, groupOrder } = useSidebarCategories();
 	const hasCustomCategories = customCategoryNames.size > 0;
 	const isGrouping = showUnread || showFavorites || groupByType || hasCustomCategories;
 	const isOmnichannelAgent = roles?.includes('livechat-agent') ?? false;
@@ -79,6 +79,7 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 				groupOrder,
 				customCategoryNames,
 				categoryUnreadOptions,
+				sectionsOrder,
 				showUnread,
 				showFavorites,
 				groupByType,
@@ -90,6 +91,7 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 			groupOrder,
 			customCategoryNames,
 			categoryUnreadOptions,
+			sectionsOrder,
 			showUnread,
 			showFavorites,
 			groupByType,

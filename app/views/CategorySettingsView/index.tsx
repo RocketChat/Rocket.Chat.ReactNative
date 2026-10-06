@@ -12,18 +12,19 @@ import { DisplayMode, SortBy } from '~/lib/constants/constantDisplayMode';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
 import { useCategoryUnreadToggles } from './hooks/useCategoryUnreadToggles';
-import { useCustomCategory } from './hooks/useCustomCategory';
+import { useSettingsCategory } from './hooks/useSettingsCategory';
 import { useDeleteCategory } from './hooks/useDeleteCategory';
 import { useDisplayShortcuts } from './hooks/useDisplayShortcuts';
 import { useRoomsInCategory } from './hooks/useRoomsInCategory';
 
 export type CategorySettingsViewParams = {
 	categoryId: string;
+	title: string;
 };
 
 const renderRadio = (checked: boolean) => <Radio check={checked} size={ICON_SIZE} />;
 
-const CategorySettings = ({ category }: { category: ISidebarCategory }) => {
+const CategorySettings = ({ category, title }: { category: ISidebarCategory; title: string }) => {
 	const { colors } = useTheme();
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CategorySettingsView'>>();
 	const rooms = useRoomsInCategory(category._id);
@@ -33,32 +34,36 @@ const CategorySettings = ({ category }: { category: ISidebarCategory }) => {
 		category,
 		rooms.map(room => room.rid)
 	);
+	const isCustomCategory = !category.default;
+	const headerTitle = isCustomCategory ? category.name : title;
 
 	useLayoutEffect(() => {
-		navigation.setOptions({ title: category.name });
-	}, [navigation, category.name]);
+		navigation.setOptions({ title: headerTitle });
+	}, [navigation, headerTitle]);
 
 	return (
 		<List.Container testID='category-settings-view-list'>
-			<List.Section>
-				<List.Separator />
-				<List.Item
-					title='Manage_rooms'
-					testID='category-settings-view-manage-rooms'
-					left={() => <List.Icon name='settings' />}
-					onPress={() => navigation.navigate('ManageCategoryRoomsView', { categoryId: category._id, rooms })}
-					showActionIndicator
-				/>
-				<List.Separator />
-				<List.Item
-					title='Rename'
-					testID='category-settings-view-rename'
-					left={() => <List.Icon name='edit' />}
-					onPress={() => navigation.navigate('RenameCategoryView', { categoryId: category._id })}
-					showActionIndicator
-				/>
-				<List.Separator />
-			</List.Section>
+			{isCustomCategory ? (
+				<List.Section>
+					<List.Separator />
+					<List.Item
+						title='Manage_rooms'
+						testID='category-settings-view-manage-rooms'
+						left={() => <List.Icon name='settings' />}
+						onPress={() => navigation.navigate('ManageCategoryRoomsView', { categoryId: category._id, rooms })}
+						showActionIndicator
+					/>
+					<List.Separator />
+					<List.Item
+						title='Rename'
+						testID='category-settings-view-rename'
+						left={() => <List.Icon name='edit' />}
+						onPress={() => navigation.navigate('RenameCategoryView', { categoryId: category._id })}
+						showActionIndicator
+					/>
+					<List.Separator />
+				</List.Section>
+			) : null}
 			<List.Section title='Unread_rooms_on_main_display'>
 				<List.Separator />
 				<List.Item
@@ -70,11 +75,11 @@ const CategorySettings = ({ category }: { category: ISidebarCategory }) => {
 							accessible={false}
 							value={unread.showUnreads}
 							onValueChange={unread.toggleShowUnreads}
-							disabled={unread.disabled}
+							disabled={unread.alwaysDisplayDisabled}
 						/>
 					)}
 					onPress={unread.toggleShowUnreads}
-					disabled={unread.disabled}
+					disabled={unread.alwaysDisplayDisabled}
 					additionalAccessibilityLabel={unread.showUnreads}
 					accessibilityRole='switch'
 				/>
@@ -88,15 +93,16 @@ const CategorySettings = ({ category }: { category: ISidebarCategory }) => {
 							accessible={false}
 							value={unread.keepUnreadsOnTop}
 							onValueChange={unread.toggleKeepUnreadsOnTop}
-							disabled={unread.disabled}
+							disabled={unread.keepOnTopDisabled}
 						/>
 					)}
 					onPress={unread.toggleKeepUnreadsOnTop}
-					disabled={unread.disabled}
+					disabled={unread.keepOnTopDisabled}
 					additionalAccessibilityLabel={unread.keepUnreadsOnTop}
 					accessibilityRole='switch'
 				/>
 				<List.Separator />
+				{unread.keepOnTopDisabled ? <List.Info info='Disabled_by_unread_group_see_display_options' /> : null}
 			</List.Section>
 			<List.Section title='Display'>
 				<List.Separator />
@@ -154,26 +160,30 @@ const CategorySettings = ({ category }: { category: ISidebarCategory }) => {
 				/>
 				<List.Separator />
 			</List.Section>
-			<List.Section>
-				<List.Separator />
-				<List.Item
-					title='Delete'
-					testID='category-settings-view-delete'
-					color={colors.fontDanger}
-					left={() => <List.Icon name='delete' color={colors.fontDanger} />}
-					onPress={confirmDelete}
-				/>
-				<List.Separator />
-			</List.Section>
+			{isCustomCategory ? (
+				<List.Section>
+					<List.Separator />
+					<List.Item
+						title='Delete'
+						testID='category-settings-view-delete'
+						color={colors.fontDanger}
+						left={() => <List.Icon name='delete' color={colors.fontDanger} />}
+						onPress={confirmDelete}
+					/>
+					<List.Separator />
+				</List.Section>
+			) : null}
 		</List.Container>
 	);
 };
 
 const CategorySettingsView = ({ route }: StaticScreenProps<CategorySettingsViewParams>) => {
-	const category = useCustomCategory(route.params.categoryId);
+	const category = useSettingsCategory(route.params.categoryId);
 
 	return (
-		<SafeAreaView testID='category-settings-view'>{category ? <CategorySettings category={category} /> : null}</SafeAreaView>
+		<SafeAreaView testID='category-settings-view'>
+			{category ? <CategorySettings category={category} title={route.params.title} /> : null}
+		</SafeAreaView>
 	);
 };
 

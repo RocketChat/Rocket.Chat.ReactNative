@@ -17,17 +17,18 @@ import { useSidebarCategories } from '~/views/RoomsListView/hooks/useSidebarCate
 export const prependCategory = (
 	storedCategories: ISidebarCategory[],
 	groupOrder: string[],
+	sectionsOrder: readonly string[],
 	category: ISidebarCategory
-): ISidebarCategory[] => toSidebarCategories([...storedCategories, category], [category._id, ...groupOrder]);
+): ISidebarCategory[] => toSidebarCategories([...storedCategories, category], [category._id, ...groupOrder], sectionsOrder);
 
 export const useCreateCategory = () => {
 	const dispatch = useDispatch();
-	const { storedCategories, groupOrder } = useSidebarCategories();
+	const { storedCategories, sectionsOrder, groupOrder } = useSidebarCategories();
 	const [creating, setCreating] = useState(false);
 
 	const createCategory = async (name: string, roomIds: string[]) => {
 		const category: ISidebarCategory = { _id: random(17), name: name.trim() };
-		const sidebarCategories = prependCategory(storedCategories, groupOrder, category);
+		const sidebarCategories = prependCategory(storedCategories, groupOrder, sectionsOrder, category);
 		setCreating(true);
 		try {
 			await saveSidebarCategories(sidebarCategories);
