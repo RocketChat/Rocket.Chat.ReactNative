@@ -2,7 +2,15 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUserWithPasswordChange, deleteCreatedUsers } from '~e2e/support/api';
-import { hideKeyboard, loginWithDeepLink, loginWithForm, logout, navigateToLogin, LONG_TIMEOUT } from '~e2e/support/flows';
+import {
+	fillWhenUncovered,
+	hideKeyboard,
+	loginWithDeepLink,
+	loginWithForm,
+	logout,
+	navigateToLogin,
+	LONG_TIMEOUT
+} from '~e2e/support/flows';
 
 afterEach(deleteCreatedUsers);
 
@@ -15,9 +23,9 @@ test('requires a password change on first login', { tags: ['test-1'] }, async fi
 	await loginWithDeepLink(fixtures, user);
 	await expect(screen.getByText('You need to change your password')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByTestId('change-password-required-button').tap();
-	await screen.getByTestId('change-password-view-new-password').fill(NEW_PASSWORD);
+	await fillWhenUncovered(screen.getByTestId('change-password-view-new-password'), NEW_PASSWORD);
 	await hideKeyboard(fixtures);
-	await screen.getByTestId('change-password-view-confirm-new-password').fill(NEW_PASSWORD);
+	await fillWhenUncovered(screen.getByTestId('change-password-view-confirm-new-password'), NEW_PASSWORD);
 	await hideKeyboard(fixtures);
 	await screen.getByTestId('change-password-view-set-new-password-button').tap();
 	await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });

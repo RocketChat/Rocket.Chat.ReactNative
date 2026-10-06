@@ -127,9 +127,9 @@ export const navigateToLogin = async ({ screen }: Fixtures, server = data.server
 
 export const submitLoginForm = async (fixtures: Fixtures, credentials: Credentials) => {
 	const { screen } = fixtures;
-	await screen.getByTestId('login-view-email').fill(credentials.username);
+	await fillWhenUncovered(screen.getByTestId('login-view-email'), credentials.username);
 	await hideKeyboard(fixtures);
-	await screen.getByTestId('login-view-password').fill(credentials.password);
+	await fillWhenUncovered(screen.getByTestId('login-view-password'), credentials.password);
 	await hideKeyboard(fixtures);
 	await screen.getByTestId('login-view-submit').tap();
 };
@@ -142,7 +142,8 @@ export const loginWithForm = async (fixtures: Fixtures, credentials: Credentials
 const COVERED_ERROR = 'is covered by another visible element';
 const OFF_SCREEN_ERROR = 'is off-screen and not safe to press';
 const NO_INPUT_AT_POINT_ERROR = 'no text input found at the provided coordinates';
-const RETRYABLE_ACTION_ERRORS = [COVERED_ERROR, OFF_SCREEN_ERROR, NO_INPUT_AT_POINT_ERROR];
+const UNCONFIRMED_FILL_ERROR = 'could not confirm the typed text reached the field';
+const RETRYABLE_ACTION_ERRORS = [COVERED_ERROR, OFF_SCREEN_ERROR, NO_INPUT_AT_POINT_ERROR, UNCONFIRMED_FILL_ERROR];
 
 const retryWhileUnreachable = async (action: () => Promise<unknown>, timeout: number) => {
 	const deadline = Date.now() + timeout;
