@@ -139,9 +139,14 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
 		if (sdk.host === server) {
-			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
-			yield put(selectServerCancel());
-			return;
+			// Skip fast-path for unauthenticated retries so they stay OUTSIDE on WorkspaceView.
+			const storedUserId = UserPreferences.getString(getServerUserIdKey(server));
+			const storedToken = storedUserId ? UserPreferences.getString(getUserTokenKey(server, storedUserId)) : null;
+			if (storedUserId && storedToken) {
+				yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+				yield put(selectServerCancel());
+				return;
+			}
 		}
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
