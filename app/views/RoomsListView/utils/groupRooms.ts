@@ -32,8 +32,12 @@ const filterIsOmnichannel = (subscription: TSubscriptionModel) => subscription.t
 const sumOf = (rooms: TSubscriptionModel[], count: (room: TSubscriptionModel) => number | undefined) =>
 	rooms.reduce((total, room) => total + (count(room) ?? 0), 0);
 
-const threadsOf = (rooms: TSubscriptionModel[], threads: (room: TSubscriptionModel) => string[] | undefined) =>
-	rooms.flatMap(room => threads(room) ?? []);
+const NO_THREADS: string[] = [];
+
+const threadsOf = (rooms: TSubscriptionModel[], threads: (room: TSubscriptionModel) => string[] | undefined) => {
+	const roomThreads = rooms.flatMap(room => threads(room) ?? []);
+	return roomThreads.length ? roomThreads : NO_THREADS;
+};
 
 export type CategoryUnreadOptions = {
 	showUnreads: boolean;
