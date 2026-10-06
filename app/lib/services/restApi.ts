@@ -126,7 +126,7 @@ export const spotlight = (
 	rid?: string
 ): Promise<ISpotlight> => {
 	const serverVersion = reduxStore.getState().server.version;
-	// RC 8.6.0 added the usernames, type and rid query params to GET spotlight
+	// RC 8.6.0
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
 		return sdk.get('spotlight', {
 			query: search,
