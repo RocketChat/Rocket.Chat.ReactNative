@@ -3,7 +3,6 @@ import UserPreferences from '../userPreferences';
 import { syncWatchOSQuickReplies } from './syncReplies';
 import { type IApplicationState } from '~/definitions';
 import { shouldShowWatchAppOptions } from './getWatchStatus';
-import { getWatchOSRepliesForServer } from './getWatchOSRepliesFromMMKV';
 
 const syncWatchOSQuickRepliesWithServer = (state: IApplicationState): boolean => {
 	if (!shouldShowWatchAppOptions()) return false;
@@ -11,16 +10,16 @@ const syncWatchOSQuickRepliesWithServer = (state: IApplicationState): boolean =>
 	const appleWatchReplies = state.settings.Apple_Watch_Quick_Actions;
 	if (!server) return false;
 
-	const isRepliesAvailable = getWatchOSRepliesForServer(server);
+	const quickRepliesMMKVKey = `${server}-${WATCHOS_QUICKREPLIES}`;
 
-	// we use apple watch settings from server on first login
-	if (!isRepliesAvailable && appleWatchReplies && typeof appleWatchReplies === 'string') {
-		const quickRepliesMMKVKey = `${server}-${WATCHOS_QUICKREPLIES}`;
-
-		const replies = appleWatchReplies.split(',').map(reply => reply.trim());
+	// seed from the server setting only on first login, so user edits are never overwritten
+	if (!UserPreferences.contains(quickRepliesMMKVKey) && appleWatchReplies && typeof appleWatchReplies === 'string') {
+		const replies = appleWatchReplies
+			.split(',')
+			.map(reply => reply.trim())
+			.filter(Boolean);
 		UserPreferences.setString(quickRepliesMMKVKey, JSON.stringify(replies));
 	}
-	const result = syncWatchOSQuickReplies();
-	return result;
+	return syncWatchOSQuickReplies();
 };
 export default syncWatchOSQuickRepliesWithServer;
