@@ -36,7 +36,6 @@ export interface IHeaderAction {
 	disabled?: boolean;
 	tintColor?: string;
 	badge?: IHeaderActionBadge;
-	legacyHeaderOnly?: boolean;
 	placement?: 'toolbar';
 	variant?: 'prominent';
 	onPress?: () => void;
@@ -61,23 +60,21 @@ const toNativeMenuAction = ({
 });
 
 export const nativeHeaderItems = (actions: IHeaderAction[]): NativeStackHeaderItem[] =>
-	actions
-		.filter(action => !action.legacyHeaderOnly)
-		.map(({ label, icon, disabled, tintColor, badge, variant, placement, onPress, menu }): NativeStackHeaderItem => {
-			const item = {
-				label,
-				accessibilityLabel: label,
-				icon: icon && headerIcon(icon),
-				disabled,
-				tintColor,
-				variant,
-				badge: badge && { value: badge.value ?? '', style: { backgroundColor: badge.color } }
-			};
-			if (menu) {
-				return { ...item, type: 'menu', menu: { items: menu.map(toNativeMenuAction) } };
-			}
-			return { ...item, type: 'button', placement, onPress: onPress ?? (() => {}) };
-		});
+	actions.map(({ label, icon, disabled, tintColor, badge, variant, placement, onPress, menu }): NativeStackHeaderItem => {
+		const item = {
+			label,
+			accessibilityLabel: label,
+			icon: icon && headerIcon(icon),
+			disabled,
+			tintColor,
+			variant,
+			badge: badge && { value: badge.value ?? '', style: { backgroundColor: badge.color } }
+		};
+		if (menu) {
+			return { ...item, type: 'menu', menu: { items: menu.map(toNativeMenuAction) } };
+		}
+		return { ...item, type: 'button', placement, onPress: onPress ?? (() => {}) };
+	});
 
 const showMenu = (menu: IHeaderMenuItem[]) =>
 	showActionSheetRef({

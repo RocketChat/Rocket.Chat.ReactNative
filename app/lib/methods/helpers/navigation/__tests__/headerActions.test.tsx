@@ -20,19 +20,12 @@ const searchAction: IHeaderAction = {
 	label: 'Search',
 	icon: 'search',
 	testID: 'search',
-	legacyHeaderOnly: true,
 	onPress: jest.fn()
 };
 
 const openedSheetOptions = () => (showActionSheetRef as jest.Mock).mock.calls[0][0].options as TActionSheetOptionsItem[];
 
 describe('nativeHeaderItems', () => {
-	it('leaves out actions that only exist on the legacy header', () => {
-		const items = nativeHeaderItems([filterAction, searchAction]) as NativeStackHeaderItemMenu[];
-
-		expect(items.map(item => item.label)).toEqual(['Filter']);
-	});
-
 	it('turns a menu into native menu actions with radio state only on checkable items', () => {
 		const [menu] = nativeHeaderItems([filterAction]) as NativeStackHeaderItemMenu[];
 
@@ -60,7 +53,7 @@ describe('HeaderActions', () => {
 		expect(screen.toJSON()).toBeNull();
 	});
 
-	it('shows legacy-only actions and uses the label as text when there is no icon', () => {
+	it('shows icon actions and uses the label as text when there is no icon', () => {
 		render(<HeaderActions actions={[searchAction, { label: 'Next', testID: 'next', onPress: jest.fn() }]} />);
 
 		expect(screen.getByTestId('search')).toBeOnTheScreen();

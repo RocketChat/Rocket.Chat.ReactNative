@@ -10,16 +10,14 @@ import { type IMessageFromServer, type TThreadModel } from '~/definitions';
 import { type ChatsStackParamList } from '~/stacks/types';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';
-import { outsideHeaderLeftClose, stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
-import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
+import { outsideHeaderLeftClose } from '~/lib/methods/helpers/navigation';
+import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import log from '~/lib/methods/helpers/log';
-import { hasNativeHeaderBar, isIOS, useDebounce } from '~/lib/methods/helpers';
+import { isIOS, useDebounce } from '~/lib/methods/helpers';
 import SafeAreaView from '~/containers/SafeAreaView';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import * as List from '~/containers/List';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { useTheme } from '~/theme';
-import SearchHeader from '~/containers/SearchHeader';
 import Item from './Item';
 import { getDiscussions } from '~/lib/services/restApi';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -106,35 +104,19 @@ const DiscussionsView = () => {
 		setIsSearching(true);
 	};
 
-	const setHeader = (): Partial<NativeStackNavigationOptions> => {
-		if (isSearching && !hasNativeHeaderBar) {
-			return {
-				headerLeft: () => (
-					<HeaderButton.Container style={{ marginLeft: 1 }} left>
-						<HeaderButton.Item iconName='close' onPress={onCancelSearchPress} />
-					</HeaderButton.Container>
-				),
-				headerTitle: () => (
-					<SearchHeader onSearchChangeText={onSearchChangeText} testID='discussion-messages-view-search-header' />
-				),
-				headerRight: () => null
-			};
-		}
-
-		return {
-			headerTitle: I18n.t('Discussions'),
-			...(hasNativeHeaderBar && {
-				headerSearchBarOptions: stackedSearchBarOptions({
-					ref: searchBarRef,
-					onFocus: onSearchPress,
-					onChangeText: onSearchChangeText,
-					onCancel: onCancelSearchPress
-				})
-			}),
-			...(isMasterDetail ? outsideHeaderLeftClose(() => navigation.pop()) : { headerLeft: undefined }),
-			...headerRightActions([{ label: I18n.t('Search'), icon: 'search', legacyHeaderOnly: true, onPress: onSearchPress }])
-		};
-	};
+	const setHeader = (): NativeStackNavigationOptions =>
+		searchHeaderOptions({
+			isSearching,
+			searchBarRef,
+			onSearchPress,
+			onChangeText: onSearchChangeText,
+			onCancel: onCancelSearchPress,
+			testIDPrefix: 'discussion-messages-view',
+			options: {
+				headerTitle: I18n.t('Discussions'),
+				...(isMasterDetail ? outsideHeaderLeftClose(() => navigation.pop()) : { headerLeft: undefined })
+			}
+		});
 
 	useEffect(() => {
 		load();

@@ -10,8 +10,8 @@ import { Component, createRef } from 'react';
 
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';
-import { outsideHeaderLeftClose, stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
-import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
+import { outsideHeaderLeftClose } from '~/lib/methods/helpers/navigation';
+import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import database from '~/lib/database';
 import { sanitizeLikeString } from '~/lib/database/utils';
 import buildMessage from '~/lib/methods/helpers/buildMessage';
@@ -22,11 +22,9 @@ import { themes, colors } from '~/lib/constants/colors';
 import { type TSupportedThemes, withTheme } from '~/theme';
 import { getUserSelector } from '~/selectors/login';
 import SafeAreaView from '~/containers/SafeAreaView';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import * as List from '~/containers/List';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { getBadgeColor, makeThreadName } from '~/lib/methods/helpers/room';
-import SearchHeader from '~/containers/SearchHeader';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { Filter } from './filters';
 import Item from './Item';
@@ -122,33 +120,19 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 		const { isSearching, currentFilter } = this.state;
 		const { navigation, isMasterDetail, theme } = this.props;
 
-		if (isSearching && !hasNativeHeaderBar) {
-			return {
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
-					</HeaderButton.Container>
-				),
-				headerTitle: () => (
-					<SearchHeader onSearchChangeText={this.onSearchChangeText} testID='thread-messages-view-search-header' />
-				),
-				headerRight: () => null
-			};
-		}
-
-		return {
-			headerTitle: I18n.t('Threads'),
-			...(hasNativeHeaderBar && {
-				headerTransparent: true,
-				headerSearchBarOptions: stackedSearchBarOptions({
-					ref: this.searchBarRef,
-					onFocus: this.onSearchPress,
-					onChangeText: this.onSearchChangeText,
-					onCancel: this.onCancelSearchPress
-				})
-			}),
-			...(isMasterDetail ? outsideHeaderLeftClose(() => navigation.pop()) : { headerLeft: undefined }),
-			...headerRightActions([
+		return searchHeaderOptions({
+			isSearching,
+			searchBarRef: this.searchBarRef,
+			onSearchPress: this.onSearchPress,
+			onChangeText: this.onSearchChangeText,
+			onCancel: this.onCancelSearchPress,
+			testIDPrefix: 'thread-messages-view',
+			options: {
+				headerTitle: I18n.t('Threads'),
+				headerTransparent: hasNativeHeaderBar,
+				...(isMasterDetail ? outsideHeaderLeftClose(() => navigation.pop()) : { headerLeft: undefined })
+			},
+			rightActions: [
 				{
 					label: I18n.t('Filter'),
 					icon: 'filter',
@@ -158,16 +142,9 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 						checked: currentFilter === filter,
 						onPress: () => this.onFilterSelected(filter)
 					}))
-				},
-				{
-					label: I18n.t('Search'),
-					icon: 'search',
-					testID: 'thread-messages-view-search-icon',
-					legacyHeaderOnly: true,
-					onPress: this.onSearchPress
 				}
-			])
-		};
+			]
+		});
 	};
 
 	setHeader = () => {
