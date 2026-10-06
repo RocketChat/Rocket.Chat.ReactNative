@@ -78,7 +78,11 @@ test('creates, follows, drafts and navigates threads', { tags: ['test-13'], time
 	await screen.getByTestId('header-back').tap();
 	await openThreadFromButton(fixtures, THREAD);
 	await expect(screen.getByTestId(THREAD_INPUT)).toHaveValue('draftthread', { timeout: LONG_TIMEOUT });
-	await screen.getByTestId(THREAD_INPUT).clear();
+	await screen
+		.getByTestId(THREAD_INPUT)
+		.clear()
+		.catch(() => undefined);
+	await expect(threadReplyPlaceholder(fixtures)).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByTestId('header-back').tap();
 	await openThreadFromButton(fixtures, THREAD);
 	await expect(screen.getByTestId(THREAD_INPUT)).not.toHaveValue('draftthread', { timeout: LONG_TIMEOUT });

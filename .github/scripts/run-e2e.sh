@@ -42,6 +42,7 @@ echo "Preflight OK: ${E2E_SERVER}/api/info -> 200"
 if [ "$PLATFORM" = "android" ]; then
   adb -s "$ANDROID_DEVICE" shell settings put system show_touches 1 || true
   adb -s "$ANDROID_DEVICE" shell settings put secure autofill_service null || true
+  adb -s "$ANDROID_DEVICE" shell settings put global hide_error_dialogs 1 || true
 
   if [ -d "$TESTS_DIR/share-extension" ] \
     && grep -rhoE "tags:[[:space:]]*\[[^]]*\]" "$TESTS_DIR/share-extension" --include='*.e2e.ts' | grep -E "['\"]test-${SHARD}['\"]" >/dev/null; then
