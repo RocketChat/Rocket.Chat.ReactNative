@@ -2,7 +2,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { InteractionManager } from 'react-native';
 import { type KeyboardFocus } from 'react-native-external-keyboard';
-import { type SearchBarCommands } from 'react-native-screens';
 
 import { showActionSheetRef } from '~/containers/ActionSheet';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
@@ -82,11 +81,10 @@ const getScreenFocusNavigation = (navigation: any, isMasterDetail: boolean) => {
 };
 
 export const useHeader = () => {
-	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsSearchContext);
+	const { searchEnabled, search, startSearch, stopSearch, resetSearch, searchBarRef } = useContext(RoomsSearchContext);
 	const [options, setOptions] = useState<any>(null);
 	const isAccessibilityNavigationEnabled = useIsAccessibilityNavigationEnabled();
 	const drawerButtonRef = useRef<KeyboardFocus>(null);
-	const searchBarRef = useRef<SearchBarCommands>(null);
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
 	const requirePasswordChange = useAppSelector(state => getUserSelector(state).requirePasswordChange);
 	const isMasterDetail = useMasterDetail();
@@ -206,7 +204,7 @@ export const useHeader = () => {
 					hideNavigationBar: !isTablet,
 					onFocus: startSearch,
 					onChangeText: (event: { nativeEvent: { text: string } }) => search(event.nativeEvent.text),
-					onCancelButtonPress: stopSearch
+					onCancelButtonPress: resetSearch
 				},
 				...headerLeftActions([drawerAction]),
 				...headerRightActions(isTablet && searchEnabled ? [cancelSearchAction] : rightActions)
@@ -246,22 +244,13 @@ export const useHeader = () => {
 		goToNewMessage,
 		startSearch,
 		stopSearch,
+		resetSearch,
+		searchBarRef,
 		search,
 		serverName,
 		nativeHeaderSubtitle,
 		badgeColor
 	]);
-
-	useEffect(() => {
-		if (!hasNativeHeaderBar || searchEnabled) {
-			return;
-		}
-		if (isMasterDetail) {
-			searchBarRef.current?.cancelSearch();
-			return;
-		}
-		searchBarRef.current?.clearText();
-	}, [searchEnabled, isMasterDetail]);
 
 	const focusNavigation = getScreenFocusNavigation(navigation, isMasterDetail);
 

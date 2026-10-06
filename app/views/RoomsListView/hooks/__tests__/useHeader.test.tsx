@@ -1,5 +1,6 @@
-import { act, renderHook } from '@testing-library/react-native';
-import { type ReactElement, useState } from 'react';
+import { renderHook } from '@testing-library/react-native';
+import { createRef, type ReactElement } from 'react';
+import { type SearchBarCommands } from 'react-native-screens';
 
 import { RoomsSearchContext } from '../../contexts/RoomsSearchProvider';
 import { useHeader } from '../useHeader';
@@ -76,6 +77,7 @@ jest.mock('~/lib/hooks/useAppSelector', () => ({
 
 const mockStartSearch = jest.fn();
 const mockStopSearch = jest.fn();
+const mockResetSearch = jest.fn();
 const mockSearch = jest.fn();
 const searchContextValue = {
 	searching: false,
@@ -83,7 +85,9 @@ const searchContextValue = {
 	searchResults: [],
 	startSearch: mockStartSearch,
 	stopSearch: mockStopSearch,
-	search: mockSearch
+	resetSearch: mockResetSearch,
+	search: mockSearch,
+	searchBarRef: createRef<SearchBarCommands>()
 };
 
 const renderUseHeader = () =>
@@ -191,49 +195,10 @@ describe('RoomsListView useHeader', () => {
 		options.headerSearchBarOptions.onChangeText({ nativeEvent: { text: 'general' } });
 		expect(mockSearch).toHaveBeenCalledWith('general');
 
+		expect(options.headerSearchBarOptions.ref).toBe(searchContextValue.searchBarRef);
+
 		options.headerSearchBarOptions.onCancelButtonPress();
-		expect(mockStopSearch).toHaveBeenCalledTimes(1);
-	});
-
-	it('clears the system search bar once search stops', () => {
-		let setSearchEnabled: (value: boolean) => void = () => {};
-		const wrapper = ({ children }: { children: ReactElement }) => {
-			const [searchEnabled, setter] = useState(true);
-			setSearchEnabled = setter;
-			return (
-				<RoomsSearchContext.Provider value={{ ...searchContextValue, searchEnabled }}>{children}</RoomsSearchContext.Provider>
-			);
-		};
-
-		renderHook(() => useHeader(), { wrapper });
-
-		const clearText = jest.fn();
-		mockSetOptions.mock.calls[0][0].headerSearchBarOptions.ref.current = { clearText };
-
-		act(() => setSearchEnabled(false));
-
-		expect(clearText).toHaveBeenCalledTimes(1);
-	});
-
-	it('deactivates the system search bar once search stops on tablet', () => {
-		mockIsMasterDetail = true;
-		let setSearchEnabled: (value: boolean) => void = () => {};
-		const wrapper = ({ children }: { children: ReactElement }) => {
-			const [searchEnabled, setter] = useState(true);
-			setSearchEnabled = setter;
-			return (
-				<RoomsSearchContext.Provider value={{ ...searchContextValue, searchEnabled }}>{children}</RoomsSearchContext.Provider>
-			);
-		};
-
-		renderHook(() => useHeader(), { wrapper });
-
-		const cancelSearch = jest.fn();
-		mockSetOptions.mock.calls[0][0].headerSearchBarOptions.ref.current = { cancelSearch };
-
-		act(() => setSearchEnabled(false));
-
-		expect(cancelSearch).toHaveBeenCalledTimes(1);
+		expect(mockResetSearch).toHaveBeenCalledTimes(1);
 	});
 
 	it('replaces the tablet right actions with a Cancel item that stops search while searching', () => {
