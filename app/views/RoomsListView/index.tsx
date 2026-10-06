@@ -28,12 +28,14 @@ import { useGetItemLayout } from './hooks/useGetItemLayout';
 import { useHeader } from './hooks/useHeader';
 import { useRefresh } from './hooks/useRefresh';
 import { useSubscriptions } from './hooks/useSubscriptions';
+import { useWarmUpMessageBlocks } from './hooks/useWarmUpMessageBlocks';
 import styles from './styles';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const RoomsListView = memo(function RoomsListView() {
 	useHeader();
+	useWarmUpMessageBlocks();
 	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsSearchContext);
 	const { colors } = useTheme();
 	const username = useAppSelector(state => getUserSelector(state).username);
