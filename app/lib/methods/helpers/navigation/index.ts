@@ -54,10 +54,10 @@ export const outsideHeaderLeftClose = (onPress: () => void, testID?: string): Na
 	headerLeftActions([{ label: I18n.t('Close'), icon: 'close', testID, onPress }]);
 
 export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions => ({
-	headerStyle: {
-		backgroundColor: themes[theme].surfaceNeutral
-	},
 	...(!hasNativeHeaderBar && {
+		headerStyle: {
+			backgroundColor: themes[theme].surfaceNeutral
+		},
 		headerTintColor: themes[theme].fontDefault,
 		headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 }
 	})
