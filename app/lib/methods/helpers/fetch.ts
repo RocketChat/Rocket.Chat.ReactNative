@@ -2,6 +2,10 @@ import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
+import { BASIC_AUTH_KEY } from '~/lib/constants/keys';
+
+export { BASIC_AUTH_KEY };
+
 export type TMethods = 'POST' | 'GET' | 'DELETE' | 'PUT' | 'post' | 'get' | 'delete' | 'put';
 
 interface CustomHeaders {
@@ -17,7 +21,6 @@ interface IOptions {
 	signal?: AbortSignal;
 	method?: TMethods;
 	body?: any;
-	skipCustomHeaders?: boolean;
 }
 
 // this form is required by Rocket.Chat's parser in "app/statistics/server/lib/UAParserCustom.js"
@@ -36,7 +39,6 @@ export const setBasicAuth = (basicAuth: string | null): void => {
 		RocketChatSettings.customHeaders = headers;
 	}
 };
-export const BASIC_AUTH_KEY = 'BASIC_AUTH_KEY';
 
 RocketChatSettings.customHeaders = headers;
 
@@ -44,10 +46,9 @@ const withoutEmptyValues = (requestHeaders: CustomHeaders): Record<string, strin
 	Object.fromEntries(Object.entries(requestHeaders).filter((entry): entry is [string, string] => typeof entry[1] === 'string'));
 
 export default (url: string, options: IOptions = {}): Promise<Response> => {
-	const { skipCustomHeaders, ...fetchOptions } = options;
 	const customOptions = {
-		...fetchOptions,
-		headers: withoutEmptyValues({ ...options.headers, ...(skipCustomHeaders ? headers : RocketChatSettings.customHeaders) })
+		...options,
+		headers: withoutEmptyValues({ ...RocketChatSettings.customHeaders, ...options.headers })
 	};
 	return fetch(url, customOptions);
 };

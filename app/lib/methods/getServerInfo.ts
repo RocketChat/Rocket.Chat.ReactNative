@@ -17,9 +17,10 @@ import { getServerById } from '../database/services/Server';
 import { compareServerVersion } from './helpers';
 import log from './helpers/log';
 import { getUserSelector } from '~/selectors/login';
-import fetch, { BASIC_AUTH_KEY } from './helpers/fetch';
+import fetch from './helpers/fetch';
 import UserPreferences from './userPreferences';
 import { getServerUserIdKey, getUserTokenKey } from '../constants/keys';
+import { getBasicAuthHeader } from './getBasicAuthHeader';
 
 interface IServerInfoFailure {
 	success: false;
@@ -61,11 +62,6 @@ const getSessionHeaders = (server: string) => {
 	return isSignedInToServer ? { 'X-Auth-Token': user.token, 'X-User-Id': user.id } : {};
 };
 
-const getBasicAuthHeaders = (server: string) => {
-	const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
-	return basicAuth ? { Authorization: `Basic ${basicAuth}` } : {};
-};
-
 export async function getServerInfo(server: string): Promise<TServerInfoResult> {
 	try {
 		const response = await fetch(`${server}/api/info`, {
@@ -73,9 +69,8 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 			headers: {
 				'Content-Type': 'application/json',
 				...getSessionHeaders(server),
-				...getBasicAuthHeaders(server)
-			},
-			skipCustomHeaders: true
+				Authorization: getBasicAuthHeader(server)
+			}
 		});
 		try {
 			const serverInfo: IApiServerInfo = await response.json();
@@ -103,7 +98,7 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 					};
 				}
 
-				const cloudInfo = await getCloudInfo(server);
+				const cloudInfo = await getCloudInfo(server, serverInfo.version);
 
 				// Allows airgapped servers to use the app until enforcementStartDate
 				if (!cloudInfo) {
@@ -150,19 +145,18 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 	};
 }
 
-const getUniqueId = async (server: string): Promise<string> => {
-	const serverVersion = store.getState().server.version;
+const getUniqueId = async (server: string, serverVersion: string): Promise<string> => {
 	const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
 		? `${server}/api/v1/settings.public?_id=uniqueID`
 		: `${server}/api/v1/settings.public?query={"_id": "uniqueID"}`;
-	const response = await fetch(url, { headers: getBasicAuthHeaders(server), skipCustomHeaders: true });
+	const response = await fetch(url, { headers: { Authorization: getBasicAuthHeader(server) } });
 	const result = await response.json();
 	return result?.settings?.[0]?.value;
 };
 
-export const getCloudInfo = async (domain: string): Promise<TCloudInfo | null> => {
+export const getCloudInfo = async (domain: string, serverVersion: string): Promise<TCloudInfo | null> => {
 	try {
-		const uniqueId = await getUniqueId(domain);
+		const uniqueId = await getUniqueId(domain, serverVersion);
 		const response = await getSupportedVersionsCloud(uniqueId, domain);
 		return response.json() as unknown as TCloudInfo;
 	} catch (e) {

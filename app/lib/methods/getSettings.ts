@@ -7,6 +7,7 @@ import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import { type IPreparedSettings, type ISettingsIcon } from '~/definitions';
 import fetch from './helpers/fetch';
 import log from './helpers/log';
+import { getBasicAuthHeader } from './getBasicAuthHeader';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import sdk from '../services/sdk';
@@ -117,7 +118,7 @@ export async function getLoginSettings({ server, serverVersion }: { server: stri
 		? `${server}/api/v1/settings.public?_id=${loginSettings.join(',')}`
 		: `${server}/api/v1/settings.public?query={"_id":{"$in":${settingsParams}}}`;
 	try {
-		const result = await fetch(url).then(response => response.json());
+		const result = await fetch(url, { headers: { Authorization: getBasicAuthHeader(server) } }).then(response => response.json());
 
 		if (result.success && result.settings.length) {
 			reduxStore.dispatch(clearSettings());

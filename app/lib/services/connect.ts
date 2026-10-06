@@ -1,4 +1,4 @@
-import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
+import { Rocketchat as RocketchatClient, settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
@@ -36,7 +36,10 @@ import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { isIOS } from '../methods/helpers/deviceInfo';
 import { isSsl } from '../methods/helpers/isSsl';
 import { normalizeStatusExpiresAt } from '../methods/helpers/normalizeStatusExpiresAt';
-import fetch from '../methods/helpers/fetch';
+import fetch, { setBasicAuth } from '../methods/helpers/fetch';
+import { getBasicAuthHeader } from '../methods/getBasicAuthHeader';
+import UserPreferences from '../methods/userPreferences';
+import { getBasicAuthKey } from '../constants/keys';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -430,6 +433,10 @@ async function getWebsocketInfo({
 }): Promise<{ success: true } | { success: false; message: string }> {
 	const websocketSdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 
+	// The SDK client reads the shared headers when its socket connects, so point them at this
+	// server only for the handshake and hand back whatever was there before.
+	const previousHeaders = RocketChatSettings.customHeaders;
+	setBasicAuth(UserPreferences.getString(getBasicAuthKey(server)));
 	try {
 		await websocketSdk.connect();
 	} catch (err: any) {
@@ -439,6 +446,8 @@ async function getWebsocketInfo({
 				message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
 			};
 		}
+	} finally {
+		RocketChatSettings.customHeaders = previousHeaders;
 	}
 
 	websocketSdk.disconnect();
@@ -451,7 +460,9 @@ async function getWebsocketInfo({
 async function getLoginServices(server: string) {
 	try {
 		let loginServices = [];
-		const loginServicesResult = await fetch(`${server}/api/v1/settings.oauth`).then(response => response.json());
+		const loginServicesResult = await fetch(`${server}/api/v1/settings.oauth`, {
+			headers: { Authorization: getBasicAuthHeader(server) }
+		}).then(response => response.json());
 
 		if (loginServicesResult.success && loginServicesResult.services) {
 			const { services } = loginServicesResult;

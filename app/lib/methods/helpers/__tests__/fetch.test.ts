@@ -42,18 +42,32 @@ describe('fetch helper', () => {
 		});
 	});
 
-	it('excludes global basic auth when skipCustomHeaders is true', async () => {
+	it("lets the caller's Authorization win over the global basic auth", async () => {
 		RocketChatSettings.customHeaders = { ...headers, Authorization: 'Basic victim' };
 
 		await fetchWithHeaders('https://attacker.example/api/info', {
-			headers: { 'Content-Type': 'application/json', Authorization: 'Basic requested' },
-			skipCustomHeaders: true
+			headers: { 'Content-Type': 'application/json', Authorization: 'Basic requested' }
 		});
 
 		expect(fetchMock).toHaveBeenCalledWith('https://attacker.example/api/info', {
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: 'Basic requested',
+				'User-Agent': headers['User-Agent']
+			}
+		});
+	});
+
+	it('drops the global basic auth when the caller passes Authorization: undefined', async () => {
+		RocketChatSettings.customHeaders = { ...headers, Authorization: 'Basic victim' };
+
+		await fetchWithHeaders('https://attacker.example/api/info', {
+			headers: { 'Content-Type': 'application/json', Authorization: undefined }
+		});
+
+		expect(fetchMock).toHaveBeenCalledWith('https://attacker.example/api/info', {
+			headers: {
+				'Content-Type': 'application/json',
 				'User-Agent': headers['User-Agent']
 			}
 		});

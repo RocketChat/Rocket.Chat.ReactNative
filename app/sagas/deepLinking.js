@@ -46,10 +46,11 @@ const confirmDeepLinkLogin = (host, params = {}) =>
 			resolve(true);
 			return;
 		}
+		const isTokenLogin = !!params.token;
 		showConfirmationAlert({
-			title: I18n.t('Deep_link_login_title'),
-			message: I18n.t('Deep_link_login_description', { server: host }),
-			confirmationText: I18n.t('Login'),
+			title: I18n.t(isTokenLogin ? 'Deep_link_login_title' : 'Deep_link_open_title'),
+			message: I18n.t(isTokenLogin ? 'Deep_link_login_description' : 'Deep_link_open_description', { server: host }),
+			confirmationText: I18n.t(isTokenLogin ? 'Login' : 'Continue'),
 			onPress: () => resolve(true),
 			onCancel: () => resolve(false)
 		});
@@ -146,21 +147,21 @@ const fallbackNavigation = function* fallbackNavigation() {
 	yield put(appInit());
 };
 
-const declineDeepLinkLogin = function* declineDeepLinkLogin() {
+const declineDeepLinkLogin = function* declineDeepLinkLogin(isTokenLogin) {
 	const currentRoot = yield select(state => state.app.root);
 	if (currentRoot) {
-		showToast(I18n.t('Deep_link_login_declined'));
+		showToast(I18n.t(isTokenLogin ? 'Deep_link_login_declined' : 'Deep_link_open_declined'));
 	}
 	yield fallbackNavigation();
 };
 
-const ensureDeepLinkLoginConsent = function* ensureDeepLinkLoginConsent(host, params, serverRecord) {
-	if (!params.token && serverRecord) {
+const ensureDeepLinkConsent = function* ensureDeepLinkConsent(host, params, isKnownHost) {
+	if (!params.token && isKnownHost) {
 		return true;
 	}
 	const confirmed = yield call(confirmDeepLinkLogin, host, params);
 	if (!confirmed) {
-		yield declineDeepLinkLogin();
+		yield declineDeepLinkLogin(!!params.token);
 		return false;
 	}
 	return true;
@@ -297,7 +298,7 @@ const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, 
 		yield* handleKnownServerDeepLink({ params, host, version: serverRecord.version });
 		return;
 	}
-	if (!(yield ensureDeepLinkLoginConsent(host, params, serverRecord))) {
+	if (!(yield ensureDeepLinkConsent(host, params, !!serverRecord))) {
 		return;
 	}
 	const result = yield getServerInfo(host);
@@ -438,7 +439,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 		return;
 	}
 
-	if (!(yield ensureDeepLinkLoginConsent(host, params, serverRecord))) {
+	if (!(yield ensureDeepLinkConsent(host, params, !!serverRecord))) {
 		return;
 	}
 	// if deep link is from a different server

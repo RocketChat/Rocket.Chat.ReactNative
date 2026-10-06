@@ -42,14 +42,14 @@ import sdk from '../services/sdk';
 import { disconnect } from '../services/connect';
 import database from '../database';
 import UserPreferences from './userPreferences';
-import { BASIC_AUTH_KEY } from './helpers/fetch';
 import {
 	CERTIFICATE_KEY,
 	CURRENT_SERVER,
 	E2E_PRIVATE_KEY,
 	E2E_PUBLIC_KEY,
 	E2E_RANDOM_PASSWORD_KEY,
-	TOKEN_KEY
+	TOKEN_KEY,
+	getBasicAuthKey
 } from '../constants/keys';
 
 const mockSdk = sdk as unknown as SdkIntegration.IMockSdk;
@@ -63,7 +63,7 @@ const tokenKey = (suffix: string): string => `${TOKEN_KEY}-${suffix}`;
 const certificateKey = (server: string): string => `${CERTIFICATE_KEY}-${server}`;
 
 const serverKeys = (server: string): string[] => [
-	`${BASIC_AUTH_KEY}-${server}`,
+	getBasicAuthKey(server),
 	`${server}-${E2E_PUBLIC_KEY}`,
 	`${server}-${E2E_PRIVATE_KEY}`,
 	`${server}-${E2E_RANDOM_PASSWORD_KEY}`

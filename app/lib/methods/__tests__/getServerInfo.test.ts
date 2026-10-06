@@ -5,7 +5,7 @@ import fetch from '../helpers/fetch';
 import UserPreferences from '../userPreferences';
 import { store } from '../../store/auxStore';
 import { getSupportedVersionsCloud } from '../../services/restApi';
-import { getServerUserIdKey, getUserTokenKey } from '../../constants/keys';
+import { getBasicAuthKey, getServerUserIdKey, getUserTokenKey } from '../../constants/keys';
 
 jest.mock('../helpers/fetch', () => ({ __esModule: true, default: jest.fn(), BASIC_AUTH_KEY: 'BASIC_AUTH_KEY' }));
 jest.mock('../userPreferences', () => ({ __esModule: true, default: { getString: jest.fn() } }));
@@ -72,7 +72,7 @@ describe('getServerInfo', () => {
 	});
 
 	it('sends only the stored basic auth of that server when there is no session', async () => {
-		getString.mockImplementation((key: string) => (key === `BASIC_AUTH_KEY-${attackerServer}` ? 'creds' : null) as any);
+		getString.mockImplementation((key: string) => (key === getBasicAuthKey(attackerServer) ? 'creds' : null) as any);
 
 		await getServerInfo(attackerServer);
 
@@ -80,10 +80,12 @@ describe('getServerInfo', () => {
 		expect(requestOptions().headers).not.toHaveProperty('X-Auth-Token');
 	});
 
-	it('does not send basic auth to a server without stored basic auth', async () => {
+	it('scopes basic auth to none for a server without stored basic auth', async () => {
 		await getServerInfo(attackerServer);
 
-		expect(requestOptions().headers).not.toHaveProperty('Authorization');
+		// The caller pins Authorization to undefined so the global workspace auth can't win;
+		// the fetch helper drops it before the request hits the network (covered below).
+		expect(requestOptions().headers?.Authorization).toBeUndefined();
 	});
 });
 
@@ -121,7 +123,7 @@ describe('getServerInfo cloud lookup', () => {
 	});
 
 	it('sends the requested host its own stored basic auth on the cloud lookup', async () => {
-		getString.mockImplementation((key: string) => (key === `BASIC_AUTH_KEY-${attackerServer}` ? 'attacker-creds' : null) as any);
+		getString.mockImplementation((key: string) => (key === getBasicAuthKey(attackerServer) ? 'attacker-creds' : null) as any);
 
 		await getServerInfo(attackerServer);
 
@@ -129,5 +131,16 @@ describe('getServerInfo cloud lookup', () => {
 		sentToNetwork.mock.calls.forEach(([, options]) =>
 			expect(options.headers).toMatchObject({ Authorization: 'Basic attacker-creds' })
 		);
+	});
+
+	it('picks the unique-id URL form from the requested server version, not the active one', async () => {
+		jest.mocked(store.getState).mockReturnValue({ login: { user: undefined }, server: { version: '6.9.0' } } as any);
+
+		await getServerInfo(attackerServer);
+
+		expect(sentToNetwork.mock.calls.map(([url]) => url)).toEqual([
+			`${attackerServer}/api/info`,
+			`${attackerServer}/api/v1/settings.public?_id=uniqueID`
+		]);
 	});
 });

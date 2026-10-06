@@ -117,7 +117,6 @@ const NewServerView = () => {
 
 	useEffect(() => {
 		EventEmitter.addEventListener('NewServer', handleNewServerEvent);
-		const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
 
 		let keyboardShowListener: ReturnType<typeof Keyboard.addListener> | null = null;
 		let keyboardHideListener: ReturnType<typeof Keyboard.addListener> | null = null;
@@ -129,7 +128,6 @@ const NewServerView = () => {
 
 		return () => {
 			EventEmitter.removeListener('NewServer', handleNewServerEvent);
-			backHandler.remove();
 
 			if (isAndroid) {
 				keyboardShowListener?.remove();
@@ -141,6 +139,20 @@ const NewServerView = () => {
 			}
 		};
 	}, []);
+
+	// While the add-workspace check is running the global Basic auth belongs to the probed host.
+	// Swallow hardware back like the hidden header close button so a back press can't restore
+	// the previous workspace's auth mid-flight and leak it to the new host.
+	useEffect(() => {
+		const onHardwareBackPress = () => {
+			if (connecting) {
+				return true;
+			}
+			return handleBackPress();
+		};
+		const backHandler = BackHandler.addEventListener('hardwareBackPress', onHardwareBackPress);
+		return () => backHandler.remove();
+	}, [connecting, previousServer]);
 
 	useEffect(() => {
 		setHeader();

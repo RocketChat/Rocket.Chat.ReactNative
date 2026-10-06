@@ -955,6 +955,51 @@ describe('deepLinking saga — unknown host hands off to the add-server flow', (
 		expect(jest.mocked(showConfirmationAlert)).not.toHaveBeenCalled();
 		expect(jest.mocked(getServerInfo)).toHaveBeenCalledWith(HOST);
 	});
+
+	it('asks with neutral wording when the link carries no token', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' }) as any));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(showConfirmationAlert).mock.calls[0][0]).toMatchObject({
+			title: 'Deep_link_open_title',
+			confirmationText: 'Continue'
+		});
+	});
+
+	it('keeps the sign-in wording when the link carries a token', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(showConfirmationAlert).mock.calls[0][0]).toMatchObject({
+			title: 'Deep_link_login_title',
+			confirmationText: 'Login'
+		});
+	});
+
+	it('shows a neutral toast when a tokenless confirmation is declined in a running app', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
+		const { store, dispatchedActions } = setupStore({ app: { root: RootEnum.ROOT_INSIDE } } as PreloadedState);
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' }) as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
+		expect(dispatchedActions.some(a => a.type === SERVER.INIT_ADD)).toBe(false);
+		expect(toastedMessages(emitSpy)).toContain('Deep_link_open_declined');
+		expect(toastedMessages(emitSpy)).not.toContain('Deep_link_login_declined');
+		emitSpy.mockRestore();
+	});
 });
 
 describe('deepLinking saga — handleShareExtension user-facing roots', () => {

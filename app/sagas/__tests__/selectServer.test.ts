@@ -77,8 +77,8 @@ import { appStart } from '~/actions/app';
 import { RootEnum } from '~/definitions';
 import { SERVER } from '~/actions/actionsTypes';
 import UserPreferences from '~/lib/methods/userPreferences';
-import { BASIC_AUTH_KEY, setBasicAuth } from '~/lib/methods/helpers/fetch';
-import { CURRENT_SERVER, TOKEN_KEY, getUserTokenKey } from '~/lib/constants/keys';
+import { setBasicAuth } from '~/lib/methods/helpers/fetch';
+import { CURRENT_SERVER, TOKEN_KEY, getBasicAuthKey, getUserTokenKey } from '~/lib/constants/keys';
 import { getLoggedUserById } from '~/lib/database/services/LoggedUser';
 import { getServerInfo } from '~/lib/methods/getServerInfo';
 import { getLoginSettings } from '~/lib/methods/getSettings';
@@ -96,7 +96,7 @@ const TOKEN = 'token-new';
 const keysToClear = [
 	`${TOKEN_KEY}-${SERVER_URL}`,
 	getUserTokenKey(SERVER_URL, USER_ID),
-	`${BASIC_AUTH_KEY}-${SERVER_URL}`,
+	getBasicAuthKey(SERVER_URL),
 	CURRENT_SERVER
 ];
 
@@ -320,8 +320,8 @@ describe('selectServer saga — requesting a new workspace', () => {
 	});
 
 	afterEach(() => {
-		UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${REQUESTED_HOST}`);
-		UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${OLD_SERVER}`);
+		UserPreferences.removeItem(getBasicAuthKey(REQUESTED_HOST));
+		UserPreferences.removeItem(getBasicAuthKey(OLD_SERVER));
 		(sdk as { host?: string }).host = undefined;
 		jest.mocked(getServerInfo).mockReset();
 		jest.mocked(getServerById).mockReset();
@@ -329,35 +329,51 @@ describe('selectServer saga — requesting a new workspace', () => {
 		jest.mocked(getLoginSettings).mockReset();
 	});
 
-	it('does not send the previous workspace basic auth to the requested host', async () => {
+	it('keeps the active workspace basic auth on the shared headers while probing a new host', async () => {
 		setBasicAuth('old-workspace-credentials');
 
 		const { store } = setupStore();
 		store.dispatch(serverRequest(REQUESTED_HOST));
 		await flushSagaMicrotasks();
 
+		expect(authorizationSentToHost).toEqual(['Basic old-workspace-credentials', 'Basic old-workspace-credentials']);
+	});
+
+	it('keeps the requested host credentials off the shared headers even when it has its own stored basic auth', async () => {
+		UserPreferences.setString(getBasicAuthKey(REQUESTED_HOST), 'requested-host-credentials');
+
+		const { store } = setupStore();
+		store.dispatch(serverRequest(REQUESTED_HOST));
+		await flushSagaMicrotasks();
+
+		// The probe carries the requested host's credentials on each request instead (covered
+		// by the getLoginServices/getLoginSettings unit tests), never on the shared headers.
 		expect(authorizationSentToHost).toEqual([null, null]);
 	});
 
-	it('sends the requested host its own stored basic auth', async () => {
-		UserPreferences.setString(`${BASIC_AUTH_KEY}-${REQUESTED_HOST}`, 'requested-host-credentials');
-
-		const { store } = setupStore();
-		store.dispatch(serverRequest(REQUESTED_HOST));
-		await flushSagaMicrotasks();
-
-		expect(authorizationSentToHost).toEqual(['Basic requested-host-credentials', 'Basic requested-host-credentials']);
-	});
-
-	it('restores the active workspace basic auth when the add-workspace flow is closed', async () => {
-		UserPreferences.setString(`${BASIC_AUTH_KEY}-${OLD_SERVER}`, 'old-workspace-credentials');
+	it('re-applies the connected workspace basic auth when it is selected while the probe is pending', async () => {
+		// Reachable via a select that lands before connect(): sdk.host still points at the
+		// connected workspace while the add-workspace probe is in flight.
+		UserPreferences.setString(getBasicAuthKey(OLD_SERVER), 'old-workspace-credentials');
 		setBasicAuth('old-workspace-credentials');
 		(sdk as { host?: string }).host = OLD_SERVER;
+		let resolveProbe!: (value: unknown) => void;
+		jest
+			.mocked(getServerInfo)
+			.mockImplementationOnce(() => new Promise(resolve => (resolveProbe = resolve as (value: unknown) => void)));
 
 		const { store } = setupStore();
 		store.dispatch(serverRequest(REQUESTED_HOST));
 		await flushSagaMicrotasks();
+
 		store.dispatch(selectServerRequest(OLD_SERVER, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect((RocketChatSettings.customHeaders as { Authorization?: string }).Authorization).toBe(
+			'Basic old-workspace-credentials'
+		);
+
+		resolveProbe({ success: false });
 		await flushSagaMicrotasks();
 
 		expect((RocketChatSettings.customHeaders as { Authorization?: string }).Authorization).toBe(
@@ -365,8 +381,8 @@ describe('selectServer saga — requesting a new workspace', () => {
 		);
 	});
 
-	it('restores the active workspace basic auth as soon as the requested host cannot be reached', async () => {
-		UserPreferences.setString(`${BASIC_AUTH_KEY}-${OLD_SERVER}`, 'old-workspace-credentials');
+	it('leaves the active workspace basic auth in place when the requested host cannot be reached', async () => {
+		UserPreferences.setString(getBasicAuthKey(OLD_SERVER), 'old-workspace-credentials');
 		setBasicAuth('old-workspace-credentials');
 		(sdk as { host?: string }).host = OLD_SERVER;
 		jest.mocked(getServerInfo).mockResolvedValue({ success: false } as any);
@@ -381,8 +397,8 @@ describe('selectServer saga — requesting a new workspace', () => {
 	});
 
 	it('connects to the requested host with its own basic auth after a successful probe', async () => {
-		UserPreferences.setString(`${BASIC_AUTH_KEY}-${OLD_SERVER}`, 'old-workspace-credentials');
-		UserPreferences.setString(`${BASIC_AUTH_KEY}-${REQUESTED_HOST}`, 'requested-host-credentials');
+		UserPreferences.setString(getBasicAuthKey(OLD_SERVER), 'old-workspace-credentials');
+		UserPreferences.setString(getBasicAuthKey(REQUESTED_HOST), 'requested-host-credentials');
 		setBasicAuth('old-workspace-credentials');
 		(sdk as { host?: string }).host = OLD_SERVER;
 		let authorizationAtConnect: string | null = null;

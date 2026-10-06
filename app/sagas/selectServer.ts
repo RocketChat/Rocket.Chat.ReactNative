@@ -22,14 +22,14 @@ import { clearActiveUsers } from '../actions/activeUsers';
 import database from '../lib/database';
 import log, { logServerVersion } from '../lib/methods/helpers/log';
 import I18n from '../i18n';
-import { BASIC_AUTH_KEY, setBasicAuth } from '../lib/methods/helpers/fetch';
+import { setBasicAuth } from '../lib/methods/helpers/fetch';
 import { appStart } from '../actions/app';
 import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER, getServerUserIdKey, getUserTokenKey } from '../lib/constants/keys';
+import { CERTIFICATE_KEY, CURRENT_SERVER, getBasicAuthKey, getServerUserIdKey, getUserTokenKey } from '../lib/constants/keys';
 import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
 import { getLoginSettings, setSettings } from '../lib/methods/getSettings';
@@ -60,13 +60,7 @@ const getServerVersion = function (version: string | null) {
 	throw new Error('Server version not found');
 };
 
-const applyBasicAuth = (server: string) => setBasicAuth(UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`));
-
-const restoreActiveBasicAuth = () => {
-	if (sdk.host) {
-		applyBasicAuth(sdk.host);
-	}
-};
+const applyBasicAuth = (server: string) => setBasicAuth(UserPreferences.getString(getBasicAuthKey(server)));
 
 const upsertServer = async function ({ server, serverInfo }: { server: string; serverInfo: IServerInfo }): Promise<TServerModel> {
 	const serversDB = database.servers;
@@ -239,7 +233,8 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 		if (certificate) {
 			SSLPinning?.setCertificate(certificate, server);
 		}
-		applyBasicAuth(server);
+		// Each request below carries its own server-scoped Authorization, so the shared
+		// headers stay on the active workspace for the whole probe.
 		const serverInfo = yield* getServerInfoSaga({ server });
 		const serversDB = database.servers;
 		const serversHistoryCollection = serversDB.get('servers_history');
@@ -272,8 +267,6 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 	} catch (e) {
 		yield put(serverFailure());
 		log(e);
-	} finally {
-		restoreActiveBasicAuth();
 	}
 };
 
