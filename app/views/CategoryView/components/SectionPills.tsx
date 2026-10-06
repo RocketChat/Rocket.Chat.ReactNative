@@ -41,7 +41,8 @@ const SectionPills = ({ sections, selectedHeader, onSelect }: ISectionPills) => 
 
 const styles = StyleSheet.create({
 	container: {
-		flexGrow: 0
+		flexGrow: 0,
+		flexShrink: 0
 	},
 	content: {
 		gap: 8,
