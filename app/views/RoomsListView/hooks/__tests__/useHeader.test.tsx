@@ -3,7 +3,8 @@ import { createRef, type ReactElement } from 'react';
 import { type SearchBarCommands } from 'react-native-screens';
 
 import { RoomsSearchContext } from '../../contexts/RoomsSearchProvider';
-import { useHeader } from '../useHeader';
+import { useJsRoomsListHeader } from '../useJsRoomsListHeader';
+import { useNativeRoomsListHeader } from '../useNativeRoomsListHeader';
 
 const mockSetOptions = jest.fn();
 const mockNavigation = { setOptions: mockSetOptions, navigate: jest.fn(), toggleDrawer: jest.fn(), getParent: jest.fn() };
@@ -90,14 +91,21 @@ const searchContextValue = {
 	searchBarRef: createRef<SearchBarCommands>()
 };
 
-const renderUseHeader = () =>
+const renderUseHeader = (useHeader = useNativeRoomsListHeader) =>
 	renderHook(() => useHeader(), {
 		wrapper: ({ children }: { children: ReactElement }) => (
 			<RoomsSearchContext.Provider value={searchContextValue}>{children}</RoomsSearchContext.Provider>
 		)
 	});
 
+const originalDev = __DEV__;
+
 describe('RoomsListView useHeader', () => {
+	afterEach(() => {
+		// @ts-expect-error __DEV__ is not writable but we need to test
+		global.__DEV__ = originalDev;
+	});
+
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockIsIOS = true;
@@ -142,15 +150,12 @@ describe('RoomsListView useHeader', () => {
 	});
 
 	it('builds the right cluster in push-troubleshoot, directory, display order, then the toolbar create item', () => {
-		const originalDev = __DEV__;
 		// @ts-expect-error __DEV__ is not writable but we need to test
 		global.__DEV__ = false;
 		mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
 
 		renderUseHeader();
 
-		// @ts-expect-error __DEV__ is not writable but we need to test
-		global.__DEV__ = originalDev;
 		const options = mockSetOptions.mock.calls[0][0];
 		const rightItems = options.unstable_headerRightItems();
 		const labels = rightItems.map((item: { accessibilityLabel: string }) => item.accessibilityLabel);
@@ -239,7 +244,7 @@ describe('RoomsListView useHeader', () => {
 			<RoomsSearchContext.Provider value={{ ...searchContextValue, searchEnabled: true }}>{children}</RoomsSearchContext.Provider>
 		);
 
-		renderHook(() => useHeader(), { wrapper });
+		renderHook(() => useNativeRoomsListHeader(), { wrapper });
 
 		const options = mockSetOptions.mock.calls[0][0];
 		expect(options.headerSearchBarOptions.hideNavigationBar).toBe(false);
@@ -255,7 +260,7 @@ describe('RoomsListView useHeader', () => {
 			<RoomsSearchContext.Provider value={{ ...searchContextValue, searchEnabled: true }}>{children}</RoomsSearchContext.Provider>
 		);
 
-		renderHook(() => useHeader(), { wrapper });
+		renderHook(() => useNativeRoomsListHeader(), { wrapper });
 
 		const options = mockSetOptions.mock.calls[0][0];
 		expect(options.headerSearchBarOptions.hideNavigationBar).toBe(true);
@@ -263,10 +268,8 @@ describe('RoomsListView useHeader', () => {
 		expect(labels).not.toContain('Cancel');
 	});
 
-	it('falls back to the JS header on Android', () => {
-		mockIsIOS = false;
-
-		renderUseHeader();
+	it('renders the JS header without a native bar', () => {
+		renderUseHeader(useJsRoomsListHeader);
 
 		const options = mockSetOptions.mock.calls[0][0];
 		expect(options.headerLargeTitle).toBeUndefined();
