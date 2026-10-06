@@ -17,15 +17,27 @@ export default StyleSheet.create({
 	},
 	groupTitleContainer: {
 		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 4,
 		paddingHorizontal: 16,
-		paddingVertical: 12,
 		borderBottomWidth: StyleSheet.hairlineWidth
 	},
-	groupTitle: {
-		fontSize: 16,
+	groupTitleButton: {
+		flexShrink: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 4,
+		paddingVertical: 12
+	},
+	groupToggle: {
 		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'flex-end',
+		gap: 4,
+		paddingVertical: 12
+	},
+	groupTitle: {
+		flexShrink: 1,
+		fontSize: 16,
 		lineHeight: 24,
 		...sharedStyles.textBold
 	},

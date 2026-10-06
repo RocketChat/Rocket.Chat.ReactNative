@@ -16,6 +16,7 @@ import { isIOS } from '../lib/methods/helpers';
 import { type TNavigation } from './stackType';
 import RoomView from '../views/RoomView';
 import RoomsListView from '../views/RoomsListView';
+import CategoryView from '../views/CategoryView';
 import RoomActionsView from '../views/RoomActionsView';
 import RoomInfoView from '../views/RoomInfoView';
 import ReportUserView from '../views/ReportUserView';
@@ -155,6 +156,10 @@ const ChatsStack = createNativeStackNavigator({
 		RoomsListView: createNativeStackScreen({
 			screen: RoomsListView,
 			options: { freezeOnBlur: true }
+		}),
+		CategoryView: createNativeStackScreen({
+			screen: CategoryView,
+			options: ({ route }) => ({ title: route.params.title })
 		}),
 		RoomView: RoomViewScreen,
 		RoomActionsView: createNativeStackScreen({

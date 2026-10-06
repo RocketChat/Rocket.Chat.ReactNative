@@ -15,6 +15,7 @@ import { createSplitNavigator } from './SplitNavigator';
 import { type MasterDetailChatsStackParamList, type MasterDetailInsideStackParamList, type ModalStackParamList } from './types';
 import RoomView from '~/views/RoomView';
 import RoomsListView from '~/views/RoomsListView';
+import CategoryView from '~/views/CategoryView';
 import RoomActionsView from '~/views/RoomActionsView';
 import RoomInfoView from '~/views/RoomInfoView';
 import ReportUserView from '~/views/ReportUserView';
@@ -174,6 +175,10 @@ const RoomsListStack = createNativeStackNavigator({
 		RoomsListView: createNativeStackScreen({
 			screen: RoomsListView,
 			options: { headerShown: hasNativeHeaderBar }
+		}),
+		CategoryView: createNativeStackScreen({
+			screen: CategoryView,
+			options: ({ route }) => ({ title: route.params.title })
 		})
 	}
 }).with(({ Navigator }) => {

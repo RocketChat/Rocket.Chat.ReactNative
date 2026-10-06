@@ -6,6 +6,7 @@ import { type ILivechatTag } from '~/definitions/ILivechatTag';
 import { type IMessage, type TAnyMessageModel } from '~/definitions/IMessage';
 import { type ISubscription, type SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
 import { type TChangeAvatarViewContext } from '~/definitions/TChangeAvatarViewContext';
+import { type CategoryViewParams } from '~/views/CategoryView';
 
 export type MasterDetailChatsStackParamList = {
 	RoomView: {
@@ -24,7 +25,7 @@ export type MasterDetailChatsStackParamList = {
 };
 
 export type MasterDetailSplitParamList = {
-	RoomsListStackNavigator: NavigatorScreenParams<{ RoomsListView: undefined }>;
+	RoomsListStackNavigator: NavigatorScreenParams<{ RoomsListView: undefined; CategoryView: CategoryViewParams }>;
 	ChatsStackNavigator: NavigatorScreenParams<MasterDetailChatsStackParamList>;
 };
 

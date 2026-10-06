@@ -1,5 +1,5 @@
 import { SubscriptionType, type TSubscriptionModel } from '~/definitions';
-import { buildRoomList } from '../groupRooms';
+import { buildRoomList, roomsInSection } from '../groupRooms';
 import { DEFAULT_GROUP_ORDER } from '../sidebarGroupOrder';
 
 const room = (fields: Partial<TSubscriptionModel>) => ({ t: SubscriptionType.CHANNEL, ...fields }) as TSubscriptionModel;
@@ -97,5 +97,26 @@ describe('groupRooms', () => {
 			tunread: ['thread'],
 			tunreadUser: ['thread']
 		});
+	});
+});
+
+describe('roomsInSection', () => {
+	const chats = [
+		room({ rid: 'general', category: 'work' }),
+		room({ rid: 'random', f: true }),
+		room({ rid: 'dm', t: SubscriptionType.DIRECT })
+	];
+	const roomList = buildRoomList(chats, options);
+
+	it('returns the rooms between a header and the next one', () => {
+		expect(layout(roomsInSection(roomList, 'Favorites'))).toEqual(['random']);
+	});
+
+	it('returns the rooms of the last section', () => {
+		expect(layout(roomsInSection(roomList, 'Chats'))).toEqual(['dm']);
+	});
+
+	it('returns nothing for a section that is not listed', () => {
+		expect(roomsInSection(roomList, 'empty')).toEqual([]);
 	});
 });

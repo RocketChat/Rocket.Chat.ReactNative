@@ -17,6 +17,7 @@ import {
 	type TThreadModel,
 	type IVisitor
 } from '../definitions';
+import { type CategoryViewParams } from '../views/CategoryView';
 import { type ModalStackParamList } from './MasterDetailStack/types';
 import { type TNavigation } from './stackType';
 
@@ -30,6 +31,7 @@ export type ChatsStackParamList = {
 	NewMessageStackNavigator: any;
 	NewMessageStack: undefined;
 	RoomsListView: undefined;
+	CategoryView: CategoryViewParams;
 	RoomView:
 		| {
 				rid: string;

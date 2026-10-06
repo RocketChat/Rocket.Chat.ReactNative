@@ -164,3 +164,12 @@ export const buildRoomList = (subscriptions: TSubscriptionModel[], options: Buil
 		})
 	);
 };
+
+export const roomsInSection = (roomList: TSubscriptionModel[], header: string) => {
+	const headerIndex = roomList.findIndex(room => room.separator && room.rid === header);
+	if (headerIndex < 0) {
+		return [];
+	}
+	const nextHeaderIndex = roomList.findIndex((room, index) => index > headerIndex && room.separator);
+	return roomList.slice(headerIndex + 1, nextHeaderIndex < 0 ? undefined : nextHeaderIndex);
+};
