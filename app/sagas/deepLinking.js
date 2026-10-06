@@ -298,9 +298,6 @@ const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, 
 		return;
 	}
 	if (!(yield ensureDeepLinkLoginConsent(host, params, serverRecord))) {
-		if (params.voipAcceptFailed) {
-			yield call(handleVoipAcceptFailed, params);
-		}
 		return;
 	}
 	const result = yield getServerInfo(host);
