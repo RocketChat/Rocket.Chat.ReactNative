@@ -1,14 +1,16 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useEffect, useImperativeHandle } from 'react';
 
-import { useDebounce } from '../../../lib/methods/helpers';
+import { useDebounce } from '~/lib/methods/helpers';
 import EmptyRoom from './components/EmptyRoom';
 import List from './components/List';
-import { type IListContainerProps, type IListContainerRef, type IListProps } from './definitions';
-import { useMessages, useScroll } from './hooks';
+import { MessageRow } from '../components/MessageRow';
+import { type IListContainerProps, type IListContainerRef, type IListProps } from '../definitions';
+import { useMessages } from './hooks/useMessages';
+import { useScroll } from './hooks/useScroll';
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
-	({ rid, tmid, t, renderRow, showMessageInMainThread, hideSystemMessages, listRef, serverVersion }, ref) => {
-		const [messages, messagesIds, fetchMessages] = useMessages({
+	({ rid, tmid, t, onLongPress, showMessageInMainThread, hideSystemMessages, flatListRef, serverVersion }, ref) => {
+		const [messages, messagesIds, fetchMessages, { highTs, setHighTs }] = useMessages({
 			rid,
 			tmid,
 			showMessageInMainThread,
@@ -16,41 +18,56 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			t,
 			serverVersion
 		});
-		const {
-			jumpToBottom,
-			jumpToMessage,
-			cancelJumpToMessage,
-			viewabilityConfigCallbackPairs,
-			handleScrollToIndexFailed,
-			highlightedMessageId
-		} = useScroll({ listRef, messagesIds });
+		const { jumpToBottom, jumpToMessage, cancelJumpToMessage, handleScrollToIndexFailed, highlightedMessageId, isReleasing } =
+			useScroll({
+				flatListRef,
+				messages,
+				messagesIds,
+				highTs,
+				setHighTs,
+				fetchMessages
+			});
 
 		const onEndReached = useDebounce(() => {
 			fetchMessages();
 		}, 300);
 
+		useEffect(() => onEndReached.cancel, [onEndReached]);
+
 		useImperativeHandle(ref, () => ({
 			jumpToMessage,
-			cancelJumpToMessage
+			cancelJumpToMessage,
+			isMessageInWindow: (messageId: string) => messagesIds.current?.includes(messageId) ?? false
 		}));
 
-		const renderItem: IListProps['renderItem'] = ({ item, index }) => renderRow(item, messages[index + 1], highlightedMessageId);
+		const renderItem: IListProps['renderItem'] = ({ item, index }) => (
+			<MessageRow
+				item={item}
+				previousItem={messages[index + 1]}
+				highlightedMessage={highlightedMessageId ?? undefined}
+				onLongPress={onLongPress}
+			/>
+		);
 
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} />
 				<List
-					listRef={listRef}
+					flatListRef={flatListRef}
 					data={messages}
 					renderItem={renderItem}
 					onEndReached={onEndReached}
 					onScrollToIndexFailed={handleScrollToIndexFailed}
-					viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
 					jumpToBottom={jumpToBottom}
-					maintainVisibleContentPosition={{
-						minIndexForVisible: 0,
-						autoscrollToTopThreshold: 0
-					}}
+					isAnchored={highTs != null}
+					maintainVisibleContentPosition={
+						isReleasing
+							? undefined
+							: {
+									minIndexForVisible: 0,
+									autoscrollToTopThreshold: 0
+								}
+					}
 				/>
 			</>
 		);

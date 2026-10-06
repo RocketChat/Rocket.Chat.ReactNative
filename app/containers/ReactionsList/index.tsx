@@ -1,17 +1,14 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 
-import { type TGetCustomEmoji } from '../../definitions/IEmoji';
-import { type IReaction } from '../../definitions';
-import I18n from '../../i18n';
+import { type IReaction } from '~/definitions';
+import I18n from '~/i18n';
 import styles from './styles';
 import AllTab from './AllTab';
 import UsersList from './UsersList';
 import { TabView } from '../TabView';
-import Emoji from '../message/Emoji';
+import Emoji from '../message/components/Emoji';
 
 interface IReactionsListProps {
-	getCustomEmoji: TGetCustomEmoji;
 	reactions?: IReaction[];
 }
 
@@ -31,7 +28,7 @@ const useRoutes = (reactions: IReaction[] | undefined) => {
 		};
 	}
 
-	const sortedReactions = reactions?.sort((reaction1, reaction2) => reaction2.usernames.length - reaction1.usernames.length);
+	const sortedReactions = [...reactions].sort((reaction1, reaction2) => reaction2.usernames.length - reaction1.usernames.length);
 	const routes: IRoute[] = sortedReactions.map(reaction => ({
 		key: reaction.emoji,
 		title: reaction.emoji,
@@ -51,15 +48,15 @@ const useRoutes = (reactions: IReaction[] | undefined) => {
 	};
 };
 
-const ReactionsList = ({ reactions, getCustomEmoji }: IReactionsListProps) => {
+const ReactionsList = ({ reactions }: IReactionsListProps) => {
 	const { routes, sortedReactions } = useRoutes(reactions);
 
 	const renderScene = ({ route }: { route: IRoute }) => {
 		if (route.key === 'all') {
-			return <AllTab reactions={sortedReactions} getCustomEmoji={getCustomEmoji} />;
+			return <AllTab reactions={sortedReactions} />;
 		}
-		if (route.emoji && route.usernames && route.names) {
-			return <UsersList emoji={route.emoji} usernames={route.usernames} names={route.names} />;
+		if (route.emoji && route.usernames) {
+			return <UsersList emoji={route.emoji} usernames={route.usernames} names={route.names || []} />;
 		}
 		return null;
 	};
@@ -67,20 +64,15 @@ const ReactionsList = ({ reactions, getCustomEmoji }: IReactionsListProps) => {
 	const renderTabItem = (tab: IRoute, color: string) => {
 		if (tab.key === 'all') {
 			return (
-				<View style={styles.tabBarItem}>
+				<View style={styles.tabBarItem} testID='reactions-tab-all'>
 					<Text style={[styles.allTabItem, { color }]}>{I18n.t('All')}</Text>
 				</View>
 			);
 		}
 		if (tab.emoji) {
 			return (
-				<View style={styles.tabBarItem}>
-					<Emoji
-						content={tab.emoji}
-						standardEmojiStyle={styles.standardEmojiStyle}
-						customEmojiStyle={styles.customEmojiStyle}
-						getCustomEmoji={getCustomEmoji}
-					/>
+				<View style={styles.tabBarItem} testID={`reactions-tab-${tab.emoji}`}>
+					<Emoji content={tab.emoji} standardEmojiStyle={styles.standardEmojiStyle} customEmojiStyle={styles.customEmojiStyle} />
 					<Text style={[styles.reactionCount, { color }]}>{tab.usernames?.length}</Text>
 				</View>
 			);

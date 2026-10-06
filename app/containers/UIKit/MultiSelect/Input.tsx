@@ -1,14 +1,14 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { Text, View } from 'react-native';
 
-import { CustomIcon } from '../../CustomIcon';
-import ActivityIndicator from '../../ActivityIndicator';
+import { CustomIcon } from '~/containers/CustomIcon';
+import ActivityIndicator from '~/containers/ActivityIndicator';
 import styles from './styles';
-import { useTheme } from '../../../theme';
-import Touch from '../../Touch';
+import { useTheme } from '~/theme';
+import Touch from '~/containers/Touch';
 
 interface IInput {
-	children?: JSX.Element;
+	children?: ReactElement;
 	onPress: () => void;
 	inputStyle?: object;
 	disabled?: boolean;
@@ -25,7 +25,7 @@ const Input = ({ children, onPress, loading, inputStyle, placeholder, disabled, 
 			onPress={onPress}
 			testID={testID}
 			style={[{ backgroundColor: colors.surfaceRoom }, styles.inputBorder, inputStyle]}
-			enabled={!disabled}>
+			disabled={disabled}>
 			<View style={[styles.input, styles.inputBorder, { borderColor: colors.strokeMedium }, innerInputStyle]}>
 				{placeholder ? <Text style={[styles.pickerText, { color: colors.fontSecondaryInfo }]}>{placeholder}</Text> : children}
 				{loading ? (

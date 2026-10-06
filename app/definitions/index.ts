@@ -7,9 +7,10 @@ import { type TColors, type TSupportedThemes } from '../theme';
 
 export * from './ERoomType';
 export * from './IAttachment';
+export * from './IBiometricTrustStore';
 export * from './ICannedResponse';
 export * from './ICertificate';
-export * from './ICredentials';
+export * from './ILoginCredentials';
 export * from './IEmoji';
 export * from './ILivechatDepartment';
 export * from './ILivechatTag';
@@ -21,6 +22,7 @@ export * from './IPreferences';
 export * from './IProfile';
 export * from './IReaction';
 export * from './IRole';
+export * from './IRoomMessageHandlers';
 export * from './IRoom';
 export * from './ISearch';
 export * from './IServer';
@@ -37,6 +39,7 @@ export * from './redux';
 export * from './redux/TRootEnum';
 export * from './TChangeAvatarViewContext';
 export * from './IDataSelect';
+export * from './TStatusSource';
 export * from './TUserStatus';
 export * from './IDeleteMessageBulkParams';
 

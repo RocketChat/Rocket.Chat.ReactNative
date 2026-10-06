@@ -1,5 +1,5 @@
-import React from 'react';
-import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
+import { forwardRef, type ReactNode } from 'react';
+import { Touchable, type TouchableProps } from 'react-native-gesture-handler';
 import {
 	View,
 	StyleSheet,
@@ -11,9 +11,11 @@ import {
 import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import { useTheme } from '../theme';
+import { isAndroid } from '../lib/methods/helpers/deviceInfo';
 
-export interface ITouchProps extends RectButtonProps {
-	children: React.ReactNode;
+export interface ITouchProps extends TouchableProps {
+	rippleColor?: string;
+	children: ReactNode;
 	accessible?: boolean;
 	accessibilityLabel?: string;
 	accessibilityHint?: string;
@@ -24,19 +26,21 @@ export interface ITouchProps extends RectButtonProps {
 	disabled?: boolean;
 }
 
-const KeyboardRectButton = withKeyboardFocus(RectButton);
+const KeyboardTouchable = withKeyboardFocus(Touchable);
 
-const Touch = React.forwardRef<any, ITouchProps>(
+const Touch = forwardRef<any, ITouchProps>(
 	(
 		{
 			children,
 			onPress,
 			underlayColor,
+			rippleColor,
 			accessible,
 			accessibilityLabel,
 			accessibilityHint,
 			accessibilityActions,
 			onAccessibilityAction,
+			testID,
 			style,
 			rectButtonStyle,
 			disabled,
@@ -76,18 +80,20 @@ const Touch = React.forwardRef<any, ITouchProps>(
 			marginTop
 		};
 		return (
-			<KeyboardRectButton
+			<KeyboardTouchable
 				ref={ref}
 				onPress={onPress}
-				activeOpacity={1}
-				underlayColor={underlayColor || colors.surfaceNeutral}
-				rippleColor={colors.surfaceNeutral}
+				androidRipple={isAndroid ? { color: rippleColor ?? colors.surfaceNeutral } : undefined}
+				underlayColor={isAndroid ? undefined : underlayColor || colors.surfaceNeutral}
+				activeUnderlayOpacity={isAndroid ? undefined : 1}
+				animationDuration={isAndroid ? undefined : 0}
 				focusable={!disabled}
 				canBeFocused={!disabled}
 				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
 				{...props}
-				enabled={!disabled}>
+				disabled={disabled}>
 				<View
+					testID={testID}
 					accessible={accessible}
 					accessibilityRole={props.accessibilityRole}
 					accessibilityLabel={accessibilityLabel}
@@ -97,7 +103,7 @@ const Touch = React.forwardRef<any, ITouchProps>(
 					style={viewStyle}>
 					{children}
 				</View>
-			</KeyboardRectButton>
+			</KeyboardTouchable>
 		);
 	}
 );

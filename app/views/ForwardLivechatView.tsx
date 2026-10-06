@@ -1,5 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 
 const COUNT_DEPARTMENT = 50;
 
-const ForwardLivechatView = (): React.ReactElement => {
+const ForwardLivechatView = (): ReactElement => {
 	const { navigate, setOptions } = useAppNavigation<TNavigation, 'PickerView'>();
 	const {
 		params: { rid }
@@ -65,7 +65,7 @@ const ForwardLivechatView = (): React.ReactElement => {
 				term
 			});
 			if (result.success) {
-				const parsedUsers = result.items.map(user => ({ label: user.username, value: user._id }));
+				const parsedUsers = result.items.flatMap(user => (user.username ? [{ label: user.username, value: user._id }] : []));
 				if (!term) {
 					setUsers(parsedUsers);
 				}

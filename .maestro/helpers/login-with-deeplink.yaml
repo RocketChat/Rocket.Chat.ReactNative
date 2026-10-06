@@ -27,7 +27,16 @@ tags:
             visible: '.*Pixel Launcher.*'
           commands:
             - tapOn: 'Close App'
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view'
-    timeout: 60000
+- retry:
+    maxRetries: 3
+    commands:
+      # Cold-boot emulators can show "System UI isn't responding" over the app
+      - runFlow:
+          when:
+            visible: ".*isn't responding.*"
+          commands:
+            - tapOn: 'Wait'
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-view'
+          timeout: 60000

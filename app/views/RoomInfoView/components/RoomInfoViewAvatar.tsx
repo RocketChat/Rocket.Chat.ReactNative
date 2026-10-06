@@ -1,31 +1,23 @@
-import React from 'react';
-import { View } from 'react-native';
+import { type ReactElement } from 'react';
 
-import { AvatarWithEdit } from '../../../containers/Avatar';
-import Status from '../../../containers/Status';
-import { SubscriptionType } from '../../../definitions';
-import { useTheme } from '../../../theme';
-import sharedStyles from '../../Styles';
+import { AvatarWithEdit } from '~/containers/Avatar';
+import { SubscriptionType } from '~/definitions';
 import styles from '../styles';
-import I18n from '../../../i18n';
+import I18n from '~/i18n';
 
 const RoomInfoViewAvatar = ({
 	showEdit,
 	type,
 	username,
 	rid,
-	handleEditAvatar,
-	userId
+	handleEditAvatar
 }: {
 	showEdit: boolean;
 	type: SubscriptionType;
 	username: string;
 	rid?: string;
 	handleEditAvatar: () => void;
-	userId: string;
-}): React.ReactElement => {
-	const { colors } = useTheme();
-
+}): ReactElement => {
 	const showAvatarEdit = showEdit && type !== SubscriptionType.OMNICHANNEL;
 
 	return (
@@ -35,13 +27,8 @@ const RoomInfoViewAvatar = ({
 			type={type}
 			rid={rid}
 			editAccessibilityLabel={I18n.t('Edit_Room_Photo')}
-			handleEdit={showAvatarEdit ? handleEditAvatar : undefined}>
-			{type === SubscriptionType.DIRECT && userId ? (
-				<View style={[sharedStyles.status, { backgroundColor: colors.surfaceHover }]}>
-					<Status size={20} id={userId} />
-				</View>
-			) : null}
-		</AvatarWithEdit>
+			handleEdit={showAvatarEdit ? handleEditAvatar : undefined}
+		/>
 	);
 };
 

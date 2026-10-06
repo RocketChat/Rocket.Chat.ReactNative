@@ -1,19 +1,19 @@
-import React, { useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import * as List from '../../containers/List';
-import SafeAreaView from '../../containers/SafeAreaView';
+import * as List from '~/containers/List';
+import SafeAreaView from '~/containers/SafeAreaView';
 import ListPicker from './ListPicker';
-import { useUserPreferences } from '../../lib/methods/userPreferences';
+import { useUserPreferences } from '~/lib/methods/userPreferences';
 import {
 	AUDIO_PREFERENCE_DOWNLOAD,
 	IMAGE_PREFERENCE_DOWNLOAD,
 	type MediaDownloadOption,
 	VIDEO_PREFERENCE_DOWNLOAD
-} from '../../lib/constants/mediaAutoDownload';
-import i18n from '../../i18n';
-import { type SettingsStackParamList } from '../../stacks/types';
+} from '~/lib/constants/mediaAutoDownload';
+import i18n from '~/i18n';
+import { type SettingsStackParamList } from '~/stacks/types';
 
 const MediaAutoDownload = () => {
 	const [imagesPreference, setImagesPreference] = useUserPreferences<MediaDownloadOption>(
@@ -35,11 +35,26 @@ const MediaAutoDownload = () => {
 			<List.Container>
 				<List.Section>
 					<List.Separator />
-					<ListPicker onChangeValue={setImagesPreference} value={imagesPreference as MediaDownloadOption} title='Image' />
+					<ListPicker
+						onChangeValue={setImagesPreference}
+						value={imagesPreference as MediaDownloadOption}
+						title='Image'
+						testID='media-auto-download-image'
+					/>
 					<List.Separator />
-					<ListPicker onChangeValue={setVideoPreference} value={videoPreference as MediaDownloadOption} title='Video' />
+					<ListPicker
+						onChangeValue={setVideoPreference}
+						value={videoPreference as MediaDownloadOption}
+						title='Video'
+						testID='media-auto-download-video'
+					/>
 					<List.Separator />
-					<ListPicker onChangeValue={setAudioPreference} value={audioPreference as MediaDownloadOption} title='Audio' />
+					<ListPicker
+						onChangeValue={setAudioPreference}
+						value={audioPreference as MediaDownloadOption}
+						title='Audio'
+						testID='media-auto-download-audio'
+					/>
 					<List.Separator />
 				</List.Section>
 			</List.Container>

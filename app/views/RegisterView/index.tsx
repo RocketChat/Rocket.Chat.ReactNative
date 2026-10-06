@@ -1,37 +1,39 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, Keyboard, Text, type TextInput, View } from 'react-native';
 import parse from 'url-parse';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { loginRequest } from '../../actions/login';
-import Button from '../../containers/Button';
-import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import LoginServices from '../../containers/LoginServices';
-import { ControlledFormTextInput } from '../../containers/TextInput';
-import { type IBaseScreen } from '../../definitions';
-import I18n from '../../i18n';
-import { getShowLoginButton } from '../../selectors/login';
-import { type OutsideParamList } from '../../stacks/types';
-import { useTheme } from '../../theme';
-import { showErrorAlert, isValidEmail, isAndroid } from '../../lib/methods/helpers';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import { register } from '../../lib/services/restApi';
-import UGCRules from '../../containers/UserGeneratedContentRules';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import PasswordPolicies from '../../containers/PasswordPolicies';
-import getCustomFields from '../../lib/methods/getCustomFields';
-import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
-import CustomFields from '../../containers/CustomFields';
-import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
+import { loginRequest } from '~/actions/login';
+import Button from '~/containers/Button';
+import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import LoginServices from '~/containers/LoginServices';
+import { ControlledFormTextInput } from '~/containers/TextInput';
+import I18n from '~/i18n';
+import { getShowLoginButton } from '~/selectors/login';
+import { type OutsideParamList } from '~/stacks/types';
+import { useTheme } from '~/theme';
+import { showErrorAlert, isValidEmail, isAndroid } from '~/lib/methods/helpers';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { register } from '~/lib/services/restApi';
+import UGCRules from '~/containers/UserGeneratedContentRules';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import PasswordPolicies from '~/containers/PasswordPolicies';
+import getCustomFields from '~/lib/methods/getCustomFields';
+import useVerifyPassword from '~/lib/hooks/useVerifyPassword';
+import CustomFields from '~/containers/CustomFields';
+import useParsedCustomFields from '~/lib/hooks/useParsedCustomFields';
 import styles from './styles';
 
-interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
+type RegisterViewProps = StaticScreenProps<{ title: string; username?: string }>;
 
-const RegisterView = ({ navigation, route }: IProps) => {
+const RegisterView = ({ route }: RegisterViewProps) => {
+	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'RegisterView'>>();
 	const validationSchema = yup.object().shape({
 		name: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Full_name') })}`),
 		email: yup

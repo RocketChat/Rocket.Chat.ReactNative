@@ -1,28 +1,28 @@
-import React, { useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
-import Switch from '../../containers/Switch';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import * as List from '../../containers/List';
-import SafeAreaView from '../../containers/SafeAreaView';
-import I18n from '../../i18n';
-import { type AccessibilityStackParamList } from '../../stacks/types';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useUserPreferences } from '../../lib/methods/userPreferences';
+import Switch from '~/containers/Switch';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import * as List from '~/containers/List';
+import SafeAreaView from '~/containers/SafeAreaView';
+import I18n from '~/i18n';
+import { type AccessibilityStackParamList } from '~/stacks/types';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { useUserPreferences } from '~/lib/methods/userPreferences';
 import {
 	USER_MENTIONS_PREFERENCES_KEY,
 	ROOM_MENTIONS_PREFERENCES_KEY,
 	AUTOPLAY_GIFS_PREFERENCES_KEY,
 	ALERT_DISPLAY_TYPE_PREFERENCES_KEY
-} from '../../lib/constants/keys';
+} from '~/lib/constants/keys';
 import ListPicker from './components/ListPicker';
 
 export type TAlertDisplayType = 'TOAST' | 'DIALOG';
 
 const AccessibilityAndAppearanceView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<AccessibilityStackParamList>>();
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail as boolean);
+	const isMasterDetail = useMasterDetail();
 	const [mentionsWithAtSymbol, setMentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY, false);
 	const [roomsWithHashTagSymbol, setRoomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
 	const [autoplayGifs, setAutoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
@@ -57,7 +57,7 @@ const AccessibilityAndAppearanceView = () => {
 				? undefined
 				: () => <HeaderButton.Drawer navigation={navigation} testID='accessibility-view-drawer' />
 		});
-	}, []);
+	}, [navigation, isMasterDetail]);
 	return (
 		<SafeAreaView>
 			<List.Container testID='accessibility-view-list'>

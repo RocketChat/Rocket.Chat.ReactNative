@@ -1,14 +1,14 @@
-import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { type ComponentType, type ReactNode } from 'react';
 
 import CallSection from './CallSection';
-import type { ISubscription, TSubscriptionModel } from '../../../definitions';
-import { SubscriptionType } from '../../../definitions';
-import { clearEnterpriseModules, setEnterpriseModules } from '../../../actions/enterpriseModules';
-import { setPermissions } from '../../../actions/permissions';
-import { setUser } from '../../../actions/login';
-import { mockedStore } from '../../../reducers/mockedStore';
-import { addSettings } from '../../../actions/settings';
+import type { ISubscription, TSubscriptionModel } from '~/definitions';
+import { SubscriptionType } from '~/definitions';
+import { clearEnterpriseModules, setEnterpriseModules } from '~/actions/enterpriseModules';
+import { setPermissions } from '~/actions/permissions';
+import { setUser } from '~/actions/login';
+import { mockedStore } from '~/reducers/mockedStore';
+import { addSettings } from '~/actions/settings';
 
 const styles = StyleSheet.create({
 	container: {
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <View style={styles.container}>{children}</View>;
+const Wrapper = ({ children }: { children: ReactNode }) => <View style={styles.container}>{children}</View>;
 
 const createMockRoom = (overrides: Partial<ISubscription> = {}): TSubscriptionModel =>
 	({
@@ -43,9 +43,9 @@ const createMockRoom = (overrides: Partial<ISubscription> = {}): TSubscriptionMo
 		roomUpdatedAt: new Date(),
 		ro: false,
 		...overrides
-	} as TSubscriptionModel);
+	}) as TSubscriptionModel;
 
-const withVoiceAndVideoCallEnabled = (Story: React.ComponentType) => {
+const withVoiceAndVideoCallEnabled = (Story: ComponentType) => {
 	mockedStore.dispatch(setEnterpriseModules(['teams-voip']));
 	mockedStore.dispatch(addSettings({ VideoConf_Enable_DMs: true }));
 	mockedStore.dispatch(
@@ -59,7 +59,7 @@ const withVoiceAndVideoCallEnabled = (Story: React.ComponentType) => {
 	return <Story />;
 };
 
-const withVoiceCallDisabled = (Story: React.ComponentType) => {
+const withVoiceCallDisabled = (Story: ComponentType) => {
 	mockedStore.dispatch(clearEnterpriseModules());
 	return <Story />;
 };

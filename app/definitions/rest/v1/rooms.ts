@@ -1,6 +1,6 @@
-import type { IMessage } from '../../IMessage';
-import type { IRoomNotifications, IServerRoom } from '../../IRoom';
-import type { IUser } from '../../IUser';
+import type { IMessage } from '~/definitions/IMessage';
+import type { IRoomNotifications, IServerRoom } from '~/definitions/IRoom';
+import type { IUser } from '~/definitions/IUser';
 
 export type RoomsEndpoints = {
 	'rooms.autocomplete.channelAndPrivate': {

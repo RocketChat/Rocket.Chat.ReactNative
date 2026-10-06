@@ -1,50 +1,45 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
-import React, { forwardRef, isValidElement, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, isValidElement, useImperativeHandle, useRef, useState, memo, type ReactElement } from 'react';
 import {
 	AccessibilityInfo,
 	findNodeHandle,
 	Keyboard,
 	type LayoutChangeEvent,
-	Platform,
 	useWindowDimensions,
 	type View
 } from 'react-native';
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useTheme } from '../../theme';
-import { isAndroid, isIOS } from '../../lib/methods/helpers';
+import { useTheme } from '~/theme';
+import { isAndroid, isIOS } from '~/lib/methods/helpers';
 import { Handle } from './Handle';
 import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
-import { HANDLE_HEIGHT, useActionSheetDetents } from './useActionSheetDetents';
+import { HANDLE_HEIGHT, getSheetContentPaddingBottom, useActionSheetDetents } from './useActionSheetDetents';
+import { useActionSheetItemHeight } from './useActionSheetItemHeight';
 import styles from './styles';
 
 export const ACTION_SHEET_ANIMATION_DURATION = 250;
 
-const ActionSheet = React.memo(
-	forwardRef(({ children }: { children: React.ReactElement }, ref) => {
+const ActionSheet = memo(
+	forwardRef(({ children }: { children: ReactElement }, ref) => {
 		const { colors } = useTheme();
-		const { height: windowHeight, width: windowWidth, fontScale } = useWindowDimensions();
+		const { height: windowHeight, width: windowWidth } = useWindowDimensions();
 		const sheetRef = useRef<TrueSheet>(null);
 		const handleRef = useRef<View>(null);
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setIsVisible] = useState(false);
 		const [contentHeight, setContentHeight] = useState(0);
+		const { bottom } = useSafeAreaInsets();
 		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
 
-		// TrueSheet detects the bottom inset for Android 16 and iOS
-		// To avoid content hiding behind navigation bar on older Android versions
-		const isNewAndroid = isAndroid && Number(Platform.Version) >= 36;
-		const bottom = isIOS || isNewAndroid ? 0 : windowHeight * 0.03;
-		const itemHeight = 48 * fontScale;
-
-		const handleContentLayout = ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
-			setContentHeight(layout.height);
-		};
+		const itemHeight = useActionSheetItemHeight();
 
 		const hide = () => {
+			if (!isVisible) return;
 			sheetRef.current?.dismiss();
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -107,7 +102,6 @@ const ActionSheet = React.memo(
 
 		const { detents, maxHeight, scrollEnabled } = useActionSheetDetents({
 			windowHeight,
-			bottomInset: bottom,
 			itemHeight,
 			optionsLength: data?.options?.length || 0,
 			snaps: effectiveSnaps,
@@ -118,8 +112,19 @@ const ActionSheet = React.memo(
 
 		const hasOptions = !!data?.options?.length;
 		const hasSnaps = !!effectiveSnaps?.length;
-		const disableContentPanning = data?.enableContentPanningGesture === false || (!scrollEnabled && isAndroid);
+		const disableContentPanning = data?.enableContentPanningGesture === false;
 		const isScrollable = hasOptions || (hasSnaps && !disableContentPanning);
+		const contentScrollEnabled = hasOptions ? scrollEnabled : isScrollable;
+
+		const handleContentLayout = ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
+			const padding = getSheetContentPaddingBottom({
+				bottom,
+				fullContainer: data.fullContainer,
+				hugContent: data.hugContent,
+				scrollEnabled: contentScrollEnabled
+			});
+			setContentHeight(Math.max(0, layout.height - padding));
+		};
 
 		const contentMinHeight =
 			data.fullContainer && effectiveSnaps?.length
@@ -127,7 +132,7 @@ const ActionSheet = React.memo(
 						const snap = effectiveSnaps[0];
 						const fraction = typeof snap === 'number' ? Math.min(1, Math.max(0.1, snap)) : (parseFloat(String(snap)) || 50) / 100;
 						return Math.max(0, windowHeight * fraction - HANDLE_HEIGHT);
-				  })()
+					})()
 				: undefined;
 
 		return (
@@ -156,7 +161,7 @@ const ActionSheet = React.memo(
 							fullContainer={data.fullContainer}
 							hugContent={data.hugContent}
 							contentMinHeight={isIOS ? contentMinHeight : undefined}
-							scrollEnabled={scrollEnabled}>
+							scrollEnabled={contentScrollEnabled}>
 							{data?.children}
 						</BottomSheetContent>
 					</GestureHandlerRootView>

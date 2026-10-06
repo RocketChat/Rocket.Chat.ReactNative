@@ -1,16 +1,17 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { type ReactElement } from 'react';
 
-import i18n from '../../../../i18n';
-import sharedStyles from '../../../Styles';
+import i18n from '~/i18n';
+import sharedStyles from '~/views/Styles';
 import FooterButtons from './FooterButtons';
 import AlertText from './AlertText';
-import { deleteOwnAccount } from '../../../../lib/services/restApi';
-import { deleteAccount } from '../../../../actions/login';
-import { CustomIcon } from '../../../../containers/CustomIcon';
-import { useTheme } from '../../../../theme';
-import { useActionSheet } from '../../../../containers/ActionSheet/Provider';
+import { deleteOwnAccount } from '~/lib/services/restApi';
+import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
+import { deleteAccount } from '~/actions/login';
+import { CustomIcon } from '~/containers/CustomIcon';
+import { useTheme } from '~/theme';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
 
 const styles = StyleSheet.create({
 	subtitleText: {
@@ -48,14 +49,21 @@ const ConfirmDeleteAccountContent = ({
 	password,
 	changeOwnerRooms,
 	removedRooms
-}: IConfirmDeleteAccountContent): React.ReactElement => {
+}: IConfirmDeleteAccountContent): ReactElement => {
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 	const { hideActionSheet } = useActionSheet();
 
 	const handleDeleteAccount = async () => {
 		hideActionSheet();
-		await deleteOwnAccount(password, true);
+		try {
+			await deleteOwnAccount(password, true);
+		} catch (e) {
+			if (isTwoFactorCancelled(e)) {
+				return;
+			}
+			throw e;
+		}
 		dispatch(deleteAccount());
 	};
 

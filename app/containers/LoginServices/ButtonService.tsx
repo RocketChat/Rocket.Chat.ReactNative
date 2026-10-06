@@ -1,7 +1,6 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import Touch from '../Touch';
 import { CustomIcon } from '../CustomIcon';
 import { type IButtonService } from './interfaces';

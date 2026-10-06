@@ -1,34 +1,35 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import KeyboardView from '../../containers/KeyboardView';
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import I18n from '../../i18n';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import { getUserSelector } from '../../selectors/login';
-import { ControlledFormTextInput } from '../../containers/TextInput';
-import { createDiscussionRequest, type ICreateDiscussionRequestData } from '../../actions/createDiscussion';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { events, logEvent } from '../../lib/methods/helpers/log';
+import KeyboardView from '~/containers/KeyboardView';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
+import I18n from '~/i18n';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { getUserSelector } from '~/selectors/login';
+import { ControlledFormTextInput } from '~/containers/TextInput';
+import { createDiscussionRequest, type ICreateDiscussionRequestData } from '~/actions/createDiscussion';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { events, logEvent } from '~/lib/methods/helpers/log';
 import styles from './styles';
 import SelectChannel from './SelectChannel';
 import { type ICreateChannelViewProps, type IResult, type IError } from './interfaces';
-import { type ISearchLocal, type ISubscription } from '../../definitions';
-import { E2E_ROOM_TYPES } from '../../lib/constants/keys';
-import { getRoomTitle } from '../../lib/methods/helpers';
-import * as List from '../../containers/List';
-import Switch from '../../containers/Switch';
-import Button from '../../containers/Button';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useTheme } from '../../theme';
+import { type ISearchLocal, type ISubscription } from '~/definitions';
+import { E2E_ROOM_TYPES } from '~/lib/constants/keys';
+import { getRoomTitle } from '~/lib/methods/helpers';
+import * as List from '~/containers/List';
+import Switch from '~/containers/Switch';
+import Button from '~/containers/Button';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { useTheme } from '~/theme';
 import handleSubmitEvent from './utils/handleSubmitEvent';
-import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
-import SelectedUsers from '../../containers/SelectedUsers';
-import { type ISelectedUser } from '../../reducers/selectedUsers';
+import useA11yErrorAnnouncement from '~/lib/hooks/useA11yErrorAnnouncement';
+import SelectedUsers from '~/containers/SelectedUsers';
+import { type ISelectedUser } from '~/reducers/selectedUsers';
 
 const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
 	const schema = yup.object().shape({
@@ -42,7 +43,6 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		blockUnauthenticatedAccess,
 		encryptionEnabled,
 		failure,
-		isMasterDetail,
 		loading,
 		result,
 		serverVersion,
@@ -59,10 +59,10 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		result: state.createDiscussion.result as IResult,
 		blockUnauthenticatedAccess: !!(state.settings.Accounts_AvatarBlockUnauthenticatedAccess || true),
 		serverVersion: state.server.version as string,
-		isMasterDetail: state.app.isMasterDetail,
 		encryptionEnabled: state.encryption.enabled,
 		useRealName: state.settings.UI_Use_Real_Name as boolean
 	}));
+	const isMasterDetail = useMasterDetail();
 
 	const [channel, setChannel] = useState<ISubscription | ISearchLocal>(route.params?.channel);
 	const [encrypted, setEncrypted] = useState<boolean>(encryptionEnabled);
@@ -168,13 +168,14 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 					</View>
 
 					{isEncryptionEnabled ? (
-						<>
+						<View style={styles.encryptionContainer}>
 							<List.Item
 								title='Encrypted'
 								right={() => <Switch value={encrypted} onValueChange={onEncryptedChange} testID='room-actions-encrypt' />}
 								additionalAccessibilityLabel={encrypted}
+								backgroundColor={colors.surfaceTint}
 							/>
-						</>
+						</View>
 					) : null}
 
 					{users.length > 0 ? <SelectedUsers onPress={removeUser} users={users} useRealName={useRealName} /> : null}

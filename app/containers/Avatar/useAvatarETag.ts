@@ -1,67 +1,52 @@
 import { Q } from '@nozbe/watermelondb';
-import { useEffect, useState } from 'react';
-import { type Observable, type Subscription } from 'rxjs';
+import { useCallback, useState, useSyncExternalStore } from 'react';
+import { type Observable } from 'rxjs';
 
-import { type TLoggedUserModel, type TSubscriptionModel, type TUserModel } from '../../definitions';
-import database from '../../lib/database';
+import { type TLoggedUserModel, type TSubscriptionModel, type TUserModel } from '~/definitions';
+import database from '~/lib/database';
+import { fetchQuerySync, findRecordSync } from '~/lib/database/readSync';
 
-export const useAvatarETag = ({
-	username,
-	text,
-	type = '',
-	rid,
-	id
-}: {
+type TAvatarRecord = TSubscriptionModel | TUserModel | TLoggedUserModel;
+
+interface IAvatarSource {
 	type?: string;
-	username: string;
+	username?: string;
 	text: string;
 	rid?: string;
 	id: string;
-}) => {
-	const [avatarETag, setAvatarETag] = useState<string | undefined>('');
+}
 
-	const isDirect = () => type === 'd';
+const findAvatarRecord = ({ username, text, type, rid, id }: IAvatarSource): TAvatarRecord | undefined => {
+	if (username === text) {
+		return findRecordSync(database.servers.get('users'), id);
+	}
+	if (type === 'd') {
+		const [user] = fetchQuerySync(database.active.get('users').query(Q.where('username', text)));
+		return user;
+	}
+	if (rid) {
+		return findRecordSync(database.active.get('subscriptions'), rid);
+	}
+};
 
-	useEffect(() => {
-		let subscription: Subscription;
-		if (!avatarETag) {
-			const observeAvatarETag = async () => {
-				const db = database.active;
-				const usersCollection = db.get('users');
-				const subsCollection = db.get('subscriptions');
+export const useAvatarETag = ({ username, text, type = '', rid, id }: IAvatarSource) => {
+	const sourceKey = [username, text, type, rid, id].join('\n');
+	const [lookup, setLookup] = useState(() => ({ sourceKey, record: findAvatarRecord({ username, text, type, rid, id }) }));
 
-				let record;
-				try {
-					if (username === text) {
-						const serversDB = database.servers;
-						const userCollections = serversDB.get('users');
-						const user = await userCollections.find(id);
-						record = user;
-					} else if (isDirect()) {
-						const [user] = await usersCollection.query(Q.where('username', text)).fetch();
-						record = user;
-					} else if (rid) {
-						record = await subsCollection.find(rid);
-					}
-				} catch {
-					// Record not found
-				}
+	let { record } = lookup;
+	if (lookup.sourceKey !== sourceKey) {
+		record = findAvatarRecord({ username, text, type, rid, id });
+		setLookup({ sourceKey, record });
+	}
 
-				if (record) {
-					const observable = record.observe() as Observable<TSubscriptionModel | TUserModel | TLoggedUserModel>;
-					subscription = observable.subscribe(r => {
-						setAvatarETag(r.avatarETag);
-					});
-				}
-			};
-			observeAvatarETag();
-			return () => {
-				if (subscription?.unsubscribe) {
-					subscription.unsubscribe();
-				}
-			};
-		}
-	}, [text]);
+	const subscribe = useCallback(
+		(onChange: () => void) => {
+			const subscription = (record?.observe() as Observable<TAvatarRecord> | undefined)?.subscribe(onChange);
+			return () => subscription?.unsubscribe();
+		},
+		[record]
+	);
+	const avatarETag = useSyncExternalStore(subscribe, () => record?.avatarETag);
 
 	return { avatarETag };
 };

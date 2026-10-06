@@ -1,25 +1,23 @@
-import React, { memo } from 'react';
+import { memo, type ReactElement } from 'react';
 import { Text, View, FlatList } from 'react-native';
 
-import Emoji from '../message/Emoji';
-import { useTheme } from '../../theme';
-import { type IReaction } from '../../definitions';
-import { type TGetCustomEmoji } from '../../definitions/IEmoji';
-import I18n from '../../i18n';
+import Emoji from '../message/components/Emoji';
+import { useTheme } from '~/theme';
+import { type IReaction } from '~/definitions';
+import I18n from '~/i18n';
+import { isAndroid } from '~/lib/methods/helpers';
 import styles from './styles';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
 
 interface IAllReactionsListItemProps {
-	getCustomEmoji: TGetCustomEmoji;
 	item: IReaction;
 }
 
 interface IAllTabProps {
-	getCustomEmoji: TGetCustomEmoji;
 	reactions?: IReaction[];
 }
 
-const AllReactionsListItem = ({ item, getCustomEmoji }: IAllReactionsListItemProps) => {
+const AllReactionsListItem = ({ item }: IAllReactionsListItemProps) => {
 	const { colors } = useTheme();
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const username = useAppSelector(state => state.login.user.username);
@@ -48,7 +46,6 @@ const AllReactionsListItem = ({ item, getCustomEmoji }: IAllReactionsListItemPro
 				content={item.emoji}
 				standardEmojiStyle={styles.allTabStandardEmojiStyle}
 				customEmojiStyle={styles.allTabCustomEmojiStyle}
-				getCustomEmoji={getCustomEmoji}
 			/>
 			<View style={styles.textContainer}>
 				<Text style={[styles.allListNPeopleReacted, { color: colors.fontDefault }]}>
@@ -60,12 +57,13 @@ const AllReactionsListItem = ({ item, getCustomEmoji }: IAllReactionsListItemPro
 	);
 };
 
-const AllTab = ({ reactions, getCustomEmoji }: IAllTabProps): React.ReactElement => (
+const AllTab = ({ reactions }: IAllTabProps): ReactElement => (
 	<View style={styles.allTabContainer} testID='reactionsListAllTab'>
 		<FlatList
 			data={reactions}
 			contentContainerStyle={styles.listContainer}
-			renderItem={({ item }) => <AllReactionsListItem item={item} getCustomEmoji={getCustomEmoji} />}
+			nestedScrollEnabled={isAndroid}
+			renderItem={({ item }) => <AllReactionsListItem item={item} />}
 			keyExtractor={item => item.emoji}
 		/>
 	</View>

@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -9,7 +9,7 @@ import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../lib/constants/keys';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import useServer from '../lib/methods/useServer';
 import { type SettingsStackParamList } from '../stacks/types';
-import { handleLocalAuthentication } from '../lib/methods/helpers/localAuthentication';
+import { handleLocalAuthentication, logUnlessUserCanceled } from '../lib/methods/helpers/localAuthentication';
 import {
 	events,
 	getReportAnalyticsEventsValue,
@@ -24,7 +24,7 @@ interface ISecurityPrivacyViewProps {
 	navigation: NativeStackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
 }
 
-const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Element => {
+const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps) => {
 	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue());
 	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
 	const [server] = useServer();
@@ -59,7 +59,12 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 
 	const navigateToScreenLockConfigView = async () => {
 		if (server?.autoLock) {
-			await handleLocalAuthentication(true);
+			try {
+				await handleLocalAuthentication({ canCloseModal: true });
+			} catch (e) {
+				logUnlessUserCanceled(e);
+				return;
+			}
 		}
 		navigateToScreen('ScreenLockConfigView');
 	};

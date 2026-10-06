@@ -1,0 +1,20 @@
+diff --git a/node_modules/@hookform/resolvers/package.json b/node_modules/@hookform/resolvers/package.json
+index a33e0e4..b109c88 100644
+--- a/node_modules/@hookform/resolvers/package.json
++++ b/node_modules/@hookform/resolvers/package.json
+@@ -10,6 +10,7 @@
+   "types": "dist/index.d.ts",
+   "exports": {
+     ".": {
++      "types": "./dist/index.d.ts",
+       "umd": "./dist/resolvers.umd.js",
+       "import": "./dist/resolvers.mjs",
+       "require": "./dist/resolvers.js"
+@@ -20,6 +21,7 @@
+       "require": "./zod/dist/zod.js"
+     },
+     "./yup": {
++      "types": "./yup/dist/index.d.ts",
+       "umd": "./yup/dist/yup.umd.js",
+       "import": "./yup/dist/yup.mjs",
+       "require": "./yup/dist/yup.js"

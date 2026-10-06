@@ -2,18 +2,18 @@ import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
-import { type IActiveUsers } from '../../reducers/activeUsers';
+import { type IActiveUsers } from '~/reducers/activeUsers';
 import { store as reduxStore } from '../store/auxStore';
-import { setActiveUsers } from '../../actions/activeUsers';
-import { setUser } from '../../actions/login';
+import { setActiveUsers } from '~/actions/activeUsers';
+import { setUser } from '~/actions/login';
 import database from '../database';
-import { type IUser } from '../../definitions';
+import { type IUser } from '~/definitions';
 import sdk from '../services/sdk';
-import { compareServerVersion } from './helpers';
+import { compareServerVersion, normalizeStatusExpiresAt } from './helpers';
 import log from './helpers/log';
 import userPreferences from './userPreferences';
 import { NOTIFICATION_PRESENCE_CAP } from '../constants/notifications';
-import { setNotificationPresenceCap } from '../../actions/app';
+import { setNotificationPresenceCap } from '~/actions/app';
 
 export const _activeUsersSubTimeout: { activeUsersSubTimeout: boolean | ReturnType<typeof setTimeout> | number } = {
 	activeUsersSubTimeout: false
@@ -72,7 +72,7 @@ export async function getUsersPresence(usersParams: string[]) {
 			const result = (await sdk.get('users.presence' as any, params as any)) as any;
 
 			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.1.0')) {
-				sdk.subscribeRaw('stream-user-presence', ['', { added: usersParams }]);
+				sdk.subscribeRaw('stream-user-presence', ['', { added: usersParams }]).catch(log);
 			}
 
 			if (result.success) {
@@ -80,13 +80,14 @@ export async function getUsersPresence(usersParams: string[]) {
 
 				const activeUsers = usersParams.reduce((ret: IActiveUsers, id) => {
 					const user = users.find((u: IUser) => u._id === id) ?? { _id: id, status: 'offline' };
-					const { _id, status, statusText } = user;
+					const { _id, status, statusText, statusExpiresAt, statusSource } = user;
+					const normalizedStatusExpiresAt = normalizeStatusExpiresAt(statusExpiresAt);
 
 					if (loggedUser && loggedUser.id === _id) {
-						reduxStore.dispatch(setUser({ status, statusText }));
+						reduxStore.dispatch(setUser({ status, statusText, statusExpiresAt: normalizedStatusExpiresAt, statusSource }));
 					}
 
-					ret[_id] = { status, statusText };
+					ret[_id] = { status, statusText, statusExpiresAt: normalizedStatusExpiresAt, statusSource };
 					return ret;
 				}, {});
 				InteractionManager.runAfterInteractions(() => {

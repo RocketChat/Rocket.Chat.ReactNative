@@ -1,11 +1,11 @@
 import database from '../database';
 import log from './helpers/log';
-import { type TSubscriptionModel } from '../../definitions';
+import { type TSubscriptionModel } from '~/definitions';
 import sdk from '../services/sdk';
 import { hasE2EEWarning } from '../encryption/utils';
 import { store } from '../store/auxStore';
 
-export async function readMessages(rid: string, ls: Date, updateLastOpen = false): Promise<void> {
+export async function readMessages(rid: string): Promise<void> {
 	try {
 		const db = database.active;
 		let subscription;
@@ -44,10 +44,6 @@ export async function readMessages(rid: string, ls: Date, updateLastOpen = false
 					s.unread = 0;
 					s.userMentions = 0;
 					s.groupMentions = 0;
-					s.ls = ls;
-					if (updateLastOpen) {
-						s.lastOpen = ls;
-					}
 				});
 			} catch (e) {
 				// Do nothing

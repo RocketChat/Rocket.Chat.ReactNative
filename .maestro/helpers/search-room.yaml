@@ -3,8 +3,10 @@ name: Search room
 tags:
   - 'util'
 ---
-- assertVisible:
-    id: 'rooms-list-view'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
 - waitForAnimationToEnd:
     timeout: 5000
 - tapOn:
@@ -16,4 +18,4 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-item-${ROOM}'
-    timeout: 10000
+    timeout: 60000

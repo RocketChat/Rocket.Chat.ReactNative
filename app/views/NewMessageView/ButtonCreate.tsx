@@ -1,9 +1,7 @@
-import React from 'react';
-
-import * as List from '../../containers/List';
-import { themes } from '../../lib/constants/colors';
-import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
-import { useTheme } from '../../theme';
+import * as List from '~/containers/List';
+import { themes } from '~/lib/constants/colors';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import { useTheme } from '~/theme';
 
 interface IButton {
 	onPress: () => void;

@@ -1,8 +1,8 @@
-import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { type ComponentType, type ReactNode } from 'react';
 
 import MediaCallHeader from './MediaCallHeader';
-import { useCallStore } from '../../lib/services/voip/useCallStore';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
 
 const styles = StyleSheet.create({
 	container: {
@@ -54,13 +54,13 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 	});
 };
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <View style={styles.container}>{children}</View>;
+const Wrapper = ({ children }: { children: ReactNode }) => <View style={styles.container}>{children}</View>;
 
 export default {
 	title: 'MediaCallHeader',
 	component: MediaCallHeader,
 	decorators: [
-		(Story: React.ComponentType) => (
+		(Story: ComponentType) => (
 			<Wrapper>
 				<Story />
 			</Wrapper>

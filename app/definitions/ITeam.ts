@@ -48,11 +48,10 @@ export interface ITeamStats {
 	teamStats: Array<ITeamStatData>;
 }
 
-export interface IServerTeamUpdateRoom
-	extends Omit<
-		IServerRoom,
-		'topic' | 'joinCodeRequired' | 'description' | 'jitsiTimeout' | 'usersCount' | 'e2eKeyId' | 'avatarETag'
-	> {
+export interface IServerTeamUpdateRoom extends Omit<
+	IServerRoom,
+	'topic' | 'joinCodeRequired' | 'description' | 'jitsiTimeout' | 'usersCount' | 'e2eKeyId' | 'avatarETag'
+> {
 	teamId: string;
 	teamDefault: boolean;
 }

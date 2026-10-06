@@ -1,18 +1,18 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet } from 'react-native';
 
-import I18n from '../../i18n';
-import SafeAreaView from '../../containers/SafeAreaView';
-import * as List from '../../containers/List';
-import { type ProfileStackParamList } from '../../stacks/types';
-import { FormTextInput } from '../../containers/TextInput';
-import Chip from '../../containers/Chip';
-import userPreferences, { useUserPreferences } from '../../lib/methods/userPreferences';
-import { CURRENT_SERVER, WATCHOS_QUICKREPLIES } from '../../lib/constants/keys';
-import { syncWatchOSQuickReplies } from '../../lib/methods/WatchOSQuickReplies/syncReplies';
-import log from '../../lib/methods/helpers/log';
+import I18n from '~/i18n';
+import SafeAreaView from '~/containers/SafeAreaView';
+import * as List from '~/containers/List';
+import { type ProfileStackParamList } from '~/stacks/types';
+import { FormTextInput } from '~/containers/TextInput';
+import Chip from '~/containers/Chip';
+import userPreferences, { useUserPreferences } from '~/lib/methods/userPreferences';
+import { CURRENT_SERVER, WATCHOS_QUICKREPLIES } from '~/lib/constants/keys';
+import { syncWatchOSQuickReplies } from '~/lib/methods/WatchOSQuickReplies/syncReplies';
+import log from '~/lib/methods/helpers/log';
 
 interface IUserWatchOSQuickRepliesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserWatchOSQuickRepliesView'>;

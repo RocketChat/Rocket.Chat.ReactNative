@@ -1,17 +1,17 @@
-import React, { memo } from 'react';
+import { memo, type ReactElement } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 
-import { CustomIcon, type TIconsName } from '../../../CustomIcon';
-import { useTheme } from '../../../../theme';
-import sharedStyles from '../../../../views/Styles';
+import { BorderlessButton } from '~/containers/GestureButtons';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
 
 export interface IHeaderButtonItem {
 	title?: string;
 	iconName?: TIconsName;
 	onPress?: <T>(arg: T) => void;
 	testID?: string;
-	badge?(): React.ReactElement | null;
+	badge?(): ReactElement | null;
 	color?: string;
 	disabled?: boolean;
 	accessibilityLabel?: string;
@@ -52,14 +52,13 @@ const Item = memo(
 		disabled,
 		accessibilityLabel,
 		...props
-	}: IHeaderButtonItem): React.ReactElement => {
-		'use memo';
-
+	}: IHeaderButtonItem): ReactElement => {
 		const { colors } = useTheme();
 		return (
-			<BorderlessButton onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} enabled={!disabled} style={styles.container}>
+			<BorderlessButton onPress={onPress} hitSlop={BUTTON_HIT_SLOP} disabled={disabled} style={styles.container}>
 				<View
 					accessible
+					testID={testID}
 					accessibilityLabel={accessibilityLabel}
 					style={{
 						opacity: disabled ? 0.5 : 1

@@ -13,7 +13,7 @@ export function normalizeDeepLinkingServerHost(rawHost: string): string {
 		} else {
 			host = `https://${host}`;
 		}
-	} else {
+	} else if (!/^http:\/\/localhost(:\d+)?/.test(host)) {
 		host = host.replace('http://', 'https://');
 	}
 	if (host.slice(-1) === '/') {

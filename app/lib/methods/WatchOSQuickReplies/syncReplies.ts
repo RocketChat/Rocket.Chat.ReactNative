@@ -1,4 +1,4 @@
-import NativeWatchModule from '../../native/NativeWatchModule';
+import NativeWatchModule from '~/lib/native/NativeWatchModule';
 import log from '../helpers/log';
 import { shouldShowWatchAppOptions } from './getWatchStatus';
 

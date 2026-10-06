@@ -1,9 +1,9 @@
-import React, { type ReactElement } from 'react';
+import { type FC, memo, type ReactElement } from 'react';
 import { Text, type TextStyle, View, type ViewStyle } from 'react-native';
 
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import styles from './styles';
-import Switch from '../../containers/Switch';
+import Switch from '~/containers/Switch';
 
 interface ISwitchContainer {
 	children?: ReactElement | null;
@@ -17,7 +17,7 @@ interface ISwitchContainer {
 	leftLabelStyle?: TextStyle;
 }
 
-const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
+const SwitchContainer: FC<ISwitchContainer> = memo(
 	({
 		children,
 		value,

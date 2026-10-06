@@ -1,10 +1,8 @@
-import React from 'react';
-
 import * as ActionSheetModule from '../ActionSheet';
-import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
-import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
+import { mediaSessionInstance } from '~/lib/services/voip/MediaSessionInstance';
+import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
 import { CreateCall } from './CreateCall';
-import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
+import type { TPeerItem } from '~/lib/services/voip/getPeerAutocompleteOptions';
 
 const mediaSession = mediaSessionInstance as unknown as { startCall: (...args: unknown[]) => void };
 mediaSession.startCall = () => {};

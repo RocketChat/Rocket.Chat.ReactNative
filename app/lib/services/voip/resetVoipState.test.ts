@@ -4,8 +4,8 @@ import { resetMediaCallEventsStateForTesting, setupMediaCallEvents, type MediaCa
 import { resetVoipState } from './resetVoipState';
 import { useCallStore } from './useCallStore';
 
-jest.mock('../../methods/helpers', () => ({
-	...jest.requireActual('../../methods/helpers'),
+jest.mock('~/lib/methods/helpers', () => ({
+	...jest.requireActual('~/lib/methods/helpers'),
 	isIOS: false
 }));
 
@@ -15,7 +15,7 @@ jest.mock('./useCallStore', () => ({
 	}
 }));
 
-jest.mock('../../native/NativeVoip', () => ({
+jest.mock('~/lib/native/NativeVoip', () => ({
 	__esModule: true,
 	default: {
 		clearInitialEvents: jest.fn(),

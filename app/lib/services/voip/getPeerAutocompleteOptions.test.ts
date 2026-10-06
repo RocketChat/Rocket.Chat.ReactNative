@@ -1,8 +1,8 @@
 import { usersAutoComplete } from '../restApi';
 import { getPeerAutocompleteOptions, type TPeerItem } from './getPeerAutocompleteOptions';
-import { mockedStore } from '../../../reducers/mockedStore';
-import { initStore } from '../../store/auxStore';
-import { setUser } from '../../../actions/login';
+import { mockedStore } from '~/reducers/mockedStore';
+import { initStore } from '~/lib/store/auxStore';
+import { setUser } from '~/actions/login';
 
 jest.mock('../restApi', () => ({
 	usersAutoComplete: jest.fn()

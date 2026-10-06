@@ -1,4 +1,4 @@
-import NativeWatchModule from '../../native/NativeWatchModule';
+import NativeWatchModule from '~/lib/native/NativeWatchModule';
 import { isAndroid } from '../helpers';
 
 export interface IWatchStatus {

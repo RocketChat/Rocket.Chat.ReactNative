@@ -1,6 +1,6 @@
-import { type IAvatarSuggestion, type IProfileParams } from '../../IProfile';
-import type { ITeam } from '../../ITeam';
-import type { IUser, INotificationPreferences, IUserPreferences, IUserRegistered } from '../../IUser';
+import { type IAvatarSuggestion, type IProfileParams } from '~/definitions/IProfile';
+import type { ITeam } from '~/definitions/ITeam';
+import type { IUser, INotificationPreferences, IUserPreferences, IUserRegistered } from '~/definitions/IUser';
 
 export type UsersEndpoints = {
 	'users.2fa.sendEmailCode': {
@@ -35,7 +35,7 @@ export type UsersEndpoints = {
 		POST: (params: { name: string; email: string; username: string; pass: string }) => { user: IUserRegistered };
 	};
 	'users.setStatus': {
-		POST: (params: { status?: string; message?: string }) => {};
+		POST: (params: { status?: string; message?: string; expiresAt?: string | null }) => { success: boolean };
 	};
 	'users.updateOwnBasicInfo': {
 		POST: (params: {

@@ -1,16 +1,16 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { Text } from 'react-native';
 
-import { type IUser } from '../../../../definitions';
-import { type VideoConferenceType } from '../../../../definitions/IVideoConference';
-import i18n from '../../../../i18n';
-import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
-import { useVideoConf } from '../../../../lib/hooks/useVideoConf';
-import { useIsInActiveVoipCall } from '../../../../lib/services/voip/isInActiveVoipCall';
+import { type IUser } from '~/definitions';
+import { type VideoConferenceType } from '~/definitions/IVideoConference';
+import i18n from '~/i18n';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useVideoConf } from '~/lib/hooks/useVideoConf';
+import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
 import { CallParticipants, type TCallUsers } from './CallParticipants';
 import useStyle from './styles';
 import { VideoConferenceBaseContainer } from './VideoConferenceBaseContainer';
-import Touch from '../../../Touch';
+import Touch from '~/containers/Touch';
 
 export default function VideoConferenceEnded({
 	users,
@@ -22,7 +22,7 @@ export default function VideoConferenceEnded({
 	type: VideoConferenceType;
 	createdBy: Pick<IUser, '_id' | 'username' | 'name'>;
 	rid: string;
-}): React.ReactElement {
+}): ReactElement {
 	const style = useStyle();
 	const username = useAppSelector(state => state.login.user.username);
 	const { showInitCallActionSheet } = useVideoConf(rid);

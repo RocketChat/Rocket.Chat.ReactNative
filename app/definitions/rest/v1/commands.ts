@@ -1,4 +1,4 @@
-import { type IPreviewItem } from '../../ISlashCommand';
+import { type IPreviewItem } from '~/definitions/ISlashCommand';
 
 export type CommandsEndpoints = {
 	'commands.preview': {

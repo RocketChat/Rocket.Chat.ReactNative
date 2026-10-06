@@ -1,4 +1,4 @@
-import type { IceServer } from '../../../definitions/Voip';
+import type { IceServer } from '~/definitions/Voip';
 
 function parseStringToIceServer(server: string): IceServer {
 	const credentials = server.trim().split('@');

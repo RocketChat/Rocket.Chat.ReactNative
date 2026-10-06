@@ -1,16 +1,20 @@
 import type Model from '@nozbe/watermelondb/Model';
 
-import { type IUserEmail, type IUserSettings } from './IUser';
+import { type ISidebarCategory, type IUserEmail } from './IUser';
+import { type TStatusSource } from './TStatusSource';
 import { type TUserStatus } from './TUserStatus';
 
 export interface ILoggedUser {
 	id: string;
 	token: string;
-	username: string;
+	username?: string;
 	name?: string;
 	language?: string;
 	status: TUserStatus;
+	statusDefault?: TUserStatus;
 	statusText?: string;
+	statusExpiresAt?: string;
+	statusSource?: TStatusSource;
 	customFields?: {
 		[key: string]: any;
 	};
@@ -24,18 +28,7 @@ export interface ILoggedUser {
 	bio?: string;
 	nickname?: string;
 	requirePasswordChange?: boolean;
-}
-
-export interface ILoggedUserResultFromServer
-	extends Omit<ILoggedUser, 'enableMessageParserEarlyAdoption' | 'showMessageInMainThread'> {
-	settings: IUserSettings;
-}
-
-export interface ILoginResultFromServer {
-	status: string;
-	authToken: string;
-	userId: string;
-	me: ILoggedUserResultFromServer;
+	sidebarCategories?: ISidebarCategory[];
 }
 
 export type TLoggedUserModel = ILoggedUser & Model;

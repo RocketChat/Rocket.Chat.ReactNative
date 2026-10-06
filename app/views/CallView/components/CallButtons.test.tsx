@@ -1,18 +1,18 @@
-import React from 'react';
 import { render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
-import { mockedStore } from '../../../reducers/mockedStore';
-import { useCallStore } from '../../../lib/services/voip/useCallStore';
+import { mockedStore } from '~/reducers/mockedStore';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
 import { CallButtons } from './CallButtons';
 import { useCallLayoutMode } from '../useCallLayoutMode';
-import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 jest.mock('../useCallLayoutMode', () => ({
 	useCallLayoutMode: jest.fn(() => ({ layoutMode: 'narrow' }))
 }));
 
-jest.mock('../../../containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet', () => ({
 	showActionSheetRef: jest.fn(),
 	hideActionSheetRef: jest.fn()
 }));
@@ -23,7 +23,7 @@ jest.mock('react-native-incall-manager', () => ({
 	setForceSpeakerphoneOn: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('../../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => ({
+jest.mock('~/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => ({
 	useResponsiveLayout: jest.fn(() => ({ width: 375, height: 812 }))
 }));
 
@@ -55,7 +55,7 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 	});
 };
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 describe('CallButtons', () => {
 	beforeEach(() => {

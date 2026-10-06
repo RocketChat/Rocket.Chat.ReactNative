@@ -1,31 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { type RouteProp } from '@react-navigation/native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import database from '../../lib/database';
-import I18n from '../../i18n';
-import { hideActionSheetRef, showActionSheetRef } from '../../containers/ActionSheet';
-import SafeAreaView from '../../containers/SafeAreaView';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import SearchHeader from '../../containers/SearchHeader';
-import BackgroundContainer from '../../containers/BackgroundContainer';
-import { useTheme } from '../../theme';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import * as List from '../../containers/List';
-import { themes } from '../../lib/constants/colors';
-import log from '../../lib/methods/helpers/log';
+import database from '~/lib/database';
+import I18n from '~/i18n';
+import { hideActionSheetRef, showActionSheetRef } from '~/containers/ActionSheet';
+import SafeAreaView from '~/containers/SafeAreaView';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import SearchHeader from '~/containers/SearchHeader';
+import BackgroundContainer from '~/containers/BackgroundContainer';
+import { useTheme } from '~/theme';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import * as List from '~/containers/List';
+import { themes } from '~/lib/constants/colors';
+import log from '~/lib/methods/helpers/log';
 import CannedResponseItem from './CannedResponseItem';
 import DepartmentFilter from './DepartmentFilter';
 import styles from './styles';
-import { type ICannedResponse } from '../../definitions/ICannedResponse';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { useDebounce } from '../../lib/methods/helpers';
-import { getListCannedResponse, getDepartments } from '../../lib/services/restApi';
-import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { type ISubscription } from '../../definitions';
+import { type ICannedResponse } from '~/definitions/ICannedResponse';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { useDebounce } from '~/lib/methods/helpers';
+import { getListCannedResponse, getDepartments } from '~/lib/services/restApi';
+import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { type ISubscription } from '~/definitions';
 
 const COUNT = 25;
 
@@ -49,7 +50,7 @@ interface ICannedResponsesListViewProps {
 	route: RouteProp<ChatsStackParamList, 'CannedResponsesListView'>;
 }
 
-const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListViewProps): JSX.Element => {
+const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListViewProps) => {
 	const [room, setRoom] = useState<ISubscription | null>(null);
 
 	const [cannedResponses, setCannedResponses] = useState<ICannedResponse[]>([]);
@@ -66,7 +67,8 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	const [offset, setOffset] = useState(0);
 
 	const { theme } = useTheme();
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
+	const { bottom } = useSafeAreaInsets();
 
 	const getRoomFromDb = async () => {
 		const { rid } = route.params;
@@ -271,6 +273,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 				data={cannedResponsesScopeName}
 				extraData={cannedResponsesScopeName}
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+				contentContainerStyle={{ paddingBottom: bottom }}
 				renderItem={({ item }) => (
 					<CannedResponseItem
 						theme={theme}

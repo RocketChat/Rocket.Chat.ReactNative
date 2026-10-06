@@ -1,24 +1,18 @@
-import React, { useRef, memo } from 'react';
+import { useRef, memo, type ReactElement } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import {
-	Gesture,
-	GestureDetector,
-	type GestureUpdateEvent,
-	type PanGestureHandlerEventPayload
-} from 'react-native-gesture-handler';
+import { GestureDetector, type PanGestureActiveEvent, usePanGesture } from 'react-native-gesture-handler';
 import { View, type AccessibilityActionEvent } from 'react-native';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import Touch from '../../Touch';
+import Touch from '~/containers/Touch';
 import { DeleteAction } from './Actions';
-import { useTheme } from '../../../theme';
-import I18n from '../../../i18n';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
 
 export interface ISwipeableDeleteTouchableProps {
-	children: JSX.Element;
+	children: ReactElement;
 	testID: string;
 	width: number;
-	rowHeight: number;
 	actionWidth: number;
 	longSwipe: number;
 	smallSwipe: number;
@@ -33,7 +27,6 @@ const SwipeableDeleteTouchable = ({
 	width,
 	children,
 	testID,
-	rowHeight,
 	actionWidth,
 	longSwipe,
 	smallSwipe,
@@ -42,7 +35,7 @@ const SwipeableDeleteTouchable = ({
 	onDeletePress,
 	accessibilityLabel,
 	accessibilityHint
-}: ISwipeableDeleteTouchableProps): React.ReactElement => {
+}: ISwipeableDeleteTouchableProps): ReactElement => {
 	const { colors } = useTheme();
 
 	const transX = useSharedValue(0);
@@ -83,7 +76,7 @@ const SwipeableDeleteTouchable = ({
 		}
 	};
 
-	const handleRelease = (event: GestureUpdateEvent<PanGestureHandlerEventPayload>) => {
+	const handleRelease = (event: PanGestureActiveEvent) => {
 		const { translationX } = event;
 		valueRef.current += translationX;
 		let toValue = 0;
@@ -149,10 +142,10 @@ const SwipeableDeleteTouchable = ({
 		valueRef.current = toValue;
 	};
 
-	const panGesture = Gesture.Pan()
-		.activeOffsetX([-10, 10]) // More sensitive horizontal detection
-		.failOffsetY([-20, 20]) // Fail on vertical movement to distinguish scrolling
-		.onUpdate(event => {
+	const panGesture = usePanGesture({
+		activeOffsetX: [-10, 10], // More sensitive horizontal detection
+		failOffsetY: [-20, 20], // Fail on vertical movement to distinguish scrolling
+		onUpdate: event => {
 			const newValue = event.translationX + rowOffSet.value;
 
 			if (I18n.isRTL) {
@@ -173,10 +166,11 @@ const SwipeableDeleteTouchable = ({
 				// Limit how far left it can stretch
 				if (transX.value < -width) transX.value = -width;
 			}
-		})
-		.onEnd(event => {
+		},
+		onDeactivate: event => {
 			scheduleOnRN(handleRelease, event);
-		});
+		}
+	});
 
 	const animatedStyles = useAnimatedStyle(() => ({
 		transform: [{ translateX: transX.value }]
@@ -188,7 +182,6 @@ const SwipeableDeleteTouchable = ({
 				<DeleteAction
 					width={width}
 					transX={transX}
-					rowHeight={rowHeight}
 					actionWidth={actionWidth}
 					longSwipe={longSwipe}
 					onDeletePress={handleDeletePress}

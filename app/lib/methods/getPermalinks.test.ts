@@ -1,5 +1,5 @@
 import { buildPermalinkChannel, buildPermalinkMessage } from './getPermalinks';
-import { SubscriptionType } from '../../definitions';
+import { SubscriptionType } from '~/definitions';
 
 describe('buildPermalinkChannel', () => {
 	test('normal_name', () => {

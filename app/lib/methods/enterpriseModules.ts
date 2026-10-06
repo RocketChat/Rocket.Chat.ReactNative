@@ -2,7 +2,7 @@ import sdk from '../services/sdk';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import log from './helpers/log';
-import { clearEnterpriseModules, setEnterpriseModules as setEnterpriseModulesAction } from '../../actions/enterpriseModules';
+import { clearEnterpriseModules, setEnterpriseModules as setEnterpriseModulesAction } from '~/actions/enterpriseModules';
 import { compareServerVersion } from './helpers';
 
 const LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE = 'omnichannel-mobile-enterprise';
@@ -29,32 +29,35 @@ export async function setEnterpriseModules() {
 	}
 }
 
-export function getEnterpriseModules() {
-	return new Promise<void>(async resolve => {
-		try {
-			const { version: serverVersion, server: serverId } = reduxStore.getState().server;
-			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.1.0')) {
-				// RC 3.1.0
-				const enterpriseModules = await sdk.methodCallWrapper('license:getModules');
-				if (enterpriseModules) {
-					const serversDB = database.servers;
-					const serversCollection = serversDB.get('servers');
-					const server = await serversCollection.find(serverId);
-					await serversDB.write(async () => {
-						await server.update(s => {
-							s.enterpriseModules = enterpriseModules.join(',');
-						});
-					});
-					reduxStore.dispatch(setEnterpriseModulesAction(enterpriseModules));
-					return resolve();
-				}
-			}
+async function fetchEnterpriseModules(serverVersion: string): Promise<string[] | undefined> {
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.5.0')) {
+		const licensesInfo = await sdk.get('licenses.info');
+		return licensesInfo.success ? licensesInfo.license.activeModules : undefined;
+	}
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.1.0')) {
+		return sdk.methodCallWrapper('license:getModules');
+	}
+}
+
+export async function getEnterpriseModules() {
+	try {
+		const { version: serverVersion, server: serverId } = reduxStore.getState().server;
+		const enterpriseModules = await fetchEnterpriseModules(serverVersion);
+		if (!enterpriseModules) {
 			reduxStore.dispatch(clearEnterpriseModules());
-		} catch (e) {
-			log(e);
+			return;
 		}
-		return resolve();
-	});
+		const serversDB = database.servers;
+		const server = await serversDB.get('servers').find(serverId);
+		await serversDB.write(async () => {
+			await server.update(s => {
+				s.enterpriseModules = enterpriseModules.join(',');
+			});
+		});
+		reduxStore.dispatch(setEnterpriseModulesAction(enterpriseModules));
+	} catch (e) {
+		log(e);
+	}
 }
 
 export function isOmnichannelModuleAvailable() {

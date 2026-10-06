@@ -1,13 +1,14 @@
+import { createElement, type ReactElement } from 'react';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
-import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { type NativeStackHeaderProps, type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
-import { themes } from '../../../constants/colors';
-import { type TSupportedThemes } from '../../../../theme';
-import sharedStyles from '../../../../views/Styles';
-import Header from '../../../../containers/Header';
+import { themes } from '~/lib/constants/colors';
+import { type TSupportedThemes } from '~/theme';
+import sharedStyles from '~/views/Styles';
+import Header from '~/containers/Header';
 
 export const defaultHeader: NativeStackNavigationOptions = {
-	header: Header
+	header: (props: NativeStackHeaderProps): ReactElement => createElement(Header, props)
 };
 
 export const drawerStyle = {

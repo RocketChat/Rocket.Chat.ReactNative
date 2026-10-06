@@ -1,12 +1,12 @@
-import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
 import CallerInfo from './CallerInfo';
-import { useCallStore } from '../../../lib/services/voip/useCallStore';
-import { mockedStore } from '../../../reducers/mockedStore';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
+import { mockedStore } from '~/reducers/mockedStore';
 import * as stories from './CallerInfo.stories';
-import { generateSnapshots } from '../../../../.rnstorybook/generateSnapshots';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 
 const mockCallStartTime = 1713340800000;
 
@@ -24,7 +24,7 @@ const setStoreState = (contact: { displayName?: string; username?: string; sipEx
 	});
 };
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 describe('CallerInfo', () => {
 	beforeEach(() => {

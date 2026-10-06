@@ -1,15 +1,14 @@
 import { StyleSheet } from 'react-native';
 
-import sharedStyles from '../../../Styles';
+import sharedStyles from '~/views/Styles';
 
-export const ROW_HEIGHT = 56;
+export const ROW_HEIGHT = 68;
 
 export default StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		padding: 12,
-		minHeight: ROW_HEIGHT
+		padding: 12
 	},
 	serverIcon: {
 		width: 44,

@@ -1,4 +1,5 @@
-import React from 'react';
+Object.defineProperty(globalThis, 'fetch', { value: globalThis.fetch, writable: true, configurable: true });
+
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 import { Image } from 'expo-image';
@@ -19,13 +20,19 @@ jest.mock('react-native-safe-area-context', () => {
 const loadAsyncMock = jest.spyOn(Image, 'loadAsync');
 loadAsyncMock.mockImplementation(() => Promise.resolve({ width: 200, height: 300 }));
 
-// @ts-ignore
-global.__reanimatedWorkletInit = () => {};
+jest.mock('react-native-worklets', () => jest.requireActual('react-native-worklets/lib/module/mock'));
+
+jest.mock('react-native-reanimated/src/css/native/proxy', () => ({
+	...jest.requireActual('react-native-reanimated/src/css/native/proxy'),
+	setCSSEventHandler: jest.fn()
+}));
+
 jest.mock('react-native-reanimated', () => {
 	const actual = jest.requireActual('react-native-reanimated/mock');
 	return {
 		...actual,
-		useSharedValue: jest.fn(init => ({ value: init })),
+		useSharedValue: jest.fn(init => jest.requireActual('react').useState(() => ({ value: init }))[0]),
+		makeMutable: jest.fn(init => ({ value: init })),
 		useAnimatedReaction: jest.fn(),
 		withTiming: jest.fn(value => value),
 		useAnimatedGestureHandler: jest.fn(() => jest.fn()),
@@ -36,8 +43,8 @@ jest.mock('react-native-reanimated', () => {
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
-jest.mock('react-native-file-viewer', () => ({
-	open: jest.fn(() => null)
+jest.mock('@magrinj/expo-quick-look', () => ({
+	previewFile: jest.fn(() => Promise.resolve())
 }));
 
 jest.mock('react-native-incall-manager', () => ({
@@ -48,27 +55,27 @@ jest.mock('react-native-incall-manager', () => ({
 
 jest.mock('expo-haptics', () => ({
 	impactAsync: jest.fn(),
+	notificationAsync: jest.fn(),
 	ImpactFeedbackStyle: {
 		Light: 'light',
 		Medium: 'medium',
 		Heavy: 'heavy'
+	},
+	NotificationFeedbackType: {
+		Success: 'success',
+		Warning: 'warning',
+		Error: 'error'
 	}
 }));
 
-jest.mock('react-native-gesture-handler', () => {
-	const React = require('react');
-	const { View } = require('react-native');
-	const GestureHandlerRootView = React.forwardRef(({ children, ...props }, ref) => (
-		<View ref={ref} {...props}>
-			{children}
-		</View>
-	));
-	GestureHandlerRootView.displayName = 'GestureHandlerRootView';
-	return {
-		...jest.requireActual('react-native-gesture-handler'),
-		GestureHandlerRootView,
-		gestureHandlerRootHOC: Component => Component
-	};
+jest.mock('react-native-gesture-handler/lib/module/v3/detectors/useEnsureGestureHandlerRootView', () => ({
+	useEnsureGestureHandlerRootView: () => {}
+}));
+
+jest.mock('react-native-gesture-handler/lib/module/v3/components/Touchable/Touchable', () => {
+	const { Pressable } = require('react-native');
+	const Touchable = ({ children, ...props }) => <Pressable {...props}>{children}</Pressable>;
+	return { Touchable };
 });
 
 jest.mock('expo-font', () => ({
@@ -77,120 +84,53 @@ jest.mock('expo-font', () => ({
 	__esModule: true
 }));
 
-jest.mock('expo-av', () => {
-	const InterruptionModeAndroid = {
-		DoNotMix: 1,
-		DuckOthers: 2
-	};
-	const InterruptionModeIOS = {
-		DoNotMix: 1,
-		DuckOthers: 2,
-		MixWithOthers: 3
+jest.mock('expo-audio', () => {
+	const recorderState = {
+		canRecord: true,
+		isRecording: false,
+		durationMillis: 0,
+		mediaServicesDidReset: false,
+		url: null
 	};
 
 	return {
-		Audio: {
-			getPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted', granted: true, canAskAgain: true })),
-			requestPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted', granted: true, canAskAgain: true })),
-			setAudioModeAsync: jest.fn(() => Promise.resolve()),
-			Recording: jest.fn(() => ({
-				prepareToRecordAsync: jest.fn(() => Promise.resolve()),
-				startAsync: jest.fn(() => Promise.resolve()),
-				stopAndUnloadAsync: jest.fn(() => Promise.resolve()),
-				setOnRecordingStatusUpdate: jest.fn(),
-				getStatusAsync: jest.fn(() => Promise.resolve())
-			})),
-			Sound: {
-				createAsync: jest.fn(() =>
-					Promise.resolve({
-						sound: {
-							setOnPlaybackStatusUpdate: jest.fn(),
-							playAsync: jest.fn(() => Promise.resolve()),
-							pauseAsync: jest.fn(() => Promise.resolve()),
-							stopAsync: jest.fn(() => Promise.resolve()),
-							unloadAsync: jest.fn(() => Promise.resolve()),
-							getStatusAsync: jest.fn(() => Promise.resolve()),
-							setPositionAsync: jest.fn(() => Promise.resolve())
-						},
-						status: {}
-					})
-				),
-				create: jest.fn(() => ({
-					setOnPlaybackStatusUpdate: jest.fn(),
-					playAsync: jest.fn(() => Promise.resolve()),
-					pauseAsync: jest.fn(() => Promise.resolve()),
-					stopAsync: jest.fn(() => Promise.resolve()),
-					unloadAsync: jest.fn(() => Promise.resolve()),
-					getStatusAsync: jest.fn(() => Promise.resolve()),
-					setPositionAsync: jest.fn(() => Promise.resolve()),
-					loadAsync: jest.fn(() => Promise.resolve())
-				}))
-			},
-			RecordingStatus: {
-				StatusDict: {}
-			},
-			AudioStatus: {
-				StatusDict: {}
-			},
-			AndroidOutputFormat: {
-				AAC_ADTS: 0
-			},
-			AndroidAudioEncoder: {
-				AAC: 0
-			},
-			IOSAudioQuality: {
-				LOW: 0,
-				MEDIUM: 1,
-				HIGH: 2
-			},
-			IOSOutputFormat: {
-				MPEG4AAC: 0
-			},
-			RecordingOptionsPresets: {
-				LOW_QUALITY: {
-					android: {
-						extension: '.aac',
-						outputFormat: 0,
-						audioEncoder: 0,
-						sampleRate: 16000,
-						numberOfChannels: 1,
-						bitRate: 64000
-					},
-					ios: {
-						extension: '.aac',
-						audioQuality: 1,
-						outputFormat: 0,
-						sampleRate: 16000,
-						numberOfChannels: 1,
-						bitRate: 64000
-					},
-					web: {}
-				},
-				HIGH_QUALITY: {
-					android: {
-						extension: '.aac',
-						outputFormat: 0,
-						audioEncoder: 0,
-						sampleRate: 48000,
-						numberOfChannels: 2,
-						bitRate: 128000
-					},
-					ios: {
-						extension: '.aac',
-						audioQuality: 1,
-						outputFormat: 0,
-						sampleRate: 48000,
-						numberOfChannels: 2,
-						bitRate: 128000
-					},
-					web: {}
-				}
-			}
-		},
-		InterruptionModeAndroid,
-		InterruptionModeIOS
+		PermissionStatus: { GRANTED: 'granted', DENIED: 'denied', UNDETERMINED: 'undetermined' },
+		AudioQuality: { MEDIUM: 0x40 },
+		IOSOutputFormat: { MPEG4AAC: 'aac ' },
+		createAudioPlayer: jest.fn(() => ({
+			play: jest.fn(),
+			pause: jest.fn(),
+			setPlaybackRate: jest.fn(),
+			seekTo: jest.fn(() => Promise.resolve()),
+			release: jest.fn(),
+			addListener: jest.fn(() => ({ remove: jest.fn() })),
+			playing: false,
+			loop: false,
+			isLoaded: false,
+			shouldCorrectPitch: false
+		})),
+		setAudioModeAsync: jest.fn(() => Promise.resolve()),
+		requestRecordingPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted', granted: true, canAskAgain: true })),
+		getRecordingPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted', granted: true, canAskAgain: true })),
+		useAudioRecorder: jest.fn(() => ({
+			uri: null,
+			stop: jest.fn(() => Promise.resolve()),
+			record: jest.fn(),
+			prepareToRecordAsync: jest.fn(() => Promise.resolve()),
+			getStatus: jest.fn(() => ({ ...recorderState }))
+		})),
+		useAudioRecorderState: jest.fn(() => ({ ...recorderState }))
 	};
 });
+
+jest.mock('expo-video', () => ({
+	useVideoPlayer: jest.fn(() => ({
+		play: jest.fn(),
+		pause: jest.fn(),
+		addListener: jest.fn(() => ({ remove: jest.fn() }))
+	})),
+	VideoView: jest.fn(() => null)
+}));
 
 jest.mock('./app/lib/methods/search', () => ({
 	search: () => []
@@ -200,6 +140,10 @@ jest.mock('./app/lib/database', () => ({
 	active: {
 		get: jest.fn()
 	}
+}));
+
+jest.mock('./app/containers/Avatar/useAvatarETag', () => ({
+	useAvatarETag: () => ({ avatarETag: undefined })
 }));
 
 jest.mock('./app/lib/hooks/useFrequentlyUsedEmoji', () => ({
@@ -257,10 +201,10 @@ jest.mock('@react-navigation/native', () => {
 		isFocused: () => true,
 		useIsFocused: () => true,
 		useRoute: () => jest.fn(),
-		useNavigation: () => ({
+		useNavigation: jest.fn(() => ({
 			navigate: jest.fn(),
 			addListener: () => jest.fn()
-		}),
+		})),
 		createNavigationContainerRef: jest.fn(),
 		navigate: jest.fn(),
 		addListener: jest.fn(() => jest.fn())
@@ -287,10 +231,10 @@ jest.mock('expo-device', () => ({
 }));
 
 jest.mock('@lodev09/react-native-true-sheet', () => {
-	const React = require('react');
+	const { forwardRef, useImperativeHandle } = require('react');
 	const { View } = require('react-native');
-	const TrueSheet = React.forwardRef((props, ref) => {
-		React.useImperativeHandle(ref, () => ({
+	const TrueSheet = forwardRef((props, ref) => {
+		useImperativeHandle(ref, () => ({
 			present: () => Promise.resolve(),
 			dismiss: () => Promise.resolve(),
 			resize: () => Promise.resolve()
@@ -316,14 +260,40 @@ jest.mock('react-native-math-view', () => {
 
 jest.mock('react-native-keyboard-controller');
 
+jest.mock('react-native-keychain', () => ({
+	ACCESS_CONTROL: { BIOMETRY_CURRENT_SET: 'BiometryCurrentSet' },
+	ACCESSIBLE: { WHEN_UNLOCKED_THIS_DEVICE_ONLY: 'AccessibleWhenUnlockedThisDeviceOnly' },
+	AUTHENTICATION_TYPE: { BIOMETRICS: 'Biometrics' },
+	STORAGE_TYPE: {
+		AES_CBC: 'KeystoreAESCBC',
+		AES_GCM_NO_AUTH: 'KeystoreAESGCM_NoAuth',
+		AES_GCM: 'KeystoreAESGCM',
+		RSA: 'KeystoreRSAECB'
+	},
+	setGenericPassword: jest.fn(() => Promise.resolve(true)),
+	getGenericPassword: jest.fn(() => Promise.resolve(false)),
+	resetGenericPassword: jest.fn(() => Promise.resolve(true)),
+	hasGenericPassword: jest.fn(() => Promise.resolve(false))
+}));
+
 jest.mock('./app/lib/methods/helpers/externalInput', () => ({
 	isExternalKeyboardConnected: jest.fn(() => false)
 }));
 
+jest.mock('./app/lib/native/NativeWatchModule', () => ({
+	__esModule: true,
+	default: {
+		syncQuickReplies: jest.fn(),
+		isWatchSupported: jest.fn(() => false),
+		isWatchPaired: jest.fn(() => false),
+		isWatchAppInstalled: jest.fn(() => false)
+	}
+}));
+
 jest.mock('react-native-webview', () => {
-	const React = require('react');
+	const { forwardRef } = require('react');
 	const { View } = require('react-native');
-	const WebView = React.forwardRef(() => <View />);
+	const WebView = forwardRef(() => <View />);
 	WebView.defaultProps = {};
 	return { WebView };
 });

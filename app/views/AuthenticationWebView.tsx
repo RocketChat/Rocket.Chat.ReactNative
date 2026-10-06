@@ -1,14 +1,13 @@
-import { type RouteProp } from '@react-navigation/core';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { WebView, type WebViewNavigation } from 'react-native-webview';
 import { type WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
 import parse from 'url-parse';
 
 import ActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
-import { type ICredentials } from '../definitions';
+import { type ILoginCredentials } from '../definitions';
 import { userAgent } from '../lib/constants/userAgent';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useDebounce } from '../lib/methods/helpers';
@@ -43,7 +42,9 @@ window.addEventListener('popstate', function() {
 
 const SSO_AUTH_TYPES = ['saml', 'cas', 'iframe'];
 
-const AuthenticationWebView = () => {
+type AuthenticationWebViewProps = StaticScreenProps<{ authType: string; url: string; ssoToken?: string }>;
+
+const AuthenticationWebView = ({ route }: AuthenticationWebViewProps) => {
 	const [loading, setLoading] = useState(false);
 	const [headerTitle, setHeaderTitle] = useState<string | null>(null);
 	const loggingRef = useRef(false);
@@ -52,7 +53,7 @@ const AuthenticationWebView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideModalParamList, 'AuthenticationWebView'>>();
 	const {
 		params: { authType, url, ssoToken }
-	} = useRoute<RouteProp<OutsideModalParamList, 'AuthenticationWebView'>>();
+	} = route;
 
 	// Reset redirect guard when auth params change (e.g., user logs out and retries)
 	useEffect(() => {
@@ -69,9 +70,9 @@ const AuthenticationWebView = () => {
 	const iframeRedirectRegex = new RegExp(`(?=.*(${server}))(?=.*(event|loginToken|token))`, 'g');
 
 	// Force 3s delay so the server has time to evaluate the token
-	const debouncedLogin = useDebounce((params: ICredentials) => login(params), 3000);
+	const debouncedLogin = useDebounce((params: ILoginCredentials) => login(params), 3000);
 
-	const login = async (params: ICredentials) => {
+	const login = async (params: ILoginCredentials) => {
 		if (loggingRef.current) {
 			return;
 		}

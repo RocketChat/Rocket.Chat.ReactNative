@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { OmnichannelSourceType } from '../../definitions';
+import { OmnichannelSourceType } from '~/definitions';
 import RoomTypeIcon from '.';
 
 export default {

@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { useTheme } from '../../../theme';
-import { useCallStore } from '../../../lib/services/voip/useCallStore';
-import sharedStyles from '../../../views/Styles';
+import { useTheme } from '~/theme';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
+import sharedStyles from '~/views/Styles';
 import Timer from './Timer';
-import Status from '../../Status';
+import Status from '~/containers/Status';
 
 const styles = StyleSheet.create({
 	headerTitleContainer: {
@@ -20,8 +20,6 @@ const styles = StyleSheet.create({
 });
 
 const Title = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const callState = useCallStore(state => state.callState);
 	const callStartTime = useCallStore(state => state.callStartTime);

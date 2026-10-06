@@ -1,5 +1,5 @@
-import React, { createContext, useContext } from 'react';
-import { useWindowDimensions } from 'react-native';
+import { createContext, useContext, type ReactNode } from 'react';
+import { PixelRatio, useWindowDimensions } from 'react-native';
 
 interface IResponsiveLayoutContextData {
 	fontScale: number;
@@ -12,7 +12,7 @@ interface IResponsiveLayoutContextData {
 }
 
 interface IResponsiveFontScaleProviderProps {
-	children: React.ReactNode;
+	children: ReactNode;
 }
 
 export const ResponsiveLayoutContext = createContext({} as IResponsiveLayoutContextData);
@@ -27,8 +27,8 @@ const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProp
 	const isLargeFontScale = fontScale > FONT_SCALE_LIMIT;
 	// `fontScaleLimited` applies the `FONT_SCALE_LIMIT` to prevent layout issues on large font sizes.
 	const fontScaleLimited = isLargeFontScale ? FONT_SCALE_LIMIT : fontScale;
-	const rowHeight = BASE_ROW_HEIGHT * fontScale;
-	const rowHeightCondensed = BASE_ROW_HEIGHT_CONDENSED * fontScale;
+	const rowHeight = PixelRatio.roundToNearestPixel(BASE_ROW_HEIGHT * fontScale);
+	const rowHeightCondensed = PixelRatio.roundToNearestPixel(BASE_ROW_HEIGHT_CONDENSED * fontScale);
 
 	return (
 		<ResponsiveLayoutContext.Provider

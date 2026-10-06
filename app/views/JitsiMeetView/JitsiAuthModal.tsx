@@ -1,15 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import { type Dispatch, type SetStateAction, type ReactElement } from 'react';
 import { Linking, StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import sharedStyles from '../Styles';
-import Button from '../../containers/Button';
-import { useTheme } from '../../theme';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { getUserSelector } from '../../selectors/login';
-import i18n from '../../i18n';
+import Button from '~/containers/Button';
+import { useTheme } from '~/theme';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { getUserSelector } from '~/selectors/login';
+import i18n from '~/i18n';
 
 const styles = StyleSheet.create({
 	title: {
@@ -38,9 +38,9 @@ const JitsiAuthModal = ({
 	setAuthModal,
 	callUrl
 }: {
-	setAuthModal: React.Dispatch<React.SetStateAction<boolean>>;
+	setAuthModal: Dispatch<SetStateAction<boolean>>;
 	callUrl: string;
-}): React.ReactElement => {
+}): ReactElement => {
 	const { goBack } = useNavigation();
 	const { colors } = useTheme();
 	const user = useAppSelector(state => getUserSelector(state));

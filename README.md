@@ -1,8 +1,8 @@
 # Rocket.Chat Mobile
 
 - **Supported server versions:** 0.70.0+
-- **Supported iOS versions**: 13.4+
-- **Supported Android versions**: 6.0+
+- **Supported iOS versions**: 16.4+
+- **Supported Android versions**: 7.0+
 
 ## Download
 
@@ -26,7 +26,7 @@ Also check the [#react-native](https://open.rocket.chat/channel/react-native) co
 Are you a dev and would like to help? Found a bug that you would like to report or a missing feature that you would like to work on? Great! We have written down a [Contribution guide](https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/CONTRIBUTING.md) so you can start easily.
 
 ## Whitelabel
-Do you want to make the app run on your own server only? [Follow our whitelabel documentation.](https://developer.rocket.chat/mobile-app/mobile-app-white-labelling)
+Do you want to make the app run on your own server only? [Follow our whitelabel documentation.](https://developer.rocket.chat/mobile-app-white-labelling)
 
 ## Engage with us
 ### Share your story

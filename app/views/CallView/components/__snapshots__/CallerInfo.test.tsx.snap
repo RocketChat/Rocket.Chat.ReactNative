@@ -94,6 +94,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           onProgress={[Function]}
           placeholder={[]}
           priority="high"
+          sfEffect={null}
           source={
             [
               {
@@ -111,6 +112,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               "width": 120,
             }
           }
+          symbolSize={null}
+          symbolWeight={null}
           transition={null}
           width={120}
         />
@@ -136,6 +139,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 24,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "700",
               "lineHeight": 32,
               "marginBottom": 4,
@@ -249,6 +255,7 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
           onProgress={[Function]}
           placeholder={[]}
           priority="high"
+          sfEffect={null}
           source={
             [
               {
@@ -266,6 +273,8 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
               "width": 120,
             }
           }
+          symbolSize={null}
+          symbolWeight={null}
           transition={null}
           width={120}
         />
@@ -291,6 +300,9 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 24,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "700",
               "lineHeight": 32,
               "marginBottom": 4,

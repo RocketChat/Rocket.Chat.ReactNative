@@ -1,20 +1,21 @@
-import React from 'react';
 import { AccessibilityInfo, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { sha256 } from 'js-sha256';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { type ReactElement } from 'react';
 
-import i18n from '../../../../i18n';
-import sharedStyles from '../../../Styles';
+import i18n from '~/i18n';
+import sharedStyles from '~/views/Styles';
 import FooterButtons from './FooterButtons';
 import ConfirmDeleteAccountContent from './ConfirmDeleteAccountContent';
-import { deleteOwnAccount } from '../../../../lib/services/restApi';
-import { deleteAccount } from '../../../../actions/login';
-import { CustomIcon } from '../../../../containers/CustomIcon';
-import { useTheme } from '../../../../theme';
-import { ControlledFormTextInput } from '../../../../containers/TextInput';
-import { useActionSheet } from '../../../../containers/ActionSheet/Provider';
-import { events, logEvent } from '../../../../lib/methods/helpers/log';
+import { deleteOwnAccount } from '~/lib/services/restApi';
+import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
+import { deleteAccount } from '~/actions/login';
+import { CustomIcon } from '~/containers/CustomIcon';
+import { useTheme } from '~/theme';
+import { ControlledFormTextInput } from '~/containers/TextInput';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
+import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getTranslations } from './getTranslations';
 
 const styles = StyleSheet.create({
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DeleteAccountActionSheetContent = (): React.ReactElement => {
+const DeleteAccountActionSheetContent = (): ReactElement => {
 	const { colors } = useTheme();
 	const { hideActionSheet, showActionSheet } = useActionSheet();
 	const dispatch = useDispatch();
@@ -63,6 +64,9 @@ const DeleteAccountActionSheetContent = (): React.ReactElement => {
 			await deleteOwnAccount(sha256(password));
 			hideActionSheet();
 		} catch (error: any) {
+			if (isTwoFactorCancelled(error)) {
+				return;
+			}
 			if (error.data.errorType === 'user-last-owner') {
 				const { shouldChangeOwner, shouldBeRemoved } = error.data.details;
 				const { changeOwnerRooms, removedRooms } = getTranslations({ shouldChangeOwner, shouldBeRemoved });

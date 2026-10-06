@@ -1,19 +1,19 @@
-import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
 import { PeerList } from './PeerList';
-import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
-import { mockedStore } from '../../reducers/mockedStore';
-import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
+import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
+import { mockedStore } from '~/reducers/mockedStore';
+import type { TPeerItem } from '~/lib/services/voip/getPeerAutocompleteOptions';
 import * as stories from './PeerList.stories';
-import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 
 const setStoreState = (options: TPeerItem[], selectedPeer: TPeerItem | null = null) => {
 	usePeerAutocompleteStore.setState({ options, selectedPeer });
 };
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 const mockOptions: TPeerItem[] = [
 	{

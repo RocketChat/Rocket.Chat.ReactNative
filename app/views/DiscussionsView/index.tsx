@@ -1,25 +1,27 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
-import { type IMessageFromServer, type TThreadModel } from '../../definitions';
-import { type ChatsStackParamList } from '../../stacks/types';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import I18n from '../../i18n';
-import log from '../../lib/methods/helpers/log';
-import { isIOS, useDebounce } from '../../lib/methods/helpers';
-import SafeAreaView from '../../containers/SafeAreaView';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import * as List from '../../containers/List';
-import BackgroundContainer from '../../containers/BackgroundContainer';
-import { useTheme } from '../../theme';
-import SearchHeader from '../../containers/SearchHeader';
+import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
+import { type IMessageFromServer, type TThreadModel } from '~/definitions';
+import { type ChatsStackParamList } from '~/stacks/types';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import I18n from '~/i18n';
+import log from '~/lib/methods/helpers/log';
+import { isIOS, useDebounce } from '~/lib/methods/helpers';
+import SafeAreaView from '~/containers/SafeAreaView';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import * as List from '~/containers/List';
+import BackgroundContainer from '~/containers/BackgroundContainer';
+import { useTheme } from '~/theme';
+import SearchHeader from '~/containers/SearchHeader';
 import Item from './Item';
-import { getDiscussions } from '../../lib/services/restApi';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
+import { getDiscussions } from '~/lib/services/restApi';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
 
 const API_FETCH_COUNT = 50;
 
@@ -32,12 +34,13 @@ const styles = StyleSheet.create({
 const DiscussionsView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'DiscussionsView'>>();
 	const route = useRoute<RouteProp<ChatsStackParamList, 'DiscussionsView'>>();
+	const { bottom } = useSafeAreaInsets();
 
 	const rid = route.params?.rid;
 	const t = route.params?.t;
 
 	const baseUrl = useAppSelector(state => state.server?.server);
-	const isMasterDetail = useAppSelector(state => state.app?.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 
 	const [loading, setLoading] = useState(false);
 	const [discussions, setDiscussions] = useState<IMessageFromServer[]>([]);
@@ -138,7 +141,7 @@ const DiscussionsView = () => {
 	useLayoutEffect(() => {
 		const options = setHeader();
 		navigation.setOptions(options);
-	}, [navigation, isSearching]);
+	}, [navigation, isSearching, isMasterDetail]);
 
 	const onDiscussionPress = (item: TThreadModel) => {
 		if (item.drid && item.t) {
@@ -175,7 +178,7 @@ const DiscussionsView = () => {
 				renderItem={renderItem}
 				keyExtractor={(item: any) => item._id}
 				style={{ backgroundColor: colors.surfaceRoom }}
-				contentContainerStyle={styles.contentContainer}
+				contentContainerStyle={[styles.contentContainer, { paddingBottom: bottom }]}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}
 				onEndReached={() => isSearching && offset.current < total.current && load()}

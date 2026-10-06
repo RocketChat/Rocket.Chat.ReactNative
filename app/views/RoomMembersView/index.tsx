@@ -1,32 +1,34 @@
 import { type NavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import React, { useCallback, useEffect, useReducer, useRef } from 'react';
+import { type ReactElement, useCallback, useEffect, useReducer, useRef } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { shallowEqual } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { type TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
-import { sendLoadingEvent } from '../../containers/Loading';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import * as List from '../../containers/List';
-import SafeAreaView from '../../containers/SafeAreaView';
-import SearchBox from '../../containers/SearchBox';
-import UserItem from '../../containers/UserItem';
-import Radio from '../../containers/Radio';
-import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '../../definitions';
-import I18n from '../../i18n';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { usePermissions } from '../../lib/hooks/usePermissions';
-import { compareServerVersion, getRoomTitle, isGroupChat, useDebounce } from '../../lib/methods/helpers';
-import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
-import { showConfirmationAlert } from '../../lib/methods/helpers/info';
-import log from '../../lib/methods/helpers/log';
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { getRoomMembers } from '../../lib/services/restApi';
-import { type TSupportedPermissions } from '../../reducers/permissions';
-import { getUserSelector } from '../../selectors/login';
-import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
-import { useTheme } from '../../theme';
+import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
+import { sendLoadingEvent } from '~/containers/Loading';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import * as List from '~/containers/List';
+import SafeAreaView from '~/containers/SafeAreaView';
+import SearchBox from '~/containers/SearchBox';
+import UserItem from '~/containers/UserItem';
+import Radio from '~/containers/Radio';
+import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '~/definitions';
+import I18n from '~/i18n';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { usePermissions } from '~/lib/hooks/usePermissions';
+import { compareServerVersion, getRoomTitle, isGroupChat, useDebounce } from '~/lib/methods/helpers';
+import { handleIgnore } from '~/lib/methods/helpers/handleIgnore';
+import { showConfirmationAlert } from '~/lib/methods/helpers/info';
+import log from '~/lib/methods/helpers/log';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
+import { getRoomMembers } from '~/lib/services/restApi';
+import { type TSupportedPermissions } from '~/reducers/permissions';
+import { getUserSelector } from '~/selectors/login';
+import { type ModalStackParamList } from '~/stacks/MasterDetailStack/types';
+import { useTheme } from '~/theme';
 import ActionsSection from './components/ActionsSection';
 import {
 	fetchRole,
@@ -68,18 +70,18 @@ const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
 	);
 };
 
-const RoomMembersView = (): React.ReactElement => {
+const RoomMembersView = (): ReactElement => {
 	const { showActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 
 	const { params } = useRoute<RouteProp<ModalStackParamList, 'RoomMembersView'>>();
 	const navigation = useNavigation<NavigationProp<ModalStackParamList, 'RoomMembersView'>>();
+	const { bottom } = useSafeAreaInsets();
 
 	const latestSearchRequest = useRef(0);
 
-	const { isMasterDetail, serverVersion, useRealName, user, loading } = useAppSelector(
+	const { serverVersion, useRealName, user, loading } = useAppSelector(
 		state => ({
-			isMasterDetail: state.app.isMasterDetail,
 			useRealName: state.settings.UI_Use_Real_Name,
 			user: getUserSelector(state),
 			serverVersion: state.server.version,
@@ -87,6 +89,7 @@ const RoomMembersView = (): React.ReactElement => {
 		}),
 		shallowEqual
 	);
+	const isMasterDetail = useMasterDetail();
 
 	useEffect(() => {
 		sendLoadingEvent({ visible: loading });
@@ -279,7 +282,11 @@ const RoomMembersView = (): React.ReactElement => {
 		});
 	};
 
-	const getUserDisplayName = (user: TUserModel) => (useRealName ? user.name : user.username) || user.username;
+	const getUserDisplayName = (user: TUserModel) => {
+		const preferred = useRealName ? user.name : user.username;
+		const fallback = useRealName ? user.username : user.name;
+		return preferred || fallback || user._id;
+	};
 
 	const onPressUser = (selectedUser: TUserModel) => {
 		const { room, roomRoles, members } = state;
@@ -425,7 +432,7 @@ const RoomMembersView = (): React.ReactElement => {
 				renderItem={({ item }) => (
 					<View style={{ backgroundColor: colors.surfaceRoom }}>
 						<UserItem
-							name={item.name || item.username}
+							name={getUserDisplayName(item)}
 							username={item.username}
 							onPress={() => onPressUser(item)}
 							testID={`room-members-view-item-${item.username}`}
@@ -433,6 +440,7 @@ const RoomMembersView = (): React.ReactElement => {
 					</View>
 				)}
 				style={styles.list}
+				contentContainerStyle={{ paddingBottom: bottom }}
 				keyExtractor={item => item._id}
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={

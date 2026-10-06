@@ -1,13 +1,12 @@
-import React from 'react';
 import { Dimensions } from 'react-native';
 
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,
 	ResponsiveLayoutContext
-} from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { longText } from '../../../.rnstorybook/utils';
-import { DisplayMode } from '../../lib/constants/constantDisplayMode';
+} from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { longText } from '~/.rnstorybook/utils';
+import { DisplayMode } from '~/lib/constants/constantDisplayMode';
 import RoomItemComponent from './RoomItem';
 
 const { width } = Dimensions.get('window');

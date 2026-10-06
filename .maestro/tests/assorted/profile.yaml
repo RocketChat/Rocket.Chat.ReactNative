@@ -81,7 +81,9 @@ tags:
       id: 'profile-view-submit'
     direction: UP
 
-# should change name and username
+# edit name, username, nickname, bio, and email then submit once.
+# users.updateOwnBasicInfo is rate-limited per-user, so we batch all changes
+# into a single request instead of three separate submits.
 - assertVisible:
     id: 'profile-view-name'
 - runFlow:
@@ -98,15 +100,6 @@ tags:
 - inputText: ${output.user.username + 'username'}
 - runFlow:
     file: '../../helpers/hide-keyboard.yaml'
-- scrollUntilVisible:
-    element:
-      id: 'profile-view-submit'
-    timeout: 60000
-    centerElement: true
-- tapOn:
-    id: 'profile-view-submit'
-
-# should change nickname and bio
 - assertVisible:
     id: 'profile-view-nickname'
 - tapOn:
@@ -122,15 +115,6 @@ tags:
 - tapOn:
     text: '.*Bio.*'
     index: 0
-- scrollUntilVisible:
-    element:
-      id: 'profile-view-submit'
-    timeout: 60000
-    centerElement: true
-- tapOn:
-    id: 'profile-view-submit'
-
-# should change email
 - scrollUntilVisible:
     element:
       id: 'profile-view-email'
@@ -168,6 +152,7 @@ tags:
     notVisible:
       id: 'profile-view-enter-password-sheet-input'
     timeout: 60000
+- evalScript: ${output.data.accounts[0].username = output.user.username + 'username'}
 
 # should change password
 - scrollUntilVisible:
@@ -183,11 +168,18 @@ tags:
 - tapOn:
     id: 'change-password-view-current-password'
 - inputText: ${output.user.password}
+# Dismiss the keyboard so the lower fields aren't clipped below the fold. With the
+# keyboard open, KeyboardView (behavior='padding') shrinks the scroll viewport until
+# only the title + current-password fit, pushing new-password out of the hierarchy.
+- runFlow:
+    file: '../../helpers/hide-keyboard.yaml'
 - assertVisible:
     id: 'change-password-view-new-password'
 - tapOn:
     id: 'change-password-view-new-password'
 - inputText: ${output.user.password + 'new'}
+- runFlow:
+    file: '../../helpers/hide-keyboard.yaml'
 - assertVisible:
     id: 'change-password-view-confirm-new-password'
 - tapOn:

@@ -1,4 +1,3 @@
-import React from 'react';
 import { call, cancel, delay, fork, put, race, select, spawn, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
@@ -6,16 +5,17 @@ import { Q } from '@nozbe/watermelondb';
 import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
-import { selectServerRequest, serverFinishAdd } from '../actions/server';
+import { selectServerRequest, serverFinishAdd, serverInitAdd } from '../actions/server';
 import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import I18n, { setLanguage } from '../i18n';
 import database from '../lib/database';
+import { findLoggedInServer } from '../lib/methods/loggedInServer';
 import EventEmitter from '../lib/methods/helpers/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../lib/methods/helpers/info';
-import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
+import { localAuthenticate, UserCanceledError } from '../lib/methods/helpers/localAuthentication';
 import { encryptionInit, encryptionStop } from '../actions/encryption';
 import { initTroubleshootingNotification } from '../actions/troubleshootingNotification';
 import UserPreferences from '../lib/methods/userPreferences';
@@ -23,11 +23,13 @@ import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry'
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CURRENT_SERVER, getServerUserIdKey, getUserTokenKey } from '../lib/constants/keys';
 import { getCustomEmojis } from '../lib/methods/getCustomEmojis';
+import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { getEnterpriseModules, isOmnichannelModuleAvailable, isVoipModuleAvailable } from '../lib/methods/enterpriseModules';
 import { getPermissions } from '../lib/methods/getPermissions';
 import { getRoles } from '../lib/methods/getRoles';
+import { isTwoFactorCancelled } from '../lib/services/twoFactor/twoFactorCancelled';
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
 import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
@@ -43,6 +45,7 @@ import syncWatchOSQuickRepliesWithServer from '../lib/methods/WatchOSQuickReplie
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
+import { isInActiveVoipCall } from '../lib/services/voip/isInActiveVoipCall';
 import { store as reduxStore } from '../lib/store/auxStore';
 
 const getServer = state => state.server.server;
@@ -50,13 +53,24 @@ const loginWithPasswordCall = args => loginWithPassword(args);
 const loginCall = credentials => login(credentials);
 const logoutCall = args => logout(args);
 
+const saveCustomFields = function* saveCustomFields(registerCustomFields, user) {
+	try {
+		const updatedUser = yield call(saveUserProfile, {}, { ...registerCustomFields });
+		yield put(setUser({ ...user, ...updatedUser.user }));
+	} catch (e) {
+		if (!isTwoFactorCancelled(e)) {
+			throw e;
+		}
+	}
+};
+
 const showSupportedVersionsWarning = function* showSupportedVersionsWarning(server) {
 	const { status: supportedVersionsStatus } = yield select(state => state.supportedVersions);
 	if (supportedVersionsStatus !== 'warn') {
 		return;
 	}
 	const serverRecord = yield getServerById(server);
-	const isMasterDetail = yield select(state => state.app.isMasterDetail);
+	const isMasterDetail = getIsMasterDetail();
 	if (!serverRecord || dayjs(new Date()).diff(serverRecord?.supportedVersionsWarningAt, 'hours') <= 12) {
 		return;
 	}
@@ -71,6 +85,18 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 		appNavigation.navigate('ModalStackNavigator', { screen: 'SupportedVersionsWarning', params: { showCloseButton: true } });
 	} else {
 		showActionSheetRef({ children: <SupportedVersionsWarning /> });
+	}
+};
+
+// Login already succeeded by the time this runs, so a superseded unlock must not fall through to
+// loginFailure; any other failure still propagates.
+const authenticateIgnoringCancel = function* authenticateIgnoringCancel(server) {
+	try {
+		yield localAuthenticate(server);
+	} catch (e) {
+		if (!(e instanceof UserCanceledError)) {
+			throw e;
+		}
 	}
 };
 
@@ -89,7 +115,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			yield put(appStart({ root: RootEnum.ROOT_SET_USERNAME }));
 		} else {
 			const server = yield select(getServer);
-			yield localAuthenticate(server);
+			yield* authenticateIgnoringCancel(server);
 
 			// Saves username on server history
 			const serversDB = database.servers;
@@ -123,8 +149,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			});
 			yield put(loginSuccess(result));
 			if (registerCustomFields) {
-				const updatedUser = yield call(saveUserProfile, {}, { ...registerCustomFields });
-				yield put(setUser({ ...result, ...updatedUser.user }));
+				yield* saveCustomFields(registerCustomFields, result);
 			}
 		}
 	} catch (e) {
@@ -274,7 +299,9 @@ const checkVoipPermission = async () => {
 		const canUseVoip = isVoipModuleAvailable() && (hasPermissions[0] || hasPermissions[1]);
 
 		if (!canUseVoip) {
-			mediaSessionInstance.reset();
+			if (!isInActiveVoipCall()) {
+				mediaSessionInstance.reset();
+			}
 			return;
 		}
 		if (!mediaSessionStore.getCurrentInstance()) {
@@ -337,7 +364,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			avatarETag: user.avatarETag,
 			bio: user.bio,
 			nickname: user.nickname,
-			requirePasswordChange: user.requirePasswordChange
+			requirePasswordChange: user.requirePasswordChange,
+			sidebarCategories: user.sidebarCategories
 		};
 		yield serversDB.write(async () => {
 			try {
@@ -354,8 +382,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			}
 		});
 
-		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
-		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
+		UserPreferences.setString(getServerUserIdKey(server), user.id);
+		UserPreferences.setString(getUserTokenKey(server, user.id), user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
 		EventEmitter.emit('connected');
 		yield fork(fetchWatchReplies);
@@ -382,8 +410,13 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 		try {
 			yield call(logoutCall, { server });
 
+			const loggedInServer = yield call(findLoggedInServer);
+
 			// if the user was logged out by the server
 			if (forcedByServer) {
+				if (loggedInServer) {
+					yield put(serverInitAdd(loggedInServer.id));
+				}
 				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 				if (message) {
 					showErrorAlert(I18n.t(message), I18n.t('Oops'));
@@ -391,23 +424,10 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 				yield delay(300);
 				EventEmitter.emit('NewServer', { server });
 			} else {
-				const serversDB = database.servers;
-				// all servers
-				const serversCollection = serversDB.get('servers');
-				const servers = yield serversCollection.query().fetch();
-
-				// see if there're other logged in servers and selects first one
-				if (servers.length > 0) {
-					for (let i = 0; i < servers.length; i += 1) {
-						const newServer = servers[i].id;
-						const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-						if (token) {
-							yield put(selectServerRequest(newServer, newServer.version));
-							return;
-						}
-					}
+				if (loggedInServer) {
+					yield put(selectServerRequest(loggedInServer.id, loggedInServer.version));
+					return;
 				}
-				// if there's no servers, go outside
 				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			}
 		} catch (e) {
@@ -458,23 +478,11 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 		try {
 			yield call(removeServerData, { server });
 			yield call(removeServerDatabase, { server });
-			const serversDB = database.servers;
-			// all servers
-			const serversCollection = serversDB.get('servers');
-			const servers = yield serversCollection.query().fetch();
-
-			// see if there're other logged in servers and selects first one
-			if (servers.length > 0) {
-				for (let i = 0; i < servers.length; i += 1) {
-					const newServer = servers[i].id;
-					const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-					if (token) {
-						yield put(selectServerRequest(newServer, newServer.version));
-						return;
-					}
-				}
+			const loggedInServer = yield call(findLoggedInServer);
+			if (loggedInServer) {
+				yield put(selectServerRequest(loggedInServer.id, loggedInServer.version));
+				return;
 			}
-			// if there's no servers, go outside
 			disconnect();
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} catch (e) {

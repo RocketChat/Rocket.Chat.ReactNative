@@ -42,6 +42,9 @@ exports[`Story Snapshots: Switch should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "lineHeight": 24,
               "textAlign": "left",
@@ -61,6 +64,9 @@ exports[`Story Snapshots: Switch should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 14,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 20,
               "textAlign": "left",

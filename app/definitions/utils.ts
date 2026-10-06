@@ -15,10 +15,10 @@ export type KeyOfEach<T> = T extends any ? keyof T : never;
 export type Jsonify<T> = T extends Date
 	? string
 	: T extends object
-	? {
-			[k in keyof T]: Jsonify<T[k]>;
-	  }
-	: T;
+		? {
+				[k in keyof T]: Jsonify<T[k]>;
+			}
+		: T;
 
 export type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 

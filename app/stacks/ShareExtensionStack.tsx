@@ -1,27 +1,34 @@
-import React from 'react';
+import { useContext, type ComponentType } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { type StaticParamList, type StaticScreenProps } from '@react-navigation/native';
 
 import { ThemeContext } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import SelectServerView from '../views/SelectServerView';
 import ShareListView from '../views/ShareListView';
 import ShareView from '../views/ShareView';
+import withNavigation from '../lib/navigation/withNavigation';
+import { type InsideStackParamList } from './types';
+import { type Optional } from '../definitions/utils';
 
-const ShareExtension = createNativeStackNavigator<any>();
-const ShareExtensionStack = () => {
-	'use memo';
+type ShareViewParams = Optional<InsideStackParamList['ShareView'], 'thread' | 'action' | 'finishShareView' | 'startShareView'>;
 
-	const { theme } = React.useContext(ThemeContext);
+// Cast through `any` to break the navigation-prop type cycle; removing it reintroduces a real TS circular ref.
+const ShareListViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavigation(ShareListView as any) as any;
+const ShareViewScreen: ComponentType<StaticScreenProps<ShareViewParams>> = withNavigation(ShareView as any) as any;
 
-	return (
-		<ShareExtension.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
-			{/* @ts-ignore */}
-			<ShareExtension.Screen name='ShareListView' component={ShareListView} />
-			{/* @ts-ignore */}
-			<ShareExtension.Screen name='ShareView' component={ShareView} />
-			<ShareExtension.Screen name='SelectServerView' component={SelectServerView} />
-		</ShareExtension.Navigator>
-	);
-};
+const ShareExtension = createNativeStackNavigator({
+	screenOptions: defaultHeader,
+	screens: {
+		ShareListView: ShareListViewScreen,
+		ShareView: ShareViewScreen,
+		SelectServerView
+	}
+}).with(({ Navigator }) => {
+	const { theme } = useContext(ThemeContext);
+	return <Navigator screenOptions={themedHeader(theme)} />;
+});
 
-export default ShareExtensionStack;
+export type ShareInsideStackParamList = StaticParamList<typeof ShareExtension>;
+
+export default ShareExtension;

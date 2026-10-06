@@ -1,6 +1,6 @@
 import { createContext, memo, type ReactElement } from 'react';
 
-import { type IRoomItem } from '../../../containers/RoomItem/interfaces';
+import { type IRoomItem } from '~/containers/RoomItem/interfaces';
 import { useSearch } from '../hooks/useSearch';
 
 export const RoomsSearchContext = createContext<{
@@ -24,8 +24,6 @@ interface RoomsSearchProviderProps {
 }
 
 const RoomsSearchProvider = ({ children }: RoomsSearchProviderProps) => {
-	'use memo';
-
 	const { searching, searchEnabled, searchResults, startSearch, stopSearch, search } = useSearch();
 
 	return (

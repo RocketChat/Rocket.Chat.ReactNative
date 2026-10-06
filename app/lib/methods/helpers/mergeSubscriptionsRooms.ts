@@ -1,17 +1,11 @@
 import EJSON from 'ejson';
 
-import { slugifyLikeString } from '../../database/utils';
-import { Encryption } from '../../encryption';
-import { store as reduxStore } from '../../store/auxStore';
+import { slugifyLikeString } from '~/lib/database/utils';
+import { Encryption } from '~/lib/encryption';
+import { store as reduxStore } from '~/lib/store/auxStore';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
 import normalizeMessage from './normalizeMessage';
-import {
-	type ISubscription,
-	type IServerSubscription,
-	type IServerRoom,
-	type IRoom,
-	type IOmnichannelRoom
-} from '../../../definitions';
+import { type ISubscription, type IServerSubscription, type IServerRoom, type IRoom, type IOmnichannelRoom } from '~/definitions';
 import { compareServerVersion } from './compareServerVersion';
 
 // eslint-disable-next-line complexity
@@ -21,6 +15,7 @@ export const merge = (
 ): ISubscription => {
 	const serverVersion = reduxStore.getState().server.version as string;
 	const mergedSubscription: ISubscription = EJSON.fromJSONValue(subscription);
+	mergedSubscription.category = subscription.category;
 
 	if (room) {
 		room = EJSON.fromJSONValue(room);
@@ -51,7 +46,7 @@ export const merge = (
 			// @ts-ignore Same as above scenario
 			mergedSubscription.roomUpdatedAt = mergedSubscription.lr
 				? // @ts-ignore Same as above scenario
-				  Math.max(new Date(mergedSubscription.lr), new Date(lastRoomUpdate))
+					Math.max(new Date(mergedSubscription.lr), new Date(lastRoomUpdate))
 				: lastRoomUpdate;
 		}
 		mergedSubscription.ro = room?.ro ?? false;

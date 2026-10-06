@@ -1,14 +1,12 @@
-import React from 'react';
-
-import { themes } from '../../../../lib/constants/colors';
+import { themes } from '~/lib/constants/colors';
 import ServersHistoryItemComponent, { type IServersHistoryItem } from '.';
-import { ThemeContext, type TSupportedThemes } from '../../../../theme';
-import { type TServerHistoryModel } from '../../../../definitions';
+import { ThemeContext, type TSupportedThemes } from '~/theme';
+import { type TServerHistoryModel } from '~/definitions';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,
 	ResponsiveLayoutContext
-} from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+} from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export default {
 	title: 'ServersHistoryItem'

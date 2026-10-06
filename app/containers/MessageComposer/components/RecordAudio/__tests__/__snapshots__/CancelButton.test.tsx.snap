@@ -1,0 +1,185 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`a11y label is cancel when cancelAndDelete 1`] = `
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  activeOpacity={0.3}
+  animationDuration={0}
+  collapsable={false}
+  focusable={true}
+  hitSlop={
+    {
+      "bottom": 10,
+      "left": 10,
+      "right": 10,
+      "top": 10,
+    }
+  }
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "alignItems": "center",
+        "justifyContent": "center",
+      },
+      {
+        "height": 24,
+        "width": 24,
+      },
+    ]
+  }
+>
+  <View
+    accessibilityLabel="Cancel_and_delete_recording"
+    accessibilityRole="button"
+    accessible={true}
+    collapsable={false}
+    onFocus={[Function]}
+    testID="message-composer-delete-audio"
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": undefined,
+            "fontSize": 24,
+          },
+          [
+            {
+              "lineHeight": 24,
+            },
+            undefined,
+          ],
+          {
+            "fontFamily": "custom",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`a11y label is delete otherwise and fires onPress 1`] = `
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  activeOpacity={0.3}
+  animationDuration={0}
+  collapsable={false}
+  focusable={true}
+  hitSlop={
+    {
+      "bottom": 10,
+      "left": 10,
+      "right": 10,
+      "top": 10,
+    }
+  }
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "alignItems": "center",
+        "justifyContent": "center",
+      },
+      {
+        "height": 24,
+        "width": 24,
+      },
+    ]
+  }
+>
+  <View
+    accessibilityLabel="Delete_recording"
+    accessibilityRole="button"
+    accessible={true}
+    collapsable={false}
+    onFocus={[Function]}
+    testID="message-composer-delete-audio"
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": undefined,
+            "fontSize": 24,
+          },
+          [
+            {
+              "lineHeight": 24,
+            },
+            undefined,
+          ],
+          {
+            "fontFamily": "custom",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
+</View>
+`;

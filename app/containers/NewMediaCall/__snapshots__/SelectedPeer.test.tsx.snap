@@ -97,6 +97,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              sfEffect={null}
               source={
                 [
                   {
@@ -114,6 +115,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                   "width": 28,
                 }
               }
+              symbolSize={null}
+              symbolWeight={null}
               transition={null}
               width={28}
             />
@@ -172,6 +175,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontFamily": "Inter",
                   "fontSize": 18,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "500",
                   "lineHeight": 26,
                   "textAlign": "left",
@@ -186,33 +192,45 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-      <RNGestureHandlerButton
+      <View
         accessibilityLabel="Remove"
         accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
         activeOpacity={0.3}
-        borderless={true}
+        animationDuration={0}
         collapsable={false}
-        delayLongPress={600}
-        foreground={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
+        focusable={true}
         hitSlop={10}
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#9EA2A8"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
-          [
-            {
-              "opacity": 1,
-              "padding": 2,
-            },
-            {
-              "cursor": undefined,
-            },
-          ]
+          {
+            "padding": 2,
+          }
         }
         testID="new-media-call-clear-selected-peer"
       >
@@ -242,7 +260,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         >
           
         </Text>
-      </RNGestureHandlerButton>
+      </View>
     </View>
   </View>
   <Text
@@ -345,6 +363,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontFamily": "Inter",
                   "fontSize": 18,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "500",
                   "lineHeight": 26,
                   "textAlign": "left",
@@ -359,33 +380,45 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-      <RNGestureHandlerButton
+      <View
         accessibilityLabel="Remove"
         accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
         activeOpacity={0.3}
-        borderless={true}
+        animationDuration={0}
         collapsable={false}
-        delayLongPress={600}
-        foreground={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
+        focusable={true}
         hitSlop={10}
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#9EA2A8"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
-          [
-            {
-              "opacity": 1,
-              "padding": 2,
-            },
-            {
-              "cursor": undefined,
-            },
-          ]
+          {
+            "padding": 2,
+          }
         }
         testID="new-media-call-clear-selected-peer"
       >
@@ -415,7 +448,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         >
           
         </Text>
-      </RNGestureHandlerButton>
+      </View>
     </View>
   </View>
   <Text
@@ -505,6 +538,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              sfEffect={null}
               source={
                 [
                   {
@@ -522,6 +556,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                   "width": 28,
                 }
               }
+              symbolSize={null}
+              symbolWeight={null}
               transition={null}
               width={28}
             />
@@ -580,6 +616,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontFamily": "Inter",
                   "fontSize": 18,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "500",
                   "lineHeight": 26,
                   "textAlign": "left",
@@ -594,33 +633,45 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-      <RNGestureHandlerButton
+      <View
         accessibilityLabel="Remove"
         accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
         activeOpacity={0.3}
-        borderless={true}
+        animationDuration={0}
         collapsable={false}
-        delayLongPress={600}
-        foreground={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
+        focusable={true}
         hitSlop={10}
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#9EA2A8"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
-          [
-            {
-              "opacity": 1,
-              "padding": 2,
-            },
-            {
-              "cursor": undefined,
-            },
-          ]
+          {
+            "padding": 2,
+          }
         }
         testID="new-media-call-clear-selected-peer"
       >
@@ -650,7 +701,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         >
           
         </Text>
-      </RNGestureHandlerButton>
+      </View>
     </View>
   </View>
 </View>
@@ -753,6 +804,7 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              sfEffect={null}
               source={
                 [
                   {
@@ -770,6 +822,8 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
                   "width": 28,
                 }
               }
+              symbolSize={null}
+              symbolWeight={null}
               transition={null}
               width={28}
             />
@@ -828,6 +882,9 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontFamily": "Inter",
                   "fontSize": 18,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "500",
                   "lineHeight": 26,
                   "textAlign": "left",
@@ -842,33 +899,45 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-      <RNGestureHandlerButton
+      <View
         accessibilityLabel="Remove"
         accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
         activeOpacity={0.3}
-        borderless={true}
+        animationDuration={0}
         collapsable={false}
-        delayLongPress={600}
-        foreground={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
+        focusable={true}
         hitSlop={10}
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#9EA2A8"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
-          [
-            {
-              "opacity": 1,
-              "padding": 2,
-            },
-            {
-              "cursor": undefined,
-            },
-          ]
+          {
+            "padding": 2,
+          }
         }
         testID="new-media-call-clear-selected-peer"
       >
@@ -898,7 +967,7 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
         >
           
         </Text>
-      </RNGestureHandlerButton>
+      </View>
     </View>
   </View>
 </View>
@@ -1014,6 +1083,9 @@ exports[`Story Snapshots: Sip should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontFamily": "Inter",
                   "fontSize": 18,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "500",
                   "lineHeight": 26,
                   "textAlign": "left",
@@ -1028,33 +1100,45 @@ exports[`Story Snapshots: Sip should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-      <RNGestureHandlerButton
+      <View
         accessibilityLabel="Remove"
         accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
         activeOpacity={0.3}
-        borderless={true}
+        animationDuration={0}
         collapsable={false}
-        delayLongPress={600}
-        foreground={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
+        focusable={true}
         hitSlop={10}
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#9EA2A8"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
-          [
-            {
-              "opacity": 1,
-              "padding": 2,
-            },
-            {
-              "cursor": undefined,
-            },
-          ]
+          {
+            "padding": 2,
+          }
         }
         testID="new-media-call-clear-selected-peer"
       >
@@ -1084,7 +1168,7 @@ exports[`Story Snapshots: Sip should match snapshot 1`] = `
         >
           
         </Text>
-      </RNGestureHandlerButton>
+      </View>
     </View>
   </View>
 </View>
@@ -1187,6 +1271,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              sfEffect={null}
               source={
                 [
                   {
@@ -1204,6 +1289,8 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                   "width": 28,
                 }
               }
+              symbolSize={null}
+              symbolWeight={null}
               transition={null}
               width={28}
             />
@@ -1262,6 +1349,9 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontFamily": "Inter",
                   "fontSize": 18,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "500",
                   "lineHeight": 26,
                   "textAlign": "left",
@@ -1276,33 +1366,45 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-      <RNGestureHandlerButton
+      <View
         accessibilityLabel="Remove"
         accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
         activeOpacity={0.3}
-        borderless={true}
+        animationDuration={0}
         collapsable={false}
-        delayLongPress={600}
-        foreground={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
+        focusable={true}
         hitSlop={10}
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#9EA2A8"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
-          [
-            {
-              "opacity": 1,
-              "padding": 2,
-            },
-            {
-              "cursor": undefined,
-            },
-          ]
+          {
+            "padding": 2,
+          }
         }
         testID="new-media-call-clear-selected-peer"
       >
@@ -1332,7 +1434,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
         >
           
         </Text>
-      </RNGestureHandlerButton>
+      </View>
     </View>
   </View>
 </View>

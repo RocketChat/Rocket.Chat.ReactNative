@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
+import { useMemo, memo, type ReactElement } from 'react';
 import {
 	I18nManager,
+	PixelRatio,
 	type StyleProp,
 	StyleSheet,
 	Text,
@@ -11,23 +12,22 @@ import {
 } from 'react-native';
 
 import Touch from '../Touch';
-import sharedStyles from '../../views/Styles';
-import { useTheme } from '../../theme';
-import I18n from '../../i18n';
-import { Icon } from '.';
+import sharedStyles from '~/views/Styles';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
+import Icon from './ListIcon';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 import { CustomIcon } from '../CustomIcon';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import EventEmitter from '../../lib/methods/helpers/events';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import EventEmitter from '~/lib/methods/helpers/events';
 import { LISTENER } from '../Toast';
-import { isIOS } from '../../lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers';
 
 // Maestro fail to click on child component when we enable accessibility in parent component on iOS
 const shouldDisableAccessibility = process.env.RUNNING_E2E_TESTS === 'true' && isIOS;
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -71,8 +71,6 @@ const styles = StyleSheet.create({
 interface IListTitle extends Pick<IListItemContent, 'title' | 'color' | 'translateTitle' | 'styleTitle' | 'numberOfLines'> {}
 
 const ListTitle = ({ title, color, styleTitle, translateTitle, numberOfLines }: IListTitle) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	switch (typeof title) {
 		case 'string':
@@ -91,10 +89,10 @@ const ListTitle = ({ title, color, styleTitle, translateTitle, numberOfLines }: 
 
 interface IListItemContent {
 	accessibilityLabel?: string;
-	title: string | (() => JSX.Element | null);
+	title: string | (() => ReactElement | null);
 	subtitle?: string;
-	left?: () => JSX.Element | null;
-	right?: () => JSX.Element | null;
+	left?: () => ReactElement | null;
+	right?: () => ReactElement | null;
 	disabled?: boolean;
 	disabledReason?: string;
 	testID?: string;
@@ -112,7 +110,7 @@ interface IListItemContent {
 	numberOfLines?: number;
 }
 
-const Content = React.memo(
+const Content = memo(
 	({
 		title,
 		subtitle,
@@ -134,8 +132,6 @@ const Content = React.memo(
 		accessibilityLabel,
 		numberOfLines
 	}: IListItemContent) => {
-		'use memo';
-
 		const { fontScale } = useResponsiveLayout();
 		const { colors } = useTheme();
 
@@ -173,7 +169,11 @@ const Content = React.memo(
 
 		return (
 			<View
-				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
+				style={[
+					styles.container,
+					disabled && styles.disabled,
+					{ height: PixelRatio.roundToNearestPixel((heightContainer || BASE_HEIGHT) * fontScale) }
+				]}
 				testID={testID}
 				accessible={!shouldDisableAccessibility}
 				accessibilityLabel={handleAcessibilityLabel}
@@ -219,16 +219,14 @@ interface IListButtonPress extends IListItemButton {
 }
 
 interface IListItemButton {
-	title: string | (() => JSX.Element | null);
+	title: string | (() => ReactElement | null);
 	disabled?: boolean;
 	disabledReason?: string;
 	backgroundColor?: string;
 	underlayColor?: string;
 }
 
-const Button = React.memo(({ onPress, backgroundColor, underlayColor, style, ...props }: IListButtonPress) => {
-	'use memo';
-
+const Button = memo(({ onPress, backgroundColor, underlayColor, style, ...props }: IListButtonPress) => {
 	const { colors } = useTheme();
 
 	const handlePress = () => {
@@ -244,7 +242,7 @@ const Button = React.memo(({ onPress, backgroundColor, underlayColor, style, ...
 			onPress={handlePress}
 			style={[{ backgroundColor: backgroundColor || colors.surfaceRoom }, style]}
 			underlayColor={underlayColor}
-			enabled={!props.disabled || !!props.disabledReason}>
+			disabled={props.disabled && !props.disabledReason}>
 			<Content {...props} />
 		</Touch>
 	);
@@ -256,9 +254,7 @@ export interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListIt
 	style?: ViewStyle;
 }
 
-const ListItem = React.memo(({ ...props }: IListItem) => {
-	'use memo';
-
+const ListItem = memo(({ ...props }: IListItem) => {
 	const { colors } = useTheme();
 
 	if (props.onPress) {

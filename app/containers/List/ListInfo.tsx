@@ -1,11 +1,11 @@
-import React from 'react';
+import { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants/colors';
-import { useTheme } from '../../theme';
+import sharedStyles from '~/views/Styles';
+import { themes } from '~/lib/constants/colors';
+import { useTheme } from '~/theme';
 import { PADDING_HORIZONTAL } from './constants';
-import I18n from '../../i18n';
+import I18n from '~/i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -24,9 +24,7 @@ interface IListInfo {
 	translateInfo?: boolean;
 }
 
-const ListInfo = React.memo(({ info, translateInfo = true }: IListInfo) => {
-	'use memo';
-
+const ListInfo = memo(({ info, translateInfo = true }: IListInfo) => {
 	const { theme } = useTheme();
 	return (
 		<View style={styles.container}>

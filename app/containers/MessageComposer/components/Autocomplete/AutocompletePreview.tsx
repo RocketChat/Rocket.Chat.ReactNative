@@ -1,15 +1,12 @@
-import React from 'react';
-import { RectButton } from 'react-native-gesture-handler';
 import { Image } from 'expo-image';
 
-import { type IAutocompleteItemProps } from '../../interfaces';
-import { CustomIcon } from '../../../CustomIcon';
+import { RectButton } from '~/containers/GestureButtons';
+import { type IAutocompleteItemProps } from '~/containers/MessageComposer/interfaces';
+import { CustomIcon } from '~/containers/CustomIcon';
 import { AutocompleteItemLoading } from './AutocompleteItemLoading';
 import { useStyle } from './styles';
 
 export const AutocompletePreview = ({ item, onPress }: IAutocompleteItemProps) => {
-	'use memo';
-
 	const [styles, colors] = useStyle();
 
 	let content;

@@ -1,8 +1,18 @@
+const getAliasConfig = require('./config/import-aliases');
+
 module.exports = {
+	maxWorkers: 2,
+	fakeTimers: { doNotFake: ['setImmediate'] },
+	workerIdleMemoryLimit: '512MB',
 	modulePathIgnorePatterns: ['<rootDir>/.*worktrees/'],
-	testPathIgnorePatterns: ['e2e', 'node_modules', '<rootDir>/.*worktrees/'],
+	testPathIgnorePatterns: [
+		'node_modules',
+		'<rootDir>/.*worktrees/',
+		'/__tests__/testHelpers\\.tsx$',
+		'/__tests__/mockedWatermelonDB\\.tsx$'
+	],
 	transformIgnorePatterns: [
-		'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|@rocket.chat/ui-kit|@rocket.chat/sdk|tiny-events)'
+		'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|@rocket.chat/ui-kit|@rocket.chat/sdk|@rocket.chat/message-parser|tiny-events)'
 	],
 	preset: './jest.preset.js',
 	cacheDirectory: '<rootDir>/.jest-cache',
@@ -10,7 +20,9 @@ module.exports = {
 	collectCoverage: false,
 	moduleNameMapper: {
 		'.+\\.(css|styl|less|sass|scss)$': 'identity-obj-proxy',
-		'.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/__mocks__/fileMock.js'
+		'.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/__mocks__/fileMock.js',
+		...getAliasConfig().jest
 	},
+	setupFiles: ['react-native-gesture-handler/jestSetup.js'],
 	setupFilesAfterEnv: ['./jest.setup.js']
 };

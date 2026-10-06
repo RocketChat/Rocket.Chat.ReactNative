@@ -1,31 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AccessibilityInfo, BackHandler, Keyboard, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Image } from 'expo-image';
 import { useForm } from 'react-hook-form';
+import { useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { inviteLinksClear } from '../../actions/inviteLinks';
-import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actions/server';
-import Button from '../../containers/Button';
-import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import { type TServerHistoryModel } from '../../definitions';
-import I18n from '../../i18n';
-import { useTheme } from '../../theme';
-import { isAndroid, isTablet } from '../../lib/methods/helpers';
-import EventEmitter from '../../lib/methods/helpers/events';
+import { inviteLinksClear } from '~/actions/inviteLinks';
+import { selectServerRequest, serverFinishAdd, serverRequest } from '~/actions/server';
+import Button from '~/containers/Button';
+import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { type TServerHistoryModel } from '~/definitions';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
+import { isAndroid, isTablet } from '~/lib/methods/helpers';
+import EventEmitter from '~/lib/methods/helpers/events';
 import ServerInput from './components/ServerInput';
-import { getServerById } from '../../lib/database/services/Server';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { getServerById } from '~/lib/database/services/Server';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import useServersHistory from './hooks/useServersHistory';
 import useCertificate from './hooks/useCertificate';
 import CertificatePicker from './components/CertificatePicker';
 import useConnectServer from './hooks/useConnectServer';
-import { type INewServerViewProps } from './definitions';
+import { type OutsideParamList } from '~/stacks/types';
 import completeUrl from './utils/completeUrl';
 import styles from './styles';
 
-const NewServerView = ({ navigation }: INewServerViewProps) => {
+const NewServerView = () => {
+	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'NewServerView'>>();
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
 	const { previousServer, connecting, failureMessage } = useAppSelector(state => ({
@@ -50,7 +53,6 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const { submit } = useConnectServer({ workspaceUrl, certificate, previousServer });
 	const phoneMarginTop = previousServer ? 32 : 84;
 	const marginTop = isTablet ? 0 : phoneMarginTop;
-	const formContainerStyle = previousServer ? { paddingBottom: 100 } : {};
 
 	const onChangeText = (text: string) => {
 		setValue('workspaceUrl', text);
@@ -145,18 +147,14 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 	}, [connecting, previousServer]);
 
 	return (
-		<FormContainer
-			style={formContainerStyle}
-			showAppVersion={showBottomInfo}
-			testID='new-server-view'
-			keyboardShouldPersistTaps='handled'>
+		<FormContainer showAppVersion={showBottomInfo} testID='new-server-view' keyboardShouldPersistTaps='handled'>
 			<FormContainerInner accessibilityLabel={I18n.t('Add_server')}>
 				<Image
 					style={{
 						...styles.onboardingImage,
 						marginTop
 					}}
-					source={require('../../static/images/logo_with_name.png')}
+					source={require('~/static/images/logo_with_name.png')}
 					contentFit='contain'
 				/>
 				<Text

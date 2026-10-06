@@ -1,21 +1,23 @@
-import { FlatList, Text, useWindowDimensions, View, type ViewProps } from 'react-native';
-import React from 'react';
+import { FlatList, Text, View, type ViewProps } from 'react-native';
+import { memo, type ReactElement } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import I18n from '../../i18n';
-import { useTheme } from '../../theme';
-import { isAndroid } from '../../lib/methods/helpers';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
+import { isAndroid } from '~/lib/methods/helpers';
 import { type IActionSheetItem, Item } from './Item';
 import { type TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import * as List from '../List';
 import Touch from '../Touch';
+import { useActionSheetItemHeight } from './useActionSheetItemHeight';
+import { getSheetContentPaddingBottom } from './useActionSheetDetents';
 
 interface IBottomSheetContentProps {
 	hasCancel?: boolean;
 	options?: TActionSheetOptionsItem[];
 	hide: () => void;
-	children?: React.ReactElement | null;
+	children?: ReactElement | null;
 	onLayout: ViewProps['onLayout'];
 	fullContainer?: boolean;
 	hugContent?: boolean;
@@ -23,7 +25,7 @@ interface IBottomSheetContentProps {
 	scrollEnabled?: boolean;
 }
 
-const BottomSheetContent = React.memo(
+const BottomSheetContent = memo(
 	({
 		options,
 		hasCancel,
@@ -35,14 +37,11 @@ const BottomSheetContent = React.memo(
 		contentMinHeight,
 		scrollEnabled
 	}: IBottomSheetContentProps) => {
-		'use memo';
-
 		const { colors } = useTheme();
 		const { bottom } = useSafeAreaInsets();
-		const { fontScale } = useWindowDimensions();
-		const height = 48 * fontScale;
-		const paddingBottom = isAndroid ? bottom + height : bottom;
+		const height = useActionSheetItemHeight();
 		const minHeightStyle = isAndroid || !contentMinHeight ? undefined : { minHeight: contentMinHeight };
+		const paddingBottom = getSheetContentPaddingBottom({ bottom, fullContainer, hugContent, scrollEnabled });
 
 		const renderFooter = () =>
 			hasCancel ? (
@@ -68,7 +67,7 @@ const BottomSheetContent = React.memo(
 					style={{ backgroundColor: colors.strokeExtraDark }}
 					keyboardDismissMode='interactive'
 					indicatorStyle='black'
-					contentContainerStyle={{ paddingBottom, backgroundColor: colors.surfaceLight }}
+					contentContainerStyle={{ paddingBottom: bottom, backgroundColor: colors.surfaceLight }}
 					ItemSeparatorComponent={List.Separator}
 					ListHeaderComponent={List.Separator}
 					ListFooterComponent={renderFooter}
@@ -81,7 +80,7 @@ const BottomSheetContent = React.memo(
 		return (
 			<View
 				testID='action-sheet'
-				style={fullContainer && !(hugContent && isAndroid) ? [styles.fullContainer, minHeightStyle] : undefined}
+				style={[fullContainer && !hugContent ? styles.fullContainer : undefined, minHeightStyle, { paddingBottom }]}
 				onLayout={onLayout}>
 				{children}
 			</View>

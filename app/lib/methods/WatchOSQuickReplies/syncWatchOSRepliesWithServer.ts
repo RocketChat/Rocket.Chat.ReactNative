@@ -1,7 +1,7 @@
-import { WATCHOS_QUICKREPLIES } from '../../constants/keys';
+import { WATCHOS_QUICKREPLIES } from '~/lib/constants/keys';
 import UserPreferences from '../userPreferences';
 import { syncWatchOSQuickReplies } from './syncReplies';
-import { type IApplicationState } from '../../../definitions';
+import { type IApplicationState } from '~/definitions';
 import { shouldShowWatchAppOptions } from './getWatchStatus';
 import { getWatchOSRepliesForServer } from './getWatchOSRepliesFromMMKV';
 

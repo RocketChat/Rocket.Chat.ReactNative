@@ -8,7 +8,7 @@ export const PERMISSIONS_TABLE = 'permissions';
 export default class Permission extends Model {
 	static table = PERMISSIONS_TABLE;
 
-	@json('roles', sanitizer) roles;
+	@json('roles', sanitizer, { memo: true }) roles;
 
 	@date('_updated_at') _updatedAt;
 }

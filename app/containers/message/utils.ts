@@ -1,8 +1,36 @@
 /* eslint-disable complexity */
-import { type IAttachment } from '../../definitions';
-import { type MessageTypesValues, type TMessageModel } from '../../definitions/IMessage';
-import I18n from '../../i18n';
+import { type IAttachment, type IMessageTranslations } from '~/definitions';
+import { type MessageTypesValues, type TAnyMessageModel, type TMessageModel } from '~/definitions/IMessage';
+import I18n from '~/i18n';
+import dayjs from '~/lib/dayjs';
 import { DISCUSSION } from './constants';
+
+export type TMessageSeparators = { dateSeparator: TAnyMessageModel['ts'] | null; showUnreadSeparator: boolean };
+
+export const getMessageSeparators = (
+	prev: TAnyMessageModel | undefined,
+	item: TAnyMessageModel,
+	lastSeen: Date | null
+): TMessageSeparators => {
+	let dateSeparator: TAnyMessageModel['ts'] | null = null;
+	let showUnreadSeparator = false;
+
+	const itemDate = dayjs(item.ts);
+
+	if (!prev) {
+		dateSeparator = item.ts;
+		showUnreadSeparator = lastSeen ? itemDate.isAfter(lastSeen) : false;
+	} else {
+		const prevDate = dayjs(prev.ts);
+		showUnreadSeparator =
+			(lastSeen && (itemDate.isSame(lastSeen) || itemDate.isAfter(lastSeen)) && prevDate.isBefore(lastSeen)) ?? false;
+		if (!itemDate.isSame(prev.ts, 'day')) {
+			dateSeparator = item.ts;
+		}
+	}
+
+	return { dateSeparator, showUnreadSeparator };
+};
 
 export const DEFAULT_MESSAGE_HEIGHT = 150;
 
@@ -82,11 +110,11 @@ const messagesWithAuthorName: MessageTypesValues[] = [
 export const messageHaveAuthorName = (type: MessageTypesValues): boolean => messagesWithAuthorName.includes(type);
 
 type TInfoMessage = {
-	type: MessageTypesValues;
-	role: string;
-	msg: string;
-	author: { username: string };
-	comment?: string;
+	type: TAnyMessageModel['t'];
+	role: TAnyMessageModel['role'];
+	msg: TAnyMessageModel['msg'];
+	author: TAnyMessageModel['u'];
+	comment?: TAnyMessageModel['comment'];
 };
 
 export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessage): string => {
@@ -189,13 +217,16 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 	}
 };
 
-export const getMessageTranslation = (message: TMessageModel, autoTranslateLanguage: string): string | null => {
+export const getMessageTranslation = (
+	message: TMessageModel | { translations?: TMessageModel['translations'] },
+	autoTranslateLanguage: string
+): string | null => {
 	if (!autoTranslateLanguage) {
 		return null;
 	}
 	const { translations } = message;
 	if (translations) {
-		const translation = translations.find((trans: any) => trans.language === autoTranslateLanguage);
+		const translation = translations.find((trans: IMessageTranslations) => trans.language === autoTranslateLanguage);
 		return translation?.value || null;
 	}
 	return null;

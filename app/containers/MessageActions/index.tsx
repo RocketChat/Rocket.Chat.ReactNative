@@ -1,32 +1,32 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle, memo } from 'react';
 import { Alert, Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
 
-import dayjs from '../../lib/dayjs';
-import database from '../../lib/database';
-import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
-import I18n from '../../i18n';
-import log, { logEvent } from '../../lib/methods/helpers/log';
-import Navigation from '../../lib/navigation/appNavigation';
+import dayjs from '~/lib/dayjs';
+import database from '~/lib/database';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import I18n from '~/i18n';
+import log, { logEvent } from '~/lib/methods/helpers/log';
+import Navigation from '~/lib/navigation/appNavigation';
 import { getMessageTranslation } from '../message/utils';
 import { LISTENER } from '../Toast';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { showConfirmationAlert } from '../../lib/methods/helpers/info';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import { type TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
-import { useLastFocusedMessageRef } from '../../lib/a11y/useLastFocusedMessageRef';
+import { useLastFocusedMessageRef } from '~/lib/a11y/useLastFocusedMessageRef';
 import Header, { HEADER_HEIGHT, type IHeader } from './Header';
-import events from '../../lib/methods/helpers/log/events';
+import events from '~/lib/methods/helpers/log/events';
 import {
 	type IApplicationState,
 	type IEmoji,
 	type ILoggedUser,
 	type TAnyMessageModel,
 	type TSubscriptionModel
-} from '../../definitions';
-import { getPermalinkMessage } from '../../lib/methods/getPermalinks';
-import { getQuoteMessageLink } from '../../lib/methods/getQuoteMessageLink';
-import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
+} from '~/definitions';
+import { getPermalinkMessage } from '~/lib/methods/getPermalinks';
+import { getQuoteMessageLink } from '~/lib/methods/getQuoteMessageLink';
+import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '~/lib/methods/helpers';
 import {
 	deleteMessage,
 	markAsUnread,
@@ -34,15 +34,18 @@ import {
 	togglePinMessage,
 	translateMessage,
 	reportMessage
-} from '../../lib/services/restApi';
-import { createDirectMessage } from '../../lib/methods/createDirectMessage';
+} from '~/lib/services/restApi';
+import { createDirectMessage } from '~/lib/methods/createDirectMessage';
+import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
 
 // Extra delay on top of the action sheet animation so accessibility focus is restored
 // only after the sheet is fully dismissed.
 const REFOCUS_BUFFER = 50;
 
+const isVideoConf = (message: TAnyMessageModel) => message.t === 'videoconf';
+
 export interface IMessageActionsProps {
-	room: TSubscriptionModel;
+	getRoom: () => TSubscriptionModel;
 	tmid?: string;
 	user: Pick<ILoggedUser, 'id'>;
 	editInit: (messageId: string) => void;
@@ -74,11 +77,11 @@ export interface IMessageActions {
 	showMessageActions: (message: TAnyMessageModel) => Promise<void>;
 }
 
-const MessageActions = React.memo(
+const MessageActions = memo(
 	forwardRef<IMessageActions, IMessageActionsProps>(
 		(
 			{
-				room,
+				getRoom,
 				tmid,
 				user,
 				editInit,
@@ -130,7 +133,7 @@ const MessageActions = React.memo(
 						createDirectMessagePermission,
 						createDiscussionOtherUserPermission
 					];
-					const result = await hasPermission(permission, room.rid);
+					const result = await hasPermission(permission, getRoom().rid);
 					permissions = {
 						hasEditPermission: result[0],
 						hasDeletePermission: result[1],
@@ -216,7 +219,7 @@ const MessageActions = React.memo(
 
 			const handleCreateDiscussion = (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_DISCUSSION);
-				const params = { message, channel: room, showCloseModal: true };
+				const params = { message, channel: getRoom(), showCloseModal: true };
 				if (isMasterDetail) {
 					Navigation.navigate('ModalStackNavigator', { screen: 'CreateDiscussionView', params });
 				} else {
@@ -236,7 +239,7 @@ const MessageActions = React.memo(
 			const handleUnread = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_UNREAD);
 				const { id: messageId, ts } = message;
-				const { rid } = room;
+				const { rid } = getRoom();
 				try {
 					const db = database.active;
 					const result = await markAsUnread({ messageId });
@@ -248,7 +251,7 @@ const MessageActions = React.memo(
 
 						await db.write(async () => {
 							try {
-								await subRecord.update(sub => (sub.lastOpen = ts as Date)); // TODO: reevaluate IMessage
+								await subRecord.update(sub => (sub.ls = ts as Date));
 							} catch {
 								// do nothing
 							}
@@ -352,6 +355,7 @@ const MessageActions = React.memo(
 			};
 
 			const handleToggleTranslation = async (message: TAnyMessageModel) => {
+				const room = getRoom();
 				try {
 					if (!room.autoTranslateLanguage) {
 						return;
@@ -399,9 +403,10 @@ const MessageActions = React.memo(
 				});
 			};
 
-			const getOptions = (message: TAnyMessageModel) => {
+			const getConversationOptions = (message: TAnyMessageModel) => {
+				const room = getRoom();
 				const options: TActionSheetOptionsItem[] = [];
-				const videoConfBlock = message.t === 'videoconf';
+				const videoConfBlock = isVideoConf(message);
 
 				// Edit
 				const isEditAllowed = allowEdit(message);
@@ -467,6 +472,14 @@ const MessageActions = React.memo(
 					testID: 'message-actions-create-discussion'
 				});
 
+				return options;
+			};
+
+			const getSharingOptions = (message: TAnyMessageModel) => {
+				const room = getRoom();
+				const options: TActionSheetOptionsItem[] = [];
+				const videoConfBlock = isVideoConf(message);
+
 				// Forward
 				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.2.0') && !videoConfBlock) {
 					options.push({
@@ -507,6 +520,14 @@ const MessageActions = React.memo(
 					testID: 'message-actions-share'
 				});
 
+				return options;
+			};
+
+			const getMessageStateOptions = (message: TAnyMessageModel) => {
+				const options: TActionSheetOptionsItem[] = [];
+				const videoConfBlock = isVideoConf(message);
+				const isFromAnotherUser = !!message.u && message.u._id !== user.id;
+
 				// Pin
 				if (Message_AllowPinning && !videoConfBlock) {
 					options.push({
@@ -529,7 +550,7 @@ const MessageActions = React.memo(
 				}
 
 				// Mark as unread
-				if (message.u && message.u._id !== user.id) {
+				if (isFromAnotherUser) {
 					options.push({
 						title: I18n.t('Mark_unread'),
 						icon: 'flag',
@@ -549,7 +570,7 @@ const MessageActions = React.memo(
 				}
 
 				// Toggle Auto-translate
-				if (room.autoTranslate && message.u && message.u._id !== user.id) {
+				if (getRoom().autoTranslate && isFromAnotherUser) {
 					options.push({
 						title: I18n.t(message.autoTranslate !== false ? 'View_Original' : 'Translate'),
 						icon: 'language',
@@ -557,6 +578,12 @@ const MessageActions = React.memo(
 						testID: 'message-actions-toggle-translation'
 					});
 				}
+
+				return options;
+			};
+
+			const getModerationOptions = (message: TAnyMessageModel) => {
+				const options: TActionSheetOptionsItem[] = [];
 
 				// Report
 				options.push({
@@ -583,6 +610,13 @@ const MessageActions = React.memo(
 				return options;
 			};
 
+			const getOptions = (message: TAnyMessageModel): TActionSheetOptionsItem[] => [
+				...getConversationOptions(message),
+				...getSharingOptions(message),
+				...getMessageStateOptions(message),
+				...getModerationOptions(message)
+			];
+
 			const showMessageActions = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_SHOW_MSG_ACTIONS);
 				await getPermissions();
@@ -593,7 +627,7 @@ const MessageActions = React.memo(
 					headerHeight: HEADER_HEIGHT,
 					customHeader: (
 						<>
-							{!isReadOnly || room.reactWhenReadOnly ? (
+							{!isReadOnly || getRoom().reactWhenReadOnly ? (
 								<Header handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />
 							) : null}
 						</>
@@ -618,7 +652,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Message_AllowPinning: state.settings.Message_AllowPinning as boolean,
 	Message_AllowStarring: state.settings.Message_AllowStarring as boolean,
 	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users as boolean,
-	isMasterDetail: state.app.isMasterDetail,
 	editMessagePermission: state.permissions['edit-message'],
 	deleteMessagePermission: state.permissions['delete-message'],
 	deleteOwnMessagePermission: state.permissions['delete-own-message'],
@@ -628,4 +661,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	createDiscussionOtherUserPermission: state.permissions['start-discussion-other-user']
 });
 
-export default connect(mapStateToProps, null, null, { forwardRef: true })(MessageActions);
+export default connect(mapStateToProps, null, null, { forwardRef: true })(withMasterDetail(MessageActions));

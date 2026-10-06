@@ -1,27 +1,25 @@
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { Touchable } from 'react-native-gesture-handler';
 import { StyleSheet, Text } from 'react-native';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef, type ReactElement } from 'react';
 import { type Subscription } from 'rxjs';
 import { Q } from '@nozbe/watermelondb';
 
-import { useRoomContext } from '../../../views/RoomView/context';
+import { useComposerTmid } from '../ComposerStore';
 import { useAlsoSendThreadToChannel, useMessageComposerApi } from '../context';
-import { CustomIcon } from '../../CustomIcon';
-import { useTheme } from '../../../theme';
-import sharedStyles from '../../../views/Styles';
-import I18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import database from '../../../lib/database';
-import { compareServerVersion } from '../../../lib/methods/helpers';
+import { CustomIcon } from '~/containers/CustomIcon';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
+import I18n from '~/i18n';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import database from '~/lib/database';
+import { compareServerVersion } from '~/lib/methods/helpers';
 import { useEmojiKeyboard } from '../hooks/useEmojiKeyboard';
 
-export const SendThreadToChannel = (): React.ReactElement | null => {
-	'use memo';
-
+export const SendThreadToChannel = (): ReactElement | null => {
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { setAlsoSendThreadToChannel } = useMessageComposerApi();
 	const { showEmojiSearchbar } = useEmojiKeyboard();
-	const { tmid } = useRoomContext();
+	const tmid = useComposerTmid();
 	const { colors } = useTheme();
 	const subscription = useRef<Subscription | null>(null);
 	const alsoSendThreadToChannelUserPref = useAppSelector(state => state.login.user.alsoSendThreadToChannel);
@@ -70,7 +68,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 	}
 
 	return (
-		<TouchableWithoutFeedback
+		<Touchable
 			style={styles.container}
 			onPress={() => setAlsoSendThreadToChannel(!alsoSendThreadToChannel)}
 			testID='message-composer-send-to-channel'>
@@ -81,7 +79,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 				color={alsoSendThreadToChannel ? colors.buttonBackgroundPrimaryDefault : colors.fontDefault}
 			/>
 			<Text style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Message_composer_Send_to_channel')}</Text>
-		</TouchableWithoutFeedback>
+		</Touchable>
 	);
 };
 

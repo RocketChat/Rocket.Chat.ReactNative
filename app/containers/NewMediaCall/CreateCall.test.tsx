@@ -1,21 +1,21 @@
-import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
 import { CreateCall } from './CreateCall';
-import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
-import { mockedStore } from '../../reducers/mockedStore';
-import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
+import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
+import { mockedStore } from '~/reducers/mockedStore';
+import type { TPeerItem } from '~/lib/services/voip/getPeerAutocompleteOptions';
 import * as stories from './CreateCall.stories';
-import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
-import { initStore } from '../../lib/store/auxStore';
-import { setUser } from '../../actions/login';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
+import { initStore } from '~/lib/store/auxStore';
+import { setUser } from '~/actions/login';
 
 const mockStartCall = jest.fn();
 const mockHideActionSheet = jest.fn();
 const mockUseIsInActiveVoipCall = jest.fn(() => false);
 
-jest.mock('../../lib/services/voip/MediaSessionInstance', () => {
+jest.mock('~/lib/services/voip/MediaSessionInstance', () => {
 	const instance = {};
 	Object.defineProperty(instance, 'startCall', {
 		value: (...args: unknown[]) => mockStartCall(...args),
@@ -25,7 +25,7 @@ jest.mock('../../lib/services/voip/MediaSessionInstance', () => {
 	return { mediaSessionInstance: instance };
 });
 
-jest.mock('../../lib/services/voip/isInActiveVoipCall', () => ({
+jest.mock('~/lib/services/voip/isInActiveVoipCall', () => ({
 	useIsInActiveVoipCall: () => mockUseIsInActiveVoipCall()
 }));
 
@@ -38,7 +38,7 @@ const setStoreState = (selectedPeer: TPeerItem | null) => {
 	usePeerAutocompleteStore.setState({ selectedPeer });
 };
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 const userPeer: TPeerItem = {
 	type: 'user',

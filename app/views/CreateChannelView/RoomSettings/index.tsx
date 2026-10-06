@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { type UseFormSetValue } from 'react-hook-form';
 
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { events, logEvent } from '../../../lib/methods/helpers/log';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { events, logEvent } from '~/lib/methods/helpers/log';
 import { SwitchItem } from './SwitchItem';
 import { SwitchItemType } from './SwitchItemType';
 import { SwitchItemReadOnly } from './SwitchItemReadOnly';

@@ -1,19 +1,19 @@
-import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { type ComponentType, type ReactNode } from 'react';
 
 import CallView from '.';
 import CallerInfo from './components/CallerInfo';
 import { CallButtons } from './components/CallButtons';
 import { styles as callViewStyles } from './styles';
-import { useTheme } from '../../theme';
-import { useCallStore } from '../../lib/services/voip/useCallStore';
-import { ActionSheetProvider } from '../../containers/ActionSheet';
+import { useTheme } from '~/theme';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
+import { ActionSheetProvider } from '~/containers/ActionSheet';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,
 	ResponsiveLayoutContext
-} from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+} from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {
@@ -72,13 +72,13 @@ const responsiveLayoutProviderLargeFontValue = (fontScale: number) => ({
 	height: 800
 });
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <View style={styles.container}>{children}</View>;
+const Wrapper = ({ children }: { children: ReactNode }) => <View style={styles.container}>{children}</View>;
 
 export default {
 	title: 'CallView',
 	component: CallView,
 	decorators: [
-		(Story: React.ComponentType) => (
+		(Story: ComponentType) => (
 			<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(1)}>
 				<NavigationContainer>
 					<Wrapper>

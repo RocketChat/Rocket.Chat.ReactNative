@@ -111,6 +111,9 @@ exports[`Story Snapshots: ActiveButton should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 14,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 20,
               "textAlign": "left",
@@ -247,6 +250,9 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 20,
                 "textAlign": "left",
@@ -354,6 +360,9 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 20,
                 "textAlign": "left",
@@ -461,6 +470,9 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 20,
                 "textAlign": "left",
@@ -582,6 +594,9 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 20,
                 "textAlign": "left",
@@ -689,6 +704,9 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 20,
                 "textAlign": "left",
@@ -796,6 +814,9 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 20,
                 "textAlign": "left",
@@ -925,6 +946,9 @@ exports[`Story Snapshots: DangerButton should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 14,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 20,
               "textAlign": "left",
@@ -1053,6 +1077,9 @@ exports[`Story Snapshots: DefaultButton should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 14,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 20,
               "textAlign": "left",
@@ -1183,6 +1210,9 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 14,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 20,
               "textAlign": "left",
@@ -1320,6 +1350,9 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 20,
                 "textAlign": "left",
@@ -1427,6 +1460,9 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 20,
                 "textAlign": "left",
@@ -1534,6 +1570,9 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 20,
                 "textAlign": "left",
@@ -1641,6 +1680,9 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 20,
                 "textAlign": "left",
@@ -1748,6 +1790,9 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 20,
                 "textAlign": "left",
@@ -1855,6 +1900,9 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 20,
                 "textAlign": "left",

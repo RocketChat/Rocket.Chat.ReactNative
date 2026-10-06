@@ -34,12 +34,12 @@ export const INQUIRY = createRequestTypes('INQUIRY', [
 	'QUEUE_UPDATE',
 	'QUEUE_REMOVE'
 ]);
+export const ROUTING_CONFIG = createRequestTypes('ROUTING_CONFIG');
 export const APP = createRequestTypes('APP', [
 	'START',
 	'READY',
 	'INIT',
 	'INIT_LOCAL_SETTINGS',
-	'SET_MASTER_DETAIL',
 	'SET_NOTIFICATION_PRESENCE_CAP',
 	'SET_NET_INFO_STATE'
 ]);
@@ -74,7 +74,7 @@ export const INVITE_LINKS = createRequestTypes('INVITE_LINKS', [
 	'CLEAR',
 	...defaultTypes
 ]);
-export const SETTINGS = createRequestTypes('SETTINGS', ['CLEAR', 'ADD', 'UPDATE']);
+export const SETTINGS = createRequestTypes('SETTINGS', ['CLEAR', 'ADD', 'UPDATE', 'FETCH_COMPLETE']);
 export const APP_STATE = createRequestTypes('APP_STATE', ['FOREGROUND', 'BACKGROUND']);
 export const ENTERPRISE_MODULES = createRequestTypes('ENTERPRISE_MODULES', ['CLEAR', 'SET']);
 export const ENCRYPTION = createRequestTypes('ENCRYPTION', [

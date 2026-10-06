@@ -1,11 +1,10 @@
-import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { type BlockContext } from '@rocket.chat/ui-kit';
 
 import ActivityIndicator from '../ActivityIndicator';
 import { BUTTON_HIT_SLOP } from '../message/utils';
-import openLink from '../../lib/methods/helpers/openLink';
-import { useTheme } from '../../theme';
+import openLink from '~/lib/methods/helpers/openLink';
+import { useTheme } from '~/theme';
 import { useBlockContext } from './utils';
 import { Icon } from './Icon';
 import { type IIconButton, type IText } from './interfaces';

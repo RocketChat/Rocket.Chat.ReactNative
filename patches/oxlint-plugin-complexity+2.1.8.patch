@@ -1,0 +1,16 @@
+--- a/node_modules/oxlint-plugin-complexity/dist/combined-visitor.js
++++ b/node_modules/oxlint-plugin-complexity/dist/combined-visitor.js
+@@ -21,13 +21,6 @@
+             hasRecursiveCall: false,
+         }),
+         onEnterFunction(parentScope, node, _scope) {
+-            // Only add nested function penalty for functions inside other functions
+-            // (not for top-level arrow functions or callbacks)
+-            // The penalty is added to the PARENT scope, not the nested function's own scope
+-            if (parentScope && globalFunctionNestingLevel > 0) {
+-                const functionType = node.type === 'ArrowFunctionExpression' ? 'arrow function' : 'function';
+-                parentScope.cognitivePoints.push(createComplexityPoint(node, `nested ${functionType}`));
+-            }
+             globalFunctionNestingLevel++;
+         },
+         onExitFunction(scope, node) {

@@ -1,8 +1,8 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 
-import { type IAttachment, type IUserMessage } from '../../../definitions';
-import { isImageBase64 } from '../../../lib/methods/isImageBase64';
-import { fetchAutoDownloadEnabled } from '../../../lib/methods/autoDownloadPreference';
+import { type IAttachment, type IUserMessage } from '~/definitions';
+import { isImageBase64 } from '~/lib/methods/isImageBase64';
+import { fetchAutoDownloadEnabled } from '~/lib/methods/autoDownloadPreference';
 import {
 	cancelDownload,
 	downloadMediaFile,
@@ -10,11 +10,11 @@ import {
 	isDownloadActive,
 	type MediaTypes,
 	type TDownloadState
-} from '../../../lib/methods/handleMediaDownload';
-import { emitter } from '../../../lib/methods/helpers/emitter';
-import { formatAttachmentUrl } from '../../../lib/methods/helpers/formatAttachmentUrl';
-import MessageContext from '../Context';
-import { useFile } from './useFile';
+} from '~/lib/methods/handleMediaDownload';
+import { emitter } from '~/lib/methods/helpers/emitter';
+import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
+import { useBaseUrl, useMessageUser } from '../stores/MessageRoomStore';
+import { useMessageId } from '../stores/MessageStore';
 
 const getFileType = (file: IAttachment): MediaTypes | null => {
 	if (file.image_url) {
@@ -48,6 +48,23 @@ const getOriginalURL = (file: IAttachment): string | null => {
 	return null;
 };
 
+export type TDownloadEvent = 'download_started' | 'download_succeeded' | 'download_failed' | 'download_canceled' | 'cache_hit';
+
+export const downloadStatusReducer = (state: TDownloadState, event: TDownloadEvent): TDownloadState => {
+	switch (event) {
+		case 'download_started':
+			return 'loading';
+		case 'download_succeeded':
+		case 'cache_hit':
+			return 'downloaded';
+		case 'download_failed':
+		case 'download_canceled':
+			return 'to-download';
+		default:
+			return state;
+	}
+};
+
 export const useMediaAutoDownload = ({
 	file,
 	author,
@@ -55,14 +72,15 @@ export const useMediaAutoDownload = ({
 }: {
 	file: IAttachment;
 	author?: IUserMessage;
-	showAttachment?: Function;
+	showAttachment?: (file: IAttachment) => void;
 }) => {
-	'use memo';
-
 	const fileType = getFileType(file) ?? 'image';
-	const { id, baseUrl, user } = useContext(MessageContext);
-	const [status, setStatus] = useState<TDownloadState>('to-download');
-	const [currentFile, setCurrentFile] = useFile(file, id);
+	const id = useMessageId();
+	const baseUrl = useBaseUrl();
+	const user = useMessageUser();
+	const [status, dispatchDownloadEvent] = useReducer(downloadStatusReducer, 'to-download');
+	const [fileOverrides, setFileOverrides] = useState<Partial<IAttachment> | null>(null);
+	const currentFile = fileOverrides ? { ...file, ...fileOverrides } : file;
 	const originalUrl = getOriginalURL(file);
 	const url = formatAttachmentUrl(
 		file.title_link || getFileProperty(currentFile, fileType, 'url'),
@@ -88,7 +106,7 @@ export const useMediaAutoDownload = ({
 			}
 		};
 		if (fileType === 'image' && isImageBase64(url)) {
-			setStatus('downloaded');
+			dispatchDownloadEvent('cache_hit');
 		} else {
 			handleCache();
 		}
@@ -103,7 +121,7 @@ export const useMediaAutoDownload = ({
 	}, []);
 
 	const resumeDownload = () => {
-		setStatus('loading');
+		dispatchDownloadEvent('download_started');
 		emitter.on(`downloadMedia${url}`, downloadMediaListener);
 	};
 
@@ -112,14 +130,12 @@ export const useMediaAutoDownload = ({
 		const isAutoDownloadEnabled = fetchAutoDownloadEnabled(`${fileType}PreferenceDownload`);
 		if (isAutoDownloadEnabled || isCurrentUserAuthor) {
 			await download();
-		} else {
-			setStatus('to-download');
 		}
 	};
 
 	const download = async () => {
 		try {
-			setStatus('loading');
+			dispatchDownloadEvent('download_started');
 			const uri = await downloadMediaFile({
 				messageId: id,
 				downloadUrl: url,
@@ -131,22 +147,18 @@ export const useMediaAutoDownload = ({
 			setDecrypted();
 			updateCurrentFile(uri);
 		} catch (e) {
-			setStatus('to-download');
+			dispatchDownloadEvent('download_failed');
 		}
 	};
 
 	const updateCurrentFile = (uri: string) => {
-		setCurrentFile({
-			title_link: uri
-		});
-		setStatus('downloaded');
+		setFileOverrides(prev => ({ ...prev, title_link: uri }));
+		dispatchDownloadEvent('download_succeeded');
 	};
 
 	const setDecrypted = () => {
 		if (isEncrypted) {
-			setCurrentFile({
-				e2e: 'done'
-			});
+			setFileOverrides(prev => ({ ...prev, e2e: 'done' }));
 		}
 	};
 
@@ -165,7 +177,7 @@ export const useMediaAutoDownload = ({
 	const onPress = () => {
 		if (status === 'loading') {
 			cancelDownload(url);
-			setStatus('to-download');
+			dispatchDownloadEvent('download_canceled');
 			return;
 		}
 		if (status === 'to-download') {

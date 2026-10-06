@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
 
@@ -25,7 +25,7 @@ type TCallHeader = {
 	direct: boolean;
 };
 
-export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name, direct }: TCallHeader): React.ReactElement => {
+export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name, direct }: TCallHeader): ReactElement => {
 	const style = useStyle();
 	const { colors } = useTheme();
 	const calling = useAppSelector(state => state.videoConf.calling);
@@ -54,7 +54,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 								onPress={() => setCam(!cam)}
 								style={[style.iconCallContainerRight, { backgroundColor: handleColors(cam).button }]}
 								hitSlop={BUTTON_HIT_SLOP}
-								enabled={!calling}>
+								disabled={calling}>
 								<CustomIcon name={cam ? 'camera-filled' : 'camera-disabled'} size={24} color={handleColors(cam).icon} />
 							</Touch>
 						</A11y.Index>
@@ -64,7 +64,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 								onPress={() => setMic(!mic)}
 								style={[style.iconCallContainer, { backgroundColor: handleColors(mic).button }]}
 								hitSlop={BUTTON_HIT_SLOP}
-								enabled={!calling}>
+								disabled={calling}>
 								<CustomIcon name={mic ? 'mic' : 'mic-off'} size={24} color={handleColors(mic).icon} />
 							</Touch>
 						</A11y.Index>

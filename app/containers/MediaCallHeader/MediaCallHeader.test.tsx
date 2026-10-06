@@ -1,17 +1,17 @@
-import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
 import MediaCallHeader from './MediaCallHeader';
-import { navigateToCallRoom } from '../../lib/services/voip/navigateToCallRoom';
-import { useCallStore } from '../../lib/services/voip/useCallStore';
-import { mockedStore } from '../../reducers/mockedStore';
+import { navigateToCallRoom } from '~/lib/services/voip/navigateToCallRoom';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
+import { mockedStore } from '~/reducers/mockedStore';
 import * as stories from './MediaCallHeader.stories';
-import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 
 const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
 
-jest.mock('../../lib/services/voip/navigateToCallRoom', () => ({
+jest.mock('~/lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
 }));
 
@@ -62,7 +62,7 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 	});
 };
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 beforeAll(() => {
 	jest.useFakeTimers();

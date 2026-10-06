@@ -1,7 +1,7 @@
 // @ts-nocheck - TEMP
 import log from './log';
-import { store as reduxStore } from '../../store/auxStore';
-import database from '../../database';
+import { store as reduxStore } from '~/lib/store/auxStore';
+import database from '~/lib/database';
 
 export function isGroupChat(room): boolean {
 	return ((room?.uids && room.uids.length > 2) || (room?.usernames && room.usernames.length > 2)) ?? false;
@@ -14,8 +14,8 @@ export function getRoomAvatar(room) {
 	return room.prid ? room.fname : room.name;
 }
 
-export function getUidDirectMessage(room) {
-	const { id: userId } = reduxStore.getState().login.user;
+export function getUidDirectMessage(room, loggedUserId?: string) {
+	const userId = loggedUserId ?? reduxStore.getState().login.user.id;
 
 	if (!room) {
 		return null;
@@ -81,7 +81,7 @@ export function canAutoTranslate() {
 
 export function isRead(item) {
 	let isUnread = item.archived !== true && item.open === true; // item is not archived and not opened
-	isUnread = isUnread && (item.unread > 0 || item.alert === true); // either its unread count > 0 or its alert
+	isUnread = isUnread && (item.unread > 0 || item.alert === true || item.tunread?.length > 0);
 	return !isUnread;
 }
 

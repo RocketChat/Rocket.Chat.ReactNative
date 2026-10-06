@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { StyleSheet, View, PixelRatio, TouchableWithoutFeedback } from 'react-native';
 import Animated, {
 	cancelAnimation,
@@ -12,8 +12,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Image } from 'expo-image';
 
-import { useTheme } from '../../theme';
-import EventEmitter from '../../lib/methods/helpers/events';
+import { useTheme } from '~/theme';
+import EventEmitter from '~/lib/methods/helpers/events';
 
 const LOADING_EVENT = 'LOADING_EVENT';
 export const LOADING_TEST_ID = 'loading';
@@ -42,7 +42,7 @@ interface ILoadingEvent {
 export const sendLoadingEvent = ({ visible, onCancel }: ILoadingEvent): void =>
 	EventEmitter.emit(LOADING_EVENT, { visible, onCancel });
 
-const Loading = (): React.ReactElement | null => {
+const Loading = (): ReactElement | null => {
 	const [visible, setVisible] = useState(false);
 	const [onCancel, setOnCancel] = useState<null | Function>(null);
 	const opacity = useSharedValue(0);
@@ -110,14 +110,14 @@ const Loading = (): React.ReactElement | null => {
 					<Animated.View
 						style={[
 							{
-								...StyleSheet.absoluteFillObject,
+								...StyleSheet.absoluteFill,
 								backgroundColor: colors.backdropColor
 							},
 							animatedOpacity
 						]}
 					/>
 					<AnimatedImage
-						source={require('../../static/images/logo.png')}
+						source={require('~/static/images/logo.png')}
 						style={[styles.image, animatedScale]}
 						testID={LOADING_IMAGE_TEST_ID}
 						contentFit='contain'

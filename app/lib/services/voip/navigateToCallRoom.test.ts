@@ -1,8 +1,8 @@
-import { goRoom } from '../../methods/helpers/goRoom';
-import Navigation from '../../navigation/appNavigation';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
+import Navigation from '~/lib/navigation/appNavigation';
 import { useCallStore } from './useCallStore';
 import { navigateToCallRoom } from './navigateToCallRoom';
-import { SubscriptionType } from '../../../definitions';
+import { SubscriptionType } from '~/definitions';
 
 jest.mock('./useCallStore', () => ({
 	useCallStore: {
@@ -10,11 +10,11 @@ jest.mock('./useCallStore', () => ({
 	}
 }));
 
-jest.mock('../../methods/helpers/goRoom', () => ({
+jest.mock('~/lib/methods/helpers/goRoom', () => ({
 	goRoom: jest.fn().mockResolvedValue(undefined)
 }));
 
-jest.mock('../../navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	__esModule: true,
 	default: {
 		getCurrentRoute: jest.fn(),

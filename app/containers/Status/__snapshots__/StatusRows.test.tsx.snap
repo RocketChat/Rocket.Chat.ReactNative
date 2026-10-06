@@ -1,0 +1,442 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: All should match snapshot 1`] = `
+[
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 4,
+          "marginTop": 2,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "#6C727A",
+            "fontSize": 12,
+          },
+          [
+            {
+              "lineHeight": 12,
+            },
+            [
+              {
+                "height": 12,
+                "textAlign": "center",
+                "textAlignVertical": "center",
+                "width": 12,
+              },
+              undefined,
+            ],
+          ],
+          {
+            "fontFamily": "custom",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+    <Text
+      style={
+        [
+          undefined,
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Working from home
+    </Text>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 4,
+          "marginTop": 2,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "#6C727A",
+            "fontSize": 12,
+          },
+          [
+            {
+              "lineHeight": 12,
+            },
+            [
+              {
+                "height": 12,
+                "textAlign": "center",
+                "textAlignVertical": "center",
+                "width": 12,
+              },
+              undefined,
+            ],
+          ],
+          {
+            "fontFamily": "custom",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+    <Text
+      style={
+        [
+          undefined,
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Busy
+    </Text>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 4,
+          "marginTop": 2,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          undefined,
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Away for lunch
+    </Text>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 4,
+          "marginTop": 2,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "#6C727A",
+            "fontSize": 12,
+          },
+          [
+            {
+              "lineHeight": 12,
+            },
+            [
+              {
+                "height": 12,
+                "textAlign": "center",
+                "textAlignVertical": "center",
+                "width": 12,
+              },
+              undefined,
+            ],
+          ],
+          {
+            "fontFamily": "custom",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+    <Text
+      style={
+        [
+          undefined,
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Old status
+    </Text>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 4,
+          "marginTop": 2,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "#6C727A",
+            "fontSize": 12,
+          },
+          [
+            {
+              "lineHeight": 12,
+            },
+            [
+              {
+                "height": 12,
+                "textAlign": "center",
+                "textAlignVertical": "center",
+                "width": 12,
+              },
+              undefined,
+            ],
+          ],
+          {
+            "fontFamily": "custom",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+    <Text
+      style={
+        [
+          undefined,
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      In a meeting
+    </Text>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 4,
+          "marginTop": 2,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      accessibilityElementsHidden={true}
+      allowFontScaling={false}
+      importantForAccessibility="no"
+      selectable={false}
+      style={
+        [
+          {
+            "color": "#6C727A",
+            "fontSize": 14,
+          },
+          [
+            {
+              "lineHeight": 14,
+            },
+            undefined,
+          ],
+          {
+            "fontFamily": "custom",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+    <Text
+      style={
+        [
+          undefined,
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+    >
+      Until Jun 15, 7:00 PM
+    </Text>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 4,
+          "marginTop": 2,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "#6C727A",
+            "fontSize": 12,
+          },
+          [
+            {
+              "lineHeight": 12,
+            },
+            [
+              {
+                "height": 12,
+                "textAlign": "center",
+                "textAlignVertical": "center",
+                "width": 12,
+              },
+              undefined,
+            ],
+          ],
+          {
+            "fontFamily": "custom",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+    <Text
+      style={
+        [
+          undefined,
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Working remotely
+    </Text>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 4,
+          "marginTop": 2,
+        },
+        {
+          "marginTop": 10,
+        },
+      ]
+    }
+  >
+    <Text
+      accessibilityElementsHidden={true}
+      allowFontScaling={false}
+      importantForAccessibility="no"
+      selectable={false}
+      style={
+        [
+          {
+            "color": "#6C727A",
+            "fontSize": 14,
+          },
+          [
+            {
+              "lineHeight": 14,
+            },
+            undefined,
+          ],
+          {
+            "fontFamily": "custom",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+    <Text
+      style={
+        [
+          undefined,
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+    >
+      Until Jun 15, 7:00 PM
+    </Text>
+  </View>,
+]
+`;

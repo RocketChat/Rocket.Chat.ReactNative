@@ -1,12 +1,12 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef, createRef, type ReactElement } from 'react';
 import { StyleSheet, Text, type TextInputProps, View } from 'react-native';
 
-import { CustomIcon, type TIconsName } from '../../CustomIcon';
-import i18n from '../../../i18n';
-import { useTheme } from '../../../theme';
-import sharedStyles from '../../../views/Styles';
-import Button from '../../Button';
-import { FormTextInput } from '../../TextInput/FormTextInput';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import i18n from '~/i18n';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
+import Button from '~/containers/Button';
+import { FormTextInput } from '~/containers/TextInput/FormTextInput';
 import { useActionSheet } from '../Provider';
 
 const styles = StyleSheet.create({
@@ -44,7 +44,7 @@ const FooterButtons = ({
 	cancelBackgroundColor = '',
 	confirmBackgroundColor = '',
 	testID = ''
-}): React.ReactElement => {
+}): ReactElement => {
 	const { colors } = useTheme();
 	return (
 		<View style={styles.footerButtonsContainer}>
@@ -97,16 +97,16 @@ const ActionSheetContentWithInputAndSubmit = ({
 	confirmTitle?: string;
 	iconName?: TIconsName;
 	iconColor?: string;
-	customText?: React.ReactElement;
+	customText?: ReactElement;
 	confirmBackgroundColor?: string;
 	showInput?: boolean;
 	inputs?: { placeholder: string; secureTextEntry?: boolean; key: string }[];
 	isDisabled?: (inputValues: string[]) => boolean;
 	autoComplete?: TextInputProps['autoComplete'];
-}): React.ReactElement => {
+}): ReactElement => {
 	const { colors } = useTheme();
 	const [inputValues, setInputValues] = useState(inputs.map(() => ''));
-	const inputRefs = useRef(inputs.map(() => React.createRef()));
+	const inputRefs = useRef(inputs.map(() => createRef()));
 
 	const handleInputChange = (value: string, index: number) => {
 		const newInputValues = [...inputValues];

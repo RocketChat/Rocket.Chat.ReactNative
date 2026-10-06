@@ -1,21 +1,23 @@
-import React from 'react';
+import { Fragment, type ReactElement } from 'react';
 
 import { UiKitMessage, UiKitModal } from './index';
 import { KitContext } from './utils';
 
-export const messageBlockWithContext = (context: any) => (props: any) =>
-	(
-		<KitContext.Provider value={context}>
-			<MessageBlock {...props} />
-		</KitContext.Provider>
-	);
+const keyByPosition = (renderedBlocks: ReactElement[]) =>
+	renderedBlocks.map((renderedBlock, position) => <Fragment key={position}>{renderedBlock}</Fragment>);
 
-const MessageBlock = ({ blocks }: any) => UiKitMessage(blocks);
+const MessageBlockContent = ({ blocks }: any) => keyByPosition(UiKitMessage(blocks));
 
-export const ModalBlockWithContext = (props: any) => (
-	<KitContext.Provider value={props}>
-		<ModalBlock {...props} />
+export const MessageBlock = ({ blocks, context }: any) => (
+	<KitContext.Provider value={context}>
+		<MessageBlockContent blocks={blocks} />
 	</KitContext.Provider>
 );
 
-const ModalBlock = ({ blocks }: any) => UiKitModal(blocks);
+export const ModalBlockWithContext = (props: any) => (
+	<KitContext.Provider value={props}>
+		<ModalBlock blocks={props.blocks} />
+	</KitContext.Provider>
+);
+
+const ModalBlock = ({ blocks }: any) => keyByPosition(UiKitModal(blocks));

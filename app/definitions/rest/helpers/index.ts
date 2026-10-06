@@ -4,10 +4,10 @@ import { type Endpoints } from '../v1';
 type ReplacePlaceholders<TPath extends string> = string extends TPath
 	? TPath
 	: TPath extends `${infer Start}:${infer _Param}/${infer Rest}`
-	? `${Start}${string}/${ReplacePlaceholders<Rest>}`
-	: TPath extends `${infer Start}:${infer _Param}`
-	? `${Start}${string}`
-	: TPath;
+		? `${Start}${string}/${ReplacePlaceholders<Rest>}`
+		: TPath extends `${infer Start}:${infer _Param}`
+			? `${Start}${string}`
+			: TPath;
 
 type KeyOfEach<T> = T extends any ? keyof T : never;
 
@@ -29,7 +29,7 @@ type OperationsByPathPatternAndMethod<
 			path: ReplacePlaceholders<TPathPattern>;
 			params: GetParams<Endpoints[TPathPattern][TMethod]>;
 			result: GetResult<Endpoints[TPathPattern][TMethod]>;
-	  }
+		}
 	: never;
 
 type OperationsByPathPattern<TPathPattern extends keyof Endpoints> = TPathPattern extends any
@@ -49,12 +49,12 @@ type Path = Operations['path'];
 export type Serialized<T> = T extends Date
 	? Exclude<T, Date> | string
 	: T extends boolean | number | string | null | undefined
-	? T
-	: T extends {}
-	? {
-			[K in keyof T]: Serialized<T[K]>;
-	  }
-	: null;
+		? T
+		: T extends {}
+			? {
+					[K in keyof T]: Serialized<T[K]>;
+				}
+			: null;
 
 export type MatchPathPattern<TPath extends Path> = TPath extends any
 	? Extract<Operations, { path: TPath }>['pathPattern']

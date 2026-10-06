@@ -1,10 +1,9 @@
-import React from 'react';
 import { Text } from 'react-native';
 import { type InlineCode as InlineCodeProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
-import { themes } from '../../../lib/constants/colors';
-import { useTheme } from '../../../theme';
+import { themes } from '~/lib/constants/colors';
+import { useTheme } from '~/theme';
 
 interface IInlineCodeProps {
 	value: InlineCodeProps['value'];

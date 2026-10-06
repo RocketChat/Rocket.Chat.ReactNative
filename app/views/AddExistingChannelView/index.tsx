@@ -1,26 +1,28 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
-import * as List from '../../containers/List';
-import database from '../../lib/database';
-import I18n from '../../i18n';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import SearchBox from '../../containers/SearchBox';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import { useTheme } from '../../theme';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { sendLoadingEvent } from '../../containers/Loading';
-import { showErrorAlert } from '../../lib/methods/helpers/info';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { type TSubscriptionModel, SubscriptionType } from '../../definitions';
-import { compareServerVersion, getRoomTitle, hasPermission, useDebounce } from '../../lib/methods/helpers';
-import { addRoomsToTeam } from '../../lib/services/restApi';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import Navigation from '../../lib/navigation/appNavigation';
+import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
+import * as List from '~/containers/List';
+import database from '~/lib/database';
+import I18n from '~/i18n';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import SearchBox from '~/containers/SearchBox';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { useTheme } from '~/theme';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { sendLoadingEvent } from '~/containers/Loading';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { type TSubscriptionModel, SubscriptionType } from '~/definitions';
+import { compareServerVersion, getRoomTitle, hasPermission, useDebounce } from '~/lib/methods/helpers';
+import { addRoomsToTeam } from '~/lib/services/restApi';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import Navigation from '~/lib/navigation/appNavigation';
 
 type TNavigation = NativeStackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;
 type TRoute = RouteProp<ChatsStackParamList, 'AddExistingChannelView'>;
@@ -37,17 +39,18 @@ const AddExistingChannelView = () => {
 	const {
 		params: { teamId }
 	} = useRoute<TRoute>();
+	const { bottom } = useSafeAreaInsets();
 
-	const { serverVersion, addTeamChannelPermission, isMasterDetail, moveRoomToTeamPermission } = useAppSelector(state => ({
+	const { serverVersion, addTeamChannelPermission, moveRoomToTeamPermission } = useAppSelector(state => ({
 		serverVersion: state.server.version,
-		isMasterDetail: state.app.isMasterDetail,
 		addTeamChannelPermission: state.permissions['add-team-channel'],
 		moveRoomToTeamPermission: state.permissions['move-room-to-team']
 	}));
+	const isMasterDetail = useMasterDetail();
 
 	useLayoutEffect(() => {
 		setHeader();
-	}, [selected.length]);
+	}, [selected.length, isMasterDetail]);
 
 	useEffect(() => {
 		query();
@@ -174,7 +177,7 @@ const AddExistingChannelView = () => {
 					);
 				}}
 				ItemSeparatorComponent={List.Separator}
-				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
+				contentContainerStyle={{ backgroundColor: colors.surfaceRoom, paddingBottom: bottom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

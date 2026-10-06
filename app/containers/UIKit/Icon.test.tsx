@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text } from 'react-native';
 import { render } from '@testing-library/react-native';
 
@@ -12,7 +11,7 @@ jest.mock('../CustomIcon', () => ({
 	CustomIcon: (...props: Parameters<typeof mockCustomIcon>) => mockCustomIcon(...props)
 }));
 
-jest.mock('../../theme', () => ({
+jest.mock('~/theme', () => ({
 	useTheme: () => ({
 		colors: {
 			fontDefault: '#000000',

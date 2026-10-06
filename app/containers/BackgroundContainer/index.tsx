@@ -1,9 +1,9 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { ActivityIndicator, ImageBackground, StyleSheet, Text, View } from 'react-native';
 
-import { useTheme } from '../../theme';
-import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants/colors';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
+import { themes } from '~/lib/constants/colors';
 
 export interface IBackgroundContainer {
 	text?: string;
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const BackgroundContainer = ({ text, loading }: IBackgroundContainer): React.ReactElement => {
+const BackgroundContainer = ({ text, loading }: IBackgroundContainer): ReactElement => {
 	const { theme } = useTheme();
 	return (
 		<View style={styles.container}>

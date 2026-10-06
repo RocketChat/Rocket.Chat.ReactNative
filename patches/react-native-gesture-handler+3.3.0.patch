@@ -1,0 +1,83 @@
+diff --git a/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt b/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt
+index f964945..8df6494 100644
+--- a/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt
++++ b/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt
+@@ -1459,9 +1459,21 @@ class RNGestureHandlerButtonViewManager :
+ 
+     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+       receivedKeyEvent = true
++      if (isActivationKey(keyCode) && isEnabled && event?.isCanceled != true) {
++        performClick()
++        return true
++      }
+       return super.onKeyUp(keyCode, event)
+     }
+ 
++    private fun isActivationKey(keyCode: Int) = when (keyCode) {
++      KeyEvent.KEYCODE_DPAD_CENTER,
++      KeyEvent.KEYCODE_ENTER,
++      KeyEvent.KEYCODE_NUMPAD_ENTER,
++      KeyEvent.KEYCODE_SPACE -> true
++      else -> false
++    }
++
+     override fun performClick(): Boolean {
+       // don't perform click when a child button is pressed (mainly to prevent sound effect of
+       // a parent button from playing)
+diff --git a/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm b/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
+index 994b3d3..c46411b 100644
+--- a/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
++++ b/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
+@@ -1274,6 +1274,52 @@ static CATransform3D RNGHCenterScaleTransform(NSRect bounds, CGFloat scale)
+ #endif
+ 
+ #if !TARGET_OS_OSX
++- (BOOL)canBecomeFocused
++{
++  return self.userEnabled && self.enabled && self.userInteractionEnabled;
++}
++
++- (BOOL)_isActivationKeyPress:(NSSet<UIPress *> *)presses
++{
++  if (@available(iOS 13.4, *)) {
++    for (UIPress *press in presses) {
++      if (press.key != nil &&
++          (press.key.keyCode == UIKeyboardHIDUsageKeyboardSpacebar ||
++           press.key.keyCode == UIKeyboardHIDUsageKeyboardReturnOrEnter)) {
++        return YES;
++      }
++    }
++  }
++  return NO;
++}
++
++- (void)pressesBegan:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event
++{
++  if ([self _isActivationKeyPress:presses]) {
++    [self sendActionsForControlEvents:UIControlEventTouchDown];
++  } else {
++    [super pressesBegan:presses withEvent:event];
++  }
++}
++
++- (void)pressesEnded:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event
++{
++  if ([self _isActivationKeyPress:presses]) {
++    [self sendActionsForControlEvents:UIControlEventTouchUpInside];
++  } else {
++    [super pressesEnded:presses withEvent:event];
++  }
++}
++
++- (void)pressesCancelled:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event
++{
++  if ([self _isActivationKeyPress:presses]) {
++    [self sendActionsForControlEvents:UIControlEventTouchCancel];
++  } else {
++    [super pressesCancelled:presses withEvent:event];
++  }
++}
++
+ - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+ {
+   if (UIEdgeInsetsEqualToEdgeInsets(self.hitTestEdgeInsets, UIEdgeInsetsZero)) {

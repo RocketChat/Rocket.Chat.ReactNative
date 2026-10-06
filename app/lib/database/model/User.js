@@ -16,5 +16,5 @@ export default class User extends Model {
 
 	@field('avatar_etag') avatarETag;
 
-	@json('roles', sanitizer) roles;
+	@json('roles', sanitizer, { memo: true }) roles;
 }

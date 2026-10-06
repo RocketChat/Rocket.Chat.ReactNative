@@ -94,6 +94,9 @@ exports[`Story Snapshots: BlackThemeLoading should match snapshot 1`] = `
         "backgroundColor": "transparent",
         "fontFamily": "Inter",
         "fontSize": 16,
+        "fontVariant": [
+          "tabular-nums",
+        ],
         "fontWeight": "400",
         "left": 0,
         "paddingHorizontal": 24,
@@ -156,6 +159,9 @@ exports[`Story Snapshots: BlackThemeText should match snapshot 1`] = `
           "backgroundColor": "transparent",
           "fontFamily": "Inter",
           "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
           "fontWeight": "400",
           "left": 0,
           "paddingHorizontal": 24,
@@ -224,6 +230,9 @@ exports[`Story Snapshots: DarkThemeLoading should match snapshot 1`] = `
         "backgroundColor": "transparent",
         "fontFamily": "Inter",
         "fontSize": 16,
+        "fontVariant": [
+          "tabular-nums",
+        ],
         "fontWeight": "400",
         "left": 0,
         "paddingHorizontal": 24,
@@ -286,6 +295,9 @@ exports[`Story Snapshots: DarkThemeText should match snapshot 1`] = `
           "backgroundColor": "transparent",
           "fontFamily": "Inter",
           "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
           "fontWeight": "400",
           "left": 0,
           "paddingHorizontal": 24,
@@ -354,6 +366,9 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
         "backgroundColor": "transparent",
         "fontFamily": "Inter",
         "fontSize": 16,
+        "fontVariant": [
+          "tabular-nums",
+        ],
         "fontWeight": "400",
         "left": 0,
         "paddingHorizontal": 24,
@@ -416,6 +431,9 @@ exports[`Story Snapshots: LongText should match snapshot 1`] = `
           "backgroundColor": "transparent",
           "fontFamily": "Inter",
           "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
           "fontWeight": "400",
           "left": 0,
           "paddingHorizontal": 24,
@@ -484,6 +502,9 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
           "backgroundColor": "transparent",
           "fontFamily": "Inter",
           "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
           "fontWeight": "400",
           "left": 0,
           "paddingHorizontal": 24,

@@ -1,0 +1,279 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: CustomStyleButton should match snapshot 1`] = `
+<View
+  accessibilityLabel="Press me!"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "justifyContent": "center",
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "backgroundColor": "#156FF5",
+      },
+      {
+        "marginTop": 16,
+      },
+      false,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "500",
+          "textAlign": "center",
+        },
+        {
+          "color": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    Press me!
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: LoadingButton should match snapshot 1`] = `
+<View
+  accessibilityLabel="Press me!"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": true,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "justifyContent": "center",
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "backgroundColor": "#156FF5",
+      },
+      undefined,
+      false,
+    ]
+  }
+>
+  <ActivityIndicator
+    color="#FFFFFF"
+    style={
+      {
+        "padding": 0,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`Story Snapshots: PrimaryButton should match snapshot 1`] = `
+<View
+  accessibilityLabel="Press me!"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "justifyContent": "center",
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "backgroundColor": "#156FF5",
+      },
+      undefined,
+      false,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "500",
+          "textAlign": "center",
+        },
+        {
+          "color": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    Press me!
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: SecondaryButton should match snapshot 1`] = `
+<View
+  accessibilityLabel="Press me!"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "justifyContent": "center",
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "backgroundColor": "#E4E7EA",
+      },
+      undefined,
+      false,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "500",
+          "textAlign": "center",
+        },
+        {
+          "color": "#2F343D",
+        },
+      ]
+    }
+  >
+    Press me!
+  </Text>
+</View>
+`;
