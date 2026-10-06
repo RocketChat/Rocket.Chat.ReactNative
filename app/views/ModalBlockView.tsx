@@ -248,7 +248,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 	action = async ({ actionId, value, blockId }: IActions) => {
 		const { data } = this.state;
 		const { mid, appId, viewId } = data;
-		await triggerBlockAction({
+		const result = await triggerBlockAction({
 			container: {
 				type: ContainerTypes.VIEW,
 				id: viewId
@@ -259,6 +259,10 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 			blockId,
 			mid
 		});
+		if (result === ModalActions.CLOSE) {
+			this.close();
+			return;
+		}
 		this.changeState({ actionId, value, blockId });
 	};
 

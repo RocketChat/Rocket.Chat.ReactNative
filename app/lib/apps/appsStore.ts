@@ -79,6 +79,7 @@ export const onAppsStreamData = (ddpMessage: { fields?: { args?: [[string, unkno
 		fetchActionButtons();
 	}
 	if (event === 'app/added' || event === 'app/updated' || event === 'app/removed') {
+		fetchActionButtons();
 		fetchTranslations();
 	}
 };

@@ -236,7 +236,7 @@ describe('actions', () => {
 			expect(result).toBe(ModalActions.CLOSE);
 		});
 
-		it('returns modal.close for empty response body with ok status', async () => {
+		it('keeps the modal open for empty response body with ok status', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
 				text: () => Promise.resolve('')
@@ -244,7 +244,7 @@ describe('actions', () => {
 
 			const result = await triggerAction(actionInput);
 
-			expect(result).toBe(ModalActions.CLOSE);
+			expect(result).toBeUndefined();
 		});
 
 		it('throws when request is not ok', async () => {
@@ -281,13 +281,13 @@ describe('actions', () => {
 			expect(showToast).toHaveBeenCalledTimes(1);
 		});
 
-		it('closes when an app only acknowledges the interaction', async () => {
+		it('keeps the modal open when an app only acknowledges the interaction', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
 				text: () => Promise.resolve(JSON.stringify({ success: true }))
 			} as Response);
 
-			await expect(triggerAction(actionInput)).resolves.toBe(ModalActions.CLOSE);
+			await expect(triggerAction(actionInput)).resolves.toBeUndefined();
 		});
 
 		it('keeps the stream reply when the HTTP body repeats it', async () => {

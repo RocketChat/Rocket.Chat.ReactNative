@@ -126,7 +126,7 @@ export function triggerAction({
 		const result = await appsApiFetch(`ui.interaction/${appId}/`, { method: 'POST', body: interaction });
 		const text = await result.text();
 		if (!text.trim()) {
-			return ModalActions.CLOSE;
+			return handledTriggers.get(triggerId);
 		}
 
 		let parsed: { type?: string; [key: string]: unknown };
@@ -143,7 +143,7 @@ export function triggerAction({
 				showToast(I18n.t('App_action_unsupported'));
 				return;
 			}
-			return handledTriggers.get(triggerId) ?? ModalActions.CLOSE;
+			return handledTriggers.get(triggerId);
 		}
 		if (modalType === ModalActions.CLOSE) {
 			return ModalActions.CLOSE;
