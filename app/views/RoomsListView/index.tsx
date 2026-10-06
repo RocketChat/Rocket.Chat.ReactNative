@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { memo, useContext, useEffect } from 'react';
-import { BackHandler, FlatList, Platform, RefreshControl } from 'react-native';
+import { BackHandler, Platform, RefreshControl } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 
@@ -8,7 +9,6 @@ import ActivityIndicator from '~/containers/ActivityIndicator';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { ChangePasswordRequired } from '~/containers/ChangePasswordRequired';
 import { FLOATING_ACTION_BUTTON_CLEARANCE } from '~/containers/FloatingActionButton';
-import RoomItem from '~/containers/RoomItem';
 import { type IRoomItem } from '~/containers/RoomItem/interfaces';
 import { SupportedVersionsExpired } from '~/containers/SupportedVersions';
 import i18n from '~/i18n';
@@ -32,12 +32,15 @@ import Container from './components/Container';
 import ListHeader from './components/ListHeader';
 import NewMessageButton from './components/NewMessageButton';
 import SectionHeader from './components/SectionHeader';
+import SectionRevealFooter from './components/SectionRevealFooter';
+import SectionRoomItem from './components/SectionRoomItem';
 import RoomsSearchProvider, { RoomsSearchContext } from './contexts/RoomsSearchProvider';
 import { useCollapsedGroups } from './hooks/useCollapsedGroups';
 import { useGetItemLayout } from './hooks/useGetItemLayout';
 import { useHeader } from './hooks/useHeader';
 import { useNewMessage } from './hooks/useNewMessage';
 import { useRefresh } from './hooks/useRefresh';
+import { SECTION_REFLOW, useSectionToggleAnimation } from './hooks/useSectionToggleAnimation';
 import { useSubscriptions } from './hooks/useSubscriptions';
 import styles from './styles';
 
@@ -59,6 +62,8 @@ const RoomsListView = memo(function RoomsListView() {
 	const getItemLayout = useGetItemLayout();
 	const { collapsedGroups, toggleGroup } = useCollapsedGroups();
 	const { subscriptions, loading } = useSubscriptions(collapsedGroups);
+	const { onToggle, rowEntering, rowExiting, badgeEntering, badgeExiting, revealKey, coverEntering, coverExiting } =
+		useSectionToggleAnimation(collapsedGroups, toggleGroup, subscriptions.length);
 	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
 	const changingServer = useAppSelector(state => state.server.changingServer);
 	const { refreshing, onRefresh } = useRefresh({ searching });
@@ -104,7 +109,9 @@ const RoomsListView = memo(function RoomsListView() {
 					tunread={item.tunread}
 					tunreadUser={item.tunreadUser}
 					tunreadGroup={item.tunreadGroup}
-					onToggle={toggleGroup}
+					onToggle={onToggle}
+					badgeEntering={badgeEntering}
+					badgeExiting={badgeExiting}
 				/>
 			);
 		}
@@ -114,7 +121,9 @@ const RoomsListView = memo(function RoomsListView() {
 		const swipeEnabled = !(item?.search || item?.joinCodeRequired || item?.outside);
 
 		return (
-			<RoomItem
+			<SectionRoomItem
+				entering={rowEntering}
+				exiting={rowExiting}
 				item={item}
 				id={id}
 				username={username}
@@ -155,7 +164,7 @@ const RoomsListView = memo(function RoomsListView() {
 
 	return (
 		<>
-			<FlatList
+			<Animated.FlatList
 				data={searchEnabled ? searchResults : subscriptions}
 				keyExtractor={item => `${item.rid}-${searchEnabled}`}
 				style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
@@ -164,8 +173,16 @@ const RoomsListView = memo(function RoomsListView() {
 						Platform.select({ ios: 0, default: bottom }) + (showNewMessageButton ? FLOATING_ACTION_BUTTON_CLEARANCE : 0)
 				}}
 				renderItem={renderItem}
+				itemLayoutAnimation={SECTION_REFLOW}
 				ListHeaderComponent={ListHeader}
-				ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}
+				ListFooterComponent={
+					searching ? (
+						<ActivityIndicator />
+					) : (
+						<SectionRevealFooter revealKey={revealKey} entering={coverEntering} exiting={coverExiting} />
+					)
+				}
+				removeClippedSubviews={false}
 				getItemLayout={getItemLayout}
 				contentInsetAdjustmentBehavior={isIOS ? 'automatic' : undefined}
 				keyboardShouldPersistTaps='always'

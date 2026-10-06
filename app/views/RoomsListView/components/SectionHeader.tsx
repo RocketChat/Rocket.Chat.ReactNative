@@ -1,11 +1,12 @@
 import { memo } from 'react';
 import { Pressable, Text } from 'react-native';
+import Animated, { type EntryExitAnimationFunction } from 'react-native-reanimated';
 
-import { CustomIcon } from '~/containers/CustomIcon';
 import UnreadBadge from '~/containers/UnreadBadge';
 import i18n from '~/i18n';
 import { useTheme } from '~/theme';
 import styles from '../styles';
+import SectionChevron from './SectionChevron';
 
 interface ISectionHeader {
 	header: string;
@@ -17,7 +18,9 @@ interface ISectionHeader {
 	tunread?: string[];
 	tunreadUser?: string[];
 	tunreadGroup?: string[];
-	onToggle: (header: string) => void;
+	onToggle: (header: string, headerBottom: number) => void;
+	badgeEntering: EntryExitAnimationFunction;
+	badgeExiting: EntryExitAnimationFunction;
 }
 
 const SectionHeader = ({
@@ -30,13 +33,15 @@ const SectionHeader = ({
 	tunread,
 	tunreadUser,
 	tunreadGroup,
-	onToggle
+	onToggle,
+	badgeEntering,
+	badgeExiting
 }: ISectionHeader) => {
 	const { colors } = useTheme();
 	const sectionTitle = title ?? i18n.t(header);
 	return (
 		<Pressable
-			onPress={() => onToggle(header)}
+			onPress={event => event.currentTarget.measureInWindow((_x, y, _width, height) => onToggle(header, y + height))}
 			style={[styles.groupTitleContainer, { backgroundColor: colors.surfaceRoom }]}
 			accessibilityRole='button'
 			accessibilityLabel={sectionTitle}
@@ -44,21 +49,18 @@ const SectionHeader = ({
 			testID={`rooms-list-section-${header}`}>
 			<Text style={[styles.groupTitle, { color: colors.fontHint }]}>{sectionTitle}</Text>
 			{collapsed ? (
-				<UnreadBadge
-					unread={unread}
-					userMentions={userMentions}
-					groupMentions={groupMentions}
-					tunread={tunread}
-					tunreadUser={tunreadUser}
-					tunreadGroup={tunreadGroup}
-				/>
+				<Animated.View entering={badgeEntering} exiting={badgeExiting}>
+					<UnreadBadge
+						unread={unread}
+						userMentions={userMentions}
+						groupMentions={groupMentions}
+						tunread={tunread}
+						tunreadUser={tunreadUser}
+						tunreadGroup={tunreadGroup}
+					/>
+				</Animated.View>
 			) : null}
-			<CustomIcon
-				name={collapsed ? 'chevron-down' : 'chevron-up'}
-				size={20}
-				color={colors.fontHint}
-				style={styles.groupToggleIcon}
-			/>
+			<SectionChevron collapsed={collapsed} />
 		</Pressable>
 	);
 };
