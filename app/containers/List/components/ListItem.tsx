@@ -268,12 +268,13 @@ const ListItem = memo(({ ...props }: IListItem) => {
 		return <NativeListItem item={props} />;
 	}
 
-	const content = <Content {...props} />;
+	const { onPress, ...contentProps } = props;
+	const content = <Content {...contentProps} />;
 
-	if (props.onPress) {
+	if (onPress) {
 		return (
 			<Button
-				onPress={props.onPress}
+				onPress={onPress}
 				title={props.title}
 				disabled={props.disabled}
 				disabledReason={props.disabledReason}
