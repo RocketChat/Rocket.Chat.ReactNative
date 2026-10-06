@@ -17,9 +17,9 @@ interface IListSeparator {
 
 const ListSeparator = memo(({ style }: IListSeparator) => {
 	const { theme } = useTheme();
-	const isInNativeList = useNativeListMode();
+	const nativeListMode = useNativeListMode();
 
-	if (isInNativeList) {
+	if (nativeListMode) {
 		return null;
 	}
 
