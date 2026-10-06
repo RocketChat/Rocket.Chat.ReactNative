@@ -18,7 +18,7 @@ import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import { useHasCustomCategoriesLicense } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import ButtonCreate from './ButtonCreate';
-import FolderPlusIcon from './FolderPlusIcon';
+import FolderPlusIcon from '~/containers/FolderIcons/FolderPlusIcon';
 
 const styles = StyleSheet.create({
 	container: {

@@ -11,6 +11,7 @@ import { type CategorySettingsViewParams } from '~/views/CategorySettingsView';
 import { type ConfirmCategoryRoomsViewParams } from '~/views/CategorySettingsView/ConfirmCategoryRoomsView';
 import { type ManageCategoryRoomsViewParams } from '~/views/CategorySettingsView/ManageCategoryRoomsView';
 import { type RenameCategoryViewParams } from '~/views/CategorySettingsView/RenameCategoryView';
+import { type CreateCategoryViewParams } from '~/views/CreateCategoryView';
 import { type CategoryRoomsViewParams } from '~/views/CreateCategoryView/CategoryRoomsView';
 import { type ConfirmCategoryViewParams } from '~/views/CreateCategoryView/ConfirmCategoryView';
 
@@ -186,7 +187,7 @@ export type ModalStackParamList = {
 	RenameCategoryView: RenameCategoryViewParams;
 	AdminPanelView: undefined;
 	NewMessageView: undefined;
-	CreateCategoryView: undefined;
+	CreateCategoryView: CreateCategoryViewParams;
 	CategoryRoomsView: CategoryRoomsViewParams;
 	ConfirmCategoryView: ConfirmCategoryViewParams;
 	CreateChannelView: {

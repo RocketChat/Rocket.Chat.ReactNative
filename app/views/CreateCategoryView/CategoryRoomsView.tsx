@@ -11,9 +11,11 @@ import CategoryRoomList from './components/CategoryRoomList';
 import { useCategoryRoomCandidates } from './hooks/useCategoryRoomCandidates';
 import { useRoomSelection } from './hooks/useRoomSelection';
 import { roomSearchHeaderOptions } from './utils/roomSearchHeaderOptions';
+import { type ICategoryRoom } from './types';
 
 export type CategoryRoomsViewParams = {
 	name: string;
+	rooms?: ICategoryRoom[];
 };
 
 const CategoryRoomsView = ({ route }: StaticScreenProps<CategoryRoomsViewParams>) => {
@@ -22,7 +24,7 @@ const CategoryRoomsView = ({ route }: StaticScreenProps<CategoryRoomsViewParams>
 	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'CategoryRoomsView'>>();
 	const [searchText, setSearchText] = useState('');
 	const rooms = useCategoryRoomCandidates(searchText);
-	const { selectedRooms, isSelected, toggleRoom } = useRoomSelection();
+	const { selectedRooms, isSelected, toggleRoom } = useRoomSelection(route.params.rooms);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({

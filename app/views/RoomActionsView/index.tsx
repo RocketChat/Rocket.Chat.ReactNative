@@ -74,6 +74,7 @@ import { closeLivechat } from '~/lib/methods/helpers/closeLivechat';
 import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
 import { type ILivechatTag } from '~/definitions/ILivechatTag';
 import CallSection from './components/CallSection';
+import CategorySection from './components/CategorySection';
 import { type TNavigation } from '~/stacks/stackType';
 import * as EncryptionUtils from '~/lib/encryption/utils';
 import Navigation from '~/lib/navigation/appNavigation';
@@ -1112,6 +1113,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 				<List.Container testID='room-actions-scrollview'>
 					{this.renderRoomInfo()}
 					<CallSection room={room} disabled={hasE2EEWarning} itsMe={itsMe} />
+					<CategorySection room={room} category={room.category} favorite={room.f} joined={joined} />
 					{this.renderE2EEncryption()}
 					<List.Section>
 						<List.Separator />
