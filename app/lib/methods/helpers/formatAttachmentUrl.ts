@@ -58,7 +58,7 @@ export const formatAttachmentUrl = (
 
 	const isAbsolute = /^https?:\/\//i.test(attachmentUrl);
 	if (isAbsolute && originalUrl && !isTrusted(originalUrl)) {
-		return originalUrl;
+		return encodeAttachmentUrl(originalUrl);
 	}
 	const url = isAbsolute ? attachmentUrl : `${cdnPrefix || server}/${attachmentUrl.replace(/^\/+/, '')}`;
 	if (!isTrusted(url)) {

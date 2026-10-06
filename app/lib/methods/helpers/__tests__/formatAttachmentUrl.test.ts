@@ -52,6 +52,12 @@ describe('formatAttachmentUrl', () => {
 		);
 	});
 
+	it('encodes an untrusted original url', () => {
+		expect(formatAttachmentUrl(`${SERVER}/a.png`, 'uid', 'tok', SERVER, 'https://evil.example/a b.png')).toBe(
+			'https://evil.example/a%20b.png'
+		);
+	});
+
 	it.each(['@evil.com/x', '.evil.com/x', '\t.evil.com/x', ':8443@evil.com/x'])(
 		'keeps host-like relative path %j on the server origin',
 		path => {
