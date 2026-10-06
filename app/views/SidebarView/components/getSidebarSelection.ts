@@ -8,7 +8,7 @@ export const getSidebarSelection = (
 	adminRoute: string | null,
 	currentScreen: string | null
 ): IListSelection => {
-	const selectedItem = stackItems.find(item => item.route && item.selected);
+	const selectedItem = stackItems.find(item => item.selected);
 	const isAdminSelected = adminRoute !== null && currentScreen === adminRoute;
 	return { selectedTag: selectedItem?.testID ?? (isAdminSelected ? ADMIN_SELECTION_TAG : null) };
 };
