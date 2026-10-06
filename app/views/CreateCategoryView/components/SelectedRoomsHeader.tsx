@@ -7,6 +7,7 @@ import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import { type ICategoryRoom } from '../types';
 import RoomChip from './RoomChip';
+import TextWithBoldName from './TextWithBoldName';
 
 const styles = StyleSheet.create({
 	container: {
@@ -32,14 +33,18 @@ interface ISelectedRoomsHeader {
 	selectedRooms: ICategoryRoom[];
 	onSearch: (text: string) => void;
 	onRemove: (room: ICategoryRoom) => void;
+	categoryName?: string;
 }
 
-const SelectedRoomsHeader = ({ selectedRooms, onSearch, onRemove }: ISelectedRoomsHeader) => {
+const SelectedRoomsHeader = ({ selectedRooms, onSearch, onRemove, categoryName }: ISelectedRoomsHeader) => {
 	const { colors } = useTheme();
 	const captionStyle = [styles.caption, { color: colors.fontSecondaryInfo }];
 
 	return (
 		<View style={styles.container}>
+			{categoryName ? (
+				<TextWithBoldName translationKey='Select_rooms_for_category' name={categoryName} style={captionStyle} />
+			) : null}
 			<View>
 				{hasNativeHeaderBar ? null : (
 					<SearchBox placeholder={I18n.t('Search_rooms')} onChangeText={onSearch} testID='create-category-rooms-search' />

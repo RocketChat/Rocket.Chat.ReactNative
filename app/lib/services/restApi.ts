@@ -697,7 +697,7 @@ export const saveUserPreferences = (data: Partial<INotificationPreferences & IMe
 export const saveSidebarCategories = (sidebarCategories: ISidebarCategory[]) =>
 	sdk.post('users.setPreferences', { data: { sidebarCategories } });
 
-export const setRoomsCategory = async (roomIds: string[], category: string) => {
+export const setRoomsCategory = async (roomIds: string[], category: string | null) => {
 	const { login, server } = reduxStore.getState();
 	const { user } = login;
 	const response = await fetch(`${server.server}/api/experimental/rooms.setCategory`, {

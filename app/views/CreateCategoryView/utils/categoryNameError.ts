@@ -1,5 +1,5 @@
 import I18n from '~/i18n';
-import { SYSTEM_GROUPS } from '~/views/RoomsListView/hooks/sidebarGroupOrder';
+import { SYSTEM_GROUPS } from '~/views/RoomsListView/utils/sidebarGroupOrder';
 
 export const MAX_CATEGORY_NAME_LENGTH = 30;
 

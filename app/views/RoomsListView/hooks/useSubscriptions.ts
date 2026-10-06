@@ -8,7 +8,7 @@ import { SortBy } from '~/lib/constants/constantDisplayMode';
 import database from '~/lib/database';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { getUserSelector } from '~/selectors/login';
-import { buildRoomList } from './groupRooms';
+import { buildRoomList } from '../utils/groupRooms';
 import { useSidebarCategories } from './useSidebarCategories';
 
 const SECTION_BADGE_COLUMNS = [
@@ -28,7 +28,7 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 	const [loading, setLoading] = useState(true);
 	const roles = useAppSelector(state => getUserSelector(state).roles, shallowEqual);
 	const { sortBy, showUnread, showFavorites, groupByType } = useAppSelector(state => state.sortPreferences, shallowEqual);
-	const { customCategoryNames, groupOrder } = useSidebarCategories();
+	const { customCategoryNames, categoryUnreadOptions, groupOrder } = useSidebarCategories();
 	const hasCustomCategories = customCategoryNames.size > 0;
 	const isGrouping = showUnread || showFavorites || groupByType || hasCustomCategories;
 	const isOmnichannelAgent = roles?.includes('livechat-agent') ?? false;
@@ -78,13 +78,24 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 			buildRoomList(rows, {
 				groupOrder,
 				customCategoryNames,
+				categoryUnreadOptions,
 				showUnread,
 				showFavorites,
 				groupByType,
 				isOmnichannelAgent,
 				collapsedGroups
 			}),
-		[rows, groupOrder, customCategoryNames, showUnread, showFavorites, groupByType, isOmnichannelAgent, collapsedGroups]
+		[
+			rows,
+			groupOrder,
+			customCategoryNames,
+			categoryUnreadOptions,
+			showUnread,
+			showFavorites,
+			groupByType,
+			isOmnichannelAgent,
+			collapsedGroups
+		]
 	);
 
 	return {

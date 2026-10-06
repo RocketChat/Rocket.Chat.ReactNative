@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { roomsInSection } from '~/views/RoomsListView/hooks/groupRooms';
+import { roomsInSection } from '~/views/RoomsListView/utils/groupRooms';
 import { useSubscriptions } from '~/views/RoomsListView/hooks/useSubscriptions';
 
 const NO_COLLAPSED_GROUPS: ReadonlySet<string> = new Set();

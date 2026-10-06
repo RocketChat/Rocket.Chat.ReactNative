@@ -3,7 +3,8 @@ import { useMemo } from 'react';
 import { type ISidebarCategory } from '~/definitions';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { getUserSelector } from '~/selectors/login';
-import { getGroupOrder } from './sidebarGroupOrder';
+import { type CategoryUnreadOptions } from '../utils/groupRooms';
+import { getGroupOrder } from '../utils/sidebarGroupOrder';
 
 const CUSTOM_CATEGORIES_LICENSE_MODULE = 'experimental-enterprise-features';
 const NO_CATEGORIES: ISidebarCategory[] = [];
@@ -19,6 +20,18 @@ export const useSidebarCategories = () => {
 		() => new Map(categories.filter(category => !category.default).map(category => [category._id, category.name])),
 		[categories]
 	);
+	const categoryUnreadOptions = useMemo(
+		() =>
+			new Map<string, CategoryUnreadOptions>(
+				categories
+					.filter(category => !category.default)
+					.map(category => [
+						category._id,
+						{ showUnreads: Boolean(category.showUnreads), keepUnreadsOnTop: Boolean(category.keepUnreadsOnTop) }
+					])
+			),
+		[categories]
+	);
 	const groupOrder = useMemo(() => getGroupOrder(categories), [categories]);
-	return { storedCategories, customCategoryNames, groupOrder };
+	return { storedCategories, customCategoryNames, categoryUnreadOptions, groupOrder };
 };

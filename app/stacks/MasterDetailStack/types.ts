@@ -7,6 +7,10 @@ import { type IMessage, type TAnyMessageModel } from '~/definitions/IMessage';
 import { type ISubscription, type SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
 import { type TChangeAvatarViewContext } from '~/definitions/TChangeAvatarViewContext';
 import { type CategoryViewParams } from '~/views/CategoryView';
+import { type CategorySettingsViewParams } from '~/views/CategorySettingsView';
+import { type ConfirmCategoryRoomsViewParams } from '~/views/CategorySettingsView/ConfirmCategoryRoomsView';
+import { type ManageCategoryRoomsViewParams } from '~/views/CategorySettingsView/ManageCategoryRoomsView';
+import { type RenameCategoryViewParams } from '~/views/CategorySettingsView/RenameCategoryView';
 import { type CategoryRoomsViewParams } from '~/views/CreateCategoryView/CategoryRoomsView';
 import { type ConfirmCategoryViewParams } from '~/views/CreateCategoryView/ConfirmCategoryView';
 
@@ -176,6 +180,10 @@ export type ModalStackParamList = {
 	ChangePasswordView: undefined;
 	DisplayPrefsView: undefined;
 	CategoryOrderView: undefined;
+	CategorySettingsView: CategorySettingsViewParams;
+	ManageCategoryRoomsView: ManageCategoryRoomsViewParams;
+	ConfirmCategoryRoomsView: ConfirmCategoryRoomsViewParams;
+	RenameCategoryView: RenameCategoryViewParams;
 	AdminPanelView: undefined;
 	NewMessageView: undefined;
 	CreateCategoryView: undefined;

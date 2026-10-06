@@ -11,7 +11,7 @@ import log from '~/lib/methods/helpers/log';
 import { random } from '~/lib/methods/helpers/random';
 import Navigation from '~/lib/navigation/appNavigation';
 import { saveSidebarCategories, setRoomsCategory } from '~/lib/services/restApi';
-import { toSidebarCategories } from '~/views/RoomsListView/hooks/sidebarGroupOrder';
+import { toSidebarCategories } from '~/views/RoomsListView/utils/sidebarGroupOrder';
 import { useSidebarCategories } from '~/views/RoomsListView/hooks/useSidebarCategories';
 
 export const prependCategory = (

@@ -10,6 +10,7 @@ const options = {
 		['work', 'Work'],
 		['empty', 'Empty']
 	]),
+	categoryUnreadOptions: new Map(),
 	showUnread: false,
 	showFavorites: true,
 	groupByType: false,
@@ -97,6 +98,30 @@ describe('groupRooms', () => {
 			tunread: ['thread'],
 			tunreadUser: ['thread']
 		});
+	});
+
+	it('lists unread rooms first in a category that keeps unread rooms on top', () => {
+		const chats = [
+			room({ rid: 'read', category: 'work' }),
+			room({ rid: 'unread', category: 'work', unread: 1 }),
+			room({ rid: 'alert', category: 'work', alert: true })
+		];
+		const categoryUnreadOptions = new Map([['work', { showUnreads: false, keepUnreadsOnTop: true }]]);
+
+		expect(layout(buildRoomList(chats, { ...options, categoryUnreadOptions }))).toEqual(['# Work', 'unread', 'alert', 'read']);
+	});
+
+	it('keeps unread rooms visible in a collapsed category that always displays them, badging only the hidden ones', () => {
+		const chats = [
+			room({ rid: 'read', category: 'work', groupMentions: 1 }),
+			room({ rid: 'unread', category: 'work', unread: 2, userMentions: 1 })
+		];
+		const categoryUnreadOptions = new Map([['work', { showUnreads: true, keepUnreadsOnTop: false }]]);
+
+		const roomList = buildRoomList(chats, { ...options, categoryUnreadOptions, collapsedGroups: new Set(['work']) });
+
+		expect(layout(roomList)).toEqual(['# Work', 'unread']);
+		expect(roomList[0]).toMatchObject({ collapsed: true, unread: 0, userMentions: 0, groupMentions: 1 });
 	});
 });
 

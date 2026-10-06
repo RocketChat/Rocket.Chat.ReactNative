@@ -10,7 +10,7 @@ import {
 	isVisibleGroup,
 	reorderGroups,
 	toSidebarCategories
-} from '~/views/RoomsListView/hooks/sidebarGroupOrder';
+} from '~/views/RoomsListView/utils/sidebarGroupOrder';
 import { useSidebarCategories } from '~/views/RoomsListView/hooks/useSidebarCategories';
 
 export interface ICategoryOrderGroup {

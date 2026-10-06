@@ -1,4 +1,4 @@
-import { DEFAULT_GROUP_ORDER, getGroupOrder } from '~/views/RoomsListView/hooks/sidebarGroupOrder';
+import { DEFAULT_GROUP_ORDER, getGroupOrder } from '~/views/RoomsListView/utils/sidebarGroupOrder';
 import { prependCategory } from '../useCreateCategory';
 
 describe('prependCategory', () => {

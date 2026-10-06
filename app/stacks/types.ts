@@ -18,6 +18,10 @@ import {
 	type IVisitor
 } from '../definitions';
 import { type CategoryViewParams } from '../views/CategoryView';
+import { type CategorySettingsViewParams } from '../views/CategorySettingsView';
+import { type ConfirmCategoryRoomsViewParams } from '../views/CategorySettingsView/ConfirmCategoryRoomsView';
+import { type ManageCategoryRoomsViewParams } from '../views/CategorySettingsView/ManageCategoryRoomsView';
+import { type RenameCategoryViewParams } from '../views/CategorySettingsView/RenameCategoryView';
 import { type CategoryRoomsViewParams } from '../views/CreateCategoryView/CategoryRoomsView';
 import { type ConfirmCategoryViewParams } from '../views/CreateCategoryView/ConfirmCategoryView';
 import { type ModalStackParamList } from './MasterDetailStack/types';
@@ -34,6 +38,10 @@ export type ChatsStackParamList = {
 	NewMessageStack: undefined;
 	RoomsListView: undefined;
 	CategoryView: CategoryViewParams;
+	CategorySettingsView: CategorySettingsViewParams;
+	ManageCategoryRoomsView: ManageCategoryRoomsViewParams;
+	ConfirmCategoryRoomsView: ConfirmCategoryRoomsViewParams;
+	RenameCategoryView: RenameCategoryViewParams;
 	RoomView:
 		| {
 				rid: string;

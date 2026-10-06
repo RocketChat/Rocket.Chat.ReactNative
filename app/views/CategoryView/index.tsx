@@ -17,7 +17,7 @@ import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';
 import NewMessageButton from '~/views/RoomsListView/components/NewMessageButton';
 import { useCategoryRooms } from './hooks/useCategoryRooms';
-import { useNewMessageToolbar } from './hooks/useNewMessageToolbar';
+import { useCategoryHeader } from './hooks/useCategoryHeader';
 
 export type CategoryViewParams = {
 	header: string;
@@ -35,7 +35,7 @@ const CategoryView = ({ route }: StaticScreenProps<CategoryViewParams>) => {
 	const isMasterDetail = useMasterDetail();
 	const { width } = useSafeAreaFrame();
 	const { bottom } = useSafeAreaInsets();
-	const { showNewMessageButton, goToNewMessage } = useNewMessageToolbar();
+	const { showNewMessageButton, goToNewMessage } = useCategoryHeader(route.params.header);
 
 	const onPressItem = (item = {} as IRoomItem) => {
 		if (item.rid === subscribedRoom) {

@@ -25,8 +25,15 @@ const sumOf = (rooms: TSubscriptionModel[], count: (room: TSubscriptionModel) =>
 const threadsOf = (rooms: TSubscriptionModel[], threads: (room: TSubscriptionModel) => string[] | undefined) =>
 	rooms.flatMap(room => threads(room) ?? []);
 
-const sectionHeader = (rooms: TSubscriptionModel[], header: string, title: string | undefined, collapsed: boolean) => {
-	const badgedRooms = rooms.filter(room => !room.hideUnreadStatus);
+export type CategoryUnreadOptions = {
+	showUnreads: boolean;
+	keepUnreadsOnTop: boolean;
+};
+
+const NO_UNREAD_OPTIONS: CategoryUnreadOptions = { showUnreads: false, keepUnreadsOnTop: false };
+
+const sectionHeader = (badgeSourceRooms: TSubscriptionModel[], header: string, title: string | undefined, collapsed: boolean) => {
+	const badgedRooms = badgeSourceRooms.filter(room => !room.hideUnreadStatus);
 	return {
 		rid: header,
 		separator: true,
@@ -41,15 +48,37 @@ const sectionHeader = (rooms: TSubscriptionModel[], header: string, title: strin
 	} as TSubscriptionModel;
 };
 
-const roomsGroup = (rooms: TSubscriptionModel[], header: string, collapsedGroups: ReadonlySet<string>, title?: string) => {
+const unreadFirst = (rooms: TSubscriptionModel[]) => [
+	...rooms.filter(filterIsUnread),
+	...rooms.filter(subscription => !filterIsUnread(subscription))
+];
+
+type RoomsGroupOptions = {
+	collapsedGroups: ReadonlySet<string>;
+	title?: string;
+	unreadOptions?: CategoryUnreadOptions;
+};
+
+const roomsGroup = (
+	rooms: TSubscriptionModel[],
+	header: string,
+	{ collapsedGroups, title, unreadOptions = NO_UNREAD_OPTIONS }: RoomsGroupOptions
+) => {
+	const { showUnreads, keepUnreadsOnTop } = unreadOptions;
 	if (!rooms.length) {
 		return [];
 	}
+	const orderedRooms = keepUnreadsOnTop ? unreadFirst(rooms) : rooms;
 	if (!header) {
-		return rooms;
+		return orderedRooms;
 	}
 	const collapsed = collapsedGroups.has(header);
-	return [sectionHeader(rooms, header, title, collapsed), ...(collapsed ? [] : rooms)];
+	if (!collapsed) {
+		return [sectionHeader(rooms, header, title, false), ...orderedRooms];
+	}
+	const visibleRooms = showUnreads ? orderedRooms.filter(filterIsUnread) : [];
+	const hiddenRooms = orderedRooms.filter(room => !visibleRooms.includes(room));
+	return [sectionHeader(hiddenRooms, header, title, true), ...visibleRooms];
 };
 
 const getRoomGroup = (subscription: TSubscriptionModel, groups: Map<string, TSubscriptionModel[]>) => {
@@ -80,6 +109,7 @@ const getRoomGroup = (subscription: TSubscriptionModel, groups: Map<string, TSub
 type GroupRoomsOptions = {
 	groupOrder: string[];
 	customCategoryNames: Map<string, string>;
+	categoryUnreadOptions: Map<string, CategoryUnreadOptions>;
 	showFavorites: boolean;
 	groupByType: boolean;
 	hasChatsHeader: boolean;
@@ -88,7 +118,15 @@ type GroupRoomsOptions = {
 
 const groupRooms = (
 	chats: TSubscriptionModel[],
-	{ groupOrder, customCategoryNames, showFavorites, groupByType, hasChatsHeader, collapsedGroups }: GroupRoomsOptions
+	{
+		groupOrder,
+		customCategoryNames,
+		categoryUnreadOptions,
+		showFavorites,
+		groupByType,
+		hasChatsHeader,
+		collapsedGroups
+	}: GroupRoomsOptions
 ) => {
 	const visibleGroups = groupOrder.filter(key => isVisibleGroup(key, { customCategoryNames, showFavorites, groupByType }));
 	const groups = new Map(visibleGroups.map(key => [key, [] as TSubscriptionModel[]]));
@@ -101,7 +139,11 @@ const groupRooms = (
 
 	return visibleGroups.flatMap(key => {
 		const header = key === CONVERSATIONS_GROUP ? (hasChatsHeader ? CHATS_HEADER : '') : key;
-		return roomsGroup(groups.get(key) ?? [], header, collapsedGroups, customCategoryNames.get(key));
+		return roomsGroup(groups.get(key) ?? [], header, {
+			collapsedGroups,
+			title: customCategoryNames.get(key),
+			unreadOptions: categoryUnreadOptions.get(key)
+		});
 	});
 };
 
@@ -111,8 +153,16 @@ type BuildRoomListOptions = Omit<GroupRoomsOptions, 'hasChatsHeader'> & {
 };
 
 export const buildRoomList = (subscriptions: TSubscriptionModel[], options: BuildRoomListOptions) => {
-	const { groupOrder, customCategoryNames, showUnread, showFavorites, groupByType, isOmnichannelAgent, collapsedGroups } =
-		options;
+	const {
+		groupOrder,
+		customCategoryNames,
+		categoryUnreadOptions,
+		showUnread,
+		showFavorites,
+		groupByType,
+		isOmnichannelAgent,
+		collapsedGroups
+	} = options;
 	let remainingSubscriptions = subscriptions;
 	const roomList: TSubscriptionModel[] = [];
 
@@ -123,12 +173,12 @@ export const buildRoomList = (subscriptions: TSubscriptionModel[], options: Buil
 			...roomsGroup(
 				omnichannel.filter(subscription => !subscription.onHold),
 				OMNICHANNEL_HEADER_IN_PROGRESS,
-				collapsedGroups
+				{ collapsedGroups }
 			),
 			...roomsGroup(
 				omnichannel.filter(subscription => subscription.onHold),
 				OMNICHANNEL_HEADER_ON_HOLD,
-				collapsedGroups
+				{ collapsedGroups }
 			)
 		);
 	}
@@ -136,13 +186,14 @@ export const buildRoomList = (subscriptions: TSubscriptionModel[], options: Buil
 	if (showUnread) {
 		const unread = remainingSubscriptions.filter(filterIsUnread);
 		remainingSubscriptions = remainingSubscriptions.filter(subscription => !filterIsUnread(subscription));
-		roomList.push(...roomsGroup(unread, UNREAD_HEADER, collapsedGroups));
+		roomList.push(...roomsGroup(unread, UNREAD_HEADER, { collapsedGroups }));
 	}
 
 	return roomList.concat(
 		groupRooms(remainingSubscriptions, {
 			groupOrder,
 			customCategoryNames,
+			categoryUnreadOptions,
 			showFavorites,
 			groupByType,
 			collapsedGroups,

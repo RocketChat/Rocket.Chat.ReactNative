@@ -17,6 +17,10 @@ import { type TNavigation } from './stackType';
 import RoomView from '../views/RoomView';
 import RoomsListView from '../views/RoomsListView';
 import CategoryView from '../views/CategoryView';
+import CategorySettingsView from '../views/CategorySettingsView';
+import ManageCategoryRoomsView from '../views/CategorySettingsView/ManageCategoryRoomsView';
+import ConfirmCategoryRoomsView from '../views/CategorySettingsView/ConfirmCategoryRoomsView';
+import RenameCategoryView from '../views/CategorySettingsView/RenameCategoryView';
 import RoomActionsView from '../views/RoomActionsView';
 import RoomInfoView from '../views/RoomInfoView';
 import ReportUserView from '../views/ReportUserView';
@@ -165,6 +169,10 @@ const ChatsStack = createNativeStackNavigator({
 			screen: CategoryView,
 			options: ({ route }) => ({ title: route.params.title })
 		}),
+		CategorySettingsView,
+		ManageCategoryRoomsView,
+		ConfirmCategoryRoomsView,
+		RenameCategoryView,
 		RoomView: RoomViewScreen,
 		RoomActionsView: createNativeStackScreen({
 			screen: RoomActionsViewScreen,
