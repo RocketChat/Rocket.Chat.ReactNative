@@ -14,10 +14,9 @@ interface IMediaCallPeer {
 export const useStartMediaCall = ({ userId, name, username }: IMediaCallPeer) => {
 	const hasMediaCallPermission = useMediaCallPermission();
 	const isInActiveCall = useIsInActiveVoipCall();
-	const isSelf = isSelfUserId(userId);
 
 	const startMediaCall = () => {
-		if (!userId || isInActiveCall || isSelf) return;
+		if (!userId || isInActiveCall) return;
 		usePeerAutocompleteStore.getState().setSelectedPeer({ type: 'user', value: userId, label: name, username });
 		showActionSheetRef({
 			children: <NewMediaCall />,
@@ -28,5 +27,5 @@ export const useStartMediaCall = ({ userId, name, username }: IMediaCallPeer) =>
 		});
 	};
 
-	return { canStartMediaCall: hasMediaCallPermission && !isSelf, isInActiveCall, startMediaCall };
+	return { canStartMediaCall: hasMediaCallPermission && !isSelfUserId(userId), isInActiveCall, startMediaCall };
 };
