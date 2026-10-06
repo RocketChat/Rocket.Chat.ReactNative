@@ -83,6 +83,7 @@ import { getLoggedUserById } from '~/lib/database/services/LoggedUser';
 import { getServerInfo } from '~/lib/methods/getServerInfo';
 import { getLoginSettings } from '~/lib/methods/getSettings';
 import { connect, getLoginServices } from '~/lib/services/connect';
+import sdk from '~/lib/services/sdk';
 import { getServerById } from '~/lib/database/services/Server';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
 import type { RecordingStore } from '~/lib/testUtils/sagaStore';
@@ -320,6 +321,8 @@ describe('selectServer saga — requesting a new workspace', () => {
 
 	afterEach(() => {
 		UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${REQUESTED_HOST}`);
+		UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${OLD_SERVER}`);
+		(sdk as { host?: string }).host = undefined;
 		jest.mocked(getServerInfo).mockReset();
 		jest.mocked(getServerById).mockReset();
 		jest.mocked(getLoginServices).mockReset();
@@ -344,5 +347,21 @@ describe('selectServer saga — requesting a new workspace', () => {
 		await flushSagaMicrotasks();
 
 		expect(authorizationSentToHost).toEqual(['Basic requested-host-credentials', 'Basic requested-host-credentials']);
+	});
+
+	it('restores the active workspace basic auth when the add-workspace flow is closed', async () => {
+		UserPreferences.setString(`${BASIC_AUTH_KEY}-${OLD_SERVER}`, 'old-workspace-credentials');
+		setBasicAuth('old-workspace-credentials');
+		(sdk as { host?: string }).host = OLD_SERVER;
+
+		const { store } = setupStore();
+		store.dispatch(serverRequest(REQUESTED_HOST));
+		await flushSagaMicrotasks();
+		store.dispatch(selectServerRequest(OLD_SERVER, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect((RocketChatSettings.customHeaders as { Authorization?: string }).Authorization).toBe(
+			'Basic old-workspace-credentials'
+		);
 	});
 });

@@ -760,6 +760,53 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 	});
 });
 
+describe('deepLinking saga — handleClickCallPush (no token)', () => {
+	beforeEach(() => {
+		jest.useFakeTimers();
+
+		jest.mocked(UserPreferences.getString).mockReset();
+		jest.mocked(getServerById).mockReset();
+		jest.mocked(getServerInfo).mockReset();
+		jest.mocked(showConfirmationAlert).mockClear();
+
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === 'currentServer') return 'https://other.server.com';
+			return null;
+		});
+		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '6.0.0' } as any);
+	});
+
+	afterEach(() => {
+		jest.useRealTimers();
+	});
+
+	it('does not contact an unknown host when the confirmation is declined', async () => {
+		jest.mocked(getServerById).mockResolvedValue(null);
+		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());
+		const { store, dispatchedActions } = setupStore();
+
+		store.dispatch(deepLinkingClickCallPush(makeParams({ rid: 'room-1' }) as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
+		expect(dispatchedActions.some(a => a.type === SERVER.INIT_ADD)).toBe(false);
+	});
+
+	it('does not ask for confirmation for a host with a server record and no signed-in user', async () => {
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingClickCallPush(makeParams({ rid: 'room-1' }) as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).not.toHaveBeenCalled();
+		expect(jest.mocked(getServerInfo)).toHaveBeenCalledWith(HOST);
+	});
+});
+
 // ─── handleOAuth — single-use credentialToken dedup guard ────────────────────
 
 describe('deepLinking saga — handleOAuth dedup guard', () => {

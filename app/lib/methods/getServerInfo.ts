@@ -19,7 +19,7 @@ import log from './helpers/log';
 import { getUserSelector } from '~/selectors/login';
 import fetch, { BASIC_AUTH_KEY } from './helpers/fetch';
 import UserPreferences from './userPreferences';
-import { getServerUserIdKey } from '../constants/keys';
+import { getServerUserIdKey, getUserTokenKey } from '../constants/keys';
 
 interface IServerInfoFailure {
 	success: false;
@@ -54,7 +54,10 @@ const verifyJWT = (jwt?: string): ISupportedVersionsData | null => {
 
 const getSessionHeaders = (server: string) => {
 	const user = getUserSelector(store.getState());
-	const isSignedInToServer = !!user?.id && UserPreferences.getString(getServerUserIdKey(server)) === user.id;
+	const isSignedInToServer =
+		!!user?.id &&
+		UserPreferences.getString(getServerUserIdKey(server)) === user.id &&
+		UserPreferences.getString(getUserTokenKey(server, user.id)) === user.token;
 	return isSignedInToServer ? { 'X-Auth-Token': user.token, 'X-User-Id': user.id } : {};
 };
 

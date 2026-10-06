@@ -5,6 +5,7 @@ import fetch from '../helpers/fetch';
 import UserPreferences from '../userPreferences';
 import { store } from '../../store/auxStore';
 import { getSupportedVersionsCloud } from '../../services/restApi';
+import { getServerUserIdKey, getUserTokenKey } from '../../constants/keys';
 
 jest.mock('../helpers/fetch', () => ({ __esModule: true, default: jest.fn(), BASIC_AUTH_KEY: 'BASIC_AUTH_KEY' }));
 jest.mock('../userPreferences', () => ({ __esModule: true, default: { getString: jest.fn() } }));
@@ -20,6 +21,9 @@ const attackerServer = 'https://attacker.example';
 
 const requestOptions = () => mockedFetch.mock.calls[0][1]!;
 
+const mockStoredPreferences = (stored: Record<string, string>) =>
+	getString.mockImplementation((key: string) => (stored[key] ?? null) as any);
+
 describe('getServerInfo', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -27,7 +31,10 @@ describe('getServerInfo', () => {
 			.mocked(store.getState)
 			.mockReturnValue({ login: { user: { id: 'uid', token: 'secret' } }, server: { version: '7.0.0' } } as any);
 		mockedFetch.mockResolvedValue({ json: () => Promise.resolve({ success: false }) } as any);
-		getString.mockImplementation((key: string) => (key.endsWith(currentServer) ? 'uid' : null) as any);
+		mockStoredPreferences({
+			[getServerUserIdKey(currentServer)]: 'uid',
+			[getUserTokenKey(currentServer, 'uid')]: 'secret'
+		});
 	});
 
 	it('sends the session headers to a server the user is signed in to', async () => {
@@ -47,6 +54,19 @@ describe('getServerInfo', () => {
 
 	it('does not send the session headers when the stored user id differs', async () => {
 		getString.mockImplementation((key: string) => (key.endsWith(attackerServer) ? 'someone-else' : null) as any);
+
+		await getServerInfo(attackerServer);
+
+		expect(requestOptions().headers).not.toHaveProperty('X-Auth-Token');
+		expect(requestOptions().headers).not.toHaveProperty('X-User-Id');
+		expect(requestOptions().skipCustomHeaders).toBe(true);
+	});
+
+	it('does not send the session headers when the server reports the same user id but holds a different token', async () => {
+		mockStoredPreferences({
+			[getServerUserIdKey(attackerServer)]: 'uid',
+			[getUserTokenKey(attackerServer, 'uid')]: 'attacker-token'
+		});
 
 		await getServerInfo(attackerServer);
 
