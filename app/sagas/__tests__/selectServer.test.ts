@@ -3,14 +3,6 @@ jest.mock('~/lib/methods/helpers/sslPinning', () => ({
 	default: undefined
 }));
 
-jest.mock('~/lib/database', () => ({
-	active: { get: jest.fn() },
-	servers: {
-		get: jest.fn(() => ({ query: () => ({ fetch: () => Promise.resolve([{}]) }) })),
-		write: (work: () => Promise<unknown>) => work()
-	}
-}));
-
 jest.mock('~/lib/database/services/LoggedUser', () => ({
 	getLoggedUserById: jest.fn()
 }));
@@ -72,7 +64,7 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import selectServerRoot from '../selectServer';
-import { selectServerRequest, serverRequest } from '~/actions/server';
+import { selectServerRequest } from '~/actions/server';
 import { appStart } from '~/actions/app';
 import { RootEnum } from '~/definitions';
 import { SERVER } from '~/actions/actionsTypes';
@@ -81,9 +73,7 @@ import { BASIC_AUTH_KEY, setBasicAuth } from '~/lib/methods/helpers/fetch';
 import { CURRENT_SERVER, TOKEN_KEY, getUserTokenKey } from '~/lib/constants/keys';
 import { getLoggedUserById } from '~/lib/database/services/LoggedUser';
 import { getServerInfo } from '~/lib/methods/getServerInfo';
-import { getLoginSettings } from '~/lib/methods/getSettings';
-import { connect, getLoginServices } from '~/lib/services/connect';
-import sdk from '~/lib/services/sdk';
+import { connect } from '~/lib/services/connect';
 import { getServerById } from '~/lib/database/services/Server';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
 import type { RecordingStore } from '~/lib/testUtils/sagaStore';
@@ -299,69 +289,5 @@ describe('selectServer saga — user-facing root after a failed switch', () => {
 		await flushSagaMicrotasks();
 
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_SHARE_EXTENSION);
-	});
-});
-
-describe('selectServer saga — requesting a new workspace', () => {
-	const REQUESTED_HOST = 'https://attacker.example';
-	const authorizationSentToHost: Array<string | null> = [];
-
-	beforeEach(() => {
-		authorizationSentToHost.length = 0;
-		const recordGlobalAuthorization = async () => {
-			authorizationSentToHost.push((RocketChatSettings.customHeaders as { Authorization?: string }).Authorization ?? null);
-		};
-		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '7.0.0' } as any);
-		jest
-			.mocked(getServerById)
-			.mockResolvedValue({ version: '7.0.0', update: async (apply: (r: object) => void) => apply({}) } as any);
-		jest.mocked(getLoginServices).mockImplementation(recordGlobalAuthorization);
-		jest.mocked(getLoginSettings).mockImplementation(recordGlobalAuthorization);
-	});
-
-	afterEach(() => {
-		UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${REQUESTED_HOST}`);
-		UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${OLD_SERVER}`);
-		(sdk as { host?: string }).host = undefined;
-		jest.mocked(getServerInfo).mockReset();
-		jest.mocked(getServerById).mockReset();
-		jest.mocked(getLoginServices).mockReset();
-		jest.mocked(getLoginSettings).mockReset();
-	});
-
-	it('does not send the previous workspace basic auth to the requested host', async () => {
-		setBasicAuth('old-workspace-credentials');
-
-		const { store } = setupStore();
-		store.dispatch(serverRequest(REQUESTED_HOST));
-		await flushSagaMicrotasks();
-
-		expect(authorizationSentToHost).toEqual([null, null]);
-	});
-
-	it('sends the requested host its own stored basic auth', async () => {
-		UserPreferences.setString(`${BASIC_AUTH_KEY}-${REQUESTED_HOST}`, 'requested-host-credentials');
-
-		const { store } = setupStore();
-		store.dispatch(serverRequest(REQUESTED_HOST));
-		await flushSagaMicrotasks();
-
-		expect(authorizationSentToHost).toEqual(['Basic requested-host-credentials', 'Basic requested-host-credentials']);
-	});
-
-	it('restores the active workspace basic auth when the add-workspace flow is closed', async () => {
-		UserPreferences.setString(`${BASIC_AUTH_KEY}-${OLD_SERVER}`, 'old-workspace-credentials');
-		setBasicAuth('old-workspace-credentials');
-		(sdk as { host?: string }).host = OLD_SERVER;
-
-		const { store } = setupStore();
-		store.dispatch(serverRequest(REQUESTED_HOST));
-		await flushSagaMicrotasks();
-		store.dispatch(selectServerRequest(OLD_SERVER, '7.0.0', false));
-		await flushSagaMicrotasks();
-
-		expect((RocketChatSettings.customHeaders as { Authorization?: string }).Authorization).toBe(
-			'Basic old-workspace-credentials'
-		);
 	});
 });

@@ -60,8 +60,6 @@ const getServerVersion = function (version: string | null) {
 	throw new Error('Server version not found');
 };
 
-const applyBasicAuth = (server: string) => setBasicAuth(UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`));
-
 const upsertServer = async function ({ server, serverInfo }: { server: string; serverInfo: IServerInfo }): Promise<TServerModel> {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
@@ -141,7 +139,6 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
 		if (sdk.host === server) {
-			applyBasicAuth(server);
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 			yield put(selectServerCancel());
 			return;
@@ -180,7 +177,8 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 				: { token };
 		}
 
-		applyBasicAuth(server);
+		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
+		setBasicAuth(basicAuth);
 
 		if (user) {
 			yield put(clearSettings());
@@ -233,7 +231,6 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 		if (certificate) {
 			SSLPinning?.setCertificate(certificate, server);
 		}
-		applyBasicAuth(server);
 		const serverInfo = yield* getServerInfoSaga({ server });
 		const serversDB = database.servers;
 		const serversHistoryCollection = serversDB.get('servers_history');
