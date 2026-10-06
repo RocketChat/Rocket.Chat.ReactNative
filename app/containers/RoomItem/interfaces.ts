@@ -39,23 +39,13 @@ export interface IUpdatedAtProps {
 	alert: boolean;
 }
 
-export interface IWrapperProps {
+export interface IWrapperProps extends IIconOrAvatar {
 	accessibilityLabel: string;
 	testID?: string;
 	accessibilityHint?: string;
-	avatar: string;
-	type: string;
-	userId: string | null;
-	rid: string;
 	children: ReactElement;
 	displayMode: string;
-	prid: string;
 	showLastMessage: boolean;
-	status: TUserStatus;
-	isGroupChat: boolean;
-	teamMain: boolean;
-	showAvatar: boolean;
-	sourceType: IOmnichannelSource;
 }
 
 export interface ITypeIconProps {
@@ -137,7 +127,6 @@ export interface ILastMessageProps {
 	showLastMessage: boolean;
 	username: string;
 	useRealName: boolean;
-	alert: boolean;
 }
 
 export interface ITouchableProps extends IRoomItemTouchables {
@@ -156,16 +145,7 @@ export interface IIconOrAvatar {
 	avatar: string;
 	type: string;
 	rid: string;
-	userId: string | null;
 	showAvatar: boolean;
-	displayMode: string;
-	prid: string;
-	status: TUserStatus;
-	isGroupChat: boolean;
-	teamMain: boolean;
-	showLastMessage: boolean;
-	sourceType: IOmnichannelSource;
-	abacAttributes?: ISubscription['abacAttributes'];
 }
 
 export interface IRoomItem extends ISubscription {

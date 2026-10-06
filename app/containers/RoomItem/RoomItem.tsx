@@ -62,8 +62,8 @@ const RoomItem = ({
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
 	const memoizedMessage = useMemo(
-		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, alert, type }),
-		[lastMessage, username, useRealName, showLastMessage, alert, type]
+		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, type }),
+		[lastMessage, username, useRealName, showLastMessage, type]
 	);
 	const statusAccessibilityLabel = useStatusAccessibilityLabel({
 		isGroupChat,
@@ -94,31 +94,23 @@ const RoomItem = ({
 				accessibilityHint={I18n.t('Long_press_for_more_actions')}
 				avatar={avatar}
 				type={type}
-				userId={userId}
 				rid={rid}
-				prid={prid}
-				status={status}
-				isGroupChat={isGroupChat}
-				teamMain={teamMain}
 				displayMode={displayMode}
 				showAvatar={showAvatar}
-				showLastMessage={!!showLastMessage}
-				sourceType={sourceType}>
+				showLastMessage={!!showLastMessage}>
 				{showLastMessage && displayMode === DisplayMode.Expanded ? (
 					<>
 						<View style={styles.titleContainer}>
-							{showAvatar ? (
-								<TypeIcon
-									userId={userId}
-									type={type}
-									prid={prid}
-									status={status}
-									isGroupChat={isGroupChat}
-									teamMain={teamMain}
-									sourceType={sourceType}
-									abacAttributes={abacAttributes}
-								/>
-							) : null}
+							<TypeIcon
+								userId={userId}
+								type={type}
+								prid={prid}
+								status={status}
+								isGroupChat={isGroupChat}
+								teamMain={teamMain}
+								sourceType={sourceType}
+								abacAttributes={abacAttributes}
+							/>
 							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 							{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
 							{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
@@ -129,7 +121,6 @@ const RoomItem = ({
 								type={type}
 								showLastMessage={showLastMessage}
 								username={username || ''}
-								alert={alert && !hideUnreadStatus}
 								useRealName={useRealName}
 							/>
 							<UnreadBadge
@@ -164,8 +155,6 @@ const RoomItem = ({
 								status={status}
 								isGroupChat={isGroupChat}
 								teamMain={teamMain}
-								size={22}
-								style={{ marginRight: 8 }}
 								sourceType={sourceType}
 								abacAttributes={abacAttributes}
 							/>

@@ -7,22 +7,22 @@ import { useTheme } from '~/theme';
 
 const styles = StyleSheet.create({
 	unreadNumberContainerNormal: {
-		paddingVertical: 3,
-		paddingHorizontal: 5,
+		paddingHorizontal: 4,
 		alignItems: 'center',
-		justifyContent: 'center',
-		marginLeft: 10
+		justifyContent: 'center'
 	},
 	unreadNumberContainerSmall: {
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
 	unreadText: {
-		fontSize: 13,
-		...sharedStyles.textSemibold
+		fontSize: 12,
+		lineHeight: 18,
+		...sharedStyles.textBold
 	},
 	textSmall: {
-		fontSize: 10
+		fontSize: 10,
+		...sharedStyles.textSemibold
 	}
 });
 
@@ -103,11 +103,11 @@ const UnreadBadge = memo(
 		}
 		text = text.toString();
 
-		let minWidth = 21;
+		let minWidth = 16;
 		if (small) {
 			minWidth = 11 + text.length * 5;
 		}
-		const borderRadius = 10.5 * fontScale;
+		const borderRadius = 10 * fontScale;
 		const testId = getTestId(userMentions, groupMentions, text);
 
 		return (

@@ -27,10 +27,13 @@ export default StyleSheet.create({
 	row: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'flex-start'
+		alignItems: 'flex-start',
+		gap: 4
 	},
 	wrapUpdatedAndBadge: {
-		alignItems: 'flex-end'
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 8
 	},
 	titleContainer: {
 		width: '100%',

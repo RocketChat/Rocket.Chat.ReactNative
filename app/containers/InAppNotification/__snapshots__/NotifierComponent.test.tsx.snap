@@ -17,7 +17,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
       {
         "backgroundColor": "#FFFFFF",
         "borderColor": "#CBCED1",
-        "height": 75,
+        "height": 76,
         "marginTop": 0,
       },
     ]
@@ -379,7 +379,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
       {
         "backgroundColor": "#FFFFFF",
         "borderColor": "#CBCED1",
-        "height": 75,
+        "height": 76,
         "marginTop": 0,
       },
     ]
@@ -741,7 +741,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
       {
         "backgroundColor": "#262931",
         "borderColor": "#333842",
-        "height": 75,
+        "height": 76,
         "marginTop": 0,
       },
     ]
@@ -1103,7 +1103,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
       {
         "backgroundColor": "#262931",
         "borderColor": "#333842",
-        "height": 75,
+        "height": 76,
         "marginTop": 0,
       },
     ]

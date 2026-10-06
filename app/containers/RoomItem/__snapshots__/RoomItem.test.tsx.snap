@@ -120,7 +120,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -211,19 +211,17 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -274,7 +272,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -309,7 +309,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "textAlign": "left",
                               },
                               {
-                                "color": "#1D74F5",
+                                "color": "#1F2329",
                               },
                             ],
                           ]
@@ -445,7 +445,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -536,19 +536,17 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -599,7 +597,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -634,7 +634,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "textAlign": "left",
                               },
                               {
-                                "color": "#1D74F5",
+                                "color": "#1F2329",
                               },
                             ],
                           ]
@@ -648,14 +648,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             {
                               "alignItems": "center",
                               "justifyContent": "center",
-                              "marginLeft": 10,
-                              "paddingHorizontal": 5,
-                              "paddingVertical": 3,
+                              "paddingHorizontal": 4,
                             },
                             {
-                              "backgroundColor": "#9EA2A8",
-                              "borderRadius": 10.5,
-                              "minWidth": 21,
+                              "backgroundColor": "#6C727A",
+                              "borderRadius": 10,
+                              "minWidth": 16,
                             },
                             undefined,
                           ]
@@ -669,11 +667,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               {
                                 "backgroundColor": "transparent",
                                 "fontFamily": "Inter",
-                                "fontSize": 13,
+                                "fontSize": 12,
                                 "fontVariant": [
                                   "tabular-nums",
                                 ],
-                                "fontWeight": "600",
+                                "fontWeight": "700",
+                                "lineHeight": 18,
                                 "textAlign": "left",
                               },
                               undefined,
@@ -814,7 +813,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -905,19 +904,17 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -968,7 +965,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -1003,7 +1002,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "textAlign": "left",
                               },
                               {
-                                "color": "#1D74F5",
+                                "color": "#1F2329",
                               },
                             ],
                           ]
@@ -1017,14 +1016,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             {
                               "alignItems": "center",
                               "justifyContent": "center",
-                              "marginLeft": 10,
-                              "paddingHorizontal": 5,
-                              "paddingVertical": 3,
+                              "paddingHorizontal": 4,
                             },
                             {
-                              "backgroundColor": "#9EA2A8",
-                              "borderRadius": 10.5,
-                              "minWidth": 21,
+                              "backgroundColor": "#6C727A",
+                              "borderRadius": 10,
+                              "minWidth": 16,
                             },
                             undefined,
                           ]
@@ -1038,11 +1035,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               {
                                 "backgroundColor": "transparent",
                                 "fontFamily": "Inter",
-                                "fontSize": 13,
+                                "fontSize": 12,
                                 "fontVariant": [
                                   "tabular-nums",
                                 ],
-                                "fontWeight": "600",
+                                "fontWeight": "700",
+                                "lineHeight": 18,
                                 "textAlign": "left",
                               },
                               undefined,
@@ -1183,7 +1181,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -1274,19 +1272,17 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -1337,7 +1333,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -1372,7 +1370,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "textAlign": "left",
                               },
                               {
-                                "color": "#1D74F5",
+                                "color": "#1F2329",
                               },
                             ],
                           ]
@@ -1386,14 +1384,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             {
                               "alignItems": "center",
                               "justifyContent": "center",
-                              "marginLeft": 10,
-                              "paddingHorizontal": 5,
-                              "paddingVertical": 3,
+                              "paddingHorizontal": 4,
                             },
                             {
                               "backgroundColor": "#F5455C",
-                              "borderRadius": 10.5,
-                              "minWidth": 21,
+                              "borderRadius": 10,
+                              "minWidth": 16,
                             },
                             undefined,
                           ]
@@ -1407,11 +1403,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               {
                                 "backgroundColor": "transparent",
                                 "fontFamily": "Inter",
-                                "fontSize": 13,
+                                "fontSize": 12,
                                 "fontVariant": [
                                   "tabular-nums",
                                 ],
-                                "fontWeight": "600",
+                                "fontWeight": "700",
+                                "lineHeight": 18,
                                 "textAlign": "left",
                               },
                               undefined,
@@ -1552,7 +1549,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -1643,19 +1640,17 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -1706,7 +1701,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -1741,7 +1738,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "textAlign": "left",
                               },
                               {
-                                "color": "#1D74F5",
+                                "color": "#1F2329",
                               },
                             ],
                           ]
@@ -1755,14 +1752,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             {
                               "alignItems": "center",
                               "justifyContent": "center",
-                              "marginLeft": 10,
-                              "paddingHorizontal": 5,
-                              "paddingVertical": 3,
+                              "paddingHorizontal": 4,
                             },
                             {
                               "backgroundColor": "#F38C39",
-                              "borderRadius": 10.5,
-                              "minWidth": 21,
+                              "borderRadius": 10,
+                              "minWidth": 16,
                             },
                             undefined,
                           ]
@@ -1776,11 +1771,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               {
                                 "backgroundColor": "transparent",
                                 "fontFamily": "Inter",
-                                "fontSize": 13,
+                                "fontSize": 12,
                                 "fontVariant": [
                                   "tabular-nums",
                                 ],
-                                "fontWeight": "600",
+                                "fontWeight": "700",
+                                "lineHeight": 18,
                                 "textAlign": "left",
                               },
                               undefined,
@@ -1921,7 +1917,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -2012,19 +2008,17 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -2075,7 +2069,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -2110,7 +2106,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "textAlign": "left",
                               },
                               {
-                                "color": "#1D74F5",
+                                "color": "#1F2329",
                               },
                             ],
                           ]
@@ -2124,14 +2120,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             {
                               "alignItems": "center",
                               "justifyContent": "center",
-                              "marginLeft": 10,
-                              "paddingHorizontal": 5,
-                              "paddingVertical": 3,
+                              "paddingHorizontal": 4,
                             },
                             {
                               "backgroundColor": "#095AD2",
-                              "borderRadius": 10.5,
-                              "minWidth": 21,
+                              "borderRadius": 10,
+                              "minWidth": 16,
                             },
                             undefined,
                           ]
@@ -2145,11 +2139,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               {
                                 "backgroundColor": "transparent",
                                 "fontFamily": "Inter",
-                                "fontSize": 13,
+                                "fontSize": 12,
                                 "fontVariant": [
                                   "tabular-nums",
                                 ],
-                                "fontWeight": "600",
+                                "fontWeight": "700",
+                                "lineHeight": 18,
                                 "textAlign": "left",
                               },
                               undefined,
@@ -2290,7 +2285,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -2381,19 +2376,17 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -2444,7 +2437,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -2479,7 +2474,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "textAlign": "left",
                               },
                               {
-                                "color": "#1D74F5",
+                                "color": "#1F2329",
                               },
                             ],
                           ]
@@ -2493,14 +2488,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             {
                               "alignItems": "center",
                               "justifyContent": "center",
-                              "marginLeft": 10,
-                              "paddingHorizontal": 5,
-                              "paddingVertical": 3,
+                              "paddingHorizontal": 4,
                             },
                             {
                               "backgroundColor": "#F5455C",
-                              "borderRadius": 10.5,
-                              "minWidth": 21,
+                              "borderRadius": 10,
+                              "minWidth": 16,
                             },
                             undefined,
                           ]
@@ -2514,11 +2507,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               {
                                 "backgroundColor": "transparent",
                                 "fontFamily": "Inter",
-                                "fontSize": 13,
+                                "fontSize": 12,
                                 "fontVariant": [
                                   "tabular-nums",
                                 ],
-                                "fontWeight": "600",
+                                "fontWeight": "700",
+                                "lineHeight": 18,
                                 "textAlign": "left",
                               },
                               undefined,
@@ -2659,7 +2653,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -2750,19 +2744,17 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -2813,7 +2805,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -2848,7 +2842,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "textAlign": "left",
                               },
                               {
-                                "color": "#1D74F5",
+                                "color": "#1F2329",
                               },
                             ],
                           ]
@@ -2862,14 +2856,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             {
                               "alignItems": "center",
                               "justifyContent": "center",
-                              "marginLeft": 10,
-                              "paddingHorizontal": 5,
-                              "paddingVertical": 3,
+                              "paddingHorizontal": 4,
                             },
                             {
                               "backgroundColor": "#F38C39",
-                              "borderRadius": 10.5,
-                              "minWidth": 21,
+                              "borderRadius": 10,
+                              "minWidth": 16,
                             },
                             undefined,
                           ]
@@ -2883,11 +2875,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               {
                                 "backgroundColor": "transparent",
                                 "fontFamily": "Inter",
-                                "fontSize": 13,
+                                "fontSize": 12,
                                 "fontVariant": [
                                   "tabular-nums",
                                 ],
-                                "fontWeight": "600",
+                                "fontWeight": "700",
+                                "lineHeight": 18,
                                 "textAlign": "left",
                               },
                               undefined,
@@ -3028,7 +3021,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -3119,19 +3112,17 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -3182,7 +3173,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -3217,7 +3210,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "textAlign": "left",
                               },
                               {
-                                "color": "#1D74F5",
+                                "color": "#1F2329",
                               },
                             ],
                           ]
@@ -3231,14 +3224,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             {
                               "alignItems": "center",
                               "justifyContent": "center",
-                              "marginLeft": 10,
-                              "paddingHorizontal": 5,
-                              "paddingVertical": 3,
+                              "paddingHorizontal": 4,
                             },
                             {
                               "backgroundColor": "#F5455C",
-                              "borderRadius": 10.5,
-                              "minWidth": 21,
+                              "borderRadius": 10,
+                              "minWidth": 16,
                             },
                             undefined,
                           ]
@@ -3252,11 +3243,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               {
                                 "backgroundColor": "transparent",
                                 "fontFamily": "Inter",
-                                "fontSize": 13,
+                                "fontSize": 12,
                                 "fontVariant": [
                                   "tabular-nums",
                                 ],
-                                "fontWeight": "600",
+                                "fontWeight": "700",
+                                "lineHeight": 18,
                                 "textAlign": "left",
                               },
                               undefined,
@@ -3397,7 +3389,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -3488,19 +3480,17 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -3551,7 +3541,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -3586,7 +3578,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "textAlign": "left",
                               },
                               {
-                                "color": "#1D74F5",
+                                "color": "#1F2329",
                               },
                             ],
                           ]
@@ -3600,14 +3592,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             {
                               "alignItems": "center",
                               "justifyContent": "center",
-                              "marginLeft": 10,
-                              "paddingHorizontal": 5,
-                              "paddingVertical": 3,
+                              "paddingHorizontal": 4,
                             },
                             {
                               "backgroundColor": "#F38C39",
-                              "borderRadius": 10.5,
-                              "minWidth": 21,
+                              "borderRadius": 10,
+                              "minWidth": 16,
                             },
                             undefined,
                           ]
@@ -3621,11 +3611,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               {
                                 "backgroundColor": "transparent",
                                 "fontFamily": "Inter",
-                                "fontSize": 13,
+                                "fontSize": 12,
                                 "fontVariant": [
                                   "tabular-nums",
                                 ],
-                                "fontWeight": "600",
+                                "fontWeight": "700",
+                                "lineHeight": 18,
                                 "textAlign": "left",
                               },
                               undefined,
@@ -3766,7 +3757,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -3857,19 +3848,17 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -3920,7 +3909,9 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -3955,7 +3946,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "textAlign": "left",
                               },
                               {
-                                "color": "#1D74F5",
+                                "color": "#1F2329",
                               },
                             ],
                           ]
@@ -3969,14 +3960,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             {
                               "alignItems": "center",
                               "justifyContent": "center",
-                              "marginLeft": 10,
-                              "paddingHorizontal": 5,
-                              "paddingVertical": 3,
+                              "paddingHorizontal": 4,
                             },
                             {
                               "backgroundColor": "#095AD2",
-                              "borderRadius": 10.5,
-                              "minWidth": 21,
+                              "borderRadius": 10,
+                              "minWidth": 16,
                             },
                             undefined,
                           ]
@@ -3990,11 +3979,12 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               {
                                 "backgroundColor": "transparent",
                                 "fontFamily": "Inter",
-                                "fontSize": 13,
+                                "fontSize": 12,
                                 "fontVariant": [
                                   "tabular-nums",
                                 ],
-                                "fontWeight": "600",
+                                "fontWeight": "700",
+                                "lineHeight": 18,
                                 "textAlign": "left",
                               },
                               undefined,
@@ -4139,7 +4129,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                   },
                   false,
                   {
-                    "height": 75,
+                    "height": 76,
                   },
                 ]
               }
@@ -4230,19 +4220,17 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": 22,
+                          "fontSize": 16,
                         },
                         [
                           {
-                            "lineHeight": 22,
+                            "lineHeight": 16,
                           },
                           [
                             {
                               "marginRight": 4,
                             },
-                            {
-                              "marginRight": 8,
-                            },
+                            undefined,
                           ],
                         ],
                         {
@@ -4285,7 +4273,9 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                   <View
                     style={
                       {
-                        "alignItems": "flex-end",
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "gap": 8,
                       }
                     }
                   >
@@ -4447,7 +4437,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 60,
+                      "height": 52,
                     },
                   ]
                 }
@@ -4538,19 +4528,17 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -4601,7 +4589,9 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -4636,7 +4626,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                                 "textAlign": "left",
                               },
                               {
-                                "color": "#1D74F5",
+                                "color": "#1F2329",
                               },
                             ],
                           ]
@@ -4650,14 +4640,12 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                             {
                               "alignItems": "center",
                               "justifyContent": "center",
-                              "marginLeft": 10,
-                              "paddingHorizontal": 5,
-                              "paddingVertical": 3,
+                              "paddingHorizontal": 4,
                             },
                             {
                               "backgroundColor": "#095AD2",
-                              "borderRadius": 10.5,
-                              "minWidth": 21,
+                              "borderRadius": 10,
+                              "minWidth": 16,
                             },
                             undefined,
                           ]
@@ -4671,11 +4659,12 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                               {
                                 "backgroundColor": "transparent",
                                 "fontFamily": "Inter",
-                                "fontSize": 13,
+                                "fontSize": 12,
                                 "fontVariant": [
                                   "tabular-nums",
                                 ],
-                                "fontWeight": "600",
+                                "fontWeight": "700",
+                                "lineHeight": 18,
                                 "textAlign": "left",
                               },
                               undefined,
@@ -4816,7 +4805,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 60,
+                      "height": 52,
                     },
                   ]
                 }
@@ -4907,19 +4896,17 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -4970,7 +4957,9 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -5005,7 +4994,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                                 "textAlign": "left",
                               },
                               {
-                                "color": "#1D74F5",
+                                "color": "#1F2329",
                               },
                             ],
                           ]
@@ -5019,14 +5008,12 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                             {
                               "alignItems": "center",
                               "justifyContent": "center",
-                              "marginLeft": 10,
-                              "paddingHorizontal": 5,
-                              "paddingVertical": 3,
+                              "paddingHorizontal": 4,
                             },
                             {
-                              "backgroundColor": "#9EA2A8",
-                              "borderRadius": 10.5,
-                              "minWidth": 21,
+                              "backgroundColor": "#6C727A",
+                              "borderRadius": 10,
+                              "minWidth": 16,
                             },
                             undefined,
                           ]
@@ -5040,11 +5027,12 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                               {
                                 "backgroundColor": "transparent",
                                 "fontFamily": "Inter",
-                                "fontSize": 13,
+                                "fontSize": 12,
                                 "fontVariant": [
                                   "tabular-nums",
                                 ],
-                                "fontWeight": "600",
+                                "fontWeight": "700",
+                                "lineHeight": 18,
                                 "textAlign": "left",
                               },
                               undefined,
@@ -5185,7 +5173,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 60,
+                      "height": 52,
                     },
                   ]
                 }
@@ -5276,19 +5264,17 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -5370,7 +5356,9 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -5533,7 +5521,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                     },
                     false,
                     {
-                      "height": 60,
+                      "height": 52,
                     },
                   ]
                 }
@@ -5567,19 +5555,17 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -5630,7 +5616,9 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -5665,7 +5653,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                                 "textAlign": "left",
                               },
                               {
-                                "color": "#1D74F5",
+                                "color": "#1F2329",
                               },
                             ],
                           ]
@@ -5679,14 +5667,12 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                             {
                               "alignItems": "center",
                               "justifyContent": "center",
-                              "marginLeft": 10,
-                              "paddingHorizontal": 5,
-                              "paddingVertical": 3,
+                              "paddingHorizontal": 4,
                             },
                             {
                               "backgroundColor": "#095AD2",
-                              "borderRadius": 10.5,
-                              "minWidth": 21,
+                              "borderRadius": 10,
+                              "minWidth": 16,
                             },
                             undefined,
                           ]
@@ -5700,11 +5686,12 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                               {
                                 "backgroundColor": "transparent",
                                 "fontFamily": "Inter",
-                                "fontSize": 13,
+                                "fontSize": 12,
                                 "fontVariant": [
                                   "tabular-nums",
                                 ],
-                                "fontWeight": "600",
+                                "fontWeight": "700",
+                                "lineHeight": 18,
                                 "textAlign": "left",
                               },
                               undefined,
@@ -5845,7 +5832,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                     },
                     false,
                     {
-                      "height": 60,
+                      "height": 52,
                     },
                   ]
                 }
@@ -5879,19 +5866,17 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -5934,7 +5919,9 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -6092,7 +6079,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                     },
                     false,
                     {
-                      "height": 60,
+                      "height": 52,
                     },
                   ]
                 }
@@ -6126,19 +6113,17 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -6220,7 +6205,9 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -6386,42 +6373,11 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                       "paddingTop": 8,
                     },
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#1F2329",
-                        "fontSize": 24,
-                      },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        [
-                          {
-                            "marginRight": 4,
-                          },
-                          undefined,
-                        ],
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
-                >
-                  
-                </Text>
                 <View
                   style={
                     {
@@ -6439,6 +6395,37 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                       }
                     }
                   >
+                    <Text
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#1F2329",
+                            "fontSize": 16,
+                          },
+                          [
+                            {
+                              "lineHeight": 16,
+                            },
+                            [
+                              {
+                                "marginRight": 4,
+                              },
+                              undefined,
+                            ],
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                    >
+                      
+                    </Text>
                     <Text
                       ellipsizeMode="tail"
                       numberOfLines={1}
@@ -6504,7 +6491,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                               "textAlign": "left",
                             },
                             {
-                              "color": "#1D74F5",
+                              "color": "#1F2329",
                             },
                           ],
                         ]
@@ -6519,6 +6506,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                         "alignItems": "flex-start",
                         "flex": 1,
                         "flexDirection": "row",
+                        "gap": 4,
                       }
                     }
                     testID="room-item-last-message-container"
@@ -6556,7 +6544,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                             "textAlign": "left",
                           },
                           {
-                            "color": "#2F343D",
+                            "color": "#6C727A",
                           },
                           {},
                         ]
@@ -6571,14 +6559,12 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                           {
                             "alignItems": "center",
                             "justifyContent": "center",
-                            "marginLeft": 10,
-                            "paddingHorizontal": 5,
-                            "paddingVertical": 3,
+                            "paddingHorizontal": 4,
                           },
                           {
                             "backgroundColor": "#095AD2",
-                            "borderRadius": 10.5,
-                            "minWidth": 21,
+                            "borderRadius": 10,
+                            "minWidth": 16,
                           },
                           undefined,
                         ]
@@ -6592,11 +6578,12 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                             {
                               "backgroundColor": "transparent",
                               "fontFamily": "Inter",
-                              "fontSize": 13,
+                              "fontSize": 12,
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "600",
+                              "fontWeight": "700",
+                              "lineHeight": 18,
                               "textAlign": "left",
                             },
                             undefined,
@@ -6739,42 +6726,11 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                       "paddingTop": 8,
                     },
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#1F2329",
-                        "fontSize": 24,
-                      },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        [
-                          {
-                            "marginRight": 4,
-                          },
-                          undefined,
-                        ],
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
-                >
-                  
-                </Text>
                 <View
                   style={
                     {
@@ -6792,6 +6748,37 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                       }
                     }
                   >
+                    <Text
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#1F2329",
+                            "fontSize": 16,
+                          },
+                          [
+                            {
+                              "lineHeight": 16,
+                            },
+                            [
+                              {
+                                "marginRight": 4,
+                              },
+                              undefined,
+                            ],
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                    >
+                      
+                    </Text>
                     <Text
                       ellipsizeMode="tail"
                       numberOfLines={1}
@@ -6857,7 +6844,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                               "textAlign": "left",
                             },
                             {
-                              "color": "#1D74F5",
+                              "color": "#1F2329",
                             },
                           ],
                         ]
@@ -6872,6 +6859,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                         "alignItems": "flex-start",
                         "flex": 1,
                         "flexDirection": "row",
+                        "gap": 4,
                       }
                     }
                     testID="room-item-last-message-container"
@@ -6909,7 +6897,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                             "textAlign": "left",
                           },
                           {
-                            "color": "#2F343D",
+                            "color": "#6C727A",
                           },
                           {},
                         ]
@@ -6924,14 +6912,12 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                           {
                             "alignItems": "center",
                             "justifyContent": "center",
-                            "marginLeft": 10,
-                            "paddingHorizontal": 5,
-                            "paddingVertical": 3,
+                            "paddingHorizontal": 4,
                           },
                           {
                             "backgroundColor": "#095AD2",
-                            "borderRadius": 10.5,
-                            "minWidth": 21,
+                            "borderRadius": 10,
+                            "minWidth": 16,
                           },
                           undefined,
                         ]
@@ -6945,11 +6931,12 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                             {
                               "backgroundColor": "transparent",
                               "fontFamily": "Inter",
-                              "fontSize": 13,
+                              "fontSize": 12,
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "600",
+                              "fontWeight": "700",
+                              "lineHeight": 18,
                               "textAlign": "left",
                             },
                             undefined,
@@ -7092,42 +7079,11 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                       "paddingTop": 8,
                     },
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#1F2329",
-                        "fontSize": 24,
-                      },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        [
-                          {
-                            "marginRight": 4,
-                          },
-                          undefined,
-                        ],
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
-                >
-                  
-                </Text>
                 <View
                   style={
                     {
@@ -7145,6 +7101,37 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                       }
                     }
                   >
+                    <Text
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#1F2329",
+                            "fontSize": 16,
+                          },
+                          [
+                            {
+                              "lineHeight": 16,
+                            },
+                            [
+                              {
+                                "marginRight": 4,
+                              },
+                              undefined,
+                            ],
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                    >
+                      
+                    </Text>
                     <Text
                       ellipsizeMode="tail"
                       numberOfLines={1}
@@ -7210,7 +7197,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                               "textAlign": "left",
                             },
                             {
-                              "color": "#1D74F5",
+                              "color": "#1F2329",
                             },
                           ],
                         ]
@@ -7225,6 +7212,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                         "alignItems": "flex-start",
                         "flex": 1,
                         "flexDirection": "row",
+                        "gap": 4,
                       }
                     }
                     testID="room-item-last-message-container"
@@ -7262,7 +7250,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                             "textAlign": "left",
                           },
                           {
-                            "color": "#2F343D",
+                            "color": "#6C727A",
                           },
                           {},
                         ]
@@ -7403,7 +7391,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -7494,19 +7482,17 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -7577,7 +7563,9 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -7735,7 +7723,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 60,
+                      "height": 52,
                     },
                   ]
                 }
@@ -7826,19 +7814,17 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -7909,7 +7895,9 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -8075,7 +8063,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       "paddingTop": 8,
                     },
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -8244,6 +8232,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                         "alignItems": "flex-start",
                         "flex": 1,
                         "flexDirection": "row",
+                        "gap": 4,
                       }
                     }
                     testID="room-item-last-message-container"
@@ -8420,7 +8409,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       "paddingTop": 8,
                     },
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -8589,6 +8578,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                         "alignItems": "flex-start",
                         "flex": 1,
                         "flexDirection": "row",
+                        "gap": 4,
                       }
                     }
                     testID="room-item-last-message-container"
@@ -8765,7 +8755,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       "paddingTop": 8,
                     },
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -8934,6 +8924,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                         "alignItems": "flex-start",
                         "flex": 1,
                         "flexDirection": "row",
+                        "gap": 4,
                       }
                     }
                     testID="room-item-last-message-container"
@@ -9110,7 +9101,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       "paddingTop": 8,
                     },
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -9279,6 +9270,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                         "alignItems": "flex-start",
                         "flex": 1,
                         "flexDirection": "row",
+                        "gap": 4,
                       }
                     }
                     testID="room-item-last-message-container"
@@ -9455,7 +9447,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       "paddingTop": 8,
                     },
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -9630,7 +9622,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                               "textAlign": "left",
                             },
                             {
-                              "color": "#1D74F5",
+                              "color": "#1F2329",
                             },
                           ],
                         ]
@@ -9645,6 +9637,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                         "alignItems": "flex-start",
                         "flex": 1,
                         "flexDirection": "row",
+                        "gap": 4,
                       }
                     }
                     testID="room-item-last-message-container"
@@ -9682,7 +9675,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "textAlign": "left",
                           },
                           {
-                            "color": "#2F343D",
+                            "color": "#6C727A",
                           },
                           {},
                         ]
@@ -9697,14 +9690,12 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                           {
                             "alignItems": "center",
                             "justifyContent": "center",
-                            "marginLeft": 10,
-                            "paddingHorizontal": 5,
-                            "paddingVertical": 3,
+                            "paddingHorizontal": 4,
                           },
                           {
-                            "backgroundColor": "#9EA2A8",
-                            "borderRadius": 10.5,
-                            "minWidth": 21,
+                            "backgroundColor": "#6C727A",
+                            "borderRadius": 10,
+                            "minWidth": 16,
                           },
                           undefined,
                         ]
@@ -9718,11 +9709,12 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             {
                               "backgroundColor": "transparent",
                               "fontFamily": "Inter",
-                              "fontSize": 13,
+                              "fontSize": 12,
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "600",
+                              "fontWeight": "700",
+                              "lineHeight": 18,
                               "textAlign": "left",
                             },
                             undefined,
@@ -9865,7 +9857,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       "paddingTop": 8,
                     },
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -10040,7 +10032,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                               "textAlign": "left",
                             },
                             {
-                              "color": "#1D74F5",
+                              "color": "#1F2329",
                             },
                           ],
                         ]
@@ -10055,6 +10047,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                         "alignItems": "flex-start",
                         "flex": 1,
                         "flexDirection": "row",
+                        "gap": 4,
                       }
                     }
                     testID="room-item-last-message-container"
@@ -10092,7 +10085,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "textAlign": "left",
                           },
                           {
-                            "color": "#2F343D",
+                            "color": "#6C727A",
                           },
                           {},
                         ]
@@ -10107,14 +10100,12 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                           {
                             "alignItems": "center",
                             "justifyContent": "center",
-                            "marginLeft": 10,
-                            "paddingHorizontal": 5,
-                            "paddingVertical": 3,
+                            "paddingHorizontal": 4,
                           },
                           {
-                            "backgroundColor": "#9EA2A8",
-                            "borderRadius": 10.5,
-                            "minWidth": 21,
+                            "backgroundColor": "#6C727A",
+                            "borderRadius": 10,
+                            "minWidth": 16,
                           },
                           undefined,
                         ]
@@ -10128,11 +10119,12 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             {
                               "backgroundColor": "transparent",
                               "fontFamily": "Inter",
-                              "fontSize": 13,
+                              "fontSize": 12,
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "600",
+                              "fontWeight": "700",
+                              "lineHeight": 18,
                               "textAlign": "left",
                             },
                             undefined,
@@ -10275,7 +10267,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       "paddingTop": 8,
                     },
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -10450,7 +10442,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                               "textAlign": "left",
                             },
                             {
-                              "color": "#1D74F5",
+                              "color": "#1F2329",
                             },
                           ],
                         ]
@@ -10465,6 +10457,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                         "alignItems": "flex-start",
                         "flex": 1,
                         "flexDirection": "row",
+                        "gap": 4,
                       }
                     }
                     testID="room-item-last-message-container"
@@ -10502,7 +10495,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "textAlign": "left",
                           },
                           {
-                            "color": "#2F343D",
+                            "color": "#6C727A",
                           },
                           {},
                         ]
@@ -10517,14 +10510,12 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                           {
                             "alignItems": "center",
                             "justifyContent": "center",
-                            "marginLeft": 10,
-                            "paddingHorizontal": 5,
-                            "paddingVertical": 3,
+                            "paddingHorizontal": 4,
                           },
                           {
                             "backgroundColor": "#095AD2",
-                            "borderRadius": 10.5,
-                            "minWidth": 21,
+                            "borderRadius": 10,
+                            "minWidth": 16,
                           },
                           undefined,
                         ]
@@ -10538,11 +10529,12 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             {
                               "backgroundColor": "transparent",
                               "fontFamily": "Inter",
-                              "fontSize": 13,
+                              "fontSize": 12,
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "600",
+                              "fontWeight": "700",
+                              "lineHeight": 18,
                               "textAlign": "left",
                             },
                             undefined,
@@ -10687,7 +10679,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -10778,19 +10770,17 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                         [
                           {
                             "color": "#158D65",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -10833,7 +10823,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -10991,7 +10983,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -11082,19 +11074,17 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                         [
                           {
                             "color": "#AC892F",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -11137,7 +11127,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -11295,7 +11287,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -11386,19 +11378,17 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                         [
                           {
                             "color": "#2F343D",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -11441,7 +11431,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -11599,7 +11591,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -11690,19 +11682,17 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                         [
                           {
                             "color": "#6C727A",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -11745,7 +11735,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -11903,7 +11895,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -11994,19 +11986,17 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                         [
                           {
                             "color": "#158D65",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -12049,7 +12039,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -12207,7 +12199,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -12298,19 +12290,17 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                         [
                           {
                             "color": "#6C727A",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -12353,7 +12343,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -12511,7 +12503,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -12602,19 +12594,17 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                         [
                           {
                             "color": "#158D65",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -12657,7 +12647,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -12815,7 +12807,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -12906,19 +12898,17 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                         [
                           {
                             "color": "#6C727A",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -12961,7 +12951,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -13119,7 +13111,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -13210,19 +13202,17 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                         [
                           {
                             "color": "#158D65",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -13265,7 +13255,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -13423,7 +13415,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -13514,19 +13506,17 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                         [
                           {
                             "color": "#6C727A",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -13569,7 +13559,9 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -13732,7 +13724,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -13823,19 +13815,17 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -13917,7 +13907,9 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -14078,7 +14070,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       "paddingTop": 8,
                     },
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -14287,6 +14279,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                         "alignItems": "flex-start",
                         "flex": 1,
                         "flexDirection": "row",
+                        "gap": 4,
                       }
                     }
                     testID="room-item-last-message-container"
@@ -14460,7 +14453,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -14551,19 +14544,17 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -14645,7 +14636,9 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -14806,7 +14799,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       "paddingTop": 8,
                     },
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -15015,6 +15008,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                         "alignItems": "flex-start",
                         "flex": 1,
                         "flexDirection": "row",
+                        "gap": 4,
                       }
                     }
                     testID="room-item-last-message-container"
@@ -15192,7 +15186,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                   },
                   false,
                   {
-                    "height": 75,
+                    "height": 76,
                   },
                 ]
               }
@@ -15283,19 +15277,17 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": 22,
+                          "fontSize": 16,
                         },
                         [
                           {
-                            "lineHeight": 22,
+                            "lineHeight": 16,
                           },
                           [
                             {
                               "marginRight": 4,
                             },
-                            {
-                              "marginRight": 8,
-                            },
+                            undefined,
                           ],
                         ],
                         {
@@ -15338,7 +15330,9 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                   <View
                     style={
                       {
-                        "alignItems": "flex-end",
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "gap": 8,
                       }
                     }
                   >
@@ -15500,7 +15494,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -15591,26 +15585,24 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                         [
                           {
                             "color": "#6C727A",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
-                                "height": 22,
+                                "height": 16,
                                 "textAlign": "center",
                                 "textAlignVertical": "center",
-                                "width": 22,
+                                "width": 16,
                               },
                               [
                                 {
                                   "marginRight": 4,
                                 },
-                                {
-                                  "marginRight": 8,
-                                },
+                                undefined,
                               ],
                             ],
                           ],
@@ -15654,7 +15646,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -15812,7 +15806,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -15903,19 +15897,17 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -15958,7 +15950,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -16116,7 +16110,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -16207,19 +16201,17 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -16262,7 +16254,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -16420,7 +16414,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -16511,19 +16505,17 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                         [
                           {
                             "color": "#6C727A",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -16566,7 +16558,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -16724,7 +16718,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -16815,19 +16809,17 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -16870,7 +16862,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -17028,7 +17022,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -17119,19 +17113,17 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -17174,7 +17166,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -17332,7 +17326,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -17423,19 +17417,17 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -17478,7 +17470,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -17636,7 +17630,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -17727,19 +17721,17 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -17782,7 +17774,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -17940,7 +17934,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -18031,19 +18025,17 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                         [
                           {
                             "color": "#1F2329",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
                                 "marginRight": 4,
                               },
-                              {
-                                "marginRight": 8,
-                              },
+                              undefined,
                             ],
                           ],
                           {
@@ -18086,7 +18078,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -18249,7 +18243,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -18340,26 +18334,24 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                         [
                           {
                             "color": "#6C727A",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
-                                "height": 22,
+                                "height": 16,
                                 "textAlign": "center",
                                 "textAlignVertical": "center",
-                                "width": 22,
+                                "width": 16,
                               },
                               [
                                 {
                                   "marginRight": 4,
                                 },
-                                {
-                                  "marginRight": 8,
-                                },
+                                undefined,
                               ],
                             ],
                           ],
@@ -18403,7 +18395,9 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
@@ -18561,7 +18555,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                     },
                     false,
                     {
-                      "height": 75,
+                      "height": 76,
                     },
                   ]
                 }
@@ -18652,26 +18646,24 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                         [
                           {
                             "color": "#6C727A",
-                            "fontSize": 22,
+                            "fontSize": 16,
                           },
                           [
                             {
-                              "lineHeight": 22,
+                              "lineHeight": 16,
                             },
                             [
                               {
-                                "height": 22,
+                                "height": 16,
                                 "textAlign": "center",
                                 "textAlignVertical": "center",
-                                "width": 22,
+                                "width": 16,
                               },
                               [
                                 {
                                   "marginRight": 4,
                                 },
-                                {
-                                  "marginRight": 8,
-                                },
+                                undefined,
                               ],
                             ],
                           ],
@@ -18715,7 +18707,9 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                     <View
                       style={
                         {
-                          "alignItems": "flex-end",
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "gap": 8,
                         }
                       }
                     >
