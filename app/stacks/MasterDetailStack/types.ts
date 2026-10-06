@@ -173,6 +173,7 @@ export type ModalStackParamList = {
 	ProfileView: undefined;
 	ChangePasswordView: undefined;
 	DisplayPrefsView: undefined;
+	CategoryOrderView: undefined;
 	AdminPanelView: undefined;
 	NewMessageView: undefined;
 	CreateChannelView: {

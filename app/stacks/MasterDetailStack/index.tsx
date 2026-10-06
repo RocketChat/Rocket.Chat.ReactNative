@@ -46,6 +46,7 @@ import ReadReceiptsView from '~/views/ReadReceiptView';
 import ProfileView from '~/views/ProfileView';
 import ChangePasswordView from '~/views/ChangePasswordView';
 import DisplayPrefsView from '~/views/DisplayPrefsView';
+import CategoryOrderView from '~/views/CategoryOrderView';
 import SettingsView from '~/views/SettingsView';
 import LanguageView from '~/views/LanguageView';
 import ThemeView from '~/views/ThemeView';
@@ -249,6 +250,7 @@ const ModalStack = createNativeStackNavigator({
 		ProfileView: ProfileViewScreen,
 		ChangePasswordView: ChangePasswordViewScreen,
 		DisplayPrefsView,
+		CategoryOrderView,
 		AdminPanelView,
 		NewMessageView,
 		CreateChannelView,

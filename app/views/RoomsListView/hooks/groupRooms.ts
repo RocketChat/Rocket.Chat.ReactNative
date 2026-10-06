@@ -5,6 +5,7 @@ import {
 	DIRECT_MESSAGES_GROUP,
 	DISCUSSIONS_GROUP,
 	FAVORITES_GROUP,
+	isVisibleGroup,
 	TEAMS_GROUP
 } from './sidebarGroupOrder';
 
@@ -89,22 +90,7 @@ const groupRooms = (
 	chats: TSubscriptionModel[],
 	{ groupOrder, customCategoryNames, showFavorites, groupByType, hasChatsHeader, collapsedGroups }: GroupRoomsOptions
 ) => {
-	const isVisibleGroup = (key: string) => {
-		switch (key) {
-			case FAVORITES_GROUP:
-				return showFavorites;
-			case TEAMS_GROUP:
-			case DISCUSSIONS_GROUP:
-			case CHANNELS_GROUP:
-			case DIRECT_MESSAGES_GROUP:
-				return groupByType;
-			case CONVERSATIONS_GROUP:
-				return !groupByType;
-			default:
-				return customCategoryNames.has(key);
-		}
-	};
-	const visibleGroups = groupOrder.filter(isVisibleGroup);
+	const visibleGroups = groupOrder.filter(key => isVisibleGroup(key, { customCategoryNames, showFavorites, groupByType }));
 	const groups = new Map(visibleGroups.map(key => [key, [] as TSubscriptionModel[]]));
 	chats.forEach(subscription => {
 		const group = getRoomGroup(subscription, groups);

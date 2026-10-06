@@ -12,6 +12,7 @@ import {
 	type IRoom,
 	type IRoomNotifications,
 	type IServerRoom,
+	type ISidebarCategory,
 	type RoomType,
 	type SubscriptionType
 } from '~/definitions';
@@ -692,6 +693,9 @@ export const saveUserProfile = (
 export const saveUserPreferences = (data: Partial<INotificationPreferences & IMessagePreferences>) =>
 	// RC 0.62.0
 	sdk.post('users.setPreferences', { data });
+
+export const saveSidebarCategories = (sidebarCategories: ISidebarCategory[]) =>
+	sdk.post('users.setPreferences', { data: { sidebarCategories } });
 
 export const saveNotificationSettings = (roomId: string, notifications: IRoomNotifications) =>
 	// RC 0.63.0

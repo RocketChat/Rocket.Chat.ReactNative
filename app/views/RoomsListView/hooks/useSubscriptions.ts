@@ -3,16 +3,14 @@ import { useEffect, useMemo, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import type { Subscription } from 'rxjs';
 
-import { type ISidebarCategory, type TSubscriptionModel } from '~/definitions';
+import { type TSubscriptionModel } from '~/definitions';
 import { SortBy } from '~/lib/constants/constantDisplayMode';
 import database from '~/lib/database';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { getUserSelector } from '~/selectors/login';
 import { buildRoomList } from './groupRooms';
-import { getGroupOrder } from './sidebarGroupOrder';
+import { useSidebarCategories } from './useSidebarCategories';
 
-const CUSTOM_CATEGORIES_LICENSE_MODULE = 'experimental-enterprise-features';
-const NO_CATEGORIES: ISidebarCategory[] = [];
 const SECTION_BADGE_COLUMNS = [
 	'unread',
 	'hide_unread_status',
@@ -30,14 +28,7 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 	const [loading, setLoading] = useState(true);
 	const roles = useAppSelector(state => getUserSelector(state).roles, shallowEqual);
 	const { sortBy, showUnread, showFavorites, groupByType } = useAppSelector(state => state.sortPreferences, shallowEqual);
-	const hasCustomCategoriesLicense = useAppSelector(state => state.enterpriseModules.includes(CUSTOM_CATEGORIES_LICENSE_MODULE));
-	const sidebarCategories = useAppSelector(state => getUserSelector(state).sidebarCategories ?? NO_CATEGORIES);
-	const categories = hasCustomCategoriesLicense ? sidebarCategories : NO_CATEGORIES;
-	const customCategoryNames = useMemo(
-		() => new Map(categories.filter(category => !category.default).map(category => [category._id, category.name])),
-		[categories]
-	);
-	const groupOrder = useMemo(() => getGroupOrder(categories), [categories]);
+	const { customCategoryNames, groupOrder } = useSidebarCategories();
 	const hasCustomCategories = customCategoryNames.size > 0;
 	const isGrouping = showUnread || showFavorites || groupByType || hasCustomCategories;
 	const isOmnichannelAgent = roles?.includes('livechat-agent') ?? false;

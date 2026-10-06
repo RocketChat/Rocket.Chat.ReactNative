@@ -36,3 +36,39 @@ export const getGroupOrder = (sidebarCategories: ISidebarCategory[]): string[] =
 		.map(category => category._id);
 	return mergeWithDefaultOrder([...new Set(storedIds)]);
 };
+
+type GroupVisibility = {
+	customCategoryNames: Map<string, string>;
+	showFavorites: boolean;
+	groupByType: boolean;
+};
+
+export const isVisibleGroup = (key: string, { customCategoryNames, showFavorites, groupByType }: GroupVisibility) => {
+	switch (key) {
+		case FAVORITES_GROUP:
+			return showFavorites;
+		case TEAMS_GROUP:
+		case DISCUSSIONS_GROUP:
+		case CHANNELS_GROUP:
+		case DIRECT_MESSAGES_GROUP:
+			return groupByType;
+		case CONVERSATIONS_GROUP:
+			return !groupByType;
+		default:
+			return customCategoryNames.has(key);
+	}
+};
+
+export const reorderGroups = (groupOrder: string[], reorderedGroups: string[]) => {
+	const remainingGroups = [...reorderedGroups];
+	return groupOrder.map(key => (reorderedGroups.includes(key) ? (remainingGroups.shift() ?? key) : key));
+};
+
+const DYNAMIC_GROUPS: readonly string[] = ['Incoming_Calls', 'Incoming_Livechats', 'Open_Livechats', 'On_Hold_Chats', 'Unread'];
+
+export const toSidebarCategories = (storedCategories: ISidebarCategory[], groupOrder: string[]): ISidebarCategory[] => {
+	const storedById = new Map(storedCategories.map(category => [category._id, category]));
+	const storedDynamicGroups = storedCategories.map(category => category._id).filter(id => DYNAMIC_GROUPS.includes(id));
+	const dynamicGroups = [...new Set([...storedDynamicGroups, ...DYNAMIC_GROUPS])];
+	return [...dynamicGroups, ...groupOrder].map(id => storedById.get(id) ?? { _id: id, name: id, default: true });
+};

@@ -126,6 +126,7 @@ export type ChatsStackParamList = {
 	};
 	DirectoryView: undefined;
 	DisplayPrefsView: undefined;
+	CategoryOrderView: undefined;
 	E2EEToggleRoomView: {
 		rid: string;
 	};
@@ -220,6 +221,7 @@ export type SettingsStackParamList = {
 	ScreenLockConfigView: undefined;
 	ProfileView: undefined;
 	DisplayPrefsView: undefined;
+	CategoryOrderView: undefined;
 	MediaAutoDownloadView: undefined;
 	PushTroubleshootView: undefined;
 	GetHelpView: undefined;
@@ -233,11 +235,13 @@ export type AdminPanelStackParamList = {
 export type AccessibilityStackParamList = {
 	AccessibilityAndAppearanceView: undefined;
 	DisplayPrefsView: undefined;
+	CategoryOrderView: undefined;
 	ThemeView: undefined;
 };
 
 export type DisplayPrefStackParamList = {
 	DisplayPrefsView: undefined;
+	CategoryOrderView: undefined;
 };
 
 export type DrawerParamList = {

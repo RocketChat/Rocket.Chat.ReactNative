@@ -63,6 +63,7 @@ import MediaAutoDownloadView from '../views/MediaAutoDownloadView';
 import LegalView from '../views/LegalView';
 import AccessibilityAndAppearanceView from '../views/AccessibilityAndAppearanceView';
 import DisplayPrefsView from '../views/DisplayPrefsView';
+import CategoryOrderView from '../views/CategoryOrderView';
 import ThemeView from '../views/ThemeView';
 import AdminPanelView from '../views/AdminPanelView';
 import NewMessageView from '../views/NewMessageView';
@@ -184,6 +185,7 @@ const ChatsStack = createNativeStackNavigator({
 		AutoTranslateView: AutoTranslateViewScreen,
 		DirectoryView: DirectoryViewScreen,
 		DisplayPrefsView: DisplayPrefsViewScreen,
+		CategoryOrderView,
 		NotificationPrefView: NotificationPrefViewScreen,
 		E2EEToggleRoomView: E2EEToggleRoomViewScreen,
 		PushTroubleshootView: PushTroubleshootViewScreen,
@@ -266,6 +268,7 @@ const AccessibilityStack = createNativeStackNavigator({
 	screens: {
 		AccessibilityAndAppearanceView: AccessibilityAndAppearanceViewScreen,
 		DisplayPrefsView: DisplayPrefsViewScreen,
+		CategoryOrderView,
 		ThemeView: ThemeViewScreen
 	}
 }).with(({ Navigator }) => {

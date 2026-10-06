@@ -1,4 +1,4 @@
-import { DEFAULT_GROUP_ORDER, getGroupOrder } from '../sidebarGroupOrder';
+import { DEFAULT_GROUP_ORDER, getGroupOrder, reorderGroups, toSidebarCategories } from '../sidebarGroupOrder';
 
 describe('getGroupOrder', () => {
 	it('falls back to the default order when nothing is stored', () => {
@@ -63,5 +63,38 @@ describe('getGroupOrder', () => {
 		]);
 
 		expect(order).toEqual(['Teams', 'Discussions', 'Channels', 'Direct_Messages', 'work', 'Favorites', 'Conversations']);
+	});
+});
+
+describe('reorderGroups', () => {
+	it('moves the reordered groups into the slots they occupied and leaves the rest in place', () => {
+		const groupOrder = ['work', 'Favorites', 'Teams', 'Discussions', 'Channels', 'Direct_Messages', 'Conversations'];
+
+		expect(reorderGroups(groupOrder, ['Favorites', 'Conversations', 'work'])).toEqual([
+			'Favorites',
+			'Conversations',
+			'Teams',
+			'Discussions',
+			'Channels',
+			'Direct_Messages',
+			'work'
+		]);
+	});
+});
+
+describe('toSidebarCategories', () => {
+	it('writes the dynamic groups first, then the group order, keeping stored entries', () => {
+		const work = { _id: 'work', name: 'Work', showUnreads: true };
+		const categories = toSidebarCategories([{ _id: 'Unread', name: 'Unread', default: true }, work], ['Favorites', 'work']);
+
+		expect(categories).toEqual([
+			{ _id: 'Unread', name: 'Unread', default: true },
+			{ _id: 'Incoming_Calls', name: 'Incoming_Calls', default: true },
+			{ _id: 'Incoming_Livechats', name: 'Incoming_Livechats', default: true },
+			{ _id: 'Open_Livechats', name: 'Open_Livechats', default: true },
+			{ _id: 'On_Hold_Chats', name: 'On_Hold_Chats', default: true },
+			{ _id: 'Favorites', name: 'Favorites', default: true },
+			work
+		]);
 	});
 });
