@@ -29,6 +29,5 @@ export const getUserTokenKey = (server: string, userId: string): string => `${TO
 export const TOKEN_KEY_SERVER_SCOPED_MIGRATED = 'RC_TOKEN_KEY_SERVER_SCOPED_MIGRATED';
 export const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
 
-// if you change below 2 keys you will need to change them in RCTWatchModule.mm too
 export const CURRENT_SERVER = 'currentServer';
 export const WATCHOS_QUICKREPLIES = 'RC_WATCHOS_QUICKREPLIES';
