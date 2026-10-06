@@ -269,8 +269,15 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 	}
 };
 
+const restoreActiveBasicAuth = () => {
+	if (sdk.host) {
+		applyBasicAuth(sdk.host);
+	}
+};
+
 const root = function* root() {
 	yield takeLatest<IServerRequestAction>(SERVER.REQUEST, handleServerRequest);
 	yield takeLatest<ISelectServerAction>(SERVER.SELECT_REQUEST, handleSelectServer);
+	yield takeLatest(SERVER.FINISH_ADD, restoreActiveBasicAuth);
 };
 export default root;

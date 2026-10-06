@@ -72,7 +72,7 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import selectServerRoot from '../selectServer';
-import { selectServerRequest, serverRequest } from '~/actions/server';
+import { selectServerRequest, serverFinishAdd, serverRequest } from '~/actions/server';
 import { appStart } from '~/actions/app';
 import { RootEnum } from '~/definitions';
 import { SERVER } from '~/actions/actionsTypes';
@@ -358,6 +358,23 @@ describe('selectServer saga — requesting a new workspace', () => {
 		store.dispatch(serverRequest(REQUESTED_HOST));
 		await flushSagaMicrotasks();
 		store.dispatch(selectServerRequest(OLD_SERVER, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect((RocketChatSettings.customHeaders as { Authorization?: string }).Authorization).toBe(
+			'Basic old-workspace-credentials'
+		);
+	});
+
+	it('restores the active workspace basic auth when the add-workspace flow finishes after a failed connect', async () => {
+		UserPreferences.setString(`${BASIC_AUTH_KEY}-${OLD_SERVER}`, 'old-workspace-credentials');
+		setBasicAuth('old-workspace-credentials');
+		(sdk as { host?: string }).host = OLD_SERVER;
+		jest.mocked(getServerInfo).mockResolvedValue({ success: false } as any);
+
+		const { store } = setupStore();
+		store.dispatch(serverRequest(REQUESTED_HOST));
+		await flushSagaMicrotasks();
+		store.dispatch(serverFinishAdd());
 		await flushSagaMicrotasks();
 
 		expect((RocketChatSettings.customHeaders as { Authorization?: string }).Authorization).toBe(
