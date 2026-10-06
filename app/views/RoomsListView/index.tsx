@@ -3,13 +3,14 @@ import { memo, useContext, useEffect } from 'react';
 import { BackHandler, Platform, RefreshControl } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { shallowEqual } from 'react-redux';
+import { shallowEqual, useStore } from 'react-redux';
 
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { ChangePasswordRequired } from '~/containers/ChangePasswordRequired';
 import { FLOATING_ACTION_BUTTON_CLEARANCE } from '~/containers/FloatingActionButton';
 import { type IRoomItem } from '~/containers/RoomItem/interfaces';
+import { type IApplicationState } from '~/definitions';
 import { SupportedVersionsExpired } from '~/containers/SupportedVersions';
 import i18n from '~/i18n';
 import { MAX_SIDEBAR_WIDTH } from '~/lib/constants/tablet';
@@ -42,12 +43,14 @@ import { useNewMessage } from './hooks/useNewMessage';
 import { useRefresh } from './hooks/useRefresh';
 import { SECTION_REFLOW, useSectionToggleAnimation } from './hooks/useSectionToggleAnimation';
 import { useSubscriptions } from './hooks/useSubscriptions';
+import { useWarmUpMessageBlocks } from './hooks/useWarmUpMessageBlocks';
 import styles from './styles';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const RoomsListView = memo(function RoomsListView() {
 	useHeader();
+	useWarmUpMessageBlocks();
 	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsSearchContext);
 	const { colors } = useTheme();
 	const username = useAppSelector(state => getUserSelector(state).username);
@@ -64,7 +67,8 @@ const RoomsListView = memo(function RoomsListView() {
 	const { subscriptions, loading } = useSubscriptions(collapsedGroups);
 	const { onToggle, rowEntering, rowExiting, badgeEntering, badgeExiting, revealKey, coverEntering, coverExiting } =
 		useSectionToggleAnimation(collapsedGroups, toggleGroup, subscriptions.length);
-	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
+	const store = useStore<IApplicationState>();
+	const focusedRoom = useAppSelector(state => (isMasterDetail ? state.room.subscribedRoom : undefined));
 	const changingServer = useAppSelector(state => state.server.changingServer);
 	const { refreshing, onRefresh } = useRefresh({ searching });
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
@@ -87,7 +91,7 @@ const RoomsListView = memo(function RoomsListView() {
 		if (!isMasterDetail && !navigation.isFocused()) {
 			return;
 		}
-		if (item.rid === subscribedRoom) {
+		if (item.rid === store.getState().room.subscribedRoom) {
 			return;
 		}
 
@@ -135,7 +139,7 @@ const RoomsListView = memo(function RoomsListView() {
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}
 				getIsRead={isRead}
-				isFocused={isMasterDetail && subscribedRoom === item.rid}
+				isFocused={focusedRoom === item.rid}
 				swipeEnabled={swipeEnabled}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
