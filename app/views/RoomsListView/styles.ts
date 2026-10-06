@@ -35,6 +35,9 @@ export default StyleSheet.create({
 		gap: 4,
 		paddingVertical: 12
 	},
+	groupHeaderPressed: {
+		opacity: 0.7
+	},
 	groupTitle: {
 		flexShrink: 1,
 		fontSize: 16,

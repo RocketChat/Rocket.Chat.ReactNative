@@ -1,4 +1,5 @@
-import { memo } from 'react';
+import * as Haptics from 'expo-haptics';
+import { memo, useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import Animated, { type EntryExitAnimationFunction } from 'react-native-reanimated';
 
@@ -41,12 +42,19 @@ const SectionHeader = ({
 	badgeExiting
 }: ISectionHeader) => {
 	const { colors } = useTheme();
+	const [isTogglePressed, setIsTogglePressed] = useState(false);
 	const sectionTitle = title ?? i18n.t(header);
+
+	const onPressOpen = () => {
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+		onOpen(header, sectionTitle);
+	};
+
 	return (
 		<View style={[styles.groupTitleContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
 			<Pressable
-				onPress={() => onOpen(header, sectionTitle)}
-				style={styles.groupTitleButton}
+				onPress={onPressOpen}
+				style={({ pressed }) => [styles.groupTitleButton, (pressed || isTogglePressed) && styles.groupHeaderPressed]}
 				accessibilityRole='button'
 				accessibilityLabel={sectionTitle}
 				accessibilityHint={i18n.t('Open_category')}
@@ -58,7 +66,9 @@ const SectionHeader = ({
 			</Pressable>
 			<Pressable
 				onPress={event => event.currentTarget.measureInWindow((_x, y, _width, height) => onToggle(header, y + height))}
-				style={styles.groupToggle}
+				onPressIn={() => setIsTogglePressed(true)}
+				onPressOut={() => setIsTogglePressed(false)}
+				style={[styles.groupToggle, isTogglePressed && styles.groupHeaderPressed]}
 				accessibilityRole='button'
 				accessibilityLabel={i18n.t(collapsed ? 'Expand_category' : 'Collapse_category', { name: sectionTitle })}
 				accessibilityState={{ expanded: !collapsed }}
