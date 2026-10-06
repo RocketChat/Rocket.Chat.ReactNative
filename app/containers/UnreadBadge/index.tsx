@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { type StyleProp, StyleSheet, Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
 
 import sharedStyles from '~/views/Styles';
+import { formatUnreadCount } from '~/lib/methods/helpers/formatUnreadCount';
 import { getUnreadStyle } from './getUnreadStyle';
 import { useTheme } from '~/theme';
 
@@ -39,7 +40,7 @@ export interface IUnreadBadge {
 	hideMentionStatus?: boolean;
 }
 
-function getTestId(userMentions: number | undefined, groupMentions: number | undefined, unread: number | undefined) {
+function getTestId(userMentions: number | undefined, groupMentions: number | undefined, unread: string) {
 	if (userMentions) {
 		return `mention-badge-${unread}`;
 	}
@@ -94,14 +95,7 @@ const UnreadBadge = memo(
 		if (!backgroundColor) {
 			return null;
 		}
-		let text: any = unread || tunread?.length;
-		if (small && text >= 100) {
-			text = '+99';
-		}
-		if (!small && text >= 1000) {
-			text = '+999';
-		}
-		text = text.toString();
+		const text = formatUnreadCount(unread || tunread?.length || 0, small ? 99 : 999);
 
 		let minWidth = 21;
 		if (small) {

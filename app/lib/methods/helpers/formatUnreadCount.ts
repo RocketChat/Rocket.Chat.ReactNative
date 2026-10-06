@@ -1,1 +1,1 @@
-export const formatUnreadCount = (count: number) => (count > 99 ? '+99' : String(count));
+export const formatUnreadCount = (count: number, max = 99) => (count > max ? `+${max}` : String(count));
