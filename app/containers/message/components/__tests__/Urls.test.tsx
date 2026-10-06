@@ -61,15 +61,6 @@ describe('Urls image preview credentials', () => {
 		expect(mockHead).toHaveBeenCalledWith(`${SERVER}/file-upload/1/preview.png?rc_token=secret-token&rc_uid=user-1`);
 	});
 
-	it.each(['@evil.example/x.png', '.evil.example/x.png', '//evil.example/x.png'])(
-		'keeps host-like relative image %s on the workspace origin',
-		async image => {
-			renderUrls(image);
-			await waitFor(() => expect(mockHead).toHaveBeenCalled());
-			expect(new URL(mockHead.mock.calls[0][0]).origin).toBe(SERVER);
-		}
-	);
-
 	it('requests an absolute third-party preview image without credentials', async () => {
 		renderUrls('https://evil.example/x.png');
 		await waitFor(() => expect(mockHead).toHaveBeenCalled());

@@ -134,10 +134,11 @@ describe('useMediaAutoDownload', () => {
 			expect(mockFetchAutoDownloadEnabled).toHaveBeenCalledWith('audioPreferenceDownload');
 		});
 
-		it('defaults to the image preference when the file has no media url', async () => {
+		it('does not try to auto-download when the file has no media url', async () => {
 			renderMediaHook({ file: {} });
 			await flushMount();
-			expect(mockFetchAutoDownloadEnabled).toHaveBeenCalledWith('imagePreferenceDownload');
+			expect(mockFetchAutoDownloadEnabled).not.toHaveBeenCalled();
+			expect(mockDownloadMediaFile).not.toHaveBeenCalled();
 		});
 	});
 

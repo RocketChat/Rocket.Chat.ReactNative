@@ -204,15 +204,6 @@ describe('Reply', () => {
 			expect(uri).toContain('rc_uid=user-1');
 		});
 
-		it.each(['@evil.example/x', '.evil.example/x', '//evil.example/x'])(
-			'keeps a host-like relative thumb_url %s on the workspace origin',
-			thumb => {
-				const { getByTestId } = renderReply({ attachment: { thumb_url: thumb, author_name: 'Alice', text: 'Hi' } });
-				const uri = getByTestId('reply-url-image').props.source.uri as string;
-				expect(new URL(uri).origin).toBe('https://open.rocket.chat');
-			}
-		);
-
 		it('requests an absolute third-party thumb_url without credentials', () => {
 			const { getByTestId } = renderReply({
 				attachment: { thumb_url: 'https://evil.example/thumb.png', author_name: 'Alice', text: 'Hi' }

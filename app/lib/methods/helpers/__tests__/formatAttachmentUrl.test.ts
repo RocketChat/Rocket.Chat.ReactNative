@@ -62,10 +62,62 @@ describe('formatAttachmentUrl', () => {
 		}
 	);
 
-	it('keeps a backslash-prefixed relative path on the server origin', () => {
-		// WHATWG parsing turns `\\` into `/`, so this is a path on the server, not a host.
+	it('treats backslashes in a relative path as path separators on the server', () => {
 		const url = new URL(formatAttachmentUrl('\\\\evil.com/x', 'uid', 'tok', SERVER));
 		expect(url.origin).toBe(SERVER);
+	});
+
+	it('returns an empty string when there is no attachment url', () => {
+		expect(formatAttachmentUrl(undefined, 'uid', 'tok', SERVER)).toBe('');
+		expect(formatAttachmentUrl('', 'uid', 'tok', SERVER)).toBe('');
+	});
+
+	it('matches the server origin case-insensitively', () => {
+		const result = formatAttachmentUrl('https://MOBILE.qa.rocket.chat/file-upload/1/a.png', 'uid', 'tok', SERVER);
+		expect(result).toContain('rc_token=tok');
+		expect(result).toContain('rc_uid=uid');
+	});
+
+	it('trusts the Site_Url origin when it differs from the server address', () => {
+		mockSettings({ Site_Url: 'https://www.qa.rocket.chat' });
+		expect(formatAttachmentUrl('https://www.qa.rocket.chat/ufs/GridFS/1/a.png', 'uid', 'tok', SERVER)).toBe(
+			'https://www.qa.rocket.chat/ufs/GridFS/1/a.png?rc_token=tok&rc_uid=uid'
+		);
+	});
+
+	it('does not trust a look-alike of the Site_Url origin', () => {
+		mockSettings({ Site_Url: 'https://www.qa.rocket.chat' });
+		expect(formatAttachmentUrl('https://www.qa.rocket.chat.evil.com/a.png', 'uid', 'tok', SERVER)).not.toContain('rc_token');
+	});
+
+	it.each([
+		['a path that starts with "http"', 'http-guide.png', `${SERVER}/http-guide.png?rc_token=tok&rc_uid=uid`],
+		['an uppercase scheme on a third-party host', 'HTTPS://evil.example/x.png', 'https://evil.example/x.png']
+	])('classifies %s correctly', (_name, input, expected) => {
+		expect(formatAttachmentUrl(input, 'uid', 'tok', SERVER)).toBe(expected);
+	});
+
+	it('encodes an untrusted url without adding credentials', () => {
+		expect(formatAttachmentUrl('https://other.example/a b.png', 'uid', 'tok', SERVER)).toBe('https://other.example/a%20b.png');
+	});
+
+	it('does not forward an embedded token to an untrusted host', () => {
+		expect(formatAttachmentUrl('https://evil.example/a.png?rc_token=old&rc_uid=other', 'uid', 'tok', SERVER)).toBe(
+			'https://evil.example/a.png?rc_token=old&rc_uid=other'
+		);
+	});
+
+	it('replaces an embedded token on a trusted url with the current credentials', () => {
+		expect(formatAttachmentUrl(`${SERVER}/file-upload/1/a.png?rc_token=old&rc_uid=other`, 'uid', 'tok', SERVER)).toBe(
+			`${SERVER}/file-upload/1/a.png?rc_token=tok&rc_uid=uid`
+		);
+	});
+
+	it('keeps an embedded token on a trusted url untouched when files are not protected', () => {
+		mockSettings({ FileUpload_ProtectFiles: false });
+		expect(formatAttachmentUrl(`${SERVER}/file-upload/1/a.png?rc_token=old&rc_uid=other`, 'uid', 'tok', SERVER)).toBe(
+			`${SERVER}/file-upload/1/a.png?rc_token=old&rc_uid=other`
+		);
 	});
 
 	it('does not add credentials (and does not throw) when the server is empty', () => {

@@ -21,7 +21,7 @@ export const encodeAttachmentUrl = (url: string): string => {
 const getOrigin = (url: string): string | null => {
 	try {
 		const { protocol, origin } = new URL(url);
-		return protocol === 'http:' || protocol === 'https:' ? origin : null;
+		return protocol === 'http:' || protocol === 'https:' ? origin.toLowerCase() : null;
 	} catch {
 		return null;
 	}
@@ -32,35 +32,34 @@ const getCdnPrefix = (): string => {
 	return cdnPrefix && getOrigin(cdnPrefix) ? cdnPrefix : '';
 };
 
-const isTrustedUrl = (url: string, server: string): boolean => {
-	const origin = getOrigin(url);
-	return !!origin && (origin === getOrigin(server) || origin === getOrigin(getCdnPrefix()));
-};
-
 export const formatAttachmentUrl = (
 	attachmentUrl: string | undefined,
 	userId: string,
 	token: string,
 	server: string,
-	_originalUrl?: string | null
+	originalUrl?: string | null
 ): string => {
-	const protectFiles = store.getState().settings.FileUpload_ProtectFiles;
-
-	if ((attachmentUrl && isImageBase64(attachmentUrl)) || attachmentUrl?.startsWith('file://')) {
+	if (!attachmentUrl) {
+		return '';
+	}
+	if (isImageBase64(attachmentUrl) || attachmentUrl.startsWith('file://')) {
 		return attachmentUrl;
 	}
-	const isAbsolute = !!attachmentUrl?.startsWith('http');
-	if (isAbsolute && _originalUrl && !isTrustedUrl(_originalUrl, server)) {
-		return _originalUrl;
+
+	const { FileUpload_ProtectFiles: protectFiles, Site_Url: siteUrl } = store.getState().settings;
+	const cdnPrefix = getCdnPrefix();
+	const trustedOrigins = [getOrigin(server), getOrigin(cdnPrefix), getOrigin((siteUrl as string | undefined) ?? '')].filter(
+		Boolean
+	);
+	const isTrusted = (url: string) => trustedOrigins.includes(getOrigin(url));
+
+	const isAbsolute = /^https?:\/\//i.test(attachmentUrl);
+	if (isAbsolute && originalUrl && !isTrusted(originalUrl)) {
+		return originalUrl;
 	}
-	const url =
-		isAbsolute && attachmentUrl ? attachmentUrl : `${getCdnPrefix() || server}/${(attachmentUrl ?? '').replace(/^\/+/, '')}`;
-	if (!isTrustedUrl(url, server)) {
-		return url;
-	}
-	if (isAbsolute && url.includes('rc_token')) {
+	const url = isAbsolute ? attachmentUrl : `${cdnPrefix || server}/${attachmentUrl.replace(/^\/+/, '')}`;
+	if (!isTrusted(url)) {
 		return encodeAttachmentUrl(url);
 	}
-	if (protectFiles) return setParamInUrl({ url, token, userId });
-	return url;
+	return protectFiles ? setParamInUrl({ url, token, userId }) : encodeAttachmentUrl(url);
 };
