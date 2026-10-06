@@ -51,7 +51,10 @@ export const formatAttachmentUrl = (
 	const trustedOrigins = [getOrigin(server), getOrigin(cdnPrefix), getOrigin((siteUrl as string | undefined) ?? '')].filter(
 		Boolean
 	);
-	const isTrusted = (url: string) => trustedOrigins.includes(getOrigin(url));
+	const isTrusted = (url: string) => {
+		const origin = getOrigin(url);
+		return !!origin && trustedOrigins.includes(origin);
+	};
 
 	const isAbsolute = /^https?:\/\//i.test(attachmentUrl);
 	if (isAbsolute && originalUrl && !isTrusted(originalUrl)) {
