@@ -1,4 +1,5 @@
 import { showActionSheetRef } from '~/containers/ActionSheet';
+import { useMediaCallPermission } from '~/lib/hooks/useMediaCallPermission';
 import { NewMediaCall } from '~/containers/NewMediaCall';
 import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
 import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
@@ -11,10 +12,11 @@ interface IMediaCallPeer {
 }
 
 export const useStartMediaCall = ({ userId, name, username }: IMediaCallPeer) => {
+	const hasMediaCallPermission = useMediaCallPermission();
 	const isInActiveCall = useIsInActiveVoipCall();
 	const isSelf = isSelfUserId(userId);
 
-	return () => {
+	const startMediaCall = () => {
 		if (!userId || isInActiveCall || isSelf) return;
 		usePeerAutocompleteStore.getState().setSelectedPeer({ type: 'user', value: userId, label: name, username });
 		showActionSheetRef({
@@ -25,4 +27,6 @@ export const useStartMediaCall = ({ userId, name, username }: IMediaCallPeer) =>
 			fullContainer: true
 		});
 	};
+
+	return { canStartMediaCall: hasMediaCallPermission && !isSelf, isInActiveCall, startMediaCall };
 };
