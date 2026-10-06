@@ -140,8 +140,10 @@ export const headerLeftDrawer = (
 		: { headerLeft: () => <HeaderButton.Drawer testID={testID} onPress={toggleDrawer} /> };
 };
 
+export const headerLeftClose = (onPress: () => void, testID?: string): NativeStackNavigationOptions =>
+	headerLeftActions([{ label: I18n.t('Close'), icon: 'close', testID, onPress }]);
+
 export const headerLeftCloseModal = (
 	navigation: Pick<NavigationProp<ParamListBase>, 'dispatch'>,
 	testID?: string
-): NativeStackNavigationOptions =>
-	headerLeftActions([{ label: I18n.t('Close'), icon: 'close', testID, onPress: () => navigation.dispatch(StackActions.pop()) }]);
+): NativeStackNavigationOptions => headerLeftClose(() => navigation.dispatch(StackActions.pop()), testID);

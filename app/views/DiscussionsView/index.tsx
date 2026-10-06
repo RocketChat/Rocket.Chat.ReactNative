@@ -10,7 +10,7 @@ import { type IMessageFromServer, type TThreadModel } from '~/definitions';
 import { type ChatsStackParamList } from '~/stacks/types';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';
-import { outsideHeaderLeftClose } from '~/lib/methods/helpers/navigation';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import log from '~/lib/methods/helpers/log';
 import { isIOS, useDebounce } from '~/lib/methods/helpers';
@@ -114,7 +114,7 @@ const DiscussionsView = () => {
 			testIDPrefix: 'discussion-messages-view',
 			options: {
 				headerTitle: I18n.t('Discussions'),
-				...(isMasterDetail ? outsideHeaderLeftClose(() => navigation.pop()) : { headerLeft: undefined })
+				...(isMasterDetail ? headerLeftCloseModal(navigation) : { headerLeft: undefined })
 			}
 		});
 

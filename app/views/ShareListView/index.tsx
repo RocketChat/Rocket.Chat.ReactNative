@@ -12,7 +12,7 @@ import { Component, createRef } from 'react';
 
 import database from '~/lib/database';
 import I18n from '~/i18n';
-import { outsideHeaderLeftClose } from '~/lib/methods/helpers/navigation';
+import { headerLeftClose } from '~/lib/methods/helpers/navigation/headerActions';
 import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import DirectoryItem, { ROW_HEIGHT } from '~/containers/DirectoryItem';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
@@ -220,7 +220,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		const { navigation } = this.props;
 
 		const options: NativeStackNavigationOptions = {
-			...outsideHeaderLeftClose(this.closeShareExtension, 'share-extension-close'),
+			...headerLeftClose(this.closeShareExtension, 'share-extension-close'),
 			headerTitle: I18n.t('Send_to')
 		};
 

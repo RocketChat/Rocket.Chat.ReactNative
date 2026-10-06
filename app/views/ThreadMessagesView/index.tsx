@@ -10,7 +10,7 @@ import { Component, createRef } from 'react';
 
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';
-import { outsideHeaderLeftClose } from '~/lib/methods/helpers/navigation';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import database from '~/lib/database';
 import { sanitizeLikeString } from '~/lib/database/utils';
@@ -130,7 +130,7 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 			options: {
 				headerTitle: I18n.t('Threads'),
 				headerTransparent: hasNativeHeaderBar,
-				...(isMasterDetail ? outsideHeaderLeftClose(() => navigation.pop()) : { headerLeft: undefined })
+				...(isMasterDetail ? headerLeftCloseModal(navigation) : { headerLeft: undefined })
 			},
 			rightActions: [
 				{

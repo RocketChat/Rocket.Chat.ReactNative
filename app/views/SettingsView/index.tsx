@@ -22,8 +22,7 @@ import { clearCache } from '~/lib/methods/clearCache';
 import { deleteMediaFiles } from '~/lib/methods/handleMediaDownload';
 import { getDeviceModel, getReadableVersion, isAndroid } from '~/lib/methods/helpers';
 import EventEmitter from '~/lib/methods/helpers/events';
-import { outsideHeaderLeftClose } from '~/lib/methods/helpers/navigation';
-import { headerLeftDrawer } from '~/lib/methods/helpers/navigation/headerActions';
+import { headerLeftCloseModal, headerLeftDrawer } from '~/lib/methods/helpers/navigation/headerActions';
 import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/info';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import openLink from '~/lib/methods/helpers/openLink';
@@ -46,7 +45,7 @@ const SettingsView = (): ReactElement => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			...(isMasterDetail
-				? outsideHeaderLeftClose(() => navigation.pop(), 'settings-view-close')
+				? headerLeftCloseModal(navigation, 'settings-view-close')
 				: headerLeftDrawer(navigation, 'settings-view-drawer')),
 			title: I18n.t('Settings')
 		});

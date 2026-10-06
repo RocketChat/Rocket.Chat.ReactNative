@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import useA11yErrorAnnouncement from '~/lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '~/actions/login';
-import { outsideHeaderLeftClose } from '~/lib/methods/helpers/navigation';
+import { headerLeftClose } from '~/lib/methods/helpers/navigation/headerActions';
 import * as List from '~/containers/List';
 import { sendLoadingEvent } from '~/containers/Loading';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -131,7 +131,7 @@ const StatusView = (): ReactElement => {
 		const setHeader = () => {
 			setOptions({
 				title: I18n.t('Edit_Status'),
-				...(isMasterDetail ? { headerLeft: undefined } : outsideHeaderLeftClose(goBack))
+				...(isMasterDetail ? { headerLeft: undefined } : headerLeftClose(goBack))
 			});
 		};
 		setHeader();

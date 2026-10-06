@@ -9,7 +9,7 @@ import sharedStyles from '~/views/Styles';
 import Header from '~/containers/Header';
 import I18n from '~/i18n';
 import { hasNativeHeaderBar } from '~/lib/methods/helpers';
-import { headerLeftActions, headerRightActions } from './headerActions';
+import { headerRightActions } from './headerActions';
 
 export const defaultHeader: NativeStackNavigationOptions = hasNativeHeaderBar
 	? {
@@ -49,9 +49,6 @@ export const stackedSearchBarOptions = ({
 	onSearchButtonPress: onSearch,
 	onCancelButtonPress: onCancel ?? (() => onChangeText(''))
 });
-
-export const outsideHeaderLeftClose = (onPress: () => void, testID?: string): NativeStackNavigationOptions =>
-	headerLeftActions([{ label: I18n.t('Close'), icon: 'close', testID, onPress }]);
 
 export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions => ({
 	...(!hasNativeHeaderBar && {
