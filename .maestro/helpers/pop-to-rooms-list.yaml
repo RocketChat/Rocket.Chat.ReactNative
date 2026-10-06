@@ -10,29 +10,6 @@ tags:
       notVisible:
         id: 'rooms-list-view'
     commands:
-      - runFlow:
-          when:
-            platform: Android
-            visible:
-              id: '(custom-)?header-back'
-          commands:
-            - tapOn:
-                id: '(custom-)?header-back'
-      - runFlow:
-          when:
-            platform: iOS
-            visible:
-              id: 'BackButton'
-          commands:
-            - tapOn:
-                id: 'BackButton'
-      - runFlow:
-          when:
-            platform: iOS
-            visible:
-              text: 'Back(, .*)?'
-          commands:
-            - tapOn:
-                text: 'Back(, .*)?'
+      - runFlow: 'go-back.yaml'
       - waitForAnimationToEnd:
           timeout: 5000
