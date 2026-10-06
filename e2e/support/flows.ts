@@ -251,8 +251,26 @@ export const confirmAlert = async ({ screen }: Fixtures, message: RegExp, button
 
 const VALUE_SETTLE_TIMEOUT = 3_000;
 
+const UNSETTLED_CLEAR_ERROR = 'text entry verification failed';
+const CLEAR_ATTEMPTS = 3;
+const CLEAR_RETRY_DELAY = 1_000;
+
+const clearSettled = async (input: Locator) => {
+	for (let attempt = 1; ; attempt++) {
+		try {
+			await input.clear();
+			return;
+		} catch (error) {
+			if (!String(error).includes(UNSETTLED_CLEAR_ERROR) || attempt >= CLEAR_ATTEMPTS) {
+				throw error;
+			}
+			await delay(CLEAR_RETRY_DELAY);
+		}
+	}
+};
+
 const typeValue = async (input: Locator, value: string) => {
-	await input.clear();
+	await clearSettled(input);
 	await input.pressSequentially(value);
 };
 
