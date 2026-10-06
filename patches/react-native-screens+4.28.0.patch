@@ -86,77 +86,6 @@ index 76a39d4df4a4482d6447f4ead1ae4de544132831..160a3730161d1c123737eac4b18b2aa4
  + (void)resolveImageFromConfig:(NSDictionary *)dict
                     imageLoader:(RCTImageLoader *)imageLoader
                 completionBlock:(void (^)(UIImage *_Nullable))completionBlock
-diff --git a/node_modules/react-native-screens/ios/RNSScreenStack.mm b/node_modules/react-native-screens/ios/RNSScreenStack.mm
-index c233036b56c6b2ba433785d5cbc06e9f411b5a19..5d3e28d3d6058fa610401902c33efabdcd52334c 100644
---- a/node_modules/react-native-screens/ios/RNSScreenStack.mm
-+++ b/node_modules/react-native-screens/ios/RNSScreenStack.mm
-@@ -38,6 +38,58 @@ namespace react = facebook::react;
- 
- @end
- 
-+static UIView *RNSFindLargeTitleView(UIView *view)
-+{
-+  if ([NSStringFromClass([view class]) containsString:@"LargeTitleView"]) {
-+    return view;
-+  }
-+  for (UIView *subview in view.subviews) {
-+    UIView *found = RNSFindLargeTitleView(subview);
-+    if (found != nil) {
-+      return found;
-+    }
-+  }
-+  return nil;
-+}
-+
-+static void RNSAlignLargeTitleMargins(UINavigationController *controller)
-+{
-+  UIViewController *top = controller.topViewController;
-+  if (top == nil || controller.navigationBar.prefersLargeTitles == NO) {
-+    return;
-+  }
-+  UIView *titleView = RNSFindLargeTitleView(top.view);
-+  if (titleView == nil) {
-+    return;
-+  }
-+  NSDirectionalEdgeInsets margins = titleView.directionalLayoutMargins;
-+  if (margins.leading >= margins.trailing) {
-+    return;
-+  }
-+  UINavigationItem *item = top.navigationItem;
-+  UINavigationItemLargeTitleDisplayMode mode = item.largeTitleDisplayMode;
-+  item.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-+  item.largeTitleDisplayMode = mode;
-+  titleView.insetsLayoutMarginsFromSafeArea = !titleView.insetsLayoutMarginsFromSafeArea;
-+  titleView.insetsLayoutMarginsFromSafeArea = !titleView.insetsLayoutMarginsFromSafeArea;
-+  titleView.preservesSuperviewLayoutMargins = !titleView.preservesSuperviewLayoutMargins;
-+  titleView.preservesSuperviewLayoutMargins = !titleView.preservesSuperviewLayoutMargins;
-+  margins = titleView.directionalLayoutMargins;
-+  if (margins.leading < margins.trailing) {
-+    margins.leading = margins.trailing;
-+    titleView.directionalLayoutMargins = margins;
-+  }
-+  [titleView setNeedsLayout];
-+  [titleView layoutIfNeeded];
-+  if ([titleView.superview isKindOfClass:[UIScrollView class]]) {
-+    UIScrollView *scrollView = (UIScrollView *)titleView.superview;
-+    [top setContentScrollView:nil forEdge:NSDirectionalRectEdgeTop];
-+    [top setContentScrollView:scrollView forEdge:NSDirectionalRectEdgeTop];
-+    [controller.navigationBar setNeedsLayout];
-+    [controller.navigationBar layoutIfNeeded];
-+  }
-+}
-+
- @implementation RNSNavigationController
- 
- #if !TARGET_OS_TV
-@@ -59,6 +111,7 @@ namespace react = facebook::react;
- - (void)viewDidLayoutSubviews
- {
-   [super viewDidLayoutSubviews];
-+  RNSAlignLargeTitleMargins(self);
-   if ([self.topViewController isKindOfClass:[RNSScreen class]]) {
-     RNSScreen *screenController = (RNSScreen *)self.topViewController;
-     BOOL isNotDismissingModal = screenController.presentedViewController == nil ||
 diff --git a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
 index 8a41697223f6c4b5cb2dd6d450fc58cbb3b27536..35fa3a619a288f9c9fcada43518ff0a510927aeb 100644
 --- a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
@@ -202,7 +131,7 @@ index 8a41697223f6c4b5cb2dd6d450fc58cbb3b27536..35fa3a619a288f9c9fcada43518ff0a5
  
  NS_ASSUME_NONNULL_END
 diff --git a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
-index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e889779b45988 100644
+index a54cb632e7c3387b65b02246e6d9f326e49a3362..2fe79406130859f9041dc7d867b1a14e1b35e8bd 100644
 --- a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
 +++ b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
 @@ -1,4 +1,5 @@
@@ -227,7 +156,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
  #import "RNSScreen.h"
  #import "RNSSearchBar.h"
  #import "UINavigationBar+RNSUtility.h"
-@@ -28,11 +31,200 @@ namespace react = facebook::react;
+@@ -28,11 +31,197 @@ namespace react = facebook::react;
  
  static const NSNumber *const DEFAULT_TITLE_FONT_SIZE = @17;
  static const NSNumber *const DEFAULT_TITLE_LARGE_FONT_SIZE = @34;
@@ -319,10 +248,6 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
 +{
 +  NSMutableArray<UIView *> *titleViews = [NSMutableArray new];
 +  NSMutableArray<UIView *> *pending = [NSMutableArray arrayWithArray:bar.subviews];
-+  UIView *topView = self.navigationController.topViewController.view;
-+  if (topView != nil) {
-+    [pending addObject:topView];
-+  }
 +  while (pending.count > 0) {
 +    UIView *view = pending.lastObject;
 +    [pending removeLastObject];
@@ -330,9 +255,10 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
 +      continue;
 +    }
 +    if ([view isKindOfClass:[UILabel class]]) {
-+      NSString *text = ((UILabel *)view).attributedText.string ?: ((UILabel *)view).text;
-+      BOOL isTitle = config.title.length > 0 && [text containsString:config.title];
-+      BOOL isSubtitle = config.subtitle.length > 0 && [text containsString:config.subtitle];
++      NSString *text = [NSString
++          rnscreens_stringByStrippingTitleGlyph:((UILabel *)view).attributedText.string ?: ((UILabel *)view).text];
++      BOOL isTitle = config.title.length > 0 && [text isEqualToString:config.title];
++      BOOL isSubtitle = config.subtitle.length > 0 && [text isEqualToString:config.subtitle];
 +      if (isTitle || isSubtitle) {
 +        [titleViews addObject:view];
 +        for (UIView *sibling in view.superview.subviews) {
@@ -428,7 +354,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
  @implementation NSString (RNSStringUtil)
  
  + (BOOL)rnscreens_isBlankOrNull:(NSString *)string
-@@ -43,6 +235,105 @@ static const NSNumber *const DEFAULT_TITLE_LARGE_FONT_SIZE = @34;
+@@ -43,6 +232,105 @@ static const NSNumber *const DEFAULT_TITLE_LARGE_FONT_SIZE = @34;
    return [[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0;
  }
  
@@ -534,7 +460,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
  @end
  
  @interface RNSScreenStackHeaderConfig () <RCTMountingTransactionObserving>
-@@ -59,6 +350,8 @@ static const NSNumber *const DEFAULT_TITLE_LARGE_FONT_SIZE = @34;
+@@ -59,6 +347,8 @@ static const NSNumber *const DEFAULT_TITLE_LARGE_FONT_SIZE = @34;
    /// transaction via RCTMountingTransactionObserving protocol.
    bool _addedReactSubviewsInCurrentTransaction;
    RCTImageLoader *_imageLoader;
@@ -543,7 +469,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
  }
  
  - (instancetype)initWithFrame:(CGRect)frame
-@@ -69,6 +362,8 @@ static const NSNumber *const DEFAULT_TITLE_LARGE_FONT_SIZE = @34;
+@@ -69,6 +359,8 @@ static const NSNumber *const DEFAULT_TITLE_LARGE_FONT_SIZE = @34;
      _show = YES;
      _translucent = NO;
      _addedReactSubviewsInCurrentTransaction = false;
@@ -552,7 +478,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
      _lastSendState = react::RNSScreenStackHeaderConfigState(react::Size{}, react::EdgeInsets{}, react::Point{});
      [self initProps];
    }
-@@ -131,6 +426,56 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -131,6 +423,56 @@ RNS_IGNORE_SUPER_CALL_END
    return nil;
  }
  
@@ -609,7 +535,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
  - (void)updateViewControllerIfNeeded
  {
    UIViewController *vc = _screenView.controller;
-@@ -181,10 +526,10 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -181,10 +523,10 @@ RNS_IGNORE_SUPER_CALL_END
  
    if (newState != _lastSendState) {
      _lastSendState = newState;
@@ -624,7 +550,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
    }
  }
  
-@@ -293,10 +638,11 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -293,10 +635,11 @@ RNS_IGNORE_SUPER_CALL_END
          // in the image attribute not being updated. We manually set frame to the size of an image
          // in order to trigger proper reload that'd update the image attribute.
          RCTImageSource *imageSource = [RNSScreenStackHeaderConfig imageSourceFromImageView:imageView];
@@ -640,7 +566,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
        }
  
        UIImage *image = imageView.image;
-@@ -365,6 +711,89 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -365,6 +708,89 @@ RNS_IGNORE_SUPER_CALL_END
    }
  }
  
@@ -730,7 +656,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
  + (UINavigationBarAppearance *)buildAppearance:(UIViewController *)vc withConfig:(RNSScreenStackHeaderConfig *)config
  {
    UINavigationBarAppearance *appearance = [UINavigationBarAppearance new];
-@@ -380,8 +809,10 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -380,8 +806,10 @@ RNS_IGNORE_SUPER_CALL_END
        appearance.shadowColor = shadowColor;
        appearance.shadowImage = shadowImage;
      }
@@ -742,7 +668,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
    }
  
    // set background color if specified
-@@ -408,59 +839,20 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -408,59 +836,20 @@ RNS_IGNORE_SUPER_CALL_END
    }
  
    if (config.titleFontFamily || config.titleFontSize || config.titleFontWeight || config.titleColor) {
@@ -811,7 +737,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
    }
  
    UIImage *backButtonImage = [config loadBackButtonImageInViewController:vc];
-@@ -507,13 +899,24 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -507,13 +896,24 @@ RNS_IGNORE_SUPER_CALL_END
  
    if (shouldHide) {
      navitem.title = config.title;
@@ -836,7 +762,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
  
  #if !TARGET_OS_TV
    [config configureBackItem:prevItem withPrevVC:prevVC];
-@@ -648,10 +1051,26 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -648,10 +1048,26 @@ RNS_IGNORE_SUPER_CALL_END
    // This assignment should be done after `navitem.titleView = ...` assignment (iOS 16.0 bug).
    // See: https://github.com/software-mansion/react-native-screens/issues/1570 (comments)
    navitem.title = config.title;
@@ -863,7 +789,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
  
    // Setting navigation bar visibility is split to mitigate iOS 26 bug with bar button items
    // (setting nav bar visibility should be done after `navitem.*BarButtonItems`).
-@@ -700,7 +1119,8 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -700,7 +1116,8 @@ RNS_IGNORE_SUPER_CALL_END
    const auto *config = self;
  
    const auto isBackTitleBlank = [NSString rnscreens_isBlankOrNull:config.backTitle] == YES;
@@ -873,7 +799,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
  
    // If previous screen controller was recreated (e.g. when you go back to tab with stack that has multiple screens),
    // its navigationItem may not have any information from screen's headerConfig, including the title.
-@@ -782,6 +1202,32 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -782,6 +1199,32 @@ RNS_IGNORE_SUPER_CALL_END
    }
  }
  
@@ -906,7 +832,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
  - (NSArray<UIBarButtonItem *> *)barButtonItemsFromConfigs:(NSArray<NSDictionary<NSString *, id> *> *)dicts
                                           withCurrentItems:(NSArray<UIBarButtonItem *> *)currentItems
  {
-@@ -858,12 +1304,13 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -858,12 +1301,13 @@ RNS_IGNORE_SUPER_CALL_END
      return;
    }
  
@@ -926,7 +852,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
  
    //  [_reactSubviews insertObject:(RNSScreenStackHeaderSubview *)childComponentView atIndex:index];
    [self insertReactSubview:(RNSScreenStackHeaderSubview *)childComponentView atIndex:index];
-@@ -987,6 +1434,8 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+@@ -987,6 +1431,8 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
  {
    [super prepareForRecycle];
    _initialPropsSet = NO;
@@ -935,7 +861,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
  
    _lastSendState = react::RNSScreenStackHeaderConfigState(react::Size{}, react::EdgeInsets{}, react::Point{});
  }
-@@ -1003,6 +1452,14 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+@@ -1003,6 +1449,14 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
    return react::concreteComponentDescriptorProvider<react::RNSScreenStackHeaderConfigComponentDescriptor>();
  }
  
@@ -950,7 +876,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
  - (void)updateProps:(react::Props::Shared const &)props oldProps:(react::Props::Shared const &)oldProps
  {
    const auto &oldScreenProps = *std::static_pointer_cast<const react::RNSScreenStackHeaderConfigProps>(_props);
-@@ -1025,6 +1482,7 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+@@ -1025,6 +1479,7 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
    }
  
    _title = RCTNSStringFromStringNilIfEmpty(newScreenProps.title);
@@ -958,7 +884,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
    if (newScreenProps.titleFontFamily != oldScreenProps.titleFontFamily) {
      _titleFontFamily = RCTNSStringFromStringNilIfEmpty(newScreenProps.titleFontFamily);
    }
-@@ -1064,6 +1522,27 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+@@ -1064,6 +1519,27 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
    // We cannot compare SharedColor because it is shared value.
    // We could compare color value, but it is more performant to just assign new value
    _titleColor = RCTUIColorFromSharedColor(newScreenProps.titleColor);
@@ -986,7 +912,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..47cf7d0b19734acb52f903c2513e8897
    _largeTitleColor = RCTUIColorFromSharedColor(newScreenProps.largeTitleColor);
    _color = RCTUIColorFromSharedColor(newScreenProps.color);
    _backgroundColor = RCTUIColorFromSharedColor(newScreenProps.backgroundColor);
-@@ -1087,13 +1566,20 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+@@ -1087,13 +1563,20 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
    if (newScreenProps.headerRightBarButtonItems != oldScreenProps.headerRightBarButtonItems) {
      const auto &vec = newScreenProps.headerRightBarButtonItems;
      NSMutableArray<NSDictionary<NSString *, id> *> *array = [NSMutableArray arrayWithCapacity:vec.size()];
@@ -1082,81 +1008,3 @@ index da28c51c6ffd29b996c876742a11cfdf322db969..017ca65f488fe4550fb3c2f40a69dd9f
    disableBackButtonMenu?: boolean | undefined;
    backButtonDisplayMode?: CT.WithDefault<BackButtonDisplayMode, 'default'>;
    hideBackButton?: boolean | undefined;
-diff --git a/node_modules/react-native-screens/src/types.tsx b/node_modules/react-native-screens/src/types.tsx
-index 8594b733fae4eba17b44ad917047d38614464a34..a10e423b892d96f5fd15b40c4ffe0a542c83ed17 100644
---- a/node_modules/react-native-screens/src/types.tsx
-+++ b/node_modules/react-native-screens/src/types.tsx
-@@ -827,10 +827,73 @@ export interface ScreenStackHeaderConfigProps extends ViewProps {
-    * String that can be displayed in the header as a fallback for `headerTitle`.
-    */
-   title?: string | undefined;
-+  /**
-+   * String to display in the header underneath the title.
-+   *
-+   * @platform ios
-+   *
-+   * @supported iOS 26 or higher
-+   */
-+  subtitle?: string | undefined;
-   /**
-    * Allows for setting text color of the title.
-    */
-   titleColor?: ColorValue | undefined;
-+  /**
-+   * Image rendered as a leading glyph before the title. The glyph is sized from
-+   * the resolved title font and keeps its original colors.
-+   * Requires iOS 26 or higher and is ignored on Android and earlier iOS versions.
-+   * The glyph is hidden while the large title is expanded and appears on collapse.
-+   * A custom header title view replaces the title and its glyph.
-+   *
-+   * @platform ios
-+   *
-+   * @supported iOS 26 or higher
-+   */
-+  titleImageSource?: ImageSourcePropType | undefined;
-+  /**
-+   * Image rendered as a leading glyph before the subtitle. The glyph is sized
-+   * from the resolved subtitle font and keeps its original colors.
-+   * Requires iOS 26 or higher and is ignored on Android and earlier iOS versions.
-+   * A custom header title view does not replace the subtitle or its glyph.
-+   *
-+   * @platform ios
-+   *
-+   * @supported iOS 26 or higher
-+   */
-+  subtitleImageSource?: ImageSourcePropType | undefined;
-+  /**
-+   * Color of the subtitle text. Defaults to `titleColor`.
-+   *
-+   * @platform ios
-+   *
-+   * @supported iOS 26 or higher
-+   */
-+  subtitleColor?: ColorValue | undefined;
-+  /**
-+   * Whether tapping the native header title calls `onTitlePress`.
-+   *
-+   * @platform ios
-+   *
-+   * @supported iOS 26 or higher
-+   */
-+  titlePressEnabled?: boolean | undefined;
-+  /**
-+   * Accessibility identifier of the native header title, for e2e tests.
-+   *
-+   * @platform ios
-+   *
-+   * @supported iOS 26 or higher
-+   */
-+  titleTestID?: string | undefined;
-+  /**
-+   * Called when the native header title or subtitle is tapped and `titlePressEnabled` is true.
-+   *
-+   * @platform ios
-+   *
-+   * @supported iOS 26 or higher
-+   */
-+  onTitlePress?: (() => void) | undefined;
-   /**
-    * Customize font family to be used for the title.
-    */
