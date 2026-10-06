@@ -39,10 +39,51 @@ if [ "$PREFLIGHT_CODE" != "200" ]; then
 fi
 echo "Preflight OK: ${E2E_SERVER}/api/info -> 200"
 
+ANDROID_HEALTH_ATTEMPTS="${ANDROID_HEALTH_ATTEMPTS:-3}"
+
+android_shell() {
+  adb -s "$ANDROID_DEVICE" shell "$@"
+}
+
+wait_for_android_boot() {
+  adb -s "$ANDROID_DEVICE" wait-for-device
+  until [ "$(android_shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = "1" ]; do
+    sleep 2
+  done
+}
+
+android_window_focus_healthy() {
+  android_shell cmd activity wait-for-broadcast-idle >/dev/null 2>&1 || true
+  sleep 5
+  android_shell am start -W -a android.settings.SETTINGS >/dev/null 2>&1 || return 1
+  sleep 2
+  local windows
+  windows="$(android_shell dumpsys window 2>/dev/null)"
+  android_shell input keyevent KEYCODE_HOME >/dev/null 2>&1 || true
+  if grep -q "Application Not Responding" <<<"$windows"; then
+    return 1
+  fi
+  grep -m1 "mCurrentFocus=" <<<"$windows" | grep -q "com.android.settings"
+}
+
+ensure_android_window_focus() {
+  for attempt in $(seq 1 "$ANDROID_HEALTH_ATTEMPTS"); do
+    if android_window_focus_healthy; then
+      echo "Emulator window focus OK (attempt ${attempt})"
+      return 0
+    fi
+    echo "::warning title=Emulator unhealthy::Window focus is stuck or an ANR dialog is showing (attempt ${attempt}); rebooting the emulator."
+    adb -s "$ANDROID_DEVICE" reboot
+    wait_for_android_boot
+  done
+  echo "::error title=Emulator unhealthy::The emulator never reached a healthy window focus after ${ANDROID_HEALTH_ATTEMPTS} attempts. This is an environment failure, not an app or test regression."
+  exit 3
+}
+
 if [ "$PLATFORM" = "android" ]; then
-  adb -s "$ANDROID_DEVICE" shell settings put system show_touches 1 || true
-  adb -s "$ANDROID_DEVICE" shell settings put secure autofill_service null || true
-  adb -s "$ANDROID_DEVICE" shell settings put global hide_error_dialogs 1 || true
+  ensure_android_window_focus
+  android_shell settings put system show_touches 1 || true
+  android_shell settings put secure autofill_service null || true
 
   if [ -d "$TESTS_DIR/share-extension" ] \
     && grep -rhoE "tags:[[:space:]]*\[[^]]*\]" "$TESTS_DIR/share-extension" --include='*.e2e.ts' | grep -E "['\"]test-${SHARD}['\"]" >/dev/null; then

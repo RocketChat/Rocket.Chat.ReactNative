@@ -17,10 +17,7 @@ import {
 const THREAD = 'thread';
 const THREAD_REPLY_PLACEHOLDER = /Add thread reply/;
 
-const threadReplyPlaceholder = ({ screen, platform }: Fixtures) =>
-	platform === 'ios'
-		? screen.getByRole('textbox', { name: THREAD_REPLY_PLACEHOLDER })
-		: screen.getByPlaceholder(THREAD_REPLY_PLACEHOLDER);
+const threadReplyPlaceholder = ({ screen }: Fixtures) => screen.getByRole('textbox', { name: THREAD_REPLY_PLACEHOLDER });
 
 afterEach(deleteCreatedUsers);
 
