@@ -5,7 +5,7 @@ import { type IAppActionButton, UIActionButtonContext } from '../definitions';
 import { selectAppActionButtons, useAppActionButtons } from '../useAppActionButtons';
 
 let mockActionButtons: IAppActionButton[] = [];
-const mockTranslations = { 'app-id': { en: { summarize: 'Summarize thread' } } };
+const mockTranslations = { 'app-id': { en: { summarize: 'Summarize thread' }, pt: { summarize: 'Resumir thread' } } };
 jest.mock('../appsStore', () => ({
 	useAppsStore: (selector: (state: unknown) => unknown) =>
 		selector({ actionButtons: mockActionButtons, translations: mockTranslations })
@@ -33,8 +33,10 @@ jest.mock('~/lib/database', () => ({
 }));
 
 let mockUserRoles: string[] = ['user'];
+let mockLanguage = 'en';
 jest.mock('~/lib/hooks/useAppSelector', () => ({
-	useAppSelector: () => mockUserRoles
+	useAppSelector: (selector: (state: unknown) => unknown) =>
+		selector({ login: { user: { roles: mockUserRoles, language: mockLanguage } } })
 }));
 
 const button = (overrides: Partial<IAppActionButton> = {}): IAppActionButton => ({
@@ -52,6 +54,7 @@ describe('useAppActionButtons', () => {
 		mockSubscriptions = new BehaviorSubject<Record<string, unknown>[]>([{ t: 'c', roles: ['owner'] }]);
 		mockPermissionRecords = [];
 		mockUserRoles = ['user'];
+		mockLanguage = 'en';
 	});
 
 	it('returns nothing until the room is resolved', () => {
@@ -69,6 +72,17 @@ describe('useAppActionButtons', () => {
 
 		await waitFor(() => expect(result.current).toHaveLength(1));
 		expect(result.current[0]).toMatchObject({ id: 'app-id/summarize', label: 'Summarize thread' });
+	});
+
+	it('relabels buttons when the user language changes', async () => {
+		mockActionButtons = [button()];
+		const { result, rerender } = renderHook(() => useAppActionButtons('rid'));
+		await waitFor(() => expect(result.current).toHaveLength(1));
+
+		mockLanguage = 'pt-BR';
+		rerender({});
+
+		expect(result.current[0].label).toBe('Resumir thread');
 	});
 
 	it('drops the previous room buttons until the new room resolves', async () => {

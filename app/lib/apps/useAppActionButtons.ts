@@ -15,6 +15,7 @@ import {
 import { applyAuthFilter, applyCategoryFilter, applyRoomFilter, collectPermissions } from './filters';
 import { translateAppKey } from './translations';
 import database from '~/lib/database';
+import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useObservable } from '~/lib/hooks/useObservable';
 import log from '~/lib/methods/helpers/log';
@@ -43,6 +44,7 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 	const buttons = useAppsStore(state => state.actionButtons);
 	const translations = useAppsStore(state => state.translations);
 	const userRoles = useAppSelector(state => getUserSelector(state).roles || [], shallowEqual);
+	const language = useAppSelector(state => getUserSelector(state).language);
 
 	const permissionKey = collectPermissions(buttons).join(',');
 	const hasButtons = buttons.length > 0;
@@ -94,8 +96,8 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 			.filter(button => applyRoomFilter(button, room) && applyAuthFilter(button, { roles, permissions }))
 			.map(button => ({
 				id: getIdForActionButton(button),
-				label: translateAppKey({ appId: button.appId, key: button.labelI18n, translations }),
+				label: translateAppKey({ appId: button.appId, key: button.labelI18n, translations, locale: language || i18n.locale }),
 				button
 			}));
-	}, [buttons, filterContext, translations, userRoles]);
+	}, [buttons, filterContext, translations, userRoles, language]);
 };

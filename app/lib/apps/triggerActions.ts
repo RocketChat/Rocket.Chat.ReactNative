@@ -8,15 +8,12 @@ import {
 import I18n from '~/i18n';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import log from '~/lib/methods/helpers/log';
-import Navigation from '~/lib/navigation/appNavigation';
 import { type IAppActionButton } from './definitions';
 import { triggerAction } from './actions';
 
-export async function triggerSubmitView({ viewId, ...options }: ITriggerSubmitView) {
+export async function triggerSubmitView({ viewId, ...options }: ITriggerSubmitView): Promise<boolean> {
 	const result = await triggerAction({ type: ActionTypes.SUBMIT, viewId, ...options });
-	if (!result || ModalActions.CLOSE === result) {
-		Navigation.back();
-	}
+	return !result || ModalActions.CLOSE === result;
 }
 
 export function triggerCancel({ view, ...options }: ITriggerCancel) {

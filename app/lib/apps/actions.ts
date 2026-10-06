@@ -9,7 +9,8 @@ import { appsApiFetch } from '~/lib/services/appsApiFetch';
 
 const TRIGGER_TIMEOUT = 5000;
 
-const triggersId = new Map();
+const triggersId = new Map<string, string | undefined>();
+const handledTriggers = new Map<string, TModalAction>();
 
 const invalidateTriggerId = (id: string) => {
 	const appId = triggersId.get(id);
@@ -17,17 +18,19 @@ const invalidateTriggerId = (id: string) => {
 	return appId;
 };
 
-const registerTriggerId = (appId?: string): string => {
+// The trigger stays valid while the request is in flight and for TRIGGER_TIMEOUT after it settles,
+// so a reply the app sends over the stream is still accepted when it lands after the HTTP response.
+export const withTriggerId = async <T>(appId: string | undefined, request: (triggerId: string) => Promise<T>): Promise<T> => {
 	const triggerId = random(17);
 	triggersId.set(triggerId, appId);
-	return triggerId;
-};
-
-export const generateTriggerId = (appId?: string): string => {
-	const triggerId = registerTriggerId(appId);
-	setTimeout(() => triggersId.delete(triggerId), TRIGGER_TIMEOUT);
-
-	return triggerId;
+	try {
+		return await request(triggerId);
+	} finally {
+		setTimeout(() => {
+			triggersId.delete(triggerId);
+			handledTriggers.delete(triggerId);
+		}, TRIGGER_TIMEOUT);
+	}
 };
 
 type THandledServerPayload = {
@@ -52,6 +55,7 @@ export const handlePayloadUserInteraction = (
 		showToast(I18n.t('App_action_unsupported'));
 		return;
 	}
+	handledTriggers.set(triggerId, modalType);
 	const payloadAppId = data.appId ?? triggerAppId;
 	if (!payloadAppId) {
 		return;
@@ -68,7 +72,7 @@ export const handlePayloadUserInteraction = (
 		return;
 	}
 
-	if (modalType === ModalActions.ERRORS) {
+	if (modalType === ModalActions.ERRORS || modalType === ModalActions.UPDATE || modalType === ModalActions.CLOSE) {
 		EventEmitter.emit(viewId, {
 			...data,
 			appId: payloadAppId,
@@ -76,18 +80,7 @@ export const handlePayloadUserInteraction = (
 			triggerId,
 			viewId
 		} as any);
-		return ModalActions.ERRORS;
-	}
-
-	if (modalType === ModalActions.UPDATE) {
-		EventEmitter.emit(viewId, {
-			...data,
-			appId: payloadAppId,
-			type: modalType,
-			triggerId,
-			viewId
-		} as any);
-		return ModalActions.UPDATE;
+		return modalType;
 	}
 
 	if (modalType === ModalActions.OPEN) {
@@ -102,10 +95,10 @@ export const handlePayloadUserInteraction = (
 		return ModalActions.OPEN;
 	}
 
-	return ModalActions.CLOSE;
+	return modalType;
 };
 
-export async function triggerAction({
+export function triggerAction({
 	type,
 	actionId,
 	appId,
@@ -116,10 +109,9 @@ export async function triggerAction({
 	container,
 	...rest
 }: ITriggerAction): Promise<TModalAction | undefined | void> {
-	const triggerId = registerTriggerId(appId);
 	const payload = rest.payload ?? rest.value;
 
-	try {
+	return withTriggerId(appId, async triggerId => {
 		const interaction = toUserInteraction({
 			type,
 			actionId,
@@ -155,17 +147,17 @@ export async function triggerAction({
 		if (!modalType) {
 			if (interactionType) {
 				showToast(I18n.t('App_action_unsupported'));
+				return;
 			}
-			return;
+			// The app may have already answered over the stream (e.g. updated or replaced the modal)
+			return handledTriggers.get(triggerId);
 		}
 		if (modalType === ModalActions.CLOSE) {
 			return ModalActions.CLOSE;
 		}
 
 		return handlePayloadUserInteraction(modalType, data as THandledServerPayload);
-	} catch (e) {
+	}).catch(e => {
 		throw e instanceof Error ? e : new Error('Failed to trigger action');
-	} finally {
-		invalidateTriggerId(triggerId);
-	}
+	});
 }

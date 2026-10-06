@@ -13,6 +13,7 @@ export type TAppTranslations = { [appId: string]: TTranslationsByLanguage };
 type TAppsState = {
 	actionButtons: IAppActionButton[];
 	translations: TAppTranslations;
+	loaded: boolean;
 };
 
 type TAppsActions = {
@@ -23,7 +24,8 @@ type TAppsActions = {
 
 const initialState: TAppsState = {
 	actionButtons: [],
-	translations: {}
+	translations: {},
+	loaded: false
 };
 
 const logUnlessAppsUnavailable = (e: unknown) => {
@@ -43,7 +45,7 @@ export const useAppsStore = create<TAppsState & TAppsActions>(set => ({
 		const current = ++actionButtonsRequest;
 		try {
 			const actionButtons = await getAppActionButtons();
-			if (current === actionButtonsRequest) set({ actionButtons });
+			if (current === actionButtonsRequest) set({ actionButtons, loaded: true });
 		} catch (e) {
 			logUnlessAppsUnavailable(e);
 		}
@@ -76,9 +78,9 @@ export const onAppsStreamData = (ddpMessage: { fields?: { args?: [[string, unkno
 	const [event] = ddpMessage?.fields?.args?.[0] || [];
 	const { fetchActionButtons, fetchTranslations } = useAppsStore.getState();
 	if (event === 'actions/changed') {
-		fetchActionButtons().catch(log);
+		fetchActionButtons();
 	}
 	if (event === 'app/added' || event === 'app/updated' || event === 'app/removed') {
-		fetchTranslations().catch(log);
+		fetchTranslations();
 	}
 };

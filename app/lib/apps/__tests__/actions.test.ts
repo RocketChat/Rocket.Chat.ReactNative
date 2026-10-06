@@ -1,5 +1,5 @@
 import { ActionTypes, ModalActions } from '~/containers/UIKit/interfaces';
-import { generateTriggerId, handlePayloadUserInteraction, triggerAction } from '../actions';
+import { handlePayloadUserInteraction, triggerAction, withTriggerId } from '../actions';
 import EventEmitter from '~/lib/methods/helpers/events';
 import fetch from '~/lib/methods/helpers/fetch';
 import Navigation from '~/lib/navigation/appNavigation';
@@ -41,6 +41,12 @@ const mockedNavigate = Navigation.navigate as jest.MockedFunction<typeof Navigat
 describe('actions', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		jest.useFakeTimers();
+	});
+
+	afterEach(() => {
+		jest.runOnlyPendingTimers();
+		jest.useRealTimers();
 	});
 
 	describe('handlePayloadUserInteraction', () => {
@@ -48,12 +54,12 @@ describe('actions', () => {
 			expect(handlePayloadUserInteraction(ModalActions.OPEN, { triggerId: 'unknown', viewId: 'view-id' })).toBeUndefined();
 		});
 
-		it('navigates for modal.open and returns modal.open', () => {
-			const triggerId = generateTriggerId('app-id');
-
-			const result = handlePayloadUserInteraction(ModalActions.OPEN, {
-				triggerId,
-				view: { id: 'view-id' }
+		it('navigates for modal.open and returns modal.open', async () => {
+			let result;
+			let triggerId = '';
+			await withTriggerId('app-id', async id => {
+				triggerId = id;
+				result = handlePayloadUserInteraction(ModalActions.OPEN, { triggerId, view: { id: 'view-id' } });
 			});
 
 			expect(result).toBe(ModalActions.OPEN);
@@ -64,6 +70,35 @@ describe('actions', () => {
 					viewId: 'view-id'
 				})
 			});
+		});
+
+		it('emits modal.close to the view', async () => {
+			let result;
+			await withTriggerId('app-id', async triggerId => {
+				result = handlePayloadUserInteraction(ModalActions.CLOSE, { triggerId, viewId: 'view-id' });
+			});
+
+			expect(result).toBe(ModalActions.CLOSE);
+			expect(mockedEmit).toHaveBeenCalledWith('view-id', expect.objectContaining({ type: ModalActions.CLOSE }));
+		});
+
+		it('accepts a stream reply that arrives after the request settled', async () => {
+			let triggerId = '';
+			await withTriggerId('app-id', async id => {
+				triggerId = id;
+			});
+
+			expect(handlePayloadUserInteraction(ModalActions.OPEN, { triggerId, viewId: 'view-id' })).toBe(ModalActions.OPEN);
+		});
+
+		it('drops a stream reply once the trigger expired', async () => {
+			let triggerId = '';
+			await withTriggerId('app-id', async id => {
+				triggerId = id;
+			});
+			jest.advanceTimersByTime(5000);
+
+			expect(handlePayloadUserInteraction(ModalActions.OPEN, { triggerId, viewId: 'view-id' })).toBeUndefined();
 		});
 	});
 
@@ -169,7 +204,6 @@ describe('actions', () => {
 		});
 
 		it('handles a reply that arrives after the stream trigger timeout', async () => {
-			jest.useFakeTimers();
 			mockedFetch.mockImplementationOnce(async () => {
 				jest.advanceTimersByTime(6000);
 				return {
@@ -183,7 +217,6 @@ describe('actions', () => {
 				await expect(triggerAction(actionInput)).resolves.toBe(ModalActions.OPEN);
 				expect(mockedNavigate).toHaveBeenCalledTimes(1);
 			} finally {
-				jest.useRealTimers();
 			}
 		});
 
@@ -255,6 +288,15 @@ describe('actions', () => {
 			} as Response);
 
 			await expect(triggerAction(actionInput)).resolves.toBeUndefined();
+		});
+
+		it('reports the stream reply when the app acknowledged after answering over the stream', async () => {
+			mockedFetch.mockImplementationOnce(async () => {
+				handlePayloadUserInteraction(ModalActions.UPDATE, { triggerId: 'trigger-fixed-id', viewId: 'view-id' });
+				return { ok: true, text: () => Promise.resolve(JSON.stringify({ success: true })) } as Response;
+			});
+
+			await expect(triggerAction(actionInput)).resolves.toBe(ModalActions.UPDATE);
 		});
 
 		it('invalidates trigger id after processing', async () => {

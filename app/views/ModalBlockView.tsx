@@ -10,7 +10,6 @@ import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { ModalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { textParser } from '../containers/UIKit/utils';
-import Navigation from '../lib/navigation/appNavigation';
 import { type MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions, type TModalAction } from '../containers/UIKit/interfaces';
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from '~/lib/apps/triggerActions';
@@ -102,6 +101,8 @@ const EMPTY_MESSAGE = {} as unknown as TAnyMessageModel;
 class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewState> {
 	private submitting: boolean;
 
+	private closed = false;
+
 	private values: IValues;
 
 	static navigationOptions = ({ route }: Pick<IModalBlockViewProps, 'route'>) => {
@@ -170,8 +171,18 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 		});
 	};
 
+	close = () => {
+		if (this.closed) {
+			return;
+		}
+		this.closed = true;
+		this.props.navigation.goBack();
+	};
+
 	handleUpdate = ({ type, ...data }: { type: TModalAction }) => {
-		if (type === ModalActions.ERRORS) {
+		if (type === ModalActions.CLOSE) {
+			this.close();
+		} else if (type === ModalActions.ERRORS) {
 			const { errors }: any = data;
 			this.setState({ errors });
 		} else {
@@ -184,7 +195,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 		const { data } = this.state;
 		const { appId, viewId, view } = data;
 
-		Navigation.back();
+		this.close();
 
 		try {
 			await triggerCancel({
@@ -213,7 +224,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 		const { appId, viewId } = data;
 		this.setState({ loading: true });
 		try {
-			await triggerSubmitView({
+			const shouldClose = await triggerSubmitView({
 				viewId,
 				appId,
 				payload: {
@@ -223,6 +234,9 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 					}
 				}
 			});
+			if (shouldClose) {
+				this.close();
+			}
 		} catch (e) {
 			// do nothing
 		}

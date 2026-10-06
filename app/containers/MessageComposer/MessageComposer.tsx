@@ -20,7 +20,7 @@ import { EventTypes } from '../EmojiPicker/interfaces';
 import { type IEmoji } from '~/definitions';
 import database from '~/lib/database';
 import { sanitizeLikeString } from '~/lib/database/utils';
-import { generateTriggerId } from '~/lib/apps/actions';
+import { withTriggerId } from '~/lib/apps/actions';
 import { runSlashCommand } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
 import { prepareQuoteMessage, insertEmojiAtCursor, lastGlyphLength } from './helpers';
@@ -173,8 +173,7 @@ export const MessageComposer = ({
 				try {
 					const messageWithoutCommand = textFromInput.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
-					const triggerId = generateTriggerId(appId);
-					await runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid);
+					await withTriggerId(appId, triggerId => runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid));
 				} catch (e) {
 					log(e);
 				}

@@ -209,7 +209,11 @@ const fetchRolesFork = function* fetchRolesFork() {
 const fetchAppsFork = function* fetchAppsFork() {
 	try {
 		sdk.subscribe('stream-apps', 'apps').catch(log);
-		const { fetchActionButtons, fetchTranslations } = useAppsStore.getState();
+		const { loaded, fetchActionButtons, fetchTranslations } = useAppsStore.getState();
+		// The stream keeps the store fresh while connected; refetch only after a logout or server switch reset it
+		if (loaded) {
+			return;
+		}
 		yield all([call(fetchActionButtons), call(fetchTranslations)]);
 	} catch (e) {
 		log(e);

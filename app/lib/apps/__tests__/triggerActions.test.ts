@@ -1,18 +1,12 @@
 import { ActionTypes, ModalActions } from '~/containers/UIKit/interfaces';
-import Navigation from '~/lib/navigation/appNavigation';
 import { triggerAction } from '../actions';
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../triggerActions';
-
-jest.mock('~/lib/navigation/appNavigation', () => ({
-	back: jest.fn()
-}));
 
 jest.mock('../actions', () => ({
 	triggerAction: jest.fn()
 }));
 
 const mockedTriggerAction = triggerAction as jest.MockedFunction<typeof triggerAction>;
-const mockedBack = Navigation.back as jest.MockedFunction<typeof Navigation.back>;
 
 describe('triggerActions wrappers', () => {
 	beforeEach(() => {
@@ -42,36 +36,28 @@ describe('triggerActions wrappers', () => {
 			});
 		});
 
-		it('goes back when triggerAction returns modal.close', async () => {
+		it('asks to close when triggerAction returns modal.close', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(ModalActions.CLOSE);
 
-			await triggerSubmitView(submitInput as any);
-
-			expect(mockedBack).toHaveBeenCalledTimes(1);
+			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(true);
 		});
 
-		it('goes back when triggerAction returns nothing', async () => {
+		it('asks to close when triggerAction returns nothing', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(undefined);
 
-			await triggerSubmitView(submitInput as any);
-
-			expect(mockedBack).toHaveBeenCalledTimes(1);
+			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(true);
 		});
 
-		it('does not go back for modal.update', async () => {
+		it('keeps the modal open for modal.update', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(ModalActions.UPDATE);
 
-			await triggerSubmitView(submitInput as any);
-
-			expect(mockedBack).not.toHaveBeenCalled();
+			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(false);
 		});
 
-		it('does not go back for modal.open', async () => {
+		it('keeps the modal open for modal.open', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(ModalActions.OPEN);
 
-			await triggerSubmitView(submitInput as any);
-
-			expect(mockedBack).not.toHaveBeenCalled();
+			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(false);
 		});
 	});
 

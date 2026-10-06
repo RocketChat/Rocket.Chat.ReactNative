@@ -27,7 +27,7 @@ import { emitter } from '~/lib/methods/helpers/emitter';
 import { useComposerRid, useComposerRoomTitle, useComposerSharing, useComposerTmid, useComposerType } from '../ComposerStore';
 import { useMessageAction, useMessageActionStoreApi } from '~/containers/message/stores/MessageActionStore';
 import { getMessageById } from '~/lib/database/services/Message';
-import { generateTriggerId } from '~/lib/apps/actions';
+import { withTriggerId } from '~/lib/apps/actions';
 import { executeCommandPreview } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -238,8 +238,9 @@ export const ComposerInput = memo(
 					const commandsCollection = db.get('slash_commands');
 					const commandRecord = await commandsCollection.find(item.text);
 					const { appId } = commandRecord;
-					const triggerId = generateTriggerId(appId);
-					executeCommandPreview(item.text, item.params, rid, item.preview, triggerId, tmid);
+					withTriggerId(appId, triggerId =>
+						executeCommandPreview(item.text, item.params, rid, item.preview, triggerId, tmid)
+					).catch(log);
 				} catch (e) {
 					log(e);
 				}
