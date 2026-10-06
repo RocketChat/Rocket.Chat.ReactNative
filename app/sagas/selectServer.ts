@@ -29,8 +29,9 @@ import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER, getBasicAuthKey, getServerUserIdKey, getUserTokenKey } from '../lib/constants/keys';
+import { CERTIFICATE_KEY, CURRENT_SERVER, getBasicAuthKey } from '../lib/constants/keys';
 import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
+import { getStoredSession } from '../lib/methods/loggedInServer';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
 import { getLoginSettings, setSettings } from '../lib/methods/getSettings';
 import { getServerInfo } from '../lib/methods/getServerInfo';
@@ -155,8 +156,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
 		yield* call(migrateTokenKeysToServerScoped);
-		const userId = UserPreferences.getString(getServerUserIdKey(server));
-		const token = userId ? UserPreferences.getString(getUserTokenKey(server, userId)) : null;
+		const { userId, token } = getStoredSession(server);
 		let user = null;
 		if (userId && token) {
 			// search credentials on database
@@ -233,8 +233,6 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 		if (certificate) {
 			SSLPinning?.setCertificate(certificate, server);
 		}
-		// Each request below carries its own server-scoped Authorization, so the shared
-		// headers stay on the active workspace for the whole probe.
 		const serverInfo = yield* getServerInfoSaga({ server });
 		const serversDB = database.servers;
 		const serversHistoryCollection = serversDB.get('servers_history');

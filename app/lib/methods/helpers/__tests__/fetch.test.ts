@@ -2,12 +2,6 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import fetchWithHeaders, { headers } from '../fetch';
 
-jest.mock('react-native-device-info', () => ({
-	getSystemVersion: () => '14',
-	getVersion: () => '4.0.0',
-	getBuildNumber: () => '1'
-}));
-
 const fetchMock = jest.fn(() => Promise.resolve({} as Response));
 
 describe('fetch helper', () => {

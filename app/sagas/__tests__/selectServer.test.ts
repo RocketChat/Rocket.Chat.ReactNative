@@ -346,14 +346,10 @@ describe('selectServer saga — requesting a new workspace', () => {
 		store.dispatch(serverRequest(REQUESTED_HOST));
 		await flushSagaMicrotasks();
 
-		// The probe carries the requested host's credentials on each request instead (covered
-		// by the getLoginServices/getLoginSettings unit tests), never on the shared headers.
 		expect(authorizationSentToHost).toEqual([null, null]);
 	});
 
 	it('re-applies the connected workspace basic auth when it is selected while the probe is pending', async () => {
-		// Reachable via a select that lands before connect(): sdk.host still points at the
-		// connected workspace while the add-workspace probe is in flight.
 		UserPreferences.setString(getBasicAuthKey(OLD_SERVER), 'old-workspace-credentials');
 		setBasicAuth('old-workspace-credentials');
 		(sdk as { host?: string }).host = OLD_SERVER;

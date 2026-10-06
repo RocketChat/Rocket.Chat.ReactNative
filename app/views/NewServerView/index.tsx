@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { AccessibilityInfo, BackHandler, Keyboard, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Image } from 'expo-image';
@@ -67,13 +67,23 @@ const NewServerView = () => {
 		submit({ fromServerHistory: true, username: serverHistory?.username, serverUrl: serverHistory?.url });
 	};
 
-	const handleBackPress = () => {
+	const close = useCallback(async () => {
+		dispatch(inviteLinksClear());
+		if (previousServer) {
+			const serverRecord = await getServerById(previousServer);
+			if (serverRecord) {
+				dispatch(selectServerRequest(previousServer, serverRecord.version));
+			}
+		}
+	}, [dispatch, previousServer]);
+
+	const handleBackPress = useCallback(() => {
 		if (navigation.isFocused() && previousServer) {
 			close();
 			return true;
 		}
 		return false;
-	};
+	}, [close, navigation, previousServer]);
 
 	const handleNewServerEvent = (event: { server: string }) => {
 		let { server } = event;
@@ -83,16 +93,6 @@ const NewServerView = () => {
 		setValue('workspaceUrl', server);
 		server = completeUrl(server);
 		dispatch(serverRequest(server));
-	};
-
-	const close = async () => {
-		dispatch(inviteLinksClear());
-		if (previousServer) {
-			const serverRecord = await getServerById(previousServer);
-			if (serverRecord) {
-				dispatch(selectServerRequest(previousServer, serverRecord.version));
-			}
-		}
 	};
 
 	const setHeader = () => {
@@ -140,19 +140,16 @@ const NewServerView = () => {
 		};
 	}, []);
 
-	// While the add-workspace check is running the global Basic auth belongs to the probed host.
-	// Swallow hardware back like the hidden header close button so a back press can't restore
-	// the previous workspace's auth mid-flight and leak it to the new host.
 	useEffect(() => {
 		const onHardwareBackPress = () => {
-			if (connecting) {
+			if (connecting && previousServer && navigation.isFocused()) {
 				return true;
 			}
 			return handleBackPress();
 		};
 		const backHandler = BackHandler.addEventListener('hardwareBackPress', onHardwareBackPress);
 		return () => backHandler.remove();
-	}, [connecting, previousServer]);
+	}, [connecting, previousServer, handleBackPress, navigation]);
 
 	useEffect(() => {
 		setHeader();

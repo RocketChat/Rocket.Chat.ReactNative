@@ -53,7 +53,6 @@ const PROBED_SERVER = 'https://probed.example';
 const sentToNetwork = jest.fn((_url: string, _options: { headers: Record<string, string> }) =>
 	Promise.resolve({ json: () => Promise.resolve({ success: true, services: [] }) } as Response)
 );
-// Headers the SDK handshake observed, captured inside the mocked connect().
 let handshakeHeaders: Record<string, string> = {};
 const connectMock = jest.fn(() => {
 	handshakeHeaders = { ...(RocketChatSettings.customHeaders as Record<string, string>) };

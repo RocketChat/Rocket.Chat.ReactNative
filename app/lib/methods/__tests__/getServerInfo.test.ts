@@ -7,7 +7,7 @@ import { store } from '../../store/auxStore';
 import { getSupportedVersionsCloud } from '../../services/restApi';
 import { getBasicAuthKey, getServerUserIdKey, getUserTokenKey } from '../../constants/keys';
 
-jest.mock('../helpers/fetch', () => ({ __esModule: true, default: jest.fn(), BASIC_AUTH_KEY: 'BASIC_AUTH_KEY' }));
+jest.mock('../helpers/fetch', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('../userPreferences', () => ({ __esModule: true, default: { getString: jest.fn() } }));
 jest.mock('../../store/auxStore', () => ({ store: { getState: jest.fn(), dispatch: jest.fn() } }));
 jest.mock('../../database/services/Server', () => ({ getServerById: jest.fn() }));
@@ -83,8 +83,6 @@ describe('getServerInfo', () => {
 	it('scopes basic auth to none for a server without stored basic auth', async () => {
 		await getServerInfo(attackerServer);
 
-		// The caller pins Authorization to undefined so the global workspace auth can't win;
-		// the fetch helper drops it before the request hits the network (covered below).
 		expect(requestOptions().headers?.Authorization).toBeUndefined();
 	});
 });

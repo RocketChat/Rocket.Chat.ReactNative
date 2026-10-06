@@ -2,10 +2,6 @@ import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import { BASIC_AUTH_KEY } from '~/lib/constants/keys';
-
-export { BASIC_AUTH_KEY };
-
 export type TMethods = 'POST' | 'GET' | 'DELETE' | 'PUT' | 'post' | 'get' | 'delete' | 'put';
 
 interface CustomHeaders {
@@ -30,14 +26,8 @@ export const headers: CustomHeaders = {
 	} ${DeviceInfo.getSystemVersion()}; v${DeviceInfo.getVersion()} (${DeviceInfo.getBuildNumber()})`
 };
 
-let _basicAuth;
 export const setBasicAuth = (basicAuth: string | null): void => {
-	_basicAuth = basicAuth;
-	if (basicAuth) {
-		RocketChatSettings.customHeaders = { ...headers, Authorization: `Basic ${_basicAuth}` };
-	} else {
-		RocketChatSettings.customHeaders = headers;
-	}
+	RocketChatSettings.customHeaders = basicAuth ? { ...headers, Authorization: `Basic ${basicAuth}` } : headers;
 };
 
 RocketChatSettings.customHeaders = headers;

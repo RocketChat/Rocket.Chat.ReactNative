@@ -433,8 +433,6 @@ async function getWebsocketInfo({
 }): Promise<{ success: true } | { success: false; message: string }> {
 	const websocketSdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 
-	// The SDK client reads the shared headers when its socket connects, so point them at this
-	// server only for the handshake and hand back whatever was there before.
 	const previousHeaders = RocketChatSettings.customHeaders;
 	setBasicAuth(UserPreferences.getString(getBasicAuthKey(server)));
 	try {

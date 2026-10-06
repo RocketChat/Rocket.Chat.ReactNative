@@ -40,17 +40,34 @@ const roomTypes = {
 
 export const shouldAutoConfirmDeepLinkLogin = (isE2E, params = {}) => isE2E && params.forceLoginPrompt !== 'true';
 
+const consentCopy = {
+	login: {
+		title: 'Deep_link_login_title',
+		description: 'Deep_link_login_description',
+		confirmationText: 'Login',
+		declined: 'Deep_link_login_declined'
+	},
+	open: {
+		title: 'Deep_link_open_title',
+		description: 'Deep_link_open_description',
+		confirmationText: 'Continue',
+		declined: 'Deep_link_open_declined'
+	}
+};
+
+const getConsentMode = (params = {}) => (params.token ? 'login' : 'open');
+
 const confirmDeepLinkLogin = (host, params = {}) =>
 	new Promise(resolve => {
 		if (shouldAutoConfirmDeepLinkLogin(process.env.RUNNING_E2E_TESTS === 'true', params)) {
 			resolve(true);
 			return;
 		}
-		const isTokenLogin = !!params.token;
+		const copy = consentCopy[getConsentMode(params)];
 		showConfirmationAlert({
-			title: I18n.t(isTokenLogin ? 'Deep_link_login_title' : 'Deep_link_open_title'),
-			message: I18n.t(isTokenLogin ? 'Deep_link_login_description' : 'Deep_link_open_description', { server: host }),
-			confirmationText: I18n.t(isTokenLogin ? 'Login' : 'Continue'),
+			title: I18n.t(copy.title),
+			message: I18n.t(copy.description, { server: host }),
+			confirmationText: I18n.t(copy.confirmationText),
 			onPress: () => resolve(true),
 			onCancel: () => resolve(false)
 		});
@@ -147,10 +164,10 @@ const fallbackNavigation = function* fallbackNavigation() {
 	yield put(appInit());
 };
 
-const declineDeepLinkLogin = function* declineDeepLinkLogin(isTokenLogin) {
+const declineDeepLinkLogin = function* declineDeepLinkLogin(mode) {
 	const currentRoot = yield select(state => state.app.root);
 	if (currentRoot) {
-		showToast(I18n.t(isTokenLogin ? 'Deep_link_login_declined' : 'Deep_link_open_declined'));
+		showToast(I18n.t(consentCopy[mode].declined));
 	}
 	yield fallbackNavigation();
 };
@@ -161,7 +178,7 @@ const ensureDeepLinkConsent = function* ensureDeepLinkConsent(host, params, isKn
 	}
 	const confirmed = yield call(confirmDeepLinkLogin, host, params);
 	if (!confirmed) {
-		yield declineDeepLinkLogin(!!params.token);
+		yield declineDeepLinkLogin(getConsentMode(params));
 		return false;
 	}
 	return true;
