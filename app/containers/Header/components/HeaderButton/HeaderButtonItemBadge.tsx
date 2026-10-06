@@ -3,6 +3,7 @@ import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import UnreadBadge from '~/containers/UnreadBadge';
 import { useTheme } from '~/theme';
+import { formatUnreadCount } from '~/lib/methods/helpers/formatUnreadCount';
 import sharedStyles from '~/views/Styles';
 
 const styles = StyleSheet.create({
@@ -30,7 +31,7 @@ export const BadgeWarn = ({ color }: { color: string }): ReactElement => (
 export const BadgeCount = ({ value, color }: { value: number; color: string }): ReactElement => {
 	const { colors } = useTheme();
 	const { fontScale } = useWindowDimensions();
-	const text = value >= 100 ? '+99' : String(value);
+	const text = formatUnreadCount(value);
 	return (
 		<View
 			style={[
