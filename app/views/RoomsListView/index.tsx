@@ -182,6 +182,7 @@ const RoomsListView = memo(function RoomsListView() {
 						Platform.select({ ios: 0, default: bottom }) + (showNewMessageButton ? FLOATING_ACTION_BUTTON_CLEARANCE : 0)
 				}}
 				renderItem={renderItem}
+				strictMode
 				itemLayoutAnimation={SECTION_REFLOW}
 				ListHeaderComponent={ListHeader}
 				ListFooterComponent={
