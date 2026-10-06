@@ -6,6 +6,20 @@ import { firstVisible, launchApp, navigateToLogin, LONG_TIMEOUT, fillWhenUncover
 import { dismissChromeFirstRunPrompts, dismissPasswordManagerPrompt } from '~e2e/support/onboarding';
 
 const SAFARI_APP = 'com.apple.mobilesafari';
+const APP_SWITCH_ATTEMPTS = 3;
+const APP_SWITCH_TIMEOUT_ERROR = 'xcrun timed out';
+
+const switchToApp = async ({ device }: Fixtures, app: string) => {
+	for (let attempt = 1; ; attempt++) {
+		try {
+			return await device.openApp(app);
+		} catch (error) {
+			if (attempt >= APP_SWITCH_ATTEMPTS || !String(error).includes(APP_SWITCH_TIMEOUT_ERROR)) {
+				throw error;
+			}
+		}
+	}
+};
 
 const samlControl = ({ screen, platform }: Fixtures, role: 'textbox' | 'button', label: string) =>
 	platform === 'ios' ? screen.getByRole(role, label) : screen.getByText(label);
@@ -20,7 +34,7 @@ test('logs in with SAML', { tags: ['test-2'] }, async fixtures => {
 	await expect(screen.getByText('Login on web')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByText('Login on web').tap();
 	if (isIOS) {
-		await device.openApp(SAFARI_APP);
+		await switchToApp(fixtures, SAFARI_APP);
 	}
 	await dismissChromeFirstRunPrompts(fixtures, screen.getByText('Email or username').first());
 	await screen.scrollUntilVisible(screen.getByText('SAML'));
@@ -36,7 +50,7 @@ test('logs in with SAML', { tags: ['test-2'] }, async fixtures => {
 		await screen.getByRole('button', 'Open').tap();
 	}
 	if (isIOS) {
-		await device.openApp(rocketChatApp.bundleId ?? rocketChatApp.name);
+		await switchToApp(fixtures, rocketChatApp.bundleId ?? rocketChatApp.name);
 	}
 	await expect(roomsList).toBeVisible({ timeout: LONG_TIMEOUT });
 });
