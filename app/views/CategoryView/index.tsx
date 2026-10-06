@@ -18,6 +18,7 @@ import { useTheme } from '~/theme';
 import NewMessageButton from '~/views/RoomsListView/components/NewMessageButton';
 import { useCategoryRooms } from './hooks/useCategoryRooms';
 import { useCategoryHeader } from './hooks/useCategoryHeader';
+import SectionPills from './components/SectionPills';
 
 export type CategoryViewParams = {
 	header: string;
@@ -26,7 +27,8 @@ export type CategoryViewParams = {
 
 const CategoryView = ({ route }: StaticScreenProps<CategoryViewParams>) => {
 	const { colors } = useTheme();
-	const { rooms, loading } = useCategoryRooms(route.params.header);
+	const { header, title } = route.params;
+	const { rooms, sections, loading } = useCategoryRooms(header);
 	const username = useAppSelector(state => getUserSelector(state).username);
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name) as boolean;
 	const showLastMessage = useAppSelector(state => state.settings.Store_Last_Message) as boolean;
@@ -35,7 +37,7 @@ const CategoryView = ({ route }: StaticScreenProps<CategoryViewParams>) => {
 	const isMasterDetail = useMasterDetail();
 	const { width } = useSafeAreaFrame();
 	const { bottom } = useSafeAreaInsets();
-	const { showNewMessageButton, goToNewMessage } = useCategoryHeader(route.params.header, route.params.title);
+	const { showNewMessageButton, goToNewMessage, selectSection } = useCategoryHeader(header, title);
 
 	const onPressItem = (item = {} as IRoomItem) => {
 		if (item.rid === subscribedRoom) {
@@ -69,12 +71,12 @@ const CategoryView = ({ route }: StaticScreenProps<CategoryViewParams>) => {
 
 	return (
 		<SafeAreaView testID='category-view' style={{ backgroundColor: colors.surfaceTint }}>
+			<SectionPills sections={sections} selectedHeader={header} onSelect={selectSection} />
 			<FlatList
 				data={rooms as IRoomItem[]}
 				keyExtractor={item => item.rid}
 				renderItem={renderItem}
 				contentContainerStyle={{
-					paddingTop: 8,
 					paddingBottom:
 						Platform.select({ ios: 0, default: bottom }) + (showNewMessageButton ? FLOATING_ACTION_BUTTON_CLEARANCE : 0)
 				}}

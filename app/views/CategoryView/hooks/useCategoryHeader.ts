@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 
 import i18n from '~/i18n';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -11,6 +11,7 @@ import { useTheme } from '~/theme';
 import { useNewMessage } from '~/views/RoomsListView/hooks/useNewMessage';
 import { useHasCustomCategoriesLicense, useSidebarCategories } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import { categoryIdOfHeader } from '~/views/RoomsListView/utils/groupRooms';
+import { SYSTEM_GROUPS } from '~/views/RoomsListView/utils/sidebarGroupOrder';
 
 export const useCategoryHeader = (header: string, title: string) => {
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CategoryView'>>();
@@ -20,7 +21,7 @@ export const useCategoryHeader = (header: string, title: string) => {
 	const hasCustomCategoriesLicense = useHasCustomCategoriesLicense();
 	const { customCategoryNames } = useSidebarCategories();
 	const categoryName = customCategoryNames.get(header);
-	const [isCustomCategory] = useState(categoryName !== undefined);
+	const isCustomCategory = !SYSTEM_GROUPS.includes(categoryIdOfHeader(header));
 	const showNewMessageAction = hasNativeHeaderBar && canCreateRoom;
 
 	useEffect(() => {
@@ -58,7 +59,7 @@ export const useCategoryHeader = (header: string, title: string) => {
 			});
 		}
 		navigation.setOptions({
-			...(categoryName !== undefined ? { title: categoryName } : {}),
+			title: categoryName ?? title,
 			...headerRightActions(actions)
 		});
 	}, [
@@ -73,5 +74,8 @@ export const useCategoryHeader = (header: string, title: string) => {
 		goToNewMessage
 	]);
 
-	return { showNewMessageButton: !hasNativeHeaderBar && canCreateRoom, goToNewMessage };
+	const selectSection = (sectionHeader: string, sectionTitle: string) =>
+		navigation.setParams({ header: sectionHeader, title: sectionTitle });
+
+	return { showNewMessageButton: !hasNativeHeaderBar && canCreateRoom, goToNewMessage, selectSection };
 };
