@@ -12,11 +12,11 @@ const moveRoom = async (room: TRoomPlacement, categoryId: string, currentCategor
 		await setRoomsCategory([room.rid], currentCategoryId === categoryId ? null : categoryId);
 		return;
 	}
-	if (room.category) {
-		await setRoomsCategory([room.rid], null);
-	}
 	if (currentCategoryId === FAVORITES_GROUP || !room.f) {
 		await toggleFavorite(room.rid, currentCategoryId !== FAVORITES_GROUP);
+	}
+	if (room.category) {
+		await setRoomsCategory([room.rid], null);
 	}
 };
 
