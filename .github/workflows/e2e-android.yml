@@ -46,7 +46,6 @@ jobs:
           key: avd-${{ runner.os }}-api34
 
       - name: Restore Android SDK packages (emulator + system image, seeded on develop)
-        id: sdk-cache
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: |
@@ -54,8 +53,7 @@ jobs:
             /usr/local/lib/android/sdk/system-images/android-34/google_apis/x86_64
           key: android-sdk-emu-${{ runner.os }}-api34
 
-      - name: Pre-install Android SDK packages (cache miss only, retried)
-        if: steps.sdk-cache.outputs.cache-hit != 'true'
+      - name: Pre-install Android SDK packages (updates a stale cache, retried)
         uses: ./.github/actions/preinstall-android-sdk
 
       - name: Setup Node
