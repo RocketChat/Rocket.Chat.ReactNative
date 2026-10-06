@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useRef } from 'react';
 import {
 	type EntryExitAnimationFunction,
 	LinearTransition,
@@ -47,23 +47,17 @@ const coverExiting: EntryExitAnimationFunction = () => {
 	};
 };
 
-export const useSectionToggleAnimation = (
-	collapsedGroups: ReadonlySet<string>,
-	toggleGroup: (group: string) => void,
-	rowCount: number
-) => {
+export const useSectionToggleAnimation = (toggleGroup: (group: string) => void) => {
 	const isToggling = useSharedValue(false);
 	const coverOffset = useSharedValue(0);
-	const { cover, setHeaderBottom } = useSectionReveal(collapsedGroups, rowCount);
+	const settleTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+	const { cover, reveal } = useSectionReveal();
 
-	useEffect(() => {
-		const settle = setTimeout(() => isToggling.set(false), TOGGLE_SETTLE_MS);
-		return () => clearTimeout(settle);
-	}, [collapsedGroups, isToggling]);
-
-	const onToggle = (group: string, headerBottom: number) => {
+	const onToggle = (group: string, headerBottom: number, revealedRows: number) => {
 		isToggling.set(true);
-		setHeaderBottom(headerBottom);
+		clearTimeout(settleTimer.current);
+		settleTimer.current = setTimeout(() => isToggling.set(false), TOGGLE_SETTLE_MS);
+		reveal(headerBottom, revealedRows);
 		toggleGroup(group);
 	};
 

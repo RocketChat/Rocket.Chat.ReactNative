@@ -12,13 +12,14 @@ interface ISectionHeader {
 	header: string;
 	title?: string;
 	collapsed: boolean;
+	roomCount: number;
 	unread?: number;
 	userMentions?: number;
 	groupMentions?: number;
 	tunread?: string[];
 	tunreadUser?: string[];
 	tunreadGroup?: string[];
-	onToggle: (header: string, headerBottom: number) => void;
+	onToggle: (header: string, headerBottom: number, revealedRows: number) => void;
 	badgeEntering: EntryExitAnimationFunction;
 	badgeExiting: EntryExitAnimationFunction;
 }
@@ -27,6 +28,7 @@ const SectionHeader = ({
 	header,
 	title,
 	collapsed,
+	roomCount,
 	unread,
 	userMentions,
 	groupMentions,
@@ -41,7 +43,11 @@ const SectionHeader = ({
 	const sectionTitle = title ?? i18n.t(header);
 	return (
 		<Pressable
-			onPress={event => event.currentTarget.measureInWindow((_x, y, _width, height) => onToggle(header, y + height))}
+			onPress={event =>
+				event.currentTarget.measureInWindow((_x, y, _width, height) =>
+					onToggle(header, y + height, collapsed ? roomCount : -roomCount)
+				)
+			}
 			style={[styles.groupTitleContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}
 			accessibilityRole='button'
 			accessibilityLabel={sectionTitle}

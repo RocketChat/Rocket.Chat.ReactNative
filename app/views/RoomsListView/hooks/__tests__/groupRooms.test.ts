@@ -91,6 +91,7 @@ describe('groupRooms', () => {
 
 		expect(header).toMatchObject({
 			collapsed: true,
+			sectionRoomCount: 4,
 			unread: 8,
 			userMentions: 1,
 			groupMentions: 2,
