@@ -100,7 +100,7 @@ const resetApp = async ({ app, device, platform }: Fixtures) => {
 		return;
 	}
 	if (!androidAppInstalled) {
-		await device.installApp(undefined, { reinstall: true });
+		await device.installApp();
 		androidAppInstalled = true;
 	}
 	await device.closeApp();
@@ -343,7 +343,9 @@ export const searchRoom = async (fixtures: Fixtures, room: string) => {
 	const { screen } = fixtures;
 	await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expect(screen.getByTestId(/^rooms-list-view-item-/).first()).toBeVisible({ timeout: LONG_TIMEOUT });
-	await tapWhenVisible(fixtures, 'rooms-list-view-search');
+	const searchButton = screen.getByTestId('rooms-list-view-search').first();
+	await expect(searchButton).toBeVisible({ timeout: LONG_TIMEOUT });
+	await tapUntilVisible(fixtures, searchButton, 'rooms-list-view-search-input');
 	await screen.getByTestId('rooms-list-view-search-input').fill(room);
 	await expect(screen.getByTestId(`rooms-list-view-item-${room}`).first()).toBeVisible({ timeout: LONG_TIMEOUT });
 };

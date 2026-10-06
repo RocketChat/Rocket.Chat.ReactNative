@@ -54,7 +54,7 @@ test('creates, follows, drafts and navigates threads', { tags: ['test-13'], time
 	await screen.getByTestId('send-to-channel-unchecked').tap();
 	await screen.getByTestId('message-composer-send').tap();
 	await leaveThread(fixtures, THREAD, room.name);
-	await expect(screen.getByText(/sendToChannel/)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expect(screen.getByTestId('message-content-sendToChannel')).toBeVisible({ timeout: LONG_TIMEOUT });
 
 	await sendMessage(fixtures, 'dummymessagebetweenthethread');
 	await openThreadFromButton(fixtures, THREAD);

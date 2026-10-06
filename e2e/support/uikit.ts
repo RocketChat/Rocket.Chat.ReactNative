@@ -1,7 +1,7 @@
 import type { Locator } from 'e2e';
 import { expect } from 'e2e';
 
-import { escapeRegExp, type Fixtures } from './flows';
+import { escapeRegExp, firstVisible, type Fixtures } from './flows';
 
 export const runSlashCommand = async ({ screen }: Fixtures, command: string) => {
 	await screen.getByTestId('message-composer-input').fill(`/${command}`);
@@ -24,9 +24,13 @@ const tapMessageBodyBelowHeader = async ({ screen }: Fixtures, message: Locator,
 const botMessages = ({ screen }: Fixtures, botUsername: string) =>
 	screen.getByRole('button', new RegExp(`^${escapeRegExp(botUsername)} `));
 
-const tapBotMessageBody = async (fixtures: Fixtures, botUsername: string) => {
+const tapBotMessageBody = async (fixtures: Fixtures, botUsername: string, button: Locator) => {
 	const botMessage = botMessages(fixtures, botUsername);
-	await expect(botMessage).toBeVisible({ timeout: 10_000 });
+	const groupedHeader = botMessage.getByTestId(`username-header-${botUsername}`);
+	if ((await firstVisible([button, groupedHeader], 10_000)) === button) {
+		await button.tap();
+		return;
+	}
 	await tapMessageBodyBelowHeader(fixtures, botMessage, botUsername);
 };
 
@@ -34,12 +38,13 @@ export const tapBotMessageButton = async (
 	fixtures: Fixtures,
 	{ botUsername, buttonName }: { botUsername: string; buttonName: string }
 ) => {
+	const button = fixtures.screen.getByRole('button', buttonName);
+	await expect(botMessages(fixtures, botUsername)).toBeVisible({ timeout: 10_000 });
 	if (fixtures.platform === 'ios') {
-		await tapBotMessageBody(fixtures, botUsername);
+		await tapBotMessageBody(fixtures, botUsername, button);
 		return;
 	}
-	await expect(botMessages(fixtures, botUsername)).toBeVisible({ timeout: 10_000 });
-	await fixtures.screen.getByRole('button', buttonName).tap();
+	await button.tap();
 };
 
 const BOT_MESSAGES_WITH_REPLY = 2;

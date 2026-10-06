@@ -31,7 +31,7 @@ const expectBackInRoom = async (fixtures: Fixtures) => {
 
 const expectLinkAlert = async ({ screen }: Fixtures, title: string) => {
 	await expect(screen.getByText(title)).toBeVisible({ timeout: 10_000 });
-	await expect(screen.getByText(LINK)).toBeVisible();
+	await expect(screen.getByText(LINK).first()).toBeVisible();
 	await screen.getByRole('button', { name: /^OK$/i }).tap();
 };
 

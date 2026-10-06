@@ -6,6 +6,7 @@ SHARD="${2:?usage: run-e2e.sh <android|ios> <shard>}"
 TESTS_DIR="e2e/tests"
 OUTPUT_DIR=".e2e"
 RUN_TIMEOUT="${RUN_TIMEOUT:-40m}"
+RERUN_TIMEOUT="${RERUN_TIMEOUT:-15m}"
 RETRIES="${RETRIES:-2}"
 ANDROID_DEVICE="${E2E_ANDROID_DEVICE:-emulator-5554}"
 NODE_TS=(node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON)
@@ -53,21 +54,33 @@ fi
 
 E2E_COMMAND=(pnpm exec e2e run --target "$PLATFORM" --tag "test-${SHARD}" --retries "$RETRIES" --reporter list,junit)
 
-rc=0
-if [ -n "$TIMEOUT_BIN" ]; then
-  "$TIMEOUT_BIN" -k 30s "$RUN_TIMEOUT" "${E2E_COMMAND[@]}" || rc=$?
-else
-  "${E2E_COMMAND[@]}" || rc=$?
-fi
+run_e2e_pass() {
+  local pass_timeout="$1"
+  shift
+  rc=0
+  if [ -n "$TIMEOUT_BIN" ]; then
+    "$TIMEOUT_BIN" -k 30s "$pass_timeout" "${E2E_COMMAND[@]}" "$@" || rc=$?
+  else
+    "${E2E_COMMAND[@]}" "$@" || rc=$?
+  fi
 
-if [ "$rc" -eq 124 ] || [ "$rc" -eq 137 ]; then
-  echo "::error title=E2E run timed out::'e2e run' exceeded ${RUN_TIMEOUT} and was terminated (likely a wedged simulator or emulator). This is an environment failure, not an app or test regression."
-  exit "$rc"
-fi
+  if [ "$rc" -eq 124 ] || [ "$rc" -eq 137 ]; then
+    echo "::error title=E2E run timed out::'e2e run' exceeded ${pass_timeout} and was terminated (likely a wedged simulator or emulator). This is an environment failure, not an app or test regression."
+    exit "$rc"
+  fi
 
-if [ ! -f "$OUTPUT_DIR/junit.xml" ]; then
-  echo "::error title=E2E run produced no report::'e2e run' exited ${rc} without writing ${OUTPUT_DIR}/junit.xml (config, collection, or device startup failure). Re-run the failed job if this looks transient."
-  exit $(( rc == 0 ? 1 : rc ))
+  if [ ! -f "$OUTPUT_DIR/junit.xml" ]; then
+    echo "::error title=E2E run produced no report::'e2e run' exited ${rc} without writing ${OUTPUT_DIR}/junit.xml (config, collection, or device startup failure). Re-run the failed job if this looks transient."
+    exit $(( rc == 0 ? 1 : rc ))
+  fi
+}
+
+run_e2e_pass "$RUN_TIMEOUT"
+
+if [ "$rc" -ne 0 ]; then
+  echo "::warning title=E2E rerun::Rerunning the tests that failed, with a fresh agent-device daemon. The runner never retries infrastructure failures (simulator, emulator, or automation runner), so a single flake would otherwise fail the shard."
+  pnpm exec agent-device daemon stop --clean || true
+  run_e2e_pass "$RERUN_TIMEOUT" --last-failed
 fi
 
 if [ "$rc" -ne 0 ]; then
