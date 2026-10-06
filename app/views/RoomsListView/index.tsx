@@ -9,6 +9,7 @@ import ActivityIndicator from '~/containers/ActivityIndicator';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { ChangePasswordRequired } from '~/containers/ChangePasswordRequired';
 import { FLOATING_ACTION_BUTTON_CLEARANCE } from '~/containers/FloatingActionButton';
+import RoomItem from '~/containers/RoomItem';
 import { type IRoomItem } from '~/containers/RoomItem/interfaces';
 import { type IApplicationState } from '~/definitions';
 import { SupportedVersionsExpired } from '~/containers/SupportedVersions';
@@ -34,7 +35,6 @@ import ListHeader from './components/ListHeader';
 import NewMessageButton from './components/NewMessageButton';
 import SectionHeader from './components/SectionHeader';
 import SectionRevealFooter from './components/SectionRevealFooter';
-import SectionRoomItem from './components/SectionRoomItem';
 import RoomsSearchProvider, { RoomsSearchContext } from './contexts/RoomsSearchProvider';
 import { useCollapsedGroups } from './hooks/useCollapsedGroups';
 import { useGetItemLayout } from './hooks/useGetItemLayout';
@@ -126,25 +126,25 @@ const RoomsListView = memo(function RoomsListView() {
 		const swipeEnabled = !(item?.search || item?.joinCodeRequired || item?.outside);
 
 		return (
-			<SectionRoomItem
-				entering={rowEntering}
-				exiting={rowExiting}
-				item={item}
-				id={id}
-				username={username}
-				showLastMessage={showLastMessage}
-				onPress={onPressItem}
-				// TODO: move to RoomItem
-				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
-				useRealName={useRealName}
-				getRoomTitle={getRoomTitle}
-				getRoomAvatar={getRoomAvatar}
-				getIsRead={isRead}
-				isFocused={focusedRoom === item.rid}
-				swipeEnabled={swipeEnabled}
-				showAvatar={showAvatar}
-				displayMode={displayMode}
-			/>
+			<Animated.View entering={rowEntering} exiting={rowExiting}>
+				<RoomItem
+					item={item}
+					id={id}
+					username={username}
+					showLastMessage={showLastMessage}
+					onPress={onPressItem}
+					// TODO: move to RoomItem
+					width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
+					useRealName={useRealName}
+					getRoomTitle={getRoomTitle}
+					getRoomAvatar={getRoomAvatar}
+					getIsRead={isRead}
+					isFocused={focusedRoom === item.rid}
+					swipeEnabled={swipeEnabled}
+					showAvatar={showAvatar}
+					displayMode={displayMode}
+				/>
+			</Animated.View>
 		);
 	};
 
