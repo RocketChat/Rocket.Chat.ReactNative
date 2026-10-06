@@ -79,6 +79,14 @@ describe('describeNativeListAccessory', () => {
 		).toEqual({ kind: 'text', text: 'Toasts' });
 	});
 
+	it('keeps the text color set by the caller', () => {
+		expect(describeNativeListAccessory(<Text style={[{ fontSize: 16 }, { color: 'green' }]}>42%</Text>)).toEqual({
+			kind: 'text',
+			text: '42%',
+			color: 'green'
+		});
+	});
+
 	it('hosts anything else as React Native', () => {
 		const avatar = <Avatar text='diego' size={36} />;
 		expect(describeNativeListAccessory(avatar)).toEqual({ kind: 'hosted', element: avatar });

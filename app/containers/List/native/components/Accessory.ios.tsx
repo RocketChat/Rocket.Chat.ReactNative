@@ -46,7 +46,8 @@ const NativeListAccessory = ({ accessory }: { accessory: TNativeListAccessory })
 			);
 		case 'text':
 			return (
-				<Text modifiers={[lineLimit(1), font({ textStyle: 'body' }), foregroundStyle(colors.fontSecondaryInfo)]}>
+				<Text
+					modifiers={[lineLimit(1), font({ textStyle: 'body' }), foregroundStyle(accessory.color ?? colors.fontSecondaryInfo)]}>
 					{accessory.text}
 				</Text>
 			);
