@@ -259,12 +259,14 @@ const acceptSystemAlert = async (device: Fixtures['device']) => {
 const OPEN_LINK_ATTEMPTS = 3;
 const OPEN_LINK_RETRY_DELAY = 2_000;
 
+const isOpenLinkRejected = (error: unknown) => error instanceof Error && error.message.includes('failed to open');
+
 const openLinkWithRetry = async (device: Fixtures['device'], link: string) => {
 	for (let attempt = 1; ; attempt++) {
 		try {
 			return await device.openLink(link);
 		} catch (error) {
-			if (attempt >= OPEN_LINK_ATTEMPTS) {
+			if (attempt >= OPEN_LINK_ATTEMPTS || !isOpenLinkRejected(error)) {
 				throw error;
 			}
 			await delay(OPEN_LINK_RETRY_DELAY);
