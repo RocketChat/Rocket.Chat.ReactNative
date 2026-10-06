@@ -18,16 +18,13 @@ export default StyleSheet.create({
 	groupTitleContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingHorizontal: 12,
-		paddingTop: 17,
-		paddingBottom: 10
-	},
-	groupToggleIcon: {
-		marginLeft: 8
+		gap: 4,
+		paddingHorizontal: 16,
+		paddingVertical: 12,
+		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	groupTitle: {
 		fontSize: 16,
-		letterSpacing: 0.27,
 		flex: 1,
 		lineHeight: 24,
 		...sharedStyles.textBold

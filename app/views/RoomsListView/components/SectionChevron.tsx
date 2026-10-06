@@ -3,7 +3,6 @@ import Animated, { ReduceMotion, useAnimatedStyle, withDelay, withSpring } from 
 
 import { CustomIcon } from '~/containers/CustomIcon';
 import { useTheme } from '~/theme';
-import styles from '../styles';
 
 const CHEVRON_SIZE = 20;
 const CHEVRON_SPRING = { stiffness: 410, damping: 40.5, mass: 1, reduceMotion: ReduceMotion.System };
@@ -20,12 +19,12 @@ const SectionChevron = ({ collapsed }: { collapsed: boolean }) => {
 	const collapsedChevronStyle = useAnimatedStyle(() => ({ opacity: crossfadeTo(collapsed) }));
 
 	return (
-		<View style={[styles.groupToggleIcon, chevronStyles.container]}>
+		<View style={chevronStyles.container}>
 			<Animated.View style={[StyleSheet.absoluteFill, expandedChevronStyle]}>
-				<CustomIcon name='chevron-up' size={CHEVRON_SIZE} color={colors.fontHint} />
+				<CustomIcon name='chevron-up' size={CHEVRON_SIZE} color={colors.fontTitlesLabels} />
 			</Animated.View>
 			<Animated.View style={[StyleSheet.absoluteFill, collapsedChevronStyle]}>
-				<CustomIcon name='chevron-down' size={CHEVRON_SIZE} color={colors.fontHint} />
+				<CustomIcon name='chevron-down' size={CHEVRON_SIZE} color={colors.fontTitlesLabels} />
 			</Animated.View>
 		</View>
 	);

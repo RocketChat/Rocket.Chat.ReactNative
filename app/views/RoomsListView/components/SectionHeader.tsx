@@ -42,12 +42,12 @@ const SectionHeader = ({
 	return (
 		<Pressable
 			onPress={event => event.currentTarget.measureInWindow((_x, y, _width, height) => onToggle(header, y + height))}
-			style={[styles.groupTitleContainer, { backgroundColor: colors.surfaceRoom }]}
+			style={[styles.groupTitleContainer, { backgroundColor: colors.surfaceRoom, borderColor: colors.strokeExtraLight }]}
 			accessibilityRole='button'
 			accessibilityLabel={sectionTitle}
 			accessibilityState={{ expanded: !collapsed }}
 			testID={`rooms-list-section-${header}`}>
-			<Text style={[styles.groupTitle, { color: colors.fontHint }]}>{sectionTitle}</Text>
+			<Text style={[styles.groupTitle, { color: colors.fontDefault }]}>{sectionTitle}</Text>
 			{collapsed ? (
 				<Animated.View entering={badgeEntering} exiting={badgeExiting}>
 					<UnreadBadge
