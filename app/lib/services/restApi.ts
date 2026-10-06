@@ -281,8 +281,13 @@ export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; sel
 };
 
 export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p') => {
-	// RC 0.48.0
 	if (type === 'p') {
+		const serverVersion = reduxStore.getState().server.version;
+		// RC 8.6.0
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+			return sdk.post('rooms.join', { roomId, ...(joinCode ? { joinCode } : {}) });
+		}
+		// RC 0.48.0
 		return sdk.methodCallWrapper('joinRoom', roomId) as Promise<boolean>;
 	}
 	return sdk.post('channels.join', { roomId, joinCode });

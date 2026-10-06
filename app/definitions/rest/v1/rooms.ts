@@ -57,6 +57,11 @@ export type RoomsEndpoints = {
 	'rooms.invite': {
 		POST: (params: { roomId: string; action: 'accept' | 'reject' }) => void;
 	};
+	'rooms.join': {
+		POST: (params: { roomId: string; joinCode?: string }) => {
+			room: IServerRoom;
+		};
+	};
 };
 
 export type TRoomsMediaResponse = {
