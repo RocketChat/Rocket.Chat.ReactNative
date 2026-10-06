@@ -13,7 +13,7 @@ import Navigation from '~/lib/navigation/appNavigation';
 import { useTheme } from '~/theme';
 import { toCategoryRoom } from '~/views/CreateCategoryView/hooks/useCategoryRoomCandidates';
 import sharedStyles from '~/views/Styles';
-import { useRoomCategory } from '../hooks/useRoomCategory';
+import { useRoomCategory } from './hooks/useRoomCategory';
 
 const styles = StyleSheet.create({
 	container: {

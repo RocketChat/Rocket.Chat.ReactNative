@@ -30,6 +30,7 @@ const Touchable = ({
 	type,
 	onPress,
 	onLongPress,
+	onMoveToCategoryPress,
 	width,
 	favorite,
 	isRead,
@@ -63,6 +64,11 @@ const Touchable = ({
 
 	const handleToggleFav = () => {
 		toggleFav(rid, favorite);
+		close();
+	};
+
+	const handleMoveToCategory = () => {
+		onMoveToCategoryPress?.();
 		close();
 	};
 
@@ -154,6 +160,7 @@ const Touchable = ({
 							favorite={favorite}
 							width={width}
 							toggleFav={handleToggleFav}
+							onMoveToCategoryPress={onMoveToCategoryPress ? handleMoveToCategory : undefined}
 							onHidePress={onHidePress}
 							displayMode={displayMode}
 						/>

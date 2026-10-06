@@ -23,6 +23,7 @@ export interface IRightActionsProps {
 	favorite: boolean;
 	width: number;
 	toggleFav(): void;
+	onMoveToCategoryPress?: () => void;
 	onHidePress(): void;
 	displayMode: string;
 }
@@ -68,6 +69,7 @@ interface IRoomItemTouchables {
 	hideChannel?: (rid: string, type: SubscriptionType) => Promise<void>;
 	onPress: (item?: any) => void;
 	onLongPress?: (item?: any) => void;
+	onMoveToCategoryPress?: () => void;
 }
 
 interface IBaseRoomItem extends IRoomItemTouchables {

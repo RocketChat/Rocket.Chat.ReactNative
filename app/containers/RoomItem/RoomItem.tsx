@@ -49,6 +49,7 @@ const RoomItem = ({
 	swipeEnabled = true,
 	onPress,
 	onLongPress,
+	onMoveToCategoryPress,
 	teamMain,
 	autoJoin,
 	showAvatar,
@@ -80,6 +81,7 @@ const RoomItem = ({
 		<Touchable
 			onPress={onPress}
 			onLongPress={onLongPress}
+			onMoveToCategoryPress={onMoveToCategoryPress}
 			width={width}
 			favorite={favorite}
 			isRead={isRead}

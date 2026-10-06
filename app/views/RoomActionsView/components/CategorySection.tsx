@@ -9,8 +9,8 @@ import { type TSubscriptionModel } from '~/definitions';
 import { useTheme } from '~/theme';
 import { useHasCustomCategoriesLicense } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import sharedStyles from '~/views/Styles';
-import { useRoomCategory } from '../hooks/useRoomCategory';
-import MoveToCategorySheet from './MoveToCategorySheet';
+import { useRoomCategory } from '~/containers/MoveToCategorySheet/hooks/useRoomCategory';
+import MoveToCategorySheet from '~/containers/MoveToCategorySheet';
 
 const styles = StyleSheet.create({
 	value: {
