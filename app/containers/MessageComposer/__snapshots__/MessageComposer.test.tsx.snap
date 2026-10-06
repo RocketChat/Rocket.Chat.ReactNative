@@ -424,45 +424,82 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           </View>
         </View>
       </View>
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
       <View
         style={
           {
@@ -943,45 +980,82 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           </View>
         </View>
       </View>
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
       <View
         style={
           {
@@ -1676,45 +1750,82 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           </View>
         </View>
       </View>
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
       <View
         style={
           {
@@ -2310,45 +2421,82 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         }
       }
     >
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
     </View>
     <View
       style={
@@ -3065,45 +3213,82 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         }
       }
     >
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
     </View>
     <View
       style={
@@ -3820,45 +4005,82 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         }
       }
     >
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
     </View>
     <View
       style={
@@ -4575,45 +4797,82 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         }
       }
     >
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
     </View>
     <View
       style={
@@ -5330,45 +5589,82 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         }
       }
     >
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
     </View>
     <View
       style={
@@ -6085,45 +6381,82 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         }
       }
     >
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
     </View>
     <View
       style={
@@ -6840,45 +7173,82 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         }
       }
     >
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
     </View>
     <View
       style={
@@ -7595,45 +7965,82 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         }
       }
     >
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
     </View>
     <View
       style={
@@ -8350,45 +8757,82 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         }
       }
     >
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
     </View>
     <View
       style={
@@ -9105,45 +9549,82 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         }
       }
     >
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
     </View>
     <View
       style={
@@ -9860,45 +10341,82 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         }
       }
     >
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
     </View>
     <View
       style={
@@ -10615,45 +11133,82 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         }
       }
     >
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
     </View>
     <View
       style={
@@ -11178,45 +11733,82 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         }
       }
     >
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
     </View>
     <View
       style={
@@ -13216,45 +13808,82 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         }
       }
     >
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        onTouchStart={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flex": 1,
+          }
         }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
+      >
+        <TextInput
+          accessibilityLabel="Message @Rocket Chat"
+          blurOnSubmit={false}
+          defaultValue=""
+          keyboardAppearance="light"
+          multiline={true}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSelectionChange={[Function]}
+          onTouchStart={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "maxHeight": 200,
+                "minHeight": 48,
+                "paddingBottom": 12,
+                "paddingHorizontal": 0,
+                "paddingTop": 12,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="message-composer-input"
+          underlineColorAndroid="transparent"
+        />
+        <Text
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+          numberOfLines={1}
+          pointerEvents="none"
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "left": 0,
+                "lineHeight": 22,
+                "position": "absolute",
+                "right": 0,
+                "textAlign": "left",
+                "top": 12,
+              },
+              {
+                "color": "#9EA2A8",
+              },
+            ]
+          }
+        >
+          Message @Rocket Chat
+        </Text>
+      </View>
     </View>
     <View
       style={
