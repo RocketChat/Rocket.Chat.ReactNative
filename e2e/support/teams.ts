@@ -1,10 +1,10 @@
 import { expect } from 'e2e';
 
-import { goBack, hideKeyboard, type Fixtures, LONG_TIMEOUT, tapWhenVisible } from './flows';
+import { goBack, hideKeyboard, type Fixtures, LONG_TIMEOUT, tapWhenVisible, fillWhenUncovered } from './flows';
 import { selectUser } from './room';
 
 const fillCreateChannelName = async (fixtures: Fixtures, name: string) => {
-	await fixtures.screen.getByTestId('create-channel-name').fill(name);
+	await fillWhenUncovered(fixtures.screen.getByTestId('create-channel-name'), name);
 	await hideKeyboard(fixtures);
 };
 

@@ -47,7 +47,7 @@ export const navigateToE2EESecurity = async (fixtures: Fixtures) => {
 export const changeE2EEPassword = async (fixtures: Fixtures) => {
 	const { screen } = fixtures;
 	await tapTextWhenVisible(fixtures, 'Enter manually');
-	await screen.getByPlaceholder('New password').fill(data.e2eePassword);
+	await fillWhenUncovered(screen.getByPlaceholder('New password'), data.e2eePassword);
 	await hideKeyboard(fixtures);
 	const save = screen.getByText(/^Save changes$/i);
 	await screen.scrollUntilVisible(save, { timeout: LONG_TIMEOUT });
@@ -83,7 +83,7 @@ const enterE2EEPassword = async (fixtures: Fixtures) => {
 	await expect(screen.getByText(/Enter your end-to-end encryption password to access/)).toBeVisible({ timeout: LONG_TIMEOUT });
 	await tapTextWhenVisible(fixtures, 'Enter E2EE password');
 	await tapWhenVisible(fixtures, 'e2e-enter-your-password-view-password');
-	await screen.getByTestId('e2e-enter-your-password-view-password').fill(data.e2eePassword);
+	await fillWhenUncovered(screen.getByTestId('e2e-enter-your-password-view-password'), data.e2eePassword);
 	await tapTextWhenVisible(fixtures, 'Enable encryption');
 	await expect(screen.getByTestId('room-view-messages')).toBeVisible({ timeout: LONG_TIMEOUT });
 };

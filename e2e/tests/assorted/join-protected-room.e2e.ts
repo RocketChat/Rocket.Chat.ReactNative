@@ -3,7 +3,14 @@ import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { data } from '~e2e/support/data';
-import { loginWithDeepLink, searchAndNavigateRoom, sendMessage, LONG_TIMEOUT, tapWhenVisible } from '~e2e/support/flows';
+import {
+	loginWithDeepLink,
+	searchAndNavigateRoom,
+	sendMessage,
+	LONG_TIMEOUT,
+	tapWhenVisible,
+	fillWhenUncovered
+} from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
 
 afterEach(deleteCreatedUsers);
@@ -26,7 +33,7 @@ test('joins a protected room with a join code', { tags: ['test-7'] }, async fixt
 
 	await screen.getByTestId('room-view-join-button').tap();
 	await expect(joinCodeSheet).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByTestId('join-code-input').fill(joinCode);
+	await fillWhenUncovered(screen.getByTestId('join-code-input'), joinCode);
 	await screen.getByTestId('join-code-submit').tap();
 	await expect(joinCodeSheet).toBeHidden({ timeout: LONG_TIMEOUT });
 	await expect(screen.getByTestId('message-composer')).toBeVisible({ timeout: LONG_TIMEOUT });

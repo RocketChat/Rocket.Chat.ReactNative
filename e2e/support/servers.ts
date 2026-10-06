@@ -1,7 +1,7 @@
 import { expect } from 'e2e';
 
 import { serverHost } from './api';
-import { type Fixtures, LONG_TIMEOUT, tapWhenVisible } from './flows';
+import { type Fixtures, LONG_TIMEOUT, tapWhenVisible, fillWhenUncovered } from './flows';
 
 export const checkServer = async (fixtures: Fixtures, server: string) => {
 	const { screen } = fixtures;
@@ -30,7 +30,7 @@ export const addServerFromServersList = async (fixtures: Fixtures, server: strin
 	const { screen } = fixtures;
 	await tapWhenVisible(fixtures, 'rooms-list-header-server-add');
 	await expect(screen.getByTestId('new-server-view')).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByTestId('new-server-view-input').fill(server);
+	await fillWhenUncovered(screen.getByTestId('new-server-view-input'), server);
 	await screen.getByTestId('new-server-view-input').press('Enter');
 	await expect(screen.getByTestId('workspace-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 };

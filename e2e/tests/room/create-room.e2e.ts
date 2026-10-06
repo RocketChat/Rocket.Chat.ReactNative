@@ -2,7 +2,15 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { goBack, loginWithDeepLink, type Fixtures, LONG_TIMEOUT, tapWhenVisible, expectVisible } from '~e2e/support/flows';
+import {
+	goBack,
+	loginWithDeepLink,
+	type Fixtures,
+	LONG_TIMEOUT,
+	tapWhenVisible,
+	expectVisible,
+	fillWhenUncovered
+} from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
 import { openNewMessage, selectUser } from '~e2e/support/room';
 
@@ -56,7 +64,7 @@ test('creates rooms', { tags: ['test-10'] }, async fixtures => {
 
 	await openNewMessage(fixtures);
 	await tapWhenVisible(fixtures, 'new-message-view-search');
-	await screen.getByTestId('new-message-view-search').fill('rocket.cat');
+	await fillWhenUncovered(screen.getByTestId('new-message-view-search'), 'rocket.cat');
 	await tapWhenVisible(fixtures, 'new-message-view-item-rocket.cat');
 	await expectVisible(fixtures, 'room-view');
 	await expectVisible(fixtures, 'room-view-title-rocket.cat');

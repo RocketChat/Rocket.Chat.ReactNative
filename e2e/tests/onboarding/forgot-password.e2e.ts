@@ -2,7 +2,7 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { launchApp, navigateToLogin, LONG_TIMEOUT } from '~e2e/support/flows';
+import { launchApp, navigateToLogin, LONG_TIMEOUT, fillWhenUncovered } from '~e2e/support/flows';
 
 afterEach(deleteCreatedUsers);
 
@@ -14,7 +14,7 @@ test('requests a password reset email', { tags: ['test-1'] }, async fixtures => 
 	await navigateToLogin(fixtures);
 	await screen.getByTestId('login-view-forgot-password').tap();
 	await expect(screen.getByTestId('forgot-password-view')).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByTestId('forgot-password-view-email').fill(user.email);
+	await fillWhenUncovered(screen.getByTestId('forgot-password-view-email'), user.email);
 	await screen.getByTestId('forgot-password-view-submit').tap();
 	await expect(
 		screen.getByText(

@@ -9,7 +9,8 @@ import {
 	hideKeyboard,
 	loginWithDeepLink,
 	type Fixtures,
-	LONG_TIMEOUT
+	LONG_TIMEOUT,
+	fillWhenUncovered
 } from '~e2e/support/flows';
 import { random, type RandomUser } from '~e2e/support/random';
 import { openProfile } from '~e2e/support/settings';
@@ -33,7 +34,7 @@ const editBasicInfo = async (fixtures: Fixtures, user: RandomUser) => {
 	await screen.scrollUntilVisible(screen.getByTestId('profile-view-submit'));
 	await screen.getByTestId('profile-view-submit').tap();
 	await expect(screen.getByTestId('profile-view-enter-password-sheet-input')).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByTestId('profile-view-enter-password-sheet-input').fill(user.password);
+	await fillWhenUncovered(screen.getByTestId('profile-view-enter-password-sheet-input'), user.password);
 	await screen.getByText('Save').tap();
 	await expect(screen.getByTestId('profile-view-enter-password-sheet-input')).toBeHidden({ timeout: LONG_TIMEOUT });
 	renamedUsers.push(newUsername);
@@ -45,11 +46,11 @@ const changePassword = async (fixtures: Fixtures, user: RandomUser) => {
 	await screen.scrollUntilVisible(screen.getByTestId('profile-view-change-my-password-button'));
 	await screen.getByTestId('profile-view-change-my-password-button').tap();
 	await expect(screen.getByTestId('change-password-view-current-password')).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByTestId('change-password-view-current-password').fill(user.password);
+	await fillWhenUncovered(screen.getByTestId('change-password-view-current-password'), user.password);
 	await hideKeyboard(fixtures);
-	await screen.getByTestId('change-password-view-new-password').fill(newPassword);
+	await fillWhenUncovered(screen.getByTestId('change-password-view-new-password'), newPassword);
 	await hideKeyboard(fixtures);
-	await screen.getByTestId('change-password-view-confirm-new-password').fill(newPassword);
+	await fillWhenUncovered(screen.getByTestId('change-password-view-confirm-new-password'), newPassword);
 	await hideKeyboard(fixtures);
 	await screen.scrollUntilVisible(screen.getByTestId('change-password-view-set-new-password-button'));
 	await screen.getByTestId('change-password-view-set-new-password-button').tap();

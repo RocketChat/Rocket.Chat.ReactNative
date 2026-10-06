@@ -10,7 +10,8 @@ import {
 	backToRoomsList,
 	expectHidden,
 	expectVisible,
-	openMessageActions
+	openMessageActions,
+	fillWhenUncovered
 } from '~e2e/support/flows';
 
 afterEach(deleteCreatedUsers);
@@ -19,7 +20,7 @@ const forwardMessageTo = async (fixtures: Fixtures, username: string) => {
 	const { screen } = fixtures;
 	await expectVisible(fixtures, 'forward-message-view');
 	await tapWhenVisible(fixtures, 'select-person-or-channel');
-	await screen.getByTestId('multi-select-search').fill(username);
+	await fillWhenUncovered(screen.getByTestId('multi-select-search'), username);
 	await tapWhenVisible(fixtures, `multi-select-item-${username.toLowerCase()}`);
 	await tapWhenVisible(fixtures, 'action-sheet-handle');
 	await expectHidden(fixtures, 'multi-select-search');

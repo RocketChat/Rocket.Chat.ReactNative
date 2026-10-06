@@ -1,10 +1,10 @@
 import type { Locator } from 'e2e';
 import { expect } from 'e2e';
 
-import { escapeRegExp, firstVisible, type Fixtures } from './flows';
+import { escapeRegExp, firstVisible, type Fixtures, fillWhenUncovered } from './flows';
 
 export const runSlashCommand = async ({ screen }: Fixtures, command: string) => {
-	await screen.getByTestId('message-composer-input').fill(`/${command}`);
+	await fillWhenUncovered(screen.getByTestId('message-composer-input'), `/${command}`);
 	await expect(screen.getByTestId(`autocomplete-item-${command}`)).toBeVisible({ timeout: 10_000 });
 	await screen.getByTestId(`autocomplete-item-${command}`).tap();
 	await screen.getByTestId('message-composer-send').tap();

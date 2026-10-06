@@ -2,7 +2,7 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createRandomTeam, createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
-import { loginWithDeepLink, type Fixtures, LONG_TIMEOUT, tapWhenVisible } from '~e2e/support/flows';
+import { loginWithDeepLink, type Fixtures, LONG_TIMEOUT, tapWhenVisible, fillWhenUncovered } from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
 
 afterEach(deleteCreatedUsers);
@@ -22,7 +22,7 @@ const filterDirectory = async (fixtures: Fixtures, type: 'users' | 'teams') => {
 const searchAndOpen = async (fixtures: Fixtures, name: string) => {
 	const { screen } = fixtures;
 	await tapWhenVisible(fixtures, 'directory-view-search');
-	await screen.getByTestId('directory-view-search').fill(name);
+	await fillWhenUncovered(screen.getByTestId('directory-view-search'), name);
 	const resultItem = screen.getByTestId(`directory-view-item-${name}`).first();
 	await expect(resultItem).toBeVisible({ timeout: LONG_TIMEOUT });
 	await resultItem.tap();

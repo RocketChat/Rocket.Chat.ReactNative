@@ -2,7 +2,7 @@ import { test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { account, data } from '~e2e/support/data';
-import { hideKeyboard, launchApp, navigateToLogin, LONG_TIMEOUT } from '~e2e/support/flows';
+import { hideKeyboard, launchApp, navigateToLogin, LONG_TIMEOUT, fillWhenUncovered } from '~e2e/support/flows';
 import { casField, dismissPasswordManagerPrompt } from '~e2e/support/onboarding';
 
 test('logs in with CAS', { tags: ['test-2'] }, async fixtures => {
@@ -14,8 +14,8 @@ test('logs in with CAS', { tags: ['test-2'] }, async fixtures => {
 	await screen.getByText('Continue with CAS').tap();
 	await expect(screen.getByText('CAS Login')).toBeVisible({ timeout: 10_000 });
 	await expect(casField(fixtures, 'password')).toBeVisible();
-	await casField(fixtures, 'username').fill(account.cas.username);
-	await casField(fixtures, 'password').fill(account.cas.password);
+	await fillWhenUncovered(casField(fixtures, 'username'), account.cas.username);
+	await fillWhenUncovered(casField(fixtures, 'password'), account.cas.password);
 	await hideKeyboard(fixtures);
 	await screen.getByText('Sign in').tap();
 	const roomsList = screen.getByTestId('rooms-list-view');

@@ -11,7 +11,8 @@ import {
 	navigateToRoom,
 	tapWhenUncovered,
 	type Fixtures,
-	LONG_TIMEOUT
+	LONG_TIMEOUT,
+	fillWhenUncovered
 } from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
 import { selectUser } from '~e2e/support/room';
@@ -42,7 +43,7 @@ const createTeamChannel = async (fixtures: Fixtures, channel: string) => {
 	await hideKeyboard(fixtures);
 	await screen.getByTestId('selected-users-view-submit').tap();
 	await expectVisible(fixtures, 'create-channel-view');
-	await screen.getByTestId('create-channel-name').fill(channel);
+	await fillWhenUncovered(screen.getByTestId('create-channel-name'), channel);
 	await hideKeyboard(fixtures);
 	await screen.scrollUntilVisible(screen.getByTestId('create-channel-submit'));
 	await screen.getByTestId('create-channel-submit').tap();

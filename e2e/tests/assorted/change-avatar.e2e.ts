@@ -2,7 +2,7 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers, getProfileInfo, login } from '~e2e/support/api';
-import { hideKeyboard, loginWithDeepLink, type Fixtures, LONG_TIMEOUT } from '~e2e/support/flows';
+import { hideKeyboard, loginWithDeepLink, type Fixtures, LONG_TIMEOUT, fillWhenUncovered } from '~e2e/support/flows';
 
 afterEach(deleteCreatedUsers);
 
@@ -70,7 +70,7 @@ test('changes the avatar', { tags: ['test-5'] }, async fixtures => {
 	await changeAvatarWith(fixtures, userId, () => screen.getByText('Take a photo').tap());
 
 	await changeAvatarWith(fixtures, userId, async () => {
-		await screen.getByTestId('change-avatar-view-avatar-url').fill(AVATAR_URL);
+		await fillWhenUncovered(screen.getByTestId('change-avatar-view-avatar-url'), AVATAR_URL);
 		await hideKeyboard(fixtures);
 		await screen.getByText('Fetch image from URL').tap();
 	});

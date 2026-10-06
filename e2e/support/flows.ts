@@ -117,7 +117,7 @@ export const launchApp = async (fixtures: Fixtures) => {
 };
 
 export const navigateToLogin = async ({ screen }: Fixtures, server = data.server) => {
-	await screen.getByTestId('new-server-view-input').fill(server);
+	await fillWhenUncovered(screen.getByTestId('new-server-view-input'), server);
 	await screen.getByText('Connect').tap();
 	await expect(screen.getByTestId('workspace-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expect(screen.getByText('Login')).toBeVisible({ timeout: LONG_TIMEOUT });
@@ -313,7 +313,7 @@ export const loginWithDeepLink = async (fixtures: Fixtures, credentials: Credent
 };
 
 export const navigateToRegister = async ({ screen }: Fixtures, server = data.server) => {
-	await screen.getByTestId('new-server-view-input').fill(server);
+	await fillWhenUncovered(screen.getByTestId('new-server-view-input'), server);
 	await screen.getByText('Connect').tap();
 	await expect(screen.getByText('Create an account')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByText('Create an account').tap();
@@ -365,7 +365,7 @@ export const searchRoom = async (fixtures: Fixtures, room: string) => {
 	const searchButton = screen.getByTestId('rooms-list-view-search').first();
 	await expect(searchButton).toBeVisible({ timeout: LONG_TIMEOUT });
 	await tapUntilVisible(fixtures, searchButton, 'rooms-list-view-search-input');
-	await screen.getByTestId('rooms-list-view-search-input').fill(room);
+	await fillWhenUncovered(screen.getByTestId('rooms-list-view-search-input'), room);
 	await expect(screen.getByTestId(`rooms-list-view-item-${room}`).first()).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 

@@ -12,7 +12,8 @@ import {
 	tapWhenVisible,
 	backToRoomsList,
 	expectVisible,
-	tapUntilVisible
+	tapUntilVisible,
+	fillWhenUncovered
 } from '~e2e/support/flows';
 import { navigateToInfoView } from '~e2e/support/room';
 
@@ -36,7 +37,7 @@ const reportUser = async (fixtures: Fixtures, roomTitle: string) => {
 	await tapWhenVisible(fixtures, 'room-info-view-warning');
 	await expectVisible(fixtures, 'report-user-view');
 	await tapWhenVisible(fixtures, 'report-user-view-input');
-	await fixtures.screen.getByTestId('report-user-view-input').fill('e2e test');
+	await fillWhenUncovered(fixtures.screen.getByTestId('report-user-view-input'), 'e2e test');
 	await hideKeyboard(fixtures);
 	await tapWhenVisible(fixtures, 'report-user-view-submit');
 	await expectVisible(fixtures, `room-view-title-${roomTitle}`);

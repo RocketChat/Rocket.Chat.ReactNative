@@ -1,6 +1,14 @@
 import { expect } from 'e2e';
 
-import { type Fixtures, goBackUntil, LONG_TIMEOUT, openMessageActions, succeeds, tapWhenVisible } from './flows';
+import {
+	type Fixtures,
+	goBackUntil,
+	LONG_TIMEOUT,
+	openMessageActions,
+	succeeds,
+	tapWhenVisible,
+	fillWhenUncovered
+} from './flows';
 
 const SHORT_TIMEOUT = 5_000;
 
@@ -22,7 +30,7 @@ export const openThreadFromButton = async (fixtures: Fixtures, thread: string) =
 
 export const typeThreadReply = async ({ screen }: Fixtures, text: string) => {
 	await screen.getByTestId(THREAD_INPUT).tap();
-	await screen.getByTestId(THREAD_INPUT).fill(text);
+	await fillWhenUncovered(screen.getByTestId(THREAD_INPUT), text);
 };
 
 export const sendThreadReply = async (fixtures: Fixtures, text: string) => {
