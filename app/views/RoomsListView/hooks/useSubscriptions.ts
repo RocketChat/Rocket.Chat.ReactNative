@@ -13,7 +13,15 @@ import { getGroupOrder } from './sidebarGroupOrder';
 
 const CUSTOM_CATEGORIES_LICENSE_MODULE = 'experimental-enterprise-features';
 const NO_CATEGORIES: ISidebarCategory[] = [];
-const SECTION_BADGE_COLUMNS = ['unread', 'user_mentions', 'group_mentions', 'tunread', 'tunread_user', 'tunread_group'];
+const SECTION_BADGE_COLUMNS = [
+	'unread',
+	'hide_unread_status',
+	'user_mentions',
+	'group_mentions',
+	'tunread',
+	'tunread_user',
+	'tunread_group'
+];
 
 export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
