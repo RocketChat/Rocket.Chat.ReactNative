@@ -7,16 +7,13 @@ import { type SearchBarCommands } from 'react-native-screens';
 
 import database from '~/lib/database';
 import I18n from '~/i18n';
-import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
-import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
+import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import { hideActionSheetRef, showActionSheetRef } from '~/containers/ActionSheet';
 import SafeAreaView from '~/containers/SafeAreaView';
 import ActivityIndicator from '~/containers/ActivityIndicator';
-import SearchHeader from '~/containers/SearchHeader';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { useTheme } from '~/theme';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import * as List from '~/containers/List';
 import { themes } from '~/lib/constants/colors';
 import log from '~/lib/methods/helpers/log';
@@ -25,7 +22,7 @@ import DepartmentFilter from './DepartmentFilter';
 import styles from './styles';
 import { type ICannedResponse } from '~/definitions/ICannedResponse';
 import { type ChatsStackParamList } from '~/stacks/types';
-import { hasNativeHeaderBar, useDebounce } from '~/lib/methods/helpers';
+import { useDebounce } from '~/lib/methods/helpers';
 import { getListCannedResponse, getDepartments } from '~/lib/services/restApi';
 import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -226,44 +223,23 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		});
 	};
 
-	const getHeader = (): NativeStackNavigationOptions => {
-		if (isSearching && !hasNativeHeaderBar) {
-			return {
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item
-							iconName='close'
-							onPress={() => {
-								onChangeText('');
-								setIsSearching(false);
-							}}
-						/>
-					</HeaderButton.Container>
-				),
-				headerTitle: () => <SearchHeader onSearchChangeText={onChangeText} testID='team-channels-view-search-header' />,
-				headerRight: () => null
-			};
-		}
-
-		return {
-			headerLeft: () => null,
-			headerTitle: I18n.t('Canned_Responses'),
-			...(hasNativeHeaderBar && {
-				headerSearchBarOptions: stackedSearchBarOptions({
-					ref: searchBarRef,
-					onChangeText,
-					onCancel: () => {
-						onChangeText('');
-						searchBarRef.current?.clearText();
-					}
-				})
-			}),
-			...headerRightActions([
-				{ label: I18n.t('Filter'), icon: 'filter', onPress: showFilters },
-				{ label: I18n.t('Search'), icon: 'search', legacyHeaderOnly: true, onPress: () => setIsSearching(true) }
-			])
-		};
+	const onCancelSearch = () => {
+		onChangeText('');
+		setIsSearching(false);
+		searchBarRef.current?.clearText();
 	};
+
+	const getHeader = (): NativeStackNavigationOptions =>
+		searchHeaderOptions({
+			isSearching,
+			searchBarRef,
+			onSearchPress: () => setIsSearching(true),
+			onChangeText,
+			onCancel: onCancelSearch,
+			testIDPrefix: 'canned-responses-view',
+			options: { headerLeft: () => null, headerTitle: I18n.t('Canned_Responses') },
+			rightActions: [{ label: I18n.t('Filter'), icon: 'filter', onPress: showFilters }]
+		});
 
 	const setHeader = () => {
 		const options = getHeader();

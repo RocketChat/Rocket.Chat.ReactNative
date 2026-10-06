@@ -9,7 +9,7 @@ import sharedStyles from '~/views/Styles';
 import Header from '~/containers/Header';
 import I18n from '~/i18n';
 import { hasNativeHeaderBar } from '~/lib/methods/helpers';
-import { headerLeftActions, headerRightActions } from './headerActions';
+import { headerRightActions } from './headerActions';
 
 export const defaultHeader: NativeStackNavigationOptions = hasNativeHeaderBar
 	? {
@@ -52,17 +52,14 @@ export const stackedSearchBarOptions = ({
 	onCancelButtonPress: onCancel ?? (() => onChangeText(''))
 });
 
-export const outsideHeaderLeftClose = (onPress: () => void, testID?: string): NativeStackNavigationOptions =>
-	headerLeftActions([{ label: I18n.t('Close'), icon: 'close', testID, onPress }]);
-
 export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions => ({
 	headerStyle: {
 		backgroundColor: themes[theme].surfaceNeutral
 	},
-	...(!hasNativeHeaderBar && {
-		headerTintColor: themes[theme].fontDefault,
-		headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 }
-	})
+	headerTintColor: themes[theme].fontDefault,
+	...(hasNativeHeaderBar
+		? { headerTitleStyle: { color: themes[theme].fontTitlesLabels }, headerSubtitleColor: themes[theme].fontSecondaryInfo }
+		: { headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 } })
 });
 
 export const navigationTheme = (theme: TSupportedThemes) => {

@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { type DrawerNavigationProp } from '@react-navigation/drawer';
 
 import * as List from '~/containers/List';
@@ -10,28 +9,16 @@ import { ADMIN_SELECTION_TAG, getSidebarSelection } from './components/getSideba
 import { useAdminRoute, useIsAdmin } from './components/Admin';
 import { sidebarNavigate } from './methods/sidebarNavigate';
 import Profile from './components/Profile';
-
-const currentRouteName = (navigation: DrawerNavigationProp<DrawerParamList>) => {
-	const state = navigation.getState();
-	return state.routes[state.index].name;
-};
+import { useCurrentScreen } from './useCurrentScreen';
 
 export const useSidebarSections = (navigation: DrawerNavigationProp<DrawerParamList>) => {
-	const [currentScreen, setCurrentScreen] = useState<string | null>(() => currentRouteName(navigation));
+	const currentScreen = useCurrentScreen(navigation);
 	const isSupportedVersionsWarnVisible = useIsSupportedVersionsWarnVisible();
 	const isCustomStatusVisible = useIsCustomStatusVisible();
 	const stackItems = useStackItems(currentScreen);
 	const isAdmin = useIsAdmin();
 	const adminRoute = useAdminRoute();
 	const selection = getSidebarSelection(stackItems, isAdmin ? adminRoute : null, currentScreen);
-
-	useEffect(() => {
-		const unsubscribe = navigation.addListener('state', () => {
-			setCurrentScreen(currentRouteName(navigation));
-		});
-
-		return unsubscribe;
-	}, [navigation]);
 
 	const sections = (
 		<>

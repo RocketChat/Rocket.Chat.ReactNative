@@ -17,7 +17,7 @@ import { useTheme } from '~/theme';
 import I18n from '~/i18n';
 import Icon from './ListIcon';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from '../constants';
-import { useNativeListMode } from '../native/context';
+import { useIsNativeList } from '../native/context';
 import NativeListItem from '../native/components/Item';
 import { CustomIcon } from '~/containers/CustomIcon';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
@@ -218,6 +218,7 @@ const Content = memo(
 interface IListButtonPress extends IListItemButton {
 	onPress: Function;
 	style?: ViewStyle;
+	children: ReactElement;
 }
 
 interface IListItemButton {
@@ -228,27 +229,29 @@ interface IListItemButton {
 	underlayColor?: string;
 }
 
-const Button = memo(({ onPress, backgroundColor, underlayColor, style, ...props }: IListButtonPress) => {
-	const { colors } = useTheme();
+const Button = memo(
+	({ onPress, title, disabled, disabledReason, backgroundColor, underlayColor, style, children }: IListButtonPress) => {
+		const { colors } = useTheme();
 
-	const handlePress = () => {
-		if (props.disabled && props.disabledReason) {
-			EventEmitter.emit(LISTENER, { message: props.disabledReason });
-		} else if (!props.disabled) {
-			onPress(props.title);
-		}
-	};
+		const handlePress = () => {
+			if (disabled && disabledReason) {
+				EventEmitter.emit(LISTENER, { message: disabledReason });
+			} else if (!disabled) {
+				onPress(title);
+			}
+		};
 
-	return (
-		<Touch
-			onPress={handlePress}
-			style={[{ backgroundColor: backgroundColor || colors.surfaceRoom }, style]}
-			underlayColor={underlayColor}
-			disabled={props.disabled && !props.disabledReason}>
-			<Content {...props} />
-		</Touch>
-	);
-});
+		return (
+			<Touch
+				onPress={handlePress}
+				style={[{ backgroundColor: backgroundColor || colors.surfaceRoom }, style]}
+				underlayColor={underlayColor}
+				disabled={disabled && !disabledReason}>
+				{children}
+			</Touch>
+		);
+	}
+);
 
 export interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListItemButton, 'theme'> {
 	backgroundColor?: string;
@@ -258,22 +261,30 @@ export interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListIt
 
 const ListItem = memo(({ ...props }: IListItem) => {
 	const { colors } = useTheme();
-	const nativeListMode = useNativeListMode();
-	const backgroundColor = props.backgroundColor || (nativeListMode ? 'transparent' : colors.surfaceRoom);
+	const isNativeList = useIsNativeList();
+	const backgroundColor = props.backgroundColor || colors.surfaceRoom;
 
-	if (nativeListMode === 'native') {
+	if (isNativeList) {
 		return <NativeListItem item={props} />;
 	}
 
+	const content = <Content {...props} />;
+
 	if (props.onPress) {
-		const { onPress } = props;
-		return <Button {...props} onPress={onPress} backgroundColor={backgroundColor} />;
+		return (
+			<Button
+				onPress={props.onPress}
+				title={props.title}
+				disabled={props.disabled}
+				disabledReason={props.disabledReason}
+				backgroundColor={backgroundColor}
+				underlayColor={props.underlayColor}
+				style={props.style}>
+				{content}
+			</Button>
+		);
 	}
-	return (
-		<View style={{ backgroundColor }}>
-			<Content {...props} />
-		</View>
-	);
+	return <View style={{ backgroundColor }}>{content}</View>;
 });
 
 ListItem.displayName = 'List.Item';

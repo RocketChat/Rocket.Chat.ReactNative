@@ -1,5 +1,4 @@
 import { useActionSheet } from '~/containers/ActionSheet';
-import { asNativeListRow } from '~/containers/List/native/utils/rowMarkers';
 import NativeListPicker from '~/containers/List/native/components/Picker';
 import I18n from '~/i18n';
 import DatePickerSheetContent from './DatePickerSheetContent';
@@ -47,4 +46,4 @@ const ClearAfterNativeRow = ({ value, customDate, customDateLabel, onChange }: I
 	);
 };
 
-export default asNativeListRow(ClearAfterNativeRow);
+export default ClearAfterNativeRow;

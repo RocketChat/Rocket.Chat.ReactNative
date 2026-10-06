@@ -14,7 +14,7 @@ import { type TServerHistoryModel } from '~/definitions';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import { isAndroid, isTablet } from '~/lib/methods/helpers';
-import { outsideHeaderLeftClose } from '~/lib/methods/helpers/navigation';
+import { headerLeftClose } from '~/lib/methods/helpers/navigation/headerActions';
 import EventEmitter from '~/lib/methods/helpers/events';
 import ServerInput from './components/ServerInput';
 import { getServerById } from '~/lib/database/services/Server';
@@ -101,7 +101,7 @@ const NewServerView = () => {
 				headerTitle: I18n.t('Add_Server'),
 				...(connecting
 					? { headerLeft: () => null, unstable_headerLeftItems: () => [] }
-					: outsideHeaderLeftClose(close, 'new-server-view-close'))
+					: headerLeftClose(close, 'new-server-view-close'))
 			});
 		}
 		return navigation.setOptions({

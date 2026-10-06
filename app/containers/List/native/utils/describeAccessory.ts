@@ -1,5 +1,5 @@
 import { Children, isValidElement, type ReactElement, type ReactNode } from 'react';
-import { Text, View, type SwitchProps } from 'react-native';
+import { StyleSheet, Text, View, type SwitchProps } from 'react-native';
 
 import { type TUserStatus } from '~/definitions';
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
@@ -17,7 +17,7 @@ export type TNativeListAccessory =
 	| { kind: 'status'; status: TUserStatus }
 	| { kind: 'toggle'; isOn: boolean; onValueChange?: (value: boolean) => void; disabled: boolean; testID?: string }
 	| { kind: 'checkbox'; value: boolean; onValueChange: (value: boolean) => void; testID?: string }
-	| { kind: 'text'; text: string }
+	| { kind: 'text'; text: string; color?: string }
 	| { kind: 'hosted'; element: ReactElement };
 
 interface IIconProps {
@@ -49,9 +49,13 @@ const onlyChild = (children: ReactNode) => {
 type TProps = Record<string, any>;
 type TDescriber = (props: TProps) => TNativeListAccessory | null | undefined;
 
-const describeText: TDescriber = ({ children }) => {
+const describeText: TDescriber = ({ children, style }) => {
 	const text = textContent(children);
-	return text === null ? undefined : { kind: 'text', text };
+	if (text === null) {
+		return undefined;
+	}
+	const { color } = StyleSheet.flatten(style) ?? {};
+	return { kind: 'text', text, color: typeof color === 'string' ? color : undefined };
 };
 
 const describeToggle: TDescriber = props => {

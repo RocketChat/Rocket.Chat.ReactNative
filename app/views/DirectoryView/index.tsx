@@ -98,12 +98,13 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 					headerRight: undefined,
 					headerTransparent: true,
 					headerSearchBarOptions: stackedSearchBarOptions({ onChangeText: onSearchChangeText, onSearch: search }),
-					unstable_headerRightItems: () => [
+					unstable_headerRightItems: ({ tintColor }) => [
 						{
 							type: 'menu',
 							label: I18n.t('Filter'),
 							accessibilityLabel: I18n.t('Filter'),
 							icon: headerIcon('filter'),
+							tintColor,
 							menu: {
 								items: [
 									{

@@ -3,7 +3,6 @@ import { memo } from 'react';
 import { useTheme } from '~/theme';
 import { CustomIcon } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
-import { asNativeListRow } from '~/containers/List/native/utils/rowMarkers';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { showActionSheetRef } from '~/containers/ActionSheet';
@@ -42,4 +41,4 @@ const SupportedVersionsWarnItem = () => {
 	return null;
 };
 
-export default asNativeListRow(memo(SupportedVersionsWarnItem));
+export default memo(SupportedVersionsWarnItem);

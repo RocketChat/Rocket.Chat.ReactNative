@@ -87,7 +87,6 @@ const SelectedUsersView = () => {
 		setSearching(true);
 
 		try {
-			// Paint local results immediately while the backend request is still in flight
 			const result = await runSearch({
 				text,
 				filterRooms: false,
@@ -101,7 +100,6 @@ const SelectedUsersView = () => {
 		} catch (e) {
 			log(e);
 		} finally {
-			// Only the latest search clears the flag, so a stale request never hides an in-flight newer one
 			if (!isStale()) setSearching(false);
 		}
 	}, []);

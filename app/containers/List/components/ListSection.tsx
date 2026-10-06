@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import Header from './ListHeader';
 import NativeListSection from '../native/components/Section';
-import { useNativeListMode } from '../native/context';
+import { useIsNativeList } from '../native/context';
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,9 +18,9 @@ interface IListSection {
 }
 
 const ListSection = ({ children, title, translateTitle }: IListSection) => {
-	const nativeListMode = useNativeListMode();
+	const isNativeList = useIsNativeList();
 
-	if (nativeListMode === 'native') {
+	if (isNativeList) {
 		return (
 			<NativeListSection title={title} translateTitle={translateTitle}>
 				{children}

@@ -3,8 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { useActionSheet } from '~/containers/ActionSheet';
 import * as List from '~/containers/List';
-import { asNativeListRow } from '~/containers/List/native/utils/rowMarkers';
-import { useNativeListMode } from '~/containers/List/native/context';
+import { useIsNativeList } from '~/containers/List/native/context';
 import NativeListPicker from '~/containers/List/native/components/Picker';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
@@ -60,7 +59,7 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const nativeListMode = useNativeListMode();
+	const isNativeList = useIsNativeList();
 	const option = OPTIONS.find(option => option.value === value) || OPTIONS[2];
 
 	const getOptions = (): ReactElement => (
@@ -87,7 +86,7 @@ const ListPicker = ({
 	/* when picking an option the label should be Never but when showing among the other settings the label should be Off */
 	const label = option.label === 'Never' ? I18n.t('Off') : I18n.t(option.label);
 
-	if (nativeListMode === 'native') {
+	if (isNativeList) {
 		return (
 			<NativeListPicker
 				title={title}
@@ -116,4 +115,4 @@ const ListPicker = ({
 	);
 };
 
-export default asNativeListRow(ListPicker);
+export default ListPicker;

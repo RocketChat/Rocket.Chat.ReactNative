@@ -59,7 +59,7 @@ jest.mock('~/lib/services/restApi', () => ({ returnLivechat: jest.fn() }));
 const mockGoThreadsView = jest.fn();
 const mockGoSearchView = jest.fn();
 let mockButtonsData: Record<string, unknown>;
-jest.mock('../../components/RightButtons/useRoomRightButtonsData', () => ({
+jest.mock('../useRoomRightButtonsData', () => ({
 	useRoomRightButtonsData: () => mockButtonsData
 }));
 

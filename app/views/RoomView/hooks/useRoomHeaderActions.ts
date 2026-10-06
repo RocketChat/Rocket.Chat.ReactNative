@@ -24,8 +24,8 @@ import { getRoomHeaderMode, type TRoomHeaderMode } from '../helpers/getRoomHeade
 import { splitRoomHeaderActions, type TRoomHeaderActionKey } from '../helpers/roomHeaderActions';
 import { useCanPlaceLivechatOnHold } from './useCanPlaceLivechatOnHold';
 import { useThreadFollowing } from './useThreadFollowing';
-import { useRoomRightButtonsData } from '../components/RightButtons/useRoomRightButtonsData';
-import { useHeaderCallPress } from '../components/RightButtons/useHeaderCallPress';
+import { useRoomRightButtonsData } from './useRoomRightButtonsData';
+import { useHeaderCallPress } from './useHeaderCallPress';
 
 export const EMPTY_ACTIONS: IHeaderAction[] = [];
 const VISIBLE_ORDER: TRoomHeaderActionKey[] = ['encryption', 'notifications', 'call', 'threads'];

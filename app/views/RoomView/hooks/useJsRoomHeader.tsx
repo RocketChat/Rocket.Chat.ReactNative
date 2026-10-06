@@ -4,8 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 import { useStore } from 'zustand';
 
 import RoomHeader from '~/containers/RoomHeader';
+import { HeaderActions } from '~/lib/methods/helpers/navigation/headerActions';
 import LeftButtons from '../components/LeftButtons';
-import RightButtons from '../components/RightButtons/RightButtons';
+import { RoomHeaderActions } from '../components/RoomViewHeader/RoomHeaderActions';
 import { type IRoomViewProps, type RoomStore } from '../definitions';
 import { useGoRoomActionsView } from './useGoRoomActionsView';
 import { useHeaderFields } from './useHeaderFields';
@@ -32,7 +33,7 @@ export const useJsRoomHeader = ({ rid, tmid, name: threadName, roomStore }: IUse
 
 		navigation.setOptions({
 			headerLeft: () => <LeftButtons rid={rid} tmid={tmid} roomStore={roomStore} />,
-			headerRight: () => <RightButtons rid={rid} tmid={tmid} roomStore={roomStore} />
+			headerRight: () => <RoomHeaderActions rid={rid} tmid={tmid} roomStore={roomStore} ActionsRenderer={HeaderActions} />
 		});
 	}, [rid, tmid, navigation, roomStore]);
 

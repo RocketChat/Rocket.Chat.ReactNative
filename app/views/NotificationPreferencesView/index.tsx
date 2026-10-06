@@ -6,8 +6,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
-import { asNativeListRow } from '~/containers/List/native/utils/rowMarkers';
-import { useNativeListMode } from '~/containers/List/native/context';
+import { useIsNativeList } from '~/containers/List/native/context';
 import NativeListPicker from '~/containers/List/native/components/Picker';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { type IRoomNotifications, type TRoomNotificationsModel } from '~/definitions';
@@ -46,7 +45,7 @@ const RenderListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const nativeListMode = useNativeListMode();
+	const isNativeList = useIsNativeList();
 
 	const pref = room[preference]
 		? OPTIONS[preference as TOptions].find(option => option.value === room[preference])
@@ -71,7 +70,7 @@ const RenderListPicker = ({
 
 	const label = option?.label ? I18n.t(option?.label, { defaultValue: option?.label, second: option?.second }) : option?.label;
 
-	if (nativeListMode === 'native') {
+	if (isNativeList) {
 		return (
 			<NativeListPicker
 				title={I18n.t(title)}
@@ -101,8 +100,6 @@ const RenderListPicker = ({
 		/>
 	);
 };
-
-const NativeRenderListPicker = asNativeListRow(RenderListPicker);
 
 const RenderSwitch = ({ preference, room, onChangeValue }: IBaseParams) => {
 	const [switchValue, setSwitchValue] = useState(!room[preference]);
@@ -231,7 +228,7 @@ const NotificationPreferencesView = (): ReactElement => {
 
 				<List.Section title='In_App_And_Desktop'>
 					<List.Separator />
-					<NativeRenderListPicker
+					<RenderListPicker
 						preference='desktopNotifications'
 						room={room}
 						title='Alert'
@@ -239,7 +236,7 @@ const NotificationPreferencesView = (): ReactElement => {
 						onChangeValue={handleSaveNotificationSettings}
 					/>
 					<List.Separator />
-					<NativeRenderListPicker
+					<RenderListPicker
 						preference='audioNotificationValue'
 						room={room}
 						title='Sound'
@@ -251,7 +248,7 @@ const NotificationPreferencesView = (): ReactElement => {
 				</List.Section>
 				<List.Section title='Push_Notifications'>
 					<List.Separator />
-					<NativeRenderListPicker
+					<RenderListPicker
 						preference='mobilePushNotifications'
 						room={room}
 						title='Alert'
@@ -270,7 +267,7 @@ const NotificationPreferencesView = (): ReactElement => {
 				</List.Section>
 				<List.Section title='Email'>
 					<List.Separator />
-					<NativeRenderListPicker
+					<RenderListPicker
 						preference='emailNotifications'
 						room={room}
 						title='Alert'

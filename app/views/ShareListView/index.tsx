@@ -1,5 +1,5 @@
 import { type Dispatch } from 'redux';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BackHandler, FlatList, Keyboard, type NativeEventSubscription, PixelRatio, StyleSheet, Text, View } from 'react-native';
 import * as FileSystem from 'expo-file-system/legacy';
 import { connect } from 'react-redux';
@@ -12,15 +12,13 @@ import { Component, createRef } from 'react';
 
 import database from '~/lib/database';
 import I18n from '~/i18n';
-import { outsideHeaderLeftClose, stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
-import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
+import { headerLeftClose } from '~/lib/methods/helpers/navigation/headerActions';
+import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import DirectoryItem, { ROW_HEIGHT } from '~/containers/DirectoryItem';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import ServerItem from '~/containers/ServerItem';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import * as List from '~/containers/List';
-import SearchHeader from '~/containers/SearchHeader';
 import { themes } from '~/lib/constants/colors';
 import { type TSupportedThemes, withTheme } from '~/theme';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -221,38 +219,24 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		const { searching } = this.state;
 		const { navigation } = this.props;
 
-		if (searching && !hasNativeHeaderBar) {
-			navigation.setOptions({
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
-					</HeaderButton.Container>
-				),
-				headerTitle: () => <SearchHeader onSearchChangeText={this.search} />,
-				headerRight: () => null
-			});
-			return;
-		}
+		const options: NativeStackNavigationOptions = {
+			...headerLeftClose(this.closeShareExtension, 'share-extension-close'),
+			headerTitle: I18n.t('Send_to')
+		};
 
-		navigation.setOptions({
-			...outsideHeaderLeftClose(this.closeShareExtension, 'share-extension-close'),
-			headerTitle: I18n.t('Send_to'),
-			...(hasNativeHeaderBar && {
-				headerSearchBarOptions: this.airGappedReadOnly
-					? undefined
-					: stackedSearchBarOptions({
-							ref: this.searchBarRef,
-							onFocus: this.initSearch,
-							onChangeText: this.search,
-							onCancel: this.cancelSearch
-						})
-			}),
-			...headerRightActions(
-				this.airGappedReadOnly
-					? []
-					: [{ label: I18n.t('Search'), icon: 'search', legacyHeaderOnly: true, onPress: this.initSearch }]
-			)
-		});
+		navigation.setOptions(
+			this.airGappedReadOnly
+				? options
+				: searchHeaderOptions({
+						isSearching: searching,
+						searchBarRef: this.searchBarRef,
+						onSearchPress: this.initSearch,
+						onChangeText: this.search,
+						onCancel: this.cancelSearch,
+						testIDPrefix: 'share-list-view',
+						options
+					})
+		);
 	};
 
 	query = async (text?: string) => {

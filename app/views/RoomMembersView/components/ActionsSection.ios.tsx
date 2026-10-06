@@ -3,7 +3,7 @@ import { type ReactElement } from 'react';
 
 import NativeListRow from '~/containers/NativeListRow';
 import { CustomIcon } from '~/containers/CustomIcon';
-import Disclosure from '~/containers/NativeListRow/components/Disclosure.ios';
+import Disclosure from '~/containers/NativeListRow/components/Disclosure';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import i18n from '~/i18n';
 import { useTheme } from '~/theme';

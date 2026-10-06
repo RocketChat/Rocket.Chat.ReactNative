@@ -13,7 +13,7 @@ export interface IStackItem {
 	disabled?: boolean;
 }
 
-export const useStackItems = (currentScreen: string | null): IStackItem[] => {
+export const useStackItems = (currentScreen: string): IStackItem[] => {
 	const isMasterDetail = useMasterDetail();
 	const { openNewMediaCall, hasMediaCallPermission, isInActiveCall } = useNewMediaCall();
 
