@@ -64,7 +64,7 @@ export const dismissChromeFirstRunPrompts = async (fixtures: Fixtures, destinati
 
 const PASSWORD_MANAGER_PROMPTS = {
 	android: { prompt: /Save password to Google Password Manager/, dismiss: 'Never' },
-	ios: { prompt: /Save Password/, dismiss: 'Never for this Website' }
+	ios: { prompt: /^Save Password\?$/, dismiss: /^Never for this website$/i }
 } as const;
 
 export const dismissPasswordManagerPrompt = async (fixtures: Fixtures, destinations: readonly Locator[]) => {
