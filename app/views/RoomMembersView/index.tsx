@@ -15,7 +15,7 @@ import SearchBox from '~/containers/SearchBox';
 import UserItem from '~/containers/UserItem';
 import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '~/definitions';
 import I18n from '~/i18n';
-import { stackedSearchHeaderOptions } from '~/lib/methods/helpers/navigation';
+import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
 import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -254,7 +254,10 @@ const RoomMembersView = (): ReactElement => {
 	const setHeader = (allUsers: boolean) => {
 		navigation.setOptions({
 			title: I18n.t('Members'),
-			...stackedSearchHeaderOptions({ onChangeText: debounceFilterChange }),
+			...(hasNativeHeaderBar && {
+				headerTransparent: true,
+				headerSearchBarOptions: stackedSearchBarOptions({ onChangeText: debounceFilterChange })
+			}),
 			...headerRightActions([
 				{
 					label: I18n.t('Filter'),
