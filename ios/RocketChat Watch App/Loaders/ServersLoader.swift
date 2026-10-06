@@ -3,85 +3,77 @@ import Foundation
 import WatchConnectivity
 
 enum ServersLoadingError: Error, Equatable {
-    case unactive
-    case unreachable
-    case locked
-    case undecodable(Error)
-
-    static func == (lhs: ServersLoadingError, rhs: ServersLoadingError) -> Bool
-    {
-        switch (lhs, rhs) {
-        case (.unactive, .unactive), (.unreachable, .unreachable),
-            (.locked, .locked), (.undecodable, .undecodable):
-            return true
-        default:
-            return false
-        }
-    }
+	case unactive
+	case unreachable
+	case locked
+	case undecodable(Error)
+	
+	static func == (lhs: ServersLoadingError, rhs: ServersLoadingError) -> Bool {
+		switch (lhs, rhs) {
+		case (.unactive, .unactive), (.unreachable, .unreachable), (.locked, .locked), (.undecodable, .undecodable):
+			return true
+		default:
+			return false
+		}
+	}
 }
 
 protocol ServersLoading {
-    func loadServers() -> AnyPublisher<Void, ServersLoadingError>
+	func loadServers() -> AnyPublisher<Void, ServersLoadingError>
 }
 
 final class ServersLoader: NSObject {
-    @Dependency private var database: ServersDatabase
-
-    private let session: WatchSessionProtocol
-
-    init(session: WatchSessionProtocol = RetriableWatchSession()) {
-        self.session = session
-        super.init()
-    }
-
-    /*
-     * quick actions set via application context may not load while adding new server
-     * we store them with key pendingQuickReplies and restores them in serverDB when available
-     */
-    func applyPendingQuickReplies(for server: Server) {
-        var allReplies =
-            UserDefaults.standard.dictionary(forKey: "pendingQuickReplies")
-            as? [String: [String]] ?? [:]
-        let key = server.url.absoluteString
-        if let pending = allReplies[key] {
-            server.quickReplies = pending
-            database.save()
-            allReplies.removeValue(forKey: key)
-            UserDefaults.standard.set(allReplies, forKey: "pendingQuickReplies")
-        }
-    }
+	@Dependency private var database: ServersDatabase
+	
+	private let session: WatchSessionProtocol
+	
+	init(session: WatchSessionProtocol = RetriableWatchSession()) {
+		self.session = session
+		super.init()
+	}
+	
+	// quick replies sent via application context may arrive before the server is added,
+	// so they are kept under pendingQuickReplies and applied once the server is in the DB
+	func applyPendingQuickReplies(for server: Server) {
+		var allReplies = UserDefaults.standard.dictionary(forKey: "pendingQuickReplies") as? [String: [String]] ?? [:]
+		let key = server.url.absoluteString
+		if let pending = allReplies[key] {
+			server.quickReplies = pending
+			database.save()
+			allReplies.removeValue(forKey: key)
+			UserDefaults.standard.set(allReplies, forKey: "pendingQuickReplies")
+		}
+	}
 }
 
 // MARK: - ServersLoading
 
 extension ServersLoader: ServersLoading {
-    func loadServers() -> AnyPublisher<Void, ServersLoadingError> {
-        Future<Void, ServersLoadingError> { [self] promise in
-            session.sendMessage { result in
-                switch result {
-                case .success(let message):
-                    let group = DispatchGroup()
-                    for server in message.servers {
-                        group.enter()
-                        DispatchQueue.main.async {
-                            self.database.process(updatedServer: server)
-                            if let savedServer = self.database.server(
-                                url: server.url
-                            ) {
-                                self.applyPendingQuickReplies(for: savedServer)
-                            }
-                            group.leave()
-                        }
-                    }
-
-                    group.notify(queue: .main) {
-                        promise(.success(()))
-                    }
-                case .failure(let error):
-                    promise(.failure(error))
-                }
-            }
-        }
-        .eraseToAnyPublisher()
-    }
+	func loadServers() -> AnyPublisher<Void, ServersLoadingError> {
+		Future<Void, ServersLoadingError> { [self] promise in
+			session.sendMessage { result in
+				switch result {
+				case .success(let message):
+					let group = DispatchGroup()
+					for server in message.servers {
+						group.enter()
+						DispatchQueue.main.async {						
+							self.database.process(updatedServer: server)
+							if let savedServer = self.database.server(url: server.url) {
+								self.applyPendingQuickReplies(for: savedServer)
+							}
+							group.leave()
+						}
+					}
+					
+					group.notify(queue: .main) {
+						promise(.success(()))
+					}
+				case .failure(let error):
+					promise(.failure(error))
+				}
+			}
+		}
+			.eraseToAnyPublisher()
+	}
 }
