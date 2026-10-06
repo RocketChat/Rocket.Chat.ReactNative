@@ -15,8 +15,7 @@ test('logs in with SAML', { tags: ['test-2'] }, async fixtures => {
 	if (fixtures.platform === 'ios') {
 		await fixtures.device.alert('accept');
 	}
-	await dismissChromeFirstRunPrompts(fixtures);
-	await expect(screen.getByText('Email or username')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await dismissChromeFirstRunPrompts(fixtures, screen.getByText('Email or username'));
 	await screen.scrollUntilVisible(screen.getByText('SAML'));
 	await screen.getByText('SAML').tap();
 	await expect(screen.getByText('Enter your username and password')).toBeVisible({ timeout: 10_000 });

@@ -3,16 +3,7 @@ import { expect } from 'e2e';
 
 import { getDeepLink, login, type Credentials } from './api';
 import { data } from './data';
-import {
-	firstVisible,
-	hideKeyboard,
-	isVisibleNow,
-	openDeepLink,
-	type Fixtures,
-	LONG_TIMEOUT,
-	tapIfVisible,
-	tapWhenVisible
-} from './flows';
+import { firstVisible, hideKeyboard, openDeepLink, type Fixtures, LONG_TIMEOUT, tapIfVisible, tapWhenVisible } from './flows';
 import { randomUser, type RandomUser } from './random';
 
 export const fillRegisterForm = async (fixtures: Fixtures, user: RandomUser) => {
@@ -46,23 +37,29 @@ export const registerOnWorkspace = async (fixtures: Fixtures) => {
 	return registerAccount(fixtures);
 };
 
-const isTextVisible = ({ screen }: Fixtures, text: RegExp) => isVisibleNow(screen.getByText(text, { visible: true }));
+const CHROME_FIRST_RUN_PROMPTS = [
+	{ prompt: /Add account to device/, dismiss: 'Use without an account' },
+	{ prompt: /Chrome notifications make things easier/, dismiss: 'No thanks' },
+	{ prompt: /wants to send you notifications/, dismiss: 'Block' }
+] as const;
 
-const tapIfTextVisible = ({ screen }: Fixtures, text: string) => tapIfVisible(screen.getByText(text, { visible: true }));
-
-export const dismissChromeFirstRunPrompts = async (fixtures: Fixtures) => {
-	if (fixtures.platform !== 'android') {
-		return;
+export const dismissChromeFirstRunPrompts = async (fixtures: Fixtures, destination: Locator) => {
+	const { screen } = fixtures;
+	if (fixtures.platform === 'android') {
+		const prompts = CHROME_FIRST_RUN_PROMPTS.map(({ prompt, dismiss }) => ({
+			prompt: screen.getByText(prompt, { visible: true }),
+			dismiss: screen.getByText(dismiss, { visible: true })
+		}));
+		for (;;) {
+			const visible = await firstVisible([destination, ...prompts.map(({ prompt }) => prompt)]);
+			const shownPrompt = prompts.find(({ prompt }) => prompt === visible);
+			if (!shownPrompt) {
+				break;
+			}
+			await tapIfVisible(shownPrompt.dismiss);
+		}
 	}
-	if (await isTextVisible(fixtures, /Add account to device/)) {
-		await tapIfTextVisible(fixtures, 'Use without an account');
-	}
-	if (await isTextVisible(fixtures, /Chrome notifications make things easier/)) {
-		await tapIfTextVisible(fixtures, 'No thanks');
-	}
-	if (await isTextVisible(fixtures, /wants to send you notifications/)) {
-		await tapIfTextVisible(fixtures, 'Block');
-	}
+	await expect(destination).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
 const PASSWORD_MANAGER_PROMPTS = {
