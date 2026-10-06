@@ -3,9 +3,6 @@ import * as Haptics from 'expo-haptics';
 
 import SectionPills from '../SectionPills';
 
-jest.mock('../SectionPill', () => jest.requireActual('../SectionPill.tsx'));
-jest.mock('../SectionPills', () => jest.requireActual('../SectionPills.tsx'));
-
 const sections = [
 	{ header: 'Unread', title: 'Unread' },
 	{ header: 'catWork', title: 'Work Stuff' }

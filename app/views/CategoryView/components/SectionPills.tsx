@@ -27,7 +27,7 @@ const SectionPills = ({ sections, selectedHeader, onSelect }: ISectionPills) => 
 			horizontal
 			showsHorizontalScrollIndicator={false}
 			accessibilityRole='tablist'
-			style={{ backgroundColor: colors.surfaceTint }}
+			style={[styles.container, { backgroundColor: colors.surfaceTint }]}
 			contentContainerStyle={styles.content}
 			testID='category-view-sections'>
 			{sections.map(({ header, title }) => (
@@ -40,6 +40,9 @@ const SectionPills = ({ sections, selectedHeader, onSelect }: ISectionPills) => 
 };
 
 const styles = StyleSheet.create({
+	container: {
+		flexGrow: 0
+	},
 	content: {
 		gap: 8,
 		paddingHorizontal: HORIZONTAL_PADDING,
