@@ -4,8 +4,6 @@ tags:
   - 'util'
 
 ---
-# iOS native header items (unstable_headerLeftItems/RightItems) carry no accessibilityIdentifier,
-# only a label. Android keeps the JS-rendered header, matched by testID as before.
 - runFlow:
     when:
       platform: Android
