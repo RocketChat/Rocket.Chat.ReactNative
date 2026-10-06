@@ -25,6 +25,7 @@ const HEADER_ICONS: TIconsName[] = [
 	'phone',
 	'search',
 	'settings',
+	'sort',
 	'threads',
 	'workspaces'
 ];

@@ -28,6 +28,7 @@ interface IRightActionsParams {
 	onTroubleshoot: () => void;
 	onSearch: () => void;
 	onDirectory: () => void;
+	onDisplayPrefs: () => void;
 }
 
 const getRightActions = ({
@@ -36,7 +37,8 @@ const getRightActions = ({
 	dangerColor,
 	onTroubleshoot,
 	onSearch,
-	onDirectory
+	onDirectory,
+	onDisplayPrefs
 }: IRightActionsParams): IHeaderAction[] => {
 	const troubleshoot: IHeaderAction = {
 		label: i18n.t('Troubleshooting'),
@@ -60,7 +62,14 @@ const getRightActions = ({
 		disabled,
 		onPress: onDirectory
 	};
-	return [...(issuesWithNotifications ? [troubleshoot] : []), search, directory];
+	const displayPrefs: IHeaderAction = {
+		label: i18n.t('Display'),
+		icon: 'sort',
+		testID: 'rooms-list-view-display-prefs',
+		disabled,
+		onPress: onDisplayPrefs
+	};
+	return [...(issuesWithNotifications ? [troubleshoot] : []), search, directory, displayPrefs];
 };
 
 const getScreenFocusNavigation = (navigation: any, isMasterDetail: boolean) => {
@@ -105,6 +114,15 @@ export const useHeader = () => {
 		}
 	}, [isMasterDetail, navigation]);
 
+	const goDisplayPrefs = useCallback(() => {
+		logEvent(events.RL_GO_DISPLAY_PREFS);
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'DisplayPrefsView' });
+		} else {
+			navigation.navigate('DisplayPrefsView');
+		}
+	}, [isMasterDetail, navigation]);
+
 	const navigateToPushTroubleshootView = useCallback(() => {
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'PushTroubleshootView' });
@@ -141,7 +159,8 @@ export const useHeader = () => {
 			dangerColor: colors.fontDanger,
 			onTroubleshoot: navigateToPushTroubleshootView,
 			onSearch: startSearch,
-			onDirectory: goDirectory
+			onDirectory: goDirectory,
+			onDisplayPrefs: goDisplayPrefs
 		});
 
 		if (hasNativeHeaderBar) {
@@ -216,6 +235,7 @@ export const useHeader = () => {
 		canCreateRoom,
 		goToNewMessage,
 		goDirectory,
+		goDisplayPrefs,
 		navigateToPushTroubleshootView,
 		startSearch,
 		stopSearch,

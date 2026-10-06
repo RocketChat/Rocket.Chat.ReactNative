@@ -178,6 +178,7 @@ const ChatsStack = createNativeStackNavigator({
 		MessagesView: MessagesViewScreen,
 		AutoTranslateView: AutoTranslateViewScreen,
 		DirectoryView: DirectoryViewScreen,
+		DisplayPrefsView: DisplayPrefsViewScreen,
 		NotificationPrefView: NotificationPrefViewScreen,
 		E2EEToggleRoomView: E2EEToggleRoomViewScreen,
 		PushTroubleshootView: PushTroubleshootViewScreen,
