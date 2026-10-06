@@ -1,5 +1,5 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { setUser } from '~/actions/login';
@@ -27,6 +27,8 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 	);
 	const serverVersion = useAppSelector(state => state.server.version);
 	const dispatch = useDispatch();
+	// native JSI calls; the watch pairing can't change while this screen is open
+	const [showWatchAppOptions] = useState(shouldShowWatchAppOptions);
 	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
 	const enableMobileRinging = settings?.preferences?.enableMobileRinging;
 
@@ -36,8 +38,8 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 		});
 	}, [navigation]);
 
-	const navigateToScreen = (screen: keyof ProfileStackParamList) => {
-		logEvent(events.UP_GO_USER_NOTIFICATION_PREF);
+	const navigateToScreen = (screen: keyof ProfileStackParamList, event: string) => {
+		logEvent(event);
 		// @ts-ignore
 		navigation.navigate(screen);
 	};
@@ -94,7 +96,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 					<List.Separator />
 					<List.Item
 						title='Notifications'
-						onPress={() => navigateToScreen('UserNotificationPrefView')}
+						onPress={() => navigateToScreen('UserNotificationPrefView', events.UP_GO_USER_NOTIFICATION_PREF)}
 						showActionIndicator
 						testID='preferences-view-notifications'
 					/>
@@ -161,12 +163,12 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 						</>
 					) : null}
 				</List.Section>
-				{shouldShowWatchAppOptions() ? (
+				{showWatchAppOptions ? (
 					<List.Section title='WatchOS_Quick_Replies'>
 						<List.Separator />
 						<List.Item
 							title='WatchOS_Quick_Replies'
-							onPress={() => navigateToScreen('UserWatchOSQuickRepliesView')}
+							onPress={() => navigateToScreen('UserWatchOSQuickRepliesView', events.UP_GO_WATCHOS_QUICK_REPLIES)}
 							showActionIndicator
 							testID='preferences-view-watchos-quickreplies'
 						/>

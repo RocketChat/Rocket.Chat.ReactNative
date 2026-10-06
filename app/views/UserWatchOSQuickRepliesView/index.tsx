@@ -14,6 +14,8 @@ import { CURRENT_SERVER, WATCHOS_QUICKREPLIES } from '~/lib/constants/keys';
 import { syncWatchOSQuickReplies } from '~/lib/methods/WatchOSQuickReplies/syncReplies';
 import log from '~/lib/methods/helpers/log';
 
+const QUICK_REPLY_MAX_LENGTH = 30;
+
 interface IUserWatchOSQuickRepliesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserWatchOSQuickRepliesView'>;
 }
@@ -41,7 +43,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 
 	const addQuickReply = () => {
 		if (!currentServer) {
-			console.error('Error: cannot set quick replies, current server is undefined');
+			log(new Error('Error: cannot set quick replies, current server is undefined'));
 			return;
 		}
 		const value = input.trim();
@@ -70,7 +72,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 						onChangeText={text => setInput(text)}
 						placeholder={I18n.t('Add_Quick_Reply')}
 						onSubmitEditing={addQuickReply}
-						maxLength={30}
+						maxLength={QUICK_REPLY_MAX_LENGTH}
 					/>
 					<List.Separator />
 					<List.Info info='WatchOS_Quick_Replies_Description' />

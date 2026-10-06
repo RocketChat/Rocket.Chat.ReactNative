@@ -154,6 +154,7 @@ export default {
 
 	// USER PREFERENCE VIEW
 	UP_GO_USER_NOTIFICATION_PREF: 'up_go_user_notification_pref',
+	UP_GO_WATCHOS_QUICK_REPLIES: 'up_go_watchos_quick_replies',
 
 	// SECURITY PRIVACY VIEW
 	SP_GO_E2EENCRYPTIONSECURITY: 'sp_go_e2e_encryption_security',

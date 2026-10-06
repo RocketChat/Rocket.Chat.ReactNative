@@ -28,7 +28,6 @@ export const getLegacyUserTokenKey = (userId: string): string => `${TOKEN_KEY}-$
 export const getUserTokenKey = (server: string, userId: string): string => `${TOKEN_KEY}-${server}-${userId}`;
 export const TOKEN_KEY_SERVER_SCOPED_MIGRATED = 'RC_TOKEN_KEY_SERVER_SCOPED_MIGRATED';
 export const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
-export const FIRST_START = 'RC_FIRST_START';
 
 // if you change below 2 keys you will need to change them in RCTWatchModule.mm too
 export const CURRENT_SERVER = 'currentServer';

@@ -13,7 +13,7 @@ export function syncWatchOSQuickReplies(): boolean {
 
 		return true;
 	} catch (e) {
-		console.error('Failed to send quick replies', e);
+		log(e);
 		return false;
 	}
 }
