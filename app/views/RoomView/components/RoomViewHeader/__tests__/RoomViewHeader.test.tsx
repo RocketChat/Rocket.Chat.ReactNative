@@ -5,6 +5,7 @@ import { type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActio
 import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
 import { useOmnichannelActions, useRoomActions, useThreadActions } from '~/views/RoomView/hooks/useRoomHeaderActions';
 import { useNativeRoomHeader } from '~/views/RoomView/hooks/useNativeRoomHeader';
+import { RoomHeaderActions } from '../RoomHeaderActions';
 import { RoomViewHeader } from '../RoomViewHeader';
 
 const mockSetOptions = jest.fn();
@@ -27,15 +28,14 @@ jest.mock('~/views/RoomView/hooks/useNativeRoomHeader', () => ({ useNativeRoomHe
 jest.mock('~/views/RoomView/hooks/useGoRoomActionsView', () => ({ useGoRoomActionsView: () => jest.fn() }));
 jest.mock('~/views/RoomView/hooks/useUnreadsCount', () => ({ useUnreadsCount: () => 4 }));
 jest.mock('~/views/RoomView/components/LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
-jest.mock('~/views/RoomView/components/RightButtons/RightButtons', () => ({ __esModule: true, default: 'RightButtons' }));
 jest.mock('~/containers/RoomHeader', () => ({ __esModule: true, default: 'RoomHeader' }));
 jest.mock('~/lib/methods/helpers/navigation/headerActions', () => ({
 	...jest.requireActual('~/lib/methods/helpers/navigation/headerActions'),
 	HeaderActions: 'HeaderActions'
 }));
 
-jest.mock('~/views/RoomView/components/RightButtons/useRoomRightButtonsData', () => ({ useRoomRightButtonsData: jest.fn() }));
-jest.mock('~/views/RoomView/components/RightButtons/useHeaderCallPress', () => ({ useHeaderCallPress: jest.fn() }));
+jest.mock('~/views/RoomView/hooks/useRoomRightButtonsData', () => ({ useRoomRightButtonsData: jest.fn() }));
+jest.mock('~/views/RoomView/hooks/useHeaderCallPress', () => ({ useHeaderCallPress: jest.fn() }));
 
 const mockActionsStore = createStore<{ roomActions: IHeaderAction[] }>(() => ({
 	roomActions: [{ label: 'Threads', icon: 'threads', onPress: jest.fn() }]
@@ -84,19 +84,17 @@ describe('on the JS header', () => {
 		render(<RoomViewHeader rid='rid-1' roomStore={makeRoomStore()} />);
 
 		expect(lastOptionsWith('headerLeft').headerLeft().type).toBe('LeftButtons');
-		expect(lastOptionsWith('headerRight').headerRight().type).toBe('RightButtons');
+		expect(lastOptionsWith('headerRight').headerRight().type).toBe(RoomHeaderActions);
 		expect(lastOptionsWith('headerTitle').headerTitle().type).toBe('RoomHeader');
 		expect(optionsWith('unstable_headerRightItems')).toHaveLength(0);
 		expect(optionsWith('unstable_headerLeftItems')).toHaveLength(0);
 	});
 
 	it('renders only the active mode actions in the JS header buttons', () => {
-		const { default: ActualRightButtons } = jest.requireActual('~/views/RoomView/components/RightButtons/RightButtons');
 		render(<RoomViewHeader rid='rid-1' tmid='tmid-1' roomStore={makeRoomStore()} />);
 		expect(useThreadActions).not.toHaveBeenCalled();
 
-		const { props } = lastOptionsWith('headerRight').headerRight();
-		const { toJSON } = render(<ActualRightButtons rid={props.rid} tmid={props.tmid} roomStore={props.roomStore} />);
+		const { toJSON } = render(lastOptionsWith('headerRight').headerRight());
 
 		expect(useThreadActions).toHaveBeenCalledWith('tmid-1');
 		expect(useRoomActions).not.toHaveBeenCalled();
