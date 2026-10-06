@@ -48,7 +48,7 @@ const DisplayPrefsView = (): ReactElement => {
 		setSortPreference({ sortBy: SortBy.Activity });
 	};
 
-	const toggleGroupByType = () => {
+	const toggleCategories = () => {
 		logEvent(events.DP_GROUP_CHANNELS_BY_TYPE);
 		setSortPreference({ groupByType: !groupByType });
 	};
@@ -172,10 +172,10 @@ const DisplayPrefsView = (): ReactElement => {
 					/>
 					<List.Separator />
 					<List.Item
-						title='Types'
-						testID='display-pref-view-types'
+						title='Categories'
+						testID='display-pref-view-categories'
 						left={() => <List.Icon name='group-by-type' />}
-						onPress={toggleGroupByType}
+						onPress={toggleCategories}
 						right={() => renderCheckBox(groupByType)}
 						additionalAccessibilityLabel={groupByType}
 						accessibilityRole='checkbox'
