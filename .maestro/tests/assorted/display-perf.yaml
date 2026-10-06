@@ -116,9 +116,9 @@ tags:
     label: 'Should have group by favorites'
 - extendedWaitUntil:
     visible:
-      id: 'display-pref-view-types'
+      id: 'display-pref-view-categories'
     timeout: 60000
-    label: 'Should have group by types'
+    label: 'Should have categories'
 
 # should appear the last message in RoomList when is Expanded
 - extendedWaitUntil:
