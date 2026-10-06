@@ -79,11 +79,13 @@ const NewServerView = () => {
 
 	const handleBackPress = useCallback(() => {
 		if (navigation.isFocused() && previousServer) {
-			close();
+			if (!connecting) {
+				close();
+			}
 			return true;
 		}
 		return false;
-	}, [close, navigation, previousServer]);
+	}, [close, connecting, navigation, previousServer]);
 
 	const handleNewServerEvent = (event: { server: string }) => {
 		let { server } = event;
@@ -141,15 +143,9 @@ const NewServerView = () => {
 	}, []);
 
 	useEffect(() => {
-		const onHardwareBackPress = () => {
-			if (connecting && previousServer && navigation.isFocused()) {
-				return true;
-			}
-			return handleBackPress();
-		};
-		const backHandler = BackHandler.addEventListener('hardwareBackPress', onHardwareBackPress);
+		const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
 		return () => backHandler.remove();
-	}, [connecting, previousServer, handleBackPress, navigation]);
+	}, [handleBackPress]);
 
 	useEffect(() => {
 		setHeader();
