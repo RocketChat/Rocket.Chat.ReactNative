@@ -462,7 +462,7 @@ index a54cb63..366121a 100644
 +  [RNSImageLoadingHelper
 +      loadImageFromSource:source
 +          withImageLoader:imageLoader
-+               asTemplate:YES
++               asTemplate:NO
 +          completionBlock:^(UIImage *image) {
 +            RNSHeaderImageSlot *strongSelf = weakSelf;
 +            if (strongSelf == nil || generation != strongSelf->_generation) {
