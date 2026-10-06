@@ -152,7 +152,7 @@ const getUniqueId = async (server: string): Promise<string> => {
 	const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
 		? `${server}/api/v1/settings.public?_id=uniqueID`
 		: `${server}/api/v1/settings.public?query={"_id": "uniqueID"}`;
-	const response = await fetch(url);
+	const response = await fetch(url, { headers: getBasicAuthHeaders(server), skipCustomHeaders: true });
 	const result = await response.json();
 	return result?.settings?.[0]?.value;
 };

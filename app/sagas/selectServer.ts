@@ -231,6 +231,7 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 		if (certificate) {
 			SSLPinning?.setCertificate(certificate, server);
 		}
+		setBasicAuth(UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`));
 		const serverInfo = yield* getServerInfoSaga({ server });
 		const serversDB = database.servers;
 		const serversHistoryCollection = serversDB.get('servers_history');

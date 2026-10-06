@@ -1,7 +1,10 @@
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+
 import { getServerInfo } from '../getServerInfo';
 import fetch from '../helpers/fetch';
 import UserPreferences from '../userPreferences';
 import { store } from '../../store/auxStore';
+import { getSupportedVersionsCloud } from '../../services/restApi';
 
 jest.mock('../helpers/fetch', () => ({ __esModule: true, default: jest.fn(), BASIC_AUTH_KEY: 'BASIC_AUTH_KEY' }));
 jest.mock('../userPreferences', () => ({ __esModule: true, default: { getString: jest.fn() } }));
@@ -20,7 +23,9 @@ const requestOptions = () => mockedFetch.mock.calls[0][1]!;
 describe('getServerInfo', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		jest.mocked(store.getState).mockReturnValue({ login: { user: { id: 'uid', token: 'secret' } } } as any);
+		jest
+			.mocked(store.getState)
+			.mockReturnValue({ login: { user: { id: 'uid', token: 'secret' } }, server: { version: '7.0.0' } } as any);
 		mockedFetch.mockResolvedValue({ json: () => Promise.resolve({ success: false }) } as any);
 		getString.mockImplementation((key: string) => (key.endsWith(currentServer) ? 'uid' : null) as any);
 	});
@@ -65,5 +70,50 @@ describe('getServerInfo', () => {
 
 		expect(requestOptions().headers).not.toHaveProperty('Authorization');
 		expect(requestOptions().skipCustomHeaders).toBe(true);
+	});
+});
+
+describe('getServerInfo cloud lookup', () => {
+	const originalGlobalFetch = global.fetch;
+	const originalCustomHeaders = RocketChatSettings.customHeaders;
+	const sentToNetwork = jest.fn((_url: string, _options: { headers: Record<string, string> }) =>
+		Promise.resolve({ json: () => Promise.resolve({ success: true, version: '7.0.0' }) })
+	);
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		jest.mocked(store.getState).mockReturnValue({ login: { user: undefined }, server: { version: '7.0.0' } } as any);
+		getString.mockReturnValue(null as any);
+		jest.mocked(getSupportedVersionsCloud).mockResolvedValue({ json: () => Promise.resolve({}) } as any);
+		mockedFetch.mockImplementation(jest.requireActual('../helpers/fetch').default);
+		global.fetch = sentToNetwork as unknown as typeof global.fetch;
+		RocketChatSettings.customHeaders = { Authorization: 'Basic current-workspace' };
+	});
+
+	afterEach(() => {
+		global.fetch = originalGlobalFetch;
+		RocketChatSettings.customHeaders = originalCustomHeaders;
+	});
+
+	it('does not send the current workspace basic auth to the requested host', async () => {
+		await getServerInfo(attackerServer);
+
+		expect(sentToNetwork).toHaveBeenCalledTimes(2);
+		expect(sentToNetwork.mock.calls.map(([url]) => url)).toEqual([
+			`${attackerServer}/api/info`,
+			`${attackerServer}/api/v1/settings.public?_id=uniqueID`
+		]);
+		sentToNetwork.mock.calls.forEach(([, options]) => expect(options.headers).not.toHaveProperty('Authorization'));
+	});
+
+	it('sends the requested host its own stored basic auth on the cloud lookup', async () => {
+		getString.mockImplementation((key: string) => (key === `BASIC_AUTH_KEY-${attackerServer}` ? 'attacker-creds' : null) as any);
+
+		await getServerInfo(attackerServer);
+
+		expect(sentToNetwork).toHaveBeenCalledTimes(2);
+		sentToNetwork.mock.calls.forEach(([, options]) =>
+			expect(options.headers).toMatchObject({ Authorization: 'Basic attacker-creds' })
+		);
 	});
 });
