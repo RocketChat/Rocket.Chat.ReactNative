@@ -390,6 +390,7 @@
 		1EC6AD6022CBA20C00A41C61 /* ShareRocketChatRN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareRocketChatRN.entitlements; sourceTree = "<group>"; };
 		1ED00BB02513E04400A1331F /* ReplyNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyNotification.swift; sourceTree = "<group>"; };
 		1ED033AD2B55B1CC004F4930 /* Default.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Default.xcdatamodel; sourceTree = "<group>"; };
+		16A2DDFD2F4B3F1700051F86 /* Default 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Default 2.xcdatamodel"; sourceTree = "<group>"; };
 		1ED033AF2B55B25A004F4930 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		1ED033B52B55B4A5004F4930 /* ServerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerListView.swift; sourceTree = "<group>"; };
 		1ED033B92B55B5F6004F4930 /* ServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerView.swift; sourceTree = "<group>"; };
@@ -2538,8 +2539,9 @@
 			isa = XCVersionGroup;
 			children = (
 				1ED033AD2B55B1CC004F4930 /* Default.xcdatamodel */,
+				16A2DDFD2F4B3F1700051F86 /* Default 2.xcdatamodel */,
 			);
-			currentVersion = 1ED033AD2B55B1CC004F4930 /* Default.xcdatamodel */;
+			currentVersion = 16A2DDFD2F4B3F1700051F86 /* Default 2.xcdatamodel */;
 			path = Default.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
