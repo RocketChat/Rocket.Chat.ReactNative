@@ -16,7 +16,7 @@ import SafeAreaView from '~/containers/SafeAreaView';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import I18n from '~/i18n';
-import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
+import { stackedSearchHeaderOptions } from '~/lib/methods/helpers/navigation';
 import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import database from '~/lib/database';
 import UserItem from '~/containers/UserItem';
@@ -115,12 +115,7 @@ const SelectedUsersView = () => {
 			...headerRightActions(
 				showHeaderButton ? [{ label: buttonTitle, testID: 'selected-users-view-submit', onPress: nextActionHeader }] : []
 			),
-			...(hasNativeHeaderBar
-				? {
-						headerTransparent: true,
-						headerSearchBarOptions: stackedSearchBarOptions({ onChangeText: handleSearch })
-					}
-				: {})
+			...stackedSearchHeaderOptions({ onChangeText: handleSearch })
 		});
 	}, [navigation, users.length, maxUsers, buttonText, nextAction, handleSearch]);
 

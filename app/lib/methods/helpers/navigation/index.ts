@@ -50,6 +50,9 @@ export const stackedSearchBarOptions = ({
 	onCancelButtonPress: onCancel ?? (() => onChangeText(''))
 });
 
+export const stackedSearchHeaderOptions = (searchBarOptions: IStackedSearchBarOptions): NativeStackNavigationOptions =>
+	hasNativeHeaderBar ? { headerTransparent: true, headerSearchBarOptions: stackedSearchBarOptions(searchBarOptions) } : {};
+
 export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions => ({
 	...(!hasNativeHeaderBar && {
 		headerStyle: {

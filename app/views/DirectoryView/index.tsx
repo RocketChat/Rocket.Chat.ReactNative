@@ -13,7 +13,7 @@ import { useActionSheet } from '~/containers/ActionSheet';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
 import I18n from '~/i18n';
-import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
+import { stackedSearchHeaderOptions } from '~/lib/methods/helpers/navigation';
 import SearchBox from '~/containers/SearchBox';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
@@ -96,8 +96,7 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 			? {
 					title: I18n.t('Directory'),
 					headerRight: undefined,
-					headerTransparent: true,
-					headerSearchBarOptions: stackedSearchBarOptions({ onChangeText: onSearchChangeText, onSearch: search }),
+					...stackedSearchHeaderOptions({ onChangeText: onSearchChangeText, onSearch: search }),
 					unstable_headerRightItems: () => [
 						{
 							type: 'menu',
