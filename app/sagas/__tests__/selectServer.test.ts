@@ -72,7 +72,7 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import selectServerRoot from '../selectServer';
-import { selectServerRequest, serverFinishAdd, serverRequest } from '~/actions/server';
+import { selectServerRequest, serverRequest } from '~/actions/server';
 import { appStart } from '~/actions/app';
 import { RootEnum } from '~/definitions';
 import { SERVER } from '~/actions/actionsTypes';
@@ -365,7 +365,7 @@ describe('selectServer saga — requesting a new workspace', () => {
 		);
 	});
 
-	it('restores the active workspace basic auth when the add-workspace flow finishes after a failed connect', async () => {
+	it('restores the active workspace basic auth as soon as the requested host cannot be reached', async () => {
 		UserPreferences.setString(`${BASIC_AUTH_KEY}-${OLD_SERVER}`, 'old-workspace-credentials');
 		setBasicAuth('old-workspace-credentials');
 		(sdk as { host?: string }).host = OLD_SERVER;
@@ -374,11 +374,26 @@ describe('selectServer saga — requesting a new workspace', () => {
 		const { store } = setupStore();
 		store.dispatch(serverRequest(REQUESTED_HOST));
 		await flushSagaMicrotasks();
-		store.dispatch(serverFinishAdd());
-		await flushSagaMicrotasks();
 
 		expect((RocketChatSettings.customHeaders as { Authorization?: string }).Authorization).toBe(
 			'Basic old-workspace-credentials'
 		);
+	});
+
+	it('connects to the requested host with its own basic auth after a successful probe', async () => {
+		UserPreferences.setString(`${BASIC_AUTH_KEY}-${OLD_SERVER}`, 'old-workspace-credentials');
+		UserPreferences.setString(`${BASIC_AUTH_KEY}-${REQUESTED_HOST}`, 'requested-host-credentials');
+		setBasicAuth('old-workspace-credentials');
+		(sdk as { host?: string }).host = OLD_SERVER;
+		let authorizationAtConnect: string | null = null;
+		jest.mocked(connect).mockImplementationOnce(async () => {
+			authorizationAtConnect = (RocketChatSettings.customHeaders as { Authorization?: string }).Authorization ?? null;
+		});
+
+		const { store } = setupStore();
+		store.dispatch(serverRequest(REQUESTED_HOST));
+		await flushSagaMicrotasks();
+
+		expect(authorizationAtConnect).toBe('Basic requested-host-credentials');
 	});
 });

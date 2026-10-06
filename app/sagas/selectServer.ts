@@ -62,6 +62,12 @@ const getServerVersion = function (version: string | null) {
 
 const applyBasicAuth = (server: string) => setBasicAuth(UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`));
 
+const restoreActiveBasicAuth = () => {
+	if (sdk.host) {
+		applyBasicAuth(sdk.host);
+	}
+};
+
 const upsertServer = async function ({ server, serverInfo }: { server: string; serverInfo: IServerInfo }): Promise<TServerModel> {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
@@ -266,18 +272,13 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 	} catch (e) {
 		yield put(serverFailure());
 		log(e);
-	}
-};
-
-const restoreActiveBasicAuth = () => {
-	if (sdk.host) {
-		applyBasicAuth(sdk.host);
+	} finally {
+		restoreActiveBasicAuth();
 	}
 };
 
 const root = function* root() {
 	yield takeLatest<IServerRequestAction>(SERVER.REQUEST, handleServerRequest);
 	yield takeLatest<ISelectServerAction>(SERVER.SELECT_REQUEST, handleSelectServer);
-	yield takeLatest(SERVER.FINISH_ADD, restoreActiveBasicAuth);
 };
 export default root;
