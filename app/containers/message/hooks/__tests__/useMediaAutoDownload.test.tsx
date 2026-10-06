@@ -300,7 +300,7 @@ describe('useMediaAutoDownload', () => {
 			expect(getUrl({ title_link: '/file.png', image_url: URL })).toBe(`${URL}?rc_token=${USER.token}&rc_uid=${USER.id}`);
 		});
 
-		it('returns an untrusted url that already carries rc_token unchanged', () => {
+		it('does not rewrite the credentials already on an untrusted url', () => {
 			const attackerUrl = 'https://evil.example/x.png?rc_token=attacker&rc_uid=attacker';
 			expect(getUrl({ image_url: attackerUrl })).toBe(attackerUrl);
 			expect(getUrl({ title_link: attackerUrl, image_url: URL })).toBe(attackerUrl);

@@ -52,6 +52,21 @@ describe('formatAttachmentUrl', () => {
 		);
 	});
 
+	it('adds credentials to a trusted url when the original url is relative', () => {
+		const result = formatAttachmentUrl(`${SERVER}/file-upload/1/a.png`, 'uid', 'tok', SERVER, '/file-upload/1/a.png');
+		expect(result).toBe(`${SERVER}/file-upload/1/a.png?rc_token=tok&rc_uid=uid`);
+	});
+
+	it.each(['//evil.com/x', 'ftp://evil.com/x', 'javascript:alert(1)'])(
+		'only adds credentials to the trusted origin when the original url is %j',
+		originalUrl => {
+			expect(formatAttachmentUrl('https://evil.example/x', 'uid', 'tok', SERVER, originalUrl)).toBe('https://evil.example/x');
+			expect(formatAttachmentUrl(`${SERVER}/a.png`, 'uid', 'tok', SERVER, originalUrl)).toBe(
+				`${SERVER}/a.png?rc_token=tok&rc_uid=uid`
+			);
+		}
+	);
+
 	it('encodes an untrusted original url', () => {
 		expect(formatAttachmentUrl(`${SERVER}/a.png`, 'uid', 'tok', SERVER, 'https://evil.example/a b.png')).toBe(
 			'https://evil.example/a%20b.png'
