@@ -109,13 +109,13 @@ const QueueListView = memo(() => {
 	};
 
 	return (
-		<SafeAreaView testID='queue-list-view' style={{ backgroundColor: colors.surfaceRoom }}>
+		<SafeAreaView testID='queue-list-view' style={{ backgroundColor: colors.surfaceTint }}>
 			<FlatList
 				ref={getScrollRef}
 				data={queued}
 				extraData={queued}
 				keyExtractor={keyExtractor}
-				style={{ backgroundColor: colors.surfaceRoom }}
+				style={{ backgroundColor: colors.surfaceTint }}
 				renderItem={renderItem}
 				getItemLayout={getItemLayout}
 				removeClippedSubviews={isIOS}

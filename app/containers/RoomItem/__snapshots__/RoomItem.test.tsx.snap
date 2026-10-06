@@ -93,7 +93,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -418,7 +418,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -787,7 +787,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -1156,7 +1156,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -1525,7 +1525,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -1894,7 +1894,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -2263,7 +2263,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -2632,7 +2632,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -3001,7 +3001,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -3370,7 +3370,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -3739,7 +3739,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -4112,7 +4112,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                   "marginVertical": undefined,
                 },
                 {
-                  "backgroundColor": "#FFFFFF",
+                  "backgroundColor": "#F7F8FA",
                   "borderRadius": undefined,
                 },
               ],
@@ -4420,7 +4420,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -4789,7 +4789,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -5158,7 +5158,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -5506,7 +5506,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -5818,7 +5818,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -6065,7 +6065,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -6356,7 +6356,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -6709,7 +6709,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -7062,7 +7062,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -7376,7 +7376,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -7708,7 +7708,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -8045,7 +8045,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -8390,7 +8390,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -8735,7 +8735,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -9080,7 +9080,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -9425,7 +9425,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -9835,7 +9835,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -10245,7 +10245,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -10660,7 +10660,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -10964,7 +10964,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -11268,7 +11268,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -11572,7 +11572,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -11876,7 +11876,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -12180,7 +12180,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -12484,7 +12484,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -12788,7 +12788,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -13092,7 +13092,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -13396,7 +13396,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -13705,7 +13705,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -14048,7 +14048,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -14433,7 +14433,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -14776,7 +14776,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -15165,7 +15165,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                   "marginVertical": undefined,
                 },
                 {
-                  "backgroundColor": "#FFFFFF",
+                  "backgroundColor": "#F7F8FA",
                   "borderRadius": undefined,
                 },
               ],
@@ -15473,7 +15473,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -15785,7 +15785,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -16089,7 +16089,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -16393,7 +16393,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -16697,7 +16697,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -17001,7 +17001,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -17305,7 +17305,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -17609,7 +17609,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -17913,7 +17913,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -18222,7 +18222,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],
@@ -18534,7 +18534,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#FFFFFF",
+                    "backgroundColor": "#F7F8FA",
                     "borderRadius": undefined,
                   },
                 ],

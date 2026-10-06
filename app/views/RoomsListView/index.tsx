@@ -167,7 +167,7 @@ const RoomsListView = memo(function RoomsListView() {
 			<Animated.FlatList
 				data={searchEnabled ? searchResults : subscriptions}
 				keyExtractor={item => `${item.rid}-${searchEnabled}`}
-				style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
+				style={[styles.list, { backgroundColor: colors.surfaceTint }]}
 				contentContainerStyle={{
 					paddingBottom:
 						Platform.select({ ios: 0, default: bottom }) + (showNewMessageButton ? FLOATING_ACTION_BUTTON_CLEARANCE : 0)

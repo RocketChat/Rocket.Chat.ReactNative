@@ -42,7 +42,7 @@ const SectionHeader = ({
 	return (
 		<Pressable
 			onPress={event => event.currentTarget.measureInWindow((_x, y, _width, height) => onToggle(header, y + height))}
-			style={[styles.groupTitleContainer, { backgroundColor: colors.surfaceRoom, borderColor: colors.strokeExtraLight }]}
+			style={[styles.groupTitleContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}
 			accessibilityRole='button'
 			accessibilityLabel={sectionTitle}
 			accessibilityState={{ expanded: !collapsed }}
