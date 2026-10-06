@@ -27,6 +27,7 @@ import {
 } from '~/lib/methods/helpers';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { events, logEvent } from '~/lib/methods/helpers/log';
+import { store } from '~/lib/store/auxStore';
 import { getUserSelector } from '~/selectors/login';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
@@ -66,7 +67,7 @@ const RoomsListView = memo(function RoomsListView() {
 	const { subscriptions, loading } = useSubscriptions(collapsedGroups);
 	const { onToggle, rowEntering, rowExiting, badgeEntering, badgeExiting, revealKey, coverEntering, coverExiting } =
 		useSectionToggleAnimation(collapsedGroups, toggleGroup, subscriptions.length);
-	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
+	const focusedRoom = useAppSelector(state => (isMasterDetail ? state.room.subscribedRoom : undefined));
 	const changingServer = useAppSelector(state => state.server.changingServer);
 	const { refreshing, onRefresh } = useRefresh({ searching });
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
@@ -89,7 +90,7 @@ const RoomsListView = memo(function RoomsListView() {
 		if (!isMasterDetail && !navigation.isFocused()) {
 			return;
 		}
-		if (item.rid === subscribedRoom) {
+		if (item.rid === store.getState().room.subscribedRoom) {
 			return;
 		}
 
@@ -143,7 +144,7 @@ const RoomsListView = memo(function RoomsListView() {
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}
 				getIsRead={isRead}
-				isFocused={isMasterDetail && subscribedRoom === item.rid}
+				isFocused={focusedRoom === item.rid}
 				swipeEnabled={swipeEnabled}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
