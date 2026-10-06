@@ -4,6 +4,7 @@ import { expect } from 'e2e';
 import { createRandomRoom, createUser, deleteCreatedUsers, get } from '~e2e/support/api';
 import {
 	fillSettled,
+	fillWhenUncovered,
 	hideKeyboard,
 	loginWithDeepLink,
 	type Fixtures,
@@ -31,7 +32,9 @@ const scrollToEditControl = async ({ screen }: Fixtures, field: string, directio
 const fillEditField = async (fixtures: Fixtures, field: string, value: string) => {
 	await scrollToEditControl(fixtures, field);
 	const input = fixtures.screen.getByTestId(editViewTestId(field));
-	if (field !== 'password' && fixtures.platform === 'android') {
+	if (field === 'password') {
+		await fillWhenUncovered(input, value);
+	} else if (fixtures.platform === 'android') {
 		await fillSettled(input, value);
 	} else {
 		await input.clear();
