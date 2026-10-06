@@ -123,6 +123,25 @@ describe('groupRooms', () => {
 		expect(layout(roomList)).toEqual(['# Work', 'unread']);
 		expect(roomList[0]).toMatchObject({ collapsed: true, unread: 0, userMentions: 0, groupMentions: 1 });
 	});
+
+	it('treats a room with only unread threads as unread', () => {
+		const chats = [room({ rid: 'read', category: 'work' }), room({ rid: 'thread-only', category: 'work', tunread: ['thread'] })];
+		const categoryUnreadOptions = new Map([['work', { showUnreads: true, keepUnreadsOnTop: true }]]);
+
+		expect(layout(buildRoomList(chats, { ...options, categoryUnreadOptions }))).toEqual(['# Work', 'thread-only', 'read']);
+		expect(layout(buildRoomList(chats, { ...options, categoryUnreadOptions, collapsedGroups: new Set(['work']) }))).toEqual([
+			'# Work',
+			'thread-only'
+		]);
+	});
+
+	it('counts a room flagged only by an alert as one unread on its collapsed header', () => {
+		const chats = [room({ rid: 'alert', category: 'work', alert: true })];
+
+		const [header] = buildRoomList(chats, { ...options, collapsedGroups: new Set(['work']) });
+
+		expect(header).toMatchObject({ collapsed: true, unread: 1 });
+	});
 });
 
 describe('roomsInSection', () => {

@@ -15,7 +15,7 @@ const OMNICHANNEL_HEADER_IN_PROGRESS = 'Open_Livechats';
 const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
 
 const filterIsUnread = (subscription: TSubscriptionModel) =>
-	(subscription.alert || subscription.unread) && !subscription.hideUnreadStatus;
+	(subscription.alert || subscription.unread || subscription.tunread?.length) && !subscription.hideUnreadStatus;
 
 const filterIsOmnichannel = (subscription: TSubscriptionModel) => subscription.t === 'l';
 
@@ -39,7 +39,7 @@ const sectionHeader = (badgeSourceRooms: TSubscriptionModel[], header: string, t
 		separator: true,
 		name: title,
 		collapsed,
-		unread: sumOf(badgedRooms, room => room.unread || room.tunread?.length),
+		unread: sumOf(badgedRooms, room => room.unread || room.tunread?.length || (room.alert ? 1 : 0)),
 		userMentions: sumOf(badgedRooms, room => room.userMentions),
 		groupMentions: sumOf(badgedRooms, room => room.groupMentions),
 		tunread: threadsOf(badgedRooms, room => room.tunread),
