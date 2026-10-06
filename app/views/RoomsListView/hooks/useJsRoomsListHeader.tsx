@@ -40,17 +40,19 @@ export const useJsRoomsListHeader = () => {
 			dangerColor: colors.fontDanger,
 			navigateToScreen
 		});
+		const headerTitle = () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />;
 		const nextOptions = searchEnabled
 			? {
+					headerTitle,
 					headerLeft: () => (
 						<HeaderButton.Container style={{ marginLeft: 1 }} left>
 							<HeaderButton.Item iconName='close' onPress={stopSearch} />
 						</HeaderButton.Container>
 					),
-					headerTitle: () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />,
 					headerRight: () => null
 				}
 			: {
+					headerTitle,
 					headerLeft: () => (
 						<HeaderButton.Drawer
 							ref={drawerButtonRef}
@@ -61,7 +63,6 @@ export const useJsRoomsListHeader = () => {
 							disabled={disabled}
 						/>
 					),
-					headerTitle: () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />,
 					...headerRightActions([...troubleshootActions, searchAction, ...browseActions])
 				};
 		navigation.setOptions(nextOptions);
