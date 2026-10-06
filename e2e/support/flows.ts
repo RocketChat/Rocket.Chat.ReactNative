@@ -256,8 +256,24 @@ const acceptSystemAlert = async (device: Fixtures['device']) => {
 	}
 };
 
+const OPEN_LINK_ATTEMPTS = 3;
+const OPEN_LINK_RETRY_DELAY = 2_000;
+
+const openLinkWithRetry = async (device: Fixtures['device'], link: string) => {
+	for (let attempt = 1; ; attempt++) {
+		try {
+			return await device.openLink(link);
+		} catch (error) {
+			if (attempt >= OPEN_LINK_ATTEMPTS) {
+				throw error;
+			}
+			await delay(OPEN_LINK_RETRY_DELAY);
+		}
+	}
+};
+
 export const openDeepLink = async ({ device, screen, platform }: Fixtures, link: string, destination?: Locator) => {
-	await device.openLink(link);
+	await openLinkWithRetry(device, link);
 	if (platform !== 'ios') {
 		return;
 	}
