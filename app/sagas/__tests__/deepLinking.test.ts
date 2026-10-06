@@ -896,12 +896,7 @@ describe('deepLinking saga — unknown host hands off to the add-server flow', (
 		emitSpy.mockRestore();
 	});
 
-	it('does not ask for confirmation for a known host without a token', async () => {
-		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
-			if (key === 'currentServer') return PREVIOUS_SERVER;
-			if (key === getServerUserIdKey(HOST)) return TOKEN;
-			return null;
-		});
+	it('does not ask for confirmation for a host with a server record and no signed-in user, without a token', async () => {
 		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
 		jest.mocked(showConfirmationAlert).mockClear();
 		const { store } = setupStore();
@@ -911,7 +906,7 @@ describe('deepLinking saga — unknown host hands off to the add-server flow', (
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(showConfirmationAlert)).not.toHaveBeenCalled();
-		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
+		expect(jest.mocked(getServerInfo)).toHaveBeenCalledWith(HOST);
 	});
 });
 

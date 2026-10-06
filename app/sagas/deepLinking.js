@@ -154,16 +154,9 @@ const declineDeepLinkLogin = function* declineDeepLinkLogin() {
 	yield fallbackNavigation();
 };
 
-const ensureDeepLinkLoginConsent = function* ensureDeepLinkLoginConsent(host, params) {
-	if (!params.token) {
-		const storedUser = UserPreferences.getString(getServerUserIdKey(host));
-		if (storedUser) {
-			return true;
-		}
-		const serverRecord = yield getServerById(host);
-		if (serverRecord) {
-			return true;
-		}
+const ensureDeepLinkLoginConsent = function* ensureDeepLinkLoginConsent(host, params, serverRecord) {
+	if (!params.token && serverRecord) {
+		return true;
 	}
 	const confirmed = yield call(confirmDeepLinkLogin, host, params);
 	if (!confirmed) {
@@ -304,7 +297,7 @@ const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, 
 		yield* handleKnownServerDeepLink({ params, host, version: serverRecord.version });
 		return;
 	}
-	if (!(yield ensureDeepLinkLoginConsent(host, params))) {
+	if (!(yield ensureDeepLinkLoginConsent(host, params, serverRecord))) {
 		return;
 	}
 	const result = yield getServerInfo(host);
@@ -445,7 +438,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 		return;
 	}
 
-	if (!(yield ensureDeepLinkLoginConsent(host, params))) {
+	if (!(yield ensureDeepLinkLoginConsent(host, params, serverRecord))) {
 		return;
 	}
 	// if deep link is from a different server
