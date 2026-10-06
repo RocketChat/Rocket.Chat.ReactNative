@@ -7,28 +7,30 @@ const CARD_MARGIN_HORIZONTAL = 16;
 const CARD_RADIUS = 26;
 const TEXT_MARGIN_HORIZONTAL = CARD_MARGIN_HORIZONTAL * 2;
 const SECTION_SPACING = 35;
-const SECTION_SPACING_BELOW_CARD = 53 / 3;
+const SECTION_SPACING_BELOW_CARD = 17.5;
 const LAST_SECTION_SPACING = 20;
 const TITLE_LINE_SPACING = 2;
-const TITLE_LINE_HEIGHT = 61 / 3 + TITLE_LINE_SPACING;
+const NATIVE_TEXT_LINE_HEIGHT = 61 / 3;
+const TITLE_LINE_HEIGHT = NATIVE_TEXT_LINE_HEIGHT + TITLE_LINE_SPACING;
 
 export default StyleSheet.create({
 	content: {
 		paddingBottom: LAST_SECTION_SPACING - SECTION_SPACING_BELOW_CARD
 	},
-	firstSection: {
-		paddingTop: SECTION_SPACING
+	firstSectionSpacer: {
+		height: SECTION_SPACING
 	},
-	section: {
-		paddingTop: SECTION_SPACING - SECTION_SPACING_BELOW_CARD
+	sectionSpacer: {
+		height: SECTION_SPACING - SECTION_SPACING_BELOW_CARD
 	},
-	sectionWithoutFooter: {
-		paddingBottom: SECTION_SPACING_BELOW_CARD
+	belowCardSpacer: {
+		height: SECTION_SPACING_BELOW_CARD
 	},
 	header: {
 		paddingVertical: 10,
 		marginHorizontal: TEXT_MARGIN_HORIZONTAL,
 		fontSize: 17,
+		lineHeight: NATIVE_TEXT_LINE_HEIGHT,
 		fontWeight: '600'
 	},
 	footer: {
