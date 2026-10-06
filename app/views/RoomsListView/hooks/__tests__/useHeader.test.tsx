@@ -157,7 +157,7 @@ describe('RoomsListView useHeader', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		const rightItems = options.unstable_headerRightItems();
+		const rightItems = options.unstable_headerRightItems({});
 		const labels = rightItems.map((item: { accessibilityLabel: string }) => item.accessibilityLabel);
 		expect(labels).toEqual(['Troubleshooting', 'Directory', 'Display', 'Create new channel, team, direct message or discussion']);
 	});
@@ -168,7 +168,7 @@ describe('RoomsListView useHeader', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		const rightItems = options.unstable_headerRightItems();
+		const rightItems = options.unstable_headerRightItems({});
 		const labels = rightItems.map((item: { accessibilityLabel: string }) => item.accessibilityLabel);
 		expect(labels).not.toContain('Troubleshooting');
 	});
@@ -178,7 +178,7 @@ describe('RoomsListView useHeader', () => {
 
 		const options = mockSetOptions.mock.calls[0][0];
 		const toolbarItems = options
-			.unstable_headerRightItems()
+			.unstable_headerRightItems({})
 			.filter((item: { placement?: string }) => item.placement === 'toolbar');
 		expect(toolbarItems).toEqual([
 			expect.objectContaining({
@@ -193,7 +193,7 @@ describe('RoomsListView useHeader', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		const rightItems = options.unstable_headerRightItems();
+		const rightItems = options.unstable_headerRightItems({});
 		const labels = rightItems.map((item: { accessibilityLabel: string }) => item.accessibilityLabel);
 		expect(labels).toEqual(['Directory', 'Display', 'Create new channel, team, direct message or discussion']);
 		expect(rightItems.every((item: { type: string }) => item.type === 'button')).toBe(true);
@@ -203,7 +203,7 @@ describe('RoomsListView useHeader', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		const leftItems = options.unstable_headerLeftItems();
+		const leftItems = options.unstable_headerLeftItems({});
 		expect(leftItems).toHaveLength(1);
 		expect(leftItems[0].icon).toEqual({ type: 'image', source: { uri: 'hamburguer' } });
 	});
@@ -220,7 +220,7 @@ describe('RoomsListView useHeader', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		const rightItems = options.unstable_headerRightItems();
+		const rightItems = options.unstable_headerRightItems({});
 		expect(rightItems.some((item: { accessibilityLabel: string }) => item.accessibilityLabel === 'Search')).toBe(false);
 
 		expect(options.headerSearchBarOptions.placement).toBe('automatic');
@@ -248,7 +248,7 @@ describe('RoomsListView useHeader', () => {
 
 		const options = mockSetOptions.mock.calls[0][0];
 		expect(options.headerSearchBarOptions.hideNavigationBar).toBe(false);
-		const rightItems = options.unstable_headerRightItems();
+		const rightItems = options.unstable_headerRightItems({});
 		expect(rightItems.map((item: { label: string }) => item.label)).toEqual(['Cancel']);
 
 		rightItems[0].onPress();
@@ -264,7 +264,7 @@ describe('RoomsListView useHeader', () => {
 
 		const options = mockSetOptions.mock.calls[0][0];
 		expect(options.headerSearchBarOptions.hideNavigationBar).toBe(true);
-		const labels = options.unstable_headerRightItems().map((item: { label: string }) => item.label);
+		const labels = options.unstable_headerRightItems({}).map((item: { label: string }) => item.label);
 		expect(labels).not.toContain('Cancel');
 	});
 

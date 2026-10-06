@@ -42,6 +42,19 @@ describe('nativeHeaderItems', () => {
 
 		expect((button as NativeStackHeaderItemButton).badge).toEqual({ value: '', style: { backgroundColor: 'red' } });
 	});
+
+	it('tints items with the header tint unless the action sets its own', () => {
+		const [plain, tinted] = nativeHeaderItems(
+			[
+				{ label: 'Menu', icon: 'hamburguer', onPress: jest.fn() },
+				{ label: 'Create', icon: 'add', tintColor: 'blue', onPress: jest.fn() }
+			],
+			'gray'
+		) as NativeStackHeaderItemButton[];
+
+		expect(plain.tintColor).toBe('gray');
+		expect(tinted.tintColor).toBe('blue');
+	});
 });
 
 describe('HeaderActions', () => {

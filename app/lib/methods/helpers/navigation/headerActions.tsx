@@ -59,22 +59,24 @@ const toNativeMenuAction = ({
 	onPress
 });
 
-export const nativeHeaderItems = (actions: IHeaderAction[]): NativeStackHeaderItem[] =>
-	actions.map(({ label, icon, disabled, tintColor, badge, variant, placement, onPress, menu }): NativeStackHeaderItem => {
-		const item = {
-			label,
-			accessibilityLabel: label,
-			icon: icon && headerIcon(icon),
-			disabled,
-			tintColor,
-			variant,
-			badge: badge && { value: badge.value ?? '', style: { backgroundColor: badge.color } }
-		};
-		if (menu) {
-			return { ...item, type: 'menu', menu: { items: menu.map(toNativeMenuAction) } };
+export const nativeHeaderItems = (actions: IHeaderAction[], headerTintColor?: string): NativeStackHeaderItem[] =>
+	actions.map(
+		({ label, icon, disabled, tintColor = headerTintColor, badge, variant, placement, onPress, menu }): NativeStackHeaderItem => {
+			const item = {
+				label,
+				accessibilityLabel: label,
+				icon: icon && headerIcon(icon),
+				disabled,
+				tintColor,
+				variant,
+				badge: badge && { value: badge.value ?? '', style: { backgroundColor: badge.color } }
+			};
+			if (menu) {
+				return { ...item, type: 'menu', menu: { items: menu.map(toNativeMenuAction) } };
+			}
+			return { ...item, type: 'button', placement, onPress: onPress ?? (() => {}) };
 		}
-		return { ...item, type: 'button', placement, onPress: onPress ?? (() => {}) };
-	});
+	);
 
 const showMenu = (menu: IHeaderMenuItem[]) =>
 	showActionSheetRef({
@@ -122,12 +124,12 @@ export const HeaderActions = ({ actions, left = false }: { actions: IHeaderActio
 
 export const headerRightActions = (actions: IHeaderAction[]): NativeStackNavigationOptions =>
 	hasNativeHeaderBar
-		? { headerRight: undefined, unstable_headerRightItems: () => nativeHeaderItems(actions) }
+		? { headerRight: undefined, unstable_headerRightItems: ({ tintColor }) => nativeHeaderItems(actions, tintColor) }
 		: { headerRight: () => <HeaderActions actions={actions} /> };
 
 export const headerLeftActions = (actions: IHeaderAction[]): NativeStackNavigationOptions =>
 	hasNativeHeaderBar
-		? { headerLeft: undefined, unstable_headerLeftItems: () => nativeHeaderItems(actions) }
+		? { headerLeft: undefined, unstable_headerLeftItems: ({ tintColor }) => nativeHeaderItems(actions, tintColor) }
 		: { headerLeft: () => <HeaderActions actions={actions} left /> };
 
 export const headerLeftDrawer = (

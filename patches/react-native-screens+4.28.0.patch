@@ -131,7 +131,7 @@ index 8a41697223f6c4b5cb2dd6d450fc58cbb3b27536..35fa3a619a288f9c9fcada43518ff0a5
  
  NS_ASSUME_NONNULL_END
 diff --git a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
-index a54cb632e7c3387b65b02246e6d9f326e49a3362..2fe79406130859f9041dc7d867b1a14e1b35e8bd 100644
+index a54cb632e7c3387b65b02246e6d9f326e49a3362..926ca067c6fc2e1717f85ca7c099fde282048c42 100644
 --- a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
 +++ b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
 @@ -1,4 +1,5 @@
@@ -799,7 +799,47 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..2fe79406130859f9041dc7d867b1a14e
  
    // If previous screen controller was recreated (e.g. when you go back to tab with stack that has multiple screens),
    // its navigationItem may not have any information from screen's headerConfig, including the title.
-@@ -782,6 +1199,32 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -714,6 +1131,7 @@ RNS_IGNORE_SUPER_CALL_END
+   // This has any effect only in case the `backBarButtonItem` is not set.
+   // We apply it before we configure the back item, because it might get overriden.
+   prevItem.backButtonDisplayMode = config.backButtonDisplayMode;
++  UIBarButtonItem *customBackBarButtonItem = nil;
+ 
+   if (config.isBackTitleVisible) {
+     RNSBackBarButtonItem *backBarButtonItem = [[RNSBackBarButtonItem alloc] initWithTitle:resolvedBackTitle
+@@ -753,12 +1171,31 @@ RNS_IGNORE_SUPER_CALL_END
+     // See: https://github.com/software-mansion/react-native-screens/issues/1589
+     if (shouldUseCustomBackBarButtonItem) {
+       prevItem.backBarButtonItem = backBarButtonItem;
++      customBackBarButtonItem = backBarButtonItem;
+     }
+   } else {
+     // back button title should be not visible next to back button,
+     // but it should still appear in back menu
+     prevItem.backButtonDisplayMode = UINavigationItemBackButtonDisplayModeMinimal;
+   }
++
++  if (@available(iOS 26.0, *)) {
++    if (config.color != nil) {
++      UIBarButtonItem *tintedBackBarButtonItem = customBackBarButtonItem;
++      if (tintedBackBarButtonItem == nil) {
++        NSString *backBarButtonTitle =
++            prevItem.backButtonDisplayMode == UINavigationItemBackButtonDisplayModeMinimal ? @"" : resolvedBackTitle;
++        RNSBackBarButtonItem *backBarButtonItem = [[RNSBackBarButtonItem alloc] initWithTitle:backBarButtonTitle
++                                                                                        style:UIBarButtonItemStylePlain
++                                                                                       target:nil
++                                                                                       action:nil];
++        [backBarButtonItem setMenuHidden:config.disableBackButtonMenu];
++        tintedBackBarButtonItem = backBarButtonItem;
++      }
++      tintedBackBarButtonItem.tintColor = config.color;
++      prevItem.backBarButtonItem = tintedBackBarButtonItem;
++    }
++  }
+ #endif
+ }
+ 
+@@ -782,6 +1219,32 @@ RNS_IGNORE_SUPER_CALL_END
    }
  }
  
@@ -832,7 +872,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..2fe79406130859f9041dc7d867b1a14e
  - (NSArray<UIBarButtonItem *> *)barButtonItemsFromConfigs:(NSArray<NSDictionary<NSString *, id> *> *)dicts
                                           withCurrentItems:(NSArray<UIBarButtonItem *> *)currentItems
  {
-@@ -858,12 +1301,13 @@ RNS_IGNORE_SUPER_CALL_END
+@@ -858,12 +1321,13 @@ RNS_IGNORE_SUPER_CALL_END
      return;
    }
  
@@ -852,7 +892,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..2fe79406130859f9041dc7d867b1a14e
  
    //  [_reactSubviews insertObject:(RNSScreenStackHeaderSubview *)childComponentView atIndex:index];
    [self insertReactSubview:(RNSScreenStackHeaderSubview *)childComponentView atIndex:index];
-@@ -987,6 +1431,8 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+@@ -987,6 +1451,8 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
  {
    [super prepareForRecycle];
    _initialPropsSet = NO;
@@ -861,7 +901,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..2fe79406130859f9041dc7d867b1a14e
  
    _lastSendState = react::RNSScreenStackHeaderConfigState(react::Size{}, react::EdgeInsets{}, react::Point{});
  }
-@@ -1003,6 +1449,14 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+@@ -1003,6 +1469,14 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
    return react::concreteComponentDescriptorProvider<react::RNSScreenStackHeaderConfigComponentDescriptor>();
  }
  
@@ -876,7 +916,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..2fe79406130859f9041dc7d867b1a14e
  - (void)updateProps:(react::Props::Shared const &)props oldProps:(react::Props::Shared const &)oldProps
  {
    const auto &oldScreenProps = *std::static_pointer_cast<const react::RNSScreenStackHeaderConfigProps>(_props);
-@@ -1025,6 +1479,7 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+@@ -1025,6 +1499,7 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
    }
  
    _title = RCTNSStringFromStringNilIfEmpty(newScreenProps.title);
@@ -884,7 +924,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..2fe79406130859f9041dc7d867b1a14e
    if (newScreenProps.titleFontFamily != oldScreenProps.titleFontFamily) {
      _titleFontFamily = RCTNSStringFromStringNilIfEmpty(newScreenProps.titleFontFamily);
    }
-@@ -1064,6 +1519,27 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+@@ -1064,6 +1539,27 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
    // We cannot compare SharedColor because it is shared value.
    // We could compare color value, but it is more performant to just assign new value
    _titleColor = RCTUIColorFromSharedColor(newScreenProps.titleColor);
@@ -912,7 +952,7 @@ index a54cb632e7c3387b65b02246e6d9f326e49a3362..2fe79406130859f9041dc7d867b1a14e
    _largeTitleColor = RCTUIColorFromSharedColor(newScreenProps.largeTitleColor);
    _color = RCTUIColorFromSharedColor(newScreenProps.color);
    _backgroundColor = RCTUIColorFromSharedColor(newScreenProps.backgroundColor);
-@@ -1087,13 +1563,20 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+@@ -1087,13 +1583,20 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
    if (newScreenProps.headerRightBarButtonItems != oldScreenProps.headerRightBarButtonItems) {
      const auto &vec = newScreenProps.headerRightBarButtonItems;
      NSMutableArray<NSDictionary<NSString *, id> *> *array = [NSMutableArray arrayWithCapacity:vec.size()];

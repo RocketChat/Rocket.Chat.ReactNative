@@ -49,7 +49,7 @@ export const NativeRightItems = ({ actions }: { actions: IHeaderAction[] }) => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 
 	useLayoutEffect(() => {
-		navigation.setOptions({ unstable_headerRightItems: () => nativeHeaderItems(actions) });
+		navigation.setOptions({ unstable_headerRightItems: ({ tintColor }) => nativeHeaderItems(actions, tintColor) });
 	}, [navigation, actions]);
 
 	return null;

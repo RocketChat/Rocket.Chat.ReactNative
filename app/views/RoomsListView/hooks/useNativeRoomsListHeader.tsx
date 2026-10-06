@@ -49,8 +49,7 @@ export const useNativeRoomsListHeader = () => {
 
 		navigation.setOptions({
 			headerTransparent: true,
-			headerStyle: { backgroundColor: `${colors.surfaceNeutral}B3` },
-			headerBlurEffect: 'regular',
+			headerStyle: { backgroundColor: colors.surfaceNeutral },
 			headerTitle: serverName,
 			headerSubtitle: subtitle,
 			headerTitleTestID: 'rooms-list-header-servers-list-button',

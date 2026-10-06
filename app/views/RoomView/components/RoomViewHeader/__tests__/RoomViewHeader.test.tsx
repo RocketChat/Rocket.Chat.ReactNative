@@ -128,12 +128,12 @@ describe('on the native header bar', () => {
 	it('shows the room actions on the right and an unread back button on the left', () => {
 		render(<RoomViewHeader rid='rid-1' roomStore={makeRoomStore()} />);
 
-		expect(lastOptionsWith('unstable_headerRightItems').unstable_headerRightItems()).toEqual([
+		expect(lastOptionsWith('unstable_headerRightItems').unstable_headerRightItems({})).toEqual([
 			expect.objectContaining({ type: 'button', label: 'Threads' })
 		]);
 		const backOptions = lastOptionsWith('unstable_headerLeftItems');
 		expect(backOptions.headerBackVisible).toBe(false);
-		expect(backOptions.unstable_headerLeftItems()).toEqual([expect.objectContaining({ label: '4' })]);
+		expect(backOptions.unstable_headerLeftItems({})).toEqual([expect.objectContaining({ label: '4' })]);
 		expect(optionsWith('headerRight')).toHaveLength(0);
 	});
 
@@ -152,13 +152,13 @@ describe('on the native header bar', () => {
 	it('swaps the actions when an omnichannel chat is placed back in the queue', () => {
 		const roomStore = makeRoomStore({ t: 'l' });
 		render(<RoomViewHeader rid='rid-1' roomStore={roomStore} />);
-		expect(lastOptionsWith('unstable_headerRightItems').unstable_headerRightItems()).toHaveLength(1);
+		expect(lastOptionsWith('unstable_headerRightItems').unstable_headerRightItems({})).toHaveLength(1);
 
 		act(() => {
 			roomStore.setState({ room: { id: 'sub-1', rid: 'rid-1', t: 'l', status: 'queued' } as RoomState['room'] });
 		});
 
-		expect(lastOptionsWith('unstable_headerRightItems').unstable_headerRightItems()).toEqual([]);
+		expect(lastOptionsWith('unstable_headerRightItems').unstable_headerRightItems({})).toEqual([]);
 	});
 
 	describe('on a master-detail layout', () => {
@@ -169,7 +169,7 @@ describe('on the native header bar', () => {
 		it('shows the room avatar without the shared glass background instead of the back button', () => {
 			render(<RoomViewHeader rid='rid-1' roomStore={makeRoomStore()} />);
 
-			const [avatarItem] = lastOptionsWith('unstable_headerLeftItems').unstable_headerLeftItems();
+			const [avatarItem] = lastOptionsWith('unstable_headerLeftItems').unstable_headerLeftItems({});
 			expect(avatarItem).toMatchObject({ type: 'custom', hidesSharedBackground: true });
 			expect(avatarItem.element.type).toBe('LeftButtons');
 			expect(optionsWith('headerBackVisible')).toHaveLength(0);
@@ -183,7 +183,7 @@ describe('on the native header bar', () => {
 				mockActionsStore.setState({ roomActions: [{ label: 'Call', icon: 'phone', onPress: jest.fn() }] });
 			});
 
-			expect(lastOptionsWith('unstable_headerRightItems').unstable_headerRightItems()).toEqual([
+			expect(lastOptionsWith('unstable_headerRightItems').unstable_headerRightItems({})).toEqual([
 				expect.objectContaining({ label: 'Call' })
 			]);
 			expect(optionsWith('unstable_headerLeftItems')).toHaveLength(leftUpdates);
@@ -192,7 +192,7 @@ describe('on the native header bar', () => {
 		it('keeps the back button on a thread', () => {
 			render(<RoomViewHeader rid='rid-1' tmid='tmid-1' roomStore={makeRoomStore()} />);
 
-			expect(lastOptionsWith('unstable_headerLeftItems').unstable_headerLeftItems()).toEqual([
+			expect(lastOptionsWith('unstable_headerLeftItems').unstable_headerLeftItems({})).toEqual([
 				expect.objectContaining({ label: '4', icon: { type: 'sfSymbol', name: 'chevron.backward' } })
 			]);
 		});
