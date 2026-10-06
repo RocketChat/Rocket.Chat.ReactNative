@@ -143,7 +143,8 @@ const COVERED_ERROR = 'is covered by another visible element';
 const OFF_SCREEN_ERROR = 'is off-screen and not safe to press';
 const NO_INPUT_AT_POINT_ERROR = 'no text input found at the provided coordinates';
 const UNCONFIRMED_FILL_ERROR = 'could not confirm the typed text reached the field';
-const RETRYABLE_ACTION_ERRORS = [COVERED_ERROR, OFF_SCREEN_ERROR, NO_INPUT_AT_POINT_ERROR, UNCONFIRMED_FILL_ERROR];
+const RETRYABLE_ACTION_ERRORS = [COVERED_ERROR, OFF_SCREEN_ERROR, NO_INPUT_AT_POINT_ERROR];
+const UNCONFIRMED_FILL_ATTEMPTS = 3;
 
 const retryWhileUnreachable = async (action: () => Promise<unknown>, timeout: number) => {
 	const deadline = Date.now() + timeout;
@@ -163,8 +164,33 @@ const retryWhileUnreachable = async (action: () => Promise<unknown>, timeout: nu
 
 export const tapWhenUncovered = (locator: Locator, timeout = LONG_TIMEOUT) => retryWhileUnreachable(() => locator.tap(), timeout);
 
+const holdsValue = async (locator: Locator, text: string) => {
+	try {
+		return (await locator.inputValue()) === text;
+	} catch {
+		return false;
+	}
+};
+
+const fillConfirmed = async (locator: Locator, text: string) => {
+	for (let attempt = 1; ; attempt++) {
+		try {
+			await locator.fill(text);
+			return;
+		} catch (error) {
+			if (!String(error).includes(UNCONFIRMED_FILL_ERROR) || attempt >= UNCONFIRMED_FILL_ATTEMPTS) {
+				throw error;
+			}
+			if (await holdsValue(locator, text)) {
+				return;
+			}
+			await locator.clear();
+		}
+	}
+};
+
 export const fillWhenUncovered = (locator: Locator, text: string, timeout = LONG_TIMEOUT) =>
-	retryWhileUnreachable(() => locator.fill(text), timeout);
+	retryWhileUnreachable(() => fillConfirmed(locator, text), timeout);
 
 export const tapWhenVisible = async ({ screen }: Fixtures, testIdOrTarget: string | Locator) => {
 	const target = typeof testIdOrTarget === 'string' ? screen.getByTestId(testIdOrTarget).first() : testIdOrTarget;
