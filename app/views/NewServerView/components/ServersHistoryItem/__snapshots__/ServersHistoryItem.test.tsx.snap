@@ -2617,14 +2617,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#0d0d0d",
+                    "backgroundColor": "#262931",
                     "borderRadius": undefined,
                   },
                 ],
                 undefined,
               ]
             }
-            underlayColor="#16181a"
+            underlayColor="#2D3039"
           >
             <View
               accessibilityActions={
