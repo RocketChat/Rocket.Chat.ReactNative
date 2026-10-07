@@ -173,8 +173,8 @@ const declineDeepLinkConsent = function* declineDeepLinkConsent(copy) {
 	yield fallbackNavigation();
 };
 
-const ensureDeepLinkConsent = function* ensureDeepLinkConsent(host, params, serverRecord) {
-	if (!params.token && serverRecord) {
+const ensureDeepLinkConsent = function* ensureDeepLinkConsent(host, params, isKnownHost) {
+	if (!params.token && isKnownHost) {
 		return true;
 	}
 	const copy = consentCopy[params.token ? 'login' : 'open'];
@@ -317,7 +317,7 @@ const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, 
 		yield* handleKnownServerDeepLink({ params, host, version: serverRecord.version });
 		return;
 	}
-	if (!(yield ensureDeepLinkConsent(host, params, serverRecord))) {
+	if (!(yield ensureDeepLinkConsent(host, params, !!serverRecord))) {
 		if (params.voipAcceptFailed) {
 			endVoipCall(params.callId);
 		}
@@ -461,7 +461,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 		return;
 	}
 
-	if (!(yield ensureDeepLinkConsent(host, params, serverRecord))) {
+	if (!(yield ensureDeepLinkConsent(host, params, !!serverRecord))) {
 		return;
 	}
 	// if deep link is from a different server

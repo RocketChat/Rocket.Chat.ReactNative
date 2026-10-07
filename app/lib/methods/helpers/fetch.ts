@@ -26,10 +26,6 @@ export const headers: CustomHeaders = {
 	} ${DeviceInfo.getSystemVersion()}; v${DeviceInfo.getVersion()} (${DeviceInfo.getBuildNumber()})`
 };
 
-export const setBasicAuth = (basicAuth: string | null): void => {
-	RocketChatSettings.customHeaders = basicAuth ? { ...headers, Authorization: `Basic ${basicAuth}` } : headers;
-};
-
 RocketChatSettings.customHeaders = headers;
 
 const withoutEmptyValues = (requestHeaders: CustomHeaders): Record<string, string> =>
