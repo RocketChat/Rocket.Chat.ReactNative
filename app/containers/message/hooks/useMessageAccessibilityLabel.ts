@@ -16,6 +16,8 @@ import {
 import { useAutoTranslate, useIsReadReceiptEnabled } from '../stores/MessageRoomStore';
 import { useSetting } from '~/lib/hooks/useSetting';
 
+const timeFormat = new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: 'numeric', second: 'numeric' });
+
 const stripMentions = (label: string, mentions: IUserMention[] = [], channels: IUserChannel[] = []) => {
 	let result = label;
 	mentions?.forEach(item => {
@@ -62,7 +64,7 @@ export const useMessageAccessibilityLabel = (): string => {
 	}
 	label = stripMentions(label, mentions, channels);
 
-	const hour = ts ? new Date(ts).toLocaleTimeString() : '';
+	const hour = ts ? timeFormat.format(new Date(ts)) : '';
 	const user = useRealName ? author?.name : author?.username || '';
 	const readOrUnreadLabel = !unread && unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
 	const readReceipt = isReadReceiptEnabled && !isInfo ? readOrUnreadLabel : '';
