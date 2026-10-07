@@ -10,7 +10,7 @@ import {
 	setUser
 } from '../actions/login';
 import { initialState } from './login';
-import { mockedStore } from './mockedStore';
+import { createMockedStore, mockedStore } from './mockedStore';
 
 describe('test selectedUsers reducer', () => {
 	it('should return initial state', () => {
@@ -93,6 +93,21 @@ describe('test selectedUsers reducer', () => {
 		expect(after).not.toBe(before);
 		expect(after.statusText).toEqual('Lunch');
 		expect(after.username).toEqual(before.username);
+	});
+
+	it('should keep the user settings when the same user logs in again', () => {
+		const settings = { preferences: { convertAsciiEmoji: true } };
+		const store = createMockedStore();
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', settings }));
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito' }));
+		expect(store.getState().login.user.settings).toBe(settings);
+	});
+
+	it('should drop the user settings when a different user logs in', () => {
+		const store = createMockedStore();
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', settings: { preferences: { convertAsciiEmoji: true } } }));
+		store.dispatch(loginSuccess({ id: 'other-id', username: 'other' }));
+		expect(store.getState().login.user.settings).toBeUndefined();
 	});
 
 	it('should clear user after clearUser', () => {

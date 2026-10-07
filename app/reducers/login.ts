@@ -29,6 +29,9 @@ export interface ILogin {
 	failure: boolean;
 }
 
+const userAfterLogin = (previous: Partial<IUser>, loggedIn: Partial<IUser>) =>
+	previous.id === loggedIn.id ? { settings: previous.settings, ...loggedIn } : loggedIn;
+
 const isSubsetOf = (fields: Partial<IUser>, user: Partial<IUser>) =>
 	Object.entries(fields).every(([key, value]) => user[key as keyof IUser] === value);
 
@@ -59,7 +62,7 @@ export default function login(state = initialState, action: TActionsLogin): ILog
 				...state,
 				isFetching: false,
 				isAuthenticated: true,
-				user: action.user,
+				user: userAfterLogin(state.user, action.user),
 				failure: false,
 				error: {}
 			};
