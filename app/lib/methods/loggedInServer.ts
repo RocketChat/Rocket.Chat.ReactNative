@@ -9,7 +9,8 @@ export const getStoredSession = (server: string): { userId: string | null; token
 	return { userId, token };
 };
 
-export const isLoggedInServer = (serverId?: string | null): boolean => !!serverId && !!getStoredSession(serverId).userId;
+export const isLoggedInServer = (serverId?: string | null): boolean =>
+	!!serverId && !!UserPreferences.getString(getServerUserIdKey(serverId));
 
 export const findLoggedInServer = async (): Promise<TServerModel | undefined> =>
 	(await getAllServers()).find(({ id }) => isLoggedInServer(id));
