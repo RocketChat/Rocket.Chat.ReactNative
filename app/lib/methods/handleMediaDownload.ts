@@ -201,6 +201,7 @@ export async function cancelDownload(messageUrl: string): Promise<void> {
 }
 
 export const matchDownloadUrl = (att: IAttachment, downloadUrl: string) =>
+	(att.title_link && downloadUrl.includes(att.title_link)) ||
 	(att.image_url && downloadUrl.includes(att.image_url)) ||
 	(att.audio_url && downloadUrl.includes(att.audio_url)) ||
 	(att.video_url && downloadUrl.includes(att.video_url));

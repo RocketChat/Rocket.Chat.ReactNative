@@ -78,6 +78,15 @@ describe('matchDownloadUrl', () => {
 		expect(matchDownloadUrl({}, 'https://server.com/file-upload/abc/audio.mp3')).toBeFalsy();
 	});
 
+	it('matches when downloadUrl contains title_link', () => {
+		expect(
+			matchDownloadUrl(
+				{ image_url: '/file-upload/thumb/photo.jpg', title_link: '/file-upload/abc/photo.jpg' },
+				'https://server.com/file-upload/abc/photo.jpg'
+			)
+		).toBeTruthy();
+	});
+
 	it('does not match image_url against an unrelated audio download', () => {
 		expect(
 			matchDownloadUrl({ image_url: '/file-upload/abc/photo.jpg' }, 'https://server.com/file-upload/abc/audio.mp3')
@@ -229,7 +238,7 @@ describe('persistMessage', () => {
 
 	it('replaces title_link when the full-size file is downloaded', async () => {
 		const record = makeFakeRecord(`messages#${messageId}`, {
-			attachments: [{ image_url: '/file-upload/abc/photo.jpg', title_link: '/file-upload/abc/photo.jpg' }]
+			attachments: [{ image_url: '/file-upload/thumb/photo.jpg', title_link: '/file-upload/abc/photo.jpg' }]
 		});
 		(getMessageById as jest.Mock).mockResolvedValue(record);
 		(getThreadById as jest.Mock).mockResolvedValue(null);
