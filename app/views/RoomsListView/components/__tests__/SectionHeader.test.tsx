@@ -68,10 +68,13 @@ describe('SectionHeader', () => {
 		expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
 	});
 
-	it('ignores the toggle of an empty category but still opens it', () => {
+	it('shows an empty category as collapsed, ignores its toggle and still opens it', () => {
 		const { onOpen, onToggle } = renderSectionHeader({ empty: true });
 
-		fireEvent.press(screen.getByTestId('rooms-list-section-catWork'));
+		const toggle = screen.getByTestId('rooms-list-section-catWork');
+		expect(toggle).toHaveAccessibleName('Expand Work Stuff');
+
+		fireEvent.press(toggle);
 		expect(onToggle).not.toHaveBeenCalled();
 
 		fireEvent.press(screen.getByTestId('rooms-list-section-open-catWork'));

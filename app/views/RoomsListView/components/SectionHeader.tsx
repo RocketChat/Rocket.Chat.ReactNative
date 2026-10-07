@@ -47,6 +47,7 @@ const SectionHeader = ({
 	const [isTogglePressed, setIsTogglePressed] = useState(false);
 	const sectionTitle = title ?? i18n.t(header);
 	const hasHiddenUnread = collapsed && !!unread;
+	const showsCollapsed = collapsed || !!empty;
 
 	const onPressOpen = () => {
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -84,8 +85,8 @@ const SectionHeader = ({
 				onPressOut={() => setIsTogglePressed(false)}
 				style={[styles.groupToggle, isTogglePressed && styles.groupHeaderPressed]}
 				accessibilityRole='button'
-				accessibilityLabel={i18n.t(collapsed ? 'Expand_category' : 'Collapse_category', { name: sectionTitle })}
-				accessibilityState={{ expanded: !collapsed, disabled: empty }}
+				accessibilityLabel={i18n.t(showsCollapsed ? 'Expand_category' : 'Collapse_category', { name: sectionTitle })}
+				accessibilityState={{ expanded: !showsCollapsed, disabled: empty }}
 				testID={`rooms-list-section-${header}`}>
 				{collapsed ? (
 					<Animated.View entering={badgeEntering} exiting={badgeExiting}>
@@ -99,7 +100,7 @@ const SectionHeader = ({
 						/>
 					</Animated.View>
 				) : null}
-				<SectionChevron collapsed={collapsed} color={empty ? colors.fontDisabled : colors.fontDefault} />
+				<SectionChevron collapsed={showsCollapsed} color={empty ? colors.fontDisabled : colors.fontDefault} />
 			</Pressable>
 		</View>
 	);
