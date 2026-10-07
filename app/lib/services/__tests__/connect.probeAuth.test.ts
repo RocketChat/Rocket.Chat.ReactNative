@@ -1,14 +1,15 @@
-import { settings as RocketChatSettings, Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+import WebSocket from 'universal-websocket-client';
 
 import { getLoginServices, getWebsocketInfo } from '../connect';
 import { headers } from '~/lib/methods/helpers/fetch';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getBasicAuthKey } from '~/lib/constants/keys';
+import { MockConnection } from '~/lib/testUtils/sdkIntegration';
 
-jest.mock('@rocket.chat/sdk', () => {
-	const actual = jest.requireActual('@rocket.chat/sdk');
-	return { ...actual, Rocketchat: jest.fn() };
-});
+jest.unmock('@rocket.chat/sdk');
+
+jest.mock('universal-websocket-client', () => jest.fn());
 
 jest.mock('~/lib/services/voip/MediaSessionInstance', () => ({
 	mediaSessionInstance: { reset: jest.fn(), drainPendingHangups: jest.fn() }
@@ -51,19 +52,28 @@ const PROBED_SERVER = 'https://probed.example';
 const sentToNetwork = jest.fn((_url: string, _options: { headers: Record<string, string> }) =>
 	Promise.resolve({ json: () => Promise.resolve({ success: true, services: [] }) } as Response)
 );
+const connections: MockConnection[] = [];
 let handshakeHeaders: Record<string, string> = {};
-const connectMock = jest.fn(() => {
-	handshakeHeaders = { ...(RocketChatSettings.customHeaders as Record<string, string>) };
-	return Promise.resolve();
-});
+const openSocket =
+	(settle?: (connection: MockConnection) => void) =>
+	(_url: string, _protocols: null, options: { headers: Record<string, string> }) => {
+		handshakeHeaders = { ...options.headers };
+		const connection = new MockConnection(connections);
+		connection.close.mockImplementation(() => connection.onclose?.({ code: 1000 }));
+		if (settle) {
+			setImmediate(() => settle(connection));
+		}
+		return connection;
+	};
+const WebSocketMock = WebSocket as unknown as jest.Mock;
 
 const originalGlobalFetch = global.fetch;
 const originalCustomHeaders = RocketChatSettings.customHeaders;
 
 beforeEach(() => {
 	jest.clearAllMocks();
-	connectMock.mockClear();
-	(RocketchatClient as unknown as jest.Mock).mockImplementation(() => ({ connect: connectMock, disconnect: jest.fn() }));
+	connections.length = 0;
+	WebSocketMock.mockImplementation(openSocket(connection => connection.onopen()));
 	sentToNetwork.mockClear();
 	global.fetch = sentToNetwork as unknown as typeof global.fetch;
 	UserPreferences.removeItem(getBasicAuthKey(PROBED_SERVER));
@@ -112,19 +122,13 @@ describe('getWebsocketInfo — handshake-only global auth', () => {
 	it('hands the active headers back before the handshake settles', async () => {
 		RocketChatSettings.customHeaders = { ...headers, Authorization: 'Basic active-workspace' };
 		UserPreferences.setString(getBasicAuthKey(PROBED_SERVER), 'probed-credentials');
-		let settleHandshake = () => {};
-		connectMock.mockImplementationOnce(() => {
-			handshakeHeaders = { ...(RocketChatSettings.customHeaders as Record<string, string>) };
-			return new Promise<void>(resolve => {
-				settleHandshake = resolve;
-			});
-		});
+		WebSocketMock.mockImplementationOnce(openSocket());
 
 		const pending = getWebsocketInfo({ server: PROBED_SERVER });
 
 		expect(handshakeHeaders).toMatchObject({ Authorization: 'Basic probed-credentials' });
 		expect(RocketChatSettings.customHeaders).toMatchObject({ Authorization: 'Basic active-workspace' });
-		settleHandshake();
+		connections[0].onopen();
 		await expect(pending).resolves.toEqual({ success: true });
 	});
 
@@ -140,7 +144,7 @@ describe('getWebsocketInfo — handshake-only global auth', () => {
 
 	it('still hands the previous headers back when the handshake fails', async () => {
 		RocketChatSettings.customHeaders = { ...headers, Authorization: 'Basic active-workspace' };
-		connectMock.mockRejectedValueOnce(new Error('connect failed'));
+		WebSocketMock.mockImplementationOnce(openSocket(connection => connection.onerror()));
 
 		const result = await getWebsocketInfo({ server: PROBED_SERVER });
 
