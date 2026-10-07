@@ -97,7 +97,6 @@ const DiscussionsView = () => {
 		setSearch([]);
 		searchText.current = '';
 		offset.current = 0;
-		searchBarRef.current?.clearText();
 	};
 
 	const onSearchPress = () => {

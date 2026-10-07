@@ -45,6 +45,25 @@ describe('searchHeaderOptions', () => {
 		expect(labels).toEqual(['Filter']);
 	});
 
+	it('clears the system search bar after cancelling', () => {
+		mockHasNativeHeaderBar = true;
+		const clearText = jest.fn();
+		const searchBarRef = { current: { clearText } as unknown as SearchBarCommands };
+
+		const options = searchHeaderOptions({
+			isSearching: true,
+			searchBarRef,
+			onSearchPress,
+			onChangeText,
+			onCancel,
+			options: { headerTitle: 'Threads' }
+		});
+		options.headerSearchBarOptions?.onCancelButtonPress?.({} as never);
+
+		expect(onCancel).toHaveBeenCalledTimes(1);
+		expect(clearText).toHaveBeenCalledTimes(1);
+	});
+
 	it('adds a search action to the JS header', () => {
 		mockHasNativeHeaderBar = false;
 

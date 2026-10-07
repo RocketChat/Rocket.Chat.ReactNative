@@ -359,7 +359,6 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 	cancelSearch = () => {
 		this.setState({ searching: false, searchResults: [], searchText: '' }, () => {
 			this.setHeader();
-			this.searchBarRef.current?.clearText();
 		});
 		Keyboard.dismiss();
 	};

@@ -381,7 +381,6 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 				this.setHeader();
 			}
 			this.subscribeMessages(subscription);
-			this.searchBarRef.current?.clearText();
 		});
 	};
 

@@ -314,7 +314,6 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 				if (!hasNativeHeaderBar) {
 					this.setHeader();
 				}
-				this.searchBarRef.current?.clearText();
 			}
 		);
 	};
