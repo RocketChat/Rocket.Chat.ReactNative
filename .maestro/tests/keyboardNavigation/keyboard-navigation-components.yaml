@@ -27,9 +27,21 @@ tags:
     visible:
       text: 'Accessibility & Appearance'
     timeout: 60000
-- pressKey: Remote Dpad Left
-- pressKey: Remote Dpad Down
-- pressKey: Remote Dpad Down
+- repeat:
+    times: 10
+    while:
+      notVisible:
+        focused: true
+        containsDescendants:
+          - id: 'sidebar-accessibility'
+    commands:
+      - pressKey: Remote Dpad Down
+      - waitForAnimationToEnd:
+          timeout: 1000
+- assertVisible:
+    focused: true
+    containsDescendants:
+      - id: 'sidebar-accessibility'
 - pressKey: enter
 
 # switches
