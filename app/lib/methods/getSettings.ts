@@ -166,7 +166,7 @@ export async function getSettings(server: string): Promise<void> {
 		do {
 			// TODO: why is no-await-in-loop enforced in the first place?
 			/* eslint-disable no-await-in-loop */
-			const response = await fetch(`${url}&offset=${offset}`);
+			const response = await fetch(`${url}&offset=${offset}`, { headers: { Authorization: getBasicAuthHeader(server) } });
 
 			const result = await response.json();
 			if (!result.success) {
