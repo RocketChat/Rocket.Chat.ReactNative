@@ -214,6 +214,32 @@ describe('persistMessage', () => {
 		});
 	});
 
+	it('keeps the full-size title_link when the downloaded file is a thumbnail', async () => {
+		const record = makeFakeRecord(`messages#${messageId}`, {
+			attachments: [{ image_url: '/file-upload/thumb/photo.jpg', title_link: '/file-upload/abc/photo.jpg' }]
+		});
+		(getMessageById as jest.Mock).mockResolvedValue(record);
+		(getThreadById as jest.Mock).mockResolvedValue(null);
+		(getThreadMessageById as jest.Mock).mockResolvedValue(null);
+
+		await persistMessage(messageId, uri, false, 'https://server.com/file-upload/thumb/photo.jpg');
+
+		expect(record.attachments[0].title_link).toBe('/file-upload/abc/photo.jpg');
+	});
+
+	it('replaces title_link when the full-size file is downloaded', async () => {
+		const record = makeFakeRecord(`messages#${messageId}`, {
+			attachments: [{ image_url: '/file-upload/abc/photo.jpg', title_link: '/file-upload/abc/photo.jpg' }]
+		});
+		(getMessageById as jest.Mock).mockResolvedValue(record);
+		(getThreadById as jest.Mock).mockResolvedValue(null);
+		(getThreadMessageById as jest.Mock).mockResolvedValue(null);
+
+		await persistMessage(messageId, uri, false, downloadUrl);
+
+		expect(record.attachments[0].title_link).toBe(uri);
+	});
+
 	it('does not batch when the message is not found locally', async () => {
 		(getMessageById as jest.Mock).mockResolvedValue(null);
 		(getThreadById as jest.Mock).mockResolvedValue(null);

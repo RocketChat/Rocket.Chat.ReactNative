@@ -205,6 +205,11 @@ export const matchDownloadUrl = (att: IAttachment, downloadUrl: string) =>
 	(att.audio_url && downloadUrl.includes(att.audio_url)) ||
 	(att.video_url && downloadUrl.includes(att.video_url));
 
+// An image_url that differs from title_link is a thumbnail; its local path must not replace the full-size title_link
+const shouldPersistUri = (att: IAttachment, downloadUrl: string) =>
+	matchDownloadUrl(att, downloadUrl) &&
+	!(att.image_url && att.title_link && att.title_link !== att.image_url && !downloadUrl.includes(att.title_link));
+
 const mapAttachments = ({
 	attachments,
 	uri,
@@ -218,7 +223,7 @@ const mapAttachments = ({
 }): TMessageModel['attachments'] =>
 	attachments?.map(att => ({
 		...att,
-		title_link: matchDownloadUrl(att, downloadUrl) ? uri : att.title_link,
+		title_link: shouldPersistUri(att, downloadUrl) ? uri : att.title_link,
 		e2e: encryption ? 'done' : undefined
 	}));
 

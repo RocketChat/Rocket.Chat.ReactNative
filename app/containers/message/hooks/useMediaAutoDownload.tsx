@@ -48,6 +48,11 @@ const getOriginalURL = (file: IAttachment): string | null => {
 	return null;
 };
 
+// The server sends a downsized copy in image_url and keeps the full-size file in title_link.
+// Once the full-size file is cached locally title_link is a file:// path and is used as is.
+const isImageThumbnail = (file: IAttachment): boolean =>
+	!!file.image_url && !!file.title_link && !file.title_link.startsWith('file://') && file.title_link !== file.image_url;
+
 export type TDownloadEvent = 'download_started' | 'download_succeeded' | 'download_failed' | 'download_canceled' | 'cache_hit';
 
 export const downloadStatusReducer = (state: TDownloadState, event: TDownloadEvent): TDownloadState => {
@@ -82,8 +87,9 @@ export const useMediaAutoDownload = ({
 	const [fileOverrides, setFileOverrides] = useState<Partial<IAttachment> | null>(null);
 	const currentFile = fileOverrides ? { ...file, ...fileOverrides } : file;
 	const originalUrl = getOriginalURL(file);
+	const isThumbnail = isImageThumbnail(file);
 	const url = formatAttachmentUrl(
-		file.title_link || getFileProperty(currentFile, fileType, 'url'),
+		(isThumbnail ? file.image_url : file.title_link) || getFileProperty(currentFile, fileType, 'url'),
 		user.id,
 		user.token,
 		baseUrl,
@@ -152,7 +158,10 @@ export const useMediaAutoDownload = ({
 	};
 
 	const updateCurrentFile = (uri: string) => {
-		setFileOverrides(prev => ({ ...prev, title_link: uri }));
+		// A thumbnail must not replace title_link, which the full-size preview still needs
+		if (!isThumbnail) {
+			setFileOverrides(prev => ({ ...prev, title_link: uri }));
+		}
 		dispatchDownloadEvent('download_succeeded');
 	};
 
