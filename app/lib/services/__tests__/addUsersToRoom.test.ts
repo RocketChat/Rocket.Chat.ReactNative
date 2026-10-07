@@ -1,14 +1,14 @@
-import { store as reduxStore } from '../store/auxStore';
-import sdk from './sdk';
-import { addUsersToRoom } from './restApi';
+import { store as reduxStore } from '../../store/auxStore';
+import sdk from '../sdk';
+import { addUsersToRoom } from '../restApi';
 
-jest.mock('../store/auxStore', () => ({
+jest.mock('../../store/auxStore', () => ({
 	store: {
 		getState: jest.fn()
 	}
 }));
 
-jest.mock('./sdk', () => ({
+jest.mock('../sdk', () => ({
 	__esModule: true,
 	default: {
 		methodCallWrapper: jest.fn().mockResolvedValue(true),
@@ -16,7 +16,7 @@ jest.mock('./sdk', () => ({
 	}
 }));
 
-const setState = (version: string) =>
+const setServerVersion = (version: string) =>
 	(reduxStore.getState as jest.Mock).mockReturnValue({
 		server: { version },
 		selectedUsers: {
@@ -30,11 +30,11 @@ const setState = (version: string) =>
 describe('addUsersToRoom', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		setState('8.6.0');
+		setServerVersion('8.6.0');
 	});
 
 	it('uses DDP below 8.6.0 with the same arguments as before', async () => {
-		setState('8.5.9');
+		setServerVersion('8.5.9');
 		await addUsersToRoom('rid1', 'c');
 		expect(sdk.methodCallWrapper).toHaveBeenCalledWith('addUsersToRoom', { rid: 'rid1', users: ['alice', 'bob'] });
 		expect(sdk.post).not.toHaveBeenCalled();

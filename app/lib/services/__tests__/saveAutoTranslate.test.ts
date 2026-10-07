@@ -1,14 +1,14 @@
-import { store as reduxStore } from '../store/auxStore';
-import sdk from './sdk';
-import { saveAutoTranslate } from './restApi';
+import { store as reduxStore } from '../../store/auxStore';
+import sdk from '../sdk';
+import { saveAutoTranslate } from '../restApi';
 
-jest.mock('../store/auxStore', () => ({
+jest.mock('../../store/auxStore', () => ({
 	store: {
 		getState: jest.fn()
 	}
 }));
 
-jest.mock('./sdk', () => ({
+jest.mock('../sdk', () => ({
 	__esModule: true,
 	default: {
 		methodCallWrapper: jest.fn().mockResolvedValue(true),

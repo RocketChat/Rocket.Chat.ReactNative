@@ -65,7 +65,7 @@ export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: 
 	// RC 2.2.0
 	sdk.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key, ...(force && { force: true }) });
 
-export const e2eRequestSubscriptionKeys = (): Promise<unknown> => {
+export const e2eRequestSubscriptionKeys = () => {
 	const serverVersion = reduxStore.getState().server.version;
 	// RC 8.6.0
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
@@ -564,7 +564,7 @@ export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 
 	return sdk.get('canned-responses', params);
 };
 
-export const toggleBlockUser = (rid: string, blocked: string, block: boolean): Promise<unknown> => {
+export const toggleBlockUser = (rid: string, blocked: string, block: boolean) => {
 	const serverVersion = reduxStore.getState().server.version;
 	// RC 8.6.0
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
@@ -1002,7 +1002,7 @@ export const saveAutoTranslate = ({
 	field: 'autoTranslate' | 'autoTranslateLanguage';
 	value: boolean | string;
 	options?: { defaultLanguage: string };
-}): Promise<unknown> => {
+}) => {
 	const serverVersion = reduxStore.getState().server.version;
 	// RC 8.6.0
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
@@ -1066,13 +1066,12 @@ export const createGroupChat = () => {
 	return sdk.post('im.create', { usernames });
 };
 
-export const addUsersToRoom = (rid: string, t: 'c' | 'p'): Promise<unknown> => {
+export const addUsersToRoom = (rid: string, t: 'c' | 'p') => {
 	const { selectedUsers, server } = reduxStore.getState();
 	const users = selectedUsers.users.map(u => u.name);
 	// RC 8.6.0
 	if (compareServerVersion(server.version, 'greaterThanOrEqualTo', '8.6.0')) {
-		const endpoint = t === 'p' ? 'groups.invite' : 'channels.invite';
-		return Promise.all(users.map(username => sdk.post(endpoint, { roomId: rid, username })));
+		return Promise.all(users.map(username => sdk.post(`${roomTypeToApiType(t)}.invite`, { roomId: rid, username })));
 	}
 	// RC 0.51.0
 	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });

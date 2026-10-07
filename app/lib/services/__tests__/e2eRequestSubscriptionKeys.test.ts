@@ -1,14 +1,14 @@
-import { store as reduxStore } from '../store/auxStore';
-import sdk from './sdk';
-import { e2eRequestSubscriptionKeys } from './restApi';
+import { store as reduxStore } from '../../store/auxStore';
+import sdk from '../sdk';
+import { e2eRequestSubscriptionKeys } from '../restApi';
 
-jest.mock('../store/auxStore', () => ({
+jest.mock('../../store/auxStore', () => ({
 	store: {
 		getState: jest.fn()
 	}
 }));
 
-jest.mock('./sdk', () => ({
+jest.mock('../sdk', () => ({
 	__esModule: true,
 	default: {
 		methodCallWrapper: jest.fn().mockResolvedValue(true),
@@ -37,7 +37,7 @@ describe('e2eRequestSubscriptionKeys', () => {
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
 	});
 
-	it('rejects when the request fails so key setup does not continue', async () => {
+	it('rejects when the request fails', async () => {
 		(sdk.post as jest.Mock).mockRejectedValueOnce(new Error('404'));
 		await expect(e2eRequestSubscriptionKeys()).rejects.toThrow('404');
 	});

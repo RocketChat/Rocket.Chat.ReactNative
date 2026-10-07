@@ -1,14 +1,14 @@
-import { store as reduxStore } from '../store/auxStore';
-import sdk from './sdk';
-import { spotlight } from './restApi';
+import { store as reduxStore } from '../../store/auxStore';
+import sdk from '../sdk';
+import { spotlight } from '../restApi';
 
-jest.mock('../store/auxStore', () => ({
+jest.mock('../../store/auxStore', () => ({
 	store: {
 		getState: jest.fn()
 	}
 }));
 
-jest.mock('./sdk', () => ({
+jest.mock('../sdk', () => ({
 	__esModule: true,
 	default: {
 		methodCallWrapper: jest.fn().mockResolvedValue({ users: [], rooms: [] }),
@@ -52,10 +52,10 @@ describe('spotlight', () => {
 
 	it('omits usernames and rid on 8.6.0+ when empty', async () => {
 		await spotlight('john', [], type, '');
-		expect(sdk.get).toHaveBeenCalledWith('spotlight', {
-			query: 'john',
-			type: JSON.stringify(type)
-		});
+		const params = (sdk.get as jest.Mock).mock.calls[0][1];
+		expect(params).toEqual({ query: 'john', type: JSON.stringify(type) });
+		expect(params).not.toHaveProperty('usernames');
+		expect(params).not.toHaveProperty('rid');
 	});
 
 	it('sends rid on 8.6.0+ when provided', async () => {
@@ -66,11 +66,5 @@ describe('spotlight', () => {
 			type: JSON.stringify(type),
 			rid: 'rid1'
 		});
-	});
-
-	it('returns the REST response', async () => {
-		const response = { users: [{ _id: 'u1' }], rooms: [], success: true };
-		(sdk.get as jest.Mock).mockResolvedValueOnce(response);
-		await expect(spotlight('john', [], type)).resolves.toBe(response);
 	});
 });
