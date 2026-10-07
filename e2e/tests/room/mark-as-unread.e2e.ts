@@ -2,7 +2,7 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
-import { loginWithDeepLink, navigateToRoom, LONG_TIMEOUT, expectVisible } from '~e2e/support/flows';
+import { loginWithDeepLink, navigateToRoom, LONG_TIMEOUT, expectVisible, scrollAndTap } from '~e2e/support/flows';
 
 afterEach(deleteCreatedUsers);
 
@@ -17,8 +17,7 @@ test('marks a message as unread', { tags: ['test-11'] }, async fixtures => {
 	await expectVisible(fixtures, 'message-content-message-mark-as-unread');
 	await screen.getByTestId('message-content-message-mark-as-unread').longPress();
 	await expectVisible(fixtures, 'action-sheet');
-	await screen.getByTestId('action-sheet').scrollUntilVisible(screen.getByTestId('message-actions-mark-unread'));
-	await screen.getByTestId('message-actions-mark-unread').tap();
+	await scrollAndTap(screen.getByTestId('action-sheet'), screen.getByTestId('message-actions-mark-unread'));
 
 	await expectVisible(fixtures, 'rooms-list-view');
 	const roomItem = screen.getByTestId(`rooms-list-view-item-${otherUser.username}`);

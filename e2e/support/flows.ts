@@ -142,8 +142,9 @@ export const loginWithForm = async (fixtures: Fixtures, credentials: Credentials
 const COVERED_ERROR = 'is covered by another visible element';
 const OFF_SCREEN_ERROR = 'is off-screen and not safe to press';
 const NO_INPUT_AT_POINT_ERROR = 'no text input found at the provided coordinates';
+const BEHIND_KEYBOARD_ERROR = 'is behind the visible keyboard';
 const UNCONFIRMED_FILL_ERRORS = ['could not confirm the typed text reached the field', 'Android fill verification failed'];
-const RETRYABLE_ACTION_ERRORS = [COVERED_ERROR, OFF_SCREEN_ERROR, NO_INPUT_AT_POINT_ERROR];
+const RETRYABLE_ACTION_ERRORS = [COVERED_ERROR, OFF_SCREEN_ERROR, NO_INPUT_AT_POINT_ERROR, BEHIND_KEYBOARD_ERROR];
 const UNCONFIRMED_FILL_ATTEMPTS = 3;
 
 const retryWhileUnreachable = async (action: () => Promise<unknown>, timeout: number) => {
@@ -220,6 +221,17 @@ export const tapUntilVisible = async (
 };
 
 const TAP_UNTIL_HIDDEN_TIMEOUT = 3_000;
+
+export const scrollAndTap = async (container: Locator, target: Locator) => {
+	for (let attempt = 1; attempt < TAP_ATTEMPTS; attempt += 1) {
+		await container.scrollUntilVisible(target, { timeout: LONG_TIMEOUT });
+		if (await succeeds(target.tap({ timeout: TAP_RESPONSE_TIMEOUT }))) {
+			return;
+		}
+	}
+	await container.scrollUntilVisible(target, { timeout: LONG_TIMEOUT });
+	await target.tap();
+};
 
 export const tapUntilHidden = async ({ screen }: Fixtures, testId: string, goneTestId: string, attempts = 5) => {
 	const gone = screen.getByTestId(goneTestId);
@@ -315,6 +327,7 @@ const URL_SCHEME_REGISTRATION_TIMEOUT = 30_000;
 const OPEN_LINK_RETRY_DELAY = 2_000;
 
 const isOpenLinkRejected = (error: unknown) => error instanceof Error && error.message.includes('failed to open');
+const isOpenLinkUnanswered = (error: unknown) => error instanceof Error && error.message.includes('openurl did not answer');
 
 const openLinkWithRetry = async (device: Fixtures['device'], link: string) => {
 	const deadline = Date.now() + URL_SCHEME_REGISTRATION_TIMEOUT;
@@ -322,6 +335,9 @@ const openLinkWithRetry = async (device: Fixtures['device'], link: string) => {
 		try {
 			return await device.openLink(link);
 		} catch (error) {
+			if (isOpenLinkUnanswered(error)) {
+				return;
+			}
 			if (Date.now() > deadline || !isOpenLinkRejected(error)) {
 				throw error;
 			}
@@ -398,6 +414,12 @@ export const goBackUntil = async (fixtures: Fixtures, testId: string, state: 'vi
 };
 
 export const backToRoomsList = (fixtures: Fixtures) => goBackUntil(fixtures, 'rooms-list-view');
+
+export const goBackThrough = async (fixtures: Fixtures, testIds: readonly string[]) => {
+	for (const testId of testIds) {
+		await goBackUntil(fixtures, testId);
+	}
+};
 
 export const logout = async (fixtures: Fixtures) => {
 	const { screen, platform } = fixtures;

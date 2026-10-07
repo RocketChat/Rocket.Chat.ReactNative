@@ -80,6 +80,7 @@ test('creates a broadcast room and replies to its message', { tags: ['test-5'] }
 	await screen.getByTestId('message-composer-send').tap();
 	const reply = screen.getByText(/broadcastreply/).first();
 	await expect(reply).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expect(screen.getByTestId(`reply-${owner.username}-message`)).toBeVisible({ timeout: LONG_TIMEOUT });
 	await reply.longPress();
 	await expect(screen.getByText('Jump to message')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByText('Jump to message').tap();

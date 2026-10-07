@@ -10,7 +10,8 @@ import {
 	loginWithDeepLink,
 	type Fixtures,
 	LONG_TIMEOUT,
-	fillWhenUncovered
+	fillWhenUncovered,
+	tapWhenUncovered
 } from '~e2e/support/flows';
 import { random, type RandomUser } from '~e2e/support/random';
 import { openProfile } from '~e2e/support/settings';
@@ -35,7 +36,7 @@ const editBasicInfo = async (fixtures: Fixtures, user: RandomUser) => {
 	await screen.getByTestId('profile-view-submit').tap();
 	await expect(screen.getByTestId('profile-view-enter-password-sheet-input')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await fillWhenUncovered(screen.getByTestId('profile-view-enter-password-sheet-input'), user.password);
-	await screen.getByText('Save').tap();
+	await tapWhenUncovered(screen.getByText('Save'));
 	await expect(screen.getByTestId('profile-view-enter-password-sheet-input')).toBeHidden({ timeout: LONG_TIMEOUT });
 	renamedUsers.push(newUsername);
 };
