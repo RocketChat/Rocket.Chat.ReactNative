@@ -103,6 +103,14 @@ describe('test selectedUsers reducer', () => {
 		expect(store.getState().login.user.settings).toBe(settings);
 	});
 
+	it('should keep the same user object when the same user logs in with unchanged fields', () => {
+		const store = createMockedStore();
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', roles: ['user'] }));
+		const before = store.getState().login.user;
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', roles: ['user'] }));
+		expect(store.getState().login.user).toBe(before);
+	});
+
 	it('should drop the user settings when a different user logs in', () => {
 		const store = createMockedStore();
 		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', settings: { preferences: { convertAsciiEmoji: true } } }));

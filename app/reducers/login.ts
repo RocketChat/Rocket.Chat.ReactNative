@@ -1,3 +1,5 @@
+import { dequal } from 'dequal';
+
 import * as types from '../actions/actionsTypes';
 import { type TActionsLogin } from '../actions/login';
 import { type IUser, type TUserStatus } from '../definitions';
@@ -29,11 +31,15 @@ export interface ILogin {
 	failure: boolean;
 }
 
-const userAfterLogin = (previous: Partial<IUser>, loggedIn: Partial<IUser>) =>
-	previous.id === loggedIn.id ? { settings: previous.settings, ...loggedIn } : loggedIn;
-
 const isSubsetOf = (fields: Partial<IUser>, user: Partial<IUser>) =>
-	Object.entries(fields).every(([key, value]) => user[key as keyof IUser] === value);
+	Object.entries(fields).every(([key, value]) => dequal(user[key as keyof IUser], value));
+
+const userAfterLogin = (previous: Partial<IUser>, loggedIn: Partial<IUser>) => {
+	if (previous.id !== loggedIn.id) {
+		return loggedIn;
+	}
+	return isSubsetOf(loggedIn, previous) ? previous : { settings: previous.settings, ...loggedIn };
+};
 
 export const initialState: ILogin = {
 	isLocalAuthenticated: true,
