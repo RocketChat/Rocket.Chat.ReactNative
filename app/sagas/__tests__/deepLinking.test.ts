@@ -102,6 +102,8 @@ jest.mock('~/lib/methods/helpers', () => ({
 
 // ─── Real imports (after mocks) ───────────────────────────────────────────────
 
+import RNCallKeep from 'react-native-callkeep';
+
 import { deepLinkingOpen, deepLinkingClickCallPush } from '~/actions/deepLinking';
 import { loginFailure, loginSuccess } from '~/actions/login';
 import { selectServerFailure, selectServerSuccess } from '~/actions/server';
@@ -109,11 +111,12 @@ import { appStart } from '~/actions/app';
 import { connectSuccess } from '~/actions/connect';
 import { APP, LOGIN, LOGOUT, SERVER } from '~/actions/actionsTypes';
 import { RootEnum } from '~/definitions';
-import deepLinkingRoot, { shouldAutoConfirmDeepLinkLogin } from '../deepLinking';
+import deepLinkingRoot, { shouldAutoConfirmDeepLinkConsent } from '../deepLinking';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getServerUserIdKey } from '~/lib/constants/keys';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import { getServerById } from '~/lib/database/services/Server';
+import { resetVoipState } from '~/lib/services/voip/resetVoipState';
 import { localAuthenticate, logUnlessUserCanceled, UserCanceledError } from '~/lib/methods/helpers/localAuthentication';
 import { canOpenRoom } from '~/lib/methods/canOpenRoom';
 import { getServerInfo } from '~/lib/methods/getServerInfo';
@@ -343,21 +346,21 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 	// Marker decision behind the login-confirmation bypass (vuln fix): deleting or
 	// inverting the forceLoginPrompt check must fail here. Env wiring itself is
 	// compile-time inlined, so it's covered by Maestro deeplink.yaml instead.
-	describe('shouldAutoConfirmDeepLinkLogin', () => {
+	describe('shouldAutoConfirmDeepLinkConsent', () => {
 		it('auto-confirms when isE2E with no marker', () => {
-			expect(shouldAutoConfirmDeepLinkLogin(true, {})).toBe(true);
+			expect(shouldAutoConfirmDeepLinkConsent(true, {})).toBe(true);
 		});
 
 		it('shows the prompt when isE2E with forceLoginPrompt=true', () => {
-			expect(shouldAutoConfirmDeepLinkLogin(true, { forceLoginPrompt: 'true' })).toBe(false);
+			expect(shouldAutoConfirmDeepLinkConsent(true, { forceLoginPrompt: 'true' })).toBe(false);
 		});
 
 		it('shows the prompt when not isE2E with no marker', () => {
-			expect(shouldAutoConfirmDeepLinkLogin(false, {})).toBe(false);
+			expect(shouldAutoConfirmDeepLinkConsent(false, {})).toBe(false);
 		});
 
 		it('shows the prompt when not isE2E with forceLoginPrompt=true', () => {
-			expect(shouldAutoConfirmDeepLinkLogin(false, { forceLoginPrompt: 'true' })).toBe(false);
+			expect(shouldAutoConfirmDeepLinkConsent(false, { forceLoginPrompt: 'true' })).toBe(false);
 		});
 	});
 
@@ -941,6 +944,22 @@ describe('deepLinking saga — unknown host hands off to the add-server flow', (
 		expect(emitSpy).not.toHaveBeenCalledWith('NewServer', expect.anything());
 		expect(dispatchedActions.some(a => a.type === SERVER.INIT_ADD)).toBe(false);
 		emitSpy.mockRestore();
+	});
+
+	it('still ends the call and resets VoIP state when the confirmation is declined after a failed VoIP accept', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());
+		jest.mocked(resetVoipState).mockClear();
+		jest.mocked(RNCallKeep.endCall).mockClear();
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParams({ callId: 'call-1', username: 'bob', voipAcceptFailed: true }) as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
+		expect(jest.mocked(resetVoipState)).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(RNCallKeep.endCall)).toHaveBeenCalledWith('call-1');
 	});
 
 	it('does not ask for confirmation for a host with a server record and no signed-in user, without a token', async () => {

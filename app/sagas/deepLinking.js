@@ -38,7 +38,7 @@ const roomTypes = {
 	channels: 'l'
 };
 
-export const shouldAutoConfirmDeepLinkLogin = (isE2E, params = {}) => isE2E && params.forceLoginPrompt !== 'true';
+export const shouldAutoConfirmDeepLinkConsent = (isE2E, params = {}) => isE2E && params.forceLoginPrompt !== 'true';
 
 const consentCopy = {
 	login: {
@@ -57,7 +57,7 @@ const consentCopy = {
 
 const confirmDeepLinkConsent = (host, params, copy) =>
 	new Promise(resolve => {
-		if (shouldAutoConfirmDeepLinkLogin(process.env.RUNNING_E2E_TESTS === 'true', params)) {
+		if (shouldAutoConfirmDeepLinkConsent(process.env.RUNNING_E2E_TESTS === 'true', params)) {
 			resolve(true);
 			return;
 		}
@@ -314,6 +314,9 @@ const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, 
 		return;
 	}
 	if (!(yield ensureDeepLinkConsent(host, params, serverRecord))) {
+		if (params.voipAcceptFailed) {
+			yield call(handleVoipAcceptFailed, params);
+		}
 		return;
 	}
 	const result = yield getServerInfo(host);
