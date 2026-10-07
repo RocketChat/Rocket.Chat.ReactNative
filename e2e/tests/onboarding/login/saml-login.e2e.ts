@@ -24,6 +24,16 @@ const switchToApp = async ({ device }: Fixtures, app: string) => {
 const samlControl = ({ screen, platform }: Fixtures, role: 'textbox' | 'button', label: string) =>
 	platform === 'ios' ? screen.getByRole(role, label) : screen.getByText(label);
 
+const fillSamlField = async (fixtures: Fixtures, label: string, text: string) => {
+	const field = samlControl(fixtures, 'textbox', label);
+	if (fixtures.platform === 'ios') {
+		await field.tap();
+		await field.pressSequentially(text);
+		return;
+	}
+	await fillWhenUncovered(field, text);
+};
+
 test('logs in with SAML', { tags: ['test-2'] }, async fixtures => {
 	const { device, screen } = fixtures;
 	const isIOS = fixtures.platform === 'ios';
@@ -38,10 +48,11 @@ test('logs in with SAML', { tags: ['test-2'] }, async fixtures => {
 	}
 	await dismissChromeFirstRunPrompts(fixtures, screen.getByText('Email or username').first());
 	await screen.scrollUntilVisible(screen.getByText('SAML'));
+	await screen.swipe({ direction: 'down' });
 	await screen.getByText('SAML').tap();
 	await expect(screen.getByText('Enter your username and password')).toBeVisible({ timeout: 10_000 });
-	await fillWhenUncovered(samlControl(fixtures, 'textbox', 'Username'), account.saml.username);
-	await fillWhenUncovered(samlControl(fixtures, 'textbox', 'Password'), account.saml.password);
+	await fillSamlField(fixtures, 'Username', account.saml.username);
+	await fillSamlField(fixtures, 'Password', account.saml.password);
 	await samlControl(fixtures, 'button', 'Login').tap();
 	const roomsList = screen.getByTestId('rooms-list-view');
 	const openInAppPrompt = screen.getByText(/Open this page in .Rocket\.Chat.\?/, { visible: true });
