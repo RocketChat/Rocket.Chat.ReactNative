@@ -368,6 +368,7 @@
   "error-you-are-last-owner": "Você é o último proprietário da sala. Por favor defina um novo proprietário antes de sair.",
   "Everyone_can_access_this_channel": "Todos podem acessar este canal",
   "Everyone_can_access_this_team": "Todos podem acessar este canal",
+  "Expand": "Expandir",
   "Expanded": "Estendido",
   "Experimental_retirement_continue": "Continuar para o app",
   "Experimental_retirement_description": "Por favor, instale o aplicativo oficial do Rocket.Chat e entre novamente no seu workspace. Esta versão Experimental deixará de receber atualizações.",

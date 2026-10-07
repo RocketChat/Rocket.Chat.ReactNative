@@ -19,6 +19,7 @@ import { themes } from './lib/constants/colors';
 import { emitter } from './lib/methods/helpers';
 import MediaCallHeader from './containers/MediaCallHeader/MediaCallHeader';
 import PexipCall from './containers/PexipCall';
+import PexipCallSplitSpacer from './containers/PexipCall/PexipCallSplitSpacer';
 
 const useIsLoading = () =>
 	useSelector(
@@ -84,6 +85,7 @@ const AppContainer = () => {
 	return (
 		<>
 			<MediaCallHeader />
+			<PexipCallSplitSpacer />
 			<AppNavigation
 				theme={navigationTheme(theme)}
 				ref={Navigation.navigationRef}

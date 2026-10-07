@@ -26,21 +26,23 @@ import { PexipCallTimer } from './PexipCallTimer';
 import { isTlsError } from './pexipLoopbackProxy';
 import { usePexipLoopbackUrl } from './usePexipLoopbackUrl';
 import { usePexipPresenceLease } from './usePexipPresenceLease';
+import { SPLIT_BAR_HEIGHT, usePexipSplitHeight } from './usePexipSplitHeight';
 
 const MINI_WIDTH = 120;
 const MINI_HEIGHT = 180;
 const MINI_MARGIN = 12;
-const TOP_BAR_HEIGHT = 48;
 
 const PexipCall = () => {
 	const { colors } = useTheme();
 	const insets = useSafeAreaInsets();
 	const { width, height } = useWindowDimensions();
 	const isMasterDetail = useMasterDetail();
-	const { call, minimized, minimize, expand, leave } = usePexipCallStore(
+	const splitHeight = usePexipSplitHeight();
+	const { call, layout, split, minimize, expand, leave } = usePexipCallStore(
 		useShallow(state => ({
 			call: state.call,
-			minimized: state.minimized,
+			layout: state.layout,
+			split: state.split,
 			minimize: state.minimize,
 			expand: state.expand,
 			leave: state.leave
@@ -50,6 +52,8 @@ const PexipCall = () => {
 	const isPersistentChatEnabled = useAppSelector(state => !!state.settings.VideoConf_Enable_Persistent_Chat);
 	usePexipPresenceLease(call?.callId, isPersistentChatEnabled);
 	const loopback = usePexipLoopbackUrl(call);
+	const minimized = layout === 'minimized';
+	const isSplit = layout === 'split';
 
 	const onError: WebViewProps['onError'] = ({ nativeEvent }) => {
 		loopback.onTlsError(nativeEvent.code);
@@ -74,7 +78,7 @@ const PexipCall = () => {
 	}, [call]);
 
 	const openChat = async () => {
-		minimize();
+		split();
 		if (!call?.rid) return;
 		const current = Navigation.getCurrentRoute();
 		if (current?.name === 'RoomView' && (current.params as { rid?: string } | undefined)?.rid === call.rid) return;
@@ -101,8 +105,18 @@ const PexipCall = () => {
 			scheduleOnRN(expand);
 		});
 
-	const containerStyle = useAnimatedStyle(() =>
-		minimized
+	const containerStyle = useAnimatedStyle(() => {
+		if (isSplit) {
+			return {
+				top: insets.top,
+				left: 0,
+				width,
+				height: splitHeight,
+				borderRadius: 0,
+				transform: [{ translateX: 0 }, { translateY: 0 }]
+			};
+		}
+		return minimized
 			? {
 					top: 0,
 					left: 0,
@@ -111,8 +125,8 @@ const PexipCall = () => {
 					borderRadius: 12,
 					transform: [{ translateX: translateX.get() }, { translateY: translateY.get() }]
 				}
-			: { top: 0, left: 0, width, height, borderRadius: 0, transform: [{ translateX: 0 }, { translateY: 0 }] }
-	);
+			: { top: 0, left: 0, width, height, borderRadius: 0, transform: [{ translateX: 0 }, { translateY: 0 }] };
+	});
 
 	if (!call) return null;
 
@@ -124,9 +138,15 @@ const PexipCall = () => {
 
 	return (
 		<GestureDetector gesture={Gesture.Exclusive(pan, tap)}>
-			<Animated.View style={[styles.container, containerStyle]} testID={minimized ? 'pexip-call-minimized' : 'pexip-call'}>
+			<Animated.View
+				style={[styles.container, containerStyle]}
+				testID={minimized ? 'pexip-call-minimized' : isSplit ? 'pexip-call-split' : 'pexip-call'}>
 				{!minimized ? (
-					<View style={[styles.topBar, { paddingTop: insets.top, height: TOP_BAR_HEIGHT + insets.top }]}>
+					<View
+						style={[
+							styles.topBar,
+							isSplit ? { height: SPLIT_BAR_HEIGHT } : { paddingTop: insets.top, height: SPLIT_BAR_HEIGHT + insets.top }
+						]}>
 						<Touch
 							onPress={leave}
 							style={[styles.button, { backgroundColor: colors.buttonBackgroundDangerDefault }]}
@@ -139,7 +159,16 @@ const PexipCall = () => {
 						<Text style={[styles.title, { color: colors.fontWhite }]} numberOfLines={1}>
 							{room?.fname || room?.name || i18n.t('Video_call')}
 						</Text>
-						{call.rid ? (
+						{isSplit ? (
+							<Touch
+								onPress={expand}
+								style={[styles.button, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}
+								accessibilityLabel={i18n.t('Expand')}
+								testID='pexip-call-expand-full'>
+								<CustomIcon name='arrow-expand' size={20} color={colors.fontDefault} />
+							</Touch>
+						) : null}
+						{!isSplit && call.rid ? (
 							<Touch
 								onPress={openChat}
 								style={[styles.button, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}
@@ -157,7 +186,7 @@ const PexipCall = () => {
 						</Touch>
 					</View>
 				) : null}
-				<View style={[styles.webviewContainer, !minimized && { marginBottom: insets.bottom }]}>
+				<View style={[styles.webviewContainer, layout === 'full' && { marginBottom: insets.bottom }]}>
 					{loopback.loading ? (
 						loadingView
 					) : (
