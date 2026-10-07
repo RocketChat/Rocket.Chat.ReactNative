@@ -170,7 +170,7 @@
 		"@babel/runtime": "~7.25.9",
 		"@bugsnag/cli": "^3.2.1",
 		"@bugsnag/source-maps": "^2.3.3",
-		"@e2e-dev/mobile": "0.8.1",
+		"@e2e-dev/mobile": "0.10.0",
 		"@gorhom/bottom-sheet": "^5",
 		"@react-native-community/cli": "20.0.0",
 		"@react-native-community/cli-platform-android": "20.0.0",
@@ -202,7 +202,7 @@
 		"babel-plugin-transform-inline-environment-variables": "^0.4.4",
 		"babel-plugin-transform-remove-console": "^6.9.4",
 		"babel-preset-expo": "~57.0.12",
-		"e2e": "0.15.1",
+		"e2e": "0.18.0",
 		"emojibase-data": "17.0.0",
 		"eslint-plugin-react-native": "~5.0.0",
 		"fast-glob": "3.3.3",
@@ -234,7 +234,7 @@
 		}
 	},
 	"engines": {
-		"node": ">=22.13.0"
+		"node": ">=22.22.3"
 	},
 	"codegenConfig": {
 		"name": "SSLPinning",
