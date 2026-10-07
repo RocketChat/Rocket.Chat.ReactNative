@@ -38,12 +38,11 @@ const PexipCall = () => {
 	const { width, height } = useWindowDimensions();
 	const isMasterDetail = useMasterDetail();
 	const splitHeight = usePexipSplitHeight();
-	const { call, layout, split, minimize, expand, leave } = usePexipCallStore(
+	const { call, layout, split, expand, leave } = usePexipCallStore(
 		useShallow(state => ({
 			call: state.call,
 			layout: state.layout,
 			split: state.split,
-			minimize: state.minimize,
 			expand: state.expand,
 			leave: state.leave
 		}))
@@ -177,13 +176,6 @@ const PexipCall = () => {
 								<CustomIcon name='message' size={20} color={colors.fontDefault} />
 							</Touch>
 						) : null}
-						<Touch
-							onPress={minimize}
-							style={[styles.button, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}
-							accessibilityLabel={i18n.t('Minimize')}
-							testID='pexip-call-minimize'>
-							<CustomIcon name='arrow-collapse' size={20} color={colors.fontDefault} />
-						</Touch>
 					</View>
 				) : null}
 				<View style={[styles.webviewContainer, layout === 'full' && { marginBottom: insets.bottom }]}>
