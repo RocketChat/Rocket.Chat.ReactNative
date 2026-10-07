@@ -23,6 +23,7 @@ import { type ConfirmCategoryRoomsViewParams } from '../views/CategorySettingsVi
 import { type ManageCategoryRoomsViewParams } from '../views/CategorySettingsView/ManageCategoryRoomsView';
 import { type RenameCategoryViewParams } from '../views/CategorySettingsView/RenameCategoryView';
 import { type CreateCategoryViewParams } from '../views/CreateCategoryView';
+import { type NewMessageViewParams } from '../views/NewMessageView';
 import { type CategoryRoomsViewParams } from '../views/CreateCategoryView/CategoryRoomsView';
 import { type ConfirmCategoryViewParams } from '../views/CreateCategoryView/ConfirmCategoryView';
 import { type ModalStackParamList } from './MasterDetailStack/types';
@@ -167,6 +168,7 @@ export type ChatsStackParamList = {
 	CreateChannelView: {
 		isTeam?: boolean;
 		teamId?: string;
+		categoryId?: string;
 	};
 	AddChannelTeamView: {
 		teamId: string;
@@ -264,7 +266,7 @@ export type DrawerParamList = {
 };
 
 export type NewMessageStackParamList = {
-	NewMessageView: undefined;
+	NewMessageView: NewMessageViewParams;
 	SelectedUsersView: {
 		maxUsers?: number;
 		showButton?: boolean;
@@ -276,11 +278,13 @@ export type NewMessageStackParamList = {
 	CreateChannelView?: {
 		isTeam?: boolean;
 		teamId?: string;
+		categoryId?: string;
 	};
 	CreateDiscussionView: {
 		channel: ISubscription;
 		message: IMessage;
 		showCloseModal: boolean;
+		categoryId?: string;
 	};
 	ForwardMessageView: {
 		message: TAnyMessageModel;

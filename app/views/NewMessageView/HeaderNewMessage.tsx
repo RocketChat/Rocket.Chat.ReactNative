@@ -1,6 +1,6 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type ReactElement, useCallback } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -19,10 +19,18 @@ import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useList
 import { useHasCustomCategoriesLicense } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import ButtonCreate from './ButtonCreate';
 import FolderPlusIcon from '~/containers/FolderIcons/FolderPlusIcon';
+import sharedStyles from '~/views/Styles';
 
 const styles = StyleSheet.create({
 	container: {
 		paddingTop: 16
+	},
+	categoryDescription: {
+		fontSize: 14,
+		lineHeight: 20,
+		paddingHorizontal: 16,
+		paddingBottom: 12,
+		...sharedStyles.textRegular
 	}
 });
 
@@ -34,7 +42,14 @@ interface IButtonConfig {
 	testID: string;
 }
 
-const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChangeText: (text: string) => void }) => {
+interface IHeaderNewMessage {
+	maxUsers: number;
+	onChangeText: (text: string) => void;
+	categoryId?: string;
+	categoryName?: string;
+}
+
+const HeaderNewMessage = ({ maxUsers, onChangeText, categoryId, categoryName }: IHeaderNewMessage) => {
 	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
@@ -53,33 +68,33 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 
 	const createChannel = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_CHANNEL);
-		navigation.navigate('SelectedUsersView', { nextAction: () => navigation.navigate('CreateChannelView') });
-	}, [navigation]);
+		navigation.navigate('SelectedUsersView', { nextAction: () => navigation.navigate('CreateChannelView', { categoryId }) });
+	}, [navigation, categoryId]);
 
 	const createTeam = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_TEAM);
 		navigation.navigate('SelectedUsersView', {
-			nextAction: () => navigation.navigate('CreateChannelView', { isTeam: true })
+			nextAction: () => navigation.navigate('CreateChannelView', { isTeam: true, categoryId })
 		});
-	}, [navigation]);
+	}, [navigation, categoryId]);
 
 	const createGroupChat = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_GROUP_CHAT);
 		navigation.navigate('SelectedUsersView', {
-			nextAction: () => dispatch(createChannelRequest({ group: true })),
+			nextAction: () => dispatch(createChannelRequest({ group: true, category: categoryId })),
 			buttonText: I18n.t('Create'),
 			maxUsers
 		});
-	}, [dispatch, maxUsers, navigation]);
+	}, [dispatch, maxUsers, navigation, categoryId]);
 
 	const createDiscussion = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_DISCUSSION);
 		navigation.navigate('SelectedUsersView', {
-			nextAction: () => Navigation.navigate('CreateDiscussionView'),
+			nextAction: () => Navigation.navigate('CreateDiscussionView', { categoryId }),
 			title: I18n.t('Create_Discussion'),
 			buttonText: I18n.t('Next')
 		});
-	}, [navigation]);
+	}, [navigation, categoryId]);
 
 	const createCategory = useCallback(() => {
 		navigation.navigate('CreateCategoryView');
@@ -117,7 +132,7 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 			testID: 'new-message-view-create-discussion'
 		},
 		{
-			visible: hasCustomCategoriesLicense,
+			visible: hasCustomCategoriesLicense && !categoryId,
 			onPress: createCategory,
 			title: 'Category',
 			icon: <FolderPlusIcon color={colors.fontDefault} />,
@@ -127,6 +142,11 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 
 	return (
 		<View style={[styles.container, { backgroundColor: listBackgroundColor }]}>
+			{categoryName ? (
+				<Text style={[styles.categoryDescription, { color: colors.fontSecondaryInfo }]}>
+					{I18n.t('Create_New_Room_Inside_Category', { name: categoryName })}
+				</Text>
+			) : null}
 			{buttons.map((button, index) => (
 				<ButtonCreate
 					key={button.testID}

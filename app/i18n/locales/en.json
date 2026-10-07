@@ -232,6 +232,8 @@
   "Create_Direct_Messages": "Create direct messages",
   "Create_Discussion": "Create discussion",
   "Create_New": "Create new",
+  "Create_New_In_Category": "Create new ({{name}})",
+  "Create_New_Room_Inside_Category": "Create new room inside {{name}}",
   "Create_new_channel_team_dm_discussion": "Create new channel, team, direct message or discussion",
   "Create_Team": "Create team",
   "Created_snippet": "created a snippet",

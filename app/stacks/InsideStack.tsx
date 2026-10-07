@@ -71,7 +71,7 @@ import DisplayPrefsView from '../views/DisplayPrefsView';
 import CategoryOrderView from '../views/CategoryOrderView';
 import ThemeView from '../views/ThemeView';
 import AdminPanelView from '../views/AdminPanelView';
-import NewMessageView from '../views/NewMessageView';
+import NewMessageView, { type NewMessageViewParams } from '../views/NewMessageView';
 import CreateChannelView from '../views/CreateChannelView';
 import CreateCategoryView from '../views/CreateCategoryView';
 import CategoryRoomsView from '../views/CreateCategoryView/CategoryRoomsView';
@@ -145,7 +145,7 @@ const AccessibilityAndAppearanceViewScreen: ComponentType<StaticScreenProps<unde
 const DisplayPrefsViewScreen: ComponentType<StaticScreenProps<undefined>> = DisplayPrefsView as any;
 const ThemeViewScreen: ComponentType<StaticScreenProps<undefined>> = ThemeView as any;
 const AdminPanelViewScreen: ComponentType<StaticScreenProps<undefined>> = AdminPanelView as any;
-const NewMessageViewScreen: ComponentType<StaticScreenProps<undefined>> = NewMessageView as any;
+const NewMessageViewScreen: ComponentType<StaticScreenProps<NewMessageViewParams>> = NewMessageView as any;
 const ForwardMessageViewScreen = ForwardMessageView as any;
 const E2ESaveYourPasswordViewScreen: ComponentType<StaticScreenProps<undefined>> = E2ESaveYourPasswordView as any;
 const E2EHowItWorksViewScreen = E2EHowItWorksView as any;

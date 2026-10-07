@@ -125,7 +125,8 @@ const CreateChannelView = () => {
 			broadcast,
 			encrypted,
 			isTeam,
-			teamId
+			teamId,
+			category: params?.categoryId
 		};
 		dispatch(createChannelRequest(data));
 		Review.pushPositiveEvent();

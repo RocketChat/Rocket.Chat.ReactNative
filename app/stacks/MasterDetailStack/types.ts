@@ -12,6 +12,7 @@ import { type ConfirmCategoryRoomsViewParams } from '~/views/CategorySettingsVie
 import { type ManageCategoryRoomsViewParams } from '~/views/CategorySettingsView/ManageCategoryRoomsView';
 import { type RenameCategoryViewParams } from '~/views/CategorySettingsView/RenameCategoryView';
 import { type CreateCategoryViewParams } from '~/views/CreateCategoryView';
+import { type NewMessageViewParams } from '~/views/NewMessageView';
 import { type CategoryRoomsViewParams } from '~/views/CreateCategoryView/CategoryRoomsView';
 import { type ConfirmCategoryViewParams } from '~/views/CreateCategoryView/ConfirmCategoryView';
 
@@ -186,18 +187,20 @@ export type ModalStackParamList = {
 	ConfirmCategoryRoomsView: ConfirmCategoryRoomsViewParams;
 	RenameCategoryView: RenameCategoryViewParams;
 	AdminPanelView: undefined;
-	NewMessageView: undefined;
+	NewMessageView: NewMessageViewParams;
 	CreateCategoryView: CreateCategoryViewParams;
 	CategoryRoomsView: CategoryRoomsViewParams;
 	ConfirmCategoryView: ConfirmCategoryViewParams;
 	CreateChannelView: {
 		isTeam?: boolean; // TODO: To check
 		teamId?: string;
+		categoryId?: string;
 	};
 	CreateDiscussionView: {
 		channel: ISubscription;
 		message: IMessage;
 		showCloseModal: boolean;
+		categoryId?: string;
 	};
 	E2ESaveYourPasswordView: undefined;
 	E2EHowItWorksView: {

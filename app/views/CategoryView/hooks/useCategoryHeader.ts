@@ -17,11 +17,11 @@ export const useCategoryHeader = (header: string, title: string) => {
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CategoryView'>>();
 	const { colors } = useTheme();
 	const isMasterDetail = useMasterDetail();
-	const { canCreateRoom, goToNewMessage } = useNewMessage();
 	const hasCustomCategoriesLicense = useHasCustomCategoriesLicense();
 	const { customCategoryNames } = useSidebarCategories();
 	const categoryName = customCategoryNames.get(header);
 	const isCustomCategory = !SYSTEM_GROUPS.includes(categoryIdOfHeader(header));
+	const { canCreateRoom, goToNewMessage } = useNewMessage(isCustomCategory ? header : undefined);
 	const showNewMessageAction = hasNativeHeaderBar && canCreateRoom;
 
 	useEffect(() => {
