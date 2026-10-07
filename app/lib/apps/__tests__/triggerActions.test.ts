@@ -42,8 +42,14 @@ describe('triggerActions wrappers', () => {
 			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(true);
 		});
 
-		it('keeps the modal open when triggerAction returns nothing', async () => {
+		it('asks to close when the app only acknowledges the submit', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(undefined);
+
+			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(true);
+		});
+
+		it('keeps the modal open for errors', async () => {
+			mockedTriggerAction.mockResolvedValueOnce(ModalActions.ERRORS);
 
 			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(false);
 		});
