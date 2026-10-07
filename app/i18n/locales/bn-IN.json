@@ -176,6 +176,7 @@
   "Connect": "সংযোগ করুন",
   "Connect_to_server_as_user": "{{user}} হিসেবে {{serverUrl}} এ সংযোগ করুন",
   "Connecting": "সংযোগ হচ্ছে...",
+  "Connection_timed_out": "সংযোগের সময় শেষ হয়ে গেছে। সার্ভারের URL পরীক্ষা করে আবার চেষ্টা করুন।",
   "Contact_us": "আমাদের সাথে যোগাযোগ করুন",
   "Contact_your_server_admin": "আপনার কাজকর্ম অ্যাডমিনের সাথে যোগাযোগ করুন।",
   "Content": "কন্টেন্ট",

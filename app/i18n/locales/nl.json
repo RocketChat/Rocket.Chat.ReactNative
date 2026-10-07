@@ -139,6 +139,7 @@
   "Connect": "Verbinden",
   "Connect_to_server_as_user": "Verbind met {{serverUrl}} als {{user}}",
   "Connecting": "Aan het verbinden...",
+  "Connection_timed_out": "De verbinding is verlopen. Controleer de server-URL en probeer het opnieuw.",
   "Contact_us": "Neem contact op",
   "Contact_your_server_admin": "Neem contact op met je serverbeheerder.",
   "Content": "Inhoud",

@@ -139,6 +139,7 @@
   "Connect": "Connecter",
   "Connect_to_server_as_user": "Connectez-vous à {{serverUrl}} en tant que {{user}}",
   "Connecting": "Connexion...",
+  "Connection_timed_out": "Délai de connexion dépassé. Vérifiez l'URL du serveur et réessayez.",
   "Contact_us": "Contactez-nous",
   "Contact_your_server_admin": "Contactez votre administrateur de serveur.",
   "Content": "Contenu",

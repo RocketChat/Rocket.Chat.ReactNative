@@ -123,6 +123,7 @@
   "Connect": "接続",
   "Connect_to_server_as_user": "{{user}}として{{serverUrl}}に接続する",
   "Connecting": "接続中...",
+  "Connection_timed_out": "接続がタイムアウトしました。サーバーのURLを確認して、もう一度お試しください。",
   "Contact_us": "お問い合わせ",
   "Contact_your_server_admin": "サーバー管理者にお問い合わせください。",
   "Continue_with": "次でログイン: ",

@@ -124,6 +124,7 @@
   "Connect": "連接",
   "Connect_to_server_as_user": "連接至 {{serverUrl}} 作為 {{user}}",
   "Connecting": "連接中",
+  "Connection_timed_out": "連線逾時。請檢查伺服器 URL 後再試一次。",
   "Contact_us": "聯絡我們",
   "Contact_your_server_admin": "請聯絡系統管理員",
   "Continue_with": "繼續採用",

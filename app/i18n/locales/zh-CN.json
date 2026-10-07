@@ -123,6 +123,7 @@
   "Connect": "连接",
   "Connect_to_server_as_user": "以{{user}}身份连接到{{serverUrl}}",
   "Connecting": "连接中",
+  "Connection_timed_out": "连接超时。请检查服务器 URL 后重试。",
   "Contact_us": "联系我们",
   "Contact_your_server_admin": "请联络系统管理员",
   "Continue_with": "继续采用",

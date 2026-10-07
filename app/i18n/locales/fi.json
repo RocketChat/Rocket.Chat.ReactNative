@@ -160,6 +160,7 @@
   "Connect": "Yhdistä",
   "Connect_to_server_as_user": "Yhdistä osoitteeseen {{serverUrl}} käyttäjänä {{user}}",
   "Connecting": "Yhdistetään...",
+  "Connection_timed_out": "Yhteys aikakatkaistiin. Tarkista palvelimen URL-osoite ja yritä uudelleen.",
   "Contact_us": "Ota yhteyttä",
   "Contact_your_server_admin": "Ota yhteys palvelimen järjestelmänvalvojaan.",
   "Content": "Sisältö",

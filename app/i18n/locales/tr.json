@@ -123,6 +123,7 @@
   "Connect": "Bağlan",
   "Connect_to_server_as_user": "{{serverUrl}} bağlanın, kullanıcı: {{user}}",
   "Connecting": "Bağlanıyor...",
+  "Connection_timed_out": "Bağlantı zaman aşımına uğradı. Sunucu URL'sini kontrol edip tekrar deneyin.",
   "Contact_us": "Bize ulaşın",
   "Contact_your_server_admin": "Sunucu yöneticisiyle iletişime geçin.",
   "Continue_with": "Devam et:",

@@ -186,6 +186,7 @@
   "Connect": "Conectar",
   "Connect_to_server_as_user": "Conectar-se a {{serverUrl}} como {{user}}",
   "Connecting": "Conectando...",
+  "Connection_timed_out": "A conexão expirou. Verifique a URL do servidor e tente novamente.",
   "Contact_us": "Entre em contato",
   "Contact_your_server_admin": "Contate o administrador da workspace.",
   "Content": "Conteúdo",

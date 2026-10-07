@@ -144,6 +144,7 @@
   "Connect": "Povežite",
   "Connect_to_server_as_user": "Povežite se na {{serverUrl}} kot {{user}}",
   "Connecting": "Povezovanje ...",
+  "Connection_timed_out": "Povezava je potekla. Preverite URL strežnika in poskusite znova.",
   "Contact_us": "Kontaktiraj nas",
   "Contact_your_server_admin": "Se obrnite na skrbnika strežnika.",
   "Content": "Vsebina",

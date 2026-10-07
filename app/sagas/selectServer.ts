@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { delay, put, race, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import valid from 'semver/functions/valid';
@@ -224,19 +224,36 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	}
 };
 
+// React Native's Android HTTP client has no default request timeout, so a host that accepts the connection and never answers would hang the probe forever
+const SERVER_PROBE_TIMEOUT = 30000;
+
+const probeServer = function* probeServer(server: string) {
+	const serverInfo = yield* getServerInfoSaga({ server });
+	if (serverInfo) {
+		yield getLoginServices(server);
+		yield getLoginSettings({ server, serverVersion: serverInfo.version });
+	}
+	return serverInfo;
+};
+
 const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }: IServerRequestAction) {
 	try {
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		if (certificate) {
 			SSLPinning?.setCertificate(certificate, server);
 		}
-		const serverInfo = yield* getServerInfoSaga({ server });
+		const { serverInfo, timedOut } = yield race({
+			serverInfo: call(probeServer, server),
+			timedOut: delay(SERVER_PROBE_TIMEOUT)
+		});
+		if (timedOut) {
+			yield put(serverFailure(I18n.t('Connection_timed_out')));
+			return;
+		}
 		const serversDB = database.servers;
 		const serversHistoryCollection = serversDB.get('servers_history');
 
 		if (serverInfo) {
-			yield getLoginServices(server);
-			yield getLoginSettings({ server, serverVersion: serverInfo.version });
 			Navigation.navigate('WorkspaceView');
 
 			const Accounts_iframe_enabled = yield* appSelector(state => state.settings.Accounts_iframe_enabled);

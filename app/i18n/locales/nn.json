@@ -98,6 +98,7 @@
   "Confirmation": "Bekreftelse",
   "Connect": "Koble til",
   "Connecting": "Kobler til...",
+  "Connection_timed_out": "Tilkoplinga fekk tidsavbrot. Sjekk server-URL-en og prøv på nytt.",
   "Content": "Innhold",
   "Continue": "Fortsette",
   "Conversation": "Samtale",

@@ -355,6 +355,26 @@ describe('selectServer saga — requesting a new workspace', () => {
 		expect(sharedAuthorizationDuringProbe).toEqual([null, null]);
 	});
 
+	it('fails the request when the host never answers the probe', async () => {
+		jest.useFakeTimers();
+		try {
+			jest.mocked(getServerInfo).mockImplementationOnce(() => new Promise(() => {}));
+
+			const { store, dispatchedActions } = setupStore();
+			store.dispatch(serverRequest(REQUESTED_HOST));
+			await flushSagaMicrotasks();
+			expect(dispatchedActions.map(action => action.type)).not.toContain(SERVER.FAILURE);
+
+			await jest.advanceTimersByTimeAsync(30000);
+
+			expect(dispatchedActions.map(action => action.type)).toContain(SERVER.FAILURE);
+			expect(store.getState().server.connecting).toBe(false);
+			expect(store.getState().server.failureMessage).toBe('Connection timed out. Check the server URL and try again.');
+		} finally {
+			jest.useRealTimers();
+		}
+	});
+
 	it('leaves the active workspace basic auth in place when the requested host cannot be reached', async () => {
 		storeActiveBasicAuth(OLD_SERVER, 'old-workspace-credentials');
 		(sdk as { host?: string }).host = OLD_SERVER;
