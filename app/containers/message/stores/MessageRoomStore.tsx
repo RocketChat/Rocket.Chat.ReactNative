@@ -165,3 +165,6 @@ export const useAutoTranslate = (): { autoTranslateRoom?: boolean; autoTranslate
 	useMessageRoomStore(
 		useShallow(s => ({ autoTranslateRoom: s.autoTranslateRoom, autoTranslateLanguage: s.autoTranslateLanguage }))
 	);
+
+export const useRoomTranslateLanguage = (): string | undefined =>
+	useMessageRoomStore(s => (s.autoTranslateRoom ? s.autoTranslateLanguage : undefined));
