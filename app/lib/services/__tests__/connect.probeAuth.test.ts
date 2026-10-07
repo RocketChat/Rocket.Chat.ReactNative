@@ -1,7 +1,6 @@
 import { settings as RocketChatSettings, Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 
 import { getLoginServices, getWebsocketInfo } from '../connect';
-import sdk from '../sdk';
 import { headers } from '~/lib/methods/helpers/fetch';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getBasicAuthKey } from '~/lib/constants/keys';
@@ -48,7 +47,6 @@ jest.mock('../sdk', () => ({
 	default: { host: undefined }
 }));
 
-const ACTIVE_SERVER = 'https://active.rocket.chat';
 const PROBED_SERVER = 'https://probed.example';
 const sentToNetwork = jest.fn((_url: string, _options: { headers: Record<string, string> }) =>
 	Promise.resolve({ json: () => Promise.resolve({ success: true, services: [] }) } as Response)
@@ -68,16 +66,13 @@ beforeEach(() => {
 	(RocketchatClient as unknown as jest.Mock).mockImplementation(() => ({ connect: connectMock, disconnect: jest.fn() }));
 	sentToNetwork.mockClear();
 	global.fetch = sentToNetwork as unknown as typeof global.fetch;
-	UserPreferences.removeItem(getBasicAuthKey(ACTIVE_SERVER));
 	UserPreferences.removeItem(getBasicAuthKey(PROBED_SERVER));
-	(sdk as { host?: string }).host = undefined;
 	handshakeHeaders = {};
 });
 
 afterEach(() => {
 	global.fetch = originalGlobalFetch;
 	RocketChatSettings.customHeaders = originalCustomHeaders;
-	UserPreferences.removeItem(getBasicAuthKey(ACTIVE_SERVER));
 	UserPreferences.removeItem(getBasicAuthKey(PROBED_SERVER));
 });
 
@@ -106,8 +101,6 @@ describe('getWebsocketInfo — handshake-only global auth', () => {
 	it('points the shared headers at the probed server for the handshake, then hands back the active one', async () => {
 		RocketChatSettings.customHeaders = { ...headers, Authorization: 'Basic active-workspace' };
 		UserPreferences.setString(getBasicAuthKey(PROBED_SERVER), 'probed-credentials');
-		UserPreferences.setString(getBasicAuthKey(ACTIVE_SERVER), 'active-workspace');
-		(sdk as { host?: string }).host = ACTIVE_SERVER;
 
 		const result = await getWebsocketInfo({ server: PROBED_SERVER });
 
@@ -137,8 +130,6 @@ describe('getWebsocketInfo — handshake-only global auth', () => {
 
 	it('sends no basic auth on the handshake when the probed server has none stored', async () => {
 		RocketChatSettings.customHeaders = { ...headers, Authorization: 'Basic active-workspace' };
-		UserPreferences.setString(getBasicAuthKey(ACTIVE_SERVER), 'active-workspace');
-		(sdk as { host?: string }).host = ACTIVE_SERVER;
 
 		const result = await getWebsocketInfo({ server: PROBED_SERVER });
 
@@ -149,8 +140,6 @@ describe('getWebsocketInfo — handshake-only global auth', () => {
 
 	it('still hands the previous headers back when the handshake fails', async () => {
 		RocketChatSettings.customHeaders = { ...headers, Authorization: 'Basic active-workspace' };
-		UserPreferences.setString(getBasicAuthKey(ACTIVE_SERVER), 'active-workspace');
-		(sdk as { host?: string }).host = ACTIVE_SERVER;
 		connectMock.mockRejectedValueOnce(new Error('connect failed'));
 
 		const result = await getWebsocketInfo({ server: PROBED_SERVER });
