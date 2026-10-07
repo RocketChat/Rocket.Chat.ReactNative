@@ -15,7 +15,7 @@ jest.mock('~/lib/services/sdk', () => ({
 	default: {}
 }));
 
-jest.mock('../getUsersPresence', () => ({
+jest.mock('~/lib/methods/getUsersPresence', () => ({
 	setPresenceCap: jest.fn()
 }));
 
@@ -23,7 +23,7 @@ jest.mock('~/lib/store/auxStore', () => ({
 	store: { dispatch: jest.fn(), getState: jest.fn() }
 }));
 
-jest.mock('../helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));

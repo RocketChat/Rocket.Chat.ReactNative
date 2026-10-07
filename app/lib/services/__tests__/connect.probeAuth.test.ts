@@ -10,11 +10,11 @@ jest.mock('@rocket.chat/sdk', () => {
 	return { ...actual, Rocketchat: jest.fn() };
 });
 
-jest.mock('../voip/MediaSessionInstance', () => ({
+jest.mock('~/lib/services/voip/MediaSessionInstance', () => ({
 	mediaSessionInstance: { reset: jest.fn(), drainPendingHangups: jest.fn() }
 }));
 
-jest.mock('../twoFactor/twoFactor', () => ({
+jest.mock('~/lib/services/twoFactor/twoFactor', () => ({
 	twoFactor: jest.fn()
 }));
 
@@ -42,7 +42,7 @@ jest.mock('~/lib/store/auxStore', () => ({
 	store: { dispatch: jest.fn(), getState: jest.fn() }
 }));
 
-jest.mock('../sdk', () => ({
+jest.mock('~/lib/services/sdk', () => ({
 	__esModule: true,
 	default: { host: undefined }
 }));

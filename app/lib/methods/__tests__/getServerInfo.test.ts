@@ -7,8 +7,8 @@ import { store } from '~/lib/store/auxStore';
 import { getSupportedVersionsCloud } from '~/lib/services/restApi';
 import { getBasicAuthKey, getServerUserIdKey, getUserTokenKey } from '~/lib/constants/keys';
 
-jest.mock('../helpers/fetch', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('../userPreferences', () => ({ __esModule: true, default: { getString: jest.fn() } }));
+jest.mock('~/lib/methods/helpers/fetch', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('~/lib/methods/userPreferences', () => ({ __esModule: true, default: { getString: jest.fn() } }));
 jest.mock('~/lib/store/auxStore', () => ({ store: { getState: jest.fn(), dispatch: jest.fn() } }));
 jest.mock('~/lib/database/services/Server', () => ({ getServerById: jest.fn() }));
 jest.mock('~/lib/services/restApi', () => ({ getSupportedVersionsCloud: jest.fn() }));
