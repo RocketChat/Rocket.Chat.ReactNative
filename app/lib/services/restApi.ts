@@ -134,10 +134,11 @@ export const spotlight = (
 	const serverVersion = reduxStore.getState().server.version;
 	// RC 8.6.0
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+		const withoutGroupDMNames = usernames.filter(name => !name.includes(','));
 		return sdk.get('spotlight', {
 			query: search,
 			type: JSON.stringify(type),
-			...(usernames.length ? { usernames: usernames.join(',') } : {}),
+			...(withoutGroupDMNames.length ? { usernames: withoutGroupDMNames.join(',') } : {}),
 			...(rid ? { rid } : {})
 		}) as Promise<ISpotlight>;
 	}

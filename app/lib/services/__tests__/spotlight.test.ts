@@ -58,6 +58,26 @@ describe('spotlight', () => {
 		expect(params).not.toHaveProperty('rid');
 	});
 
+	it.each(['alice, bob', 'alice,bob'])('leaves the group DM name %j out of usernames on 8.6.0+', async groupDMName => {
+		await spotlight('john', [groupDMName, 'carol'], type);
+		expect(sdk.get).toHaveBeenCalledWith('spotlight', {
+			query: 'john',
+			usernames: 'carol',
+			type: JSON.stringify(type)
+		});
+	});
+
+	it('omits usernames on 8.6.0+ when only group DM names are given', async () => {
+		await spotlight('john', ['alice, bob'], type);
+		expect((sdk.get as jest.Mock).mock.calls[0][1]).not.toHaveProperty('usernames');
+	});
+
+	it('still sends group DM names to DDP below 8.6.0 untouched', async () => {
+		setServerVersion('8.5.9');
+		await spotlight('john', ['alice, bob'], type);
+		expect(sdk.methodCallWrapper).toHaveBeenCalledWith('spotlight', 'john', ['alice, bob'], type);
+	});
+
 	it('sends rid on 8.6.0+ when provided', async () => {
 		await spotlight('john', ['a'], type, 'rid1');
 		expect(sdk.get).toHaveBeenCalledWith('spotlight', {
