@@ -25,20 +25,20 @@ jest.mock('~/containers/FormContainer', () => ({
 	FormContainerInner: ({ children }: { children: unknown }) => children
 }));
 jest.mock('~/containers/Header/components/HeaderButton', () => ({ CloseModal: () => null }));
-jest.mock('../components/ServerInput', () => () => null);
-jest.mock('../components/CertificatePicker', () => () => null);
-jest.mock('../hooks/useServersHistory', () => () => ({
+jest.mock('~/views/NewServerView/components/ServerInput', () => () => null);
+jest.mock('~/views/NewServerView/components/CertificatePicker', () => () => null);
+jest.mock('~/views/NewServerView/hooks/useServersHistory', () => () => ({
 	deleteServerHistory: jest.fn(),
 	queryServerHistory: jest.fn(),
 	serversHistory: []
 }));
-jest.mock('../hooks/useCertificate', () => () => ({
+jest.mock('~/views/NewServerView/hooks/useCertificate', () => () => ({
 	certificate: null,
 	chooseCertificate: jest.fn(),
 	removeCertificate: jest.fn(),
 	autocompleteCertificate: jest.fn()
 }));
-jest.mock('../hooks/useConnectServer', () => () => ({ submit: jest.fn() }));
+jest.mock('~/views/NewServerView/hooks/useConnectServer', () => () => ({ submit: jest.fn() }));
 
 const mockServerState = (state: { previousServer: string | null; connecting: boolean }) => {
 	jest
