@@ -2,7 +2,6 @@ import { type ReactElement } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 import { useActionSheet } from '~/containers/ActionSheet';
-import FolderStarIcon from '~/containers/FolderIcons/FolderStarIcon';
 import * as List from '~/containers/List';
 import { asNativeListSection } from '~/containers/List/native/utils/rowMarkers';
 import { type TSubscriptionModel } from '~/definitions';
@@ -48,7 +47,7 @@ function CategorySection({ room, category, favorite, joined }: ICategorySection)
 					})
 				}
 				testID='room-actions-category'
-				left={() => <FolderStarIcon color={colors.fontDefault} />}
+				left={() => <List.Icon name='folder-star' />}
 				right={
 					currentCategoryName
 						? () => <Text style={[styles.value, { color: colors.fontSecondaryInfo }]}>{`(${currentCategoryName})`}</Text>

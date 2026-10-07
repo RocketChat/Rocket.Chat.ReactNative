@@ -2,8 +2,6 @@ import { Fragment, type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { useActionSheet } from '~/containers/ActionSheet';
-import FolderIcon from '~/containers/FolderIcons/FolderIcon';
-import FolderPlusIcon from '~/containers/FolderIcons/FolderPlusIcon';
 import * as List from '~/containers/List';
 import { type TSubscriptionModel } from '~/definitions';
 import I18n from '~/i18n';
@@ -71,7 +69,7 @@ const MoveToCategorySheet = ({ room, category, favorite }: IMoveToCategorySheet)
 							translateTitle={false}
 							onPress={() => selectCategory(option.id)}
 							testID={`move-to-category-${option.id}`}
-							left={() => (option.isFavorites ? <List.Icon name='star' /> : <FolderIcon color={colors.fontDefault} />)}
+							left={() => (option.isFavorites ? <List.Icon name='star' /> : <List.Icon name='folder' />)}
 							right={() => (
 								<List.Checkbox value={option.id === currentCategoryId} onValueChange={() => selectCategory(option.id)} />
 							)}
@@ -85,7 +83,7 @@ const MoveToCategorySheet = ({ room, category, favorite }: IMoveToCategorySheet)
 					title='New_category'
 					onPress={createCategory}
 					testID='move-to-category-new-category'
-					left={() => <FolderPlusIcon color={colors.fontDefault} />}
+					left={() => <List.Icon name='folder-plus' />}
 				/>
 				<List.Separator />
 			</View>

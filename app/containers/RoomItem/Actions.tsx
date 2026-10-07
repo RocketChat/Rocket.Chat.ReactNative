@@ -11,7 +11,6 @@ import Animated, {
 
 import { RectButton } from '~/containers/GestureButtons';
 import { CustomIcon } from '../CustomIcon';
-import FolderStarIcon from '../FolderIcons/FolderStarIcon';
 import { DisplayMode } from '~/lib/constants/constantDisplayMode';
 import styles from './styles';
 import { getActionWidth, getFullSwipeThreshold } from './utils/swipeRelease';
@@ -133,7 +132,7 @@ export const RightActions = memo(
 							style={styles.actionButton}
 							onPress={onMoveToCategoryPress}>
 							<View style={[styles.actionIconSlot, { width: actionWidth }]}>
-								<FolderStarIcon size={iconSize} color={colors.fontWhite} />
+								<CustomIcon size={iconSize} name='folder-star' color={colors.fontWhite} />
 							</View>
 						</RectButton>
 					</Animated.View>

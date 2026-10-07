@@ -18,7 +18,6 @@ import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import { useHasCustomCategoriesLicense } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import ButtonCreate from './ButtonCreate';
-import FolderPlusIcon from '~/containers/FolderIcons/FolderPlusIcon';
 import sharedStyles from '~/views/Styles';
 
 const styles = StyleSheet.create({
@@ -135,7 +134,7 @@ const HeaderNewMessage = ({ maxUsers, onChangeText, categoryId, categoryName }: 
 			visible: hasCustomCategoriesLicense && !categoryId,
 			onPress: createCategory,
 			title: 'Category',
-			icon: <FolderPlusIcon color={colors.fontDefault} />,
+			icon: renderIcon('folder-plus'),
 			testID: 'new-message-view-create-category'
 		}
 	].filter((button): button is IButtonConfig => Boolean(button.visible));
