@@ -1,8 +1,9 @@
 import { ActionTypes, ModalActions } from '~/containers/UIKit/interfaces';
-import { triggerAction } from '../actions';
+import { ACKNOWLEDGED, triggerAction } from '../actions';
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../triggerActions';
 
 jest.mock('../actions', () => ({
+	ACKNOWLEDGED: 'acknowledged',
 	triggerAction: jest.fn()
 }));
 
@@ -42,10 +43,16 @@ describe('triggerActions wrappers', () => {
 			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(true);
 		});
 
-		it('asks to close when the app only acknowledges the submit', async () => {
-			mockedTriggerAction.mockResolvedValueOnce(undefined);
+		it('asks to close when the app acknowledges the submit', async () => {
+			mockedTriggerAction.mockResolvedValueOnce(ACKNOWLEDGED);
 
 			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(true);
+		});
+
+		it('keeps the modal open when the server sends no reply', async () => {
+			mockedTriggerAction.mockResolvedValueOnce(undefined);
+
+			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(false);
 		});
 
 		it('keeps the modal open for errors', async () => {
@@ -60,10 +67,10 @@ describe('triggerActions wrappers', () => {
 			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(false);
 		});
 
-		it('keeps the modal open for modal.open', async () => {
+		it('asks to close when the app opens another modal', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(ModalActions.OPEN);
 
-			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(false);
+			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(true);
 		});
 	});
 

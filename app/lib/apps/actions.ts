@@ -9,6 +9,8 @@ import { appsApiFetch } from '~/lib/services/appsApiFetch';
 
 const TRIGGER_TIMEOUT = 5000;
 
+export const ACKNOWLEDGED = 'acknowledged';
+
 const triggersId = new Map<string, string | undefined>();
 const handledTriggers = new Map<string, TModalAction>();
 
@@ -102,7 +104,7 @@ export function triggerAction({
 	viewId,
 	container,
 	...rest
-}: ITriggerAction): Promise<TModalAction | undefined | void> {
+}: ITriggerAction): Promise<TModalAction | typeof ACKNOWLEDGED | undefined> {
 	const payload = rest.payload ?? rest.value;
 
 	return withTriggerId(appId, async triggerId => {
@@ -143,7 +145,7 @@ export function triggerAction({
 				showToast(I18n.t('App_action_unsupported'));
 				return;
 			}
-			return handledTriggers.get(triggerId);
+			return handledTriggers.get(triggerId) ?? ACKNOWLEDGED;
 		}
 		if (modalType === ModalActions.CLOSE) {
 			return ModalActions.CLOSE;

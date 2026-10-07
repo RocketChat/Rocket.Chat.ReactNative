@@ -13,7 +13,7 @@ import { triggerAction } from './actions';
 
 export async function triggerSubmitView({ viewId, ...options }: ITriggerSubmitView): Promise<boolean> {
 	const result = await triggerAction({ type: ActionTypes.SUBMIT, viewId, ...options });
-	return result !== ModalActions.UPDATE && result !== ModalActions.ERRORS && result !== ModalActions.OPEN;
+	return !!result && result !== ModalActions.UPDATE && result !== ModalActions.ERRORS;
 }
 
 export function triggerCancel({ view, ...options }: ITriggerCancel) {

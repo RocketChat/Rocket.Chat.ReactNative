@@ -1,5 +1,5 @@
 import { ActionTypes, ModalActions } from '~/containers/UIKit/interfaces';
-import { handlePayloadUserInteraction, triggerAction, withTriggerId } from '../actions';
+import { ACKNOWLEDGED, handlePayloadUserInteraction, triggerAction, withTriggerId } from '../actions';
 import EventEmitter from '~/lib/methods/helpers/events';
 import fetch from '~/lib/methods/helpers/fetch';
 import Navigation from '~/lib/navigation/appNavigation';
@@ -281,13 +281,13 @@ describe('actions', () => {
 			expect(showToast).toHaveBeenCalledTimes(1);
 		});
 
-		it('keeps the modal open when an app only acknowledges the interaction', async () => {
+		it('reports an acknowledgement when the app replies without an interaction type', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
 				text: () => Promise.resolve(JSON.stringify({ success: true }))
 			} as Response);
 
-			await expect(triggerAction(actionInput)).resolves.toBeUndefined();
+			await expect(triggerAction(actionInput)).resolves.toBe(ACKNOWLEDGED);
 		});
 
 		it('keeps the stream reply when the HTTP body repeats it', async () => {
