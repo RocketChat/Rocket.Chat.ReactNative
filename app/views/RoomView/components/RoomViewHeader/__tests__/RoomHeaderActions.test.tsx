@@ -15,7 +15,7 @@ jest.mock('~/containers/ActionSheet', () => ({ showActionSheetRef: jest.fn() }))
 
 let mockIsMasterDetail = false;
 jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: () => mockIsMasterDetail }));
-jest.mock('~/theme', () => ({ useTheme: () => ({ theme: 'light', colors: { fontDanger: '#f00' } }) }));
+jest.mock('~/theme', () => ({ useTheme: () => ({ theme: 'light', colors: { buttonBackgroundDangerDefault: '#f00' } }) }));
 jest.mock('~/lib/helpers/getRoomAccessibilityLabel', () => ({ __esModule: true, default: () => 'label' }));
 jest.mock('~/lib/methods/helpers', () => ({
 	...jest.requireActual('~/lib/methods/helpers'),
@@ -104,6 +104,7 @@ const allTestIDs = [
 	'room-view-header-call',
 	'room-view-header-encryption',
 	'room-view-push-troubleshoot',
+	'room-view-header-kebab',
 	'room-view-header-omnichannel-kebab',
 	'room-view-header-follow',
 	'room-view-header-unfollow'
@@ -125,7 +126,15 @@ const createRoomStore = (room: Record<string, unknown>, membership: RoomMembersh
 	return store as typeof store & RoomStore;
 };
 
-const ROOM_BUTTONS = ['room-view-header-call', 'room-view-header-threads', 'room-view-search'];
+const ROOM_BUTTONS = ['room-view-header-threads', 'room-view-header-kebab'];
+
+const openMoreMenu = () => {
+	fireEvent.press(screen.getByTestId('room-view-header-kebab'));
+	const { options } = (showActionSheetRef as jest.Mock).mock.lastCall[0] as { options: TActionSheetOptionsItem[] };
+	return options;
+};
+
+const moreMenuOption = (testID: string) => openMoreMenu().find(option => option.testID === testID);
 
 describe('RoomHeaderActions', () => {
 	beforeEach(() => {
@@ -188,7 +197,7 @@ describe('RoomHeaderActions', () => {
 			expectOnly(['room-view-header-follow']);
 		});
 
-		it('renders call, threads and search in order for a regular channel', () => {
+		it('renders threads and the more menu in order for a regular channel', () => {
 			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
 
 			expect(renderedTestIDs()).toEqual(ROOM_BUTTONS);
@@ -236,7 +245,13 @@ describe('RoomHeaderActions', () => {
 	});
 
 	describe('room', () => {
-		it('enables encryption while the e2ee warning disables the other buttons', () => {
+		it('lists call and search in the more menu', () => {
+			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
+
+			expect(openMoreMenu().map(option => option.testID)).toEqual(['room-view-header-call', 'room-view-search']);
+		});
+
+		it('enables encryption while the e2ee warning disables the other actions', () => {
 			mockE2EEStatus = { showMissingE2EEKey: true, showE2EEDisabledRoom: false, hasE2EEWarning: true };
 			mockHeaderHooks = { ...mockHeaderHooks, canToggleEncryption: true };
 
@@ -244,22 +259,23 @@ describe('RoomHeaderActions', () => {
 				<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c', encrypted: true })} ActionsRenderer={HeaderActions} />
 			);
 
-			expectOnly(['room-view-header-encryption', ...ROOM_BUTTONS]);
-			expect(screen.getByTestId('room-view-header-encryption')).toHaveProp('disabled', false);
-			expect(screen.getByTestId('room-view-search')).toHaveProp('disabled', true);
+			expectOnly(ROOM_BUTTONS);
+			expect(screen.getByTestId('room-view-header-threads')).toHaveProp('disabled', true);
+			expect(moreMenuOption('room-view-header-encryption')?.enabled).toBe(true);
+			expect(moreMenuOption('room-view-search')?.enabled).toBe(false);
 		});
 
 		it.each([
 			['the user cannot toggle encryption', { showMissingE2EEKey: true, showE2EEDisabledRoom: false }],
 			['the room has e2ee disabled', { showMissingE2EEKey: false, showE2EEDisabledRoom: true }]
-		])('disables the encryption button when %s', (_case, status) => {
+		])('disables the encryption option when %s', (_case, status) => {
 			mockE2EEStatus = { ...status, hasE2EEWarning: true };
 
 			render(
 				<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c', encrypted: true })} ActionsRenderer={HeaderActions} />
 			);
 
-			expect(screen.getByTestId('room-view-header-encryption')).toHaveProp('disabled', true);
+			expect(moreMenuOption('room-view-header-encryption')?.enabled).toBe(false);
 		});
 
 		it('navigates to the encryption toggle', () => {
@@ -267,23 +283,24 @@ describe('RoomHeaderActions', () => {
 			mockHeaderHooks = { ...mockHeaderHooks, canToggleEncryption: true };
 			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
 
-			fireEvent.press(screen.getByTestId('room-view-header-encryption'));
+			moreMenuOption('room-view-header-encryption')?.onPress();
 
 			expect(logEvent).toHaveBeenCalledTimes(1);
 			expect(logEvent).toHaveBeenCalledWith(events.ROOM_GO_E2EE);
 			expect(mockNavigation.navigate).toHaveBeenCalledWith('E2EEToggleRoomView', { rid: 'rid-1' });
 		});
 
-		it('tints the push troubleshoot button when there are notification issues', () => {
+		it('badges the more menu red and lists push troubleshooting as danger when there are notification issues', () => {
 			mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
 
 			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
 
-			expect(renderedTestIDs()).toEqual(['room-view-push-troubleshoot', ...ROOM_BUTTONS]);
-			expect(screen.getByTestId('room-view-push-troubleshoot')).toHaveProp('color', '#f00');
+			expect(renderedTestIDs()).toEqual(ROOM_BUTTONS);
+			expect(screen.getByTestId('room-view-header-kebab').props.badge().props.color).toBe('#f00');
+			expect(moreMenuOption('room-view-push-troubleshoot')?.danger).toBe(true);
 		});
 
-		it('shows an untinted push troubleshoot button when notifications are disabled for the room', () => {
+		it('badges the more menu red when notifications are disabled for the room', () => {
 			render(
 				<RoomHeaderActions
 					rid='rid-1'
@@ -292,7 +309,14 @@ describe('RoomHeaderActions', () => {
 				/>
 			);
 
-			expect(screen.getByTestId('room-view-push-troubleshoot')).toHaveProp('color', undefined);
+			expect(screen.getByTestId('room-view-header-kebab').props.badge().props.color).toBe('#f00');
+			expect(moreMenuOption('room-view-push-troubleshoot')?.danger).toBe(false);
+		});
+
+		it('leaves the more menu without a badge when there is nothing to troubleshoot', () => {
+			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
+
+			expect(screen.getByTestId('room-view-header-kebab')).toHaveProp('badge', undefined);
 		});
 
 		it.each([false, true])('routes notification issues to push troubleshooting (master-detail: %s)', isMasterDetail => {
@@ -300,7 +324,7 @@ describe('RoomHeaderActions', () => {
 			mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
 			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
 
-			fireEvent.press(screen.getByTestId('room-view-push-troubleshoot'));
+			moreMenuOption('room-view-push-troubleshoot')?.onPress();
 
 			expect(mockNavigation.navigate).toHaveBeenCalledWith(
 				...(isMasterDetail
@@ -314,25 +338,28 @@ describe('RoomHeaderActions', () => {
 
 			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
 
-			expectOnly(['room-view-header-call', 'room-view-search']);
+			expectOnly(['room-view-header-kebab']);
 		});
 
-		it('hides the call button on a self DM', () => {
+		it('leaves call out of the more menu on a self DM', () => {
 			mockHeaderHooks = { ...mockHeaderHooks, isSelfDm: true };
 
 			render(
 				<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'd', name: 'user' })} ActionsRenderer={HeaderActions} />
 			);
 
-			expectOnly(['room-view-header-threads', 'room-view-search']);
+			expect(openMoreMenu().map(option => option.testID)).toEqual(['room-view-search']);
 		});
 
-		it('starts a video conference from the call button', () => {
+		it('starts a video conference from the call option', () => {
+			jest.useFakeTimers();
 			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
 
-			fireEvent.press(screen.getByTestId('room-view-header-call'));
+			moreMenuOption('room-view-header-call')?.onPress();
+			act(() => jest.advanceTimersByTime(300));
 
 			expect(mockVideoConf.showInitCallActionSheet).toHaveBeenCalled();
+			jest.useRealTimers();
 		});
 
 		it('navigates to the threads screen', () => {

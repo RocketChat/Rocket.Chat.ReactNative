@@ -7,7 +7,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useCanReturnQueue } from '~/ee/omnichannel/hooks/useCanReturnQueue';
 import { useSetting } from '~/lib/hooks/useSetting';
-import { hasNativeHeaderBar, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { type IHeaderAction, type IHeaderMenuItem } from '~/lib/methods/helpers/navigation/headerActions';
 import { toggleFollowThread } from '~/lib/methods/toggleFollowThread';
@@ -21,14 +21,12 @@ import { closeLivechat } from '../services/closeLivechat';
 import { placeLivechatOnHold } from '../services/placeLivechatOnHold';
 import { navigateToScreen, type TRoomStackNavigation } from '../services/navigateToScreen';
 import { getRoomHeaderMode, type TRoomHeaderMode } from '../helpers/getRoomHeaderMode';
-import { splitRoomHeaderActions, type TRoomHeaderActionKey } from '../helpers/roomHeaderActions';
 import { useCanPlaceLivechatOnHold } from './useCanPlaceLivechatOnHold';
 import { useThreadFollowing } from './useThreadFollowing';
 import { useRoomRightButtonsData } from './useRoomRightButtonsData';
 import { useHeaderCallPress } from './useHeaderCallPress';
 
 export const EMPTY_ACTIONS: IHeaderAction[] = [];
-const VISIBLE_ORDER: TRoomHeaderActionKey[] = ['encryption', 'notifications', 'call', 'threads'];
 
 export const useOmnichannelActions = (rid: string, roomStore: RoomStore): IHeaderAction[] => {
 	const navigation = useNavigation<TRoomStackNavigation>();
@@ -130,79 +128,76 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 	} = useRoomRightButtonsData(rid, roomStore);
 	const { callPresent, isCallDisabled, onPressCall } = useHeaderCallPress(rid);
 
-	const present: Partial<Record<TRoomHeaderActionKey, boolean>> = {
-		threads: threadsEnabled,
-		call: !isSelfDm && callPresent,
-		encryption: hasE2EEWarning,
-		notifications: issuesWithNotifications || disableNotifications
-	};
-
-	const actions: Record<TRoomHeaderActionKey, IHeaderAction> = {
-		threads: {
-			label: threadsAccessibilityLabel,
-			icon: 'threads',
-			testID: 'room-view-header-threads',
-			disabled: hasE2EEWarning,
-			badge: tunread.length
-				? {
-						value: tunread.length,
-						color: getUnreadStyle({ tunread, tunreadUser, tunreadGroup, theme }).backgroundColor as string
-					}
-				: undefined,
-			onPress: goThreadsView
-		},
-		call: {
-			label: callAccessibilityLabel,
-			icon: 'phone',
-			testID: 'room-view-header-call',
-			disabled: hasE2EEWarning || isCallDisabled,
-			onPress: onPressCall
-		},
-		encryption: {
-			label: i18n.t('Encrypted'),
-			icon: 'encrypted',
-			testID: 'room-view-header-encryption',
-			disabled: !canToggleEncryption,
-			onPress: goE2EEToggleRoomView
-		},
-		notifications: {
-			label: i18n.t('Troubleshooting'),
-			icon: 'notification-disabled',
-			testID: 'room-view-push-troubleshoot',
-			tintColor: issuesWithNotifications ? colors.fontDanger : undefined,
-			disabled: hasE2EEWarning,
-			onPress: navigateToNotificationOrPushTroubleshoot
-		}
-	};
-
-	const searchAction: IHeaderAction = {
-		label: i18n.t('Search_Messages'),
-		icon: 'search',
-		testID: 'room-view-search',
+	const threadsAction: IHeaderAction = {
+		label: threadsAccessibilityLabel,
+		icon: 'threads',
+		testID: 'room-view-header-threads',
 		disabled: hasE2EEWarning,
-		onPress: goSearchView
+		badge: tunread.length
+			? {
+					value: tunread.length,
+					color: getUnreadStyle({ tunread, tunreadUser, tunreadGroup, theme }).backgroundColor as string
+				}
+			: undefined,
+		onPress: goThreadsView
 	};
 
-	if (!hasNativeHeaderBar) {
-		return [...VISIBLE_ORDER.filter(key => present[key]).map(key => actions[key]), searchAction];
-	}
+	const showCall = !isSelfDm && callPresent;
+	const showNotifications = issuesWithNotifications || disableNotifications;
 
-	const { visibleKeys, overflowKeys } = splitRoomHeaderActions(present);
-	const toMenuItem = ({ label, icon, disabled, onPress }: IHeaderAction): IHeaderMenuItem => ({
-		label,
-		icon,
-		disabled,
-		onPress: onPress ?? (() => {})
-	});
-
-	return [
-		...VISIBLE_ORDER.filter(key => visibleKeys.includes(key)).map(key => actions[key]),
+	const menu: IHeaderMenuItem[] = [
+		...(showCall
+			? [
+					{
+						label: callAccessibilityLabel,
+						icon: 'phone' as const,
+						testID: 'room-view-header-call',
+						disabled: hasE2EEWarning || isCallDisabled,
+						onPress: onPressCall
+					}
+				]
+			: []),
+		...(hasE2EEWarning
+			? [
+					{
+						label: i18n.t('Encrypted'),
+						icon: 'encrypted' as const,
+						testID: 'room-view-header-encryption',
+						disabled: !canToggleEncryption,
+						onPress: goE2EEToggleRoomView
+					}
+				]
+			: []),
+		...(showNotifications
+			? [
+					{
+						label: i18n.t('Troubleshooting'),
+						icon: 'notification-disabled' as const,
+						testID: 'room-view-push-troubleshoot',
+						destructive: issuesWithNotifications,
+						disabled: hasE2EEWarning,
+						onPress: navigateToNotificationOrPushTroubleshoot
+					}
+				]
+			: []),
 		{
-			label: i18n.t('More'),
-			icon: 'kebab',
-			menu: [...overflowKeys.map(key => toMenuItem(actions[key])), toMenuItem(searchAction)]
+			label: i18n.t('Search_Messages'),
+			icon: 'search',
+			testID: 'room-view-search',
+			disabled: hasE2EEWarning,
+			onPress: goSearchView
 		}
 	];
+
+	const moreAction: IHeaderAction = {
+		label: i18n.t('More'),
+		icon: 'kebab',
+		testID: 'room-view-header-kebab',
+		badge: showNotifications ? { color: colors.buttonBackgroundDangerDefault } : undefined,
+		menu
+	};
+
+	return threadsEnabled ? [threadsAction, moreAction] : [moreAction];
 };
 
 export const useRoomHeaderMode = (rid: string | undefined, tmid: string | undefined, roomStore: RoomStore): TRoomHeaderMode => {
