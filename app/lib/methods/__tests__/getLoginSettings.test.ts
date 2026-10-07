@@ -3,14 +3,14 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { getLoginSettings } from '../getSettings';
 import { headers } from '../helpers/fetch';
 import UserPreferences from '../userPreferences';
-import { getBasicAuthKey } from '../../constants/keys';
+import { getBasicAuthKey } from '~/lib/constants/keys';
 
 jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn() }, servers: { get: jest.fn(), write: jest.fn() } }
 }));
 
-jest.mock('../../services/sdk', () => ({
+jest.mock('~/lib/services/sdk', () => ({
 	__esModule: true,
 	default: {}
 }));
@@ -19,7 +19,7 @@ jest.mock('../getUsersPresence', () => ({
 	setPresenceCap: jest.fn()
 }));
 
-jest.mock('../../store/auxStore', () => ({
+jest.mock('~/lib/store/auxStore', () => ({
 	store: { dispatch: jest.fn(), getState: jest.fn() }
 }));
 

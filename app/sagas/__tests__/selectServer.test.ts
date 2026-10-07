@@ -351,7 +351,7 @@ describe('selectServer saga — requesting a new workspace', () => {
 
 	it('re-applies the connected workspace basic auth when it is selected while the probe is pending', async () => {
 		UserPreferences.setString(getBasicAuthKey(OLD_SERVER), 'old-workspace-credentials');
-		setBasicAuth('old-workspace-credentials');
+		setBasicAuth('stale-credentials');
 		(sdk as { host?: string }).host = OLD_SERVER;
 		let resolveProbe!: (value: unknown) => void;
 		jest

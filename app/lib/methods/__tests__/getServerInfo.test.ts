@@ -3,15 +3,15 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { getServerInfo } from '../getServerInfo';
 import fetch from '../helpers/fetch';
 import UserPreferences from '../userPreferences';
-import { store } from '../../store/auxStore';
-import { getSupportedVersionsCloud } from '../../services/restApi';
-import { getBasicAuthKey, getServerUserIdKey, getUserTokenKey } from '../../constants/keys';
+import { store } from '~/lib/store/auxStore';
+import { getSupportedVersionsCloud } from '~/lib/services/restApi';
+import { getBasicAuthKey, getServerUserIdKey, getUserTokenKey } from '~/lib/constants/keys';
 
 jest.mock('../helpers/fetch', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('../userPreferences', () => ({ __esModule: true, default: { getString: jest.fn() } }));
-jest.mock('../../store/auxStore', () => ({ store: { getState: jest.fn(), dispatch: jest.fn() } }));
-jest.mock('../../database/services/Server', () => ({ getServerById: jest.fn() }));
-jest.mock('../../services/restApi', () => ({ getSupportedVersionsCloud: jest.fn() }));
+jest.mock('~/lib/store/auxStore', () => ({ store: { getState: jest.fn(), dispatch: jest.fn() } }));
+jest.mock('~/lib/database/services/Server', () => ({ getServerById: jest.fn() }));
+jest.mock('~/lib/services/restApi', () => ({ getSupportedVersionsCloud: jest.fn() }));
 
 const mockedFetch = jest.mocked(fetch);
 const getString = jest.mocked(UserPreferences.getString);

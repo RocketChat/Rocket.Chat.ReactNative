@@ -39,7 +39,7 @@ jest.mock('~/lib/database', () => ({
 	default: { setActiveDB: jest.fn(), servers: { get: jest.fn(), write: jest.fn() }, active: { get: jest.fn() } }
 }));
 
-jest.mock('../../store/auxStore', () => ({
+jest.mock('~/lib/store/auxStore', () => ({
 	store: { dispatch: jest.fn(), getState: jest.fn() }
 }));
 

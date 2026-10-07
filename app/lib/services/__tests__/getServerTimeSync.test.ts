@@ -1,8 +1,8 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { getServerTimeSync } from '../getServerTimeSync';
-import UserPreferences from '../../methods/userPreferences';
-import { getBasicAuthKey } from '../../constants/keys';
+import UserPreferences from '~/lib/methods/userPreferences';
+import { getBasicAuthKey } from '~/lib/constants/keys';
 
 describe('getServerTimeSync', () => {
 	const originalGlobalFetch = global.fetch;
