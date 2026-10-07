@@ -74,7 +74,7 @@ const ListPicker = ({
 			title={title}
 			options={OPTIONS.map(i => ({ label: i.label, value: i.value }))}
 			selection={option.value}
-			onSelectionChange={selected => onChangeValue(selected as TAlertDisplayType)}>
+			onSelectionChange={onChangeValue}>
 			<List.Item
 				accessibilityLabel={`${title}. ${option?.label}`}
 				onPress={() => showActionSheet({ options: getOptions() })}

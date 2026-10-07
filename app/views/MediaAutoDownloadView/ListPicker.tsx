@@ -89,7 +89,7 @@ const ListPicker = ({
 			testID={testID}
 			options={OPTIONS.map(i => ({ label: I18n.t(i.label), value: i.value, testID: `${testID}-${i.value}` }))}
 			selection={option.value}
-			onSelectionChange={selected => onChangeValue(selected as MediaDownloadOption)}>
+			onSelectionChange={onChangeValue}>
 			<List.Item
 				testID={testID}
 				onPress={() => showActionSheet({ children: getOptions() })}
