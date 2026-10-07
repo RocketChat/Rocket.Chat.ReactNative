@@ -1,7 +1,9 @@
-import { type ReactElement } from 'react';
+import { type ReactElement, useContext, useLayoutEffect } from 'react';
 import { ScrollView } from 'react-native';
+import { NavigationContext } from '@react-navigation/native';
 
 import { useTheme } from '~/theme';
+import { translucentHeader } from '~/lib/methods/helpers/navigation';
 import ListSection from './ListSection';
 import { isNativeListSection } from '../native/utils/rowMarkers';
 import { flattenListChildren, isListSeparator } from '../utils/listChildren';
@@ -42,8 +44,17 @@ const groupIntoSections = (elements: ReactElement[]) => {
 	return sections;
 };
 
+const useTranslucentHeader = () => {
+	const navigation = useContext(NavigationContext);
+
+	useLayoutEffect(() => {
+		navigation?.setOptions(translucentHeader);
+	}, [navigation]);
+};
+
 const ListContainer = ({ children, testID, selection, backgroundHidden }: IListContainer) => {
 	const { colors } = useTheme();
+	useTranslucentHeader();
 	const selectedTag = selection?.selectedTag ?? null;
 	const sections = groupIntoSections(flattenListChildren(children).filter(element => !isListSeparator(element)));
 
