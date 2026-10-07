@@ -4,6 +4,7 @@ import { getLoginSettings } from '../getSettings';
 import { headers } from '~/lib/methods/helpers/fetch';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getBasicAuthKey } from '~/lib/constants/keys';
+import log from '~/lib/methods/helpers/log';
 
 jest.mock('~/lib/database', () => ({
 	__esModule: true,
@@ -71,5 +72,16 @@ describe('getLoginSettings — per-request basic auth', () => {
 		await getLoginSettings({ server: PROBED_SERVER, serverVersion: '6.9.0' });
 
 		expect(sentToNetwork.mock.calls[0][0]).toContain('query={"_id":{"$in"');
+	});
+
+	it('passes the abort signal to the request and stays silent once it is aborted', async () => {
+		const controller = new AbortController();
+		sentToNetwork.mockImplementationOnce(() => Promise.reject(new Error('aborted')));
+		controller.abort();
+
+		await getLoginSettings({ server: PROBED_SERVER, serverVersion: '7.0.0', signal: controller.signal });
+
+		expect(sentToNetwork.mock.calls[0][1]).toMatchObject({ signal: controller.signal });
+		expect(log).not.toHaveBeenCalled();
 	});
 });

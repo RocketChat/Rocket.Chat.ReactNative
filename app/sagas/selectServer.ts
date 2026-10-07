@@ -96,7 +96,15 @@ const upsertServer = async function ({ server, serverInfo }: { server: string; s
 	throw new Error('Error creating server record');
 };
 
-const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = true }: { server: string; raiseError?: boolean }) {
+const getServerInfoSaga = function* getServerInfoSaga({
+	server,
+	raiseError = true,
+	signal
+}: {
+	server: string;
+	raiseError?: boolean;
+	signal?: AbortSignal;
+}) {
 	try {
 		const serverInfoResult = yield* call(getServerInfo, server);
 		if (raiseError) {
@@ -104,7 +112,7 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 				yield put(serverFailure(I18n.t('Invalid_URL')));
 				return;
 			}
-			const websocketInfo = yield* call(getWebsocketInfo, { server });
+			const websocketInfo = yield* call(getWebsocketInfo, { server, signal });
 			if (!websocketInfo.success) {
 				yield put(serverFailure(I18n.t('Invalid_URL')));
 				return;
@@ -224,27 +232,28 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	}
 };
 
-// React Native's Android HTTP client has no default request timeout, so a host that accepts the connection and never answers would hang the probe forever
-const SERVER_PROBE_TIMEOUT = 30000;
+// Android's HTTP client has no request timeout
+const UNANSWERED_HOST_PROBE_TIMEOUT_MS = 30000;
 
-const probeServer = function* probeServer(server: string) {
-	const serverInfo = yield* getServerInfoSaga({ server });
+const probeServer = function* probeServer(server: string, signal: AbortSignal) {
+	const serverInfo = yield* getServerInfoSaga({ server, signal });
 	if (serverInfo) {
-		yield getLoginServices(server);
-		yield getLoginSettings({ server, serverVersion: serverInfo.version });
+		yield getLoginServices(server, signal);
+		yield getLoginSettings({ server, serverVersion: serverInfo.version, signal });
 	}
 	return serverInfo;
 };
 
 const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }: IServerRequestAction) {
+	const probeController = new AbortController();
 	try {
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		if (certificate) {
 			SSLPinning?.setCertificate(certificate, server);
 		}
 		const { serverInfo, timedOut } = yield race({
-			serverInfo: call(probeServer, server),
-			timedOut: delay(SERVER_PROBE_TIMEOUT)
+			serverInfo: call(probeServer, server, probeController.signal),
+			timedOut: delay(UNANSWERED_HOST_PROBE_TIMEOUT_MS)
 		});
 		if (timedOut) {
 			yield put(serverFailure(I18n.t('Connection_timed_out')));
@@ -279,6 +288,8 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 	} catch (e) {
 		yield put(serverFailure());
 		log(e);
+	} finally {
+		probeController.abort();
 	}
 };
 

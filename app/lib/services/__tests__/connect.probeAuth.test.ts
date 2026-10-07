@@ -151,4 +151,15 @@ describe('getWebsocketInfo — handshake-only global auth', () => {
 		expect(result).toEqual({ success: true });
 		expect(RocketChatSettings.customHeaders).toMatchObject({ Authorization: 'Basic active-workspace' });
 	});
+
+	it('closes the socket when the probe is aborted before the handshake settles', async () => {
+		WebSocketMock.mockImplementationOnce(openSocket());
+		const controller = new AbortController();
+
+		const pending = getWebsocketInfo({ server: PROBED_SERVER, signal: controller.signal });
+		controller.abort();
+
+		await expect(pending).resolves.toEqual({ success: true });
+		expect(connections[0].close).toHaveBeenCalled();
+	});
 });

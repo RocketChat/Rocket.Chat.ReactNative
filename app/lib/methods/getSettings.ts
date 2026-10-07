@@ -111,20 +111,33 @@ const serverInfoUpdate = async (serverInfo: IPreparedSettings[], iconSetting: IS
 	});
 };
 
-export async function getLoginSettings({ server, serverVersion }: { server: string; serverVersion: string }): Promise<void> {
+export async function getLoginSettings({
+	server,
+	serverVersion,
+	signal
+}: {
+	server: string;
+	serverVersion: string;
+	signal?: AbortSignal;
+}): Promise<void> {
 	const settingsParams = JSON.stringify(loginSettings);
 
 	const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
 		? `${server}/api/v1/settings.public?_id=${loginSettings.join(',')}`
 		: `${server}/api/v1/settings.public?query={"_id":{"$in":${settingsParams}}}`;
 	try {
-		const result = await fetch(url, { headers: { Authorization: getBasicAuthHeader(server) } }).then(response => response.json());
+		const result = await fetch(url, { headers: { Authorization: getBasicAuthHeader(server) }, signal }).then(response =>
+			response.json()
+		);
 
 		if (result.success && result.settings.length) {
 			reduxStore.dispatch(clearSettings());
 			reduxStore.dispatch(addSettings(parseSettings(_prepareSettings(result.settings))));
 		}
 	} catch (e) {
+		if (signal?.aborted) {
+			return;
+		}
 		log(e);
 	}
 }

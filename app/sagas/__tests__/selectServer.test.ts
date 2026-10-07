@@ -375,6 +375,28 @@ describe('selectServer saga — requesting a new workspace', () => {
 		}
 	});
 
+	it('aborts the in-flight login settings request when the probe times out', async () => {
+		jest.useFakeTimers();
+		try {
+			let probeSignal: AbortSignal | undefined;
+			jest.mocked(getLoginSettings).mockImplementationOnce(({ signal }) => {
+				probeSignal = signal;
+				return new Promise(() => {});
+			});
+
+			const { store } = setupStore();
+			store.dispatch(serverRequest(REQUESTED_HOST));
+			await flushSagaMicrotasks();
+			expect(probeSignal?.aborted).toBe(false);
+
+			await jest.advanceTimersByTimeAsync(30000);
+
+			expect(probeSignal?.aborted).toBe(true);
+		} finally {
+			jest.useRealTimers();
+		}
+	});
+
 	it('leaves the active workspace basic auth in place when the requested host cannot be reached', async () => {
 		storeActiveBasicAuth(OLD_SERVER, 'old-workspace-credentials');
 		(sdk as { host?: string }).host = OLD_SERVER;

@@ -435,11 +435,14 @@ function connectWithBasicAuth(client: RocketchatClient, server: string) {
 }
 
 async function getWebsocketInfo({
-	server
+	server,
+	signal
 }: {
 	server: string;
+	signal?: AbortSignal;
 }): Promise<{ success: true } | { success: false; message: string }> {
 	const websocketSdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
+	signal?.addEventListener('abort', () => websocketSdk.disconnect(), { once: true });
 
 	try {
 		await connectWithBasicAuth(websocketSdk, server);
@@ -459,11 +462,12 @@ async function getWebsocketInfo({
 	};
 }
 
-async function getLoginServices(server: string) {
+async function getLoginServices(server: string, signal?: AbortSignal) {
 	try {
 		let loginServices = [];
 		const loginServicesResult = await fetch(`${server}/api/v1/settings.oauth`, {
-			headers: { Authorization: getBasicAuthHeader(server) }
+			headers: { Authorization: getBasicAuthHeader(server) },
+			signal
 		}).then(response => response.json());
 
 		if (loginServicesResult.success && loginServicesResult.services) {
@@ -485,6 +489,9 @@ async function getLoginServices(server: string) {
 			store.dispatch(setLoginServices({}));
 		}
 	} catch (error) {
+		if (signal?.aborted) {
+			return;
+		}
 		console.log(error);
 		store.dispatch(setLoginServices({}));
 	}
