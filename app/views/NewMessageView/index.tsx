@@ -113,12 +113,12 @@ const NewMessageView = () => {
 		[isMasterDetail, navigation]
 	);
 
-	const data = search.length > 0 ? search : chats;
+	const listedChats = search.length > 0 ? search : chats;
 
 	return (
 		<SafeAreaView testID='new-message-view'>
 			<FlatList
-				data={data}
+				data={listedChats}
 				keyExtractor={item => item._id || item.rid}
 				ListHeaderComponent={<HeaderNewMessage maxUsers={maxUsers} onChangeText={handleSearch} />}
 				renderItem={({ item, index }) => {
@@ -134,7 +134,7 @@ const NewMessageView = () => {
 							onPress={() => goRoom(itemModel)}
 							testID={`new-message-view-item-${item.name}`}
 							isFirst={index === 0}
-							isLast={index === data.length - 1}
+							isLast={index === listedChats.length - 1}
 						/>
 					);
 				}}

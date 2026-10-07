@@ -62,7 +62,7 @@ const toNativeMenuAction = ({
 export const nativeHeaderItems = (actions: IHeaderAction[], headerTintColor?: string): NativeStackHeaderItem[] =>
 	actions.map(
 		({ label, icon, disabled, tintColor = headerTintColor, badge, variant, placement, onPress, menu }): NativeStackHeaderItem => {
-			const item = {
+			const sharedProps = {
 				label,
 				accessibilityLabel: label,
 				icon: icon && headerIcon(icon),
@@ -72,9 +72,9 @@ export const nativeHeaderItems = (actions: IHeaderAction[], headerTintColor?: st
 				badge: badge && { value: badge.value ?? '', style: { backgroundColor: badge.color } }
 			};
 			if (menu) {
-				return { ...item, type: 'menu', menu: { items: menu.map(toNativeMenuAction) } };
+				return { ...sharedProps, type: 'menu', menu: { items: menu.map(toNativeMenuAction) } };
 			}
-			return { ...item, type: 'button', placement, onPress: onPress ?? (() => {}) };
+			return { ...sharedProps, type: 'button', placement, onPress: onPress ?? (() => {}) };
 		}
 	);
 
