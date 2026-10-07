@@ -165,7 +165,7 @@ const DisplayPrefsView = (): ReactElement => {
 				<List.Section title='Group_by'>
 					<List.Separator />
 					<List.Item
-						title='Unread_on_top'
+						title='Unread'
 						testID='display-pref-view-unread'
 						left={() => <List.Icon name='flag' />}
 						onPress={toggleUnread}
