@@ -39,15 +39,14 @@ const NativeListSection = ({ children, title, translateTitle }: INativeListSecti
 	const isSelected = (row?: ReactElement) => Boolean(selectedTag) && rowTestID(row) === selectedTag;
 
 	return (
-		<View
-			style={[
-				!title && (context?.sectionIndex === 0 ? styles.firstSection : styles.section),
-				!infos.length && styles.sectionWithoutFooter
-			]}>
+		<>
+			{title ? null : <View style={context?.sectionIndex === 0 ? styles.firstSectionSpacer : styles.sectionSpacer} />}
 			{title ? (
-				<Text accessibilityRole='header' style={[styles.header, { color: secondaryLabel }]}>
-					{translateListText(title, translateTitle)}
-				</Text>
+				<View>
+					<Text accessibilityRole='header' style={[styles.header, { color: secondaryLabel }]}>
+						{translateListText(title, translateTitle)}
+					</Text>
+				</View>
 			) : null}
 			{rows.length ? (
 				<View style={[styles.card, { backgroundColor: colors.surfaceLight }]}>
@@ -64,11 +63,14 @@ const NativeListSection = ({ children, title, translateTitle }: INativeListSecti
 				</View>
 			) : null}
 			{infos.map(info => (
-				<Text key={info.key} lineBreakStrategyIOS='standard' style={[styles.footer, { color: secondaryLabel }]}>
-					{translateListText(info.props.info, info.props.translateInfo)}
-				</Text>
+				<View key={info.key}>
+					<Text lineBreakStrategyIOS='standard' style={[styles.footer, { color: secondaryLabel }]}>
+						{translateListText(info.props.info, info.props.translateInfo)}
+					</Text>
+				</View>
 			))}
-		</View>
+			{infos.length ? null : <View style={styles.belowCardSpacer} />}
+		</>
 	);
 };
 

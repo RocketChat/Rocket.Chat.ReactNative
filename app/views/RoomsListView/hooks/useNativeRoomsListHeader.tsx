@@ -5,6 +5,7 @@ import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { isTablet } from '~/lib/methods/helpers';
 import { headerLeftActions, headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
+import { translucentHeader } from '~/lib/methods/helpers/navigation';
 import ServersList from '../components/ServersList';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
 import { useNewMessage } from './useNewMessage';
@@ -48,8 +49,7 @@ export const useNativeRoomsListHeader = () => {
 		const cancelSearchAction: IHeaderAction = { label: i18n.t('Cancel'), onPress: stopSearch };
 
 		navigation.setOptions({
-			headerTransparent: true,
-			headerStyle: { backgroundColor: colors.surfaceNeutral },
+			...translucentHeader,
 			headerTitle: serverName,
 			headerSubtitle: subtitle,
 			headerTitleTestID: 'rooms-list-header-servers-list-button',

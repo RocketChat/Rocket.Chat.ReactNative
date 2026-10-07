@@ -107,7 +107,7 @@ exports[`Story Snapshots: BlackThemeLoading should match snapshot 1`] = `
   >
     <View>
       <ActivityIndicator
-        color="#9EA2A8"
+        color="#949393"
         style={
           {
             "backgroundColor": "transparent",
@@ -201,7 +201,7 @@ exports[`Story Snapshots: BlackThemeText should match snapshot 1`] = `
               "top": 60,
             },
             {
-              "color": "#9EA2A8",
+              "color": "#949393",
             },
           ]
         }

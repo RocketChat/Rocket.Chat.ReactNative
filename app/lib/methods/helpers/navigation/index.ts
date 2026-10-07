@@ -62,6 +62,14 @@ export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOpti
 		: { headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 } })
 });
 
+export const translucentHeader: NativeStackNavigationOptions = hasNativeHeaderBar
+	? {
+			headerTransparent: true,
+			headerStyle: { backgroundColor: 'transparent' },
+			scrollEdgeEffects: { top: 'soft' }
+		}
+	: {};
+
 export const navigationTheme = (theme: TSupportedThemes) => {
 	const defaultNavTheme = theme === 'light' ? DefaultTheme : DarkTheme;
 

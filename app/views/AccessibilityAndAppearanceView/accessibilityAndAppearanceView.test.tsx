@@ -4,6 +4,7 @@ import AccessibilityAndAppearanceView from './index';
 import { useUserPreferences } from '~/lib/methods/userPreferences';
 
 jest.mock('@react-navigation/native', () => ({
+	...jest.requireActual('@react-navigation/native'),
 	useNavigation: () => ({ setOptions: jest.fn(), navigate: jest.fn() })
 }));
 

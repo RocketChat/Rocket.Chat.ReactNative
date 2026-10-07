@@ -2910,14 +2910,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 "marginVertical": undefined,
               },
               {
-                "backgroundColor": "#000000",
+                "backgroundColor": "#0A0A0A",
                 "borderRadius": undefined,
               },
             ],
             undefined,
           ]
         }
-        underlayColor="#2D3039"
+        underlayColor="#161717"
       >
         <View
           style={{}}
@@ -3023,7 +3023,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#F2F3F5",
+                        "color": "#FAFAFA",
                       },
                     ]
                   }
@@ -3045,7 +3045,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#9EA2A8",
+                        "color": "#949393",
                       },
                     ]
                   }
@@ -3077,7 +3077,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#C1C7D0",
+                        "color": "#E4E4E4",
                         "lineHeight": undefined,
                       },
                       {
@@ -3123,7 +3123,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       style={
                         [
                           {
-                            "color": "#9EA2A8",
+                            "color": "#949393",
                             "fontSize": 24,
                           },
                           [
@@ -3159,7 +3159,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                             "textAlign": "left",
                           },
                           {
-                            "color": "#9EA2A8",
+                            "color": "#949393",
                           },
                         ]
                       }
@@ -3180,7 +3180,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       style={
                         [
                           {
-                            "color": "#9EA2A8",
+                            "color": "#949393",
                             "fontSize": 24,
                           },
                           [
@@ -3216,7 +3216,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                             "textAlign": "left",
                           },
                           {
-                            "color": "#9EA2A8",
+                            "color": "#949393",
                           },
                         ]
                       }

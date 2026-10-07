@@ -4391,7 +4391,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           collapsable={false}
           style={
             {
-              "backgroundColor": "#2D3039",
+              "backgroundColor": "#161717",
               "borderBottomColor": "rgb(216, 216, 216)",
               "flex": 1,
               "shadowColor": "rgba(0, 0, 0, 1)",
@@ -4558,7 +4558,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       style={
                         [
                           {
-                            "color": "#C1C7D0",
+                            "color": "#E4E4E4",
                             "fontSize": 24,
                           },
                           [
@@ -4665,7 +4665,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "color": "#C1C7D0",
+                        "color": "#E4E4E4",
                         "fontSize": 24,
                       },
                       [
@@ -4813,7 +4813,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#C1C7D0",
+                        "color": "#E4E4E4",
                       },
                     ]
                   }
@@ -4882,7 +4882,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "color": "#C1C7D0",
+                        "color": "#E4E4E4",
                         "fontSize": 24,
                       },
                       [
@@ -4910,7 +4910,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "justifyContent": "center",
                       },
                       {
-                        "backgroundColor": "#245399",
+                        "backgroundColor": "#10529E",
                         "borderRadius": 10,
                         "minWidth": 16,
                       },
