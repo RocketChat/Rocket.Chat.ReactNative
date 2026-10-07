@@ -52,18 +52,26 @@ wait_for_android_boot() {
   done
 }
 
+ANDROID_FOCUS_TIMEOUT="${ANDROID_FOCUS_TIMEOUT:-30}"
+
 android_window_focus_healthy() {
   android_shell cmd activity wait-for-broadcast-idle >/dev/null 2>&1 || true
-  sleep 5
   android_shell am start -W -a android.settings.SETTINGS >/dev/null 2>&1 || return 1
-  sleep 2
-  local windows
-  windows="$(android_shell dumpsys window 2>/dev/null)"
+  local windows focus
+  local deadline=$((SECONDS + ANDROID_FOCUS_TIMEOUT))
+  while [ "$SECONDS" -lt "$deadline" ]; do
+    windows="$(android_shell dumpsys window 2>/dev/null)"
+    focus="$(grep -m1 "mCurrentFocus=" <<<"$windows" | tr -d '\r')"
+    if grep -q "com.android.settings" <<<"$focus" && ! grep -q "Application Not Responding" <<<"$windows"; then
+      android_shell input keyevent KEYCODE_HOME >/dev/null 2>&1 || true
+      return 0
+    fi
+    sleep 2
+  done
+  echo "Window focus after ${ANDROID_FOCUS_TIMEOUT}s:${focus:- none}"
+  grep -m3 "Application Not Responding" <<<"$windows" || true
   android_shell input keyevent KEYCODE_HOME >/dev/null 2>&1 || true
-  if grep -q "Application Not Responding" <<<"$windows"; then
-    return 1
-  fi
-  grep -m1 "mCurrentFocus=" <<<"$windows" | grep -q "com.android.settings"
+  return 1
 }
 
 ensure_android_window_focus() {
