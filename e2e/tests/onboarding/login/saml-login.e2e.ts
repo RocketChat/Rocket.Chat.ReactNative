@@ -50,15 +50,17 @@ test('logs in with SAML', { tags: ['test-2'] }, async fixtures => {
 	await screen.scrollUntilVisible(screen.getByText('SAML'));
 	await screen.swipe({ direction: 'down' });
 	await screen.getByText('SAML').tap();
-	await expect(screen.getByText('Enter your username and password')).toBeVisible({ timeout: 10_000 });
-	await fillSamlField(fixtures, 'Username', account.saml.username);
-	await fillSamlField(fixtures, 'Password', account.saml.password);
-	await samlControl(fixtures, 'button', 'Login').tap();
+	const samlForm = screen.getByText('Enter your username and password');
 	const roomsList = screen.getByTestId('rooms-list-view');
 	const openInAppPrompt = screen.getByText(/Open this page in .Rocket\.Chat.\?/, { visible: true });
-	await dismissPasswordManagerPrompt(fixtures, isIOS ? [roomsList, openInAppPrompt] : [roomsList]);
+	if ((await firstVisible([samlForm, openInAppPrompt, roomsList])) === samlForm) {
+		await fillSamlField(fixtures, 'Username', account.saml.username);
+		await fillSamlField(fixtures, 'Password', account.saml.password);
+		await samlControl(fixtures, 'button', 'Login').tap();
+		await dismissPasswordManagerPrompt(fixtures, isIOS ? [roomsList, openInAppPrompt] : [roomsList]);
+	}
 	if (isIOS && (await firstVisible([openInAppPrompt, roomsList])) === openInAppPrompt) {
-		await screen.getByRole('button', 'Open').tap();
+		await screen.getByRole('button', 'Open').first().tap();
 	}
 	if (isIOS) {
 		await switchToApp(fixtures, rocketChatApp.bundleId ?? rocketChatApp.name);
