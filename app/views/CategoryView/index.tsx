@@ -20,6 +20,7 @@ import NewMessageButton from '~/views/RoomsListView/components/NewMessageButton'
 import { useCategoryRooms } from './hooks/useCategoryRooms';
 import { useCategoryHeader } from './hooks/useCategoryHeader';
 import SectionPills from './components/SectionPills';
+import CategoryEmptyState from './components/CategoryEmptyState';
 
 export type CategoryViewParams = {
 	header: string;
@@ -78,6 +79,7 @@ const CategoryView = ({ route }: StaticScreenProps<CategoryViewParams>) => {
 				data={rooms as IRoomItem[]}
 				keyExtractor={item => item.rid}
 				renderItem={renderItem}
+				ListEmptyComponent={CategoryEmptyState}
 				contentContainerStyle={{
 					paddingBottom:
 						Platform.select({ ios: 0, default: bottom }) + (showNewMessageButton ? FLOATING_ACTION_BUTTON_CLEARANCE : 0)

@@ -42,6 +42,9 @@ export default StyleSheet.create({
 		flexShrink: 1,
 		fontSize: 16,
 		lineHeight: 24,
+		...sharedStyles.textRegular
+	},
+	groupTitleUnread: {
 		...sharedStyles.textBold
 	},
 	serverHeader: {

@@ -115,6 +115,7 @@ const RoomsListView = memo(function RoomsListView() {
 					header={item.rid}
 					title={item.name}
 					collapsed={item.collapsed ?? false}
+					empty={item.empty}
 					unread={item.unread}
 					userMentions={item.userMentions}
 					groupMentions={item.groupMentions}

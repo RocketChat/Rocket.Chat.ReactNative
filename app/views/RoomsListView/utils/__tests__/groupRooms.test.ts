@@ -5,11 +5,8 @@ import { DEFAULT_GROUP_ORDER, SYSTEM_GROUPS } from '../sidebarGroupOrder';
 const room = (fields: Partial<TSubscriptionModel>) => ({ t: SubscriptionType.CHANNEL, ...fields }) as TSubscriptionModel;
 
 const options = {
-	groupOrder: ['work', 'empty', ...DEFAULT_GROUP_ORDER],
-	customCategoryNames: new Map([
-		['work', 'Work'],
-		['empty', 'Empty']
-	]),
+	groupOrder: ['work', ...DEFAULT_GROUP_ORDER],
+	customCategoryNames: new Map([['work', 'Work']]),
 	categoryUnreadOptions: new Map(),
 	sectionsOrder: SYSTEM_GROUPS,
 	showUnread: false,
@@ -22,7 +19,7 @@ const options = {
 const layout = (chats: TSubscriptionModel[]) => chats.map(chat => (chat.separator ? `# ${chat.name ?? chat.rid}` : chat.rid));
 
 describe('groupRooms', () => {
-	it('puts a room in its category ahead of favorites and hides empty categories', () => {
+	it('puts a room in its category ahead of favorites and hides empty system groups', () => {
 		const chats = [
 			room({ rid: 'general', f: true, category: 'work' }),
 			room({ rid: 'random', f: true }),
@@ -37,6 +34,21 @@ describe('groupRooms', () => {
 			'# Direct_Messages',
 			'dm'
 		]);
+	});
+
+	it('keeps an empty custom category as an empty header', () => {
+		const chats = [room({ rid: 'general', category: 'work' })];
+		const roomList = buildRoomList(chats, {
+			...options,
+			groupOrder: ['work', 'empty', ...DEFAULT_GROUP_ORDER],
+			customCategoryNames: new Map([
+				['work', 'Work'],
+				['empty', 'Empty']
+			])
+		});
+
+		expect(layout(roomList)).toEqual(['# Work', 'general', '# Empty']);
+		expect(roomList.filter(chat => chat.separator).map(header => header.empty)).toEqual([false, true]);
 	});
 
 	it('keeps custom categories and drops type groups when categories are off', () => {
@@ -70,7 +82,7 @@ describe('groupRooms', () => {
 	it('falls back to the default groups when the room category no longer exists', () => {
 		const chats = [room({ rid: 'general', category: 'deleted' })];
 
-		expect(layout(buildRoomList(chats, options))).toEqual(['# Channels', 'general']);
+		expect(layout(buildRoomList(chats, options))).toEqual(['# Work', '# Channels', 'general']);
 	});
 
 	it('lists rooms without a header when nothing else is grouped', () => {
@@ -106,6 +118,7 @@ describe('groupRooms', () => {
 			'on-hold-livechat',
 			'# Unread',
 			'unread',
+			'# Work',
 			'# Chats',
 			'regular'
 		]);
@@ -187,8 +200,14 @@ describe('groupRooms', () => {
 		const chats = [room({ rid: 'read', f: true }), room({ rid: 'unread', f: true, unread: 1 })];
 		const categoryUnreadOptions = new Map([['Favorites', { showUnreads: true, keepUnreadsOnTop: true }]]);
 
-		expect(layout(buildRoomList(chats, { ...options, categoryUnreadOptions }))).toEqual(['# Favorites', 'unread', 'read']);
+		expect(layout(buildRoomList(chats, { ...options, categoryUnreadOptions }))).toEqual([
+			'# Work',
+			'# Favorites',
+			'unread',
+			'read'
+		]);
 		expect(layout(buildRoomList(chats, { ...options, categoryUnreadOptions, collapsedGroups: new Set(['Favorites']) }))).toEqual([
+			'# Work',
 			'# Favorites',
 			'unread'
 		]);
@@ -200,7 +219,7 @@ describe('groupRooms', () => {
 
 		expect(
 			layout(buildRoomList(chats, { ...options, showUnread: true, categoryUnreadOptions, collapsedGroups: new Set(['Unread']) }))
-		).toEqual(['# Unread', 'unread']);
+		).toEqual(['# Unread', 'unread', '# Work']);
 	});
 
 	it('leaves out the sections the admin removed from the sections order', () => {
@@ -209,7 +228,7 @@ describe('groupRooms', () => {
 
 		expect(
 			layout(buildRoomList(chats, { ...options, sectionsOrder, showUnread: true, groupByType: false, isOmnichannelAgent: true }))
-		).toEqual(['# Chats', 'unread']);
+		).toEqual(['# Work', '# Chats', 'unread']);
 	});
 });
 

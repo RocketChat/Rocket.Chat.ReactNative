@@ -46,13 +46,22 @@ export type CategoryUnreadOptions = {
 
 const NO_UNREAD_OPTIONS: CategoryUnreadOptions = { showUnreads: false, keepUnreadsOnTop: false };
 
-const sectionHeader = (badgeSourceRooms: TSubscriptionModel[], header: string, title: string | undefined, collapsed: boolean) => {
+type SectionHeaderOptions = {
+	rooms: TSubscriptionModel[];
+	badgeSourceRooms: TSubscriptionModel[];
+	header: string;
+	title: string | undefined;
+	collapsed: boolean;
+};
+
+const sectionHeader = ({ rooms, badgeSourceRooms, header, title, collapsed }: SectionHeaderOptions) => {
 	const badgedRooms = badgeSourceRooms.filter(room => !room.hideUnreadStatus);
 	return {
 		rid: header,
 		separator: true,
 		name: title,
 		collapsed,
+		empty: !rooms.length,
 		unread: sumOf(badgedRooms, room => room.unread || room.tunread?.length || (room.alert ? 1 : 0)),
 		userMentions: sumOf(badgedRooms, room => room.userMentions),
 		groupMentions: sumOf(badgedRooms, room => room.groupMentions),
@@ -71,15 +80,16 @@ type RoomsGroupOptions = {
 	collapsedGroups: ReadonlySet<string>;
 	title?: string;
 	unreadOptions?: CategoryUnreadOptions;
+	keepWhenEmpty?: boolean;
 };
 
 const roomsGroup = (
 	rooms: TSubscriptionModel[],
 	header: string,
-	{ collapsedGroups, title, unreadOptions = NO_UNREAD_OPTIONS }: RoomsGroupOptions
+	{ collapsedGroups, title, unreadOptions = NO_UNREAD_OPTIONS, keepWhenEmpty = false }: RoomsGroupOptions
 ) => {
 	const { showUnreads, keepUnreadsOnTop } = unreadOptions;
-	if (!rooms.length) {
+	if (!rooms.length && !(header && keepWhenEmpty)) {
 		return [];
 	}
 	const orderedRooms = keepUnreadsOnTop ? unreadFirst(rooms) : rooms;
@@ -88,11 +98,11 @@ const roomsGroup = (
 	}
 	const collapsed = collapsedGroups.has(header);
 	if (!collapsed) {
-		return [sectionHeader(rooms, header, title, false), ...orderedRooms];
+		return [sectionHeader({ rooms, badgeSourceRooms: rooms, header, title, collapsed }), ...orderedRooms];
 	}
 	const visibleRooms = showUnreads ? orderedRooms.filter(filterIsUnread) : [];
 	const hiddenRooms = orderedRooms.filter(room => !visibleRooms.includes(room));
-	return [sectionHeader(hiddenRooms, header, title, true), ...visibleRooms];
+	return [sectionHeader({ rooms, badgeSourceRooms: hiddenRooms, header, title, collapsed }), ...visibleRooms];
 };
 
 const getRoomGroup = (subscription: TSubscriptionModel, groups: Map<string, TSubscriptionModel[]>) => {
@@ -156,7 +166,8 @@ const groupRooms = (
 		return roomsGroup(groups.get(key) ?? [], header, {
 			collapsedGroups,
 			title: customCategoryNames.get(key),
-			unreadOptions: categoryUnreadOptions.get(key)
+			unreadOptions: categoryUnreadOptions.get(key),
+			keepWhenEmpty: customCategoryNames.has(key)
 		});
 	});
 };

@@ -6,7 +6,7 @@ import SectionHeader from '../SectionHeader';
 
 const noAnimation: EntryExitAnimationFunction = () => ({ initialValues: {}, animations: {} });
 
-const renderSectionHeader = () => {
+const renderSectionHeader = ({ empty = false } = {}) => {
 	const onOpen = jest.fn();
 	const onToggle = jest.fn();
 	render(
@@ -14,6 +14,7 @@ const renderSectionHeader = () => {
 			header='catWork'
 			title='Work Stuff'
 			collapsed={false}
+			empty={empty}
 			onOpen={onOpen}
 			onToggle={onToggle}
 			badgeEntering={noAnimation}
@@ -65,5 +66,15 @@ describe('SectionHeader', () => {
 
 		expect(onToggle).toHaveBeenCalledWith('catWork', 148);
 		expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
+	});
+
+	it('ignores the toggle of an empty category but still opens it', () => {
+		const { onOpen, onToggle } = renderSectionHeader({ empty: true });
+
+		fireEvent.press(screen.getByTestId('rooms-list-section-catWork'));
+		expect(onToggle).not.toHaveBeenCalled();
+
+		fireEvent.press(screen.getByTestId('rooms-list-section-open-catWork'));
+		expect(onOpen).toHaveBeenCalledWith('catWork', 'Work Stuff');
 	});
 });

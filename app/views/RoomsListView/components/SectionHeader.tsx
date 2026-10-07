@@ -14,6 +14,7 @@ interface ISectionHeader {
 	header: string;
 	title?: string;
 	collapsed: boolean;
+	empty?: boolean;
 	unread?: number;
 	userMentions?: number;
 	groupMentions?: number;
@@ -30,6 +31,7 @@ const SectionHeader = ({
 	header,
 	title,
 	collapsed,
+	empty,
 	unread,
 	userMentions,
 	groupMentions,
@@ -44,6 +46,7 @@ const SectionHeader = ({
 	const { colors } = useTheme();
 	const [isTogglePressed, setIsTogglePressed] = useState(false);
 	const sectionTitle = title ?? i18n.t(header);
+	const hasHiddenUnread = collapsed && !!unread;
 
 	const onPressOpen = () => {
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -64,19 +67,25 @@ const SectionHeader = ({
 				accessibilityLabel={sectionTitle}
 				accessibilityHint={i18n.t('Open_category')}
 				testID={`rooms-list-section-open-${header}`}>
-				<Text style={[styles.groupTitle, { color: colors.fontDefault }]} numberOfLines={1}>
+				<Text
+					style={[
+						styles.groupTitle,
+						hasHiddenUnread ? [styles.groupTitleUnread, { color: colors.fontTitlesLabels }] : { color: colors.fontDefault }
+					]}
+					numberOfLines={1}>
 					{sectionTitle}
 				</Text>
-				<CustomIcon name='chevron-right' size={20} color={colors.fontDefault} />
+				<CustomIcon name='chevron-right' size={20} color={hasHiddenUnread ? colors.fontTitlesLabels : colors.fontDefault} />
 			</Pressable>
 			<Pressable
 				onPress={onPressToggle}
+				disabled={empty}
 				onPressIn={() => setIsTogglePressed(true)}
 				onPressOut={() => setIsTogglePressed(false)}
 				style={[styles.groupToggle, isTogglePressed && styles.groupHeaderPressed]}
 				accessibilityRole='button'
 				accessibilityLabel={i18n.t(collapsed ? 'Expand_category' : 'Collapse_category', { name: sectionTitle })}
-				accessibilityState={{ expanded: !collapsed }}
+				accessibilityState={{ expanded: !collapsed, disabled: empty }}
 				testID={`rooms-list-section-${header}`}>
 				{collapsed ? (
 					<Animated.View entering={badgeEntering} exiting={badgeExiting}>
@@ -90,7 +99,7 @@ const SectionHeader = ({
 						/>
 					</Animated.View>
 				) : null}
-				<SectionChevron collapsed={collapsed} />
+				<SectionChevron collapsed={collapsed} color={empty ? colors.fontDisabled : colors.fontDefault} />
 			</Pressable>
 		</View>
 	);
