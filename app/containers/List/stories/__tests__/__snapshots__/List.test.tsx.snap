@@ -5191,7 +5191,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
         "flex": 1,
       },
       {
-        "backgroundColor": "#080808",
+        "backgroundColor": "#0A0A0A",
       },
       undefined,
     ]
@@ -5208,7 +5208,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
     keyboardShouldPersistTaps="handled"
     style={
       {
-        "backgroundColor": "#16181a",
+        "backgroundColor": "#0A0A0A",
       }
     }
   >
@@ -5244,7 +5244,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
               "overflow": "hidden",
             },
             {
-              "backgroundColor": "#262931",
+              "backgroundColor": "#161717",
             },
           ]
         }
@@ -5332,7 +5332,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "color": "#C1C7D0",
+                      "color": "#E4E4E4",
                       "fontSize": 24,
                     },
                     [
@@ -5384,7 +5384,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                           "fontWeight": "500",
                         },
                         {
-                          "color": "#C1C7D0",
+                          "color": "#E4E4E4",
                         },
                         {
                           "lineHeight": 22.333333333333332,
@@ -5404,7 +5404,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                         "fontSize": 15,
                       },
                       {
-                        "color": "#9EA2A8",
+                        "color": "#949393",
                       },
                     ]
                   }
@@ -5418,7 +5418,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "color": "#C1C7D0",
+                      "color": "#E4E4E4",
                       "fontSize": 24,
                     },
                     [
@@ -5451,7 +5451,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   "right": 16,
                 },
                 {
-                  "backgroundColor": "#2F343D",
+                  "backgroundColor": "#2D2E2E",
                 },
               ]
             }
@@ -5542,7 +5542,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "color": "#C1C7D0",
+                      "color": "#E4E4E4",
                       "fontSize": 24,
                     },
                     [
@@ -5594,7 +5594,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                           "fontWeight": "500",
                         },
                         {
-                          "color": "#C1C7D0",
+                          "color": "#E4E4E4",
                         },
                         {
                           "lineHeight": 22.333333333333332,
@@ -5614,7 +5614,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                         "fontSize": 15,
                       },
                       {
-                        "color": "#9EA2A8",
+                        "color": "#949393",
                       },
                     ]
                   }
@@ -5628,7 +5628,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "color": "#C1C7D0",
+                      "color": "#E4E4E4",
                       "fontSize": 24,
                     },
                     [
@@ -5704,7 +5704,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
               "overflow": "hidden",
             },
             {
-              "backgroundColor": "#262931",
+              "backgroundColor": "#161717",
             },
           ]
         }
@@ -5792,7 +5792,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "color": "#C1C7D0",
+                      "color": "#E4E4E4",
                       "fontSize": 24,
                     },
                     [
@@ -5844,7 +5844,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                           "fontWeight": "500",
                         },
                         {
-                          "color": "#C1C7D0",
+                          "color": "#E4E4E4",
                         },
                         {
                           "lineHeight": 22.333333333333332,
@@ -5864,7 +5864,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                         "fontSize": 15,
                       },
                       {
-                        "color": "#9EA2A8",
+                        "color": "#949393",
                       },
                     ]
                   }
@@ -5878,7 +5878,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "color": "#C1C7D0",
+                      "color": "#E4E4E4",
                       "fontSize": 24,
                     },
                     [
@@ -5911,7 +5911,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   "right": 16,
                 },
                 {
-                  "backgroundColor": "#2F343D",
+                  "backgroundColor": "#2D2E2E",
                 },
               ]
             }
@@ -6002,7 +6002,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "color": "#C1C7D0",
+                      "color": "#E4E4E4",
                       "fontSize": 24,
                     },
                     [
@@ -6054,7 +6054,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                           "fontWeight": "500",
                         },
                         {
-                          "color": "#C1C7D0",
+                          "color": "#E4E4E4",
                         },
                         {
                           "lineHeight": 22.333333333333332,
@@ -6074,7 +6074,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                         "fontSize": 15,
                       },
                       {
-                        "color": "#9EA2A8",
+                        "color": "#949393",
                       },
                     ]
                   }
@@ -6088,7 +6088,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "color": "#C1C7D0",
+                      "color": "#E4E4E4",
                       "fontSize": 24,
                     },
                     [

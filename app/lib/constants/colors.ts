@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 const backdropColor = '#000000';
 const overlayBackground = 'rgba(31, 35, 41, 0.65)';
 
@@ -185,12 +187,61 @@ const dark = {
 	buttonSuccessDisabled: '#757575'
 };
 
-const black = {
+const blackAndroid = {
 	...dark,
 	surfaceTint: '#16181a',
 	surfaceRoom: '#000000',
 	surfaceHover: '#080808'
 };
+
+const blackIOS = {
+	...dark,
+	surfaceLight: '#161717',
+	surfaceTint: '#0A0A0A',
+	surfaceRoom: '#0A0A0A',
+	surfaceNeutral: '#161717',
+	surfaceDisabled: '#121313',
+	surfaceHover: '#0A0A0A',
+	surfaceSelected: '#2A2B2B',
+	surfaceDark: '#E4E4E4',
+
+	strokeExtraLight: '#2D2E2E',
+	strokeLight: '#2D2E2E',
+	strokeMedium: '#646565',
+	strokeDark: '#161717',
+	strokeExtraDark: '#CCCCCC',
+	strokeHighlight: '#156FF5',
+
+	fontDisabled: '#5C5C5C',
+	fontAnnotation: '#949393',
+	fontHint: '#949393',
+	fontSecondaryInfo: '#949393',
+	fontDefault: '#E4E4E4',
+	fontTitlesLabels: '#FAFAFA',
+
+	badgeBackgroundLevel1: '#484848',
+	badgeBackgroundLevel2: '#156FF5',
+
+	userPresenceOffline: '#8A8A8A',
+
+	buttonBackgroundPrimaryDefault: '#156FF5',
+	buttonBackgroundPrimaryPress: '#10529E',
+
+	buttonBackgroundSecondaryDefault: '#292929',
+	buttonBackgroundSecondaryPress: '#3A3B3B',
+	buttonBackgroundSecondaryDisabled: '#1D1E1E',
+
+	buttonBackgroundSecondaryDangerDefault: '#292929',
+	buttonBackgroundSecondaryDangerPress: '#3A3B3B',
+	buttonBackgroundSecondaryDangerDisabled: '#1D1E1E',
+
+	buttonPrimaryDisabled: '#8A8A8A',
+	buttonFontSecondary: '#E4E4E4',
+	buttonSecondaryDisabled: '#6D6D6D',
+	buttonFontSecondaryDanger: '#D88892'
+};
+
+const black = Platform.OS === 'ios' ? blackIOS : blackAndroid;
 
 export const colors = {
 	light: {
