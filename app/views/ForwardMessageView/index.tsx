@@ -36,6 +36,20 @@ const ForwardMessageView = () => {
 		serverVersion: state.server.version as string
 	}));
 
+	const handlePostMessage = async () => {
+		setSending(true);
+		const permalink = await getPermalinkMessage(message);
+		const msg = `[ ](${permalink})\n`;
+		try {
+			await Promise.all(rooms.map(roomId => postMessage(roomId, msg)));
+			EventEmitter.emit(LISTENER, { message: I18n.t('Message_has_been_shared') });
+			navigation.dispatch(StackActions.pop());
+		} catch (e: any) {
+			Alert.alert(I18n.t('Oops'), e.message);
+		}
+		setSending(false);
+	};
+
 	useLayoutEffect(() => {
 		const isSendButtonEnabled = rooms.length && !sending;
 		navigation.setOptions({
@@ -50,21 +64,7 @@ const ForwardMessageView = () => {
 			]),
 			...headerLeftCloseModal(navigation)
 		});
-	}, [rooms.length, navigation, sending]);
-
-	const handlePostMessage = async () => {
-		setSending(true);
-		const permalink = await getPermalinkMessage(message);
-		const msg = `[ ](${permalink})\n`;
-		try {
-			await Promise.all(rooms.map(roomId => postMessage(roomId, msg)));
-			EventEmitter.emit(LISTENER, { message: I18n.t('Message_has_been_shared') });
-			navigation.dispatch(StackActions.pop());
-		} catch (e: any) {
-			Alert.alert(I18n.t('Oops'), e.message);
-		}
-		setSending(false);
-	};
+	}, [rooms.length, navigation, sending, handlePostMessage]);
 
 	const selectRooms = ({ value }: { value: string[] }) => {
 		setRooms(value);

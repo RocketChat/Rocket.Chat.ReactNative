@@ -61,7 +61,7 @@ const SortableRow = ({
 		() => positions.value[id],
 		(position, previousPosition) => {
 			if (previousPosition !== null && position !== previousPosition && activeId.value !== id) {
-				offset.value = withTiming(position * rowHeight);
+				offset.set(withTiming(position * rowHeight));
 			}
 		}
 	);
@@ -69,26 +69,28 @@ const SortableRow = ({
 	const dragGesture = usePanGesture({
 		hitSlop: DRAG_HANDLE_HIT_SLOP,
 		onActivate: () => {
-			activeId.value = id;
-			dragStartOffset.value = offset.value;
+			activeId.set(id);
+			dragStartOffset.set(offset.value);
 			scheduleOnRN(triggerPickUpHaptic);
 		},
 		onUpdate: event => {
 			const maxOffset = (rowCount - 1) * rowHeight;
-			offset.value = Math.min(Math.max(dragStartOffset.value + event.translationY, 0), maxOffset);
+			offset.set(Math.min(Math.max(dragStartOffset.value + event.translationY, 0), maxOffset));
 			const from = positions.value[id];
 			const to = Math.round(offset.value / rowHeight);
 			if (to !== from) {
-				positions.value = moveIndex(positions.value, from, to);
+				positions.set(moveIndex(positions.value, from, to));
 			}
 		},
 		onDeactivate: () => {
-			offset.value = withTiming(positions.value[id] * rowHeight, undefined, finished => {
-				activeId.value = null;
-				if (finished) {
-					scheduleOnRN(onDrop, orderedIds(positions.value));
-				}
-			});
+			offset.set(
+				withTiming(positions.value[id] * rowHeight, undefined, finished => {
+					activeId.set(null);
+					if (finished) {
+						scheduleOnRN(onDrop, orderedIds(positions.value));
+					}
+				})
+			);
 		}
 	});
 
