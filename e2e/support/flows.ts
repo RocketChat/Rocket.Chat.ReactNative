@@ -142,7 +142,7 @@ export const loginWithForm = async (fixtures: Fixtures, credentials: Credentials
 const COVERED_ERROR = 'is covered by another visible element';
 const OFF_SCREEN_ERROR = 'is off-screen and not safe to press';
 const NO_INPUT_AT_POINT_ERROR = 'no text input found at the provided coordinates';
-const UNCONFIRMED_FILL_ERROR = 'could not confirm the typed text reached the field';
+const UNCONFIRMED_FILL_ERRORS = ['could not confirm the typed text reached the field', 'Android fill verification failed'];
 const RETRYABLE_ACTION_ERRORS = [COVERED_ERROR, OFF_SCREEN_ERROR, NO_INPUT_AT_POINT_ERROR];
 const UNCONFIRMED_FILL_ATTEMPTS = 3;
 
@@ -178,13 +178,14 @@ const fillConfirmed = async (locator: Locator, text: string) => {
 			await locator.fill(text);
 			return;
 		} catch (error) {
-			if (!String(error).includes(UNCONFIRMED_FILL_ERROR) || attempt >= UNCONFIRMED_FILL_ATTEMPTS) {
+			const message = String(error);
+			if (!UNCONFIRMED_FILL_ERRORS.some(unconfirmed => message.includes(unconfirmed)) || attempt >= UNCONFIRMED_FILL_ATTEMPTS) {
 				throw error;
 			}
 			if (await holdsValue(locator, text)) {
 				return;
 			}
-			await locator.clear();
+			await clearSettled(locator);
 		}
 	}
 };
@@ -255,7 +256,7 @@ const UNSETTLED_CLEAR_ERROR = 'text entry verification failed';
 const CLEAR_ATTEMPTS = 3;
 const CLEAR_RETRY_DELAY = 1_000;
 
-const clearSettled = async (input: Locator) => {
+export const clearSettled = async (input: Locator) => {
 	for (let attempt = 1; ; attempt++) {
 		try {
 			await input.clear();
@@ -301,17 +302,18 @@ const acceptSystemAlert = async (device: Fixtures['device']) => {
 	}
 };
 
-const OPEN_LINK_ATTEMPTS = 3;
+const URL_SCHEME_REGISTRATION_TIMEOUT = 30_000;
 const OPEN_LINK_RETRY_DELAY = 2_000;
 
 const isOpenLinkRejected = (error: unknown) => error instanceof Error && error.message.includes('failed to open');
 
 const openLinkWithRetry = async (device: Fixtures['device'], link: string) => {
-	for (let attempt = 1; ; attempt++) {
+	const deadline = Date.now() + URL_SCHEME_REGISTRATION_TIMEOUT;
+	for (;;) {
 		try {
 			return await device.openLink(link);
 		} catch (error) {
-			if (attempt >= OPEN_LINK_ATTEMPTS || !isOpenLinkRejected(error)) {
+			if (Date.now() > deadline || !isOpenLinkRejected(error)) {
 				throw error;
 			}
 			await delay(OPEN_LINK_RETRY_DELAY);

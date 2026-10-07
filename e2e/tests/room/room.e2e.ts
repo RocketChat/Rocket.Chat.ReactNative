@@ -17,7 +17,8 @@ import {
 	goBackUntil,
 	openMessageActions,
 	tapUntilVisible,
-	fillWhenUncovered
+	fillWhenUncovered,
+	clearSettled
 } from '~e2e/support/flows';
 import { deleteMessage } from '~e2e/support/room';
 
@@ -40,7 +41,7 @@ const expectAutocomplete = async (
 	await tapWhenVisible(fixtures, `autocomplete-item-${selected}`);
 	await expect(composer(fixtures)).toHaveValue(completed, { timeout: LONG_TIMEOUT });
 	await expectHidden(fixtures, `autocomplete-item-${selected}`);
-	await composer(fixtures).clear();
+	await clearSettled(composer(fixtures));
 };
 
 const reactFromPicker = async (fixtures: Fixtures, emoji: string) => {
@@ -164,7 +165,7 @@ const sendSavedDraft = async (fixtures: Fixtures, roomName: string) => {
 const replaceDraftKeepingQuote = async (fixtures: Fixtures, roomName: string, original: string, text: string) => {
 	await leaveAndReopenRoom(fixtures, roomName);
 	await expectVisible(fixtures, `markdown-preview-${original}`);
-	await composer(fixtures).clear();
+	await clearSettled(composer(fixtures));
 	await fillWhenUncovered(composer(fixtures), text);
 	await expect(composer(fixtures)).toHaveValue(text, { timeout: LONG_TIMEOUT });
 };

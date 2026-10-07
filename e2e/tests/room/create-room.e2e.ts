@@ -9,7 +9,8 @@ import {
 	LONG_TIMEOUT,
 	tapWhenVisible,
 	expectVisible,
-	fillWhenUncovered
+	fillWhenUncovered,
+	clearSettled
 } from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
 import { openNewMessage, selectUser } from '~e2e/support/room';
@@ -34,7 +35,7 @@ const fillChannelName = async (fixtures: Fixtures, name: string) => {
 	const nameInput = screen.getByTestId('create-channel-name');
 	await dismissChannelKeyboard(fixtures);
 	await screen.scrollUntilVisible(nameInput, { direction: 'up' });
-	await nameInput.clear();
+	await clearSettled(nameInput);
 	await nameInput.pressSequentially(name);
 	await dismissChannelKeyboard(fixtures);
 };
