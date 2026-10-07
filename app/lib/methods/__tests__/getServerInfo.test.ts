@@ -50,8 +50,8 @@ describe('getServerInfo', () => {
 		expect(requestOptions().headers).not.toHaveProperty('X-User-Id');
 	});
 
-	it('does not send the session headers when the stored user id differs', async () => {
-		getString.mockImplementation((key: string) => (key.endsWith(attackerServer) ? 'someone-else' : null) as any);
+	it('does not send the session headers when the server has a stored user id but no token', async () => {
+		getString.mockImplementation((key: string) => (key === getServerUserIdKey(attackerServer) ? 'someone-else' : null) as any);
 
 		await getServerInfo(attackerServer);
 
@@ -59,16 +59,16 @@ describe('getServerInfo', () => {
 		expect(requestOptions().headers).not.toHaveProperty('X-User-Id');
 	});
 
-	it('does not send the session headers when the server reports the same user id but holds a different token', async () => {
+	it('sends a signed-in workspace that is not active its own stored session', async () => {
+		const otherServer = 'https://other.example';
 		mockStoredPreferences({
-			[getServerUserIdKey(attackerServer)]: 'uid',
-			[getUserTokenKey(attackerServer, 'uid')]: 'attacker-token'
+			[getServerUserIdKey(otherServer)]: 'other-uid',
+			[getUserTokenKey(otherServer, 'other-uid')]: 'other-token'
 		});
 
-		await getServerInfo(attackerServer);
+		await getServerInfo(otherServer);
 
-		expect(requestOptions().headers).not.toHaveProperty('X-Auth-Token');
-		expect(requestOptions().headers).not.toHaveProperty('X-User-Id');
+		expect(requestOptions().headers).toMatchObject({ 'X-Auth-Token': 'other-token', 'X-User-Id': 'other-uid' });
 	});
 
 	it('sends only the stored basic auth of that server when there is no session', async () => {
@@ -99,7 +99,7 @@ describe('getServerInfo cloud lookup', () => {
 		jest.mocked(store.getState).mockReturnValue({ login: { user: undefined }, server: { version: '7.0.0' } } as any);
 		getString.mockReturnValue(null as any);
 		jest.mocked(getSupportedVersionsCloud).mockResolvedValue({ json: () => Promise.resolve({}) } as any);
-		mockedFetch.mockImplementation(jest.requireActual('../helpers/fetch').default);
+		mockedFetch.mockImplementation(jest.requireActual('~/lib/methods/helpers/fetch').default);
 		global.fetch = sentToNetwork as unknown as typeof global.fetch;
 		RocketChatSettings.customHeaders = { Authorization: 'Basic current-workspace' };
 	});

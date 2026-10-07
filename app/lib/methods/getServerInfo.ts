@@ -16,7 +16,6 @@ import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants/supportedVers
 import { getServerById } from '../database/services/Server';
 import { compareServerVersion } from './helpers';
 import log from './helpers/log';
-import { getUserSelector } from '~/selectors/login';
 import fetch from './helpers/fetch';
 import { getBasicAuthHeader } from './serverBasicAuth';
 import { getStoredSession } from './loggedInServer';
@@ -53,10 +52,8 @@ const verifyJWT = (jwt?: string): ISupportedVersionsData | null => {
 };
 
 const getSessionHeaders = (server: string) => {
-	const user = getUserSelector(store.getState());
 	const { userId, token } = getStoredSession(server);
-	const isSignedInToServer = !!user?.id && userId === user.id && token === user.token;
-	return isSignedInToServer ? { 'X-Auth-Token': user.token, 'X-User-Id': user.id } : {};
+	return userId && token ? { 'X-Auth-Token': token, 'X-User-Id': userId } : {};
 };
 
 export async function getServerInfo(server: string): Promise<TServerInfoResult> {
