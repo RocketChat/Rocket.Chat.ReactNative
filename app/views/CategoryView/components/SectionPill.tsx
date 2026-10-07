@@ -8,7 +8,7 @@ import { type ISectionPill } from './types';
 const SectionPill = ({ header, title, selected, onSelect }: ISectionPill) => {
 	const { colors } = useTheme();
 	const backgroundColor = selected ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundSecondaryDefault;
-	const pressedBackgroundColor = selected ? colors.buttonBackgroundPrimaryPress : colors.surfaceNeutral;
+	const pressedBackgroundColor = selected ? colors.buttonBackgroundPrimaryPress : colors.buttonBackgroundSecondaryPress;
 
 	return (
 		<Pressable
