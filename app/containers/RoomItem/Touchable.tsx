@@ -15,6 +15,10 @@ import { toggleFav } from '~/lib/methods/toggleFav';
 import { toggleRead } from '~/lib/methods/toggleRead';
 import { hideRoom } from '~/lib/methods/hideRoom';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { isIOS } from '~/lib/methods/helpers';
+
+const BACK_SWIPE_EDGE_WIDTH = 20;
+const backSwipeEdgeExclusion = I18nManager.isRTL ? { right: -BACK_SWIPE_EDGE_WIDTH } : { left: -BACK_SWIPE_EDGE_WIDTH };
 
 const rubberband = (overshoot: number, dimension: number, constant = 0.55) => {
 	'worklet';
@@ -106,6 +110,7 @@ const Touchable = ({
 		activeOffsetX: [-10, 10], // More sensitive horizontal detection
 		failOffsetY: [-20, 20], // Fail on vertical movement to distinguish scrolling
 		enabled: swipeEnabled,
+		hitSlop: isIOS ? backSwipeEdgeExclusion : undefined,
 		onBegin: () => {
 			crossedFullSwipe.value = false;
 			touchClosedOtherRow.value = closeOpenSwipeItem(rid);
