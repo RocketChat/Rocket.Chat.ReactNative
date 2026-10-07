@@ -33,7 +33,6 @@ jest.mock('~/lib/hooks/useVideoConf', () => ({ useVideoConf: () => mockVideoConf
 jest.mock('~/lib/hooks/useNewMediaCall', () => ({
 	useNewMediaCall: () => ({
 		openNewMediaCall: jest.fn(),
-		startCallImmediate: jest.fn(),
 		hasMediaCallPermission: false,
 		isInActiveCall: false
 	})
@@ -352,14 +351,11 @@ describe('RoomHeaderActions', () => {
 		});
 
 		it('starts a video conference from the call option', () => {
-			jest.useFakeTimers();
 			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
 
 			moreMenuOption('room-view-header-call')?.onPress();
-			act(() => jest.advanceTimersByTime(300));
 
 			expect(mockVideoConf.showInitCallActionSheet).toHaveBeenCalled();
-			jest.useRealTimers();
 		});
 
 		it('navigates to the threads screen', () => {

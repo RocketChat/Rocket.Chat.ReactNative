@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-native';
+import { renderHook } from '@testing-library/react-native';
 
 import { type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import { events, logEvent } from '~/lib/methods/helpers/log';
@@ -65,7 +65,6 @@ jest.mock('~/lib/hooks/useVideoConf', () => ({ useVideoConf: () => mockVideoConf
 
 const mockMediaCall = {
 	openNewMediaCall: jest.fn(),
-	startCallImmediate: jest.fn(),
 	hasMediaCallPermission: false,
 	isInActiveCall: false
 };
@@ -247,14 +246,6 @@ describe('useRoomHeaderActions', () => {
 	});
 
 	describe('call action', () => {
-		beforeEach(() => {
-			jest.useFakeTimers();
-		});
-
-		afterEach(() => {
-			jest.useRealTimers();
-		});
-
 		const callAction = () => menuItemByTestID('room-view-header-call');
 
 		it('is absent without media call permission and with calls disabled', () => {
@@ -274,27 +265,12 @@ describe('useRoomHeaderActions', () => {
 			expect(callAction()?.disabled).toBe(true);
 		});
 
-		it('opens the media call sheet after the double tap window on a single tap', () => {
+		it('opens the media call sheet', () => {
 			mockMediaCall.hasMediaCallPermission = true;
 
 			callAction()?.onPress();
 
-			expect(mockMediaCall.openNewMediaCall).not.toHaveBeenCalled();
-			act(() => jest.advanceTimersByTime(300));
 			expect(mockMediaCall.openNewMediaCall).toHaveBeenCalled();
-			expect(mockMediaCall.startCallImmediate).not.toHaveBeenCalled();
-		});
-
-		it('starts the call immediately on a double tap', () => {
-			mockMediaCall.hasMediaCallPermission = true;
-			const onPress = callAction()?.onPress;
-
-			onPress?.();
-			onPress?.();
-
-			expect(mockMediaCall.startCallImmediate).toHaveBeenCalled();
-			act(() => jest.advanceTimersByTime(300));
-			expect(mockMediaCall.openNewMediaCall).not.toHaveBeenCalled();
 		});
 
 		it('shows the video conference sheet when calls are enabled without media call permission', () => {
