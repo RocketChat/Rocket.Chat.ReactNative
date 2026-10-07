@@ -51,32 +51,26 @@ describe('groupRooms', () => {
 		expect(roomList.filter(chat => chat.separator).map(header => header.empty)).toEqual([false, true]);
 	});
 
-	it('keeps custom categories and drops type groups when categories are off', () => {
+	it('hides custom categories and type groups when categories are off', () => {
 		const chats = [
 			room({ rid: 'general', category: 'work' }),
-			room({ rid: 'random', f: true }),
+			room({ rid: 'random', f: true, category: 'work' }),
 			room({ rid: 'dm', t: SubscriptionType.DIRECT })
 		];
 
 		expect(layout(buildRoomList(chats, { ...options, groupByType: false }))).toEqual([
-			'# Work',
-			'general',
 			'# Favorites',
 			'random',
 			'# Chats',
+			'general',
 			'dm'
 		]);
 	});
 
-	it('keeps custom categories when categories, favorites and unread are off', () => {
+	it('lists rooms in a flat list when categories, favorites and unread are off', () => {
 		const chats = [room({ rid: 'general', category: 'work' }), room({ rid: 'dm', t: SubscriptionType.DIRECT })];
 
-		expect(layout(buildRoomList(chats, { ...options, groupByType: false, showFavorites: false }))).toEqual([
-			'# Work',
-			'general',
-			'# Chats',
-			'dm'
-		]);
+		expect(layout(buildRoomList(chats, { ...options, groupByType: false, showFavorites: false }))).toEqual(['general', 'dm']);
 	});
 
 	it('falls back to the default groups when the room category no longer exists', () => {
@@ -118,7 +112,6 @@ describe('groupRooms', () => {
 			'on-hold-livechat',
 			'# Unread',
 			'unread',
-			'# Work',
 			'# Chats',
 			'regular'
 		]);
@@ -228,7 +221,7 @@ describe('groupRooms', () => {
 
 		expect(
 			layout(buildRoomList(chats, { ...options, sectionsOrder, showUnread: true, groupByType: false, isOmnichannelAgent: true }))
-		).toEqual(['# Work', '# Chats', 'unread']);
+		).toEqual(['# Chats', 'unread']);
 	});
 });
 
