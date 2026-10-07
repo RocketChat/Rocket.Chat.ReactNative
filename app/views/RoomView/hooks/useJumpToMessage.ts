@@ -118,6 +118,14 @@ export function useJumpToMessage({
 	const openThreadFromHere = (message: TOpenThreadTarget) =>
 		openThread(message, { navigation, rid, roomUserId: roomUserIdRef.current, cancelJumpToMessage });
 
+	// Resolves to whether the jump can proceed: false when it was superseded or the thread could not be fully loaded.
+	const loadRestOfThread = async (threadId: string, roomId: string, generation: number): Promise<boolean> => {
+		const allLoaded = await loadAllThreadMessages({ tmid: threadId, rid: roomId });
+		if (!isCurrentJump(generation)) return false;
+		if (!allLoaded) cancelJumpToMessage();
+		return allLoaded;
+	};
+
 	const executeJump = async (message: TGetMessageInfoResult, generation: number): Promise<boolean> => {
 		const inThisThread = !!message.tmid && message.tmid === tmid;
 		const inThisRoom = !message.tmid && message.rid === rid;
@@ -133,11 +141,9 @@ export function useJumpToMessage({
 			await openRoom(message, { isMasterDetail });
 			return false;
 		}
-		let inWindow = listContainerRef.current?.isMessageInWindow(message.id) ?? false;
+		const inWindow = listContainerRef.current?.isMessageInWindow(message.id) ?? false;
 		if (inThisThread && tmid && rid && !inWindow) {
-			await loadAllThreadMessages({ tmid, rid });
-			if (!isCurrentJump(generation)) return false;
-			inWindow = listContainerRef.current?.isMessageInWindow(message.id) ?? false;
+			if (!(await loadRestOfThread(tmid, rid, generation))) return false;
 		}
 		const highTsMs = await resolveJumpAnchor(rid, message, inWindow, { loadSurroundingMessages, getLocalAnchorTs });
 		if (!isCurrentJump(generation)) return false;

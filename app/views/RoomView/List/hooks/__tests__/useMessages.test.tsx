@@ -34,8 +34,16 @@ jest.mock('~/lib/database/services/Thread', () => ({
 	getThreadById: jest.fn(() => Promise.resolve(null))
 }));
 
+let threadLoadedListener: ((tmid: string) => void) | null = null;
+
 jest.mock('~/lib/methods/loadThreadMessages', () => ({
-	hasMoreThreadMessages: jest.fn(() => false)
+	hasMoreThreadMessages: jest.fn(() => false),
+	subscribeThreadLoaded: jest.fn((listener: (tmid: string) => void) => {
+		threadLoadedListener = listener;
+		return () => {
+			threadLoadedListener = null;
+		};
+	})
 }));
 
 jest.mock('~/lib/services/restApi', () => ({
@@ -394,6 +402,27 @@ describe('useMessages', () => {
 			expect(result.current[0].map(m => m.id)).toContain('tm1');
 		});
 		expect(result.current[0].map(m => m.id)).not.toContain('parent-thread');
+	});
+
+	it('shows the thread parent when the last page finishes loading without a new DB emission', async () => {
+		const parent = {
+			...msg({ id: 'parent-thread', t: undefined }),
+			collection: { table: 'threads' }
+		} as TAnyMessageModel;
+		mockGetThreadById.mockResolvedValueOnce(parent);
+		mockHasMoreThreadMessages.mockReturnValueOnce(true);
+		emittedRows = [msg({ id: 'tm1', tmid: 'THREAD_ID' })];
+		const { result } = renderUseMessages({ tmid: 'THREAD_ID' });
+		await waitFor(() => {
+			expect(result.current[0].map(m => m.id)).toContain('tm1');
+		});
+		expect(result.current[0].map(m => m.id)).not.toContain('parent-thread');
+
+		act(() => {
+			threadLoadedListener?.('THREAD_ID');
+		});
+
+		expect(result.current[0].map(m => m.id)).toContain('parent-thread');
 	});
 
 	it('falls back to getMessageById when thread record is missing', async () => {

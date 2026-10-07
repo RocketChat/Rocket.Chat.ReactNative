@@ -1,4 +1,10 @@
-import { hasMoreThreadMessages, loadAllThreadMessages, loadMoreThreadMessages, loadThreadMessages } from './loadThreadMessages';
+import {
+	hasMoreThreadMessages,
+	loadAllThreadMessages,
+	loadMoreThreadMessages,
+	loadThreadMessages,
+	subscribeThreadLoaded
+} from './loadThreadMessages';
 import { type IReaction } from '~/definitions';
 import database from '../database';
 import { getThreadById } from '../database/services/Thread';
@@ -223,11 +229,10 @@ describe('loadThreadMessages', () => {
 		const threadRecord = { id: TMID, _updatedAt: new Date('2026-01-02'), prepareUpdate: jest.fn() };
 		mockedGetThreadById.mockResolvedValue(threadRecord as any);
 
-		const result = await loadThreadMessages({ tmid: TMID, rid: RID });
+		await expect(loadThreadMessages({ tmid: TMID, rid: RID })).resolves.toBeUndefined();
 
 		expect(threadRecord.prepareUpdate).not.toHaveBeenCalled();
 		expect(threadsCollection.prepareCreate).not.toHaveBeenCalled();
-		expect(result).toEqual([expect.objectContaining({ _id: 'REPLY_ID' })]);
 		expect(batched).toHaveLength(1);
 		expect(batched[0]._id).toBe('REPLY_ID');
 	});
@@ -320,10 +325,9 @@ describe('loadThreadMessages', () => {
 		const lookupError = new Error('threads lookup boom');
 		mockedGetThreadById.mockRejectedValue(lookupError);
 
-		const result = await loadThreadMessages({ tmid: TMID, rid: RID });
+		await expect(loadThreadMessages({ tmid: TMID, rid: RID })).resolves.toBeUndefined();
 
 		expect(mockedLog).toHaveBeenCalledWith(lookupError);
-		expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ _id: 'REPLY_ID' })]));
 		expect(dbBatch()).not.toHaveBeenCalled();
 	});
 
@@ -335,10 +339,9 @@ describe('loadThreadMessages', () => {
 			throw createError;
 		});
 
-		const result = await loadThreadMessages({ tmid: TMID, rid: RID });
+		await expect(loadThreadMessages({ tmid: TMID, rid: RID })).resolves.toBeUndefined();
 
 		expect(mockedLog).toHaveBeenCalledWith(createError);
-		expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ _id: 'REPLY_ID' })]));
 		expect(dbBatch()).not.toHaveBeenCalled();
 	});
 
@@ -353,10 +356,9 @@ describe('loadThreadMessages', () => {
 			})
 		} as any);
 
-		const result = await loadThreadMessages({ tmid: TMID, rid: RID });
+		await expect(loadThreadMessages({ tmid: TMID, rid: RID })).resolves.toBeUndefined();
 
 		expect(mockedLog).toHaveBeenCalledWith(updateError);
-		expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ _id: 'REPLY_ID' })]));
 		expect(dbBatch()).not.toHaveBeenCalled();
 	});
 
@@ -417,10 +419,9 @@ describe('loadThreadMessages', () => {
 			return threadMessagesCollection;
 		});
 
-		const result = await loadThreadMessages({ tmid: TMID, rid: RID });
+		await expect(loadThreadMessages({ tmid: TMID, rid: RID })).resolves.toBeUndefined();
 
 		expect(mockedLog).toHaveBeenCalledWith(getError);
-		expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ _id: 'REPLY_ID' })]));
 		expect(dbBatch()).not.toHaveBeenCalled();
 	});
 
@@ -595,15 +596,14 @@ describe('loadThreadMessages thread_messages unit', () => {
 		expect(batchArg).toEqual(expect.arrayContaining([expect.objectContaining({ _id: 'R2' })]));
 	});
 
-	it('logs inner DB failures and still resolves data without rejecting', async () => {
+	it('logs inner DB failures and still resolves without rejecting', async () => {
 		mockedMethodCall.mockResolvedValue([unitReply('R1', NEW)] as any);
 		const dbError = new Error('batch boom');
 		dbBatch().mockRejectedValueOnce(dbError);
 
-		const result = await loadThreadMessages({ tmid: TMID, rid: RID });
+		await expect(loadThreadMessages({ tmid: TMID, rid: RID })).resolves.toBeUndefined();
 
 		expect(mockedLog).toHaveBeenCalledWith(dbError);
-		expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ _id: 'R1' })]));
 	});
 });
 
@@ -634,6 +634,49 @@ describe('thread message pagination', () => {
 		expect(hasMoreThreadMessages(TMID)).toBe(true);
 	});
 
+	it('keeps the replies when the root message fails to load', async () => {
+		mockedGetSingleMessage.mockRejectedValueOnce(new Error('boom'));
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
+
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(threadsCreated).toHaveLength(0);
+		expect(hasMoreThreadMessages(TMID)).toBe(true);
+	});
+
+	it('logs and returns nothing when the first page fails', async () => {
+		mockedGetPage.mockRejectedValueOnce(new Error('429'));
+
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(mockedLog).toHaveBeenCalled();
+	});
+
+	it('retries the first page on the next load more when it failed', async () => {
+		const retryTmid = 'retry-tmid';
+		mockedGetPage.mockRejectedValueOnce(new Error('500'));
+		await loadThreadMessages({ tmid: retryTmid, rid: RID });
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
+
+		await loadMoreThreadMessages({ tmid: retryTmid, rid: RID });
+
+		expect(mockedGetPage).toHaveBeenLastCalledWith({ tmid: retryTmid, offset: 0 });
+		expect(hasMoreThreadMessages(retryTmid)).toBe(true);
+	});
+
+	it('requests the first page again when saving it failed', async () => {
+		const saveFailTmid = 'save-fail-tmid';
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
+		mockedDecryptMessages.mockRejectedValueOnce(new Error('db'));
+		await loadThreadMessages({ tmid: saveFailTmid, rid: RID });
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
+
+		await loadMoreThreadMessages({ tmid: saveFailTmid, rid: RID });
+
+		expect(hasMoreThreadMessages(saveFailTmid)).toBe(true);
+		expect(mockedGetPage).toHaveBeenLastCalledWith({ tmid: saveFailTmid, offset: 0 });
+	});
+
 	it('reports no more messages when the first page holds the whole thread', async () => {
 		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 1 });
 
@@ -662,6 +705,21 @@ describe('thread message pagination', () => {
 		await Promise.all([loadMoreThreadMessages({ tmid: TMID, rid: RID }), loadMoreThreadMessages({ tmid: TMID, rid: RID })]);
 
 		expect(mockedGetPage).toHaveBeenCalledTimes(2);
+	});
+
+	it('waits for a reload in flight instead of requesting a stale page', async () => {
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 5 });
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+		let release!: (page: { messages: ReturnType<typeof reply>[]; total: number }) => void;
+		mockedGetPage.mockReturnValueOnce(new Promise(resolve => (release = resolve)));
+
+		const reload = loadThreadMessages({ tmid: TMID, rid: RID });
+		const more = loadMoreThreadMessages({ tmid: TMID, rid: RID });
+		release({ messages: [reply('R1')], total: 5 });
+		await Promise.all([reload, more]);
+
+		expect(mockedGetPage).toHaveBeenCalledTimes(2);
+		expect(mockedGetPage).toHaveBeenLastCalledWith({ tmid: TMID, offset: 0 });
 	});
 
 	it('does not call the server when there is nothing more to load', async () => {
@@ -701,10 +759,36 @@ describe('thread message pagination', () => {
 			.mockResolvedValueOnce({ messages: [reply('R2')], total: 3 })
 			.mockResolvedValueOnce({ messages: [reply('R3')], total: 3 });
 
-		await loadAllThreadMessages({ tmid: TMID, rid: RID });
+		await expect(loadAllThreadMessages({ tmid: TMID, rid: RID })).resolves.toBe(true);
 
 		expect(mockedGetPage).toHaveBeenCalledTimes(3);
 		expect(hasMoreThreadMessages(TMID)).toBe(false);
+	});
+
+	it('waits for the first load before loading all', async () => {
+		mockedGetPage
+			.mockResolvedValueOnce({ messages: [reply('R1')], total: 2 })
+			.mockResolvedValueOnce({ messages: [reply('R2')], total: 2 });
+
+		const first = loadThreadMessages({ tmid: TMID, rid: RID });
+		await expect(loadAllThreadMessages({ tmid: TMID, rid: RID })).resolves.toBe(true);
+		await first;
+
+		expect(mockedGetPage).toHaveBeenCalledTimes(2);
+		expect(mockedGetPage).toHaveBeenLastCalledWith({ tmid: TMID, offset: 1 });
+	});
+
+	it('notifies subscribers when a load finishes', async () => {
+		const listener = jest.fn();
+		const unsubscribe = subscribeThreadLoaded(listener);
+		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 1 });
+
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+		unsubscribe();
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(listener).toHaveBeenCalledTimes(1);
+		expect(listener).toHaveBeenCalledWith(TMID);
 	});
 
 	it('gives up on load all when a page request fails', async () => {
@@ -712,7 +796,7 @@ describe('thread message pagination', () => {
 		await loadThreadMessages({ tmid: TMID, rid: RID });
 		mockedGetPage.mockRejectedValue(new Error('boom'));
 
-		await loadAllThreadMessages({ tmid: TMID, rid: RID });
+		await expect(loadAllThreadMessages({ tmid: TMID, rid: RID })).resolves.toBe(false);
 
 		expect(mockedGetPage).toHaveBeenCalledTimes(2);
 	});

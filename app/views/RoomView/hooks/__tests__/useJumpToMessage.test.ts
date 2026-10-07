@@ -35,7 +35,7 @@ jest.mock('~/views/RoomView/services/resolveJumpAnchor', () => ({ resolveJumpAnc
 jest.mock('~/views/RoomView/services/fetchThreadName', () => ({
 	fetchThreadName: jest.fn(() => Promise.resolve('Thread Title'))
 }));
-jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadAllThreadMessages: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadAllThreadMessages: jest.fn(() => Promise.resolve(true)) }));
 jest.mock('~/lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
 jest.mock('~/containers/Loading', () => ({ sendLoadingEvent: jest.fn() }));
 
@@ -167,6 +167,18 @@ describe('useJumpToMessage', () => {
 
 			expect(mockLoadAllThreadMessages).toHaveBeenCalledWith({ tmid: 'thread-1', rid: 'rid-1' });
 			expect(list.jumpToMessage).toHaveBeenCalledWith('msg-42', null);
+		});
+
+		it('does not jump when the rest of the thread could not be loaded', async () => {
+			mockGetMessageInfo.mockResolvedValueOnce({ id: 'msg-42', rid: 'rid-1', tmid: 'thread-1' });
+			mockLoadAllThreadMessages.mockResolvedValueOnce(false);
+			const { result, list } = renderThreadJump(false);
+
+			await act(async () => {
+				await result.current.jumpToMessageByUrl('https://open.rocket.chat/channel/general?msg=msg-42');
+			});
+
+			expect(list.jumpToMessage).not.toHaveBeenCalled();
 		});
 
 		it('does not load more of the thread when the reply is already in the list', async () => {

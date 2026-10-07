@@ -9,7 +9,7 @@ import { getMessageById } from '~/lib/database/services/Message';
 import { getThreadById } from '~/lib/database/services/Thread';
 import { tsToMs } from '~/lib/dayjs';
 import { compareServerVersion, useDebounce } from '~/lib/methods/helpers';
-import { hasMoreThreadMessages } from '~/lib/methods/loadThreadMessages';
+import { hasMoreThreadMessages, subscribeThreadLoaded } from '~/lib/methods/loadThreadMessages';
 import { readThreads } from '~/lib/services/restApi';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
 import { buildVisibleSystemTypesClause, isHiddenSystemMessage, isLoaderMessage } from '../visibleSystemMessages';
@@ -41,6 +41,7 @@ export const useMessages = ({
 	const thread = useRef<TAnyMessageModel | null>(null);
 	const count = useRef(0);
 	const subscription = useRef<Subscription | null>(null);
+	const lastResult = useRef<TAnyMessageModel[] | null>(null);
 	const messagesIds = useRef<string[]>([]);
 	const lastDispatchedLoaderId = useRef<string | null>(null);
 	const autoLoadCount = useRef(0);
@@ -129,6 +130,17 @@ export const useMessages = ({
 		[rid]
 	);
 
+	const withThreadParent = useCallback(
+		(result: TAnyMessageModel[]): TAnyMessageModel[] => {
+			const visibleThreadParent =
+				tmid && thread.current && !hasMoreThreadMessages(tmid) && !isHiddenSystemMessage(thread.current, hideSystemMessages)
+					? thread.current
+					: null;
+			return visibleThreadParent ? [...result, visibleThreadParent] : result;
+		},
+		[tmid, hideSystemMessages]
+	);
+
 	const fetchMessages = useCallback(async () => {
 		unsubscribe();
 		if (!rid) {
@@ -166,11 +178,8 @@ export const useMessages = ({
 			.observe();
 
 		subscription.current = observable.subscribe(result => {
-			const visibleThreadParent =
-				tmid && thread.current && !hasMoreThreadMessages(tmid) && !isHiddenSystemMessage(thread.current, hideSystemMessages)
-					? thread.current
-					: null;
-			const newMessages: TAnyMessageModel[] = visibleThreadParent ? [...result, visibleThreadParent] : result;
+			lastResult.current = result as TAnyMessageModel[];
+			const newMessages = withThreadParent(lastResult.current);
 
 			// Thread / local windows are never anchored, so rejoin only applies to the bounded main room.
 			if (!tmid && highTs != null) {
@@ -183,7 +192,7 @@ export const useMessages = ({
 			setMessages(newMessages);
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps -- readThread is omitted intentionally: useDebouncedCallback stores func in a ref so changes propagate without recreating fetchMessages; hideSystemMessages must stay so the DB re-queries for proper pagination
-	}, [rid, tmid, showMessageInMainThread, hideSystemMessages, highTs, unsubscribe, raiseOrReleaseAnchor]);
+	}, [rid, tmid, showMessageInMainThread, hideSystemMessages, highTs, unsubscribe, raiseOrReleaseAnchor, withThreadParent]);
 
 	// Setting an anchor re-seeds the window to a single standard page (QUERY_SIZE) instead of
 	// continuing to grow: reset count, then change the bound. highTs is a fetchMessages dependency,
@@ -201,6 +210,18 @@ export const useMessages = ({
 		fetchMessages();
 		return unsubscribe;
 	}, [fetchMessages, unsubscribe]);
+
+	// A page that is already stored locally emits no DB change, so re-derive the thread parent when a load ends.
+	useEffect(() => {
+		if (!tmid) {
+			return;
+		}
+		return subscribeThreadLoaded(loadedTmid => {
+			if (loadedTmid === tmid && lastResult.current) {
+				setMessages(withThreadParent(lastResult.current));
+			}
+		});
+	}, [tmid, withThreadParent]);
 
 	useLayoutEffect(() => {
 		messagesIds.current = messages.map(m => m.id);
