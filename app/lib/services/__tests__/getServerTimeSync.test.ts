@@ -13,12 +13,14 @@ describe('getServerTimeSync', () => {
 	);
 
 	beforeEach(() => {
+		jest.useFakeTimers();
 		sentToNetwork.mockClear();
 		global.fetch = sentToNetwork as unknown as typeof global.fetch;
 		RocketChatSettings.customHeaders = { Authorization: 'Basic current-workspace' };
 	});
 
 	afterEach(() => {
+		jest.useRealTimers();
 		global.fetch = originalGlobalFetch;
 		RocketChatSettings.customHeaders = originalCustomHeaders;
 		UserPreferences.removeItem(getBasicAuthKey(requested));
