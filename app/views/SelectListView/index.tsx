@@ -17,6 +17,7 @@ import Item from './Item';
 import { isIOS } from '~/lib/methods/helpers';
 import { type TDataSelect } from '~/definitions/IDataSelect';
 import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { checkedStateLabel } from '~/containers/List/native/utils/itemProps';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -140,7 +141,7 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 		const channelIcon = item.t === 'p' ? 'channel-private' : 'channel-public';
 		const teamIcon = item.t === 'p' ? 'teams-private' : 'teams';
 		const isChecked = this.isChecked(item.rid);
-		const checkedLabel = isChecked ? I18n.t('Checked') : I18n.t('Unchecked');
+		const checkedLabel = checkedStateLabel(isChecked);
 		const radioLabel = isChecked ? I18n.t('Selected') : I18n.t('Unselected');
 
 		return (

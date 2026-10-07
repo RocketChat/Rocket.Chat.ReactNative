@@ -1,7 +1,7 @@
 import * as List from '~/containers/List';
 import NativeListRow from '~/containers/NativeListRow';
 import { AVATAR_SIZE } from '~/containers/NativeListRow/constants';
-import I18n from '~/i18n';
+import { checkedStateLabel } from '~/containers/List/native/utils/itemProps';
 import { useTheme } from '~/theme';
 import { type IChannelItem } from './ChannelItem';
 
@@ -12,7 +12,7 @@ const ChannelItem = ({ title, icon, isChecked, onPress, testID, isFirst, isLast 
 			title={title}
 			onPress={onPress}
 			testID={testID}
-			accessibilityLabel={`${title} ${isChecked ? I18n.t('Checked') : I18n.t('Unchecked')}`}
+			accessibilityLabel={`${title} ${checkedStateLabel(isChecked)}`}
 			isSelected={isChecked}
 			isFirst={isFirst}
 			isLast={isLast}

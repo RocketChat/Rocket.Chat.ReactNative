@@ -1,6 +1,7 @@
 import * as List from '~/containers/List';
 import NativeListRow from '~/containers/NativeListRow';
 import I18n from '~/i18n';
+import { checkedStateLabel } from '~/containers/List/native/utils/itemProps';
 import { useTheme } from '~/theme';
 import { type IPickerItem } from './Item';
 
@@ -12,7 +13,7 @@ const Item = ({ item, selected, onItemPress, isFirst, isLast }: IPickerItem) => 
 			title={title}
 			onPress={onItemPress}
 			testID={`picker-view-item-${item.value}`}
-			accessibilityLabel={`${title} ${selected ? I18n.t('Checked') : I18n.t('Unchecked')}`}
+			accessibilityLabel={`${title} ${checkedStateLabel(selected)}`}
 			isSelected={selected}
 			isFirst={isFirst}
 			isLast={isLast}
