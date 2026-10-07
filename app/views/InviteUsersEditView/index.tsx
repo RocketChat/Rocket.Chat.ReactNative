@@ -41,9 +41,11 @@ const InviteUsersEditView = () => {
 					<List.Item title='Max_number_of_uses' right={() => <Picker param='maxUses' first='No_limit' />} />
 					<List.Separator />
 				</List.Section>
-				<View style={styles.innerContainer}>
-					<Button title={I18n.t('Generate_New_Link')} type='primary' onPress={createInviteLink} />
-				</View>
+				<List.Section>
+					<View style={styles.innerContainer}>
+						<Button title={I18n.t('Generate_New_Link')} type='primary' onPress={createInviteLink} />
+					</View>
+				</List.Section>
 			</List.Container>
 		</SafeAreaView>
 	);

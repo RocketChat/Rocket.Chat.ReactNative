@@ -9,7 +9,6 @@ import { compareServerVersion, showErrorAlertWithEMessage } from '~/lib/methods/
 import { pushTest } from '~/lib/services/restApi';
 import { useTheme } from '~/theme';
 import { CustomIcon } from '~/containers/CustomIcon';
-import { asNativeListSection } from '~/containers/List/native/utils/rowMarkers';
 
 function PushGatewayConnection(): ReactElement | null {
 	const [loading, setLoading] = useState(false);
@@ -64,4 +63,4 @@ function PushGatewayConnection(): ReactElement | null {
 	);
 }
 
-export default asNativeListSection(PushGatewayConnection);
+export default PushGatewayConnection;

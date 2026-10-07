@@ -7,7 +7,6 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { isIOS, showErrorAlert } from '~/lib/methods/helpers';
 import { useTheme } from '~/theme';
 import { CustomIcon } from '~/containers/CustomIcon';
-import { asNativeListSection } from '~/containers/List/native/utils/rowMarkers';
 
 function DeviceNotificationSettings(): ReactElement {
 	const { colors } = useTheme();
@@ -53,4 +52,4 @@ function DeviceNotificationSettings(): ReactElement {
 	);
 }
 
-export default asNativeListSection(DeviceNotificationSettings);
+export default DeviceNotificationSettings;

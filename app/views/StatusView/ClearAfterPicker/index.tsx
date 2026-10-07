@@ -3,7 +3,6 @@ import { Text } from 'react-native';
 
 import { useActionSheet } from '~/containers/ActionSheet';
 import * as List from '~/containers/List';
-import { asNativeListSection } from '~/containers/List/native/utils/rowMarkers';
 import { useIsNativeList } from '~/containers/List/native/context';
 import I18n from '~/i18n';
 import dayjs from '~/lib/dayjs';
@@ -76,4 +75,4 @@ const ClearAfterPicker = ({ value, customDate, onChange }: IClearAfterPickerProp
 	);
 };
 
-export default asNativeListSection(ClearAfterPicker);
+export default ClearAfterPicker;

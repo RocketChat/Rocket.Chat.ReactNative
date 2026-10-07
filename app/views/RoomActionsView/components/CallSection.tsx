@@ -1,7 +1,6 @@
 import { type ReactElement, useEffect, useState } from 'react';
 
 import * as List from '~/containers/List';
-import { asNativeListSection } from '~/containers/List/native/utils/rowMarkers';
 import { useVideoConf } from '~/lib/hooks/useVideoConf';
 import type { TSubscriptionModel } from '~/definitions';
 import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall';
@@ -71,4 +70,4 @@ function CallSection({
 	);
 }
 
-export default asNativeListSection(CallSection);
+export default CallSection;

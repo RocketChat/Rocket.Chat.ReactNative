@@ -4,8 +4,6 @@ import { NavigationContext } from '@react-navigation/native';
 
 import { useTheme } from '~/theme';
 import { translucentHeader } from '~/lib/methods/helpers/navigation';
-import ListSection from './ListSection';
-import { isNativeListSection } from '../native/utils/rowMarkers';
 import { flattenListChildren, isListSeparator } from '../utils/listChildren';
 import { NativeListContext } from '../native/context';
 import styles from '../native/styles';
@@ -15,29 +13,6 @@ interface IListContainer {
 	testID?: string;
 	backgroundHidden?: boolean;
 }
-
-const isSection = (element: ReactElement) => element.type === ListSection || isNativeListSection(element.type);
-
-const groupIntoSections = (elements: ReactElement[]) => {
-	const sections: ReactElement[] = [];
-	let rows: ReactElement[] = [];
-	const closeRowsSection = () => {
-		if (rows.length) {
-			sections.push(<ListSection key={rows[0].key}>{rows}</ListSection>);
-			rows = [];
-		}
-	};
-	elements.forEach(element => {
-		if (isSection(element)) {
-			closeRowsSection();
-			sections.push(element);
-		} else {
-			rows.push(element);
-		}
-	});
-	closeRowsSection();
-	return sections;
-};
 
 const useTranslucentHeader = () => {
 	const navigation = useContext(NavigationContext);
@@ -50,7 +25,7 @@ const useTranslucentHeader = () => {
 const ListContainer = ({ children, testID, backgroundHidden }: IListContainer) => {
 	const { colors } = useTheme();
 	useTranslucentHeader();
-	const sections = groupIntoSections(flattenListChildren(children).filter(element => !isListSeparator(element)));
+	const sections = flattenListChildren(children).filter(element => !isListSeparator(element));
 
 	return (
 		<ScrollView

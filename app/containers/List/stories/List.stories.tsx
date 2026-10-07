@@ -13,101 +13,121 @@ export default {
 
 export const TitleAndSubtitle = () => (
 	<List.Container>
-		<List.Separator />
-		<List.Item title='Chats' />
-		<List.Separator />
-		<List.Item title='Chats' subtitle='All' />
-		<List.Separator />
-		<List.Item title={longText} subtitle={longText} translateTitle={false} translateSubtitle={false} testID='test-id' />
-		<List.Separator />
-		<List.Item title={longText} subtitle={longText} translateTitle={false} translateSubtitle={false} numberOfLines={1} />
-		<List.Separator />
+		<List.Section>
+			<List.Separator />
+			<List.Item title='Chats' />
+			<List.Separator />
+			<List.Item title='Chats' subtitle='All' />
+			<List.Separator />
+			<List.Item title={longText} subtitle={longText} translateTitle={false} translateSubtitle={false} testID='test-id' />
+			<List.Separator />
+			<List.Item title={longText} subtitle={longText} translateTitle={false} translateSubtitle={false} numberOfLines={1} />
+			<List.Separator />
+		</List.Section>
 	</List.Container>
 );
 
 export const Alert = () => (
 	<List.Container>
-		<List.Separator />
-		<List.Item title='Chats' alert />
-		<List.Separator />
-		<List.Item title={longText} translateTitle={false} translateSubtitle={false} alert />
-		<List.Separator />
-		<List.Item title='Chats' right={() => <List.Icon name='emoji' />} alert />
-		<List.Separator />
-		<List.Item title={longText} translateTitle={false} translateSubtitle={false} right={() => <List.Icon name='emoji' />} alert />
-		<List.Separator />
+		<List.Section>
+			<List.Separator />
+			<List.Item title='Chats' alert />
+			<List.Separator />
+			<List.Item title={longText} translateTitle={false} translateSubtitle={false} alert />
+			<List.Separator />
+			<List.Item title='Chats' right={() => <List.Icon name='emoji' />} alert />
+			<List.Separator />
+			<List.Item
+				title={longText}
+				translateTitle={false}
+				translateSubtitle={false}
+				right={() => <List.Icon name='emoji' />}
+				alert
+			/>
+			<List.Separator />
+		</List.Section>
 	</List.Container>
 );
 
 export const Pressable = () => (
 	<List.Container>
-		<List.Separator />
-		<List.Item title='Press me' onPress={() => alert('Hi there!')} translateTitle={false} />
-		<List.Separator />
-		<List.Item title={"I'm disabled"} onPress={() => alert('Hi there!')} disabled translateTitle={false} />
-		<List.Separator />
+		<List.Section>
+			<List.Separator />
+			<List.Item title='Press me' onPress={() => alert('Hi there!')} translateTitle={false} />
+			<List.Separator />
+			<List.Item title={"I'm disabled"} onPress={() => alert('Hi there!')} disabled translateTitle={false} />
+			<List.Separator />
+		</List.Section>
 	</List.Container>
 );
 
 export const Header = () => (
 	<List.Container>
-		<List.Header title='Chats' />
-		<List.Header title={longText} translateTitle={false} />
+		<List.Section>
+			<List.Header title='Chats' />
+			<List.Header title={longText} translateTitle={false} />
+		</List.Section>
 	</List.Container>
 );
 
 export const Icon = () => (
 	<List.Container>
-		<List.Icon name='emoji' />
+		<List.Section>
+			<List.Icon name='emoji' />
+		</List.Section>
 	</List.Container>
 );
 
 export const Separator = () => (
 	<List.Container>
-		<List.Separator />
+		<List.Section>
+			<List.Separator />
+		</List.Section>
 	</List.Container>
 );
 
 export const Radio = () => (
 	<List.Container>
-		<List.Separator />
-		<List.Radio
-			translateTitle={false}
-			translateSubtitle={false}
-			title='Option 1'
-			value='option1'
-			isSelected={true}
-			onPress={() => alert('Option 1 selected')}
-		/>
-		<List.Separator />
-		<List.Radio
-			translateTitle={false}
-			translateSubtitle={false}
-			title='Option 2'
-			value='option2'
-			isSelected={false}
-			onPress={() => alert('Option 2 selected')}
-		/>
-		<List.Separator />
-		<List.Radio
-			translateTitle={false}
-			translateSubtitle={false}
-			title='Option 3'
-			value='option3'
-			isSelected={false}
-			onPress={() => alert('Option 3 selected')}
-		/>
-		<List.Separator />
-		<List.Radio
-			title={longText}
-			subtitle={longText}
-			value='option4'
-			isSelected={true}
-			translateTitle={false}
-			translateSubtitle={false}
-			onPress={() => alert('Option 4 selected')}
-		/>
-		<List.Separator />
+		<List.Section>
+			<List.Separator />
+			<List.Radio
+				translateTitle={false}
+				translateSubtitle={false}
+				title='Option 1'
+				value='option1'
+				isSelected={true}
+				onPress={() => alert('Option 1 selected')}
+			/>
+			<List.Separator />
+			<List.Radio
+				translateTitle={false}
+				translateSubtitle={false}
+				title='Option 2'
+				value='option2'
+				isSelected={false}
+				onPress={() => alert('Option 2 selected')}
+			/>
+			<List.Separator />
+			<List.Radio
+				translateTitle={false}
+				translateSubtitle={false}
+				title='Option 3'
+				value='option3'
+				isSelected={false}
+				onPress={() => alert('Option 3 selected')}
+			/>
+			<List.Separator />
+			<List.Radio
+				title={longText}
+				subtitle={longText}
+				value='option4'
+				isSelected={true}
+				translateTitle={false}
+				translateSubtitle={false}
+				onPress={() => alert('Option 4 selected')}
+			/>
+			<List.Separator />
+		</List.Section>
 	</List.Container>
 );
 
@@ -161,39 +181,43 @@ export const ListItemWithRightContainerStyle = () => (
 
 export const WithIcon = () => (
 	<List.Container>
-		<List.Separator />
-		<List.Item title='Icon Left' translateTitle={false} left={() => <List.Icon name='emoji' />} />
-		<List.Separator />
-		<List.Item title='Icon Right' translateTitle={false} right={() => <List.Icon name='emoji' />} />
-		<List.Separator />
-		<List.Item
-			title={longText}
-			subtitle={longText}
-			translateTitle={false}
-			translateSubtitle={false}
-			left={() => <List.Icon name='emoji' />}
-			right={() => <List.Icon name='emoji' />}
-		/>
-		<List.Separator />
-		<List.Item title='Show Action Indicator' translateTitle={false} showActionIndicator />
-		<List.Separator />
+		<List.Section>
+			<List.Separator />
+			<List.Item title='Icon Left' translateTitle={false} left={() => <List.Icon name='emoji' />} />
+			<List.Separator />
+			<List.Item title='Icon Right' translateTitle={false} right={() => <List.Icon name='emoji' />} />
+			<List.Separator />
+			<List.Item
+				title={longText}
+				subtitle={longText}
+				translateTitle={false}
+				translateSubtitle={false}
+				left={() => <List.Icon name='emoji' />}
+				right={() => <List.Icon name='emoji' />}
+			/>
+			<List.Separator />
+			<List.Item title='Show Action Indicator' translateTitle={false} showActionIndicator />
+			<List.Separator />
+		</List.Section>
 	</List.Container>
 );
 
 export const WithCustomColors = () => (
 	<List.Container>
-		<List.Separator />
-		<List.Item title='Chats' color='red' />
-		<List.Separator />
-		<List.Item
-			title='Press me!'
-			color='white'
-			onPress={() => alert('Press')}
-			backgroundColor='red'
-			underlayColor='green'
-			translateTitle={false}
-		/>
-		<List.Separator />
+		<List.Section>
+			<List.Separator />
+			<List.Item title='Chats' color='red' />
+			<List.Separator />
+			<List.Item
+				title='Press me!'
+				color='white'
+				onPress={() => alert('Press')}
+				backgroundColor='red'
+				underlayColor='green'
+				translateTitle={false}
+			/>
+			<List.Separator />
+		</List.Section>
 	</List.Container>
 );
 

@@ -5,21 +5,17 @@ import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsi
 import { useTheme } from '~/theme';
 import { BASE_HEIGHT, ICON_SIZE } from '~/containers/List/constants';
 import { type INativeListItem } from '../types';
-import { describeNativeListAccessory } from '../utils/describeAccessory';
 import {
 	nativeListItemAccessibilityLabel,
 	nativeListItemSubtitle,
 	nativeListItemTitle,
 	pressNativeListItem
 } from '../utils/itemProps';
-import NativeListAccessory from './Accessory';
 import styles, { ROW_MIN_HEIGHT } from '../styles';
 
 const NativeListItem = ({ item }: INativeListItem) => {
 	const { colors } = useTheme();
 	const { fontScale } = useResponsiveLayout();
-	const leading = describeNativeListAccessory(item.left?.());
-	const trailing = describeNativeListAccessory(item.right?.());
 	const minHeight = Math.max(ROW_MIN_HEIGHT, (item.heightContainer ?? BASE_HEIGHT) * fontScale);
 	const showsDisabledReason = Boolean(item.disabled && item.disabledReason);
 
@@ -34,10 +30,10 @@ const NativeListItem = ({ item }: INativeListItem) => {
 			titleTrailing={
 				item.alert ? <CustomIcon name='info' size={ICON_SIZE} color={colors.buttonBackgroundDangerDefault} /> : undefined
 			}
-			leading={leading ? <NativeListAccessory accessory={leading} /> : null}
+			leading={item.left?.()}
 			trailing={
 				<>
-					{trailing ? <NativeListAccessory accessory={trailing} /> : null}
+					{item.right?.()}
 					{item.showActionIndicator ? <Indicator indicator='disclosure' /> : null}
 				</>
 			}
