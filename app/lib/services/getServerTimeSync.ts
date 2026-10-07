@@ -1,5 +1,5 @@
 import fetch from '../methods/helpers/fetch';
-import { getBasicAuthHeader } from '../methods/getBasicAuthHeader';
+import { getBasicAuthHeader } from '../methods/serverBasicAuth';
 
 export const getServerTimeSync = async (server: string) => {
 	try {

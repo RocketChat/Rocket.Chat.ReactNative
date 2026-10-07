@@ -37,7 +37,7 @@ import { isIOS } from '../methods/helpers/deviceInfo';
 import { isSsl } from '../methods/helpers/isSsl';
 import { normalizeStatusExpiresAt } from '../methods/helpers/normalizeStatusExpiresAt';
 import fetch from '../methods/helpers/fetch';
-import { applyBasicAuth, getBasicAuthHeader } from '../methods/getBasicAuthHeader';
+import { applyBasicAuth, getBasicAuthHeader } from '../methods/serverBasicAuth';
 
 interface IServices {
 	[index: string]: string | boolean;

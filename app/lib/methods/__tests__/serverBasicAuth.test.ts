@@ -1,4 +1,4 @@
-import { getBasicAuthHeaderForUrl } from '../getBasicAuthHeader';
+import { getBasicAuthHeaderForUrl } from '../serverBasicAuth';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getBasicAuthKey } from '~/lib/constants/keys';
 

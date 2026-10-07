@@ -7,7 +7,7 @@ import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import { type IPreparedSettings, type ISettingsIcon } from '~/definitions';
 import fetch from './helpers/fetch';
 import log from './helpers/log';
-import { getBasicAuthHeader } from './getBasicAuthHeader';
+import { getBasicAuthHeader } from './serverBasicAuth';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import sdk from '../services/sdk';

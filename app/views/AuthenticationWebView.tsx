@@ -14,7 +14,7 @@ import { useDebounce } from '../lib/methods/helpers';
 import { loginOAuthOrSso } from '../lib/services/connect';
 import { type OutsideModalParamList } from '../stacks/types';
 import fetch, { type TMethods } from '../lib/methods/helpers/fetch';
-import { getBasicAuthHeaderForUrl } from '../lib/methods/getBasicAuthHeader';
+import { getBasicAuthHeaderForUrl } from '../lib/methods/serverBasicAuth';
 import { parseSamlOrCasRedirect } from '../lib/methods/helpers/parseSamlOrCasRedirect';
 
 // iframe uses a postMessage to send the token to the client

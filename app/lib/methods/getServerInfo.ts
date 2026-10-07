@@ -18,7 +18,7 @@ import { compareServerVersion } from './helpers';
 import log from './helpers/log';
 import { getUserSelector } from '~/selectors/login';
 import fetch from './helpers/fetch';
-import { getBasicAuthHeader } from './getBasicAuthHeader';
+import { getBasicAuthHeader } from './serverBasicAuth';
 import { getStoredSession } from './loggedInServer';
 
 interface IServerInfoFailure {
