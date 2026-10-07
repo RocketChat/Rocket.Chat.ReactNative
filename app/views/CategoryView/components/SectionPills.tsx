@@ -47,8 +47,7 @@ const styles = StyleSheet.create({
 	content: {
 		gap: 8,
 		paddingHorizontal: HORIZONTAL_PADDING,
-		paddingTop: 16,
-		paddingBottom: 8,
+		paddingVertical: 16,
 		alignItems: 'center'
 	}
 });

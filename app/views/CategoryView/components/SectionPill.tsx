@@ -1,6 +1,5 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
 
-import { AVATAR_BORDER_RADIUS } from '~/containers/Avatar/constants';
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
 import { type ISectionPill } from './types';
@@ -19,7 +18,7 @@ const SectionPill = ({ header, title, selected, onSelect }: ISectionPill) => {
 			accessibilityState={{ selected }}
 			accessibilityLabel={title}
 			testID={`category-view-section-${header}`}>
-			<Text style={[styles.title, { color: selected ? colors.fontWhite : colors.fontDefault }]} numberOfLines={1}>
+			<Text style={[styles.title, { color: selected ? colors.fontWhite : colors.fontTitlesLabels }]} numberOfLines={1}>
 				{title}
 			</Text>
 		</Pressable>
@@ -28,14 +27,15 @@ const SectionPill = ({ header, title, selected, onSelect }: ISectionPill) => {
 
 const styles = StyleSheet.create({
 	pill: {
-		minHeight: 36,
 		paddingHorizontal: 12,
+		paddingVertical: 8,
 		justifyContent: 'center',
-		borderRadius: AVATAR_BORDER_RADIUS,
+		borderRadius: 16,
 		overflow: 'hidden'
 	},
 	title: {
 		fontSize: 16,
+		lineHeight: 24,
 		...sharedStyles.textMedium
 	}
 });
