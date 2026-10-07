@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import {
 	type EntryExitAnimationFunction,
-	LinearTransition,
+	type ILayoutAnimationBuilder,
+	type LayoutAnimationsValues,
 	ReduceMotion,
 	useSharedValue,
 	withDelay,
@@ -27,17 +28,45 @@ const TOGGLE_SETTLE_MS = 500;
 const FIRST_DRAWN_FRAME_DELAY_MS = 1;
 const COVER_HANDOFF_MS = 50;
 
-export const SECTION_REFLOW = LinearTransition.springify()
-	.stiffness(SPRING_STIFFNESS)
-	.damping(SPRING_DAMPING)
-	.mass(SPRING_MASS)
-	.delay(FIRST_DRAWN_FRAME_DELAY_MS)
-	.reduceMotion(ReduceMotion.System);
-
 const slideTo = (offset: number) => {
 	'worklet';
 	return withDelay(FIRST_DRAWN_FRAME_DELAY_MS, withSpring(offset, SECTION_SPRING));
 };
+
+const jumpTo = (offset: number) => {
+	'worklet';
+	return withTiming(offset, { duration: 0 });
+};
+
+const isOnScreen = (globalOriginY: number, height: number, windowHeight: number) => {
+	'worklet';
+	return globalOriginY + height > 0 && globalOriginY < windowHeight;
+};
+
+const reflow = (values: LayoutAnimationsValues) => {
+	'worklet';
+	const { windowHeight } = values;
+	const isVisible =
+		isOnScreen(values.currentGlobalOriginY, values.currentHeight, windowHeight) ||
+		isOnScreen(values.targetGlobalOriginY, values.targetHeight, windowHeight);
+	const moveTo = isVisible ? slideTo : jumpTo;
+	return {
+		initialValues: {
+			originX: values.currentOriginX,
+			originY: values.currentOriginY,
+			width: values.currentWidth,
+			height: values.currentHeight
+		},
+		animations: {
+			originX: moveTo(values.targetOriginX),
+			originY: moveTo(values.targetOriginY),
+			width: moveTo(values.targetWidth),
+			height: moveTo(values.targetHeight)
+		}
+	};
+};
+
+export const SECTION_REFLOW: ILayoutAnimationBuilder = { build: () => reflow };
 
 const coverExiting: EntryExitAnimationFunction = () => {
 	'worklet';
