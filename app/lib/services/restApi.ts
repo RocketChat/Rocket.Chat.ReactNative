@@ -65,9 +65,15 @@ export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: 
 	// RC 2.2.0
 	sdk.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key, ...(force && { force: true }) });
 
-export const e2eRequestSubscriptionKeys = (): Promise<boolean> =>
+export const e2eRequestSubscriptionKeys = (): Promise<unknown> => {
+	const serverVersion = reduxStore.getState().server.version;
+	// RC 8.6.0
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+		return sdk.post('e2e.requestSubscriptionKeys');
+	}
 	// RC 0.72.0
-	sdk.methodCallWrapper('e2e.requestSubscriptionKeys');
+	return sdk.methodCallWrapper('e2e.requestSubscriptionKeys');
+};
 
 export const e2eGetUsersOfRoomWithoutKey = (rid: string) =>
 	// RC 0.70.0
@@ -124,11 +130,22 @@ export const spotlight = (
 	usernames: string[],
 	type: { users: boolean; rooms: boolean; mentions: boolean },
 	rid?: string
-): Promise<ISpotlight> =>
+): Promise<ISpotlight> => {
+	const serverVersion = reduxStore.getState().server.version;
+	// RC 8.6.0
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+		return sdk.get('spotlight', {
+			query: search,
+			type: JSON.stringify(type),
+			...(usernames.length ? { usernames: usernames.join(',') } : {}),
+			...(rid ? { rid } : {})
+		}) as Promise<ISpotlight>;
+	}
 	// RC 0.51.0
-	rid
+	return rid
 		? sdk.methodCallWrapper('spotlight', search, usernames, type, rid)
 		: sdk.methodCallWrapper('spotlight', search, usernames, type);
+};
 
 export const createDirectMessage = (username: string) =>
 	// RC 0.59.0
@@ -281,8 +298,13 @@ export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; sel
 };
 
 export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p') => {
-	// RC 0.48.0
 	if (type === 'p') {
+		const serverVersion = reduxStore.getState().server.version;
+		// RC 8.6.0
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+			return sdk.post('rooms.join', { roomId, ...(joinCode ? { joinCode } : {}) });
+		}
+		// RC 0.48.0
 		return sdk.methodCallWrapper('joinRoom', roomId) as Promise<boolean>;
 	}
 	return sdk.post('channels.join', { roomId, joinCode });
@@ -542,7 +564,12 @@ export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 
 	return sdk.get('canned-responses', params);
 };
 
-export const toggleBlockUser = (rid: string, blocked: string, block: boolean): Promise<boolean> => {
+export const toggleBlockUser = (rid: string, blocked: string, block: boolean): Promise<unknown> => {
+	const serverVersion = reduxStore.getState().server.version;
+	// RC 8.6.0
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+		return sdk.post('im.blockUser', { roomId: rid, block });
+	}
 	if (block) {
 		// RC 0.49.0
 		return sdk.methodCallWrapper('blockUser', { rid, blocked });
@@ -972,10 +999,27 @@ export const saveAutoTranslate = ({
 	options
 }: {
 	rid: string;
-	field: string;
-	value: string;
+	field: 'autoTranslate' | 'autoTranslateLanguage';
+	value: boolean | string;
 	options?: { defaultLanguage: string };
-}) => sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options ?? null);
+}): Promise<unknown> => {
+	const serverVersion = reduxStore.getState().server.version;
+	// RC 8.6.0
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+		return sdk.post('autotranslate.saveSettings', {
+			roomId: rid,
+			field,
+			value,
+			...(options?.defaultLanguage ? { defaultLanguage: options.defaultLanguage } : {})
+		});
+	}
+	let ddpValue = value;
+	if (typeof value === 'boolean') {
+		ddpValue = value ? '1' : '0';
+	}
+	// RC 2.0.0
+	return sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, ddpValue, options ?? null);
+};
 
 export const getSupportedLanguagesAutoTranslate = (): Promise<{ language: string; name: string }[]> =>
 	sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
@@ -1003,6 +1047,10 @@ export const inviteToken = (token: string): any =>
 
 export const readThreads = (tmid: string): Promise<void> => {
 	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.8.0')) {
+		// RC 8.8.0
+		return sdk.post('chat.readThread', { tmid }).then(() => undefined);
+	}
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
 		// RC 3.4.0
 		return sdk.methodCallWrapper('readThreads', tmid);
@@ -1018,9 +1066,14 @@ export const createGroupChat = () => {
 	return sdk.post('im.create', { usernames });
 };
 
-export const addUsersToRoom = (rid: string): Promise<boolean> => {
-	const { users: selectedUsers } = reduxStore.getState().selectedUsers;
-	const users = selectedUsers.map(u => u.name);
+export const addUsersToRoom = (rid: string, t: 'c' | 'p'): Promise<unknown> => {
+	const { selectedUsers, server } = reduxStore.getState();
+	const users = selectedUsers.users.map(u => u.name);
+	// RC 8.6.0
+	if (compareServerVersion(server.version, 'greaterThanOrEqualTo', '8.6.0')) {
+		const endpoint = t === 'p' ? 'groups.invite' : 'channels.invite';
+		return Promise.all(users.map(username => sdk.post(endpoint, { roomId: rid, username })));
+	}
 	// RC 0.51.0
 	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });
 };

@@ -65,6 +65,9 @@ export type GroupsEndpoints = {
 			userMentions: number;
 		};
 	};
+	'groups.invite': {
+		POST: (params: { roomId: string; username: string }) => { group: IServerRoom };
+	};
 	'groups.close': {
 		POST: (params: { roomId: string }) => {};
 	};

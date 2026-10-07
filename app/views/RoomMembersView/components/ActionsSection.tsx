@@ -56,7 +56,7 @@ export default function ActionsSection({ rid, t, joined, abacAttributes }: IActi
 	const addUser = async () => {
 		try {
 			dispatch(setLoading(true));
-			await addUsersToRoom(rid);
+			await addUsersToRoom(rid, t as 'c' | 'p');
 			pop();
 		} catch (e) {
 			log(e);
