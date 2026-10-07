@@ -85,7 +85,6 @@ const DiscussionsView = () => {
 	};
 
 	const onSearchChangeText = useDebounce((text: string) => {
-		setIsSearching(true);
 		setSearch([]);
 		searchText.current = text;
 		offset.current = 0;
