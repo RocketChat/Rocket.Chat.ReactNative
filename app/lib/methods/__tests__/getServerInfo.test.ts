@@ -1,8 +1,8 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { getServerInfo } from '../getServerInfo';
-import fetch from '../helpers/fetch';
-import UserPreferences from '../userPreferences';
+import fetch from '~/lib/methods/helpers/fetch';
+import UserPreferences from '~/lib/methods/userPreferences';
 import { store } from '~/lib/store/auxStore';
 import { getSupportedVersionsCloud } from '~/lib/services/restApi';
 import { getBasicAuthKey, getServerUserIdKey, getUserTokenKey } from '~/lib/constants/keys';

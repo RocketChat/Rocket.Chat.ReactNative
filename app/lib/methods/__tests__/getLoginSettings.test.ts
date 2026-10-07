@@ -1,8 +1,8 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { getLoginSettings } from '../getSettings';
-import { headers } from '../helpers/fetch';
-import UserPreferences from '../userPreferences';
+import { headers } from '~/lib/methods/helpers/fetch';
+import UserPreferences from '~/lib/methods/userPreferences';
 import { getBasicAuthKey } from '~/lib/constants/keys';
 
 jest.mock('~/lib/database', () => ({
