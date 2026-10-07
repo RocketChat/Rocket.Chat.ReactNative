@@ -168,10 +168,14 @@ export const ComposerInput = memo(
 			focus
 		}));
 
-		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
+		const syncTextState = (text: string) => {
 			const message = text.trim();
 			textRef.current = message;
+			setMicOrSend(message.length === 0 ? 'mic' : 'send');
+			setIsEmpty(text.length === 0);
+		};
 
+		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
 			if (forceUpdateDraftMessage) {
 				saveMessageDraft('');
 			}
@@ -188,8 +192,7 @@ export const ComposerInput = memo(
 					selectionRef.current = selection;
 				}, 50);
 			}
-			setMicOrSend(message.length === 0 ? 'mic' : 'send');
-			setIsEmpty(text.length === 0);
+			syncTextState(text);
 		};
 
 		const focus = () => {
@@ -201,9 +204,8 @@ export const ComposerInput = memo(
 		};
 
 		const onChangeText: TextInputProps['onChangeText'] = text => {
-			textRef.current = text;
 			debouncedOnChangeText(text);
-			setInput(text);
+			syncTextState(text);
 		};
 
 		const onSelectionChange: TextInputProps['onSelectionChange'] = e => {
