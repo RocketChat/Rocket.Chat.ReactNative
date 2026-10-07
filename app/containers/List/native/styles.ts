@@ -66,8 +66,5 @@ export default StyleSheet.create({
 	},
 	disabled: {
 		opacity: 0.3
-	},
-	accessoryText: {
-		fontSize: 17
 	}
 });

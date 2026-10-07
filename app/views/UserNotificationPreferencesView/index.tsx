@@ -85,7 +85,9 @@ const UserNotificationPreferencesView = () => {
 		<SafeAreaView testID='user-notification-preference-view'>
 			<List.Container>
 				{loading ? (
-					<ActivityIndicator />
+					<List.Section>
+						<ActivityIndicator />
+					</List.Section>
 				) : (
 					<>
 						<List.Section title='In_App_Notification'>

@@ -23,7 +23,7 @@ import { navigateToScreen, type TRoomStackNavigation } from '../services/navigat
 import { getRoomHeaderMode, type TRoomHeaderMode } from '../helpers/getRoomHeaderMode';
 import { useCanPlaceLivechatOnHold } from './useCanPlaceLivechatOnHold';
 import { useThreadFollowing } from './useThreadFollowing';
-import { useRoomRightButtonsData } from './useRoomRightButtonsData';
+import { useRoomActionsState } from './useRoomActionsState';
 import { useHeaderCallPress } from './useHeaderCallPress';
 
 export const EMPTY_ACTIONS: IHeaderAction[] = [];
@@ -125,7 +125,7 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 		goSearchView,
 		goE2EEToggleRoomView,
 		threadsAccessibilityLabel
-	} = useRoomRightButtonsData(rid, roomStore);
+	} = useRoomActionsState(rid, roomStore);
 	const { callPresent, isCallDisabled, onPressCall } = useHeaderCallPress(rid);
 
 	const threadsAction: IHeaderAction = {

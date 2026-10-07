@@ -3,7 +3,6 @@ import { StyleSheet, Text } from 'react-native';
 
 import { useActionSheet } from '~/containers/ActionSheet';
 import * as List from '~/containers/List';
-import { asNativeListSection } from '~/containers/List/native/utils/rowMarkers';
 import { type TSubscriptionModel } from '~/definitions';
 import { useTheme } from '~/theme';
 import { useHasCustomCategoriesLicense } from '~/views/RoomsListView/hooks/useSidebarCategories';
@@ -61,4 +60,4 @@ function CategorySection({ room, category, favorite, joined }: ICategorySection)
 	);
 }
 
-export default asNativeListSection(CategorySection);
+export default CategorySection;

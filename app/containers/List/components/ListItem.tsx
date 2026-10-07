@@ -257,9 +257,10 @@ export interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListIt
 	backgroundColor?: string;
 	onPress?: Function;
 	style?: ViewStyle;
+	selected?: boolean;
 }
 
-const ListItem = memo(({ ...props }: IListItem) => {
+const ListItem = memo((props: IListItem) => {
 	const { colors } = useTheme();
 	const isNativeList = useIsNativeList();
 	const backgroundColor = props.backgroundColor || colors.surfaceRoom;
@@ -268,13 +269,34 @@ const ListItem = memo(({ ...props }: IListItem) => {
 		return <NativeListItem item={props} />;
 	}
 
-	const { onPress, ...contentProps } = props;
-	const content = <Content {...contentProps} />;
+	const content = (
+		<Content
+			accessibilityLabel={props.accessibilityLabel}
+			title={props.title}
+			subtitle={props.subtitle}
+			left={props.left}
+			right={props.right}
+			disabled={props.disabled}
+			testID={props.testID}
+			color={props.color}
+			translateTitle={props.translateTitle}
+			translateSubtitle={props.translateSubtitle}
+			showActionIndicator={props.showActionIndicator}
+			alert={props.alert}
+			heightContainer={props.heightContainer}
+			rightContainerStyle={props.rightContainerStyle}
+			styleTitle={props.styleTitle}
+			additionalAccessibilityLabel={props.additionalAccessibilityLabel}
+			accessibilityRole={props.accessibilityRole}
+			additionalAccessibilityLabelCheck={props.additionalAccessibilityLabelCheck}
+			numberOfLines={props.numberOfLines}
+		/>
+	);
 
-	if (onPress) {
+	if (props.onPress) {
 		return (
 			<Button
-				onPress={onPress}
+				onPress={props.onPress}
 				title={props.title}
 				disabled={props.disabled}
 				disabledReason={props.disabledReason}

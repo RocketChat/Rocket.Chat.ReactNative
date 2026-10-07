@@ -2,7 +2,6 @@ import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useStore } from 'zustand';
 
-import { type IHeaderAction, nativeHeaderItems } from '~/lib/methods/helpers/navigation/headerActions';
 import { type IRoomViewProps, type RoomStore } from '~/views/RoomView/definitions';
 import { useGoRoomActionsView } from '~/views/RoomView/hooks/useGoRoomActionsView';
 import { useHeaderFields } from '~/views/RoomView/hooks/useHeaderFields';
@@ -41,16 +40,6 @@ export const NativeAvatarItem = ({ rid, roomStore }: { rid: string; roomStore: R
 			]
 		});
 	}, [navigation, rid, roomStore]);
-
-	return null;
-};
-
-export const NativeRightItems = ({ actions }: { actions: IHeaderAction[] }) => {
-	const navigation = useNavigation<IRoomViewProps['navigation']>();
-
-	useLayoutEffect(() => {
-		navigation.setOptions({ unstable_headerRightItems: ({ tintColor }) => nativeHeaderItems(actions, tintColor) });
-	}, [navigation, actions]);
 
 	return null;
 };

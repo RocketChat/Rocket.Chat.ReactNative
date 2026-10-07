@@ -56,8 +56,8 @@ jest.mock('~/lib/services/restApi', () => ({ returnLivechat: jest.fn() }));
 const mockGoThreadsView = jest.fn();
 const mockGoSearchView = jest.fn();
 let mockButtonsData: Record<string, unknown>;
-jest.mock('../useRoomRightButtonsData', () => ({
-	useRoomRightButtonsData: () => mockButtonsData
+jest.mock('../useRoomActionsState', () => ({
+	useRoomActionsState: () => mockButtonsData
 }));
 
 const mockVideoConf = { showInitCallActionSheet: jest.fn(), callEnabled: false, disabledTooltip: false };

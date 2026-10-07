@@ -4,8 +4,6 @@ import { StyleSheet, Text } from 'react-native';
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
-import { useIsNativeList } from '~/containers/List/native/context';
-import NativeListPicker from '~/containers/List/native/components/Picker';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
@@ -51,7 +49,6 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const isNativeList = useIsNativeList();
 	const [option, setOption] = useState(
 		value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0]
 	);
@@ -74,26 +71,21 @@ const ListPicker = ({
 
 	const label = option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label;
 
-	if (isNativeList) {
-		return (
-			<NativeListPicker
-				title={I18n.t(title)}
-				testID={testID}
-				options={OPTIONS[preference].map(i => ({ label: I18n.t(i.label, { defaultValue: i.label }), value: i.value }))}
-				selection={option?.value ?? ''}
-				onSelectionChange={selectOption}
-			/>
-		);
-	}
-
 	return (
-		<List.Item
-			title={title}
+		<List.Picker
+			title={I18n.t(title)}
 			testID={testID}
-			onPress={() => showActionSheet({ options: getOptions() })}
-			right={() => <Text style={[styles.title, { color: colors.fontHint }]}>{label}</Text>}
-			additionalAccessibilityLabel={label}
-		/>
+			options={OPTIONS[preference].map(i => ({ label: I18n.t(i.label, { defaultValue: i.label }), value: i.value }))}
+			selection={option?.value ?? ''}
+			onSelectionChange={selectOption}>
+			<List.Item
+				title={title}
+				testID={testID}
+				onPress={() => showActionSheet({ options: getOptions() })}
+				right={() => <Text style={[styles.title, { color: colors.fontHint }]}>{label}</Text>}
+				additionalAccessibilityLabel={label}
+			/>
+		</List.Picker>
 	);
 };
 

@@ -7,10 +7,12 @@ import { CustomIcon } from '../CustomIcon';
 import { type IStatusComponentProps } from './definition';
 import { getStatusIconName } from './getStatusIconName';
 import { useUserStatusColor } from '~/lib/hooks/useUserStatusColor';
+import { useIsNativeList } from '~/containers/List/native/context';
 
 const Status = memo(({ style, status = 'offline', size = 32, ...props }: IStatusComponentProps) => {
 	const { colors } = useTheme();
 	const userStatusColor = useUserStatusColor(status);
+	const isNativeList = useIsNativeList();
 
 	const { fontScale } = useWindowDimensions();
 
@@ -27,7 +29,7 @@ const Status = memo(({ style, status = 'offline', size = 32, ...props }: IStatus
 	return (
 		<CustomIcon
 			{...props}
-			style={calculatedStyle}
+			style={isNativeList ? style : calculatedStyle}
 			size={size}
 			name={getStatusIconName(status)}
 			color={userStatusColor ?? colors.userPresenceOffline}

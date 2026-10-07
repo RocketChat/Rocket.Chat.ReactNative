@@ -26,7 +26,7 @@ jest.mock('../RoomScreen', () => ({ __esModule: true, default: () => null }));
 jest.mock('../components/LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
 jest.mock('../components/RoomViewHeader/RoomHeaderActions', () => ({ RoomHeaderActions: 'RoomHeaderActions' }));
 jest.mock('~/containers/RoomHeader', () => ({ __esModule: true, default: 'RoomHeader' }));
-jest.mock('../hooks/useRoomRightButtonsData', () => ({ useRoomRightButtonsData: jest.fn() }));
+jest.mock('../hooks/useRoomActionsState', () => ({ useRoomActionsState: jest.fn() }));
 jest.mock('../hooks/useHeaderCallPress', () => ({ useHeaderCallPress: jest.fn() }));
 
 const mockRoomStore: { current: StoreApi<Partial<RoomState>> | null } = { current: null };

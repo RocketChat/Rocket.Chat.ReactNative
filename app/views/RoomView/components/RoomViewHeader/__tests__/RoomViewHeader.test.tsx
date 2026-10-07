@@ -5,7 +5,6 @@ import { type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActio
 import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
 import { useOmnichannelActions, useRoomActions, useThreadActions } from '~/views/RoomView/hooks/useRoomHeaderActions';
 import { useNativeRoomHeader } from '~/views/RoomView/hooks/useNativeRoomHeader';
-import { RoomHeaderActions } from '../RoomHeaderActions';
 import { RoomViewHeader } from '../RoomViewHeader';
 
 const mockSetOptions = jest.fn();
@@ -19,6 +18,11 @@ jest.mock('~/lib/methods/helpers', () =>
 		get: () => mockHasNativeHeaderBar
 	})
 );
+jest.mock('~/lib/methods/helpers/deviceInfo', () =>
+	Object.defineProperty({ ...jest.requireActual('~/lib/methods/helpers/deviceInfo') }, 'hasNativeHeaderBar', {
+		get: () => mockHasNativeHeaderBar
+	})
+);
 
 let mockIsMasterDetail = false;
 jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: () => mockIsMasterDetail }));
@@ -29,12 +33,8 @@ jest.mock('~/views/RoomView/hooks/useGoRoomActionsView', () => ({ useGoRoomActio
 jest.mock('~/views/RoomView/hooks/useUnreadsCount', () => ({ useUnreadsCount: () => 4 }));
 jest.mock('~/views/RoomView/components/LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
 jest.mock('~/containers/RoomHeader', () => ({ __esModule: true, default: 'RoomHeader' }));
-jest.mock('~/lib/methods/helpers/navigation/headerActions', () => ({
-	...jest.requireActual('~/lib/methods/helpers/navigation/headerActions'),
-	HeaderActions: 'HeaderActions'
-}));
 
-jest.mock('~/views/RoomView/hooks/useRoomRightButtonsData', () => ({ useRoomRightButtonsData: jest.fn() }));
+jest.mock('~/views/RoomView/hooks/useRoomActionsState', () => ({ useRoomActionsState: jest.fn() }));
 jest.mock('~/views/RoomView/hooks/useHeaderCallPress', () => ({ useHeaderCallPress: jest.fn() }));
 
 const mockActionsStore = createStore<{ roomActions: IHeaderAction[] }>(() => ({
@@ -84,25 +84,27 @@ describe('on the JS header', () => {
 		render(<RoomViewHeader rid='rid-1' roomStore={makeRoomStore()} />);
 
 		expect(lastOptionsWith('headerLeft').headerLeft().type).toBe('LeftButtons');
-		expect(lastOptionsWith('headerRight').headerRight().type).toBe(RoomHeaderActions);
+		expect(lastOptionsWith('headerRight').headerRight().props.actions).toEqual([expect.objectContaining({ label: 'Threads' })]);
 		expect(lastOptionsWith('headerTitle').headerTitle().type).toBe('RoomHeader');
 		expect(optionsWith('unstable_headerRightItems')).toHaveLength(0);
 		expect(optionsWith('unstable_headerLeftItems')).toHaveLength(0);
 	});
 
+	it('sets no right actions without a rid', () => {
+		render(<RoomViewHeader roomStore={makeRoomStore()} />);
+
+		expect(optionsWith('headerRight')).toHaveLength(0);
+	});
+
 	it('renders only the active mode actions in the JS header buttons', () => {
 		render(<RoomViewHeader rid='rid-1' tmid='tmid-1' roomStore={makeRoomStore()} />);
-		expect(useThreadActions).not.toHaveBeenCalled();
-
-		const { toJSON } = render(lastOptionsWith('headerRight').headerRight());
 
 		expect(useThreadActions).toHaveBeenCalledWith('tmid-1');
 		expect(useRoomActions).not.toHaveBeenCalled();
 		expect(useOmnichannelActions).not.toHaveBeenCalled();
-		expect(toJSON()).toMatchObject({
-			type: 'HeaderActions',
-			props: { actions: [expect.objectContaining({ label: 'Follow_thread' })] }
-		});
+		expect(lastOptionsWith('headerRight').headerRight().props.actions).toEqual([
+			expect.objectContaining({ label: 'Follow_thread' })
+		]);
 	});
 });
 
@@ -134,7 +136,7 @@ describe('on the native header bar', () => {
 		const backOptions = lastOptionsWith('unstable_headerLeftItems');
 		expect(backOptions.headerBackVisible).toBe(false);
 		expect(backOptions.unstable_headerLeftItems({})).toEqual([expect.objectContaining({ label: '4' })]);
-		expect(optionsWith('headerRight')).toHaveLength(0);
+		expect(lastOptionsWith('headerRight').headerRight).toBeUndefined();
 	});
 
 	it.each([

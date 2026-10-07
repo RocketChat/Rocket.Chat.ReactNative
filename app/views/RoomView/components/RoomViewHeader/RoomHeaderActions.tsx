@@ -1,7 +1,8 @@
-import { type ComponentType, type ReactElement } from 'react';
+import { useLayoutEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
-import { type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
-import { type RoomStore } from '~/views/RoomView/definitions';
+import { headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
+import { type IRoomViewProps, type RoomStore } from '~/views/RoomView/definitions';
 import {
 	EMPTY_ACTIONS,
 	useOmnichannelActions,
@@ -10,57 +11,42 @@ import {
 	useThreadActions
 } from '~/views/RoomView/hooks/useRoomHeaderActions';
 
-type TActionsRenderer = ComponentType<{ actions: IHeaderAction[] }>;
+const HeaderRightActions = ({ actions }: { actions: IHeaderAction[] }) => {
+	const navigation = useNavigation<IRoomViewProps['navigation']>();
 
-interface IRoomHeaderActionsProps {
-	rid?: string;
-	tmid?: string;
-	roomStore: RoomStore;
-	ActionsRenderer: TActionsRenderer;
-}
+	useLayoutEffect(() => {
+		navigation.setOptions(headerRightActions(actions));
+	}, [navigation, actions]);
 
-const OmnichannelActions = ({
-	rid,
-	roomStore,
-	ActionsRenderer
-}: {
-	rid: string;
-	roomStore: RoomStore;
-	ActionsRenderer: TActionsRenderer;
-}) => {
+	return null;
+};
+
+const OmnichannelActions = ({ rid, roomStore }: { rid: string; roomStore: RoomStore }) => {
 	const actions = useOmnichannelActions(rid, roomStore);
-	return <ActionsRenderer actions={actions} />;
+	return <HeaderRightActions actions={actions} />;
 };
 
-const ThreadActions = ({ tmid, ActionsRenderer }: { tmid: string; ActionsRenderer: TActionsRenderer }) => {
+const ThreadActions = ({ tmid }: { tmid: string }) => {
 	const actions = useThreadActions(tmid);
-	return <ActionsRenderer actions={actions} />;
+	return <HeaderRightActions actions={actions} />;
 };
 
-const RoomActions = ({
-	rid,
-	roomStore,
-	ActionsRenderer
-}: {
-	rid: string;
-	roomStore: RoomStore;
-	ActionsRenderer: TActionsRenderer;
-}) => {
+const RoomActions = ({ rid, roomStore }: { rid: string; roomStore: RoomStore }) => {
 	const actions = useRoomActions(rid, roomStore);
-	return <ActionsRenderer actions={actions} />;
+	return <HeaderRightActions actions={actions} />;
 };
 
-export const RoomHeaderActions = ({ rid, tmid, roomStore, ActionsRenderer }: IRoomHeaderActionsProps): ReactElement => {
+export const RoomHeaderActions = ({ rid, tmid, roomStore }: { rid?: string; tmid?: string; roomStore: RoomStore }) => {
 	const mode = useRoomHeaderMode(rid, tmid, roomStore);
 
 	if (rid && mode === 'omnichannel') {
-		return <OmnichannelActions rid={rid} roomStore={roomStore} ActionsRenderer={ActionsRenderer} />;
+		return <OmnichannelActions rid={rid} roomStore={roomStore} />;
 	}
 	if (tmid && mode === 'thread') {
-		return <ThreadActions tmid={tmid} ActionsRenderer={ActionsRenderer} />;
+		return <ThreadActions tmid={tmid} />;
 	}
 	if (rid && mode === 'room') {
-		return <RoomActions rid={rid} roomStore={roomStore} ActionsRenderer={ActionsRenderer} />;
+		return <RoomActions rid={rid} roomStore={roomStore} />;
 	}
-	return <ActionsRenderer actions={EMPTY_ACTIONS} />;
+	return <HeaderRightActions actions={EMPTY_ACTIONS} />;
 };

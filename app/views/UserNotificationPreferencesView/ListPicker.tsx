@@ -2,8 +2,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Fragment, type ReactElement } from 'react';
 
 import * as List from '~/containers/List';
-import { useIsNativeList } from '~/containers/List/native/context';
-import NativeListPicker from '~/containers/List/native/components/Picker';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
@@ -37,7 +35,6 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const isNativeList = useIsNativeList();
 	const option = value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0];
 
 	const getOptions = (): ReactElement => (
@@ -63,30 +60,25 @@ const ListPicker = ({
 
 	const label = option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label;
 
-	if (isNativeList) {
-		return (
-			<NativeListPicker
-				title={I18n.t(title)}
-				testID={testID}
-				options={OPTIONS[preference].map(i => ({
-					label: I18n.t(i.label, { defaultValue: i.label }),
-					value: i.value.toString(),
-					testID: `notification-preferences-${preference}-${i.value}`
-				}))}
-				selection={option?.value.toString() ?? ''}
-				onSelectionChange={selected => onChangeValue({ [preference]: selected })}
-			/>
-		);
-	}
-
 	return (
-		<List.Item
-			title={title}
+		<List.Picker
+			title={I18n.t(title)}
 			testID={testID}
-			onPress={() => showActionSheet({ children: getOptions() })}
-			right={() => <Text style={[styles.pickerText, { color: colors.fontInfo }]}>{label}</Text>}
-			additionalAccessibilityLabel={label}
-		/>
+			options={OPTIONS[preference].map(i => ({
+				label: I18n.t(i.label, { defaultValue: i.label }),
+				value: i.value.toString(),
+				testID: `notification-preferences-${preference}-${i.value}`
+			}))}
+			selection={option?.value.toString() ?? ''}
+			onSelectionChange={selected => onChangeValue({ [preference]: selected })}>
+			<List.Item
+				title={title}
+				testID={testID}
+				onPress={() => showActionSheet({ children: getOptions() })}
+				right={() => <Text style={[styles.pickerText, { color: colors.fontInfo }]}>{label}</Text>}
+				additionalAccessibilityLabel={label}
+			/>
+		</List.Picker>
 	);
 };
 

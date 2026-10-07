@@ -21,7 +21,7 @@ const SECONDARY_LABEL = {
 
 const isInfo = (element: ReactElement): element is ReactElement<IInfoProps> => element.type === ListInfo;
 
-const rowTestID = (element?: ReactElement) => (element?.props as { testID?: string } | undefined)?.testID;
+const isSelected = (row?: ReactElement) => Boolean((row?.props as { selected?: boolean } | undefined)?.selected);
 
 const NativeListSection = ({ children, title, translateTitle }: INativeListSection) => {
 	const { theme, colors } = useTheme();
@@ -29,14 +29,11 @@ const NativeListSection = ({ children, title, translateTitle }: INativeListSecti
 	const elements = flattenListChildren(children).filter(element => !isListSeparator(element));
 	const infos = elements.filter(isInfo);
 	const rows = elements.filter(element => !isInfo(element));
-	const selectedTag = context?.selectedTag ?? null;
 	const secondaryLabel = theme === 'light' ? SECONDARY_LABEL.light : SECONDARY_LABEL.dark;
 
 	if (!rows.length && !infos.length) {
 		return null;
 	}
-
-	const isSelected = (row?: ReactElement) => Boolean(selectedTag) && rowTestID(row) === selectedTag;
 
 	return (
 		<>

@@ -7,8 +7,8 @@ import { setUser } from '~/actions/login';
 import { addSettings } from '~/actions/settings';
 import { selectServerSuccess } from '~/actions/server';
 import { initStore } from '~/lib/store/auxStore';
-import { type INativeListPicker } from '~/containers/List/native/types';
-import StatusView from './index';
+import { type IListPicker } from '~/containers/List/components/ListPicker';
+import StatusView from '..';
 
 const mockNavigationSetOptions = jest.fn();
 const mockNavigationGoBack = jest.fn();
@@ -55,18 +55,18 @@ jest.mock('~/containers/ActionSheet', () => ({
 }));
 
 const mockPicker = jest.fn();
-jest.mock('~/containers/List/native/components/Picker', () => {
+jest.mock('~/containers/List/components/ListPicker', () => {
 	const { View } = require('react-native');
 	return {
 		__esModule: true,
-		default: (props: INativeListPicker) => {
+		default: (props: IListPicker) => {
 			mockPicker(props);
 			return <View testID={props.testID} />;
 		}
 	};
 });
 
-const latestPicker = (): INativeListPicker => mockPicker.mock.calls[mockPicker.mock.calls.length - 1][0];
+const latestPicker = (): IListPicker => mockPicker.mock.calls[mockPicker.mock.calls.length - 1][0];
 
 const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 

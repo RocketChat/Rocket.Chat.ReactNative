@@ -3,12 +3,11 @@ import { Text } from 'react-native';
 
 import { useActionSheet } from '~/containers/ActionSheet';
 import * as List from '~/containers/List';
-import { asNativeListSection } from '~/containers/List/native/utils/rowMarkers';
 import { useIsNativeList } from '~/containers/List/native/context';
 import I18n from '~/i18n';
 import dayjs from '~/lib/dayjs';
 import { useTheme } from '~/theme';
-import ClearAfterNativeRow from './ClearAfterNativeRow';
+import ClearAfterRow from './ClearAfterRow';
 import ClearAfterSheetContent from './ClearAfterSheetContent';
 import styles from './styles';
 import { CLEAR_AFTER_OPTIONS, type ClearAfterValue } from './types';
@@ -45,17 +44,8 @@ const ClearAfterPicker = ({ value, customDate, onChange }: IClearAfterPickerProp
 		});
 	};
 
-	if (isNativeList) {
-		return (
-			<List.Section>
-				<ClearAfterNativeRow value={value} customDate={customDate} customDateLabel={customDateLabel} onChange={onChange} />
-				<List.Info info='Status_clear_after_hint' />
-			</List.Section>
-		);
-	}
-
-	return (
-		<>
+	const row = (
+		<ClearAfterRow value={value} customDate={customDate} customDateLabel={customDateLabel} onChange={onChange}>
 			<List.Item
 				title='Status_clear_after'
 				testID='status-view-clear-after'
@@ -64,10 +54,25 @@ const ClearAfterPicker = ({ value, customDate, onChange }: IClearAfterPickerProp
 				additionalAccessibilityLabel={getDisplayLabel()}
 				style={styles.listItem}
 			/>
+		</ClearAfterRow>
+	);
+
+	if (isNativeList) {
+		return (
+			<List.Section>
+				{row}
+				<List.Info info='Status_clear_after_hint' />
+			</List.Section>
+		);
+	}
+
+	return (
+		<>
+			{row}
 			<List.Separator />
 			<List.Info info='Status_clear_after_hint' />
 		</>
 	);
 };
 
-export default asNativeListSection(ClearAfterPicker);
+export default ClearAfterPicker;
