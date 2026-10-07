@@ -10,14 +10,9 @@ import { flattenListChildren, isListSeparator } from '../utils/listChildren';
 import { NativeListContext } from '../native/context';
 import styles from '../native/styles';
 
-export interface IListSelection {
-	selectedTag: string | null;
-}
-
 interface IListContainer {
 	children: (ReactElement | null)[] | ReactElement | null;
 	testID?: string;
-	selection?: IListSelection;
 	backgroundHidden?: boolean;
 }
 
@@ -52,10 +47,9 @@ const useTranslucentHeader = () => {
 	}, [navigation]);
 };
 
-const ListContainer = ({ children, testID, selection, backgroundHidden }: IListContainer) => {
+const ListContainer = ({ children, testID, backgroundHidden }: IListContainer) => {
 	const { colors } = useTheme();
 	useTranslucentHeader();
-	const selectedTag = selection?.selectedTag ?? null;
 	const sections = groupIntoSections(flattenListChildren(children).filter(element => !isListSeparator(element)));
 
 	return (
@@ -67,7 +61,7 @@ const ListContainer = ({ children, testID, selection, backgroundHidden }: IListC
 			keyboardShouldPersistTaps='handled'
 			keyboardDismissMode='interactive'>
 			{sections.map((section, sectionIndex) => (
-				<NativeListContext.Provider key={section.key} value={{ selectedTag, sectionIndex }}>
+				<NativeListContext.Provider key={section.key} value={{ sectionIndex }}>
 					{section}
 				</NativeListContext.Provider>
 			))}

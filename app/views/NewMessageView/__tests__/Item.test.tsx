@@ -2,10 +2,10 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { isValidElement, type ReactNode } from 'react';
 
-import Item from './Item';
+import Item from '../Item';
 import { mockedStore } from '~/reducers/mockedStore';
 import { setUser } from '~/actions/login';
-import * as stories from './Item.stories';
+import * as stories from '../Item.stories';
 import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 import { NewMediaCall } from '~/containers/NewMediaCall';
 import { initStore } from '~/lib/store/auxStore';

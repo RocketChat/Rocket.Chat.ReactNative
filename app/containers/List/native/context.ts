@@ -1,7 +1,6 @@
 import { createContext, useContext } from 'react';
 
 interface INativeListContext {
-	selectedTag: string | null;
 	sectionIndex: number;
 }
 

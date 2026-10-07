@@ -5,7 +5,6 @@ import { type DrawerParamList } from '~/stacks/types';
 import SupportedVersionsWarnItem, { useIsSupportedVersionsWarnVisible } from './components/SupportedVersionsWarnItem';
 import CustomStatus, { useIsCustomStatusVisible } from './components/CustomStatus';
 import { useStackItems } from './components/useStackItems';
-import { ADMIN_SELECTION_TAG, getSidebarSelection } from './components/getSidebarSelection';
 import { useAdminRoute, useIsAdmin } from './components/Admin';
 import { sidebarNavigate } from './methods/sidebarNavigate';
 import Profile from './components/Profile';
@@ -18,7 +17,6 @@ export const useSidebarSections = (navigation: DrawerNavigationProp<DrawerParamL
 	const stackItems = useStackItems(currentScreen);
 	const isAdmin = useIsAdmin();
 	const adminRoute = useAdminRoute();
-	const selection = getSidebarSelection(stackItems, isAdmin ? adminRoute : null, currentScreen);
 
 	const sections = (
 		<>
@@ -41,6 +39,7 @@ export const useSidebarSections = (navigation: DrawerNavigationProp<DrawerParamL
 							onPress={item.onPress}
 							testID={item.testID}
 							disabled={item.disabled}
+							selected={item.selected}
 						/>
 					))}
 				</List.Section>
@@ -49,7 +48,8 @@ export const useSidebarSections = (navigation: DrawerNavigationProp<DrawerParamL
 				<List.Section>
 					<List.Item
 						title='Admin_Panel'
-						testID={ADMIN_SELECTION_TAG}
+						testID='sidebar-admin'
+						selected={currentScreen === adminRoute}
 						left={() => <List.Icon name='settings' />}
 						onPress={() => sidebarNavigate(adminRoute)}
 					/>
@@ -58,5 +58,5 @@ export const useSidebarSections = (navigation: DrawerNavigationProp<DrawerParamL
 		</>
 	);
 
-	return { sections, selection };
+	return { sections };
 };

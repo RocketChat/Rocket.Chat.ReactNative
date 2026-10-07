@@ -3,13 +3,13 @@ import { memo } from 'react';
 
 import Header from '~/containers/Header';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { useHeader } from '../hooks/useHeader';
+import { useJsRoomsListHeader } from '../hooks/useJsRoomsListHeader';
 
 const TabletHeader = () => {
 	const navigation = useNavigation<any>();
 	const route = useRoute<any>();
 	const isMasterDetail = useMasterDetail();
-	const { options } = useHeader();
+	const { options } = useJsRoomsListHeader();
 
 	if (!isMasterDetail || !options) {
 		return null;

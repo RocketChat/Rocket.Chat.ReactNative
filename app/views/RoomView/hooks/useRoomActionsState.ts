@@ -32,7 +32,7 @@ const getThreadsAccessibilityLabel = (tunread: string[], tunreadUser?: string[],
 	return i18n.t('Threads_unread', { unread: tunread.length });
 };
 
-export const useRoomRightButtonsData = (rid: string, roomStore: RoomStore) => {
+export const useRoomActionsState = (rid: string, roomStore: RoomStore) => {
 	const navigation = useNavigation<TRoomStackNavigation>();
 	const isMasterDetail = useMasterDetail();
 

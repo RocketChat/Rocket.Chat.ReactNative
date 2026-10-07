@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@testing-library/react-native';
 
-import AccessibilityAndAppearanceView from './index';
+import AccessibilityAndAppearanceView from '..';
 import { useUserPreferences } from '~/lib/methods/userPreferences';
 
 jest.mock('@react-navigation/native', () => ({

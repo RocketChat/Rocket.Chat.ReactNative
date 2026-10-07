@@ -2,13 +2,19 @@ import { Host, Picker, Text } from '@expo/ui/swift-ui';
 import { labelsHidden, offset, pickerStyle, tag, tint } from '@expo/ui/swift-ui/modifiers';
 
 import { useTheme } from '~/theme';
-import { type INativeListPicker } from '../types';
-import NativeListItem from './Item';
+import NativeListItem from '../native/components/Item';
+import { useIsNativeList } from '../native/context';
+import { type IListPicker } from './ListPicker';
 
 const MENU_BUTTON_CONTENT_INSET = 12;
 
-const NativeListPicker = ({ title, testID, options, selection, onSelectionChange }: INativeListPicker) => {
+const ListPicker = ({ children, title, testID, options, selection, onSelectionChange }: IListPicker) => {
 	const { colors } = useTheme();
+	const isNativeList = useIsNativeList();
+
+	if (!isNativeList) {
+		return children;
+	}
 
 	return (
 		<NativeListItem
@@ -41,4 +47,4 @@ const NativeListPicker = ({ title, testID, options, selection, onSelectionChange
 	);
 };
 
-export default NativeListPicker;
+export default ListPicker;

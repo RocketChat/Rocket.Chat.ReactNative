@@ -1,39 +1,36 @@
 import { act, render } from '@testing-library/react-native';
 
-import { NativeListContext } from '~/containers/List/native/context';
-import { type INativeListPicker } from '~/containers/List/native/types';
+import { type IListPicker } from '~/containers/List/components/ListPicker';
 import ListPicker from '../ListPicker';
 
 const mockPicker = jest.fn();
-jest.mock('~/containers/List/native/components/Picker', () => ({
+jest.mock('~/containers/List/components/ListPicker', () => ({
 	__esModule: true,
-	default: (props: INativeListPicker) => {
+	default: (props: IListPicker) => {
 		mockPicker(props);
 		return null;
 	}
 }));
 
-const latestPicker = (): INativeListPicker => mockPicker.mock.calls[mockPicker.mock.calls.length - 1][0];
+const latestPicker = (): IListPicker => mockPicker.mock.calls[mockPicker.mock.calls.length - 1][0];
 
-const renderNative = (onChangeValue: jest.Mock) =>
+const renderPicker = (onChangeValue: jest.Mock) =>
 	render(
-		<NativeListContext.Provider value={{ selectedTag: null, sectionIndex: 0 }}>
-			<ListPicker
-				preference='alsoSendThreadToChannel'
-				value='always'
-				title='Also_send_thread_message_to_channel_behavior'
-				testID='preferences-view-enable-message-parser'
-				onChangeValue={onChangeValue}
-			/>
-		</NativeListContext.Provider>
+		<ListPicker
+			preference='alsoSendThreadToChannel'
+			value='always'
+			title='Also_send_thread_message_to_channel_behavior'
+			testID='preferences-view-enable-message-parser'
+			onChangeValue={onChangeValue}
+		/>
 	);
 
-describe('UserPreferencesView ListPicker in a native list', () => {
+describe('UserPreferencesView ListPicker', () => {
 	beforeEach(() => mockPicker.mockClear());
 
 	it('selects the current value and saves a new selection', () => {
 		const onChangeValue = jest.fn();
-		renderNative(onChangeValue);
+		renderPicker(onChangeValue);
 		expect(latestPicker().selection).toBe('always');
 		expect(latestPicker().testID).toBe('preferences-view-enable-message-parser');
 
@@ -45,7 +42,7 @@ describe('UserPreferencesView ListPicker in a native list', () => {
 
 	it('restores the previous value when saving fails', () => {
 		const onChangeValue = jest.fn();
-		renderNative(onChangeValue);
+		renderPicker(onChangeValue);
 
 		act(() => latestPicker().onSelectionChange('never'));
 		act(() => onChangeValue.mock.calls[0][1]());

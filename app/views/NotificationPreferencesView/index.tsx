@@ -6,8 +6,6 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
-import { useIsNativeList } from '~/containers/List/native/context';
-import NativeListPicker from '~/containers/List/native/components/Picker';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { type IRoomNotifications, type TRoomNotificationsModel } from '~/definitions';
 import I18n from '~/i18n';
@@ -45,7 +43,6 @@ const RenderListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const isNativeList = useIsNativeList();
 
 	const pref = room[preference]
 		? OPTIONS[preference as TOptions].find(option => option.value === room[preference])
@@ -70,34 +67,29 @@ const RenderListPicker = ({
 
 	const label = option?.label ? I18n.t(option?.label, { defaultValue: option?.label, second: option?.second }) : option?.label;
 
-	if (isNativeList) {
-		return (
-			<NativeListPicker
-				title={I18n.t(title)}
-				testID={testID}
-				options={OPTIONS[preference as TOptions].map(i => ({
-					label: I18n.t(i.label, { defaultValue: i.label, second: i.second }),
-					value: i.value.toString()
-				}))}
-				selection={option?.value.toString() ?? ''}
-				onSelectionChange={selected => {
-					const selectedOption = OPTIONS[preference as TOptions].find(i => i.value.toString() === selected);
-					if (selectedOption) {
-						selectOption(selectedOption);
-					}
-				}}
-			/>
-		);
-	}
-
 	return (
-		<List.Item
-			title={title}
+		<List.Picker
+			title={I18n.t(title)}
 			testID={testID}
-			onPress={() => showActionSheet({ options })}
-			right={() => <Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.fontHint }]}>{label}</Text>}
-			additionalAccessibilityLabel={label}
-		/>
+			options={OPTIONS[preference as TOptions].map(i => ({
+				label: I18n.t(i.label, { defaultValue: i.label, second: i.second }),
+				value: i.value.toString()
+			}))}
+			selection={option?.value.toString() ?? ''}
+			onSelectionChange={selected => {
+				const selectedOption = OPTIONS[preference as TOptions].find(i => i.value.toString() === selected);
+				if (selectedOption) {
+					selectOption(selectedOption);
+				}
+			}}>
+			<List.Item
+				title={title}
+				testID={testID}
+				onPress={() => showActionSheet({ options })}
+				right={() => <Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.fontHint }]}>{label}</Text>}
+				additionalAccessibilityLabel={label}
+			/>
+		</List.Picker>
 	);
 };
 

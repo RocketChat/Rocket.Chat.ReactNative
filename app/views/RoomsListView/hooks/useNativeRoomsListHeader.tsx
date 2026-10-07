@@ -89,6 +89,4 @@ export const useNativeRoomsListHeader = () => {
 		resetSearch,
 		search
 	]);
-
-	return { options: null };
 };

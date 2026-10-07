@@ -21,14 +21,17 @@ import { closeLivechat } from '../services/closeLivechat';
 import { placeLivechatOnHold } from '../services/placeLivechatOnHold';
 import { navigateToScreen, type TRoomStackNavigation } from '../services/navigateToScreen';
 import { getRoomHeaderMode, type TRoomHeaderMode } from '../helpers/getRoomHeaderMode';
-import { splitRoomHeaderActions, type TRoomHeaderActionKey } from '../helpers/roomHeaderActions';
+import {
+	ROOM_HEADER_ACTION_DISPLAY_ORDER,
+	splitRoomHeaderActions,
+	type TRoomHeaderActionKey
+} from '../helpers/roomHeaderActions';
 import { useCanPlaceLivechatOnHold } from './useCanPlaceLivechatOnHold';
 import { useThreadFollowing } from './useThreadFollowing';
-import { useRoomRightButtonsData } from './useRoomRightButtonsData';
+import { useRoomActionsState } from './useRoomActionsState';
 import { useHeaderCallPress } from './useHeaderCallPress';
 
 export const EMPTY_ACTIONS: IHeaderAction[] = [];
-const VISIBLE_ORDER: TRoomHeaderActionKey[] = ['encryption', 'notifications', 'call', 'threads'];
 
 export const useOmnichannelActions = (rid: string, roomStore: RoomStore): IHeaderAction[] => {
 	const navigation = useNavigation<TRoomStackNavigation>();
@@ -127,7 +130,7 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 		goSearchView,
 		goE2EEToggleRoomView,
 		threadsAccessibilityLabel
-	} = useRoomRightButtonsData(rid, roomStore);
+	} = useRoomActionsState(rid, roomStore);
 	const { callPresent, isCallDisabled, onPressCall } = useHeaderCallPress(rid);
 
 	const present: Partial<Record<TRoomHeaderActionKey, boolean>> = {
@@ -184,7 +187,7 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 	};
 
 	if (!hasNativeHeaderBar) {
-		return [...VISIBLE_ORDER.filter(key => present[key]).map(key => actions[key]), searchAction];
+		return [...ROOM_HEADER_ACTION_DISPLAY_ORDER.filter(key => present[key]).map(key => actions[key]), searchAction];
 	}
 
 	const { visibleKeys, overflowKeys } = splitRoomHeaderActions(present);
@@ -196,7 +199,7 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 	});
 
 	return [
-		...VISIBLE_ORDER.filter(key => visibleKeys.includes(key)).map(key => actions[key]),
+		...visibleKeys.map(key => actions[key]),
 		{
 			label: i18n.t('More'),
 			icon: 'kebab',

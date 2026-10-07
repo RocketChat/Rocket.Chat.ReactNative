@@ -4,14 +4,14 @@ describe('splitRoomHeaderActions', () => {
 	it('keeps every present item visible when at or under the cap', () => {
 		const { visibleKeys, overflowKeys } = splitRoomHeaderActions({ threads: true, call: true });
 
-		expect(visibleKeys).toEqual(['threads', 'call']);
+		expect(visibleKeys).toEqual(['call', 'threads']);
 		expect(overflowKeys).toEqual([]);
 	});
 
 	it('ranks threads ahead of call so an unread badge always keeps a bar item', () => {
 		const { visibleKeys, overflowKeys } = splitRoomHeaderActions({ threads: true, call: true, encryption: true });
 
-		expect(visibleKeys).toEqual(['threads', 'call']);
+		expect(visibleKeys).toEqual(['call', 'threads']);
 		expect(overflowKeys).toEqual(['encryption']);
 	});
 
@@ -23,7 +23,7 @@ describe('splitRoomHeaderActions', () => {
 			notifications: true
 		});
 
-		expect(visibleKeys).toEqual(['threads', 'call']);
+		expect(visibleKeys).toEqual(['call', 'threads']);
 		expect(overflowKeys).toEqual(['encryption', 'notifications']);
 	});
 
@@ -35,7 +35,7 @@ describe('splitRoomHeaderActions', () => {
 			notifications: true
 		});
 
-		expect(visibleKeys).toEqual(['call', 'encryption']);
+		expect(visibleKeys).toEqual(['encryption', 'call']);
 		expect(overflowKeys).toEqual(['notifications']);
 	});
 

@@ -54,6 +54,9 @@ export const preloadHeaderIcons = () => {
 };
 
 export const headerIcon = (name: TIconsName) => {
+	if (__DEV__ && !HEADER_ICONS.includes(name)) {
+		console.warn(`headerIcon: '${name}' is not in HEADER_ICONS and will render without an icon`);
+	}
 	const source = headerIconSources.get(name);
 	return source ? { type: 'image' as const, source } : undefined;
 };

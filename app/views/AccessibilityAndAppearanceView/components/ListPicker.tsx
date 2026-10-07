@@ -3,8 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
-import { useIsNativeList } from '~/containers/List/native/context';
-import NativeListPicker from '~/containers/List/native/components/Picker';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
@@ -42,7 +40,6 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const isNativeList = useIsNativeList();
 
 	const OPTIONS: TOPTIONS = [
 		{
@@ -73,35 +70,26 @@ const ListPicker = ({
 			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
 		}));
 
-	if (isNativeList) {
-		return (
-			<NativeListPicker
-				title={title}
-				options={OPTIONS.map(i => ({ label: i.label, value: i.value }))}
-				selection={option.value}
-				onSelectionChange={selected => onChangeValue(selected as TAlertDisplayType)}
-			/>
-		);
-	}
-
-	const openOptions = () => {
-		const options = getOptions();
-		showActionSheet({ options });
-	};
 	return (
-		<List.Item
-			accessibilityLabel={`${title}. ${option?.label}`}
-			onPress={openOptions}
+		<List.Picker
 			title={title}
-			translateTitle={false}
-			right={() => (
-				<View style={styles.rightTitleContainer}>
-					<Text style={[styles.rightTitle, { color: colors.fontInfo }]}>{option?.label}</Text>
-				</View>
-			)}
-			rightContainerStyle={styles.rightContainer}
-			additionalAccessibilityLabel={option?.label}
-		/>
+			options={OPTIONS.map(i => ({ label: i.label, value: i.value }))}
+			selection={option.value}
+			onSelectionChange={selected => onChangeValue(selected as TAlertDisplayType)}>
+			<List.Item
+				accessibilityLabel={`${title}. ${option?.label}`}
+				onPress={() => showActionSheet({ options: getOptions() })}
+				title={title}
+				translateTitle={false}
+				right={() => (
+					<View style={styles.rightTitleContainer}>
+						<Text style={[styles.rightTitle, { color: colors.fontInfo }]}>{option?.label}</Text>
+					</View>
+				)}
+				rightContainerStyle={styles.rightContainer}
+				additionalAccessibilityLabel={option?.label}
+			/>
+		</List.Picker>
 	);
 };
 

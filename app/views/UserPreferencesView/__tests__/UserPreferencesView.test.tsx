@@ -1,7 +1,7 @@
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import { useDispatch } from 'react-redux';
 
-import UserPreferencesView from './index';
+import UserPreferencesView from '..';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { saveUserPreferences } from '~/lib/services/restApi';
 
@@ -17,7 +17,7 @@ jest.mock('~/lib/services/restApi', () => ({
 	saveUserPreferences: jest.fn()
 }));
 
-jest.mock('./ListPicker', () => () => null);
+jest.mock('../ListPicker', () => () => null);
 
 describe('UserPreferencesView', () => {
 	const dispatch = jest.fn();
