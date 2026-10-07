@@ -6,6 +6,7 @@ import { KeyboardFocusView } from 'react-native-external-keyboard';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
 import I18n from '~/i18n';
+import { joinTypingUsers } from './subtitle';
 import sharedStyles from '~/views/Styles';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
@@ -98,15 +99,9 @@ const SubTitle = memo(({ usersTyping, subtitle, formattedStatusExpiry, renderFun
 	const fontSize = getSubTitleSize(scale);
 	// typing
 	if (usersTyping.length) {
-		let usersText;
-		if (usersTyping.length === 2) {
-			usersText = usersTyping.join(` ${I18n.t('and')} `);
-		} else {
-			usersText = usersTyping.join(', ');
-		}
 		return (
 			<Text style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} numberOfLines={1}>
-				<Text style={styles.typingUsers}>{usersText} </Text>
+				<Text style={styles.typingUsers}>{joinTypingUsers(usersTyping)} </Text>
 				{usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing')}...
 			</Text>
 		);
