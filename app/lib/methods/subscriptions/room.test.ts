@@ -6,6 +6,7 @@ import { getThreadById } from '~/lib/database/services/Thread';
 import { getThreadMessageById } from '~/lib/database/services/ThreadMessage';
 import database from '~/lib/database';
 import log from '../helpers/log';
+import { loadMissedMessages } from '../loadMissedMessages';
 import {
 	commitPreparedRecords,
 	deferred,
@@ -142,6 +143,32 @@ describe('RoomSubscription', () => {
 
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
+		});
+
+		it('catches up on messages sent before the subscription was ready, only after it is ready', async () => {
+			const subscriptionReady = deferred();
+			mockSubscribeRoom.mockReturnValue(subscriptionReady.promise.then(() => []));
+
+			const subscribing = sub.subscribe();
+			await flush();
+			expect(loadMissedMessages).not.toHaveBeenCalled();
+
+			subscriptionReady.resolve();
+			await subscribing;
+
+			expect(loadMissedMessages).toHaveBeenCalledWith({ rid });
+		});
+
+		it('skips the catch-up when the room was left while subscribing', async () => {
+			const subscriptionReady = deferred();
+			mockSubscribeRoom.mockReturnValue(subscriptionReady.promise.then(() => []));
+
+			const subscribing = sub.subscribe();
+			const leaving = sub.unsubscribe();
+			subscriptionReady.resolve();
+			await Promise.all([subscribing, leaving]);
+
+			expect(loadMissedMessages).not.toHaveBeenCalled();
 		});
 	});
 
