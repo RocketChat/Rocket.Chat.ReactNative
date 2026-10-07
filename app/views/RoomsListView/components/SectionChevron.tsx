@@ -21,10 +21,10 @@ const SectionChevron = ({ collapsed }: { collapsed: boolean }) => {
 	return (
 		<View style={chevronStyles.container}>
 			<Animated.View style={[StyleSheet.absoluteFill, expandedChevronStyle]}>
-				<CustomIcon name='chevron-up' size={CHEVRON_SIZE} color={colors.fontTitlesLabels} />
+				<CustomIcon name='chevron-up' size={CHEVRON_SIZE} color={colors.fontDefault} />
 			</Animated.View>
 			<Animated.View style={[StyleSheet.absoluteFill, collapsedChevronStyle]}>
-				<CustomIcon name='chevron-down' size={CHEVRON_SIZE} color={colors.fontTitlesLabels} />
+				<CustomIcon name='chevron-down' size={CHEVRON_SIZE} color={colors.fontDefault} />
 			</Animated.View>
 		</View>
 	);
