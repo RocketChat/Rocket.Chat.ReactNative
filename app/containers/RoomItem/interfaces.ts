@@ -80,6 +80,7 @@ interface IBaseRoomItem extends IRoomItemTouchables {
 	displayMode: string;
 	showAvatar: boolean;
 	swipeEnabled: boolean;
+	navigationSwipeEdgeWidth?: number;
 	autoJoin?: boolean;
 	width: number;
 	username?: string;
@@ -140,6 +141,7 @@ export interface ITouchableProps extends IRoomItemTouchables {
 	rid: string;
 	isFocused: boolean;
 	swipeEnabled: boolean;
+	navigationSwipeEdgeWidth?: number;
 	displayMode: string;
 }
 

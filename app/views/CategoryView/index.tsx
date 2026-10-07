@@ -9,6 +9,7 @@ import RoomItem from '~/containers/RoomItem';
 import { type IRoomItem } from '~/containers/RoomItem/interfaces';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { MAX_SIDEBAR_WIDTH } from '~/lib/constants/tablet';
+import { IOS_BACK_SWIPE_EDGE_WIDTH } from '~/lib/constants/gestures';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isRead } from '~/lib/methods/helpers';
@@ -60,6 +61,7 @@ const CategoryView = ({ route }: StaticScreenProps<CategoryViewParams>) => {
 			getIsRead={isRead}
 			isFocused={isMasterDetail && subscribedRoom === item.rid}
 			swipeEnabled
+			navigationSwipeEdgeWidth={isIOS ? IOS_BACK_SWIPE_EDGE_WIDTH : 0}
 			showAvatar={showAvatar}
 			displayMode={displayMode}
 		/>

@@ -47,6 +47,7 @@ const RoomItem = ({
 	tunreadGroup,
 	testID,
 	swipeEnabled = true,
+	navigationSwipeEdgeWidth,
 	onPress,
 	onLongPress,
 	onMoveToCategoryPress,
@@ -89,6 +90,7 @@ const RoomItem = ({
 			type={type}
 			isFocused={!!isFocused}
 			swipeEnabled={swipeEnabled}
+			navigationSwipeEdgeWidth={navigationSwipeEdgeWidth}
 			displayMode={displayMode}>
 			<Wrapper
 				testID={testID}

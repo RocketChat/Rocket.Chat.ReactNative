@@ -16,6 +16,7 @@ import { type IApplicationState } from '~/definitions';
 import { SupportedVersionsExpired } from '~/containers/SupportedVersions';
 import i18n from '~/i18n';
 import { MAX_SIDEBAR_WIDTH } from '~/lib/constants/tablet';
+import { DRAWER_SWIPE_EDGE_WIDTH } from '~/lib/constants/gestures';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import {
@@ -148,6 +149,7 @@ const RoomsListView = memo(function RoomsListView() {
 					getIsRead={isRead}
 					isFocused={focusedRoom === item.rid}
 					swipeEnabled={swipeEnabled}
+					navigationSwipeEdgeWidth={isMasterDetail ? 0 : DRAWER_SWIPE_EDGE_WIDTH}
 					showAvatar={showAvatar}
 					displayMode={displayMode}
 				/>

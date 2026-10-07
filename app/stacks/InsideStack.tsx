@@ -6,13 +6,14 @@ import {
 	type NativeStackNavigationOptions
 } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { type StaticScreenProps } from '@react-navigation/native';
+import { getFocusedRouteNameFromRoute, type StaticScreenProps } from '@react-navigation/native';
 
 import { ThemeContext } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import withNavigation from '../lib/navigation/withNavigation';
 import Sidebar from '../views/SidebarView';
 import { isIOS } from '../lib/methods/helpers';
+import { DRAWER_SWIPE_EDGE_WIDTH } from '../lib/constants/gestures';
 import { type TNavigation } from './stackType';
 import RoomView from '../views/RoomView';
 import RoomsListView from '../views/RoomsListView';
@@ -287,14 +288,28 @@ const AccessibilityStack = createNativeStackNavigator({
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
+const DRAWER_STACK_ROOT_SCREENS = [
+	'RoomsListView',
+	'ProfileView',
+	'SettingsView',
+	'AdminPanelView',
+	'AccessibilityAndAppearanceView'
+];
+
+const isNestedStackAtRoot = (route: Parameters<typeof getFocusedRouteNameFromRoute>[0]) => {
+	const focusedScreen = getFocusedRouteNameFromRoute(route);
+	return !focusedScreen || DRAWER_STACK_ROOT_SCREENS.includes(focusedScreen);
+};
+
 const DrawerStack = createDrawerNavigator({
-	screenOptions: {
-		swipeEnabled: false,
+	screenOptions: ({ route }) => ({
+		swipeEnabled: isNestedStackAtRoot(route),
+		swipeEdgeWidth: DRAWER_SWIPE_EDGE_WIDTH,
 		headerShown: false,
 		drawerPosition: I18nManager.isRTL ? 'right' : 'left',
 		drawerType: 'slide',
 		freezeOnBlur: true
-	},
+	}),
 	screens: {
 		ChatsStackNavigator: ChatsStack,
 		ProfileStackNavigator: ProfileStack,

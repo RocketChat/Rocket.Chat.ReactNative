@@ -31,7 +31,8 @@ const RoomItemContainer = memo(
 		getRoomTitle = () => 'title',
 		getRoomAvatar = () => '',
 		getIsRead = () => false,
-		swipeEnabled = true
+		swipeEnabled = true,
+		navigationSwipeEdgeWidth
 	}: IRoomItemContainerProps) => {
 		const room = useRoomSnapshot(item);
 		const { showActionSheet } = useActionSheet();
@@ -112,6 +113,7 @@ const RoomItemContainer = memo(
 				tunreadUser={room.tunreadUser}
 				tunreadGroup={room.tunreadGroup}
 				swipeEnabled={swipeEnabled}
+				navigationSwipeEdgeWidth={navigationSwipeEdgeWidth}
 				teamMain={room.teamMain}
 				autoJoin={autoJoin}
 				showAvatar={showAvatar}
