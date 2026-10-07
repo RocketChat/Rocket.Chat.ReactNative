@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    timeout-minutes: 85
+    timeout-minutes: 95
     env:
       E2E_TELEMETRY_DISABLED: '1'
       ANDROID_AVD_HOME: /home/runner/.android/avd
@@ -138,7 +138,7 @@ jobs:
       - name: Start Android Emulator and Run E2E Tests (keyboard AVD)
         if: ${{ inputs.shard == '14' }}
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
-        timeout-minutes: 65
+        timeout-minutes: 70
         env:
           E2E_ANDROID_APP_PATH: ${{ github.workspace }}/app-release.apk
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -160,7 +160,7 @@ jobs:
       - name: Start Android Emulator and Run E2E Tests (default, snapshot stays restore-only)
         if: ${{ inputs.shard != '14' }}
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
-        timeout-minutes: 65
+        timeout-minutes: 70
         env:
           E2E_ANDROID_APP_PATH: ${{ github.workspace }}/app-release.apk
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}

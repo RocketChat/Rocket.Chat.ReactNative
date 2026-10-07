@@ -6,7 +6,7 @@ SHARD="${2:?usage: run-e2e.sh <android|ios> <shard>}"
 TESTS_DIR="e2e/tests"
 OUTPUT_DIR=".e2e"
 RUN_TIMEOUT="${RUN_TIMEOUT:-40m}"
-RERUN_TIMEOUT="${RERUN_TIMEOUT:-15m}"
+RERUN_TIMEOUT="${RERUN_TIMEOUT:-25m}"
 RETRIES="${RETRIES:-2}"
 ANDROID_DEVICE="${E2E_ANDROID_DEVICE:-emulator-5554}"
 NODE_TS=(node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON)
@@ -94,7 +94,7 @@ if [ "$PLATFORM" = "android" ]; then
   fi
 fi
 
-E2E_COMMAND=(pnpm exec e2e run --target "$PLATFORM" --tag "test-${SHARD}" --retries "$RETRIES" --reporter list,junit)
+E2E_COMMAND=(pnpm exec e2e run --target "$PLATFORM" --tag "test-${SHARD}" --reporter list,junit)
 
 run_e2e_pass() {
   local pass_timeout="$1"
@@ -117,12 +117,12 @@ run_e2e_pass() {
   fi
 }
 
-run_e2e_pass "$RUN_TIMEOUT"
+run_e2e_pass "$RUN_TIMEOUT" --retries "$RETRIES"
 
 if [ "$rc" -ne 0 ]; then
   echo "::warning title=E2E rerun::Rerunning the tests that failed, with a fresh agent-device daemon. The runner never retries infrastructure failures (simulator, emulator, or automation runner), so a single flake would otherwise fail the shard."
   pnpm exec agent-device daemon stop --clean || true
-  run_e2e_pass "$RERUN_TIMEOUT" --last-failed
+  run_e2e_pass "$RERUN_TIMEOUT" --last-failed --retries 0
 fi
 
 if [ "$rc" -ne 0 ]; then
