@@ -112,6 +112,13 @@ const navigate = function* navigate({ params }) {
 	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 };
 
+const endVoipCall = callId => {
+	resetVoipState();
+	if (callId) {
+		RNCallKeep.endCall(callId);
+	}
+};
+
 /**
  * After native VoIP accept fails: reset call state, end CallKit session, land inside root,
  * optionally open DM via same pipeline as deep links (`direct/username`), then toast/dialog per a11y.
@@ -119,10 +126,7 @@ const navigate = function* navigate({ params }) {
 const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
 	try {
 		const { callId, username } = params;
-		resetVoipState();
-		if (callId) {
-			RNCallKeep.endCall(callId);
-		}
+		endVoipCall(callId);
 
 		yield call(waitForNavigationReady);
 
@@ -315,7 +319,7 @@ const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, 
 	}
 	if (!(yield ensureDeepLinkConsent(host, params, serverRecord))) {
 		if (params.voipAcceptFailed) {
-			yield call(handleVoipAcceptFailed, params);
+			endVoipCall(params.callId);
 		}
 		return;
 	}

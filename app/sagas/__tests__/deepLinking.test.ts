@@ -932,6 +932,7 @@ describe('deepLinking saga — unknown host hands off to the add-server flow', (
 	it('does not contact a new host when the confirmation is declined', async () => {
 		jest.mocked(showConfirmationAlert).mockClear();
 		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());
+		jest.mocked(resetVoipState).mockClear();
 		const emitSpy = jest.spyOn(EventEmitter, 'emit');
 		const { store, dispatchedActions } = setupStore();
 
@@ -943,6 +944,7 @@ describe('deepLinking saga — unknown host hands off to the add-server flow', (
 		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
 		expect(emitSpy).not.toHaveBeenCalledWith('NewServer', expect.anything());
 		expect(dispatchedActions.some(a => a.type === SERVER.INIT_ADD)).toBe(false);
+		expect(jest.mocked(resetVoipState)).not.toHaveBeenCalled();
 		emitSpy.mockRestore();
 	});
 
@@ -960,6 +962,20 @@ describe('deepLinking saga — unknown host hands off to the add-server flow', (
 		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
 		expect(jest.mocked(resetVoipState)).toHaveBeenCalledTimes(1);
 		expect(jest.mocked(RNCallKeep.endCall)).toHaveBeenCalledWith('call-1');
+	});
+
+	it('does not try to open the caller on the active workspace when the confirmation is declined after a failed VoIP accept', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());
+		jest.mocked(canOpenRoom).mockClear();
+		const { store, dispatchedActions } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParams({ callId: 'call-1', username: 'bob', voipAcceptFailed: true }) as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(canOpenRoom)).not.toHaveBeenCalled();
+		expect(dispatchedActions.some(action => action.type === APP.START && action.root === RootEnum.ROOT_INSIDE)).toBe(false);
 	});
 
 	it('does not ask for confirmation for a host with a server record and no signed-in user, without a token', async () => {
