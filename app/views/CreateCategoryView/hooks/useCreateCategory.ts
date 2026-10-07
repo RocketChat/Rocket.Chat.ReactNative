@@ -19,15 +19,21 @@ export const prependCategory = (
 	groupOrder: string[],
 	sectionsOrder: readonly string[],
 	category: ISidebarCategory
-): ISidebarCategory[] => toSidebarCategories([...storedCategories, category], [category._id, ...groupOrder], sectionsOrder);
+): ISidebarCategory[] =>
+	toSidebarCategories(
+		[...storedCategories.filter(stored => stored._id !== category._id), category],
+		[category._id, ...groupOrder.filter(groupId => groupId !== category._id)],
+		sectionsOrder
+	);
 
 export const useCreateCategory = () => {
 	const dispatch = useDispatch();
 	const { storedCategories, sectionsOrder, groupOrder } = useSidebarCategories();
 	const [creating, setCreating] = useState(false);
+	const [categoryId] = useState(() => random(17));
 
 	const createCategory = async (name: string, roomIds: string[]) => {
-		const category: ISidebarCategory = { _id: random(17), name: name.trim() };
+		const category: ISidebarCategory = { _id: categoryId, name: name.trim() };
 		const sidebarCategories = prependCategory(storedCategories, groupOrder, sectionsOrder, category);
 		setCreating(true);
 		try {

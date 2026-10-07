@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { type DrawerNavigationProp } from '@react-navigation/drawer';
 import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,18 +10,11 @@ import CustomStatus from './components/CustomStatus';
 import Stacks from './components/Stacks';
 import Admin from './components/Admin';
 import Profile from './components/Profile';
+import { useCurrentScreen } from './useCurrentScreen';
 
 const SidebarView = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
 	const { top } = useSafeAreaInsets();
-	const [currentScreen, setCurrentScreen] = useState<string | null>(null);
-
-	useEffect(() => {
-		const unsubscribe = navigation.addListener('state', () => {
-			setCurrentScreen(navigation.getState().routes[navigation.getState().index].name);
-		});
-
-		return unsubscribe;
-	}, [navigation]);
+	const currentScreen = useCurrentScreen(navigation);
 
 	return (
 		<View testID='sidebar-view' style={styles.container}>

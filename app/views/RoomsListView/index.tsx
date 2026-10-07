@@ -4,13 +4,15 @@ import { memo, useContext, useEffect } from 'react';
 import { BackHandler, Platform, RefreshControl } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { shallowEqual } from 'react-redux';
+import { shallowEqual, useStore } from 'react-redux';
 
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { ChangePasswordRequired } from '~/containers/ChangePasswordRequired';
 import { FLOATING_ACTION_BUTTON_CLEARANCE } from '~/containers/FloatingActionButton';
+import RoomItem from '~/containers/RoomItem';
 import { type IRoomItem } from '~/containers/RoomItem/interfaces';
+import { type IApplicationState } from '~/definitions';
 import { SupportedVersionsExpired } from '~/containers/SupportedVersions';
 import i18n from '~/i18n';
 import { MAX_SIDEBAR_WIDTH } from '~/lib/constants/tablet';
@@ -27,7 +29,6 @@ import {
 } from '~/lib/methods/helpers';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { events, logEvent } from '~/lib/methods/helpers/log';
-import { store } from '~/lib/store/auxStore';
 import { getUserSelector } from '~/selectors/login';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
@@ -36,7 +37,6 @@ import ListHeader from './components/ListHeader';
 import NewMessageButton from './components/NewMessageButton';
 import SectionHeader from './components/SectionHeader';
 import SectionRevealFooter from './components/SectionRevealFooter';
-import SectionRoomItem from './components/SectionRoomItem';
 import RoomsSearchProvider, { RoomsSearchContext } from './contexts/RoomsSearchProvider';
 import { useCollapsedGroups } from './hooks/useCollapsedGroups';
 import { useGetItemLayout } from './hooks/useGetItemLayout';
@@ -45,12 +45,14 @@ import { useNewMessage } from './hooks/useNewMessage';
 import { useRefresh } from './hooks/useRefresh';
 import { SECTION_REFLOW, useSectionToggleAnimation } from './hooks/useSectionToggleAnimation';
 import { useSubscriptions } from './hooks/useSubscriptions';
+import { useWarmUpMessageBlocks } from './hooks/useWarmUpMessageBlocks';
 import styles from './styles';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const RoomsListView = memo(function RoomsListView() {
 	useHeader();
+	useWarmUpMessageBlocks();
 	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsSearchContext);
 	const { colors } = useTheme();
 	const username = useAppSelector(state => getUserSelector(state).username);
@@ -67,6 +69,7 @@ const RoomsListView = memo(function RoomsListView() {
 	const { subscriptions, loading } = useSubscriptions(collapsedGroups);
 	const { onToggle, rowEntering, rowExiting, badgeEntering, badgeExiting, revealKey, coverEntering, coverExiting } =
 		useSectionToggleAnimation(collapsedGroups, toggleGroup, subscriptions.length);
+	const store = useStore<IApplicationState>();
 	const focusedRoom = useAppSelector(state => (isMasterDetail ? state.room.subscribedRoom : undefined));
 	const changingServer = useAppSelector(state => state.server.changingServer);
 	const { refreshing, onRefresh } = useRefresh({ searching });
@@ -130,25 +133,25 @@ const RoomsListView = memo(function RoomsListView() {
 		const swipeEnabled = !(item?.search || item?.joinCodeRequired || item?.outside);
 
 		return (
-			<SectionRoomItem
-				entering={rowEntering}
-				exiting={rowExiting}
-				item={item}
-				id={id}
-				username={username}
-				showLastMessage={showLastMessage}
-				onPress={onPressItem}
-				// TODO: move to RoomItem
-				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
-				useRealName={useRealName}
-				getRoomTitle={getRoomTitle}
-				getRoomAvatar={getRoomAvatar}
-				getIsRead={isRead}
-				isFocused={focusedRoom === item.rid}
-				swipeEnabled={swipeEnabled}
-				showAvatar={showAvatar}
-				displayMode={displayMode}
-			/>
+			<Animated.View entering={rowEntering} exiting={rowExiting}>
+				<RoomItem
+					item={item}
+					id={id}
+					username={username}
+					showLastMessage={showLastMessage}
+					onPress={onPressItem}
+					// TODO: move to RoomItem
+					width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
+					useRealName={useRealName}
+					getRoomTitle={getRoomTitle}
+					getRoomAvatar={getRoomAvatar}
+					getIsRead={isRead}
+					isFocused={focusedRoom === item.rid}
+					swipeEnabled={swipeEnabled}
+					showAvatar={showAvatar}
+					displayMode={displayMode}
+				/>
+			</Animated.View>
 		);
 	};
 

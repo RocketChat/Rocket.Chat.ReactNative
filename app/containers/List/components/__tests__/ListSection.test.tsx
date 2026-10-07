@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react-native';
 
 import ListSection from '../ListSection';
 import { NativeListContext } from '~/containers/List/native/context';
-import { asNativeListSection, isNativeListRow, isNativeListSection } from '~/containers/List/native/utils/rowMarkers';
 
 jest.mock('~/containers/List/native/components/Section', () => {
 	const { Text: MockText } = jest.requireActual('react-native');
@@ -13,7 +12,7 @@ jest.mock('~/containers/List/native/components/Section', () => {
 describe('ListSection', () => {
 	it('renders as a native section inside a native list', async () => {
 		await render(
-			<NativeListContext.Provider value={{ mode: 'native', renderRow: row => row }}>
+			<NativeListContext.Provider value={{ selectedTag: null, sectionIndex: 0 }}>
 				<ListSection title='Calls' translateTitle={false}>
 					<Text>row</Text>
 				</ListSection>
@@ -30,14 +29,5 @@ describe('ListSection', () => {
 			</ListSection>
 		);
 		expect(screen.getByText('row')).toBeTruthy();
-	});
-});
-
-describe('asNativeListSection', () => {
-	it('marks a component as a whole section rather than a row', () => {
-		const CallRows = asNativeListSection(() => null);
-		expect(isNativeListSection(CallRows)).toBe(true);
-		expect(isNativeListRow(CallRows)).toBe(false);
-		expect(isNativeListSection(() => null)).toBe(false);
 	});
 });

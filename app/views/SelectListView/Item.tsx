@@ -1,8 +1,7 @@
 import * as List from '~/containers/List';
-import { ICON_SIZE } from '~/containers/List/constants';
 import { type TIconsName } from '~/containers/CustomIcon';
-import Radio from '~/containers/Radio';
 import { useTheme } from '~/theme';
+import SelectionIndicator from './SelectionIndicator';
 
 export interface ISelectListItem {
 	name: string;
@@ -18,18 +17,6 @@ export interface ISelectListItem {
 
 const Item = ({ name, icon, alert, isRadio, isChecked, accessibilityState, onPress }: ISelectListItem) => {
 	const { colors } = useTheme();
-	const renderRight = () => {
-		if (isRadio) {
-			return (
-				<Radio
-					testID={isChecked ? `radio-button-selected-${name}` : `radio-button-unselected-${name}`}
-					check={isChecked}
-					size={ICON_SIZE}
-				/>
-			);
-		}
-		return isChecked ? <List.Icon testID={`${name}-checked`} name='check' color={colors.fontHint} /> : null;
-	};
 	return (
 		<>
 			<List.Separator />
@@ -40,7 +27,7 @@ const Item = ({ name, icon, alert, isRadio, isChecked, accessibilityState, onPre
 				onPress={onPress}
 				alert={alert}
 				left={() => <List.Icon name={icon} color={colors.fontHint} />}
-				right={renderRight}
+				right={() => <SelectionIndicator name={name} isRadio={isRadio} isChecked={isChecked} />}
 				additionalAccessibilityLabel={accessibilityState}
 			/>
 		</>

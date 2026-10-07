@@ -36,7 +36,6 @@ export interface IHeaderAction {
 	disabled?: boolean;
 	tintColor?: string;
 	badge?: IHeaderActionBadge;
-	legacyHeaderOnly?: boolean;
 	placement?: 'toolbar';
 	variant?: 'prominent';
 	onPress?: () => void;
@@ -60,10 +59,9 @@ const toNativeMenuAction = ({
 	onPress
 });
 
-export const nativeHeaderItems = (actions: IHeaderAction[]): NativeStackHeaderItem[] =>
-	actions
-		.filter(action => !action.legacyHeaderOnly)
-		.map(({ label, icon, disabled, tintColor, badge, variant, placement, onPress, menu }): NativeStackHeaderItem => {
+export const nativeHeaderItems = (actions: IHeaderAction[], headerTintColor?: string): NativeStackHeaderItem[] =>
+	actions.map(
+		({ label, icon, disabled, tintColor = headerTintColor, badge, variant, placement, onPress, menu }): NativeStackHeaderItem => {
 			const item = {
 				label,
 				accessibilityLabel: label,
@@ -77,7 +75,8 @@ export const nativeHeaderItems = (actions: IHeaderAction[]): NativeStackHeaderIt
 				return { ...item, type: 'menu', menu: { items: menu.map(toNativeMenuAction) } };
 			}
 			return { ...item, type: 'button', placement, onPress: onPress ?? (() => {}) };
-		});
+		}
+	);
 
 const showMenu = (menu: IHeaderMenuItem[]) =>
 	showActionSheetRef({
@@ -125,12 +124,12 @@ export const HeaderActions = ({ actions, left = false }: { actions: IHeaderActio
 
 export const headerRightActions = (actions: IHeaderAction[]): NativeStackNavigationOptions =>
 	hasNativeHeaderBar
-		? { headerRight: undefined, unstable_headerRightItems: () => nativeHeaderItems(actions) }
+		? { headerRight: undefined, unstable_headerRightItems: ({ tintColor }) => nativeHeaderItems(actions, tintColor) }
 		: { headerRight: () => <HeaderActions actions={actions} /> };
 
 export const headerLeftActions = (actions: IHeaderAction[]): NativeStackNavigationOptions =>
 	hasNativeHeaderBar
-		? { headerLeft: undefined, unstable_headerLeftItems: () => nativeHeaderItems(actions) }
+		? { headerLeft: undefined, unstable_headerLeftItems: ({ tintColor }) => nativeHeaderItems(actions, tintColor) }
 		: { headerLeft: () => <HeaderActions actions={actions} left /> };
 
 export const headerLeftDrawer = (
@@ -143,8 +142,10 @@ export const headerLeftDrawer = (
 		: { headerLeft: () => <HeaderButton.Drawer testID={testID} onPress={toggleDrawer} /> };
 };
 
+export const headerLeftClose = (onPress: () => void, testID?: string): NativeStackNavigationOptions =>
+	headerLeftActions([{ label: I18n.t('Close'), icon: 'close', testID, onPress }]);
+
 export const headerLeftCloseModal = (
 	navigation: Pick<NavigationProp<ParamListBase>, 'dispatch'>,
 	testID?: string
-): NativeStackNavigationOptions =>
-	headerLeftActions([{ label: I18n.t('Close'), icon: 'close', testID, onPress: () => navigation.dispatch(StackActions.pop()) }]);
+): NativeStackNavigationOptions => headerLeftClose(() => navigation.dispatch(StackActions.pop()), testID);

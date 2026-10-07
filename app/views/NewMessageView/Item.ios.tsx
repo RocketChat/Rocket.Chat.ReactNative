@@ -2,17 +2,11 @@ import Avatar from '~/containers/Avatar';
 import NativeListRow from '~/containers/NativeListRow';
 import { AVATAR_SIZE } from '~/containers/NativeListRow/constants';
 import I18n from '~/i18n';
-import { useMediaCallPermission } from '~/lib/hooks/useMediaCallPermission';
-import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
-import { isSelfUserId } from '~/lib/services/voip/isSelfUserId';
 import { useStartMediaCall } from './useStartMediaCall';
 import { type IItem } from './Item';
 
 const Item = ({ userId, name, username, onPress, testID, onLongPress, isFirst, isLast }: IItem) => {
-	const hasMediaCallPermission = useMediaCallPermission();
-	const isInActiveCall = useIsInActiveVoipCall();
-	const isSelf = isSelfUserId(userId);
-	const startMediaCall = useStartMediaCall({ userId, name, username });
+	const { canStartMediaCall, isInActiveCall, startMediaCall } = useStartMediaCall({ userId, name, username });
 
 	return (
 		<NativeListRow
@@ -25,7 +19,7 @@ const Item = ({ userId, name, username, onPress, testID, onLongPress, isFirst, i
 			isLast={isLast}
 			leading={<Avatar text={username} size={AVATAR_SIZE} />}
 			trailingAction={
-				hasMediaCallPermission && !isSelf
+				canStartMediaCall
 					? {
 							icon: 'phone',
 							onPress: startMediaCall,

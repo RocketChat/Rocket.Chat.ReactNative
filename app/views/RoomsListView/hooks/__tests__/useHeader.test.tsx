@@ -1,8 +1,10 @@
-import { act, renderHook } from '@testing-library/react-native';
-import { type ReactElement, useState } from 'react';
+import { renderHook } from '@testing-library/react-native';
+import { createRef, type ReactElement } from 'react';
+import { type SearchBarCommands } from 'react-native-screens';
 
 import { RoomsSearchContext } from '../../contexts/RoomsSearchProvider';
-import { useHeader } from '../useHeader';
+import { useJsRoomsListHeader } from '../useJsRoomsListHeader';
+import { useNativeRoomsListHeader } from '../useNativeRoomsListHeader';
 
 const mockSetOptions = jest.fn();
 const mockNavigation = { setOptions: mockSetOptions, navigate: jest.fn(), toggleDrawer: jest.fn(), getParent: jest.fn() };
@@ -76,6 +78,7 @@ jest.mock('~/lib/hooks/useAppSelector', () => ({
 
 const mockStartSearch = jest.fn();
 const mockStopSearch = jest.fn();
+const mockResetSearch = jest.fn();
 const mockSearch = jest.fn();
 const searchContextValue = {
 	searching: false,
@@ -83,17 +86,26 @@ const searchContextValue = {
 	searchResults: [],
 	startSearch: mockStartSearch,
 	stopSearch: mockStopSearch,
-	search: mockSearch
+	resetSearch: mockResetSearch,
+	search: mockSearch,
+	searchBarRef: createRef<SearchBarCommands>()
 };
 
-const renderUseHeader = () =>
+const renderUseHeader = (useHeader = useNativeRoomsListHeader) =>
 	renderHook(() => useHeader(), {
 		wrapper: ({ children }: { children: ReactElement }) => (
 			<RoomsSearchContext.Provider value={searchContextValue}>{children}</RoomsSearchContext.Provider>
 		)
 	});
 
+const originalDev = __DEV__;
+
 describe('RoomsListView useHeader', () => {
+	afterEach(() => {
+		// @ts-expect-error __DEV__ is not writable but we need to test
+		global.__DEV__ = originalDev;
+	});
+
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockIsIOS = true;
@@ -138,17 +150,14 @@ describe('RoomsListView useHeader', () => {
 	});
 
 	it('builds the right cluster in push-troubleshoot, directory, display order, then the toolbar create item', () => {
-		const originalDev = __DEV__;
 		// @ts-expect-error __DEV__ is not writable but we need to test
 		global.__DEV__ = false;
 		mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
 
 		renderUseHeader();
 
-		// @ts-expect-error __DEV__ is not writable but we need to test
-		global.__DEV__ = originalDev;
 		const options = mockSetOptions.mock.calls[0][0];
-		const rightItems = options.unstable_headerRightItems();
+		const rightItems = options.unstable_headerRightItems({});
 		const labels = rightItems.map((item: { accessibilityLabel: string }) => item.accessibilityLabel);
 		expect(labels).toEqual(['Troubleshooting', 'Directory', 'Display', 'Create new channel, team, direct message or discussion']);
 	});
@@ -159,7 +168,7 @@ describe('RoomsListView useHeader', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		const rightItems = options.unstable_headerRightItems();
+		const rightItems = options.unstable_headerRightItems({});
 		const labels = rightItems.map((item: { accessibilityLabel: string }) => item.accessibilityLabel);
 		expect(labels).not.toContain('Troubleshooting');
 	});
@@ -169,7 +178,7 @@ describe('RoomsListView useHeader', () => {
 
 		const options = mockSetOptions.mock.calls[0][0];
 		const toolbarItems = options
-			.unstable_headerRightItems()
+			.unstable_headerRightItems({})
 			.filter((item: { placement?: string }) => item.placement === 'toolbar');
 		expect(toolbarItems).toEqual([
 			expect.objectContaining({
@@ -184,7 +193,7 @@ describe('RoomsListView useHeader', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		const rightItems = options.unstable_headerRightItems();
+		const rightItems = options.unstable_headerRightItems({});
 		const labels = rightItems.map((item: { accessibilityLabel: string }) => item.accessibilityLabel);
 		expect(labels).toEqual(['Directory', 'Display', 'Create new channel, team, direct message or discussion']);
 		expect(rightItems.every((item: { type: string }) => item.type === 'button')).toBe(true);
@@ -194,7 +203,7 @@ describe('RoomsListView useHeader', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		const leftItems = options.unstable_headerLeftItems();
+		const leftItems = options.unstable_headerLeftItems({});
 		expect(leftItems).toHaveLength(1);
 		expect(leftItems[0].icon).toEqual({ type: 'image', source: { uri: 'hamburguer' } });
 	});
@@ -211,7 +220,7 @@ describe('RoomsListView useHeader', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		const rightItems = options.unstable_headerRightItems();
+		const rightItems = options.unstable_headerRightItems({});
 		expect(rightItems.some((item: { accessibilityLabel: string }) => item.accessibilityLabel === 'Search')).toBe(false);
 
 		expect(options.headerSearchBarOptions.placement).toBe('automatic');
@@ -223,49 +232,10 @@ describe('RoomsListView useHeader', () => {
 		options.headerSearchBarOptions.onChangeText({ nativeEvent: { text: 'general' } });
 		expect(mockSearch).toHaveBeenCalledWith('general');
 
+		expect(options.headerSearchBarOptions.ref).toBe(searchContextValue.searchBarRef);
+
 		options.headerSearchBarOptions.onCancelButtonPress();
-		expect(mockStopSearch).toHaveBeenCalledTimes(1);
-	});
-
-	it('clears the system search bar once search stops', () => {
-		let setSearchEnabled: (value: boolean) => void = () => {};
-		const wrapper = ({ children }: { children: ReactElement }) => {
-			const [searchEnabled, setter] = useState(true);
-			setSearchEnabled = setter;
-			return (
-				<RoomsSearchContext.Provider value={{ ...searchContextValue, searchEnabled }}>{children}</RoomsSearchContext.Provider>
-			);
-		};
-
-		renderHook(() => useHeader(), { wrapper });
-
-		const clearText = jest.fn();
-		mockSetOptions.mock.calls[0][0].headerSearchBarOptions.ref.current = { clearText };
-
-		act(() => setSearchEnabled(false));
-
-		expect(clearText).toHaveBeenCalledTimes(1);
-	});
-
-	it('deactivates the system search bar once search stops on tablet', () => {
-		mockIsMasterDetail = true;
-		let setSearchEnabled: (value: boolean) => void = () => {};
-		const wrapper = ({ children }: { children: ReactElement }) => {
-			const [searchEnabled, setter] = useState(true);
-			setSearchEnabled = setter;
-			return (
-				<RoomsSearchContext.Provider value={{ ...searchContextValue, searchEnabled }}>{children}</RoomsSearchContext.Provider>
-			);
-		};
-
-		renderHook(() => useHeader(), { wrapper });
-
-		const cancelSearch = jest.fn();
-		mockSetOptions.mock.calls[0][0].headerSearchBarOptions.ref.current = { cancelSearch };
-
-		act(() => setSearchEnabled(false));
-
-		expect(cancelSearch).toHaveBeenCalledTimes(1);
+		expect(mockResetSearch).toHaveBeenCalledTimes(1);
 	});
 
 	it('replaces the tablet right actions with a Cancel item that stops search while searching', () => {
@@ -274,11 +244,11 @@ describe('RoomsListView useHeader', () => {
 			<RoomsSearchContext.Provider value={{ ...searchContextValue, searchEnabled: true }}>{children}</RoomsSearchContext.Provider>
 		);
 
-		renderHook(() => useHeader(), { wrapper });
+		renderHook(() => useNativeRoomsListHeader(), { wrapper });
 
 		const options = mockSetOptions.mock.calls[0][0];
 		expect(options.headerSearchBarOptions.hideNavigationBar).toBe(false);
-		const rightItems = options.unstable_headerRightItems();
+		const rightItems = options.unstable_headerRightItems({});
 		expect(rightItems.map((item: { label: string }) => item.label)).toEqual(['Cancel']);
 
 		rightItems[0].onPress();
@@ -290,18 +260,16 @@ describe('RoomsListView useHeader', () => {
 			<RoomsSearchContext.Provider value={{ ...searchContextValue, searchEnabled: true }}>{children}</RoomsSearchContext.Provider>
 		);
 
-		renderHook(() => useHeader(), { wrapper });
+		renderHook(() => useNativeRoomsListHeader(), { wrapper });
 
 		const options = mockSetOptions.mock.calls[0][0];
 		expect(options.headerSearchBarOptions.hideNavigationBar).toBe(true);
-		const labels = options.unstable_headerRightItems().map((item: { label: string }) => item.label);
+		const labels = options.unstable_headerRightItems({}).map((item: { label: string }) => item.label);
 		expect(labels).not.toContain('Cancel');
 	});
 
-	it('falls back to the JS header on Android', () => {
-		mockIsIOS = false;
-
-		renderUseHeader();
+	it('renders the JS header without a native bar', () => {
+		renderUseHeader(useJsRoomsListHeader);
 
 		const options = mockSetOptions.mock.calls[0][0];
 		expect(options.headerLargeTitle).toBeUndefined();

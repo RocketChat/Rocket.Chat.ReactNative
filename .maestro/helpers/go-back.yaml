@@ -11,22 +11,19 @@ tags:
       - tapOn:
           id: '(custom-)?header-back'
 
-# iOS system back button: id BackButton, labelled with the previous screen title.
-# The unread badge back button has no id, only a 'Back, N Unread' label.
-# The selector is chosen once so a tap on the first can't trigger the second on the next screen.
-- evalScript: ${output.iosBackById = false}
+- evalScript: ${output.iosBackButtonHasId = false}
 - runFlow:
     when:
       platform: iOS
       visible:
         id: 'BackButton'
     commands:
-      - evalScript: ${output.iosBackById = true}
+      - evalScript: ${output.iosBackButtonHasId = true}
 
 - runFlow:
     when:
       platform: iOS
-      true: ${output.iosBackById}
+      true: ${output.iosBackButtonHasId}
     commands:
       - tapOn:
           id: 'BackButton'
@@ -35,7 +32,7 @@ tags:
 - runFlow:
     when:
       platform: iOS
-      true: ${!output.iosBackById}
+      true: ${!output.iosBackButtonHasId}
     commands:
       - tapOn:
           text: 'Back(, .*)?'

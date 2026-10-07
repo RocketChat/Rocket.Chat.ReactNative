@@ -35,7 +35,7 @@ export const useIsAdmin = () => {
 
 export const useAdminRoute = () => (useMasterDetail() ? 'AdminPanelView' : 'AdminPanelStackNavigator');
 
-const Admin = ({ currentScreen }: { currentScreen: string | null }) => {
+const Admin = ({ currentScreen }: { currentScreen: string }) => {
 	const routeName = useAdminRoute();
 	const { colors } = useTheme();
 	const isAdmin = useIsAdmin();

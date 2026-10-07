@@ -6,7 +6,8 @@ import { events, logEvent } from '~/lib/methods/helpers/log';
 import { toggleFollowThread } from '~/lib/methods/toggleFollowThread';
 import { type RoomMembership, type RoomStore } from '~/views/RoomView/definitions';
 import { closeLivechat } from '~/views/RoomView/services/closeLivechat';
-import RightButtons from '../RightButtons';
+import { HeaderActions } from '~/lib/methods/helpers/navigation/headerActions';
+import { RoomHeaderActions } from '../RoomHeaderActions';
 
 const mockNavigation = { navigate: jest.fn(), push: jest.fn() };
 jest.mock('@react-navigation/native', () => ({ useNavigation: () => mockNavigation }));
@@ -126,7 +127,7 @@ const createRoomStore = (room: Record<string, unknown>, membership: RoomMembersh
 
 const ROOM_BUTTONS = ['room-view-header-call', 'room-view-header-threads', 'room-view-search'];
 
-describe('RightButtons', () => {
+describe('RoomHeaderActions', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockIsMasterDetail = false;
@@ -149,7 +150,7 @@ describe('RightButtons', () => {
 
 	describe('routing', () => {
 		it('renders nothing without a rid', () => {
-			const { toJSON } = render(<RightButtons roomStore={createRoomStore({ t: 'c' })} />);
+			const { toJSON } = render(<RoomHeaderActions roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
 
 			expect(toJSON()).toBeNull();
 		});
@@ -160,32 +161,42 @@ describe('RightButtons', () => {
 			['an omnichannel room still in the preview window', { t: 'l' }, 'preview'],
 			['an invited omnichannel room', { t: 'l' }, 'invited']
 		])('renders nothing for %s', (_case, room, membership) => {
-			const { toJSON } = render(<RightButtons rid='rid-1' roomStore={createRoomStore(room, membership as RoomMembership)} />);
+			const { toJSON } = render(
+				<RoomHeaderActions
+					rid='rid-1'
+					roomStore={createRoomStore(room, membership as RoomMembership)}
+					ActionsRenderer={HeaderActions}
+				/>
+			);
 
 			expect(toJSON()).toBeNull();
 		});
 
 		it('renders only the kebab for an active omnichannel room even with a tmid', () => {
-			render(<RightButtons rid='rid-1' tmid='tmid-1' roomStore={createRoomStore({ t: 'l' })} />);
+			render(
+				<RoomHeaderActions rid='rid-1' tmid='tmid-1' roomStore={createRoomStore({ t: 'l' })} ActionsRenderer={HeaderActions} />
+			);
 
 			expectOnly(['room-view-header-omnichannel-kebab']);
 		});
 
 		it('renders the thread buttons when a tmid is given', () => {
-			render(<RightButtons rid='rid-1' tmid='tmid-1' roomStore={createRoomStore({ t: 'c' })} />);
+			render(
+				<RoomHeaderActions rid='rid-1' tmid='tmid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />
+			);
 
 			expectOnly(['room-view-header-follow']);
 		});
 
 		it('renders call, threads and search in order for a regular channel', () => {
-			render(<RightButtons rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
+			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
 
 			expect(renderedTestIDs()).toEqual(ROOM_BUTTONS);
 		});
 
 		it('swaps the room buttons for the omnichannel kebab when the room type changes in place', () => {
 			const roomStore = createRoomStore({ t: 'c' });
-			render(<RightButtons rid='rid-1' roomStore={roomStore} />);
+			render(<RoomHeaderActions rid='rid-1' roomStore={roomStore} ActionsRenderer={HeaderActions} />);
 			expectOnly(ROOM_BUTTONS);
 
 			act(() => roomStore.setState({ room: { id: 'sub-1', rid: 'rid-1', t: 'l' } as never }));
@@ -195,12 +206,12 @@ describe('RightButtons', () => {
 
 		it('switches to the thread buttons when a tmid appears and back when it is cleared', () => {
 			const roomStore = createRoomStore({ t: 'c' });
-			render(<RightButtons rid='rid-1' roomStore={roomStore} />);
+			render(<RoomHeaderActions rid='rid-1' roomStore={roomStore} ActionsRenderer={HeaderActions} />);
 
-			screen.rerender(<RightButtons rid='rid-1' tmid='tmid-1' roomStore={roomStore} />);
+			screen.rerender(<RoomHeaderActions rid='rid-1' tmid='tmid-1' roomStore={roomStore} ActionsRenderer={HeaderActions} />);
 			expectOnly(['room-view-header-follow']);
 
-			screen.rerender(<RightButtons rid='rid-1' roomStore={roomStore} />);
+			screen.rerender(<RoomHeaderActions rid='rid-1' roomStore={roomStore} ActionsRenderer={HeaderActions} />);
 			expectOnly(ROOM_BUTTONS);
 		});
 
@@ -213,7 +224,7 @@ describe('RightButtons', () => {
 		])('updates buttons when the same Room changes from %s/%s to %s/%s', (t, status, nextType, nextStatus, expected) => {
 			const room = { id: 'sub-1', rid: 'rid-1', t, status };
 			const roomStore = createRoomStore(room, status === 'INVITED' ? 'invited' : 'subscribed');
-			render(<RightButtons rid='rid-1' roomStore={roomStore} />);
+			render(<RoomHeaderActions rid='rid-1' roomStore={roomStore} ActionsRenderer={HeaderActions} />);
 
 			act(() => {
 				Object.assign(room, { t: nextType, status: nextStatus });
@@ -229,7 +240,9 @@ describe('RightButtons', () => {
 			mockE2EEStatus = { showMissingE2EEKey: true, showE2EEDisabledRoom: false, hasE2EEWarning: true };
 			mockHeaderHooks = { ...mockHeaderHooks, canToggleEncryption: true };
 
-			render(<RightButtons rid='rid-1' roomStore={createRoomStore({ t: 'c', encrypted: true })} />);
+			render(
+				<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c', encrypted: true })} ActionsRenderer={HeaderActions} />
+			);
 
 			expectOnly(['room-view-header-encryption', ...ROOM_BUTTONS]);
 			expect(screen.getByTestId('room-view-header-encryption')).toHaveProp('disabled', false);
@@ -242,7 +255,9 @@ describe('RightButtons', () => {
 		])('disables the encryption button when %s', (_case, status) => {
 			mockE2EEStatus = { ...status, hasE2EEWarning: true };
 
-			render(<RightButtons rid='rid-1' roomStore={createRoomStore({ t: 'c', encrypted: true })} />);
+			render(
+				<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c', encrypted: true })} ActionsRenderer={HeaderActions} />
+			);
 
 			expect(screen.getByTestId('room-view-header-encryption')).toHaveProp('disabled', true);
 		});
@@ -250,7 +265,7 @@ describe('RightButtons', () => {
 		it('navigates to the encryption toggle', () => {
 			mockE2EEStatus = { showMissingE2EEKey: true, showE2EEDisabledRoom: false, hasE2EEWarning: true };
 			mockHeaderHooks = { ...mockHeaderHooks, canToggleEncryption: true };
-			render(<RightButtons rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
+			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
 
 			fireEvent.press(screen.getByTestId('room-view-header-encryption'));
 
@@ -262,14 +277,20 @@ describe('RightButtons', () => {
 		it('tints the push troubleshoot button when there are notification issues', () => {
 			mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
 
-			render(<RightButtons rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
+			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
 
 			expect(renderedTestIDs()).toEqual(['room-view-push-troubleshoot', ...ROOM_BUTTONS]);
 			expect(screen.getByTestId('room-view-push-troubleshoot')).toHaveProp('color', '#f00');
 		});
 
 		it('shows an untinted push troubleshoot button when notifications are disabled for the room', () => {
-			render(<RightButtons rid='rid-1' roomStore={createRoomStore({ t: 'c', disableNotifications: true })} />);
+			render(
+				<RoomHeaderActions
+					rid='rid-1'
+					roomStore={createRoomStore({ t: 'c', disableNotifications: true })}
+					ActionsRenderer={HeaderActions}
+				/>
+			);
 
 			expect(screen.getByTestId('room-view-push-troubleshoot')).toHaveProp('color', undefined);
 		});
@@ -277,7 +298,7 @@ describe('RightButtons', () => {
 		it.each([false, true])('routes notification issues to push troubleshooting (master-detail: %s)', isMasterDetail => {
 			mockIsMasterDetail = isMasterDetail;
 			mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
-			render(<RightButtons rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
+			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
 
 			fireEvent.press(screen.getByTestId('room-view-push-troubleshoot'));
 
@@ -291,7 +312,7 @@ describe('RightButtons', () => {
 		it('hides the threads button when threads are disabled', () => {
 			mockAppState = { ...mockAppState, settings: { ...mockAppState.settings, Threads_enabled: false } };
 
-			render(<RightButtons rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
+			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
 
 			expectOnly(['room-view-header-call', 'room-view-search']);
 		});
@@ -299,13 +320,15 @@ describe('RightButtons', () => {
 		it('hides the call button on a self DM', () => {
 			mockHeaderHooks = { ...mockHeaderHooks, isSelfDm: true };
 
-			render(<RightButtons rid='rid-1' roomStore={createRoomStore({ t: 'd', name: 'user' })} />);
+			render(
+				<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'd', name: 'user' })} ActionsRenderer={HeaderActions} />
+			);
 
 			expectOnly(['room-view-header-threads', 'room-view-search']);
 		});
 
 		it('starts a video conference from the call button', () => {
-			render(<RightButtons rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
+			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
 
 			fireEvent.press(screen.getByTestId('room-view-header-call'));
 
@@ -313,7 +336,7 @@ describe('RightButtons', () => {
 		});
 
 		it('navigates to the threads screen', () => {
-			render(<RightButtons rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
+			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
 
 			fireEvent.press(screen.getByTestId('room-view-header-threads'));
 
@@ -322,7 +345,7 @@ describe('RightButtons', () => {
 
 		it('badges the threads button with the unread thread count', () => {
 			mockHeaderHooks = { ...mockHeaderHooks, tunread: ['t1', 't2'] };
-			render(<RightButtons rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
+			render(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />);
 
 			const badge = screen.getByTestId('room-view-header-threads').props.badge();
 
@@ -336,7 +359,9 @@ describe('RightButtons', () => {
 			[true, 'room-view-header-unfollow', 'Unfollow thread']
 		])('toggles the follow state of a thread (following: %s)', (isFollowingThread, testID, label) => {
 			mockHeaderHooks = { ...mockHeaderHooks, isFollowingThread };
-			render(<RightButtons rid='rid-1' tmid='tmid-1' roomStore={createRoomStore({ t: 'c' })} />);
+			render(
+				<RoomHeaderActions rid='rid-1' tmid='tmid-1' roomStore={createRoomStore({ t: 'c' })} ActionsRenderer={HeaderActions} />
+			);
 
 			expect(screen.getByTestId(testID)).toHaveProp('accessibilityLabel', label);
 			fireEvent.press(screen.getByTestId(testID));
@@ -347,7 +372,13 @@ describe('RightButtons', () => {
 
 	describe('omnichannel', () => {
 		it('opens the more actions sheet and closes the chat from it', () => {
-			render(<RightButtons rid='rid-1' roomStore={createRoomStore({ t: 'l', departmentId: 'department-1' })} />);
+			render(
+				<RoomHeaderActions
+					rid='rid-1'
+					roomStore={createRoomStore({ t: 'l', departmentId: 'department-1' })}
+					ActionsRenderer={HeaderActions}
+				/>
+			);
 
 			fireEvent.press(screen.getByTestId('room-view-header-omnichannel-kebab'));
 

@@ -8,8 +8,8 @@ import { createRoomStore, observeRoom } from './stores/RoomStore';
 import { type RoomStore } from './definitions';
 
 const RoomView = ({ route, navigation }: IRoomViewProps) => {
-	const [input] = useState(() => parseRoomRoute(route.params));
-	const { rid, t, tmid, name, initialRoom, roomUserId } = input;
+	const [mountedRouteParams] = useState(() => parseRoomRoute(route.params));
+	const { rid, t, tmid, name, initialRoom, roomUserId } = mountedRouteParams;
 
 	const [roomStore] = useState<RoomStore>(() => createRoomStore({ rid, initialRoom, roomUserId }));
 	const [ready, setReady] = useState(false);

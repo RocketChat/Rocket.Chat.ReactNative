@@ -29,8 +29,6 @@ const JsRoomHeader = ({ rid, tmid, name, roomStore }: IRoomViewHeaderProps) => {
 	return null;
 };
 
-// rid/tmid/name come from the screen's mount-time snapshot: route.params can be wiped to undefined
-// while this RoomView is retained below the stack top, which would break the header permanently.
 export const RoomViewHeader = ({ rid, tmid, name, roomStore }: IRoomViewHeaderProps) => {
 	if (!hasNativeHeaderBar) {
 		return <JsRoomHeader rid={rid} tmid={tmid} name={name} roomStore={roomStore} />;

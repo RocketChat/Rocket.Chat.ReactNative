@@ -4,7 +4,7 @@ import * as List from '~/containers/List';
 import StackItem from './StackItem';
 import { useStackItems } from './useStackItems';
 
-const Stacks = ({ currentScreen }: { currentScreen: string | null }) => {
+const Stacks = ({ currentScreen }: { currentScreen: string }) => {
 	const items = useStackItems(currentScreen);
 
 	return (

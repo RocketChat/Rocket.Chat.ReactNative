@@ -20,19 +20,12 @@ const searchAction: IHeaderAction = {
 	label: 'Search',
 	icon: 'search',
 	testID: 'search',
-	legacyHeaderOnly: true,
 	onPress: jest.fn()
 };
 
 const openedSheetOptions = () => (showActionSheetRef as jest.Mock).mock.calls[0][0].options as TActionSheetOptionsItem[];
 
 describe('nativeHeaderItems', () => {
-	it('leaves out actions that only exist on the legacy header', () => {
-		const items = nativeHeaderItems([filterAction, searchAction]) as NativeStackHeaderItemMenu[];
-
-		expect(items.map(item => item.label)).toEqual(['Filter']);
-	});
-
 	it('turns a menu into native menu actions with radio state only on checkable items', () => {
 		const [menu] = nativeHeaderItems([filterAction]) as NativeStackHeaderItemMenu[];
 
@@ -49,6 +42,19 @@ describe('nativeHeaderItems', () => {
 
 		expect((button as NativeStackHeaderItemButton).badge).toEqual({ value: '', style: { backgroundColor: 'red' } });
 	});
+
+	it('tints items with the header tint unless the action sets its own', () => {
+		const [plain, tinted] = nativeHeaderItems(
+			[
+				{ label: 'Menu', icon: 'hamburguer', onPress: jest.fn() },
+				{ label: 'Create', icon: 'add', tintColor: 'blue', onPress: jest.fn() }
+			],
+			'gray'
+		) as NativeStackHeaderItemButton[];
+
+		expect(plain.tintColor).toBe('gray');
+		expect(tinted.tintColor).toBe('blue');
+	});
 });
 
 describe('HeaderActions', () => {
@@ -60,7 +66,7 @@ describe('HeaderActions', () => {
 		expect(screen.toJSON()).toBeNull();
 	});
 
-	it('shows legacy-only actions and uses the label as text when there is no icon', () => {
+	it('shows icon actions and uses the label as text when there is no icon', () => {
 		render(<HeaderActions actions={[searchAction, { label: 'Next', testID: 'next', onPress: jest.fn() }]} />);
 
 		expect(screen.getByTestId('search')).toBeOnTheScreen();

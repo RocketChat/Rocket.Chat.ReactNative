@@ -4,20 +4,15 @@ import { type NativeStackHeaderItem } from '@react-navigation/native-stack';
 
 import i18n from '~/i18n';
 import { useTheme } from '~/theme';
+import { formatUnreadCount } from '~/lib/methods/helpers/formatUnreadCount';
 import { type IRoomViewProps } from '../definitions';
 import { useUnreadsCount } from './useUnreadsCount';
-
-const formatUnreadsCount = (unreadsCount: number | null) => {
-	if (!unreadsCount) {
-		return '';
-	}
-	return unreadsCount > 99 ? '+99' : unreadsCount.toString();
-};
 
 export const useNativeBackButton = (rid: string) => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const { colors } = useTheme();
-	const unreadsLabel = formatUnreadsCount(useUnreadsCount(rid));
+	const unreadsCount = useUnreadsCount(rid);
+	const unreadsLabel = unreadsCount ? formatUnreadCount(unreadsCount) : '';
 
 	useLayoutEffect(() => {
 		if (!navigation.canGoBack()) {

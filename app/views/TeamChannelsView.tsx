@@ -13,18 +13,16 @@ import { themes } from '../lib/constants/colors';
 import { type TActionSheetOptions, type TActionSheetOptionsItem, withActionSheet } from '../containers/ActionSheet';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import BackgroundContainer from '../containers/BackgroundContainer';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import RoomHeader from '../containers/RoomHeader';
 import SafeAreaView from '../containers/SafeAreaView';
-import SearchHeader from '../containers/SearchHeader';
 import { type IApplicationState, type IBaseScreen, type TSubscriptionModel } from '../definitions';
 import { ERoomType } from '../definitions/ERoomType';
 import { withDimensions } from '../lib/hooks/withDimensions';
 import { withMasterDetail } from '../lib/hooks/useMasterDetail';
 import { BASE_ROW_HEIGHT, BASE_ROW_HEIGHT_CONDENSED } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import I18n from '../i18n';
-import { stackedSearchBarOptions } from '~/lib/methods/helpers/navigation';
-import { headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
+import { type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
+import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import database from '../lib/database';
 import { CustomIcon } from '../containers/CustomIcon';
 import RoomItem from '../containers/RoomItem';
@@ -233,62 +231,42 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 			return;
 		}
 
-		if (isSearching && !hasNativeHeaderBar) {
-			const options: NativeStackNavigationOptions = {
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
-					</HeaderButton.Container>
-				),
-				headerTitle: () => (
-					<SearchHeader onSearchChangeText={this.onSearchChangeText} testID='team-channels-view-search-header' />
-				),
-				headerRight: undefined
-			};
-			return navigation.setOptions(options);
-		}
-
 		const createAction: IHeaderAction = {
 			label: I18n.t('Add_Channel_to_Team'),
 			icon: 'create',
 			testID: 'team-channels-view-create',
 			onPress: () => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, rid: this.team.rid, t: this.team.t as any })
 		};
-		const searchAction: IHeaderAction = {
-			label: I18n.t('Search'),
-			icon: 'search',
-			testID: 'team-channels-view-search',
-			legacyHeaderOnly: true,
-			onPress: this.onSearchPress
-		};
+		const titleOptions: NativeStackNavigationOptions = hasNativeHeaderBar
+			? {
+					headerTitle: getRoomTitle(team),
+					headerSubtitle: team.topic,
+					onHeaderTitlePress: () => this.goRoomActionsView()
+				}
+			: {
+					headerTitle: () => (
+						<RoomHeader
+							title={getRoomTitle(team)}
+							subtitle={team.topic}
+							type={team.t}
+							onPress={this.goRoomActionsView}
+							teamMain
+						/>
+					)
+				};
 
-		navigation.setOptions({
-			headerLeft: undefined,
-			...(hasNativeHeaderBar
-				? {
-						headerTitle: getRoomTitle(team),
-						headerSubtitle: team.topic,
-						onHeaderTitlePress: () => this.goRoomActionsView(),
-						headerSearchBarOptions: stackedSearchBarOptions({
-							ref: this.searchBarRef,
-							onFocus: this.onSearchPress,
-							onChangeText: this.onSearchChangeText,
-							onCancel: this.onCancelSearchPress
-						})
-					}
-				: {
-						headerTitle: () => (
-							<RoomHeader
-								title={getRoomTitle(team)}
-								subtitle={team.topic}
-								type={team.t}
-								onPress={this.goRoomActionsView}
-								teamMain
-							/>
-						)
-					}),
-			...headerRightActions(showCreate ? [createAction, searchAction] : [searchAction])
-		});
+		navigation.setOptions(
+			searchHeaderOptions({
+				isSearching,
+				searchBarRef: this.searchBarRef,
+				onSearchPress: this.onSearchPress,
+				onChangeText: this.onSearchChangeText,
+				onCancel: this.onCancelSearchPress,
+				testIDPrefix: 'team-channels-view',
+				options: { headerLeft: undefined, ...titleOptions },
+				rightActions: showCreate ? [createAction] : []
+			})
+		);
 	};
 
 	onSearchPress = () => {

@@ -83,6 +83,7 @@ describe('MediaCallHeader', () => {
 	beforeEach(() => {
 		useCallStore.getState().reset();
 		jest.clearAllMocks();
+		mockHasNativeHeaderBar = false;
 	});
 
 	it('should render empty placeholder when there is no call', () => {
@@ -110,7 +111,6 @@ describe('MediaCallHeader', () => {
 		);
 
 		expect(toJSON()).toBeNull();
-		mockHasNativeHeaderBar = false;
 	});
 
 	it('should render empty placeholder when native accepted but call not bound yet (before answerCall completes)', () => {

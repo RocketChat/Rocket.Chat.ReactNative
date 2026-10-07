@@ -74,25 +74,17 @@ export const useSectionToggleAnimation = (
 			: withTiming(toValue, { duration: 0 });
 	};
 
-	const rowEntering: EntryExitAnimationFunction = () => {
-		'worklet';
-		return { initialValues: { opacity: 0 }, animations: { opacity: fadeTo(1, SECTION_SPRING) } };
-	};
+	const fade =
+		(fromOpacity: number, toOpacity: number, spring: WithSpringConfig): EntryExitAnimationFunction =>
+		() => {
+			'worklet';
+			return { initialValues: { opacity: fromOpacity }, animations: { opacity: fadeTo(toOpacity, spring) } };
+		};
 
-	const rowExiting: EntryExitAnimationFunction = () => {
-		'worklet';
-		return { initialValues: { opacity: 1 }, animations: { opacity: fadeTo(0, SECTION_SPRING) } };
-	};
-
-	const badgeEntering: EntryExitAnimationFunction = () => {
-		'worklet';
-		return { initialValues: { opacity: 0 }, animations: { opacity: fadeTo(1, BADGE_IN_SPRING) } };
-	};
-
-	const badgeExiting: EntryExitAnimationFunction = () => {
-		'worklet';
-		return { initialValues: { opacity: 1 }, animations: { opacity: fadeTo(0, BADGE_OUT_SPRING) } };
-	};
+	const rowEntering = fade(0, 1, SECTION_SPRING);
+	const rowExiting = fade(1, 0, SECTION_SPRING);
+	const badgeEntering = fade(0, 1, BADGE_IN_SPRING);
+	const badgeExiting = fade(1, 0, BADGE_OUT_SPRING);
 
 	const coverEntering: EntryExitAnimationFunction = () => {
 		'worklet';

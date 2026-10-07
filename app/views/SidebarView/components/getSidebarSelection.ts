@@ -6,7 +6,7 @@ export const ADMIN_SELECTION_TAG = 'sidebar-admin';
 export const getSidebarSelection = (
 	stackItems: IStackItem[],
 	adminRoute: string | null,
-	currentScreen: string | null
+	currentScreen: string
 ): IListSelection => {
 	const selectedItem = stackItems.find(item => item.route && item.selected);
 	const isAdminSelected = adminRoute !== null && currentScreen === adminRoute;

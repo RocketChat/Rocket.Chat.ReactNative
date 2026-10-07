@@ -9,7 +9,7 @@ let mockTestStore: RoomStore;
 
 jest.mock('../useGoRoomActionsView', () => ({ useGoRoomActionsView: jest.fn(() => jest.fn()) }));
 jest.mock('~/views/RoomView/components/LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
-jest.mock('~/views/RoomView/components/RightButtons/RightButtons', () => ({ __esModule: true, default: 'RightButtons' }));
+jest.mock('~/views/RoomView/components/RoomViewHeader/RoomHeaderActions', () => ({ RoomHeaderActions: 'RoomHeaderActions' }));
 jest.mock('~/containers/RoomHeader', () => ({ __esModule: true, default: 'RoomHeader' }));
 jest.mock('~/lib/methods/helpers', () => ({
 	getRoomTitle: jest.fn(() => 'Room Title'),
