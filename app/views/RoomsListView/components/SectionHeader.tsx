@@ -1,6 +1,6 @@
 import * as Haptics from 'expo-haptics';
 import { memo, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { type GestureResponderEvent, Pressable, Text, View } from 'react-native';
 import Animated, { type EntryExitAnimationFunction } from 'react-native-reanimated';
 
 import { CustomIcon } from '~/containers/CustomIcon';
@@ -50,6 +50,11 @@ const SectionHeader = ({
 		onOpen(header, sectionTitle);
 	};
 
+	const onPressToggle = (event: GestureResponderEvent) => {
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+		event.currentTarget.measureInWindow((_x, y, _width, height) => onToggle(header, y + height));
+	};
+
 	return (
 		<View style={[styles.groupTitleContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
 			<Pressable
@@ -65,7 +70,7 @@ const SectionHeader = ({
 				<CustomIcon name='chevron-right' size={20} color={colors.fontDefault} />
 			</Pressable>
 			<Pressable
-				onPress={event => event.currentTarget.measureInWindow((_x, y, _width, height) => onToggle(header, y + height))}
+				onPress={onPressToggle}
 				onPressIn={() => setIsTogglePressed(true)}
 				onPressOut={() => setIsTogglePressed(false)}
 				style={[styles.groupToggle, isTogglePressed && styles.groupHeaderPressed]}

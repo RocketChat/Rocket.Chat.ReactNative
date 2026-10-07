@@ -53,7 +53,7 @@ describe('SectionHeader', () => {
 		expect(toggle).not.toHaveStyle({ opacity: 0.7 });
 	});
 
-	it('toggles the category without a haptic when the toggle is pressed', () => {
+	it('toggles the category with a light haptic when the toggle is pressed', () => {
 		const { onToggle } = renderSectionHeader();
 		const pressEvent = {
 			currentTarget: {
@@ -64,6 +64,6 @@ describe('SectionHeader', () => {
 		fireEvent.press(screen.getByTestId('rooms-list-section-catWork'), pressEvent);
 
 		expect(onToggle).toHaveBeenCalledWith('catWork', 148);
-		expect(Haptics.impactAsync).not.toHaveBeenCalled();
+		expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
 	});
 });
