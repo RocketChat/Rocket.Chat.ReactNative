@@ -80,6 +80,21 @@ describe('test selectedUsers reducer', () => {
 		expect(state).toEqual(user.username);
 	});
 
+	it('should keep the same user object when setUser changes nothing', () => {
+		const before = mockedStore.getState().login.user;
+		mockedStore.dispatch(setUser({ username: before.username, status: before.status }));
+		expect(mockedStore.getState().login.user).toBe(before);
+	});
+
+	it('should replace the user object when setUser changes a field', () => {
+		const before = mockedStore.getState().login.user;
+		mockedStore.dispatch(setUser({ statusText: 'Lunch' }));
+		const after = mockedStore.getState().login.user;
+		expect(after).not.toBe(before);
+		expect(after.statusText).toEqual('Lunch');
+		expect(after.username).toEqual(before.username);
+	});
+
 	it('should clear user after clearUser', () => {
 		mockedStore.dispatch(clearUser());
 		const state = mockedStore.getState().login.user;

@@ -29,6 +29,9 @@ export interface ILogin {
 	failure: boolean;
 }
 
+const isSubsetOf = (fields: Partial<IUser>, user: Partial<IUser>) =>
+	Object.entries(fields).every(([key, value]) => user[key as keyof IUser] === value);
+
 export const initialState: ILogin = {
 	isLocalAuthenticated: true,
 	isAuthenticated: false,
@@ -71,6 +74,9 @@ export default function login(state = initialState, action: TActionsLogin): ILog
 		case types.LOGOUT:
 			return initialState;
 		case types.USER.SET:
+			if (isSubsetOf(action.user, state.user)) {
+				return state;
+			}
 			return {
 				...state,
 				user: {
