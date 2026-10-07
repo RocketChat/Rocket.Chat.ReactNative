@@ -19,7 +19,7 @@ export default StyleSheet.create({
 		flex: 1,
 		fontSize: 16,
 		lineHeight: 20,
-		...sharedStyles.textMedium
+		...sharedStyles.textRegular
 	},
 	alert: {
 		...sharedStyles.textBold
@@ -45,7 +45,7 @@ export default StyleSheet.create({
 		fontSize: 12,
 		lineHeight: 18,
 		marginLeft: 4,
-		...sharedStyles.textRegular
+		...sharedStyles.textMedium
 	},
 	updateAlert: {
 		...sharedStyles.textBold

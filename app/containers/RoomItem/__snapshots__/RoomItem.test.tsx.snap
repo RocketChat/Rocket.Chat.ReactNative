@@ -248,22 +248,24 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -290,7 +292,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -573,22 +575,24 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -615,7 +619,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -941,22 +945,24 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -983,7 +989,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -1309,22 +1315,24 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -1351,7 +1359,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -1677,22 +1685,24 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -1719,7 +1729,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -2045,22 +2055,24 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -2087,7 +2099,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -2413,22 +2425,24 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -2455,7 +2469,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -2781,22 +2795,24 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -2823,7 +2839,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -3149,22 +3165,24 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -3191,7 +3209,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -3517,22 +3535,24 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -3559,7 +3579,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -3885,22 +3905,24 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -3927,7 +3949,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -4257,13 +4279,12 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                           "fontVariant": [
                             "tabular-nums",
                           ],
-                          "fontWeight": "500",
+                          "fontWeight": "400",
                           "lineHeight": 20,
                           "textAlign": "left",
                         },
-                        undefined,
                         {
-                          "color": "#1F2329",
+                          "color": "#2F343D",
                         },
                       ]
                     }
@@ -4291,7 +4312,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "400",
+                            "fontWeight": "500",
                             "lineHeight": 18,
                             "marginLeft": 4,
                             "textAlign": "left",
@@ -4565,22 +4586,24 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -4607,7 +4630,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -4933,22 +4956,24 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -4975,7 +5000,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -5301,13 +5326,12 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -5374,7 +5398,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -5592,22 +5616,24 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -5634,7 +5660,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -5903,13 +5929,12 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -5937,7 +5962,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -6150,13 +6175,12 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -6223,7 +6247,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -6439,22 +6463,24 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -6472,7 +6498,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "400",
+                            "fontWeight": "500",
                             "lineHeight": 18,
                             "marginLeft": 4,
                             "textAlign": "left",
@@ -6792,22 +6818,24 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -6825,7 +6853,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "400",
+                            "fontWeight": "500",
                             "lineHeight": 18,
                             "marginLeft": 4,
                             "textAlign": "left",
@@ -7145,22 +7173,24 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -7178,7 +7208,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "400",
+                            "fontWeight": "500",
                             "lineHeight": 18,
                             "marginLeft": 4,
                             "textAlign": "left",
@@ -7519,13 +7549,12 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -7581,7 +7610,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -7851,13 +7880,12 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -7913,7 +7941,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -8186,13 +8214,12 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -8211,7 +8238,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "400",
+                            "fontWeight": "500",
                             "lineHeight": 18,
                             "marginLeft": 4,
                             "textAlign": "left",
@@ -8532,13 +8559,12 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -8557,7 +8583,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "400",
+                            "fontWeight": "500",
                             "lineHeight": 18,
                             "marginLeft": 4,
                             "textAlign": "left",
@@ -8878,13 +8904,12 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -8903,7 +8928,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "400",
+                            "fontWeight": "500",
                             "lineHeight": 18,
                             "marginLeft": 4,
                             "textAlign": "left",
@@ -9224,13 +9249,12 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -9249,7 +9273,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "400",
+                            "fontWeight": "500",
                             "lineHeight": 18,
                             "marginLeft": 4,
                             "textAlign": "left",
@@ -9570,22 +9594,24 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -9603,7 +9629,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "400",
+                            "fontWeight": "500",
                             "lineHeight": 18,
                             "marginLeft": 4,
                             "textAlign": "left",
@@ -9980,22 +10006,24 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -10013,7 +10041,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "400",
+                            "fontWeight": "500",
                             "lineHeight": 18,
                             "marginLeft": 4,
                             "textAlign": "left",
@@ -10390,22 +10418,24 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "700",
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "color": "#1F2329",
+                            },
+                          ],
                         ]
                       }
                     >
@@ -10423,7 +10453,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "400",
+                            "fontWeight": "500",
                             "lineHeight": 18,
                             "marginLeft": 4,
                             "textAlign": "left",
@@ -10807,13 +10837,12 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -10841,7 +10870,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -11111,13 +11140,12 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -11145,7 +11173,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -11415,13 +11443,12 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -11449,7 +11476,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -11719,13 +11746,12 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -11753,7 +11779,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -12023,13 +12049,12 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -12057,7 +12082,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -12327,13 +12352,12 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -12361,7 +12385,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -12631,13 +12655,12 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -12665,7 +12688,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -12935,13 +12958,12 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -12969,7 +12991,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -13239,13 +13261,12 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -13273,7 +13294,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -13543,13 +13564,12 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -13577,7 +13597,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -13852,13 +13872,12 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -13925,7 +13944,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -14193,13 +14212,12 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -14258,7 +14276,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "400",
+                            "fontWeight": "500",
                             "lineHeight": 18,
                             "marginLeft": 4,
                             "textAlign": "left",
@@ -14581,13 +14599,12 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -14654,7 +14671,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -14922,13 +14939,12 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -14987,7 +15003,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "400",
+                            "fontWeight": "500",
                             "lineHeight": 18,
                             "marginLeft": 4,
                             "textAlign": "left",
@@ -15314,13 +15330,12 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                           "fontVariant": [
                             "tabular-nums",
                           ],
-                          "fontWeight": "500",
+                          "fontWeight": "400",
                           "lineHeight": 20,
                           "textAlign": "left",
                         },
-                        undefined,
                         {
-                          "color": "#1F2329",
+                          "color": "#2F343D",
                         },
                       ]
                     }
@@ -15348,7 +15363,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "400",
+                            "fontWeight": "500",
                             "lineHeight": 18,
                             "marginLeft": 4,
                             "textAlign": "left",
@@ -15630,13 +15645,12 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -15664,7 +15678,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -15934,13 +15948,12 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -15968,7 +15981,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -16238,13 +16251,12 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -16272,7 +16284,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -16542,13 +16554,12 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -16576,7 +16587,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -16846,13 +16857,12 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -16880,7 +16890,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -17150,13 +17160,12 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -17184,7 +17193,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -17454,13 +17463,12 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -17488,7 +17496,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -17758,13 +17766,12 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -17792,7 +17799,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -18062,13 +18069,12 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -18096,7 +18102,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -18379,13 +18385,12 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -18413,7 +18418,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
@@ -18691,13 +18696,12 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                             "fontVariant": [
                               "tabular-nums",
                             ],
-                            "fontWeight": "500",
+                            "fontWeight": "400",
                             "lineHeight": 20,
                             "textAlign": "left",
                           },
-                          undefined,
                           {
-                            "color": "#1F2329",
+                            "color": "#2F343D",
                           },
                         ]
                       }
@@ -18725,7 +18729,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                               "fontVariant": [
                                 "tabular-nums",
                               ],
-                              "fontWeight": "400",
+                              "fontWeight": "500",
                               "lineHeight": 18,
                               "marginLeft": 4,
                               "textAlign": "left",
