@@ -246,8 +246,17 @@ const tapToleratingRunnerFailure = async (target: Locator) => {
 };
 
 export const confirmAlert = async ({ screen }: Fixtures, message: RegExp, button: RegExp) => {
-	await expect(screen.getByText(message).first()).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByRole('button', button).last().tap();
+	const alertMessage = screen.getByText(message).first();
+	const confirmButton = screen.getByRole('button', button).last();
+	await expect(alertMessage).toBeVisible({ timeout: LONG_TIMEOUT });
+	for (let attempt = 1; attempt < TAP_ATTEMPTS; attempt += 1) {
+		await confirmButton.tap();
+		if (await succeeds(alertMessage.waitFor({ state: 'hidden', timeout: TAP_UNTIL_HIDDEN_TIMEOUT }))) {
+			return;
+		}
+	}
+	await confirmButton.tap();
+	await expect(alertMessage).toBeHidden({ timeout: LONG_TIMEOUT });
 };
 
 const VALUE_SETTLE_TIMEOUT = 3_000;
