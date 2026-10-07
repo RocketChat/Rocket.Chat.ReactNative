@@ -182,6 +182,24 @@ describe('ShareView', () => {
 		expect(selected).toBe(attachments[0]);
 	});
 
+	it('getAttachments derives a decoded filename keeping UUID prefix from a share-extension path', async () => {
+		const shareView = makeInstance({ mime: 'application/pdf', serverVersion: '8.5.0' });
+		shareView.getPermissionMobileUpload = jest.fn().mockResolvedValue(true);
+		(shareView as any).files = [
+			{
+				path: 'file:///group/550e8400-e29b-41d4-a716-446655440000-%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80.pdf',
+				size: 10,
+				mime: 'application/pdf'
+			}
+		];
+
+		const { attachments, selected } = await shareView.getAttachments();
+
+		expect(attachments).toHaveLength(1);
+		expect(attachments[0].filename).toBe('550e8400-e29b-41d4-a716-446655440000-Пример.pdf');
+		expect(selected).toBe(attachments[0]);
+	});
+
 	it('getAttachments returns an empty selected attachment when every file is invalid', async () => {
 		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.5.0' });
 		shareView.getPermissionMobileUpload = jest.fn().mockResolvedValue(true);
