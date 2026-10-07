@@ -13,6 +13,7 @@ import Dialpad from './Dialpad/Dialpad';
 import { useCallLayoutMode } from '../useCallLayoutMode';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { type TIconsName } from '~/containers/CustomIcon';
+import { useMediaCallAppActions } from '../useMediaCallAppActions';
 
 interface ICallButtonConfig {
 	testID: string;
@@ -43,6 +44,7 @@ export const CallButtons = () => {
 	const endCall = useCallStore(state => state.endCall);
 
 	const controlsVisible = useControlsVisible();
+	const appActions = useMediaCallAppActions();
 
 	const containerStyle = useAnimatedStyle(() => ({
 		opacity: withTiming(controlsVisible ? 1 : 0, { duration: CONTROLS_ANIMATION_DURATION }),
@@ -53,8 +55,29 @@ export const CallButtons = () => {
 	const speakerDisabled = callState === 'none';
 	const messageDisabled = roomId == null;
 
-	const handleMessage = () => {
-		navigateToCallRoom({ isMasterDetail }).catch(() => undefined);
+	const handleMore = () => {
+		showActionSheetRef({
+			options: [
+				{
+					title: I18n.t('Direct_message'),
+					icon: 'message',
+					onPress: () => {
+						navigateToCallRoom({ isMasterDetail }).catch(() => undefined);
+					},
+					enabled: !messageDisabled,
+					testID: 'call-view-more-message'
+				},
+				...appActions.map(action => ({
+					title: action.label,
+					danger: action.variant === 'danger',
+					enabled: !action.disabled,
+					onPress: () => {
+						action.onPress();
+					},
+					testID: `call-view-more-app-${action.key}`
+				}))
+			]
+		});
 	};
 
 	const handleDialpad = () => {
@@ -91,11 +114,11 @@ export const CallButtons = () => {
 			disabled: isConnecting
 		},
 		{
-			testID: 'call-view-message',
-			icon: 'message',
-			label: I18n.t('Message'),
-			onPress: handleMessage,
-			disabled: messageDisabled
+			testID: 'call-view-more',
+			icon: 'kebab',
+			label: I18n.t('More'),
+			onPress: handleMore,
+			disabled: messageDisabled && appActions.length === 0
 		},
 		{
 			testID: 'call-view-end',

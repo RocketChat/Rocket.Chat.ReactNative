@@ -74,7 +74,7 @@ describe('CallButtons', () => {
 		expect(getByTestId('call-view-speaker')).toBeTruthy();
 		expect(getByTestId('call-view-hold')).toBeTruthy();
 		expect(getByTestId('call-view-mute')).toBeTruthy();
-		expect(getByTestId('call-view-message')).toBeTruthy();
+		expect(getByTestId('call-view-more')).toBeTruthy();
 		expect(getByTestId('call-view-end')).toBeTruthy();
 		expect(getByTestId('call-view-dialpad')).toBeTruthy();
 	});
@@ -126,7 +126,7 @@ describe('CallButtons', () => {
 		expect(getByText('Speaker')).toBeTruthy();
 		expect(getByText('Hold')).toBeTruthy();
 		expect(getByText('Mute')).toBeTruthy();
-		expect(getByText('Message')).toBeTruthy();
+		expect(getByText('More')).toBeTruthy();
 		expect(getByText('End')).toBeTruthy();
 		expect(getByText('Dialpad')).toBeTruthy();
 	});
