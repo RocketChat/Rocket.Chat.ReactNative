@@ -102,7 +102,7 @@ if [ "$PLATFORM" = "android" ]; then
   fi
 fi
 
-E2E_COMMAND=(pnpm exec e2e run --target "$PLATFORM" --tag "test-${SHARD}" --reporter list,junit --no-cache)
+E2E_COMMAND=(pnpm exec e2e run --target "$PLATFORM" --tag "test-${SHARD}" --reporter list,junit)
 
 run_e2e_pass() {
   local pass_timeout="$1"
