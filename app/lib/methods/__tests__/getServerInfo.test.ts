@@ -59,7 +59,7 @@ describe('getServerInfo', () => {
 		expect(requestOptions().headers).not.toHaveProperty('X-User-Id');
 	});
 
-	it('sends a signed-in workspace that is not active its own stored session', async () => {
+	it('sends an inactive signed-in workspace its own stored session', async () => {
 		const otherServer = 'https://other.example';
 		mockStoredPreferences({
 			[getServerUserIdKey(otherServer)]: 'other-uid',

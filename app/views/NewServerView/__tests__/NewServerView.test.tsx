@@ -80,6 +80,23 @@ describe('NewServerView hardware back', () => {
 		expect(mockDispatch).not.toHaveBeenCalledWith(selectServerRequest(PREVIOUS_SERVER, PREVIOUS_VERSION));
 	});
 
+	it('swallows back once the connection check starts after the screen is mounted', async () => {
+		const remove = jest.fn();
+		const addEventListener = jest.spyOn(BackHandler, 'addEventListener').mockReturnValue({ remove });
+		mockServerState({ previousServer: PREVIOUS_SERVER, connecting: false });
+		const view = render(<NewServerView />);
+
+		mockServerState({ previousServer: PREVIOUS_SERVER, connecting: true });
+		view.rerender(<NewServerView />);
+
+		const registered = addEventListener.mock.calls.filter(([eventName]) => eventName === 'hardwareBackPress');
+		const latestHandleBackPress = registered[registered.length - 1][1] as () => boolean;
+		expect(latestHandleBackPress()).toBe(true);
+		await Promise.resolve();
+		expect(getServerById).not.toHaveBeenCalled();
+		expect(remove).toHaveBeenCalled();
+	});
+
 	it('lets back through when there is no previous workspace, even while connecting', () => {
 		mockServerState({ previousServer: null, connecting: true });
 
