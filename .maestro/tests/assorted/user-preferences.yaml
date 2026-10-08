@@ -86,12 +86,10 @@ tags:
           text: 'All messages'
       - assertVisible:
           text: 'Mentions'
-      - tapOn:
-          point: 50%,80%
-      - extendedWaitUntil:
-          notVisible:
-            text: 'Nothing'
-          timeout: 60000
+      - runFlow:
+          file: '../../helpers/dismiss-menu.yaml'
+          env:
+            MENU_ITEM: 'Nothing'
 # should have "Vibrate for new messages"
 - assertVisible:
     id: user-notification-preference-view-in-app-vibration
@@ -131,12 +129,10 @@ tags:
           text: 'All messages'
       - assertVisible:
           text: 'Mentions'
-      - tapOn:
-          point: 50%,80%
-      - extendedWaitUntil:
-          notVisible:
-            text: 'Nothing'
-          timeout: 60000
+      - runFlow:
+          file: '../../helpers/dismiss-menu.yaml'
+          env:
+            MENU_ITEM: 'Nothing'
 
 # should have troubleshooting
 - assertVisible:
@@ -178,12 +174,10 @@ tags:
           timeout: 60000
       - assertVisible:
           text: 'Every mention/DM'
-      - tapOn:
-          point: 50%,80%
-      - extendedWaitUntil:
-          notVisible:
-            text: 'Disabled'
-          timeout: 60000
+      - runFlow:
+          file: '../../helpers/dismiss-menu.yaml'
+          env:
+            MENU_ITEM: 'Disabled'
 - runFlow: '../../helpers/go-back.yaml'
 
 # ASCII should not be converted to emoji (Android only)

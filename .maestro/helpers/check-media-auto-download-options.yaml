@@ -30,9 +30,7 @@ tags:
           text: 'Wi-Fi'
       - assertVisible:
           text: 'Never'
-      - tapOn:
-          point: 50%,80%
-      - extendedWaitUntil:
-          notVisible:
-            text: 'Never'
-          timeout: 60000
+      - runFlow:
+          file: './dismiss-menu.yaml'
+          env:
+            MENU_ITEM: 'Never'

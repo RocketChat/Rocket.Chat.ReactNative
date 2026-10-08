@@ -51,12 +51,10 @@ tags:
           visible:
             text: 'Search messages'
           timeout: 60000
-      - tapOn:
-          point: 50%,80%
-      - extendedWaitUntil:
-          notVisible:
-            text: 'Search messages'
-          timeout: 60000
+      - runFlow:
+          file: '../../helpers/dismiss-menu.yaml'
+          env:
+            MENU_ITEM: 'Search messages'
 
 # Team Action Usage
 - runFlow: '../../helpers/open-room-actions.yaml'
@@ -236,12 +234,10 @@ tags:
           visible:
             text: 'Search messages'
           timeout: 60000
-      - tapOn:
-          point: 50%,80%
-      - extendedWaitUntil:
-          notVisible:
-            text: 'Search messages'
-          timeout: 60000
+      - runFlow:
+          file: '../../helpers/dismiss-menu.yaml'
+          env:
+            MENU_ITEM: 'Search messages'
 - runFlow: '../../helpers/go-back.yaml'
 
 # should add existing channel to team
