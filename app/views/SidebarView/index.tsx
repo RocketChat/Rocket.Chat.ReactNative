@@ -5,16 +5,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 import styles from './styles';
 import { type DrawerParamList } from '~/stacks/types';
-import SupportedVersionsWarnItem from './components/SupportedVersionsWarnItem';
-import CustomStatus from './components/CustomStatus';
-import Stacks from './components/Stacks';
-import Admin from './components/Admin';
-import Profile from './components/Profile';
-import { useCurrentScreen } from './useCurrentScreen';
+import SidebarContent from './components/SidebarContent';
 
 const SidebarView = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
 	const { top } = useSafeAreaInsets();
-	const currentScreen = useCurrentScreen(navigation);
 
 	return (
 		<View testID='sidebar-view' style={styles.container}>
@@ -23,11 +17,7 @@ const SidebarView = ({ navigation }: { navigation: DrawerNavigationProp<DrawerPa
 				contentContainerStyle={{ paddingTop: top }}
 				contentInsetAdjustmentBehavior='never'
 				{...scrollPersistTaps}>
-				<Profile navigation={navigation} />
-				<SupportedVersionsWarnItem />
-				<CustomStatus />
-				<Stacks currentScreen={currentScreen} />
-				<Admin currentScreen={currentScreen} />
+				<SidebarContent navigation={navigation} />
 			</ScrollView>
 		</View>
 	);
