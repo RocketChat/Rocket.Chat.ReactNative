@@ -216,6 +216,9 @@ export type MasterDetailInsideStackParamList = {
 		url: string;
 		onlyAudio?: boolean;
 	};
+	VideoConfWebView: {
+		url: string;
+	};
 	ShareView: {
 		attachments: IAttachment[];
 		isShareView?: boolean;

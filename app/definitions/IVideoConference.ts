@@ -49,6 +49,13 @@ export interface IVideoConference extends IRocketChatRecord {
 	providerName: string;
 	providerData?: Record<string, any>;
 	ringing?: boolean;
+	discussionRid?: IRoom['_id'];
+	mediaCallIds?: string[];
+	sipAlias?: string;
+	sipParticipantCount?: number;
+	webrtcParticipantCount?: number;
+	discussionTitle?: string;
+	discussionLastMessage?: IMessage;
 }
 export interface IDirectVideoConference extends IVideoConference {
 	type: 'direct';

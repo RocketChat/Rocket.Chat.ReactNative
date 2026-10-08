@@ -152,7 +152,7 @@ describe('RoomSubscription over the real SDK', () => {
 
 		await subscribeToRoom('room-rid');
 
-		expect(framesOn(mockConnections[0], 'sub')).toHaveLength(5);
+		expect(framesOn(mockConnections[0], 'sub')).toHaveLength(6);
 		expect(redux.store.dispatch).toHaveBeenCalledWith(subscribeRoom('room-rid'));
 	});
 
@@ -174,14 +174,14 @@ describe('RoomSubscription over the real SDK', () => {
 		expect(record).toMatchObject({ _id: 'msg-1', rid: 'room-rid', msg: 'hello' });
 	});
 
-	it('stops its listeners and unsubscribes all five subscriptions', async () => {
+	it('stops its listeners and unsubscribes all six subscriptions', async () => {
 		await connectDriver();
 		const room = await subscribeToRoom('room-rid');
 
 		await room.unsubscribe();
 		await flushMicrotasksAndTimers();
 
-		expect(framesOn(mockConnections[0], 'unsub')).toHaveLength(5);
+		expect(framesOn(mockConnections[0], 'unsub')).toHaveLength(6);
 		expect(redux.store.dispatch).toHaveBeenCalledWith(unsubscribeRoom('room-rid'));
 		expect(redux.store.dispatch).toHaveBeenCalledWith(clearUserTyping());
 
