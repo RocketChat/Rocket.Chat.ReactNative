@@ -24,7 +24,8 @@
 		"e2e:push-downloads": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/push-downloads-to-sim.js",
 		"storybook:start": "USE_STORYBOOK=true react-native start --reset-cache",
 		"storybook-generate": "sb-rn-get-stories",
-		"bugsnag:upload-android": "bugsnag-cli upload react-native-android"
+		"bugsnag:upload-android": "bugsnag-cli upload react-native-android",
+		"doctor": "npx react-doctor@latest"
 	},
 	"dependencies": {
 		"@bugsnag/react-native": "8.4.0",
