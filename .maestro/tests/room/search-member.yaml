@@ -24,40 +24,88 @@ tags:
 - tapOn:
     id: 'room-actions-members'
 
-# should search in all users
 - runFlow:
-    file: '../../helpers/tap-search-field.yaml'
-    env:
-      SEARCH_ID: 'room-members-view-search'
-- inputText: rohit.bansal
-- extendedWaitUntil:
-    visible:
-      id: 'room-members-view-item-rohit.bansal'
-    timeout: 60000
+    when:
+      platform: android
+    commands:
+      # should search in all users
+      - runFlow:
+          file: '../../helpers/tap-search-field.yaml'
+          env:
+            SEARCH_ID: 'room-members-view-search'
+      - inputText: rohit.bansal
+      - extendedWaitUntil:
+          visible:
+            id: 'room-members-view-item-rohit.bansal'
+          timeout: 60000
 
-# use online status and it should use the text filter
-- runFlow:
-    file: '../../helpers/select-header-filter.yaml'
-    env:
-      ANDROID_FILTER_ID: 'room-members-view-filter'
-      ANDROID_OPTION_ID: 'room-members-view-toggle-status-online'
-      IOS_OPTION: 'Online'
-- extendedWaitUntil:
-    visible:
-      text: 'No members found'
-    timeout: 60000
+      # use online status and it should use the text filter
+      - runFlow:
+          file: '../../helpers/select-header-filter.yaml'
+          env:
+            ANDROID_FILTER_ID: 'room-members-view-filter'
+            ANDROID_OPTION_ID: 'room-members-view-toggle-status-online'
+            IOS_OPTION: 'Online'
+      - extendedWaitUntil:
+          visible:
+            text: 'No members found'
+          timeout: 60000
 
-# use all status again and it should use text filter
+      # use all status again and it should use text filter
+      - runFlow:
+          file: '../../helpers/select-header-filter.yaml'
+          env:
+            ANDROID_FILTER_ID: 'room-members-view-filter'
+            ANDROID_OPTION_ID: 'room-members-view-toggle-status-all'
+            IOS_OPTION: 'All'
+      - extendedWaitUntil:
+          visible:
+            id: 'room-members-view-item-rohit.bansal'
+          timeout: 60000
 - runFlow:
-    file: '../../helpers/select-header-filter.yaml'
-    env:
-      ANDROID_FILTER_ID: 'room-members-view-filter'
-      ANDROID_OPTION_ID: 'room-members-view-toggle-status-all'
-      IOS_OPTION: 'All'
-- extendedWaitUntil:
-    visible:
-      id: 'room-members-view-item-rohit.bansal'
-    timeout: 60000
+    when:
+      platform: iOS
+    commands:
+      # should search in all users
+      - runFlow:
+          file: '../../helpers/tap-search-field.yaml'
+          env:
+            SEARCH_ID: 'room-members-view-search'
+      - inputText: rohit.bansal
+      - extendedWaitUntil:
+          visible:
+            id: 'room-members-view-item-rohit.bansal'
+          timeout: 60000
+      - runFlow: '../../helpers/close-search.yaml'
+      # use online status and it should use the text filter
+      - runFlow:
+          file: '../../helpers/select-header-filter.yaml'
+          env:
+            IOS_OPTION: 'Online'
+      - runFlow:
+          file: '../../helpers/tap-search-field.yaml'
+          env:
+            SEARCH_ID: 'room-members-view-search'
+      - inputText: rohit.bansal
+      - extendedWaitUntil:
+          visible:
+            text: 'No members found'
+          timeout: 60000
+      - runFlow: '../../helpers/close-search.yaml'
+      # use all status again and it should use text filter
+      - runFlow:
+          file: '../../helpers/select-header-filter.yaml'
+          env:
+            IOS_OPTION: 'All'
+      - runFlow:
+          file: '../../helpers/tap-search-field.yaml'
+          env:
+            SEARCH_ID: 'room-members-view-search'
+      - inputText: rohit.bansal
+      - extendedWaitUntil:
+          visible:
+            id: 'room-members-view-item-rohit.bansal'
+          timeout: 60000
 - runFlow: '../../helpers/clear-search-field.yaml'
 
 - evalScript: ${output.secondUser = output.utils.createUser()}
