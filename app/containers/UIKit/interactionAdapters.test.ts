@@ -128,7 +128,7 @@ describe('interactionAdapters', () => {
 					rid: 'room-id',
 					triggerId: 'trigger-id'
 				})
-			).toThrow('actionId and payload.context are required for actionButton interaction');
+			).toThrow('Unsupported actionButton context: undefined');
 		});
 	});
 

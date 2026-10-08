@@ -13,6 +13,32 @@ const assertViewId = (viewId?: string) => {
 	return viewId;
 };
 
+const toActionButtonInteraction = ({
+	actionId,
+	rid,
+	tmid,
+	payload,
+	triggerId
+}: Pick<ITriggerAction, 'actionId' | 'rid' | 'tmid' | 'payload'> & { triggerId: string }): UserInteraction => {
+	if (!actionId || !rid) {
+		throw new Error('actionId and rid are required for actionButton interaction');
+	}
+	if (payload?.context === 'roomAction') {
+		return { type: 'actionButton', actionId, payload: { context: 'roomAction' }, rid, triggerId };
+	}
+	if (payload?.context === 'messageBoxAction') {
+		return {
+			type: 'actionButton',
+			actionId,
+			payload: { context: 'messageBoxAction', message: payload.message ?? '' },
+			tmid,
+			rid,
+			triggerId
+		};
+	}
+	throw new Error(`Unsupported actionButton context: ${payload?.context}`);
+};
+
 /**
  * Converts a trigger action to a user interaction
  */
@@ -32,31 +58,7 @@ export const toUserInteraction = ({
 	isCleared
 }: ITriggerAction & { triggerId: string }): UserInteraction => {
 	if (type === ActionTypes.ACTION_BUTTON) {
-		if (!actionId || !payload?.context) {
-			throw new Error('actionId and payload.context are required for actionButton interaction');
-		}
-
-		switch (payload.context) {
-			case 'roomAction':
-				if (!rid) {
-					throw new Error('rid is required for roomAction interaction');
-				}
-				return { type: 'actionButton', actionId, payload: { context: 'roomAction' }, rid, triggerId };
-			case 'messageBoxAction':
-				if (!rid) {
-					throw new Error('rid is required for messageBoxAction interaction');
-				}
-				return {
-					type: 'actionButton',
-					actionId,
-					payload: { context: 'messageBoxAction', message: payload.message ?? '' },
-					tmid,
-					rid,
-					triggerId
-				};
-			default:
-				throw new Error(`Unsupported actionButton context: ${payload.context}`);
-		}
+		return toActionButtonInteraction({ actionId, rid, tmid, payload, triggerId });
 	}
 
 	if (type === ActionTypes.ACTION) {
