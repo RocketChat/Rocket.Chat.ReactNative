@@ -191,10 +191,12 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 	}
 
 	const { visibleKeys, overflowKeys } = splitRoomHeaderActions(present);
-	const toMenuItem = ({ label, icon, disabled, onPress }: IHeaderAction): IHeaderMenuItem => ({
+	const toMenuItem = ({ label, icon, disabled, testID, tintColor, onPress }: IHeaderAction): IHeaderMenuItem => ({
 		label,
 		icon,
 		disabled,
+		testID,
+		destructive: !!tintColor,
 		onPress: onPress ?? (() => {})
 	});
 

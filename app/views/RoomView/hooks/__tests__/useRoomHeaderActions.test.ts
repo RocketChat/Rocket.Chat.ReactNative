@@ -172,10 +172,22 @@ describe('useRoomHeaderActions', () => {
 
 			const actions = renderRoomActions();
 
-			expect(labelsOf(actions)).toEqual(['Call', 'Threads', 'More']);
+			expect(labelsOf(actions)).toEqual(['Encrypted', 'Threads', 'More']);
 			expect(moreMenuOf(actions).map(item => [item.label, !!item.disabled])).toEqual([
-				['Encrypted', true],
+				['Call', true],
 				['Search messages', true]
+			]);
+		});
+
+		it('keeps the test id and the danger tint of actions moved into the menu', () => {
+			mockButtonsData = { ...mockButtonsData, threadsEnabled: true, issuesWithNotifications: true };
+			mockMediaCall.hasMediaCallPermission = true;
+
+			const menu = moreMenuOf(renderRoomActions());
+
+			expect(menu.map(item => [item.testID, !!item.destructive])).toEqual([
+				['room-view-push-troubleshoot', true],
+				['room-view-search', false]
 			]);
 		});
 	});
