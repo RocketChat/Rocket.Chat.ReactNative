@@ -395,12 +395,12 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 				<View
 					style={[
 						styles.headerContainer,
-						hasNativeHeaderBar && styles.nativeHeaderContainer,
+						isIOS && styles.nativeHeaderContainer,
 						{ backgroundColor: themes[theme].surfaceHover }
 					]}>
 					<Text style={[styles.headerText, { color: themes[theme].fontTitlesLabels }]}>{I18n.t(header)}</Text>
 				</View>
-				{hasNativeHeaderBar ? null : <List.Separator />}
+				{isIOS ? null : <List.Separator />}
 			</>
 		);
 	};
@@ -448,7 +448,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 			<>
 				{this.renderSectionHeader('Select_Server')}
 				<ServerItem onPress={() => navigation.navigate('SelectServerView')} item={serverInfo} />
-				{hasNativeHeaderBar ? null : <List.Separator />}
+				{isIOS ? null : <List.Separator />}
 			</>
 		);
 	};
@@ -530,7 +530,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 					getItemLayout={getItemLayout}
 					ItemSeparatorComponent={RowSeparator}
 					ListHeaderComponent={this.renderHeader}
-					ListFooterComponent={!hasNativeHeaderBar && (!searching || searchResults.length > 0) ? <List.Separator /> : null}
+					ListFooterComponent={!isIOS && (!searching || searchResults.length > 0) ? <List.Separator /> : null}
 					ListEmptyComponent={this.renderEmptyComponent}
 					removeClippedSubviews
 					keyboardShouldPersistTaps='always'
