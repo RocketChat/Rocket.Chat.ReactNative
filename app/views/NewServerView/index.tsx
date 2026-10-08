@@ -69,7 +69,9 @@ const NewServerView = () => {
 
 	const handleBackPress = () => {
 		if (navigation.isFocused() && previousServer) {
-			close();
+			if (!connecting) {
+				close();
+			}
 			return true;
 		}
 		return false;
@@ -117,7 +119,6 @@ const NewServerView = () => {
 
 	useEffect(() => {
 		EventEmitter.addEventListener('NewServer', handleNewServerEvent);
-		const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
 
 		let keyboardShowListener: ReturnType<typeof Keyboard.addListener> | null = null;
 		let keyboardHideListener: ReturnType<typeof Keyboard.addListener> | null = null;
@@ -129,7 +130,6 @@ const NewServerView = () => {
 
 		return () => {
 			EventEmitter.removeListener('NewServer', handleNewServerEvent);
-			backHandler.remove();
 
 			if (isAndroid) {
 				keyboardShowListener?.remove();
@@ -141,6 +141,11 @@ const NewServerView = () => {
 			}
 		};
 	}, []);
+
+	useEffect(() => {
+		const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+		return () => backHandler.remove();
+	}, [connecting, previousServer]);
 
 	useEffect(() => {
 		setHeader();
