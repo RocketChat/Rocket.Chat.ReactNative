@@ -192,7 +192,6 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   },
                   {
                     "alignItems": "center",
-                    "borderRadius": 10,
                     "justifyContent": "center",
                     "padding": 2,
                     "position": "absolute",
@@ -325,7 +324,6 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   },
                   {
                     "alignItems": "center",
-                    "borderRadius": 10,
                     "justifyContent": "center",
                     "padding": 2,
                     "position": "absolute",
@@ -458,7 +456,6 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   },
                   {
                     "alignItems": "center",
-                    "borderRadius": 10,
                     "justifyContent": "center",
                     "padding": 2,
                     "position": "absolute",
@@ -625,7 +622,6 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     [
                       {
                         "alignItems": "center",
-                        "borderRadius": 10,
                         "justifyContent": "center",
                         "padding": 2,
                         "position": "absolute",
@@ -634,6 +630,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                       },
                       {
                         "backgroundColor": "red",
+                        "borderRadius": 5,
                         "height": 10,
                         "width": 10,
                       },
@@ -3334,7 +3331,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         [
                           {
                             "alignItems": "center",
-                            "borderRadius": 10,
                             "justifyContent": "center",
                             "padding": 2,
                             "position": "absolute",
@@ -3343,6 +3339,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#EC0D2A",
+                            "borderRadius": 5,
                             "height": 10,
                             "width": 10,
                           },
@@ -3664,7 +3661,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       },
                       {
                         "alignItems": "center",
-                        "borderRadius": 10,
                         "justifyContent": "center",
                         "padding": 2,
                         "position": "absolute",
@@ -3940,7 +3936,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         [
                           {
                             "alignItems": "center",
-                            "borderRadius": 10,
                             "justifyContent": "center",
                             "padding": 2,
                             "position": "absolute",
@@ -3949,6 +3944,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#BB3E4E",
+                            "borderRadius": 5,
                             "height": 10,
                             "width": 10,
                           },
@@ -4270,7 +4266,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       },
                       {
                         "alignItems": "center",
-                        "borderRadius": 10,
                         "justifyContent": "center",
                         "padding": 2,
                         "position": "absolute",
@@ -4546,7 +4541,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         [
                           {
                             "alignItems": "center",
-                            "borderRadius": 10,
                             "justifyContent": "center",
                             "padding": 2,
                             "position": "absolute",
@@ -4555,6 +4549,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#BB3E4E",
+                            "borderRadius": 5,
                             "height": 10,
                             "width": 10,
                           },
@@ -4876,7 +4871,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       },
                       {
                         "alignItems": "center",
-                        "borderRadius": 10,
                         "justifyContent": "center",
                         "padding": 2,
                         "position": "absolute",
