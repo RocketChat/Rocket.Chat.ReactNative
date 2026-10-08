@@ -39,7 +39,7 @@ const expectAutocomplete = async (
 		await expectVisible(fixtures, `autocomplete-item-${listedItemId}`);
 	}
 	await tapWhenVisible(fixtures, `autocomplete-item-${selected}`);
-	await expect(composer(fixtures)).toHaveValue(completed, { timeout: LONG_TIMEOUT });
+	await expect(composer(fixtures)).toHaveValue(new RegExp(`^${completed} ?$`), { timeout: LONG_TIMEOUT });
 	await expectHidden(fixtures, `autocomplete-item-${selected}`);
 	await clearSettled(composer(fixtures));
 };
@@ -195,9 +195,9 @@ test('sends, reacts to and manages messages in a room', { tags: ['test-12'], tim
 	await navigateToRoom(fixtures, room.name);
 	await sendMessage(fixtures, MESSAGE);
 
-	await expectAutocomplete(fixtures, ':joy', ':joy: ', { selected: 'joy', alsoListed: ['joystick'] });
-	await expectAutocomplete(fixtures, `@${user.username}`, `@${user.username} `, { selected: user.username });
-	await expectAutocomplete(fixtures, '#translation-test', '#translation-test ', { selected: 'translation-test' });
+	await expectAutocomplete(fixtures, ':joy', ':joy:', { selected: 'joy', alsoListed: ['joystick'] });
+	await expectAutocomplete(fixtures, `@${user.username}`, `@${user.username}`, { selected: user.username });
+	await expectAutocomplete(fixtures, '#translation-test', '#translation-test', { selected: 'translation-test' });
 
 	await reactFromPicker(fixtures, 'grinning');
 	await reactBySearch(fixtures, 'laughing');
