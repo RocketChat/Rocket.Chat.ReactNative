@@ -107,9 +107,12 @@ describe('VideoConferenceBlock', () => {
 		expect(goRoom).not.toHaveBeenCalled();
 	});
 
-	it('shows "not answered" for a group call that ended with only the creator', async () => {
-		mockedGet.mockResolvedValue({ ...ended(3), type: 'videoconference', users: [{ _id: 'u1', username: 'me', name: 'Me' }] });
-		render(<VideoConferenceBlock callId='call1' blockId='call1' />);
-		expect(await screen.findByText('Call was not answered')).toBeTruthy();
-	});
+	it.each([[[]], [[{ _id: 'u1', username: 'me', name: 'Me' }]]])(
+		'shows "not answered" for a group call that ended with users %j',
+		async users => {
+			mockedGet.mockResolvedValue({ ...ended(3), type: 'videoconference', users });
+			render(<VideoConferenceBlock callId='call1' blockId='call1' />);
+			expect(await screen.findByText('Call was not answered')).toBeTruthy();
+		}
+	);
 });

@@ -54,9 +54,9 @@ export default function VideoConferenceEnded({
 				<>
 					{users.length && !onlyAuthorOnCall ? (
 						<CallParticipants users={users} />
-					) : notAnswered || onlyAuthorOnCall ? (
+					) : (
 						<Text style={style.notAnswered}>{i18n.t('Call_was_not_answered')}</Text>
-					) : null}
+					)}
 				</>
 			)}
 		</VideoConferenceBaseContainer>
