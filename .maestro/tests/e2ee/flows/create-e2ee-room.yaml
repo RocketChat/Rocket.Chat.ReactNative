@@ -36,6 +36,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'selected-user-${USER_TO_ADD}'
+- runFlow: '../../../helpers/close-search.yaml'
 - runFlow:
     file: '../../../helpers/tap-header-item.yaml'
     env:

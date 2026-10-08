@@ -141,6 +141,7 @@ tags:
     timeout: 60000
 
 # should navigate to create channel view
+- runFlow: '../../helpers/close-search.yaml'
 - runFlow:
     file: '../../helpers/wait-header-item.yaml'
     env:
@@ -255,6 +256,7 @@ tags:
     visible:
       id: 'selected-user-rocket.cat'
     timeout: 60000
+- runFlow: '../../helpers/close-search.yaml'
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:

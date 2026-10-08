@@ -379,6 +379,7 @@ tags:
     visible:
       id: 'selected-user-${output.otherUser.username}'
     timeout: 60000
+- runFlow: '../../helpers/close-search.yaml'
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
