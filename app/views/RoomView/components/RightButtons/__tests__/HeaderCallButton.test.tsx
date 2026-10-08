@@ -21,6 +21,11 @@ jest.mock('~/lib/hooks/useNewMediaCall', () => ({
 	useNewMediaCall: () => mockMediaCall
 }));
 
+const mockRoom: { t: string; uids?: string[] } = { t: 'd' };
+jest.mock('~/lib/hooks/useSubscription', () => ({
+	useSubscription: () => mockRoom
+}));
+
 jest.mock('~/containers/Header/components/HeaderButton', () => {
 	const ReactActual = jest.requireActual('react');
 	return {
@@ -51,6 +56,7 @@ describe('HeaderCallButton', () => {
 		mockVideoConf.disabledTooltip = false;
 		mockMediaCall.hasMediaCallPermission = false;
 		mockMediaCall.isInActiveCall = false;
+		mockRoom.t = 'd';
 	});
 
 	afterEach(() => {
@@ -107,29 +113,53 @@ describe('HeaderCallButton', () => {
 		expect(mockMediaCall.openNewMediaCall).not.toHaveBeenCalled();
 	});
 
-	it('shows the video conference sheet when calls are enabled without media call permission', () => {
+	it('shows the video call button when calls are enabled without media call permission', () => {
 		mockVideoConf.callEnabled = true;
 
 		renderCallButton();
-		fireEvent.press(screen.getByTestId('room-view-header-call'));
+		expect(screen.queryByTestId('room-view-header-call')).not.toBeOnTheScreen();
+		fireEvent.press(screen.getByTestId('room-view-header-video-call'));
 
 		expect(mockVideoConf.showInitCallActionSheet).toHaveBeenCalled();
 	});
 
-	it('disables the video conference button when the tooltip is disabled', () => {
+	it('shows both voice and video call buttons in a DM', () => {
+		mockMediaCall.hasMediaCallPermission = true;
+		mockVideoConf.callEnabled = true;
+
+		renderCallButton();
+
+		expect(screen.getByTestId('room-view-header-call')).toHaveProp('iconName', 'phone');
+		expect(screen.getByTestId('room-view-header-video-call')).toHaveProp('iconName', 'video');
+	});
+
+	it('shows only the video call button in a channel even with media call permission', () => {
+		mockMediaCall.hasMediaCallPermission = true;
+		mockVideoConf.callEnabled = true;
+		mockRoom.t = 'c';
+
+		renderCallButton();
+
+		expect(screen.queryByTestId('room-view-header-call')).not.toBeOnTheScreen();
+		fireEvent.press(screen.getByTestId('room-view-header-video-call'));
+		expect(mockVideoConf.showInitCallActionSheet).toHaveBeenCalled();
+		expect(mockMediaCall.openNewMediaCall).not.toHaveBeenCalled();
+	});
+
+	it('disables the video call button when the tooltip is disabled', () => {
 		mockVideoConf.callEnabled = true;
 		mockVideoConf.disabledTooltip = true;
 
 		renderCallButton();
 
-		expect(screen.getByTestId('room-view-header-call')).toHaveProp('disabled', true);
+		expect(screen.getByTestId('room-view-header-video-call')).toHaveProp('disabled', true);
 	});
 
-	it('disables the video conference button when the header disables it', () => {
+	it('disables the video call button when the header disables it', () => {
 		mockVideoConf.callEnabled = true;
 
 		renderCallButton(true);
 
-		expect(screen.getByTestId('room-view-header-call')).toHaveProp('disabled', true);
+		expect(screen.getByTestId('room-view-header-video-call')).toHaveProp('disabled', true);
 	});
 });

@@ -189,7 +189,7 @@ describe('CallView/CallView', () => {
 		expect(getByTestId('call-view-speaker')).toBeTruthy();
 		expect(getByTestId('call-view-hold')).toBeTruthy();
 		expect(getByTestId('call-view-mute')).toBeTruthy();
-		expect(getByTestId('call-view-message')).toBeTruthy();
+		expect(getByTestId('call-view-more')).toBeTruthy();
 		expect(getByTestId('call-view-end')).toBeTruthy();
 		expect(getByTestId('call-view-dialpad')).toBeTruthy();
 	});
@@ -324,7 +324,7 @@ describe('CallView/CallView', () => {
 		expect(endCall).toHaveBeenCalledTimes(1);
 	});
 
-	it('should call navigateToCallRoom when message button is pressed', () => {
+	it('should call navigateToCallRoom from the More action sheet', () => {
 		setStoreState({ callState: 'active' });
 		const { getByTestId } = render(
 			<Wrapper>
@@ -332,8 +332,43 @@ describe('CallView/CallView', () => {
 			</Wrapper>
 		);
 
-		fireEvent.press(getByTestId('call-view-message'));
+		fireEvent.press(getByTestId('call-view-more'));
+		const { options } = mockShowActionSheetRef.mock.calls[0][0];
+		expect(options.map((o: any) => o.testID)).toEqual(['call-view-more-message']);
+		options[0].onPress();
 		expect(mockNavigateToCallRoom).toHaveBeenCalledTimes(1);
+	});
+
+	it('should offer video escalation when the call supports it', () => {
+		setStoreState({ callState: 'active', call: { ...createMockCall(), features: ['audio', 'conference-escalation'] } as any });
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		fireEvent.press(getByTestId('call-view-more'));
+		const { options } = mockShowActionSheetRef.mock.calls[0][0];
+		expect(options.map((o: any) => o.testID)).toEqual(['call-view-more-video', 'call-view-more-message']);
+	});
+
+	it('should prompt to join the conference once the call was escalated', () => {
+		setStoreState({
+			callState: 'active',
+			escalated: true,
+			call: { ...createMockCall(), features: ['audio', 'conference-escalation'] } as any
+		});
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		expect(getByTestId('call-view-join-video')).toBeTruthy();
+		expect(getByTestId('call-view-hold').props.accessibilityState?.disabled).toBe(true);
+		fireEvent.press(getByTestId('call-view-more'));
+		const { options } = mockShowActionSheetRef.mock.calls[0][0];
+		expect(options.map((o: any) => o.testID)).toEqual(['call-view-more-message']);
 	});
 
 	it('should show action sheet with dialpad when dialpad button is pressed', () => {
@@ -524,7 +559,7 @@ describe('CallView (tablet/wide layout)', () => {
 		expect(getByTestId('call-view-speaker')).toBeTruthy();
 		expect(getByTestId('call-view-hold')).toBeTruthy();
 		expect(getByTestId('call-view-mute')).toBeTruthy();
-		expect(getByTestId('call-view-message')).toBeTruthy();
+		expect(getByTestId('call-view-more')).toBeTruthy();
 		expect(getByTestId('call-view-end')).toBeTruthy();
 		expect(getByTestId('call-view-dialpad')).toBeTruthy();
 	});
@@ -538,14 +573,7 @@ describe('CallView (tablet/wide layout)', () => {
 		);
 
 		const row0 = getByTestId('call-buttons-row-0');
-		const ids = [
-			'call-view-speaker',
-			'call-view-hold',
-			'call-view-mute',
-			'call-view-message',
-			'call-view-end',
-			'call-view-dialpad'
-		];
+		const ids = ['call-view-speaker', 'call-view-hold', 'call-view-mute', 'call-view-more', 'call-view-end', 'call-view-dialpad'];
 		ids.forEach(id => {
 			expect(within(row0).getByTestId(id)).toBeTruthy();
 		});

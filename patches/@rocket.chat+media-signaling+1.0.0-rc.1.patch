@@ -1,0 +1,237 @@
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/call/CallEvents.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/call/CallEvents.d.ts
+index 92933c8..f09c3c2 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/call/CallEvents.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/call/CallEvents.d.ts
+@@ -14,5 +14,6 @@ export type CallEvents = {
+     ended: void;
+     screenShareRequestChange: boolean;
+     streamChange: void;
++    escalated: void;
+ };
+ //# sourceMappingURL=CallEvents.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.d.ts
+index 8965e17..490e9f0 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.d.ts
+@@ -3,13 +3,13 @@ import type { CallEvents } from './CallEvents';
+ import type { AnyClientMediaCallParticipant, IClientMediaCallLocalParticipant, IClientMediaCallRemoteParticipant } from './IClientMediaCallParticipant';
+ import type { CallActorType } from './common';
+ export type CallService = 'webrtc';
+-export declare const callFeatureList: readonly ["audio", "screen-share", "transfer", "hold"];
++export declare const callFeatureList: readonly ["audio", "screen-share", "transfer", "hold", "conference-escalation"];
+ export type CallFeature = (typeof callFeatureList)[number];
+ export type CallState = 'none' | 'ringing' | 'accepted' | 'active' | 'renegotiating' | 'hangup';
+-export type CallHangupReason = 'normal' | 'remote' | 'rejected' | 'unavailable' | 'transfer' | 'not-answered' | 'timeout-remote-sdp' | 'timeout-local-sdp' | 'timeout-activation' | 'timeout' | 'signaling-error' | 'service-error' | 'media-error' | 'input-error' | 'error' | 'unknown' | 'another-client';
++export type CallHangupReason = 'normal' | 'remote' | 'rejected' | 'unavailable' | 'transfer' | 'not-answered' | 'timeout-remote-sdp' | 'timeout-local-sdp' | 'timeout-activation' | 'timeout' | 'signaling-error' | 'service-error' | 'media-error' | 'input-error' | 'error' | 'unknown' | 'another-client' | 'conference-escalation';
+ export declare const callAnswerList: readonly ["accept", "reject", "ack", "unavailable"];
+ export type CallAnswer = (typeof callAnswerList)[number];
+-export type CallNotification = 'accepted' | 'active' | 'hangup' | 'trying';
++export type CallNotification = 'accepted' | 'active' | 'hangup' | 'trying' | 'escalated';
+ export type CallRejectedReason = 'invalid-call-id' | 'invalid-contract-id' | 'existing-call-id' | 'already-requested' | 'unsupported' | 'unavailable' | 'busy' | 'invalid-call-params' | 'forbidden';
+ export type CallFlag = 'internal' | 'create-data-channel';
+ export interface IClientMediaCall {
+@@ -18,6 +18,9 @@ export interface IClientMediaCall {
+     ignored: boolean;
+     signed: boolean;
+     hidden: boolean;
++    readonly features: readonly CallFeature[];
++    readonly escalated: boolean;
++    readonly hangupReason: CallHangupReason | null;
+     busy: boolean;
+     /** The timestamp of the moment the call was marked as active for the first time */
+     activeTimestamp?: Date;
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.js b/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.js
+index d67f927..6c88db5 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.js
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.js
+@@ -1,4 +1,4 @@
+-export const callFeatureList = ['audio', 'screen-share', 'transfer', 'hold'];
++export const callFeatureList = ['audio', 'screen-share', 'transfer', 'hold', 'conference-escalation'];
+ export const callAnswerList = [
+     'accept', // actor accepts the call
+     'reject', // actor rejects the call
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/call/callStates/IDirectMediaCallData.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/call/callStates/IDirectMediaCallData.d.ts
+index 95fae75..f925632 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/call/callStates/IDirectMediaCallData.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/call/callStates/IDirectMediaCallData.d.ts
+@@ -9,6 +9,7 @@ export interface IDirectMediaCallData {
+     readonly features: readonly CallFeature[];
+     readonly state: CallState;
+     readonly hidden: boolean;
++    readonly escalated: boolean;
+     readonly transferredBy: CallContact | null;
+     readonly activeTimestamp?: Date;
+     readonly tempCallId: string;
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/notification.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/notification.d.ts
+index 31cd437..35a8ff5 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/notification.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/notification.d.ts
+@@ -1,4 +1,4 @@
+-import type { CallFeature, CallNotification } from '../../call';
++import type { CallFeature, CallHangupReason, CallNotification } from '../../call';
+ /** Server is sending a notification about the call state */
+ export type ServerMediaSignalNotification = {
+     callId: string;
+@@ -10,5 +10,6 @@ export type ServerMediaSignalNotification = {
+      */
+     signedContractId?: string;
+     features?: CallFeature[];
++    hangupReason?: CallHangupReason;
+ };
+ //# sourceMappingURL=notification.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/lib/Call.d.ts b/node_modules/@rocket.chat/media-signaling/dist/lib/Call.d.ts
+index fd161f8..f3098aa 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/lib/Call.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/lib/Call.d.ts
+@@ -76,6 +76,8 @@ export declare class ClientMediaCall implements IClientMediaCall {
+     private _flags;
+     get flags(): CallFlag[];
+     get features(): CallFeature[];
++    get escalated(): boolean;
++    get hangupReason(): CallHangupReason | null;
+     readonly localParticipant: IClientMediaCallLocalParticipant;
+     private selfContact;
+     private remoteParticipant;
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/lib/Call.js b/node_modules/@rocket.chat/media-signaling/dist/lib/Call.js
+index fe272b5..5c9278e 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/lib/Call.js
++++ b/node_modules/@rocket.chat/media-signaling/dist/lib/Call.js
+@@ -98,6 +98,12 @@ export class ClientMediaCall {
+     get features() {
+         return [...(this.enabledFeatures || [])];
+     }
++    get escalated() {
++        return this._escalated;
++    }
++    get hangupReason() {
++        return this._hangupReason;
++    }
+     get remoteParticipants() {
+         if (!this.remoteParticipant) {
+             return [];
+@@ -129,6 +135,7 @@ export class ClientMediaCall {
+             activeTimestamp: this.activeTimestamp,
+             tempCallId: this.tempCallId,
+             hidden: this.hidden,
++            escalated: this.escalated,
+             localParticipant: this.localParticipant,
+             remoteParticipant: this.remoteParticipant,
+         };
+@@ -156,6 +163,8 @@ export class ClientMediaCall {
+         this.sentLocalSdp = false;
+         this.receivedRemoteSdp = false;
+         this.enabledFeatures = null;
++        this._escalated = false;
++        this._hangupReason = null;
+         this.earlySignals = new Set();
+         this.stateTimeoutHandlers = new Set();
+         this._role = 'callee';
+@@ -439,6 +448,9 @@ export class ClientMediaCall {
+             if (!this.hasRemoteData) {
+                 // if the call is over, we no longer need to wait for its data
+                 if (signal.type === 'notification' && signal.notification === 'hangup') {
++                    if (signal.hangupReason) {
++                        this._hangupReason = signal.hangupReason;
++                    }
+                     this.changeState('hangup');
+                     return;
+                 }
+@@ -453,6 +465,8 @@ export class ClientMediaCall {
+                     return this.processOfferRequest(signal);
+                 case 'notification':
+                     return this.processNotification(signal);
++                case 'update':
++                    return this.processCallUpdate(signal);
+             }
+         });
+     }
+@@ -893,10 +907,34 @@ export class ClientMediaCall {
+                     this.resetStateTimeouts();
+                     break;
+                 case 'hangup':
+-                    return this.flagAsEnded('remote');
++                    return this.flagAsEnded('remote', signal.hangupReason);
++                case 'escalated':
++                    return this.flagAsEscalated(signal.features);
+             }
+         });
+     }
++    processCallUpdate(signal) {
++        var _a;
++        (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.processCallUpdate');
++        if (signal.features) {
++            this.enabledFeatures = signal.features;
++        }
++        if (signal.contact) {
++            this.changeContact(signal.contact);
++        }
++    }
++    flagAsEscalated(overrideFeatures) {
++        var _a;
++        if (this._escalated) {
++            return;
++        }
++        (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.flagAsEscalated', overrideFeatures || '');
++        if (overrideFeatures) {
++            this.enabledFeatures = overrideFeatures;
++        }
++        this._escalated = true;
++        this.emitter.emit('escalated');
++    }
+     flagAsAccepted(enabledFeatures) {
+         return __awaiter(this, void 0, void 0, function* () {
+             var _a, _b;
+@@ -924,15 +962,16 @@ export class ClientMediaCall {
+             this.changeState('accepted');
+         });
+     }
+-    flagAsEnded(reason) {
++    flagAsEnded(reason, reasonForClient) {
+         var _a;
+-        (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.flagAsEnded', reason);
++        (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.flagAsEnded', reason, reasonForClient);
+         if (this._state === 'hangup') {
+             return;
+         }
+         if (!this.hidden && this.hasRemoteData) {
+             this.config.transporter.hangup(this.callId, reason);
+         }
++        this._hangupReason = reasonForClient || reason;
+         this.changeState('hangup');
+     }
+     addStateTimeout(state, timeout, callback) {
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/lib/Session.js b/node_modules/@rocket.chat/media-signaling/dist/lib/Session.js
+index 676d423..a814bec 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/lib/Session.js
++++ b/node_modules/@rocket.chat/media-signaling/dist/lib/Session.js
+@@ -136,6 +136,9 @@ export class MediaSignalingSession extends Emitter {
+                 return;
+             }
+             const call = this.getOrCreateCallBySignal(signal);
++            if (!call) {
++                return;
++            }
+             if (signal.type === 'notification' && signal.signedContractId) {
+                 if (signal.signedContractId === this._sessionId) {
+                     call.setContractState('signed');
+@@ -254,6 +257,10 @@ export class MediaSignalingSession extends Emitter {
+         if (existingCall) {
+             return existingCall;
+         }
++        // Notifications that do not cause state change can be ignored if the call is still unknown
++        if (signal.type === 'notification' && ['escalated', 'trying'].includes(signal.notification)) {
++            return null;
++        }
+         return this.createCall(signal.callId);
+     }
+     reportState() {
+@@ -503,6 +510,7 @@ export class MediaSignalingSession extends Emitter {
+         call.emitter.on('ended', () => this.onEndedCall(call));
+         call.emitter.on('screenShareRequestChange', (requested) => this.onScreenShareRequestChange(call, requested));
+         call.emitter.on('streamChange', () => this.onSessionStateChange());
++        call.emitter.on('escalated', () => this.onSessionStateChange());
+         return call;
+     }
+     onCallContactUpdate(_call) {

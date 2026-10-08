@@ -1,6 +1,7 @@
 import { act, renderHook } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
+import { usePexipCallStore } from '~/lib/services/videoConf/usePexipCallStore';
 import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
 import { useHeader } from '../useHeader';
 
@@ -45,6 +46,7 @@ describe('useHeader', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockTestStore = makeRoomStore();
+		usePexipCallStore.getState().leave();
 	});
 
 	it('sets only the headerLeft spacer and returns when rid is missing', () => {
@@ -94,5 +96,26 @@ describe('useHeader', () => {
 		expect(() => sideOptions.headerLeft()).not.toThrow();
 		expect(() => titleOptions.headerTitle()).not.toThrow();
 		expect(() => sideOptions.headerRight()).not.toThrow();
+	});
+
+	it('hides the header while this room is docked beside a split Pexip call', () => {
+		renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
+		expect(mockSetOptions.mock.calls[0][0].headerShown).toBe(true);
+
+		act(() => {
+			usePexipCallStore.getState().open({ callId: 'call-1', url: 'https://pexip.example/call', rid: 'rid-1' });
+			usePexipCallStore.getState().split();
+		});
+		const lastSideOptions = mockSetOptions.mock.calls.filter(([options]) => 'headerShown' in options).pop()?.[0];
+		expect(lastSideOptions.headerShown).toBe(false);
+	});
+
+	it('keeps the header when the split call belongs to another room', () => {
+		act(() => {
+			usePexipCallStore.getState().open({ callId: 'call-1', url: 'https://pexip.example/call', rid: 'other-rid' });
+			usePexipCallStore.getState().split();
+		});
+		renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
+		expect(mockSetOptions.mock.calls[0][0].headerShown).toBe(true);
 	});
 });

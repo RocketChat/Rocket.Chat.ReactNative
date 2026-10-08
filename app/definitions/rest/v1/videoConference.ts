@@ -20,8 +20,16 @@ export type VideoConferenceEndpoints = {
 		POST: (params: VideoConfJoinProps) => { url: string; providerName: string };
 	};
 
+	'media-calls.escalate': {
+		POST: (params: { callId: string }) => { url: string; providerName: string; callId?: string };
+	};
+
 	'video-conference.cancel': {
 		POST: (params: VideoConfCancelProps) => void;
+	};
+
+	'video-conference.heartbeat': {
+		POST: (params: { callId: string }) => void;
 	};
 
 	'video-conference.info': {
