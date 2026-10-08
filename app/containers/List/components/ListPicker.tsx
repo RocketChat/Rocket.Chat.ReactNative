@@ -1,20 +1,20 @@
 import { type ReactElement } from 'react';
 
-interface IListPickerOption {
+interface IListPickerOption<T extends string> {
 	label: string;
-	value: string;
+	value: T;
 	testID?: string;
 }
 
-export interface IListPicker {
+export interface IListPicker<T extends string = string> {
 	title: string;
 	testID?: string;
-	options: IListPickerOption[];
-	selection: string;
-	onSelectionChange: (value: string) => void;
+	options: IListPickerOption<T>[];
+	selection: T;
+	onSelectionChange: (value: T) => void;
 	children: ReactElement;
 }
 
-const ListPicker = ({ children }: IListPicker) => children;
+const ListPicker = <T extends string>({ children }: IListPicker<T>) => children;
 
 export default ListPicker;

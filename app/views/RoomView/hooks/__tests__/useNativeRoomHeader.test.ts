@@ -47,28 +47,30 @@ beforeEach(() => {
 });
 
 it('sets the title before the room icon is ready and adds the icon when it loads', async () => {
-	renderHook(() => useNativeRoomHeader({ ...fields, type: 'p', title: 'Shown' }));
+	renderHook(() => useNativeRoomHeader({ ...fields, type: 'p', title: 'Shown' }, undefined, undefined, jest.fn()));
 	expect(mockSetOptions.mock.calls[0][0]).toMatchObject({ headerTitle: 'Shown', headerSubtitle: 'Topic' });
 	await waitFor(() => expect(latestOptions().headerTitleImageSource?.uri).toBe('channel-private:title'));
 	expect(latestOptions().headerTitle).toBe('Shown');
 });
 
 it('shows plain topic text and the room icon', async () => {
-	renderHook(() => useNativeRoomHeader(fields));
+	renderHook(() => useNativeRoomHeader(fields, undefined, undefined, jest.fn()));
 	await waitFor(() => expect(latestOptions().headerTitleImageSource?.uri).toBe('channel-public:title'));
 	expect(latestOptions()).toMatchObject({ headerTitle: 'Room', headerSubtitle: 'Topic', headerSubtitleImageSource: undefined });
 });
 
 it('keeps the parent subtitle and moves its icon below the Thread title while users type', async () => {
 	mockState.usersTyping = ['Alice'];
-	renderHook(() => useNativeRoomHeader({ ...fields, title: '*Thread*', parentTitle: '*Parent*' }, 'thread'));
+	renderHook(() =>
+		useNativeRoomHeader({ ...fields, title: '*Thread*', parentTitle: '*Parent*' }, 'thread', undefined, jest.fn())
+	);
 	await waitFor(() => expect(latestOptions().headerSubtitleImageSource?.uri).toBe('channel-public:title'));
 	expect(latestOptions()).toMatchObject({ headerTitle: 'Thread', headerSubtitle: '*Parent*', headerTitleImageSource: undefined });
 });
 
 it('clears the expiry clock during typing and updates the colored presence image', async () => {
 	mockState.activeUsers.user = { status: 'online', statusText: 'Working', statusExpiresAt: 'future' };
-	const { rerender } = renderHook(() => useNativeRoomHeader({ ...fields, type: 'd' }, undefined, 'user'));
+	const { rerender } = renderHook(() => useNativeRoomHeader({ ...fields, type: 'd' }, undefined, 'user', jest.fn()));
 	await waitFor(() => expect(latestOptions().headerSubtitleImageSource?.uri).toBe('clock:subtitle'));
 	expect(latestOptions().headerTitleImageSource.uri).toBe('status-online:online');
 	mockState = { ...mockState, usersTyping: ['Alice', 'Bob'], activeUsers: { user: { status: 'busy' } } };
@@ -79,7 +81,7 @@ it('clears the expiry clock during typing and updates the colored presence image
 });
 
 it('requests missing direct-message presence but respects disabled broadcasting', async () => {
-	const { rerender } = renderHook(() => useNativeRoomHeader({ ...fields, type: 'd' }, undefined, 'user'));
+	const { rerender } = renderHook(() => useNativeRoomHeader({ ...fields, type: 'd' }, undefined, 'user', jest.fn()));
 	await act(async () => {});
 	expect(getUserPresence).toHaveBeenCalledWith('user');
 	jest.mocked(getUserPresence).mockClear();
@@ -93,7 +95,9 @@ it('uses supported Omnichannel app images and falls back when decoding fails', a
 	const getSize = jest.spyOn(Image, 'getSize').mockImplementation(() => Promise.resolve({ width: 24, height: 24 }));
 	mockState.server.server = 'https://chat.example';
 	let sourceType = { type: 'app', id: 'app-id', sidebarIcon: 'icon.png' } as IHeaderFields['sourceType'];
-	const { rerender } = renderHook(() => useNativeRoomHeader({ ...fields, type: 'l', sourceType }));
+	const { rerender } = renderHook(() =>
+		useNativeRoomHeader({ ...fields, type: 'l', sourceType }, undefined, undefined, jest.fn())
+	);
 	await waitFor(() => expect(latestOptions().headerTitleImageSource?.uri).toContain('get-sidebar-icon?icon=icon.png'));
 	getSize.mockImplementation(() => Promise.reject(new Error('Unsupported image')));
 	sourceType = { ...sourceType, sidebarIcon: 'icon.svg' } as IHeaderFields['sourceType'];

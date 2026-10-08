@@ -2,9 +2,8 @@ import { memo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import type { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor, ISubscription } from '~/definitions';
-import { STATUS_I18N_KEYS } from '~/definitions';
-import I18n from '~/i18n';
 import RoomHeader from './RoomHeader';
+import { getConnectionSubtitle, getPresenceLabel } from './subtitle';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IRoomHeaderContainerProps {
@@ -57,25 +56,12 @@ const RoomHeaderContainer = memo(
 			shallowEqual
 		);
 
-		if (connecting) {
-			subtitle = I18n.t('Connecting');
-		} else if (!connected) {
-			subtitle = I18n.t('Waiting_for_network');
-		} else {
-			subtitle = subtitleProp;
-		}
+		subtitle = getConnectionSubtitle({ connecting, connected }) ?? subtitleProp;
 
 		if (connected) {
 			if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
-				const {
-					statusText: statusTextActiveUser,
-					statusExpiresAt: statusExpiresAtActiveUser,
-					status: statusActiveUser
-				} = activeUser;
-				const presenceKey = statusActiveUser ? STATUS_I18N_KEYS[statusActiveUser] : undefined;
-				const presenceLabel = presenceKey ? I18n.t(presenceKey) : undefined;
-				statusText = statusTextActiveUser || presenceLabel;
-				statusExpiresAt = statusExpiresAtActiveUser;
+				statusText = getPresenceLabel(activeUser);
+				statusExpiresAt = activeUser.statusExpiresAt;
 			} else if (type === 'l' && visitor?.status) {
 				({ status: statusVisitor } = visitor);
 			}

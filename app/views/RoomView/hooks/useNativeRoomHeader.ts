@@ -9,7 +9,8 @@ import {
 	getOmnichannelSidebarIconUri,
 	getRoomTypeIconName
 } from '~/containers/RoomTypeIcon/roomTypeIconName';
-import { STATUS_I18N_KEYS, type TUserStatus } from '~/definitions';
+import { getConnectionSubtitle, getPresenceLabel, joinTypingUsers } from '~/containers/RoomHeader/subtitle';
+import { type TUserStatus } from '~/definitions';
 import { type IActiveUser } from '~/reducers/activeUsers';
 import I18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -60,21 +61,14 @@ const getSubtitle = ({
 		return fields.parentTitle;
 	}
 	if (usersTyping.length) {
-		const names = usersTyping.join(usersTyping.length === 2 ? ` ${I18n.t('and')} ` : ', ');
-		return `${names} ${I18n.t(usersTyping.length > 1 ? 'are_typing' : 'is_typing')}...`;
+		return `${joinTypingUsers(usersTyping)} ${I18n.t(usersTyping.length > 1 ? 'are_typing' : 'is_typing')}...`;
 	}
-	if (connecting) {
-		return I18n.t('Connecting');
-	}
-	if (!connected) {
-		return I18n.t('Waiting_for_network');
+	const connectionSubtitle = getConnectionSubtitle({ connecting, connected });
+	if (connectionSubtitle) {
+		return connectionSubtitle;
 	}
 	if (fields.type === 'd') {
-		if (!activeUser) {
-			return undefined;
-		}
-		const presenceKey = STATUS_I18N_KEYS[activeUser.status];
-		return activeUser.statusText || (presenceKey ? I18n.t(presenceKey) : undefined);
+		return activeUser ? getPresenceLabel(activeUser) : undefined;
 	}
 	return fields.subtitle;
 };
@@ -119,9 +113,9 @@ const useRoomHeaderContent = (
 
 export const useNativeRoomHeader = (
 	fields: IHeaderFields,
-	tmid?: string,
-	roomUserId?: string | null,
-	onTitlePress?: () => void
+	tmid: string | undefined,
+	roomUserId: string | null | undefined,
+	onTitlePress: () => void
 ) => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const { colors } = useTheme();
@@ -151,7 +145,7 @@ export const useNativeRoomHeader = (
 			headerTitleStyle: { color: colors.fontTitlesLabels },
 			headerSubtitleColor: colors.fontSecondaryInfo,
 			headerTitleTestID: 'room-header',
-			onHeaderTitlePress: onTitlePress && !fields.disabled ? () => onTitlePress() : undefined
+			onHeaderTitlePress: fields.disabled ? undefined : () => onTitlePress()
 		});
 	}, [navigation, title, subtitle, tmid, roomImage, subtitleImage, colors, onTitlePress, fields.disabled]);
 };

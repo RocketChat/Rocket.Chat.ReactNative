@@ -8,7 +8,7 @@ import { type IListPicker } from './ListPicker';
 
 const MENU_BUTTON_CONTENT_INSET = 12;
 
-const ListPicker = ({ children, title, testID, options, selection, onSelectionChange }: IListPicker) => {
+const ListPicker = <T extends string>({ children, title, testID, options, selection, onSelectionChange }: IListPicker<T>) => {
 	const { colors } = useTheme();
 	const isNativeList = useIsNativeList();
 

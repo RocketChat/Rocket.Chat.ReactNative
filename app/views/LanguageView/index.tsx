@@ -1,10 +1,8 @@
 import { reloadAppAsync } from 'expo';
 import { Fragment, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ListRadio from '~/containers/List/components/ListRadio';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -17,7 +15,6 @@ import I18n, { isRTL, LANGUAGES } from '~/i18n';
 import database from '~/lib/database';
 import { getUserSelector } from '~/selectors/login';
 import { type SettingsStackParamList } from '~/stacks/types';
-import { isIOS } from '~/lib/methods/helpers';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { saveUserPreferences } from '~/lib/services/restApi';
@@ -31,9 +28,6 @@ const LanguageView = () => {
 
 	const dispatch = useDispatch();
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'LanguageView'>>();
-	const { bottom } = useSafeAreaInsets();
-
-	const paddingBottom = Math.max(16, bottom);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -106,25 +100,17 @@ const LanguageView = () => {
 
 	return (
 		<SafeAreaView testID='language-view'>
-			{isIOS ? (
-				<List.Container>
-					<List.Section>
-						{LANGUAGES.map(item => (
-							<Fragment key={item.value}>{renderLanguage(item)}</Fragment>
-						))}
-					</List.Section>
-				</List.Container>
-			) : (
-				<FlatList
-					data={LANGUAGES}
-					keyExtractor={item => item.value}
-					ListHeaderComponent={List.Separator}
-					ListFooterComponent={List.Separator}
-					contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom }]}
-					renderItem={({ item }) => renderLanguage(item)}
-					ItemSeparatorComponent={List.Separator}
-				/>
-			)}
+			<List.Container>
+				<List.Section>
+					<List.Separator />
+					{LANGUAGES.map(item => (
+						<Fragment key={item.value}>
+							{renderLanguage(item)}
+							<List.Separator />
+						</Fragment>
+					))}
+				</List.Section>
+			</List.Container>
 		</SafeAreaView>
 	);
 };

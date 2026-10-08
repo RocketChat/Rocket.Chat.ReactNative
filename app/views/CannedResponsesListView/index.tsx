@@ -226,7 +226,6 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	const onCancelSearch = () => {
 		onChangeText('');
 		setIsSearching(false);
-		searchBarRef.current?.clearText();
 	};
 
 	const getHeader = (): NativeStackNavigationOptions =>

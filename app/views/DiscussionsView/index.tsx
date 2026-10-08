@@ -10,10 +10,11 @@ import { type IMessageFromServer, type TThreadModel } from '~/definitions';
 import { type ChatsStackParamList } from '~/stacks/types';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';
+import { translucentHeader } from '~/lib/methods/helpers/navigation';
 import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import log from '~/lib/methods/helpers/log';
-import { isIOS, useDebounce } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar, isIOS, useDebounce } from '~/lib/methods/helpers';
 import SafeAreaView from '~/containers/SafeAreaView';
 import * as List from '~/containers/List';
 import BackgroundContainer from '~/containers/BackgroundContainer';
@@ -85,7 +86,6 @@ const DiscussionsView = () => {
 	};
 
 	const onSearchChangeText = useDebounce((text: string) => {
-		setIsSearching(true);
 		setSearch([]);
 		searchText.current = text;
 		offset.current = 0;
@@ -97,7 +97,6 @@ const DiscussionsView = () => {
 		setSearch([]);
 		searchText.current = '';
 		offset.current = 0;
-		searchBarRef.current?.clearText();
 	};
 
 	const onSearchPress = () => {
@@ -114,6 +113,7 @@ const DiscussionsView = () => {
 			testIDPrefix: 'discussion-messages-view',
 			options: {
 				headerTitle: I18n.t('Discussions'),
+				...translucentHeader,
 				...(isMasterDetail ? headerLeftCloseModal(navigation) : { headerLeft: undefined })
 			}
 		});
@@ -162,9 +162,10 @@ const DiscussionsView = () => {
 				renderItem={renderItem}
 				keyExtractor={(item: any) => item._id}
 				style={{ backgroundColor: colors.surfaceRoom }}
-				contentContainerStyle={[styles.contentContainer, { paddingBottom: bottom }]}
+				contentContainerStyle={[styles.contentContainer, { paddingBottom: hasNativeHeaderBar ? 0 : bottom }]}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}
+				contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
 				onEndReached={() => isSearching && offset.current < total.current && load()}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}

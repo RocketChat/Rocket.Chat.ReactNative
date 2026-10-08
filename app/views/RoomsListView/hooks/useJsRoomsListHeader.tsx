@@ -1,11 +1,10 @@
-import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import { InteractionManager } from 'react-native';
 import { type KeyboardFocus } from 'react-native-external-keyboard';
 
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import i18n from '~/i18n';
 import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
-import { isTablet } from '~/lib/methods/helpers';
 import { headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import RoomsListHeaderView from '../components/Header';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
@@ -22,7 +21,6 @@ export const useJsRoomsListHeader = () => {
 	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsSearchContext);
 	const { navigation, isMasterDetail, colors, disabled, badgeColor, showTroubleshoot, navigateToScreen, onDrawerPress } =
 		useRoomsListHeaderState();
-	const [options, setOptions] = useState<any>(null);
 	const isAccessibilityNavigationEnabled = useIsAccessibilityNavigationEnabled();
 	const drawerButtonRef = useRef<KeyboardFocus>(null);
 
@@ -66,9 +64,6 @@ export const useJsRoomsListHeader = () => {
 					...headerRightActions([...troubleshootActions, searchAction, ...browseActions])
 				};
 		navigation.setOptions(nextOptions);
-		if (isTablet) {
-			setOptions(nextOptions);
-		}
 	}, [
 		navigation,
 		colors,
@@ -105,6 +100,4 @@ export const useJsRoomsListHeader = () => {
 			task?.cancel();
 		};
 	}, [focusNavigation, isAccessibilityNavigationEnabled]);
-
-	return { options };
 };

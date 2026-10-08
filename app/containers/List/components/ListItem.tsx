@@ -1,4 +1,4 @@
-import { useMemo, memo, type ReactElement } from 'react';
+import { memo, type ReactElement } from 'react';
 import {
 	I18nManager,
 	PixelRatio,
@@ -19,10 +19,9 @@ import Icon from './ListIcon';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from '../constants';
 import { useIsNativeList } from '../native/context';
 import NativeListItem from '../native/components/Item';
+import { nativeListItemAccessibilityLabel, pressNativeListItem } from '../native/utils/itemProps';
 import { CustomIcon } from '~/containers/CustomIcon';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import EventEmitter from '~/lib/methods/helpers/events';
-import { LISTENER } from '~/containers/Toast';
 import { isIOS } from '~/lib/methods/helpers';
 
 // Maestro fail to click on child component when we enable accessibility in parent component on iOS
@@ -137,37 +136,15 @@ const Content = memo(
 		const { fontScale } = useResponsiveLayout();
 		const { colors } = useTheme();
 
-		const handleAcessibilityLabel = useMemo(() => {
-			let label = '';
-			if (accessibilityLabel) {
-				return accessibilityLabel;
-			}
-			if (typeof title === 'string') {
-				label = translateTitle ? I18n.t(title) : title;
-			}
-			if (subtitle) {
-				label = translateSubtitle ? `${label} ${I18n.t(subtitle)}` : `${label} ${subtitle}`;
-			}
-			if (typeof additionalAccessibilityLabel === 'string') {
-				label = `${label} ${additionalAccessibilityLabel}`;
-			}
-			if (typeof additionalAccessibilityLabel === 'boolean') {
-				if (additionalAccessibilityLabelCheck) {
-					label = `${label} ${additionalAccessibilityLabel ? I18n.t('Checked') : I18n.t('Unchecked')}`;
-				} else {
-					label = `${label} ${additionalAccessibilityLabel ? I18n.t('Enabled') : I18n.t('Disabled')}`;
-				}
-			}
-			return label;
-		}, [
-			accessibilityLabel,
+		const accessibilityLabelText = nativeListItemAccessibilityLabel({
 			title,
 			subtitle,
 			translateTitle,
 			translateSubtitle,
+			accessibilityLabel,
 			additionalAccessibilityLabel,
 			additionalAccessibilityLabelCheck
-		]);
+		});
 
 		return (
 			<View
@@ -178,7 +155,7 @@ const Content = memo(
 				]}
 				testID={testID}
 				accessible={!shouldDisableAccessibility}
-				accessibilityLabel={handleAcessibilityLabel}
+				accessibilityLabel={accessibilityLabelText}
 				accessibilityRole={accessibilityRole ?? 'button'}>
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 				{title || subtitle ? (
@@ -233,17 +210,9 @@ const Button = memo(
 	({ onPress, title, disabled, disabledReason, backgroundColor, underlayColor, style, children }: IListButtonPress) => {
 		const { colors } = useTheme();
 
-		const handlePress = () => {
-			if (disabled && disabledReason) {
-				EventEmitter.emit(LISTENER, { message: disabledReason });
-			} else if (!disabled) {
-				onPress(title);
-			}
-		};
-
 		return (
 			<Touch
-				onPress={handlePress}
+				onPress={() => pressNativeListItem({ title, disabled, disabledReason, onPress })}
 				style={[{ backgroundColor: backgroundColor || colors.surfaceRoom }, style]}
 				underlayColor={underlayColor}
 				disabled={disabled && !disabledReason}>

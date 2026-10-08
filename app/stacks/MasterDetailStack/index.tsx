@@ -9,7 +9,7 @@ import { type StaticScreenProps, useNavigation } from '@react-navigation/native'
 import { ThemeContext } from '~/theme';
 import { defaultHeader, themedHeader } from '~/lib/methods/helpers/navigation';
 import withNavigation from '~/lib/navigation/withNavigation';
-import { hasNativeHeaderBar, isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers';
 import { ModalContainer } from './ModalContainer';
 import { createSplitNavigator } from './SplitNavigator';
 import { type MasterDetailChatsStackParamList, type MasterDetailInsideStackParamList, type ModalStackParamList } from './types';
@@ -181,8 +181,7 @@ const RoomsListStack = createNativeStackNavigator({
 	screenOptions: defaultHeader,
 	screens: {
 		RoomsListView: createNativeStackScreen({
-			screen: RoomsListView,
-			options: { headerShown: hasNativeHeaderBar }
+			screen: RoomsListView
 		}),
 		CategoryView: createNativeStackScreen({
 			screen: CategoryView,

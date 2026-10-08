@@ -129,13 +129,13 @@ const NewMessageView = ({ route }: StaticScreenProps<NewMessageViewParams>) => {
 		[isMasterDetail, navigation]
 	);
 
-	const globalData = search.length > 0 ? search : chats;
-	const data = categoryId ? filterChatsByName(chats, categorySearchText) : globalData;
+	const globalChats = search.length > 0 ? search : chats;
+	const listedChats = categoryId ? filterChatsByName(chats, categorySearchText) : globalChats;
 
 	return (
 		<SafeAreaView testID='new-message-view'>
 			<FlatList
-				data={data}
+				data={listedChats}
 				keyExtractor={item => item._id || item.rid}
 				ListHeaderComponent={
 					<HeaderNewMessage maxUsers={maxUsers} onChangeText={handleSearch} categoryId={categoryId} categoryName={categoryName} />
@@ -153,7 +153,7 @@ const NewMessageView = ({ route }: StaticScreenProps<NewMessageViewParams>) => {
 							onPress={() => goRoom(itemModel)}
 							testID={`new-message-view-item-${item.name}`}
 							isFirst={index === 0}
-							isLast={index === data.length - 1}
+							isLast={index === listedChats.length - 1}
 						/>
 					);
 				}}

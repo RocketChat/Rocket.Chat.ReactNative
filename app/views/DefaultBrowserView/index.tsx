@@ -1,7 +1,6 @@
 import { Fragment, useCallback, useEffect, useLayoutEffect, useState } from 'react';
-import { FlatList, Linking } from 'react-native';
+import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '~/i18n';
 import * as List from '~/containers/List';
@@ -49,9 +48,6 @@ const DefaultBrowserView = () => {
 	const [supported, setSupported] = useState<IBrowsersValues[]>([]);
 
 	const navigation = useNavigation();
-	const { bottom } = useSafeAreaInsets();
-
-	const paddingBottom = Math.max(16, bottom);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -100,30 +96,17 @@ const DefaultBrowserView = () => {
 
 	return (
 		<SafeAreaView testID='default-browser-view'>
-			{isIOS ? (
-				<List.Container>
-					<List.Section title='Choose_where_you_want_links_be_opened'>
-						{browsers.map(item => (
-							<Fragment key={item.value}>{renderBrowser(item)}</Fragment>
-						))}
-					</List.Section>
-				</List.Container>
-			) : (
-				<FlatList
-					data={browsers}
-					keyExtractor={item => item.value}
-					contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom }]}
-					renderItem={({ item }) => renderBrowser(item)}
-					ListHeaderComponent={
-						<>
-							<List.Header title='Choose_where_you_want_links_be_opened' numberOfLines={2} />
+			<List.Container>
+				<List.Section title='Choose_where_you_want_links_be_opened'>
+					<List.Separator />
+					{browsers.map(item => (
+						<Fragment key={item.value}>
+							{renderBrowser(item)}
 							<List.Separator />
-						</>
-					}
-					ListFooterComponent={List.Separator}
-					ItemSeparatorComponent={List.Separator}
-				/>
-			)}
+						</Fragment>
+					))}
+				</List.Section>
+			</List.Container>
 		</SafeAreaView>
 	);
 };

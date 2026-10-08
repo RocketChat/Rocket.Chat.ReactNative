@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
+import { checkedStateLabel } from '~/containers/List/native/utils/itemProps';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
@@ -60,9 +61,7 @@ const ListPicker = ({
 		OPTIONS.map(i => ({
 			title: i.label,
 			subtitle: i?.description || undefined,
-			accessibilityLabel: `${i.label}. ${i?.description || ''}. ${
-				option?.value === i.value ? I18n.t('Checked') : I18n.t('Unchecked')
-			}`,
+			accessibilityLabel: `${i.label}. ${i?.description || ''}. ${checkedStateLabel(option?.value === i.value)}`,
 			onPress: () => {
 				hideActionSheet();
 				onChangeValue(i.value);
@@ -75,7 +74,7 @@ const ListPicker = ({
 			title={title}
 			options={OPTIONS.map(i => ({ label: i.label, value: i.value }))}
 			selection={option.value}
-			onSelectionChange={selected => onChangeValue(selected as TAlertDisplayType)}>
+			onSelectionChange={onChangeValue}>
 			<List.Item
 				accessibilityLabel={`${title}. ${option?.label}`}
 				onPress={() => showActionSheet({ options: getOptions() })}

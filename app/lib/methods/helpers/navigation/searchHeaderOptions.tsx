@@ -31,9 +31,18 @@ export const searchHeaderOptions = ({
 	rightActions = []
 }: ISearchHeaderOptionsParams): NativeStackNavigationOptions => {
 	if (hasNativeHeaderBar) {
+		const cancelAndClear = () => {
+			onCancel();
+			searchBarRef.current?.clearText();
+		};
 		return {
 			...options,
-			headerSearchBarOptions: stackedSearchBarOptions({ ref: searchBarRef, onFocus: onSearchPress, onChangeText, onCancel }),
+			headerSearchBarOptions: stackedSearchBarOptions({
+				ref: searchBarRef,
+				onFocus: onSearchPress,
+				onChangeText,
+				onCancel: cancelAndClear
+			}),
 			...headerRightActions(rightActions)
 		};
 	}

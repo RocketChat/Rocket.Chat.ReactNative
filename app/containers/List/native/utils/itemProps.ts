@@ -11,6 +11,8 @@ export const nativeListItemTitle = ({ title, translateTitle }: IListItem) =>
 export const nativeListItemSubtitle = ({ subtitle, translateSubtitle }: IListItem) =>
 	subtitle ? translateListText(subtitle, translateSubtitle) : undefined;
 
+export const checkedStateLabel = (checked: boolean) => I18n.t(checked ? 'Checked' : 'Unchecked');
+
 const stateLabel = ({ additionalAccessibilityLabel, additionalAccessibilityLabelCheck }: IListItem) => {
 	if (typeof additionalAccessibilityLabel === 'string') {
 		return additionalAccessibilityLabel;
@@ -19,7 +21,7 @@ const stateLabel = ({ additionalAccessibilityLabel, additionalAccessibilityLabel
 		return undefined;
 	}
 	if (additionalAccessibilityLabelCheck) {
-		return I18n.t(additionalAccessibilityLabel ? 'Checked' : 'Unchecked');
+		return checkedStateLabel(additionalAccessibilityLabel);
 	}
 	return I18n.t(additionalAccessibilityLabel ? 'Enabled' : 'Disabled');
 };

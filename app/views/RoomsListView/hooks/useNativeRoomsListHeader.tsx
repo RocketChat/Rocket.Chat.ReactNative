@@ -5,7 +5,7 @@ import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { isTablet } from '~/lib/methods/helpers';
 import { headerLeftActions, headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
-import { translucentHeader } from '~/lib/methods/helpers/navigation';
+import { stackedSearchBarOptions, translucentHeader } from '~/lib/methods/helpers/navigation';
 import ServersList from '../components/ServersList';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
 import { useNewMessage } from './useNewMessage';
@@ -55,13 +55,10 @@ export const useNativeRoomsListHeader = () => {
 			headerTitleTestID: 'rooms-list-header-servers-list-button',
 			onHeaderTitlePress: openServersList,
 			headerSearchBarOptions: {
-				ref: searchBarRef,
+				...stackedSearchBarOptions({ ref: searchBarRef, onFocus: startSearch, onChangeText: search, onCancel: resetSearch }),
 				placement: isTablet ? 'stacked' : 'automatic',
-				placeholder: i18n.t('Search'),
-				hideNavigationBar: !isTablet,
-				onFocus: startSearch,
-				onChangeText: (event: { nativeEvent: { text: string } }) => search(event.nativeEvent.text),
-				onCancelButtonPress: resetSearch
+				hideWhenScrolling: true,
+				hideNavigationBar: !isTablet
 			},
 			...headerLeftActions([drawerAction]),
 			...headerRightActions(
