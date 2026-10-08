@@ -59,7 +59,7 @@ const VideoConfWebView = (): ReactElement => {
 const styles = StyleSheet.create({
 	container: { flex: 1 },
 	webview: { flex: 1 },
-	loading: { ...StyleSheet.absoluteFillObject, alignItems: 'center', justifyContent: 'center' }
+	loading: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' }
 });
 
 export default VideoConfWebView;

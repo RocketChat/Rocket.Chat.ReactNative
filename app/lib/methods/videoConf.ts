@@ -33,7 +33,7 @@ export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean
 			const { url, providerName } = result;
 			if (providerName === 'jitsi') {
 				navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });
-			} else if (providerName === 'pexip') {
+			} else if (providerName === 'core.pexip') {
 				navigation.navigate('VideoConfWebView', { url });
 			} else {
 				openLink(url);

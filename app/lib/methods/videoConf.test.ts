@@ -25,7 +25,7 @@ describe('videoConfJoin', () => {
 	});
 
 	it('opens pexip calls in VideoConfWebView', async () => {
-		mockedJoin.mockResolvedValue({ success: true, url: 'https://pexip.example/call', providerName: 'pexip' });
+		mockedJoin.mockResolvedValue({ success: true, url: 'https://pexip.example/call', providerName: 'core.pexip' });
 		await videoConfJoin('call-2', true, true);
 		expect(navigation.navigate).toHaveBeenCalledWith('VideoConfWebView', { url: 'https://pexip.example/call' });
 	});
