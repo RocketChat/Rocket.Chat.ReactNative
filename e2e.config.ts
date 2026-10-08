@@ -24,6 +24,7 @@ export default {
 		}
 	],
 	timeout: 600_000,
+	launchTimeout: 180_000,
 	actionTimeout: 60_000,
 	workers: 1,
 	agents: { default: { executor: claudeSubscriptionExecutor } }
