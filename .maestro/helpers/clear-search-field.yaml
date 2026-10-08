@@ -9,6 +9,7 @@ tags:
     commands:
       - tapOn:
           text: 'Clear text'
+      - runFlow: 'close-search.yaml'
 - runFlow:
     when:
       platform: android
