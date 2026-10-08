@@ -104,6 +104,33 @@ fi
 
 E2E_COMMAND=(pnpm exec e2e run --target "$PLATFORM" --tag "test-${SHARD}" --reporter list,junit)
 
+DEVICE_EVIDENCE_DIR="$OUTPUT_DIR/artifacts/device"
+DEVICE_CAPTURE_DIR=""
+DEVICE_CAPTURE_PIDS=()
+
+start_device_capture() {
+  [ "$PLATFORM" = "ios" ] && [ -n "${E2E_IOS_DEVICE:-}" ] || return 0
+  DEVICE_CAPTURE_DIR="$(mktemp -d)"
+  xcrun simctl io "$E2E_IOS_DEVICE" recordVideo --codec h264 --force "$DEVICE_CAPTURE_DIR/screen.mp4" >/dev/null 2>&1 &
+  DEVICE_CAPTURE_PIDS+=($!)
+  xcrun simctl spawn "$E2E_IOS_DEVICE" log stream --style compact --level debug --predicate 'process == "Rocket.Chat" AND (subsystem == "com.facebook.react.log" OR messageType == error OR messageType == fault)' >"$DEVICE_CAPTURE_DIR/app.log" 2>&1 &
+  DEVICE_CAPTURE_PIDS+=($!)
+}
+
+stop_device_capture() {
+  [ "${#DEVICE_CAPTURE_PIDS[@]}" -gt 0 ] || return 0
+  kill -INT "${DEVICE_CAPTURE_PIDS[@]}" 2>/dev/null || true
+  wait "${DEVICE_CAPTURE_PIDS[@]}" 2>/dev/null || true
+  DEVICE_CAPTURE_PIDS=()
+  [ "${rc:-1}" -ne 0 ] || return 0
+  find "$HOME/Library/Logs/DiagnosticReports" -name 'Rocket.Chat*' -newer "$DEVICE_CAPTURE_DIR/app.log" -exec cp {} "$DEVICE_CAPTURE_DIR/" \; 2>/dev/null || true
+  mkdir -p "$DEVICE_EVIDENCE_DIR"
+  mv "$DEVICE_CAPTURE_DIR"/* "$DEVICE_EVIDENCE_DIR/"
+}
+
+trap stop_device_capture EXIT
+start_device_capture
+
 run_e2e_pass() {
   local pass_timeout="$1"
   shift
