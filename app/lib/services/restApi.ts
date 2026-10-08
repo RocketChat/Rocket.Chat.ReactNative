@@ -67,7 +67,6 @@ export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: 
 
 export const e2eRequestSubscriptionKeys = () => {
 	const serverVersion = reduxStore.getState().server.version;
-	// RC 8.6.0
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
 		return sdk.post('e2e.requestSubscriptionKeys');
 	}
@@ -132,13 +131,12 @@ export const spotlight = (
 	rid?: string
 ): Promise<ISpotlight> => {
 	const serverVersion = reduxStore.getState().server.version;
-	// RC 8.6.0
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
-		const withoutGroupDMNames = usernames.filter(name => !name.includes(','));
+		const withoutMultiUserDirectMessageNames = usernames.filter(name => !name.includes(','));
 		return sdk.get('spotlight', {
 			query: search,
 			type: JSON.stringify(type),
-			...(withoutGroupDMNames.length ? { usernames: withoutGroupDMNames.join(',') } : {}),
+			...(withoutMultiUserDirectMessageNames.length ? { usernames: withoutMultiUserDirectMessageNames.join(',') } : {}),
 			...(rid ? { rid } : {})
 		}) as Promise<ISpotlight>;
 	}
@@ -301,12 +299,11 @@ export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; sel
 export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p') => {
 	if (type === 'p') {
 		const serverVersion = reduxStore.getState().server.version;
-		// RC 8.6.0
 		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
 			return sdk.post('rooms.join', { roomId, ...(joinCode ? { joinCode } : {}) });
 		}
 		// RC 0.48.0
-		return sdk.methodCallWrapper('joinRoom', roomId) as Promise<boolean>;
+		return sdk.methodCallWrapper('joinRoom', roomId);
 	}
 	return sdk.post('channels.join', { roomId, joinCode });
 };
@@ -567,7 +564,6 @@ export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 
 
 export const toggleBlockUser = (rid: string, blocked: string, block: boolean) => {
 	const serverVersion = reduxStore.getState().server.version;
-	// RC 8.6.0
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
 		return sdk.post('im.blockUser', { roomId: rid, block });
 	}
@@ -998,14 +994,11 @@ export const saveAutoTranslate = ({
 	field,
 	value,
 	options
-}: {
-	rid: string;
-	field: 'autoTranslate' | 'autoTranslateLanguage';
-	value: boolean | string;
-	options?: { defaultLanguage: string };
-}) => {
+}: { rid: string; options?: { defaultLanguage: string } } & (
+	| { field: 'autoTranslate'; value: boolean }
+	| { field: 'autoTranslateLanguage'; value: string }
+)) => {
 	const serverVersion = reduxStore.getState().server.version;
-	// RC 8.6.0
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
 		return sdk.post('autotranslate.saveSettings', {
 			roomId: rid,
@@ -1014,11 +1007,7 @@ export const saveAutoTranslate = ({
 			...(options?.defaultLanguage ? { defaultLanguage: options.defaultLanguage } : {})
 		});
 	}
-	let ddpValue = value;
-	if (typeof value === 'boolean') {
-		ddpValue = value ? '1' : '0';
-	}
-	// RC 2.0.0
+	const ddpValue = typeof value === 'boolean' ? (value ? '1' : '0') : value;
 	return sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, ddpValue, options ?? null);
 };
 
@@ -1046,11 +1035,10 @@ export const inviteToken = (token: string): any =>
 	// @ts-ignore
 	sdk.post('useInviteToken', { token });
 
-export const readThreads = (tmid: string): Promise<void> => {
+export const readThreads = (tmid: string) => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.8.0')) {
-		// RC 8.8.0
-		return sdk.post('chat.readThread', { tmid }).then(() => undefined);
+		return sdk.post('chat.readThread', { tmid });
 	}
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
 		// RC 3.4.0
@@ -1070,9 +1058,11 @@ export const createGroupChat = () => {
 export const addUsersToRoom = (rid: string, t: 'c' | 'p') => {
 	const { selectedUsers, server } = reduxStore.getState();
 	const users = selectedUsers.users.map(u => u.name);
-	// RC 8.6.0
 	if (compareServerVersion(server.version, 'greaterThanOrEqualTo', '8.6.0')) {
-		return Promise.all(users.map(username => sdk.post(`${roomTypeToApiType(t)}.invite`, { roomId: rid, username })));
+		if (t === 'p') {
+			return sdk.post('groups.invite', { roomId: rid, usernames: users });
+		}
+		return Promise.all(users.map(username => sdk.post('channels.invite', { roomId: rid, username })));
 	}
 	// RC 0.51.0
 	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });

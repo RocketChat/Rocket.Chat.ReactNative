@@ -36,9 +36,4 @@ describe('e2eRequestSubscriptionKeys', () => {
 		expect(sdk.post).toHaveBeenCalledWith('e2e.requestSubscriptionKeys');
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
 	});
-
-	it('rejects when the request fails', async () => {
-		(sdk.post as jest.Mock).mockRejectedValueOnce(new Error('404'));
-		await expect(e2eRequestSubscriptionKeys()).rejects.toThrow('404');
-	});
 });

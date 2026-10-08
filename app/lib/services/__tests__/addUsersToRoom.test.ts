@@ -48,11 +48,10 @@ describe('addUsersToRoom', () => {
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
 	});
 
-	it('invites each selected user through groups.invite for private rooms on 8.6.0+', async () => {
+	it('invites all selected users in one groups.invite request for private rooms on 8.6.0+', async () => {
 		await addUsersToRoom('rid1', 'p');
-		expect(sdk.post).toHaveBeenCalledTimes(2);
-		expect(sdk.post).toHaveBeenCalledWith('groups.invite', { roomId: 'rid1', username: 'alice' });
-		expect(sdk.post).toHaveBeenCalledWith('groups.invite', { roomId: 'rid1', username: 'bob' });
+		expect(sdk.post).toHaveBeenCalledTimes(1);
+		expect(sdk.post).toHaveBeenCalledWith('groups.invite', { roomId: 'rid1', usernames: ['alice', 'bob'] });
 	});
 
 	it('rejects when any invite fails', async () => {
