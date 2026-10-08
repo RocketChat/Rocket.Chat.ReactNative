@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import { LISTENER } from '~/containers/Toast';
+import EventEmitter from '~/lib/methods/helpers/events';
 import { useTheme } from '~/theme';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { CONTENT_SPACING, ROW_HEIGHT, ROW_MARGIN_HORIZONTAL, ROW_PADDING_HORIZONTAL, ROW_RADIUS } from './constants';
@@ -93,6 +95,7 @@ export interface INativeListRowContent {
 	accessibilityRole?: AccessibilityRole;
 	isSelected?: boolean;
 	disabled?: boolean;
+	disabledReason?: string;
 	titleColor?: string;
 	titleNumberOfLines?: number;
 	titleStyle?: StyleProp<TextStyle>;
@@ -115,6 +118,7 @@ export const NativeListRowContent = ({
 	accessibilityRole = 'button',
 	isSelected,
 	disabled,
+	disabledReason,
 	titleColor,
 	titleNumberOfLines = 1,
 	titleStyle,
@@ -122,13 +126,15 @@ export const NativeListRowContent = ({
 	style
 }: INativeListRowContent) => {
 	const { colors } = useTheme();
+	const showDisabledReason =
+		disabled && disabledReason ? () => EventEmitter.emit(LISTENER, { message: disabledReason }) : undefined;
 
 	return (
 		<View style={[styles.row, style]}>
 			<Pressable
-				onPress={onPress}
-				onLongPress={onLongPress}
-				disabled={disabled}
+				onPress={showDisabledReason ?? onPress}
+				onLongPress={showDisabledReason ? undefined : onLongPress}
+				disabled={disabled && !showDisabledReason}
 				testID={testID}
 				accessible={Boolean(onPress || onLongPress)}
 				accessibilityRole={accessibilityRole}
@@ -199,7 +205,8 @@ const NativeListRow = ({
 	isSelected,
 	isFirst,
 	isLast,
-	disabled
+	disabled,
+	disabledReason
 }: INativeListRow) => {
 	const { colors } = useTheme();
 	const { fontScale } = useResponsiveLayout();
@@ -219,6 +226,7 @@ const NativeListRow = ({
 			accessibilityLabel={accessibilityLabel}
 			isSelected={isSelected}
 			disabled={disabled}
+			disabledReason={disabledReason}
 			style={[
 				styles.card,
 				{ height, backgroundColor: colors.surfaceLight },
