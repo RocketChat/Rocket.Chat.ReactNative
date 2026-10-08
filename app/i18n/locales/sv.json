@@ -160,7 +160,7 @@
   "Connect": "Anslut",
   "Connect_to_server_as_user": "Anslut till {{serverUrl}} som {{user}}",
   "Connecting": "Ansluter...",
-  "Connection_timed_out": "Anslutningen översteg tidsgränsen. Kontrollera serverns URL och försök igen.",
+  "Connection_timed_out": "Anslutningen översteg tidsgränsen. Kontrollera arbetsytans URL och försök igen.",
   "Contact_us": "Kontakta oss",
   "Contact_your_server_admin": "Kontakta serveradministratören.",
   "Content": "Innehåll",

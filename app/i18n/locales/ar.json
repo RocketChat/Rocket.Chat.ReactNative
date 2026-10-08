@@ -124,7 +124,7 @@
   "Connect": "اتصال",
   "Connect_to_server_as_user": "اتصل بـ {{serverUrl}} كـ {{user}}",
   "Connecting": "جار الاتصال...",
-  "Connection_timed_out": "انتهت مهلة الاتصال. تحقق من عنوان الخادم وحاول مرة أخرى.",
+  "Connection_timed_out": "انتهت مهلة الاتصال. تحقق من عنوان URL لمساحة العمل وحاول مرة أخرى.",
   "Contact_us": "تواصل معنا",
   "Contact_your_server_admin": "اتصل بمسؤول الخادم",
   "Continue_with": "متابعة بـ",

@@ -170,7 +170,7 @@
   "Connect": "Verbinden",
   "Connect_to_server_as_user": "Verbinden Sie sich mit {{serverUrl}} als {{user}}",
   "Connecting": "Verbinden ...",
-  "Connection_timed_out": "Zeitüberschreitung bei der Verbindung. Überprüfen Sie die Server-URL und versuchen Sie es erneut.",
+  "Connection_timed_out": "Zeitüberschreitung bei der Verbindung. Überprüfen Sie die Arbeitsbereichs-URL und versuchen Sie es erneut.",
   "Contact_us": "Kontaktieren Sie uns",
   "Contact_your_server_admin": "Kontaktieren Sie Ihren Server-Administrator.",
   "Content": "Inhalt",

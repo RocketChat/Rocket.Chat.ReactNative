@@ -185,7 +185,7 @@
   "Connect": "Připojit",
   "Connect_to_server_as_user": "Připojte se k {{serverUrl}} jako {{user}}",
   "Connecting": "Spojovací...",
-  "Connection_timed_out": "Časový limit připojení vypršel. Zkontrolujte adresu serveru a zkuste to znovu.",
+  "Connection_timed_out": "Časový limit připojení vypršel. Zkontrolujte URL adresu pracovního prostoru a zkuste to znovu.",
   "Contact_us": "Kontaktujte nás",
   "Contact_your_server_admin": "Kontaktujte svého správce pracovního prostoru.",
   "Content": "Obsah",

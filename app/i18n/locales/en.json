@@ -190,7 +190,7 @@
   "Connect": "Connect",
   "Connect_to_server_as_user": "Connect to {{serverUrl}} as {{user}}",
   "Connecting": "Connecting...",
-  "Connection_timed_out": "Connection timed out. Check the server URL and try again.",
+  "Connection_timed_out": "Connection timed out. Check the workspace URL and try again.",
   "Contact_us": "Contact us",
   "Contact_your_server_admin": "Contact your workspace admin.",
   "Content": "Content",

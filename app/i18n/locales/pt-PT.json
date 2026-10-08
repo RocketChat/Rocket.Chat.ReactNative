@@ -120,7 +120,7 @@
   "Connect": "Ligar",
   "Connect_to_server_as_user": "Ligar a {{serverUrl}} como {{user}}",
   "Connecting": "A ligar...",
-  "Connection_timed_out": "A ligação expirou. Verifique o URL do servidor e tente novamente.",
+  "Connection_timed_out": "A ligação expirou. Verifique o URL do espaço de trabalho e tente novamente.",
   "Contact_us": "Contacte-nos",
   "Contact_your_server_admin": "Contacte o administrador do seu servidor.",
   "Continue_with": "Continuar com",
