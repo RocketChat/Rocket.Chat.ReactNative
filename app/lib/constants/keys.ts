@@ -28,6 +28,7 @@ export const getLegacyUserTokenKey = (userId: string): string => `${TOKEN_KEY}-$
 export const getUserTokenKey = (server: string, userId: string): string => `${TOKEN_KEY}-${server}-${userId}`;
 export const TOKEN_KEY_SERVER_SCOPED_MIGRATED = 'RC_TOKEN_KEY_SERVER_SCOPED_MIGRATED';
 export const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
-
 export const CURRENT_SERVER = 'currentServer';
 export const WATCHOS_QUICKREPLIES = 'RC_WATCHOS_QUICKREPLIES';
+const BASIC_AUTH_KEY = 'BASIC_AUTH_KEY';
+export const getBasicAuthKey = (server: string): string => `${BASIC_AUTH_KEY}-${server}`;

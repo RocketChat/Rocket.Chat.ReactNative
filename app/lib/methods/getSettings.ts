@@ -5,8 +5,8 @@ import { addSettings, clearSettings } from '~/actions/settings';
 import { defaultSettings } from '../constants/defaultSettings';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import { type IPreparedSettings, type ISettingsIcon } from '~/definitions';
-import fetch from './helpers/fetch';
 import log from './helpers/log';
+import { fetchForWorkspace } from './serverBasicAuth';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import sdk from '../services/sdk';
@@ -16,7 +16,7 @@ import { setPresenceCap } from './getUsersPresence';
 import { compareServerVersion } from './helpers';
 import { SETTINGS } from '~/actions/actionsTypes';
 
-const serverInfoKeys = [
+const serverInfoKeys = new Set([
 	'Site_Name',
 	'UI_Use_Real_Name',
 	'FileUpload_MediaTypeWhiteList',
@@ -27,7 +27,7 @@ const serverInfoKeys = [
 	'uniqueID',
 	'E2E_Enable',
 	'E2E_Enabled_Default_PrivateRooms'
-];
+]);
 
 // these settings are used only on onboarding process
 const loginSettings = [
@@ -112,20 +112,31 @@ const serverInfoUpdate = async (serverInfo: IPreparedSettings[], iconSetting: IS
 	});
 };
 
-export async function getLoginSettings({ server, serverVersion }: { server: string; serverVersion: string }): Promise<void> {
+export async function getLoginSettings({
+	server,
+	serverVersion,
+	signal
+}: {
+	server: string;
+	serverVersion: string;
+	signal?: AbortSignal;
+}): Promise<void> {
 	const settingsParams = JSON.stringify(loginSettings);
 
 	const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
 		? `${server}/api/v1/settings.public?_id=${loginSettings.join(',')}`
 		: `${server}/api/v1/settings.public?query={"_id":{"$in":${settingsParams}}}`;
 	try {
-		const result = await fetch(url).then(response => response.json());
+		const result = await fetchForWorkspace(server, url, { signal }).then(response => response.json());
 
 		if (result.success && result.settings.length) {
 			reduxStore.dispatch(clearSettings());
 			reduxStore.dispatch(addSettings(parseSettings(_prepareSettings(result.settings))));
 		}
 	} catch (e) {
+		if (signal?.aborted) {
+			return;
+		}
 		log(e);
 	}
 }
@@ -154,7 +165,8 @@ type IData = ISettingsIcon | IPreparedSettings;
 export async function getSettings(server: string): Promise<void> {
 	try {
 		const db = database.active;
-		const settingsParams = Object.keys(defaultSettings).filter(key => !loginSettings.includes(key));
+		const loginSettingKeys = new Set(loginSettings);
+		const settingsParams = Object.keys(defaultSettings).filter(key => !loginSettingKeys.has(key));
 		// RC 0.60.0
 		let offset = 0;
 		let remaining;
@@ -167,7 +179,7 @@ export async function getSettings(server: string): Promise<void> {
 		do {
 			// TODO: why is no-await-in-loop enforced in the first place?
 			/* eslint-disable no-await-in-loop */
-			const response = await fetch(`${url}&offset=${offset}`);
+			const response = await fetchForWorkspace(server, `${url}&offset=${offset}`);
 
 			const result = await response.json();
 			if (!result.success) {
@@ -190,7 +202,7 @@ export async function getSettings(server: string): Promise<void> {
 		setPresenceCap(parsedSettings.Presence_broadcast_disabled);
 
 		// filter server info
-		const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
+		const serverInfo = filteredSettings.filter(setting => serverInfoKeys.has(setting._id));
 		const iconSetting = data.find(icon => icon._id === 'Assets_favicon_512');
 		try {
 			await serverInfoUpdate(serverInfo, iconSetting as ISettingsIcon);

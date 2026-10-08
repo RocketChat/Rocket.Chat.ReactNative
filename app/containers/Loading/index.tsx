@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactElement } from 'react';
+import { useEffect, useRef, useState, type ReactElement } from 'react';
 import { StyleSheet, View, PixelRatio, TouchableWithoutFeedback } from 'react-native';
 import Animated, {
 	cancelAnimation,
@@ -44,28 +44,37 @@ export const sendLoadingEvent = ({ visible, onCancel }: ILoadingEvent): void =>
 
 const Loading = (): ReactElement | null => {
 	const [visible, setVisible] = useState(false);
-	const [onCancel, setOnCancel] = useState<null | Function>(null);
+	const onCancelRef = useRef<null | Function>(null);
 	const opacity = useSharedValue(0);
 	const scale = useSharedValue(1);
 	const { colors } = useTheme();
+
+	const reset = () => {
+		cancelAnimation(scale);
+		cancelAnimation(opacity);
+		setVisible(false);
+		onCancelRef.current = null;
+	};
 
 	const onEventReceived = ({ visible: _visible, onCancel: _onCancel = null }: ILoadingEvent) => {
 		if (_visible) {
 			// if it's already visible, ignore it
 			if (!visible) {
 				setVisible(_visible);
-				opacity.value = 0;
-				scale.value = 1;
-				opacity.value = withTiming(1, {
-					// 300ms doens't work on expensive navigation animations, like jump to message
-					duration: 500
-				});
-				scale.value = withRepeat(withSequence(withTiming(0, { duration: 1000 }), withTiming(1, { duration: 1000 })), -1);
+				opacity.set(0);
+				scale.set(1);
+				opacity.set(
+					withTiming(1, {
+						// 300ms doens't work on expensive navigation animations, like jump to message
+						duration: 500
+					})
+				);
+				scale.set(withRepeat(withSequence(withTiming(0, { duration: 1000 }), withTiming(1, { duration: 1000 })), -1));
 			}
 
 			// allows to override the onCancel function
 			if (_onCancel) {
-				setOnCancel(() => () => _onCancel());
+				onCancelRef.current = _onCancel;
 			}
 		} else {
 			setVisible(false);
@@ -79,18 +88,11 @@ const Loading = (): ReactElement | null => {
 		return () => EventEmitter.removeListener(LOADING_EVENT, listener);
 	}, [visible]);
 
-	const reset = () => {
-		cancelAnimation(scale);
-		cancelAnimation(opacity);
-		setVisible(false);
-		setOnCancel(null);
-	};
-
 	const onCancelHandler = () => {
-		if (!onCancel) {
+		if (!onCancelRef.current) {
 			return;
 		}
-		onCancel();
+		onCancelRef.current();
 		setVisible(false);
 		reset();
 	};
