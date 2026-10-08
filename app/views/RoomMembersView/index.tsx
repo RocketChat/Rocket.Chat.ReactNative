@@ -241,7 +241,10 @@ const RoomMembersView = (): ReactElement => {
 		});
 	}, 500);
 
-	const toggleStatus = (status: boolean) => {
+	const toggleStatus = (status: boolean, currentStatus: boolean) => {
+		if (status === currentStatus) {
+			return;
+		}
 		try {
 			// We only update 'allUsers'. 'filter' remains in state, so the next fetch uses both.
 			updateState({ members: [], allUsers: status, end: false, page: 0 });
@@ -268,13 +271,13 @@ const RoomMembersView = (): ReactElement => {
 							label: I18n.t('Online'),
 							checked: !allUsers,
 							testID: 'room-members-view-toggle-status-online',
-							onPress: () => toggleStatus(false)
+							onPress: () => toggleStatus(false, allUsers)
 						},
 						{
 							label: I18n.t('All'),
 							checked: allUsers,
 							testID: 'room-members-view-toggle-status-all',
-							onPress: () => toggleStatus(true)
+							onPress: () => toggleStatus(true, allUsers)
 						}
 					]
 				}
