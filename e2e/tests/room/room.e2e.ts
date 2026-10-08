@@ -216,9 +216,9 @@ test('sends, reacts to and manages messages in a room', { tags: ['test-12'], tim
 
 	await toggleReactionsList(fixtures, 'laughing');
 
-	await expectProfileFromUsername(fixtures, user.username, room.name);
 	const otherUser = await createUser();
 	await sendMessageAsUser(otherUser, room._id, 'new message');
+	await expectProfileFromUsername(fixtures, user.username, room.name);
 	await expectProfileFromUsername(fixtures, otherUser.username, room.name);
 
 	await editMessage(fixtures);

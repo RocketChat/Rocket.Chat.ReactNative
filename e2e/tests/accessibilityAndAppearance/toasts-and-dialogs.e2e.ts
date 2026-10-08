@@ -4,6 +4,7 @@ import { expect } from 'e2e';
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { type Fixtures, loginWithDeepLink, LONG_TIMEOUT, tapWhenVisible } from '~e2e/support/flows';
 import { expectLabel } from '~e2e/support/keyboard';
+import { openSidebar } from '~e2e/support/settings';
 
 const TOAST_CHECKED = 'Toasts. Dismissed automatically. Checked';
 const DIALOG_UNCHECKED = 'Dialogs. Require manual dismissal. Unchecked';
@@ -36,7 +37,7 @@ test('shows alerts as toasts or dialogs', { tags: ['test-13'] }, async fixtures 
 	const user = await createUser();
 	await loginWithDeepLink(fixtures, user);
 
-	await tapWhenVisible(fixtures, 'rooms-list-view-sidebar');
+	await openSidebar(fixtures);
 	await openAlertDisplayPicker(fixtures);
 	await expectLabel(fixtures, DIALOG_UNCHECKED);
 	await screen.getByTestId('action-sheet-handle').tap();

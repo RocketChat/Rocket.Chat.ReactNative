@@ -1,12 +1,13 @@
 import { expect } from 'e2e';
 
-import { type Fixtures, searchAndNavigateRoom, LONG_TIMEOUT, tapWhenVisible } from './flows';
+import { type Fixtures, searchAndNavigateRoom, LONG_TIMEOUT, tapUntilVisible, tapWhenVisible } from './flows';
 
 const ACCESSIBILITY_ROOM = 'maestro-accessibility-test';
 
 export const openSidebar = async (fixtures: Fixtures) => {
-	await tapWhenVisible(fixtures, 'rooms-list-view-sidebar');
-	await expect(fixtures.screen.getByTestId('sidebar-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+	const drawerButton = fixtures.screen.getByTestId('rooms-list-view-sidebar').first();
+	await expect(drawerButton).toBeVisible({ timeout: LONG_TIMEOUT });
+	await tapUntilVisible(fixtures, drawerButton, 'sidebar-view');
 };
 
 export const openSettings = async (fixtures: Fixtures) => {
@@ -29,7 +30,7 @@ export const goToUserPreferences = async (fixtures: Fixtures) => {
 
 export const navigateToLanguage = async (fixtures: Fixtures) => {
 	await expect(fixtures.screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
-	await tapWhenVisible(fixtures, 'rooms-list-view-sidebar');
+	await openSidebar(fixtures);
 	await tapWhenVisible(fixtures, 'sidebar-settings');
 	await tapWhenVisible(fixtures, 'settings-view-language');
 	await expect(fixtures.screen.getByTestId('language-view')).toBeVisible({ timeout: LONG_TIMEOUT });
@@ -43,7 +44,7 @@ export const enterPasscode = async ({ screen }: Fixtures, passcode: string) => {
 };
 
 export const goToAccessibilityAndAppearance = async (fixtures: Fixtures) => {
-	await tapWhenVisible(fixtures, 'rooms-list-view-sidebar');
+	await openSidebar(fixtures);
 	await tapWhenVisible(fixtures, 'sidebar-accessibility');
 	await expect(fixtures.screen.getByTestId('accessibility-view-list')).toBeVisible({ timeout: LONG_TIMEOUT });
 };
@@ -57,7 +58,7 @@ export const toggleAccessibilitySwitchAndOpenRoom = async (fixtures: Fixtures, s
 };
 
 export const goToDisplayPreferences = async (fixtures: Fixtures) => {
-	await tapWhenVisible(fixtures, 'rooms-list-view-sidebar');
+	await openSidebar(fixtures);
 	await tapWhenVisible(fixtures, 'sidebar-accessibility');
 	await tapWhenVisible(fixtures, 'accessibility-display-button');
 };

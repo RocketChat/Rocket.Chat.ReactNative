@@ -7,16 +7,20 @@ import {
 	expectVisible,
 	fillSettled,
 	type Fixtures,
+	isVisibleNow,
 	LONG_TIMEOUT,
 	openMessageActions,
 	openRoomActions,
 	searchAndNavigateRoom,
+	succeeds,
+	tapUntilVisible,
 	tapWhenVisible
 } from './flows';
 
 export const openNewMessage = async (fixtures: Fixtures) => {
-	await tapWhenVisible(fixtures, 'rooms-list-view-create-channel');
-	await expectVisible(fixtures, 'new-message-view');
+	const createButton = fixtures.screen.getByTestId('rooms-list-view-create-channel').first();
+	await expect(createButton).toBeVisible({ timeout: LONG_TIMEOUT });
+	await tapUntilVisible(fixtures, createButton, 'new-message-view');
 };
 
 export const selectUser = async (fixtures: Fixtures, username: string) => {
@@ -41,14 +45,30 @@ export const expandActionSheet = async ({ screen }: Fixtures) => {
 	await screen.getByTestId('action-sheet-handle').swipe({ direction: 'down' });
 };
 
-export const deleteMessage = async (fixtures: Fixtures, message: string) => {
-	const { screen } = fixtures;
+const DELETE_CONFIRMATION = /You will not be able to recover this message/;
+const DELETE_TAP_ATTEMPTS = 3;
+const DELETE_RESPONSE_TIMEOUT = 5_000;
+
+const tapDeleteAction = async ({ screen }: Fixtures) => {
 	const deleteAction = screen.getByTestId('message-actions-delete');
+	const confirmation = screen.getByText(DELETE_CONFIRMATION).first();
+	for (let attempt = 1; attempt <= DELETE_TAP_ATTEMPTS; attempt += 1) {
+		if (!(await isVisibleNow(screen.getByTestId('action-sheet')))) {
+			return;
+		}
+		await screen.scrollUntilVisible(deleteAction, { timeout: LONG_TIMEOUT });
+		await deleteAction.tap();
+		if (await succeeds(expect(confirmation).toBeVisible({ timeout: DELETE_RESPONSE_TIMEOUT }))) {
+			return;
+		}
+	}
+};
+
+export const deleteMessage = async (fixtures: Fixtures, message: string) => {
 	await openMessageActions(fixtures, message);
 	await expandActionSheet(fixtures);
-	await screen.scrollUntilVisible(deleteAction, { timeout: LONG_TIMEOUT });
-	await deleteAction.tap();
-	await confirmAlert(fixtures, /You will not be able to recover this message/, /^Delete$/i);
+	await tapDeleteAction(fixtures);
+	await confirmAlert(fixtures, DELETE_CONFIRMATION, /^Delete$/i);
 	await expectHidden(fixtures, `message-content-${message}`);
 };
 

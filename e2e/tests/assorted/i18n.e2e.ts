@@ -3,7 +3,7 @@ import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { loginWithDeepLink, type Fixtures, LONG_TIMEOUT } from '~e2e/support/flows';
-import { navigateToLanguage } from '~e2e/support/settings';
+import { navigateToLanguage, openSidebar } from '~e2e/support/settings';
 
 afterEach(deleteCreatedUsers);
 
@@ -15,8 +15,7 @@ const selectLanguage = async (fixtures: Fixtures, language: string) => {
 
 const expectSidebarLabels = async (fixtures: Fixtures, labels: string[]) => {
 	const { screen } = fixtures;
-	await screen.getByTestId('rooms-list-view-sidebar').tap();
-	await expect(screen.getByTestId('sidebar-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await openSidebar(fixtures);
 	for (const label of labels) {
 		await expect(screen.getByText(label).first()).toBeVisible({ timeout: LONG_TIMEOUT });
 	}

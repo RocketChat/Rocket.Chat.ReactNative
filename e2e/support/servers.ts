@@ -2,11 +2,11 @@ import { expect } from 'e2e';
 
 import { serverHost } from './api';
 import { type Fixtures, LONG_TIMEOUT, tapWhenVisible, fillWhenUncovered } from './flows';
+import { openSidebar } from './settings';
 
 export const checkServer = async (fixtures: Fixtures, server: string) => {
 	const { screen } = fixtures;
-	await tapWhenVisible(fixtures, 'rooms-list-view-sidebar');
-	await expect(screen.getByTestId('sidebar-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await openSidebar(fixtures);
 	await expect(screen.getByText(`Connected to ${server}`, { exact: false })).toBeVisible({ timeout: LONG_TIMEOUT });
 	await tapWhenVisible(fixtures, 'sidebar-close-drawer');
 	await expect(screen.getByTestId('sidebar-close-drawer')).toBeHidden({ timeout: LONG_TIMEOUT });

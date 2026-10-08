@@ -14,6 +14,7 @@ import {
 	fillWhenUncovered
 } from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
+import { openNewMessage } from '~e2e/support/room';
 
 afterEach(deleteCreatedUsers);
 
@@ -28,7 +29,7 @@ const enableBroadcast = async ({ screen, platform }: Fixtures) => {
 
 const createBroadcastChannel = async (fixtures: Fixtures, room: string, member: string) => {
 	const { screen } = fixtures;
-	await tapWhenVisible(fixtures, 'rooms-list-view-create-channel');
+	await openNewMessage(fixtures);
 	await tapWhenVisible(fixtures, 'new-message-view-create-channel');
 	await tapWhenVisible(fixtures, 'select-users-view-search');
 	await fillWhenUncovered(screen.getByTestId('select-users-view-search'), member);

@@ -3,6 +3,7 @@ import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers, getProfileInfo, login } from '~e2e/support/api';
 import { hideKeyboard, loginWithDeepLink, type Fixtures, LONG_TIMEOUT, fillWhenUncovered } from '~e2e/support/flows';
+import { openSidebar } from '~e2e/support/settings';
 
 afterEach(deleteCreatedUsers);
 
@@ -52,7 +53,7 @@ test('changes the avatar', { tags: ['test-5'] }, async fixtures => {
 	const { userId } = await login(user);
 
 	await loginWithDeepLink(fixtures, user);
-	await screen.getByTestId('rooms-list-view-sidebar').tap();
+	await openSidebar(fixtures);
 	await expect(screen.getByTestId('sidebar-profile')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByTestId('sidebar-profile').tap();
 	await expect(screen.getByTestId('profile-view')).toBeVisible({ timeout: LONG_TIMEOUT });

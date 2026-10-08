@@ -210,13 +210,16 @@ export const tapUntilVisible = async (
 	gesture: 'tap' | 'longPress' = 'tap'
 ) => {
 	const expected = fixtures.screen.getByTestId(expectedTestId);
-	for (let attempt = 1; attempt < TAP_ATTEMPTS; attempt += 1) {
-		await (gesture === 'tap' ? tapWhenUncovered(target) : target.longPress());
+	const press = () => (gesture === 'tap' ? tapWhenUncovered(target) : target.longPress());
+	await press();
+	for (let attempt = 2; attempt <= TAP_ATTEMPTS; attempt += 1) {
 		if (await succeeds(expect(expected).toBeVisible({ timeout: TAP_RESPONSE_TIMEOUT }))) {
 			return;
 		}
+		if (await isVisibleNow(target)) {
+			await succeeds(press());
+		}
 	}
-	await (gesture === 'tap' ? tapWhenUncovered(target) : target.longPress());
 	await expect(expected).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
@@ -257,10 +260,20 @@ const tapToleratingRunnerFailure = async (target: Locator) => {
 	}
 };
 
+const nearestTo = async (anchor: Locator, candidates: Locator) => {
+	const anchorTop = (await anchor.boundingBox())?.y ?? 0;
+	const distances = await Promise.all(
+		(await candidates.all()).map(async candidate => Math.abs(((await candidate.boundingBox())?.y ?? Infinity) - anchorTop))
+	);
+	return candidates.nth(distances.indexOf(Math.min(...distances)));
+};
+
 export const confirmAlert = async ({ screen }: Fixtures, message: RegExp, button: RegExp) => {
 	const alertMessage = screen.getByText(message).first();
-	const confirmButton = screen.getByRole('button', button).last();
+	const buttons = screen.getByRole('button', button);
 	await expect(alertMessage).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expect(buttons.first()).toBeVisible({ timeout: LONG_TIMEOUT });
+	const confirmButton = await nearestTo(alertMessage, buttons);
 	for (let attempt = 1; attempt < TAP_ATTEMPTS; attempt += 1) {
 		await confirmButton.tap();
 		if (await succeeds(alertMessage.waitFor({ state: 'hidden', timeout: TAP_UNTIL_HIDDEN_TIMEOUT }))) {
@@ -447,6 +460,7 @@ export const searchRoom = async (fixtures: Fixtures, room: string) => {
 };
 
 const ROOM_OPEN_ATTEMPTS = 2;
+const ROOM_OPEN_RESPONSE_TIMEOUT = 10_000;
 const E2E_PASSWORD_CLOSE_BUTTON_TEST_IDS = ['e2e-save-your-password-view-close', 'e2e-enter-your-password-view-close'];
 
 export const navigateToRoom = async ({ screen }: Fixtures, room: string) => {
@@ -456,14 +470,16 @@ export const navigateToRoom = async ({ screen }: Fixtures, room: string) => {
 	for (let attempt = 1; attempt < ROOM_OPEN_ATTEMPTS; attempt += 1) {
 		await screen.scrollUntilVisible(roomItem);
 		await roomItem.tap();
-		const opened = await firstVisible([roomTitle, ...e2ePasswordCloseButtons]);
+		const opened = await firstVisible([roomTitle, ...e2ePasswordCloseButtons], ROOM_OPEN_RESPONSE_TIMEOUT).catch(() => undefined);
 		if (opened === roomTitle) {
 			return;
 		}
-		await opened.tap();
+		await opened?.tap();
 	}
-	await screen.scrollUntilVisible(roomItem);
-	await roomItem.tap();
+	if (!(await isVisibleNow(roomTitle))) {
+		await screen.scrollUntilVisible(roomItem);
+		await roomItem.tap();
+	}
 	await expect(roomTitle).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 

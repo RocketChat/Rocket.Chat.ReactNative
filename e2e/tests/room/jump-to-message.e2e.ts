@@ -2,6 +2,7 @@ import { test } from '@e2e-dev/mobile';
 import { expect, type Locator } from 'e2e';
 
 import { adminCredentials } from '~e2e/support/api';
+import { openSidebar } from '~e2e/support/settings';
 import { delay } from '~e2e/support/timing';
 import {
 	loginWithDeepLink,
@@ -59,7 +60,7 @@ const clearCache = async (fixtures: Fixtures) => {
 	const { screen } = fixtures;
 	await expectVisible(fixtures, 'room-view');
 	await screen.getByTestId('header-back').tap();
-	await tapWhenVisible(fixtures, 'rooms-list-view-sidebar');
+	await openSidebar(fixtures);
 	await tapWhenVisible(fixtures, 'sidebar-settings');
 	await tapWhenVisible(fixtures, 'settings-view-clear-cache');
 	await expect(screen.getByText(/This will clear all your offline data/)).toBeVisible({ timeout: LONG_TIMEOUT });
@@ -143,9 +144,8 @@ test('jumps to messages', { tags: ['test-5'], timeout: 900_000 }, async fixtures
 	await scrollUntilLoaded(fixtures, screen.getByTestId('message-content-1'), 'up');
 	await scrollUntilLoaded(fixtures, screen.getByTestId('message-content-50'), 'down');
 	const loadNewer = screen.getByText('Load newer', { visible: true });
-	await scrollUntilLoaded(fixtures, loadNewer, 'down');
 	for (const lastLoaded of [104, 154, 202]) {
-		await expect(loadNewer).toBeVisible({ timeout: LONG_TIMEOUT });
+		await scrollUntilLoaded(fixtures, loadNewer, 'down');
 		await tapCenterUntilVisible(fixtures, loadNewer, `message-content-${lastLoaded}`, 'down');
 	}
 	await screen.getByTestId('header-back').tap();

@@ -16,6 +16,7 @@ import {
 	tapUntilVisible,
 	tapWhenVisible
 } from './flows';
+import { openSidebar } from './settings';
 import { createAndOpenChannel } from './teams';
 
 const tapTextWhenVisible = (fixtures: Fixtures, text: string | RegExp) =>
@@ -36,8 +37,7 @@ const openSecurityAndPrivacy = async (fixtures: Fixtures) => {
 export const navigateToE2EESecurity = async (fixtures: Fixtures) => {
 	const { screen } = fixtures;
 	await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
-	await tapWhenVisible(fixtures, 'rooms-list-view-sidebar');
-	await expect(screen.getByTestId('sidebar-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await openSidebar(fixtures);
 	await tapWhenVisible(fixtures, 'sidebar-settings');
 	await openSecurityAndPrivacy(fixtures);
 	await tapWhenVisible(fixtures, 'security-privacy-view-e2e-encryption');
