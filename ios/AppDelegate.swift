@@ -44,13 +44,13 @@ public class AppDelegate: ExpoAppDelegate {
     reactNativeDelegate = delegate
     reactNativeFactory = factory
 
+    // Initialize Watch Connection
+    watchConnection = WatchConnection(session: WCSession.default)
+
     let result = super.application(application, didFinishLaunchingWithOptions: launchOptions)
 
     // Initialize SSL Pinning
      SSLPinning().migrate()
-
-    // Initialize Watch Connection
-    watchConnection = WatchConnection(session: WCSession.default)
 
     return result
   }

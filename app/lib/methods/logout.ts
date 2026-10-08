@@ -15,7 +15,8 @@ import {
 	getBasicAuthKey,
 	getLegacyUserTokenKey,
 	getServerUserIdKey,
-	getUserTokenKey
+	getUserTokenKey,
+	WATCHOS_QUICKREPLIES
 } from '../constants/keys';
 import UserPreferences from './userPreferences';
 import { removePushToken } from '../services/restApi';
@@ -33,6 +34,7 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_PRIVATE_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
+	UserPreferences.removeItem(`${server}-${WATCHOS_QUICKREPLIES}`);
 }
 
 export async function removeServerData({ server }: { server: string }): Promise<void> {

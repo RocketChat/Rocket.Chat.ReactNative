@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MessageListView: View {
 	private let messageComposer = "MESSAGE_COMPOSER_ID"
+	private let bottomAnchor = "BOTTOM_ANCHOR_ID"
 	
 	@Dependency private var database: Database
 	@Dependency private var messagesLoader: MessagesLoading
@@ -41,47 +42,57 @@ struct MessageListView: View {
 					Spacer()
 				}
 			}
-			ChatScrollView {
-				VStack(spacing: 0) {
-					if room.hasMoreMessages {
-						Button("Load more...") {
-							guard let oldestMessage = room.firstMessage?.ts else { return }
-							
-							messagesLoader.loadMore(from: oldestMessage)
-						}
-						.padding(.bottom, 8)
-					}
-					
-					ForEach(messages.indices, id: \.self) { index in
-						let message = messages[index]
-						let previousMessage = messages.indices.contains(index - 1) ? messages[index - 1] : nil
-						
-						MessageView(
-							viewModel: .init(
-								message: message,
-								previousMessage: previousMessage,
-								server: server,
-								lastOpen: lastOpen
-							)
-						) { action in
-							switch action {
-							case .resend(let message):
-								messageSender.resendMessage(message: message, in: room)
+			ScrollViewReader { proxy in
+				ChatScrollView {
+					VStack(spacing: 0) {
+						if room.hasMoreMessages {
+							Button("Load more...") {
+								guard let oldestMessage = room.firstMessage?.ts else { return }
 								
-								lastOpen = nil
-							case .delete(let message):
-								database.remove(message)
+								messagesLoader.loadMore(from: oldestMessage)
+							}
+							.padding(.bottom, 8)
+						}
+						
+						ForEach(messages.indices, id: \.self) { index in
+							let message = messages[index]
+							let previousMessage = messages.indices.contains(index - 1) ? messages[index - 1] : nil
+							
+							MessageView(
+								viewModel: .init(
+									message: message,
+									previousMessage: previousMessage,
+									server: server,
+									lastOpen: lastOpen
+								)
+							) { action in
+								switch action {
+								case .resend(let message):
+									messageSender.resendMessage(message: message, in: room)
+									
+									lastOpen = nil
+								case .delete(let message):
+									database.remove(message)
+								}
 							}
 						}
-					}
-					
-					MessageComposerView(room: room) {
-						messageSender.sendMessage($0, in: room)
 						
-						lastOpen = nil
+						MessageComposerView(room: room, server: server, anchorID: bottomAnchor) {
+							messageSender.sendMessage($0, in: room)
+							
+							lastOpen = nil
+						}
+						.id(messageComposer)
+						.padding(.top, 8)
 					}
-					.id(messageComposer)
-					.padding(.top, 8)
+					.onAppear {
+						scrollToBottom(proxy: proxy)
+					}
+					.onChange(of: messages.last?.id) { _ in
+						withAnimation(.easeOut(duration: 0.3)) {
+							proxy.scrollTo(bottomAnchor, anchor: .bottom)
+						}
+					}
 				}
 			}
 		}
@@ -119,6 +130,15 @@ struct MessageListView: View {
 				messagesLoader.stop()
 			@unknown default:
 				break
+			}
+		}
+	}
+	
+	private func scrollToBottom(proxy: ScrollViewProxy) {
+		// small delay so layout is complete before scrolling
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+			withAnimation(.easeOut(duration: 0.3)) {
+				proxy.scrollTo(bottomAnchor, anchor: .bottom)
 			}
 		}
 	}

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		16A2DDFC2F4B3F1700051F86 /* RCTWatchModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 16A2DDFB2F4B3F1700051F86 /* RCTWatchModule.mm */; };
 		1E01C81C2511208400FEF824 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C81B2511208400FEF824 /* URL+Extensions.swift */; };
 		1E01C8212511301400FEF824 /* PushResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8202511301400FEF824 /* PushResponse.swift */; };
 		1E01C8252511303100FEF824 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8242511303100FEF824 /* Notification.swift */; };
@@ -279,6 +280,8 @@
 		1238492C71CF27C87CB2E976 /* Pods-defaults-NotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-NotificationService.release.xcconfig"; path = "Target Support Files/Pods-defaults-NotificationService/Pods-defaults-NotificationService.release.xcconfig"; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RocketChatRN/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RocketChatRN/Info.plist; sourceTree = "<group>"; };
+		16A2DDFA2F4B3F1700051F86 /* RCTWatchModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTWatchModule.h; sourceTree = "<group>"; };
+		16A2DDFB2F4B3F1700051F86 /* RCTWatchModule.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RCTWatchModule.mm; sourceTree = "<group>"; };
 		194D9A8897F4A486C2C6F89A /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-defaults-NotificationService/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		1E01C81B2511208400FEF824 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		1E01C8202511301400FEF824 /* PushResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushResponse.swift; sourceTree = "<group>"; };
@@ -387,6 +390,7 @@
 		1EC6AD6022CBA20C00A41C61 /* ShareRocketChatRN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareRocketChatRN.entitlements; sourceTree = "<group>"; };
 		1ED00BB02513E04400A1331F /* ReplyNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyNotification.swift; sourceTree = "<group>"; };
 		1ED033AD2B55B1CC004F4930 /* Default.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Default.xcdatamodel; sourceTree = "<group>"; };
+		16A2DDFD2F4B3F1700051F86 /* Default 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Default 2.xcdatamodel"; sourceTree = "<group>"; };
 		1ED033AF2B55B25A004F4930 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		1ED033B52B55B4A5004F4930 /* ServerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerListView.swift; sourceTree = "<group>"; };
 		1ED033B92B55B5F6004F4930 /* ServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerView.swift; sourceTree = "<group>"; };
@@ -521,6 +525,8 @@
 				6FA7E2362F28A9D300A1D45E /* ExternalInputModule.h */,
 				6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */,
 				7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */,
+				16A2DDFA2F4B3F1700051F86 /* RCTWatchModule.h */,
+				16A2DDFB2F4B3F1700051F86 /* RCTWatchModule.mm */,
 				680FA18DB475479CAD48F334 /* SceneDelegate.swift */,
 				B1E1F0032F03A00000EXT003 /* ExternalInputModule.h */,
 				B1E1F0042F03A00000EXT004 /* ExternalInputModule.m */,
@@ -1710,6 +1716,7 @@
 				7AAB3E15257E6A6E00707CF6 /* Sender.swift in Sources */,
 				1E5141192B856673007BE94A /* SSLPinning.swift in Sources */,
 				7AAB3E16257E6A6E00707CF6 /* Request.swift in Sources */,
+				16A2DDFC2F4B3F1700051F86 /* RCTWatchModule.mm in Sources */,
 				1E51411D2B85683C007BE94A /* SSLPinning.m in Sources */,
 				66C2701C2EBBCB570062725F /* MMKVKeyManager.mm in Sources */,
 				7A1B58412F5F58FF002A6BDE /* VoipPayload.swift in Sources */,
@@ -2532,8 +2539,9 @@
 			isa = XCVersionGroup;
 			children = (
 				1ED033AD2B55B1CC004F4930 /* Default.xcdatamodel */,
+				16A2DDFD2F4B3F1700051F86 /* Default 2.xcdatamodel */,
 			);
-			currentVersion = 1ED033AD2B55B1CC004F4930 /* Default.xcdatamodel */;
+			currentVersion = 16A2DDFD2F4B3F1700051F86 /* Default 2.xcdatamodel */;
 			path = Default.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

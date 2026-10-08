@@ -49,6 +49,7 @@ import QueueListView from '../ee/omnichannel/views/QueueListView';
 import ProfileView from '../views/ProfileView';
 import UserPreferencesView from '../views/UserPreferencesView';
 import UserNotificationPrefView from '../views/UserNotificationPreferencesView';
+import UserWatchOSQuickRepliesView from '../views/UserWatchOSQuickRepliesView';
 import ChangePasswordView from '../views/ChangePasswordView';
 import SettingsView from '../views/SettingsView';
 import SecurityPrivacyView from '../views/SecurityPrivacyView';
@@ -124,6 +125,9 @@ const CannedResponseDetailScreen = CannedResponseDetail as any;
 const JitsiMeetViewScreen = JitsiMeetView as any;
 const ChangeAvatarViewScreen = ChangeAvatarView as any;
 const UserNotificationPrefViewScreen: ComponentType<StaticScreenProps<undefined>> = UserNotificationPrefView as any;
+const UserWatchOSQuickRepliesViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavigation(
+	UserWatchOSQuickRepliesView as any
+) as any;
 const SettingsViewScreen: ComponentType<StaticScreenProps<undefined>> = SettingsView as any;
 const E2EEncryptionSecurityViewScreen: ComponentType<StaticScreenProps<undefined>> = E2EEncryptionSecurityView as any;
 const LanguageViewScreen: ComponentType<StaticScreenProps<undefined>> = LanguageView as any;
@@ -215,6 +219,7 @@ const ProfileStack = createNativeStackNavigator({
 		UserPreferencesView: UserPreferencesViewScreen,
 		ChangeAvatarView: ChangeAvatarViewScreen,
 		UserNotificationPrefView: UserNotificationPrefViewScreen,
+		UserWatchOSQuickRepliesView: UserWatchOSQuickRepliesViewScreen,
 		PushTroubleshootView: PushTroubleshootViewScreen,
 		PickerView: PickerViewScreen
 	}

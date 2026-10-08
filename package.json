@@ -232,11 +232,17 @@
 		"node": ">=22.13.0"
 	},
 	"codegenConfig": {
-		"name": "SSLPinning",
+		"name": "RocketChatSpec",
 		"type": "modules",
 		"jsSrcsDir": "./app/lib/native",
 		"android": {
 			"javaPackageName": "chat.rocket.reactnative.networking"
+		},
+		"ios": {
+			"modulesProvider": {
+				"WatchModule": "RCTWatchModule",
+				"VoipModule": "VoipModule"
+			}
 		}
 	},
 	"volta": {
