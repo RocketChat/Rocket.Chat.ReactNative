@@ -42,7 +42,6 @@ const RoomHeaderContainer = memo(
 		disabled,
 		abacAttributes
 	}: IRoomHeaderContainerProps) => {
-		let subtitle: string | undefined;
 		let statusVisitor: TUserStatus | undefined;
 		let statusText: string | undefined;
 		let statusExpiresAt: string | undefined;
@@ -56,7 +55,7 @@ const RoomHeaderContainer = memo(
 			shallowEqual
 		);
 
-		subtitle = getConnectionSubtitle({ connecting, connected }) ?? subtitleProp;
+		const connectionSubtitle = getConnectionSubtitle({ connecting, connected });
 
 		if (connected) {
 			if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
@@ -73,7 +72,7 @@ const RoomHeaderContainer = memo(
 				prid={prid}
 				tmid={tmid}
 				title={title}
-				subtitle={type === 'd' ? statusText : subtitle}
+				subtitle={connectionSubtitle ?? (type === 'd' ? statusText : subtitleProp)}
 				statusExpiresAt={type === 'd' ? statusExpiresAt : undefined}
 				type={type}
 				teamMain={teamMain}
