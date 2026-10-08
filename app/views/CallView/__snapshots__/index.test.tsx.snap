@@ -572,7 +572,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
           }
         >
           <View
-            accessibilityLabel="Message"
+            accessibilityLabel="More"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -619,7 +619,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-message"
+            testID="call-view-more"
           >
             <Text
               allowFontScaling={false}
@@ -645,7 +645,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -669,7 +669,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
               ]
             }
           >
-            Message
+            More
           </Text>
         </View>
         <View
@@ -1474,7 +1474,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           }
         >
           <View
-            accessibilityLabel="Message"
+            accessibilityLabel="More"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -1521,7 +1521,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-message"
+            testID="call-view-more"
           >
             <Text
               allowFontScaling={false}
@@ -1547,7 +1547,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -1571,7 +1571,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
               ]
             }
           >
-            Message
+            More
           </Text>
         </View>
         <View
@@ -2374,7 +2374,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
           }
         >
           <View
-            accessibilityLabel="Message"
+            accessibilityLabel="More"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -2421,7 +2421,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-message"
+            testID="call-view-more"
           >
             <Text
               allowFontScaling={false}
@@ -2447,7 +2447,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -2471,7 +2471,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
               ]
             }
           >
-            Message
+            More
           </Text>
         </View>
         <View
@@ -3272,7 +3272,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
           }
         >
           <View
-            accessibilityLabel="Message"
+            accessibilityLabel="More"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -3319,7 +3319,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-message"
+            testID="call-view-more"
           >
             <Text
               allowFontScaling={false}
@@ -3345,7 +3345,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -3369,7 +3369,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
               ]
             }
           >
-            Message
+            More
           </Text>
         </View>
         <View
@@ -4170,7 +4170,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
           }
         >
           <View
-            accessibilityLabel="Message"
+            accessibilityLabel="More"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -4217,7 +4217,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-message"
+            testID="call-view-more"
           >
             <Text
               allowFontScaling={false}
@@ -4243,7 +4243,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -4267,7 +4267,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
               ]
             }
           >
-            Message
+            More
           </Text>
         </View>
         <View
@@ -5068,7 +5068,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
           }
         >
           <View
-            accessibilityLabel="Message"
+            accessibilityLabel="More"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -5115,7 +5115,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-message"
+            testID="call-view-more"
           >
             <Text
               allowFontScaling={false}
@@ -5141,7 +5141,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -5165,7 +5165,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
               ]
             }
           >
-            Message
+            More
           </Text>
         </View>
         <View
@@ -5938,7 +5938,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
           }
         >
           <View
-            accessibilityLabel="Message"
+            accessibilityLabel="More"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -5985,7 +5985,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-message"
+            testID="call-view-more"
           >
             <Text
               allowFontScaling={false}
@@ -6011,7 +6011,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -6035,7 +6035,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
               ]
             }
           >
-            Message
+            More
           </Text>
         </View>
         <View
@@ -6812,7 +6812,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
           }
         >
           <View
-            accessibilityLabel="Message"
+            accessibilityLabel="More"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -6859,7 +6859,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-message"
+            testID="call-view-more"
           >
             <Text
               allowFontScaling={false}
@@ -6885,7 +6885,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -6909,7 +6909,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
               ]
             }
           >
-            Message
+            More
           </Text>
         </View>
         <View
@@ -7684,7 +7684,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
           }
         >
           <View
-            accessibilityLabel="Message"
+            accessibilityLabel="More"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -7731,7 +7731,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-message"
+            testID="call-view-more"
           >
             <Text
               allowFontScaling={false}
@@ -7757,7 +7757,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -7781,7 +7781,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
               ]
             }
           >
-            Message
+            More
           </Text>
         </View>
         <View
@@ -8554,7 +8554,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
           }
         >
           <View
-            accessibilityLabel="Message"
+            accessibilityLabel="More"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -8601,7 +8601,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-message"
+            testID="call-view-more"
           >
             <Text
               allowFontScaling={false}
@@ -8627,7 +8627,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -8651,7 +8651,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
               ]
             }
           >
-            Message
+            More
           </Text>
         </View>
         <View
@@ -9424,7 +9424,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
           }
         >
           <View
-            accessibilityLabel="Message"
+            accessibilityLabel="More"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -9471,7 +9471,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-message"
+            testID="call-view-more"
           >
             <Text
               allowFontScaling={false}
@@ -9497,7 +9497,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -9521,7 +9521,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
               ]
             }
           >
-            Message
+            More
           </Text>
         </View>
         <View
@@ -10294,7 +10294,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
           }
         >
           <View
-            accessibilityLabel="Message"
+            accessibilityLabel="More"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -10341,7 +10341,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-message"
+            testID="call-view-more"
           >
             <Text
               allowFontScaling={false}
@@ -10367,7 +10367,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -10391,7 +10391,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
               ]
             }
           >
-            Message
+            More
           </Text>
         </View>
         <View
@@ -11164,7 +11164,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
           }
         >
           <View
-            accessibilityLabel="Message"
+            accessibilityLabel="More"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -11211,7 +11211,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-message"
+            testID="call-view-more"
           >
             <Text
               allowFontScaling={false}
@@ -11237,7 +11237,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -11261,7 +11261,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
               ]
             }
           >
-            Message
+            More
           </Text>
         </View>
         <View
@@ -12062,7 +12062,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
           }
         >
           <View
-            accessibilityLabel="Message"
+            accessibilityLabel="More"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -12109,7 +12109,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-message"
+            testID="call-view-more"
           >
             <Text
               allowFontScaling={false}
@@ -12135,7 +12135,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -12159,7 +12159,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
               ]
             }
           >
-            Message
+            More
           </Text>
         </View>
         <View
