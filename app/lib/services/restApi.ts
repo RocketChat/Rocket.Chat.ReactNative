@@ -1243,6 +1243,8 @@ export const videoConferenceGetCapabilities = () => sdk.get('video-conference.ca
 
 export const videoConferenceStart = (roomId: string) => sdk.post('video-conference.start', { roomId, allowRinging: true });
 
+export const mediaCallsEscalate = (callId: string) => sdk.post('media-calls.escalate', { callId });
+
 export const videoConferenceCancel = (callId: string) => sdk.post('video-conference.cancel', { callId });
 
 export const deleteOwnAccount = (password: string, confirmRelinquish = false): any =>

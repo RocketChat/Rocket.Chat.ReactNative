@@ -344,6 +344,14 @@ export const useCallStore = create<CallStore>((set, get) => ({
 }));
 
 export const useCallContact = () => useCallStore(state => state.contact);
+/** True when the server offers voice-to-video escalation for the current call (re-evaluated on call state changes). */
+export const useCanEscalateToVideo = () =>
+	useCallStore(
+		state =>
+			state.callState === 'active' &&
+			// `features` lives on the SDK's Call class, not on IClientMediaCall
+			((state.call as { features?: readonly string[] } | null)?.features ?? []).includes('conference-escalation')
+	);
 export const useDialpadValue = () => useCallStore(state => state.dialpadValue);
 export const useControlsVisible = () => {
 	const controlsVisible = useCallStore(state => state.controlsVisible);
