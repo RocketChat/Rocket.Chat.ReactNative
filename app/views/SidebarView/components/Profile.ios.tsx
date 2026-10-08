@@ -15,7 +15,11 @@ const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamL
 	const isMasterDetail = useMasterDetail();
 	const { username, name, statusText } = useAppSelector(getUserSelector, shallowEqual);
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
+	const server = useAppSelector(state => state.server.server);
 	const siteName = useAppSelector(state => state.settings.Site_Name) as string;
+
+	const displayName = (useRealName ? name : username) ?? '';
+	const subtitle = statusText || siteName;
 
 	const onPressUser = () => {
 		if (isMasterDetail) {
@@ -26,14 +30,15 @@ const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamL
 
 	return (
 		<List.Item
-			title={(useRealName ? name : username) ?? ''}
+			title={displayName}
 			translateTitle={false}
-			subtitle={statusText || siteName}
+			subtitle={subtitle}
 			translateSubtitle={false}
 			left={() => <Avatar text={username} size={40} />}
 			heightContainer={PROFILE_ROW_HEIGHT}
 			onPress={onPressUser}
 			testID='sidebar-close-drawer'
+			accessibilityLabel={`${displayName} ${subtitle} Connected to ${server}`}
 			numberOfLines={1}
 		/>
 	);
