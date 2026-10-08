@@ -6,6 +6,7 @@ import { headers } from '~/lib/methods/helpers/fetch';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getBasicAuthKey } from '~/lib/constants/keys';
 import { MockConnection } from '~/lib/testUtils/sdkIntegration';
+import { mockGlobalFetch } from '~/lib/testUtils/mockGlobalFetch';
 
 jest.unmock('@rocket.chat/sdk');
 
@@ -49,7 +50,7 @@ jest.mock('~/lib/services/sdk', () => ({
 }));
 
 const PROBED_SERVER = 'https://probed.example';
-const sentToNetwork = jest.fn((_url: string, _options: { headers: Record<string, string> }) =>
+const sentToNetwork = mockGlobalFetch(() =>
 	Promise.resolve({ json: () => Promise.resolve({ success: true, services: [] }) } as Response)
 );
 const connections: MockConnection[] = [];
@@ -67,22 +68,15 @@ const openSocket =
 	};
 const WebSocketMock = WebSocket as unknown as jest.Mock;
 
-const originalGlobalFetch = global.fetch;
-const originalCustomHeaders = RocketChatSettings.customHeaders;
-
 beforeEach(() => {
 	jest.clearAllMocks();
 	connections.length = 0;
 	WebSocketMock.mockImplementation(openSocket(connection => connection.onopen()));
-	sentToNetwork.mockClear();
-	global.fetch = sentToNetwork as unknown as typeof global.fetch;
 	UserPreferences.removeItem(getBasicAuthKey(PROBED_SERVER));
 	handshakeHeaders = {};
 });
 
 afterEach(() => {
-	global.fetch = originalGlobalFetch;
-	RocketChatSettings.customHeaders = originalCustomHeaders;
 	UserPreferences.removeItem(getBasicAuthKey(PROBED_SERVER));
 });
 

@@ -106,7 +106,7 @@ const getServerInfoSaga = function* getServerInfoSaga({
 	signal?: AbortSignal;
 }) {
 	try {
-		const serverInfoResult = yield* call(getServerInfo, server);
+		const serverInfoResult = yield* call(getServerInfo, server, signal);
 		if (raiseError) {
 			if (!serverInfoResult.success) {
 				yield put(serverFailure(I18n.t('Invalid_URL')));

@@ -106,6 +106,12 @@ const storeActiveBasicAuth = (server: string, credentials: string) => {
 	applyBasicAuth(server);
 };
 
+const activeAuthorization = () => (RocketChatSettings.customHeaders as { Authorization?: string }).Authorization;
+
+const setActiveHost = (host?: string) => {
+	(sdk as { host?: string }).host = host;
+};
+
 const setupStore = (): RecordingStore => createRecordingStore(selectServerRoot);
 
 afterEach(cancelSagaTasks);
@@ -315,7 +321,7 @@ describe('selectServer saga — requesting a new workspace', () => {
 	beforeEach(() => {
 		sharedAuthorizationDuringProbe.length = 0;
 		const recordGlobalAuthorization = async () => {
-			sharedAuthorizationDuringProbe.push((RocketChatSettings.customHeaders as { Authorization?: string }).Authorization ?? null);
+			sharedAuthorizationDuringProbe.push(activeAuthorization() ?? null);
 		};
 		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '7.0.0' } as any);
 		jest
@@ -328,7 +334,7 @@ describe('selectServer saga — requesting a new workspace', () => {
 	afterEach(() => {
 		UserPreferences.removeItem(getBasicAuthKey(REQUESTED_HOST));
 		UserPreferences.removeItem(getBasicAuthKey(OLD_SERVER));
-		(sdk as { host?: string }).host = undefined;
+		setActiveHost(undefined);
 		jest.mocked(getServerInfo).mockReset();
 		jest.mocked(getServerById).mockReset();
 		jest.mocked(getLoginServices).mockReset();
@@ -397,28 +403,48 @@ describe('selectServer saga — requesting a new workspace', () => {
 		}
 	});
 
+	it('aborts the in-flight server info request when the probe times out', async () => {
+		jest.useFakeTimers();
+		try {
+			let probeSignal: AbortSignal | undefined;
+			jest.mocked(getServerInfo).mockImplementationOnce((_server, signal) => {
+				probeSignal = signal;
+				return new Promise(() => {});
+			});
+
+			const { store } = setupStore();
+			store.dispatch(serverRequest(REQUESTED_HOST));
+			await flushSagaMicrotasks();
+			expect(probeSignal?.aborted).toBe(false);
+
+			await jest.advanceTimersByTimeAsync(30000);
+
+			expect(probeSignal?.aborted).toBe(true);
+		} finally {
+			jest.useRealTimers();
+		}
+	});
+
 	it('leaves the active workspace basic auth in place when the requested host cannot be reached', async () => {
 		storeActiveBasicAuth(OLD_SERVER, 'old-workspace-credentials');
-		(sdk as { host?: string }).host = OLD_SERVER;
+		setActiveHost(OLD_SERVER);
 		jest.mocked(getServerInfo).mockResolvedValue({ success: false } as any);
 
 		const { store } = setupStore();
 		store.dispatch(serverRequest(REQUESTED_HOST));
 		await flushSagaMicrotasks();
 
-		expect((RocketChatSettings.customHeaders as { Authorization?: string }).Authorization).toBe(
-			'Basic old-workspace-credentials'
-		);
+		expect(activeAuthorization()).toBe('Basic old-workspace-credentials');
 	});
 
 	it('connects to the requested host with its own basic auth after a successful probe', async () => {
 		UserPreferences.setString(getBasicAuthKey(OLD_SERVER), 'old-workspace-credentials');
 		UserPreferences.setString(getBasicAuthKey(REQUESTED_HOST), 'requested-host-credentials');
 		storeActiveBasicAuth(OLD_SERVER, 'old-workspace-credentials');
-		(sdk as { host?: string }).host = OLD_SERVER;
+		setActiveHost(OLD_SERVER);
 		let authorizationAtConnect: string | null = null;
 		jest.mocked(connect).mockImplementationOnce(async () => {
-			authorizationAtConnect = (RocketChatSettings.customHeaders as { Authorization?: string }).Authorization ?? null;
+			authorizationAtConnect = activeAuthorization() ?? null;
 		});
 
 		const { store } = setupStore();
@@ -433,14 +459,12 @@ describe('selectServer saga — selecting the connected workspace', () => {
 	it('applies the stored basic auth when the connected workspace is selected again', async () => {
 		storeActiveBasicAuth(OLD_SERVER, 'old-workspace-credentials');
 		UserPreferences.setString(getBasicAuthKey(OLD_SERVER), 'new-workspace-credentials');
-		(sdk as { host?: string }).host = OLD_SERVER;
+		setActiveHost(OLD_SERVER);
 
 		const { store } = setupStore();
 		store.dispatch(selectServerRequest(OLD_SERVER, '7.0.0', false));
 		await flushSagaMicrotasks();
 
-		expect((RocketChatSettings.customHeaders as { Authorization?: string }).Authorization).toBe(
-			'Basic new-workspace-credentials'
-		);
+		expect(activeAuthorization()).toBe('Basic new-workspace-credentials');
 	});
 });

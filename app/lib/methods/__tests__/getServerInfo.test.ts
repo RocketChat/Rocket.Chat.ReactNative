@@ -2,16 +2,19 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { getServerInfo } from '../getServerInfo';
 import fetch from '~/lib/methods/helpers/fetch';
+import log from '~/lib/methods/helpers/log';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { store } from '~/lib/store/auxStore';
 import { getSupportedVersionsCloud } from '~/lib/services/restApi';
 import { getBasicAuthKey, getServerUserIdKey, getUserTokenKey } from '~/lib/constants/keys';
+import { mockGlobalFetch } from '~/lib/testUtils/mockGlobalFetch';
 
 jest.mock('~/lib/methods/helpers/fetch', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/lib/methods/userPreferences', () => ({ __esModule: true, default: { getString: jest.fn() } }));
 jest.mock('~/lib/store/auxStore', () => ({ store: { getState: jest.fn(), dispatch: jest.fn() } }));
 jest.mock('~/lib/database/services/Server', () => ({ getServerById: jest.fn() }));
 jest.mock('~/lib/services/restApi', () => ({ getSupportedVersionsCloud: jest.fn() }));
+jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
 const mockedFetch = jest.mocked(fetch);
 const getString = jest.mocked(UserPreferences.getString);
@@ -85,13 +88,37 @@ describe('getServerInfo', () => {
 
 		expect(requestOptions().headers?.Authorization).toBeUndefined();
 	});
+
+	it('passes the abort signal to the info request', async () => {
+		const controller = new AbortController();
+
+		await getServerInfo(attackerServer, controller.signal);
+
+		expect(requestOptions().signal).toBe(controller.signal);
+	});
+
+	it('leaves the store alone when the request fails because the signal aborted', async () => {
+		const controller = new AbortController();
+		controller.abort();
+		mockedFetch.mockRejectedValueOnce(new Error('Aborted'));
+
+		await expect(getServerInfo(attackerServer, controller.signal)).resolves.toMatchObject({ success: false });
+
+		expect(store.dispatch).not.toHaveBeenCalled();
+	});
+
+	it('still fails the workspace switch when an abort comes from somewhere else', async () => {
+		mockedFetch.mockRejectedValueOnce(new Error('Aborted'));
+
+		await expect(getServerInfo(attackerServer)).rejects.toThrow('Aborted');
+
+		expect(store.dispatch).toHaveBeenCalledTimes(1);
+	});
 });
 
 describe('getServerInfo cloud lookup', () => {
-	const originalGlobalFetch = global.fetch;
-	const originalCustomHeaders = RocketChatSettings.customHeaders;
-	const sentToNetwork = jest.fn((_url: string, _options: { headers: Record<string, string> }) =>
-		Promise.resolve({ json: () => Promise.resolve({ success: true, version: '7.0.0' }) })
+	const sentToNetwork = mockGlobalFetch(() =>
+		Promise.resolve({ json: () => Promise.resolve({ success: true, version: '7.0.0' }) } as Response)
 	);
 
 	beforeEach(() => {
@@ -100,13 +127,7 @@ describe('getServerInfo cloud lookup', () => {
 		getString.mockReturnValue(null as any);
 		jest.mocked(getSupportedVersionsCloud).mockResolvedValue({ json: () => Promise.resolve({}) } as any);
 		mockedFetch.mockImplementation(jest.requireActual('~/lib/methods/helpers/fetch').default);
-		global.fetch = sentToNetwork as unknown as typeof global.fetch;
 		RocketChatSettings.customHeaders = { Authorization: 'Basic current-workspace' };
-	});
-
-	afterEach(() => {
-		global.fetch = originalGlobalFetch;
-		RocketChatSettings.customHeaders = originalCustomHeaders;
 	});
 
 	it('does not send the current workspace basic auth to the requested host', async () => {
@@ -129,6 +150,44 @@ describe('getServerInfo cloud lookup', () => {
 		sentToNetwork.mock.calls.forEach(([, options]) =>
 			expect(options.headers).toMatchObject({ Authorization: 'Basic attacker-creds' })
 		);
+	});
+
+	it('passes the abort signal to every request of the lookup', async () => {
+		const controller = new AbortController();
+
+		await getServerInfo(attackerServer, controller.signal);
+
+		expect(sentToNetwork).toHaveBeenCalledTimes(2);
+		sentToNetwork.mock.calls.forEach(([, options]) => expect(options.signal).toBe(controller.signal));
+		expect(getSupportedVersionsCloud).toHaveBeenCalledWith(undefined, attackerServer, controller.signal);
+	});
+
+	it('does not log a failed lookup when the signal aborted', async () => {
+		const controller = new AbortController();
+		sentToNetwork
+			.mockImplementationOnce(() =>
+				Promise.resolve({ json: () => Promise.resolve({ success: true, version: '7.0.0' }) } as Response)
+			)
+			.mockImplementationOnce(() => {
+				controller.abort();
+				return Promise.reject(new Error('Aborted'));
+			});
+
+		await getServerInfo(attackerServer, controller.signal);
+
+		expect(log).not.toHaveBeenCalled();
+	});
+
+	it('logs a failed lookup when the signal did not abort', async () => {
+		sentToNetwork
+			.mockImplementationOnce(() =>
+				Promise.resolve({ json: () => Promise.resolve({ success: true, version: '7.0.0' }) } as Response)
+			)
+			.mockImplementationOnce(() => Promise.reject(new Error('network down')));
+
+		await getServerInfo(attackerServer, new AbortController().signal);
+
+		expect(log).toHaveBeenCalledTimes(1);
 	});
 
 	it('picks the unique-id URL form from the requested server version, not the active one', async () => {

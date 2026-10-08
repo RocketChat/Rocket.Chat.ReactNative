@@ -5,9 +5,8 @@ import { addSettings, clearSettings } from '~/actions/settings';
 import { defaultSettings } from '../constants/defaultSettings';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import { type IPreparedSettings, type ISettingsIcon } from '~/definitions';
-import fetch from './helpers/fetch';
 import log from './helpers/log';
-import { getBasicAuthHeader } from './serverBasicAuth';
+import { fetchForWorkspace } from './serverBasicAuth';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import sdk from '../services/sdk';
@@ -126,9 +125,7 @@ export async function getLoginSettings({
 		? `${server}/api/v1/settings.public?_id=${loginSettings.join(',')}`
 		: `${server}/api/v1/settings.public?query={"_id":{"$in":${settingsParams}}}`;
 	try {
-		const result = await fetch(url, { headers: { Authorization: getBasicAuthHeader(server) }, signal }).then(response =>
-			response.json()
-		);
+		const result = await fetchForWorkspace(server, url, { signal }).then(response => response.json());
 
 		if (result.success && result.settings.length) {
 			reduxStore.dispatch(clearSettings());
@@ -179,7 +176,7 @@ export async function getSettings(server: string): Promise<void> {
 		do {
 			// TODO: why is no-await-in-loop enforced in the first place?
 			/* eslint-disable no-await-in-loop */
-			const response = await fetch(`${url}&offset=${offset}`, { headers: { Authorization: getBasicAuthHeader(server) } });
+			const response = await fetchForWorkspace(server, `${url}&offset=${offset}`);
 
 			const result = await response.json();
 			if (!result.success) {

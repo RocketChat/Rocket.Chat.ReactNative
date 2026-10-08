@@ -16,8 +16,7 @@ import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants/supportedVers
 import { getServerById } from '../database/services/Server';
 import { compareServerVersion } from './helpers';
 import log from './helpers/log';
-import fetch from './helpers/fetch';
-import { getBasicAuthHeader } from './serverBasicAuth';
+import { fetchForWorkspace } from './serverBasicAuth';
 import { getStoredSession } from './loggedInServer';
 
 interface IServerInfoFailure {
@@ -56,15 +55,12 @@ const getSessionHeaders = (server: string) => {
 	return userId && token ? { 'X-Auth-Token': token, 'X-User-Id': userId } : {};
 };
 
-export async function getServerInfo(server: string): Promise<TServerInfoResult> {
+export async function getServerInfo(server: string, signal?: AbortSignal): Promise<TServerInfoResult> {
 	try {
-		const response = await fetch(`${server}/api/info`, {
+		const response = await fetchForWorkspace(server, `${server}/api/info`, {
 			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				...getSessionHeaders(server),
-				Authorization: getBasicAuthHeader(server)
-			}
+			headers: { 'Content-Type': 'application/json', ...getSessionHeaders(server) },
+			signal
 		});
 		try {
 			const serverInfo: IApiServerInfo = await response.json();
@@ -92,7 +88,7 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 					};
 				}
 
-				const cloudInfo = await getCloudInfo(server, serverInfo.version);
+				const cloudInfo = await getCloudInfo(server, serverInfo.version, signal);
 
 				// Allows airgapped servers to use the app until enforcementStartDate
 				if (!cloudInfo) {
@@ -121,7 +117,7 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 			// Request is successful, but response isn't a json
 		}
 	} catch (e: any) {
-		if (e?.message) {
+		if (e?.message && !signal?.aborted) {
 			if (e.message === 'Aborted') {
 				store.dispatch(selectServerFailure());
 				throw e;
@@ -139,22 +135,24 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 	};
 }
 
-const getUniqueId = async (server: string, serverVersion: string): Promise<string> => {
+const getUniqueId = async (server: string, serverVersion: string, signal?: AbortSignal): Promise<string> => {
 	const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
 		? `${server}/api/v1/settings.public?_id=uniqueID`
 		: `${server}/api/v1/settings.public?query={"_id": "uniqueID"}`;
-	const response = await fetch(url, { headers: { Authorization: getBasicAuthHeader(server) } });
+	const response = await fetchForWorkspace(server, url, { signal });
 	const result = await response.json();
 	return result?.settings?.[0]?.value;
 };
 
-export const getCloudInfo = async (domain: string, serverVersion: string): Promise<TCloudInfo | null> => {
+export const getCloudInfo = async (domain: string, serverVersion: string, signal?: AbortSignal): Promise<TCloudInfo | null> => {
 	try {
-		const uniqueId = await getUniqueId(domain, serverVersion);
-		const response = await getSupportedVersionsCloud(uniqueId, domain);
+		const uniqueId = await getUniqueId(domain, serverVersion, signal);
+		const response = await getSupportedVersionsCloud(uniqueId, domain, signal);
 		return response.json() as unknown as TCloudInfo;
 	} catch (e) {
-		log(e);
+		if (!signal?.aborted) {
+			log(e);
+		}
 		return null;
 	}
 };

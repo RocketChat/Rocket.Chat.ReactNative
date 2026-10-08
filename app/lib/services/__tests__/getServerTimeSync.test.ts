@@ -3,26 +3,19 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { getServerTimeSync } from '../getServerTimeSync';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getBasicAuthKey } from '~/lib/constants/keys';
+import { mockGlobalFetch } from '~/lib/testUtils/mockGlobalFetch';
 
 describe('getServerTimeSync', () => {
-	const originalGlobalFetch = global.fetch;
-	const originalCustomHeaders = RocketChatSettings.customHeaders;
 	const requested = 'https://requested.example';
-	const sentToNetwork = jest.fn((_url: string, _options: { headers: Record<string, string> }) =>
-		Promise.resolve({ json: () => Promise.resolve('1700000000000') } as Response)
-	);
+	const sentToNetwork = mockGlobalFetch(() => Promise.resolve({ json: () => Promise.resolve('1700000000000') } as Response));
 
 	beforeEach(() => {
 		jest.useFakeTimers();
-		sentToNetwork.mockClear();
-		global.fetch = sentToNetwork as unknown as typeof global.fetch;
 		RocketChatSettings.customHeaders = { Authorization: 'Basic current-workspace' };
 	});
 
 	afterEach(() => {
 		jest.useRealTimers();
-		global.fetch = originalGlobalFetch;
-		RocketChatSettings.customHeaders = originalCustomHeaders;
 		UserPreferences.removeItem(getBasicAuthKey(requested));
 	});
 

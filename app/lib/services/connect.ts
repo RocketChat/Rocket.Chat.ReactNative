@@ -1,4 +1,4 @@
-import { Rocketchat as RocketchatClient, settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
@@ -35,9 +35,9 @@ import { _setUser, type IActiveUsers, _setUserTimer, _activeUsers } from '../met
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { isIOS } from '../methods/helpers/deviceInfo';
 import { isSsl } from '../methods/helpers/isSsl';
+import { onAbort } from '../methods/helpers/onAbort';
 import { normalizeStatusExpiresAt } from '../methods/helpers/normalizeStatusExpiresAt';
-import fetch from '../methods/helpers/fetch';
-import { applyBasicAuth, getBasicAuthHeader } from '../methods/serverBasicAuth';
+import { fetchForWorkspace, withBasicAuth } from '../methods/serverBasicAuth';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -424,16 +424,6 @@ function disconnect(): void {
 	mediaSessionInstance.reset();
 }
 
-function connectWithBasicAuth(client: RocketchatClient, server: string) {
-	const previousHeaders = RocketChatSettings.customHeaders;
-	applyBasicAuth(server);
-	try {
-		return client.connect();
-	} finally {
-		RocketChatSettings.customHeaders = previousHeaders;
-	}
-}
-
 async function getWebsocketInfo({
 	server,
 	signal
@@ -442,10 +432,10 @@ async function getWebsocketInfo({
 	signal?: AbortSignal;
 }): Promise<{ success: true } | { success: false; message: string }> {
 	const websocketSdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
-	signal?.addEventListener('abort', () => websocketSdk.disconnect(), { once: true });
+	onAbort(signal, () => websocketSdk.disconnect());
 
 	try {
-		await connectWithBasicAuth(websocketSdk, server);
+		await withBasicAuth(server, () => websocketSdk.connect());
 	} catch (err: any) {
 		if (err.message && err.message.includes('400')) {
 			return {
@@ -465,10 +455,9 @@ async function getWebsocketInfo({
 async function getLoginServices(server: string, signal?: AbortSignal) {
 	try {
 		let loginServices = [];
-		const loginServicesResult = await fetch(`${server}/api/v1/settings.oauth`, {
-			headers: { Authorization: getBasicAuthHeader(server) },
-			signal
-		}).then(response => response.json());
+		const loginServicesResult = await fetchForWorkspace(server, `${server}/api/v1/settings.oauth`, { signal }).then(response =>
+			response.json()
+		);
 
 		if (loginServicesResult.success && loginServicesResult.services) {
 			const { services } = loginServicesResult;
