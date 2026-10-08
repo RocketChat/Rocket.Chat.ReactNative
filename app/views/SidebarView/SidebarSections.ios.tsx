@@ -10,7 +10,7 @@ import { sidebarNavigate } from './methods/sidebarNavigate';
 import Profile from './components/Profile';
 import { useCurrentScreen } from './useCurrentScreen';
 
-export const useSidebarSections = (navigation: DrawerNavigationProp<DrawerParamList>) => {
+const SidebarSections = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
 	const currentScreen = useCurrentScreen(navigation);
 	const isSupportedVersionsWarnVisible = useIsSupportedVersionsWarnVisible();
 	const isCustomStatusVisible = useIsCustomStatusVisible();
@@ -18,7 +18,7 @@ export const useSidebarSections = (navigation: DrawerNavigationProp<DrawerParamL
 	const isAdmin = useIsAdmin();
 	const adminRoute = useAdminRoute();
 
-	const sections = (
+	return (
 		<>
 			<List.Section>
 				<Profile navigation={navigation} />
@@ -57,6 +57,6 @@ export const useSidebarSections = (navigation: DrawerNavigationProp<DrawerParamL
 			) : null}
 		</>
 	);
-
-	return { sections };
 };
+
+export default SidebarSections;
