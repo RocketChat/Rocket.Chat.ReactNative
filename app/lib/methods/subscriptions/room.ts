@@ -59,16 +59,6 @@ export default class RoomSubscription {
 		}
 
 		reduxStore.dispatch(subscribeRoom(this.rid));
-
-		try {
-			await this.promises;
-		} catch (e) {
-			log(e);
-			return;
-		}
-		if (this.isAlive) {
-			await this.handleConnection();
-		}
 	};
 
 	unsubscribe = async () => {
