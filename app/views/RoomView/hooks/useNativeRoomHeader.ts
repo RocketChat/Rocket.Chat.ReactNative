@@ -125,7 +125,9 @@ export const useNativeRoomHeader = (
 		TITLE_FONT_SIZE
 	);
 	const server = useAppSelector(state => state.server.server);
-	const remoteUri = connected && fields.type === 'l' ? getOmnichannelSidebarIconUri(server, fields.sourceType) : undefined;
+	const isSvgSidebarIcon = fields.sourceType?.sidebarIcon?.toLowerCase().endsWith('.svg');
+	const remoteUri =
+		connected && fields.type === 'l' && !isSvgSidebarIcon ? getOmnichannelSidebarIconUri(server, fields.sourceType) : undefined;
 	const remoteImage = useHeaderRemoteImage(remoteUri);
 	const roomImage = remoteImage ?? glyphImage;
 	const clockImage = useHeaderIconImage(showClock ? 'clock' : undefined, colors.fontSecondaryInfo, SUBTITLE_FONT_SIZE);
