@@ -27,15 +27,15 @@ tags:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: '.*detox-public*.'
+      text: '.*detox-public.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: '.*e2e_admin*.'
+      text: '.*e2e_admin.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: '.*Message with thread*.'
+      text: '.*Message with thread.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
@@ -44,7 +44,7 @@ tags:
 
 # Tap on detox-public mention to open room info
 - tapOn:
-    text: '.*detox-public*.'
+    text: '.*detox-public.*'
 
 # Verify room info view is shown
 - extendedWaitUntil:
@@ -123,7 +123,7 @@ tags:
 
 # Tap on e2e_admin mention to open user info
 - tapOn:
-    text: '.*e2e_admin*.'
+    text: '.*e2e_admin.*'
 
 # Verify user info view is shown
 - extendedWaitUntil:
