@@ -54,7 +54,7 @@ const RoomItemContainer = memo(
 			const isScreenReaderEnabled = await AccessibilityInfo.isScreenReaderEnabled();
 			const hasExternalKeyboard = isExternalKeyboardConnected();
 
-			if (item.separator || !swipeEnabled || (!isScreenReaderEnabled && !hasExternalKeyboard)) {
+			if (!isScreenReaderEnabled && !hasExternalKeyboard) {
 				return;
 			}
 			showActionSheet({
@@ -68,6 +68,8 @@ const RoomItemContainer = memo(
 			});
 		};
 
+		const supportsLongPress = !!onLongPress || (!item.separator && swipeEnabled);
+
 		return (
 			<RoomItem
 				name={name}
@@ -76,7 +78,7 @@ const RoomItemContainer = memo(
 				isInvited={isInvited}
 				isRead={isRead}
 				onPress={handleOnPress}
-				onLongPress={handleOnLongPress}
+				onLongPress={supportsLongPress ? handleOnLongPress : undefined}
 				date={date}
 				accessibilityDate={accessibilityDate}
 				width={width}

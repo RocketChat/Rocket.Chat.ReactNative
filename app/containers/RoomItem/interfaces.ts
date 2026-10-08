@@ -43,6 +43,7 @@ export interface IWrapperProps {
 	accessibilityLabel: string;
 	testID?: string;
 	accessibilityHint?: string;
+	onLongPress?: () => void;
 	avatar: string;
 	type: string;
 	userId: string | null;
