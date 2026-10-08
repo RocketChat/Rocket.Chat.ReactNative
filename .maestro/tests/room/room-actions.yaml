@@ -81,12 +81,15 @@ tags:
     timeout: 60000
 
 # should have leave channel
-- extendedWaitUntil:
-    visible:
+- scrollUntilVisible:
+    element:
       id: 'room-actions-leave-channel'
-    timeout: 60000
 
 # should show mentioned messages
+- scrollUntilVisible:
+    element:
+      id: 'room-actions-mentioned'
+    direction: UP
 - tapOn:
     id: 'room-actions-mentioned'
 - extendedWaitUntil:
@@ -604,20 +607,30 @@ tags:
     timeout: 60000
 - tapOn: 'DISABLE WRITING IN ROOM'
 
-- extendedWaitUntil:
-    visible:
-      id: 'room-members-view-item-${output.otherUser.username}'
-    timeout: 60000
-- tapOn:
-    id: 'room-members-view-item-${output.otherUser.username}'
-- extendedWaitUntil:
-    visible:
-      id: 'action-sheet-mute-user'
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
-      text: 'Enable writing in room'
-    timeout: 60000
+- retry:
+    maxRetries: 3
+    commands:
+      - runFlow:
+          when:
+            visible:
+              id: 'action-sheet-mute-user'
+          commands:
+            - tapOn:
+                text: 'Cancel'
+      - extendedWaitUntil:
+          visible:
+            id: 'room-members-view-item-${output.otherUser.username}'
+          timeout: 60000
+      - tapOn:
+          id: 'room-members-view-item-${output.otherUser.username}'
+      - extendedWaitUntil:
+          visible:
+            id: 'action-sheet-mute-user'
+          timeout: 60000
+      - extendedWaitUntil:
+          visible:
+            text: 'Enable writing in room'
+          timeout: 10000
 - tapOn:
     id: action-sheet-mute-user
 - extendedWaitUntil:
@@ -630,20 +643,30 @@ tags:
     timeout: 60000
 - tapOn: 'ENABLE WRITING IN ROOM'
 
-- extendedWaitUntil:
-    visible:
-      id: 'room-members-view-item-${output.otherUser.username}'
-    timeout: 60000
-- tapOn:
-    id: 'room-members-view-item-${output.otherUser.username}'
-- extendedWaitUntil:
-    visible:
-      id: 'action-sheet-mute-user'
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
-      text: 'Disable writing in room'
-    timeout: 60000
+- retry:
+    maxRetries: 3
+    commands:
+      - runFlow:
+          when:
+            visible:
+              id: 'action-sheet-mute-user'
+          commands:
+            - tapOn:
+                text: 'Cancel'
+      - extendedWaitUntil:
+          visible:
+            id: 'room-members-view-item-${output.otherUser.username}'
+          timeout: 60000
+      - tapOn:
+          id: 'room-members-view-item-${output.otherUser.username}'
+      - extendedWaitUntil:
+          visible:
+            id: 'action-sheet-mute-user'
+          timeout: 60000
+      - extendedWaitUntil:
+          visible:
+            text: 'Disable writing in room'
+          timeout: 10000
 - tapOn:
     text: 'Cancel'
 
@@ -710,7 +733,16 @@ tags:
     file: '../../helpers/assert-room-title.yaml'
     env:
       ROOM: ${output.otherUser.username}
-- tapOn: Back
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - tapOn: Back
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
