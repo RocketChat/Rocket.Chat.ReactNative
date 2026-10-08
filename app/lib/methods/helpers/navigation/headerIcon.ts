@@ -30,19 +30,30 @@ const HEADER_ICONS: TIconsName[] = [
 	'workspaces'
 ];
 
-const headerIconSources = new Map<TIconsName, ImageURISource & { alignmentInset: number }>();
+const HEADER_ICON_COLOR = 'black';
+
+const iconImages = new Map<string, ImageURISource>();
+
+const iconImageKey = (name: TIconsName, size: number, color: string) => `${name}:${size}:${color}`;
+
+export const getIconImage = (name: TIconsName, size: number, color: string) => iconImages.get(iconImageKey(name, size, color));
+
+export const loadIconImage = async (name: TIconsName, size: number, color: string) => {
+	const cached = getIconImage(name, size, color);
+	if (cached) {
+		return cached;
+	}
+	const source = await IconSet.getImageSource(name, size, color);
+	if (source) {
+		iconImages.set(iconImageKey(name, size, color), source);
+	}
+	return source;
+};
 
 let preloadPromise: Promise<void> | undefined;
 
 const loadHeaderIcons = async () => {
-	await Promise.all(
-		HEADER_ICONS.map(async name => {
-			const source = await IconSet.getImageSource(name, HEADER_ICON_SIZE, 'black');
-			if (source) {
-				headerIconSources.set(name, { ...source, alignmentInset: HEADER_ICON_GLYPH_PADDING });
-			}
-		})
-	);
+	await Promise.all(HEADER_ICONS.map(name => loadIconImage(name, HEADER_ICON_SIZE, HEADER_ICON_COLOR)));
 };
 
 export const preloadHeaderIcons = () => {
@@ -57,6 +68,6 @@ export const headerIcon = (name: TIconsName) => {
 	if (__DEV__ && !HEADER_ICONS.includes(name)) {
 		console.warn(`headerIcon: '${name}' is not in HEADER_ICONS and will render without an icon`);
 	}
-	const source = headerIconSources.get(name);
-	return source ? { type: 'image' as const, source } : undefined;
+	const source = getIconImage(name, HEADER_ICON_SIZE, HEADER_ICON_COLOR);
+	return source ? { type: 'image' as const, source: { ...source, alignmentInset: HEADER_ICON_GLYPH_PADDING } } : undefined;
 };

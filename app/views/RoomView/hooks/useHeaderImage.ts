@@ -1,23 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Image, type ImageSourcePropType } from 'react-native';
 
-import { IconSet, type TIconsName } from '~/containers/CustomIcon';
+import { type TIconsName } from '~/containers/CustomIcon';
+import { getIconImage, loadIconImage } from '~/lib/methods/helpers/navigation/headerIcon';
 import log from '~/lib/methods/helpers/log';
-
-const iconImageCache = new Map<string, ImageSourcePropType>();
 
 export const useHeaderIconImage = (name: TIconsName | undefined, color: string, size: number) => {
 	const [image, setImage] = useState<{ name: TIconsName; color: string; source: ImageSourcePropType }>();
-	const cacheKey = `${name}:${color}:${size}`;
-	const cachedSource = name ? iconImageCache.get(cacheKey) : undefined;
+	const cachedSource = name ? getIconImage(name, size, color) : undefined;
 	useEffect(() => {
 		let cancelled = false;
-		if (name && !iconImageCache.has(cacheKey)) {
-			IconSet.getImageSource(name, size, color)
+		if (name && !getIconImage(name, size, color)) {
+			loadIconImage(name, size, color)
 				.then(source => {
-					if (source) {
-						iconImageCache.set(cacheKey, source);
-					}
 					if (!cancelled && source) {
 						setImage({ name, color, source });
 					}
@@ -27,7 +22,7 @@ export const useHeaderIconImage = (name: TIconsName | undefined, color: string, 
 		return () => {
 			cancelled = true;
 		};
-	}, [name, color, size, cacheKey]);
+	}, [name, color, size]);
 	if (cachedSource) {
 		return cachedSource;
 	}
