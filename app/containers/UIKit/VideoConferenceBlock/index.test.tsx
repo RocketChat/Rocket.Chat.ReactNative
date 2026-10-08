@@ -3,6 +3,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-
 import { emitter } from '~/lib/methods/helpers/emitter';
 import getRoomInfo from '~/lib/methods/getRoomInfo';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
+import { showToast } from '~/lib/methods/helpers/showToast';
 import sdk from '~/lib/services/sdk';
 import VideoConferenceBlock from '.';
 
@@ -18,6 +19,7 @@ jest.mock('~/containers/Touch', () => {
 });
 jest.mock('~/lib/methods/getRoomInfo', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
+jest.mock('~/lib/methods/helpers/showToast', () => ({ showToast: jest.fn() }));
 
 const mockedGet = sdk.get as jest.Mock;
 
@@ -79,5 +81,35 @@ describe('VideoConferenceBlock', () => {
 		render(<VideoConferenceBlock callId='call1' blockId='call1' />);
 		await screen.findByText('Call again');
 		expect(screen.queryByText('Call was not answered')).toBeNull();
+	});
+
+	it('opens the discussion only once on a double tap', async () => {
+		mockedGet.mockResolvedValue({ ...calling, discussionRid: 'disc1' });
+		(getRoomInfo as jest.Mock).mockResolvedValue({ rid: 'disc1', name: 'disc', t: 'p' });
+		render(<VideoConferenceBlock callId='call1' blockId='call1' />);
+
+		const button = await screen.findByTestId('video-conf-join-discussion');
+		fireEvent.press(button);
+		fireEvent.press(button);
+
+		await waitFor(() => expect(goRoom).toHaveBeenCalledTimes(1));
+		expect(getRoomInfo).toHaveBeenCalledTimes(1);
+	});
+
+	it('shows a toast when the discussion cannot be resolved', async () => {
+		mockedGet.mockResolvedValue({ ...calling, discussionRid: 'disc1' });
+		(getRoomInfo as jest.Mock).mockResolvedValue(null);
+		render(<VideoConferenceBlock callId='call1' blockId='call1' />);
+
+		fireEvent.press(await screen.findByTestId('video-conf-join-discussion'));
+
+		await waitFor(() => expect(showToast).toHaveBeenCalledWith('Room not found'));
+		expect(goRoom).not.toHaveBeenCalled();
+	});
+
+	it('shows "not answered" for a group call that ended with only the creator', async () => {
+		mockedGet.mockResolvedValue({ ...ended(3), type: 'videoconference', users: [{ _id: 'u1', username: 'me', name: 'Me' }] });
+		render(<VideoConferenceBlock callId='call1' blockId='call1' />);
+		expect(await screen.findByText('Call was not answered')).toBeTruthy();
 	});
 });

@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import { type ReactElement, useRef } from 'react';
 import { View, Text } from 'react-native';
 
 import i18n from '~/i18n';
@@ -9,6 +9,7 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import getRoomInfo from '~/lib/methods/getRoomInfo';
 import { goRoom, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
 import log from '~/lib/methods/helpers/log';
+import { showToast } from '~/lib/methods/helpers/showToast';
 import useStyle from './styles';
 
 type VideoConfMessageIconProps = {
@@ -21,16 +22,23 @@ export const VideoConferenceBaseContainer = ({ variant, children, discussionRid 
 	const { colors } = useTheme();
 	const style = useStyle();
 	const isMasterDetail = useMasterDetail();
+	const opening = useRef(false);
 
 	const openDiscussion = async () => {
-		if (!discussionRid) return;
+		if (!discussionRid || opening.current) return;
+		opening.current = true;
 		try {
 			const discussion = await getRoomInfo(discussionRid);
 			if (discussion) {
 				goRoom({ item: discussion as TGoRoomItem, isMasterDetail });
+			} else {
+				showToast(i18n.t('Room_not_found'));
 			}
 		} catch (e) {
 			log(e);
+			showToast(i18n.t('Room_not_found'));
+		} finally {
+			opening.current = false;
 		}
 	};
 
