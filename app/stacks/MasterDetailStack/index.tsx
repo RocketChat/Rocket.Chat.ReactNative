@@ -10,6 +10,7 @@ import { ThemeContext } from '~/theme';
 import { defaultHeader, themedHeader } from '~/lib/methods/helpers/navigation';
 import withNavigation from '~/lib/navigation/withNavigation';
 import { isIOS } from '~/lib/methods/helpers';
+import { MASTER_DETAIL_INSIDE_STACK_ID } from './constants';
 import { ModalContainer } from './ModalContainer';
 import { createSplitNavigator } from './SplitNavigator';
 import { type MasterDetailChatsStackParamList, type MasterDetailInsideStackParamList, type ModalStackParamList } from './types';
@@ -273,6 +274,7 @@ const ModalStack = createNativeStackNavigator({
 });
 
 const InsideStack = createNativeStackNavigator({
+	id: MASTER_DETAIL_INSIDE_STACK_ID,
 	screenOptions: {
 		...defaultHeader,
 		presentation: isIOS ? 'containedTransparentModal' : 'containedModal'
