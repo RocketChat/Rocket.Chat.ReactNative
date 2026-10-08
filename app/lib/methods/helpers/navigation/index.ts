@@ -68,6 +68,8 @@ export const translucentHeader: NativeStackNavigationOptions = hasNativeHeaderBa
 		}
 	: {};
 
+export const nativeHeaderContentInset = hasNativeHeaderBar ? 'automatic' : undefined;
+
 export const navigationTheme = (theme: TSupportedThemes) => {
 	const defaultNavTheme = theme === 'light' ? DefaultTheme : DarkTheme;
 

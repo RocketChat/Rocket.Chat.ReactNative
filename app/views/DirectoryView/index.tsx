@@ -13,7 +13,7 @@ import { useActionSheet } from '~/containers/ActionSheet';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
 import I18n from '~/i18n';
-import { stackedSearchBarOptions, translucentHeader } from '~/lib/methods/helpers/navigation';
+import { stackedSearchBarOptions, nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpers/navigation';
 import SearchBox from '~/containers/SearchBox';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
@@ -218,7 +218,7 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 
 			<FlashList
 				data={data}
-				contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
+				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				style={styles.list}
 				contentContainerStyle={[styles.listContainer, { paddingBottom: bottom }]}
 				extraData={type}

@@ -23,7 +23,7 @@ import { BASE_ROW_HEIGHT, BASE_ROW_HEIGHT_CONDENSED } from '../lib/hooks/useResp
 import I18n from '../i18n';
 import { type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
-import { translucentHeader } from '~/lib/methods/helpers/navigation';
+import { nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpers/navigation';
 import database from '../lib/database';
 import { CustomIcon } from '../containers/CustomIcon';
 import RoomItem from '../containers/RoomItem';
@@ -595,7 +595,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 				renderItem={this.renderItem}
 				getItemLayout={this.getItemLayout}
 				removeClippedSubviews={isIOS}
-				contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
+				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				keyboardShouldPersistTaps='always'
 				onEndReached={() => this.load()}
 				onEndReachedThreshold={0.5}

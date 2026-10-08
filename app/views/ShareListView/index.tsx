@@ -28,6 +28,7 @@ import { type IApplicationState, RootEnum, type TServerModel, type TSubscription
 import { type ShareInsideStackParamList } from '~/definitions/navigationTypes';
 import { getRoomAvatar, hasNativeHeaderBar, isAndroid, isIOS } from '~/lib/methods/helpers';
 import { getFilenameFromUri } from '~/lib/methods/helpers/getFilenameFromUri';
+import { nativeHeaderContentInset } from '~/lib/methods/helpers/navigation';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { shareSetParams } from '~/actions/share';
 import { appStart } from '~/actions/app';
@@ -524,7 +525,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 					keyExtractor={keyExtractor}
 					style={[styles.flatlist, { backgroundColor: themes[theme].surfaceHover }]}
 					contentContainerStyle={hasNativeHeaderBar ? searching && styles.nativeSearchContent : { paddingBottom: insets.bottom }}
-					contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
+					contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
 					ItemSeparatorComponent={RowSeparator}

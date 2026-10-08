@@ -11,7 +11,7 @@ import { Component, createRef } from 'react';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';
 import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
-import { translucentHeader } from '~/lib/methods/helpers/navigation';
+import { nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpers/navigation';
 import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import database from '~/lib/database';
 import { sanitizeLikeString } from '~/lib/database/utils';
@@ -481,7 +481,7 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 				windowSize={10}
 				initialNumToRender={7}
 				removeClippedSubviews={isIOS}
-				contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
+				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444

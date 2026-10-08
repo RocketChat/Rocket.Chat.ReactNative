@@ -15,7 +15,7 @@ import SearchBox from '~/containers/SearchBox';
 import UserItem from '~/containers/UserItem';
 import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '~/definitions';
 import I18n from '~/i18n';
-import { stackedSearchBarOptions, translucentHeader } from '~/lib/methods/helpers/navigation';
+import { stackedSearchBarOptions, nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpers/navigation';
 import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -436,7 +436,7 @@ const RoomMembersView = (): ReactElement => {
 		<SafeAreaView testID='room-members-view'>
 			<FlatList
 				data={state.members}
-				contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
+				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				renderItem={({ item, index }) => (
 					<UserItem
 						name={getUserDisplayName(item)}

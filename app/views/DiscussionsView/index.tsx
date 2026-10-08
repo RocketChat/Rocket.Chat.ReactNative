@@ -10,7 +10,7 @@ import { type IMessageFromServer, type TThreadModel } from '~/definitions';
 import { type ChatsStackParamList } from '~/stacks/types';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';
-import { translucentHeader } from '~/lib/methods/helpers/navigation';
+import { nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpers/navigation';
 import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import log from '~/lib/methods/helpers/log';
@@ -165,7 +165,7 @@ const DiscussionsView = () => {
 				contentContainerStyle={[styles.contentContainer, { paddingBottom: hasNativeHeaderBar ? 0 : bottom }]}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}
-				contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
+				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				onEndReached={() => isSearching && offset.current < total.current && load()}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}
