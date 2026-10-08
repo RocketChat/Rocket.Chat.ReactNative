@@ -52,10 +52,7 @@ describe('spotlight', () => {
 
 	it('omits usernames and rid on 8.9.0+ when empty', async () => {
 		await spotlight('john', [], type, '');
-		const params = (sdk.get as jest.Mock).mock.calls[0][1];
-		expect(params).toEqual({ query: 'john', type: JSON.stringify(type) });
-		expect(params).not.toHaveProperty('usernames');
-		expect(params).not.toHaveProperty('rid');
+		expect((sdk.get as jest.Mock).mock.calls[0][1]).toStrictEqual({ query: 'john', type: JSON.stringify(type) });
 	});
 
 	it.each(['alice, bob', 'alice,bob'])('leaves the multi-user direct message name %j out of usernames on 8.9.0+', async name => {
@@ -69,7 +66,7 @@ describe('spotlight', () => {
 
 	it('omits usernames on 8.9.0+ when only multi-user direct message names are given', async () => {
 		await spotlight('john', ['alice, bob'], type);
-		expect((sdk.get as jest.Mock).mock.calls[0][1]).not.toHaveProperty('usernames');
+		expect((sdk.get as jest.Mock).mock.calls[0][1]).toStrictEqual({ query: 'john', type: JSON.stringify(type) });
 	});
 
 	it('passes multi-user direct message names to DDP below 8.9.0', async () => {

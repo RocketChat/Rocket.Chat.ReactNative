@@ -66,11 +66,9 @@ describe('saveAutoTranslate', () => {
 
 	it('posts the language without a defaultLanguage key on 8.6.0+', async () => {
 		await saveAutoTranslate({ rid: 'rid1', field: 'autoTranslateLanguage', value: 'pt-BR' });
-		expect(sdk.post).toHaveBeenCalledWith('autotranslate.saveSettings', {
-			roomId: 'rid1',
-			field: 'autoTranslateLanguage',
-			value: 'pt-BR'
-		});
-		expect((sdk.post as jest.Mock).mock.calls[0][1]).not.toHaveProperty('defaultLanguage');
+		expect((sdk.post as jest.Mock).mock.calls[0]).toStrictEqual([
+			'autotranslate.saveSettings',
+			{ roomId: 'rid1', field: 'autoTranslateLanguage', value: 'pt-BR' }
+		]);
 	});
 });
