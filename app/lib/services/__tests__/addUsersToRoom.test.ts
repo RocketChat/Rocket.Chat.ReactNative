@@ -33,7 +33,7 @@ describe('addUsersToRoom', () => {
 		setServerVersion('8.6.0');
 	});
 
-	it('uses DDP below 8.6.0 with the same arguments as before', async () => {
+	it('calls addUsersToRoom over DDP with usernames below 8.6.0', async () => {
 		setServerVersion('8.5.9');
 		await addUsersToRoom('rid1', 'c');
 		expect(sdk.methodCallWrapper).toHaveBeenCalledWith('addUsersToRoom', { rid: 'rid1', users: ['alice', 'bob'] });
@@ -48,7 +48,7 @@ describe('addUsersToRoom', () => {
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
 	});
 
-	it('invites all selected users in one groups.invite request for private rooms on 8.6.0+', async () => {
+	it('invites all selected users in one groups.invite request on 8.6.0+', async () => {
 		await addUsersToRoom('rid1', 'p');
 		expect(sdk.post).toHaveBeenCalledTimes(1);
 		expect(sdk.post).toHaveBeenCalledWith('groups.invite', { roomId: 'rid1', usernames: ['alice', 'bob'] });

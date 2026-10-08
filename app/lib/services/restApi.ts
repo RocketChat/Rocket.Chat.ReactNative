@@ -131,7 +131,7 @@ export const spotlight = (
 	rid?: string
 ): Promise<ISpotlight> => {
 	const serverVersion = reduxStore.getState().server.version;
-	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
 		const withoutMultiUserDirectMessageNames = usernames.filter(name => !name.includes(','));
 		return sdk.get('spotlight', {
 			query: search,

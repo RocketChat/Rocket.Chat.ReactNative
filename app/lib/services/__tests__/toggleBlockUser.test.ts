@@ -27,7 +27,7 @@ describe('toggleBlockUser', () => {
 	it.each([
 		{ block: true, method: 'blockUser' },
 		{ block: false, method: 'unblockUser' }
-	])('uses the $method DDP method below 8.6.0 with the same arguments as before', async ({ block, method }) => {
+	])('calls the $method DDP method below 8.6.0', async ({ block, method }) => {
 		setServerVersion('8.5.9');
 		await toggleBlockUser('rid1', 'user1', block);
 		expect(sdk.methodCallWrapper).toHaveBeenCalledWith(method, { rid: 'rid1', blocked: 'user1' });
