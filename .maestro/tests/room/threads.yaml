@@ -149,6 +149,14 @@ tags:
 
 # should send message in thread only
 - runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          notVisible:
+            text: 'Following thread'
+          timeout: 10000
+- runFlow:
     file: '../../helpers/send-message.yaml'
     env:
       message: threadonly
@@ -168,7 +176,7 @@ tags:
     commands:
       - extendedWaitUntil:
           notVisible:
-            text: 'thread'
+            id: 'message-composer-input-thread'
           timeout: 5000
 - runFlow:
     file: '../../helpers/assert-room-title.yaml'
@@ -212,7 +220,7 @@ tags:
     commands:
       - extendedWaitUntil:
           notVisible:
-            text: 'thread'
+            id: 'message-composer-input-thread'
           timeout: 5000
 - runFlow:
     file: '../../helpers/assert-room-title.yaml'
@@ -256,7 +264,7 @@ tags:
     commands:
       - extendedWaitUntil:
           notVisible:
-            text: 'thread'
+            id: 'message-composer-input-thread'
           timeout: 60000
 - runFlow:
     file: '../../helpers/assert-room-title.yaml'
@@ -368,7 +376,7 @@ tags:
     commands:
       - extendedWaitUntil:
           notVisible:
-            text: 'thread'
+            id: 'message-composer-input-thread'
           timeout: 60000
 - runFlow:
     file: '../../helpers/assert-room-title.yaml'
