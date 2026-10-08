@@ -24,6 +24,7 @@ import { type SubscriptionsEndpoints } from '~/definitions/rest/v1/subscriptions
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
 import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
+import { isMembersOrderedByRoleSupported } from '../methods/helpers/isMembersOrderedByRoleSupported';
 import { getDeviceToken } from '../notifications/deviceToken';
 import NativeVoipModule from '../native/NativeVoip';
 import { store as reduxStore } from '../store/auxStore';
@@ -1189,14 +1190,20 @@ export const getRoomMembers = async ({
 }) => {
 	const t = roomType as SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.DIRECT;
 	const serverVersion = reduxStore.getState().server.version;
+	const params = {
+		roomId: rid,
+		offset: skip,
+		count: limit,
+		...(type !== 'all' && { 'status[]': type }),
+		...(filter && { filter })
+	};
+	if (isMembersOrderedByRoleSupported(serverVersion, roomType)) {
+		// RC 7.4.0
+		// No fallback: members from this endpoint carry roles, which the view relies on.
+		const result = await sdk.get('rooms.membersOrderedByRole', params);
+		return result.success ? result.members : undefined;
+	}
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
-		const params = {
-			roomId: rid,
-			offset: skip,
-			count: limit,
-			...(type !== 'all' && { 'status[]': type }),
-			...(filter && { filter })
-		};
 		// RC 3.16.0
 		const result = await sdk.get(`${roomTypeToApiType(t)}.members`, params);
 		if (result.success) {
