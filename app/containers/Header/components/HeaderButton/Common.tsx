@@ -1,5 +1,4 @@
 import { forwardRef, memo } from 'react';
-import { StackActions, useNavigation } from '@react-navigation/native';
 import { type StyleProp, type ViewStyle } from 'react-native';
 import { type KeyboardFocus, withKeyboardFocus } from 'react-native-external-keyboard';
 
@@ -44,24 +43,6 @@ export const Drawer = forwardRef<KeyboardFocus, IHeaderButtonCommon>(
 
 Drawer.displayName = 'HeaderButton.Drawer';
 
-export const CloseModal = memo(({ testID, onPress, ...props }: IHeaderButtonCommon) => {
-	const { dispatch } = useNavigation();
-	return (
-		<Container left>
-			<Item
-				accessibilityLabel={I18n.t('Close')}
-				iconName='close'
-				onPress={arg => {
-					if (onPress) return onPress(arg);
-					dispatch(StackActions.pop());
-				}}
-				testID={testID}
-				{...props}
-			/>
-		</Container>
-	);
-});
-
 export const CancelModal = memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
 	<Container left>
 		{isIOS ? (
@@ -78,21 +59,3 @@ export const More = memo(({ onPress, testID, ...props }: IHeaderButtonCommon) =>
 		<Item iconName='kebab' onPress={onPress} testID={testID} {...props} />
 	</Container>
 ));
-
-export const Download = memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
-	<Container>
-		<Item iconName='download' onPress={onPress} testID={testID} {...props} />
-	</Container>
-));
-
-export const Preferences = memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
-	<Container>
-		<Item iconName='settings' onPress={onPress} testID={testID} {...props} />
-	</Container>
-));
-
-export const Legal = memo(
-	({ navigation, testID, onPress = () => navigation?.navigate('LegalView'), ...props }: IHeaderButtonCommon) => (
-		<More accessibilityLabel={I18n.t('More')} onPress={onPress} testID={testID} {...props} />
-	)
-);

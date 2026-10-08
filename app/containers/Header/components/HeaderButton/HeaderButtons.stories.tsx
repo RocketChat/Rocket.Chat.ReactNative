@@ -103,9 +103,18 @@ export const Badge = () => (
 		<HeaderExample
 			left={() => (
 				<HeaderButton.Container left>
-					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.BadgeUnread tunread={[1]} />} />
-					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.BadgeUnread tunread={[1]} tunreadUser={[1]} />} />
-					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.BadgeUnread tunread={[1]} tunreadGroup={[1]} />} />
+					<HeaderButton.Item
+						iconName='threads'
+						badge={() => <HeaderButton.BadgeCount value={1} color={colors.light.fontSecondaryInfo} />}
+					/>
+					<HeaderButton.Item
+						iconName='threads'
+						badge={() => <HeaderButton.BadgeCount value={1} color={colors.light.badgeBackgroundLevel4} />}
+					/>
+					<HeaderButton.Item
+						iconName='threads'
+						badge={() => <HeaderButton.BadgeCount value={1} color={colors.light.badgeBackgroundLevel3} />}
+					/>
 					<HeaderButton.Drawer badge={() => <HeaderButton.BadgeWarn color='red' />} />
 				</HeaderButton.Container>
 			)}
@@ -126,7 +135,10 @@ const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
 				right={() => (
 					<HeaderButton.Container>
 						<HeaderButton.Item title='Threads' />
-						<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.BadgeUnread tunread={[1]} />} />
+						<HeaderButton.Item
+							iconName='threads'
+							badge={() => <HeaderButton.BadgeCount value={1} color={colors[theme].fontSecondaryInfo} />}
+						/>
 					</HeaderButton.Container>
 				)}
 				colors={colors[theme]}
@@ -146,11 +158,7 @@ export const Themes = () => (
 export const Common = () => (
 	<>
 		<HeaderExample left={() => <HeaderButton.Drawer />} />
-		<HeaderExample left={() => <HeaderButton.CloseModal />} />
 		<HeaderExample left={() => <HeaderButton.CancelModal />} />
 		<HeaderExample right={() => <HeaderButton.More />} />
-		<HeaderExample right={() => <HeaderButton.Download />} />
-		<HeaderExample right={() => <HeaderButton.Preferences />} />
-		<HeaderExample right={() => <HeaderButton.Legal />} />
 	</>
 );

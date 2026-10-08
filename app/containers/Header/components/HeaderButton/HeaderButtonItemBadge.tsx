@@ -1,7 +1,6 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import UnreadBadge from '~/containers/UnreadBadge';
 import CountBadge from '~/containers/UnreadBadge/CountBadge';
 import { useTheme } from '~/theme';
 import { formatUnreadCount } from '~/lib/methods/helpers/formatUnreadCount';
@@ -16,8 +15,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	}
 });
-
-export const BadgeUnread = ({ ...props }): ReactElement => <UnreadBadge {...props} style={styles.badgeContainer} small />;
 
 export const BadgeWarn = ({ color }: { color: string }): ReactElement => (
 	<View style={[styles.badgeContainer, { width: 10, height: 10, borderRadius: 5, backgroundColor: color }]} />
