@@ -13,8 +13,8 @@ import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useDebounce } from '../lib/methods/helpers';
 import { loginOAuthOrSso } from '../lib/services/connect';
 import { type OutsideModalParamList } from '../stacks/types';
-import fetch, { type TMethods } from '../lib/methods/helpers/fetch';
-import { getBasicAuthHeaderForUrl } from '../lib/methods/serverBasicAuth';
+import { type TMethods } from '../lib/methods/helpers/fetch';
+import { fetchForWorkspace } from '../lib/methods/serverBasicAuth';
 import { parseSamlOrCasRedirect } from '../lib/methods/helpers/parseSamlOrCasRedirect';
 
 // iframe uses a postMessage to send the token to the client
@@ -90,9 +90,8 @@ const AuthenticationWebView = ({ route }: AuthenticationWebViewProps) => {
 
 	const tryLogin = useDebounce(
 		async () => {
-			const data = await fetch(Accounts_Iframe_api_url, {
-				method: Accounts_Iframe_api_method as TMethods,
-				headers: { Authorization: getBasicAuthHeaderForUrl(Accounts_Iframe_api_url, server) }
+			const data = await fetchForWorkspace(server, Accounts_Iframe_api_url, {
+				method: Accounts_Iframe_api_method as TMethods
 			}).then(response => response.json());
 			const resume = data?.login || data?.loginToken;
 			if (resume) {

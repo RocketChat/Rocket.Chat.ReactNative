@@ -1,23 +1,26 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
-import parse from 'url-parse';
 
 import UserPreferences from './userPreferences';
-import fetch, { headers } from './helpers/fetch';
+import fetch, { headers, setSharedAuthorizationOrigin } from './helpers/fetch';
+import { isSameOrigin } from './helpers/getOrigin';
 import { getBasicAuthKey } from '../constants/keys';
 
-export const getBasicAuthHeader = (server: string): string | undefined => {
+const getBasicAuthHeader = (server: string): string | undefined => {
 	const basicAuth = UserPreferences.getString(getBasicAuthKey(server));
 	return basicAuth ? `Basic ${basicAuth}` : undefined;
 };
 
+const headersWith = (authorization?: string) => (authorization ? { ...headers, Authorization: authorization } : headers);
+
 export const applyBasicAuth = (server: string): void => {
 	const authorization = getBasicAuthHeader(server);
-	RocketChatSettings.customHeaders = authorization ? { ...headers, Authorization: authorization } : headers;
+	RocketChatSettings.customHeaders = headersWith(authorization);
+	setSharedAuthorizationOrigin(authorization ? server : null);
 };
 
 export const withBasicAuth = <T>(server: string, run: () => T): T => {
 	const previousHeaders = RocketChatSettings.customHeaders;
-	applyBasicAuth(server);
+	RocketChatSettings.customHeaders = headersWith(getBasicAuthHeader(server));
 	try {
 		return run();
 	} finally {
@@ -25,8 +28,7 @@ export const withBasicAuth = <T>(server: string, run: () => T): T => {
 	}
 };
 
-export const fetchForWorkspace = (server: string, url: string, options: Parameters<typeof fetch>[1] = {}) =>
-	fetch(url, { ...options, headers: { ...options.headers, Authorization: getBasicAuthHeader(server) } });
-
-export const getBasicAuthHeaderForUrl = (url: string, server: string): string | undefined =>
-	parse(url).origin === parse(server).origin ? getBasicAuthHeader(server) : undefined;
+export const fetchForWorkspace = (server: string, url: string, options: Parameters<typeof fetch>[1] = {}) => {
+	const authorization = isSameOrigin(url, server) ? getBasicAuthHeader(server) : undefined;
+	return fetch(url, { ...options, headers: { ...options.headers, Authorization: authorization } });
+};

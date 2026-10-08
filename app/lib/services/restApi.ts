@@ -1270,7 +1270,6 @@ export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
 
 export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string, signal?: AbortSignal) =>
 	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`, {
-		headers: { Authorization: undefined },
 		signal
 	});
 

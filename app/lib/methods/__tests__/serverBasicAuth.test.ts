@@ -1,65 +1,46 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import { fetchForWorkspace, getBasicAuthHeaderForUrl, withBasicAuth } from '../serverBasicAuth';
-import { headers } from '~/lib/methods/helpers/fetch';
+import { applyBasicAuth, fetchForWorkspace, withBasicAuth } from '../serverBasicAuth';
+import fetchWithHeaders, { headers, setSharedAuthorizationOrigin } from '~/lib/methods/helpers/fetch';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getBasicAuthKey } from '~/lib/constants/keys';
 import { mockGlobalFetch } from '~/lib/testUtils/mockGlobalFetch';
 
-describe('getBasicAuthHeaderForUrl', () => {
-	const server = 'https://open.rocket.chat';
-
-	beforeEach(() => {
-		UserPreferences.setString(getBasicAuthKey(server), 'server-credentials');
-	});
+describe('applyBasicAuth', () => {
+	const workspace = 'https://open.rocket.chat';
+	const sentToNetwork = mockGlobalFetch(() => Promise.resolve({} as Response));
 
 	afterEach(() => {
-		UserPreferences.removeItem(getBasicAuthKey(server));
+		UserPreferences.removeItem(getBasicAuthKey(workspace));
+		setSharedAuthorizationOrigin(null);
 	});
 
-	it('returns the stored basic auth for a url on the same origin as the server', () => {
-		expect(getBasicAuthHeaderForUrl(`${server}/sso/api?token=1`, server)).toBe('Basic server-credentials');
-	});
+	it('shares the stored basic auth only with the workspace it was applied for', async () => {
+		UserPreferences.setString(getBasicAuthKey(workspace), 'workspace-credentials');
+		applyBasicAuth(workspace);
 
-	it('treats the default port as the same origin', () => {
-		expect(getBasicAuthHeaderForUrl('https://open.rocket.chat:443/sso/api', server)).toBe('Basic server-credentials');
-	});
+		await fetchWithHeaders(`${workspace}/api/info`);
+		await fetchWithHeaders('https://other.example/api/info');
 
-	it('returns undefined for a different host', () => {
-		expect(getBasicAuthHeaderForUrl('https://sso.example.com/api', server)).toBeUndefined();
-	});
-
-	it('returns undefined for a host that only starts with the server host', () => {
-		expect(getBasicAuthHeaderForUrl('https://open.rocket.chat.evil.example/api', server)).toBeUndefined();
-	});
-
-	it('returns undefined for the same host over another scheme or port', () => {
-		expect(getBasicAuthHeaderForUrl('http://open.rocket.chat/api', server)).toBeUndefined();
-		expect(getBasicAuthHeaderForUrl('https://open.rocket.chat:8443/api', server)).toBeUndefined();
-	});
-
-	it('returns undefined when the url is not absolute', () => {
-		expect(getBasicAuthHeaderForUrl('/sso/api', server)).toBeUndefined();
-		expect(getBasicAuthHeaderForUrl('', server)).toBeUndefined();
-	});
-
-	it('returns undefined when the server has no stored basic auth', () => {
-		UserPreferences.removeItem(getBasicAuthKey(server));
-
-		expect(getBasicAuthHeaderForUrl(`${server}/sso/api`, server)).toBeUndefined();
+		expect(sentToNetwork.mock.calls[0][1].headers).toMatchObject({ Authorization: 'Basic workspace-credentials' });
+		expect(sentToNetwork.mock.calls[1][1].headers).not.toHaveProperty('Authorization');
 	});
 });
 
 describe('fetchForWorkspace', () => {
 	const workspace = 'https://open.rocket.chat';
+	const workspaceWithoutScheme = 'open.rocket.chat';
 	const sentToNetwork = mockGlobalFetch(() => Promise.resolve({} as Response));
 
 	beforeEach(() => {
 		RocketChatSettings.customHeaders = { ...headers, Authorization: 'Basic active-workspace' };
+		setSharedAuthorizationOrigin(workspace);
 	});
 
 	afterEach(() => {
 		UserPreferences.removeItem(getBasicAuthKey(workspace));
+		UserPreferences.removeItem(getBasicAuthKey(workspaceWithoutScheme));
+		setSharedAuthorizationOrigin(null);
 	});
 
 	it('sends the stored basic auth of the workspace instead of the shared one', async () => {
@@ -91,12 +72,47 @@ describe('fetchForWorkspace', () => {
 			signal: controller.signal
 		});
 	});
+
+	describe('origin scoping', () => {
+		beforeEach(() => {
+			UserPreferences.setString(getBasicAuthKey(workspace), 'workspace-credentials');
+		});
+
+		it('treats the default port as the same origin', async () => {
+			await fetchForWorkspace(workspace, 'https://open.rocket.chat:443/sso/api');
+
+			expect(sentToNetwork.mock.calls[0][1].headers).toMatchObject({ Authorization: 'Basic workspace-credentials' });
+		});
+
+		it.each([
+			['a different host', 'https://sso.example.com/api'],
+			['a host that only starts with the workspace host', 'https://open.rocket.chat.evil.example/api'],
+			['the same host over another scheme', 'http://open.rocket.chat/api'],
+			['the same host on another port', 'https://open.rocket.chat:8443/api'],
+			['a relative url', '/sso/api'],
+			['an empty url', '']
+		])('sends no basic auth to %s', async (_, url) => {
+			await fetchForWorkspace(workspace, url);
+
+			expect(sentToNetwork.mock.calls[0][1].headers).not.toHaveProperty('Authorization');
+		});
+
+		it('sends no basic auth when neither the url nor the workspace has a valid origin', async () => {
+			UserPreferences.setString(getBasicAuthKey(workspaceWithoutScheme), 'workspace-credentials');
+
+			await fetchForWorkspace(workspaceWithoutScheme, '/sso/api');
+
+			expect(sentToNetwork.mock.calls[0][1].headers).not.toHaveProperty('Authorization');
+		});
+	});
 });
 
 describe('withBasicAuth', () => {
 	const workspace = 'https://open.rocket.chat';
+	const activeWorkspace = 'https://active.rocket.chat';
 	const originalCustomHeaders = RocketChatSettings.customHeaders;
 	const activeHeaders = { ...headers, Authorization: 'Basic active-workspace' };
+	const sentToNetwork = mockGlobalFetch(() => Promise.resolve({} as Response));
 
 	beforeEach(() => {
 		RocketChatSettings.customHeaders = activeHeaders;
@@ -106,6 +122,8 @@ describe('withBasicAuth', () => {
 	afterEach(() => {
 		RocketChatSettings.customHeaders = originalCustomHeaders;
 		UserPreferences.removeItem(getBasicAuthKey(workspace));
+		UserPreferences.removeItem(getBasicAuthKey(activeWorkspace));
+		setSharedAuthorizationOrigin(null);
 	});
 
 	it('points the shared headers at the workspace while running and hands the previous ones back', () => {
@@ -131,5 +149,17 @@ describe('withBasicAuth', () => {
 
 	it('returns what the callback returns', () => {
 		expect(withBasicAuth(workspace, () => 42)).toBe(42);
+	});
+
+	it('keeps the shared basic auth scoped to the active workspace', async () => {
+		UserPreferences.setString(getBasicAuthKey(activeWorkspace), 'active-credentials');
+		applyBasicAuth(activeWorkspace);
+
+		withBasicAuth(workspace, () => undefined);
+		await fetchWithHeaders(`${activeWorkspace}/api/info`);
+		await fetchWithHeaders(`${workspace}/api/info`);
+
+		expect(sentToNetwork.mock.calls[0][1].headers).toMatchObject({ Authorization: 'Basic active-credentials' });
+		expect(sentToNetwork.mock.calls[1][1].headers).not.toHaveProperty('Authorization');
 	});
 });
