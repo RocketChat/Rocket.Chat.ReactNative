@@ -448,10 +448,15 @@ export const logout = async (fixtures: Fixtures) => {
 	await expect(screen.getByTestId('new-server-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
+const CONNECTED_SERVER_HOST = /^[\w-]+(\.[\w-]+)+$/;
+
 export const searchRoom = async (fixtures: Fixtures, room: string) => {
 	const { screen } = fixtures;
 	await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expect(screen.getByTestId(/^rooms-list-view-item-/).first()).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expect(screen.getByTestId('rooms-list-header-server-subtitle')).toHaveText(CONNECTED_SERVER_HOST, {
+		timeout: LONG_TIMEOUT
+	});
 	const searchButton = screen.getByTestId('rooms-list-view-search').first();
 	await expect(searchButton).toBeVisible({ timeout: LONG_TIMEOUT });
 	await tapUntilVisible(fixtures, searchButton, 'rooms-list-view-search-input');
