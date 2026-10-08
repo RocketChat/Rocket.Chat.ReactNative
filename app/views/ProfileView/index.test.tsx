@@ -190,4 +190,26 @@ describe('ProfileView submit', () => {
 		);
 		expect(mockHideActionSheet).toHaveBeenCalled();
 	});
+
+	it('keeps the new email in the form and the stored user after saving it', async () => {
+		(saveUserProfile as jest.Mock).mockResolvedValue(true);
+		let confirmOnSubmit: ((password: string) => Promise<void>) | undefined;
+		mockShowActionSheet.mockImplementation(({ children }: any) => {
+			confirmOnSubmit = children?.props?.onSubmit;
+		});
+
+		const { getByTestId } = renderProfile();
+		fireEvent.changeText(getByTestId('profile-view-email'), 'jane@rocket.chat');
+		fireEvent.press(getByTestId('profile-view-submit'));
+
+		await waitFor(() => expect(confirmOnSubmit).toBeDefined());
+		await act(async () => {
+			await confirmOnSubmit!('my-secret');
+		});
+
+		await waitFor(() => expect(getByTestId('profile-view-email').props.value).toBe('jane@rocket.chat'));
+		expect(dispatch).toHaveBeenCalledWith(
+			setUser(expect.objectContaining({ emails: [{ address: 'jane@rocket.chat', verified: false }] }))
+		);
+	});
 });
