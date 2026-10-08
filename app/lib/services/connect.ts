@@ -36,8 +36,9 @@ import { _setUser, type IActiveUsers, _setUserTimer, _activeUsers } from '../met
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { isIOS } from '../methods/helpers/deviceInfo';
 import { isSsl } from '../methods/helpers/isSsl';
+import { onAbort } from '../methods/helpers/onAbort';
 import { normalizeStatusExpiresAt } from '../methods/helpers/normalizeStatusExpiresAt';
-import fetch from '../methods/helpers/fetch';
+import { fetchForWorkspace, withBasicAuth } from '../methods/serverBasicAuth';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -430,14 +431,17 @@ function disconnect(): void {
 }
 
 async function getWebsocketInfo({
-	server
+	server,
+	signal
 }: {
 	server: string;
+	signal?: AbortSignal;
 }): Promise<{ success: true } | { success: false; message: string }> {
 	const websocketSdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
+	onAbort(signal, () => websocketSdk.disconnect());
 
 	try {
-		await websocketSdk.connect();
+		await withBasicAuth(server, () => websocketSdk.connect());
 	} catch (err: any) {
 		if (err.message && err.message.includes('400')) {
 			return {
@@ -454,10 +458,12 @@ async function getWebsocketInfo({
 	};
 }
 
-async function getLoginServices(server: string) {
+async function getLoginServices(server: string, signal?: AbortSignal) {
 	try {
 		let loginServices = [];
-		const loginServicesResult = await fetch(`${server}/api/v1/settings.oauth`).then(response => response.json());
+		const loginServicesResult = await fetchForWorkspace(server, `${server}/api/v1/settings.oauth`, { signal }).then(response =>
+			response.json()
+		);
 
 		if (loginServicesResult.success && loginServicesResult.services) {
 			const { services } = loginServicesResult;
@@ -478,6 +484,9 @@ async function getLoginServices(server: string) {
 			store.dispatch(setLoginServices({}));
 		}
 	} catch (error) {
+		if (signal?.aborted) {
+			return;
+		}
 		console.log(error);
 		store.dispatch(setLoginServices({}));
 	}

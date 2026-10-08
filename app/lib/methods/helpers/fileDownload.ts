@@ -38,7 +38,7 @@ export const fileDownloadAndPreview = async (url: string, attachment: IAttachmen
 			}
 		}
 
-		await ExpoQuickLook.previewFile({ uri: file });
+		await ExpoQuickLook.previewFile({ uri: file, editingMode: 'createCopy' });
 	} catch (e) {
 		EventEmitter.emit(LISTENER, { message: i18n.t('Error_Download_file') });
 	}

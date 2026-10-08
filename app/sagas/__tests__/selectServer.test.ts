@@ -3,6 +3,14 @@ jest.mock('~/lib/methods/helpers/sslPinning', () => ({
 	default: undefined
 }));
 
+jest.mock('~/lib/database', () => ({
+	active: { get: jest.fn() },
+	servers: {
+		get: jest.fn(() => ({ query: () => ({ fetch: () => Promise.resolve([{}]) }) })),
+		write: (work: () => Promise<unknown>) => work()
+	}
+}));
+
 jest.mock('~/lib/database/services/LoggedUser', () => ({
 	getLoggedUserById: jest.fn()
 }));
@@ -64,16 +72,18 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import selectServerRoot from '../selectServer';
-import { selectServerRequest } from '~/actions/server';
+import { selectServerRequest, serverRequest } from '~/actions/server';
 import { appStart } from '~/actions/app';
 import { RootEnum } from '~/definitions';
 import { SERVER } from '~/actions/actionsTypes';
 import UserPreferences from '~/lib/methods/userPreferences';
-import { BASIC_AUTH_KEY, setBasicAuth } from '~/lib/methods/helpers/fetch';
-import { CURRENT_SERVER, TOKEN_KEY, getUserTokenKey } from '~/lib/constants/keys';
+import { applyBasicAuth } from '~/lib/methods/serverBasicAuth';
+import { CURRENT_SERVER, TOKEN_KEY, getBasicAuthKey, getUserTokenKey } from '~/lib/constants/keys';
 import { getLoggedUserById } from '~/lib/database/services/LoggedUser';
 import { getServerInfo } from '~/lib/methods/getServerInfo';
-import { connect } from '~/lib/services/connect';
+import { getLoginSettings } from '~/lib/methods/getSettings';
+import { connect, getLoginServices } from '~/lib/services/connect';
+import sdk from '~/lib/services/sdk';
 import { getServerById } from '~/lib/database/services/Server';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
 import type { RecordingStore } from '~/lib/testUtils/sagaStore';
@@ -86,9 +96,21 @@ const TOKEN = 'token-new';
 const keysToClear = [
 	`${TOKEN_KEY}-${SERVER_URL}`,
 	getUserTokenKey(SERVER_URL, USER_ID),
-	`${BASIC_AUTH_KEY}-${SERVER_URL}`,
+	getBasicAuthKey(SERVER_URL),
+	getBasicAuthKey(OLD_SERVER),
 	CURRENT_SERVER
 ];
+
+const storeActiveBasicAuth = (server: string, credentials: string) => {
+	UserPreferences.setString(getBasicAuthKey(server), credentials);
+	applyBasicAuth(server);
+};
+
+const activeAuthorization = () => (RocketChatSettings.customHeaders as { Authorization?: string }).Authorization;
+
+const setActiveHost = (host?: string) => {
+	(sdk as { host?: string }).host = host;
+};
 
 const setupStore = (): RecordingStore => createRecordingStore(selectServerRoot);
 
@@ -98,7 +120,7 @@ beforeEach(() => {
 	jest.clearAllMocks();
 	keysToClear.forEach(key => UserPreferences.removeItem(key));
 	UserPreferences.setString(CURRENT_SERVER, OLD_SERVER);
-	setBasicAuth(null);
+	applyBasicAuth(SERVER_URL);
 });
 
 describe('selectServer saga — resolving the target workspace user', () => {
@@ -179,7 +201,7 @@ describe('selectServer saga — resolving the target workspace user', () => {
 	});
 
 	it('drops the previous workspace basic-auth header when the target has none', async () => {
-		setBasicAuth('old-workspace-credentials');
+		storeActiveBasicAuth(OLD_SERVER, 'old-workspace-credentials');
 		expect(RocketChatSettings.customHeaders).toHaveProperty('Authorization');
 
 		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
@@ -289,5 +311,160 @@ describe('selectServer saga — user-facing root after a failed switch', () => {
 		await flushSagaMicrotasks();
 
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_SHARE_EXTENSION);
+	});
+});
+
+describe('selectServer saga — requesting a new workspace', () => {
+	const REQUESTED_HOST = 'https://attacker.example';
+	const sharedAuthorizationDuringProbe: Array<string | null> = [];
+
+	beforeEach(() => {
+		sharedAuthorizationDuringProbe.length = 0;
+		const recordGlobalAuthorization = async () => {
+			sharedAuthorizationDuringProbe.push(activeAuthorization() ?? null);
+		};
+		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '7.0.0' } as any);
+		jest
+			.mocked(getServerById)
+			.mockResolvedValue({ version: '7.0.0', update: async (apply: (r: object) => void) => apply({}) } as any);
+		jest.mocked(getLoginServices).mockImplementation(recordGlobalAuthorization);
+		jest.mocked(getLoginSettings).mockImplementation(recordGlobalAuthorization);
+	});
+
+	afterEach(() => {
+		UserPreferences.removeItem(getBasicAuthKey(REQUESTED_HOST));
+		UserPreferences.removeItem(getBasicAuthKey(OLD_SERVER));
+		setActiveHost(undefined);
+		jest.mocked(getServerInfo).mockReset();
+		jest.mocked(getServerById).mockReset();
+		jest.mocked(getLoginServices).mockReset();
+		jest.mocked(getLoginSettings).mockReset();
+	});
+
+	it('keeps the active workspace basic auth on the shared headers while probing a new host', async () => {
+		storeActiveBasicAuth(OLD_SERVER, 'old-workspace-credentials');
+
+		const { store } = setupStore();
+		store.dispatch(serverRequest(REQUESTED_HOST));
+		await flushSagaMicrotasks();
+
+		expect(sharedAuthorizationDuringProbe).toEqual(['Basic old-workspace-credentials', 'Basic old-workspace-credentials']);
+	});
+
+	it('keeps the requested host credentials off the shared headers even when it has its own stored basic auth', async () => {
+		UserPreferences.setString(getBasicAuthKey(REQUESTED_HOST), 'requested-host-credentials');
+
+		const { store } = setupStore();
+		store.dispatch(serverRequest(REQUESTED_HOST));
+		await flushSagaMicrotasks();
+
+		expect(sharedAuthorizationDuringProbe).toEqual([null, null]);
+	});
+
+	it('fails the request when the host never answers the probe', async () => {
+		jest.useFakeTimers();
+		try {
+			jest.mocked(getServerInfo).mockImplementationOnce(() => new Promise(() => {}));
+
+			const { store, dispatchedActions } = setupStore();
+			store.dispatch(serverRequest(REQUESTED_HOST));
+			await flushSagaMicrotasks();
+			expect(dispatchedActions.map(action => action.type)).not.toContain(SERVER.FAILURE);
+
+			await jest.advanceTimersByTimeAsync(30000);
+
+			expect(dispatchedActions.map(action => action.type)).toContain(SERVER.FAILURE);
+			expect(store.getState().server.connecting).toBe(false);
+			expect(store.getState().server.failureMessage).toBe('Connection timed out. Check the workspace URL and try again.');
+		} finally {
+			jest.useRealTimers();
+		}
+	});
+
+	it('aborts the in-flight login settings request when the probe times out', async () => {
+		jest.useFakeTimers();
+		try {
+			let probeSignal: AbortSignal | undefined;
+			jest.mocked(getLoginSettings).mockImplementationOnce(({ signal }) => {
+				probeSignal = signal;
+				return new Promise(() => {});
+			});
+
+			const { store } = setupStore();
+			store.dispatch(serverRequest(REQUESTED_HOST));
+			await flushSagaMicrotasks();
+			expect(probeSignal?.aborted).toBe(false);
+
+			await jest.advanceTimersByTimeAsync(30000);
+
+			expect(probeSignal?.aborted).toBe(true);
+		} finally {
+			jest.useRealTimers();
+		}
+	});
+
+	it('aborts the in-flight server info request when the probe times out', async () => {
+		jest.useFakeTimers();
+		try {
+			let probeSignal: AbortSignal | undefined;
+			jest.mocked(getServerInfo).mockImplementationOnce((_server, signal) => {
+				probeSignal = signal;
+				return new Promise(() => {});
+			});
+
+			const { store } = setupStore();
+			store.dispatch(serverRequest(REQUESTED_HOST));
+			await flushSagaMicrotasks();
+			expect(probeSignal?.aborted).toBe(false);
+
+			await jest.advanceTimersByTimeAsync(30000);
+
+			expect(probeSignal?.aborted).toBe(true);
+		} finally {
+			jest.useRealTimers();
+		}
+	});
+
+	it('leaves the active workspace basic auth in place when the requested host cannot be reached', async () => {
+		storeActiveBasicAuth(OLD_SERVER, 'old-workspace-credentials');
+		setActiveHost(OLD_SERVER);
+		jest.mocked(getServerInfo).mockResolvedValue({ success: false } as any);
+
+		const { store } = setupStore();
+		store.dispatch(serverRequest(REQUESTED_HOST));
+		await flushSagaMicrotasks();
+
+		expect(activeAuthorization()).toBe('Basic old-workspace-credentials');
+	});
+
+	it('connects to the requested host with its own basic auth after a successful probe', async () => {
+		UserPreferences.setString(getBasicAuthKey(OLD_SERVER), 'old-workspace-credentials');
+		UserPreferences.setString(getBasicAuthKey(REQUESTED_HOST), 'requested-host-credentials');
+		storeActiveBasicAuth(OLD_SERVER, 'old-workspace-credentials');
+		setActiveHost(OLD_SERVER);
+		let authorizationAtConnect: string | null = null;
+		jest.mocked(connect).mockImplementationOnce(async () => {
+			authorizationAtConnect = activeAuthorization() ?? null;
+		});
+
+		const { store } = setupStore();
+		store.dispatch(serverRequest(REQUESTED_HOST));
+		await flushSagaMicrotasks();
+
+		expect(authorizationAtConnect).toBe('Basic requested-host-credentials');
+	});
+});
+
+describe('selectServer saga — selecting the connected workspace', () => {
+	it('applies the stored basic auth when the connected workspace is selected again', async () => {
+		storeActiveBasicAuth(OLD_SERVER, 'old-workspace-credentials');
+		UserPreferences.setString(getBasicAuthKey(OLD_SERVER), 'new-workspace-credentials');
+		setActiveHost(OLD_SERVER);
+
+		const { store } = setupStore();
+		store.dispatch(selectServerRequest(OLD_SERVER, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect(activeAuthorization()).toBe('Basic new-workspace-credentials');
 	});
 });
