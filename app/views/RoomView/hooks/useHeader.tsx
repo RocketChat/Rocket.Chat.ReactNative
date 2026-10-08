@@ -7,6 +7,7 @@ import { useStore } from 'zustand';
 import RoomHeader from '~/containers/RoomHeader';
 import { getRoomTitle, isGroupChat } from '~/lib/methods/helpers';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
+import { usePexipCallStore } from '~/lib/services/videoConf/usePexipCallStore';
 import { type IOmnichannelSource, type ISubscription, type IVisitor } from '~/definitions';
 import LeftButtons from '../components/LeftButtons';
 import RightButtons from '../components/RightButtons/RightButtons';
@@ -66,6 +67,7 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 	);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const goRoomActionsView = useGoRoomActionsView(roomStore);
+	const isPexipSplit = usePexipCallStore(state => !!rid && state.layout === 'split' && state.call?.rid === rid);
 
 	useLayoutEffect(() => {
 		if (!rid) {
@@ -74,10 +76,11 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 			return;
 		}
 		navigation.setOptions({
+			headerShown: !isPexipSplit,
 			headerLeft: () => <LeftButtons rid={rid} tmid={tmid} roomStore={roomStore} />,
 			headerRight: () => <RightButtons rid={rid} tmid={tmid} roomStore={roomStore} />
 		});
-	}, [rid, tmid, navigation, roomStore]);
+	}, [rid, tmid, isPexipSplit, navigation, roomStore]);
 
 	useLayoutEffect(() => {
 		if (!rid) {

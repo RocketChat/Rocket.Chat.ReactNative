@@ -4,6 +4,8 @@ import { useStore } from 'zustand';
 import { useTheme } from '~/theme';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { usePexipSplitLayout } from '~/containers/PexipCall/usePexipSplitLayout';
+import { useIsPexipCallSplit } from '~/lib/services/videoConf/usePexipCallStore';
 import JoinCode from './components/JoinCode';
 import { type IJoinCode, type IRoomScreenProps } from './definitions';
 import { RoomProviders } from './components/RoomProviders';
@@ -25,6 +27,10 @@ import { useInAppFeedback } from './hooks/useInAppFeedback';
 const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps) => {
 	const { colors } = useTheme();
 	const isMasterDetail = useMasterDetail();
+	const isPexipSplit = useIsPexipCallSplit();
+	const { isLandscape } = usePexipSplitLayout();
+	// the docked call already covers the left inset
+	const safeAreaEdges = isPexipSplit && isLandscape ? (['right'] as const) : undefined;
 
 	const roomTitle = useStore(roomStore, s => getRoomTitle(s.room));
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
@@ -87,7 +93,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 					editCancel={onEditCancel}
 					editRequest={onEditRequest}
 					onSendMessage={sendMessage}>
-					<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='room-view'>
+					<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} edges={safeAreaEdges} testID='room-view'>
 						{!tmid ? <RoomAnnouncementBanner /> : null}
 						<RoomMessageList
 							tmid={tmid}
