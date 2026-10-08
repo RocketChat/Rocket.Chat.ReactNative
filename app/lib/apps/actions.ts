@@ -55,7 +55,6 @@ export const handlePayloadUserInteraction = (
 		showToast(I18n.t('App_action_unsupported'));
 		return;
 	}
-	handledTriggers.set(triggerId, modalType);
 	const payloadAppId = data.appId ?? triggerAppId;
 	if (!payloadAppId) {
 		return;
@@ -71,6 +70,8 @@ export const handlePayloadUserInteraction = (
 	if (!viewId) {
 		return;
 	}
+
+	handledTriggers.set(triggerId, modalType);
 
 	if (modalType === ModalActions.ERRORS || modalType === ModalActions.UPDATE || modalType === ModalActions.CLOSE) {
 		EventEmitter.emit(viewId, {
@@ -139,18 +140,13 @@ export function triggerAction({
 		}
 
 		const { type: interactionType, ...data } = parsed;
-		const modalType = toServerModalInteractionType(interactionType ?? '');
-		if (!modalType) {
-			if (interactionType) {
-				showToast(I18n.t('App_action_unsupported'));
-				return;
-			}
+		if (!interactionType) {
 			return handledTriggers.get(triggerId) ?? ACKNOWLEDGED;
 		}
-		if (modalType === ModalActions.CLOSE) {
+		if (interactionType === ModalActions.CLOSE) {
 			return ModalActions.CLOSE;
 		}
 
-		return handlePayloadUserInteraction(modalType, data as THandledServerPayload) ?? handledTriggers.get(triggerId);
+		return handlePayloadUserInteraction(interactionType, data as THandledServerPayload) ?? handledTriggers.get(triggerId);
 	});
 }
