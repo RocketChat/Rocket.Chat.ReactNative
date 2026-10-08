@@ -1,5 +1,5 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useCallback, useContext, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useLayoutEffect, useMemo, useRef } from 'react';
 import { InteractionManager } from 'react-native';
 import { type KeyboardFocus } from 'react-native-external-keyboard';
 
@@ -18,7 +18,6 @@ import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
 
 export const useHeader = () => {
 	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsSearchContext);
-	const [options, setOptions] = useState<any>(null);
 	const isAccessibilityNavigationEnabled = useIsAccessibilityNavigationEnabled();
 	const drawerButtonRef = useRef<KeyboardFocus>(null);
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
@@ -83,97 +82,91 @@ export const useHeader = () => {
 		}
 	}, [isMasterDetail, navigation]);
 
-	useLayoutEffect(() => {
-		if (searchEnabled) {
-			const searchOptions = {
-				headerLeft: () => (
-					<HeaderButton.Container style={{ marginLeft: 1 }} left>
-						<HeaderButton.Item iconName='close' onPress={stopSearch} />
-					</HeaderButton.Container>
-				),
-				headerTitle: () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />,
-				headerRight: () => null
-			};
-			navigation.setOptions(searchOptions);
-			if (isTablet) {
-				setOptions(searchOptions);
-			}
-			return;
-		}
-
-		const options = {
-			headerLeft: () => (
-				<HeaderButton.Drawer
-					ref={drawerButtonRef}
-					navigation={navigation}
-					testID='rooms-list-view-sidebar'
-					onPress={
-						isMasterDetail
-							? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
-							: () => navigation.toggleDrawer()
+	const options = useMemo(
+		() =>
+			searchEnabled
+				? {
+						headerLeft: () => (
+							<HeaderButton.Container style={{ marginLeft: 1 }} left>
+								<HeaderButton.Item iconName='close' onPress={stopSearch} />
+							</HeaderButton.Container>
+						),
+						headerTitle: () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />,
+						headerRight: () => null
 					}
-					badge={getBadge}
-					disabled={disabled}
-				/>
-			),
-			headerTitle: () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />,
-			headerRight: () => (
-				<HeaderButton.Container>
-					{issuesWithNotifications ? (
-						<HeaderButton.Item
-							iconName='notification-disabled'
-							onPress={navigateToPushTroubleshootView}
-							testID='rooms-list-view-push-troubleshoot'
-							color={colors.fontDanger}
-						/>
-					) : null}
-					{canCreateRoom ? (
-						<HeaderButton.Item
-							iconName='add'
-							accessibilityLabel={i18n.t('Create_new_channel_team_dm_discussion')}
-							onPress={goToNewMessage}
-							testID='rooms-list-view-create-channel'
-							disabled={disabled}
-						/>
-					) : null}
-					<HeaderButton.Item
-						iconName='search'
-						accessibilityLabel={i18n.t('Search')}
-						onPress={startSearch}
-						testID='rooms-list-view-search'
-						disabled={disabled}
-					/>
-					<HeaderButton.Item
-						iconName='directory'
-						accessibilityLabel={i18n.t('Directory')}
-						onPress={goDirectory}
-						testID='rooms-list-view-directory'
-						disabled={disabled}
-					/>
-				</HeaderButton.Container>
-			)
-		};
+				: {
+						headerLeft: () => (
+							<HeaderButton.Drawer
+								ref={drawerButtonRef}
+								navigation={navigation}
+								testID='rooms-list-view-sidebar'
+								onPress={
+									isMasterDetail
+										? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
+										: () => navigation.toggleDrawer()
+								}
+								badge={getBadge}
+								disabled={disabled}
+							/>
+						),
+						headerTitle: () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />,
+						headerRight: () => (
+							<HeaderButton.Container>
+								{issuesWithNotifications ? (
+									<HeaderButton.Item
+										iconName='notification-disabled'
+										onPress={navigateToPushTroubleshootView}
+										testID='rooms-list-view-push-troubleshoot'
+										color={colors.fontDanger}
+									/>
+								) : null}
+								{canCreateRoom ? (
+									<HeaderButton.Item
+										iconName='add'
+										accessibilityLabel={i18n.t('Create_new_channel_team_dm_discussion')}
+										onPress={goToNewMessage}
+										testID='rooms-list-view-create-channel'
+										disabled={disabled}
+									/>
+								) : null}
+								<HeaderButton.Item
+									iconName='search'
+									accessibilityLabel={i18n.t('Search')}
+									onPress={startSearch}
+									testID='rooms-list-view-search'
+									disabled={disabled}
+								/>
+								<HeaderButton.Item
+									iconName='directory'
+									accessibilityLabel={i18n.t('Directory')}
+									onPress={goDirectory}
+									testID='rooms-list-view-directory'
+									disabled={disabled}
+								/>
+							</HeaderButton.Container>
+						)
+					},
+		[
+			disabled,
+			issuesWithNotifications,
+			navigation,
+			isMasterDetail,
+			colors,
+			canCreateRoom,
+			searchEnabled,
+			goDirectory,
+			navigateToPushTroubleshootView,
+			getBadge,
+			goToNewMessage,
+			startSearch,
+			stopSearch,
+			search
+		]
+	);
 
+	useLayoutEffect(() => {
 		navigation.setOptions(options);
-		if (isTablet) {
-			setOptions(options);
-		}
-	}, [
-		disabled,
-		issuesWithNotifications,
-		navigation,
-		isMasterDetail,
-		colors,
-		canCreateRoom,
-		searchEnabled,
-		goDirectory,
-		navigateToPushTroubleshootView,
-		getBadge,
-		goToNewMessage,
-		startSearch,
-		stopSearch,
-		search
-	]);
+	}, [navigation, options]);
 
 	// The rooms list header persists across native-stack navigation, so autoFocus (mount-only)
 	// won't re-fire on back-return or after the list/banner render asynchronously. Re-assert focus
@@ -191,5 +184,5 @@ export const useHeader = () => {
 		}, [isAccessibilityNavigationEnabled])
 	);
 
-	return { options };
+	return { options: isTablet ? options : null };
 };

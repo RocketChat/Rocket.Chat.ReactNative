@@ -23,6 +23,18 @@ import AudioPlayer from '~/containers/AudioPlayer';
 import { CancelButton } from './CancelButton';
 import i18n from '~/i18n';
 
+const getRecordingUpload = async (recordingUri: string): Promise<IUpload> => {
+	const fileData = await getInfoAsync(recordingUri);
+	return {
+		name: `${Date.now()}${RECORDING_EXTENSION}`,
+		mime: 'audio/aac',
+		type: 'audio/aac',
+		store: 'Uploads',
+		path: fileData.uri,
+		size: fileData.exists ? fileData.size : null
+	} as IUpload;
+};
+
 export const RecordAudio = (): ReactElement | null => {
 	const [styles, colors] = useStyle();
 	const audioRecorder = useAudioRecorder(RECORDING_SETTINGS);
@@ -70,9 +82,8 @@ export const RecordAudio = (): ReactElement | null => {
 			await audioRecorder.stop();
 		} catch {
 			// Do nothing
-		} finally {
-			setRecordingAudio(false);
 		}
+		setRecordingAudio(false);
 	};
 
 	const goReview = async () => {
@@ -85,22 +96,12 @@ export const RecordAudio = (): ReactElement | null => {
 	};
 
 	const sendAudio = async () => {
+		const recordingUri = audioRecorder.uri;
+		if (!rid || !recordingUri) return;
 		try {
-			if (!rid || !audioRecorder.uri) return;
-			const fileData = await getInfoAsync(audioRecorder.uri);
-			const fileInfo = {
-				name: `${Date.now()}${RECORDING_EXTENSION}`,
-				mime: 'audio/aac',
-				type: 'audio/aac',
-				store: 'Uploads',
-				path: fileData.uri,
-				size: fileData.exists ? fileData.size : null
-			} as IUpload;
-
-			if (fileInfo) {
-				if (permissionToUpload) {
-					await sendFileMessage(rid, fileInfo, tmid, server, user);
-				}
+			const fileInfo = await getRecordingUpload(recordingUri);
+			if (permissionToUpload) {
+				await sendFileMessage(rid, fileInfo, tmid, server, user);
 			}
 			setRecordingAudio(false);
 		} catch (e) {

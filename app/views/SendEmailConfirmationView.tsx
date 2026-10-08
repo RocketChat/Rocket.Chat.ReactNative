@@ -17,15 +17,9 @@ type SendEmailConfirmationViewProps = StaticScreenProps<{ user?: string }>;
 const SendEmailConfirmationView = ({ route }: SendEmailConfirmationViewProps) => {
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'SendEmailConfirmationView'>>();
 
-	const [email, setEmail] = useState('');
-	const [invalidEmail, setInvalidEmail] = useState(true);
+	const [email, setEmail] = useState(route.params?.user ?? '');
 	const [isFetching, setIsFetching] = useState(false);
-
-	const validate = (val: string) => {
-		const isInvalidEmail = !isValidEmail(val);
-		setEmail(val);
-		setInvalidEmail(isInvalidEmail);
-	};
+	const invalidEmail = !isValidEmail(email);
 
 	const resendConfirmationEmail = async () => {
 		logEvent(events.SEC_SEND_EMAIL_CONFIRMATION);
@@ -51,10 +45,7 @@ const SendEmailConfirmationView = ({ route }: SendEmailConfirmationViewProps) =>
 		navigation.setOptions({
 			title: 'Rocket.Chat'
 		});
-		if (route.params?.user) {
-			validate(route.params.user);
-		}
-	}, [navigation, route.params?.user]);
+	}, [navigation]);
 
 	return (
 		<FormContainer testID='send-email-confirmation-view'>
@@ -64,7 +55,7 @@ const SendEmailConfirmationView = ({ route }: SendEmailConfirmationViewProps) =>
 					placeholder={I18n.t('Email')}
 					keyboardType='email-address'
 					returnKeyType='send'
-					onChangeText={(email: string) => validate(email)}
+					onChangeText={setEmail}
 					onSubmitEditing={resendConfirmationEmail}
 					testID='send-email-confirmation-view-email'
 					containerStyle={sharedStyles.inputLastChild}

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { AccessibilityInfo, BackHandler, Keyboard, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Image } from 'expo-image';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -39,14 +39,13 @@ const NewServerView = () => {
 
 	const {
 		control,
-		watch,
 		formState: { errors },
 		setValue,
 		setError,
 		clearErrors
 	} = useForm({ mode: 'onChange', defaultValues: { workspaceUrl: '' } });
 
-	const workspaceUrl = watch('workspaceUrl');
+	const workspaceUrl = useWatch({ control, name: 'workspaceUrl' });
 	const [showBottomInfo, setShowBottomInfo] = useState<boolean>(true);
 	const { deleteServerHistory, queryServerHistory, serversHistory } = useServersHistory();
 	const { certificate, chooseCertificate, removeCertificate, autocompleteCertificate } = useCertificate();
