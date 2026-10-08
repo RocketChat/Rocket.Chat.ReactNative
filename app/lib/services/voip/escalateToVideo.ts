@@ -4,6 +4,7 @@ import openLink from '~/lib/methods/helpers/openLink';
 import log from '~/lib/methods/helpers/log';
 import Navigation from '~/lib/navigation/appNavigation';
 import { mediaCallsEscalate } from '~/lib/services/restApi';
+import { usePexipCallStore } from '~/lib/services/videoConf/usePexipCallStore';
 import { useCallStore } from './useCallStore';
 
 let inFlight = false;
@@ -20,7 +21,7 @@ const executeEscalation = async (callId: string): Promise<void> => {
 		}
 		const { url, providerName } = result;
 		// The OS call session owns the microphone, so the VoIP call has to end before the conference can use it.
-		const { callId: currentCallId, focused, endCall } = useCallStore.getState();
+		const { callId: currentCallId, focused, endCall, roomId } = useCallStore.getState();
 		if (currentCallId === callId) {
 			endCall();
 			if (focused) {
@@ -29,6 +30,8 @@ const executeEscalation = async (callId: string): Promise<void> => {
 		}
 		if (providerName === 'jitsi') {
 			Navigation.navigate('JitsiMeetView', { url, onlyAudio: false, videoConf: true });
+		} else if (providerName.toLowerCase().includes('pexip')) {
+			usePexipCallStore.getState().open({ callId: result.callId ?? callId, url, rid: roomId ?? undefined });
 		} else {
 			openLink(url);
 		}
