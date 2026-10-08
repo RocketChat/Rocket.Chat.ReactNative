@@ -19,5 +19,6 @@ tags:
     commands:
       - extendedWaitUntil:
           visible:
-            text: '${ROOM}'
+            id: 'room-header'
+            text: '.*${ROOM}'
           timeout: 60000

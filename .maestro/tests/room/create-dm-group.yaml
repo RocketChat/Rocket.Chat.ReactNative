@@ -80,11 +80,6 @@ tags:
     id: 'select-users-view-item-${output.otherUser.username}'
 - runFlow: '../../helpers/close-search.yaml'
 - runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'selected-users-view-submit'
-      IOS_LABEL: 'Create'
-- runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
       ANDROID_ID: 'selected-users-view-submit'

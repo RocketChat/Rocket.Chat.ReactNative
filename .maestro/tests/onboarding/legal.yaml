@@ -9,11 +9,6 @@ tags:
 - runFlow: '../../helpers/launch-app.yaml'
 - runFlow: '../../helpers/navigate-to-workspace.yaml'
 - runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'login-view-more'
-      IOS_LABEL: 'More'
-- runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
       ANDROID_ID: 'login-view-more'
@@ -25,11 +20,6 @@ tags:
     element:
       text: 'Create an account'
 - tapOn: 'Create an account'
-- runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'register-view-more'
-      IOS_LABEL: 'More'
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:

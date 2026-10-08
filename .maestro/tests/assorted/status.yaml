@@ -15,11 +15,6 @@ tags:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
 - runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'rooms-list-view-sidebar'
-      IOS_LABEL: 'Menu'
-- runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
       ANDROID_ID: 'rooms-list-view-sidebar'

@@ -20,11 +20,6 @@ tags:
       id: 'profile-view'
     timeout: 60000
 - runFlow:
-    file: '../../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'preferences-view-open'
-      IOS_LABEL: 'Preferences'
-- runFlow:
     file: '../../../helpers/tap-header-item.yaml'
     env:
       ANDROID_ID: 'preferences-view-open'

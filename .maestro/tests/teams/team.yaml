@@ -290,13 +290,8 @@ tags:
     id: add-existing-channel-view-item-${output.room.name}
 - runFlow: '../../helpers/close-search.yaml'
 - runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    label: should have submit button
-    env:
-      ANDROID_ID: 'add-existing-channel-view-submit'
-      IOS_LABEL: 'Next'
-- runFlow:
     file: '../../helpers/tap-header-item.yaml'
+    label: should have submit button
     env:
       ANDROID_ID: 'add-existing-channel-view-submit'
       IOS_LABEL: 'Next'
@@ -433,11 +428,6 @@ tags:
     timeout: 60000
 - runFlow: '../../helpers/close-search.yaml'
 - runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'selected-users-view-submit'
-      IOS_LABEL: 'Next'
-- runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
       ANDROID_ID: 'selected-users-view-submit'
@@ -481,11 +471,6 @@ tags:
     notVisible:
       id: ${output.privateRoomName}-checked
     timeout: 60000
-- runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'select-list-view-submit'
-      IOS_LABEL: 'Next'
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
@@ -547,11 +532,6 @@ tags:
 - assertVisible:
     text: You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.
 - tapOn: OK
-- runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'select-list-view-submit'
-      IOS_LABEL: 'Next'
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:

@@ -59,11 +59,6 @@ tags:
       IOS_LABEL: 'Room info edit'
 
 - runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'room-info-view-edit-button'
-      IOS_LABEL: 'Room info edit'
-- runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
       ANDROID_ID: 'room-info-view-edit-button'
