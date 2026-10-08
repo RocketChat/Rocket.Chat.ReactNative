@@ -131,7 +131,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -141,7 +141,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -171,7 +171,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -456,7 +456,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -466,7 +466,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -496,7 +496,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -825,7 +825,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -835,7 +835,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -865,7 +865,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -1194,7 +1194,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -1204,7 +1204,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -1234,7 +1234,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -1563,7 +1563,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -1573,7 +1573,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -1603,7 +1603,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -1932,7 +1932,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -1942,7 +1942,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -1972,7 +1972,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -2301,7 +2301,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -2311,7 +2311,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -2341,7 +2341,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -2670,7 +2670,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -2680,7 +2680,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -2710,7 +2710,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -3039,7 +3039,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -3049,7 +3049,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -3079,7 +3079,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -3408,7 +3408,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -3418,7 +3418,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -3448,7 +3448,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -3777,7 +3777,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -3787,7 +3787,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -3817,7 +3817,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -4150,7 +4150,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderRadius": 4,
+                      "borderRadius": 8,
                       "height": 36,
                       "width": 36,
                     },
@@ -4160,7 +4160,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                 testID="avatar"
               >
                 <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
+                  borderRadius={8}
                   containerViewRef={{"current":"Object"}}
                   contentFit="cover"
                   contentPosition={
@@ -4190,7 +4190,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "borderRadius": 4,
+                      "borderRadius": 8,
                       "height": 36,
                       "width": 36,
                     }
@@ -4458,7 +4458,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -4468,7 +4468,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -4498,7 +4498,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -4827,7 +4827,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -4837,7 +4837,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -4867,7 +4867,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -5196,7 +5196,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -5206,7 +5206,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -5236,7 +5236,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -7414,7 +7414,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -7424,7 +7424,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -7454,7 +7454,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -7746,7 +7746,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -7756,7 +7756,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -7786,7 +7786,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -8086,7 +8086,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -8096,7 +8096,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -8126,7 +8126,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -8431,7 +8431,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -8441,7 +8441,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -8471,7 +8471,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -8776,7 +8776,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -8786,7 +8786,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -8816,7 +8816,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -9121,7 +9121,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -9131,7 +9131,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -9161,7 +9161,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -9466,7 +9466,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -9476,7 +9476,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -9506,7 +9506,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -9876,7 +9876,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -9886,7 +9886,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -9916,7 +9916,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -10286,7 +10286,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -10296,7 +10296,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -10326,7 +10326,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -10698,7 +10698,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -10708,7 +10708,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -10738,7 +10738,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -11002,7 +11002,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -11012,7 +11012,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -11042,7 +11042,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -11306,7 +11306,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -11316,7 +11316,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -11346,7 +11346,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -11610,7 +11610,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -11620,7 +11620,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -11650,7 +11650,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -11914,7 +11914,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -11924,7 +11924,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -11954,7 +11954,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -12218,7 +12218,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -12228,7 +12228,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -12258,7 +12258,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -12522,7 +12522,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -12532,7 +12532,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -12562,7 +12562,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -12826,7 +12826,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -12836,7 +12836,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -12866,7 +12866,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -13130,7 +13130,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -13140,7 +13140,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -13170,7 +13170,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -13434,7 +13434,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -13444,7 +13444,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -13474,7 +13474,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -13743,7 +13743,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -13753,7 +13753,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -13783,7 +13783,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -14089,7 +14089,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -14099,7 +14099,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -14129,7 +14129,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -14471,7 +14471,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -14481,7 +14481,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -14511,7 +14511,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -14817,7 +14817,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -14827,7 +14827,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -14857,7 +14857,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -15203,7 +15203,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderRadius": 4,
+                      "borderRadius": 8,
                       "height": 36,
                       "width": 36,
                     },
@@ -15213,7 +15213,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                 testID="avatar"
               >
                 <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
+                  borderRadius={8}
                   containerViewRef={{"current":"Object"}}
                   contentFit="cover"
                   contentPosition={
@@ -15243,7 +15243,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "borderRadius": 4,
+                      "borderRadius": 8,
                       "height": 36,
                       "width": 36,
                     }
@@ -15511,7 +15511,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -15521,7 +15521,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -15551,7 +15551,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -15823,7 +15823,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -15833,7 +15833,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -15863,7 +15863,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -16127,7 +16127,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -16137,7 +16137,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -16167,7 +16167,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -16431,7 +16431,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -16441,7 +16441,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -16471,7 +16471,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -16735,7 +16735,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -16745,7 +16745,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -16775,7 +16775,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -17039,7 +17039,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -17049,7 +17049,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -17079,7 +17079,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -17343,7 +17343,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -17353,7 +17353,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -17383,7 +17383,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -17647,7 +17647,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -17657,7 +17657,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -17687,7 +17687,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -17951,7 +17951,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -17961,7 +17961,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -17991,7 +17991,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -18260,7 +18260,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -18270,7 +18270,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -18300,7 +18300,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }
@@ -18572,7 +18572,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       },
@@ -18582,7 +18582,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
-                    borderRadius={4}
+                    borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
                     contentPosition={
@@ -18612,7 +18612,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "borderRadius": 4,
+                        "borderRadius": 8,
                         "height": 36,
                         "width": 36,
                       }

@@ -78,7 +78,7 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
       style={
         [
           {
-            "borderRadius": 4,
+            "borderRadius": 8,
             "height": 30,
             "width": 30,
           },
@@ -88,7 +88,7 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
       testID="avatar"
     >
       <ViewManagerAdapter_ExpoImage
-        borderRadius={4}
+        borderRadius={8}
         containerViewRef={{"current":"Object"}}
         contentFit="cover"
         contentPosition={
@@ -118,7 +118,7 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
         }
         style={
           {
-            "borderRadius": 4,
+            "borderRadius": 8,
             "height": 30,
             "width": 30,
           }
@@ -262,7 +262,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         style={
           [
             {
-              "borderRadius": 4,
+              "borderRadius": 8,
               "height": 30,
               "width": 30,
             },
@@ -272,7 +272,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         testID="avatar"
       >
         <ViewManagerAdapter_ExpoImage
-          borderRadius={4}
+          borderRadius={8}
           containerViewRef={{"current":"Object"}}
           contentFit="cover"
           contentPosition={
@@ -302,7 +302,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           }
           style={
             {
-              "borderRadius": 4,
+              "borderRadius": 8,
               "height": 30,
               "width": 30,
             }
@@ -509,7 +509,7 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
         style={
           [
             {
-              "borderRadius": 4,
+              "borderRadius": 8,
               "height": 30,
               "width": 30,
             },
@@ -519,7 +519,7 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
         testID="avatar"
       >
         <ViewManagerAdapter_ExpoImage
-          borderRadius={4}
+          borderRadius={8}
           containerViewRef={{"current":"Object"}}
           contentFit="cover"
           contentPosition={
@@ -549,7 +549,7 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
           }
           style={
             {
-              "borderRadius": 4,
+              "borderRadius": 8,
               "height": 30,
               "width": 30,
             }
@@ -756,7 +756,7 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
         style={
           [
             {
-              "borderRadius": 4,
+              "borderRadius": 8,
               "height": 30,
               "width": 30,
             },
@@ -766,7 +766,7 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
         testID="avatar"
       >
         <ViewManagerAdapter_ExpoImage
-          borderRadius={4}
+          borderRadius={8}
           containerViewRef={{"current":"Object"}}
           contentFit="cover"
           contentPosition={
@@ -796,7 +796,7 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
           }
           style={
             {
-              "borderRadius": 4,
+              "borderRadius": 8,
               "height": 30,
               "width": 30,
             }
