@@ -5,8 +5,8 @@ import { addSettings, clearSettings } from '~/actions/settings';
 import { defaultSettings } from '../constants/defaultSettings';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import { type IPreparedSettings, type ISettingsIcon } from '~/definitions';
-import fetch from './helpers/fetch';
 import log from './helpers/log';
+import { fetchForWorkspace } from './serverBasicAuth';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import sdk from '../services/sdk';
@@ -110,20 +110,31 @@ const serverInfoUpdate = async (serverInfo: IPreparedSettings[], iconSetting: IS
 	});
 };
 
-export async function getLoginSettings({ server, serverVersion }: { server: string; serverVersion: string }): Promise<void> {
+export async function getLoginSettings({
+	server,
+	serverVersion,
+	signal
+}: {
+	server: string;
+	serverVersion: string;
+	signal?: AbortSignal;
+}): Promise<void> {
 	const settingsParams = JSON.stringify(loginSettings);
 
 	const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
 		? `${server}/api/v1/settings.public?_id=${loginSettings.join(',')}`
 		: `${server}/api/v1/settings.public?query={"_id":{"$in":${settingsParams}}}`;
 	try {
-		const result = await fetch(url).then(response => response.json());
+		const result = await fetchForWorkspace(server, url, { signal }).then(response => response.json());
 
 		if (result.success && result.settings.length) {
 			reduxStore.dispatch(clearSettings());
 			reduxStore.dispatch(addSettings(parseSettings(_prepareSettings(result.settings))));
 		}
 	} catch (e) {
+		if (signal?.aborted) {
+			return;
+		}
 		log(e);
 	}
 }
@@ -166,7 +177,7 @@ export async function getSettings(server: string): Promise<void> {
 		do {
 			// TODO: why is no-await-in-loop enforced in the first place?
 			/* eslint-disable no-await-in-loop */
-			const response = await fetch(`${url}&offset=${offset}`);
+			const response = await fetchForWorkspace(server, `${url}&offset=${offset}`);
 
 			const result = await response.json();
 			if (!result.success) {

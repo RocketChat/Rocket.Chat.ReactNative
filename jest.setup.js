@@ -152,6 +152,10 @@ jest.mock('./app/lib/database', () => ({
 	}
 }));
 
+jest.mock('./app/containers/Avatar/useAvatarETag', () => ({
+	useAvatarETag: () => ({ avatarETag: undefined })
+}));
+
 jest.mock('./app/lib/hooks/useFrequentlyUsedEmoji', () => ({
 	useFrequentlyUsedEmoji: () => ({
 		frequentlyUsed: [],
