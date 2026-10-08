@@ -1,6 +1,6 @@
-import type * as SdkIntegration from '../testUtils/sdkIntegration';
+import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
 
-jest.mock('../database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: {
 		servers: {
@@ -12,45 +12,45 @@ jest.mock('../database', () => ({
 	getDatabase: jest.fn()
 }));
 
-jest.mock('./helpers/log', () => ({
-	...jest.requireActual('./helpers/log'),
+jest.mock('~/lib/methods/helpers/log', () => ({
+	...jest.requireActual('~/lib/methods/helpers/log'),
 	__esModule: true,
 	default: jest.fn()
 }));
 
-jest.mock('../notifications', () => ({
+jest.mock('~/lib/notifications', () => ({
 	getDeviceToken: jest.fn(() => '')
 }));
 
-jest.mock('../services/connect', () => ({
+jest.mock('~/lib/services/connect', () => ({
 	disconnect: jest.fn()
 }));
 
-jest.mock('../services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	removePushToken: jest.fn()
 }));
 
 const mockSdkLogout = jest.fn();
 
-jest.mock('../services/sdk', () => {
-	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../testUtils/sdkIntegration');
+jest.mock('~/lib/services/sdk', () => {
+	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('~/lib/testUtils/sdkIntegration');
 	return { __esModule: true, default: makeSdkMock({ logout: () => mockSdkLogout() }) };
 });
 
-import { logout, removeServerData } from './logout';
-import sdk from '../services/sdk';
-import { disconnect } from '../services/connect';
-import database from '../database';
-import UserPreferences from './userPreferences';
-import { BASIC_AUTH_KEY } from './helpers/fetch';
+import { logout, removeServerData } from '../logout';
+import sdk from '~/lib/services/sdk';
+import { disconnect } from '~/lib/services/connect';
+import database from '~/lib/database';
+import UserPreferences from '~/lib/methods/userPreferences';
 import {
 	CERTIFICATE_KEY,
 	CURRENT_SERVER,
 	E2E_PRIVATE_KEY,
 	E2E_PUBLIC_KEY,
 	E2E_RANDOM_PASSWORD_KEY,
-	TOKEN_KEY
-} from '../constants/keys';
+	TOKEN_KEY,
+	getBasicAuthKey
+} from '~/lib/constants/keys';
 
 const mockSdk = sdk as unknown as SdkIntegration.IMockSdk;
 
@@ -63,7 +63,7 @@ const tokenKey = (suffix: string): string => `${TOKEN_KEY}-${suffix}`;
 const certificateKey = (server: string): string => `${CERTIFICATE_KEY}-${server}`;
 
 const serverKeys = (server: string): string[] => [
-	`${BASIC_AUTH_KEY}-${server}`,
+	getBasicAuthKey(server),
 	`${server}-${E2E_PUBLIC_KEY}`,
 	`${server}-${E2E_PRIVATE_KEY}`,
 	`${server}-${E2E_RANDOM_PASSWORD_KEY}`

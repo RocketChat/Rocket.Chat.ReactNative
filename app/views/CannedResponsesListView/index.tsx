@@ -51,18 +51,16 @@ interface ICannedResponsesListViewProps {
 }
 
 const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListViewProps) => {
-	const [room, setRoom] = useState<ISubscription | null>(null);
+	const roomRef = useRef<ISubscription | null>(null);
 
 	const [cannedResponses, setCannedResponses] = useState<ICannedResponse[]>([]);
-	const [cannedResponsesScopeName, setCannedResponsesScopeName] = useState<ICannedResponse[]>([]);
 	const [departments, setDepartments] = useState<ILivechatDepartment[]>([]);
 	const [isSearching, setIsSearching] = useState(false);
 	const [currentDepartment, setCurrentDepartment] = useState(fixedScopes[0]);
 
-	// states used to do a fetch by onChangeText, onDepartmentSelect and onEndReached
-	const [searchText, setSearchText] = useState('');
-	const [scope, setScope] = useState('');
-	const [departmentId, setDepartmentId] = useState('');
+	const searchTextRef = useRef('');
+	const scopeRef = useRef('');
+	const departmentIdRef = useRef('');
 	const [loading, setLoading] = useState(true);
 	const [offset, setOffset] = useState(0);
 
@@ -77,7 +75,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		const subsCollection = db.get('subscriptions');
 		try {
 			const r = await subsCollection.find(rid);
-			setRoom(r);
+			roomRef.current = r;
 		} catch (error) {
 			console.log('CannedResponsesListView: Room not found');
 			log(error);
@@ -97,12 +95,14 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	}, 300);
 
 	const goToDetail = (item: ICannedResponse) => {
+		const room = roomRef.current;
 		if (room) {
 			navigation.navigate('CannedResponseDetail', { cannedResponse: item, room });
 		}
 	};
 
 	const navigateToRoom = (item: ICannedResponse) => {
+		const room = roomRef.current;
 		if (room?.rid) {
 			goRoom({ item: room, isMasterDetail, usedCannedResponse: item.text });
 		}
@@ -139,23 +139,16 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		}
 	};
 
-	useEffect(() => {
-		if (departments.length > 0) {
-			const newCannedResponses = cannedResponses.map(cr => {
-				let scopeName = '';
-
-				if (cr?.departmentId) {
-					scopeName = departments.filter(dep => dep._id === cr.departmentId)[0]?.name || 'Department';
-				} else {
-					scopeName = departments.filter(dep => dep._id === cr.scope)[0]?.name;
-				}
-				cr.scopeName = scopeName;
-
-				return cr;
-			});
-			setCannedResponsesScopeName(newCannedResponses);
+	const getScopeName = (cannedResponse: ICannedResponse) => {
+		if (cannedResponse.departmentId) {
+			return departments.find(department => department._id === cannedResponse.departmentId)?.name || 'Department';
 		}
-	}, [departments, cannedResponses]);
+		return departments.find(department => department._id === cannedResponse.scope)?.name ?? '';
+	};
+
+	const cannedResponsesScopeName: ICannedResponse[] = departments.length
+		? cannedResponses.map(cannedResponse => ({ ...cannedResponse, scopeName: getScopeName(cannedResponse) }))
+		: [];
 
 	const searchCallback = useDebounce(async (text = '', department = '', depId = '') => {
 		await handleGetListCannedResponse({ text, department, depId, debounced: true });
@@ -175,8 +168,8 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const onChangeText = (text: string) => {
 		newSearch();
-		setSearchText(text);
-		searchCallback(text, scope, departmentId);
+		searchTextRef.current = text;
+		searchCallback(text, scopeRef.current, departmentIdRef.current);
 	};
 
 	const onDepartmentSelect = (value: ILivechatDepartment) => {
@@ -196,9 +189,9 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 		newSearch();
 		setCurrentDepartment(value);
-		setScope(department);
-		setDepartmentId(depId);
-		searchCallback(searchText, department, depId);
+		scopeRef.current = department;
+		departmentIdRef.current = depId;
+		searchCallback(searchTextRef.current, department, depId);
 		hideActionSheetRef();
 	};
 
@@ -207,7 +200,12 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			return;
 		}
 		setLoading(true);
-		await handleGetListCannedResponse({ text: searchText, department: scope, depId: departmentId, debounced: false });
+		await handleGetListCannedResponse({
+			text: searchTextRef.current,
+			department: scopeRef.current,
+			depId: departmentIdRef.current,
+			debounced: false
+		});
 	};
 
 	const showFilters = () => {

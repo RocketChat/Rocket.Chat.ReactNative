@@ -247,12 +247,21 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 			}
 
 			const canAutoTranslate = canAutoTranslateMethod();
-			const canEdit = await this.canEdit();
-			const canToggleEncryption = await this.canToggleEncryption();
-			const canViewMembers = await this.canViewMembers();
-			const canCreateTeam = await this.canCreateTeam();
-			const canAddChannelToTeam = await this.hasMoveToTeamPermission(room.rid);
-			const canConvertTeam = await this.canConvertTeam();
+			const { editRoomPermission, toggleRoomE2EEncryptionPermission, createTeamPermission, convertTeamPermission } = this.props;
+			const [[canEdit, canToggleEncryption, canCreateTeam, canAddChannelToTeam, canConvertTeam], canViewMembers] =
+				await Promise.all([
+					hasPermission(
+						[
+							editRoomPermission,
+							toggleRoomE2EEncryptionPermission,
+							createTeamPermission,
+							this.getMoveToTeamPermission(),
+							convertTeamPermission
+						],
+						room.rid
+					),
+					this.canViewMembers()
+				]);
 			const hasE2EEWarning = EncryptionUtils.hasE2EEWarning({
 				encryptionEnabled,
 				E2EKey: room.E2EKey,
@@ -341,54 +350,16 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 		}
 	};
 
-	canEdit = async () => {
-		const { room } = this.state;
-		const { editRoomPermission } = this.props;
-		const { rid } = room;
-		const permissions = await hasPermission([editRoomPermission], rid);
-
-		const canEdit = permissions[0];
-		return canEdit;
-	};
-
-	canCreateTeam = async () => {
-		const { room } = this.state;
-		const { createTeamPermission } = this.props;
-		const { rid } = room;
-		const permissions = await hasPermission([createTeamPermission], rid);
-
-		const canCreateTeam = permissions[0];
-		return canCreateTeam;
+	getMoveToTeamPermission = () => {
+		const { addTeamChannelPermission, moveRoomToTeamPermission, serverVersion } = this.props;
+		return compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
+			? moveRoomToTeamPermission
+			: addTeamChannelPermission;
 	};
 
 	hasMoveToTeamPermission = async (rid: string) => {
-		const { addTeamChannelPermission, moveRoomToTeamPermission, serverVersion } = this.props;
-		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
-			const result = await hasPermission([moveRoomToTeamPermission], rid);
-			return result[0];
-		}
-		const result = await hasPermission([addTeamChannelPermission], rid);
-		return result[0];
-	};
-
-	canConvertTeam = async () => {
-		const { room } = this.state;
-		const { convertTeamPermission } = this.props;
-		const { rid } = room;
-		const permissions = await hasPermission([convertTeamPermission], rid);
-
-		const canConvertTeam = permissions[0];
-		return canConvertTeam;
-	};
-
-	canToggleEncryption = async () => {
-		const { room } = this.state;
-		const { toggleRoomE2EEncryptionPermission } = this.props;
-		const { rid } = room;
-		const permissions = await hasPermission([toggleRoomE2EEncryptionPermission], rid);
-
-		const canToggleEncryption = permissions[0];
-		return canToggleEncryption;
+		const [canMoveToTeam] = await hasPermission([this.getMoveToTeamPermission()], rid);
+		return canMoveToTeam;
 	};
 
 	canViewMembers = async () => {

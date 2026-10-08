@@ -47,8 +47,8 @@ const List = ({ flatListRef, jumpToBottom, isAnchored, ...props }: IListProps) =
 		onMomentumEnd,
 		onScroll: event => {
 			const isPastLimit = event.contentOffset.y > SCROLL_LIMIT;
-			if (isPastLimit !== wasScrolledPastLimit.value) {
-				wasScrolledPastLimit.value = isPastLimit;
+			if (isPastLimit !== wasScrolledPastLimit.get()) {
+				wasScrolledPastLimit.set(isPastLimit);
 				scheduleOnRN(setScrolledPastLimit, isPastLimit);
 			}
 		}

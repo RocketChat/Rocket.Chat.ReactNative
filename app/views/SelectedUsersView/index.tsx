@@ -95,13 +95,11 @@ const SelectedUsersView = () => {
 					setSearch(localData);
 				}
 			});
-			if (isStale()) return;
-			setSearch(result);
+			if (!isStale()) setSearch(result);
 		} catch (e) {
 			log(e);
-		} finally {
-			if (!isStale()) setSearching(false);
 		}
+		if (!isStale()) setSearching(false);
 	}, []);
 
 	useLayoutEffect(() => {

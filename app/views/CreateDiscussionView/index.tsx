@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -71,7 +71,6 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	const {
 		control,
 		handleSubmit,
-		watch,
 		formState: { errors }
 	} = useForm({
 		defaultValues: {
@@ -80,7 +79,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		resolver: yupResolver(schema)
 	});
 
-	const inputValues = watch();
+	const inputValues = useWatch({ control });
 	const prevLoading = useRef<boolean>(loading);
 	const isEncryptionEnabled = encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 

@@ -1,4 +1,4 @@
-import { type ReactElement, useLayoutEffect, useState } from 'react';
+import { type ReactElement, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, Text, type TextInputProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -43,8 +43,8 @@ const PickerView = (): ReactElement => {
 
 	const { bottom } = useSafeAreaInsets();
 	const [data, setData] = useState(paramData);
-	const [total, setTotal] = useState(paramTotal ?? 0);
-	const [searchText, setSearchText] = useState('');
+	const totalRef = useRef(paramTotal ?? 0);
+	const searchTextRef = useRef('');
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -60,17 +60,17 @@ const PickerView = (): ReactElement => {
 	const onChangeText = useDebounce(async (text: string) => {
 		const search = await onSearch(text);
 		if (search?.data) {
-			setSearchText(text);
+			searchTextRef.current = text;
 			setData(search?.data);
 		}
 	}, textInputDebounceTime);
 
 	const handleOnEndReached = async () => {
-		if (onEndReached && total && data.length < total) {
-			const end = await onEndReached(searchText, data.length);
+		if (onEndReached && totalRef.current && data.length < totalRef.current) {
+			const end = await onEndReached(searchTextRef.current, data.length);
 			if (end?.data) {
 				setData([...data, ...end.data]);
-				setTotal(end.total);
+				totalRef.current = end.total;
 			}
 		}
 	};

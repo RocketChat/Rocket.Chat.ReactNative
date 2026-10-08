@@ -1,8 +1,8 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { AccessibilityInfo, ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { sha256 } from 'js-sha256';
@@ -80,11 +80,10 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 		serverURL: state.server.server,
 		user: getUserSelector(state)
 	}));
-	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
+	const hasPromptedTwoFactorRef = useRef(false);
 
 	const {
 		control,
-		watch,
 		setValue,
 		setError,
 		formState: { isDirty, errors }
@@ -97,92 +96,81 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
-	const inputValues = watch();
-	const { isPasswordValid, passwordPolicies } = useVerifyPassword(inputValues?.newPassword, inputValues?.confirmNewPassword);
+	const [currentPassword, newPassword, confirmNewPassword, saving] = useWatch({
+		control,
+		name: ['currentPassword', 'newPassword', 'confirmNewPassword', 'saving']
+	});
+	const { isPasswordValid, passwordPolicies } = useVerifyPassword(newPassword, confirmNewPassword);
 
 	const onCancel = () => {
 		navigation.goBack();
 	};
 
 	const changePassword = async () => {
-		const { newPassword } = inputValues;
-
+		setValue('saving', true);
 		try {
-			setValue('saving', true);
 			await setPassword(newPassword);
 			dispatch(setUser({ requirePasswordChange: false }));
 			navigation.goBack();
 		} catch (error: any) {
 			showErrorAlert(error?.reason || error?.message, I18n.t('Oops'));
-		} finally {
-			setValue('saving', false);
 		}
-	};
-
-	const resetTwoFactorState = () => {
-		setValue('currentPassword', '');
-		setTwoFactorCode(null);
+		setValue('saving', false);
 	};
 
 	const changePasswordFromProfileView = async () => {
-		const { currentPassword, newPassword, confirmNewPassword } = inputValues;
 		if (newPassword !== confirmNewPassword) {
 			setError('newPassword', { message: 'Passwords must match', type: 'validate' });
 			setError('confirmNewPassword', { message: 'Passwords must match', type: 'validate' });
 			AccessibilityInfo.announceForAccessibility('Passwords must match');
 			return;
 		}
+		setValue('saving', true);
+		const { username, emails } = user;
+		const params = { currentPassword: sha256(currentPassword), newPassword, username, email: emails?.[0]?.address || '' };
 		try {
-			setValue('saving', true);
-			const { username, emails } = user;
-			if (fromProfileView) {
-				const params = { currentPassword: sha256(currentPassword), newPassword, username, email: emails?.[0].address || '' };
-				const result = await saveUserProfile(params);
+			const result = await saveUserProfile(params);
 
-				if (result) {
-					logEvent(events.PROFILE_SAVE_CHANGES);
-					dispatch(setUser({ ...params }));
-					EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
-					navigation.goBack();
-				}
+			if (result) {
+				logEvent(events.PROFILE_SAVE_CHANGES);
+				dispatch(setUser({ ...params }));
+				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
+				navigation.goBack();
 			}
 		} catch (e: any) {
-			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
+			const twoFactorMethod = e?.details?.method;
+			if (e?.error === 'totp-invalid' && twoFactorMethod !== TwoFactorMethods.PASSWORD) {
 				try {
-					const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
-					setTwoFactorCode(code as any);
-					return handleSetNewPassword();
+					await twoFactor({ method: twoFactorMethod, invalid: hasPromptedTwoFactorRef.current });
+					hasPromptedTwoFactorRef.current = true;
+					await changePasswordFromProfileView();
 				} catch (twoFactorError) {
-					resetTwoFactorState();
-					if (isTwoFactorCancelled(twoFactorError)) {
-						return;
+					setValue('currentPassword', '');
+					if (!isTwoFactorCancelled(twoFactorError)) {
+						handleSaveUserProfileError(twoFactorError, 'saving_profile');
 					}
-					return handleSaveUserProfileError(twoFactorError, 'saving_profile');
 				}
-			}
-
-			if (e?.error === 'totp-invalid' && e?.details.method === TwoFactorMethods.PASSWORD) {
+			} else if (e?.error === 'totp-invalid' && twoFactorMethod === TwoFactorMethods.PASSWORD) {
 				setError('currentPassword', { message: I18n.t('error-invalid-password'), type: 'validate' });
 				AccessibilityInfo.announceForAccessibility(I18n.t('error-invalid-password'));
-				return;
+			} else {
+				setValue('currentPassword', '');
+				handleSaveUserProfileError(e, 'saving_profile');
 			}
-
-			resetTwoFactorState();
-			handleSaveUserProfileError(e, 'saving_profile');
-		} finally {
-			setValue('saving', false);
 		}
+		setValue('saving', false);
 	};
 
 	const handleSetNewPassword = async () => {
 		if (fromProfileView) {
+			hasPromptedTwoFactorRef.current = false;
 			await changePasswordFromProfileView();
 		} else {
 			await changePassword();
 		}
 	};
 
-	useA11yErrorAnnouncement({ errors, inputValues });
+	useA11yErrorAnnouncement({ errors, inputValues: { currentPassword, newPassword, confirmNewPassword, saving } });
 
 	useLayoutEffect(() => {
 		const server = serverURL?.replace(/(^\w+:|^)\/\//, '');
@@ -256,14 +244,12 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 						) : null}
 					</View>
 
-					{passwordPolicies ? (
-						<PasswordPolicies isDirty={isDirty} password={inputValues.newPassword} policies={passwordPolicies} />
-					) : null}
+					{passwordPolicies ? <PasswordPolicies isDirty={isDirty} password={newPassword} policies={passwordPolicies} /> : null}
 
 					<View style={{ columnGap: 12 }}>
 						<Button title={I18n.t('Cancel')} type='secondary' onPress={onCancel} testID='change-password-view-cancel-button' />
 						<Button
-							loading={inputValues.saving}
+							loading={saving}
 							disabled={!isPasswordValid}
 							title={I18n.t('Set_new_password')}
 							type='primary'

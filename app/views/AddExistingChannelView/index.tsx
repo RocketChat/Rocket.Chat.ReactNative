@@ -51,13 +51,34 @@ const AddExistingChannelView = () => {
 	}));
 	const isMasterDetail = useMasterDetail();
 
-	useLayoutEffect(() => {
-		setHeader();
-	}, [selected.length, isMasterDetail]);
+	const isChecked = (rid: string) => selected.includes(rid);
 
-	useEffect(() => {
-		query();
-	}, []);
+	const toggleChannel = (rid: string) => {
+		if (!isChecked(rid)) {
+			logEvent(events.AEC_ADD_CHANNEL);
+			setSelected([...selected, rid]);
+		} else {
+			logEvent(events.AEC_REMOVE_CHANNEL);
+			const filterSelected = selected.filter(el => el !== rid);
+			setSelected(filterSelected);
+		}
+	};
+
+	const submit = async () => {
+		sendLoadingEvent({ visible: true });
+		try {
+			logEvent(events.CT_ADD_ROOM_TO_TEAM);
+			const result = await addRoomsToTeam({ rooms: selected, teamId });
+			if (result.success) {
+				sendLoadingEvent({ visible: false });
+				Navigation.resetTo();
+			}
+		} catch (e: any) {
+			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
+			showErrorAlert(I18n.t(e.data.error), I18n.t('Add_Existing_Channel'), () => {});
+			sendLoadingEvent({ visible: false });
+		}
+	};
 
 	const setHeader = () => {
 		const options: NativeStackNavigationOptions = {
@@ -117,38 +138,17 @@ const AddExistingChannelView = () => {
 		}
 	};
 
+	useLayoutEffect(() => {
+		setHeader();
+	}, [selected.length, isMasterDetail]);
+
+	useEffect(() => {
+		query();
+	}, []);
+
 	const onSearchChangeText = useDebounce((text: string) => {
 		query(text);
 	}, textInputDebounceTime);
-
-	const isChecked = (rid: string) => selected.includes(rid);
-
-	const toggleChannel = (rid: string) => {
-		if (!isChecked(rid)) {
-			logEvent(events.AEC_ADD_CHANNEL);
-			setSelected([...selected, rid]);
-		} else {
-			logEvent(events.AEC_REMOVE_CHANNEL);
-			const filterSelected = selected.filter(el => el !== rid);
-			setSelected(filterSelected);
-		}
-	};
-
-	const submit = async () => {
-		sendLoadingEvent({ visible: true });
-		try {
-			logEvent(events.CT_ADD_ROOM_TO_TEAM);
-			const result = await addRoomsToTeam({ rooms: selected, teamId });
-			if (result.success) {
-				sendLoadingEvent({ visible: false });
-				Navigation.resetTo();
-			}
-		} catch (e: any) {
-			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
-			showErrorAlert(I18n.t(e.data.error), I18n.t('Add_Existing_Channel'), () => {});
-			sendLoadingEvent({ visible: false });
-		}
-	};
 
 	return (
 		<SafeAreaView testID='add-existing-channel-view'>
