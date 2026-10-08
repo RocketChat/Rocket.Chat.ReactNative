@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import MessageActionTouchable from './Touchable/MessageActionTouchable';
 import openLink from '~/lib/methods/helpers/openLink';
+import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
 import { LISTENER } from '~/containers/Toast';
@@ -128,9 +129,6 @@ const UrlImage = ({
 	);
 };
 
-const toAuthenticatedUrl = (rawUrl: string, baseUrl: string, userId?: string, token?: string) =>
-	rawUrl.startsWith('http') ? rawUrl : `${baseUrl}/${rawUrl}?rc_uid=${userId ?? ''}&rc_token=${token ?? ''}`;
-
 const useImageUrl = (url: IUrl): string | null => {
 	const baseUrl = useBaseUrl();
 	const user = useMessageUser();
@@ -139,7 +137,7 @@ const useImageUrl = (url: IUrl): string | null => {
 
 	useEffect(() => {
 		if (url.image || !url.url || !API_Embed) return;
-		const linkUrl = toAuthenticatedUrl(url.url, baseUrl, user?.id, user?.token);
+		const linkUrl = formatAttachmentUrl(url.url, user?.id ?? '', user?.token ?? '', baseUrl ?? '');
 		axios
 			.head(linkUrl)
 			.then(response => {
@@ -150,7 +148,7 @@ const useImageUrl = (url: IUrl): string | null => {
 			.catch(() => {});
 	}, [url.image, url.url, API_Embed, baseUrl, user?.id, user?.token]);
 
-	return url.image ? toAuthenticatedUrl(url.image, baseUrl, user?.id, user?.token) : verifiedImageUrl;
+	return url.image ? formatAttachmentUrl(url.image, user?.id ?? '', user?.token ?? '', baseUrl ?? '') : verifiedImageUrl;
 };
 
 const Url = ({ url }: { url: IUrl }) => {

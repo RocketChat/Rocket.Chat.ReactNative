@@ -11,10 +11,15 @@ import { selectServerSuccess } from '~/actions/server';
 import { type IUrl, type TAnyMessageModel } from '~/definitions';
 import { MessageRoomProvider } from '~/containers/message/stores/MessageRoomStore';
 import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { store as auxStore } from '~/lib/store/auxStore';
 import { WidthAwareContext } from '../WidthAwareView';
 import Urls from '../Urls';
 
 jest.mock('axios', () => ({ head: jest.fn() }));
+
+jest.mock('~/lib/store/auxStore', () => ({
+	store: { getState: jest.fn() }
+}));
 
 const mockedHead = axios.head as jest.Mock;
 
@@ -50,6 +55,7 @@ describe('Urls', () => {
 	beforeEach(() => {
 		mockedHead.mockReset();
 		mockedHead.mockResolvedValue({ headers: { 'content-type': 'text/html' } });
+		(auxStore.getState as jest.Mock).mockReturnValue({ settings: { FileUpload_ProtectFiles: true } });
 	});
 
 	it('sizes the preview image from metadata dimensions on first render', () => {
@@ -82,7 +88,7 @@ describe('Urls', () => {
 		renderUrl({ url: 'https://rocket.chat', image: '' });
 		await act(() => Promise.resolve());
 
-		expect(mockedHead).toHaveBeenCalledWith('https://rocket.chat');
+		expect(mockedHead).toHaveBeenCalledWith('https://rocket.chat/');
 		expect(screen.UNSAFE_queryByType(ExpoImage)).toBeNull();
 		expect(screen.getByText('Pull request')).toBeOnTheScreen();
 	});
@@ -119,5 +125,19 @@ describe('Urls', () => {
 
 		expect(screen.UNSAFE_queryByType(ExpoImage)).toBeNull();
 		expect(screen.getByText('Pull request')).toBeOnTheScreen();
+	});
+
+	it('adds credentials to a relative preview image on the workspace', () => {
+		renderUrl({ url: 'https://example.com/page', image: 'file-upload/1/preview.png' });
+
+		expect(screen.UNSAFE_getByType(ExpoImage).props.source).toEqual({
+			uri: 'https://open.rocket.chat/file-upload/1/preview.png?rc_token=token&rc_uid=reader-id'
+		});
+	});
+
+	it('loads an absolute third-party preview image without credentials', () => {
+		renderUrl({ url: 'https://example.com/page', image: 'https://evil.example/x.png' });
+
+		expect(screen.UNSAFE_getByType(ExpoImage).props.source).toEqual({ uri: 'https://evil.example/x.png' });
 	});
 });

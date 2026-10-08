@@ -58,6 +58,17 @@ interface IRoomMembersViewState {
 	page: number;
 }
 
+const mergeMembersPage = (members: TUserModel[], membersResult: TUserModel[], page: number) => {
+	const existingIds = new Set(members.map(m => m._id));
+	const membersResultFiltered = membersResult?.filter((member: TUserModel) => !existingIds.has(member._id));
+
+	// Safety check: if page is 0, we replace the list entirely
+	return {
+		members: page === 0 ? membersResultFiltered : [...members, ...(membersResultFiltered || [])],
+		end: membersResult?.length < PAGE_SIZE
+	};
+};
+
 const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
 	const { colors } = useTheme();
 	return (
@@ -125,6 +136,49 @@ const RoomMembersView = (): ReactElement => {
 		viewAllTeamsPermission
 	] = usePermissions(['mute-user', 'set-leader', 'set-owner', 'set-moderator', 'remove-user', ...teamPermissions], params.rid);
 
+	const toggleStatus = (status: boolean) => {
+		try {
+			// We only update 'allUsers'. 'filter' remains in state, so the next fetch uses both.
+			updateState({ members: [], allUsers: status, end: false, page: 0 });
+			setHeader(status);
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	const setHeader = (allUsers: boolean) => {
+		navigation.setOptions({
+			title: I18n.t('Members'),
+			headerRight: () => (
+				<HeaderButton.Container>
+					<HeaderButton.Item
+						iconName='filter'
+						onPress={() =>
+							showActionSheet({
+								options: [
+									{
+										title: I18n.t('Online'),
+										onPress: () => toggleStatus(false),
+										right: () => <Radio check={!allUsers} />,
+										testID: 'room-members-view-toggle-status-online'
+									},
+									{
+										title: I18n.t('All'),
+										onPress: () => toggleStatus(true),
+										right: () => <Radio check={allUsers} />,
+										testID: 'room-members-view-toggle-status-all'
+									}
+								],
+								enableContentPanningGesture: false
+							})
+						}
+						testID='room-members-view-filter'
+					/>
+				</HeaderButton.Container>
+			)
+		});
+	};
+
 	useEffect(() => {
 		const subscription = params?.room?.observe && params.room.observe().subscribe(changes => updateState({ room: changes }));
 		setHeader(true);
@@ -160,11 +214,12 @@ const RoomMembersView = (): ReactElement => {
 		const requestId = ++latestSearchRequest.current;
 		updateState({ isLoading: true });
 
+		const type = allUsers ? 'all' : 'online';
 		try {
 			const membersResult = await getRoomMembers({
 				rid: room.rid,
 				roomType: t,
-				type: allUsers ? 'all' : 'online',
+				type,
 				filter,
 				skip: PAGE_SIZE * page,
 				limit: PAGE_SIZE,
@@ -175,17 +230,9 @@ const RoomMembersView = (): ReactElement => {
 				return;
 			}
 
-			const existingIds = new Set(members.map(m => m._id));
-			const membersResultFiltered = membersResult?.filter((member: TUserModel) => !existingIds.has(member._id));
-
-			// Safety check: if page is 0, we replace the list entirely
-			const newMembers = page === 0 ? membersResultFiltered : [...members, ...(membersResultFiltered || [])];
-			const isEnd = membersResult?.length < PAGE_SIZE;
-
 			updateState({
-				members: newMembers,
+				...mergeMembersPage(members, membersResult, page),
 				isLoading: false,
-				end: isEnd,
 				page: page + 1
 			});
 		} catch (e) {
@@ -238,49 +285,6 @@ const RoomMembersView = (): ReactElement => {
 			isLoading: false
 		});
 	}, 500);
-
-	const toggleStatus = (status: boolean) => {
-		try {
-			// We only update 'allUsers'. 'filter' remains in state, so the next fetch uses both.
-			updateState({ members: [], allUsers: status, end: false, page: 0 });
-			setHeader(status);
-		} catch (e) {
-			log(e);
-		}
-	};
-
-	const setHeader = (allUsers: boolean) => {
-		navigation.setOptions({
-			title: I18n.t('Members'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item
-						iconName='filter'
-						onPress={() =>
-							showActionSheet({
-								options: [
-									{
-										title: I18n.t('Online'),
-										onPress: () => toggleStatus(false),
-										right: () => <Radio check={!allUsers} />,
-										testID: 'room-members-view-toggle-status-online'
-									},
-									{
-										title: I18n.t('All'),
-										onPress: () => toggleStatus(true),
-										right: () => <Radio check={allUsers} />,
-										testID: 'room-members-view-toggle-status-all'
-									}
-								],
-								enableContentPanningGesture: false
-							})
-						}
-						testID='room-members-view-filter'
-					/>
-				</HeaderButton.Container>
-			)
-		});
-	};
 
 	const getUserDisplayName = (user: TUserModel) => {
 		const preferred = useRealName ? user.name : user.username;

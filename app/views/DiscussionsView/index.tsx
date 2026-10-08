@@ -42,7 +42,7 @@ const DiscussionsView = () => {
 	const baseUrl = useAppSelector(state => state.server?.server);
 	const isMasterDetail = useMasterDetail();
 
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [discussions, setDiscussions] = useState<IMessageFromServer[]>([]);
 	const [search, setSearch] = useState<IMessageFromServer[]>([]);
 	const [isSearching, setIsSearching] = useState(false);
@@ -52,12 +52,7 @@ const DiscussionsView = () => {
 
 	const { colors } = useTheme();
 
-	const load = async () => {
-		if (loading) {
-			return;
-		}
-
-		setLoading(true);
+	const fetchDiscussions = async () => {
 		try {
 			const result = await getDiscussions({
 				roomId: rid,
@@ -80,6 +75,14 @@ const DiscussionsView = () => {
 			log(e);
 			setLoading(false);
 		}
+	};
+
+	const load = () => {
+		if (loading) {
+			return;
+		}
+		setLoading(true);
+		fetchDiscussions();
 	};
 
 	const onSearchChangeText = useDebounce((text: string) => {
@@ -135,7 +138,7 @@ const DiscussionsView = () => {
 	};
 
 	useEffect(() => {
-		load();
+		fetchDiscussions();
 	}, []);
 
 	useLayoutEffect(() => {

@@ -426,7 +426,8 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 			return messages?.filter(item => item?.replies?.find(u => u === user.id));
 		}
 		if (currentFilter === Filter.Unread) {
-			return messages?.filter(item => subscription?.tunread?.includes(item?.id));
+			const unreadThreadIds = new Set(subscription?.tunread);
+			return messages?.filter(item => unreadThreadIds.has(item?.id));
 		}
 		return messages;
 	};

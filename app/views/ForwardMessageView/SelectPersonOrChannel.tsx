@@ -23,6 +23,19 @@ const SelectPersonOrChannel = ({
 	const [rooms, setRooms] = useState<ISearchLocal[]>([]);
 	const { colors } = useTheme();
 
+	const getAvatar = (item: ISearchLocal) =>
+		getAvatarURL({
+			text: getRoomAvatar(item),
+			type: item.t,
+			userId,
+			token,
+			server,
+			avatarETag: item.avatarETag,
+			rid: item.rid,
+			blockUnauthenticatedAccess,
+			serverVersion
+		});
+
 	const getRooms = async (keyword = '') => {
 		try {
 			const res = await localSearchSubscription({ text: keyword, filterMessagingAllowed: true });
@@ -40,19 +53,6 @@ const SelectPersonOrChannel = ({
 	useEffect(() => {
 		getRooms('');
 	}, []);
-
-	const getAvatar = (item: ISearchLocal) =>
-		getAvatarURL({
-			text: getRoomAvatar(item),
-			type: item.t,
-			userId,
-			token,
-			server,
-			avatarETag: item.avatarETag,
-			rid: item.rid,
-			blockUnauthenticatedAccess,
-			serverVersion
-		});
 
 	return (
 		<View style={styles.inputContainer}>
