@@ -1,6 +1,7 @@
 import type { ServerInteraction, UserInteraction } from '@rocket.chat/ui-kit';
 
 import { ActionTypes, type ITriggerAction, type IView } from './interfaces';
+import { UIActionButtonContext } from '~/lib/apps/definitions';
 
 type TServerModalInteraction = Extract<ServerInteraction, { type: 'modal.open' | 'modal.update' | 'modal.close' | 'errors' }>;
 type TServerModalInteractionType = TServerModalInteraction['type'];
@@ -23,14 +24,14 @@ const toActionButtonInteraction = ({
 	if (!actionId || !rid) {
 		throw new Error('actionId and rid are required for actionButton interaction');
 	}
-	if (payload?.context === 'roomAction') {
-		return { type: 'actionButton', actionId, payload: { context: 'roomAction' }, rid, triggerId };
+	if (payload?.context === UIActionButtonContext.ROOM_ACTION) {
+		return { type: 'actionButton', actionId, payload: { context: UIActionButtonContext.ROOM_ACTION }, rid, triggerId };
 	}
-	if (payload?.context === 'messageBoxAction') {
+	if (payload?.context === UIActionButtonContext.MESSAGE_BOX_ACTION) {
 		return {
 			type: 'actionButton',
 			actionId,
-			payload: { context: 'messageBoxAction', message: payload.message ?? '' },
+			payload: { context: UIActionButtonContext.MESSAGE_BOX_ACTION, message: payload.message ?? '' },
 			tmid,
 			rid,
 			triggerId

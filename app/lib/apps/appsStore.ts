@@ -1,14 +1,10 @@
 import { create } from 'zustand';
 
-import { type IAppActionButton } from './definitions';
+import { type IAppActionButton, type TAppTranslations } from './definitions';
 import { normalizeLanguage } from './translations';
 import log from '~/lib/methods/helpers/log';
 import { getAppActionButtons, getAppsLanguages } from '~/lib/services/restApi';
 import { AppsApiError } from '~/lib/services/appsApiFetch';
-
-type TTranslationsByKey = { [key: string]: string };
-type TTranslationsByLanguage = { [language: string]: TTranslationsByKey };
-export type TAppTranslations = { [appId: string]: TTranslationsByLanguage };
 
 type TAppsState = {
 	actionButtons: IAppActionButton[];

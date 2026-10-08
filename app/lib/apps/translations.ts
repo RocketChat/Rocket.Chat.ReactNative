@@ -1,4 +1,4 @@
-import { type TAppTranslations } from './appsStore';
+import { type TAppTranslations } from './definitions';
 import i18n from '~/i18n';
 
 export const normalizeLanguage = (language: string) => language.toLowerCase().replace('_', '-');

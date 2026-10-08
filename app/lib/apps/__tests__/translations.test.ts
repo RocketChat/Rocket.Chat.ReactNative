@@ -1,4 +1,4 @@
-import { type TAppTranslations } from '../appsStore';
+import { type TAppTranslations } from '../definitions';
 import { translateAppKey } from '../translations';
 
 const translations: TAppTranslations = {

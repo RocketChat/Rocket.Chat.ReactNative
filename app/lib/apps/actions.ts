@@ -11,23 +11,23 @@ const TRIGGER_TIMEOUT = 5000;
 
 export const ACKNOWLEDGED = 'acknowledged';
 
-const triggersId = new Map<string, string | undefined>();
+const appIdByTriggerId = new Map<string, string | undefined>();
 const handledTriggers = new Map<string, TModalAction>();
 
 const invalidateTriggerId = (id: string) => {
-	const appId = triggersId.get(id);
-	triggersId.delete(id);
+	const appId = appIdByTriggerId.get(id);
+	appIdByTriggerId.delete(id);
 	return appId;
 };
 
 export const withTriggerId = async <T>(appId: string | undefined, request: (triggerId: string) => Promise<T>): Promise<T> => {
 	const triggerId = random(17);
-	triggersId.set(triggerId, appId);
+	appIdByTriggerId.set(triggerId, appId);
 	try {
 		return await request(triggerId);
 	} finally {
 		setTimeout(() => {
-			triggersId.delete(triggerId);
+			appIdByTriggerId.delete(triggerId);
 			handledTriggers.delete(triggerId);
 		}, TRIGGER_TIMEOUT);
 	}
@@ -45,7 +45,7 @@ export const handlePayloadUserInteraction = (
 	type: string,
 	{ triggerId, ...data }: THandledServerPayload
 ): TModalAction | undefined => {
-	if (!triggersId.has(triggerId)) {
+	if (!appIdByTriggerId.has(triggerId)) {
 		return;
 	}
 
@@ -60,13 +60,7 @@ export const handlePayloadUserInteraction = (
 		return;
 	}
 
-	const { view } = data;
-	let { viewId } = data as { viewId?: string };
-
-	if (view && view.id) {
-		viewId = view.id;
-	}
-
+	const viewId = data.view?.id || data.viewId;
 	if (!viewId) {
 		return;
 	}
@@ -95,36 +89,11 @@ export const handlePayloadUserInteraction = (
 	return ModalActions.OPEN;
 };
 
-export function triggerAction({
-	type,
-	actionId,
-	appId,
-	rid,
-	mid,
-	tmid,
-	viewId,
-	container,
-	...rest
-}: ITriggerAction): Promise<TModalAction | typeof ACKNOWLEDGED | undefined> {
-	const payload = rest.payload ?? rest.value;
+export function triggerAction(action: ITriggerAction): Promise<TModalAction | typeof ACKNOWLEDGED | undefined> {
+	const { appId } = action;
 
 	return withTriggerId(appId, async triggerId => {
-		const interaction = toUserInteraction({
-			type,
-			actionId,
-			appId,
-			rid,
-			mid,
-			tmid,
-			viewId,
-			container,
-			payload,
-			blockId: rest.blockId,
-			value: rest.value,
-			view: rest.view,
-			isCleared: rest.isCleared,
-			triggerId
-		});
+		const interaction = toUserInteraction({ ...action, payload: action.payload ?? action.value, triggerId });
 
 		const result = await appsApiFetch(`ui.interaction/${appId}/`, { method: 'POST', body: interaction });
 		const text = await result.text();
