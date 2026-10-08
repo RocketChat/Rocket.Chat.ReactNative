@@ -42,6 +42,14 @@ export const styles = StyleSheet.create({
 		textAlign: 'center',
 		marginBottom: 8
 	},
+	escalatedPrompt: {
+		alignItems: 'center',
+		marginTop: 24
+	},
+	escalatedPromptButton: {
+		marginTop: 16,
+		marginBottom: 0
+	},
 	statusText: {
 		...sharedStyles.textRegular,
 		fontSize: 18,

@@ -20,9 +20,18 @@ const executeEscalation = async (callId: string): Promise<void> => {
 			throw new Error('media-calls.escalate failed');
 		}
 		const { url, providerName } = result;
-		// The OS call session owns the microphone, so the VoIP call has to end before the conference can use it.
-		const { callId: currentCallId, focused, endCall, roomId } = useCallStore.getState();
-		if (currentCallId === callId) {
+		const { callId: currentCallId, focused, endCall, toggleFocus, roomId } = useCallStore.getState();
+		const isCurrentCall = currentCallId === callId;
+		if (providerName.toLowerCase().includes('pexip')) {
+			// The server hangs the voice call up once we join the conference, so the peer is never dropped mid-handoff.
+			if (isCurrentCall && focused) {
+				toggleFocus();
+			}
+			usePexipCallStore.getState().open({ callId: result.callId ?? callId, url, rid: roomId ?? undefined });
+			return;
+		}
+		// Other providers never end the voice call for us, and the OS call session would keep the microphone.
+		if (isCurrentCall) {
 			endCall();
 			if (focused) {
 				Navigation.back();
@@ -30,8 +39,6 @@ const executeEscalation = async (callId: string): Promise<void> => {
 		}
 		if (providerName === 'jitsi') {
 			Navigation.navigate('JitsiMeetView', { url, onlyAudio: false, videoConf: true });
-		} else if (providerName.toLowerCase().includes('pexip')) {
-			usePexipCallStore.getState().open({ callId: result.callId ?? callId, url, rid: roomId ?? undefined });
 		} else {
 			openLink(url);
 		}
@@ -43,10 +50,17 @@ const executeEscalation = async (callId: string): Promise<void> => {
 	}
 };
 
-/** Asks for confirmation, then escalates the current VoIP call to a video conference ends the voice call and joins the conference. */
+/**
+ * Escalates the current VoIP call to a video conference and joins it. Asks for confirmation first, unless the call
+ * was already escalated (by either side), in which case it just joins the existing conference.
+ */
 export function escalateToVideo(): void {
-	const { callId } = useCallStore.getState();
+	const { callId, escalated } = useCallStore.getState();
 	if (!callId) {
+		return;
+	}
+	if (escalated) {
+		executeEscalation(callId);
 		return;
 	}
 	showConfirmationAlert({

@@ -17,6 +17,7 @@ jest.mock('~/lib/navigation/appNavigation', () => ({ back: jest.fn(), navigate: 
 const mockEscalate = jest.mocked(mediaCallsEscalate);
 const mockOpenLink = jest.mocked(openLink);
 const mockEndCall = jest.fn();
+const mockToggleFocus = jest.fn();
 
 const pressAlertButton = (index: number) => {
 	const buttons = jest.mocked(Alert.alert).mock.calls[0][2]!;
@@ -27,7 +28,14 @@ describe('escalateToVideo', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
-		useCallStore.setState({ callId: 'call-1', roomId: 'room-1', focused: true, endCall: mockEndCall });
+		useCallStore.setState({
+			callId: 'call-1',
+			roomId: 'room-1',
+			focused: true,
+			escalated: false,
+			endCall: mockEndCall,
+			toggleFocus: mockToggleFocus
+		});
 		usePexipCallStore.getState().leave();
 	});
 
@@ -44,7 +52,7 @@ describe('escalateToVideo', () => {
 		expect(mockEscalate).not.toHaveBeenCalled();
 	});
 
-	it('ends the voice call, leaves CallView and joins pexip in the in-app overlay on confirm', async () => {
+	it('keeps the voice call, leaves CallView and joins pexip in the in-app overlay on confirm', async () => {
 		mockEscalate.mockResolvedValue({
 			success: true,
 			url: 'https://pexip.example/conf',
@@ -54,8 +62,8 @@ describe('escalateToVideo', () => {
 		escalateToVideo();
 		await pressAlertButton(1);
 		expect(mockEscalate).toHaveBeenCalledWith('call-1');
-		expect(mockEndCall).toHaveBeenCalledTimes(1);
-		expect(Navigation.back).toHaveBeenCalledTimes(1);
+		expect(mockEndCall).not.toHaveBeenCalled();
+		expect(mockToggleFocus).toHaveBeenCalledTimes(1);
 		expect(usePexipCallStore.getState().call).toMatchObject({
 			callId: 'conf-1',
 			url: 'https://pexip.example/conf',
@@ -64,10 +72,21 @@ describe('escalateToVideo', () => {
 		expect(mockOpenLink).not.toHaveBeenCalled();
 	});
 
-	it('opens other providers externally', async () => {
+	it('joins without asking again once the call was escalated', async () => {
+		useCallStore.setState({ escalated: true });
+		mockEscalate.mockResolvedValue({ success: true, url: 'https://pexip.example/conf', providerName: 'core.pexip' } as any);
+		escalateToVideo();
+		await new Promise(process.nextTick);
+		expect(Alert.alert).not.toHaveBeenCalled();
+		expect(mockEscalate).toHaveBeenCalledWith('call-1');
+		expect(usePexipCallStore.getState().call).toMatchObject({ callId: 'call-1', url: 'https://pexip.example/conf' });
+	});
+
+	it('ends the voice call and opens other providers externally', async () => {
 		mockEscalate.mockResolvedValue({ success: true, url: 'https://bbb.example/conf', providerName: 'bbb' } as any);
 		escalateToVideo();
 		await pressAlertButton(1);
+		expect(Navigation.back).toHaveBeenCalledTimes(1);
 		expect(mockEndCall.mock.invocationCallOrder[0]).toBeLessThan(mockOpenLink.mock.invocationCallOrder[0]);
 		expect(mockOpenLink).toHaveBeenCalledWith('https://bbb.example/conf');
 	});
@@ -84,15 +103,14 @@ describe('escalateToVideo', () => {
 		expect(mockOpenLink).not.toHaveBeenCalled();
 	});
 
-	it('does not end or leave again when the server already ended the voice call', async () => {
+	it('does not leave CallView again when the server already ended the voice call', async () => {
 		mockEscalate.mockImplementation(() => {
 			useCallStore.setState({ callId: null });
 			return Promise.resolve({ success: true, url: 'https://pexip.example/conf', providerName: 'core.pexip' } as any);
 		});
 		escalateToVideo();
 		await pressAlertButton(1);
-		expect(mockEndCall).not.toHaveBeenCalled();
-		expect(Navigation.back).not.toHaveBeenCalled();
+		expect(mockToggleFocus).not.toHaveBeenCalled();
 		expect(usePexipCallStore.getState().call).toMatchObject({ callId: 'call-1', url: 'https://pexip.example/conf' });
 	});
 

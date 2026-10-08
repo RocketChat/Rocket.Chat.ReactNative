@@ -352,6 +352,25 @@ describe('CallView/CallView', () => {
 		expect(options.map((o: any) => o.testID)).toEqual(['call-view-more-video', 'call-view-more-message']);
 	});
 
+	it('should prompt to join the conference once the call was escalated', () => {
+		setStoreState({
+			callState: 'active',
+			escalated: true,
+			call: { ...createMockCall(), features: ['audio', 'conference-escalation'] } as any
+		});
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		expect(getByTestId('call-view-join-video')).toBeTruthy();
+		expect(getByTestId('call-view-hold').props.accessibilityState?.disabled).toBe(true);
+		fireEvent.press(getByTestId('call-view-more'));
+		const { options } = mockShowActionSheetRef.mock.calls[0][0];
+		expect(options.map((o: any) => o.testID)).toEqual(['call-view-more-message']);
+	});
+
 	it('should show action sheet with dialpad when dialpad button is pressed', () => {
 		setStoreState({ callState: 'active' });
 		const { getByTestId } = render(
