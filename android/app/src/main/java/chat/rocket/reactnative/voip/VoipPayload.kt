@@ -1,5 +1,6 @@
 package chat.rocket.reactnative.voip
 
+import androidx.annotation.Keep
 import android.os.Bundle
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
@@ -119,6 +120,7 @@ data class VoipPayload(
             formatter.isLenient = false
         }
 
+        @Keep
         private data class RemoteCaller(
             @SerializedName("name")
             val name: String? = null,
@@ -130,6 +132,7 @@ data class VoipPayload(
             val avatarUrl: String? = null,
         )
 
+        @Keep
         private data class RemoteVoipPayload(
             @SerializedName("callId")
             val callId: String? = null,
