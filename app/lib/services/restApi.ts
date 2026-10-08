@@ -300,7 +300,7 @@ export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p
 	if (type === 'p') {
 		const serverVersion = reduxStore.getState().server.version;
 		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
-			return sdk.post('rooms.join', { roomId, ...(joinCode ? { joinCode } : {}) });
+			return sdk.post('rooms.join', { roomId, joinCode });
 		}
 		// RC 0.48.0
 		return sdk.methodCallWrapper('joinRoom', roomId);
@@ -1000,12 +1000,7 @@ export const saveAutoTranslate = ({
 )) => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
-		return sdk.post('autotranslate.saveSettings', {
-			roomId: rid,
-			field,
-			value,
-			...(options?.defaultLanguage ? { defaultLanguage: options.defaultLanguage } : {})
-		});
+		return sdk.post('autotranslate.saveSettings', { roomId: rid, field, value, ...options });
 	}
 	const ddpValue = typeof value === 'boolean' ? (value ? '1' : '0') : value;
 	return sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, ddpValue, options ?? null);

@@ -33,7 +33,7 @@ describe('joinRoom', () => {
 
 	it('posts rooms.join for groups on 8.6.0+', async () => {
 		await joinRoom('rid1', null, 'p');
-		expect(sdk.post).toHaveBeenCalledWith('rooms.join', { roomId: 'rid1' });
+		expect(sdk.post).toHaveBeenCalledWith('rooms.join', { roomId: 'rid1', joinCode: null });
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
 	});
 

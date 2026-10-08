@@ -1,15 +1,15 @@
 import { Platform } from 'react-native';
 
-import type * as SdkIntegration from '../testUtils/sdkIntegration';
-import { mediaCallsStateSignals } from './restApi';
+import type * as SdkIntegration from '../../testUtils/sdkIntegration';
+import { mediaCallsStateSignals } from '../restApi';
 
 const mockSdkGet = jest.fn();
 const mockSdkPost = jest.fn();
 const mockSdkDel = jest.fn();
 let mockSdk!: SdkIntegration.IMockSdk;
 
-jest.mock('./sdk', () => {
-	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../testUtils/sdkIntegration');
+jest.mock('../sdk', () => {
+	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
 	mockSdk =
 		mockSdk ??
 		makeSdkMock({
@@ -22,11 +22,11 @@ jest.mock('./sdk', () => {
 
 const SDK_HOST = 'https://open.rocket.chat';
 
-jest.mock('../notifications/deviceToken', () => ({
+jest.mock('../../notifications/deviceToken', () => ({
 	getDeviceToken: jest.fn()
 }));
 
-jest.mock('../native/NativeVoip', () => ({
+jest.mock('../../native/NativeVoip', () => ({
 	__esModule: true,
 	default: {
 		getLastVoipToken: jest.fn()
@@ -51,7 +51,7 @@ function loadPushTokenApi(platform: 'ios' | 'android' = 'android', mockServerVer
 	jest.resetModules();
 	Object.defineProperty(Platform, 'OS', { configurable: true, writable: true, value: platform });
 
-	jest.doMock('../store/auxStore', () => ({
+	jest.doMock('../../store/auxStore', () => ({
 		store: {
 			getState: () => ({
 				server: { version: mockServerVersion }
@@ -60,16 +60,16 @@ function loadPushTokenApi(platform: 'ios' | 'android' = 'android', mockServerVer
 	}));
 
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
-	const notifications = require('../notifications/deviceToken');
+	const notifications = require('../../notifications/deviceToken');
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
-	const voipNative = require('../native/NativeVoip').default;
+	const voipNative = require('../../native/NativeVoip').default;
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
-	const { registerPushToken, removePushToken } = require('./restApi');
+	const { registerPushToken, removePushToken } = require('../restApi');
 	return {
 		// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-		registerPushToken: registerPushToken as typeof import('./restApi').registerPushToken,
+		registerPushToken: registerPushToken as typeof import('../restApi').registerPushToken,
 		// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-		removePushToken: removePushToken as typeof import('./restApi').removePushToken,
+		removePushToken: removePushToken as typeof import('../restApi').removePushToken,
 		getDeviceToken: jest.mocked(notifications.getDeviceToken),
 		getLastVoipToken: jest.mocked(voipNative.getLastVoipToken)
 	};

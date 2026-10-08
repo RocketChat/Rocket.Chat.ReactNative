@@ -58,7 +58,7 @@ export type RoomsEndpoints = {
 		POST: (params: { roomId: string; action: 'accept' | 'reject' }) => void;
 	};
 	'rooms.join': {
-		POST: (params: { roomId: string; joinCode?: string }) => {
+		POST: (params: { roomId: string; joinCode: string | null }) => {
 			room: IServerRoom;
 		};
 	};
