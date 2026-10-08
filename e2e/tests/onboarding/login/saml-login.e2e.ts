@@ -3,7 +3,7 @@ import { expect } from 'e2e';
 
 import { account, data } from '~e2e/support/data';
 import { firstVisible, launchApp, navigateToLogin, LONG_TIMEOUT, fillWhenUncovered, type Fixtures } from '~e2e/support/flows';
-import { dismissChromeFirstRunPrompts, dismissPasswordManagerPrompt } from '~e2e/support/onboarding';
+import { dismissBrowserFirstRunPrompts, dismissPasswordManagerPrompt } from '~e2e/support/onboarding';
 
 const SAFARI_APP = 'com.apple.mobilesafari';
 const APP_SWITCH_ATTEMPTS = 3;
@@ -46,7 +46,7 @@ test('logs in with SAML', { tags: ['test-2'] }, async fixtures => {
 	if (isIOS) {
 		await switchToApp(fixtures, SAFARI_APP);
 	}
-	await dismissChromeFirstRunPrompts(fixtures, screen.getByText('Email or username').first());
+	await dismissBrowserFirstRunPrompts(fixtures, screen.getByText('Email or username').first());
 	await screen.scrollUntilVisible(screen.getByText('SAML'));
 	await screen.swipe({ direction: 'down' });
 	await screen.getByText('SAML').tap();

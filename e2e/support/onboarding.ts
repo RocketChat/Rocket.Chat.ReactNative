@@ -43,21 +43,28 @@ const CHROME_FIRST_RUN_PROMPTS = [
 	{ prompt: /wants to send you notifications/, dismiss: 'Block' }
 ] as const;
 
-export const dismissChromeFirstRunPrompts = async (fixtures: Fixtures, destination: Locator) => {
-	const { screen } = fixtures;
-	if (fixtures.platform === 'android') {
-		const prompts = CHROME_FIRST_RUN_PROMPTS.map(({ prompt, dismiss }) => ({
-			prompt: screen.getByText(prompt, { visible: true }),
-			dismiss: screen.getByText(dismiss, { visible: true })
-		}));
-		for (;;) {
-			const visible = await firstVisible([destination, ...prompts.map(({ prompt }) => prompt)]);
-			const shownPrompt = prompts.find(({ prompt }) => prompt === visible);
-			if (!shownPrompt) {
-				break;
-			}
-			await tapIfVisible(shownPrompt.dismiss);
+const SAFARI_FIRST_RUN_PROMPTS = [{ prompt: /You can now view these items in the More menu/, dismiss: 'Close' }] as const;
+
+const browserFirstRunPrompts = ({ screen, platform }: Fixtures) =>
+	platform === 'android'
+		? CHROME_FIRST_RUN_PROMPTS.map(({ prompt, dismiss }) => ({
+				prompt: screen.getByText(prompt, { visible: true }),
+				dismiss: screen.getByText(dismiss, { visible: true })
+			}))
+		: SAFARI_FIRST_RUN_PROMPTS.map(({ prompt, dismiss }) => ({
+				prompt: screen.getByText(prompt, { visible: true }),
+				dismiss: screen.getByRole('button', dismiss)
+			}));
+
+export const dismissBrowserFirstRunPrompts = async (fixtures: Fixtures, destination: Locator) => {
+	const prompts = browserFirstRunPrompts(fixtures);
+	for (;;) {
+		const visible = await firstVisible([destination, ...prompts.map(({ prompt }) => prompt)]);
+		const shownPrompt = prompts.find(({ prompt }) => prompt === visible);
+		if (!shownPrompt) {
+			break;
 		}
+		await tapIfVisible(shownPrompt.dismiss);
 	}
 	await expect(destination).toBeVisible({ timeout: LONG_TIMEOUT });
 };
