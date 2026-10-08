@@ -42,12 +42,16 @@ describe('joinRoom', () => {
 		expect(sdk.post).toHaveBeenCalledWith('rooms.join', { roomId: 'rid1', joinCode: 'secret' });
 	});
 
-	it('posts channels.join for channels on any version', async () => {
+	it('posts channels.join for channels on 8.6.0+', async () => {
 		await joinRoom('rid1', 'secret', 'c');
 		expect(sdk.post).toHaveBeenCalledWith('channels.join', { roomId: 'rid1', joinCode: 'secret' });
+		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
+	});
+
+	it('posts channels.join for channels below 8.6.0', async () => {
 		setServerVersion('7.0.0');
-		await joinRoom('rid2', null, 'c');
-		expect(sdk.post).toHaveBeenLastCalledWith('channels.join', { roomId: 'rid2', joinCode: null });
+		await joinRoom('rid1', null, 'c');
+		expect(sdk.post).toHaveBeenCalledWith('channels.join', { roomId: 'rid1', joinCode: null });
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
 	});
 });
