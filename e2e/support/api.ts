@@ -183,6 +183,8 @@ export const sendMessage = (credentials: Credentials, channel: string, text: str
 
 export const getProfileInfo = async (userId: string) => (await get(`users.info?userId=${userId}`, adminCredentials())).user;
 
+export const getOwnEmail = async (credentials: Credentials): Promise<string> => (await get('me', credentials)).emails[0].address;
+
 export const reactAsNewUsers = async (count: number, messageId: string, emoji: string) => {
 	const reactors: RandomUser[] = [];
 	for (let index = 0; index < count; index += 1) {
