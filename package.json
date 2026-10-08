@@ -220,6 +220,9 @@
 	"expo": {
 		"autolinking": {
 			"android": {
+				"exclude": [
+					"@expo/ui"
+				],
 				"buildFromSource": [
 					"expo-asset",
 					"expo-audio",
