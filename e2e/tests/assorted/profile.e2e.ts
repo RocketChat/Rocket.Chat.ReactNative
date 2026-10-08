@@ -42,36 +42,46 @@ const editBasicInfo = async (fixtures: Fixtures, user: RandomUser) => {
 	await expect(screen.getByTestId('profile-view-enter-password-sheet-input')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await fillWhenUncovered(screen.getByTestId('profile-view-enter-password-sheet-input'), user.password);
 	await tapWhenUncovered(screen.getByText('Save'));
+	const savedAt = Date.now();
 	await expect(screen.getByTestId('profile-view-enter-password-sheet-input')).toBeHidden({ timeout: LONG_TIMEOUT });
 	renamedUsers.push(newUsername);
 	expect(await getOwnEmail({ username: newUsername, password: user.password })).toBe(newEmail);
+	return savedAt;
 };
 
-const changePassword = async (fixtures: Fixtures, user: RandomUser) => {
+const fillCurrentPassword = async (fixtures: Fixtures, password: string) => {
+	const currentPassword = fixtures.screen.getByTestId('change-password-view-current-password');
+	await fixtures.screen.scrollUntilVisible(currentPassword, { direction: 'up' });
+	await fillWhenUncovered(currentPassword, password);
+	await hideKeyboard(fixtures);
+};
+
+const changePassword = async (fixtures: Fixtures, user: RandomUser, profileSavedAt: number) => {
 	const { screen } = fixtures;
 	const newPassword = `${user.password}new`;
 	await screen.scrollUntilVisible(screen.getByTestId('profile-view-change-my-password-button'));
 	await screen.getByTestId('profile-view-change-my-password-button').tap();
 	await expect(screen.getByTestId('change-password-view-current-password')).toBeVisible({ timeout: LONG_TIMEOUT });
-	await fillWhenUncovered(screen.getByTestId('change-password-view-current-password'), user.password);
-	await hideKeyboard(fixtures);
 	await fillWhenUncovered(screen.getByTestId('change-password-view-new-password'), newPassword);
 	await hideKeyboard(fixtures);
 	await fillWhenUncovered(screen.getByTestId('change-password-view-confirm-new-password'), newPassword);
 	await hideKeyboard(fixtures);
-	await screen.scrollUntilVisible(screen.getByTestId('change-password-view-set-new-password-button'));
+	const submit = screen.getByTestId('change-password-view-set-new-password-button');
 	const rateLimited = screen.getByText(/too many requests/i);
 	const profileView = screen.getByTestId('profile-view');
-	for (let attempt = 1; attempt < PASSWORD_CHANGE_ATTEMPTS; attempt += 1) {
-		await screen.getByTestId('change-password-view-set-new-password-button').tap();
+	let rateLimitResetsAt = profileSavedAt + RATE_LIMIT_WINDOW;
+	for (let attempt = 1; attempt <= PASSWORD_CHANGE_ATTEMPTS; attempt += 1) {
+		await fillCurrentPassword(fixtures, user.password);
+		await screen.scrollUntilVisible(submit);
+		await delay(Math.max(0, rateLimitResetsAt - Date.now()));
+		await submit.tap();
 		if ((await firstVisible([rateLimited, profileView])) === profileView) {
 			return;
 		}
 		await screen.getByRole('button', { name: /^Ok$/i }).tap();
-		await delay(RATE_LIMIT_WINDOW);
+		rateLimitResetsAt = Date.now() + RATE_LIMIT_WINDOW;
 	}
-	await screen.getByTestId('change-password-view-set-new-password-button').tap();
-	await expect(profileView).toBeVisible({ timeout: LONG_TIMEOUT });
+	throw new Error(`Password change was still rate limited after ${PASSWORD_CHANGE_ATTEMPTS} attempts`);
 };
 
 test('edits profile info and changes password', { tags: ['test-8'] }, async fixtures => {
@@ -91,6 +101,6 @@ test('edits profile info and changes password', { tags: ['test-8'] }, async fixt
 	await screen.scrollUntilVisible(screen.getByTestId('profile-view-change-my-password-button'));
 	await screen.scrollUntilVisible(screen.getByTestId('profile-view-name'), { direction: 'up' });
 
-	await editBasicInfo(fixtures, user);
-	await changePassword(fixtures, user);
+	const profileSavedAt = await editBasicInfo(fixtures, user);
+	await changePassword(fixtures, user, profileSavedAt);
 });
