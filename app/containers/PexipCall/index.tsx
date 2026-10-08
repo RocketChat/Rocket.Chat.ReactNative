@@ -26,7 +26,7 @@ import { PexipCallTimer } from './PexipCallTimer';
 import { isTlsError } from './pexipLoopbackProxy';
 import { usePexipLoopbackUrl } from './usePexipLoopbackUrl';
 import { usePexipPresenceLease } from './usePexipPresenceLease';
-import { SPLIT_BAR_HEIGHT, usePexipSplitHeight } from './usePexipSplitHeight';
+import { SPLIT_BAR_HEIGHT, usePexipSplitLayout } from './usePexipSplitLayout';
 
 const MINI_WIDTH = 120;
 const MINI_HEIGHT = 180;
@@ -37,7 +37,7 @@ const PexipCall = () => {
 	const insets = useSafeAreaInsets();
 	const { width, height } = useWindowDimensions();
 	const isMasterDetail = useMasterDetail();
-	const splitHeight = usePexipSplitHeight();
+	const { isLandscape, size: splitSize } = usePexipSplitLayout();
 	const { call, layout, split, expand, leave } = usePexipCallStore(
 		useShallow(state => ({
 			call: state.call,
@@ -108,9 +108,9 @@ const PexipCall = () => {
 		if (isSplit) {
 			return {
 				top: insets.top,
-				left: 0,
-				width,
-				height: splitHeight,
+				left: isLandscape ? insets.left : 0,
+				width: isLandscape ? splitSize - insets.left : width,
+				height: isLandscape ? height - insets.top - insets.bottom : splitSize,
 				borderRadius: 0,
 				transform: [{ translateX: 0 }, { translateY: 0 }]
 			};
