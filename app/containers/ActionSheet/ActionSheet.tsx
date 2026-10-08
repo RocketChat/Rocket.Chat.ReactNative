@@ -38,20 +38,32 @@ const ActionSheet = memo(
 
 		const itemHeight = useActionSheetItemHeight();
 
+		const dismissingRef = useRef(false);
+		const pendingOptionsRef = useRef<TActionSheetOptions | null>(null);
+
 		const hide = () => {
 			if (!isVisible) return;
+			dismissingRef.current = true;
 			sheetRef.current?.dismiss();
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		};
 
-		const show = (options: TActionSheetOptions) => {
+		const present = (options: TActionSheetOptions) => {
 			setData(options);
 			setIsVisible(true);
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 			onCloseSnapshotRef.current = options.onClose;
 			sheetRef.current?.present();
+		};
+
+		const show = (options: TActionSheetOptions) => {
+			if (dismissingRef.current) {
+				pendingOptionsRef.current = options;
+				return;
+			}
+			present(options);
 		};
 
 		useBackHandler(() => {
@@ -90,11 +102,17 @@ const ActionSheet = memo(
 		);
 
 		const onDidDismiss = () => {
+			dismissingRef.current = false;
 			setIsVisible(false);
 			// Keep contentHeight to avoid flickering on next show
 			const snapshotOnClose = onCloseSnapshotRef.current;
 			onCloseSnapshotRef.current = undefined;
 			snapshotOnClose?.();
+			const pendingOptions = pendingOptionsRef.current;
+			pendingOptionsRef.current = null;
+			if (pendingOptions) {
+				setTimeout(() => present(pendingOptions));
+			}
 		};
 
 		const isPortrait = windowHeight > windowWidth;
