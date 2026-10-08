@@ -137,7 +137,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 		const oldData = prevProps.route.params?.data ?? {};
 		const newData = route.params?.data ?? {};
 		if (oldData.viewId !== newData.viewId) {
-			navigation.push('ModalBlockView', { data: newData });
+			navigation.replace('ModalBlockView', { data: newData });
 		}
 	}
 

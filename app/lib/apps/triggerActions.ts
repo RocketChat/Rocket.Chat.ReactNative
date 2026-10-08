@@ -9,11 +9,11 @@ import I18n from '~/i18n';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import log from '~/lib/methods/helpers/log';
 import { type IAppActionButton } from './definitions';
-import { triggerAction } from './actions';
+import { ACKNOWLEDGED, triggerAction } from './actions';
 
 export async function triggerSubmitView({ viewId, ...options }: ITriggerSubmitView): Promise<boolean> {
 	const result = await triggerAction({ type: ActionTypes.SUBMIT, viewId, ...options });
-	return !!result && result !== ModalActions.UPDATE && result !== ModalActions.ERRORS;
+	return result === ModalActions.CLOSE || result === ACKNOWLEDGED;
 }
 
 export function triggerCancel({ view, ...options }: ITriggerCancel) {

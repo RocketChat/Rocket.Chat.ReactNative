@@ -67,10 +67,10 @@ describe('triggerActions wrappers', () => {
 			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(false);
 		});
 
-		it('asks to close when the app opens another modal', async () => {
+		it('keeps the modal for the app to replace when it opens another modal', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(ModalActions.OPEN);
 
-			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(true);
+			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(false);
 		});
 	});
 
