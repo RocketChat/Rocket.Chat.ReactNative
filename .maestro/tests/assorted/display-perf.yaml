@@ -169,13 +169,28 @@ tags:
 - runFlow:
     file: './utils/go-to-display-pref.yaml'
     label: 'Should go to Display Preferences'
-- extendedWaitUntil:
-    visible:
-      id: 'display-pref-view-avatar-switch'
-    timeout: 60000
-- tapOn:
-    id: 'display-pref-view-avatar-switch'
-    label: 'Should tap on avatar switch'
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'display-pref-view-avatar-switch'
+          timeout: 60000
+      - tapOn:
+          id: 'display-pref-view-avatar-switch'
+          label: 'Should tap on avatar switch'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'display-pref-view-avatars'
+          timeout: 60000
+      - tapOn:
+          id: 'display-pref-view-avatars'
+          label: 'Should tap on avatars row'
 - runFlow:
     file: './utils/go-to-room-list.yaml'
     label: 'Should go to Room List'
