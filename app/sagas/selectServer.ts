@@ -1,9 +1,9 @@
-import { delay, put, race, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import valid from 'semver/functions/valid';
 import coerce from 'semver/functions/coerce';
-import { call } from 'typed-redux-saga';
+import { call, delay, race } from 'typed-redux-saga';
 
 import Navigation from '../lib/navigation/appNavigation';
 import { SERVER } from '../actions/actionsTypes';
@@ -238,8 +238,8 @@ const UNANSWERED_HOST_PROBE_TIMEOUT_MS = 30000;
 const probeServer = function* probeServer(server: string, signal: AbortSignal) {
 	const serverInfo = yield* getServerInfoSaga({ server, signal });
 	if (serverInfo) {
-		yield getLoginServices(server, signal);
-		yield getLoginSettings({ server, serverVersion: serverInfo.version, signal });
+		yield* call(getLoginServices, server, signal);
+		yield* call(getLoginSettings, { server, serverVersion: serverInfo.version, signal });
 	}
 	return serverInfo;
 };
@@ -251,7 +251,7 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 		if (certificate) {
 			SSLPinning?.setCertificate(certificate, server);
 		}
-		const { serverInfo, timedOut } = yield race({
+		const { serverInfo, timedOut } = yield* race({
 			serverInfo: call(probeServer, server, probeController.signal),
 			timedOut: delay(UNANSWERED_HOST_PROBE_TIMEOUT_MS)
 		});
