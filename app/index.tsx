@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Linking } from 'react-native';
+import { Linking, type EmitterSubscription } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
@@ -52,7 +52,7 @@ interface IState {
 }
 
 export default class Root extends Component<{}, IState> {
-	private listenerTimeout!: any;
+	private deepLinkSubscription?: EmitterSubscription;
 	private videoConfActionCleanup?: () => void;
 	private mediaCallEventCleanup?: () => void;
 
@@ -76,14 +76,12 @@ export default class Root extends Component<{}, IState> {
 	}
 
 	componentDidMount() {
-		this.listenerTimeout = setTimeout(() => {
-			Linking.addEventListener('url', ({ url }) => {
-				const parsedDeepLinkingURL = parseDeepLinking(url);
-				if (parsedDeepLinkingURL) {
-					store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
-				}
-			});
-		}, 5000);
+		this.deepLinkSubscription = Linking.addEventListener('url', ({ url }) => {
+			const parsedDeepLinkingURL = parseDeepLinking(url);
+			if (parsedDeepLinkingURL) {
+				store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
+			}
+		});
 
 		// Set up video conf action listener for background accept/decline
 		this.videoConfActionCleanup = setupVideoConfActionListener();
@@ -92,7 +90,7 @@ export default class Root extends Component<{}, IState> {
 	}
 
 	componentWillUnmount() {
-		clearTimeout(this.listenerTimeout);
+		this.deepLinkSubscription?.remove();
 		this.videoConfActionCleanup?.();
 		this.mediaCallEventCleanup?.();
 

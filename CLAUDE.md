@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Rocket.Chat React Native mobile client. Single-package React Native app (not a monorepo) using pnpm. Supports iOS 13.4+ and Android 6.0+.
+Rocket.Chat React Native mobile client. Single-package React Native app (not a monorepo) using pnpm. Supports iOS 16.4+ and Android 7.0+.
 
 Read CONTEXT.md.
 
@@ -12,16 +12,16 @@ Read CONTEXT.md.
 
 ```bash
 corepack enable            # First-time per machine: activates the pinned pnpm version
+bundle install             # First-time per worktree: gems vendor into vendor/bundle; pod-install fails with Bundler::GemNotFound without it
 pnpm pod-install           # Required before any iOS build
 ```
 
 Everything else is a standard `package.json` script.
 
-## Code Style
+## Workflow
 
-- **Oxfmt**: config in `.oxfmtrc.json` (tabs, single quotes, 130 char width, no trailing commas, arrow parens avoid, bracket same line)
-- **Oxlint**: config in `.oxlintrc.json` (import, react, jest, typescript plugins; `eslint-plugin-react-native` loaded via `jsPlugins`)
-- **Before committing**: Run `pnpm format-lint` and `TZ=UTC pnpm test` for modified files. Nothing enforces this locally — CI is the only gate.
+- **Before committing**: Run `pnpm format-lint` (repo-wide; takes no file list) and `pnpm test <paths>` for modified files. Nothing enforces this locally — CI is the only gate.
+- **Reviewing**: apply `CODING_STANDARDS.md`.
 
 ## Gotchas
 
@@ -30,4 +30,4 @@ Everything else is a standard `package.json` script.
 
 ## Continuous Integration
 
-CI triggers, call graph, and manual gates: see `.github/README.md`.
+CI triggers and manual gates: see `.github/README.md`.

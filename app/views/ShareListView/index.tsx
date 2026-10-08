@@ -25,6 +25,7 @@ import styles from './styles';
 import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '~/definitions';
 import { type ShareInsideStackParamList } from '~/definitions/navigationTypes';
 import { getRoomAvatar, isAndroid, isIOS } from '~/lib/methods/helpers';
+import { getFilenameFromUri } from '~/lib/methods/helpers/getFilenameFromUri';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { shareSetParams } from '~/actions/share';
 import { appStart } from '~/actions/app';
@@ -125,7 +126,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 							}
 
 							return {
-								filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
+								filename: getFilenameFromUri(file.uri) ?? file.uri.substring(file.uri.lastIndexOf('/') + 1),
 								description: '',
 								size: file.size,
 								mime: mime.lookup(file.uri) || '',

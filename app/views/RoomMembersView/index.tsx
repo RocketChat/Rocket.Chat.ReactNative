@@ -432,7 +432,7 @@ const RoomMembersView = (): ReactElement => {
 				renderItem={({ item }) => (
 					<View style={{ backgroundColor: colors.surfaceRoom }}>
 						<UserItem
-							name={item.name || item.username}
+							name={getUserDisplayName(item)}
 							username={item.username}
 							onPress={() => onPressUser(item)}
 							testID={`room-members-view-item-${item.username}`}

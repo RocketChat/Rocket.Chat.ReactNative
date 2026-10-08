@@ -158,11 +158,10 @@ describe('useRoomInit', () => {
 		const stale = new Date('2026-01-01T00:00:00.000Z');
 		const fresh = new Date('2026-02-02T00:00:00.000Z');
 		const { roomStore, resolveInit } = makeDeferredRoomStore();
-		const { result } = renderRoomInit({}, roomStore);
+		const { result, rerender } = renderRoomInit({}, roomStore);
 
-		await act(async () => {
-			result.current.retry();
-		});
+		rerender({ isAuthenticated: false });
+		rerender({ isAuthenticated: true });
 		expect(roomStore.getState().init).toHaveBeenCalledTimes(2);
 
 		await resolveInit(0, stale);
@@ -176,18 +175,36 @@ describe('useRoomInit', () => {
 		expect(result.current.loading).toBe(false);
 	});
 
-	it.each([['failed'], ['skipped']] as const)('leaves lastSeen untouched when init reports %s', async status => {
+	it('stops loading when the first init run does not load the room', async () => {
+		const { roomStore, resolveInitWith } = makeDeferredRoomStore();
+		const { result } = renderRoomInit({}, roomStore);
+
+		await resolveInitWith(0, { status: 'skipped' });
+
+		expect(result.current.loading).toBe(false);
+		expect(result.current.lastSeen).toBeNull();
+	});
+
+	it('stops loading when init throws', async () => {
+		const roomStore = makeRoomStore();
+		roomStore.setState({ init: jest.fn(() => Promise.reject(new Error('init failed'))) });
+		const { result } = renderRoomInit({}, roomStore);
+
+		await waitFor(() => expect(result.current.loading).toBe(false));
+		expect(result.current.lastSeen).toBeNull();
+	});
+
+	it('leaves lastSeen untouched when a later init run does not load the room', async () => {
 		const loaded = new Date('2026-01-01T00:00:00.000Z');
 		const { roomStore, resolveInit, resolveInitWith } = makeDeferredRoomStore();
-		const { result } = renderRoomInit({}, roomStore);
+		const { result, rerender } = renderRoomInit({}, roomStore);
 
 		await resolveInit(0, loaded);
 		expect(result.current.lastSeen).toBe(loaded);
 
-		await act(async () => {
-			result.current.retry();
-		});
-		await resolveInitWith(1, { status });
+		rerender({ isAuthenticated: false });
+		rerender({ isAuthenticated: true });
+		await resolveInitWith(1, { status: 'skipped' });
 
 		expect(result.current.lastSeen).toBe(loaded);
 		expect(result.current.loading).toBe(false);
@@ -201,54 +218,5 @@ describe('useRoomInit', () => {
 		await resolveInit();
 
 		expect(result.current.loading).toBe(true);
-	});
-
-	it('reports failed once a failed run settles', async () => {
-		const { roomStore, resolveInitWith } = makeDeferredRoomStore();
-		const { result } = renderRoomInit({}, roomStore);
-
-		expect(result.current.failed).toBe(false);
-
-		await resolveInitWith(0, { status: 'failed' });
-
-		expect(result.current.failed).toBe(true);
-		expect(result.current.loading).toBe(false);
-	});
-
-	it('clears failed and runs init again on retry', async () => {
-		const { roomStore, resolveInitWith, resolveInit } = makeDeferredRoomStore();
-		const { result } = renderRoomInit({}, roomStore);
-
-		await resolveInitWith(0, { status: 'failed' });
-		expect(result.current.failed).toBe(true);
-
-		await act(async () => {
-			result.current.retry();
-		});
-		expect(result.current.failed).toBe(false);
-
-		await resolveInit(1);
-		expect(result.current.failed).toBe(false);
-	});
-
-	it('stops reporting failed once the screen has no init work left', async () => {
-		const { roomStore, resolveInitWith } = makeDeferredRoomStore();
-		const { result, rerender } = renderRoomInit({}, roomStore);
-
-		await resolveInitWith(0, { status: 'failed' });
-		expect(result.current.failed).toBe(true);
-
-		rerender({ isAuthenticated: false });
-
-		expect(result.current.failed).toBe(false);
-	});
-
-	it('does not report failed for a skipped run', async () => {
-		const { roomStore, resolveInitWith } = makeDeferredRoomStore();
-		const { result } = renderRoomInit({}, roomStore);
-
-		await resolveInitWith(0, { status: 'skipped' });
-
-		expect(result.current.failed).toBe(false);
 	});
 });

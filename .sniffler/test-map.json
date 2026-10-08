@@ -1,7 +1,7 @@
 [
 	{
 		"test": ".maestro/tests/accessibilityAndAppearance/ToastsAndDialogs.yml",
-		"dependsOn": ["app/views/StatusView/**"]
+		"dependsOn": ["app/views/StatusView/**", "app/views/SidebarView/**"]
 	},
 	{
 		"test": ".maestro/tests/assorted/accessibility-and-appearance.yaml",
@@ -313,6 +313,15 @@
 		]
 	},
 	{
+		"test": ".maestro/tests/room/send-message-while-offline.yaml",
+		"dependsOn": [
+			"app/views/RoomView/**",
+			"app/containers/message/components/RightIcons/MessageError.tsx",
+			"app/lib/methods/sendMessage.ts",
+			"app/sagas/messages.js"
+		]
+	},
+	{
 		"test": ".maestro/tests/room/message-markdown-click.yaml",
 		"dependsOn": ["app/views/RoomView/**", "app/containers/markdown/**", "app/sagas/room.js"]
 	},
@@ -327,6 +336,16 @@
 			"app/containers/MessageComposer/**",
 			"app/containers/MessageActions/**",
 			"app/sagas/room.js"
+		]
+	},
+	{
+		"test": ".maestro/tests/room/attachment-send.yaml",
+		"dependsOn": [
+			"app/views/RoomView/**",
+			"app/containers/MessageComposer/**",
+			"app/lib/methods/helpers/ImagePicker/**",
+			"app/lib/methods/sendFileMessage/**",
+			"app/lib/hooks/useAltTextSupported.ts"
 		]
 	},
 	{
