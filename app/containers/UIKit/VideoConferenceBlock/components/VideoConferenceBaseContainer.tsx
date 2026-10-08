@@ -8,6 +8,7 @@ import Touch from '~/containers/Touch';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import getRoomInfo from '~/lib/methods/getRoomInfo';
 import { goRoom, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
+import log from '~/lib/methods/helpers/log';
 import useStyle from './styles';
 
 type VideoConfMessageIconProps = {
@@ -23,9 +24,13 @@ export const VideoConferenceBaseContainer = ({ variant, children, discussionRid 
 
 	const openDiscussion = async () => {
 		if (!discussionRid) return;
-		const discussion = await getRoomInfo(discussionRid);
-		if (discussion) {
-			goRoom({ item: discussion as TGoRoomItem, isMasterDetail });
+		try {
+			const discussion = await getRoomInfo(discussionRid);
+			if (discussion) {
+				goRoom({ item: discussion as TGoRoomItem, isMasterDetail });
+			}
+		} catch (e) {
+			log(e);
 		}
 	};
 

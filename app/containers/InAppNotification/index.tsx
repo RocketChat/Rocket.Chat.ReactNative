@@ -47,7 +47,7 @@ const showNotification = (notification: INotifierNotification) => {
 
 const isSuppressed = (messageType?: string) => {
 	const route = getActiveRoute(Navigation.navigationRef.current?.getRootState());
-	return route?.name === 'JitsiMeetView' || messageType === 'videoconf';
+	return route?.name === 'JitsiMeetView' || route?.name === 'VideoConfWebView' || messageType === 'videoconf';
 };
 
 const InAppNotification = memo(() => {

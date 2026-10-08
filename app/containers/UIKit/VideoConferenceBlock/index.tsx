@@ -12,7 +12,7 @@ export default function VideoConferenceBlock({ callId, blockId }: { callId: stri
 	const { result, error, reload } = useEndpointData('video-conference.info', { callId });
 
 	useEffect(() => {
-		const onUpdate = ({ callId: updatedCallId }: { callId: string }) => {
+		const onUpdate = (updatedCallId: string) => {
 			if (updatedCallId === callId) {
 				reload();
 			}

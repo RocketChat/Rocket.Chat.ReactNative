@@ -12,6 +12,10 @@ import useStyle from './styles';
 import { VideoConferenceBaseContainer } from './VideoConferenceBaseContainer';
 import Touch from '~/containers/Touch';
 
+// VideoConferenceStatus is a declare enum, so its values aren't available at runtime
+const EXPIRED: VideoConferenceStatus = 2;
+const DECLINED: VideoConferenceStatus = 4;
+
 export default function VideoConferenceEnded({
 	users,
 	type,
@@ -33,7 +37,7 @@ export default function VideoConferenceEnded({
 	const isInActiveVoipCall = useIsInActiveVoipCall();
 
 	const onlyAuthorOnCall = users.length === 1 && users.some(user => user.username === createdBy.username);
-	const notAnswered = status === 2 || status === 4;
+	const notAnswered = status === EXPIRED || status === DECLINED;
 
 	return (
 		<VideoConferenceBaseContainer variant='ended' discussionRid={discussionRid}>

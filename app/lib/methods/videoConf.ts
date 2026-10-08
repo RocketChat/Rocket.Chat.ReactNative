@@ -6,6 +6,7 @@ import navigation from '../navigation/appNavigation';
 import { videoConferenceJoin } from '../services/restApi';
 import { isAndroid, showErrorAlert } from './helpers';
 import log from './helpers/log';
+import openLink from './helpers/openLink';
 
 const handleBltPermission = async (): Promise<Permission[]> => {
 	const systemVersion = await DeviceInfo.getApiLevel();
@@ -32,8 +33,10 @@ export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean
 			const { url, providerName } = result;
 			if (providerName === 'jitsi') {
 				navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });
-			} else {
+			} else if (providerName === 'pexip') {
 				navigation.navigate('VideoConfWebView', { url });
+			} else {
+				openLink(url);
 			}
 		}
 	} catch (e) {

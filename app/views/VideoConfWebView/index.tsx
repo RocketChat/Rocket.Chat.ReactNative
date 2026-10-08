@@ -44,7 +44,7 @@ const VideoConfWebView = (): ReactElement => {
 				javaScriptEnabled
 				domStorageEnabled
 				allowsInlineMediaPlayback
-				mediaCapturePermissionGrantType='grant'
+				mediaCapturePermissionGrantType='grantIfSameHostElseDeny'
 				mediaPlaybackRequiresUserAction={isIOS}
 			/>
 			{loading ? (
