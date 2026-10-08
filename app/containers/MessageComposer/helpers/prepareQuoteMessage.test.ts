@@ -135,6 +135,17 @@ describe('prepareQuoteMessage', () => {
 			expect(result).toBe('[ ](https://example.com/message/message1) \nMy reply');
 		});
 
+		test('should skip messages whose permalink cannot be resolved', async () => {
+			const selectedMessages = ['message1', 'message2'];
+
+			mockGetMessageById.mockResolvedValue(mockMessage as any);
+			mockGetPermalinkMessage.mockResolvedValueOnce(null).mockResolvedValueOnce('https://example.com/message/message2');
+
+			const result = await prepareQuoteMessage('My reply', selectedMessages);
+
+			expect(result).toBe('[ ](https://example.com/message/message2) \nMy reply');
+		});
+
 		test('should handle empty text input with quotes', async () => {
 			const textFromInput = '';
 			const selectedMessages = ['message1'];

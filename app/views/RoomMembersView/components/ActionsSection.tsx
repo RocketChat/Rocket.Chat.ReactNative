@@ -40,6 +40,8 @@ export default function ActionsSection({ rid, t, joined, abacAttributes }: IActi
 		false;
 
 	const canInviteUser = createInviteLinksPermission;
+	const isChannelOrGroup = ['c', 'p'].includes(t);
+	const verticalPadding = canAddUser || canInviteUser ? 16 : 0;
 
 	const handleOnPress = ({
 		route,
@@ -55,21 +57,20 @@ export default function ActionsSection({ rid, t, joined, abacAttributes }: IActi
 	};
 
 	const addUser = async () => {
+		dispatch(setLoading(true));
 		try {
-			dispatch(setLoading(true));
 			await addUsersToRoom(rid, t as 'c' | 'p');
 			pop();
 		} catch (e) {
 			log(e);
 			showErrorAlertWithEMessage(e);
-		} finally {
-			dispatch(setLoading(false));
 		}
+		dispatch(setLoading(false));
 	};
 
 	return (
-		<View style={{ paddingTop: canAddUser || canInviteUser ? 16 : 0, paddingBottom: canAddUser || canInviteUser ? 16 : 0 }}>
-			{['c', 'p'].includes(t) && canAddUser ? (
+		<View style={{ paddingTop: verticalPadding, paddingBottom: verticalPadding }}>
+			{isChannelOrGroup && canAddUser ? (
 				<>
 					<List.Separator />
 					<List.Item
@@ -92,7 +93,7 @@ export default function ActionsSection({ rid, t, joined, abacAttributes }: IActi
 				</>
 			) : null}
 
-			{['c', 'p'].includes(t) && canInviteUser ? (
+			{isChannelOrGroup && canInviteUser ? (
 				<>
 					<List.Item
 						title='Invite_users'

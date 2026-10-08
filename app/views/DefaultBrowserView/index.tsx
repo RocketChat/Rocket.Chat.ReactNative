@@ -45,7 +45,7 @@ const BROWSERS: IBrowsersValues[] = [
 ];
 
 const DefaultBrowserView = () => {
-	const [browser, setBrowser] = useState<string | null>(null);
+	const [browser, setBrowser] = useState(() => UserPreferences.getString(DEFAULT_BROWSER_KEY));
 	const [supported, setSupported] = useState<IBrowsersValues[]>([]);
 
 	const navigation = useNavigation();
@@ -60,9 +60,6 @@ const DefaultBrowserView = () => {
 	}, [navigation]);
 
 	useEffect(() => {
-		const getBrowser = UserPreferences.getString(DEFAULT_BROWSER_KEY);
-		setBrowser(getBrowser);
-
 		if (isIOS) {
 			BROWSERS.forEach(browser => {
 				const { value } = browser;
@@ -77,8 +74,8 @@ const DefaultBrowserView = () => {
 
 	const changeDefaultBrowser = useCallback((newBrowser: TValue) => {
 		logEvent(events.DB_CHANGE_DEFAULT_BROWSER, { browser: newBrowser });
+		const browser = newBrowser || 'systemDefault:';
 		try {
-			const browser = newBrowser || 'systemDefault:';
 			UserPreferences.setString(DEFAULT_BROWSER_KEY, browser);
 			setBrowser(browser);
 		} catch {
