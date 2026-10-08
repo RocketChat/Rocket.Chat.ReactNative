@@ -23,6 +23,7 @@ import { BASE_ROW_HEIGHT, BASE_ROW_HEIGHT_CONDENSED } from '../lib/hooks/useResp
 import I18n from '../i18n';
 import { type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
+import { translucentHeader } from '~/lib/methods/helpers/navigation';
 import database from '../lib/database';
 import { CustomIcon } from '../containers/CustomIcon';
 import RoomItem from '../containers/RoomItem';
@@ -181,10 +182,16 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 		}
 	};
 
-	load = debounce(async () => {
-		const { loadingMore, data, search, isSearching, searchText, end } = this.state;
+	get isFiltering() {
+		const { isSearching, searchText } = this.state;
+		return isSearching && !!searchText;
+	}
 
-		const length = isSearching ? search.length : data.length;
+	load = debounce(async () => {
+		const { loadingMore, data, search, searchText, end } = this.state;
+		const { isFiltering } = this;
+
+		const length = isFiltering ? search.length : data.length;
 		if (loadingMore || end) {
 			return;
 		}
@@ -206,7 +213,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 					end: result.rooms.length < API_FETCH_COUNT
 				} as ITeamChannelsViewState;
 
-				if (isSearching) {
+				if (isFiltering) {
 					newState.search = [...search, ...result.rooms] as IItem[];
 				} else {
 					newState.data = [...data, ...result.rooms] as IItem[];
@@ -239,6 +246,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 		};
 		const titleOptions: NativeStackNavigationOptions = hasNativeHeaderBar
 			? {
+					...translucentHeader,
 					headerTitle: getRoomTitle(team),
 					headerSubtitle: team.topic,
 					onHeaderTitlePress: () => this.goRoomActionsView()
@@ -566,30 +574,32 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 	};
 
 	renderScroll = () => {
-		const { loading, data, search, isSearching, searchText } = this.state;
+		const { loading, data, search } = this.state;
 		const { insets } = this.props;
+		const { isFiltering } = this;
 		if (loading) {
 			return <BackgroundContainer loading />;
 		}
-		if (isSearching && !search.length) {
-			return <BackgroundContainer text={searchText ? I18n.t('No_channels_in_team') : ''} />;
+		if (isFiltering && !search.length) {
+			return <BackgroundContainer text={I18n.t('No_channels_in_team')} />;
 		}
-		if (!isSearching && !data.length) {
+		if (!isFiltering && !data.length) {
 			return <BackgroundContainer text={I18n.t('No_channels_in_team')} />;
 		}
 
 		return (
 			<FlatList
-				data={isSearching ? search : data}
-				extraData={isSearching ? search : data}
+				data={isFiltering ? search : data}
+				extraData={isFiltering ? search : data}
 				keyExtractor={keyExtractor}
 				renderItem={this.renderItem}
 				getItemLayout={this.getItemLayout}
 				removeClippedSubviews={isIOS}
+				contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
 				keyboardShouldPersistTaps='always'
 				onEndReached={() => this.load()}
 				onEndReachedThreshold={0.5}
-				contentContainerStyle={{ paddingBottom: insets.bottom }}
+				contentContainerStyle={{ paddingBottom: hasNativeHeaderBar ? 0 : insets.bottom }}
 				ListFooterComponent={this.renderFooter}
 			/>
 		);
