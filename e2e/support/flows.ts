@@ -446,10 +446,25 @@ export const searchRoom = async (fixtures: Fixtures, room: string) => {
 	await expect(screen.getByTestId(`rooms-list-view-item-${room}`).first()).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
+const ROOM_OPEN_ATTEMPTS = 2;
+const E2E_PASSWORD_CLOSE_BUTTON_TEST_IDS = ['e2e-save-your-password-view-close', 'e2e-enter-your-password-view-close'];
+
 export const navigateToRoom = async ({ screen }: Fixtures, room: string) => {
-	await screen.scrollUntilVisible(screen.getByTestId(`rooms-list-view-item-${room}`).first());
-	await screen.getByTestId(`rooms-list-view-item-${room}`).first().tap();
-	await expect(screen.getByTestId(`room-view-title-${room}`)).toBeVisible({ timeout: LONG_TIMEOUT });
+	const roomItem = screen.getByTestId(`rooms-list-view-item-${room}`).first();
+	const roomTitle = screen.getByTestId(`room-view-title-${room}`);
+	const e2ePasswordCloseButtons = E2E_PASSWORD_CLOSE_BUTTON_TEST_IDS.map(testId => screen.getByTestId(testId));
+	for (let attempt = 1; attempt < ROOM_OPEN_ATTEMPTS; attempt += 1) {
+		await screen.scrollUntilVisible(roomItem);
+		await roomItem.tap();
+		const opened = await firstVisible([roomTitle, ...e2ePasswordCloseButtons]);
+		if (opened === roomTitle) {
+			return;
+		}
+		await opened.tap();
+	}
+	await screen.scrollUntilVisible(roomItem);
+	await roomItem.tap();
+	await expect(roomTitle).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
 export const searchAndNavigateRoom = async (fixtures: Fixtures, room: string) => {
