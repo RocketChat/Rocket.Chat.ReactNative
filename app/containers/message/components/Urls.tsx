@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import MessageActionTouchable from './Touchable/MessageActionTouchable';
 import openLink from '~/lib/methods/helpers/openLink';
+import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
 import { LISTENER } from '~/containers/Toast';
@@ -128,9 +129,7 @@ const Url = ({ url }: { url: IUrl }) => {
 				const rawImageUrl = url.image || url.url;
 				if (!rawImageUrl || !API_Embed) return;
 
-				const _imageUrl = rawImageUrl.startsWith('http')
-					? rawImageUrl
-					: `${baseUrl}/${rawImageUrl}?rc_uid=${user?.id ?? ''}&rc_token=${user?.token ?? ''}`;
+				const _imageUrl = formatAttachmentUrl(rawImageUrl, user?.id ?? '', user?.token ?? '', baseUrl ?? '');
 
 				const response = await axios.head(_imageUrl);
 				const contentType = response.headers['content-type'];
