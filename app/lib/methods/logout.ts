@@ -18,7 +18,6 @@ import {
 	getUserTokenKey
 } from '../constants/keys';
 import UserPreferences from './userPreferences';
-import { getStoredSession } from './loggedInServer';
 import { removePushToken } from '../services/restApi';
 import { roomsSubscription } from './subscriptions/rooms';
 import { _activeUsersSubTimeout } from './getUsersPresence';
@@ -89,9 +88,13 @@ async function logoutFromServer(server: string, resume: string): Promise<void> {
 
 export async function removeServer({ server }: { server: string }): Promise<void> {
 	try {
-		const { token: resume } = getStoredSession(server);
-		if (resume) {
-			await logoutFromServer(server, resume);
+		const userId = UserPreferences.getString(getServerUserIdKey(server));
+		if (userId) {
+			const resume = UserPreferences.getString(getUserTokenKey(server, userId));
+
+			if (resume) {
+				await logoutFromServer(server, resume);
+			}
 		}
 
 		await removeServerData({ server });
