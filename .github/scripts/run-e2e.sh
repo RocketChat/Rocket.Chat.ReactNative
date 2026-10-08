@@ -108,6 +108,7 @@ DEVICE_EVIDENCE_DIR="$OUTPUT_DIR/artifacts/device"
 DEVICE_CAPTURE_DIR=""
 DEVICE_CAPTURE_PIDS=()
 AGENT_DEVICE_STATE="${AGENT_DEVICE_STATE_DIR:-$HOME/.agent-device}"
+RETRIED=false
 
 save_automation_logs() {
   [ -n "$DEVICE_CAPTURE_DIR" ] || return 0
@@ -123,8 +124,14 @@ save_automation_logs() {
 }
 
 start_device_capture() {
-  [ "$PLATFORM" = "ios" ] && [ -n "${E2E_IOS_DEVICE:-}" ] || return 0
   DEVICE_CAPTURE_DIR="$(mktemp -d)"
+  if [ "$PLATFORM" = "android" ]; then
+    adb -s "$ANDROID_DEVICE" logcat -c || true
+    adb -s "$ANDROID_DEVICE" logcat -v threadtime '*:I' >"$DEVICE_CAPTURE_DIR/logcat.txt" 2>&1 &
+    DEVICE_CAPTURE_PIDS+=($!)
+    return 0
+  fi
+  [ -n "${E2E_IOS_DEVICE:-}" ] || return 0
   xcrun simctl io "$E2E_IOS_DEVICE" recordVideo --codec h264 --force "$DEVICE_CAPTURE_DIR/screen.mp4" >/dev/null 2>&1 &
   DEVICE_CAPTURE_PIDS+=($!)
   xcrun simctl spawn "$E2E_IOS_DEVICE" log stream --style compact --level debug --predicate 'process == "Rocket.Chat" AND (subsystem == "com.facebook.react.log" OR messageType == error OR messageType == fault)' >"$DEVICE_CAPTURE_DIR/app.log" 2>&1 &
@@ -136,8 +143,13 @@ stop_device_capture() {
   kill -INT "${DEVICE_CAPTURE_PIDS[@]}" 2>/dev/null || true
   wait "${DEVICE_CAPTURE_PIDS[@]}" 2>/dev/null || true
   DEVICE_CAPTURE_PIDS=()
-  [ "${rc:-1}" -ne 0 ] || return 0
-  find "$HOME/Library/Logs/DiagnosticReports" -name 'Rocket.Chat*' -newer "$DEVICE_CAPTURE_DIR/app.log" -exec cp {} "$DEVICE_CAPTURE_DIR/" \; 2>/dev/null || true
+  [ "${rc:-1}" -ne 0 ] || [ "$RETRIED" = true ] || return 0
+  if [ -f "$DEVICE_CAPTURE_DIR/app.log" ]; then
+    find "$HOME/Library/Logs/DiagnosticReports" -name 'Rocket.Chat*' -newer "$DEVICE_CAPTURE_DIR/app.log" -exec cp {} "$DEVICE_CAPTURE_DIR/" \; 2>/dev/null || true
+  fi
+  if [ -f "$DEVICE_CAPTURE_DIR/logcat.txt" ]; then
+    gzip "$DEVICE_CAPTURE_DIR/logcat.txt"
+  fi
   save_automation_logs last-pass
   mkdir -p "$DEVICE_EVIDENCE_DIR"
   mv "$DEVICE_CAPTURE_DIR"/* "$DEVICE_EVIDENCE_DIR/"
@@ -179,7 +191,12 @@ if [ ! -f "$OUTPUT_DIR/junit.xml" ]; then
 fi
 require_report
 
+if jq -e '[.run.results[] | select((.attempts | length) > 1)] | length > 0' "$OUTPUT_DIR/report.json" >/dev/null 2>&1; then
+  RETRIED=true
+fi
+
 if [ "$rc" -ne 0 ]; then
+  RETRIED=true
   echo "::warning title=E2E rerun::Rerunning the tests that failed, with a fresh agent-device daemon. The runner never retries infrastructure failures (simulator, emulator, or automation runner), so a single flake would otherwise fail the shard."
   save_automation_logs first-pass
   pnpm exec agent-device daemon stop --clean || true
