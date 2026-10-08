@@ -228,6 +228,10 @@ const RoomMembersView = (): ReactElement => {
 	const debounceFilterChange = useDebounce((text: string) => {
 		const trimmedFilter = text.trim();
 
+		if (trimmedFilter === state.filter) {
+			return;
+		}
+
 		if (!trimmedFilter) {
 			latestSearchRequest.current += 1;
 		}
