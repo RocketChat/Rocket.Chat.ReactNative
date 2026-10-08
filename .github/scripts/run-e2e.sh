@@ -107,6 +107,20 @@ E2E_COMMAND=(pnpm exec e2e run --target "$PLATFORM" --tag "test-${SHARD}" --repo
 DEVICE_EVIDENCE_DIR="$OUTPUT_DIR/artifacts/device"
 DEVICE_CAPTURE_DIR=""
 DEVICE_CAPTURE_PIDS=()
+AGENT_DEVICE_STATE="${AGENT_DEVICE_STATE_DIR:-$HOME/.agent-device}"
+
+save_automation_logs() {
+  [ -n "$DEVICE_CAPTURE_DIR" ] || return 0
+  local pass_dir="$DEVICE_CAPTURE_DIR/automation-$1"
+  mkdir -p "$pass_dir"
+  if [ -f "$AGENT_DEVICE_STATE/daemon.log" ]; then
+    gzip -c "$AGENT_DEVICE_STATE/daemon.log" >"$pass_dir/daemon.log.gz"
+  fi
+  for runner_log in "$AGENT_DEVICE_STATE"/sessions/*/runner.log; do
+    [ -f "$runner_log" ] || continue
+    gzip -c "$runner_log" >"$pass_dir/$(basename "$(dirname "$runner_log")")-runner.log.gz"
+  done
+}
 
 start_device_capture() {
   [ "$PLATFORM" = "ios" ] && [ -n "${E2E_IOS_DEVICE:-}" ] || return 0
@@ -124,6 +138,7 @@ stop_device_capture() {
   DEVICE_CAPTURE_PIDS=()
   [ "${rc:-1}" -ne 0 ] || return 0
   find "$HOME/Library/Logs/DiagnosticReports" -name 'Rocket.Chat*' -newer "$DEVICE_CAPTURE_DIR/app.log" -exec cp {} "$DEVICE_CAPTURE_DIR/" \; 2>/dev/null || true
+  save_automation_logs last-pass
   mkdir -p "$DEVICE_EVIDENCE_DIR"
   mv "$DEVICE_CAPTURE_DIR"/* "$DEVICE_EVIDENCE_DIR/"
 }
@@ -158,6 +173,7 @@ run_e2e_pass "$RUN_TIMEOUT" --retries "$RETRIES"
 
 if [ ! -f "$OUTPUT_DIR/junit.xml" ]; then
   echo "::warning title=E2E startup retry::'e2e run' exited ${rc} before running any test (device or automation runner startup failure). Restarting the agent-device daemon and running the shard again."
+  save_automation_logs startup
   pnpm exec agent-device daemon stop --clean || true
   run_e2e_pass "$RUN_TIMEOUT" --retries "$RETRIES"
 fi
@@ -165,6 +181,7 @@ require_report
 
 if [ "$rc" -ne 0 ]; then
   echo "::warning title=E2E rerun::Rerunning the tests that failed, with a fresh agent-device daemon. The runner never retries infrastructure failures (simulator, emulator, or automation runner), so a single flake would otherwise fail the shard."
+  save_automation_logs first-pass
   pnpm exec agent-device daemon stop --clean || true
   run_e2e_pass "$RERUN_TIMEOUT" --last-failed --retries 0
   require_report
