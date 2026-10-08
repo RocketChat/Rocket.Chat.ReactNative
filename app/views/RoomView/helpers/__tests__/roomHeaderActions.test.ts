@@ -9,10 +9,17 @@ describe('splitRoomHeaderActions', () => {
 	});
 
 	it('ranks threads ahead of call so an unread badge always keeps a bar item', () => {
-		const { visibleKeys, overflowKeys } = splitRoomHeaderActions({ threads: true, call: true, encryption: true });
+		const { visibleKeys, overflowKeys } = splitRoomHeaderActions({ threads: true, call: true, notifications: true });
 
 		expect(visibleKeys).toEqual(['call', 'threads']);
-		expect(overflowKeys).toEqual(['encryption']);
+		expect(overflowKeys).toEqual(['notifications']);
+	});
+
+	it('keeps the encryption action visible because its warning disables the other actions', () => {
+		const { visibleKeys, overflowKeys } = splitRoomHeaderActions({ threads: true, call: true, encryption: true });
+
+		expect(visibleKeys).toEqual(['encryption', 'threads']);
+		expect(overflowKeys).toEqual(['call']);
 	});
 
 	it('demotes the lowest-ranked items to overflow when every warning is active at once', () => {
@@ -23,8 +30,8 @@ describe('splitRoomHeaderActions', () => {
 			notifications: true
 		});
 
-		expect(visibleKeys).toEqual(['call', 'threads']);
-		expect(overflowKeys).toEqual(['encryption', 'notifications']);
+		expect(visibleKeys).toEqual(['encryption', 'threads']);
+		expect(overflowKeys).toEqual(['call', 'notifications']);
 	});
 
 	it('promotes call to the visible cluster once threads is absent', () => {

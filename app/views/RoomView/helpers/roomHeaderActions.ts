@@ -1,4 +1,4 @@
-const ROOM_HEADER_ACTION_PRIORITY = ['threads', 'call', 'encryption', 'notifications'] as const;
+const ROOM_HEADER_ACTION_PRIORITY = ['encryption', 'threads', 'call', 'notifications'] as const;
 export type TRoomHeaderActionKey = (typeof ROOM_HEADER_ACTION_PRIORITY)[number];
 export const ROOM_HEADER_ACTION_DISPLAY_ORDER: TRoomHeaderActionKey[] = ['encryption', 'notifications', 'call', 'threads'];
 const MAX_VISIBLE_ROOM_HEADER_ACTIONS = 2;

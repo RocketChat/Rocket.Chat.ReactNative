@@ -119,3 +119,19 @@ it('does not make the title pressable for invite subscriptions', async () => {
 	await waitFor(() => expect(latestOptions().headerTitleImageSource?.uri).toBe('channel-public:title'));
 	expect(latestOptions().onHeaderTitlePress).toBeUndefined();
 });
+
+it('shows the connection state in a thread instead of the parent title and its icon', async () => {
+	mockState.meteor = { connected: false, connecting: true };
+	renderHook(() => useNativeRoomHeader(fields, 'thread', undefined, jest.fn()));
+	await act(async () => {});
+	expect(latestOptions()).toMatchObject({ headerSubtitle: 'Connecting', headerSubtitleImageSource: undefined });
+});
+
+it('shows waiting for network instead of typing users or presence', async () => {
+	mockState.meteor = { connected: false, connecting: false };
+	mockState.usersTyping = ['Alice'];
+	mockState.activeUsers.user = { status: 'online', statusText: 'Working', statusExpiresAt: 'future' };
+	renderHook(() => useNativeRoomHeader({ ...fields, type: 'd' }, undefined, 'user', jest.fn()));
+	await act(async () => {});
+	expect(latestOptions()).toMatchObject({ headerSubtitle: 'Waiting_for_network', headerSubtitleImageSource: undefined });
+});
