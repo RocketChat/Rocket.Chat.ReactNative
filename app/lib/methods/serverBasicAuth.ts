@@ -1,15 +1,12 @@
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import parse from 'url-parse';
 
 import UserPreferences from './userPreferences';
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
-
 import { headers } from './helpers/fetch';
 import { getBasicAuthKey } from '../constants/keys';
 
-const getStoredBasicAuth = (server: string) => UserPreferences.getString(getBasicAuthKey(server));
-
 export const getBasicAuthHeader = (server: string): string | undefined => {
-	const basicAuth = getStoredBasicAuth(server);
+	const basicAuth = UserPreferences.getString(getBasicAuthKey(server));
 	return basicAuth ? `Basic ${basicAuth}` : undefined;
 };
 

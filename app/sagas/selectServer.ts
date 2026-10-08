@@ -148,6 +148,7 @@ const getServerInfoSaga = function* getServerInfoSaga({
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
 		if (sdk.host === server) {
+			applyBasicAuth(server);
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 			yield put(selectServerCancel());
 			return;
@@ -232,7 +233,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	}
 };
 
-// Android's HTTP client has no request timeout
 const UNANSWERED_HOST_PROBE_TIMEOUT_MS = 30000;
 
 const probeServer = function* probeServer(server: string, signal: AbortSignal) {

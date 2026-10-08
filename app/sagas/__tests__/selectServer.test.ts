@@ -369,7 +369,7 @@ describe('selectServer saga — requesting a new workspace', () => {
 
 			expect(dispatchedActions.map(action => action.type)).toContain(SERVER.FAILURE);
 			expect(store.getState().server.connecting).toBe(false);
-			expect(store.getState().server.failureMessage).toBe('Connection timed out. Check the server URL and try again.');
+			expect(store.getState().server.failureMessage).toBe('Connection timed out. Check the workspace URL and try again.');
 		} finally {
 			jest.useRealTimers();
 		}
@@ -426,5 +426,21 @@ describe('selectServer saga — requesting a new workspace', () => {
 		await flushSagaMicrotasks();
 
 		expect(authorizationAtConnect).toBe('Basic requested-host-credentials');
+	});
+});
+
+describe('selectServer saga — selecting the connected workspace', () => {
+	it('applies the stored basic auth when the connected workspace is selected again', async () => {
+		storeActiveBasicAuth(OLD_SERVER, 'old-workspace-credentials');
+		UserPreferences.setString(getBasicAuthKey(OLD_SERVER), 'new-workspace-credentials');
+		(sdk as { host?: string }).host = OLD_SERVER;
+
+		const { store } = setupStore();
+		store.dispatch(selectServerRequest(OLD_SERVER, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect((RocketChatSettings.customHeaders as { Authorization?: string }).Authorization).toBe(
+			'Basic new-workspace-credentials'
+		);
 	});
 });
