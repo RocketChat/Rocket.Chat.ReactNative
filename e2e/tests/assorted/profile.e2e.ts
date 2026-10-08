@@ -45,7 +45,9 @@ const editBasicInfo = async (fixtures: Fixtures, user: RandomUser) => {
 	const savedAt = Date.now();
 	await expect(screen.getByTestId('profile-view-enter-password-sheet-input')).toBeHidden({ timeout: LONG_TIMEOUT });
 	renamedUsers.push(newUsername);
-	expect(await getOwnEmail({ username: newUsername, password: user.password })).toBe(newEmail);
+	await expect
+		.poll(() => getOwnEmail({ username: newUsername, password: user.password }), { timeout: LONG_TIMEOUT, interval: 3_000 })
+		.toBe(newEmail);
 	return savedAt;
 };
 
