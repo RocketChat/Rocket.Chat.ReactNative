@@ -118,7 +118,9 @@ run_e2e_pass() {
     echo "::error title=E2E run timed out::'e2e run' exceeded ${pass_timeout} and was terminated (likely a wedged simulator or emulator). This is an environment failure, not an app or test regression."
     exit "$rc"
   fi
+}
 
+require_report() {
   if [ ! -f "$OUTPUT_DIR/junit.xml" ]; then
     echo "::error title=E2E run produced no report::'e2e run' exited ${rc} without writing ${OUTPUT_DIR}/junit.xml (config, collection, or device startup failure). Re-run the failed job if this looks transient."
     exit $(( rc == 0 ? 1 : rc ))
@@ -127,10 +129,18 @@ run_e2e_pass() {
 
 run_e2e_pass "$RUN_TIMEOUT" --retries "$RETRIES"
 
+if [ ! -f "$OUTPUT_DIR/junit.xml" ]; then
+  echo "::warning title=E2E startup retry::'e2e run' exited ${rc} before running any test (device or automation runner startup failure). Restarting the agent-device daemon and running the shard again."
+  pnpm exec agent-device daemon stop --clean || true
+  run_e2e_pass "$RUN_TIMEOUT" --retries "$RETRIES"
+fi
+require_report
+
 if [ "$rc" -ne 0 ]; then
   echo "::warning title=E2E rerun::Rerunning the tests that failed, with a fresh agent-device daemon. The runner never retries infrastructure failures (simulator, emulator, or automation runner), so a single flake would otherwise fail the shard."
   pnpm exec agent-device daemon stop --clean || true
   run_e2e_pass "$RERUN_TIMEOUT" --last-failed --retries 0
+  require_report
 fi
 
 if [ "$rc" -ne 0 ]; then
