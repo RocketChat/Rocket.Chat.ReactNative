@@ -1,6 +1,6 @@
-import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
+import type * as SdkIntegration from '../testUtils/sdkIntegration';
 
-jest.mock('~/lib/database', () => ({
+jest.mock('../database', () => ({
 	__esModule: true,
 	default: {
 		servers: {
@@ -12,36 +12,36 @@ jest.mock('~/lib/database', () => ({
 	getDatabase: jest.fn()
 }));
 
-jest.mock('~/lib/methods/helpers/log', () => ({
-	...jest.requireActual('~/lib/methods/helpers/log'),
+jest.mock('./helpers/log', () => ({
+	...jest.requireActual('./helpers/log'),
 	__esModule: true,
 	default: jest.fn()
 }));
 
-jest.mock('~/lib/notifications', () => ({
+jest.mock('../notifications', () => ({
 	getDeviceToken: jest.fn(() => '')
 }));
 
-jest.mock('~/lib/services/connect', () => ({
+jest.mock('../services/connect', () => ({
 	disconnect: jest.fn()
 }));
 
-jest.mock('~/lib/services/restApi', () => ({
+jest.mock('../services/restApi', () => ({
 	removePushToken: jest.fn()
 }));
 
 const mockSdkLogout = jest.fn();
 
-jest.mock('~/lib/services/sdk', () => {
-	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('~/lib/testUtils/sdkIntegration');
+jest.mock('../services/sdk', () => {
+	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../testUtils/sdkIntegration');
 	return { __esModule: true, default: makeSdkMock({ logout: () => mockSdkLogout() }) };
 });
 
-import { logout, removeServerData } from '../logout';
-import sdk from '~/lib/services/sdk';
-import { disconnect } from '~/lib/services/connect';
-import database from '~/lib/database';
-import UserPreferences from '~/lib/methods/userPreferences';
+import { logout, removeServerData } from './logout';
+import sdk from '../services/sdk';
+import { disconnect } from '../services/connect';
+import database from '../database';
+import UserPreferences from './userPreferences';
 import {
 	CERTIFICATE_KEY,
 	CURRENT_SERVER,
@@ -50,7 +50,7 @@ import {
 	E2E_RANDOM_PASSWORD_KEY,
 	TOKEN_KEY,
 	getBasicAuthKey
-} from '~/lib/constants/keys';
+} from '../constants/keys';
 
 const mockSdk = sdk as unknown as SdkIntegration.IMockSdk;
 

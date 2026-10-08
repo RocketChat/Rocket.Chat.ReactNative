@@ -38,7 +38,7 @@ const roomTypes = {
 	channels: 'l'
 };
 
-export const shouldAutoConfirmDeepLinkConsent = (isE2E, params = {}) => isE2E && params.forceLoginPrompt !== 'true';
+export const shouldAutoConfirmDeepLinkLogin = (isE2E, params = {}) => isE2E && params.forceLoginPrompt !== 'true';
 
 const consentCopy = {
 	login: {
@@ -57,7 +57,7 @@ const consentCopy = {
 
 const confirmDeepLinkConsent = (host, params, copy) =>
 	new Promise(resolve => {
-		if (shouldAutoConfirmDeepLinkConsent(process.env.RUNNING_E2E_TESTS === 'true', params)) {
+		if (shouldAutoConfirmDeepLinkLogin(process.env.RUNNING_E2E_TESTS === 'true', params)) {
 			resolve(true);
 			return;
 		}
