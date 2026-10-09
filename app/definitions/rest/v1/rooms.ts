@@ -1,4 +1,4 @@
-import type { IMessage } from '~/definitions/IMessage';
+import type { IMessage, IMessageFromServer } from '~/definitions/IMessage';
 import type { IRoomNotifications, IServerRoom } from '~/definitions/IRoom';
 import type { IUser } from '~/definitions/IUser';
 
@@ -56,6 +56,12 @@ export type RoomsEndpoints = {
 	};
 	'rooms.invite': {
 		POST: (params: { roomId: string; action: 'accept' | 'reject' }) => void;
+	};
+	'rooms.history': {
+		GET: (params: { roomId: IServerRoom['_id']; next?: string; count?: number; showThreadMessages?: boolean }) => {
+			messages: IMessageFromServer[];
+			cursor: { next: string | null; previous: string | null };
+		};
 	};
 };
 

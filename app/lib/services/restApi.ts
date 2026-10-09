@@ -1,9 +1,11 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+import EJSON from 'ejson';
 import { getUniqueId } from 'react-native-device-info';
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 
 import {
 	type IAvatarSuggestion,
+	type IMessage,
 	type IMessagePreferences,
 	type INotificationPreferences,
 	type IPreviewItem,
@@ -26,6 +28,7 @@ import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar'
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 import { getDeviceToken } from '../notifications/deviceToken';
 import NativeVoipModule from '../native/NativeVoip';
+import { tsToMs } from '../dayjs';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import fetch from '../methods/helpers/fetch';
@@ -897,6 +900,28 @@ export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updated
 		rid,
 		updatedSince
 	});
+
+export const getNextMessages = async ({ rid, after, count }: { rid: string; after: Date; count: number }) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
+		const history = await sdk.get('rooms.history', {
+			roomId: rid,
+			next: String(tsToMs(after)),
+			count,
+			showThreadMessages: false
+		});
+		if (!history.success) {
+			throw new Error('Unable to load newer messages');
+		}
+		return { messages: history.messages as IMessage[], hasMore: history.cursor.next !== null };
+	}
+	const result = await sdk.methodCallWrapper('loadNextMessages', rid, after, count);
+	if (!result?.messages) {
+		throw new Error('Unable to load newer messages');
+	}
+	const messages: IMessage[] = EJSON.fromJSONValue(result.messages);
+	return { messages, hasMore: messages.length === count };
+};
 
 export const runSlashCommand = (command: string, roomId: string, params: string, triggerId?: string, tmid?: string) =>
 	// RC 0.60.2
