@@ -68,8 +68,7 @@ const answerLoginPrompt = async (fixtures: Fixtures, link: string, answer: RegEx
 	await screen.getByRole('button', { name: answer }).last().tap();
 };
 
-test('handles auth, room, thread and share deep links', { tags: ['test-6'], timeout: 900_000 }, async fixtures => {
-	const { screen } = fixtures;
+const createDeepLinkTargets = async () => {
 	const user = await createUser();
 	const session = await login(user);
 	const room = await createRandomRoom(user, 'p');
@@ -81,7 +80,14 @@ test('handles auth, room, thread and share deep links', { tags: ['test-6'], time
 	const authLink = (extra: Record<string, string> = {}) =>
 		getDeepLink('auth', data.server, { userId: session.userId, token: session.authToken, path: roomPath, ...extra });
 	const roomLink = getDeepLink('room', data.server, { path: roomPath });
-	const shareLink = (text: string) => `rocketchat://shareextension?text=${text}`;
+	return { room, roomPath, threadMessage, thread, authLink, roomLink };
+};
+
+const shareLink = (text: string) => `rocketchat://shareextension?text=${text}`;
+
+test('handles auth deep links', { tags: ['test-6'] }, async fixtures => {
+	const { screen } = fixtures;
+	const { room, authLink } = await createDeepLinkTargets();
 	const roomItem = screen.getByTestId(`rooms-list-view-item-${room.name}`);
 
 	await launchApp(fixtures);
@@ -94,6 +100,12 @@ test('handles auth, room, thread and share deep links', { tags: ['test-6'], time
 	await backToRoomsList(fixtures);
 	await checkServer(fixtures, data.server);
 	await expect(roomItem).toBeVisible({ timeout: LONG_TIMEOUT });
+});
+
+test('handles room, thread and share deep links with two workspaces', { tags: ['test-6'], timeout: 900_000 }, async fixtures => {
+	const { screen } = fixtures;
+	const { room, roomPath, threadMessage, thread, authLink, roomLink } = await createDeepLinkTargets();
+	const roomItem = screen.getByTestId(`rooms-list-view-item-${room.name}`);
 
 	await launchApp(fixtures);
 	await navigateToRegister(fixtures, data.alternateServer);
@@ -145,6 +157,11 @@ test('handles auth, room, thread and share deep links', { tags: ['test-6'], time
 	await expectVisible(fixtures, 'share-list-view');
 	await expectVisible(fixtures, `server-item-${data.server}`);
 	await shareTextTo(fixtures, room.name, secondShare);
+});
+
+test('handles share and login prompt deep links without a workspace', { tags: ['test-6'] }, async fixtures => {
+	const { screen } = fixtures;
+	const { room, authLink } = await createDeepLinkTargets();
 
 	await launchApp(fixtures);
 	await coldStartLink(fixtures, shareLink('whatever'));
