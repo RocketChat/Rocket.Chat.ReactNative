@@ -292,42 +292,43 @@ const handleKnownServerDeepLink = function* handleKnownServerDeepLink({ params, 
 	}
 };
 
-const signInWithDeepLinkToken = function* signInWithDeepLinkToken({ params, hostAlreadyConnected }) {
-	if (!hostAlreadyConnected) {
-		yield take(types.SERVER.SELECT_SUCCESS);
-		const connected = yield select(state => state.meteor.connected);
-		if (!connected) {
-			yield take(types.METEOR.SUCCESS);
-		}
+const waitForServerConnection = function* waitForServerConnection() {
+	yield take(types.SERVER.SELECT_SUCCESS);
+	const connected = yield select(state => state.meteor.connected);
+	if (!connected) {
+		yield take(types.METEOR.SUCCESS);
 	}
-	yield put(loginRequest({ resume: params.token }, true));
-	yield take(types.LOGIN.SUCCESS);
 	return true;
 };
 
-const signInWithDeepLinkTokenInTime = function* signInWithDeepLinkTokenInTime({ params, hostAlreadyConnected = false }) {
-	const { signedIn, timedOut } = yield race({
-		signedIn: call(signInWithDeepLinkToken, { params, hostAlreadyConnected }),
-		failed: take([types.LOGIN.FAILURE, types.SERVER.SELECT_FAILURE, types.LOGOUT]),
-		timedOut: delay(DEEP_LINK_SIGN_IN_TIMEOUT)
+const signInWithDeepLinkToken = function* signInWithDeepLinkToken({ params, hostAlreadyConnected = false }) {
+	if (!hostAlreadyConnected) {
+		const { connected, failed, timedOut } = yield race({
+			connected: call(waitForServerConnection),
+			failed: take([types.LOGIN.FAILURE, types.SERVER.SELECT_FAILURE]),
+			loggedOut: take(types.LOGOUT),
+			timedOut: delay(DEEP_LINK_SIGN_IN_TIMEOUT)
+		});
+		if (timedOut) {
+			showToast(I18n.t('Deep_link_login_timed_out'));
+		}
+		if (failed) {
+			showToast(I18n.t('Deep_link_login_failed'));
+		}
+		if (!connected) {
+			return false;
+		}
+	}
+	yield put(loginRequest({ resume: params.token }, true));
+	const { signedIn, failed } = yield race({
+		signedIn: take(types.LOGIN.SUCCESS),
+		failed: take(types.LOGIN.FAILURE),
+		loggedOut: take(types.LOGOUT)
 	});
-	if (timedOut) {
-		showToast(I18n.t('Deep_link_login_timed_out'));
+	if (failed) {
+		showToast(I18n.t('Deep_link_login_failed'));
 	}
 	return !!signedIn;
-};
-
-const loginWithDeepLinkToken = function* loginWithDeepLinkToken({ params, hostAlreadyConnected }) {
-	if (!(yield* signInWithDeepLinkTokenInTime({ params, hostAlreadyConnected }))) {
-		return;
-	}
-	yield put(appReady({}));
-
-	const currentRoot = yield select(state => state.app.root);
-	if (currentRoot !== RootEnum.ROOT_INSIDE) {
-		yield take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE);
-	}
-	yield completeDeepLinkNavigation(params);
 };
 
 const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, user, serverRecord }) {
@@ -360,11 +361,19 @@ const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, 
 		EventEmitter.emit('NewServer', { server: host });
 	}
 
-	if (params.token) {
-		yield loginWithDeepLinkToken({ params, hostAlreadyConnected });
-	} else {
+	if (!params.token) {
 		yield handleInviteLink({ params, requireLogin: true });
+		return;
 	}
+	if (!(yield* signInWithDeepLinkToken({ params, hostAlreadyConnected }))) {
+		return;
+	}
+	yield put(appReady({}));
+	const currentRoot = yield select(state => state.app.root);
+	if (currentRoot !== RootEnum.ROOT_INSIDE) {
+		yield take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE);
+	}
+	yield completeDeepLinkNavigation(params);
 };
 
 const handleOpen = function* handleOpen({ params }) {
@@ -495,7 +504,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 	yield put(serverInitAdd(server));
 	yield delay(1000);
 	EventEmitter.emit('NewServer', { server: host });
-	if (params.token && (yield* signInWithDeepLinkTokenInTime({ params }))) {
+	if (params.token && (yield* signInWithDeepLinkToken({ params }))) {
 		yield handleNavigateCallRoom({ params });
 	}
 };

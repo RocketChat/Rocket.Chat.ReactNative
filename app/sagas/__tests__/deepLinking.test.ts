@@ -105,7 +105,7 @@ jest.mock('~/lib/methods/helpers', () => ({
 import RNCallKeep from 'react-native-callkeep';
 
 import { deepLinkingOpen, deepLinkingClickCallPush } from '~/actions/deepLinking';
-import { loginFailure, loginSuccess } from '~/actions/login';
+import { loginFailure, loginSuccess, logout } from '~/actions/login';
 import { selectServerFailure, selectServerSuccess } from '~/actions/server';
 import { appStart } from '~/actions/app';
 import { connectSuccess } from '~/actions/connect';
@@ -293,7 +293,35 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		expect(loginRequested()).toBe(true);
 	});
 
-	it('stops waiting and does not open the room when the deep link login fails', async () => {
+	it('opens the room when the login answers after the sign-in timeout window', async () => {
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+
+		await jest.advanceTimersByTimeAsync(61_000);
+		await flushSagaMicrotasks();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
+		await flushSagaMicrotasks();
+		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.ready).toBe(true);
+		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
+		expect(toastedMessages(emitSpy)).not.toContain('Deep_link_login_timed_out');
+		emitSpy.mockRestore();
+	});
+
+	it('stops waiting, tells the user and does not open the room when the deep link login fails', async () => {
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
 		const { store } = setupStore();
 
 		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
@@ -307,16 +335,43 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(loginFailure({ error: 'invalid token' }));
 		await flushSagaMicrotasks();
 
+		expect(toastedMessages(emitSpy)).toContain('Deep_link_login_failed');
+
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+		emitSpy.mockRestore();
 	});
 
-	it('tells the user and stops waiting when the deep link login never finishes', async () => {
+	it('stays silent when the server logs the user out instead of answering the deep link login', async () => {
 		const emitSpy = jest.spyOn(EventEmitter, 'emit');
 		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+		store.dispatch(logout(true, 'Token_expired'));
+		await flushSagaMicrotasks();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
+		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+		await flushSagaMicrotasks();
+
+		expect(toastedMessages(emitSpy)).not.toContain('Deep_link_login_failed');
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+		emitSpy.mockRestore();
+	});
+
+	it('tells the user and never sends the login when the server does not connect in time', async () => {
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
+		const { store, dispatchedActions } = setupStore();
 
 		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
 		await flushSagaMicrotasks();
@@ -334,6 +389,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		await flushSagaMicrotasks();
 
+		expect(dispatchedActions.some(a => a.type === LOGIN.REQUEST)).toBe(false);
 		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
 		emitSpy.mockRestore();
 	});

@@ -233,6 +233,7 @@
   "Dark_level": "Dark level",
   "decline": "Decline",
   "Deep_link_login_declined": "Sign-in link dismissed.",
+  "Deep_link_login_failed": "Could not sign in from the link. Try again.",
   "Deep_link_login_description": "A link is asking to sign you in to {{server}}. Only continue if you opened this link yourself and trust it.",
   "Deep_link_login_timed_out": "Signing in from the link took too long. Try again.",
   "Deep_link_login_title": "Sign in to this workspace?",
