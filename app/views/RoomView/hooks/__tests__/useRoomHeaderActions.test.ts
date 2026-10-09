@@ -245,6 +245,14 @@ describe('useRoomHeaderActions', () => {
 			expect(troubleshoot?.tintColor).toBeUndefined();
 		});
 
+		it('labels the notifications action by where it leads', () => {
+			mockButtonsData = { ...mockButtonsData, issuesWithNotifications: true };
+			expect(actionByTestID(renderRoomActions(), 'room-view-push-troubleshoot')?.label).toBe('Troubleshooting');
+
+			mockButtonsData = { ...mockButtonsData, issuesWithNotifications: false, disableNotifications: true };
+			expect(actionByTestID(renderRoomActions(), 'room-view-push-troubleshoot')?.label).toBe('Notification preferences');
+		});
+
 		it('hides the threads action when threads are disabled', () => {
 			expect(actionByTestID(renderRoomActions(), 'room-view-header-threads')).toBeUndefined();
 		});

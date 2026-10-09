@@ -169,7 +169,7 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 			onPress: goE2EEToggleRoomView
 		},
 		notifications: {
-			label: i18n.t('Troubleshooting'),
+			label: i18n.t(issuesWithNotifications ? 'Troubleshooting' : 'Notification_Preferences'),
 			icon: 'notification-disabled',
 			testID: 'room-view-push-troubleshoot',
 			tintColor: issuesWithNotifications ? colors.fontDanger : undefined,
