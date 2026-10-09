@@ -6,11 +6,10 @@ import { LISTENER } from '~/containers/Toast';
 import { type ISidebarCategory } from '~/definitions';
 import I18n from '~/i18n';
 import EventEmitter from '~/lib/methods/helpers/events';
-import { showErrorAlert } from '~/lib/methods/helpers/info';
-import log from '~/lib/methods/helpers/log';
 import { random } from '~/lib/methods/helpers/random';
 import Navigation from '~/lib/navigation/appNavigation';
 import { saveSidebarCategories, setRoomsCategory } from '~/lib/services/restApi';
+import { alertCategoryError } from '~/views/CategorySettingsView/utils/alertCategoryError';
 import { toSidebarCategories } from '~/views/RoomsListView/utils/sidebarGroupOrder';
 import { useSidebarCategories } from '~/views/RoomsListView/hooks/useSidebarCategories';
 
@@ -44,9 +43,8 @@ export const useCreateCategory = () => {
 			}
 			EventEmitter.emit(LISTENER, { message: I18n.t('Category_created') });
 			Navigation.popTo('DrawerNavigator');
-		} catch (error: any) {
-			log(error);
-			showErrorAlert(error?.data?.error ?? error?.message ?? '', I18n.t('Oops'));
+		} catch (error) {
+			alertCategoryError(error);
 		} finally {
 			setCreating(false);
 		}
