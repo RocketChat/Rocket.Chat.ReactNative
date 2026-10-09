@@ -14,9 +14,20 @@ import ImageBadge from './ImageBadge';
 import log from '~/lib/methods/helpers/log';
 import { encodeAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 
-export const MessageImage = ({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
+const BORDER_WIDTH = 1;
+
+const fitInto = ({ width: naturalWidth, height: naturalHeight }: { width: number; height: number }, maxSize: number) => {
+	const width = Math.min(naturalWidth, maxSize) || 0;
+	const height = Math.min((naturalHeight * ((width * 100) / naturalWidth)) / 100, maxSize) || 0;
+	return { width, height };
+};
+
+export const MessageImage = ({ uri, status, encrypted = false, imagePreview, imageType, dimensions }: IMessageImage) => {
 	const { colors } = useTheme();
-	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
+	const [imageDimensions, setImageDimensions] = useState({
+		width: 0,
+		height: 0
+	});
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 	const maxSize = useContext(WidthAwareContext);
 	const showImage = isValidUrl(uri) && imageDimensions.width && status === 'downloaded';
@@ -36,12 +47,18 @@ export const MessageImage = ({ uri, status, encrypted = false, imagePreview, ima
 		}
 	}, [uri, status]);
 
-	const width = Math.min(imageDimensions.width, maxSize) || 0;
-	const height = Math.min((imageDimensions.height * ((width * 100) / imageDimensions.width)) / 100, maxSize) || 0;
-	const imageStyle = {
-		width,
-		height
-	};
+	const imageStyle = fitInto(imageDimensions, maxSize);
+	const knownDimensions =
+		dimensions?.width && dimensions?.height && maxSize ? { width: dimensions.width, height: dimensions.height } : undefined;
+	const placeholderStyle = knownDimensions
+		? [
+				styles.image,
+				{
+					minHeight: 0,
+					height: fitInto(knownDimensions, maxSize).height + 2 * BORDER_WIDTH
+				}
+			]
+		: styles.image;
 
 	const containerStyle: ViewStyle = {
 		alignItems: 'center',
@@ -52,7 +69,7 @@ export const MessageImage = ({ uri, status, encrypted = false, imagePreview, ima
 
 	const borderStyle: ViewStyle = {
 		borderColor: colors.strokeLight,
-		borderWidth: 1,
+		borderWidth: BORDER_WIDTH,
 		borderRadius: 4,
 		overflow: 'hidden'
 	};
@@ -78,16 +95,16 @@ export const MessageImage = ({ uri, status, encrypted = false, imagePreview, ima
 					{imagePreview && imageType && !encrypted ? (
 						<Image
 							autoplay={autoplayGifs}
-							style={styles.image}
+							style={placeholderStyle}
 							source={{ uri: `data:${imageType};base64,${imagePreview}` }}
 							contentFit='cover'
 						/>
 					) : (
-						<View style={[styles.image, borderStyle]} />
+						<View style={[placeholderStyle, borderStyle]} />
 					)}
 					<OverlayComponent
 						loading={['loading', 'downloaded'].includes(status)}
-						style={[styles.image, borderStyle]}
+						style={[placeholderStyle, borderStyle]}
 						iconName={status === 'to-download' ? 'arrow-down-circle' : 'loading'}
 						showBackground={!imagePreview || !imageType}
 					/>

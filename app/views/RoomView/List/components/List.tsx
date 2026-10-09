@@ -10,6 +10,7 @@ import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput
 import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '~/lib/constants/accessibility';
 import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
+import MessageCell from './MessageCell';
 import { type TAnyMessageModel } from '~/definitions';
 import { type IListProps } from '~/views/RoomView/definitions';
 import { SCROLL_LIMIT } from '../constants';
@@ -71,6 +72,7 @@ const List = ({ flatListRef, jumpToBottom, isAnchored, ...props }: IListProps) =
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
 				inverted
+				CellRendererComponent={MessageCell}
 				renderScrollComponent={
 					renderScrollComponent
 						? props => <InvertedScrollView {...props} exitFocusNativeId={MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID} />
