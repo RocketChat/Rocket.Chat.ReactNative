@@ -1,11 +1,19 @@
 diff --git a/node_modules/@e2e-dev/mobile/dist/errors.js b/node_modules/@e2e-dev/mobile/dist/errors.js
-index 60781e8..0d80010 100644
+index 60781e8..0aa3261 100644
 --- a/node_modules/@e2e-dev/mobile/dist/errors.js
 +++ b/node_modules/@e2e-dev/mobile/dist/errors.js
-@@ -207,6 +207,14 @@ export function isNoSessionApp(error) {
+@@ -207,6 +207,22 @@ export function isNoSessionApp(error) {
  export function isSnapshotPresentationFailure(error) {
      return error instanceof Error && isPresentationFailure(error.cause);
  }
++/**
++ * True when the Android snapshot helper found too little of the foreground
++ * app to trust the capture: a splash or a screen still mounting. A capture is
++ * a read, so taking it again once the screen fills in is safe.
++ */
++export function isContentPoorCapture(error) {
++    return error instanceof Error && details(error.cause).androidSnapshotHelperFailureReason === 'content-poor-app-window';
++}
 +/**
 + * True when the iOS runner refused a command because abandoned work still
 + * holds its main thread. The runner refuses before dispatching, so resending
@@ -18,7 +26,7 @@ index 60781e8..0d80010 100644
   * Runs one agent-device command under an abort signal and translates its
   * failure onto the engine taxonomy: the one boundary every command crosses.
 diff --git a/node_modules/@e2e-dev/mobile/dist/surface.js b/node_modules/@e2e-dev/mobile/dist/surface.js
-index 4c260ed..fe7348e 100644
+index 4c260ed..1679ff4 100644
 --- a/node_modules/@e2e-dev/mobile/dist/surface.js
 +++ b/node_modules/@e2e-dev/mobile/dist/surface.js
 @@ -15,7 +15,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, w
@@ -26,20 +34,22 @@ index 4c260ed..fe7348e 100644
  import path from 'node:path';
  import { EngineError, KEY_NAMES, parseKey, raceAbort, rejectUnknownKeys, stopProviderRecording, withinCleanupBudget, ConfigurationError, TestError, } from 'e2e/engine';
 -import { isNoSessionApp, isSnapshotPresentationFailure, runCommand, staleOr } from './errors.js';
-+import { isNoSessionApp, isRunnerBusy, isSnapshotPresentationFailure, runCommand, staleOr } from './errors.js';
++import { isContentPoorCapture, isNoSessionApp, isRunnerBusy, isSnapshotPresentationFailure, runCommand, staleOr } from './errors.js';
  import { pointerInteraction, DEFAULT_LONG_PRESS_MS } from './actions.js';
  import { resolveExpression } from './locate.js';
  import { isWithin, projectSnapshot, ROOT_ID, screenRoot, screenTitle, } from './nodes.js';
-@@ -25,6 +25,8 @@ import { deviceLabel, pinnedApp } from './bindings.js';
+@@ -25,6 +25,10 @@ import { deviceLabel, pinnedApp } from './bindings.js';
  import { assertAppId } from './links.js';
  import { DevicePool, deviceSelection } from './pool.js';
  import { recordLease, travelledLease } from './provider.js';
 +const RUNNER_BUSY_BUDGET_MS = 60_000;
 +const RUNNER_BUSY_RETRY_MS = 1_000;
++const CONTENT_POOR_BUDGET_MS = 60_000;
++const CONTENT_POOR_RETRY_MS = 500;
  import { invalidState, notActionable, logicalScreenSize, readPngSize, sanitizeFilename, screenLocation, swipeWithin, unsupported, } from './support.js';
  /** Why nothing is pinned with `appPath` alone: the install is the suite's. */
  const UNINSTALLED_BUILD = "the build the target's `app.appPath` names installed first with `device.installApp()`";
-@@ -257,7 +259,7 @@ export class AgentDeviceSurface {
+@@ -257,7 +261,7 @@ export class AgentDeviceSurface {
       */
      async command(label, run, signal) {
          const client = this.requireClient();
@@ -48,7 +58,7 @@ index 4c260ed..fe7348e 100644
      }
      /**
       * Runs a fixture command that changes the screen (a back, the home screen,
-@@ -274,6 +276,19 @@ export class AgentDeviceSurface {
+@@ -274,6 +278,19 @@ export class AgentDeviceSurface {
          return result;
      }
      /** Registers one device command as in flight until it settles. */
@@ -68,7 +78,7 @@ index 4c260ed..fe7348e 100644
      track(pending) {
          this.inflight.add(pending);
          pending.then(() => this.inflight.delete(pending), () => this.inflight.delete(pending));
-@@ -556,7 +571,7 @@ export class AgentDeviceSurface {
+@@ -556,7 +573,7 @@ export class AgentDeviceSurface {
          }
      }
      async permission(permission, state, signal) {
@@ -77,7 +87,7 @@ index 4c260ed..fe7348e 100644
      }
      /**
       * Opens a link on the device, into `app` (the pinned app when none is
-@@ -614,7 +629,7 @@ export class AgentDeviceSurface {
+@@ -614,7 +631,7 @@ export class AgentDeviceSurface {
       */
      async closeApp(signal) {
          const app = this.appIdentity ?? this.pinnedApp;
@@ -86,7 +96,42 @@ index 4c260ed..fe7348e 100644
          this.sessionApp = undefined;
          this.screenReplaced();
      }
-@@ -968,7 +983,7 @@ export class AgentDeviceSurface {
+@@ -668,17 +685,26 @@ export class AgentDeviceSurface {
+      * One capture, taken again once when the iOS runner acquired the tree but
+      * failed its own presentation check on it (a viewport it could not read, a
+      * malformed graph). The check is per capture and a capture is a read, so
+-     * the retry is safe; a second failure is the runner's and propagates.
++     * the retry is safe; a second failure is the runner's and propagates. An
++     * Android capture of a foreground app too empty to trust is taken again
++     * until the screen fills in, within the caller's signal.
+      */
+     async capture(signal, interactiveOnly) {
+         const take = () => this.command('snapshot', (client) => client.capture.snapshot({ interactiveOnly }), signal);
+-        try {
+-            return await take();
+-        }
+-        catch (cause) {
+-            if (signal.aborted || !isSnapshotPresentationFailure(cause))
+-                throw cause;
+-            return take();
++        const deadline = Date.now() + CONTENT_POOR_BUDGET_MS;
++        for (;;) {
++            try {
++                return await take();
++            }
++            catch (cause) {
++                if (signal.aborted)
++                    throw cause;
++                if (isSnapshotPresentationFailure(cause))
++                    return take();
++                if (!isContentPoorCapture(cause) || Date.now() >= deadline)
++                    throw cause;
++                await new Promise((resolve) => setTimeout(resolve, CONTENT_POOR_RETRY_MS));
++            }
+         }
+     }
+     /**
+@@ -968,7 +994,7 @@ export class AgentDeviceSurface {
              }
          };
          try {
@@ -95,7 +140,7 @@ index 4c260ed..fe7348e 100644
          }
          catch (cause) {
              throw staleOr(cause, label, this.where);
-@@ -1145,7 +1160,7 @@ export class AgentDeviceSurface {
+@@ -1145,7 +1171,7 @@ export class AgentDeviceSurface {
          const app = this.pinnedApp;
          if (app === undefined)
              throw unsupported(`app.clearState needs the target's \`app.bundleId\`, or ${UNINSTALLED_BUILD}`);
@@ -104,7 +149,7 @@ index 4c260ed..fe7348e 100644
          await this.openApp(app, { relaunch: true }, operation.signal);
      }
      /**
-@@ -1168,7 +1183,7 @@ export class AgentDeviceSurface {
+@@ -1168,7 +1194,7 @@ export class AgentDeviceSurface {
          if (this.options.platform !== 'ios') {
              throw unsupported('device.clearKeychain resets an iOS simulator keychain; Android has none to reset');
          }
