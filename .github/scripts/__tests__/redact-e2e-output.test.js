@@ -45,6 +45,40 @@ describe('redact-e2e-output.sh', () => {
 		expect(read(outputDir, 'artifacts/shard/agent.log')).toBe('Authorization: Bearer ***REDACTED***');
 	});
 
+	it('replaces the token query parameter of auth deep links', () => {
+		const outputDir = makeOutputDir({
+			'report.json':
+				'{"url":"rocketchat://auth?host=open.rocket.chat&userId=abc&token=Xy_9-Zq.w"}\nopen rocketchat://auth?token=Xy_9-Zq.w&userId=abc'
+		});
+
+		runScript(SCRIPT, { args: [outputDir], env: credentials });
+
+		expect(read(outputDir, 'report.json')).toBe(
+			'{"url":"rocketchat://auth?host=open.rocket.chat&userId=abc&token=***REDACTED***"}\nopen rocketchat://auth?token=***REDACTED***&userId=abc'
+		);
+	});
+
+	it('fails without touching any file when compressed output is present', () => {
+		const outputDir = makeOutputDir({
+			'report.json': '{"user":"admin.user"}',
+			'artifacts/device/logcat.txt.gz': 'admin.user'
+		});
+
+		const { status } = runScript(SCRIPT, { args: [outputDir], env: credentials });
+
+		expect(status).not.toBe(0);
+		expect(read(outputDir, 'report.json')).toBe('{"user":"admin.user"}');
+	});
+
+	it('ignores compressed files in the cache folder', () => {
+		const outputDir = makeOutputDir({ 'cache/replay.gz': 'cached', 'junit.xml': 'admin.user' });
+
+		const { status } = runScript(SCRIPT, { args: [outputDir], env: credentials });
+
+		expect(status).toBe(0);
+		expect(read(outputDir, 'junit.xml')).toBe('***REDACTED***');
+	});
+
 	it('leaves the cache folder untouched', () => {
 		const outputDir = makeOutputDir({ 'cache/state.json': 'admin.user' });
 

@@ -180,13 +180,14 @@ jobs:
           script: bash .github/scripts/run-e2e.sh android "$SHARD"
 
       - name: Redact E2E Report
+        id: redact
         if: always()
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: bash .github/scripts/redact-e2e-output.sh
 
       - name: Upload E2E Report
-        if: always()
+        if: always() && steps.redact.outcome == 'success'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: Android E2E Report - Shard ${{ inputs.shard }}

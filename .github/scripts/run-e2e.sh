@@ -133,11 +133,11 @@ save_automation_logs() {
   local pass_dir="$DEVICE_CAPTURE_DIR/automation-$1"
   mkdir -p "$pass_dir"
   if [ -f "$AGENT_DEVICE_STATE/daemon.log" ]; then
-    gzip -c "$AGENT_DEVICE_STATE/daemon.log" >"$pass_dir/daemon.log.gz"
+    cp "$AGENT_DEVICE_STATE/daemon.log" "$pass_dir/daemon.log"
   fi
   for runner_log in "$AGENT_DEVICE_STATE"/sessions/*/runner.log; do
     [ -f "$runner_log" ] || continue
-    gzip -c "$runner_log" >"$pass_dir/$(basename "$(dirname "$runner_log")")-runner.log.gz"
+    cp "$runner_log" "$pass_dir/$(basename "$(dirname "$runner_log")")-runner.log"
   done
 }
 
@@ -169,11 +169,7 @@ stop_device_capture() {
   if [ -f "$DEVICE_CAPTURE_DIR/.capture-started" ]; then
     find "$HOME/Library/Logs/DiagnosticReports" -name 'Rocket.Chat*' -newer "$DEVICE_CAPTURE_DIR/.capture-started" -exec cp {} "$DEVICE_CAPTURE_DIR/" \; 2>/dev/null || true
   fi
-  if [ -f "$DEVICE_CAPTURE_DIR/system.log" ]; then
-    gzip "$DEVICE_CAPTURE_DIR/system.log"
-  fi
   if [ -f "$DEVICE_CAPTURE_DIR/logcat.txt" ]; then
-    gzip "$DEVICE_CAPTURE_DIR/logcat.txt"
     adb -s "$ANDROID_DEVICE" shell dumpsys dropbox --print data_app_anr >"$DEVICE_CAPTURE_DIR/anr.txt" 2>&1 || true
   fi
   save_automation_logs last-pass
