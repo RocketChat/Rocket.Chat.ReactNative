@@ -16,6 +16,8 @@ import { type SettingsStackParamList } from '../stacks/types';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { saveSortPreference } from '../lib/methods/userPreferencesMethods';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../lib/hooks/useMasterDetail';
+import { headerLeftCloseModal } from '../lib/methods/helpers/navigation/headerActions';
 
 const DisplayPrefsView = (): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
@@ -24,12 +26,15 @@ const DisplayPrefsView = (): ReactElement => {
 		state => state.sortPreferences
 	);
 	const dispatch = useDispatch();
+	const isMasterDetail = useMasterDetail();
 
 	useLayoutEffect(() => {
+		const isModalRoot = navigation.getState().index === 0;
 		navigation.setOptions({
-			title: I18n.t('Display')
+			title: I18n.t('Display'),
+			...(isMasterDetail && isModalRoot ? headerLeftCloseModal(navigation, 'display-view-close') : {})
 		});
-	}, []);
+	}, [navigation, isMasterDetail]);
 
 	const setSortPreference = (param: Partial<IPreferences>) => {
 		dispatch(setPreference(param));
