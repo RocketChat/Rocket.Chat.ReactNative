@@ -3,7 +3,6 @@ import { getNextMessages } from '../../services/restApi';
 import { getMessageById } from '../../database/services/Message';
 import updateMessages from '../updateMessages';
 import log from '../helpers/log';
-import dayjs from '../../dayjs';
 import { MessageTypeLoad } from '../../constants/messageTypeLoad';
 
 jest.mock('../../services/restApi', () => ({
@@ -92,14 +91,10 @@ describe('loadNextMessages', () => {
 		await loadNextMessages({ rid: RID, ts: TS, loaderItem: LOADER_ITEM });
 
 		expect(mockedGetMessageById).toHaveBeenCalledWith('msg-50');
-		const update = mockedUpdateMessages.mock.calls[0][0].update as any[];
-		expect(update).toHaveLength(COUNT + 1);
-		expect(update.slice(0, COUNT)).toEqual(messages);
-		const loaderRow = update[COUNT];
-		expect(loaderRow._id).toBe('load-more-msg-50');
-		expect(loaderRow.rid).toBe(RID);
-		expect(loaderRow.t).toBe(MessageTypeLoad.NEXT_CHUNK);
-		expect(dayjs(loaderRow.ts).valueOf()).toBe(NEWEST_MS + 1);
+		expect(mockedUpdateMessages.mock.calls[0][0].update).toEqual([
+			...messages,
+			{ _id: 'load-more-msg-50', rid: RID, t: MessageTypeLoad.NEXT_CHUNK, ts: new Date(NEWEST_MS + 1) }
+		]);
 	});
 
 	it('stores a newest-first response oldest-first', async () => {
