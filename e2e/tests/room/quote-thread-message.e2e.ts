@@ -2,7 +2,15 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { loginWithDeepLink, navigateToRoom, sendMessage, LONG_TIMEOUT, tapWhenVisible, expectVisible } from '~e2e/support/flows';
+import {
+	loginWithDeepLink,
+	navigateToRoom,
+	sendMessage,
+	LONG_TIMEOUT,
+	tapWhenVisible,
+	expectVisible,
+	tapSend
+} from '~e2e/support/flows';
 import { replyInThread, sendThreadReply, typeThreadReply } from '~e2e/support/threads';
 
 afterEach(deleteCreatedUsers);
@@ -32,7 +40,7 @@ test('quotes a message inside a thread', { tags: ['test-13'] }, async fixtures =
 	await expect(screen.getByTestId(/^composer-quote-remove-/)).toBeVisible();
 
 	await typeThreadReply(fixtures, 'quotedinthread');
-	await tapWhenVisible(fixtures, 'message-composer-send');
+	await tapSend(fixtures);
 	await expect(screen.getByTestId(/^message-content-.*quotedinthread$/)).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expect(screen.getByTestId(/^reply-.*-quotable$/)).toBeVisible({ timeout: LONG_TIMEOUT });
 });

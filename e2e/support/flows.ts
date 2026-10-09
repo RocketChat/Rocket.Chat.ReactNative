@@ -398,6 +398,9 @@ export const loginWithDeepLink = async (fixtures: Fixtures, credentials: Credent
 	);
 	await dismissAndroidSystemDialogs(fixtures);
 	await expect(fixtures.screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expect(fixtures.screen.getByTestId('rooms-list-header-server-subtitle')).toHaveText(CONNECTED_SERVER_HOST, {
+		timeout: LONG_TIMEOUT
+	});
 };
 
 export const navigateToRegister = async ({ screen }: Fixtures, server = data.server) => {
@@ -511,10 +514,25 @@ export const navigateToRoomActions = async (fixtures: Fixtures, room: string) =>
 	await openRoomActions(fixtures);
 };
 
-export const sendMessage = async ({ screen }: Fixtures, message: string, { inThread = false } = {}) => {
+const SEND_RESPONSE_TIMEOUT = 10_000;
+
+export const tapSend = async ({ screen }: Fixtures) => {
+	const send = screen.getByTestId('message-composer-send');
+	await expect(send).toBeVisible({ timeout: LONG_TIMEOUT });
+	for (let attempt = 1; attempt < TAP_ATTEMPTS; attempt += 1) {
+		await tapWhenUncovered(send);
+		if (await succeeds(send.waitFor({ state: 'hidden', timeout: SEND_RESPONSE_TIMEOUT }))) {
+			return;
+		}
+	}
+	await tapWhenUncovered(send);
+	await expect(send).toBeHidden({ timeout: LONG_TIMEOUT });
+};
+
+export const sendMessage = async (fixtures: Fixtures, message: string, { inThread = false } = {}) => {
+	const { screen } = fixtures;
 	await fillWhenUncovered(screen.getByTestId(inThread ? 'message-composer-input-thread' : 'message-composer-input'), message);
-	await expect(screen.getByTestId('message-composer-send')).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByTestId('message-composer-send').tap();
+	await tapSend(fixtures);
 	await expect(screen.getByTestId(`message-content-${message}`)).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 

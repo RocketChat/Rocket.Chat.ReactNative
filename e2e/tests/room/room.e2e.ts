@@ -18,7 +18,8 @@ import {
 	openMessageActions,
 	tapUntilVisible,
 	fillWhenUncovered,
-	clearSettled
+	clearSettled,
+	tapSend
 } from '~e2e/support/flows';
 import { deleteMessage } from '~e2e/support/room';
 
@@ -90,7 +91,7 @@ const startMessageAction = async (fixtures: Fixtures, message: string, action: s
 
 const sendComposerText = async (fixtures: Fixtures, text: string) => {
 	await composer(fixtures).pressSequentially(text);
-	await tapWhenVisible(fixtures, 'message-composer-send');
+	await tapSend(fixtures);
 };
 
 const editMessage = async (fixtures: Fixtures) => {
@@ -98,7 +99,7 @@ const editMessage = async (fixtures: Fixtures) => {
 	await hideKeyboard(fixtures);
 	await startMessageAction(fixtures, 'edit', 'edit');
 	await fillWhenUncovered(composer(fixtures), 'edited');
-	await tapWhenVisible(fixtures, 'message-composer-send');
+	await tapSend(fixtures);
 	await expectVisible(fixtures, 'message-content-edited');
 	await expectVisible(fixtures, 'edited-edited');
 };
@@ -137,7 +138,7 @@ const replyInDirectMessage = async (fixtures: Fixtures) => {
 	await expectVisible(fixtures, `room-view-title-${author.username}`);
 	await fillWhenUncovered(composer(fixtures), reply);
 	await hideKeyboard(fixtures);
-	await tapWhenVisible(fixtures, 'message-composer-send');
+	await tapSend(fixtures);
 	await expect(fixtures.screen.getByTestId(new RegExp(`^message-content-.*${reply}$`, 's'))).toBeVisible({
 		timeout: LONG_TIMEOUT
 	});
@@ -159,7 +160,7 @@ const sendSavedDraft = async (fixtures: Fixtures, roomName: string) => {
 	await typeDraft(fixtures, 'draft');
 	await leaveAndReopenRoom(fixtures, roomName);
 	await expect(composer(fixtures)).toHaveValue('draft', { timeout: LONG_TIMEOUT });
-	await tapWhenVisible(fixtures, 'message-composer-send');
+	await tapSend(fixtures);
 	await expectVisible(fixtures, 'message-content-draft');
 	await backToRoomsList(fixtures);
 };
@@ -185,7 +186,7 @@ const saveQuoteDraft = async (fixtures: Fixtures) => {
 	await replaceDraftKeepingQuote(fixtures, room.name, original, quoteText);
 	await leaveAndReopenRoom(fixtures, room.name);
 	await expect(composer(fixtures)).toHaveValue(quoteText, { timeout: LONG_TIMEOUT });
-	await tapWhenVisible(fixtures, 'message-composer-send');
+	await tapSend(fixtures);
 	await expectVisible(fixtures, `reply-${author.name}-${original}`);
 };
 

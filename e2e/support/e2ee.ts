@@ -13,6 +13,7 @@ import {
 	navigateToRoom,
 	LONG_TIMEOUT,
 	openMessageActions,
+	tapSend,
 	tapUntilVisible,
 	tapWhenVisible
 } from './flows';
@@ -128,7 +129,7 @@ export const quoteMessage = async (fixtures: Fixtures, message: string, quote: s
 	await tapTextWhenVisible(fixtures, 'Quote');
 	await tapWhenVisible(fixtures, 'message-composer-input');
 	await fillWhenUncovered(screen.getByTestId('message-composer-input'), quote);
-	await tapWhenVisible(fixtures, 'message-composer-send');
+	await tapSend(fixtures);
 	await expect(screen.getByText(new RegExp(quote)).first()).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
@@ -137,7 +138,7 @@ export const editMessage = async (fixtures: Fixtures, message: string, edited: s
 	await openMessageActions(fixtures, message);
 	await tapTextWhenVisible(fixtures, 'Edit');
 	await fillWhenUncovered(screen.getByTestId('message-composer-input'), edited);
-	await tapWhenVisible(fixtures, 'message-composer-send');
+	await tapSend(fixtures);
 };
 
 export const resetRoomKey = async (fixtures: Fixtures) => {
