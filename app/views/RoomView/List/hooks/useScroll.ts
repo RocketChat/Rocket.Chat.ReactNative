@@ -177,19 +177,12 @@ export const useScroll = ({
 	};
 
 	// No getItemLayout for these variable-height rows, so the first scroll uses an estimated offset and
-	// can undershoot while the target is unmeasured. It renders the row; a second scroll lands precisely.
-	// Re-read the index in case the window shifted a row between.
+	// can undershoot while the target is unmeasured.
 	const scrollToTarget = (messageId: string, index: number) => {
 		flatListRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
 		clearRescrolls();
 		rescrollTimeouts.current = JUMP_RESCROLL_DELAYS.map(rescrollDelay =>
-			setTimeout(() => {
-				// A newer jump may now own the scroll; re-reading this old target would yank the list off it.
-				if (lastJumpTargetId.current !== messageId) {
-					return;
-				}
-				reScrollWhenSettled(messageId);
-			}, rescrollDelay)
+			setTimeout(() => reScrollWhenSettled(messageId), rescrollDelay)
 		);
 	};
 
@@ -292,6 +285,7 @@ export const useScroll = ({
 			}
 
 			lastJumpTargetId.current = messageId;
+			clearRescrolls();
 			scrollFailRetries.current = 0;
 			jumpGrowthRetries.current = 0;
 			const anchored = typeof highTsMs === 'number' && Number.isFinite(highTsMs);
@@ -335,14 +329,12 @@ export const useScroll = ({
 		abortJump(jump);
 	};
 
-	const handleDragStart = releaseJumpTarget;
-
 	return {
 		jumpToBottom,
 		jumpToMessage,
 		cancelJumpToMessage,
 		handleScrollToIndexFailed,
-		handleDragStart,
+		handleDragStart: releaseJumpTarget,
 		highlightedMessageId,
 		isReleasing
 	};

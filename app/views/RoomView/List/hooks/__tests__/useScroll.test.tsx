@@ -672,7 +672,7 @@ describe('useScroll', () => {
 		expect(scrollToIndex).toHaveBeenCalledTimes(1);
 		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 1 }));
 
-		// Jump B: starts before the 50 ms timer fires, updating lastJumpTargetId to 'target-b'.
+		// Jump B: starts before the 50 ms timer fires; B's start clears A's re-scrolls.
 		act(() => {
 			rerender({ rows: [{ id: 'a' }, { id: 'target-a' }, { id: 'b' }, { id: 'target-b' }] });
 			result.current.jumpToMessage('target-b', null);
@@ -681,7 +681,6 @@ describe('useScroll', () => {
 		const callCountAfterBJump = scrollToIndex.mock.calls.length;
 		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 3 }));
 
-		// Advance past 50 ms: A's deferred re-scroll timer fires. The guard must suppress it.
 		act(() => {
 			jest.advanceTimersByTime(100);
 		});
