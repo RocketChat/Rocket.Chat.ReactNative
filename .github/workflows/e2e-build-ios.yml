@@ -19,11 +19,42 @@ on:
         required: true
       FASTLANE_REPO_PAT:
         required: true
+    inputs:
+      seed-only:
+        description: Build only to save a native build under a new fingerprint; no app artifact
+        type: boolean
+        default: false
 
 permissions: {}
 
 jobs:
+  native-fingerprint:
+    runs-on: macos-26
+    permissions:
+      contents: read
+
+    outputs:
+      cache-key: ${{ steps.fingerprint.outputs.cache-key }}
+      cache-hit: ${{ steps.fingerprint.outputs.cache-hit }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Set up Node.js
+        uses: ./.github/actions/setup-node
+
+      - name: Native fingerprint
+        id: fingerprint
+        uses: ./.github/actions/native-fingerprint
+        with:
+          platform: ios
+          cache-key-prefix: e2e-ios-${{ hashFiles('.github/workflows/e2e-build-ios.yml', 'ios/fastlane/Fastfile') }}
+          cache-path: .native-cache
+
   ios-build:
+    needs: native-fingerprint
+    if: ${{ !(inputs.seed-only && needs.native-fingerprint.outputs.cache-hit == 'true') }}
     runs-on: macos-26
     permissions:
       contents: read
@@ -31,6 +62,7 @@ jobs:
     env:
       # Keep in sync with maestro-ios.yml
       MAESTRO_VERSION: 2.5.1
+      APP_PATH: .native-cache/Rocket.Chat.app
 
     steps:
       - name: Checkout repository
@@ -64,19 +96,36 @@ jobs:
             ~/.maestro/lib
             ~/.maestro/deps
           key: maestro-${{ runner.os }}-${{ env.MAESTRO_VERSION }}
-    
+
+      - name: Restore cached native build
+        id: native-cache
+        if: ${{ needs.native-fingerprint.outputs.cache-hit == 'true' }}
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: .native-cache
+          key: ${{ needs.native-fingerprint.outputs.cache-key }}
+
+      - name: Bundle JS into cached app
+        if: ${{ steps.native-cache.outputs.cache-hit == 'true' }}
+        run: .github/scripts/bundle-ios-app.sh "$APP_PATH"
+        env:
+          RUNNING_E2E_TESTS: true
+
       - name: Set up Xcode
+        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
         with:
           xcode-version: '26.6'
 
       - name: Set up Ruby
+        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
         with:
           ruby-version: 2.7.7
           bundler-cache: true
 
       - name: Cache CocoaPods and derived data
+        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: |
@@ -89,6 +138,7 @@ jobs:
             ios-cache-${{ runner.os }}-
 
       - name: Cache Xcode DerivedData
+        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/Library/Developer/Xcode/DerivedData
@@ -97,20 +147,24 @@ jobs:
             derived-data-${{ runner.os }}-
 
       - name: pod install
+        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         run: |
           pnpm pod-install
 
       - name: Decode p8
+        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         run: |
           echo ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
 
       - name: Set bugsnag key
+        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         run: |
           cd ios
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./RocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./ShareRocketChatRN/Info.plist
 
       - name: Build iOS app
+        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         run: |
           cd ios
           export RUNNING_E2E_TESTS=true
@@ -128,14 +182,29 @@ jobs:
           RUNNING_E2E_TESTS: true
 
       - name: Find latest xcarchive path
+        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         id: find_xcarchive
         run: |
           ARCHIVE_PATH=$(ls -td ios/fastlane/build/*.xcarchive | head -n 1)
           echo "Latest archive path is $ARCHIVE_PATH"
           echo "archive_path=$ARCHIVE_PATH" >> $GITHUB_OUTPUT
 
+      - name: Prepare native build for cache
+        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
+        run: |
+          mkdir -p "$(dirname "$APP_PATH")"
+          ditto "${{ steps.find_xcarchive.outputs.archive_path }}/Products/Applications/Rocket.Chat.app" "$APP_PATH"
+
+      - name: Save native build to cache
+        if: ${{ needs.native-fingerprint.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: .native-cache
+          key: ${{ needs.native-fingerprint.outputs.cache-key }}
+
       - name: Upload Artifact
+        if: ${{ !inputs.seed-only }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ios-simulator-app
-          path: ${{ steps.find_xcarchive.outputs.archive_path }}/Products/Applications/Rocket.Chat.app
+          path: ${{ env.APP_PATH }}

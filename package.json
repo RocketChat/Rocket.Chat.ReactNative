@@ -170,6 +170,7 @@
 		"@babel/runtime": "~7.25.9",
 		"@bugsnag/cli": "^3.2.1",
 		"@bugsnag/source-maps": "^2.3.3",
+		"@expo/fingerprint": "0.20.13",
 		"@gorhom/bottom-sheet": "^5",
 		"@react-native-community/cli": "20.0.0",
 		"@react-native-community/cli-platform-android": "20.0.0",
