@@ -94,7 +94,7 @@ jobs:
           path: |
             ~/.agent-device/apple-runner
             ~/.agent-device/ios-runner
-          key: agent-device-runner-${{ runner.os }}-xcode-26.6-${{ hashFiles('node_modules/agent-device/package.json') }}
+          key: agent-device-runner-${{ runner.os }}-xcode-26.6-${{ hashFiles('node_modules/agent-device/package.json', 'patches/agent-device+*.patch') }}
           restore-keys: |
             agent-device-runner-${{ runner.os }}-xcode-26.6-
 
@@ -131,7 +131,7 @@ jobs:
           path: |
             ~/.agent-device/apple-runner
             ~/.agent-device/ios-runner
-          key: agent-device-runner-${{ runner.os }}-xcode-26.6-${{ hashFiles('node_modules/agent-device/package.json') }}
+          key: agent-device-runner-${{ runner.os }}-xcode-26.6-${{ hashFiles('node_modules/agent-device/package.json', 'patches/agent-device+*.patch') }}
 
       - name: Redact E2E Report
         if: always()
