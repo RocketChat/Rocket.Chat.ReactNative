@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-native';
+import { act, renderHook, waitFor } from '@testing-library/react-native';
 
 import { makeThreadName } from '~/lib/methods/helpers/room';
 import getRoomInfo from '~/lib/methods/getRoomInfo';
@@ -119,6 +119,19 @@ describe('useJumpToMessage', () => {
 		expect(mockGoRoom).toHaveBeenCalledWith({ item: { rid: 'other-rid' }, isMasterDetail: false, jumpToMessageId: 'msg-1' });
 	});
 
+	it('leaves the loading overlay to the room it opened when the view closes afterwards', async () => {
+		mockGetRoomInfo.mockResolvedValueOnce({ rid: 'other-rid' });
+		mockGetMessageInfo.mockResolvedValueOnce({ id: 'msg-1', rid: 'other-rid' });
+		const { result, unmount } = renderRoomNavigation();
+		await act(async () => {
+			await result.current.jumpToMessageByUrl('https://open.rocket.chat/channel/general?msg=msg-1');
+		});
+
+		unmount();
+
+		expect(sendLoadingEvent).not.toHaveBeenCalledWith({ visible: false });
+	});
+
 	it('Message URL navigation is a no-op without a target rid', async () => {
 		mockGetMessageInfo.mockResolvedValueOnce({ id: 'msg-1' });
 		const { result } = renderRoomNavigation();
@@ -230,6 +243,35 @@ describe('useJumpToMessage', () => {
 			unmount();
 
 			expect(isWanted()).toBe(false);
+		});
+
+		it('hides the loading overlay when the thread view closes while the thread is loading', async () => {
+			mockGetMessageInfo.mockResolvedValueOnce(THREAD_MESSAGE);
+			let finishLoading!: (reached: boolean) => void;
+			mockLoadThreadMessagesUntil.mockImplementationOnce(
+				() =>
+					new Promise<boolean>(resolve => {
+						finishLoading = resolve;
+					})
+			);
+			const list = {
+				isMessageInWindow: jest.fn(() => false),
+				jumpToMessage: jest.fn(() => Promise.resolve()),
+				cancelJumpToMessage: jest.fn()
+			};
+			const { result, unmount } = renderRoomNavigation({
+				tmid: 'thread-1',
+				t: 'thread',
+				listContainerRef: { current: list as any }
+			});
+			const jumping = result.current.jumpToMessageByUrl(MESSAGE_URL);
+			await waitFor(() => expect(mockLoadThreadMessagesUntil).toHaveBeenCalled());
+
+			unmount();
+			finishLoading(false);
+			await jumping;
+
+			expect(sendLoadingEvent).toHaveBeenLastCalledWith({ visible: false });
 		});
 
 		it('does not load thread messages when jumping in the room', async () => {
