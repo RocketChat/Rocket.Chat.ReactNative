@@ -275,6 +275,17 @@ describe('RoomsListView useHeader', () => {
 		expect(labels).not.toContain('Cancel');
 	});
 
+	it('does not restart the search when the system search bar is refocused while searching', () => {
+		const wrapper = ({ children }: { children: ReactElement }) => (
+			<RoomsSearchContext.Provider value={{ ...searchContextValue, searchEnabled: true }}>{children}</RoomsSearchContext.Provider>
+		);
+
+		renderHook(() => useNativeRoomsListHeader(), { wrapper });
+
+		mockSetOptions.mock.calls[0][0].headerSearchBarOptions.onFocus?.();
+		expect(mockStartSearch).not.toHaveBeenCalled();
+	});
+
 	it('renders the JS header without a native bar', () => {
 		renderUseHeader(useJsRoomsListHeader);
 

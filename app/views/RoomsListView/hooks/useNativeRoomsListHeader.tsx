@@ -55,7 +55,12 @@ export const useNativeRoomsListHeader = () => {
 			headerTitleTestID: 'rooms-list-header-servers-list-button',
 			onHeaderTitlePress: openServersList,
 			headerSearchBarOptions: {
-				...stackedSearchBarOptions({ ref: searchBarRef, onFocus: startSearch, onChangeText: search, onCancel: resetSearch }),
+				...stackedSearchBarOptions({
+					ref: searchBarRef,
+					onFocus: searchEnabled ? undefined : startSearch,
+					onChangeText: search,
+					onCancel: resetSearch
+				}),
 				placement: isTablet ? 'stacked' : 'automatic',
 				hideWhenScrolling: true,
 				hideNavigationBar: !isTablet
@@ -78,6 +83,7 @@ export const useNativeRoomsListHeader = () => {
 		canCreateRoom,
 		goToNewMessage,
 		showsCancelSearch,
+		searchEnabled,
 		serverName,
 		subtitle,
 		searchBarRef,
