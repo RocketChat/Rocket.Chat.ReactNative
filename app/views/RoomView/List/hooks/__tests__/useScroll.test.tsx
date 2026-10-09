@@ -234,6 +234,35 @@ describe('useScroll', () => {
 		expect(setHighTs).toHaveBeenLastCalledWith(null);
 	});
 
+	it('a drag that abandons an unscrolled anchored jump releases the window like jump-to-bottom', async () => {
+		const setHighTs = jest.fn();
+		const { result, rerender, scrollToOffset } = renderUseScroll([{ id: 'anchored-1' }, { id: 'anchored-2' }], setHighTs);
+
+		let jumpPromise: Promise<void> = Promise.resolve();
+		act(() => {
+			jumpPromise = result.current.jumpToMessage('target', 1500);
+		});
+		act(() => {
+			rerender({ rows: [{ id: 'anchored-1' }, { id: 'anchored-2' }], highTs: 1500 });
+		});
+		act(() => {
+			result.current.handleDragStart();
+		});
+		await jumpPromise;
+
+		expect(setHighTs).toHaveBeenLastCalledWith(null);
+		expect(scrollToOffset).toHaveBeenCalledTimes(1);
+		expect(scrollToOffset).toHaveBeenLastCalledWith({ offset: 0, animated: false });
+		expect(result.current.isReleasing).toBe(true);
+
+		act(() => {
+			rerender({ rows: [{ id: 'live-1' }, { id: 'live-2' }], highTs: null });
+		});
+		expect(scrollToOffset).toHaveBeenCalledTimes(2);
+		expect(scrollToOffset).toHaveBeenLastCalledWith({ offset: 0, animated: false });
+		expect(result.current.isReleasing).toBe(false);
+	});
+
 	it('grows the window (bounded) for a deep anchored target, then scrolls once it appears', async () => {
 		const setHighTs = jest.fn();
 		const fetchMessages = jest.fn(() => Promise.resolve());

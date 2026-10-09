@@ -100,13 +100,17 @@ export const useScroll = ({
 	// so the shorter tail cannot strand it, and scrolling the already-settled anchored content sidesteps
 	// the post-shrink layout race a deferred correction loses to. Suppress MVCP across the swap so its
 	// offset adjustment for the disjoint key set cannot drag the viewport back off-content.
+	const releaseAnchoredWindow = () => {
+		flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
+		pendingBottom.current = true;
+		setIsReleasing(true);
+		setHighTs(null);
+	};
+
 	const jumpToBottom = () => {
 		releaseJumpTarget();
 		if (highTs != null) {
-			flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
-			pendingBottom.current = true;
-			setIsReleasing(true);
-			setHighTs(null);
+			releaseAnchoredWindow();
 			return;
 		}
 		flatListRef.current?.scrollToOffset({ offset: -100 });
@@ -140,7 +144,7 @@ export const useScroll = ({
 		}
 		pendingJump.current = null;
 		if (jump.anchored) {
-			setHighTs(null);
+			releaseAnchoredWindow();
 		}
 		jump.resolve();
 	};
