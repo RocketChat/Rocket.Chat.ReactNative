@@ -38,6 +38,8 @@ const roomTypes = {
 	channels: 'l'
 };
 
+const DEEP_LINK_SIGN_IN_TIMEOUT = 60_000;
+
 export const shouldAutoConfirmDeepLinkLogin = (isE2E, params = {}) => isE2E && params.forceLoginPrompt !== 'true';
 
 const consentCopy = {
@@ -290,7 +292,7 @@ const handleKnownServerDeepLink = function* handleKnownServerDeepLink({ params, 
 	}
 };
 
-const loginWithDeepLinkToken = function* loginWithDeepLinkToken({ params, hostAlreadyConnected }) {
+const signInWithDeepLinkToken = function* signInWithDeepLinkToken({ params, hostAlreadyConnected }) {
 	if (!hostAlreadyConnected) {
 		yield take(types.SERVER.SELECT_SUCCESS);
 		const connected = yield select(state => state.meteor.connected);
@@ -300,6 +302,25 @@ const loginWithDeepLinkToken = function* loginWithDeepLinkToken({ params, hostAl
 	}
 	yield put(loginRequest({ resume: params.token }, true));
 	yield take(types.LOGIN.SUCCESS);
+	return true;
+};
+
+const signInWithDeepLinkTokenInTime = function* signInWithDeepLinkTokenInTime({ params, hostAlreadyConnected = false }) {
+	const { signedIn, timedOut } = yield race({
+		signedIn: call(signInWithDeepLinkToken, { params, hostAlreadyConnected }),
+		failed: take([types.LOGIN.FAILURE, types.SERVER.SELECT_FAILURE, types.LOGOUT]),
+		timedOut: delay(DEEP_LINK_SIGN_IN_TIMEOUT)
+	});
+	if (timedOut) {
+		showToast(I18n.t('Deep_link_login_timed_out'));
+	}
+	return !!signedIn;
+};
+
+const loginWithDeepLinkToken = function* loginWithDeepLinkToken({ params, hostAlreadyConnected }) {
+	if (!(yield* signInWithDeepLinkTokenInTime({ params, hostAlreadyConnected }))) {
+		return;
+	}
 	yield put(appReady({}));
 
 	const currentRoot = yield select(state => state.app.root);
@@ -474,10 +495,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 	yield put(serverInitAdd(server));
 	yield delay(1000);
 	EventEmitter.emit('NewServer', { server: host });
-	if (params.token) {
-		yield take(types.SERVER.SELECT_SUCCESS);
-		yield put(loginRequest({ resume: params.token }, true));
-		yield take(types.LOGIN.SUCCESS);
+	if (params.token && (yield* signInWithDeepLinkTokenInTime({ params }))) {
 		yield handleNavigateCallRoom({ params });
 	}
 };

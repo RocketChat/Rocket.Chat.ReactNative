@@ -293,6 +293,51 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		expect(loginRequested()).toBe(true);
 	});
 
+	it('stops waiting and does not open the room when the deep link login fails', async () => {
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+		store.dispatch(loginFailure({ error: 'invalid token' }));
+		await flushSagaMicrotasks();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
+		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+	});
+
+	it('tells the user and stops waiting when the deep link login never finishes', async () => {
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		await jest.advanceTimersByTimeAsync(60_000);
+		await flushSagaMicrotasks();
+
+		expect(toastedMessages(emitSpy)).toContain('Deep_link_login_timed_out');
+
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		store.dispatch(connectSuccess());
+		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
+		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+		emitSpy.mockRestore();
+	});
+
 	it('does not touch the deep link server when the login confirmation is declined', async () => {
 		jest.mocked(showConfirmationAlert).mockClear();
 		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());
@@ -743,7 +788,7 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 		jest.useRealTimers();
 	});
 
-	it('navigates to the call room once after SELECT_SUCCESS and LOGIN.SUCCESS', async () => {
+	it('navigates to the call room once after SELECT_SUCCESS, METEOR.SUCCESS and LOGIN.SUCCESS', async () => {
 		const { store } = setupStore();
 
 		store.dispatch(deepLinkingClickCallPush(makeCallParams()));
@@ -754,6 +799,9 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 		expect(jest.mocked(navigateToRoom)).not.toHaveBeenCalled();
 
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		await flushSagaMicrotasks();
+
+		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();
 
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
