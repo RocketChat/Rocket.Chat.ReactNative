@@ -132,7 +132,7 @@ export const spotlight = (
 ): Promise<ISpotlight> => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
-		const cappedUsernames = usernames.slice(0, 50);
+		const cappedUsernames = usernames.filter(name => !name.includes(',')).slice(0, 50);
 		return sdk.get('spotlight', {
 			query: search,
 			type: JSON.stringify(type),

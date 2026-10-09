@@ -139,7 +139,7 @@ export const searchRemote = async ({
 	const usernames =
 		rid && filterUsers
 			? (localData as IUserMessage[]).map(sub => sub.username as string)
-			: (localData as ISearchLocal[]).map(sub => sub.name).filter(name => !name.includes(','));
+			: (localData as ISearchLocal[]).map(sub => sub.name);
 
 	try {
 		if (searchText) {
