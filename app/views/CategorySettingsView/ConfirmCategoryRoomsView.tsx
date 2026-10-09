@@ -1,6 +1,6 @@
 import { type StaticScreenProps, useNavigation } from '@react-navigation/native';
 import { useLayoutEffect } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 import Button from '~/containers/Button';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -8,7 +8,7 @@ import I18n from '~/i18n';
 import { isIOS } from '~/lib/methods/helpers';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
-import RoomChip from '~/views/CreateCategoryView/components/RoomChip';
+import RoomChips from '~/views/CreateCategoryView/components/RoomChips';
 import TextWithBoldName from '~/views/CreateCategoryView/components/TextWithBoldName';
 import { useRoomSelection } from '~/views/CreateCategoryView/hooks/useRoomSelection';
 import { type ICategoryRoom } from '~/views/CreateCategoryView/types';
@@ -25,11 +25,6 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		lineHeight: 20,
 		...sharedStyles.textRegular
-	},
-	chips: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		gap: 8
 	}
 });
 
@@ -59,13 +54,7 @@ const ConfirmCategoryRoomsView = ({ route }: StaticScreenProps<ConfirmCategoryRo
 					name={category?.name ?? ''}
 					style={[styles.caption, { color: colors.fontSecondaryInfo }]}
 				/>
-				{selectedRooms.length > 0 ? (
-					<View style={styles.chips}>
-						{selectedRooms.map(room => (
-							<RoomChip key={room.rid} room={room} onRemove={toggleRoom} />
-						))}
-					</View>
-				) : null}
+				<RoomChips rooms={selectedRooms} onRemove={toggleRoom} />
 				<Button
 					title={I18n.t('Save')}
 					onPress={() => saveRooms(selectedRooms.map(room => room.rid))}
