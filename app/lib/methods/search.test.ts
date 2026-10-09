@@ -187,6 +187,16 @@ describe('searchRemote', () => {
 		expect(mockedSpotlight).toHaveBeenCalledWith('foo', ['jane.doe'], { users: true, rooms: true, mentions: true }, '');
 	});
 
+	it.each(['alice, bob', 'alice,bob'])(
+		'leaves the multi-user direct message name %j out of the usernames passed to spotlight',
+		async name => {
+			const localData = [buildLocalSubscription({ name }), buildLocalSubscription({ name: 'jane.doe' })];
+			await searchRemote({ text: 'foo', localData });
+
+			expect(mockedSpotlight).toHaveBeenCalledWith('foo', ['jane.doe'], { users: true, rooms: true, mentions: true }, '');
+		}
+	);
+
 	it('passes local message usernames to spotlight on the rid path', async () => {
 		const localData: IUserMessage[] = [{ _id: 'm1', username: 'jane.doe', name: 'Jane Doe' }];
 		await searchRemote({ text: 'foo', rid: 'rid1', filterUsers: true, localData });

@@ -17,6 +17,7 @@ import {
 } from '~/definitions';
 import { type TParams } from '~/definitions/ILivechatEditView';
 import { type ILivechatTag } from '~/definitions/ILivechatTag';
+import { type ISpotlight } from '~/definitions/ISpotlight';
 import { TEAM_TYPE } from '~/definitions/ITeam';
 import { type OperationParams, type ResultFor } from '~/definitions/rest/helpers';
 import { type SubscriptionsEndpoints } from '~/definitions/rest/v1/subscriptions';
@@ -128,16 +129,16 @@ export const spotlight = (
 	usernames: string[],
 	type: { users: boolean; rooms: boolean; mentions: boolean },
 	rid?: string
-) => {
+): Promise<ISpotlight> => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
-		const withoutMultiUserDirectMessageNames = usernames.filter(name => !name.includes(',')).slice(0, 50);
+		const cappedUsernames = usernames.slice(0, 50);
 		return sdk.get('spotlight', {
 			query: search,
 			type: JSON.stringify(type),
-			...(withoutMultiUserDirectMessageNames.length ? { usernames: withoutMultiUserDirectMessageNames.join(',') } : {}),
+			...(cappedUsernames.length ? { usernames: cappedUsernames.join(',') } : {}),
 			...(rid ? { rid } : {})
-		});
+		}) as Promise<ISpotlight>;
 	}
 	// RC 0.51.0
 	return rid

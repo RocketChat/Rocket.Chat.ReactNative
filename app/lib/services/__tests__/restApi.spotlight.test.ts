@@ -55,18 +55,9 @@ describe('spotlight', () => {
 		expect((sdk.get as jest.Mock).mock.calls[0][1]).toStrictEqual({ query: 'john', type: JSON.stringify(type) });
 	});
 
-	it.each(['alice, bob', 'alice,bob'])('leaves the multi-user direct message name %j out of usernames on 8.9.0+', async name => {
-		await spotlight('john', [name, 'carol'], type);
-		expect(sdk.get).toHaveBeenCalledWith('spotlight', {
-			query: 'john',
-			usernames: 'carol',
-			type: JSON.stringify(type)
-		});
-	});
-
 	it('sends at most the first 50 usernames on 8.9.0+', async () => {
 		const names = Array.from({ length: 60 }, (_, i) => `user${i}`);
-		await spotlight('john', ['alice, bob', ...names], type);
+		await spotlight('john', names, type);
 		expect(sdk.get).toHaveBeenCalledWith('spotlight', {
 			query: 'john',
 			usernames: names.slice(0, 50).join(','),
@@ -79,17 +70,6 @@ describe('spotlight', () => {
 		const names = Array.from({ length: 60 }, (_, i) => `user${i}`);
 		await spotlight('john', names, type);
 		expect(sdk.methodCallWrapper).toHaveBeenCalledWith('spotlight', 'john', names, type);
-	});
-
-	it('omits usernames on 8.9.0+ when only multi-user direct message names are given', async () => {
-		await spotlight('john', ['alice, bob'], type);
-		expect((sdk.get as jest.Mock).mock.calls[0][1]).toStrictEqual({ query: 'john', type: JSON.stringify(type) });
-	});
-
-	it('passes multi-user direct message names to DDP below 8.9.0', async () => {
-		setServerVersion('8.8.0');
-		await spotlight('john', ['alice, bob'], type);
-		expect(sdk.methodCallWrapper).toHaveBeenCalledWith('spotlight', 'john', ['alice, bob'], type);
 	});
 
 	it('sends rid on 8.9.0+ when provided', async () => {

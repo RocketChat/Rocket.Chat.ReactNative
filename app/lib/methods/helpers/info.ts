@@ -10,7 +10,8 @@ export const showErrorAlertWithEMessage = (e: any, title?: string): void => {
 	if (isTwoFactorCancelled(e)) {
 		return;
 	}
-	let errorMessage: string = e?.data?.error || e?.reason || e?.message;
+	const ddpErrorKey = typeof e?.error === 'string' ? e.error : undefined;
+	let errorMessage: string = e?.data?.error || ddpErrorKey || e?.reason || e?.message;
 
 	if (errorMessage?.includes('[error-too-many-requests]')) {
 		const seconds = errorMessage.replace(/\D/g, '');
