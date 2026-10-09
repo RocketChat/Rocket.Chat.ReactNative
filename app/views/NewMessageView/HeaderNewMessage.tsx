@@ -1,12 +1,12 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type ReactElement, useCallback } from 'react';
+import { useCallback } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import { createChannelRequest } from '~/actions/createChannel';
 import SearchBox from '~/containers/SearchBox';
-import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import { type TIconsName } from '~/containers/CustomIcon';
 import I18n from '~/i18n';
 import Navigation from '~/lib/navigation/appNavigation';
 import { useTheme } from '~/theme';
@@ -37,7 +37,7 @@ interface IButtonConfig {
 	visible: boolean;
 	onPress: () => void;
 	title: string;
-	icon: ReactElement;
+	icon: TIconsName;
 	testID: string;
 }
 
@@ -99,42 +99,40 @@ const HeaderNewMessage = ({ maxUsers, onChangeText, categoryId, categoryName }: 
 		navigation.navigate('CreateCategoryView');
 	}, [navigation]);
 
-	const renderIcon = (name: TIconsName) => <CustomIcon name={name} size={24} color={colors.fontDefault} />;
-
 	const buttons = [
 		{
 			visible: createPublicChannelPermission || createPrivateChannelPermission,
 			onPress: createChannel,
 			title: 'Channel',
-			icon: renderIcon('channel-public'),
+			icon: 'channel-public',
 			testID: 'new-message-view-create-channel'
 		},
 		{
 			visible: compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.13.0') && createTeamPermission,
 			onPress: createTeam,
 			title: 'Team',
-			icon: renderIcon('teams'),
+			icon: 'teams',
 			testID: 'new-message-view-create-team'
 		},
 		{
 			visible: maxUsers > 2 && createDirectMessagePermission,
 			onPress: createGroupChat,
 			title: 'Direct_message',
-			icon: renderIcon('message'),
+			icon: 'message',
 			testID: 'new-message-view-create-direct-message'
 		},
 		{
 			visible: createDiscussionPermission,
 			onPress: createDiscussion,
 			title: 'Discussion',
-			icon: renderIcon('discussions'),
+			icon: 'discussions',
 			testID: 'new-message-view-create-discussion'
 		},
 		{
 			visible: isCustomCategoriesAvailable && !categoryId,
 			onPress: createCategory,
 			title: 'Category',
-			icon: renderIcon('folder-plus'),
+			icon: 'folder-plus',
 			testID: 'new-message-view-create-category'
 		}
 	].filter((button): button is IButtonConfig => Boolean(button.visible));
