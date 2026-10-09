@@ -155,6 +155,7 @@ export const NativeListRowContent = ({
 				accessible={Boolean(onPress || onLongPress)}
 				accessibilityRole={accessibilityRole}
 				accessibilityLabel={accessibilityLabel}
+				accessibilityHint={disabled ? disabledReason : undefined}
 				accessibilityState={{ selected: isSelected, disabled }}
 				style={({ pressed }) => [styles.content, pressed && onPress && styles.pressed, disabled && styles.disabled]}>
 				{leading}
