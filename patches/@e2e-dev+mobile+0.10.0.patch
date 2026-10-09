@@ -1,8 +1,74 @@
+diff --git a/node_modules/@e2e-dev/mobile/dist/errors.js b/node_modules/@e2e-dev/mobile/dist/errors.js
+index 60781e8..0d80010 100644
+--- a/node_modules/@e2e-dev/mobile/dist/errors.js
++++ b/node_modules/@e2e-dev/mobile/dist/errors.js
+@@ -207,6 +207,14 @@ export function isNoSessionApp(error) {
+ export function isSnapshotPresentationFailure(error) {
+     return error instanceof Error && isPresentationFailure(error.cause);
+ }
++/**
++ * True when the iOS runner refused a command because abandoned work still
++ * holds its main thread. The runner refuses before dispatching, so resending
++ * the same command once it drains is safe.
++ */
++export function isRunnerBusy(cause) {
++    return details(cause).runnerErrorCode === 'RUNNER_BUSY';
++}
+ /**
+  * Runs one agent-device command under an abort signal and translates its
+  * failure onto the engine taxonomy: the one boundary every command crosses.
 diff --git a/node_modules/@e2e-dev/mobile/dist/surface.js b/node_modules/@e2e-dev/mobile/dist/surface.js
-index 8ad99de..acbe7c1 100644
+index 4c260ed..fe7348e 100644
 --- a/node_modules/@e2e-dev/mobile/dist/surface.js
 +++ b/node_modules/@e2e-dev/mobile/dist/surface.js
-@@ -556,7 +556,7 @@ export class AgentDeviceSurface {
+@@ -15,7 +15,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, w
+ import { tmpdir } from 'node:os';
+ import path from 'node:path';
+ import { EngineError, KEY_NAMES, parseKey, raceAbort, rejectUnknownKeys, stopProviderRecording, withinCleanupBudget, ConfigurationError, TestError, } from 'e2e/engine';
+-import { isNoSessionApp, isSnapshotPresentationFailure, runCommand, staleOr } from './errors.js';
++import { isNoSessionApp, isRunnerBusy, isSnapshotPresentationFailure, runCommand, staleOr } from './errors.js';
+ import { pointerInteraction, DEFAULT_LONG_PRESS_MS } from './actions.js';
+ import { resolveExpression } from './locate.js';
+ import { isWithin, projectSnapshot, ROOT_ID, screenRoot, screenTitle, } from './nodes.js';
+@@ -25,6 +25,8 @@ import { deviceLabel, pinnedApp } from './bindings.js';
+ import { assertAppId } from './links.js';
+ import { DevicePool, deviceSelection } from './pool.js';
+ import { recordLease, travelledLease } from './provider.js';
++const RUNNER_BUSY_BUDGET_MS = 60_000;
++const RUNNER_BUSY_RETRY_MS = 1_000;
+ import { invalidState, notActionable, logicalScreenSize, readPngSize, sanitizeFilename, screenLocation, swipeWithin, unsupported, } from './support.js';
+ /** Why nothing is pinned with `appPath` alone: the install is the suite's. */
+ const UNINSTALLED_BUILD = "the build the target's `app.appPath` names installed first with `device.installApp()`";
+@@ -257,7 +259,7 @@ export class AgentDeviceSurface {
+      */
+     async command(label, run, signal) {
+         const client = this.requireClient();
+-        return runCommand(label, () => this.track(run(client)), signal ?? new AbortController().signal, this.where);
++        return runCommand(label, () => this.untilRunnerIdle(() => run(client)), signal ?? new AbortController().signal, this.where);
+     }
+     /**
+      * Runs a fixture command that changes the screen (a back, the home screen,
+@@ -274,6 +276,19 @@ export class AgentDeviceSurface {
+         return result;
+     }
+     /** Registers one device command as in flight until it settles. */
++    async untilRunnerIdle(run) {
++        const deadline = Date.now() + RUNNER_BUSY_BUDGET_MS;
++        for (;;) {
++            try {
++                return await this.track(run());
++            }
++            catch (cause) {
++                if (!isRunnerBusy(cause) || Date.now() >= deadline)
++                    throw cause;
++                await new Promise((resolve) => setTimeout(resolve, RUNNER_BUSY_RETRY_MS));
++            }
++        }
++    }
+     track(pending) {
+         this.inflight.add(pending);
+         pending.then(() => this.inflight.delete(pending), () => this.inflight.delete(pending));
+@@ -556,7 +571,7 @@ export class AgentDeviceSurface {
          }
      }
      async permission(permission, state, signal) {
@@ -11,7 +77,7 @@ index 8ad99de..acbe7c1 100644
      }
      /**
       * Opens a link on the device, into `app` (the pinned app when none is
-@@ -614,7 +614,7 @@ export class AgentDeviceSurface {
+@@ -614,7 +629,7 @@ export class AgentDeviceSurface {
       */
      async closeApp(signal) {
          const app = this.appIdentity ?? this.pinnedApp;
@@ -20,7 +86,16 @@ index 8ad99de..acbe7c1 100644
          this.sessionApp = undefined;
          this.screenReplaced();
      }
-@@ -1141,7 +1141,7 @@ export class AgentDeviceSurface {
+@@ -968,7 +983,7 @@ export class AgentDeviceSurface {
+             }
+         };
+         try {
+-            await raceAbort(() => this.track(run()), operation.signal, label);
++            await raceAbort(() => this.untilRunnerIdle(run), operation.signal, label);
+         }
+         catch (cause) {
+             throw staleOr(cause, label, this.where);
+@@ -1145,7 +1160,7 @@ export class AgentDeviceSurface {
          const app = this.pinnedApp;
          if (app === undefined)
              throw unsupported(`app.clearState needs the target's \`app.bundleId\`, or ${UNINSTALLED_BUILD}`);
@@ -29,7 +104,7 @@ index 8ad99de..acbe7c1 100644
          await this.openApp(app, { relaunch: true }, operation.signal);
      }
      /**
-@@ -1153,7 +1153,7 @@ export class AgentDeviceSurface {
+@@ -1168,7 +1183,7 @@ export class AgentDeviceSurface {
          if (this.options.platform !== 'ios') {
              throw unsupported('device.clearKeychain resets an iOS simulator keychain; Android has none to reset');
          }
