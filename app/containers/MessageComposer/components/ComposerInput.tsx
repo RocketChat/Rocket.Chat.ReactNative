@@ -238,9 +238,9 @@ export const ComposerInput = memo(
 					const commandsCollection = db.get('slash_commands');
 					const commandRecord = await commandsCollection.find(item.text);
 					const { appId } = commandRecord;
-					withTriggerId(appId, triggerId =>
+					await withTriggerId(appId, triggerId =>
 						executeCommandPreview(item.text, item.params, rid, item.preview, triggerId, tmid)
-					).catch(log);
+					);
 				} catch (e) {
 					log(e);
 				}
