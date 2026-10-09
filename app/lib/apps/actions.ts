@@ -13,24 +13,16 @@ const TRIGGER_TIMEOUT = 5000;
 
 export const ACKNOWLEDGED = 'acknowledged';
 
-const appIdByTriggerId = new Map<string, string | undefined>();
-const handledTriggers = new Map<string, TModalAction>();
-
-const invalidateTriggerId = (id: string) => {
-	const appId = appIdByTriggerId.get(id);
-	appIdByTriggerId.delete(id);
-	return appId;
-};
+const triggers = new Map<string, { appId?: string; consumed?: boolean; handled?: TModalAction }>();
 
 export const withTriggerId = async <T>(appId: string | undefined, request: (triggerId: string) => Promise<T>): Promise<T> => {
 	const triggerId = random(17);
-	appIdByTriggerId.set(triggerId, appId);
+	triggers.set(triggerId, { appId });
 	try {
 		return await request(triggerId);
 	} finally {
 		setTimeout(() => {
-			appIdByTriggerId.delete(triggerId);
-			handledTriggers.delete(triggerId);
+			triggers.delete(triggerId);
 		}, TRIGGER_TIMEOUT);
 	}
 };
@@ -47,17 +39,18 @@ export const handlePayloadUserInteraction = (
 	type: string,
 	{ triggerId, ...data }: THandledServerPayload
 ): TModalAction | undefined => {
-	if (!appIdByTriggerId.has(triggerId)) {
+	const trigger = triggers.get(triggerId);
+	if (!trigger || trigger.consumed) {
 		return;
 	}
 
-	const triggerAppId = invalidateTriggerId(triggerId);
+	trigger.consumed = true;
 	const modalType = toServerModalInteractionType(type);
 	if (!modalType) {
 		showToast(I18n.t('App_action_unsupported'));
 		return;
 	}
-	const payloadAppId = data.appId ?? triggerAppId;
+	const payloadAppId = data.appId ?? trigger.appId;
 	if (!payloadAppId) {
 		return;
 	}
@@ -67,7 +60,7 @@ export const handlePayloadUserInteraction = (
 		return;
 	}
 
-	handledTriggers.set(triggerId, modalType);
+	trigger.handled = modalType;
 
 	if (modalType === ModalActions.ERRORS || modalType === ModalActions.UPDATE || modalType === ModalActions.CLOSE) {
 		EventEmitter.emit(viewId, {
@@ -103,7 +96,7 @@ export function postUserInteraction(
 		const result = await appsApiFetch(`ui.interaction/${appId}/`, { method: 'POST', body: interaction });
 		const text = await result.text();
 		if (!text.trim()) {
-			return handledTriggers.get(triggerId);
+			return triggers.get(triggerId)?.handled;
 		}
 
 		let parsed: { type?: string; [key: string]: unknown };
@@ -115,13 +108,13 @@ export function postUserInteraction(
 
 		const { type: interactionType, ...data } = parsed;
 		if (!interactionType) {
-			return handledTriggers.get(triggerId) ?? ACKNOWLEDGED;
+			return triggers.get(triggerId)?.handled ?? ACKNOWLEDGED;
 		}
 		if (interactionType === ModalActions.CLOSE) {
 			return ModalActions.CLOSE;
 		}
 
-		return handlePayloadUserInteraction(interactionType, data as THandledServerPayload) ?? handledTriggers.get(triggerId);
+		return handlePayloadUserInteraction(interactionType, data as THandledServerPayload) ?? triggers.get(triggerId)?.handled;
 	});
 }
 

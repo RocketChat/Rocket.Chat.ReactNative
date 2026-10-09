@@ -7,7 +7,7 @@ export const translateAppKey = ({
 	appId,
 	key,
 	translations,
-	locale = i18n.locale
+	locale
 }: {
 	appId: string;
 	key: string;
@@ -19,7 +19,7 @@ export const translateAppKey = ({
 		return key;
 	}
 
-	const normalized = normalizeLanguage(locale);
+	const normalized = normalizeLanguage(locale || i18n.locale);
 	const candidates = [normalized, normalized.split('-')[0], 'en'];
 
 	for (const candidate of candidates) {

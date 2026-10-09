@@ -15,7 +15,6 @@ import {
 import { applyAuthFilter, applyCategoryFilter, applyRoomFilter, collectPermissions } from './filters';
 import { translateAppKey } from './translations';
 import database from '~/lib/database';
-import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useObservable } from '~/lib/hooks/useObservable';
 import log from '~/lib/methods/helpers/log';
@@ -46,7 +45,7 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 	const userRoles = useAppSelector(state => getUserSelector(state).roles || [], shallowEqual);
 	const language = useAppSelector(state => getUserSelector(state).language);
 
-	const permissionKey = collectPermissions(buttons).join(',');
+	const permissionIds = useMemo(() => collectPermissions(buttons), [buttons]);
 	const hasButtons = buttons.length > 0;
 
 	const context$ = useMemo(() => {
@@ -55,7 +54,6 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 		}
 
 		const db = database.active;
-		const permissionIds = permissionKey ? permissionKey.split(',') : [];
 		const subscription$ = rid
 			? db.get('subscriptions').query(Q.where('id', rid)).observeWithColumns(['t', 'roles', 'team_main', 'prid', 'uids'])
 			: of([]);
@@ -83,7 +81,7 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 				return EMPTY;
 			})
 		);
-	}, [hasButtons, rid, permissionKey]);
+	}, [hasButtons, rid, permissionIds]);
 	const filterContext = useObservable(context$);
 
 	return useMemo(() => {
@@ -96,7 +94,7 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 			.filter(button => applyRoomFilter(button, room) && applyAuthFilter(button, { roles, permissions }))
 			.map(button => ({
 				id: getIdForActionButton(button),
-				label: translateAppKey({ appId: button.appId, key: button.labelI18n, translations, locale: language || i18n.locale }),
+				label: translateAppKey({ appId: button.appId, key: button.labelI18n, translations, locale: language }),
 				button
 			}));
 	}, [buttons, filterContext, translations, userRoles, language]);
