@@ -1050,14 +1050,19 @@ export const createGroupChat = () => {
 	return sdk.post('im.create', { usernames });
 };
 
-export const addUsersToRoom = (rid: string, t: 'c' | 'p') => {
+export const addUsersToRoom = async (rid: string, t: 'c' | 'p') => {
 	const { selectedUsers, server } = reduxStore.getState();
 	const users = selectedUsers.users.map(u => u.name);
 	if (compareServerVersion(server.version, 'greaterThanOrEqualTo', '8.6.0')) {
 		if (t === 'p') {
 			return sdk.post('groups.invite', { roomId: rid, usernames: users });
 		}
-		return Promise.all(users.map(username => sdk.post('channels.invite', { roomId: rid, username })));
+		const results = await Promise.allSettled(users.map(username => sdk.post('channels.invite', { roomId: rid, username })));
+		const failed = results.find((result): result is PromiseRejectedResult => result.status === 'rejected');
+		if (failed) {
+			throw failed.reason;
+		}
+		return results;
 	}
 	// RC 0.51.0
 	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });

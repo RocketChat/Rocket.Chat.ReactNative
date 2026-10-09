@@ -58,4 +58,20 @@ describe('addUsersToRoom', () => {
 		(sdk.post as jest.Mock).mockResolvedValueOnce({ success: true }).mockRejectedValueOnce(new Error('error-user-is-banned'));
 		await expect(addUsersToRoom('rid1', 'c')).rejects.toThrow('error-user-is-banned');
 	});
+
+	it('waits for every invite to settle before rejecting', async () => {
+		let resolveSecondInvite: (value: { success: boolean }) => void = () => {};
+		(sdk.post as jest.Mock)
+			.mockRejectedValueOnce(new Error('error-user-is-banned'))
+			.mockReturnValueOnce(new Promise(resolve => (resolveSecondInvite = resolve)));
+		const onRejected = jest.fn();
+
+		addUsersToRoom('rid1', 'c').catch(onRejected);
+		await new Promise(setImmediate);
+		expect(onRejected).not.toHaveBeenCalled();
+
+		resolveSecondInvite({ success: true });
+		await new Promise(setImmediate);
+		expect(onRejected).toHaveBeenCalledWith(expect.objectContaining({ message: 'error-user-is-banned' }));
+	});
 });
