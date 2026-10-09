@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '~/views/RoomView/definitions';
 import { type TAnyMessageModel } from '~/definitions';
+import { MAX_SCROLL_TO_INDEX_RETRIES } from '../constants';
 
 // Abort a jump whose target never re-observes within this window: release the anchor, drop to the Live
 // Tail, resolve the jump. Does not cancel an in-flight scroll — completion is reactive on re-observe.
@@ -13,7 +14,6 @@ const MAX_JUMP_GROWTH_RETRIES = 5;
 // VirtualizedList re-fires onScrollToIndexFailed synchronously, so defer each retry one frame to break
 // the recursion.
 const SCROLL_TO_INDEX_RETRY_DELAY = 50;
-export const MAX_SCROLL_TO_INDEX_RETRIES = 60;
 
 // animated:false snaps straight to the target instead of smooth-scrolling through every row between here
 // and a deep index — the latter reads as the list "hunting" for the message across several visible scrolls.
