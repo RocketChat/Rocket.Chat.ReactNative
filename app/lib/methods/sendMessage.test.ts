@@ -330,6 +330,49 @@ describe('sendMessage', () => {
 			expect(record.md).toBeUndefined();
 		});
 
+		it('keeps the urls, attachments and markdown of a stream update that lands before the reply', async () => {
+			const link = 'https://rocket.chat';
+			const post = deferred();
+			mockPost.mockImplementation(async () => {
+				await post.promise;
+				return { success: true, message: { mentions: [], channels: [], attachments: [], urls: [{ url: link }], md: [] } };
+			});
+
+			const send = sendMessage(rid, link, undefined, user);
+			await flush();
+			const record = createdRecord('messages');
+			const streamUrls = [{ url: link, meta: { pageTitle: 'Rocket.Chat' } }];
+			const streamAttachments = [{ title: 'Rocket.Chat' }];
+			const streamMd = [{ type: 'PARAGRAPH', value: [{ type: 'LINK', value: link }] }];
+			Object.assign(record, { status: messagesStatus.SENT, urls: streamUrls, attachments: streamAttachments, md: streamMd });
+
+			post.resolve();
+			await send;
+
+			expect(record.status).toBe(messagesStatus.SENT);
+			expect(record.urls).toBe(streamUrls);
+			expect(record.attachments).toBe(streamAttachments);
+			expect(record.md).toBe(streamMd);
+		});
+
+		it('keeps a message the stream delivered as SENT when the send request fails', async () => {
+			const post = deferred();
+			mockPost.mockImplementation(async () => {
+				await post.promise;
+				throw new Error('timeout');
+			});
+
+			const send = sendMessage(rid, 'hello', undefined, user);
+			await flush();
+			const record = createdRecord('messages');
+			record.status = messagesStatus.SENT;
+
+			post.resolve();
+			await send;
+
+			expect(record.status).toBe(messagesStatus.SENT);
+		});
+
 		it('marks the message as errored when the server answers success: false', async () => {
 			mockPost.mockImplementation(() => Promise.resolve({ success: false }));
 
@@ -570,6 +613,20 @@ describe('sendMessage', () => {
 			await resendMessage(makeMessageModel() as any, 'threadHeaderId');
 
 			expect(mockEncryptMessage).toHaveBeenCalledWith(expect.objectContaining({ tmid: 'threadHeaderId' }));
+		});
+
+		it('marks both the room and the thread copy as sent when a thread reply is resent', async () => {
+			mockPost.mockImplementation(() => Promise.resolve({ success: true, message: {} }));
+			const roomCopy = makeRecord('messages#messageId', { id: 'messageId', status: messagesStatus.ERROR });
+			mockGetCollection('messages').records.set('messageId', roomCopy);
+			const threadCopy = makeRecord('thread_messages#messageId', { id: 'messageId', status: messagesStatus.ERROR });
+			mockGetCollection('thread_messages').records.set('messageId', threadCopy);
+			threadCopy.update = jest.fn((updater: (m: FakeRecord) => void) => Promise.resolve(updater(threadCopy)));
+
+			await resendMessage(threadCopy as any, 'threadHeaderId');
+
+			expect(roomCopy.status).toBe(messagesStatus.SENT);
+			expect(threadCopy.status).toBe(messagesStatus.SENT);
 		});
 
 		it('logs and does not rethrow when the update fails', async () => {

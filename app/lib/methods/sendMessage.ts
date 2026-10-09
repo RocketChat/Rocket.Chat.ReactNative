@@ -11,7 +11,14 @@ import sdk from '../services/sdk';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
 import { messagesStatus } from '../constants/messagesStatus';
 
-const applyServerMessage = (record: TMessageModel | TThreadMessageModel, message: IMessage) => {
+const applySendResult = (record: TMessageModel | TThreadMessageModel, status: number, message: IMessage | null) => {
+	if (record.status === messagesStatus.SENT) {
+		return;
+	}
+	record.status = status;
+	if (!message) {
+		return;
+	}
 	record.mentions = message.mentions;
 	record.channels = message.channels;
 	if (message.t === E2E_MESSAGE_TYPE) {
@@ -23,7 +30,7 @@ const applyServerMessage = (record: TMessageModel | TThreadMessageModel, message
 };
 
 const changeMessageStatus = async (id: string, status: number, tmid?: string, serverMessage?: IMessage) => {
-	const message = serverMessage && (normalizeMessage(serverMessage) as IMessage);
+	const message = normalizeMessage(serverMessage) as IMessage | null;
 	const db = database.active;
 	const msgCollection = db.get('messages');
 	const threadMessagesCollection = db.get('thread_messages');
@@ -32,25 +39,11 @@ const changeMessageStatus = async (id: string, status: number, tmid?: string, se
 		await db.write(async () => {
 			const successBatch: Model[] = [];
 			const messageRecord = await msgCollection.find(id);
-			successBatch.push(
-				messageRecord.prepareUpdate(m => {
-					m.status = status;
-					if (message) {
-						applyServerMessage(m, message);
-					}
-				})
-			);
+			successBatch.push(messageRecord.prepareUpdate(m => applySendResult(m, status, message)));
 
 			if (tmid) {
 				const threadMessageRecord = await threadMessagesCollection.find(id);
-				successBatch.push(
-					threadMessageRecord.prepareUpdate(tm => {
-						tm.status = status;
-						if (message) {
-							applyServerMessage(tm, message);
-						}
-					})
-				);
+				successBatch.push(threadMessageRecord.prepareUpdate(tm => applySendResult(tm, status, message)));
 			}
 
 			await db.batch(successBatch);
