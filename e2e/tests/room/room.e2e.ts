@@ -110,9 +110,11 @@ const quoteMessage = async (fixtures: Fixtures, authorName: string) => {
 	await expectVisible(fixtures, `reply-${authorName}-quote`);
 };
 
-const joinRoom = async (fixtures: Fixtures) => {
+const joinRoom = async (fixtures: Fixtures, roomName: string) => {
 	await tapWhenVisible(fixtures, 'room-view-join-button');
 	await expectHidden(fixtures, 'room-view-join-button');
+	await backToRoomsList(fixtures);
+	await searchAndNavigateRoom(fixtures, roomName);
 	await expect(fixtures.screen.getByText(/joined the channel/)).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
@@ -123,7 +125,7 @@ const openRoomWithOthersMessage = async (fixtures: Fixtures, message: string) =>
 	await expectVisible(fixtures, 'rooms-list-view');
 	await searchAndNavigateRoom(fixtures, room.name);
 	await expectVisible(fixtures, `message-content-${message}`);
-	await joinRoom(fixtures);
+	await joinRoom(fixtures, room.name);
 	return { author, room };
 };
 
