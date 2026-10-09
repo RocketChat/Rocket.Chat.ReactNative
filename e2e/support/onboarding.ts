@@ -11,7 +11,8 @@ import {
 	LONG_TIMEOUT,
 	tapIfVisible,
 	tapUntilVisible,
-	tapWhenVisible
+	tapWhenVisible,
+	unlessCancelled
 } from './flows';
 import { randomUser, type RandomUser } from './random';
 
@@ -112,7 +113,7 @@ export const loginWithDeepLinkIntoRunningApp = async (fixtures: Fixtures, creden
 	const link = getDeepLink('auth', data.server, { userId: session.userId, token: session.authToken });
 	for (let attempt = 1; attempt <= DEEP_LINK_ATTEMPTS && !(await roomsList.isVisible()); attempt += 1) {
 		await openDeepLink(fixtures, link, roomsList);
-		await roomsList.waitFor({ timeout: 20_000 }).catch(() => undefined);
+		await roomsList.waitFor({ timeout: 20_000 }).catch(unlessCancelled(undefined));
 	}
 	await expect(roomsList).toBeVisible({ timeout: LONG_TIMEOUT });
 };

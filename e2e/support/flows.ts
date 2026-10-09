@@ -10,17 +10,24 @@ export type Fixtures = TestFixtures & { device: Device };
 
 export const LONG_TIMEOUT = 60_000;
 
-export const succeeds = (assertion: Promise<unknown>) =>
-	assertion.then(
-		() => true,
-		() => false
-	);
+const isCancelled = (error: unknown) => (error as { code?: string } | null)?.code === 'CANCELLED';
+
+export const unlessCancelled =
+	<Fallback>(fallback: Fallback) =>
+	(error: unknown) => {
+		if (isCancelled(error)) {
+			throw error;
+		}
+		return fallback;
+	};
+
+export const succeeds = (assertion: Promise<unknown>) => assertion.then(() => true, unlessCancelled(false));
 
 export const isVisibleNow = async (locator: Locator) => {
 	try {
 		return await locator.isVisible();
-	} catch {
-		return false;
+	} catch (error) {
+		return unlessCancelled(false)(error);
 	}
 };
 
@@ -94,8 +101,13 @@ export const hideKeyboard = async ({ platform, device, screen }: Fixtures, iosTa
 
 let androidAppInstalled = false;
 
-const resetApp = async ({ app, device, platform }: Fixtures) => {
+const LEFTOVER_OPEN_PROMPT = /^Open in .Rocket\.Chat.\?$/;
+
+const resetApp = async ({ app, device, platform, screen }: Fixtures) => {
 	if (platform === 'ios') {
+		if (await isVisibleNow(screen.getByText(LEFTOVER_OPEN_PROMPT))) {
+			await tapIfVisible(screen.getByRole('button', 'Cancel'));
+		}
 		await device.installApp(undefined, { reinstall: true });
 		return;
 	}
@@ -172,8 +184,8 @@ export const tapWhenUncovered = (locator: Locator, timeout = LONG_TIMEOUT) => re
 const holdsValue = async (locator: Locator, text: string) => {
 	try {
 		return (await locator.inputValue()) === text;
-	} catch {
-		return false;
+	} catch (error) {
+		return unlessCancelled(false)(error);
 	}
 };
 
@@ -277,7 +289,9 @@ export const tapUntilHidden = async ({ screen }: Fixtures, testId: string, goneT
 		try {
 			await gone.waitFor({ state: 'hidden', timeout: TAP_UNTIL_HIDDEN_TIMEOUT });
 			return;
-		} catch {}
+		} catch (error) {
+			unlessCancelled(undefined)(error);
+		}
 	}
 	await expect(gone).toBeHidden();
 };
@@ -347,7 +361,8 @@ export const fillSettled = async (input: Locator, value: string) => {
 	await typeValue(input, value);
 	try {
 		await expect(input).toHaveValue(value, { timeout: VALUE_SETTLE_TIMEOUT });
-	} catch {
+	} catch (error) {
+		unlessCancelled(undefined)(error);
 		await typeValue(input, value);
 		await expect(input).toHaveValue(value);
 	}
@@ -365,8 +380,8 @@ const acceptSystemAlert = async (device: Fixtures['device']) => {
 	try {
 		await device.alert('accept');
 		return true;
-	} catch {
-		return false;
+	} catch (error) {
+		return unlessCancelled(false)(error);
 	}
 };
 
@@ -379,7 +394,9 @@ const OPEN_LINK_RETRY_DELAY = 2_000;
 const isOpenLinkRejected = (error: unknown) => error instanceof Error && error.message.includes('failed to open');
 const isOpenLinkUnanswered = (error: unknown) => error instanceof Error && error.message.includes('openurl did not answer');
 
-const openLinkWithRetry = async (device: Fixtures['device'], link: string) => {
+const LATE_DELIVERY_WAIT = 10_000;
+
+const openLinkWithRetry = async (device: Fixtures['device'], link: string, arrivals: readonly Locator[]) => {
 	const deadline = Date.now() + URL_SCHEME_REGISTRATION_TIMEOUT;
 	for (;;) {
 		try {
@@ -391,17 +408,20 @@ const openLinkWithRetry = async (device: Fixtures['device'], link: string) => {
 			if (Date.now() > deadline || !isOpenLinkRejected(error)) {
 				throw error;
 			}
+			if (arrivals.length && (await succeeds(firstVisible(arrivals, LATE_DELIVERY_WAIT)))) {
+				return;
+			}
 			await delay(OPEN_LINK_RETRY_DELAY);
 		}
 	}
 };
 
 export const openDeepLink = async ({ device, screen, platform }: Fixtures, link: string, destination?: Locator) => {
-	await openLinkWithRetry(device, link);
+	const openPrompt = screen.getByRole('button', 'Open');
+	await openLinkWithRetry(device, link, destination ? [destination, openPrompt] : []);
 	if (platform !== 'ios') {
 		return;
 	}
-	const openPrompt = screen.getByRole('button', 'Open');
 	const deadline = Date.now() + (destination ? LONG_TIMEOUT : OPEN_PROMPT_WAIT);
 	while (Date.now() < deadline) {
 		if (await isVisibleNow(openPrompt)) {
@@ -416,6 +436,10 @@ export const openDeepLink = async ({ device, screen, platform }: Fixtures, link:
 			return;
 		}
 		await delay(OPEN_PROMPT_POLL_INTERVAL);
+	}
+	if (!destination && (await isVisibleNow(openPrompt))) {
+		await tapIfVisible(openPrompt);
+		await expect(openPrompt).toBeHidden({ timeout: OPEN_PROMPT_WAIT });
 	}
 };
 
@@ -438,6 +462,7 @@ export const loginWithDeepLink = async (fixtures: Fixtures, credentials: Credent
 	await expect(fixtures.screen.getByTestId('rooms-list-header-server-subtitle')).toHaveText(CONNECTED_SERVER_HOST, {
 		timeout: LONG_TIMEOUT
 	});
+	await expect(fixtures.screen.getByTestId(/^rooms-list-view-item-/).first()).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
 export const navigateToRegister = async ({ screen }: Fixtures, server = data.server) => {
@@ -520,7 +545,9 @@ export const navigateToRoom = async ({ screen }: Fixtures, room: string) => {
 	for (let attempt = 1; attempt < ROOM_OPEN_ATTEMPTS; attempt += 1) {
 		await screen.scrollUntilVisible(roomItem);
 		await roomItem.tap();
-		const opened = await firstVisible([roomTitle, ...e2ePasswordCloseButtons], ROOM_OPEN_RESPONSE_TIMEOUT).catch(() => undefined);
+		const opened = await firstVisible([roomTitle, ...e2ePasswordCloseButtons], ROOM_OPEN_RESPONSE_TIMEOUT).catch(
+			unlessCancelled(undefined)
+		);
 		if (opened === roomTitle) {
 			return;
 		}
