@@ -43,6 +43,14 @@ describe('nativeHeaderItems', () => {
 		expect((button as NativeStackHeaderItemButton).badge).toEqual({ value: '', style: { backgroundColor: 'red' } });
 	});
 
+	it('caps a numeric native badge at +99', () => {
+		const [button] = nativeHeaderItems([
+			{ label: 'Threads', icon: 'threads', badge: { value: 150, color: 'blue' }, onPress: jest.fn() }
+		]);
+
+		expect((button as NativeStackHeaderItemButton).badge).toEqual({ value: '+99', style: { backgroundColor: 'blue' } });
+	});
+
 	it('tints items with the header tint unless the action sets its own', () => {
 		const [plain, tinted] = nativeHeaderItems(
 			[

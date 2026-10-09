@@ -12,6 +12,7 @@ import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import Radio from '~/containers/Radio';
 import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 import I18n from '~/i18n';
+import { formatUnreadCount } from '~/lib/methods/helpers/formatUnreadCount';
 import { headerIcon } from './headerIcon';
 
 export interface IHeaderMenuItem {
@@ -69,7 +70,10 @@ export const nativeHeaderItems = (actions: IHeaderAction[], headerTintColor?: st
 				disabled,
 				tintColor,
 				variant,
-				badge: badge && { value: badge.value ?? '', style: { backgroundColor: badge.color } }
+				badge: badge && {
+					value: badge.value === undefined ? '' : formatUnreadCount(badge.value),
+					style: { backgroundColor: badge.color }
+				}
 			};
 			if (menu) {
 				return { ...sharedProps, type: 'menu', menu: { items: menu.map(toNativeMenuAction) } };
