@@ -154,7 +154,7 @@ jobs:
           force-avd-creation: false
           disable-animations: true
           emulator-boot-timeout: 900
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
           script: bash .github/scripts/run-e2e.sh android "$SHARD"
 
       - name: Start Android Emulator and Run E2E Tests (default, snapshot stays restore-only)
