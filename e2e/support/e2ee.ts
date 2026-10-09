@@ -1,6 +1,6 @@
 import { expect } from 'e2e';
 
-import type { Credentials } from './api';
+import { type Credentials, get } from './api';
 import { data } from './data';
 import {
 	fillWhenUncovered,
@@ -97,9 +97,24 @@ export const setupE2EEUser = async (fixtures: Fixtures, user: Credentials) => {
 	await changeE2EEPassword(fixtures);
 };
 
-export const createE2EERoom = async (fixtures: Fixtures, room: string, member: string) => {
+const describeRoomKeyState = async (creator: Credentials, room: string) => {
+	const { room: roomInfo } = await get(`rooms.info?roomName=${room}`, creator);
+	const { subscription } = await get(`subscriptions.getOne?roomId=${roomInfo._id}`, creator);
+	return JSON.stringify({
+		roomKeyId: roomInfo.e2eKeyId ?? null,
+		hasE2EKey: Boolean(subscription.E2EKey),
+		hasE2ESuggestedKey: Boolean(subscription.E2ESuggestedKey)
+	});
+};
+
+export const createE2EERoom = async (fixtures: Fixtures, room: string, creator: Credentials, member: string) => {
 	await fixtures.app.restart();
 	await createAndOpenChannel(fixtures, room, { encrypted: true, members: [member] });
+	try {
+		await expect(fixtures.screen.getByTestId('message-composer-input')).toBeVisible({ timeout: LONG_TIMEOUT });
+	} catch (error) {
+		throw new Error(`Creator has no room key, server state ${await describeRoomKeyState(creator, room)}`, { cause: error });
+	}
 };
 
 export const openRoomFromList = async (fixtures: Fixtures, room: string) => {

@@ -30,8 +30,7 @@ test('encrypts, decrypts, quotes, resets keys and edits messages', { tags: ['tes
 	await setupE2EEUser(fixtures, userB);
 	await setupE2EEUser(fixtures, userA);
 
-	await createE2EERoom(fixtures, room, userB.username);
-	await expect(screen.getByTestId('message-composer-input')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await createE2EERoom(fixtures, room, userA, userB.username);
 	await sendMessage(fixtures, 'm0');
 
 	await sendMessage(fixtures, 'm1');
