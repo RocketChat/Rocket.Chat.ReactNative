@@ -13,7 +13,7 @@ export const useRoomsInCategory = (categoryId: string) => {
 		const subscription = database.active
 			.get('subscriptions')
 			.query(Q.where('category', categoryId), Q.sortBy('room_updated_at', Q.desc))
-			.observeWithColumns(['category'])
+			.observe()
 			.subscribe({
 				next: subscriptions => setRooms(subscriptions.map(toCategoryRoom)),
 				error: log
