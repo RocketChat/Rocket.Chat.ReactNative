@@ -278,12 +278,11 @@ export const loadThreadMessagesUntil = async (
 	isWanted: () => boolean
 ): Promise<boolean> => {
 	await inFlight.get(thread.tmid);
+	let reached = await hasPagedTo(thread.tmid, target);
 	let fetched = true;
-	while (fetched && isWanted() && !(await hasPagedTo(thread.tmid, target))) {
+	while (!reached && fetched && isWanted()) {
 		fetched = await loadNextPage(thread);
+		reached = await hasPagedTo(thread.tmid, target);
 	}
-	if (!(await hasPagedTo(thread.tmid, target))) {
-		return false;
-	}
-	return target.id === thread.tmid || !!(await getThreadMessageById(target.id));
+	return reached && (target.id === thread.tmid || !!(await getThreadMessageById(target.id)));
 };
