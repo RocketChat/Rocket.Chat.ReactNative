@@ -86,36 +86,29 @@ const NewMessageView = ({ route }: StaticScreenProps<NewMessageViewParams>) => {
 		init();
 	}, [categoryId]);
 
-	const handleSearch = useCallback(
-		async (text: string) => {
-			if (categoryId) {
-				setCategorySearchText(text);
-				return;
-			}
-			searchId.current += 1;
-			const currentSearchId = searchId.current;
-			const isStale = () => currentSearchId !== searchId.current;
+	const handleSearch = useCallback(async (text: string) => {
+		searchId.current += 1;
+		const currentSearchId = searchId.current;
+		const isStale = () => currentSearchId !== searchId.current;
 
-			setSearching(true);
+		setSearching(true);
 
-			try {
-				// Paint local results immediately while the backend request is still in flight
-				const result = (await runSearch({
-					text,
-					filterRooms: false,
-					onLocal: localData => {
-						if (isStale()) return;
-						setSearch(localData as ISearch[]);
-					}
-				})) as ISearch[];
-				if (!isStale()) setSearch(result);
-			} catch (e) {
-				log(e);
-			}
-			if (!isStale()) setSearching(false);
-		},
-		[categoryId]
-	);
+		try {
+			// Paint local results immediately while the backend request is still in flight
+			const result = (await runSearch({
+				text,
+				filterRooms: false,
+				onLocal: localData => {
+					if (isStale()) return;
+					setSearch(localData as ISearch[]);
+				}
+			})) as ISearch[];
+			if (!isStale()) setSearch(result);
+		} catch (e) {
+			log(e);
+		}
+		if (!isStale()) setSearching(false);
+	}, []);
 
 	const goRoom = useCallback(
 		(item: TGoRoomItem) => {
@@ -135,7 +128,12 @@ const NewMessageView = ({ route }: StaticScreenProps<NewMessageViewParams>) => {
 				data={listedChats}
 				keyExtractor={item => item._id || item.rid}
 				ListHeaderComponent={
-					<HeaderNewMessage maxUsers={maxUsers} onChangeText={handleSearch} categoryId={categoryId} categoryName={categoryName} />
+					<HeaderNewMessage
+						maxUsers={maxUsers}
+						onChangeText={categoryId ? setCategorySearchText : handleSearch}
+						categoryId={categoryId}
+						categoryName={categoryName}
+					/>
 				}
 				renderItem={({ item, index }) => {
 					const itemSearch = item as ISearch;
