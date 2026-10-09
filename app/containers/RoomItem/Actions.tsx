@@ -10,7 +10,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { RectButton } from '~/containers/GestureButtons';
-import { CustomIcon } from '../CustomIcon';
+import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { DisplayMode } from '~/lib/constants/constantDisplayMode';
 import styles from './styles';
 import { getActionWidth, getFullSwipeThreshold } from './utils/swipeRelease';
@@ -111,6 +111,19 @@ export const RightActions = memo(
 		const isCondensed = displayMode === DisplayMode.Condensed;
 		const viewHeight = { height: isCondensed ? rowHeightCondensed : rowHeight };
 		const iconSize = isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE;
+		const leadingAction: { backgroundColor: string; label: string; icon: TIconsName; onPress: () => void } = onMoveToCategoryPress
+			? {
+					backgroundColor: colors.fontPureBlack,
+					label: 'Move_to_category',
+					icon: 'folder-star',
+					onPress: onMoveToCategoryPress
+				}
+			: {
+					backgroundColor: colors.statusFontWarning,
+					label: favorite ? 'Unfavorite' : 'Favorite',
+					icon: favorite ? 'star-filled' : 'star',
+					onPress: toggleFav
+				};
 
 		return (
 			<View
@@ -118,43 +131,23 @@ export const RightActions = memo(
 				pointerEvents='box-none'
 				accessibilityElementsHidden
 				importantForAccessibility='no'>
-				{onMoveToCategoryPress ? (
-					<Animated.View
-						style={[
-							styles.actionRightButtonContainer,
-							{ backgroundColor: colors.fontPureBlack },
-							viewHeight,
-							animatedLeadingStyles
-						]}>
-						<RectButton
-							accessible={false}
-							accessibilityLabel={I18n.t('Move_to_category')}
-							style={styles.actionButton}
-							onPress={onMoveToCategoryPress}>
-							<View style={[styles.actionIconSlot, { width: actionWidth }]}>
-								<CustomIcon size={iconSize} name='folder-star' color={colors.fontWhite} />
-							</View>
-						</RectButton>
-					</Animated.View>
-				) : (
-					<Animated.View
-						style={[
-							styles.actionRightButtonContainer,
-							{ backgroundColor: colors.statusFontWarning },
-							viewHeight,
-							animatedLeadingStyles
-						]}>
-						<RectButton
-							accessible={false}
-							accessibilityLabel={I18n.t(favorite ? 'Unfavorite' : 'Favorite')}
-							style={styles.actionButton}
-							onPress={toggleFav}>
-							<View style={[styles.actionIconSlot, { width: actionWidth }]}>
-								<CustomIcon size={iconSize} name={favorite ? 'star-filled' : 'star'} color={colors.fontWhite} />
-							</View>
-						</RectButton>
-					</Animated.View>
-				)}
+				<Animated.View
+					style={[
+						styles.actionRightButtonContainer,
+						{ backgroundColor: leadingAction.backgroundColor },
+						viewHeight,
+						animatedLeadingStyles
+					]}>
+					<RectButton
+						accessible={false}
+						accessibilityLabel={I18n.t(leadingAction.label)}
+						style={styles.actionButton}
+						onPress={leadingAction.onPress}>
+						<View style={[styles.actionIconSlot, { width: actionWidth }]}>
+							<CustomIcon size={iconSize} name={leadingAction.icon} color={colors.fontWhite} />
+						</View>
+					</RectButton>
+				</Animated.View>
 				<Animated.View
 					style={[
 						styles.actionRightButtonContainer,
