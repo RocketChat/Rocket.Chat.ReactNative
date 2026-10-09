@@ -47,6 +47,11 @@ const styles = StyleSheet.create({
 		alignSelf: 'stretch',
 		gap: CONTENT_SPACING
 	},
+	trailing: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: CONTENT_SPACING
+	},
 	pressed: {
 		opacity: 0.75
 	},
@@ -102,6 +107,17 @@ export interface INativeListRowContent {
 	subtitleSpacing?: number;
 	style?: StyleProp<ViewStyle>;
 }
+
+const Trailing = ({ isRowPressable, children }: { isRowPressable: boolean; children: ReactNode }) => {
+	if (!children) {
+		return null;
+	}
+	return (
+		<View pointerEvents={isRowPressable ? 'none' : 'auto'} style={styles.trailing}>
+			{children}
+		</View>
+	);
+};
 
 export const NativeListRowContent = ({
 	title,
@@ -162,7 +178,7 @@ export const NativeListRowContent = ({
 						</Text>
 					) : null}
 				</View>
-				{trailing}
+				<Trailing isRowPressable={Boolean(onPress)}>{trailing}</Trailing>
 			</Pressable>
 			{trailingAction ? (
 				<Pressable

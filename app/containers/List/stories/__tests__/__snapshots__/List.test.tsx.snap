@@ -187,6 +187,16 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                 </Text>
               </View>
             </View>
+            <View
+              pointerEvents="auto"
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
+              }
+            />
           </View>
         </View>
         <View
@@ -354,6 +364,16 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                 </Text>
               </View>
             </View>
+            <View
+              pointerEvents="auto"
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
+              }
+            />
           </View>
         </View>
         <View
@@ -522,42 +542,53 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
               </View>
             </View>
             <View
+              pointerEvents="auto"
               style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
+              <View
                 style={
                   [
                     {
-                      "color": "#2F343D",
-                      "fontSize": 24,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
+                    undefined,
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -727,42 +758,53 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
               </View>
             </View>
             <View
+              pointerEvents="auto"
               style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
+              <View
                 style={
                   [
                     {
-                      "color": "#2F343D",
-                      "fontSize": 24,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
+                    undefined,
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -1464,6 +1506,16 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
                 </Text>
               </View>
             </View>
+            <View
+              pointerEvents="none"
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
+              }
+            />
           </View>
         </View>
         <View
@@ -1607,6 +1659,16 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
                 </Text>
               </View>
             </View>
+            <View
+              pointerEvents="none"
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
+              }
+            />
           </View>
         </View>
       </View>
@@ -1783,32 +1845,43 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
                 </Text>
               </View>
             </View>
-            <ViewManagerAdapter_ExpoUI
-              layoutDirection="leftToRight"
-              matchContentsHorizontal={true}
-              matchContentsVertical={true}
+            <View
+              pointerEvents="none"
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
+              }
             >
               <ViewManagerAdapter_ExpoUI
-                modifiers={
-                  [
-                    {
-                      "$type": "font",
-                      "textStyle": "body",
-                      "weight": "semibold",
-                    },
-                    {
-                      "$type": "foregroundStyle",
-                      "style": {
-                        "color": "#1D74F5",
-                        "type": "color",
+                layoutDirection="leftToRight"
+                matchContentsHorizontal={true}
+                matchContentsVertical={true}
+              >
+                <ViewManagerAdapter_ExpoUI
+                  modifiers={
+                    [
+                      {
+                        "$type": "font",
+                        "textStyle": "body",
+                        "weight": "semibold",
                       },
-                    },
-                  ]
-                }
-                onGlobalEvent={[Function]}
-                systemName="checkmark"
-              />
-            </ViewManagerAdapter_ExpoUI>
+                      {
+                        "$type": "foregroundStyle",
+                        "style": {
+                          "color": "#1D74F5",
+                          "type": "color",
+                        },
+                      },
+                    ]
+                  }
+                  onGlobalEvent={[Function]}
+                  systemName="checkmark"
+                />
+              </ViewManagerAdapter_ExpoUI>
+            </View>
           </View>
         </View>
         <View
@@ -1950,6 +2023,16 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
                 </Text>
               </View>
             </View>
+            <View
+              pointerEvents="none"
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
+              }
+            />
           </View>
         </View>
         <View
@@ -2091,6 +2174,16 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
                 </Text>
               </View>
             </View>
+            <View
+              pointerEvents="none"
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
+              }
+            />
           </View>
         </View>
         <View
@@ -2247,32 +2340,43 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
               </Text>
             </View>
-            <ViewManagerAdapter_ExpoUI
-              layoutDirection="leftToRight"
-              matchContentsHorizontal={true}
-              matchContentsVertical={true}
+            <View
+              pointerEvents="none"
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
+              }
             >
               <ViewManagerAdapter_ExpoUI
-                modifiers={
-                  [
-                    {
-                      "$type": "font",
-                      "textStyle": "body",
-                      "weight": "semibold",
-                    },
-                    {
-                      "$type": "foregroundStyle",
-                      "style": {
-                        "color": "#1D74F5",
-                        "type": "color",
+                layoutDirection="leftToRight"
+                matchContentsHorizontal={true}
+                matchContentsVertical={true}
+              >
+                <ViewManagerAdapter_ExpoUI
+                  modifiers={
+                    [
+                      {
+                        "$type": "font",
+                        "textStyle": "body",
+                        "weight": "semibold",
                       },
-                    },
-                  ]
-                }
-                onGlobalEvent={[Function]}
-                systemName="checkmark"
-              />
-            </ViewManagerAdapter_ExpoUI>
+                      {
+                        "$type": "foregroundStyle",
+                        "style": {
+                          "color": "#1D74F5",
+                          "type": "color",
+                        },
+                      },
+                    ]
+                  }
+                  onGlobalEvent={[Function]}
+                  systemName="checkmark"
+                />
+              </ViewManagerAdapter_ExpoUI>
+            </View>
           </View>
         </View>
       </View>
@@ -2470,6 +2574,16 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                   </Text>
                 </View>
               </View>
+              <View
+                pointerEvents="auto"
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
+                }
+              />
             </View>
           </View>
           <View
@@ -2611,6 +2725,16 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                   </Text>
                 </View>
               </View>
+              <View
+                pointerEvents="auto"
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
+                }
+              />
             </View>
           </View>
         </View>
@@ -2766,6 +2890,16 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                   </Text>
                 </View>
               </View>
+              <View
+                pointerEvents="auto"
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
+                }
+              />
             </View>
           </View>
           <View
@@ -2907,6 +3041,16 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                   </Text>
                 </View>
               </View>
+              <View
+                pointerEvents="auto"
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
+                }
+              />
             </View>
           </View>
         </View>
@@ -3076,6 +3220,16 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                   </Text>
                 </View>
               </View>
+              <View
+                pointerEvents="auto"
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
+                }
+              />
             </View>
           </View>
           <View
@@ -3217,6 +3371,16 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                   </Text>
                 </View>
               </View>
+              <View
+                pointerEvents="auto"
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
+                }
+              />
             </View>
           </View>
         </View>
@@ -3400,6 +3564,16 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                   </Text>
                 </View>
               </View>
+              <View
+                pointerEvents="auto"
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
+                }
+              />
             </View>
           </View>
           <View
@@ -3541,6 +3715,16 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                   </Text>
                 </View>
               </View>
+              <View
+                pointerEvents="auto"
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
+                }
+              />
             </View>
           </View>
         </View>
@@ -3752,6 +3936,16 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
                 </Text>
               </View>
             </View>
+            <View
+              pointerEvents="auto"
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
+              }
+            />
           </View>
         </View>
         <View
@@ -3908,6 +4102,16 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
                 All
               </Text>
             </View>
+            <View
+              pointerEvents="auto"
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
+              }
+            />
           </View>
         </View>
         <View
@@ -4065,6 +4269,16 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
               </Text>
             </View>
+            <View
+              pointerEvents="auto"
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
+              }
+            />
           </View>
         </View>
         <View
@@ -4221,6 +4435,16 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
               </Text>
             </View>
+            <View
+              pointerEvents="auto"
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
+              }
+            />
           </View>
         </View>
       </View>
@@ -4486,42 +4710,53 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                 </Text>
               </View>
               <View
+                pointerEvents="none"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    undefined,
-                  ]
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
                       {
-                        "color": "#2F343D",
-                        "fontSize": 24,
+                        "alignItems": "center",
+                        "justifyContent": "center",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#2F343D",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -4720,42 +4955,53 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                 </Text>
               </View>
               <View
+                pointerEvents="none"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    undefined,
-                  ]
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
                       {
-                        "color": "#2F343D",
-                        "fontSize": 24,
+                        "alignItems": "center",
+                        "justifyContent": "center",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#2F343D",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -4994,42 +5240,53 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                 </Text>
               </View>
               <View
+                pointerEvents="none"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    undefined,
-                  ]
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
                       {
-                        "color": "#2F343D",
-                        "fontSize": 24,
+                        "alignItems": "center",
+                        "justifyContent": "center",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#2F343D",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -5228,42 +5485,53 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                 </Text>
               </View>
               <View
+                pointerEvents="none"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    undefined,
-                  ]
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
                       {
-                        "color": "#2F343D",
-                        "fontSize": 24,
+                        "alignItems": "center",
+                        "justifyContent": "center",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#2F343D",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -5545,42 +5813,53 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 </Text>
               </View>
               <View
+                pointerEvents="none"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    undefined,
-                  ]
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
                       {
-                        "color": "#E4E4E4",
-                        "fontSize": 24,
+                        "alignItems": "center",
+                        "justifyContent": "center",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#E4E4E4",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -5779,42 +6058,53 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 </Text>
               </View>
               <View
+                pointerEvents="none"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    undefined,
-                  ]
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
                       {
-                        "color": "#E4E4E4",
-                        "fontSize": 24,
+                        "alignItems": "center",
+                        "justifyContent": "center",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#E4E4E4",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -6053,42 +6343,53 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 </Text>
               </View>
               <View
+                pointerEvents="none"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    undefined,
-                  ]
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
                       {
-                        "color": "#E4E4E4",
-                        "fontSize": 24,
+                        "alignItems": "center",
+                        "justifyContent": "center",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#E4E4E4",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -6287,42 +6588,53 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 </Text>
               </View>
               <View
+                pointerEvents="none"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    undefined,
-                  ]
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
                       {
-                        "color": "#E4E4E4",
-                        "fontSize": 24,
+                        "alignItems": "center",
+                        "justifyContent": "center",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#E4E4E4",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -6515,6 +6827,16 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
                 </Text>
               </View>
             </View>
+            <View
+              pointerEvents="auto"
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
+              }
+            />
           </View>
         </View>
         <View
@@ -6656,6 +6978,16 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
                 </Text>
               </View>
             </View>
+            <View
+              pointerEvents="none"
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
+              }
+            />
           </View>
         </View>
       </View>
@@ -6921,42 +7253,53 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                 </Text>
               </View>
               <View
+                pointerEvents="none"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    undefined,
-                  ]
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
                       {
-                        "color": "#C1C7D0",
-                        "fontSize": 24,
+                        "alignItems": "center",
+                        "justifyContent": "center",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#C1C7D0",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -7155,42 +7498,53 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                 </Text>
               </View>
               <View
+                pointerEvents="none"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    undefined,
-                  ]
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
                       {
-                        "color": "#C1C7D0",
-                        "fontSize": 24,
+                        "alignItems": "center",
+                        "justifyContent": "center",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#C1C7D0",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -7429,42 +7783,53 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                 </Text>
               </View>
               <View
+                pointerEvents="none"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    undefined,
-                  ]
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
                       {
-                        "color": "#C1C7D0",
-                        "fontSize": 24,
+                        "alignItems": "center",
+                        "justifyContent": "center",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#C1C7D0",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -7663,42 +8028,53 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                 </Text>
               </View>
               <View
+                pointerEvents="none"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    undefined,
-                  ]
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
                       {
-                        "color": "#C1C7D0",
-                        "fontSize": 24,
+                        "alignItems": "center",
+                        "justifyContent": "center",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#C1C7D0",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -8966,6 +9342,16 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                 </Text>
               </View>
             </View>
+            <View
+              pointerEvents="auto"
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
+              }
+            />
           </View>
         </View>
         <View
@@ -9108,42 +9494,53 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
               </View>
             </View>
             <View
+              pointerEvents="auto"
               style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
+              <View
                 style={
                   [
                     {
-                      "color": "#2F343D",
-                      "fontSize": 24,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
+                    undefined,
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -9340,42 +9737,53 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
               </Text>
             </View>
             <View
+              pointerEvents="auto"
               style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
+              <View
                 style={
                   [
                     {
-                      "color": "#2F343D",
-                      "fontSize": 24,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
+                    undefined,
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -9518,32 +9926,43 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                 </Text>
               </View>
             </View>
-            <ViewManagerAdapter_ExpoUI
-              layoutDirection="leftToRight"
-              matchContentsHorizontal={true}
-              matchContentsVertical={true}
+            <View
+              pointerEvents="auto"
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 12,
+                }
+              }
             >
               <ViewManagerAdapter_ExpoUI
-                modifiers={
-                  [
-                    {
-                      "$type": "font",
-                      "textStyle": "footnote",
-                      "weight": "semibold",
-                    },
-                    {
-                      "$type": "foregroundStyle",
-                      "style": {
-                        "color": "#6C727A",
-                        "type": "color",
+                layoutDirection="leftToRight"
+                matchContentsHorizontal={true}
+                matchContentsVertical={true}
+              >
+                <ViewManagerAdapter_ExpoUI
+                  modifiers={
+                    [
+                      {
+                        "$type": "font",
+                        "textStyle": "footnote",
+                        "weight": "semibold",
                       },
-                    },
-                  ]
-                }
-                onGlobalEvent={[Function]}
-                systemName="chevron.forward"
-              />
-            </ViewManagerAdapter_ExpoUI>
+                      {
+                        "$type": "foregroundStyle",
+                        "style": {
+                          "color": "#6C727A",
+                          "type": "color",
+                        },
+                      },
+                    ]
+                  }
+                  onGlobalEvent={[Function]}
+                  systemName="chevron.forward"
+                />
+              </ViewManagerAdapter_ExpoUI>
+            </View>
           </View>
         </View>
       </View>
@@ -9809,42 +10228,53 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                 </Text>
               </View>
               <View
+                pointerEvents="none"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    undefined,
-                  ]
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
                       {
-                        "color": "#2F343D",
-                        "fontSize": 24,
+                        "alignItems": "center",
+                        "justifyContent": "center",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#2F343D",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -10043,42 +10473,53 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                 </Text>
               </View>
               <View
+                pointerEvents="none"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    undefined,
-                  ]
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
                       {
-                        "color": "#2F343D",
-                        "fontSize": 24,
+                        "alignItems": "center",
+                        "justifyContent": "center",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#2F343D",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -10317,42 +10758,53 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                 </Text>
               </View>
               <View
+                pointerEvents="none"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    undefined,
-                  ]
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
                       {
-                        "color": "#2F343D",
-                        "fontSize": 24,
+                        "alignItems": "center",
+                        "justifyContent": "center",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#2F343D",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -10551,42 +11003,53 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                 </Text>
               </View>
               <View
+                pointerEvents="none"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    undefined,
-                  ]
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "gap": 12,
+                  }
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
                       {
-                        "color": "#2F343D",
-                        "fontSize": 24,
+                        "alignItems": "center",
+                        "justifyContent": "center",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#2F343D",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
