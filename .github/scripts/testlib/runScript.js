@@ -13,7 +13,8 @@ const path = require('path');
 // stubs: { binName: 'bash body' | '#!/usr/bin/env bash\n…' }
 // env:   extra environment variables for the script
 // args:  argv passed to the script
-function runScript(scriptPath, { stubs = {}, env = {}, args = [] } = {}) {
+// cwd:   working directory for the script
+function runScript(scriptPath, { stubs = {}, env = {}, args = [], cwd } = {}) {
 	const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'selshard-'));
 	const binDir = path.join(tmp, 'bin');
 	fs.mkdirSync(binDir);
@@ -33,6 +34,7 @@ function runScript(scriptPath, { stubs = {}, env = {}, args = [] } = {}) {
 	try {
 		stdout = execFileSync('bash', [scriptPath, ...args], {
 			encoding: 'utf8',
+			cwd,
 			env: { ...process.env, PATH: `${binDir}:${process.env.PATH}`, GITHUB_OUTPUT: outFile, ...env }
 		});
 	} catch (e) {

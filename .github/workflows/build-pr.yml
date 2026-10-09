@@ -178,6 +178,31 @@ jobs:
     with:
       shard: ${{ matrix.shard }}
 
+  e2e-replays:
+    name: E2E Replays
+    if: ${{ always() && github.repository == 'RocketChat/Rocket.Chat.ReactNative' && needs.e2e-shards.outputs.should_run == 'true' }}
+    needs: [e2e-shards, e2e-run-android, e2e-run-ios]
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Download Recorded Agent Replays
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: e2e-replays-*
+          path: .e2e/replays
+
+      - name: Comment Recorded Agent Replays on the PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          RUN_ID: ${{ github.run_id }}
+        run: bash .github/scripts/comment-e2e-replays.sh .e2e/replays
+
   # Single required e2e status check. Always publishes one stable context, so an
   # intentional confident-zero skip merges clean while a real shard failure blocks.
   e2e-result:

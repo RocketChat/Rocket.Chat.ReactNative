@@ -27,5 +27,6 @@ export default {
 	launchTimeout: 180_000,
 	actionTimeout: 60_000,
 	workers: 1,
+	cache: 'read-write',
 	agents: { default: { executor: claudeSubscriptionExecutor } }
 } satisfies E2EConfig;

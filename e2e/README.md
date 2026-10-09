@@ -32,7 +32,7 @@ e2e/
 
 `agent.act`, `agent.assert`, `agent.waitFor` and `agent.extract` run on Claude through the Claude Agent SDK, so they use your Claude Code login (or `CLAUDE_CODE_OAUTH_TOKEN` in CI). `E2E_CLAUDE_MODEL` picks the model (default `sonnet`).
 
-A passing `agent.act` step is recorded in `.e2e/cache` and replays without a model call. Commit new or changed entries with the test that produced them. Judgments (`assert`, `waitFor`, `extract`) always call the model, so prefer locators and `expect` where they can express the check.
+A passing `agent.act` step is recorded in `.e2e/cache` and replays without a model call. Commit new or changed entries with the test that produced them. When CI runs a step on the model because its recording is missing, it uploads what it recorded and comments on the PR with the command that copies those entries into `.e2e/cache`. Judgments (`assert`, `waitFor`, `extract`) always call the model, so prefer locators and `expect` where they can express the check.
 
 ## Running tests
 
