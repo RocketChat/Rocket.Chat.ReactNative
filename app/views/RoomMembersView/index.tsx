@@ -243,20 +243,20 @@ const RoomMembersView = (): ReactElement => {
 		});
 	}, 500);
 
-	const toggleStatus = (status: boolean, currentStatus: boolean) => {
-		if (status === currentStatus) {
-			return;
-		}
-		try {
+	useLayoutEffect(() => {
+		const subscription = params?.room?.observe && params.room.observe().subscribe(changes => updateState({ room: changes }));
+		return () => subscription?.unsubscribe();
+	}, []);
+
+	useLayoutEffect(() => {
+		const toggleStatus = (status: boolean) => {
+			if (status === state.allUsers) {
+				return;
+			}
 			// We only update 'allUsers'. 'filter' remains in state, so the next fetch uses both.
 			updateState({ members: [], allUsers: status, end: false, page: 0 });
-			setHeader(status);
-		} catch (e) {
-			log(e);
-		}
-	};
+		};
 
-	const setHeader = (allUsers: boolean) => {
 		navigation.setOptions({
 			title: I18n.t('Members'),
 			...(hasNativeHeaderBar && {
@@ -271,27 +271,21 @@ const RoomMembersView = (): ReactElement => {
 					menu: [
 						{
 							label: I18n.t('Online'),
-							checked: !allUsers,
+							checked: !state.allUsers,
 							testID: 'room-members-view-toggle-status-online',
-							onPress: () => toggleStatus(false, allUsers)
+							onPress: () => toggleStatus(false)
 						},
 						{
 							label: I18n.t('All'),
-							checked: allUsers,
+							checked: state.allUsers,
 							testID: 'room-members-view-toggle-status-all',
-							onPress: () => toggleStatus(true, allUsers)
+							onPress: () => toggleStatus(true)
 						}
 					]
 				}
 			])
 		});
-	};
-
-	useLayoutEffect(() => {
-		const subscription = params?.room?.observe && params.room.observe().subscribe(changes => updateState({ room: changes }));
-		setHeader(true);
-		return () => subscription?.unsubscribe();
-	}, []);
+	}, [navigation, debounceFilterChange, state.allUsers]);
 
 	const getUserDisplayName = (user: TUserModel) => {
 		const preferred = useRealName ? user.name : user.username;
