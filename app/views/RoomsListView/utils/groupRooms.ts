@@ -1,3 +1,5 @@
+import partition from 'lodash/partition';
+
 import { type TSubscriptionModel } from '~/definitions';
 import {
 	CHANNELS_GROUP,
@@ -71,11 +73,6 @@ const sectionHeader = ({ rooms, badgeSourceRooms, header, title, collapsed }: Se
 	} as TSubscriptionModel;
 };
 
-const unreadFirst = (rooms: TSubscriptionModel[]) => [
-	...rooms.filter(filterIsUnread),
-	...rooms.filter(subscription => !filterIsUnread(subscription))
-];
-
 type RoomsGroupOptions = {
 	collapsedGroups: ReadonlySet<string>;
 	title?: string;
@@ -92,7 +89,8 @@ const roomsGroup = (
 	if (!rooms.length && !(header && keepWhenEmpty)) {
 		return [];
 	}
-	const orderedRooms = keepUnreadsOnTop ? unreadFirst(rooms) : rooms;
+	const [unreadRooms, readRooms] = partition(rooms, filterIsUnread);
+	const orderedRooms = keepUnreadsOnTop ? [...unreadRooms, ...readRooms] : rooms;
 	if (!header) {
 		return orderedRooms;
 	}
@@ -100,8 +98,8 @@ const roomsGroup = (
 	if (!collapsed) {
 		return [sectionHeader({ rooms, badgeSourceRooms: rooms, header, title, collapsed }), ...orderedRooms];
 	}
-	const visibleRooms = showUnreads ? orderedRooms.filter(filterIsUnread) : [];
-	const hiddenRooms = orderedRooms.filter(room => !visibleRooms.includes(room));
+	const visibleRooms = showUnreads ? unreadRooms : [];
+	const hiddenRooms = showUnreads ? readRooms : orderedRooms;
 	return [sectionHeader({ rooms, badgeSourceRooms: hiddenRooms, header, title, collapsed }), ...visibleRooms];
 };
 
@@ -195,8 +193,8 @@ export const buildRoomList = (subscriptions: TSubscriptionModel[], options: Buil
 	const roomList: TSubscriptionModel[] = [];
 
 	if (isOmnichannelAgent) {
-		const omnichannel = remainingSubscriptions.filter(filterIsOmnichannel);
-		remainingSubscriptions = remainingSubscriptions.filter(subscription => !filterIsOmnichannel(subscription));
+		const [omnichannel, nonOmnichannel] = partition(remainingSubscriptions, filterIsOmnichannel);
+		remainingSubscriptions = nonOmnichannel;
 		if (showsSection(OMNICHANNEL_IN_PROGRESS_GROUP)) {
 			roomList.push(
 				...roomsGroup(
@@ -218,8 +216,8 @@ export const buildRoomList = (subscriptions: TSubscriptionModel[], options: Buil
 	}
 
 	if (showUnread && showsSection(UNREAD_GROUP)) {
-		const unread = remainingSubscriptions.filter(filterIsUnread);
-		remainingSubscriptions = remainingSubscriptions.filter(subscription => !filterIsUnread(subscription));
+		const [unread, read] = partition(remainingSubscriptions, filterIsUnread);
+		remainingSubscriptions = read;
 		roomList.push(
 			...roomsGroup(unread, UNREAD_HEADER, { collapsedGroups, unreadOptions: categoryUnreadOptions.get(UNREAD_GROUP) })
 		);
