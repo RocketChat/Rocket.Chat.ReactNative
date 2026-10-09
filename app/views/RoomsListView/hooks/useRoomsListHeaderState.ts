@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -18,7 +18,7 @@ interface IRoomsListRightActionsParams {
 	navigateToScreen: (screen: TRoomsListModalScreen) => void;
 }
 
-export const getRoomsListRightActions = ({
+const getRoomsListRightActions = ({
 	showTroubleshoot,
 	disabled,
 	dangerColor,
@@ -83,6 +83,11 @@ export const useRoomsListHeaderState = () => {
 		[isMasterDetail, navigation]
 	);
 
+	const { troubleshootActions, browseActions } = useMemo(
+		() => getRoomsListRightActions({ showTroubleshoot, disabled, dangerColor: colors.fontDanger, navigateToScreen }),
+		[showTroubleshoot, disabled, colors.fontDanger, navigateToScreen]
+	);
+
 	const onDrawerPress = useCallback(() => {
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' });
@@ -91,5 +96,5 @@ export const useRoomsListHeaderState = () => {
 		}
 	}, [isMasterDetail, navigation]);
 
-	return { navigation, isMasterDetail, colors, disabled, badgeColor, showTroubleshoot, navigateToScreen, onDrawerPress };
+	return { navigation, isMasterDetail, disabled, badgeColor, troubleshootActions, browseActions, onDrawerPress };
 };

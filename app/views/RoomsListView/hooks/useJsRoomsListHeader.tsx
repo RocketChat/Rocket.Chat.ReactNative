@@ -9,7 +9,7 @@ import { MASTER_DETAIL_INSIDE_STACK_ID } from '~/stacks/MasterDetailStack/consta
 import { headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import RoomsListHeaderView from '../components/Header';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
-import { getRoomsListRightActions, useRoomsListHeaderState } from './useRoomsListHeaderState';
+import { useRoomsListHeaderState } from './useRoomsListHeaderState';
 
 const getScreenFocusNavigation = (navigation: any, isMasterDetail: boolean) => {
 	if (!isMasterDetail) {
@@ -20,7 +20,7 @@ const getScreenFocusNavigation = (navigation: any, isMasterDetail: boolean) => {
 
 export const useJsRoomsListHeader = () => {
 	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsSearchContext);
-	const { navigation, isMasterDetail, colors, disabled, badgeColor, showTroubleshoot, navigateToScreen, onDrawerPress } =
+	const { navigation, isMasterDetail, disabled, badgeColor, troubleshootActions, browseActions, onDrawerPress } =
 		useRoomsListHeaderState();
 	const isAccessibilityNavigationEnabled = useIsAccessibilityNavigationEnabled();
 	const drawerButtonRef = useRef<KeyboardFocus>(null);
@@ -33,12 +33,6 @@ export const useJsRoomsListHeader = () => {
 			disabled,
 			onPress: startSearch
 		};
-		const { troubleshootActions, browseActions } = getRoomsListRightActions({
-			showTroubleshoot,
-			disabled,
-			dangerColor: colors.fontDanger,
-			navigateToScreen
-		});
 		const headerTitle = () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />;
 		const nextOptions = searchEnabled
 			? {
@@ -67,11 +61,10 @@ export const useJsRoomsListHeader = () => {
 		navigation.setOptions(nextOptions);
 	}, [
 		navigation,
-		colors,
 		disabled,
 		badgeColor,
-		showTroubleshoot,
-		navigateToScreen,
+		troubleshootActions,
+		browseActions,
 		onDrawerPress,
 		searchEnabled,
 		search,
