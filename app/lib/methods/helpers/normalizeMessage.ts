@@ -53,7 +53,8 @@ export default (msg: any): IMessage | IThreadResult | null => {
 		msg.autoTranslate = true;
 	}
 	msg.urls = msg.urls ? parseUrls(msg.urls) : [];
-	msg._updatedAt = msg._updatedAt || new Date();
+	const updatedAt = msg._updatedAt || new Date();
+	msg._updatedAt = typeof updatedAt === 'string' ? new Date(updatedAt) : updatedAt;
 	// loadHistory returns msg.starred as object
 	// stream-room-msgs returns msg.starred as an array
 	msg.starred = msg.starred && (Array.isArray(msg.starred) ? msg.starred.length > 0 : !!msg.starred);

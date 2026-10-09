@@ -913,8 +913,7 @@ export const getNextMessages = async ({ rid, after, count }: { rid: string; afte
 		if (!history.success) {
 			throw new Error('Unable to load newer messages');
 		}
-		const messages = history.messages.map(message => ({ ...message, _updatedAt: new Date(message._updatedAt) })) as IMessage[];
-		return { messages, hasMore: history.cursor.next !== null };
+		return { messages: history.messages as IMessage[], hasMore: history.cursor.next !== null };
 	}
 	const result = await sdk.methodCallWrapper('loadNextMessages', rid, after, count);
 	if (!result?.messages) {

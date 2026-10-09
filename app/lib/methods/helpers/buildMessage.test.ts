@@ -142,6 +142,13 @@ describe('normalizeMessage', () => {
 		expect((normalizeMessage({ _id: 'm1', _updatedAt: kept } as any) as any)._updatedAt).toBe(kept);
 	});
 
+	it('converts an ISO string _updatedAt to a Date', () => {
+		const iso = '2024-01-15T12:00:00.000Z';
+		const result = normalizeMessage({ _id: 'm1', _updatedAt: iso } as any) as any;
+
+		expect(result._updatedAt).toEqual(new Date(iso));
+	});
+
 	it('normalizes starred', () => {
 		expect((normalizeMessage({ _id: 'm1', starred: [{ _id: 'u1' }] } as any) as any).starred).toBe(true);
 		expect((normalizeMessage({ _id: 'm1', starred: [] } as any) as any).starred).toBe(false);
