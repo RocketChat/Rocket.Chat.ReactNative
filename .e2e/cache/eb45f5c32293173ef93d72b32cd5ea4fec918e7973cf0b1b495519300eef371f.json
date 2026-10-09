@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "trace-1",
+  "createdAt": "2026-10-09T22:27:46.745Z",
+  "payload": {
+    "actions": [
+      {
+        "name": "type",
+        "summary": "type \"https://mobile.qa.rocket.chat\" into textbox \"Workspace URL. Required.\"",
+        "target": {
+          "role": "textbox",
+          "name": "Workspace URL. Required.",
+          "testId": "new-server-view-input",
+          "selector": "id=new-server-view-input"
+        },
+        "value": "https://mobile.qa.rocket.chat"
+      },
+      {
+        "name": "tap",
+        "summary": "tap button \"Connect\"",
+        "target": {
+          "role": "button",
+          "name": "Connect",
+          "testId": "new-server-view-button",
+          "selector": "id=new-server-view-button"
+        }
+      }
+    ],
+    "executor": {
+      "name": "claude-subscription",
+      "version": "1"
+    },
+    "recordedFor": {
+      "testId": "e2e/tests/onboarding/workspace/valid-workspace.e2e.ts::connects%20to%20a%20valid%20workspace",
+      "targetId": "ios",
+      "instructionDigest": "6f978e514a0fe87a163de266f59b2f4fc8cb02efa211732d1625c5a1b709bce8",
+      "paramsDigest": "5815369c679653d3cadfeda8f12c9a0bdc5b2695a283eeb10d158904d2749447",
+      "callIndex": 0,
+      "agent": "default"
+    },
+    "summary": "Entered https://mobile.qa.rocket.chat and tapped Connect; app navigated to the workspace view showing \"Mobile!\" workspace with Login and Create an account options.",
+    "startPath": "chat.rocket.ios",
+    "endPath": "chat.rocket.ios",
+    "endAnchors": [
+      {
+        "role": "button",
+        "name": "Back",
+        "testId": "custom-header-back"
+      },
+      {
+        "role": "text",
+        "name": "mobile.qa.rocket.chat"
+      },
+      {
+        "role": "other",
+        "testId": "workspace-view"
+      },
+      {
+        "role": "text",
+        "name": "Mobile!"
+      },
+      {
+        "role": "text",
+        "name": "https://mobile.qa.rocket.chat"
+      },
+      {
+        "role": "button",
+        "name": "Login"
+      },
+      {
+        "role": "text",
+        "name": "Login"
+      },
+      {
+        "role": "button",
+        "name": "Create an account"
+      }
+    ],
+    "goneAnchors": [
+      {
+        "role": "text",
+        "name": "Workspace URL (Required)"
+      },
+      {
+        "role": "textbox",
+        "name": "Workspace URL. Required.",
+        "testId": "new-server-view-input"
+      },
+      {
+        "role": "other",
+        "testId": "new-server-view"
+      },
+      {
+        "role": "text",
+        "name": "Add workspace"
+      },
+      {
+        "role": "button",
+        "name": "Connect"
+      },
+      {
+        "role": "text",
+        "name": "Connect"
+      },
+      {
+        "role": "text",
+        "name": "Do you have a certificate for this workspace?"
+      },
+      {
+        "role": "button",
+        "name": "Apply certificate"
+      }
+    ],
+    "endWaitMs": 16873
+  }
+}
