@@ -1,5 +1,5 @@
-import { ActionTypes } from './interfaces';
-import { toServerModalInteractionType, toUserInteraction } from './interactionAdapters';
+import { ActionTypes } from '../interfaces';
+import { toServerModalInteractionType, toUserInteraction } from '../interactionAdapters';
 
 describe('interactionAdapters', () => {
 	describe('toUserInteraction', () => {

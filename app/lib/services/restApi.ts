@@ -18,6 +18,7 @@ import {
 import { type TParams } from '~/definitions/ILivechatEditView';
 import { type ILivechatTag } from '~/definitions/ILivechatTag';
 import { type ISpotlight } from '~/definitions/ISpotlight';
+import { type IAppActionButton, type IAppLanguages } from '../apps/definitions';
 import { TEAM_TYPE } from '~/definitions/ITeam';
 import { type OperationParams, type ResultFor } from '~/definitions/rest/helpers';
 import { type SubscriptionsEndpoints } from '~/definitions/rest/v1/subscriptions';
@@ -29,6 +30,7 @@ import NativeVoipModule from '../native/NativeVoip';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import fetch from '../methods/helpers/fetch';
+import { appsApiFetch } from './appsApiFetch';
 import log from '../methods/helpers/log';
 
 export const createChannel = ({
@@ -1283,3 +1285,9 @@ export const mediaCallsStateSignals = async (contractId: string): Promise<{ sign
 		return { signals: [], success: false };
 	}
 };
+
+const appsApiGet = async <T>(path: string): Promise<T> => (await appsApiFetch(path)).json();
+
+export const getAppActionButtons = (): Promise<IAppActionButton[]> => appsApiGet<IAppActionButton[]>('actionButtons');
+
+export const getAppsLanguages = (): Promise<IAppLanguages> => appsApiGet<IAppLanguages>('languages');

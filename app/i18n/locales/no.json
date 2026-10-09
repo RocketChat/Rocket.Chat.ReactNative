@@ -71,6 +71,8 @@
   "and_N_more": "Og {{count}} mer",
   "Announcement": "Kunngjøring",
   "announcement": "kunngjøring",
+  "App_action_error": "Kunne ikke kjøre denne apphandlingen",
+  "App_action_unsupported": "Denne apphandlingen støttes ikke på mobil ennå",
   "App_users_are_not_allowed_to_log_in_directly": "Appbrukere har ikke lov til å logge inn direkte.",
   "Apply_Certificate": "Bruke sertifikat",
   "ARCHIVE": "Arkiv",

@@ -70,6 +70,8 @@
   "Animals_and_nature": "Állatok és természet",
   "Announcement": "Bejelentés",
   "announcement": "bejelentés",
+  "App_action_error": "Nem sikerült futtatni ezt az alkalmazásműveletet",
+  "App_action_unsupported": "Ez az alkalmazásművelet még nem támogatott mobileszközön",
   "Apply_Certificate": "Tanúsítvány alkalmazása",
   "ARCHIVE": "Archívum",
   "archive": "archívum",

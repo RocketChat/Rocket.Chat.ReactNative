@@ -10,12 +10,26 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useCanUploadFile, useChooseMedia } from '~/containers/MessageComposer/hooks';
 import { useComposerRid, useComposerTmid, useComposerType } from '~/containers/MessageComposer/ComposerStore';
+import { UIActionButtonContext } from '~/lib/apps/definitions';
+import { type IAppActionButtonItem, selectAppActionButtons, useAppActionButtons } from '~/lib/apps/useAppActionButtons';
+import { type TIconsName } from '~/containers/CustomIcon';
+import { triggerAppActionButton } from '~/lib/apps/triggerActions';
+
+const toOption =
+	(icon: TIconsName, testIDPrefix: string, onPress: (item: IAppActionButtonItem) => void) =>
+	(item: IAppActionButtonItem): TActionSheetOptionsItem => ({
+		title: item.label,
+		icon,
+		danger: item.button.variant === 'danger',
+		testID: `${testIDPrefix}-${item.id}`,
+		onPress: () => onPress(item)
+	});
 
 export const ActionsButton = () => {
 	const rid = useComposerRid();
 	const tmid = useComposerTmid();
 	const t = useComposerType();
-	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
+	const { closeEmojiKeyboardAndAction, getText } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
 	const [permissionToViewCannedResponses] = usePermissions(['view-canned-responses'], rid);
 	const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({
@@ -25,6 +39,9 @@ export const ActionsButton = () => {
 	});
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useMasterDetail();
+	const appButtons = useAppActionButtons(rid);
+	const appActions = selectAppActionButtons(appButtons, UIActionButtonContext.MESSAGE_BOX_ACTION);
+	const aiActions = selectAppActionButtons(appButtons, UIActionButtonContext.ROOM_ACTION, 'ai');
 
 	const createDiscussion = async () => {
 		if (!rid) return;
@@ -94,6 +111,15 @@ export const ActionsButton = () => {
 			icon: 'discussions',
 			onPress: () => createDiscussion()
 		});
+
+		options.push(
+			...aiActions.map(toOption('stars', 'message-composer-ai-action', ({ button }) => triggerAppActionButton({ button, rid }))),
+			...appActions.map(
+				toOption('apps', 'message-composer-app-action', ({ button }) =>
+					triggerAppActionButton({ button, rid, tmid, message: getText() })
+				)
+			)
+		);
 
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
 	};

@@ -1,48 +1,48 @@
-import { createOrUpdateSubscription } from './rooms';
-import { updateLastOpen } from '../updateLastOpen';
+import { createOrUpdateSubscription } from '../rooms';
+import { updateLastOpen } from '../../updateLastOpen';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { getMessageById } from '~/lib/database/services/Message';
-import log from '../helpers/log';
+import log from '../../helpers/log';
 
-jest.mock('../../services/sdk', () => ({
+jest.mock('../../../services/sdk', () => ({
 	__esModule: true,
 	default: {}
 }));
 
-jest.mock('../../store/auxStore', () => ({
+jest.mock('../../../store/auxStore', () => ({
 	store: {
 		getState: jest.fn(() => ({ room: { subscribedRoom: null } })),
 		dispatch: jest.fn()
 	}
 }));
 
-jest.mock('../helpers/log', () => ({
+jest.mock('../../helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));
 
-jest.mock('../helpers', () => ({
+jest.mock('../../helpers', () => ({
 	getRoomAvatar: jest.fn(),
 	getRoomTitle: jest.fn(),
 	getSenderName: jest.fn(),
 	random: jest.fn()
 }));
 
-jest.mock('../helpers/protectedFunction', () => ({
+jest.mock('../../helpers/protectedFunction', () => ({
 	__esModule: true,
 	default: (fn: (...args: unknown[]) => unknown) => fn
 }));
 
-jest.mock('../helpers/buildMessage', () => ({
+jest.mock('../../helpers/buildMessage', () => ({
 	__esModule: true,
 	default: (msg: unknown) => msg
 }));
 
-jest.mock('../helpers/mergeSubscriptionsRooms', () => ({
+jest.mock('../../helpers/mergeSubscriptionsRooms', () => ({
 	merge: (subscription: unknown) => subscription
 }));
 
-jest.mock('../../encryption', () => ({
+jest.mock('../../../encryption', () => ({
 	Encryption: {
 		decryptPendingSubscriptions: jest.fn(),
 		decryptPendingMessages: jest.fn(),
@@ -50,37 +50,37 @@ jest.mock('../../encryption', () => ({
 	}
 }));
 
-jest.mock('../updateMessages', () => ({
+jest.mock('../../updateMessages', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));
 
-jest.mock('../getRoom', () => ({
+jest.mock('../../getRoom', () => ({
 	getRoom: jest.fn()
 }));
 
-jest.mock('../actions', () => ({
+jest.mock('~/lib/apps/actions', () => ({
 	handlePayloadUserInteraction: jest.fn()
 }));
 
-jest.mock('../../../actions/room', () => ({
+jest.mock('../../../../actions/room', () => ({
 	removedRoom: jest.fn()
 }));
 
-jest.mock('../../../actions/login', () => ({
+jest.mock('../../../../actions/login', () => ({
 	setUser: jest.fn()
 }));
 
-jest.mock('../../../actions/videoConf', () => ({
+jest.mock('../../../../actions/videoConf', () => ({
 	handleVideoConfIncomingWebsocketMessages: jest.fn()
 }));
 
-jest.mock('../../../containers/InAppNotification', () => ({
+jest.mock('../../../../containers/InAppNotification', () => ({
 	INAPP_NOTIFICATION_EMITTER: 'NotificationInApp'
 }));
 
 const mockDbBatch = jest.fn();
-jest.mock('../../database', () => {
+jest.mock('../../../database', () => {
 	let writerQueue: Promise<unknown> = Promise.resolve();
 	const mockCollection = {
 		find: jest.fn(() => Promise.reject(new Error('not found'))),

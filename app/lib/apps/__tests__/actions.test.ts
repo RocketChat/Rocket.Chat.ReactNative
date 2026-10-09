@@ -1,24 +1,29 @@
 import { ActionTypes, ModalActions } from '~/containers/UIKit/interfaces';
-import { generateTriggerId, handlePayloadUserInteraction, triggerAction } from './actions';
-import EventEmitter from './helpers/events';
-import fetch from './helpers/fetch';
-import Navigation from '../navigation/appNavigation';
+import { ACKNOWLEDGED, handlePayloadUserInteraction, triggerAction, withTriggerId } from '../actions';
+import EventEmitter from '~/lib/methods/helpers/events';
+import fetch from '~/lib/methods/helpers/fetch';
+import Navigation from '~/lib/navigation/appNavigation';
+import { showToast } from '~/lib/methods/helpers/showToast';
 
-jest.mock('./helpers', () => ({
+jest.mock('~/lib/methods/helpers', () => ({
 	random: jest.fn(() => 'trigger-fixed-id')
 }));
 
-jest.mock('./helpers/fetch', () => jest.fn());
+jest.mock('~/lib/methods/helpers/fetch', () => jest.fn());
 
-jest.mock('./helpers/events', () => ({
+jest.mock('~/lib/methods/helpers/events', () => ({
 	emit: jest.fn()
 }));
 
-jest.mock('../navigation/appNavigation', () => ({
+jest.mock('~/lib/methods/helpers/showToast', () => ({
+	showToast: jest.fn()
+}));
+
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	navigate: jest.fn()
 }));
 
-jest.mock('../services/sdk', () => ({
+jest.mock('~/lib/services/sdk', () => ({
 	__esModule: true,
 	default: {
 		currentLogin: {
@@ -36,6 +41,12 @@ const mockedNavigate = Navigation.navigate as jest.MockedFunction<typeof Navigat
 describe('actions', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		jest.useFakeTimers();
+	});
+
+	afterEach(() => {
+		jest.runOnlyPendingTimers();
+		jest.useRealTimers();
 	});
 
 	describe('handlePayloadUserInteraction', () => {
@@ -43,12 +54,12 @@ describe('actions', () => {
 			expect(handlePayloadUserInteraction(ModalActions.OPEN, { triggerId: 'unknown', viewId: 'view-id' })).toBeUndefined();
 		});
 
-		it('navigates for modal.open and returns modal.open', () => {
-			const triggerId = generateTriggerId('app-id');
-
-			const result = handlePayloadUserInteraction(ModalActions.OPEN, {
-				triggerId,
-				view: { id: 'view-id' }
+		it('navigates for modal.open and returns modal.open', async () => {
+			let result;
+			let triggerId = '';
+			await withTriggerId('app-id', async id => {
+				triggerId = id;
+				result = handlePayloadUserInteraction(ModalActions.OPEN, { triggerId, view: { id: 'view-id' } });
 			});
 
 			expect(result).toBe(ModalActions.OPEN);
@@ -59,6 +70,35 @@ describe('actions', () => {
 					viewId: 'view-id'
 				})
 			});
+		});
+
+		it('emits modal.close to the view', async () => {
+			let result;
+			await withTriggerId('app-id', async triggerId => {
+				result = handlePayloadUserInteraction(ModalActions.CLOSE, { triggerId, viewId: 'view-id' });
+			});
+
+			expect(result).toBe(ModalActions.CLOSE);
+			expect(mockedEmit).toHaveBeenCalledWith('view-id', expect.objectContaining({ type: ModalActions.CLOSE }));
+		});
+
+		it('accepts a stream reply that arrives after the request settled', async () => {
+			let triggerId = '';
+			await withTriggerId('app-id', async id => {
+				triggerId = id;
+			});
+
+			expect(handlePayloadUserInteraction(ModalActions.OPEN, { triggerId, viewId: 'view-id' })).toBe(ModalActions.OPEN);
+		});
+
+		it('drops a stream reply once the trigger expired', async () => {
+			let triggerId = '';
+			await withTriggerId('app-id', async id => {
+				triggerId = id;
+			});
+			jest.advanceTimersByTime(5000);
+
+			expect(handlePayloadUserInteraction(ModalActions.OPEN, { triggerId, viewId: 'view-id' })).toBeUndefined();
 		});
 	});
 
@@ -163,6 +203,23 @@ describe('actions', () => {
 			);
 		});
 
+		it('handles a reply that arrives after the stream trigger timeout', async () => {
+			mockedFetch.mockImplementationOnce(async () => {
+				jest.advanceTimersByTime(6000);
+				return {
+					ok: true,
+					text: () =>
+						Promise.resolve(JSON.stringify({ type: ModalActions.OPEN, triggerId: 'trigger-fixed-id', view: { id: 'slow-view' } }))
+				} as Response;
+			});
+
+			try {
+				await expect(triggerAction(actionInput)).resolves.toBe(ModalActions.OPEN);
+				expect(mockedNavigate).toHaveBeenCalledTimes(1);
+			} finally {
+			}
+		});
+
 		it('returns modal.close for explicit close response', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
@@ -179,7 +236,7 @@ describe('actions', () => {
 			expect(result).toBe(ModalActions.CLOSE);
 		});
 
-		it('returns modal.close for empty response body with ok status', async () => {
+		it('keeps the modal open for empty response body with ok status', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
 				text: () => Promise.resolve('')
@@ -187,7 +244,7 @@ describe('actions', () => {
 
 			const result = await triggerAction(actionInput);
 
-			expect(result).toBe(ModalActions.CLOSE);
+			expect(result).toBeUndefined();
 		});
 
 		it('throws when request is not ok', async () => {
@@ -196,7 +253,7 @@ describe('actions', () => {
 				status: 500
 			} as Response);
 
-			await expect(triggerAction(actionInput)).rejects.toThrow('Failed to trigger action: 500');
+			await expect(triggerAction(actionInput)).rejects.toThrow('Failed to POST /api/apps/ui.interaction/app-id/: 500');
 		});
 
 		it('throws when response body is malformed JSON', async () => {
@@ -208,19 +265,51 @@ describe('actions', () => {
 			await expect(triggerAction(actionInput)).rejects.toThrow('Invalid JSON response from server');
 		});
 
-		it('throws when response has unknown modal interaction type', async () => {
+		it('shows a toast for an unsupported surface this client cannot render', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
 				text: () =>
 					Promise.resolve(
 						JSON.stringify({
-							type: 'unknown.legacy',
+							type: 'contextual_bar.open',
 							triggerId: 'trigger-fixed-id'
 						})
 					)
 			} as Response);
 
-			await expect(triggerAction(actionInput)).rejects.toThrow('Unknown modal interaction type: unknown.legacy');
+			await expect(triggerAction(actionInput)).resolves.toBeUndefined();
+			expect(showToast).toHaveBeenCalledTimes(1);
+		});
+
+		it('reports an acknowledgement when the app replies without an interaction type', async () => {
+			mockedFetch.mockResolvedValueOnce({
+				ok: true,
+				text: () => Promise.resolve(JSON.stringify({ success: true }))
+			} as Response);
+
+			await expect(triggerAction(actionInput)).resolves.toBe(ACKNOWLEDGED);
+		});
+
+		it('keeps the stream reply when the HTTP body repeats it', async () => {
+			mockedFetch.mockImplementationOnce(async () => {
+				handlePayloadUserInteraction(ModalActions.UPDATE, { triggerId: 'trigger-fixed-id', viewId: 'view-id' });
+				return {
+					ok: true,
+					text: () =>
+						Promise.resolve(JSON.stringify({ type: ModalActions.UPDATE, triggerId: 'trigger-fixed-id', viewId: 'view-id' }))
+				} as Response;
+			});
+
+			await expect(triggerAction(actionInput)).resolves.toBe(ModalActions.UPDATE);
+		});
+
+		it('reports the stream reply when the app acknowledged after answering over the stream', async () => {
+			mockedFetch.mockImplementationOnce(async () => {
+				handlePayloadUserInteraction(ModalActions.UPDATE, { triggerId: 'trigger-fixed-id', viewId: 'view-id' });
+				return { ok: true, text: () => Promise.resolve(JSON.stringify({ success: true })) } as Response;
+			});
+
+			await expect(triggerAction(actionInput)).resolves.toBe(ModalActions.UPDATE);
 		});
 
 		it('invalidates trigger id after processing', async () => {
