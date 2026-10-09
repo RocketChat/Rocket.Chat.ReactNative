@@ -96,23 +96,22 @@ export async function getUsersPresence(usersParams: string[]) {
 
 				const db = database.active;
 				const userCollection = db.get('users');
-				users.forEach(async (user: IUser) => {
-					try {
-						const userRecord = await userCollection.find(user._id);
-						await db.write(async () => {
-							await userRecord.update(u => {
-								Object.assign(u, user);
+				await db.write(async () => {
+					const userRecords = await userCollection.query(Q.where('id', Q.oneOf(users.map((user: IUser) => user._id)))).fetch();
+					const userRecordsById = new Map(userRecords.map(userRecord => [userRecord.id, userRecord]));
+					const preparedUsers = users.map((user: IUser) => {
+						const userRecord = userRecordsById.get(user._id);
+						if (userRecord) {
+							return userRecord.prepareUpdate(record => {
+								Object.assign(record, user);
 							});
+						}
+						return userCollection.prepareCreate(record => {
+							record._raw = sanitizedRaw({ id: user._id }, userCollection.schema);
+							Object.assign(record, user);
 						});
-					} catch (e) {
-						// User not found
-						await db.write(async () => {
-							await userCollection.create(u => {
-								u._raw = sanitizedRaw({ id: user._id }, userCollection.schema);
-								Object.assign(u, user);
-							});
-						});
-					}
+					});
+					await db.batch(preparedUsers);
 				});
 			}
 		} catch {

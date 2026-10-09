@@ -1295,8 +1295,10 @@ export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
 	return sdk.methodCall('getUserRoles');
 };
 
-export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
-	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`);
+export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string, signal?: AbortSignal) =>
+	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`, {
+		signal
+	});
 
 export const mediaCallsStateSignals = async (contractId: string): Promise<{ signals: ServerMediaSignal[]; success: boolean }> => {
 	try {

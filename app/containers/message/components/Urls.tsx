@@ -1,11 +1,12 @@
-import { useContext, useEffect, useLayoutEffect, useState, type ReactElement } from 'react';
-import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { useContext, useEffect, useState, type ReactElement } from 'react';
+import { StyleSheet, Text, View, type ImageStyle, type ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { Image } from 'expo-image';
+import { Image, type ImageLoadEventData } from 'expo-image';
 import axios from 'axios';
 
 import MessageActionTouchable from './Touchable/MessageActionTouchable';
 import openLink from '~/lib/methods/helpers/openLink';
+import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
 import { LISTENER } from '~/containers/Toast';
@@ -41,6 +42,9 @@ const styles = StyleSheet.create({
 	loading: {
 		flex: 1,
 		height: 150
+	},
+	loadingImage: {
+		flex: 1
 	}
 });
 
@@ -61,88 +65,97 @@ const UrlContent = ({ title, description }: { title: string; description: string
 		</View>
 	);
 };
-const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean }) => {
-	const { colors } = useTheme();
-	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
-	const maxSize = useContext(WidthAwareContext);
 
-	useLayoutEffect(() => {
-		if (image && maxSize) {
-			Image.loadAsync(image, {
-				onError: () => {
-					setImageDimensions({ width: -1, height: -1 });
-				},
-				maxWidth: maxSize
-			}).then(image => {
-				setImageDimensions({ width: image.width, height: image.height });
-			});
-		}
-	}, [image, maxSize]);
+type ImageDimensions = { width: number; height: number };
 
-	if (!imageDimensions.width || !imageDimensions.height) {
-		return <View style={styles.loading} />;
-	}
-	if (imageDimensions.width === -1) {
-		return null;
-	}
-
-	const width = Math.min(imageDimensions.width, maxSize) || 0;
-	const height = Math.min((imageDimensions.height * ((width * 100) / imageDimensions.width)) / 100, maxSize) || 0;
-	const imageStyle = {
-		width,
-		height
+const getImageStyles = (dimensions: ImageDimensions, maxSize: number) => {
+	const aspectRatio = dimensions.width / dimensions.height;
+	const isWidthMeasured = maxSize > 0;
+	const imageStyle: ImageStyle = {
+		width: '100%',
+		maxWidth: dimensions.width,
+		aspectRatio: isWidthMeasured ? aspectRatio : Math.max(aspectRatio, 1),
+		...(isWidthMeasured && { maxHeight: maxSize })
 	};
-	let containerStyle: ViewStyle = {
+	const containerStyle: ViewStyle = {
 		overflow: 'hidden',
 		alignItems: 'center',
 		justifyContent: 'center',
-		...(imageDimensions.width <= 64 && { width: 64 }),
-		...(imageDimensions.height <= 64 && { height: 64 })
+		...(dimensions.width <= 64 && { width: 64 }),
+		...(dimensions.height <= 64 && { height: 64 })
 	};
-	if (!hasContent) {
-		containerStyle = {
-			...containerStyle,
-			borderColor: colors.strokeLight,
-			borderWidth: 1,
-			borderRadius: 4
-		};
+	return { imageStyle, containerStyle };
+};
+
+const UrlImage = ({
+	image,
+	hasContent,
+	knownDimensions
+}: {
+	image: string;
+	hasContent: boolean;
+	knownDimensions?: ImageDimensions;
+}) => {
+	const { colors } = useTheme();
+	const maxSize = useContext(WidthAwareContext);
+	const [loadedDimensions, setLoadedDimensions] = useState<ImageDimensions | null>(null);
+	const [failed, setFailed] = useState(false);
+	const dimensions = knownDimensions ?? loadedDimensions;
+
+	if (failed) {
+		return null;
 	}
 
+	const onLoad = ({ source }: ImageLoadEventData) => setLoadedDimensions({ width: source.width, height: source.height });
+	const onError = () => setFailed(true);
+
+	if (!dimensions) {
+		return (
+			<View style={styles.loading}>
+				<Image source={{ uri: image }} style={styles.loadingImage} contentFit='contain' onLoad={onLoad} onError={onError} />
+			</View>
+		);
+	}
+
+	const { imageStyle, containerStyle } = getImageStyles(dimensions, maxSize);
+	const borderStyle: ViewStyle | undefined = hasContent
+		? undefined
+		: { borderColor: colors.strokeLight, borderWidth: 1, borderRadius: 4 };
+
 	return (
-		<View style={containerStyle}>
-			<Image source={{ uri: image }} style={imageStyle} contentFit='contain' />
+		<View style={[containerStyle, borderStyle]}>
+			<Image source={{ uri: image }} style={imageStyle} contentFit='contain' onError={onError} />
 		</View>
 	);
 };
 
-const Url = ({ url }: { url: IUrl }) => {
-	const { colors, theme } = useTheme();
+const useImageUrl = (url: IUrl): string | null => {
 	const baseUrl = useBaseUrl();
 	const user = useMessageUser();
 	const API_Embed = useSetting('API_Embed') as boolean;
-	const [imageUrl, setImageUrl] = useState<string | null>(null);
+	const [verifiedImageUrl, setVerifiedImageUrl] = useState<string | null>(null);
 
 	useEffect(() => {
-		const verifyUrlIsImage = async () => {
-			try {
-				const rawImageUrl = url.image || url.url;
-				if (!rawImageUrl || !API_Embed) return;
-
-				const _imageUrl = rawImageUrl.startsWith('http')
-					? rawImageUrl
-					: `${baseUrl}/${rawImageUrl}?rc_uid=${user?.id ?? ''}&rc_token=${user?.token ?? ''}`;
-
-				const response = await axios.head(_imageUrl);
-				const contentType = response.headers['content-type'];
-				if (contentType?.startsWith?.('image/')) {
-					setImageUrl(_imageUrl);
+		if (url.image || !url.url || !API_Embed) return;
+		const linkUrl = formatAttachmentUrl(url.url, user?.id ?? '', user?.token ?? '', baseUrl ?? '');
+		axios
+			.head(linkUrl)
+			.then(response => {
+				if (response.headers['content-type']?.startsWith?.('image/')) {
+					setVerifiedImageUrl(linkUrl);
 				}
-			} catch {
-				// do nothing
-			}
-		};
-		verifyUrlIsImage();
+			})
+			.catch(() => {});
 	}, [url.image, url.url, API_Embed, baseUrl, user?.id, user?.token]);
+
+	return url.image ? formatAttachmentUrl(url.image, user?.id ?? '', user?.token ?? '', baseUrl ?? '') : verifiedImageUrl;
+};
+
+const Url = ({ url }: { url: IUrl }) => {
+	const { colors, theme } = useTheme();
+	const API_Embed = useSetting('API_Embed') as boolean;
+	const imageUrl = useImageUrl(url);
+	const knownDimensions = url.imageWidth && url.imageHeight ? { width: url.imageWidth, height: url.imageHeight } : undefined;
 
 	const onPress = () => openLink(url.url, theme);
 
@@ -172,7 +185,7 @@ const Url = ({ url }: { url: IUrl }) => {
 				}
 			]}>
 			<>
-				{imageUrl ? <UrlImage image={imageUrl} hasContent={hasContent} /> : null}
+				{imageUrl ? <UrlImage key={imageUrl} image={imageUrl} hasContent={hasContent} knownDimensions={knownDimensions} /> : null}
 				{hasContent ? <UrlContent title={url.title} description={url.description} /> : null}
 			</>
 		</MessageActionTouchable>

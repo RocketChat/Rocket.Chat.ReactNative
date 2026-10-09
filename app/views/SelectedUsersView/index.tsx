@@ -141,14 +141,11 @@ const SelectedUsersView = () => {
 					setSearch(localData);
 				}
 			});
-			if (isStale()) return;
-			setSearch(result);
+			if (!isStale()) setSearch(result);
 		} catch (e) {
 			log(e);
-		} finally {
-			// Only the latest search clears the flag, so a stale request never hides an in-flight newer one
-			if (!isStale()) setSearching(false);
 		}
+		if (!isStale()) setSearching(false);
 	}, []);
 
 	const toggleUser = (userItem: ISelectedUser) => {
