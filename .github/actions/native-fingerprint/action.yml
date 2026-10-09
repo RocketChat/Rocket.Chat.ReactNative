@@ -1,0 +1,51 @@
+name: Native Fingerprint
+description: Hash a platform's native inputs into a cache key and check whether a native build is cached under it
+inputs:
+  platform:
+    description: android or ios
+    required: true
+  cache-key-prefix:
+    description: Prefix for the cache key; include anything outside the repo's native files that changes the binary
+    required: true
+  cache-path:
+    description: Path the native build is cached under; must match the path used to save it
+    required: true
+outputs:
+  cache-key:
+    description: Cache key for the native build
+    value: ${{ steps.key.outputs.cache-key }}
+  cache-hit:
+    description: Whether a native build is cached under the key
+    value: ${{ steps.lookup.outputs.cache-hit == 'true' }}
+runs:
+  using: composite
+  steps:
+    - name: Compute native fingerprint
+      id: key
+      shell: bash
+      env:
+        PLATFORM: ${{ inputs.platform }}
+        CACHE_KEY_PREFIX: ${{ inputs.cache-key-prefix }}
+      run: |
+        fingerprint=$(pnpm exec fingerprint fingerprint:generate --platform "$PLATFORM" | jq -r .hash)
+        echo "cache-key=$CACHE_KEY_PREFIX-$fingerprint" >> "$GITHUB_OUTPUT"
+        echo "Native fingerprint ($PLATFORM): \`$fingerprint\`" >> "$GITHUB_STEP_SUMMARY"
+
+    - name: Look up cached native build
+      id: lookup
+      uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      with:
+        path: ${{ inputs.cache-path }}
+        key: ${{ steps.key.outputs.cache-key }}
+        lookup-only: true
+
+    - name: Report cache lookup
+      shell: bash
+      env:
+        CACHE_HIT: ${{ steps.lookup.outputs.cache-hit == 'true' }}
+      run: |
+        if [ "$CACHE_HIT" = "true" ]; then
+          echo "Cached native build found: only the JS bundle is rebuilt." >> "$GITHUB_STEP_SUMMARY"
+        else
+          echo "No cached native build: full native build." >> "$GITHUB_STEP_SUMMARY"
+        fi
