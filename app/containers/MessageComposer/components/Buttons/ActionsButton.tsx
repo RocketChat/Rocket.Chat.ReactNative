@@ -11,8 +11,19 @@ import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useCanUploadFile, useChooseMedia } from '~/containers/MessageComposer/hooks';
 import { useComposerRid, useComposerTmid, useComposerType } from '~/containers/MessageComposer/ComposerStore';
 import { UIActionButtonContext } from '~/lib/apps/definitions';
-import { selectAppActionButtons, useAppActionButtons } from '~/lib/apps/useAppActionButtons';
+import { type IAppActionButtonItem, selectAppActionButtons, useAppActionButtons } from '~/lib/apps/useAppActionButtons';
+import { type TIconsName } from '~/containers/CustomIcon';
 import { triggerAppActionButton } from '~/lib/apps/triggerActions';
+
+const toOption =
+	(icon: TIconsName, testIDPrefix: string, onPress: (item: IAppActionButtonItem) => void) =>
+	(item: IAppActionButtonItem): TActionSheetOptionsItem => ({
+		title: item.label,
+		icon,
+		danger: item.button.variant === 'danger',
+		testID: `${testIDPrefix}-${item.id}`,
+		onPress: () => onPress(item)
+	});
 
 export const ActionsButton = () => {
 	const rid = useComposerRid();
@@ -101,29 +112,14 @@ export const ActionsButton = () => {
 			onPress: () => createDiscussion()
 		});
 
-		aiActions.forEach(({ id, label, button }) => {
-			options.push({
-				title: label,
-				icon: 'stars',
-				danger: button.variant === 'danger',
-				testID: `message-composer-ai-action-${id}`,
-				onPress: () => {
-					triggerAppActionButton({ button, rid });
-				}
-			});
-		});
-
-		appActions.forEach(({ id, label, button }) => {
-			options.push({
-				title: label,
-				icon: 'apps',
-				danger: button.variant === 'danger',
-				testID: `message-composer-app-action-${id}`,
-				onPress: () => {
-					triggerAppActionButton({ button, rid, tmid, message: getText() ?? '' });
-				}
-			});
-		});
+		options.push(
+			...aiActions.map(toOption('stars', 'message-composer-ai-action', ({ button }) => triggerAppActionButton({ button, rid }))),
+			...appActions.map(
+				toOption('apps', 'message-composer-app-action', ({ button }) =>
+					triggerAppActionButton({ button, rid, tmid, message: getText() })
+				)
+			)
+		);
 
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
 	};

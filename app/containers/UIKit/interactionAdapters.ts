@@ -1,7 +1,6 @@
 import type { ServerInteraction, UserInteraction } from '@rocket.chat/ui-kit';
 
 import { ActionTypes, type ITriggerAction, type IView } from './interfaces';
-import { UIActionButtonContext } from '~/lib/apps/definitions';
 
 type TServerModalInteraction = Extract<ServerInteraction, { type: 'modal.open' | 'modal.update' | 'modal.close' | 'errors' }>;
 type TServerModalInteractionType = TServerModalInteraction['type'];
@@ -12,32 +11,6 @@ const assertViewId = (viewId?: string) => {
 	}
 
 	return viewId;
-};
-
-const toActionButtonInteraction = ({
-	actionId,
-	rid,
-	tmid,
-	payload,
-	triggerId
-}: Pick<ITriggerAction, 'actionId' | 'rid' | 'tmid' | 'payload'> & { triggerId: string }): UserInteraction => {
-	if (!actionId || !rid) {
-		throw new Error('actionId and rid are required for actionButton interaction');
-	}
-	if (payload?.context === UIActionButtonContext.ROOM_ACTION) {
-		return { type: 'actionButton', actionId, payload: { context: UIActionButtonContext.ROOM_ACTION }, rid, triggerId };
-	}
-	if (payload?.context === UIActionButtonContext.MESSAGE_BOX_ACTION) {
-		return {
-			type: 'actionButton',
-			actionId,
-			payload: { context: UIActionButtonContext.MESSAGE_BOX_ACTION, message: payload.message ?? '' },
-			tmid,
-			rid,
-			triggerId
-		};
-	}
-	throw new Error(`Unsupported actionButton context: ${payload?.context}`);
 };
 
 /**
@@ -51,17 +24,12 @@ export const toUserInteraction = ({
 	container,
 	mid,
 	rid,
-	tmid,
 	triggerId,
 	viewId,
 	payload,
 	view,
 	isCleared
 }: ITriggerAction & { triggerId: string }): UserInteraction => {
-	if (type === ActionTypes.ACTION_BUTTON) {
-		return toActionButtonInteraction({ actionId, rid, tmid, payload, triggerId });
-	}
-
 	if (type === ActionTypes.ACTION) {
 		if (!actionId || !container) {
 			throw new Error('actionId and container are required for blockAction interaction');

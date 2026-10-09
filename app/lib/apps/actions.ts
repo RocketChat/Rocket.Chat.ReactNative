@@ -1,3 +1,5 @@
+import type { UserInteraction } from '@rocket.chat/ui-kit';
+
 import { type ITriggerAction, ModalActions, type TModalAction } from '~/containers/UIKit/interfaces';
 import { toServerModalInteractionType, toUserInteraction } from '~/containers/UIKit/interactionAdapters';
 import I18n from '~/i18n';
@@ -89,11 +91,14 @@ export const handlePayloadUserInteraction = (
 	return ModalActions.OPEN;
 };
 
-export function triggerAction(action: ITriggerAction): Promise<TModalAction | typeof ACKNOWLEDGED | undefined> {
-	const { appId } = action;
+type TTriggerResult = TModalAction | typeof ACKNOWLEDGED | undefined;
 
+export function postUserInteraction(
+	appId: string | undefined,
+	buildInteraction: (triggerId: string) => UserInteraction
+): Promise<TTriggerResult> {
 	return withTriggerId(appId, async triggerId => {
-		const interaction = toUserInteraction({ ...action, payload: action.payload ?? action.value, triggerId });
+		const interaction = buildInteraction(triggerId);
 
 		const result = await appsApiFetch(`ui.interaction/${appId}/`, { method: 'POST', body: interaction });
 		const text = await result.text();
@@ -118,4 +123,10 @@ export function triggerAction(action: ITriggerAction): Promise<TModalAction | ty
 
 		return handlePayloadUserInteraction(interactionType, data as THandledServerPayload) ?? handledTriggers.get(triggerId);
 	});
+}
+
+export function triggerAction(action: ITriggerAction): Promise<TTriggerResult> {
+	return postUserInteraction(action.appId, triggerId =>
+		toUserInteraction({ ...action, payload: action.payload ?? action.value, triggerId })
+	);
 }
