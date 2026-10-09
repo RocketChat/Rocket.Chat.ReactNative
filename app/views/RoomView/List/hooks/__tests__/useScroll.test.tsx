@@ -2,7 +2,7 @@ import { act, renderHook, waitFor } from '@testing-library/react-native';
 
 import { type TAnyMessageModel } from '~/definitions';
 import { type TListRef, type TMessagesIdsRef } from '~/views/RoomView/definitions';
-import { useScroll } from '../useScroll';
+import { MAX_SCROLL_TO_INDEX_RETRIES, useScroll } from '../useScroll';
 
 type Row = { id: string };
 
@@ -376,7 +376,7 @@ describe('useScroll', () => {
 		let reentry = 0;
 		scrollToIndex.mockImplementation(() => {
 			reentry += 1;
-			if (reentry > 1000) {
+			if (reentry > 4 * MAX_SCROLL_TO_INDEX_RETRIES) {
 				return;
 			}
 			result.current.handleScrollToIndexFailed(info);
@@ -391,12 +391,13 @@ describe('useScroll', () => {
 
 		// Drain the deferred retries: each tick may schedule at most one more, and the retry cap guarantees
 		// the chain terminates well below the mock's runaway-recursion ceiling.
-		for (let i = 0; i < 200; i++) {
+		const maxScrollToIndexCalls = 2 * MAX_SCROLL_TO_INDEX_RETRIES + 1;
+		for (let i = 0; i < maxScrollToIndexCalls; i++) {
 			act(() => {
 				jest.runOnlyPendingTimers();
 			});
 		}
-		expect(scrollToIndex.mock.calls.length).toBeLessThan(200);
+		expect(scrollToIndex.mock.calls.length).toBeLessThanOrEqual(maxScrollToIndexCalls);
 	});
 
 	it('climbs the measured frontier across repeated failures until a deep target lands', () => {

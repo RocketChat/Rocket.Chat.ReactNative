@@ -13,7 +13,7 @@ const MAX_JUMP_GROWTH_RETRIES = 5;
 // VirtualizedList re-fires onScrollToIndexFailed synchronously, so defer each retry one frame to break
 // the recursion.
 const SCROLL_TO_INDEX_RETRY_DELAY = 50;
-const MAX_SCROLL_TO_INDEX_RETRIES = 60;
+export const MAX_SCROLL_TO_INDEX_RETRIES = 60;
 
 // animated:false snaps straight to the target instead of smooth-scrolling through every row between here
 // and a deep index — the latter reads as the list "hunting" for the message across several visible scrolls.
