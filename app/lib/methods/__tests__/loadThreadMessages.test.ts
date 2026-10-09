@@ -977,6 +977,42 @@ describe('thread message pagination', () => {
 		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
 	});
 
+	it('keeps paging from the furthest fetched offset when the first page is reloaded', async () => {
+		await loadFirstPage(4, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(4, 'R2'));
+		await loadOlderThreadMessages(thread);
+
+		await loadFirstPage(4, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(4, 'R3'));
+		await loadOlderThreadMessages(thread);
+
+		expect(mockedGetThreadMessages).toHaveBeenLastCalledWith({ tmid: thread.tmid, offset: 2 });
+	});
+
+	it('does not page again for a target within the pages fetched before the first page was reloaded', async () => {
+		await loadFirstPage(4, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(4, 'R2'));
+		await loadOlderThreadMessages(thread);
+		await loadFirstPage(4, 'R1');
+		mockedGetThreadMessages.mockClear();
+
+		await expect(loadThreadMessagesUntil(thread, target('R2'), wanted)).resolves.toBe(true);
+
+		expect(mockedGetThreadMessages).not.toHaveBeenCalled();
+	});
+
+	it('pages again from the reloaded first page when the thread changed since it was last loaded', async () => {
+		await loadFirstPage(4, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(4, 'R2'));
+		await loadOlderThreadMessages(thread);
+
+		await loadFirstPage(5, 'R0');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(5, 'R1'));
+		await loadOlderThreadMessages(thread);
+
+		expect(mockedGetThreadMessages).toHaveBeenLastCalledWith({ tmid: thread.tmid, offset: 1 });
+	});
+
 	it('forgets the reached oldest page once the thread view closes', async () => {
 		const closeView = retainThreadPagination(thread.tmid);
 		await loadFirstPage(2, 'R1');

@@ -175,14 +175,15 @@ const fetchPage = async (thread: IThreadLocation, pager: IThreadPager, requested
 		if (pagination.get(thread.tmid) !== pager) {
 			return false;
 		}
-		const loaded = offset + messages.length;
+		const resumed = offset === 0 && previous?.total === total ? previous : undefined;
+		const loaded = Math.max(offset + messages.length, resumed?.loaded ?? 0);
 		const fullyPaged = !messages.length || loaded >= total;
 		const oldest = messages.at(-1);
 		pager.state = {
 			loaded,
 			total,
 			fullyPaged,
-			oldestTs: oldest ? tsToMs(oldest.ts) : Infinity,
+			oldestTs: Math.min(oldest ? tsToMs(oldest.ts) : Infinity, resumed?.oldestTs ?? Infinity),
 			reachedOldest: !!previous?.reachedOldest || fullyPaged
 		};
 		await saveThreadMessages({ ...thread, messages: threadParent ? [threadParent, ...messages] : messages });
