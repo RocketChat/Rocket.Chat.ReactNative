@@ -1,8 +1,8 @@
-import { store as reduxStore } from '../../store/auxStore';
+import { store as reduxStore } from '~/lib/store/auxStore';
 import sdk from '../sdk';
 import { e2eRequestSubscriptionKeys } from '../restApi';
 
-jest.mock('../../store/auxStore', () => ({
+jest.mock('~/lib/store/auxStore', () => ({
 	store: {
 		getState: jest.fn()
 	}

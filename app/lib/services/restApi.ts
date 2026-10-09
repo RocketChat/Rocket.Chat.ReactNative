@@ -1002,7 +1002,6 @@ export const saveAutoTranslate = ({
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
 		return sdk.post('autotranslate.saveSettings', { roomId: rid, field, value, ...options });
 	}
-	// RC 0.54.0
 	const ddpValue = typeof value === 'boolean' ? (value ? '1' : '0') : value;
 	return sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, ddpValue, options ?? null);
 };
