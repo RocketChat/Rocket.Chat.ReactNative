@@ -107,6 +107,7 @@ E2E_COMMAND=(pnpm exec e2e run --target "$PLATFORM" --tag "test-${SHARD}" --repo
 DEVICE_EVIDENCE_DIR="$OUTPUT_DIR/artifacts/device"
 DEVICE_CAPTURE_DIR=""
 DEVICE_CAPTURE_PIDS=()
+DEVICE_CAPTURE_STOP_SIGNAL=INT
 AGENT_DEVICE_STATE="${AGENT_DEVICE_STATE_DIR:-$HOME/.agent-device}"
 RETRIED=false
 
@@ -129,6 +130,7 @@ start_device_capture() {
     adb -s "$ANDROID_DEVICE" logcat -c || true
     adb -s "$ANDROID_DEVICE" logcat -v threadtime '*:I' >"$DEVICE_CAPTURE_DIR/logcat.txt" 2>&1 &
     DEVICE_CAPTURE_PIDS+=($!)
+    DEVICE_CAPTURE_STOP_SIGNAL=TERM
     return 0
   fi
   [ -n "${E2E_IOS_DEVICE:-}" ] || return 0
@@ -140,7 +142,7 @@ start_device_capture() {
 
 stop_device_capture() {
   [ "${#DEVICE_CAPTURE_PIDS[@]}" -gt 0 ] || return 0
-  kill -INT "${DEVICE_CAPTURE_PIDS[@]}" 2>/dev/null || true
+  kill -"$DEVICE_CAPTURE_STOP_SIGNAL" "${DEVICE_CAPTURE_PIDS[@]}" 2>/dev/null || true
   wait "${DEVICE_CAPTURE_PIDS[@]}" 2>/dev/null || true
   DEVICE_CAPTURE_PIDS=()
   [ "${rc:-1}" -ne 0 ] || [ "$RETRIED" = true ] || return 0
