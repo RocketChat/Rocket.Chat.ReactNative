@@ -110,11 +110,10 @@ if [ "$PLATFORM" = "android" ]; then
   android_shell settings put system show_touches 1 || true
   android_shell settings put secure autofill_service null || true
 
-  if [ -d "$TESTS_DIR/share-extension" ] \
-    && grep -rhoE "tags:[[:space:]]*\[[^]]*\]" "$TESTS_DIR/share-extension" --include='*.e2e.ts' | grep -E "['\"]test-${SHARD}['\"]" >/dev/null; then
+  if pnpm exec e2e list --target "$PLATFORM" --tag "test-${SHARD}" --reporter json --pass-with-no-tests "$TESTS_DIR/share-extension" \
+    | jq -e '[.pairs[] | select(.disposition == "run")] | length > 0' >/dev/null; then
     if ! E2E_ANDROID_DEVICE="$ANDROID_DEVICE" pnpm run --silent e2e:push-downloads; then
-      echo "::error title=Share fixture push failed::scripts/push-downloads-to-sim.js could not download or push the share-extension fixtures to the emulator's Downloads. This is an environment failure, not an app or test regression."
-      exit 3
+      echo "::warning title=Share fixture push failed::scripts/push-downloads-to-sim.js could not download or push the share-extension fixtures to the emulator's Downloads. A share-extension test that runs on Android will fail on the missing files; that is an environment failure, not an app or test regression."
     fi
   fi
 fi
