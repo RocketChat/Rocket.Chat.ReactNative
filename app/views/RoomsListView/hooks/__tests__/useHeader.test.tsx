@@ -132,6 +132,14 @@ describe('RoomsListView useHeader', () => {
 		expect(options.headerSubtitle).toBe('open.rocket.chat');
 	});
 
+	it('keeps a string native title while the server name is not loaded yet', () => {
+		mockAppState = { ...mockAppState, settings: {} } as typeof mockAppState;
+
+		renderUseHeader();
+
+		expect(mockSetOptions.mock.calls[0][0].headerTitle).toBe('');
+	});
+
 	it.each([
 		[{ meteor: { connecting: true, connected: true } }, 'Connecting...'],
 		[{ login: { isFetching: true } }, 'Connecting...'],
@@ -273,6 +281,17 @@ describe('RoomsListView useHeader', () => {
 		expect(options.headerSearchBarOptions.hideNavigationBar).toBe(true);
 		const labels = options.unstable_headerRightItems({}).map((item: { label: string }) => item.label);
 		expect(labels).not.toContain('Cancel');
+	});
+
+	it('does not restart the search when the system search bar is refocused while searching', () => {
+		const wrapper = ({ children }: { children: ReactElement }) => (
+			<RoomsSearchContext.Provider value={{ ...searchContextValue, searchEnabled: true }}>{children}</RoomsSearchContext.Provider>
+		);
+
+		renderHook(() => useNativeRoomsListHeader(), { wrapper });
+
+		mockSetOptions.mock.calls[0][0].headerSearchBarOptions.onFocus?.();
+		expect(mockStartSearch).not.toHaveBeenCalled();
 	});
 
 	it('renders the JS header without a native bar', () => {

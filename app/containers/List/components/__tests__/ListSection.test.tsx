@@ -30,4 +30,14 @@ describe('ListSection', () => {
 		);
 		expect(screen.getByText('row')).toBeTruthy();
 	});
+
+	it('shows the header trailing element outside a native list', async () => {
+		await render(
+			<ListSection title='Status' translateTitle={false} headerTrailing={<Text>dot</Text>}>
+				<Text>row</Text>
+			</ListSection>
+		);
+		expect(screen.getByText('Status')).toBeTruthy();
+		expect(screen.getByText('dot')).toBeTruthy();
+	});
 });

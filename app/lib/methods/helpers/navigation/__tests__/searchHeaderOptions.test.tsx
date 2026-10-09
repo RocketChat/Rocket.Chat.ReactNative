@@ -45,6 +45,15 @@ describe('searchHeaderOptions', () => {
 		expect(labels).toEqual(['Filter']);
 	});
 
+	it('does not restart the search when the system search bar is refocused', () => {
+		mockHasNativeHeaderBar = true;
+
+		const options = buildOptions(true);
+		options.headerSearchBarOptions?.onFocus?.({} as never);
+
+		expect(onSearchPress).not.toHaveBeenCalled();
+	});
+
 	it('clears the system search bar after cancelling', () => {
 		mockHasNativeHeaderBar = true;
 		const clearText = jest.fn();

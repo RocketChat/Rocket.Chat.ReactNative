@@ -8,7 +8,7 @@ import { usePermissions } from '~/lib/hooks/usePermissions';
 import { compareServerVersion, showErrorAlertWithEMessage } from '~/lib/methods/helpers';
 import { pushTest } from '~/lib/services/restApi';
 import { useTheme } from '~/theme';
-import { CustomIcon } from '~/containers/CustomIcon';
+import StatusDot from './StatusDot';
 
 function PushGatewayConnection(): ReactElement | null {
 	const [loading, setLoading] = useState(false);
@@ -48,14 +48,15 @@ function PushGatewayConnection(): ReactElement | null {
 	}
 
 	return (
-		<List.Section title={!defaultPushGateway ? 'Custom_push_gateway_connection' : 'Push_gateway_connection'}>
+		<List.Section
+			title={!defaultPushGateway ? 'Custom_push_gateway_connection' : 'Push_gateway_connection'}
+			headerTrailing={<StatusDot color={statusColor} />}>
 			<List.Separator />
 			<List.Item
 				title='Test_push_notification'
 				disabled={!pushGatewayEnabled || !testPushNotificationsPermission || loading}
 				onPress={handleTestPushNotification}
 				testID='push-troubleshoot-view-push-gateway-connection'
-				right={() => <CustomIcon name='status-online' size={16} color={statusColor} />}
 			/>
 			<List.Separator />
 			<List.Info info={infoColor} />

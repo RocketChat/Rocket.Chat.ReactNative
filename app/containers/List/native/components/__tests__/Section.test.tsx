@@ -31,6 +31,17 @@ describe('NativeListSection', () => {
 		expect(separators()).toHaveLength(0);
 	});
 
+	it('shows the header trailing element next to the title', async () => {
+		await render(
+			<NativeListSection title='Status' translateTitle={false} headerTrailing={<Text>dot</Text>}>
+				<Row key='first' title='First' />
+			</NativeListSection>
+		);
+
+		expect(screen.getByRole('header', { name: 'Status' })).toBeTruthy();
+		expect(screen.getByText('dot')).toBeTruthy();
+	});
+
 	it('separates unselected rows', async () => {
 		await render(
 			<View>

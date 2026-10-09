@@ -26,7 +26,15 @@ export default StyleSheet.create({
 	belowCardSpacer: {
 		height: SECTION_SPACING_BELOW_CARD
 	},
+	headerRow: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	headerTrailing: {
+		marginRight: TEXT_MARGIN_HORIZONTAL
+	},
 	header: {
+		flex: 1,
 		paddingVertical: 10,
 		marginHorizontal: TEXT_MARGIN_HORIZONTAL,
 		fontSize: 17,

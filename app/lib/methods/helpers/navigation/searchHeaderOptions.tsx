@@ -39,7 +39,7 @@ export const searchHeaderOptions = ({
 			...options,
 			headerSearchBarOptions: stackedSearchBarOptions({
 				ref: searchBarRef,
-				onFocus: onSearchPress,
+				onFocus: isSearching ? undefined : onSearchPress,
 				onChangeText,
 				onCancel: cancelAndClear
 			}),

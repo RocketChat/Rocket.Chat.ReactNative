@@ -171,7 +171,7 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 		...(showNotifications
 			? [
 					{
-						label: i18n.t('Troubleshooting'),
+						label: i18n.t(issuesWithNotifications ? 'Troubleshooting' : 'Notification_Preferences'),
 						icon: 'notification-disabled' as const,
 						testID: 'room-view-push-troubleshoot',
 						destructive: issuesWithNotifications,

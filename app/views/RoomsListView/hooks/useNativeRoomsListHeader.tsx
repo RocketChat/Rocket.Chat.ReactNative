@@ -18,7 +18,7 @@ export const useNativeRoomsListHeader = () => {
 	const { searchEnabled, search, startSearch, stopSearch, resetSearch, searchBarRef } = useContext(RoomsSearchContext);
 	const { navigation, colors, disabled, badgeColor, showTroubleshoot, navigateToScreen, onDrawerPress } =
 		useRoomsListHeaderState();
-	const serverName = useAppSelector(state => state.settings.Site_Name as string);
+	const serverName = useAppSelector(state => state.settings.Site_Name as string | undefined);
 	const subtitle = useRoomsListSubtitle();
 	const { canCreateRoom, goToNewMessage } = useNewMessage();
 	const showsCancelSearch = isTablet && searchEnabled;
@@ -50,12 +50,17 @@ export const useNativeRoomsListHeader = () => {
 
 		navigation.setOptions({
 			...translucentHeader,
-			headerTitle: serverName,
+			headerTitle: serverName ?? '',
 			headerSubtitle: subtitle,
 			headerTitleTestID: 'rooms-list-header-servers-list-button',
 			onHeaderTitlePress: openServersList,
 			headerSearchBarOptions: {
-				...stackedSearchBarOptions({ ref: searchBarRef, onFocus: startSearch, onChangeText: search, onCancel: resetSearch }),
+				...stackedSearchBarOptions({
+					ref: searchBarRef,
+					onFocus: searchEnabled ? undefined : startSearch,
+					onChangeText: search,
+					onCancel: resetSearch
+				}),
 				placement: isTablet ? 'stacked' : 'automatic',
 				hideWhenScrolling: true,
 				hideNavigationBar: !isTablet
@@ -78,6 +83,7 @@ export const useNativeRoomsListHeader = () => {
 		canCreateRoom,
 		goToNewMessage,
 		showsCancelSearch,
+		searchEnabled,
 		serverName,
 		subtitle,
 		searchBarRef,

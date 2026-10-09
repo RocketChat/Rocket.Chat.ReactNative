@@ -23,7 +23,7 @@ const isInfo = (element: ReactElement): element is ReactElement<IInfoProps> => e
 
 const isSelected = (row?: ReactElement) => Boolean((row?.props as { selected?: boolean } | undefined)?.selected);
 
-const NativeListSection = ({ children, title, translateTitle }: INativeListSection) => {
+const NativeListSection = ({ children, title, translateTitle, headerTrailing }: INativeListSection) => {
 	const { theme, colors } = useTheme();
 	const context = useNativeListContext();
 	const elements = flattenListChildren(children).filter(element => !isListSeparator(element));
@@ -39,10 +39,11 @@ const NativeListSection = ({ children, title, translateTitle }: INativeListSecti
 		<>
 			{title ? null : <View style={context?.sectionIndex === 0 ? styles.firstSectionSpacer : styles.sectionSpacer} />}
 			{title ? (
-				<View>
+				<View style={styles.headerRow}>
 					<Text accessibilityRole='header' style={[styles.header, { color: secondaryLabel }]}>
 						{translateListText(title, translateTitle)}
 					</Text>
+					{headerTrailing ? <View style={styles.headerTrailing}>{headerTrailing}</View> : null}
 				</View>
 			) : null}
 			{rows.length ? (

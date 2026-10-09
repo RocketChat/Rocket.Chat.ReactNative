@@ -17,6 +17,8 @@ import { events, logEvent } from '../lib/methods/helpers/log';
 import { saveSortPreference } from '../lib/methods/userPreferencesMethods';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useIsCustomCategoriesAvailable } from './RoomsListView/hooks/useSidebarCategories';
+import { useMasterDetail } from '../lib/hooks/useMasterDetail';
+import { headerLeftCloseModal } from '../lib/methods/helpers/navigation/headerActions';
 
 const DisplayPrefsView = (): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<DisplayPrefStackParamList, 'DisplayPrefsView'>>();
@@ -26,12 +28,15 @@ const DisplayPrefsView = (): ReactElement => {
 	);
 	const isCustomCategoriesAvailable = useIsCustomCategoriesAvailable();
 	const dispatch = useDispatch();
+	const isMasterDetail = useMasterDetail();
 
 	useLayoutEffect(() => {
+		const isModalRoot = navigation.getState().index === 0;
 		navigation.setOptions({
-			title: I18n.t('Display')
+			title: I18n.t('Display'),
+			...(isMasterDetail && isModalRoot ? headerLeftCloseModal(navigation, 'display-view-close') : {})
 		});
-	}, []);
+	}, [navigation, isMasterDetail]);
 
 	const setSortPreference = (param: Partial<IPreferences>) => {
 		dispatch(setPreference(param));

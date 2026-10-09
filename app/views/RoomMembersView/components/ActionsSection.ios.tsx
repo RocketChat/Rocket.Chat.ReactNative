@@ -26,7 +26,7 @@ export default function ActionsSection(props: IActionsSection): ReactElement | n
 						title={i18n.t(action.title)}
 						onPress={action.onPress}
 						testID={action.testID}
-						accessibilityLabel={action.disabledReason ?? i18n.t(action.title)}
+						accessibilityLabel={i18n.t(action.title)}
 						disabled={action.disabled}
 						disabledReason={action.disabledReason}
 						isFirst={index === 0}
