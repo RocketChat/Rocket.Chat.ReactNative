@@ -26,7 +26,7 @@ index 60781e8..0aa3261 100644
   * Runs one agent-device command under an abort signal and translates its
   * failure onto the engine taxonomy: the one boundary every command crosses.
 diff --git a/node_modules/@e2e-dev/mobile/dist/surface.js b/node_modules/@e2e-dev/mobile/dist/surface.js
-index 4c260ed..1679ff4 100644
+index 4c260ed..635099b 100644
 --- a/node_modules/@e2e-dev/mobile/dist/surface.js
 +++ b/node_modules/@e2e-dev/mobile/dist/surface.js
 @@ -15,7 +15,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, w
@@ -49,20 +49,15 @@ index 4c260ed..1679ff4 100644
  import { invalidState, notActionable, logicalScreenSize, readPngSize, sanitizeFilename, screenLocation, swipeWithin, unsupported, } from './support.js';
  /** Why nothing is pinned with `appPath` alone: the install is the suite's. */
  const UNINSTALLED_BUILD = "the build the target's `app.appPath` names installed first with `device.installApp()`";
-@@ -257,7 +261,7 @@ export class AgentDeviceSurface {
+@@ -257,7 +261,23 @@ export class AgentDeviceSurface {
       */
      async command(label, run, signal) {
          const client = this.requireClient();
 -        return runCommand(label, () => this.track(run(client)), signal ?? new AbortController().signal, this.where);
-+        return runCommand(label, () => this.untilRunnerIdle(() => run(client)), signal ?? new AbortController().signal, this.where);
-     }
-     /**
-      * Runs a fixture command that changes the screen (a back, the home screen,
-@@ -274,6 +278,19 @@ export class AgentDeviceSurface {
-         return result;
-     }
-     /** Registers one device command as in flight until it settles. */
-+    async untilRunnerIdle(run) {
++        const operationSignal = signal ?? new AbortController().signal;
++        return runCommand(label, () => this.untilRunnerIdle(() => run(client), operationSignal), operationSignal, this.where);
++    }
++    async untilRunnerIdle(run, signal) {
 +        const deadline = Date.now() + RUNNER_BUSY_BUDGET_MS;
 +        for (;;) {
 +            try {
@@ -71,14 +66,15 @@ index 4c260ed..1679ff4 100644
 +            catch (cause) {
 +                if (!isRunnerBusy(cause) || Date.now() >= deadline)
 +                    throw cause;
-+                await new Promise((resolve) => setTimeout(resolve, RUNNER_BUSY_RETRY_MS));
++                await sleep(RUNNER_BUSY_RETRY_MS, signal);
++                if (signal.aborted)
++                    throw cause;
 +            }
 +        }
-+    }
-     track(pending) {
-         this.inflight.add(pending);
-         pending.then(() => this.inflight.delete(pending), () => this.inflight.delete(pending));
-@@ -556,7 +573,7 @@ export class AgentDeviceSurface {
+     }
+     /**
+      * Runs a fixture command that changes the screen (a back, the home screen,
+@@ -556,7 +576,7 @@ export class AgentDeviceSurface {
          }
      }
      async permission(permission, state, signal) {
@@ -87,7 +83,7 @@ index 4c260ed..1679ff4 100644
      }
      /**
       * Opens a link on the device, into `app` (the pinned app when none is
-@@ -614,7 +631,7 @@ export class AgentDeviceSurface {
+@@ -614,7 +634,7 @@ export class AgentDeviceSurface {
       */
      async closeApp(signal) {
          const app = this.appIdentity ?? this.pinnedApp;
@@ -96,7 +92,7 @@ index 4c260ed..1679ff4 100644
          this.sessionApp = undefined;
          this.screenReplaced();
      }
-@@ -668,17 +685,26 @@ export class AgentDeviceSurface {
+@@ -668,17 +688,26 @@ export class AgentDeviceSurface {
       * One capture, taken again once when the iOS runner acquired the tree but
       * failed its own presentation check on it (a viewport it could not read, a
       * malformed graph). The check is per capture and a capture is a read, so
@@ -131,16 +127,16 @@ index 4c260ed..1679ff4 100644
          }
      }
      /**
-@@ -968,7 +994,7 @@ export class AgentDeviceSurface {
+@@ -968,7 +997,7 @@ export class AgentDeviceSurface {
              }
          };
          try {
 -            await raceAbort(() => this.track(run()), operation.signal, label);
-+            await raceAbort(() => this.untilRunnerIdle(run), operation.signal, label);
++            await raceAbort(() => this.untilRunnerIdle(run, operation.signal), operation.signal, label);
          }
          catch (cause) {
              throw staleOr(cause, label, this.where);
-@@ -1145,7 +1171,7 @@ export class AgentDeviceSurface {
+@@ -1145,7 +1174,7 @@ export class AgentDeviceSurface {
          const app = this.pinnedApp;
          if (app === undefined)
              throw unsupported(`app.clearState needs the target's \`app.bundleId\`, or ${UNINSTALLED_BUILD}`);
@@ -149,7 +145,7 @@ index 4c260ed..1679ff4 100644
          await this.openApp(app, { relaunch: true }, operation.signal);
      }
      /**
-@@ -1168,7 +1194,7 @@ export class AgentDeviceSurface {
+@@ -1168,7 +1197,7 @@ export class AgentDeviceSurface {
          if (this.options.platform !== 'ios') {
              throw unsupported('device.clearKeychain resets an iOS simulator keychain; Android has none to reset');
          }
