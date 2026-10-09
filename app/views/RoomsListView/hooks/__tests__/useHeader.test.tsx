@@ -132,6 +132,14 @@ describe('RoomsListView useHeader', () => {
 		expect(options.headerSubtitle).toBe('open.rocket.chat');
 	});
 
+	it('keeps a string native title while the server name is not loaded yet', () => {
+		mockAppState = { ...mockAppState, settings: {} } as typeof mockAppState;
+
+		renderUseHeader();
+
+		expect(mockSetOptions.mock.calls[0][0].headerTitle).toBe('');
+	});
+
 	it.each([
 		[{ meteor: { connecting: true, connected: true } }, 'Connecting...'],
 		[{ login: { isFetching: true } }, 'Connecting...'],
