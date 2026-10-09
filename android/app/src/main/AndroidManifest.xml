@@ -52,6 +52,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="${usesCleartextTraffic}"
         android:hardwareAccelerated="true"
+        android:gwpAsanMode="never"
         tools:replace="android:allowBackup">
         <activity
             android:name="chat.rocket.reactnative.MainActivity"
