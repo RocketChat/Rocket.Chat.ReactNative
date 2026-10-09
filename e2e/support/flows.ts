@@ -282,18 +282,27 @@ export const scrollAndTap = async (container: Locator, target: Locator) => {
 	await target.tap();
 };
 
+const tapRegistered = async (loading: Locator, gone: Locator) => {
+	const deadline = Date.now() + TAP_UNTIL_HIDDEN_TIMEOUT;
+	while (Date.now() < deadline) {
+		if ((await isVisibleNow(loading)) || !(await isVisibleNow(gone))) {
+			return true;
+		}
+		await delay(FIRST_VISIBLE_POLL_INTERVAL);
+	}
+	return false;
+};
+
 export const tapUntilHidden = async ({ screen }: Fixtures, testId: string, goneTestId: string, attempts = 5) => {
 	const gone = screen.getByTestId(goneTestId);
+	const loading = screen.getByTestId('loading');
 	for (let attempt = 1; attempt <= attempts; attempt += 1) {
 		await screen.getByTestId(testId).tap();
-		try {
-			await gone.waitFor({ state: 'hidden', timeout: TAP_UNTIL_HIDDEN_TIMEOUT });
-			return;
-		} catch (error) {
-			unlessCancelled(undefined)(error);
+		if (await tapRegistered(loading, gone)) {
+			break;
 		}
 	}
-	await expect(gone).toBeHidden();
+	await expect(gone).toBeHidden({ timeout: LONG_TIMEOUT });
 };
 
 const isEngineFailure = (error: unknown) => (error as { code?: string } | null)?.code === 'ENGINE_FAILURE';
