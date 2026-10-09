@@ -88,8 +88,25 @@ ensure_android_window_focus() {
   exit 3
 }
 
+GMS_MODULE_UPDATE_TIMEOUT="${GMS_MODULE_UPDATE_TIMEOUT:-180}"
+GMS_RESTART_SETTLE_SECONDS=10
+
+wait_for_gms_module_update() {
+  local deadline=$((SECONDS + GMS_MODULE_UPDATE_TIMEOUT))
+  while [ "$SECONDS" -lt "$deadline" ]; do
+    if adb -s "$ANDROID_DEVICE" logcat -d -s ChimeraModuleLdr:I ChimeraConfigurator:I 2>/dev/null | grep -qE "Module config changed, forcing restart|Update complete"; then
+      sleep "$GMS_RESTART_SETTLE_SECONDS"
+      echo "Google Play services module update done; its restart no longer kills the app mid-test"
+      return 0
+    fi
+    sleep 3
+  done
+  echo "No Google Play services module update within ${GMS_MODULE_UPDATE_TIMEOUT}s; continuing"
+}
+
 if [ "$PLATFORM" = "android" ]; then
   ensure_android_window_focus
+  wait_for_gms_module_update
   android_shell settings put system show_touches 1 || true
   android_shell settings put secure autofill_service null || true
 
