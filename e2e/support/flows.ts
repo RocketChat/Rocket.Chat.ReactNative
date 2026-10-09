@@ -385,6 +385,9 @@ export const loginWithDeepLink = async (fixtures: Fixtures, credentials: Credent
 	await resetApp(fixtures);
 	if (fixtures.platform === 'android') {
 		await fixtures.device.closeApp();
+	} else {
+		await fixtures.app.open();
+		await expect(fixtures.screen.getByText('Add workspace')).toBeVisible({ timeout: LONG_TIMEOUT });
 	}
 	const session = await login(credentials);
 	await openDeepLink(
