@@ -3,10 +3,19 @@ import { expect } from 'e2e';
 
 import { getDeepLink, login, type Credentials } from './api';
 import { data } from './data';
-import { firstVisible, hideKeyboard, openDeepLink, type Fixtures, LONG_TIMEOUT, tapIfVisible, tapWhenVisible } from './flows';
+import {
+	firstVisible,
+	hideKeyboard,
+	openDeepLink,
+	type Fixtures,
+	LONG_TIMEOUT,
+	tapIfVisible,
+	tapUntilVisible,
+	tapWhenVisible
+} from './flows';
 import { randomUser, type RandomUser } from './random';
 
-export const fillRegisterForm = async (fixtures: Fixtures, user: RandomUser) => {
+const fillRegisterFields = async (fixtures: Fixtures, user: RandomUser) => {
 	const { screen } = fixtures;
 	const fields = [
 		['register-view-name', user.name],
@@ -21,13 +30,17 @@ export const fillRegisterForm = async (fixtures: Fixtures, user: RandomUser) => 
 		await hideKeyboard(fixtures);
 	}
 	await screen.scrollUntilVisible(screen.getByTestId('register-view-submit'));
-	await screen.getByTestId('register-view-submit').tap();
+};
+
+export const fillRegisterForm = async (fixtures: Fixtures, user: RandomUser) => {
+	await fillRegisterFields(fixtures, user);
+	await fixtures.screen.getByTestId('register-view-submit').tap();
 };
 
 export const registerAccount = async (fixtures: Fixtures) => {
 	const user = randomUser();
-	await fillRegisterForm(fixtures, user);
-	await expect(fixtures.screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await fillRegisterFields(fixtures, user);
+	await tapUntilVisible(fixtures, fixtures.screen.getByTestId('register-view-submit'), 'rooms-list-view');
 	return user;
 };
 
