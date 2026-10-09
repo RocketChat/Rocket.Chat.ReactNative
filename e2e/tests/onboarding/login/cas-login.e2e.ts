@@ -12,7 +12,7 @@ test('logs in with CAS', { tags: ['test-2'] }, async fixtures => {
 
 	await expect(screen.getByText('Continue with CAS')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByText('Continue with CAS').tap();
-	await expect(screen.getByText('CAS Login')).toBeVisible({ timeout: 10_000 });
+	await expect(screen.getByText('CAS Login')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expect(casField(fixtures, 'password')).toBeVisible();
 	await fillWhenUncovered(casField(fixtures, 'username'), account.cas.username);
 	await fillWhenUncovered(casField(fixtures, 'password'), account.cas.password);

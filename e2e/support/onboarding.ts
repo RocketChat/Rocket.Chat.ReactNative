@@ -56,7 +56,7 @@ const CHROME_FIRST_RUN_PROMPTS = [
 	{ prompt: /wants to send you notifications/, dismiss: 'Block' }
 ] as const;
 
-const SAFARI_FIRST_RUN_PROMPTS = [{ prompt: /You can now view these items in the More menu/, dismiss: 'Close' }] as const;
+const SAFARI_FIRST_RUN_PROMPTS = [{ prompt: /View Bookmarks, Share Menu, and Open Tabs/, dismiss: 'Close' }] as const;
 
 const browserFirstRunPrompts = ({ screen, platform }: Fixtures) =>
 	platform === 'android'
