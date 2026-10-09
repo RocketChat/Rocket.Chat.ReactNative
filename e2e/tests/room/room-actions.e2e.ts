@@ -51,8 +51,12 @@ const tapMessageActionText = async (fixtures: Fixtures, message: string, actionT
 const expectStarredMessage = async (fixtures: Fixtures, message: string, starred: boolean) => {
 	await openRoomActions(fixtures);
 	await openRoomAction(fixtures, 'starred', 'starred-messages-view');
-	const expectation = starred ? expectVisible : expectHidden;
-	await expectation(fixtures, `message-content-${message}`);
+	if (starred) {
+		await expectVisible(fixtures, `message-content-${message}`);
+	} else {
+		await expectText(fixtures, 'No starred messages');
+		await expectHidden(fixtures, `message-content-${message}`);
+	}
 	await backToRoomActions(fixtures);
 	await backToRoom(fixtures);
 };
