@@ -311,7 +311,10 @@ const tapToleratingRunnerFailure = async (target: Locator) => {
 const nearestTo = async (anchor: Locator, candidates: Locator) => {
 	const anchorTop = (await anchor.boundingBox())?.y ?? 0;
 	const distances = await Promise.all(
-		(await candidates.all()).map(async candidate => Math.abs(((await candidate.boundingBox())?.y ?? Infinity) - anchorTop))
+		(await candidates.all()).map(async candidate => {
+			const box = await candidate.boundingBox();
+			return box ? Math.abs(box.y - anchorTop) : Infinity;
+		})
 	);
 	return candidates.nth(distances.indexOf(Math.min(...distances)));
 };
@@ -321,14 +324,18 @@ export const confirmAlert = async ({ screen }: Fixtures, message: RegExp, button
 	const buttons = screen.getByRole('button', button);
 	await expect(alertMessage).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expect(buttons.first()).toBeVisible({ timeout: LONG_TIMEOUT });
-	const confirmButton = await nearestTo(alertMessage, buttons);
+	const tapConfirmButton = async () => {
+		if (await isVisibleNow(alertMessage)) {
+			await (await nearestTo(alertMessage, buttons)).tap();
+		}
+	};
 	for (let attempt = 1; attempt < TAP_ATTEMPTS; attempt += 1) {
-		await confirmButton.tap();
+		await tapConfirmButton();
 		if (await succeeds(alertMessage.waitFor({ state: 'hidden', timeout: TAP_UNTIL_HIDDEN_TIMEOUT }))) {
 			return;
 		}
 	}
-	await confirmButton.tap();
+	await tapConfirmButton();
 	await expect(alertMessage).toBeHidden({ timeout: LONG_TIMEOUT });
 };
 
@@ -462,7 +469,10 @@ export const loginWithDeepLink = async (fixtures: Fixtures, credentials: Credent
 	await expect(fixtures.screen.getByTestId('rooms-list-header-server-subtitle')).toHaveText(CONNECTED_SERVER_HOST, {
 		timeout: LONG_TIMEOUT
 	});
-	await expect(fixtures.screen.getByTestId(/^rooms-list-view-item-/).first()).toBeVisible({ timeout: LONG_TIMEOUT });
+	await firstVisible([
+		fixtures.screen.getByTestId(/^rooms-list-view-item-/).first(),
+		fixtures.screen.getByTestId('change-password-required-button')
+	]);
 };
 
 export const navigateToRegister = async ({ screen }: Fixtures, server = data.server) => {
