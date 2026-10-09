@@ -174,13 +174,13 @@ const holdsValue = async (locator: Locator, text: string) => {
 };
 
 const fillConfirmed = async (locator: Locator, text: string) => {
-	for (let attempt = 1; ; attempt++) {
+	for (let attempt = 1; attempt < UNCONFIRMED_FILL_ATTEMPTS; attempt++) {
 		try {
 			await locator.fill(text);
 			return;
 		} catch (error) {
 			const message = String(error);
-			if (!UNCONFIRMED_FILL_ERRORS.some(unconfirmed => message.includes(unconfirmed)) || attempt >= UNCONFIRMED_FILL_ATTEMPTS) {
+			if (!UNCONFIRMED_FILL_ERRORS.some(unconfirmed => message.includes(unconfirmed))) {
 				throw error;
 			}
 			if (await holdsValue(locator, text)) {
@@ -189,6 +189,7 @@ const fillConfirmed = async (locator: Locator, text: string) => {
 			await clearSettled(locator);
 		}
 	}
+	await locator.pressSequentially(text);
 };
 
 export const fillWhenUncovered = (locator: Locator, text: string, timeout = LONG_TIMEOUT) =>
