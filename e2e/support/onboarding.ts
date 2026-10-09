@@ -78,8 +78,8 @@ export const dismissPasswordManagerPrompt = async (fixtures: Fixtures, destinati
 	const { screen, platform } = fixtures;
 	const { prompt, dismiss } = PASSWORD_MANAGER_PROMPTS[platform === 'android' ? 'android' : 'ios'];
 	const promptText = screen.getByText(prompt, { visible: true });
-	if ((await firstVisible([promptText, ...destinations])) === promptText) {
-		await screen.getByText(dismiss, { visible: true }).tap();
+	while ((await firstVisible([promptText, ...destinations])) === promptText) {
+		await tapIfVisible(screen.getByText(dismiss, { visible: true }));
 	}
 };
 

@@ -143,7 +143,11 @@ const COVERED_ERROR = 'is covered by another visible element';
 const OFF_SCREEN_ERROR = 'is off-screen and not safe to press';
 const NO_INPUT_AT_POINT_ERROR = 'no text input found at the provided coordinates';
 const BEHIND_KEYBOARD_ERROR = 'is behind the visible keyboard';
-const UNCONFIRMED_FILL_ERRORS = ['could not confirm the typed text reached the field', 'Android fill verification failed'];
+const UNCONFIRMED_FILL_ERRORS = [
+	'could not confirm the typed text reached the field',
+	'Android fill verification failed',
+	'text entry verification failed'
+];
 const RETRYABLE_ACTION_ERRORS = [COVERED_ERROR, OFF_SCREEN_ERROR, NO_INPUT_AT_POINT_ERROR, BEHIND_KEYBOARD_ERROR];
 const UNCONFIRMED_FILL_ATTEMPTS = 3;
 
