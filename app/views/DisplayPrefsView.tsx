@@ -16,7 +16,7 @@ import { type DisplayPrefStackParamList } from '../stacks/types';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { saveSortPreference } from '../lib/methods/userPreferencesMethods';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
-import { useHasCustomCategoriesLicense } from './RoomsListView/hooks/useSidebarCategories';
+import { useIsCustomCategoriesAvailable } from './RoomsListView/hooks/useSidebarCategories';
 
 const DisplayPrefsView = (): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<DisplayPrefStackParamList, 'DisplayPrefsView'>>();
@@ -24,7 +24,7 @@ const DisplayPrefsView = (): ReactElement => {
 	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useAppSelector(
 		state => state.sortPreferences
 	);
-	const hasCustomCategoriesLicense = useHasCustomCategoriesLicense();
+	const isCustomCategoriesAvailable = useIsCustomCategoriesAvailable();
 	const dispatch = useDispatch();
 
 	useLayoutEffect(() => {
@@ -91,7 +91,7 @@ const DisplayPrefsView = (): ReactElement => {
 	return (
 		<SafeAreaView>
 			<List.Container testID='display-view-list'>
-				{hasCustomCategoriesLicense ? (
+				{isCustomCategoriesAvailable ? (
 					<List.Section>
 						<List.Separator />
 						<List.Item

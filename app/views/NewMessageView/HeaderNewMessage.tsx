@@ -16,7 +16,7 @@ import { compareServerVersion } from '~/lib/methods/helpers';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
-import { useHasCustomCategoriesLicense } from '~/views/RoomsListView/hooks/useSidebarCategories';
+import { useIsCustomCategoriesAvailable } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import ButtonCreate from './ButtonCreate';
 import sharedStyles from '~/views/Styles';
 
@@ -53,7 +53,7 @@ const HeaderNewMessage = ({ maxUsers, onChangeText, categoryId, categoryName }: 
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
 	const listBackgroundColor = useListBackgroundColor(colors.surfaceTint);
-	const hasCustomCategoriesLicense = useHasCustomCategoriesLicense();
+	const isCustomCategoriesAvailable = useIsCustomCategoriesAvailable();
 
 	const serverVersion = useAppSelector(state => state.server.version as string);
 
@@ -131,7 +131,7 @@ const HeaderNewMessage = ({ maxUsers, onChangeText, categoryId, categoryName }: 
 			testID: 'new-message-view-create-discussion'
 		},
 		{
-			visible: hasCustomCategoriesLicense && !categoryId,
+			visible: isCustomCategoriesAvailable && !categoryId,
 			onPress: createCategory,
 			title: 'Category',
 			icon: renderIcon('folder-plus'),

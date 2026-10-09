@@ -12,7 +12,7 @@ import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
 import { useRoomSnapshot } from './hooks/useRoomSnapshot';
 import MoveToCategorySheet from '../MoveToCategorySheet';
-import { useHasCustomCategoriesLicense } from '~/views/RoomsListView/hooks/useSidebarCategories';
+import { useIsCustomCategoriesAvailable } from '~/views/RoomsListView/hooks/useSidebarCategories';
 
 const RoomItemContainer = memo(
 	({
@@ -37,7 +37,7 @@ const RoomItemContainer = memo(
 		const room = useRoomSnapshot(item);
 		const { showActionSheet } = useActionSheet();
 		const serverVersion = useAppSelector(state => state.server.version);
-		const hasCustomCategoriesLicense = useHasCustomCategoriesLicense();
+		const isCustomCategoriesAvailable = useIsCustomCategoriesAvailable();
 		const name = getRoomTitle(room);
 		const testID = `rooms-list-view-item-${name}`;
 		const avatar = getRoomAvatar(room);
@@ -55,7 +55,7 @@ const RoomItemContainer = memo(
 				children: <MoveToCategorySheet room={room} category={room.category} favorite={room.f} />,
 				fullContainer: true
 			});
-		const onMoveToCategoryPress = hasCustomCategoriesLicense && room.t !== 'l' ? showMoveToCategory : undefined;
+		const onMoveToCategoryPress = isCustomCategoriesAvailable && room.t !== 'l' ? showMoveToCategory : undefined;
 
 		const handleOnLongPress = async () => {
 			if (onLongPress) {

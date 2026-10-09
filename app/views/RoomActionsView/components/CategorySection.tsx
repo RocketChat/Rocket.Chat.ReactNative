@@ -5,7 +5,7 @@ import { useActionSheet } from '~/containers/ActionSheet';
 import * as List from '~/containers/List';
 import { type TSubscriptionModel } from '~/definitions';
 import { useTheme } from '~/theme';
-import { useHasCustomCategoriesLicense } from '~/views/RoomsListView/hooks/useSidebarCategories';
+import { useIsCustomCategoriesAvailable } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import sharedStyles from '~/views/Styles';
 import { useRoomCategory } from '~/containers/MoveToCategorySheet/hooks/useRoomCategory';
 import MoveToCategorySheet from '~/containers/MoveToCategorySheet';
@@ -27,10 +27,10 @@ interface ICategorySection {
 function CategorySection({ room, category, favorite, joined }: ICategorySection): ReactElement | null {
 	const { colors } = useTheme();
 	const { showActionSheet } = useActionSheet();
-	const hasCustomCategoriesLicense = useHasCustomCategoriesLicense();
+	const isCustomCategoriesAvailable = useIsCustomCategoriesAvailable();
 	const { currentCategoryName } = useRoomCategory({ rid: room.rid, category, f: favorite });
 
-	if (!hasCustomCategoriesLicense || !joined || room.t === 'l') {
+	if (!isCustomCategoriesAvailable || !joined || room.t === 'l') {
 		return null;
 	}
 

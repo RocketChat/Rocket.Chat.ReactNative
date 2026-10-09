@@ -2,20 +2,20 @@ import { useMemo } from 'react';
 
 import { type ISidebarCategory } from '~/definitions';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { getUserSelector } from '~/selectors/login';
 import { type CategoryUnreadOptions } from '../utils/groupRooms';
 import { getGroupOrder, getSectionsOrder } from '../utils/sidebarGroupOrder';
 
-const CUSTOM_CATEGORIES_LICENSE_MODULE = 'experimental-enterprise-features';
 const NO_CATEGORIES: ISidebarCategory[] = [];
 
-export const useHasCustomCategoriesLicense = () =>
-	useAppSelector(state => state.enterpriseModules.includes(CUSTOM_CATEGORIES_LICENSE_MODULE));
+export const useIsCustomCategoriesAvailable = () =>
+	useAppSelector(state => state.hasValidLicense && compareServerVersion(state.server.version, 'greaterThanOrEqualTo', '8.9.0'));
 
 export const useSidebarCategories = () => {
-	const hasCustomCategoriesLicense = useHasCustomCategoriesLicense();
+	const isCustomCategoriesAvailable = useIsCustomCategoriesAvailable();
 	const storedCategories = useAppSelector(state => getUserSelector(state).sidebarCategories ?? NO_CATEGORIES);
-	const categories = hasCustomCategoriesLicense ? storedCategories : NO_CATEGORIES;
+	const categories = isCustomCategoriesAvailable ? storedCategories : NO_CATEGORIES;
 	const adminSectionsOrder = useAppSelector(
 		state => state.settings.Accounts_Default_User_Preferences_sidebarSectionsOrder as string[] | undefined
 	);

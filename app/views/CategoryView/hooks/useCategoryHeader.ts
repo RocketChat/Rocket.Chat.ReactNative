@@ -9,7 +9,7 @@ import { headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/na
 import { type ChatsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
 import { useNewMessage } from '~/views/RoomsListView/hooks/useNewMessage';
-import { useHasCustomCategoriesLicense, useSidebarCategories } from '~/views/RoomsListView/hooks/useSidebarCategories';
+import { useIsCustomCategoriesAvailable, useSidebarCategories } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import { categoryIdOfHeader } from '~/views/RoomsListView/utils/groupRooms';
 import { SYSTEM_GROUPS } from '~/views/RoomsListView/utils/sidebarGroupOrder';
 
@@ -17,7 +17,7 @@ export const useCategoryHeader = (header: string, title: string) => {
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CategoryView'>>();
 	const { colors } = useTheme();
 	const isMasterDetail = useMasterDetail();
-	const hasCustomCategoriesLicense = useHasCustomCategoriesLicense();
+	const isCustomCategoriesAvailable = useIsCustomCategoriesAvailable();
 	const { customCategoryNames } = useSidebarCategories();
 	const categoryName = customCategoryNames.get(header);
 	const isCustomCategory = !SYSTEM_GROUPS.includes(categoryIdOfHeader(header));
@@ -40,7 +40,7 @@ export const useCategoryHeader = (header: string, title: string) => {
 			}
 		};
 		const actions: IHeaderAction[] = [];
-		if (hasCustomCategoriesLicense) {
+		if (isCustomCategoriesAvailable) {
 			actions.push({
 				label: i18n.t('Category_options'),
 				icon: 'kebab',
@@ -68,7 +68,7 @@ export const useCategoryHeader = (header: string, title: string) => {
 		header,
 		title,
 		isMasterDetail,
-		hasCustomCategoriesLicense,
+		isCustomCategoriesAvailable,
 		categoryName,
 		showNewMessageAction,
 		goToNewMessage
