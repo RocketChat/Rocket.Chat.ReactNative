@@ -80,6 +80,18 @@ describe('getNextMessages', () => {
 		expect(result.messages.map(message => message._id)).toEqual(['a', 'b', 'c']);
 	});
 
+	it('converts the ISO _updatedAt of each REST message to a Date', async () => {
+		const updatedAt = '2024-01-15T12:00:00.000Z';
+		mockedGet.mockResolvedValue({
+			...restResponse([], null),
+			messages: [{ _id: 'a', rid: RID, _updatedAt: updatedAt }]
+		});
+
+		const result = await getNextMessages({ rid: RID, after: AFTER, count: COUNT });
+
+		expect(result.messages[0]._updatedAt).toEqual(new Date(updatedAt));
+	});
+
 	it('rejects instead of returning no messages when the response is not successful', async () => {
 		mockedGet.mockResolvedValue({ success: false, error: 'error-invalid-room' });
 

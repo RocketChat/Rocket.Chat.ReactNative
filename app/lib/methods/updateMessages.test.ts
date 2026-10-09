@@ -3,7 +3,6 @@ import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { makeFakeRecord } from '../database/__tests__/mockedWatermelonDB';
 import { Encryption } from '../encryption';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
-import buildMessage from './helpers/buildMessage';
 
 jest.mock('../database/services/Subscription', () => ({
 	getSubscriptionByRoomId: jest.fn()
@@ -21,7 +20,7 @@ jest.mock('@nozbe/watermelondb/RawRecord', () => ({
 
 jest.mock('./helpers/buildMessage', () => ({
 	__esModule: true,
-	default: jest.fn()
+	default: (message: unknown) => message
 }));
 
 jest.mock('./helpers/protectedFunction', () => ({
@@ -74,7 +73,6 @@ describe('updateMessages', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		(buildMessage as jest.Mock).mockImplementation((message: unknown) => message);
 		mockDbBatch.mockImplementation((records: any[]) => {
 			records.filter(Boolean).forEach((r: any) => {
 				r._preparedState = null;
@@ -362,25 +360,6 @@ describe('updateMessages', () => {
 			expect(threadMessage.rid).toBe('parent');
 			expect(threadMessage.tmid).toBeUndefined();
 			expect(batched()).toContain(threadMessage);
-		});
-	});
-
-	describe('with the real buildMessage', () => {
-		beforeEach(() => {
-			(buildMessage as jest.Mock).mockImplementation(jest.requireActual('./helpers/buildMessage').default);
-		});
-
-		it.each([
-			['thread', 'threads', 't1', { tlm: { $date: 1 } }],
-			['thread message', 'thread_messages', 'tm1', { tmid: 'parent' }]
-		])('updates a stored %s when the incoming _updatedAt is a newer ISO string', async (_name, table, _id, fields) => {
-			const record = makeFakeRecord(`${table}#${_id}`, { msg: 'old', _updatedAt: new Date('2024-01-01T00:00:00.000Z') });
-			setRecords(table, [record]);
-
-			await updateMessages({ rid, update: [{ _id, rid, msg: 'new', _updatedAt: '2024-01-02T00:00:00.000Z', ...fields } as any] });
-
-			expect(record.msg).toBe('new');
-			expect(batched()).toContain(record);
 		});
 	});
 
