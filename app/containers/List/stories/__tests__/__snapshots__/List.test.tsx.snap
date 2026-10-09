@@ -3062,12 +3062,20 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           }
         }
       />
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+          }
+        }
+      >
         <Text
           accessibilityRole="header"
           style={
             [
               {
+                "flex": 1,
                 "fontSize": 17,
                 "fontWeight": "600",
                 "lineHeight": 20.333333333333332,
@@ -3406,12 +3414,20 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           Chats
         </Text>
       </View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+          }
+        }
+      >
         <Text
           accessibilityRole="header"
           style={
             [
               {
+                "flex": 1,
                 "fontSize": 17,
                 "fontWeight": "600",
                 "lineHeight": 20.333333333333332,
@@ -4498,12 +4514,20 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
     }
   >
     <View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+          }
+        }
+      >
         <Text
           accessibilityRole="header"
           style={
             [
               {
+                "flex": 1,
                 "fontSize": 17,
                 "fontWeight": "600",
                 "lineHeight": 20.333333333333332,
@@ -5028,12 +5052,20 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           Chats
         </Text>
       </View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+          }
+        }
+      >
         <Text
           accessibilityRole="header"
           style={
             [
               {
+                "flex": 1,
                 "fontSize": 17,
                 "fontWeight": "600",
                 "lineHeight": 20.333333333333332,
@@ -5601,12 +5633,20 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
     }
   >
     <View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+          }
+        }
+      >
         <Text
           accessibilityRole="header"
           style={
             [
               {
+                "flex": 1,
                 "fontSize": 17,
                 "fontWeight": "600",
                 "lineHeight": 20.333333333333332,
@@ -6131,12 +6171,20 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           Chats
         </Text>
       </View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+          }
+        }
+      >
         <Text
           accessibilityRole="header"
           style={
             [
               {
+                "flex": 1,
                 "fontSize": 17,
                 "fontWeight": "600",
                 "lineHeight": 20.333333333333332,
@@ -7041,12 +7089,20 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
     }
   >
     <View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+          }
+        }
+      >
         <Text
           accessibilityRole="header"
           style={
             [
               {
+                "flex": 1,
                 "fontSize": 17,
                 "fontWeight": "600",
                 "lineHeight": 20.333333333333332,
@@ -7571,12 +7627,20 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           Chats
         </Text>
       </View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+          }
+        }
+      >
         <Text
           accessibilityRole="header"
           style={
             [
               {
+                "flex": 1,
                 "fontSize": 17,
                 "fontWeight": "600",
                 "lineHeight": 20.333333333333332,
@@ -10016,12 +10080,20 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
     }
   >
     <View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+          }
+        }
+      >
         <Text
           accessibilityRole="header"
           style={
             [
               {
+                "flex": 1,
                 "fontSize": 17,
                 "fontWeight": "600",
                 "lineHeight": 20.333333333333332,
@@ -10546,12 +10618,20 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           Chats
         </Text>
       </View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+          }
+        }
+      >
         <Text
           accessibilityRole="header"
           style={
             [
               {
+                "flex": 1,
                 "fontSize": 17,
                 "fontWeight": "600",
                 "lineHeight": 20.333333333333332,

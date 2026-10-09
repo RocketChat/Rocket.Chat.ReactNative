@@ -6,7 +6,7 @@ import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { isIOS, showErrorAlert } from '~/lib/methods/helpers';
 import { useTheme } from '~/theme';
-import { CustomIcon } from '~/containers/CustomIcon';
+import StatusDot from './StatusDot';
 
 function DeviceNotificationSettings(): ReactElement {
 	const { colors } = useTheme();
@@ -32,20 +32,15 @@ function DeviceNotificationSettings(): ReactElement {
 	};
 
 	return (
-		<List.Section title='Device_notification_settings'>
+		<List.Section
+			title='Device_notification_settings'
+			headerTrailing={<StatusDot color={!deviceNotificationEnabled ? colors.userPresenceBusy : colors.userPresenceOnline} />}>
 			<List.Separator />
 			<List.Item
 				title={!deviceNotificationEnabled ? 'Allow_push_notifications_for_rocket_chat' : 'No_further_action_is_needed'}
 				onPress={alertDeviceNotificationSettings}
 				testID='push-troubleshoot-view-allow-push-notifications'
 				disabled={deviceNotificationEnabled}
-				right={() => (
-					<CustomIcon
-						name='status-online'
-						size={16}
-						color={!deviceNotificationEnabled ? colors.userPresenceBusy : colors.userPresenceOnline}
-					/>
-				)}
 			/>
 			<List.Separator />
 		</List.Section>
