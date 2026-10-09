@@ -110,6 +110,12 @@ jobs:
           echo "Booted devices:"
           xcrun simctl list devices | grep Booted
 
+      - name: Warm Up Simulator
+        timeout-minutes: 10
+        env:
+          E2E_IOS_APP_PATH: ${{ github.workspace }}/ios-simulator-app/Rocket.Chat.app
+        run: bash .github/scripts/warm-up-ios-simulator.sh "$SIM_UDID" "$E2E_IOS_APP_PATH"
+
       - name: Run E2E Tests
         timeout-minutes: 70
         env:
