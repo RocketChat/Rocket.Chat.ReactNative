@@ -5,13 +5,18 @@ PLATFORM="${1:?usage: run-e2e.sh <android|ios> <shard>}"
 SHARD="${2:?usage: run-e2e.sh <android|ios> <shard>}"
 TESTS_DIR="e2e/tests"
 OUTPUT_DIR=".e2e"
-RUN_TIMEOUT="${RUN_TIMEOUT:-40m}"
-RERUN_TIMEOUT="${RERUN_TIMEOUT:-25m}"
+RUN_TIMEOUT_SECONDS="${RUN_TIMEOUT_SECONDS:-2400}"
+RERUN_TIMEOUT_SECONDS="${RERUN_TIMEOUT_SECONDS:-1500}"
+E2E_DEADLINE="${E2E_DEADLINE:-}"
+MIN_PASS_SECONDS="${MIN_PASS_SECONDS:-300}"
 RETRIES="${RETRIES:-2}"
 ANDROID_DEVICE="${E2E_ANDROID_DEVICE:-emulator-5554}"
 NODE_TS=(node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON)
 
 TIMEOUT_BIN="$(command -v timeout || command -v gtimeout || true)"
+if [ -z "$TIMEOUT_BIN" ]; then
+  echo "::warning title=No timeout binary::Neither timeout nor gtimeout is installed, so e2e passes run without a time limit and a wedged run is killed by the step timeout before its device evidence is saved."
+fi
 
 case "$PLATFORM" in
   android)
@@ -179,18 +184,43 @@ stop_device_capture() {
 trap stop_device_capture EXIT
 start_device_capture
 
+seconds_to_deadline() {
+  echo $((E2E_DEADLINE - $(date +%s)))
+}
+
+has_time_for_another_pass() {
+  [ -z "$E2E_DEADLINE" ] || [ "$(seconds_to_deadline)" -ge "$MIN_PASS_SECONDS" ]
+}
+
+warn_pass_skipped() {
+  echo "::warning title=E2E $1 skipped::Only $(seconds_to_deadline)s are left before the step deadline, under the ${MIN_PASS_SECONDS}s a pass needs. Keeping the previous pass's result."
+}
+
 run_e2e_pass() {
   local pass_timeout="$1"
   shift
+  if [ -n "$E2E_DEADLINE" ]; then
+    local seconds_left
+    seconds_left="$(seconds_to_deadline)"
+    [ "$seconds_left" -ge "$pass_timeout" ] || pass_timeout="$seconds_left"
+  fi
   rc=0
-  if [ -n "$TIMEOUT_BIN" ]; then
-    "$TIMEOUT_BIN" -k 30s "$pass_timeout" "${E2E_COMMAND[@]}" "$@" || rc=$?
+  if [ "$pass_timeout" -le 0 ]; then
+    rc=124
+  elif [ -n "$TIMEOUT_BIN" ]; then
+    "$TIMEOUT_BIN" -k 30s "${pass_timeout}s" "${E2E_COMMAND[@]}" "$@" || rc=$?
   else
     "${E2E_COMMAND[@]}" "$@" || rc=$?
   fi
+}
 
-  if [ "$rc" -eq 124 ] || [ "$rc" -eq 137 ]; then
-    echo "::error title=E2E run timed out::'e2e run' exceeded ${pass_timeout} and was terminated (likely a wedged simulator or emulator). This is an environment failure, not an app or test regression."
+pass_timed_out() {
+  [ "$rc" -eq 124 ] || [ "$rc" -eq 137 ]
+}
+
+exit_if_timed_out() {
+  if pass_timed_out; then
+    echo "::error title=E2E run timed out::'e2e run' hit its pass timeout or the step deadline and was stopped (likely a wedged simulator or emulator). This is an environment failure, not an app or test regression."
     exit "$rc"
   fi
 }
@@ -202,13 +232,17 @@ require_report() {
   fi
 }
 
-run_e2e_pass "$RUN_TIMEOUT" --retries "$RETRIES"
+run_e2e_pass "$RUN_TIMEOUT_SECONDS" --retries "$RETRIES"
+exit_if_timed_out
 
-if [ ! -f "$OUTPUT_DIR/junit.xml" ]; then
+if [ ! -f "$OUTPUT_DIR/junit.xml" ] && ! has_time_for_another_pass; then
+  warn_pass_skipped "startup retry"
+elif [ ! -f "$OUTPUT_DIR/junit.xml" ]; then
   echo "::warning title=E2E startup retry::'e2e run' exited ${rc} before running any test (device or automation runner startup failure). Restarting the agent-device daemon and running the shard again."
   save_automation_logs startup
   pnpm exec agent-device daemon stop --clean || true
-  run_e2e_pass "$RUN_TIMEOUT" --retries "$RETRIES"
+  run_e2e_pass "$RUN_TIMEOUT_SECONDS" --retries "$RETRIES"
+  exit_if_timed_out
 fi
 require_report
 
@@ -216,12 +250,23 @@ if jq -e '[.run.results[] | select((.attempts | length) > 1)] | length > 0' "$OU
   RETRIED=true
 fi
 
-if [ "$rc" -ne 0 ]; then
+if [ "$rc" -ne 0 ] && ! has_time_for_another_pass; then
+  RETRIED=true
+  warn_pass_skipped "rerun"
+elif [ "$rc" -ne 0 ]; then
   RETRIED=true
   echo "::warning title=E2E rerun::Rerunning the tests that failed, with a fresh agent-device daemon. The runner never retries infrastructure failures (simulator, emulator, or automation runner), so a single flake would otherwise fail the shard."
   save_automation_logs first-pass
   pnpm exec agent-device daemon stop --clean || true
-  run_e2e_pass "$RERUN_TIMEOUT" --last-failed --retries 0
+  FIRST_PASS_RC="$rc"
+  FIRST_PASS_REPORT_DIR="$(mktemp -d)"
+  cp "$OUTPUT_DIR/junit.xml" "$OUTPUT_DIR/report.json" "$FIRST_PASS_REPORT_DIR/" 2>/dev/null || true
+  run_e2e_pass "$RERUN_TIMEOUT_SECONDS" --last-failed --retries 0
+  if pass_timed_out; then
+    echo "::warning title=E2E rerun timed out::The rerun hit its pass timeout or the step deadline. Keeping the first pass's result and report."
+    cp "$FIRST_PASS_REPORT_DIR"/* "$OUTPUT_DIR/"
+    rc="$FIRST_PASS_RC"
+  fi
   require_report
 fi
 
