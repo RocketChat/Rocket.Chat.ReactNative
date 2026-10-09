@@ -773,6 +773,49 @@ describe('thread message pagination', () => {
 		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
 	});
 
+	it('keeps paging when the target shares the oldest fetched timestamp but is not stored yet', async () => {
+		await loadFirstPage(3, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce({
+			messages: [{ ...threadMessage('R1'), _id: 'TIE' }],
+			total: 3,
+			threadParent: null
+		});
+
+		await expect(loadThreadMessagesUntil(thread, { id: 'TIE', ts: tsOf('R1') }, wanted)).resolves.toBe(true);
+
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(2);
+	});
+
+	it('does not request another page when the target shares the oldest fetched timestamp and is stored', async () => {
+		await loadFirstPage(3, 'R1');
+
+		await expect(loadThreadMessagesUntil(thread, target('R1'), wanted)).resolves.toBe(true);
+
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(1);
+	});
+
+	it('requests the page again from an earlier offset when replies were deleted since the previous page', async () => {
+		await loadFirstPage(4, 'R1', 'R2');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R4')).mockResolvedValueOnce(page(3, 'R3', 'R4'));
+
+		await loadOlderThreadMessages(thread);
+
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(3);
+		expect(mockedGetThreadMessages).toHaveBeenNthCalledWith(2, { tmid: thread.tmid, offset: 2 });
+		expect(mockedGetThreadMessages).toHaveBeenNthCalledWith(3, { tmid: thread.tmid, offset: 1 });
+		expect(storedIds.has('R3')).toBe(true);
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
+	});
+
+	it('does not request the first page twice when replies were deleted since it was last loaded', async () => {
+		await loadFirstPage(4, 'R1', 'R2');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R2', 'R3'));
+
+		await loadThreadMessages(thread);
+
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(2);
+	});
+
 	it('loads older pages only until the page holding the target is fetched', async () => {
 		await loadFirstPage(7, 'R1');
 		mockedGetThreadMessages.mockResolvedValueOnce(page(7, 'R2')).mockResolvedValueOnce(page(7, 'R3'));

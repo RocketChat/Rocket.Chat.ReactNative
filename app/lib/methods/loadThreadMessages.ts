@@ -24,6 +24,7 @@ interface IThreadMessageTarget {
 
 interface IPaginationState {
 	loaded: number;
+	total: number;
 	fullyPaged: boolean;
 	oldestTs: number;
 	reachedOldest: boolean;
@@ -147,10 +148,20 @@ async function saveThreadMessages({ tmid, rid, messages }: IThreadLocation & { m
 	});
 }
 
-const fetchPage = async (thread: IThreadLocation, pager: IThreadPager, offset: number): Promise<boolean> => {
+const requestPage = async (tmid: string, offset: number, previous?: IPaginationState) => {
+	const page = await getThreadMessages({ tmid, offset });
+	const deleted = previous && offset > 0 ? previous.total - page.total : 0;
+	if (deleted <= 0) {
+		return { ...page, offset };
+	}
+	const rewound = Math.max(0, offset - deleted);
+	return { ...(await getThreadMessages({ tmid, offset: rewound })), offset: rewound };
+};
+
+const fetchPage = async (thread: IThreadLocation, pager: IThreadPager, requestedOffset: number): Promise<boolean> => {
 	const previous = pager.state;
 	try {
-		const { messages, total, threadParent } = await getThreadMessages({ tmid: thread.tmid, offset });
+		const { messages, total, threadParent, offset } = await requestPage(thread.tmid, requestedOffset, previous);
 		if (pagination.get(thread.tmid) !== pager) {
 			return false;
 		}
@@ -159,6 +170,7 @@ const fetchPage = async (thread: IThreadLocation, pager: IThreadPager, offset: n
 		const oldest = messages.at(-1);
 		pager.state = {
 			loaded,
+			total,
 			fullyPaged,
 			oldestTs: oldest ? tsToMs(oldest.ts) : Infinity,
 			reachedOldest: !!previous?.reachedOldest || fullyPaged
@@ -217,12 +229,19 @@ export async function loadOlderThreadMessages(thread: IThreadLocation): Promise<
 	await (inFlight.get(thread.tmid) ?? loadNextPage(thread));
 }
 
-const hasPagedTo = (tmid: string, target: IThreadMessageTarget): boolean => {
+const hasPagedTo = async (tmid: string, target: IThreadMessageTarget): Promise<boolean> => {
 	const state = pagination.get(tmid)?.state;
 	if (target.id === tmid) {
 		return state?.reachedOldest === true;
 	}
-	return !!state && (state.reachedOldest || tsToMs(target.ts) >= state.oldestTs);
+	if (!state) {
+		return false;
+	}
+	const targetTs = tsToMs(target.ts);
+	if (state.reachedOldest || targetTs > state.oldestTs) {
+		return true;
+	}
+	return targetTs === state.oldestTs && !!(await getThreadMessageById(target.id));
 };
 
 export const loadThreadMessagesUntil = async (
@@ -232,10 +251,10 @@ export const loadThreadMessagesUntil = async (
 ): Promise<boolean> => {
 	await inFlight.get(thread.tmid);
 	let fetched = true;
-	while (fetched && isWanted() && !hasPagedTo(thread.tmid, target)) {
+	while (fetched && isWanted() && !(await hasPagedTo(thread.tmid, target))) {
 		fetched = await loadNextPage(thread);
 	}
-	if (!hasPagedTo(thread.tmid, target)) {
+	if (!(await hasPagedTo(thread.tmid, target))) {
 		return false;
 	}
 	return target.id === thread.tmid || !!(await getThreadMessageById(target.id));
