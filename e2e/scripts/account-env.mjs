@@ -1,7 +1,11 @@
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 
-const source = readFileSync(process.argv[2] ?? 0, 'utf8');
+const moduleSyntax = /^\s*(output\.account|module\.exports|export\s+default)[\s=]/;
+const source = readFileSync(process.argv[2] ?? 0, 'utf8')
+	.split('\n')
+	.filter(line => !moduleSyntax.test(line))
+	.join('\n');
 const sandbox = { output: {} };
 vm.runInNewContext(`${source}\noutput.account = account;`, sandbox);
 const { account } = sandbox.output;
@@ -15,8 +19,10 @@ const variables = {
 	E2E_CAS_PASSWORD: account.cas?.password
 };
 
+const shellQuote = value => `'${String(value).replaceAll("'", "'\\''")}'`;
+
 for (const [name, value] of Object.entries(variables)) {
 	if (value) {
-		process.stdout.write(`${name}=${value}\n`);
+		process.stdout.write(`${name}=${shellQuote(value)}\n`);
 	}
 }

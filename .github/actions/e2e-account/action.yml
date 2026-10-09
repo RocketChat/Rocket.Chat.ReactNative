@@ -15,7 +15,6 @@ runs:
       run: |
         set -euo pipefail
         if ! account_env="$(printf '%s' "$E2E_ACCOUNT" | base64 --decode 2>/dev/null \
-          | grep -vE '^[[:space:]]*(output\.account|module\.exports|export[[:space:]]+default)[[:space:]=]' \
           | node e2e/scripts/account-env.mjs 2>/dev/null)"; then
           echo "::error title=E2E account invalid::The E2E_ACCOUNT secret could not be decoded or evaluated."
           exit 1
@@ -26,6 +25,8 @@ runs:
         fi
         while IFS= read -r line; do
           [ -n "$line" ] || continue
-          echo "::add-mask::${line#*=}"
-          echo "$line" >> "$GITHUB_ENV"
+          name="${line%%=*}"
+          eval "$line"
+          echo "::add-mask::${!name}"
+          echo "$name=${!name}" >> "$GITHUB_ENV"
         done <<< "$account_env"
