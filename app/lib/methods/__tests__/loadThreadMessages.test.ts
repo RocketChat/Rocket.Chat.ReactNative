@@ -715,13 +715,16 @@ describe('thread message pagination', () => {
 		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
 	});
 
-	it('does not request another page while one is in flight', async () => {
+	it('requests the next page after the one in flight when older messages are asked for again', async () => {
 		await loadFirstPage(3, 'R1');
-		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R2'));
+		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R2')).mockResolvedValueOnce(page(3, 'R3'));
 
 		await Promise.all([loadOlderThreadMessages(thread), loadOlderThreadMessages(thread)]);
 
-		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(2);
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(3);
+		expect(mockedGetThreadMessages).toHaveBeenNthCalledWith(2, { tmid: thread.tmid, offset: 1 });
+		expect(mockedGetThreadMessages).toHaveBeenNthCalledWith(3, { tmid: thread.tmid, offset: 2 });
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
 	});
 
 	it('requests the first page once when opening the thread races an older load', async () => {
@@ -732,17 +735,19 @@ describe('thread message pagination', () => {
 		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(1);
 	});
 
-	it('waits for a reload in flight instead of requesting a stale page', async () => {
+	it('requests the next page from the reloaded count when a reload is in flight', async () => {
 		await loadFirstPage(5, 'R1');
 		const releaseReload = deferPage();
+		mockedGetThreadMessages.mockResolvedValueOnce(page(5, 'R3'));
 
 		const reload = loadThreadMessages(thread);
 		const older = loadOlderThreadMessages(thread);
-		releaseReload(5, 'R1');
+		releaseReload(5, 'R1', 'R2');
 		await Promise.all([reload, older]);
 
-		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(2);
-		expect(mockedGetThreadMessages).toHaveBeenLastCalledWith({ tmid: thread.tmid, offset: 0 });
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(3);
+		expect(mockedGetThreadMessages).toHaveBeenNthCalledWith(2, { tmid: thread.tmid, offset: 0 });
+		expect(mockedGetThreadMessages).toHaveBeenLastCalledWith({ tmid: thread.tmid, offset: 2 });
 	});
 
 	it('does not call the server when there is nothing more to load', async () => {

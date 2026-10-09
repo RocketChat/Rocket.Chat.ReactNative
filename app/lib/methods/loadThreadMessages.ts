@@ -226,7 +226,7 @@ export async function loadThreadMessages(thread: IThreadLocation): Promise<void>
 }
 
 export async function loadOlderThreadMessages(thread: IThreadLocation): Promise<void> {
-	await (inFlight.get(thread.tmid) ?? loadNextPage(thread));
+	await loadNextPage(thread);
 }
 
 const hasPagedTo = async (tmid: string, target: IThreadMessageTarget): Promise<boolean> => {
