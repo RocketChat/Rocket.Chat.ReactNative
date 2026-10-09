@@ -41,13 +41,7 @@ const jumpToMessageFrom = (fixtures: Fixtures, text: string) =>
 const expectThreadMessage = async (fixtures: Fixtures, text: string) => {
 	await expectVisible(fixtures, 'room-view-title-thread 1');
 	const message = testIdContaining(fixtures, `message-content-${text}`);
-	if (fixtures.platform === 'android') {
-		await fixtures.screen
-			.getByTestId('room-view-messages')
-			.scrollUntilVisible(message, { direction: 'down', timeout: LONG_TIMEOUT });
-	} else {
-		await expect(message).toBeVisible({ timeout: LONG_TIMEOUT });
-	}
+	await expect(message).toBeVisible({ timeout: LONG_TIMEOUT });
 	await message.tap();
 };
 
