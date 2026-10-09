@@ -5,7 +5,7 @@ import { CustomIcon } from '~/containers/CustomIcon';
 import { CONTENT_SPACING, ROW_PADDING_HORIZONTAL } from '~/containers/NativeListRow/constants';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useTheme } from '~/theme';
-import { useCategoryOrderRowHeight } from '../hooks/useCategoryOrderRowHeight';
+import { useNativeListRowHeight } from '~/containers/NativeListRow/hooks/useNativeListRowHeight';
 
 const DRAG_HANDLE_SIZE = 24;
 
@@ -38,7 +38,7 @@ interface ICategoryOrderRow {
 
 const CategoryOrderRow = ({ title, disabled = false, dragGesture, showSeparator = false }: ICategoryOrderRow) => {
 	const { colors } = useTheme();
-	const height = useCategoryOrderRowHeight();
+	const height = useNativeListRowHeight();
 	const { fontScaleLimited } = useResponsiveLayout();
 	const separatorInset = ROW_PADDING_HORIZONTAL + DRAG_HANDLE_SIZE * fontScaleLimited + CONTENT_SPACING;
 	return (

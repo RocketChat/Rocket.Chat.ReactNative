@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 
 import { type ICategoryOrderGroup } from '../hooks/useCategoryOrder';
-import { useCategoryOrderRowHeight } from '../hooks/useCategoryOrderRowHeight';
+import { useNativeListRowHeight } from '~/containers/NativeListRow/hooks/useNativeListRowHeight';
 import { swapWithNeighbour, toPositions } from '../sortablePositions';
 import CategoryOrderRow from './CategoryOrderRow';
 import SortableRow from './SortableRow';
@@ -13,7 +13,7 @@ interface ISortableList {
 }
 
 const SortableList = ({ groups, onReorder }: ISortableList) => {
-	const rowHeight = useCategoryOrderRowHeight();
+	const rowHeight = useNativeListRowHeight();
 	const ids = groups.map(group => group.id);
 	const positions = useSharedValue(toPositions(ids));
 	const activeId = useSharedValue<string | null>(null);
