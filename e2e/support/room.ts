@@ -2,6 +2,7 @@ import { expect } from 'e2e';
 
 import {
 	backToRoomsList,
+	clearSettled,
 	confirmAlert,
 	expectHidden,
 	expectVisible,
@@ -14,7 +15,8 @@ import {
 	searchAndNavigateRoom,
 	succeeds,
 	tapUntilVisible,
-	tapWhenVisible
+	tapWhenVisible,
+	typeUntilListed
 } from './flows';
 
 export const openNewMessage = async (fixtures: Fixtures) => {
@@ -25,8 +27,14 @@ export const openNewMessage = async (fixtures: Fixtures) => {
 
 export const selectUser = async (fixtures: Fixtures, username: string) => {
 	await tapWhenVisible(fixtures, 'select-users-view-search');
-	await fillSettled(fixtures.screen.getByTestId('select-users-view-search'), username);
-	await tapWhenVisible(fixtures, `select-users-view-item-${username}`);
+	const search = fixtures.screen.getByTestId('select-users-view-search');
+	const listedUser = fixtures.screen.getByTestId(`select-users-view-item-${username}`).first();
+	await typeUntilListed(
+		() => fillSettled(search, username),
+		() => clearSettled(search),
+		listedUser
+	);
+	await tapWhenVisible(fixtures, listedUser);
 	await expectVisible(fixtures, `selected-user-${username}`);
 };
 

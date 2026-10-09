@@ -205,6 +205,35 @@ export const tapWhenVisible = async ({ screen }: Fixtures, testIdOrTarget: strin
 	await tapWhenUncovered(target);
 };
 
+const SEARCH_RESPONSE_TIMEOUT = 10_000;
+
+export const typeUntilListed = async (type: () => Promise<void>, clear: () => Promise<void>, listed: Locator) => {
+	await type();
+	if (await succeeds(expect(listed).toBeVisible({ timeout: SEARCH_RESPONSE_TIMEOUT }))) {
+		return;
+	}
+	await clear();
+	await type();
+};
+
+const SCROLL_STALLED_ERROR = 'moved nothing';
+const SCROLL_STALL_DELAY = 3_000;
+
+export const scrollUntilLoaded = async ({ screen }: Fixtures, target: Locator, direction: 'up' | 'down') => {
+	const deadline = Date.now() + LONG_TIMEOUT;
+	for (;;) {
+		try {
+			await screen.scrollUntilVisible(target, { direction, timeout: LONG_TIMEOUT });
+			return;
+		} catch (error) {
+			if (!String(error).includes(SCROLL_STALLED_ERROR) || Date.now() > deadline) {
+				throw error;
+			}
+			await delay(SCROLL_STALL_DELAY);
+		}
+	}
+};
+
 const TAP_ATTEMPTS = 3;
 const TAP_RESPONSE_TIMEOUT = 5_000;
 
@@ -487,6 +516,7 @@ export const navigateToRoom = async ({ screen }: Fixtures, room: string) => {
 	const roomItem = screen.getByTestId(`rooms-list-view-item-${room}`).first();
 	const roomTitle = screen.getByTestId(`room-view-title-${room}`);
 	const e2ePasswordCloseButtons = E2E_PASSWORD_CLOSE_BUTTON_TEST_IDS.map(testId => screen.getByTestId(testId));
+	await expect(screen.getByTestId(/^rooms-list-view-item-/).first()).toBeVisible({ timeout: LONG_TIMEOUT });
 	for (let attempt = 1; attempt < ROOM_OPEN_ATTEMPTS; attempt += 1) {
 		await screen.scrollUntilVisible(roomItem);
 		await roomItem.tap();

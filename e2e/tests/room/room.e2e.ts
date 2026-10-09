@@ -19,7 +19,8 @@ import {
 	tapUntilVisible,
 	fillWhenUncovered,
 	clearSettled,
-	tapSend
+	tapSend,
+	typeUntilListed
 } from '~e2e/support/flows';
 import { deleteMessage } from '~e2e/support/room';
 
@@ -35,11 +36,16 @@ const expectAutocomplete = async (
 	completed: string,
 	{ selected, alsoListed = [] }: { selected: string; alsoListed?: readonly string[] }
 ) => {
-	await composer(fixtures).pressSequentially(typed, { delay: 50 });
+	const selectedItem = fixtures.screen.getByTestId(`autocomplete-item-${selected}`).first();
+	await typeUntilListed(
+		() => composer(fixtures).pressSequentially(typed, { delay: 50 }),
+		() => clearSettled(composer(fixtures)),
+		selectedItem
+	);
 	for (const listedItemId of alsoListed) {
 		await expectVisible(fixtures, `autocomplete-item-${listedItemId}`);
 	}
-	await tapWhenVisible(fixtures, `autocomplete-item-${selected}`);
+	await tapWhenVisible(fixtures, selectedItem);
 	await expect(composer(fixtures)).toHaveValue(new RegExp(`^${completed} ?$`), { timeout: LONG_TIMEOUT });
 	await expectHidden(fixtures, `autocomplete-item-${selected}`);
 	await clearSettled(composer(fixtures));
