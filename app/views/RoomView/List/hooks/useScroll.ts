@@ -8,15 +8,11 @@ import { type TAnyMessageModel } from '~/definitions';
 const JUMP_SAFETY_TIMEOUT = 5000;
 const HIGHLIGHT_TIMEOUT = 5000;
 
-// A target deeper than the window's initial QUERY_SIZE rows needs the window grown by QUERY_SIZE per retry to pull it in.
-// Capped so a target that never materialises aborts via the safety net instead of looping.
 const MAX_JUMP_GROWTH_RETRIES = 5;
 
 // VirtualizedList re-fires onScrollToIndexFailed synchronously, so defer each retry one frame to break
 // the recursion.
 const SCROLL_TO_INDEX_RETRY_DELAY = 50;
-// A deep target can sit ~250 rows past the measured frontier (a fully grown thread window); each retry
-// climbs ~one render batch, so the cap must cover the distance. Bounded so an unreachable target aborts, not loops.
 const MAX_SCROLL_TO_INDEX_RETRIES = 60;
 
 // animated:false snaps straight to the target instead of smooth-scrolling through every row between here
@@ -61,7 +57,6 @@ export const useScroll = ({
 	const lastJumpTargetId = useRef<string | null>(null);
 	// Bounds the onScrollToIndexFailed retry chain per jump (reset when a new jump starts).
 	const scrollFailRetries = useRef(0);
-	// Bounds the window-growth retries while waiting for a deep target to re-observe (reset per jump).
 	const jumpGrowthRetries = useRef(0);
 	// A jump-to-bottom deferred until the released live window emits (set when releasing an Anchored Window).
 	const pendingBottom = useRef(false);

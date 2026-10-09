@@ -6,14 +6,13 @@ import log from './helpers/log';
 import { Encryption } from '../encryption';
 import protectedFunction from './helpers/protectedFunction';
 import buildMessage from './helpers/buildMessage';
-import getSingleMessage from './getSingleMessage';
 import { type IMessage, type TThreadMessageModel, type TThreadModel } from '~/definitions';
 import { getThreadById } from '../database/services/Thread';
 import { getThreadMessageById } from '../database/services/ThreadMessage';
 import { tsToMs } from '../dayjs';
 import { getThreadMessages } from '../services/restApi';
 
-export interface IThreadLocation {
+interface IThreadLocation {
 	tmid: string;
 	rid: string;
 }
@@ -36,10 +35,10 @@ interface IThreadPager {
 }
 
 const pagination = new Map<string, IThreadPager>();
-const inFlight = new Map<string, Promise<unknown>>();
-const loadedListeners = new Set<(tmid: string) => void>();
+const inFlight = new Map<string, Promise<boolean>>();
+const loadedListeners = new Set<() => void>();
 
-export const subscribeThreadLoaded = (listener: (tmid: string) => void) => {
+export const subscribeThreadLoaded = (listener: () => void) => {
 	loadedListeners.add(listener);
 	return () => {
 		loadedListeners.delete(listener);
@@ -85,7 +84,7 @@ async function prepareThreadUpsert(threadParent: TThreadModel | undefined, rid: 
 	return null;
 }
 
-async function saveThreadMessages({ tmid, rid, messages }: { tmid: string; rid: string; messages: IMessage[] }): Promise<void> {
+async function saveThreadMessages({ tmid, rid, messages }: IThreadLocation & { messages: IMessage[] }): Promise<void> {
 	if (!messages?.length) {
 		return;
 	}
@@ -148,33 +147,24 @@ async function saveThreadMessages({ tmid, rid, messages }: { tmid: string; rid: 
 	});
 }
 
-const fetchThreadParent = (tmid: string): Promise<IMessage | null> =>
-	getSingleMessage(tmid).catch(e => {
-		log(e);
-		return null;
-	});
-
 const fetchPage = async (thread: IThreadLocation, pager: IThreadPager, offset: number): Promise<boolean> => {
 	const previous = pager.state;
 	try {
-		const [threadParent, page] = await Promise.all([
-			offset === 0 ? fetchThreadParent(thread.tmid) : null,
-			getThreadMessages({ tmid: thread.tmid, offset })
-		]);
+		const { messages, total, threadParent } = await getThreadMessages({ tmid: thread.tmid, offset });
 		if (pagination.get(thread.tmid) !== pager) {
 			return false;
 		}
-		const loaded = offset + page.messages.length;
-		const fullyPaged = !page.messages.length || loaded >= page.total;
-		const oldest = page.messages.at(-1);
+		const loaded = offset + messages.length;
+		const fullyPaged = !messages.length || loaded >= total;
+		const oldest = messages.at(-1);
 		pager.state = {
 			loaded,
 			fullyPaged,
 			oldestTs: oldest ? tsToMs(oldest.ts) : Infinity,
 			reachedOldest: !!previous?.reachedOldest || fullyPaged
 		};
-		await saveThreadMessages({ ...thread, messages: threadParent ? [threadParent, ...page.messages] : page.messages });
-		return page.messages.length > 0;
+		await saveThreadMessages({ ...thread, messages: threadParent ? [threadParent, ...messages] : messages });
+		return messages.length > 0;
 	} catch (e) {
 		log(e);
 		pager.state = previous;
@@ -182,12 +172,12 @@ const fetchPage = async (thread: IThreadLocation, pager: IThreadPager, offset: n
 	}
 };
 
-const track = <T>(tmid: string, run: () => Promise<T>): Promise<T> => {
+const track = (tmid: string, run: () => Promise<boolean>): Promise<boolean> => {
 	const pending = inFlight.get(tmid);
-	const request: Promise<T> = (async () => {
+	const request: Promise<boolean> = (async () => {
 		await pending;
 		const result = await run();
-		loadedListeners.forEach(listener => listener(tmid));
+		loadedListeners.forEach(listener => listener());
 		return result;
 	})().finally(() => {
 		if (inFlight.get(tmid) === request) {
@@ -219,19 +209,19 @@ const loadNextPage = (thread: IThreadLocation): Promise<boolean> => {
 	});
 };
 
-export async function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string }): Promise<void> {
-	await loadFirstPage({ tmid, rid });
+export async function loadThreadMessages(thread: IThreadLocation): Promise<void> {
+	await loadFirstPage(thread);
 }
 
-export async function loadMoreThreadMessages(thread: { tmid: string; rid: string }): Promise<void> {
+export async function loadOlderThreadMessages(thread: IThreadLocation): Promise<void> {
 	await (inFlight.get(thread.tmid) ?? loadNextPage(thread));
 }
 
 const hasPagedTo = (tmid: string, target: IThreadMessageTarget): boolean => {
-	if (target.id === tmid) {
-		return !areOlderThreadMessagesMissing(tmid);
-	}
 	const state = pagination.get(tmid)?.state;
+	if (target.id === tmid) {
+		return state?.reachedOldest === true;
+	}
 	return !!state && (state.reachedOldest || tsToMs(target.ts) >= state.oldestTs);
 };
 

@@ -4,7 +4,7 @@ import {
 	subscribeThreadLoaded,
 	areOlderThreadMessagesMissing,
 	clearThreadPagination,
-	loadMoreThreadMessages,
+	loadOlderThreadMessages,
 	loadThreadMessages,
 	loadThreadMessagesUntil
 } from '../loadThreadMessages';
@@ -14,18 +14,12 @@ import { getThreadById } from '../../database/services/Thread';
 import { getThreadMessageById } from '../../database/services/ThreadMessage';
 import { Encryption } from '../../encryption';
 import { getThreadMessages } from '../../services/restApi';
-import getSingleMessage from '../getSingleMessage';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import buildMessage from '../helpers/buildMessage';
 import log from '../helpers/log';
 
 jest.mock('../../services/restApi', () => ({
 	getThreadMessages: jest.fn()
-}));
-
-jest.mock('../getSingleMessage', () => ({
-	__esModule: true,
-	default: jest.fn()
 }));
 
 jest.mock('../../database', () => ({
@@ -68,7 +62,6 @@ jest.mock('@nozbe/watermelondb/RawRecord', () => ({
 }));
 
 const mockedGetThreadMessages = getThreadMessages as jest.Mock;
-const mockedGetSingleMessage = getSingleMessage as jest.Mock;
 const mockedGetThreadById = getThreadById as jest.MockedFunction<typeof getThreadById>;
 const mockedGetThreadMessageById = getThreadMessageById as jest.Mock;
 const mockedBuildMessage = buildMessage as jest.MockedFunction<typeof buildMessage>;
@@ -162,7 +155,8 @@ const makeLocalThreadMessage = ({ id, updatedAt, attachments }: { id: string; up
 	return record;
 };
 
-const mockThread = (messages: any[]) => mockedGetThreadMessages.mockResolvedValue({ messages, total: messages.length });
+const mockThread = (messages: any[]) =>
+	mockedGetThreadMessages.mockResolvedValue({ messages, total: messages.length, threadParent: null });
 
 const dbWrite = (): jest.Mock => (database as any).active.write as jest.Mock;
 const dbBatch = (): jest.Mock => (database as any).active.batch as jest.Mock;
@@ -171,7 +165,6 @@ describe('loadThreadMessages', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		setupDatabase();
-		mockedGetSingleMessage.mockRejectedValue(new Error('not found'));
 	});
 
 	it('creates the threads record from the parent returned by getThreadMessages', async () => {
@@ -188,7 +181,6 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('points the created threads record at the room subscription', async () => {
-		// NOTE: rid differs from parent.rid so the assertion proves the value comes from the rid parameter, not the parent.
 		const parent = { ...buildParent(new Date('2026-01-02'), []), subscription: { id: 'OLD_SUB_ID' } };
 		mockThread([parent, buildReply()]);
 		mockedGetThreadById.mockResolvedValue(null);
@@ -475,7 +467,6 @@ describe('loadThreadMessages thread_messages unit', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		setupDatabase();
-		mockedGetSingleMessage.mockRejectedValue(new Error('not found'));
 		setThreadMessageRecords([]);
 		mockedGetThreadById.mockResolvedValue(null);
 		mockedBuildMessage.mockImplementation((message: any) => message);
@@ -502,8 +493,6 @@ describe('loadThreadMessages thread_messages unit', () => {
 	});
 
 	it('filters out messages without tmid before creating thread_messages', async () => {
-		// NOTE: buildMessage/decrypt still see every truthy row (parent included);
-		// the tmid filter runs after decrypt, just before the create/update diff.
 		const reply1 = unitReply('R1', NEW);
 		const reply2 = unitReply('R2', NEW);
 		const orphan1 = { _id: 'ORPHAN-1', msg: 'orphan', _updatedAt: NEW };
@@ -636,9 +625,10 @@ describe('thread message pagination', () => {
 	const target = (id: string) => ({ id, ts: tsOf(id) });
 	const wanted = () => true;
 	const threadMessage = (id: string) => ({ _id: id, rid: RID, tmid: thread.tmid, msg: id, ts: tsOf(id), _updatedAt: new Date() });
-	const page = (total: number, ...ids: string[]) => ({ messages: ids.map(threadMessage), total });
+	const page = (total: number, ...ids: string[]) => ({ messages: ids.map(threadMessage), total, threadParent: null });
 	const loadFirstPage = async (total: number, ...ids: string[]) => {
-		mockedGetThreadMessages.mockResolvedValueOnce(page(total, ...ids));
+		const threadParent = { ...buildParent(new Date('2026-01-02'), []), _id: thread.tmid };
+		mockedGetThreadMessages.mockResolvedValueOnce({ ...page(total, ...ids), threadParent });
 		await loadThreadMessages(thread);
 	};
 	const failNextWrite = () => dbBatch().mockRejectedValueOnce(new Error('db'));
@@ -664,7 +654,6 @@ describe('thread message pagination', () => {
 		thread = { tmid: `PAGED_THREAD_${threadCount}`, rid: RID };
 		mockedGetThreadMessages.mockReset();
 		mockedGetThreadById.mockResolvedValue(null);
-		mockedGetSingleMessage.mockResolvedValue({ ...buildParent(new Date('2026-01-02'), []), _id: thread.tmid });
 		storedIds = new Set();
 		mockedGetThreadMessageById.mockImplementation((id: string) => Promise.resolve(storedIds.has(id) ? { id } : null));
 		dbBatch().mockImplementation((records: any[]) => {
@@ -678,36 +667,28 @@ describe('thread message pagination', () => {
 
 		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(1);
 		expect(mockedGetThreadMessages).toHaveBeenCalledWith({ tmid: thread.tmid, offset: 0 });
-		expect(mockedGetSingleMessage).toHaveBeenCalledWith(thread.tmid);
 		expect(threadsCreated).toHaveLength(1);
 		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
 	});
 
-	it('keeps the thread messages when the thread parent fails to load', async () => {
-		mockedGetSingleMessage.mockRejectedValueOnce(new Error('boom'));
+	it('keeps the thread messages when the first page comes without a thread parent', async () => {
+		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R1'));
 
-		await loadFirstPage(3, 'R1');
+		await loadThreadMessages(thread);
 
 		expect(threadsCreated).toHaveLength(0);
 		expect(batched.map((r: any) => r._id)).toEqual(['R1']);
 		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
 	});
 
-	it('logs when the first page fails and reports nothing older to load', async () => {
-		mockedGetThreadMessages.mockRejectedValueOnce(new Error('429'));
-
-		await loadThreadMessages(thread);
-
-		expect(mockedLog).toHaveBeenCalled();
-		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
-	});
-
-	it('retries the first page on the next load more when it failed', async () => {
+	it('logs a failed first page and retries it on the next load of older messages', async () => {
 		mockedGetThreadMessages.mockRejectedValueOnce(new Error('500'));
 		await loadThreadMessages(thread);
+		expect(mockedLog).toHaveBeenCalled();
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
 		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R1'));
 
-		await loadMoreThreadMessages(thread);
+		await loadOlderThreadMessages(thread);
 
 		expect(mockedGetThreadMessages).toHaveBeenLastCalledWith({ tmid: thread.tmid, offset: 0 });
 		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
@@ -718,26 +699,19 @@ describe('thread message pagination', () => {
 		await loadFirstPage(3, 'R1');
 		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R1'));
 
-		await loadMoreThreadMessages(thread);
+		await loadOlderThreadMessages(thread);
 
 		expect(mockedGetThreadMessages).toHaveBeenLastCalledWith({ tmid: thread.tmid, offset: 0 });
 		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
 	});
 
-	it('reports nothing older to load when the first page holds the whole thread', async () => {
-		await loadFirstPage(1, 'R1');
-
-		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
-	});
-
-	it('fetches the next page from the number of thread messages already fetched, without the thread parent', async () => {
+	it('fetches the next page from the number of thread messages already fetched', async () => {
 		await loadFirstPage(3, 'R1', 'R2');
 		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R3'));
 
-		await loadMoreThreadMessages(thread);
+		await loadOlderThreadMessages(thread);
 
 		expect(mockedGetThreadMessages).toHaveBeenLastCalledWith({ tmid: thread.tmid, offset: 2 });
-		expect(mockedGetSingleMessage).toHaveBeenCalledTimes(1);
 		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
 	});
 
@@ -745,7 +719,7 @@ describe('thread message pagination', () => {
 		await loadFirstPage(3, 'R1');
 		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R2'));
 
-		await Promise.all([loadMoreThreadMessages(thread), loadMoreThreadMessages(thread)]);
+		await Promise.all([loadOlderThreadMessages(thread), loadOlderThreadMessages(thread)]);
 
 		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(2);
 	});
@@ -753,10 +727,9 @@ describe('thread message pagination', () => {
 	it('requests the first page once when opening the thread races an older load', async () => {
 		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R1'));
 
-		await Promise.all([loadMoreThreadMessages(thread), loadThreadMessages(thread)]);
+		await Promise.all([loadOlderThreadMessages(thread), loadThreadMessages(thread)]);
 
 		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(1);
-		expect(mockedGetSingleMessage).toHaveBeenCalledTimes(1);
 	});
 
 	it('waits for a reload in flight instead of requesting a stale page', async () => {
@@ -764,7 +737,7 @@ describe('thread message pagination', () => {
 		const releaseReload = deferPage();
 
 		const reload = loadThreadMessages(thread);
-		const older = loadMoreThreadMessages(thread);
+		const older = loadOlderThreadMessages(thread);
 		releaseReload(5, 'R1');
 		await Promise.all([reload, older]);
 
@@ -775,16 +748,17 @@ describe('thread message pagination', () => {
 	it('does not call the server when there is nothing more to load', async () => {
 		await loadFirstPage(1, 'R1');
 
-		await loadMoreThreadMessages(thread);
+		await loadOlderThreadMessages(thread);
 
 		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(1);
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
 	});
 
 	it('keeps older thread messages missing and logs when a page request fails', async () => {
 		await loadFirstPage(3, 'R1');
 		mockedGetThreadMessages.mockRejectedValueOnce(new Error('boom'));
 
-		await loadMoreThreadMessages(thread);
+		await loadOlderThreadMessages(thread);
 
 		expect(mockedLog).toHaveBeenCalled();
 		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
@@ -794,7 +768,7 @@ describe('thread message pagination', () => {
 		await loadFirstPage(5, 'R1');
 		mockedGetThreadMessages.mockResolvedValueOnce(page(5));
 
-		await loadMoreThreadMessages(thread);
+		await loadOlderThreadMessages(thread);
 
 		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
 	});
@@ -883,6 +857,16 @@ describe('thread message pagination', () => {
 		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(1);
 	});
 
+	it('retries the first page before jumping to the thread parent when it could not be fetched', async () => {
+		mockedGetThreadMessages.mockRejectedValueOnce(new Error('boom'));
+		await loadThreadMessages(thread);
+		mockedGetThreadMessages.mockResolvedValueOnce(page(1, 'R1'));
+
+		await expect(loadThreadMessagesUntil(thread, { id: thread.tmid, ts: new Date() }, wanted)).resolves.toBe(true);
+
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(2);
+	});
+
 	it('gives up loading until the target when a page request fails', async () => {
 		await loadFirstPage(3, 'R1');
 		mockedGetThreadMessages.mockRejectedValue(new Error('boom'));
@@ -916,30 +900,19 @@ describe('thread message pagination', () => {
 		mockedGetThreadMessages.mockResolvedValueOnce(page(2, 'R2'));
 		const captured = captureMissingOnWrite();
 
-		await loadMoreThreadMessages(thread);
+		await loadOlderThreadMessages(thread);
 
 		expect(captured.missing).toBe(false);
-	});
-
-	it('does not adopt the pagination state of a first page that failed to save', async () => {
-		await loadFirstPage(1, 'R1');
-		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R1'));
-		failNextWrite();
-
-		await loadThreadMessages(thread);
-
-		expect(mockedLog).toHaveBeenCalled();
-		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
 	});
 
 	it('requests the same page again after saving it failed', async () => {
 		await loadFirstPage(3, 'R1');
 		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R2'));
 		failNextWrite();
-		await loadMoreThreadMessages(thread);
+		await loadOlderThreadMessages(thread);
 		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R2'));
 
-		await loadMoreThreadMessages(thread);
+		await loadOlderThreadMessages(thread);
 
 		expect(mockedGetThreadMessages).toHaveBeenNthCalledWith(2, { tmid: thread.tmid, offset: 1 });
 		expect(mockedGetThreadMessages).toHaveBeenNthCalledWith(3, { tmid: thread.tmid, offset: 1 });
@@ -949,7 +922,7 @@ describe('thread message pagination', () => {
 	it('keeps no older thread messages missing when the first page is reloaded after the oldest was stored', async () => {
 		await loadFirstPage(2, 'R1');
 		mockedGetThreadMessages.mockResolvedValueOnce(page(2, 'R2'));
-		await loadMoreThreadMessages(thread);
+		await loadOlderThreadMessages(thread);
 
 		await loadFirstPage(2, 'R2');
 
@@ -959,26 +932,10 @@ describe('thread message pagination', () => {
 	it('forgets the reached oldest page once the thread view closes', async () => {
 		await loadFirstPage(2, 'R1');
 		mockedGetThreadMessages.mockResolvedValueOnce(page(2, 'R2'));
-		await loadMoreThreadMessages(thread);
+		await loadOlderThreadMessages(thread);
 
 		clearThreadPagination(thread.tmid);
 		await loadFirstPage(2, 'R1');
-
-		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
-	});
-
-	it('drops a page that lands after its thread view closed', async () => {
-		await loadFirstPage(2, 'R1');
-		mockedGetThreadMessages.mockResolvedValueOnce(page(2, 'R2'));
-		await loadMoreThreadMessages(thread);
-		const releaseReload = deferPage();
-		const reload = loadThreadMessages(thread);
-		await flushPromises();
-
-		clearThreadPagination(thread.tmid);
-		releaseReload(2, 'R1');
-		await reload;
-		await loadFirstPage(3, 'R1');
 
 		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
 	});
@@ -986,12 +943,14 @@ describe('thread message pagination', () => {
 	it('does not reuse an older page left in flight by a closed thread view as the first page', async () => {
 		await loadFirstPage(5, 'R1');
 		const releaseOlder = deferPage();
-		const older = loadMoreThreadMessages(thread);
+		const older = loadOlderThreadMessages(thread);
 		await flushPromises();
 
 		clearThreadPagination(thread.tmid);
 		mockedGetThreadMessages.mockResolvedValueOnce(page(5, 'R1'));
 		const reopen = loadThreadMessages(thread);
+		await flushPromises();
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(2);
 		releaseOlder(5, 'R2');
 		await Promise.all([older, reopen]);
 

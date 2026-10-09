@@ -9,7 +9,7 @@ import database from '~/lib/database';
 import { getMessageById } from '~/lib/database/services/Message';
 import { getThreadById } from '~/lib/database/services/Thread';
 import { MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
-import { areOlderThreadMessagesMissing, clearThreadPagination, loadMoreThreadMessages } from '~/lib/methods/loadThreadMessages';
+import { areOlderThreadMessagesMissing, clearThreadPagination, loadOlderThreadMessages } from '~/lib/methods/loadThreadMessages';
 import { readThreads } from '~/lib/services/restApi';
 import { mockedStore } from '~/reducers/mockedStore';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '~/views/RoomView/List/constants';
@@ -45,7 +45,7 @@ jest.mock('~/lib/methods/loadThreadMessages', () => ({
 	}),
 	areOlderThreadMessagesMissing: jest.fn(() => false),
 	clearThreadPagination: jest.fn(),
-	loadMoreThreadMessages: jest.fn()
+	loadOlderThreadMessages: jest.fn()
 }));
 
 jest.mock('~/lib/services/restApi', () => ({
@@ -65,7 +65,7 @@ const mockGetThreadById = jest.mocked(getThreadById);
 const mockGetMessageById = jest.mocked(getMessageById);
 const mockReadThreads = jest.mocked(readThreads);
 const mockAreOlderThreadMessagesMissing = jest.mocked(areOlderThreadMessagesMissing);
-const mockLoadMoreThreadMessages = jest.mocked(loadMoreThreadMessages);
+const mockLoadOlderThreadMessages = jest.mocked(loadOlderThreadMessages);
 const mockClearThreadPagination = jest.mocked(clearThreadPagination);
 
 const baseArgs = {
@@ -417,11 +417,12 @@ describe('useMessages', () => {
 
 	it('hides the thread parent until the Message Window holds the oldest stored thread message', async () => {
 		mockGetThreadById.mockResolvedValueOnce(threadParentRow());
-		emittedRows = Array.from({ length: QUERY_SIZE }, (_, i) => msg({ id: `tm${i}`, tmid: 'THREAD_ID' }));
+		emittedRows = Array.from({ length: QUERY_SIZE + 1 }, (_, i) => msg({ id: `tm${i}`, tmid: 'THREAD_ID' }));
 		const { result } = renderUseMessages({ tmid: 'THREAD_ID' });
 		await waitFor(() => {
 			expect(result.current[0].map(m => m.id)).toContain('tm0');
 		});
+		expect(result.current[0]).toHaveLength(QUERY_SIZE);
 		expect(result.current[0].map(m => m.id)).not.toContain('parent-thread');
 		emittedRows = [...emittedRows, msg({ id: 'oldest', tmid: 'THREAD_ID' })];
 
@@ -430,6 +431,17 @@ describe('useMessages', () => {
 		});
 
 		expect(result.current[0].map(m => m.id).slice(-2)).toEqual(['oldest', 'parent-thread']);
+	});
+
+	it('shows the thread parent when the thread holds exactly one window of messages', async () => {
+		mockGetThreadById.mockResolvedValueOnce(threadParentRow());
+		emittedRows = Array.from({ length: QUERY_SIZE }, (_, i) => msg({ id: `tm${i}`, tmid: 'THREAD_ID' }));
+		const { result } = renderUseMessages({ tmid: 'THREAD_ID' });
+
+		await waitFor(() => {
+			expect(result.current[0].map(m => m.id)).toContain('parent-thread');
+		});
+		expect(result.current[0]).toHaveLength(QUERY_SIZE + 1);
 	});
 
 	it('forgets the thread pagination when the thread view unmounts', async () => {
@@ -457,7 +469,7 @@ describe('useMessages', () => {
 			result.current[3].loadOlderMessages();
 		});
 
-		expect(mockLoadMoreThreadMessages).toHaveBeenCalledWith({ tmid: 'THREAD_ID', rid: 'ROOM_ID' });
+		expect(mockLoadOlderThreadMessages).toHaveBeenCalledWith({ tmid: 'THREAD_ID', rid: 'ROOM_ID' });
 		expect(queryCalls.length).toBeGreaterThan(queriesBefore);
 	});
 
@@ -472,7 +484,7 @@ describe('useMessages', () => {
 			result.current[3].loadOlderMessages();
 		});
 
-		expect(mockLoadMoreThreadMessages).not.toHaveBeenCalled();
+		expect(mockLoadOlderThreadMessages).not.toHaveBeenCalled();
 	});
 
 	it('falls back to getMessageById when thread record is missing', async () => {
@@ -730,6 +742,33 @@ describe('useMessages', () => {
 			(clause): clause is { type: 'take'; count: number } =>
 				!!clause && typeof clause === 'object' && (clause as { type?: string }).type === 'take'
 		);
+
+	it('reads one thread message past the window to know whether older ones exist', async () => {
+		renderUseMessages({ tmid: 'THREAD_ID' });
+		await waitFor(() => {
+			expect(queryCalls.length).toBeGreaterThan(0);
+		});
+
+		expect(findTakeClause(queryCalls[0])?.count).toBe(QUERY_SIZE + 1);
+	});
+
+	it('sizes the window of overlapping thread loads alike', async () => {
+		let releaseLookup!: (thread: null) => void;
+		mockGetThreadById.mockReturnValueOnce(new Promise<null>(resolve => (releaseLookup = resolve)));
+		const { result } = renderUseMessages({ tmid: 'THREAD_ID' });
+
+		act(() => {
+			result.current[2]();
+		});
+		await act(async () => {
+			releaseLookup(null);
+		});
+
+		await waitFor(() => {
+			expect(queryCalls).toHaveLength(2);
+		});
+		expect(queryCalls.map(clauses => findTakeClause(clauses)?.count)).toEqual([QUERY_SIZE * 2 + 1, QUERY_SIZE * 2 + 1]);
+	});
 
 	// ms-since-epoch as the model's Date ts. Anchor bounds (highTs) are compared in ms, so a Date
 	// whose getTime() equals the chosen ms keeps `ts === highTs` boundary detection exact.

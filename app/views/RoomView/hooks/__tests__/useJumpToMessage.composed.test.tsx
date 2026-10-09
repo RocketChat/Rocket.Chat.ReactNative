@@ -25,6 +25,7 @@ jest.mock('~/lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
 jest.mock('~/views/RoomView/services/getMessageInfo', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/views/RoomView/services/fetchThreadName', () => ({ fetchThreadName: jest.fn() }));
 jest.mock('~/views/RoomView/services/resolveJumpAnchor', () => ({ resolveJumpAnchor: jest.fn() }));
+jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadThreadMessagesUntil: jest.fn(() => Promise.resolve(true)) }));
 jest.mock('~/lib/methods/helpers/room', () => ({ makeThreadName: jest.fn(() => 'Parent thread') }));
 jest.mock('~/i18n', () => ({ __esModule: true, default: { t: (key: string) => key } }));
 

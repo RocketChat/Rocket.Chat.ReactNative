@@ -448,7 +448,7 @@ describe('useScroll', () => {
 		expect(landed).toBe(true);
 	});
 
-	it('keeps climbing until a target more than twenty render batches past the measured frontier lands', () => {
+	it('keeps climbing until a target far past the measured frontier lands', () => {
 		const target = 150;
 		const { result, rerender, scrollToIndex } = renderUseScroll(
 			[{ id: 'live-1' }, { id: 'live-2' }],
