@@ -10,7 +10,8 @@ import {
 	tapWhenVisible,
 	expectVisible,
 	fillWhenUncovered,
-	clearSettled
+	clearSettled,
+	hideKeyboard
 } from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
 import { openNewMessage, selectUser } from '~e2e/support/room';
@@ -23,21 +24,13 @@ const openSelectUsers = async (fixtures: Fixtures) => {
 	await expectVisible(fixtures, 'select-users-view');
 };
 
-const dismissChannelKeyboard = async ({ screen }: Fixtures) => {
-	const doneKey = screen.getByTestId('Done', { visible: true });
-	if (await doneKey.isVisible()) {
-		await doneKey.tap();
-	}
-};
-
 const fillChannelName = async (fixtures: Fixtures, name: string) => {
 	const { screen } = fixtures;
 	const nameInput = screen.getByTestId('create-channel-name');
-	await dismissChannelKeyboard(fixtures);
 	await screen.scrollUntilVisible(nameInput, { direction: 'up' });
 	await clearSettled(nameInput);
 	await nameInput.pressSequentially(name);
-	await dismissChannelKeyboard(fixtures);
+	await hideKeyboard(fixtures, screen.getByTestId('create-channel-readonly-hint'));
 };
 
 const submitChannelName = async (fixtures: Fixtures, name: string) => {
