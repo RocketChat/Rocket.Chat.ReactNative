@@ -1,9 +1,8 @@
 import { type ISidebarCategory } from '~/definitions';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { UNREAD_GROUP } from '~/views/RoomsListView/utils/sidebarGroupOrder';
 import { alertCategoryError } from '../utils/alertCategoryError';
 import { useSidebarCategoriesUpdate } from './useSidebarCategoriesUpdate';
-
-const UNREAD_GROUP = 'Unread';
 
 export const useCategoryUnreadToggles = (category: ISidebarCategory) => {
 	const isGroupingUnreadRooms = useAppSelector(state => state.sortPreferences.showUnread);

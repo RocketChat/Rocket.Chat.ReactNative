@@ -8,16 +8,14 @@ import {
 	DISCUSSIONS_GROUP,
 	FAVORITES_GROUP,
 	isVisibleGroup,
-	TEAMS_GROUP
+	OMNICHANNEL_IN_PROGRESS_GROUP,
+	OMNICHANNEL_ON_HOLD_GROUP,
+	TEAMS_GROUP,
+	UNREAD_GROUP
 } from './sidebarGroupOrder';
 
 const CHATS_HEADER = 'Chats';
-const UNREAD_HEADER = 'Unread';
-const OMNICHANNEL_HEADER_IN_PROGRESS = 'Open_Livechats';
 const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
-const UNREAD_GROUP = 'Unread';
-const OMNICHANNEL_IN_PROGRESS_GROUP = 'Open_Livechats';
-const OMNICHANNEL_ON_HOLD_GROUP = 'On_Hold_Chats';
 
 const CATEGORY_ID_BY_HEADER: Record<string, string> = {
 	[CHATS_HEADER]: CONVERSATIONS_GROUP,
@@ -199,7 +197,7 @@ export const buildRoomList = (subscriptions: TSubscriptionModel[], options: Buil
 			roomList.push(
 				...roomsGroup(
 					omnichannel.filter(subscription => !subscription.onHold),
-					OMNICHANNEL_HEADER_IN_PROGRESS,
+					OMNICHANNEL_IN_PROGRESS_GROUP,
 					{ collapsedGroups, unreadOptions: categoryUnreadOptions.get(OMNICHANNEL_IN_PROGRESS_GROUP) }
 				)
 			);
@@ -219,7 +217,7 @@ export const buildRoomList = (subscriptions: TSubscriptionModel[], options: Buil
 		const [unread, read] = partition(remainingSubscriptions, filterIsUnread);
 		remainingSubscriptions = read;
 		roomList.push(
-			...roomsGroup(unread, UNREAD_HEADER, { collapsedGroups, unreadOptions: categoryUnreadOptions.get(UNREAD_GROUP) })
+			...roomsGroup(unread, UNREAD_GROUP, { collapsedGroups, unreadOptions: categoryUnreadOptions.get(UNREAD_GROUP) })
 		);
 	}
 

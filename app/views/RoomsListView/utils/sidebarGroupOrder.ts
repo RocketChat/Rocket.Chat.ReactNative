@@ -6,6 +6,9 @@ export const DISCUSSIONS_GROUP = 'Discussions';
 export const CHANNELS_GROUP = 'Channels';
 export const DIRECT_MESSAGES_GROUP = 'Direct_Messages';
 export const CONVERSATIONS_GROUP = 'Conversations';
+export const UNREAD_GROUP = 'Unread';
+export const OMNICHANNEL_IN_PROGRESS_GROUP = 'Open_Livechats';
+export const OMNICHANNEL_ON_HOLD_GROUP = 'On_Hold_Chats';
 
 export const DEFAULT_GROUP_ORDER: readonly string[] = [
 	FAVORITES_GROUP,
@@ -16,7 +19,13 @@ export const DEFAULT_GROUP_ORDER: readonly string[] = [
 	CONVERSATIONS_GROUP
 ];
 
-const DYNAMIC_GROUPS: readonly string[] = ['Incoming_Calls', 'Incoming_Livechats', 'Open_Livechats', 'On_Hold_Chats', 'Unread'];
+const DYNAMIC_GROUPS: readonly string[] = [
+	'Incoming_Calls',
+	'Incoming_Livechats',
+	OMNICHANNEL_IN_PROGRESS_GROUP,
+	OMNICHANNEL_ON_HOLD_GROUP,
+	UNREAD_GROUP
+];
 
 export const SYSTEM_GROUPS: readonly string[] = [...DYNAMIC_GROUPS, ...DEFAULT_GROUP_ORDER];
 
