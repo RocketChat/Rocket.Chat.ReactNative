@@ -10,7 +10,7 @@ import { useLiveRef } from '~/lib/hooks/useLiveRef';
 import log from '~/lib/methods/helpers/log';
 import { type TAnyMessageModel } from '~/definitions';
 import { loadSurroundingMessages } from '~/lib/methods/loadSurroundingMessages';
-import { loadAllThreadMessages } from '~/lib/methods/loadThreadMessages';
+import { type IThreadLocation, loadThreadMessagesUntil } from '~/lib/methods/loadThreadMessages';
 import {
 	type IRoomViewProps,
 	type IUseJumpToMessageParams,
@@ -106,6 +106,14 @@ export function useJumpToMessage({
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const route = useRoute<IRoomViewProps['route']>();
 	const jumpGenerationRef = useRef(0);
+	const mountedRef = useRef(true);
+
+	useEffect(() => {
+		mountedRef.current = true;
+		return () => {
+			mountedRef.current = false;
+		};
+	}, []);
 
 	const isCurrentJump = (generation: number): boolean => jumpGenerationRef.current === generation;
 
@@ -118,12 +126,19 @@ export function useJumpToMessage({
 	const openThreadFromHere = (message: TOpenThreadTarget) =>
 		openThread(message, { navigation, rid, roomUserId: roomUserIdRef.current, cancelJumpToMessage });
 
-	// Resolves to whether the jump can proceed: false when it was superseded or the thread could not be fully loaded.
-	const loadRestOfThread = async (threadId: string, roomId: string, generation: number): Promise<boolean> => {
-		const allLoaded = await loadAllThreadMessages({ tmid: threadId, rid: roomId });
-		if (!isCurrentJump(generation)) return false;
-		if (!allLoaded) cancelJumpToMessage();
-		return allLoaded;
+	const threadContaining = (message: TGetMessageInfoResult): IThreadLocation | null =>
+		tmid && rid && (message.tmid === tmid || message.id === tmid) ? { tmid, rid } : null;
+
+	const makeReachableInThread = async (
+		thread: IThreadLocation,
+		message: TGetMessageInfoResult,
+		generation: number
+	): Promise<boolean> => {
+		const reachable = await loadThreadMessagesUntil(thread, message, () => mountedRef.current && isCurrentJump(generation));
+		if (!reachable && isCurrentJump(generation)) {
+			cancelJumpToMessage();
+		}
+		return reachable;
 	};
 
 	const executeJump = async (message: TGetMessageInfoResult, generation: number): Promise<boolean> => {
@@ -142,10 +157,13 @@ export function useJumpToMessage({
 			return false;
 		}
 		const inWindow = listContainerRef.current?.isMessageInWindow(message.id) ?? false;
-		if (inThisThread && tmid && rid && !inWindow) {
-			if (!(await loadRestOfThread(tmid, rid, generation))) return false;
+		const thread = threadContaining(message);
+		if (thread && !inWindow && !(await makeReachableInThread(thread, message, generation))) {
+			return false;
 		}
-		const highTsMs = await resolveJumpAnchor(rid, message, inWindow, { loadSurroundingMessages, getLocalAnchorTs });
+		const highTsMs = thread
+			? null
+			: await resolveJumpAnchor(rid, message, inWindow, { loadSurroundingMessages, getLocalAnchorTs });
 		if (!isCurrentJump(generation)) return false;
 		await waitForFabricCommit();
 		if (!isCurrentJump(generation)) return false;

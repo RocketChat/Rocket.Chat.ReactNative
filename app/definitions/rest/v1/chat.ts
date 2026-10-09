@@ -49,7 +49,7 @@ export type ChatEndpoints = {
 		}>;
 	};
 	'chat.getThreadMessages': {
-		GET: (params: { tmid: IMessage['_id']; offset?: number; count?: number; sort?: string }) => PaginatedResult<{
+		GET: (params: { tmid: IMessage['_id']; offset?: number; count?: number; sort?: { ts: number } }) => PaginatedResult<{
 			messages: IMessage[];
 		}>;
 	};

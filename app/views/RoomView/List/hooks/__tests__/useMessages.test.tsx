@@ -9,7 +9,7 @@ import database from '~/lib/database';
 import { getMessageById } from '~/lib/database/services/Message';
 import { getThreadById } from '~/lib/database/services/Thread';
 import { MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
-import { hasMoreThreadMessages } from '~/lib/methods/loadThreadMessages';
+import { areOlderThreadMessagesMissing, clearThreadPagination, loadMoreThreadMessages } from '~/lib/methods/loadThreadMessages';
 import { readThreads } from '~/lib/services/restApi';
 import { mockedStore } from '~/reducers/mockedStore';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '~/views/RoomView/List/constants';
@@ -34,16 +34,18 @@ jest.mock('~/lib/database/services/Thread', () => ({
 	getThreadById: jest.fn(() => Promise.resolve(null))
 }));
 
-let threadLoadedListener: ((tmid: string) => void) | null = null;
+let notifyThreadPagination: (() => void) | null = null;
 
 jest.mock('~/lib/methods/loadThreadMessages', () => ({
-	hasMoreThreadMessages: jest.fn(() => false),
-	subscribeThreadLoaded: jest.fn((listener: (tmid: string) => void) => {
-		threadLoadedListener = listener;
+	subscribeThreadLoaded: jest.fn((listener: () => void) => {
+		notifyThreadPagination = listener;
 		return () => {
-			threadLoadedListener = null;
+			notifyThreadPagination = null;
 		};
-	})
+	}),
+	areOlderThreadMessagesMissing: jest.fn(() => false),
+	clearThreadPagination: jest.fn(),
+	loadMoreThreadMessages: jest.fn()
 }));
 
 jest.mock('~/lib/services/restApi', () => ({
@@ -62,7 +64,9 @@ const mockDbGet = database.active.get as unknown as jest.Mock;
 const mockGetThreadById = jest.mocked(getThreadById);
 const mockGetMessageById = jest.mocked(getMessageById);
 const mockReadThreads = jest.mocked(readThreads);
-const mockHasMoreThreadMessages = jest.mocked(hasMoreThreadMessages);
+const mockAreOlderThreadMessagesMissing = jest.mocked(areOlderThreadMessagesMissing);
+const mockLoadMoreThreadMessages = jest.mocked(loadMoreThreadMessages);
+const mockClearThreadPagination = jest.mocked(clearThreadPagination);
 
 const baseArgs = {
 	rid: 'ROOM_ID',
@@ -101,6 +105,7 @@ describe('useMessages', () => {
 		fetchCalls = [];
 		fetchCountValue = 0;
 		jest.clearAllMocks();
+		mockAreOlderThreadMessagesMissing.mockReturnValue(false);
 		// Reset historyLoaders so prior test dispatches don't trip the in-flight guard
 		mockedStore
 			.getState()
@@ -132,6 +137,9 @@ describe('useMessages', () => {
 		renderHook((props: Partial<Parameters<typeof useMessages>[0]> = {}) => useMessages({ ...baseArgs, ...overrides, ...props }), {
 			wrapper
 		});
+
+	const threadParentRow = (t?: TAnyMessageModel['t']) =>
+		({ ...msg({ id: 'parent-thread', t }), collection: { table: 'threads' } }) as TAnyMessageModel;
 
 	const buildRows = (loaderId: string) => [msg({ id: `${loaderId}-message` }), msg({ id: loaderId, t: MessageTypeLoad.MORE })];
 
@@ -389,40 +397,82 @@ describe('useMessages', () => {
 		});
 	});
 
-	it('hides the thread parent while older replies are still to be loaded', async () => {
-		const parent = {
-			...msg({ id: 'parent-thread', t: undefined }),
-			collection: { table: 'threads' }
-		} as TAnyMessageModel;
-		mockGetThreadById.mockResolvedValueOnce(parent);
-		mockHasMoreThreadMessages.mockReturnValueOnce(true);
+	it('hides the thread parent while older thread messages are missing and shows it once they load without a DB emission', async () => {
+		mockGetThreadById.mockResolvedValueOnce(threadParentRow());
+		mockAreOlderThreadMessagesMissing.mockReturnValue(true);
 		emittedRows = [msg({ id: 'tm1', tmid: 'THREAD_ID' })];
 		const { result } = renderUseMessages({ tmid: 'THREAD_ID' });
 		await waitFor(() => {
 			expect(result.current[0].map(m => m.id)).toContain('tm1');
 		});
 		expect(result.current[0].map(m => m.id)).not.toContain('parent-thread');
-	});
-
-	it('shows the thread parent when the last page finishes loading without a new DB emission', async () => {
-		const parent = {
-			...msg({ id: 'parent-thread', t: undefined }),
-			collection: { table: 'threads' }
-		} as TAnyMessageModel;
-		mockGetThreadById.mockResolvedValueOnce(parent);
-		mockHasMoreThreadMessages.mockReturnValueOnce(true);
-		emittedRows = [msg({ id: 'tm1', tmid: 'THREAD_ID' })];
-		const { result } = renderUseMessages({ tmid: 'THREAD_ID' });
-		await waitFor(() => {
-			expect(result.current[0].map(m => m.id)).toContain('tm1');
-		});
-		expect(result.current[0].map(m => m.id)).not.toContain('parent-thread');
+		mockAreOlderThreadMessagesMissing.mockReturnValue(false);
 
 		act(() => {
-			threadLoadedListener?.('THREAD_ID');
+			notifyThreadPagination?.();
 		});
 
 		expect(result.current[0].map(m => m.id)).toContain('parent-thread');
+	});
+
+	it('hides the thread parent until the Message Window holds the oldest stored thread message', async () => {
+		mockGetThreadById.mockResolvedValueOnce(threadParentRow());
+		emittedRows = Array.from({ length: QUERY_SIZE }, (_, i) => msg({ id: `tm${i}`, tmid: 'THREAD_ID' }));
+		const { result } = renderUseMessages({ tmid: 'THREAD_ID' });
+		await waitFor(() => {
+			expect(result.current[0].map(m => m.id)).toContain('tm0');
+		});
+		expect(result.current[0].map(m => m.id)).not.toContain('parent-thread');
+		emittedRows = [...emittedRows, msg({ id: 'oldest', tmid: 'THREAD_ID' })];
+
+		await act(async () => {
+			await result.current[2]();
+		});
+
+		expect(result.current[0].map(m => m.id).slice(-2)).toEqual(['oldest', 'parent-thread']);
+	});
+
+	it('forgets the thread pagination when the thread view unmounts', async () => {
+		emittedRows = [msg({ id: 'tm1', tmid: 'THREAD_ID' })];
+		const { unmount } = renderUseMessages({ tmid: 'THREAD_ID' });
+		await waitFor(() => {
+			expect(queryCalls.length).toBeGreaterThan(0);
+		});
+		expect(mockClearThreadPagination).not.toHaveBeenCalled();
+
+		unmount();
+
+		expect(mockClearThreadPagination).toHaveBeenCalledWith('THREAD_ID');
+	});
+
+	it('loads older thread messages along with the window when the end of a thread is reached', async () => {
+		emittedRows = [msg({ id: 'tm1', tmid: 'THREAD_ID' })];
+		const { result } = renderUseMessages({ tmid: 'THREAD_ID' });
+		await waitFor(() => {
+			expect(queryCalls.length).toBeGreaterThan(0);
+		});
+		const queriesBefore = queryCalls.length;
+
+		await act(async () => {
+			result.current[3].loadOlderMessages();
+		});
+
+		expect(mockLoadMoreThreadMessages).toHaveBeenCalledWith({ tmid: 'THREAD_ID', rid: 'ROOM_ID' });
+		expect(queryCalls.length).toBeGreaterThan(queriesBefore);
+	});
+
+	it('does not load thread messages when the end of a room is reached', async () => {
+		emittedRows = [msg({ id: 'm1' })];
+		const { result } = renderUseMessages();
+		await waitFor(() => {
+			expect(queryCalls.length).toBeGreaterThan(0);
+		});
+
+		await act(async () => {
+			result.current[3].loadOlderMessages();
+		});
+
+		expect(mockLoadMoreThreadMessages).not.toHaveBeenCalled();
 	});
 
 	it('falls back to getMessageById when thread record is missing', async () => {

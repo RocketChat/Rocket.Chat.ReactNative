@@ -1,34 +1,32 @@
 import { Platform } from 'react-native';
 
-import type * as SdkIntegration from '../testUtils/sdkIntegration';
-import { mediaCallsStateSignals } from './restApi';
+import type * as SdkIntegration from '../../testUtils/sdkIntegration';
+import { mediaCallsStateSignals } from '../restApi';
 
 const mockSdkGet = jest.fn();
 const mockSdkPost = jest.fn();
 const mockSdkDel = jest.fn();
-const mockSdkMethodCallWrapper = jest.fn();
 let mockSdk!: SdkIntegration.IMockSdk;
 
-jest.mock('./sdk', () => {
-	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../testUtils/sdkIntegration');
+jest.mock('../sdk', () => {
+	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
 	mockSdk =
 		mockSdk ??
 		makeSdkMock({
 			get: (...args: unknown[]) => mockSdkGet(...args),
 			post: (...args: unknown[]) => mockSdkPost(...args),
-			del: (...args: unknown[]) => mockSdkDel(...args),
-			methodCallWrapper: (...args: unknown[]) => mockSdkMethodCallWrapper(...args)
+			del: (...args: unknown[]) => mockSdkDel(...args)
 		});
 	return { __esModule: true, default: mockSdk };
 });
 
 const SDK_HOST = 'https://open.rocket.chat';
 
-jest.mock('../notifications/deviceToken', () => ({
+jest.mock('../../notifications/deviceToken', () => ({
 	getDeviceToken: jest.fn()
 }));
 
-jest.mock('../native/NativeVoip', () => ({
+jest.mock('../../native/NativeVoip', () => ({
 	__esModule: true,
 	default: {
 		getLastVoipToken: jest.fn()
@@ -53,7 +51,7 @@ function loadPushTokenApi(platform: 'ios' | 'android' = 'android', mockServerVer
 	jest.resetModules();
 	Object.defineProperty(Platform, 'OS', { configurable: true, writable: true, value: platform });
 
-	jest.doMock('../store/auxStore', () => ({
+	jest.doMock('../../store/auxStore', () => ({
 		store: {
 			getState: () => ({
 				server: { version: mockServerVersion }
@@ -62,16 +60,16 @@ function loadPushTokenApi(platform: 'ios' | 'android' = 'android', mockServerVer
 	}));
 
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
-	const notifications = require('../notifications/deviceToken');
+	const notifications = require('../../notifications/deviceToken');
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
-	const voipNative = require('../native/NativeVoip').default;
+	const voipNative = require('../../native/NativeVoip').default;
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
-	const { registerPushToken, removePushToken } = require('./restApi');
+	const { registerPushToken, removePushToken } = require('../restApi');
 	return {
 		// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-		registerPushToken: registerPushToken as typeof import('./restApi').registerPushToken,
+		registerPushToken: registerPushToken as typeof import('../restApi').registerPushToken,
 		// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-		removePushToken: removePushToken as typeof import('./restApi').removePushToken,
+		removePushToken: removePushToken as typeof import('../restApi').removePushToken,
 		getDeviceToken: jest.mocked(notifications.getDeviceToken),
 		getLastVoipToken: jest.mocked(voipNative.getLastVoipToken)
 	};
@@ -312,59 +310,5 @@ describe('removePushToken', () => {
 		await registerPushToken();
 
 		expect(mockSdkPost).toHaveBeenCalledTimes(2);
-	});
-});
-
-describe('thread messages', () => {
-	function loadApi(serverVersion: string) {
-		jest.resetModules();
-		jest.doMock('../store/auxStore', () => ({
-			store: { getState: () => ({ server: { version: serverVersion } }) }
-		}));
-		// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/consistent-type-imports
-		return require('./restApi') as typeof import('./restApi');
-	}
-
-	beforeEach(() => {
-		jest.clearAllMocks();
-	});
-
-	it('paginates thread messages from 8.8.0', () => {
-		expect(loadApi('8.8.0').isThreadMessagesPaginated()).toBe(true);
-		expect(loadApi('8.7.9').isThreadMessagesPaginated()).toBe(false);
-	});
-
-	it('requests a newest-first page and returns its messages and total', async () => {
-		const { getThreadMessagesPage } = loadApi('8.8.0');
-		mockSdkGet.mockResolvedValueOnce({ messages: [{ _id: 'r1' }], count: 1, offset: 50, total: 80, success: true });
-
-		const result = await getThreadMessagesPage({ tmid: 'root', offset: 50 });
-
-		expect(mockSdkGet).toHaveBeenCalledWith('chat.getThreadMessages', { tmid: 'root', count: 50, offset: 50, sort: '{"ts":-1}' });
-		expect(result).toEqual({ messages: [{ _id: 'r1' }], total: 80 });
-	});
-
-	it('throws when the page request is not successful', async () => {
-		const { getThreadMessagesPage } = loadApi('8.8.0');
-		mockSdkGet.mockResolvedValueOnce({ success: false });
-
-		await expect(getThreadMessagesPage({ tmid: 'root', offset: 0 })).rejects.toThrow();
-	});
-
-	it('calls the DDP method for the legacy full load', async () => {
-		const { getThreadMessagesDdp } = loadApi('8.7.0');
-		mockSdkMethodCallWrapper.mockResolvedValueOnce([{ _id: 'root' }, { _id: 'r1' }]);
-
-		const result = await getThreadMessagesDdp('root');
-
-		expect(mockSdkMethodCallWrapper).toHaveBeenCalledWith('getThreadMessages', { tmid: 'root' });
-		expect(result).toEqual([{ _id: 'root' }, { _id: 'r1' }]);
-	});
-
-	it('returns an empty list when the DDP method returns nothing', async () => {
-		const { getThreadMessagesDdp } = loadApi('8.7.0');
-		mockSdkMethodCallWrapper.mockResolvedValueOnce(null);
-
-		expect(await getThreadMessagesDdp('root')).toEqual([]);
 	});
 });

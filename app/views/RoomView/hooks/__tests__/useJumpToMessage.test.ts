@@ -5,7 +5,8 @@ import getRoomInfo from '~/lib/methods/getRoomInfo';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { sendLoadingEvent } from '~/containers/Loading';
 import getMessageInfo from '~/views/RoomView/services/getMessageInfo';
-import { loadAllThreadMessages } from '~/lib/methods/loadThreadMessages';
+import { loadThreadMessagesUntil } from '~/lib/methods/loadThreadMessages';
+import { resolveJumpAnchor } from '~/views/RoomView/services/resolveJumpAnchor';
 import { useJumpToMessage } from '../useJumpToMessage';
 import { type IUseJumpToMessageParams } from '~/views/RoomView/definitions';
 
@@ -35,7 +36,7 @@ jest.mock('~/views/RoomView/services/resolveJumpAnchor', () => ({ resolveJumpAnc
 jest.mock('~/views/RoomView/services/fetchThreadName', () => ({
 	fetchThreadName: jest.fn(() => Promise.resolve('Thread Title'))
 }));
-jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadAllThreadMessages: jest.fn(() => Promise.resolve(true)) }));
+jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadThreadMessagesUntil: jest.fn(() => Promise.resolve(true)) }));
 jest.mock('~/lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
 jest.mock('~/containers/Loading', () => ({ sendLoadingEvent: jest.fn() }));
 
@@ -43,10 +44,11 @@ const mockMakeThreadName = makeThreadName as jest.Mock;
 const mockGetRoomInfo = getRoomInfo as jest.Mock;
 const mockGoRoom = goRoom as jest.Mock;
 const mockGetMessageInfo = getMessageInfo as jest.Mock;
-const mockLoadAllThreadMessages = loadAllThreadMessages as jest.Mock;
+const mockLoadThreadMessagesUntil = loadThreadMessagesUntil as jest.Mock;
+const mockResolveJumpAnchor = resolveJumpAnchor as jest.Mock;
 
 const renderRoomNavigation = (overrides: Partial<IUseJumpToMessageParams> = {}) => {
-	const { result } = renderHook(() =>
+	const { result, unmount } = renderHook(() =>
 		useJumpToMessage({
 			rid: 'rid-1',
 			tmid: undefined,
@@ -58,7 +60,7 @@ const renderRoomNavigation = (overrides: Partial<IUseJumpToMessageParams> = {}) 
 		})
 	);
 
-	return { result, navigation: mockNavigation };
+	return { result, navigation: mockNavigation, unmount };
 };
 
 describe('useJumpToMessage', () => {
@@ -148,61 +150,95 @@ describe('useJumpToMessage', () => {
 	});
 
 	describe('jumping inside a thread', () => {
-		const renderThreadJump = (isMessageInWindow: boolean) => {
+		const MESSAGE_URL = 'https://open.rocket.chat/channel/general?msg=msg-42';
+		const THREAD_MESSAGE = { id: 'msg-42', rid: 'rid-1', tmid: 'thread-1' };
+
+		const renderThreadJump = ({ isMessageInWindow, tmid }: { isMessageInWindow: boolean; tmid?: string }) => {
 			const list = { isMessageInWindow: jest.fn(() => isMessageInWindow), jumpToMessage: jest.fn(() => Promise.resolve()) };
-			const { result } = renderRoomNavigation({
-				tmid: 'thread-1',
+			const { result, unmount } = renderRoomNavigation({
+				tmid,
+				t: tmid ? 'thread' : 'c',
 				listContainerRef: { current: list as any }
 			});
-			return { result, list };
+			const jump = (url = MESSAGE_URL) =>
+				act(async () => {
+					await result.current.jumpToMessageByUrl(url);
+				});
+			return { jump, list, unmount };
 		};
 
-		it('loads the rest of the thread before jumping to a reply that is not loaded yet', async () => {
-			mockGetMessageInfo.mockResolvedValueOnce({ id: 'msg-42', rid: 'rid-1', tmid: 'thread-1' });
-			const { result, list } = renderThreadJump(false);
+		it('loads the thread until the target thread message is stored before jumping to it', async () => {
+			mockGetMessageInfo.mockResolvedValueOnce(THREAD_MESSAGE);
+			const { jump, list } = renderThreadJump({ isMessageInWindow: false, tmid: 'thread-1' });
 
-			await act(async () => {
-				await result.current.jumpToMessageByUrl('https://open.rocket.chat/channel/general?msg=msg-42');
-			});
+			await jump();
 
-			expect(mockLoadAllThreadMessages).toHaveBeenCalledWith({ tmid: 'thread-1', rid: 'rid-1' });
+			expect(mockLoadThreadMessagesUntil).toHaveBeenCalledWith(
+				{ tmid: 'thread-1', rid: 'rid-1' },
+				THREAD_MESSAGE,
+				expect.any(Function)
+			);
 			expect(list.jumpToMessage).toHaveBeenCalledWith('msg-42', null);
 		});
 
-		it('does not jump when the rest of the thread could not be loaded', async () => {
-			mockGetMessageInfo.mockResolvedValueOnce({ id: 'msg-42', rid: 'rid-1', tmid: 'thread-1' });
-			mockLoadAllThreadMessages.mockResolvedValueOnce(false);
-			const { result, list } = renderThreadJump(false);
+		it('does not jump when the target thread message could not be loaded', async () => {
+			mockGetMessageInfo.mockResolvedValueOnce(THREAD_MESSAGE);
+			mockLoadThreadMessagesUntil.mockResolvedValueOnce(false);
+			const { jump, list } = renderThreadJump({ isMessageInWindow: false, tmid: 'thread-1' });
 
-			await act(async () => {
-				await result.current.jumpToMessageByUrl('https://open.rocket.chat/channel/general?msg=msg-42');
-			});
+			await jump();
 
 			expect(list.jumpToMessage).not.toHaveBeenCalled();
 		});
 
-		it('does not load more of the thread when the reply is already in the list', async () => {
-			mockGetMessageInfo.mockResolvedValueOnce({ id: 'msg-42', rid: 'rid-1', tmid: 'thread-1' });
-			const { result, list } = renderThreadJump(true);
+		it('does not load the thread when the thread message is already in the Message Window', async () => {
+			mockGetMessageInfo.mockResolvedValueOnce(THREAD_MESSAGE);
+			const { jump, list } = renderThreadJump({ isMessageInWindow: true, tmid: 'thread-1' });
 
-			await act(async () => {
-				await result.current.jumpToMessageByUrl('https://open.rocket.chat/channel/general?msg=msg-42');
-			});
+			await jump();
 
-			expect(mockLoadAllThreadMessages).not.toHaveBeenCalled();
+			expect(mockLoadThreadMessagesUntil).not.toHaveBeenCalled();
 			expect(list.jumpToMessage).toHaveBeenCalledWith('msg-42', null);
+		});
+
+		it('loads the thread before jumping to its thread parent without anchoring the window', async () => {
+			mockGetMessageInfo.mockResolvedValueOnce({ id: 'thread-1', rid: 'rid-1' });
+			const { jump, list } = renderThreadJump({ isMessageInWindow: false, tmid: 'thread-1' });
+
+			await jump('https://open.rocket.chat/channel/general?msg=thread-1');
+
+			expect(mockLoadThreadMessagesUntil).toHaveBeenCalledWith(
+				{ tmid: 'thread-1', rid: 'rid-1' },
+				{ id: 'thread-1', rid: 'rid-1' },
+				expect.any(Function)
+			);
+			expect(mockResolveJumpAnchor).not.toHaveBeenCalled();
+			expect(list.jumpToMessage).toHaveBeenCalledWith('thread-1', null);
+		});
+
+		it('stops wanting the thread loaded once the thread view closes', async () => {
+			mockGetMessageInfo.mockResolvedValueOnce(THREAD_MESSAGE);
+			let isWanted: () => boolean = () => true;
+			mockLoadThreadMessagesUntil.mockImplementationOnce((_thread, _target, wanted: () => boolean) => {
+				isWanted = wanted;
+				return Promise.resolve(true);
+			});
+			const { jump, unmount } = renderThreadJump({ isMessageInWindow: false, tmid: 'thread-1' });
+			await jump();
+			expect(isWanted()).toBe(true);
+
+			unmount();
+
+			expect(isWanted()).toBe(false);
 		});
 
 		it('does not load thread messages when jumping in the room', async () => {
 			mockGetMessageInfo.mockResolvedValueOnce({ id: 'msg-42', rid: 'rid-1' });
-			const list = { isMessageInWindow: jest.fn(() => false), jumpToMessage: jest.fn(() => Promise.resolve()) };
-			const { result } = renderRoomNavigation({ listContainerRef: { current: list as any } });
+			const { jump } = renderThreadJump({ isMessageInWindow: false });
 
-			await act(async () => {
-				await result.current.jumpToMessageByUrl('https://open.rocket.chat/channel/general?msg=msg-42');
-			});
+			await jump();
 
-			expect(mockLoadAllThreadMessages).not.toHaveBeenCalled();
+			expect(mockLoadThreadMessagesUntil).not.toHaveBeenCalled();
 		});
 	});
 });

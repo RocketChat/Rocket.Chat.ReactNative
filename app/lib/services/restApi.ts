@@ -893,29 +893,19 @@ export const getThreadsList = ({ rid, count, offset, text }: { rid: string; coun
 	return sdk.get('chat.getThreadsList', params);
 };
 
-const THREAD_MESSAGES_PAGE_SIZE = 50;
-
-// RC 8.8.0
-export const isThreadMessagesPaginated = () =>
-	compareServerVersion(reduxStore.getState().server.version, 'greaterThanOrEqualTo', '8.8.0');
-
-export const getThreadMessagesPage = async ({ tmid, offset }: { tmid: string; offset: number }) => {
-	const page = await sdk.get('chat.getThreadMessages', {
-		tmid,
-		count: THREAD_MESSAGES_PAGE_SIZE,
-		offset,
-		sort: '{"ts":-1}'
-	});
-	if (!page.success) {
-		throw new Error('Unable to load thread messages');
+export const getThreadMessages = async ({ tmid, offset }: { tmid: string; offset: number }) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.8.0')) {
+		const result = await sdk.get('chat.getThreadMessages', { tmid, count: 50, offset, sort: { ts: -1 } });
+		if (!result.success) {
+			throw new Error('Unable to load thread messages');
+		}
+		return { messages: result.messages, total: result.total };
 	}
-	return { messages: page.messages, total: page.total };
-};
-
-export const getThreadMessagesDdp = async (tmid: string): Promise<IMessage[]> => {
 	// RC 1.0
 	const result = await sdk.methodCallWrapper('getThreadMessages', { tmid });
-	return result ? EJSON.fromJSONValue(result) : [];
+	const messages: IMessage[] = result ? EJSON.fromJSONValue(result) : [];
+	return { messages, total: messages.length };
 };
 
 export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }) =>

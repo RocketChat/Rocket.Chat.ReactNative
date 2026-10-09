@@ -20,7 +20,8 @@ const renderUseScroll = (
 	initialRows: Row[],
 	setHighTs = jest.fn(),
 	fetchMessages = jest.fn(() => Promise.resolve()),
-	initialHighTs: number | null = null
+	initialHighTs: number | null = null,
+	tmid?: string
 ) => {
 	const { flatListRef, scrollToIndex, scrollToOffset, scrollToEnd } = makeListRef();
 	const idsRef = makeMessagesIdsRef(initialRows.map(r => r.id));
@@ -35,7 +36,8 @@ const renderUseScroll = (
 				messagesIds: idsRef,
 				highTs,
 				setHighTs,
-				fetchMessages
+				fetchMessages,
+				tmid
 			});
 		},
 		{ initialProps: { rows: initialRows, highTs: initialHighTs } }
@@ -258,6 +260,17 @@ describe('useScroll', () => {
 		expect(fetchMessages).not.toHaveBeenCalled();
 	});
 
+	it('starts growing the window as soon as a thread jump targets a message outside it', () => {
+		const fetchMessages = jest.fn(() => Promise.resolve());
+		const { result } = renderUseScroll([{ id: 'tm-1' }, { id: 'tm-2' }], jest.fn(), fetchMessages, null, 'THREAD_ID');
+
+		act(() => {
+			result.current.jumpToMessage('target', null);
+		});
+
+		expect(fetchMessages).toHaveBeenCalledTimes(1);
+	});
+
 	it('scroll-to-index-failed steps to the measured frontier first, then lands on the actual target index', async () => {
 		const setHighTs = jest.fn();
 		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs);
@@ -363,7 +376,7 @@ describe('useScroll', () => {
 		let reentry = 0;
 		scrollToIndex.mockImplementation(() => {
 			reentry += 1;
-			if (reentry > 100) {
+			if (reentry > 1000) {
 				return;
 			}
 			result.current.handleScrollToIndexFailed(info);
@@ -378,12 +391,12 @@ describe('useScroll', () => {
 
 		// Drain the deferred retries: each tick may schedule at most one more, and the retry cap guarantees
 		// the chain terminates well below the mock's runaway-recursion ceiling.
-		for (let i = 0; i < 20; i++) {
+		for (let i = 0; i < 200; i++) {
 			act(() => {
 				jest.runOnlyPendingTimers();
 			});
 		}
-		expect(scrollToIndex.mock.calls.length).toBeLessThan(50);
+		expect(scrollToIndex.mock.calls.length).toBeLessThan(200);
 	});
 
 	it('climbs the measured frontier across repeated failures until a deep target lands', () => {
@@ -432,6 +445,54 @@ describe('useScroll', () => {
 
 		// Stepping straight to the target every retry (the pre-fix behavior) would exhaust the cap with the
 		// frontier still at 1; climbing the frontier first gets the deep target rendered and landed.
+		expect(landed).toBe(true);
+	});
+
+	it('keeps climbing until a target more than twenty render batches past the measured frontier lands', () => {
+		const target = 150;
+		const { result, rerender, scrollToIndex } = renderUseScroll(
+			[{ id: 'live-1' }, { id: 'live-2' }],
+			jest.fn(),
+			undefined,
+			null,
+			'tmid'
+		);
+
+		act(() => {
+			result.current.jumpToMessage('target', null);
+		});
+		const rows = Array.from({ length: target }, (_, i) => ({ id: `m${i}` })).concat([{ id: 'target' }]);
+		act(() => {
+			rerender({ rows });
+		});
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
+		scrollToIndex.mockClear();
+
+		let frontier = 1;
+		let landed = false;
+		scrollToIndex.mockImplementation(({ index }: { index: number }) => {
+			if (index === target) {
+				if (frontier >= target) {
+					landed = true;
+					return;
+				}
+				result.current.handleScrollToIndexFailed({ index: target, highestMeasuredFrameIndex: frontier, averageItemLength: 50 });
+				return;
+			}
+			frontier = Math.min(target, frontier + 5);
+		});
+
+		act(() => {
+			result.current.handleScrollToIndexFailed({ index: target, highestMeasuredFrameIndex: frontier, averageItemLength: 50 });
+		});
+		for (let i = 0; i < 100; i++) {
+			act(() => {
+				jest.runOnlyPendingTimers();
+			});
+		}
+
 		expect(landed).toBe(true);
 	});
 

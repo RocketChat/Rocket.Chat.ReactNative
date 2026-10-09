@@ -1,50 +1,61 @@
+import { Q } from '@nozbe/watermelondb';
+
 import {
-	hasMoreThreadMessages,
-	loadAllThreadMessages,
+	subscribeThreadLoaded,
+	areOlderThreadMessagesMissing,
+	clearThreadPagination,
 	loadMoreThreadMessages,
 	loadThreadMessages,
-	subscribeThreadLoaded
-} from './loadThreadMessages';
+	loadThreadMessagesUntil
+} from '../loadThreadMessages';
 import { type IReaction } from '~/definitions';
-import database from '../database';
-import { getThreadById } from '../database/services/Thread';
-import { Encryption } from '../encryption';
-import { getSingleMessage, getThreadMessagesDdp, getThreadMessagesPage, isThreadMessagesPaginated } from '../services/restApi';
+import database from '../../database';
+import { getThreadById } from '../../database/services/Thread';
+import { getThreadMessageById } from '../../database/services/ThreadMessage';
+import { Encryption } from '../../encryption';
+import { getThreadMessages } from '../../services/restApi';
+import getSingleMessage from '../getSingleMessage';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import buildMessage from './helpers/buildMessage';
-import log from './helpers/log';
+import buildMessage from '../helpers/buildMessage';
+import log from '../helpers/log';
 
-jest.mock('../services/restApi', () => ({
-	getSingleMessage: jest.fn(),
-	getThreadMessagesDdp: jest.fn(),
-	getThreadMessagesPage: jest.fn(),
-	isThreadMessagesPaginated: jest.fn(() => false)
+jest.mock('../../services/restApi', () => ({
+	getThreadMessages: jest.fn()
 }));
 
-jest.mock('../database', () => ({
-	__esModule: true,
-	default: { active: {} }
-}));
-
-jest.mock('../database/services/Thread', () => ({
-	getThreadById: jest.fn()
-}));
-
-jest.mock('../encryption', () => ({
-	Encryption: { decryptMessages: jest.fn((messages: any) => Promise.resolve(messages)) }
-}));
-
-jest.mock('./helpers/log', () => ({
+jest.mock('../getSingleMessage', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));
 
-jest.mock('./helpers/buildMessage', () => ({
+jest.mock('../../database', () => ({
+	__esModule: true,
+	default: { active: {} }
+}));
+
+jest.mock('../../database/services/ThreadMessage', () => ({
+	getThreadMessageById: jest.fn()
+}));
+
+jest.mock('../../database/services/Thread', () => ({
+	getThreadById: jest.fn()
+}));
+
+jest.mock('../../encryption', () => ({
+	Encryption: { decryptMessages: jest.fn((messages: any) => Promise.resolve(messages)) }
+}));
+
+jest.mock('../helpers/log', () => ({
+	__esModule: true,
+	default: jest.fn()
+}));
+
+jest.mock('../helpers/buildMessage', () => ({
 	__esModule: true,
 	default: jest.fn((message: any) => message)
 }));
 
-jest.mock('./helpers/protectedFunction', () => ({
+jest.mock('../helpers/protectedFunction', () => ({
 	__esModule: true,
 	default:
 		(fn: (...args: any[]) => unknown) =>
@@ -56,11 +67,10 @@ jest.mock('@nozbe/watermelondb/RawRecord', () => ({
 	sanitizedRaw: jest.fn((raw: any) => raw)
 }));
 
-const mockedMethodCall = getThreadMessagesDdp as jest.MockedFunction<typeof getThreadMessagesDdp>;
+const mockedGetThreadMessages = getThreadMessages as jest.Mock;
 const mockedGetSingleMessage = getSingleMessage as jest.Mock;
-const mockedGetPage = getThreadMessagesPage as jest.Mock;
-const mockedIsPaginated = isThreadMessagesPaginated as jest.Mock;
 const mockedGetThreadById = getThreadById as jest.MockedFunction<typeof getThreadById>;
+const mockedGetThreadMessageById = getThreadMessageById as jest.Mock;
 const mockedBuildMessage = buildMessage as jest.MockedFunction<typeof buildMessage>;
 const mockedDecryptMessages = Encryption.decryptMessages as jest.Mock;
 const mockedLog = log as jest.Mock;
@@ -152,6 +162,8 @@ const makeLocalThreadMessage = ({ id, updatedAt, attachments }: { id: string; up
 	return record;
 };
 
+const mockThread = (messages: any[]) => mockedGetThreadMessages.mockResolvedValue({ messages, total: messages.length });
+
 const dbWrite = (): jest.Mock => (database as any).active.write as jest.Mock;
 const dbBatch = (): jest.Mock => (database as any).active.batch as jest.Mock;
 
@@ -159,11 +171,12 @@ describe('loadThreadMessages', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		setupDatabase();
+		mockedGetSingleMessage.mockRejectedValue(new Error('not found'));
 	});
 
 	it('creates the threads record from the parent returned by getThreadMessages', async () => {
 		const parent = buildParent(new Date('2026-01-02'), [{ emoji: ':thumbsup:', usernames: ['rocket.cat'] }]);
-		mockedMethodCall.mockResolvedValue([parent, buildReply()] as any);
+		mockThread([parent, buildReply()]);
 		mockedGetThreadById.mockResolvedValue(null);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
@@ -177,7 +190,7 @@ describe('loadThreadMessages', () => {
 	it('points the created threads record at the room subscription', async () => {
 		// NOTE: rid differs from parent.rid so the assertion proves the value comes from the rid parameter, not the parent.
 		const parent = { ...buildParent(new Date('2026-01-02'), []), subscription: { id: 'OLD_SUB_ID' } };
-		mockedMethodCall.mockResolvedValue([parent, buildReply()] as any);
+		mockThread([parent, buildReply()]);
 		mockedGetThreadById.mockResolvedValue(null);
 
 		await loadThreadMessages({ tmid: TMID, rid: 'OTHER_ROOM_ID' });
@@ -191,7 +204,7 @@ describe('loadThreadMessages', () => {
 
 	it('updates a stale threads record so newer reactions reach the UI', async () => {
 		const parent = buildParent(new Date('2026-01-02'), [{ emoji: ':thumbsup:', usernames: ['rocket.cat'] }]);
-		mockedMethodCall.mockResolvedValue([parent, buildReply()] as any);
+		mockThread([parent, buildReply()]);
 
 		const updated: any = {};
 		const threadRecord = {
@@ -212,7 +225,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('leaves an up-to-date threads record untouched', async () => {
-		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-01'), []), buildReply()] as any);
+		mockThread([buildParent(new Date('2026-01-01'), []), buildReply()]);
 
 		const threadRecord = { id: TMID, _updatedAt: new Date('2026-01-01'), prepareUpdate: jest.fn() };
 		mockedGetThreadById.mockResolvedValue(threadRecord as any);
@@ -224,7 +237,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('leaves a newer threads record untouched and still writes the replies', async () => {
-		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-01'), []), buildReply()] as any);
+		mockThread([buildParent(new Date('2026-01-01'), []), buildReply()]);
 
 		const threadRecord = { id: TMID, _updatedAt: new Date('2026-01-02'), prepareUpdate: jest.fn() };
 		mockedGetThreadById.mockResolvedValue(threadRecord as any);
@@ -238,7 +251,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('does not write the parent into thread_messages', async () => {
-		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-02'), []), buildReply()] as any);
+		mockThread([buildParent(new Date('2026-01-02'), []), buildReply()]);
 		mockedGetThreadById.mockResolvedValue(null);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
@@ -249,7 +262,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('still resolves when the server returns no parent', async () => {
-		mockedMethodCall.mockResolvedValue([buildReply()] as any);
+		mockThread([buildReply()]);
 		mockedGetThreadById.mockResolvedValue(null);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
@@ -259,7 +272,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('drops messages buildMessage could not normalize before decrypting', async () => {
-		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-02'), []), null, buildReply()] as any);
+		mockThread([buildParent(new Date('2026-01-02'), []), null, buildReply()]);
 		mockedGetThreadById.mockResolvedValue(null);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
@@ -273,7 +286,7 @@ describe('loadThreadMessages', () => {
 
 	it('decrypts the parent along with the replies', async () => {
 		const parent = buildParent(new Date('2026-01-02'), []);
-		mockedMethodCall.mockResolvedValue([parent, buildReply()] as any);
+		mockThread([parent, buildReply()]);
 		mockedGetThreadById.mockResolvedValue(null);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
@@ -297,11 +310,11 @@ describe('loadThreadMessages', () => {
 		const localReply = makeLocalThreadMessage({ id: 'R1', updatedAt: new Date('2026-01-01') });
 		localReply.msg = 'old';
 		setThreadMessageRecords([localReply]);
-		mockedMethodCall.mockResolvedValue([
+		mockThread([
 			parent,
 			{ _id: 'R1', rid: RID, tmid: TMID, msg: 'new', _updatedAt: new Date('2026-01-02') },
 			{ _id: 'R2', rid: RID, tmid: TMID, msg: 'reply', _updatedAt: new Date('2026-01-02') }
-		] as any);
+		]);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
 
@@ -321,7 +334,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('logs and still resolves when the threads lookup fails', async () => {
-		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-02'), []), buildReply()] as any);
+		mockThread([buildParent(new Date('2026-01-02'), []), buildReply()]);
 		const lookupError = new Error('threads lookup boom');
 		mockedGetThreadById.mockRejectedValue(lookupError);
 
@@ -332,7 +345,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('logs and still resolves when preparing the threads create fails', async () => {
-		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-02'), []), buildReply()] as any);
+		mockThread([buildParent(new Date('2026-01-02'), []), buildReply()]);
 		mockedGetThreadById.mockResolvedValue(null);
 		const createError = new Error('threads create boom');
 		threadsCollection.prepareCreate.mockImplementationOnce(() => {
@@ -346,7 +359,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('logs and still resolves when preparing the threads update fails', async () => {
-		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-02'), []), buildReply()] as any);
+		mockThread([buildParent(new Date('2026-01-02'), []), buildReply()]);
 		const updateError = new Error('threads update boom');
 		mockedGetThreadById.mockResolvedValue({
 			id: TMID,
@@ -363,7 +376,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('does not touch the threads collection when the server returns no parent', async () => {
-		mockedMethodCall.mockResolvedValue([buildReply()] as any);
+		mockThread([buildReply()]);
 		mockedGetThreadById.mockResolvedValue(null);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
@@ -376,7 +389,7 @@ describe('loadThreadMessages', () => {
 
 	it('updates a stale threads record when local _updatedAt is a timestamp number', async () => {
 		const parent = buildParent(new Date('2026-01-02T00:00:00.000Z'), [{ emoji: ':thumbsup:', usernames: ['rocket.cat'] }]);
-		mockedMethodCall.mockResolvedValue([parent, buildReply()] as any);
+		mockThread([parent, buildReply()]);
 
 		const updated: any = {};
 		const threadRecord = {
@@ -396,20 +409,30 @@ describe('loadThreadMessages', () => {
 		expect(batched).toContain(updated);
 	});
 
-	it('does not update when local _updatedAt is a string mixed with a Date parent', async () => {
-		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-02T00:00:00.000Z'), []), buildReply()] as any);
+	it('updates a stale threads record when local _updatedAt is an ISO string', async () => {
+		mockThread([buildParent(new Date('2026-01-02T00:00:00.000Z'), []), buildReply()]);
 
 		const threadRecord = { id: TMID, _updatedAt: '2026-01-01T00:00:00.000Z', prepareUpdate: jest.fn() };
 		mockedGetThreadById.mockResolvedValue(threadRecord as any);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
 
-		expect(threadRecord.prepareUpdate).not.toHaveBeenCalled();
+		expect(threadRecord.prepareUpdate).toHaveBeenCalledTimes(1);
 		expect(threadsCreated).toHaveLength(0);
 	});
 
+	it('updates a stale threads record from a thread parent whose _updatedAt is an ISO string', async () => {
+		mockThread([{ ...buildParent(new Date(), []), _updatedAt: '2026-01-02T00:00:00.000Z' }, buildReply()]);
+		const threadRecord = { id: TMID, _updatedAt: new Date('2026-01-01T00:00:00.000Z'), prepareUpdate: jest.fn() };
+		mockedGetThreadById.mockResolvedValue(threadRecord as any);
+
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(threadRecord.prepareUpdate).toHaveBeenCalledTimes(1);
+	});
+
 	it('logs and still resolves when getting the threads collection fails', async () => {
-		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-02'), []), buildReply()] as any);
+		mockThread([buildParent(new Date('2026-01-02'), []), buildReply()]);
 		mockedGetThreadById.mockResolvedValue(null);
 		const getError = new Error('threads get boom');
 		(database.active.get as jest.Mock).mockImplementation((table: string) => {
@@ -426,7 +449,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('sanitizes the threads raw id from the parent _id', async () => {
-		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-02'), []), buildReply()] as any);
+		mockThread([buildParent(new Date('2026-01-02'), []), buildReply()]);
 		mockedGetThreadById.mockResolvedValue(null);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
@@ -452,26 +475,15 @@ describe('loadThreadMessages thread_messages unit', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		setupDatabase();
+		mockedGetSingleMessage.mockRejectedValue(new Error('not found'));
 		setThreadMessageRecords([]);
 		mockedGetThreadById.mockResolvedValue(null);
 		mockedBuildMessage.mockImplementation((message: any) => message);
 		mockedDecryptMessages.mockImplementation((messages: any) => Promise.resolve(messages));
 	});
 
-	it('resolves empty when the SDK returns a falsy result without decrypting or touching the DB', async () => {
-		mockedMethodCall.mockResolvedValue(null as any);
-
-		const result = await loadThreadMessages({ tmid: TMID, rid: RID });
-
-		expect(result).toBeUndefined();
-		expect(mockedDecryptMessages).not.toHaveBeenCalled();
-		expect(threadMessagesCollection.query).not.toHaveBeenCalled();
-		expect(dbWrite()).not.toHaveBeenCalled();
-		expect(dbBatch()).not.toHaveBeenCalled();
-	});
-
 	it('swallows SDK throws and resolves empty without rejecting', async () => {
-		mockedMethodCall.mockRejectedValue(new Error('boom'));
+		mockedGetThreadMessages.mockRejectedValue(new Error('boom'));
 
 		await expect(loadThreadMessages({ tmid: TMID, rid: RID })).resolves.toBeUndefined();
 
@@ -480,7 +492,7 @@ describe('loadThreadMessages thread_messages unit', () => {
 	});
 
 	it('resolves undefined on empty data without decrypting or batching', async () => {
-		mockedMethodCall.mockResolvedValue([] as any);
+		mockThread([]);
 
 		const result = await loadThreadMessages({ tmid: TMID, rid: RID });
 
@@ -496,7 +508,7 @@ describe('loadThreadMessages thread_messages unit', () => {
 		const reply2 = unitReply('R2', NEW);
 		const orphan1 = { _id: 'ORPHAN-1', msg: 'orphan', _updatedAt: NEW };
 		const orphan2 = { _id: 'ORPHAN-2', msg: 'orphan', _updatedAt: NEW };
-		mockedMethodCall.mockResolvedValue([orphan1, reply1, orphan2, reply2] as any);
+		mockThread([orphan1, reply1, orphan2, reply2]);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
 
@@ -506,7 +518,7 @@ describe('loadThreadMessages thread_messages unit', () => {
 	});
 
 	it('maps each surviving message through buildMessage', async () => {
-		mockedMethodCall.mockResolvedValue([unitReply('R1', NEW), unitReply('R2', NEW)] as any);
+		mockThread([unitReply('R1', NEW), unitReply('R2', NEW)]);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
 
@@ -516,7 +528,7 @@ describe('loadThreadMessages thread_messages unit', () => {
 	});
 
 	it('decrypts the built list before diffing', async () => {
-		mockedMethodCall.mockResolvedValue([unitReply('R1', NEW), unitReply('R2', NEW)] as any);
+		mockThread([unitReply('R1', NEW), unitReply('R2', NEW)]);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
 
@@ -533,7 +545,7 @@ describe('loadThreadMessages thread_messages unit', () => {
 
 	it('creates thread_messages absent locally (dedupe _id === id) with rid=tmid', async () => {
 		setThreadMessageRecords([makeLocalThreadMessage({ id: 'R1', updatedAt: NEW })]);
-		mockedMethodCall.mockResolvedValue([unitReply('R1', NEW), unitReply('R2', NEW)] as any);
+		mockThread([unitReply('R1', NEW), unitReply('R2', NEW)]);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
 
@@ -550,9 +562,7 @@ describe('loadThreadMessages thread_messages unit', () => {
 		const local = makeLocalThreadMessage({ id: 'R1', updatedAt: OLD, attachments: storedAttachments });
 		local.msg = 'old';
 		setThreadMessageRecords([local]);
-		mockedMethodCall.mockResolvedValue([
-			unitReply('R1', NEW, { msg: 'new', attachments: [{ image_url: '/file/new.png' }] })
-		] as any);
+		mockThread([unitReply('R1', NEW, { msg: 'new', attachments: [{ image_url: '/file/new.png' }] })]);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
 
@@ -562,13 +572,24 @@ describe('loadThreadMessages thread_messages unit', () => {
 		expect(batched).toContain(local);
 	});
 
+	it('updates stale records from thread messages whose _updatedAt is an ISO string', async () => {
+		const local = makeLocalThreadMessage({ id: 'R1', updatedAt: OLD });
+		setThreadMessageRecords([local]);
+		mockThread([unitReply('R1', NEW, { _updatedAt: NEW.toISOString(), msg: 'edited' })]);
+
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(local.prepareUpdate).toHaveBeenCalledTimes(1);
+		expect(local.msg).toBe('edited');
+	});
+
 	it('does not update records when local _updatedAt >= incoming _updatedAt', async () => {
 		const newer = makeLocalThreadMessage({ id: 'R1', updatedAt: NEW });
 		newer.msg = 'stored-newer';
 		const equal = makeLocalThreadMessage({ id: 'R2', updatedAt: NEW });
 		equal.msg = 'stored-equal';
 		setThreadMessageRecords([newer, equal]);
-		mockedMethodCall.mockResolvedValue([unitReply('R1', OLD, { msg: 'stale' }), unitReply('R2', NEW, { msg: 'same' })] as any);
+		mockThread([unitReply('R1', OLD, { msg: 'stale' }), unitReply('R2', NEW, { msg: 'same' })]);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
 
@@ -584,7 +605,7 @@ describe('loadThreadMessages thread_messages unit', () => {
 		const localToUpdate = makeLocalThreadMessage({ id: 'R1', updatedAt: OLD });
 		localToUpdate.msg = 'old';
 		setThreadMessageRecords([localToUpdate]);
-		mockedMethodCall.mockResolvedValue([unitReply('R1', NEW, { msg: 'new' }), unitReply('R2', NEW)] as any);
+		mockThread([unitReply('R1', NEW, { msg: 'new' }), unitReply('R2', NEW)]);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
 
@@ -597,7 +618,7 @@ describe('loadThreadMessages thread_messages unit', () => {
 	});
 
 	it('logs inner DB failures and still resolves without rejecting', async () => {
-		mockedMethodCall.mockResolvedValue([unitReply('R1', NEW)] as any);
+		mockThread([unitReply('R1', NEW)]);
 		const dbError = new Error('batch boom');
 		dbBatch().mockRejectedValueOnce(dbError);
 
@@ -608,263 +629,409 @@ describe('loadThreadMessages thread_messages unit', () => {
 });
 
 describe('thread message pagination', () => {
-	const reply = (id: string) => ({ _id: id, rid: RID, tmid: TMID, msg: id, _updatedAt: new Date() });
-	const parent = () => buildParent(new Date('2026-01-02'), []);
+	let threadCount = 0;
+	let thread: { tmid: string; rid: string };
+
+	const tsOf = (id: string) => new Date(Date.UTC(2026, 0, 1) - Number(id.slice(1)) * 1000);
+	const target = (id: string) => ({ id, ts: tsOf(id) });
+	const wanted = () => true;
+	const threadMessage = (id: string) => ({ _id: id, rid: RID, tmid: thread.tmid, msg: id, ts: tsOf(id), _updatedAt: new Date() });
+	const page = (total: number, ...ids: string[]) => ({ messages: ids.map(threadMessage), total });
+	const loadFirstPage = async (total: number, ...ids: string[]) => {
+		mockedGetThreadMessages.mockResolvedValueOnce(page(total, ...ids));
+		await loadThreadMessages(thread);
+	};
+	const failNextWrite = () => dbBatch().mockRejectedValueOnce(new Error('db'));
+	const flushPromises = () => new Promise(resolve => setImmediate(resolve));
+	const deferPage = () => {
+		let release!: (result: ReturnType<typeof page>) => void;
+		mockedGetThreadMessages.mockReturnValueOnce(new Promise(resolve => (release = resolve)));
+		return (total: number, ...ids: string[]) => release(page(total, ...ids));
+	};
+	const captureMissingOnWrite = () => {
+		const captured: { missing?: boolean } = {};
+		dbBatch().mockImplementationOnce(() => {
+			captured.missing = areOlderThreadMessagesMissing(thread.tmid);
+		});
+		return captured;
+	};
+	let storedIds: Set<string>;
 
 	beforeEach(() => {
 		jest.clearAllMocks();
 		setupDatabase();
-		mockedIsPaginated.mockReturnValue(true);
+		threadCount += 1;
+		thread = { tmid: `PAGED_THREAD_${threadCount}`, rid: RID };
+		mockedGetThreadMessages.mockReset();
 		mockedGetThreadById.mockResolvedValue(null);
-		mockedGetSingleMessage.mockResolvedValue({ success: true, message: parent() });
+		mockedGetSingleMessage.mockResolvedValue({ ...buildParent(new Date('2026-01-02'), []), _id: thread.tmid });
+		storedIds = new Set();
+		mockedGetThreadMessageById.mockImplementation((id: string) => Promise.resolve(storedIds.has(id) ? { id } : null));
+		dbBatch().mockImplementation((records: any[]) => {
+			batched = records;
+			records.forEach(record => storedIds.add(record._id));
+		});
 	});
 
-	afterEach(() => {
-		mockedIsPaginated.mockReturnValue(false);
-	});
+	it('loads the thread parent and only the first page when opening a thread', async () => {
+		await loadFirstPage(5, 'R1', 'R2');
 
-	it('loads the root and only the first page when opening a thread', async () => {
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1'), reply('R2')], total: 5 });
-
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-
-		expect(mockedGetPage).toHaveBeenCalledTimes(1);
-		expect(mockedGetPage).toHaveBeenCalledWith({ tmid: TMID, offset: 0 });
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(1);
+		expect(mockedGetThreadMessages).toHaveBeenCalledWith({ tmid: thread.tmid, offset: 0 });
+		expect(mockedGetSingleMessage).toHaveBeenCalledWith(thread.tmid);
 		expect(threadsCreated).toHaveLength(1);
-		expect(hasMoreThreadMessages(TMID)).toBe(true);
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
 	});
 
-	it('keeps the replies when the root message fails to load', async () => {
+	it('keeps the thread messages when the thread parent fails to load', async () => {
 		mockedGetSingleMessage.mockRejectedValueOnce(new Error('boom'));
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
 
-		await loadThreadMessages({ tmid: TMID, rid: RID });
+		await loadFirstPage(3, 'R1');
 
 		expect(threadsCreated).toHaveLength(0);
-		expect(hasMoreThreadMessages(TMID)).toBe(true);
+		expect(batched.map((r: any) => r._id)).toEqual(['R1']);
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
 	});
 
-	it('logs and returns nothing when the first page fails', async () => {
-		mockedGetPage.mockRejectedValueOnce(new Error('429'));
+	it('logs when the first page fails and reports nothing older to load', async () => {
+		mockedGetThreadMessages.mockRejectedValueOnce(new Error('429'));
 
-		await loadThreadMessages({ tmid: TMID, rid: RID });
+		await loadThreadMessages(thread);
 
 		expect(mockedLog).toHaveBeenCalled();
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
 	});
 
 	it('retries the first page on the next load more when it failed', async () => {
-		const retryTmid = 'retry-tmid';
-		mockedGetPage.mockRejectedValueOnce(new Error('500'));
-		await loadThreadMessages({ tmid: retryTmid, rid: RID });
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
+		mockedGetThreadMessages.mockRejectedValueOnce(new Error('500'));
+		await loadThreadMessages(thread);
+		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R1'));
 
-		await loadMoreThreadMessages({ tmid: retryTmid, rid: RID });
+		await loadMoreThreadMessages(thread);
 
-		expect(mockedGetPage).toHaveBeenLastCalledWith({ tmid: retryTmid, offset: 0 });
-		expect(hasMoreThreadMessages(retryTmid)).toBe(true);
+		expect(mockedGetThreadMessages).toHaveBeenLastCalledWith({ tmid: thread.tmid, offset: 0 });
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
 	});
 
 	it('requests the first page again when saving it failed', async () => {
-		const saveFailTmid = 'save-fail-tmid';
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
-		mockedDecryptMessages.mockRejectedValueOnce(new Error('db'));
-		await loadThreadMessages({ tmid: saveFailTmid, rid: RID });
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
+		failNextWrite();
+		await loadFirstPage(3, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R1'));
 
-		await loadMoreThreadMessages({ tmid: saveFailTmid, rid: RID });
+		await loadMoreThreadMessages(thread);
 
-		expect(hasMoreThreadMessages(saveFailTmid)).toBe(true);
-		expect(mockedGetPage).toHaveBeenLastCalledWith({ tmid: saveFailTmid, offset: 0 });
+		expect(mockedGetThreadMessages).toHaveBeenLastCalledWith({ tmid: thread.tmid, offset: 0 });
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
 	});
 
-	it('reports no more messages when the first page holds the whole thread', async () => {
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 1 });
+	it('reports nothing older to load when the first page holds the whole thread', async () => {
+		await loadFirstPage(1, 'R1');
 
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-
-		expect(hasMoreThreadMessages(TMID)).toBe(false);
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
 	});
 
-	it('fetches the next page from the number of replies already fetched', async () => {
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1'), reply('R2')], total: 3 });
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R3')], total: 3 });
+	it('fetches the next page from the number of thread messages already fetched, without the thread parent', async () => {
+		await loadFirstPage(3, 'R1', 'R2');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R3'));
 
-		await loadMoreThreadMessages({ tmid: TMID, rid: RID });
+		await loadMoreThreadMessages(thread);
 
-		expect(mockedGetPage).toHaveBeenLastCalledWith({ tmid: TMID, offset: 2 });
-		expect(threadsCreated).toHaveLength(1);
-		expect(hasMoreThreadMessages(TMID)).toBe(false);
+		expect(mockedGetThreadMessages).toHaveBeenLastCalledWith({ tmid: thread.tmid, offset: 2 });
+		expect(mockedGetSingleMessage).toHaveBeenCalledTimes(1);
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
 	});
 
 	it('does not request another page while one is in flight', async () => {
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R2')], total: 3 });
+		await loadFirstPage(3, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R2'));
 
-		await Promise.all([loadMoreThreadMessages({ tmid: TMID, rid: RID }), loadMoreThreadMessages({ tmid: TMID, rid: RID })]);
+		await Promise.all([loadMoreThreadMessages(thread), loadMoreThreadMessages(thread)]);
 
-		expect(mockedGetPage).toHaveBeenCalledTimes(2);
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(2);
+	});
+
+	it('requests the first page once when opening the thread races an older load', async () => {
+		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R1'));
+
+		await Promise.all([loadMoreThreadMessages(thread), loadThreadMessages(thread)]);
+
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(1);
+		expect(mockedGetSingleMessage).toHaveBeenCalledTimes(1);
 	});
 
 	it('waits for a reload in flight instead of requesting a stale page', async () => {
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 5 });
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-		let release!: (page: { messages: ReturnType<typeof reply>[]; total: number }) => void;
-		mockedGetPage.mockReturnValueOnce(new Promise(resolve => (release = resolve)));
+		await loadFirstPage(5, 'R1');
+		const releaseReload = deferPage();
 
-		const reload = loadThreadMessages({ tmid: TMID, rid: RID });
-		const more = loadMoreThreadMessages({ tmid: TMID, rid: RID });
-		release({ messages: [reply('R1')], total: 5 });
-		await Promise.all([reload, more]);
+		const reload = loadThreadMessages(thread);
+		const older = loadMoreThreadMessages(thread);
+		releaseReload(5, 'R1');
+		await Promise.all([reload, older]);
 
-		expect(mockedGetPage).toHaveBeenCalledTimes(2);
-		expect(mockedGetPage).toHaveBeenLastCalledWith({ tmid: TMID, offset: 0 });
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(2);
+		expect(mockedGetThreadMessages).toHaveBeenLastCalledWith({ tmid: thread.tmid, offset: 0 });
 	});
 
 	it('does not call the server when there is nothing more to load', async () => {
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 1 });
-		await loadThreadMessages({ tmid: TMID, rid: RID });
+		await loadFirstPage(1, 'R1');
 
-		await loadMoreThreadMessages({ tmid: TMID, rid: RID });
+		await loadMoreThreadMessages(thread);
 
-		expect(mockedGetPage).toHaveBeenCalledTimes(1);
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(1);
 	});
 
-	it('keeps more messages available and logs when a page request fails', async () => {
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-		mockedGetPage.mockRejectedValueOnce(new Error('boom'));
+	it('keeps older thread messages missing and logs when a page request fails', async () => {
+		await loadFirstPage(3, 'R1');
+		mockedGetThreadMessages.mockRejectedValueOnce(new Error('boom'));
 
-		await loadMoreThreadMessages({ tmid: TMID, rid: RID });
+		await loadMoreThreadMessages(thread);
 
 		expect(mockedLog).toHaveBeenCalled();
-		expect(hasMoreThreadMessages(TMID)).toBe(true);
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
 	});
 
 	it('stops when the server returns an empty page', async () => {
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 5 });
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-		mockedGetPage.mockResolvedValueOnce({ messages: [], total: 5 });
+		await loadFirstPage(5, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(5));
 
-		await loadMoreThreadMessages({ tmid: TMID, rid: RID });
+		await loadMoreThreadMessages(thread);
 
-		expect(hasMoreThreadMessages(TMID)).toBe(false);
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
 	});
 
-	it('loads every remaining page when asked to load all', async () => {
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-		mockedGetPage
-			.mockResolvedValueOnce({ messages: [reply('R2')], total: 3 })
-			.mockResolvedValueOnce({ messages: [reply('R3')], total: 3 });
+	it('loads older pages only until the page holding the target is fetched', async () => {
+		await loadFirstPage(7, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(7, 'R2')).mockResolvedValueOnce(page(7, 'R3'));
 
-		await expect(loadAllThreadMessages({ tmid: TMID, rid: RID })).resolves.toBe(true);
+		await expect(loadThreadMessagesUntil(thread, target('R2'), wanted)).resolves.toBe(true);
 
-		expect(mockedGetPage).toHaveBeenCalledTimes(3);
-		expect(hasMoreThreadMessages(TMID)).toBe(false);
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(2);
 	});
 
-	it('waits for the first load before loading all', async () => {
-		mockedGetPage
-			.mockResolvedValueOnce({ messages: [reply('R1')], total: 2 })
-			.mockResolvedValueOnce({ messages: [reply('R2')], total: 2 });
+	it('does not call the server when the target is within the fetched pages', async () => {
+		await loadFirstPage(7, 'R1', 'R2');
 
-		const first = loadThreadMessages({ tmid: TMID, rid: RID });
-		await expect(loadAllThreadMessages({ tmid: TMID, rid: RID })).resolves.toBe(true);
+		await expect(loadThreadMessagesUntil(thread, target('R2'), wanted)).resolves.toBe(true);
+
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(1);
+	});
+
+	it('pages down to a stored target that is older than the fetched pages', async () => {
+		await loadFirstPage(7, 'R1');
+		storedIds.add('R3');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(7, 'R2')).mockResolvedValueOnce(page(7, 'R3'));
+
+		await expect(loadThreadMessagesUntil(thread, target('R3'), wanted)).resolves.toBe(true);
+
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(3);
+	});
+
+	it('loads every remaining page to reveal the thread parent', async () => {
+		await loadFirstPage(3, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R2')).mockResolvedValueOnce(page(3, 'R3'));
+
+		await expect(loadThreadMessagesUntil(thread, { id: thread.tmid, ts: new Date() }, wanted)).resolves.toBe(true);
+
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(3);
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
+	});
+
+	it('reports a target deleted from the thread as unreachable', async () => {
+		await loadFirstPage(2, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(2, 'R2'));
+
+		await expect(loadThreadMessagesUntil(thread, { id: 'deleted', ts: tsOf('R5') }, wanted)).resolves.toBe(false);
+
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(2);
+	});
+
+	it('stops paging once the jump no longer wants the target', async () => {
+		await loadFirstPage(9, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(9, 'R2')).mockResolvedValueOnce(page(9, 'R3'));
+		const isWanted = jest.fn().mockReturnValueOnce(true).mockReturnValue(false);
+
+		await expect(loadThreadMessagesUntil(thread, target('R5'), isWanted)).resolves.toBe(false);
+
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(2);
+	});
+
+	it('waits for the first load before loading until the target', async () => {
+		mockedGetThreadMessages.mockResolvedValueOnce(page(2, 'R1')).mockResolvedValueOnce(page(2, 'R2'));
+
+		const first = loadThreadMessages(thread);
+		await expect(loadThreadMessagesUntil(thread, target('R2'), wanted)).resolves.toBe(true);
 		await first;
 
-		expect(mockedGetPage).toHaveBeenCalledTimes(2);
-		expect(mockedGetPage).toHaveBeenLastCalledWith({ tmid: TMID, offset: 1 });
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(2);
+		expect(mockedGetThreadMessages).toHaveBeenLastCalledWith({ tmid: thread.tmid, offset: 1 });
+	});
+
+	it('loads the first page before older ones when none was loaded', async () => {
+		mockedGetThreadMessages.mockResolvedValueOnce(page(2, 'R1')).mockResolvedValueOnce(page(2, 'R2'));
+
+		await expect(loadThreadMessagesUntil(thread, target('R2'), wanted)).resolves.toBe(true);
+
+		expect(mockedGetThreadMessages).toHaveBeenNthCalledWith(1, { tmid: thread.tmid, offset: 0 });
+		expect(mockedGetThreadMessages).toHaveBeenNthCalledWith(2, { tmid: thread.tmid, offset: 1 });
+	});
+
+	it('reports the target as unreachable when the first page cannot be fetched', async () => {
+		mockedGetThreadMessages.mockRejectedValue(new Error('boom'));
+
+		await expect(loadThreadMessagesUntil(thread, target('R1'), wanted)).resolves.toBe(false);
+
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(1);
+	});
+
+	it('gives up loading until the target when a page request fails', async () => {
+		await loadFirstPage(3, 'R1');
+		mockedGetThreadMessages.mockRejectedValue(new Error('boom'));
+
+		await expect(loadThreadMessagesUntil(thread, target('R3'), wanted)).resolves.toBe(false);
+
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(2);
 	});
 
 	it('notifies subscribers when a load finishes', async () => {
 		const listener = jest.fn();
-		const unsubscribe = subscribeThreadLoaded(listener);
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 1 });
+		const removeListener = subscribeThreadLoaded(listener);
 
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-		unsubscribe();
-		await loadThreadMessages({ tmid: TMID, rid: RID });
+		await loadFirstPage(1, 'R1');
+		removeListener();
+		await loadFirstPage(1, 'R1');
 
 		expect(listener).toHaveBeenCalledTimes(1);
-		expect(listener).toHaveBeenCalledWith(TMID);
 	});
 
-	it('gives up on load all when a page request fails', async () => {
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-		mockedGetPage.mockRejectedValue(new Error('boom'));
+	it('reports older thread messages missing by the time the first page is written to the database', async () => {
+		const captured = captureMissingOnWrite();
 
-		await expect(loadAllThreadMessages({ tmid: TMID, rid: RID })).resolves.toBe(false);
+		await loadFirstPage(3, 'R1');
 
-		expect(mockedGetPage).toHaveBeenCalledTimes(2);
+		expect(captured.missing).toBe(true);
 	});
 
-	it('reports more messages by the time the first page is written to the database', async () => {
-		let hasMoreWhenWritten: boolean | undefined;
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
-		dbBatch().mockImplementationOnce(() => {
-			hasMoreWhenWritten = hasMoreThreadMessages(TMID);
-		});
+	it('reports no older thread messages missing by the time the last page is written to the database', async () => {
+		await loadFirstPage(2, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(2, 'R2'));
+		const captured = captureMissingOnWrite();
 
-		await loadThreadMessages({ tmid: TMID, rid: RID });
+		await loadMoreThreadMessages(thread);
 
-		expect(hasMoreWhenWritten).toBe(true);
-	});
-
-	it('reports the advanced page state by the time a later page is written to the database', async () => {
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 2 });
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-		let hasMoreWhenWritten: boolean | undefined;
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R2')], total: 2 });
-		dbBatch().mockImplementationOnce(() => {
-			hasMoreWhenWritten = hasMoreThreadMessages(TMID);
-		});
-
-		await loadMoreThreadMessages({ tmid: TMID, rid: RID });
-
-		expect(hasMoreWhenWritten).toBe(false);
+		expect(captured.missing).toBe(false);
 	});
 
 	it('does not adopt the pagination state of a first page that failed to save', async () => {
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 1 });
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
-		dbBatch().mockImplementationOnce(() => {
-			throw new Error('db');
-		});
+		await loadFirstPage(1, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R1'));
+		failNextWrite();
 
-		await loadThreadMessages({ tmid: TMID, rid: RID });
+		await loadThreadMessages(thread);
 
 		expect(mockedLog).toHaveBeenCalled();
-		expect(hasMoreThreadMessages(TMID)).toBe(false);
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
 	});
 
 	it('requests the same page again after saving it failed', async () => {
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R1')], total: 3 });
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R2')], total: 3 });
-		dbBatch().mockImplementationOnce(() => {
-			throw new Error('db');
-		});
-		await loadMoreThreadMessages({ tmid: TMID, rid: RID });
-		mockedGetPage.mockResolvedValueOnce({ messages: [reply('R2')], total: 3 });
+		await loadFirstPage(3, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R2'));
+		failNextWrite();
+		await loadMoreThreadMessages(thread);
+		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R2'));
 
-		await loadMoreThreadMessages({ tmid: TMID, rid: RID });
+		await loadMoreThreadMessages(thread);
 
-		expect(mockedGetPage).toHaveBeenNthCalledWith(2, { tmid: TMID, offset: 1 });
-		expect(mockedGetPage).toHaveBeenNthCalledWith(3, { tmid: TMID, offset: 1 });
-		expect(hasMoreThreadMessages(TMID)).toBe(true);
+		expect(mockedGetThreadMessages).toHaveBeenNthCalledWith(2, { tmid: thread.tmid, offset: 1 });
+		expect(mockedGetThreadMessages).toHaveBeenNthCalledWith(3, { tmid: thread.tmid, offset: 1 });
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
 	});
 
-	it('loads the whole thread over DDP and reports no more on older servers', async () => {
-		mockedIsPaginated.mockReturnValue(false);
-		mockedMethodCall.mockResolvedValue([parent(), reply('R1')] as any);
+	it('keeps no older thread messages missing when the first page is reloaded after the oldest was stored', async () => {
+		await loadFirstPage(2, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(2, 'R2'));
+		await loadMoreThreadMessages(thread);
 
-		await loadThreadMessages({ tmid: TMID, rid: RID });
+		await loadFirstPage(2, 'R2');
 
-		expect(mockedGetPage).not.toHaveBeenCalled();
-		expect(hasMoreThreadMessages(TMID)).toBe(false);
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
+	});
+
+	it('forgets the reached oldest page once the thread view closes', async () => {
+		await loadFirstPage(2, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(2, 'R2'));
+		await loadMoreThreadMessages(thread);
+
+		clearThreadPagination(thread.tmid);
+		await loadFirstPage(2, 'R1');
+
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
+	});
+
+	it('drops a page that lands after its thread view closed', async () => {
+		await loadFirstPage(2, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(2, 'R2'));
+		await loadMoreThreadMessages(thread);
+		const releaseReload = deferPage();
+		const reload = loadThreadMessages(thread);
+		await flushPromises();
+
+		clearThreadPagination(thread.tmid);
+		releaseReload(2, 'R1');
+		await reload;
+		await loadFirstPage(3, 'R1');
+
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
+	});
+
+	it('does not reuse an older page left in flight by a closed thread view as the first page', async () => {
+		await loadFirstPage(5, 'R1');
+		const releaseOlder = deferPage();
+		const older = loadMoreThreadMessages(thread);
+		await flushPromises();
+
+		clearThreadPagination(thread.tmid);
+		mockedGetThreadMessages.mockResolvedValueOnce(page(5, 'R1'));
+		const reopen = loadThreadMessages(thread);
+		releaseOlder(5, 'R2');
+		await Promise.all([older, reopen]);
+
+		expect(mockedGetThreadMessages).toHaveBeenLastCalledWith({ tmid: thread.tmid, offset: 0 });
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
+	});
+
+	it('drops a first page that lands after its thread view closed', async () => {
+		const releaseFirst = deferPage();
+		const first = loadThreadMessages(thread);
+		await flushPromises();
+
+		clearThreadPagination(thread.tmid);
+		releaseFirst(1, 'R1');
+		await first;
+
+		expect(dbBatch()).not.toHaveBeenCalled();
+		await loadFirstPage(3, 'R1');
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
+	});
+
+	it('requests the first page again when the thread reopens while a reload is in flight', async () => {
+		await loadFirstPage(5, 'R1');
+		const releaseReload = deferPage();
+		const reload = loadThreadMessages(thread);
+		await flushPromises();
+
+		clearThreadPagination(thread.tmid);
+		mockedGetThreadMessages.mockResolvedValueOnce(page(5, 'R1'));
+		const reopen = loadThreadMessages(thread);
+		releaseReload(5, 'R1');
+		await Promise.all([reload, reopen]);
+
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(3);
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
+	});
+
+	it('queries only the stored records of the thread messages being saved', async () => {
+		await loadFirstPage(3, 'R1', 'R2');
+
+		expect(threadMessagesCollection.query).toHaveBeenCalledWith(Q.where('id', Q.oneOf(['R1', 'R2'])));
 	});
 });
