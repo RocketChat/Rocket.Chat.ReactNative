@@ -27,9 +27,10 @@ const findFirstLoaderId = (messages: TAnyMessageModel[]): string | null => messa
 interface IObservedWindow {
 	rows: TAnyMessageModel[];
 	threadParent: TAnyMessageModel | null;
+	hasOlderRows: boolean;
 }
 
-const EMPTY_WINDOW: IObservedWindow = { rows: [], threadParent: null };
+const EMPTY_WINDOW: IObservedWindow = { rows: [], threadParent: null, hasOlderRows: false };
 
 export const useMessages = ({
 	rid,
@@ -51,13 +52,10 @@ export const useMessages = ({
 		subscribeThreadLoaded,
 		() => !!tmid && areOlderThreadMessagesMissing(tmid)
 	);
-	const messages = useMemo(
-		() =>
-			observedWindow.threadParent && !olderThreadMessagesMissing
-				? [...observedWindow.rows, observedWindow.threadParent]
-				: observedWindow.rows,
-		[observedWindow, olderThreadMessagesMissing]
-	);
+	const messages = useMemo(() => {
+		const { rows, threadParent, hasOlderRows } = observedWindow;
+		return threadParent && !hasOlderRows && !olderThreadMessagesMissing ? [...rows, threadParent] : rows;
+	}, [observedWindow, olderThreadMessagesMissing]);
 	// Optional UPPER ts bound for the Message Window. null => Live Window (newest-first, follows the
 	// Live Tail). A finite number (ms since epoch) => Anchored Window pinned below the Live Tail.
 	const [highTs, setHighTsState] = useState<number | null>(null);
@@ -191,11 +189,9 @@ export const useMessages = ({
 			.observe();
 
 		subscription.current = observable.subscribe(result => {
-			const hasOlderThreadMessages = !!tmid && result.length > windowSize;
-			const visibleThreadParent =
-				tmid && thread.current && !hasOlderThreadMessages && !isHiddenSystemMessage(thread.current, hideSystemMessages)
-					? thread.current
-					: null;
+			const hasOlderRows = !!tmid && result.length > windowSize;
+			const threadParent =
+				tmid && thread.current && !isHiddenSystemMessage(thread.current, hideSystemMessages) ? thread.current : null;
 
 			// Thread / local windows are never anchored, so rejoin only applies to the bounded main room.
 			if (!tmid && highTs != null) {
@@ -205,10 +201,7 @@ export const useMessages = ({
 			if (tmid) {
 				readThread();
 			}
-			setObservedWindow({
-				rows: hasOlderThreadMessages ? result.slice(0, windowSize) : result,
-				threadParent: visibleThreadParent
-			});
+			setObservedWindow({ rows: hasOlderRows ? result.slice(0, windowSize) : result, threadParent, hasOlderRows });
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps -- readThread is omitted intentionally: useDebouncedCallback stores func in a ref so changes propagate without recreating fetchMessages; hideSystemMessages must stay so the DB re-queries for proper pagination
 	}, [rid, tmid, showMessageInMainThread, hideSystemMessages, highTs, unsubscribe, raiseOrReleaseAnchor]);
