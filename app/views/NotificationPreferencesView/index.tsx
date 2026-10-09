@@ -11,7 +11,7 @@ import { type IRoomNotifications, type TRoomNotificationsModel } from '~/definit
 import I18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { showErrorAlertWithEMessage } from '~/lib/methods/helpers';
+import { isIOS, showErrorAlertWithEMessage } from '~/lib/methods/helpers';
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { saveNotificationSettings } from '~/lib/services/restApi';
@@ -157,7 +157,7 @@ const NotificationPreferencesView = (): ReactElement => {
 	};
 
 	return (
-		<SafeAreaView testID='notification-preference-view' style={{ paddingTop: 16 }}>
+		<SafeAreaView testID='notification-preference-view' style={isIOS ? { paddingTop: 16 } : undefined}>
 			<List.Container testID='notification-preference-view-list'>
 				<List.Section>
 					<List.Separator />
