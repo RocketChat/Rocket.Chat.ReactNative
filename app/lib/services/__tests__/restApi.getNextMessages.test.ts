@@ -25,10 +25,11 @@ const RID = 'ROOM_ID';
 const AFTER_MS = 1704110400000;
 const AFTER = new Date(AFTER_MS);
 const COUNT = 3;
+const UPDATED_AT = '2024-01-01T12:00:01.000Z';
 
 const restResponse = (ids: string[], next: string | null) => ({
 	success: true,
-	messages: ids.map(_id => ({ _id, rid: RID })),
+	messages: ids.map(_id => ({ _id, rid: RID, _updatedAt: UPDATED_AT })),
 	cursor: { next, previous: String(AFTER_MS + 1000) }
 });
 
@@ -78,6 +79,14 @@ describe('getNextMessages', () => {
 
 		expect(result.hasMore).toBe(hasMore);
 		expect(result.messages.map(message => message._id)).toEqual(['a', 'b', 'c']);
+	});
+
+	it('returns _updatedAt as a Date', async () => {
+		mockedGet.mockResolvedValue(restResponse(['a'], null));
+
+		const result = await getNextMessages({ rid: RID, after: AFTER, count: COUNT });
+
+		expect(result.messages[0]._updatedAt).toEqual(new Date(UPDATED_AT));
 	});
 
 	it('rejects instead of returning no messages when the response is not successful', async () => {

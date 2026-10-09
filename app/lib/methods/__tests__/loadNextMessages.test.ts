@@ -29,7 +29,6 @@ const RID = 'ROOM_ID';
 const TS = new Date(Date.UTC(2024, 0, 1, 12, 0, 0));
 const COUNT = 50;
 const LOADER_ITEM = { id: 'tapped-loader' } as any;
-const NEWEST_MS = TS.getTime() + COUNT * 1000;
 
 const buildMessages = (length: number) =>
 	Array.from(
@@ -93,7 +92,7 @@ describe('loadNextMessages', () => {
 		expect(mockedGetMessageById).toHaveBeenCalledWith('msg-50');
 		expect(mockedUpdateMessages.mock.calls[0][0].update).toEqual([
 			...messages,
-			{ _id: 'load-more-msg-50', rid: RID, t: MessageTypeLoad.NEXT_CHUNK, ts: new Date(NEWEST_MS + 1) }
+			{ _id: 'load-more-msg-50', rid: RID, t: MessageTypeLoad.NEXT_CHUNK, ts: new Date(messages[COUNT - 1].ts.getTime() + 1) }
 		]);
 	});
 
