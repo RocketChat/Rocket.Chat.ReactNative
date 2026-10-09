@@ -65,7 +65,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -242,7 +241,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -419,7 +417,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -635,7 +632,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -1410,7 +1406,6 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -1561,7 +1556,6 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -1749,7 +1743,6 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -1927,7 +1920,6 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -2078,7 +2070,6 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -2229,7 +2220,6 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -2478,7 +2468,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -2629,7 +2618,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -2794,7 +2782,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -2945,7 +2932,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -3132,7 +3118,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -3283,7 +3268,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -3484,7 +3468,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -3635,7 +3618,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -3856,7 +3838,6 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -4007,7 +3988,6 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -4173,7 +4153,6 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -4340,7 +4319,6 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -4584,7 +4562,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -4827,7 +4804,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -5122,7 +5098,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -5365,7 +5340,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -5703,7 +5677,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -5946,7 +5919,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -6241,7 +6213,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -6484,7 +6455,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -6779,7 +6749,6 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -6930,7 +6899,6 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -7159,7 +7127,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -7402,7 +7369,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -7697,7 +7663,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -7940,7 +7905,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -9272,7 +9236,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -9461,7 +9424,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -9651,7 +9613,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -9894,7 +9855,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                 {
                   "minHeight": 52,
                 },
-                false,
               ],
             ]
           }
@@ -10150,7 +10110,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -10393,7 +10352,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -10688,7 +10646,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }
@@ -10931,7 +10888,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   {
                     "minHeight": 52,
                   },
-                  false,
                 ],
               ]
             }

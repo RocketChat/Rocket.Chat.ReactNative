@@ -71,8 +71,5 @@ export default StyleSheet.create({
 	},
 	row: {
 		paddingHorizontal: PADDING_HORIZONTAL
-	},
-	disabled: {
-		opacity: 0.3
 	}
 });
