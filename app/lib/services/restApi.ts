@@ -893,31 +893,19 @@ export const getThreadsList = ({ rid, count, offset, text }: { rid: string; coun
 	return sdk.get('chat.getThreadsList', params);
 };
 
-const getThreadParent = async (tmid: string): Promise<IMessage | null> => {
-	try {
-		const result = await getSingleMessage(tmid);
-		return result.success ? result.message : null;
-	} catch (e) {
-		log(e);
-		return null;
-	}
-};
-
-export const getThreadMessages = async ({ tmid, offset }: { tmid: string; offset: number }) => {
+export const getThreadMessages = async ({ tmid, offset, count }: { tmid: string; offset: number; count: number }) => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.8.0')) {
-		const [result, threadParent] = await Promise.all([
-			sdk.get('chat.getThreadMessages', { tmid, count: 50, offset, sort: { ts: -1 } }),
-			offset === 0 ? getThreadParent(tmid) : null
-		]);
+		const result = await sdk.get('chat.getThreadMessages', { tmid, count, offset, sort: { ts: -1 } });
 		if (!result.success) {
 			throw new Error('Unable to load thread messages');
 		}
-		return { messages: result.messages, total: result.total, threadParent };
+		return { messages: result.messages, total: result.total, threadParent: null };
 	}
 	const result = await sdk.methodCallWrapper('getThreadMessages', { tmid });
-	const messages: IMessage[] = result ? EJSON.fromJSONValue(result) : [];
-	return { messages, total: messages.length, threadParent: null };
+	const thread: IMessage[] = result ? EJSON.fromJSONValue(result) : [];
+	const messages = thread.filter(m => m._id !== tmid);
+	return { messages, total: messages.length, threadParent: thread.find(m => m._id === tmid) ?? null };
 };
 
 export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }) =>

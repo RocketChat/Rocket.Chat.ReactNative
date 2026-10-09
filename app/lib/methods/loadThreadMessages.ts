@@ -10,7 +10,7 @@ import { type IMessage, type TThreadMessageModel, type TThreadModel } from '~/de
 import { getThreadById } from '../database/services/Thread';
 import { getThreadMessageById } from '../database/services/ThreadMessage';
 import { tsToMs } from '../dayjs';
-import { getThreadMessages } from '../services/restApi';
+import { getSingleMessage, getThreadMessages } from '../services/restApi';
 
 interface IThreadLocation {
 	tmid: string;
@@ -34,6 +34,8 @@ interface IThreadPager {
 	state?: IPaginationState;
 	firstPage?: Promise<boolean>;
 }
+
+const THREAD_PAGE_SIZE = 50;
 
 const pagination = new Map<string, IThreadPager>();
 const viewCount = new Map<string, number>();
@@ -95,17 +97,21 @@ async function prepareThreadUpsert(threadParent: TThreadModel | undefined, rid: 
 	return null;
 }
 
-async function saveThreadMessages({ tmid, rid, messages }: IThreadLocation & { messages: IMessage[] }): Promise<void> {
-	if (!messages?.length) {
+const buildAndDecrypt = async (messages: IMessage[]): Promise<TThreadMessageModel[]> => {
+	const built = messages.map(m => buildMessage(m)).filter((m): m is TThreadMessageModel => !!m);
+	return built.length ? ((await Encryption.decryptMessages(built)) as TThreadMessageModel[]) : [];
+};
+
+async function saveThreadMessages({
+	rid,
+	threadParent,
+	messages
+}: IThreadLocation & { threadParent: IMessage | null; messages: IMessage[] }): Promise<void> {
+	if (!messages.length && !threadParent) {
 		return;
 	}
-	const built = messages
-		.filter(Boolean)
-		.map(m => buildMessage(m))
-		.filter((m): m is TThreadMessageModel => !!m);
-	const decrypted = (await Encryption.decryptMessages(built)) as TThreadMessageModel[];
-	const threadParent = decrypted.find(m => m._id === tmid);
-	const data = decrypted.filter(m => m.tmid);
+	const [parent] = await buildAndDecrypt(threadParent ? [threadParent] : []);
+	const data = await buildAndDecrypt(messages);
 	const db = database.active;
 	const threadMessagesCollection = db.get('thread_messages');
 	const allThreadMessagesRecords = await threadMessagesCollection.query(Q.where('id', Q.oneOf(data.map(m => m._id)))).fetch();
@@ -147,7 +153,7 @@ async function saveThreadMessages({ tmid, rid, messages }: IThreadLocation & { m
 		);
 	});
 
-	const threadToUpsert = await prepareThreadUpsert(threadParent, rid);
+	const threadToUpsert = await prepareThreadUpsert(parent, rid);
 	const records = [threadToUpsert, ...threadMessagesToCreate, ...threadMessagesToUpdate].filter(Boolean) as Model[];
 	if (!records.length) {
 		return;
@@ -159,19 +165,30 @@ async function saveThreadMessages({ tmid, rid, messages }: IThreadLocation & { m
 }
 
 const requestPage = async (tmid: string, offset: number, previous?: IPaginationState) => {
-	const page = await getThreadMessages({ tmid, offset });
+	const page = await getThreadMessages({ tmid, offset, count: THREAD_PAGE_SIZE });
 	const deleted = previous && offset > 0 ? previous.total - page.total : 0;
 	if (deleted <= 0) {
 		return { ...page, offset };
 	}
 	const rewound = Math.max(0, offset - deleted);
-	return { ...(await getThreadMessages({ tmid, offset: rewound })), offset: rewound };
+	return { ...(await getThreadMessages({ tmid, offset: rewound, count: THREAD_PAGE_SIZE })), offset: rewound };
+};
+
+const fetchThreadParent = async (tmid: string): Promise<IMessage | null> => {
+	try {
+		const result = await getSingleMessage(tmid);
+		return result.success ? result.message : null;
+	} catch (e) {
+		log(e);
+		return null;
+	}
 };
 
 const fetchPage = async (thread: IThreadLocation, pager: IThreadPager, requestedOffset: number): Promise<boolean> => {
 	const previous = pager.state;
 	try {
-		const { messages, total, threadParent, offset } = await requestPage(thread.tmid, requestedOffset, previous);
+		const { messages, total, threadParent: pageParent, offset } = await requestPage(thread.tmid, requestedOffset, previous);
+		const threadParent = requestedOffset === 0 ? (pageParent ?? (await fetchThreadParent(thread.tmid))) : null;
 		if (pagination.get(thread.tmid) !== pager) {
 			return false;
 		}
@@ -186,7 +203,7 @@ const fetchPage = async (thread: IThreadLocation, pager: IThreadPager, requested
 			oldestTs: Math.min(oldest ? tsToMs(oldest.ts) : Infinity, resumed?.oldestTs ?? Infinity),
 			reachedOldest: !!previous?.reachedOldest || fullyPaged
 		};
-		await saveThreadMessages({ ...thread, messages: threadParent ? [threadParent, ...messages] : messages });
+		await saveThreadMessages({ ...thread, threadParent, messages });
 		return messages.length > 0;
 	} catch (e) {
 		log(e);
