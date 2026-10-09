@@ -4,7 +4,7 @@ import { KeyboardFocusView } from 'react-native-external-keyboard';
 
 import { hasNativeHeaderBar } from '~/lib/methods/helpers';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
-import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
+import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
 import { fromSubscription, useRoomStore } from '../stores/RoomStoreContext';
 
 const styles = StyleSheet.create({
@@ -20,7 +20,6 @@ interface IRoomBodyFocusAnchorProps {
 
 export const RoomBodyFocusAnchor = ({ children }: IRoomBodyFocusAnchorProps) => {
 	const disabled = useRoomStore(fromSubscription(isInviteSubscription, false));
-	const accessibilityNavigationEnabled = useIsAccessibilityNavigationEnabled();
 
 	if (!hasNativeHeaderBar) {
 		return <>{children}</>;
@@ -29,8 +28,8 @@ export const RoomBodyFocusAnchor = ({ children }: IRoomBodyFocusAnchorProps) => 
 	return (
 		<>
 			<KeyboardFocusView
-				autoFocus={accessibilityNavigationEnabled && !disabled}
-				enableA11yFocus={accessibilityNavigationEnabled && !disabled}
+				autoFocus={isExternalKeyboardConnected() && !disabled}
+				accessibilityElementsHidden
 				focusable={!disabled}
 				canBeFocused={!disabled}
 				style={styles.anchor}
