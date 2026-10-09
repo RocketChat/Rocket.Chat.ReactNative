@@ -121,7 +121,8 @@ const joinRoom = async (fixtures: Fixtures, roomName: string) => {
 	await tapWhenVisible(fixtures, 'room-view-join-button');
 	await expectHidden(fixtures, 'room-view-join-button');
 	await backToRoomsList(fixtures);
-	await searchAndNavigateRoom(fixtures, roomName);
+	await expectVisible(fixtures, `rooms-list-view-item-${roomName}`);
+	await navigateToRoom(fixtures, roomName);
 	await expect(fixtures.screen.getByText(/joined the channel/)).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
