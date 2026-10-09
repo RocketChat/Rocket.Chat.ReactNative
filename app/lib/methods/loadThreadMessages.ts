@@ -110,8 +110,7 @@ async function saveThreadMessages({
 	if (!messages.length && !threadParent) {
 		return;
 	}
-	const [parent] = await buildAndDecrypt(threadParent ? [threadParent] : []);
-	const data = await buildAndDecrypt(messages);
+	const [[parent], data] = await Promise.all([buildAndDecrypt(threadParent ? [threadParent] : []), buildAndDecrypt(messages)]);
 	const db = database.active;
 	const threadMessagesCollection = db.get('thread_messages');
 	const allThreadMessagesRecords = await threadMessagesCollection.query(Q.where('id', Q.oneOf(data.map(m => m._id)))).fetch();
