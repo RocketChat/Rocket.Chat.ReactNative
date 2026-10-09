@@ -156,6 +156,8 @@ start_device_capture() {
   DEVICE_CAPTURE_PIDS+=($!)
   xcrun simctl spawn "$E2E_IOS_DEVICE" log stream --style compact --level debug --predicate 'process == "Rocket.Chat" AND (subsystem == "com.facebook.react.log" OR messageType == error OR messageType == fault)' >"$DEVICE_CAPTURE_DIR/app.log" 2>&1 &
   DEVICE_CAPTURE_PIDS+=($!)
+  xcrun simctl spawn "$E2E_IOS_DEVICE" log stream --style compact --level default --predicate 'process IN {"SpringBoard", "testmanagerd", "runningboardd", "AgentDeviceRunnerUITests-Runner"}' >"$DEVICE_CAPTURE_DIR/system.log" 2>&1 &
+  DEVICE_CAPTURE_PIDS+=($!)
 }
 
 stop_device_capture() {
@@ -166,6 +168,9 @@ stop_device_capture() {
   [ "${rc:-1}" -ne 0 ] || [ "$RETRIED" = true ] || return 0
   if [ -f "$DEVICE_CAPTURE_DIR/.capture-started" ]; then
     find "$HOME/Library/Logs/DiagnosticReports" -name 'Rocket.Chat*' -newer "$DEVICE_CAPTURE_DIR/.capture-started" -exec cp {} "$DEVICE_CAPTURE_DIR/" \; 2>/dev/null || true
+  fi
+  if [ -f "$DEVICE_CAPTURE_DIR/system.log" ]; then
+    gzip "$DEVICE_CAPTURE_DIR/system.log"
   fi
   if [ -f "$DEVICE_CAPTURE_DIR/logcat.txt" ]; then
     gzip "$DEVICE_CAPTURE_DIR/logcat.txt"
