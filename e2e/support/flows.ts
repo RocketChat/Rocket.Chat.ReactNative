@@ -341,6 +341,9 @@ const acceptSystemAlert = async (device: Fixtures['device']) => {
 	}
 };
 
+const waitUntilAppReads = (locator: Locator) =>
+	expect.poll(() => succeeds(locator.isVisible()), { timeout: LONG_TIMEOUT }).toBe(true);
+
 const URL_SCHEME_REGISTRATION_TIMEOUT = 30_000;
 const OPEN_LINK_RETRY_DELAY = 2_000;
 
@@ -380,6 +383,7 @@ export const openDeepLink = async ({ device, screen, platform }: Fixtures, link:
 		} else if (destination && (await isVisibleNow(destination))) {
 			return;
 		} else if ((await acceptSystemAlert(device)) && !destination) {
+			await waitUntilAppReads(openPrompt);
 			return;
 		}
 		await delay(OPEN_PROMPT_POLL_INTERVAL);
