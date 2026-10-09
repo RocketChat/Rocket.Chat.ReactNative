@@ -1,3 +1,27 @@
+diff --git a/node_modules/agent-device/dist/apple/runner/AgentDeviceRunner/AgentDeviceRunnerUITests/RunnerTests+Keyboard.swift b/node_modules/agent-device/dist/apple/runner/AgentDeviceRunner/AgentDeviceRunnerUITests/RunnerTests+Keyboard.swift
+index fbb48fe..e1d3225 100644
+--- a/node_modules/agent-device/dist/apple/runner/AgentDeviceRunner/AgentDeviceRunnerUITests/RunnerTests+Keyboard.swift
++++ b/node_modules/agent-device/dist/apple/runner/AgentDeviceRunner/AgentDeviceRunnerUITests/RunnerTests+Keyboard.swift
+@@ -179,8 +179,7 @@ extension RunnerTests {
+ 
+   private func keyboardBandFact(app: XCUIApplication) -> RunnerKeyboardBandFact {
+     let read = safely("KEYBOARD_BAND_FACT") { () -> RunnerKeyboardBandFact? in
+-      let keyboard = app.keyboards.firstMatch
+-      guard keyboard.exists else {
++      guard let keyboard = try? app.keyboards.firstMatch.snapshot() else {
+         return runnerKeyboardBandFact(readSucceeded: true, exists: false, frame: .zero)
+       }
+       return runnerKeyboardBandFact(readSucceeded: true, exists: true, frame: keyboard.frame)
+@@ -311,8 +310,7 @@ extension RunnerTests {
+   func visibleKeyboardFrame(app: XCUIApplication) -> CGRect? {
+ #if os(iOS)
+     return safely("KEYBOARD_FRAME") {
+-      let keyboard = app.keyboards.firstMatch
+-      guard keyboard.exists else { return nil }
++      guard let keyboard = try? app.keyboards.firstMatch.snapshot() else { return nil }
+       let keyboardFrame = keyboard.frame
+       guard !keyboardFrame.isEmpty else { return nil }
+       return keyboardFrame
 diff --git a/node_modules/agent-device/dist/src/runner-session-types.js b/node_modules/agent-device/dist/src/runner-session-types.js
 index 3769291..f04176c 100644
 --- a/node_modules/agent-device/dist/src/runner-session-types.js
