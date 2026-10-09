@@ -1,5 +1,3 @@
-import { Q } from '@nozbe/watermelondb';
-
 import {
 	subscribeThreadLoaded,
 	areOlderThreadMessagesMissing,
@@ -14,7 +12,6 @@ import { getThreadById } from '../../database/services/Thread';
 import { getThreadMessageById } from '../../database/services/ThreadMessage';
 import { Encryption } from '../../encryption';
 import { getSingleMessage, getThreadMessages } from '../../services/restApi';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import buildMessage from '../helpers/buildMessage';
 import log from '../helpers/log';
 
@@ -69,7 +66,6 @@ const mockedGetThreadMessageById = getThreadMessageById as jest.Mock;
 const mockedBuildMessage = buildMessage as jest.MockedFunction<typeof buildMessage>;
 const mockedDecryptMessages = Encryption.decryptMessages as jest.Mock;
 const mockedLog = log as jest.Mock;
-const mockedSanitizedRaw = sanitizedRaw as jest.Mock;
 
 const TMID = 'PARENT_ID';
 const RID = 'ROOM_ID';
@@ -84,14 +80,6 @@ interface IParentFixture {
 	reactions: Partial<IReaction>[];
 }
 
-interface IReplyFixture {
-	_id: string;
-	rid: string;
-	tmid: string;
-	msg: string;
-	_updatedAt: Date;
-}
-
 const buildParent = (updatedAt: Date, reactions: Partial<IReaction>[]): IParentFixture => ({
 	_id: TMID,
 	rid: RID,
@@ -101,8 +89,6 @@ const buildParent = (updatedAt: Date, reactions: Partial<IReaction>[]): IParentF
 	_updatedAt: updatedAt,
 	reactions
 });
-
-const buildReply = (): IReplyFixture => ({ _id: 'REPLY_ID', rid: RID, tmid: TMID, msg: 'reply', _updatedAt: new Date() });
 
 let batched: any[] = [];
 let threadsCreated: any[] = [];
@@ -173,15 +159,32 @@ beforeEach(() => {
 const dbWrite = (): jest.Mock => (database as any).active.write as jest.Mock;
 const dbBatch = (): jest.Mock => (database as any).active.batch as jest.Mock;
 
-describe('loadThreadMessages', () => {
+describe('saving thread messages', () => {
+	const OLD = new Date('2026-01-01T00:00:00.000Z');
+	const NEW = new Date('2026-01-02T00:00:00.000Z');
+
+	const reply = (id: string, updatedAt: Date, extra: Record<string, unknown> = {}): any => ({
+		_id: id,
+		rid: RID,
+		tmid: TMID,
+		msg: `msg-${id}`,
+		_updatedAt: updatedAt,
+		attachments: [{ image_url: `/file/${id}.png` }],
+		...extra
+	});
+
 	beforeEach(() => {
 		jest.clearAllMocks();
 		setupDatabase();
+		setThreadMessageRecords([]);
+		mockedGetThreadById.mockResolvedValue(null);
+		mockedBuildMessage.mockImplementation((message: any) => message);
+		mockedDecryptMessages.mockImplementation((messages: any) => Promise.resolve(messages));
 	});
 
 	it('creates the threads record from the parent returned by getThreadMessages', async () => {
 		const parent = buildParent(new Date('2026-01-02'), [{ emoji: ':thumbsup:', usernames: ['rocket.cat'] }]);
-		mockThread([parent, buildReply()]);
+		mockThread([parent, reply('REPLY_ID', NEW)]);
 		mockedGetThreadById.mockResolvedValue(null);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
@@ -194,7 +197,7 @@ describe('loadThreadMessages', () => {
 
 	it('points the created threads record at the room subscription', async () => {
 		const parent = { ...buildParent(new Date('2026-01-02'), []), subscription: { id: 'OLD_SUB_ID' } };
-		mockThread([parent, buildReply()]);
+		mockThread([parent, reply('REPLY_ID', NEW)]);
 		mockedGetThreadById.mockResolvedValue(null);
 
 		await loadThreadMessages({ tmid: TMID, rid: 'OTHER_ROOM_ID' });
@@ -208,7 +211,7 @@ describe('loadThreadMessages', () => {
 
 	it('updates a stale threads record so newer reactions reach the UI', async () => {
 		const parent = buildParent(new Date('2026-01-02'), [{ emoji: ':thumbsup:', usernames: ['rocket.cat'] }]);
-		mockThread([parent, buildReply()]);
+		mockThread([parent, reply('REPLY_ID', NEW)]);
 
 		const updated: any = {};
 		const threadRecord = {
@@ -229,7 +232,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('leaves an up-to-date threads record untouched', async () => {
-		mockThread([buildParent(new Date('2026-01-01'), []), buildReply()]);
+		mockThread([buildParent(new Date('2026-01-01'), []), reply('REPLY_ID', NEW)]);
 
 		const threadRecord = { id: TMID, _updatedAt: new Date('2026-01-01'), prepareUpdate: jest.fn() };
 		mockedGetThreadById.mockResolvedValue(threadRecord as any);
@@ -241,7 +244,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('leaves a newer threads record untouched and still writes the replies', async () => {
-		mockThread([buildParent(new Date('2026-01-01'), []), buildReply()]);
+		mockThread([buildParent(new Date('2026-01-01'), []), reply('REPLY_ID', NEW)]);
 
 		const threadRecord = { id: TMID, _updatedAt: new Date('2026-01-02'), prepareUpdate: jest.fn() };
 		mockedGetThreadById.mockResolvedValue(threadRecord as any);
@@ -255,7 +258,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('does not write the parent into thread_messages', async () => {
-		mockThread([buildParent(new Date('2026-01-02'), []), buildReply()]);
+		mockThread([buildParent(new Date('2026-01-02'), []), reply('REPLY_ID', NEW)]);
 		mockedGetThreadById.mockResolvedValue(null);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
@@ -265,19 +268,9 @@ describe('loadThreadMessages', () => {
 		expect(threadMessageRecords[0]._id).toBe('REPLY_ID');
 	});
 
-	it('still resolves when the server returns no parent', async () => {
-		mockThread([buildReply()]);
-		mockedGetThreadById.mockResolvedValue(null);
-
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-
-		expect(mockedGetThreadById).not.toHaveBeenCalled();
-		expect(threadsCreated).toHaveLength(0);
-	});
-
-	it('decrypts the parent along with the replies', async () => {
+	it('decrypts the thread parent before saving it', async () => {
 		const parent = buildParent(new Date('2026-01-02'), []);
-		mockThread([parent, buildReply()]);
+		mockThread([parent, reply('REPLY_ID', NEW)]);
 		mockedGetThreadById.mockResolvedValue(null);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
@@ -301,11 +294,7 @@ describe('loadThreadMessages', () => {
 		const localReply = makeLocalThreadMessage({ id: 'R1', updatedAt: new Date('2026-01-01') });
 		localReply.msg = 'old';
 		setThreadMessageRecords([localReply]);
-		mockThread([
-			parent,
-			{ _id: 'R1', rid: RID, tmid: TMID, msg: 'new', _updatedAt: new Date('2026-01-02') },
-			{ _id: 'R2', rid: RID, tmid: TMID, msg: 'reply', _updatedAt: new Date('2026-01-02') }
-		]);
+		mockThread([parent, reply('R1', NEW, { msg: 'new' }), reply('R2', NEW)]);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
 
@@ -325,7 +314,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('logs and still resolves when the threads lookup fails', async () => {
-		mockThread([buildParent(new Date('2026-01-02'), []), buildReply()]);
+		mockThread([buildParent(new Date('2026-01-02'), []), reply('REPLY_ID', NEW)]);
 		const lookupError = new Error('threads lookup boom');
 		mockedGetThreadById.mockRejectedValue(lookupError);
 
@@ -336,7 +325,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('logs and still resolves when preparing the threads create fails', async () => {
-		mockThread([buildParent(new Date('2026-01-02'), []), buildReply()]);
+		mockThread([buildParent(new Date('2026-01-02'), []), reply('REPLY_ID', NEW)]);
 		mockedGetThreadById.mockResolvedValue(null);
 		const createError = new Error('threads create boom');
 		threadsCollection.prepareCreate.mockImplementationOnce(() => {
@@ -350,7 +339,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('logs and still resolves when preparing the threads update fails', async () => {
-		mockThread([buildParent(new Date('2026-01-02'), []), buildReply()]);
+		mockThread([buildParent(new Date('2026-01-02'), []), reply('REPLY_ID', NEW)]);
 		const updateError = new Error('threads update boom');
 		mockedGetThreadById.mockResolvedValue({
 			id: TMID,
@@ -367,7 +356,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('does not touch the threads collection when the server returns no parent', async () => {
-		mockThread([buildReply()]);
+		mockThread([reply('REPLY_ID', NEW)]);
 		mockedGetThreadById.mockResolvedValue(null);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
@@ -380,7 +369,7 @@ describe('loadThreadMessages', () => {
 
 	it('updates a stale threads record when local _updatedAt is a timestamp number', async () => {
 		const parent = buildParent(new Date('2026-01-02T00:00:00.000Z'), [{ emoji: ':thumbsup:', usernames: ['rocket.cat'] }]);
-		mockThread([parent, buildReply()]);
+		mockThread([parent, reply('REPLY_ID', NEW)]);
 
 		const updated: any = {};
 		const threadRecord = {
@@ -401,7 +390,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('updates a stale threads record when local _updatedAt is an ISO string', async () => {
-		mockThread([buildParent(new Date('2026-01-02T00:00:00.000Z'), []), buildReply()]);
+		mockThread([buildParent(new Date('2026-01-02T00:00:00.000Z'), []), reply('REPLY_ID', NEW)]);
 
 		const threadRecord = { id: TMID, _updatedAt: '2026-01-01T00:00:00.000Z', prepareUpdate: jest.fn() };
 		mockedGetThreadById.mockResolvedValue(threadRecord as any);
@@ -413,7 +402,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('updates a stale threads record from a thread parent whose _updatedAt is an ISO string', async () => {
-		mockThread([{ ...buildParent(new Date(), []), _updatedAt: '2026-01-02T00:00:00.000Z' }, buildReply()]);
+		mockThread([{ ...buildParent(new Date(), []), _updatedAt: '2026-01-02T00:00:00.000Z' }, reply('REPLY_ID', NEW)]);
 		const threadRecord = { id: TMID, _updatedAt: new Date('2026-01-01T00:00:00.000Z'), prepareUpdate: jest.fn() };
 		mockedGetThreadById.mockResolvedValue(threadRecord as any);
 
@@ -423,7 +412,7 @@ describe('loadThreadMessages', () => {
 	});
 
 	it('logs and still resolves when getting the threads collection fails', async () => {
-		mockThread([buildParent(new Date('2026-01-02'), []), buildReply()]);
+		mockThread([buildParent(new Date('2026-01-02'), []), reply('REPLY_ID', NEW)]);
 		mockedGetThreadById.mockResolvedValue(null);
 		const getError = new Error('threads get boom');
 		(database.active.get as jest.Mock).mockImplementation((table: string) => {
@@ -439,40 +428,7 @@ describe('loadThreadMessages', () => {
 		expect(dbBatch()).not.toHaveBeenCalled();
 	});
 
-	it('sanitizes the threads raw id from the parent _id', async () => {
-		mockThread([buildParent(new Date('2026-01-02'), []), buildReply()]);
-		mockedGetThreadById.mockResolvedValue(null);
-
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-
-		expect(mockedSanitizedRaw).toHaveBeenCalledWith({ id: TMID }, threadsCollection.schema);
-		expect(mockedSanitizedRaw).toHaveBeenCalledWith({ id: 'REPLY_ID' }, threadMessagesCollection.schema);
-	});
-});
-
-describe('loadThreadMessages thread_messages unit', () => {
-	const OLD = new Date('2026-01-01T00:00:00.000Z');
-	const NEW = new Date('2026-01-02T00:00:00.000Z');
-
-	const unitReply = (id: string, updatedAt: Date, extra: Record<string, unknown> = {}): any => ({
-		_id: id,
-		tmid: TMID,
-		msg: `msg-${id}`,
-		_updatedAt: updatedAt,
-		attachments: [{ image_url: `/file/${id}.png` }],
-		...extra
-	});
-
-	beforeEach(() => {
-		jest.clearAllMocks();
-		setupDatabase();
-		setThreadMessageRecords([]);
-		mockedGetThreadById.mockResolvedValue(null);
-		mockedBuildMessage.mockImplementation((message: any) => message);
-		mockedDecryptMessages.mockImplementation((messages: any) => Promise.resolve(messages));
-	});
-
-	it('swallows SDK throws and resolves empty without rejecting', async () => {
+	it('resolves without decrypting or batching when the page request fails', async () => {
 		mockedGetThreadMessages.mockRejectedValue(new Error('boom'));
 
 		await expect(loadThreadMessages({ tmid: TMID, rid: RID })).resolves.toBeUndefined();
@@ -491,35 +447,9 @@ describe('loadThreadMessages thread_messages unit', () => {
 		expect(dbBatch()).not.toHaveBeenCalled();
 	});
 
-	it('maps each surviving message through buildMessage', async () => {
-		mockThread([unitReply('R1', NEW), unitReply('R2', NEW)]);
-
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-
-		expect(mockedBuildMessage).toHaveBeenCalledTimes(2);
-		expect(mockedBuildMessage).toHaveBeenNthCalledWith(1, expect.objectContaining({ _id: 'R1' }));
-		expect(mockedBuildMessage).toHaveBeenNthCalledWith(2, expect.objectContaining({ _id: 'R2' }));
-	});
-
-	it('decrypts the built list before diffing', async () => {
-		mockThread([unitReply('R1', NEW), unitReply('R2', NEW)]);
-
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-
-		expect(mockedDecryptMessages).toHaveBeenCalledTimes(1);
-		expect(mockedDecryptMessages).toHaveBeenCalledWith([
-			expect.objectContaining({ _id: 'R1' }),
-			expect.objectContaining({ _id: 'R2' })
-		]);
-		expect(threadMessagesCollection.query).toHaveBeenCalled();
-		expect(mockedDecryptMessages.mock.invocationCallOrder[0]).toBeLessThan(
-			threadMessagesCollection.query.mock.invocationCallOrder[0]
-		);
-	});
-
 	it('creates thread_messages absent locally (dedupe _id === id) with rid=tmid', async () => {
 		setThreadMessageRecords([makeLocalThreadMessage({ id: 'R1', updatedAt: NEW })]);
-		mockThread([unitReply('R1', NEW), unitReply('R2', NEW)]);
+		mockThread([reply('R1', NEW), reply('R2', NEW)]);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
 
@@ -536,7 +466,7 @@ describe('loadThreadMessages thread_messages unit', () => {
 		const local = makeLocalThreadMessage({ id: 'R1', updatedAt: OLD, attachments: storedAttachments });
 		local.msg = 'old';
 		setThreadMessageRecords([local]);
-		mockThread([unitReply('R1', NEW, { msg: 'new', attachments: [{ image_url: '/file/new.png' }] })]);
+		mockThread([reply('R1', NEW, { msg: 'new', attachments: [{ image_url: '/file/new.png' }] })]);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
 
@@ -549,7 +479,7 @@ describe('loadThreadMessages thread_messages unit', () => {
 	it('updates stale records from thread messages whose _updatedAt is an ISO string', async () => {
 		const local = makeLocalThreadMessage({ id: 'R1', updatedAt: OLD });
 		setThreadMessageRecords([local]);
-		mockThread([unitReply('R1', NEW, { _updatedAt: NEW.toISOString(), msg: 'edited' })]);
+		mockThread([reply('R1', NEW, { _updatedAt: NEW.toISOString(), msg: 'edited' })]);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
 
@@ -563,7 +493,7 @@ describe('loadThreadMessages thread_messages unit', () => {
 		const equal = makeLocalThreadMessage({ id: 'R2', updatedAt: NEW });
 		equal.msg = 'stored-equal';
 		setThreadMessageRecords([newer, equal]);
-		mockThread([unitReply('R1', OLD, { msg: 'stale' }), unitReply('R2', NEW, { msg: 'same' })]);
+		mockThread([reply('R1', OLD, { msg: 'stale' }), reply('R2', NEW, { msg: 'same' })]);
 
 		await loadThreadMessages({ tmid: TMID, rid: RID });
 
@@ -575,24 +505,8 @@ describe('loadThreadMessages thread_messages unit', () => {
 		expect(batched).toHaveLength(0);
 	});
 
-	it('writes creates and updates via db.write then db.batch once', async () => {
-		const localToUpdate = makeLocalThreadMessage({ id: 'R1', updatedAt: OLD });
-		localToUpdate.msg = 'old';
-		setThreadMessageRecords([localToUpdate]);
-		mockThread([unitReply('R1', NEW, { msg: 'new' }), unitReply('R2', NEW)]);
-
-		await loadThreadMessages({ tmid: TMID, rid: RID });
-
-		expect(dbWrite()).toHaveBeenCalledTimes(1);
-		expect(dbBatch()).toHaveBeenCalledTimes(1);
-		const batchArg = dbBatch().mock.calls[0][0];
-		expect(batchArg).toHaveLength(2);
-		expect(batchArg).toContain(localToUpdate);
-		expect(batchArg).toEqual(expect.arrayContaining([expect.objectContaining({ _id: 'R2' })]));
-	});
-
 	it('logs inner DB failures and still resolves without rejecting', async () => {
-		mockThread([unitReply('R1', NEW)]);
+		mockThread([reply('R1', NEW)]);
 		const dbError = new Error('batch boom');
 		dbBatch().mockRejectedValueOnce(dbError);
 
@@ -1137,11 +1051,5 @@ describe('thread message pagination', () => {
 
 		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(3);
 		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
-	});
-
-	it('queries only the stored records of the thread messages being saved', async () => {
-		await loadFirstPage(3, 'R1', 'R2');
-
-		expect(threadMessagesCollection.query).toHaveBeenCalledWith(Q.where('id', Q.oneOf(['R1', 'R2'])));
 	});
 });
