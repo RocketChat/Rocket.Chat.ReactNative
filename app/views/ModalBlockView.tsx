@@ -109,7 +109,8 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 		const { view } = data;
 		const { title } = view;
 		return {
-			title: textParser([title])
+			title: textParser([title]),
+			gestureEnabled: false
 		};
 	};
 

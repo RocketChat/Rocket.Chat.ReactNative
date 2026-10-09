@@ -15,7 +15,7 @@ import SearchBox from '~/containers/SearchBox';
 import UserItem from '~/containers/UserItem';
 import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '~/definitions';
 import I18n from '~/i18n';
-import { stackedSearchBarOptions, translucentHeader } from '~/lib/methods/helpers/navigation';
+import { stackedSearchBarOptions, nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpers/navigation';
 import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -58,6 +58,17 @@ interface IRoomMembersViewState {
 	filter: string;
 	page: number;
 }
+
+const mergeMembersPage = (members: TUserModel[], membersResult: TUserModel[], page: number) => {
+	const existingIds = new Set(members.map(m => m._id));
+	const membersResultFiltered = membersResult?.filter((member: TUserModel) => !existingIds.has(member._id));
+
+	// Safety check: if page is 0, we replace the list entirely
+	return {
+		members: page === 0 ? membersResultFiltered : [...members, ...(membersResultFiltered || [])],
+		end: membersResult?.length < PAGE_SIZE
+	};
+};
 
 const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
 	const { colors } = useTheme();
@@ -127,12 +138,6 @@ const RoomMembersView = (): ReactElement => {
 		viewAllTeamsPermission
 	] = usePermissions(['mute-user', 'set-leader', 'set-owner', 'set-moderator', 'remove-user', ...teamPermissions], params.rid);
 
-	useLayoutEffect(() => {
-		const subscription = params?.room?.observe && params.room.observe().subscribe(changes => updateState({ room: changes }));
-		setHeader(true);
-		return () => subscription?.unsubscribe();
-	}, []);
-
 	const fetchRoles = () => {
 		if (isGroupChat(state.room)) {
 			return;
@@ -162,11 +167,12 @@ const RoomMembersView = (): ReactElement => {
 		const requestId = ++latestSearchRequest.current;
 		updateState({ isLoading: true });
 
+		const type = allUsers ? 'all' : 'online';
 		try {
 			const membersResult = await getRoomMembers({
 				rid: room.rid,
 				roomType: t,
-				type: allUsers ? 'all' : 'online',
+				type,
 				filter,
 				skip: PAGE_SIZE * page,
 				limit: PAGE_SIZE,
@@ -177,17 +183,9 @@ const RoomMembersView = (): ReactElement => {
 				return;
 			}
 
-			const existingIds = new Set(members.map(m => m._id));
-			const membersResultFiltered = membersResult?.filter((member: TUserModel) => !existingIds.has(member._id));
-
-			// Safety check: if page is 0, we replace the list entirely
-			const newMembers = page === 0 ? membersResultFiltered : [...members, ...(membersResultFiltered || [])];
-			const isEnd = membersResult?.length < PAGE_SIZE;
-
 			updateState({
-				members: newMembers,
+				...mergeMembersPage(members, membersResult, page),
 				isLoading: false,
-				end: isEnd,
 				page: page + 1
 			});
 		} catch (e) {
@@ -228,6 +226,10 @@ const RoomMembersView = (): ReactElement => {
 	const debounceFilterChange = useDebounce((text: string) => {
 		const trimmedFilter = text.trim();
 
+		if (trimmedFilter === state.filter) {
+			return;
+		}
+
 		if (!trimmedFilter) {
 			latestSearchRequest.current += 1;
 		}
@@ -241,7 +243,10 @@ const RoomMembersView = (): ReactElement => {
 		});
 	}, 500);
 
-	const toggleStatus = (status: boolean) => {
+	const toggleStatus = (status: boolean, currentStatus: boolean) => {
+		if (status === currentStatus) {
+			return;
+		}
 		try {
 			// We only update 'allUsers'. 'filter' remains in state, so the next fetch uses both.
 			updateState({ members: [], allUsers: status, end: false, page: 0 });
@@ -268,19 +273,25 @@ const RoomMembersView = (): ReactElement => {
 							label: I18n.t('Online'),
 							checked: !allUsers,
 							testID: 'room-members-view-toggle-status-online',
-							onPress: () => toggleStatus(false)
+							onPress: () => toggleStatus(false, allUsers)
 						},
 						{
 							label: I18n.t('All'),
 							checked: allUsers,
 							testID: 'room-members-view-toggle-status-all',
-							onPress: () => toggleStatus(true)
+							onPress: () => toggleStatus(true, allUsers)
 						}
 					]
 				}
 			])
 		});
 	};
+
+	useLayoutEffect(() => {
+		const subscription = params?.room?.observe && params.room.observe().subscribe(changes => updateState({ room: changes }));
+		setHeader(true);
+		return () => subscription?.unsubscribe();
+	}, []);
 
 	const getUserDisplayName = (user: TUserModel) => {
 		const preferred = useRealName ? user.name : user.username;
@@ -429,7 +440,7 @@ const RoomMembersView = (): ReactElement => {
 		<SafeAreaView testID='room-members-view'>
 			<FlatList
 				data={state.members}
-				contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
+				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				renderItem={({ item, index }) => (
 					<UserItem
 						name={getUserDisplayName(item)}

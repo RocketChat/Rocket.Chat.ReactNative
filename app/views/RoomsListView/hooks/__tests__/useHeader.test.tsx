@@ -133,7 +133,6 @@ describe('RoomsListView useHeader', () => {
 	});
 
 	it.each([
-		[{ supportedVersions: { status: 'expired' } }, 'Cannot connect'],
 		[{ meteor: { connecting: true, connected: true } }, 'Connecting...'],
 		[{ login: { isFetching: true } }, 'Connecting...'],
 		[{ rooms: { isFetching: true } }, 'Updating...'],
@@ -147,6 +146,14 @@ describe('RoomsListView useHeader', () => {
 		const options = mockSetOptions.mock.calls[0][0];
 		expect(options.headerTitle).toBe('Rocket.Chat');
 		expect(options.headerSubtitle).toBe(expectedSubtitle);
+	});
+
+	it('keeps the server url as the native subtitle when the server version is expired', () => {
+		mockAppState = { ...mockAppState, supportedVersions: { status: 'expired' } };
+
+		renderUseHeader();
+
+		expect(mockSetOptions.mock.calls[0][0].headerSubtitle).toBe('open.rocket.chat');
 	});
 
 	it('builds the right cluster in push-troubleshoot, directory, display order, then the toolbar create item', () => {

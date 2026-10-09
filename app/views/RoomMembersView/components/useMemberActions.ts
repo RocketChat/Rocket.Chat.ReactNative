@@ -63,15 +63,14 @@ export const useMemberActions = ({ rid, t, joined, abacAttributes }: IActionsSec
 	};
 
 	const addUser = async () => {
+		dispatch(setLoading(true));
 		try {
-			dispatch(setLoading(true));
 			await addUsersToRoom(rid);
 			pop();
 		} catch (e) {
 			log(e);
-		} finally {
-			dispatch(setLoading(false));
 		}
+		dispatch(setLoading(false));
 	};
 
 	const actions: IMemberAction[] = [];

@@ -3,7 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import * as List from '~/containers/List';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
-import { hasNativeHeaderBar, isIOS26OrLater } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers';
 import { type ICategoryRoom } from '../types';
 import NativeRoomCheckItem from './NativeRoomCheckItem';
 import RoomCheckItem from './RoomCheckItem';
@@ -26,7 +26,7 @@ const CategoryRoomList = ({ rooms, selectedRooms, isSelected, onToggle, onSearch
 			data={rooms}
 			keyExtractor={room => room.rid}
 			renderItem={({ item, index }) =>
-				isIOS26OrLater ? (
+				hasNativeHeaderBar ? (
 					<NativeRoomCheckItem
 						room={item}
 						isSelected={isSelected(item.rid)}
@@ -38,7 +38,7 @@ const CategoryRoomList = ({ rooms, selectedRooms, isSelected, onToggle, onSearch
 					<RoomCheckItem room={item} isSelected={isSelected(item.rid)} onToggle={onToggle} />
 				)
 			}
-			ItemSeparatorComponent={isIOS26OrLater ? RowSeparator : List.Separator}
+			ItemSeparatorComponent={hasNativeHeaderBar ? RowSeparator : List.Separator}
 			ListHeaderComponent={
 				<SelectedRoomsHeader selectedRooms={selectedRooms} onSearch={onSearch} onRemove={onToggle} categoryName={categoryName} />
 			}

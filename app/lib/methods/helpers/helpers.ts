@@ -71,8 +71,8 @@ export function canAutoTranslate() {
 			return false;
 		}
 		const autoTranslatePermission = reduxStore.getState().permissions['auto-translate'];
-		const userRoles = reduxStore.getState().login?.user?.roles ?? [];
-		return autoTranslatePermission?.some(role => userRoles.includes(role)) ?? false;
+		const userRoles = new Set(reduxStore.getState().login?.user?.roles);
+		return autoTranslatePermission?.some(role => userRoles.has(role)) ?? false;
 	} catch (e) {
 		log(e);
 		return false;
@@ -110,8 +110,8 @@ export async function hasPermission(permissions, rid?: any): Promise<boolean[]> 
 	try {
 		const loginUser = reduxStore.getState().login.user;
 		const userRoles = loginUser?.roles || [];
-		const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-		return permissions.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
+		const mergedRoles = new Set([...roomRoles, ...userRoles]);
+		return permissions.map(permission => permission?.some(r => mergedRoles.has(r)));
 	} catch (e) {
 		log(e);
 	}

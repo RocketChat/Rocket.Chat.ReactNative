@@ -60,6 +60,7 @@ tags:
     visible:
       id: 'selected-user-${output.selectUser}'
     timeout: 60000
+- runFlow: '../../helpers/close-search.yaml'
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:

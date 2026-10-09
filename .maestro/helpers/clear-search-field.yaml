@@ -8,8 +8,8 @@ tags:
       platform: iOS
     commands:
       - tapOn:
-          id: 'magnifyingglass'
-      - eraseText
+          text: 'Clear text'
+      - runFlow: 'close-search.yaml'
 - runFlow:
     when:
       platform: android

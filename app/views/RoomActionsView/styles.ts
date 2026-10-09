@@ -1,13 +1,13 @@
 import { StyleSheet } from 'react-native';
 
 import { PADDING_HORIZONTAL } from '~/containers/List/constants';
-import { isIOS26OrLater } from '~/lib/methods/helpers/deviceInfo';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	roomInfoContainer: {
 		paddingHorizontal: PADDING_HORIZONTAL,
-		paddingVertical: isIOS26OrLater ? 12 : 4,
+		paddingVertical: isIOS ? 12 : 4,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},

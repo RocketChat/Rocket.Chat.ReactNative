@@ -189,9 +189,14 @@ const dark = {
 
 const blackAndroid = {
 	...dark,
+	surfaceLight: '#0d0d0d',
 	surfaceTint: '#16181a',
 	surfaceRoom: '#000000',
-	surfaceHover: '#080808'
+	surfaceNeutral: '#16181a',
+	surfaceHover: '#080808',
+	strokeLight: '#1f2329',
+	fontDefault: '#E4E7EA',
+	buttonBackgroundPrimaryDefault: '#3976D1'
 };
 
 const blackIOS = {

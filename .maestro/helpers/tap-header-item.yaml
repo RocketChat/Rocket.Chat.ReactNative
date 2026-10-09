@@ -5,6 +5,12 @@ tags:
 
 ---
 - runFlow:
+    file: 'wait-header-item.yaml'
+    env:
+      ANDROID_ID: ${ANDROID_ID}
+      IOS_LABEL: ${IOS_LABEL}
+
+- runFlow:
     when:
       platform: Android
     commands:

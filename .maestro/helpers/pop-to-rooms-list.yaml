@@ -36,3 +36,7 @@ tags:
                 text: 'Back(, .*)?'
       - waitForAnimationToEnd:
           timeout: 5000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000

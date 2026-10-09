@@ -35,11 +35,6 @@ tags:
 
 # should back to rooms list
 - runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'new-message-view-close'
-      IOS_LABEL: 'Close'
-- runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
       ANDROID_ID: 'new-message-view-close'
@@ -141,11 +136,7 @@ tags:
     timeout: 60000
 
 # should navigate to create channel view
-- runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'selected-users-view-submit'
-      IOS_LABEL: 'Next'
+- runFlow: '../../helpers/close-search.yaml'
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
@@ -255,6 +246,7 @@ tags:
     visible:
       id: 'selected-user-rocket.cat'
     timeout: 60000
+- runFlow: '../../helpers/close-search.yaml'
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:

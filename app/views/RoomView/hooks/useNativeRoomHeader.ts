@@ -46,15 +46,11 @@ const getSubtitle = ({
 	fields,
 	tmid,
 	usersTyping,
-	connected,
-	connecting,
 	activeUser
 }: {
 	fields: IHeaderFields;
 	tmid?: string;
 	usersTyping: string[];
-	connected: boolean;
-	connecting: boolean;
 	activeUser?: IActiveUser;
 }) => {
 	if (tmid) {
@@ -62,10 +58,6 @@ const getSubtitle = ({
 	}
 	if (usersTyping.length) {
 		return `${joinTypingUsers(usersTyping)} ${I18n.t(usersTyping.length > 1 ? 'are_typing' : 'is_typing')}...`;
-	}
-	const connectionSubtitle = getConnectionSubtitle({ connecting, connected });
-	if (connectionSubtitle) {
-		return connectionSubtitle;
 	}
 	if (fields.type === 'd') {
 		return activeUser ? getPresenceLabel(activeUser) : undefined;
@@ -99,15 +91,18 @@ const useRoomHeaderContent = (
 ) => {
 	const connecting = useAppSelector(state => state.meteor.connecting || state.server.loading);
 	const usersTyping = useAppSelector(state => state.usersTyping, shallowEqual);
+	const connectionSubtitle = getConnectionSubtitle({ connecting, connected });
 	const typing = !tmid && usersTyping.length > 0;
-	const subtitle = getSubtitle({ fields, tmid, usersTyping, connected, connecting, activeUser });
+	const subtitle = connectionSubtitle ?? getSubtitle({ fields, tmid, usersTyping, activeUser });
 	const plainTitle = usePreviewFormatText(fields.title ?? '');
 	const formattedSubtitle = usePreviewFormatText(subtitle ?? '');
 	const hasStatusExpiry = fields.type === 'd' && connected && !!formatStatusExpiry(activeUser?.statusExpiresAt);
+	const showsRoomSubtitle = !connectionSubtitle && !tmid && !typing;
 	return {
 		title: tmid || fields.prid ? plainTitle : fields.title,
-		subtitle: tmid || typing ? subtitle : formattedSubtitle,
-		showClock: !tmid && !typing && !!subtitle && hasStatusExpiry
+		subtitle: showsRoomSubtitle ? formattedSubtitle : subtitle,
+		showClock: showsRoomSubtitle && !!subtitle && hasStatusExpiry,
+		showParentIcon: !connectionSubtitle && !!tmid
 	};
 };
 
@@ -121,7 +116,7 @@ export const useNativeRoomHeader = (
 	const { colors } = useTheme();
 	const { connected, activeUser, isDirectMessage, status, statusColor } = useRoomHeaderPresence(fields, roomUserId);
 
-	const { title, subtitle, showClock } = useRoomHeaderContent(fields, tmid, activeUser, connected);
+	const { title, subtitle, showClock, showParentIcon } = useRoomHeaderContent(fields, tmid, activeUser, connected);
 
 	const roomIcon = getRoomIcon(fields, isDirectMessage, status);
 	const glyphImage = useHeaderIconImage(
@@ -130,11 +125,13 @@ export const useNativeRoomHeader = (
 		TITLE_FONT_SIZE
 	);
 	const server = useAppSelector(state => state.server.server);
-	const remoteUri = connected && fields.type === 'l' ? getOmnichannelSidebarIconUri(server, fields.sourceType) : undefined;
+	const isSvgSidebarIcon = fields.sourceType?.sidebarIcon?.toLowerCase().endsWith('.svg');
+	const remoteUri =
+		connected && fields.type === 'l' && !isSvgSidebarIcon ? getOmnichannelSidebarIconUri(server, fields.sourceType) : undefined;
 	const remoteImage = useHeaderRemoteImage(remoteUri);
 	const roomImage = remoteImage ?? glyphImage;
 	const clockImage = useHeaderIconImage(showClock ? 'clock' : undefined, colors.fontSecondaryInfo, SUBTITLE_FONT_SIZE);
-	const subtitleImage = tmid ? roomImage : clockImage;
+	const subtitleImage = showParentIcon ? roomImage : clockImage;
 
 	useLayoutEffect(() => {
 		navigation.setOptions({

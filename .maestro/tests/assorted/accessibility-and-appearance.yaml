@@ -70,11 +70,6 @@ tags:
     id: 'accessibility-mentions-with-at-symbol-switch'
 
 - runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'accessibility-view-drawer'
-      IOS_LABEL: 'Menu'
-- runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
       ANDROID_ID: 'accessibility-view-drawer'
@@ -111,11 +106,6 @@ tags:
 - tapOn:
     id: 'accessibility-mentions-with-at-symbol-switch'
 
-- runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'accessibility-view-drawer'
-      IOS_LABEL: 'Menu'
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
@@ -154,11 +144,6 @@ tags:
     id: 'accessibility-rooms-with-hashtag-symbol-switch'
 
 - runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'accessibility-view-drawer'
-      IOS_LABEL: 'Menu'
-- runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
       ANDROID_ID: 'accessibility-view-drawer'
@@ -191,11 +176,6 @@ tags:
 - tapOn:
     id: 'accessibility-rooms-with-hashtag-symbol-switch'
 
-- runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'accessibility-view-drawer'
-      IOS_LABEL: 'Menu'
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:

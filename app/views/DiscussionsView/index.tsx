@@ -10,7 +10,7 @@ import { type IMessageFromServer, type TThreadModel } from '~/definitions';
 import { type ChatsStackParamList } from '~/stacks/types';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';
-import { translucentHeader } from '~/lib/methods/helpers/navigation';
+import { nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpers/navigation';
 import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import log from '~/lib/methods/helpers/log';
@@ -44,7 +44,7 @@ const DiscussionsView = () => {
 	const baseUrl = useAppSelector(state => state.server?.server);
 	const isMasterDetail = useMasterDetail();
 
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [discussions, setDiscussions] = useState<IMessageFromServer[]>([]);
 	const [search, setSearch] = useState<IMessageFromServer[]>([]);
 	const [isSearching, setIsSearching] = useState(false);
@@ -55,12 +55,7 @@ const DiscussionsView = () => {
 
 	const { colors } = useTheme();
 
-	const load = async () => {
-		if (loading) {
-			return;
-		}
-
-		setLoading(true);
+	const fetchDiscussions = async () => {
 		try {
 			const result = await getDiscussions({
 				roomId: rid,
@@ -83,6 +78,14 @@ const DiscussionsView = () => {
 			log(e);
 			setLoading(false);
 		}
+	};
+
+	const load = () => {
+		if (loading) {
+			return;
+		}
+		setLoading(true);
+		fetchDiscussions();
 	};
 
 	const onSearchChangeText = useDebounce((text: string) => {
@@ -119,7 +122,7 @@ const DiscussionsView = () => {
 		});
 
 	useEffect(() => {
-		load();
+		fetchDiscussions();
 	}, []);
 
 	useLayoutEffect(() => {
@@ -165,7 +168,7 @@ const DiscussionsView = () => {
 				contentContainerStyle={[styles.contentContainer, { paddingBottom: hasNativeHeaderBar ? 0 : bottom }]}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}
-				contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
+				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				onEndReached={() => isSearching && offset.current < total.current && load()}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}

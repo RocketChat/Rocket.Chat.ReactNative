@@ -2,7 +2,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import SearchBox from '~/containers/SearchBox';
 import I18n from '~/i18n';
-import { hasNativeHeaderBar, isIOS26OrLater } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import { type ICategoryRoom } from '../types';
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 		gap: 10
 	},
 	chips: {
-		paddingHorizontal: isIOS26OrLater ? 16 : 12,
+		paddingHorizontal: hasNativeHeaderBar ? 16 : 12,
 		gap: 8
 	}
 });

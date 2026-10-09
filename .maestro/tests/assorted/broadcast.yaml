@@ -55,11 +55,6 @@ tags:
     timeout: 60000
 - runFlow: '../../helpers/close-search.yaml'
 - runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'selected-users-view-submit'
-      IOS_LABEL: 'Next'
-- runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
       ANDROID_ID: 'selected-users-view-submit'

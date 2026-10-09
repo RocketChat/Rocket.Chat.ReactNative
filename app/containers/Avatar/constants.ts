@@ -1,3 +1,3 @@
-import { isIOS26OrLater } from '~/lib/methods/helpers/deviceInfo';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 
-export const AVATAR_BORDER_RADIUS = isIOS26OrLater ? 8 : 4;
+export const AVATAR_BORDER_RADIUS = isIOS ? 8 : 4;

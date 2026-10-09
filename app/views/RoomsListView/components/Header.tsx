@@ -4,6 +4,7 @@ import { Touchable } from 'react-native-gesture-handler';
 
 import { showActionSheetRef } from '~/containers/ActionSheet';
 import SearchHeader from '~/containers/SearchHeader';
+import I18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
@@ -33,7 +34,9 @@ const styles = StyleSheet.create({
 // search and searchEnabled need to be props because Header is used on react-navigation, which does not support context
 const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string) => void; searchEnabled: boolean }) => {
 	const serverName = useAppSelector(state => state.settings.Site_Name as string);
-	const subtitle = useRoomsListSubtitle();
+	const supportedVersionsExpired = useAppSelector(state => state.supportedVersions.status === 'expired');
+	const connectionSubtitle = useRoomsListSubtitle();
+	const subtitle = supportedVersionsExpired ? I18n.t('Cannot_connect') : connectionSubtitle;
 	const { colors } = useTheme();
 	const { fontScale } = useWindowDimensions();
 

@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, memo, type ReactElement } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type ReactElement } from 'react';
 import { FlatList, StyleSheet, Switch } from 'react-native';
 import { type Subscription } from 'rxjs';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -95,29 +95,27 @@ const AutoTranslateView = (): ReactElement => {
 		}
 	};
 
-	const LanguageItem = memo(({ language, name }: { language: string; name?: string }) => (
-		<List.Item
-			title={name || language}
-			onPress={() => saveAutoTranslateLanguage(language)}
-			testID={`auto-translate-view-${language}`}
-			right={() =>
-				selectedLanguage === language ? (
-					<List.Icon testID={`auto-translate-view-${language}-check`} name='check' color={colors.badgeBackgroundLevel2} />
-				) : null
-			}
-			translateTitle={false}
-			additionalAccessibilityLabel={selectedLanguage === language}
-			additionalAccessibilityLabelCheck
-		/>
-	));
-
 	return (
 		<SafeAreaView>
 			<FlatList
 				testID='auto-translate-view'
 				data={languages}
 				keyExtractor={item => item.name || item.language}
-				renderItem={({ item: { language, name } }) => <LanguageItem language={language} name={name} />}
+				renderItem={({ item: { language, name } }) => (
+					<List.Item
+						title={name || language}
+						onPress={() => saveAutoTranslateLanguage(language)}
+						testID={`auto-translate-view-${language}`}
+						right={() =>
+							selectedLanguage === language ? (
+								<List.Icon testID={`auto-translate-view-${language}-check`} name='check' color={colors.badgeBackgroundLevel2} />
+							) : null
+						}
+						translateTitle={false}
+						additionalAccessibilityLabel={selectedLanguage === language}
+						additionalAccessibilityLabelCheck
+					/>
+				)}
 				ListHeaderComponent={
 					<>
 						<List.Separator />

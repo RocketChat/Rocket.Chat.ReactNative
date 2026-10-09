@@ -51,14 +51,14 @@ tags:
           text: 'More'
       - extendedWaitUntil:
           visible:
-            id: 'action-sheet'
+            text: 'Search messages'
           timeout: 60000
       - assertVisible:
           text: '.*Call.*'
-      - assertVisible:
-          text: 'Search messages'
-      - tapOn:
-          id: 'action-sheet-handle'
+      - runFlow:
+          file: '../../helpers/dismiss-menu.yaml'
+          env:
+            MENU_ITEM: 'Search messages'
 
 # Team Action Usage
 - runFlow: '../../helpers/open-room-actions.yaml'
@@ -147,6 +147,7 @@ tags:
     visible:
       id: selected-user-rocket.cat
     timeout: 60000
+- runFlow: '../../helpers/close-search.yaml'
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
@@ -237,14 +238,14 @@ tags:
           text: 'More'
       - extendedWaitUntil:
           visible:
-            id: 'action-sheet'
+            text: 'Search messages'
           timeout: 60000
       - assertVisible:
           text: '.*Call.*'
-      - assertVisible:
-          text: 'Search messages'
-      - tapOn:
-          id: 'action-sheet-handle'
+      - runFlow:
+          file: '../../helpers/dismiss-menu.yaml'
+          env:
+            MENU_ITEM: 'Search messages'
 - runFlow: '../../helpers/go-back.yaml'
 
 # should add existing channel to team
@@ -295,13 +296,13 @@ tags:
     id: add-existing-channel-view-item-${output.room.name}
 - tapOn:
     id: add-existing-channel-view-item-${output.room.name}
-- extendedWaitUntil:
-    visible:
-      id: add-existing-channel-view-submit
-    timeout: 60000
+- runFlow: '../../helpers/close-search.yaml'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
     label: should have submit button
-- tapOn:
-    id: add-existing-channel-view-submit
+    env:
+      ANDROID_ID: 'add-existing-channel-view-submit'
+      IOS_LABEL: 'Next'
 - runFlow:
     file: '../../helpers/assert-room-title.yaml'
     env:
@@ -410,7 +411,17 @@ tags:
     file: '../../helpers/tap-search-field.yaml'
     env:
       SEARCH_ID: 'select-users-view-search'
-- eraseText
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - eraseText
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          text: 'Clear text'
 - inputText: ${output.secondUser.username}
 - runFlow: '../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
@@ -423,11 +434,7 @@ tags:
     visible:
       id: selected-user-${output.secondUser.username}
     timeout: 60000
-- runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'selected-users-view-submit'
-      IOS_LABEL: 'Next'
+- runFlow: '../../helpers/close-search.yaml'
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
@@ -472,10 +479,11 @@ tags:
     notVisible:
       id: ${output.privateRoomName}-checked
     timeout: 60000
-- assertVisible:
-    id: select-list-view-submit
-- tapOn:
-    id: select-list-view-submit
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'select-list-view-submit'
+      IOS_LABEL: 'Next'
 - extendedWaitUntil:
     notVisible:
       id: room-members-view-item-rocket.cat
@@ -532,12 +540,11 @@ tags:
 - assertVisible:
     text: You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.
 - tapOn: OK
-- extendedWaitUntil:
-    visible:
-      id: select-list-view-submit
-    timeout: 60000
-- tapOn:
-    id: select-list-view-submit
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'select-list-view-submit'
+      IOS_LABEL: 'Next'
 - extendedWaitUntil:
     visible:
       id: rooms-list-view

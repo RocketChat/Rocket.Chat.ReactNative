@@ -99,11 +99,6 @@ tags:
 - tapOn:
     id: room-actions-move-to-team
 - runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'select-list-view-submit'
-      IOS_LABEL: 'Next'
-- runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
       ANDROID_ID: 'select-list-view-submit'
@@ -114,11 +109,6 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'select-list-view-item-${output.toBeConverted}'
-- runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'select-list-view-submit'
-      IOS_LABEL: 'Next'
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
@@ -163,11 +153,6 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'select-list-view-item-${output.toBeMoved}'
-- runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'select-list-view-submit'
-      IOS_LABEL: 'Next'
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:

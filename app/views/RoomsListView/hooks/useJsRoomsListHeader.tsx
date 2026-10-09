@@ -5,6 +5,7 @@ import { type KeyboardFocus } from 'react-native-external-keyboard';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import i18n from '~/i18n';
 import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
+import { MASTER_DETAIL_INSIDE_STACK_ID } from '~/stacks/MasterDetailStack/constants';
 import { headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import RoomsListHeaderView from '../components/Header';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
@@ -14,7 +15,7 @@ const getScreenFocusNavigation = (navigation: any, isMasterDetail: boolean) => {
 	if (!isMasterDetail) {
 		return navigation;
 	}
-	return navigation.getParent()?.getParent() ?? navigation;
+	return navigation.getParent(MASTER_DETAIL_INSIDE_STACK_ID) ?? navigation;
 };
 
 export const useJsRoomsListHeader = () => {

@@ -28,6 +28,7 @@ export default function ActionsSection(props: IActionsSection): ReactElement | n
 						testID={action.testID}
 						accessibilityLabel={action.disabledReason ?? i18n.t(action.title)}
 						disabled={action.disabled}
+						disabledReason={action.disabledReason}
 						isFirst={index === 0}
 						isLast={index === actions.length - 1}
 						leading={<CustomIcon name={action.icon} size={24} color={colors.fontDefault} />}

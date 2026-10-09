@@ -1,4 +1,4 @@
-import { capitalize } from 'lodash';
+import capitalize from 'lodash/capitalize';
 
 import { useTheme } from '~/theme';
 import type { TColors } from '~/theme';

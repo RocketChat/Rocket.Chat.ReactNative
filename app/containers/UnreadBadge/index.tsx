@@ -1,31 +1,10 @@
 import { memo } from 'react';
-import { type StyleProp, StyleSheet, Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
+import { type StyleProp, type ViewStyle } from 'react-native';
 
-import sharedStyles from '~/views/Styles';
 import { formatUnreadCount } from '~/lib/methods/helpers/formatUnreadCount';
 import { getUnreadStyle } from './getUnreadStyle';
 import { useTheme } from '~/theme';
-
-const styles = StyleSheet.create({
-	unreadNumberContainerNormal: {
-		paddingHorizontal: 4,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	unreadNumberContainerSmall: {
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	unreadText: {
-		fontSize: 12,
-		lineHeight: 18,
-		...sharedStyles.textBold
-	},
-	textSmall: {
-		fontSize: 10,
-		...sharedStyles.textSemibold
-	}
-});
+import CountBadge from './CountBadge';
 
 export interface IUnreadBadge {
 	unread?: number;
@@ -67,7 +46,6 @@ const UnreadBadge = memo(
 		hideUnreadStatus
 	}: IUnreadBadge) => {
 		const { theme } = useTheme();
-		const { fontScale } = useWindowDimensions();
 
 		if ((!unread || unread <= 0) && !tunread?.length) {
 			return null;
@@ -97,25 +75,15 @@ const UnreadBadge = memo(
 		}
 		const text = formatUnreadCount(unread || tunread?.length || 0, small ? 99 : 999);
 
-		let minWidth = 18;
-		if (small) {
-			minWidth = 11 + text.length * 5;
-		}
-		const borderRadius = 10 * fontScale;
-		const testId = getTestId(userMentions, groupMentions, text);
-
 		return (
-			<View
-				style={[
-					small ? styles.unreadNumberContainerSmall : styles.unreadNumberContainerNormal,
-					{ backgroundColor, minWidth: minWidth * fontScale, borderRadius },
-					style
-				]}
-				testID={testId}>
-				<Text style={[styles.unreadText, small && styles.textSmall, { color }]} numberOfLines={1}>
-					{text}
-				</Text>
-			</View>
+			<CountBadge
+				text={text}
+				backgroundColor={backgroundColor}
+				color={color}
+				small={small}
+				style={style}
+				testID={getTestId(userMentions, groupMentions, text)}
+			/>
 		);
 	}
 );

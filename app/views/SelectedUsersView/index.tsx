@@ -16,7 +16,7 @@ import SafeAreaView from '~/containers/SafeAreaView';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import I18n from '~/i18n';
-import { stackedSearchBarOptions, translucentHeader } from '~/lib/methods/helpers/navigation';
+import { stackedSearchBarOptions, nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpers/navigation';
 import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import database from '~/lib/database';
 import UserItem from '~/containers/UserItem';
@@ -95,13 +95,11 @@ const SelectedUsersView = () => {
 					setSearch(localData);
 				}
 			});
-			if (isStale()) return;
-			setSearch(result);
+			if (!isStale()) setSearch(result);
 		} catch (e) {
 			log(e);
-		} finally {
-			if (!isStale()) setSearching(false);
 		}
+		if (!isStale()) setSearching(false);
 	}, []);
 
 	useLayoutEffect(() => {
@@ -189,7 +187,7 @@ const SelectedUsersView = () => {
 		<SafeAreaView testID='select-users-view'>
 			<FlatList
 				data={data}
-				contentInsetAdjustmentBehavior={hasNativeHeaderBar ? 'automatic' : undefined}
+				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				keyExtractor={item => item._id}
 				renderItem={({ item, index }) => {
 					const name = useRealName && item.fname ? item.fname : item.name;

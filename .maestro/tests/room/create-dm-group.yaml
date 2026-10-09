@@ -60,7 +60,17 @@ tags:
     file: '../../helpers/tap-search-field.yaml'
     env:
       SEARCH_ID: 'select-users-view-search'
-- eraseText
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - eraseText
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          text: 'Clear text'
 - inputText: ${output.otherUser.username}
 - extendedWaitUntil:
     visible:
@@ -68,11 +78,7 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'select-users-view-item-${output.otherUser.username}'
-- runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'selected-users-view-submit'
-      IOS_LABEL: 'Create'
+- runFlow: '../../helpers/close-search.yaml'
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
