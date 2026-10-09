@@ -4,6 +4,7 @@ import { expect } from 'e2e';
 import { createRandomRoom, createRandomTeam, createUser, deleteCreatedUsers } from '~e2e/support/api';
 import {
 	backToRoomsList,
+	confirmAlert,
 	expectVisible,
 	goBackUntil,
 	hideKeyboard,
@@ -100,7 +101,7 @@ const removeMemberKeepingChannel = async (fixtures: Fixtures, username: string, 
 	await expectVisible(fixtures, `${channel}-checked`);
 	await screen.getByTestId(`select-list-view-item-${channel}`).tap();
 	await expect(screen.getByTestId(`${channel}-checked`)).toBeHidden({ timeout: LONG_TIMEOUT });
-	await screen.getByTestId('select-list-view-submit').tap();
+	await tapWhenUncovered(screen.getByTestId('select-list-view-submit'));
 	await expect(screen.getByTestId(`room-members-view-item-${username}`)).toBeHidden({ timeout: LONG_TIMEOUT });
 };
 
@@ -120,13 +121,8 @@ const leaveTeam = async (fixtures: Fixtures, team: string, channels: { existing:
 	await expectVisible(fixtures, 'select-list-view');
 	await expectVisible(fixtures, `select-list-view-item-${channels.existing}`);
 	await screen.getByTestId(`select-list-view-item-${channels.created}`).tap();
-	await expect(
-		screen.getByText(
-			'You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.'
-		)
-	).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByRole('button', { name: /^OK$/i }).tap();
-	await screen.getByTestId('select-list-view-submit').tap();
+	await confirmAlert(fixtures, /You are the last owner of this channel/, /^OK$/i);
+	await tapWhenUncovered(screen.getByTestId('select-list-view-submit'));
 	await expectVisible(fixtures, 'rooms-list-view');
 	await expect(screen.getByTestId(`rooms-list-view-item-${team}`)).toBeHidden({ timeout: LONG_TIMEOUT });
 };
