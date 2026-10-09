@@ -48,6 +48,24 @@ type Method = 'GET' | 'POST';
 
 const REQUEST_ATTEMPTS = 5;
 const RETRY_BASE_DELAY = 1_000;
+const CONNECTION_RETRY_BUDGET = 90_000;
+const CONNECTION_RETRY_DELAY = 5_000;
+const CONNECTION_FAILURE_CODES = new Set([
+	'UND_ERR_CONNECT_TIMEOUT',
+	'ECONNREFUSED',
+	'ETIMEDOUT',
+	'ENOTFOUND',
+	'EAI_AGAIN',
+	'ENETUNREACH',
+	'EHOSTUNREACH'
+]);
+
+type ErrorReason = { code?: string; errors?: ErrorReason[] };
+
+const failedToConnect = (error: unknown) => {
+	const cause = (error as { cause?: ErrorReason }).cause;
+	return [cause, ...(cause?.errors ?? [])].some(reason => CONNECTION_FAILURE_CODES.has(reason?.code ?? ''));
+};
 
 const fetchOnce = async (method: Method, endpoint: string, body?: unknown, session?: Session) => {
 	const response = await fetch(`${data.server}/api/v1/${endpoint}`, {
@@ -76,10 +94,15 @@ const retryDelay = (method: Method, error: unknown, attempt: number) => {
 };
 
 const request = async (method: Method, endpoint: string, body?: unknown, session?: Session) => {
+	const connectionDeadline = Date.now() + CONNECTION_RETRY_BUDGET;
 	for (let attempt = 1; ; attempt += 1) {
 		try {
 			return await fetchOnce(method, endpoint, body, session);
 		} catch (error) {
+			if (failedToConnect(error) && Date.now() < connectionDeadline) {
+				await delay(CONNECTION_RETRY_DELAY);
+				continue;
+			}
 			const wait = retryDelay(method, error, attempt);
 			if (wait === undefined || attempt === REQUEST_ATTEMPTS) {
 				throw error;
