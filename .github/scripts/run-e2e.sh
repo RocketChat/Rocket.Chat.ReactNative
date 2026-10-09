@@ -169,6 +169,7 @@ stop_device_capture() {
   fi
   if [ -f "$DEVICE_CAPTURE_DIR/logcat.txt" ]; then
     gzip "$DEVICE_CAPTURE_DIR/logcat.txt"
+    adb -s "$ANDROID_DEVICE" shell dumpsys dropbox --print data_app_anr >"$DEVICE_CAPTURE_DIR/anr.txt" 2>&1 || true
   fi
   save_automation_logs last-pass
   mkdir -p "$DEVICE_EVIDENCE_DIR"
