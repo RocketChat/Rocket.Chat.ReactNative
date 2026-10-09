@@ -3,10 +3,10 @@ import { Q } from '@nozbe/watermelondb';
 import {
 	subscribeThreadLoaded,
 	areOlderThreadMessagesMissing,
-	clearThreadPagination,
 	loadOlderThreadMessages,
 	loadThreadMessages,
-	loadThreadMessagesUntil
+	loadThreadMessagesUntil,
+	retainThreadPagination
 } from '../loadThreadMessages';
 import { type IReaction } from '~/definitions';
 import database from '../../database';
@@ -978,23 +978,41 @@ describe('thread message pagination', () => {
 	});
 
 	it('forgets the reached oldest page once the thread view closes', async () => {
+		const closeView = retainThreadPagination(thread.tmid);
 		await loadFirstPage(2, 'R1');
 		mockedGetThreadMessages.mockResolvedValueOnce(page(2, 'R2'));
 		await loadOlderThreadMessages(thread);
 
-		clearThreadPagination(thread.tmid);
+		closeView();
 		await loadFirstPage(2, 'R1');
 
 		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
 	});
 
+	it('keeps the reached oldest page until the last view of the thread closes', async () => {
+		const closeFirstView = retainThreadPagination(thread.tmid);
+		const closeSecondView = retainThreadPagination(thread.tmid);
+		await loadFirstPage(2, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(2, 'R2'));
+		await loadOlderThreadMessages(thread);
+
+		closeFirstView();
+		await loadFirstPage(2, 'R1');
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
+
+		closeSecondView();
+		await loadFirstPage(2, 'R1');
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
+	});
+
 	it('does not reuse an older page left in flight by a closed thread view as the first page', async () => {
+		const closeView = retainThreadPagination(thread.tmid);
 		await loadFirstPage(5, 'R1');
 		const releaseOlder = deferPage();
 		const older = loadOlderThreadMessages(thread);
 		await flushPromises();
 
-		clearThreadPagination(thread.tmid);
+		closeView();
 		mockedGetThreadMessages.mockResolvedValueOnce(page(5, 'R1'));
 		const reopen = loadThreadMessages(thread);
 		await flushPromises();
@@ -1007,11 +1025,12 @@ describe('thread message pagination', () => {
 	});
 
 	it('drops a first page that lands after its thread view closed', async () => {
+		const closeView = retainThreadPagination(thread.tmid);
 		const releaseFirst = deferPage();
 		const first = loadThreadMessages(thread);
 		await flushPromises();
 
-		clearThreadPagination(thread.tmid);
+		closeView();
 		releaseFirst(1, 'R1');
 		await first;
 
@@ -1021,12 +1040,13 @@ describe('thread message pagination', () => {
 	});
 
 	it('requests the first page again when the thread reopens while a reload is in flight', async () => {
+		const closeView = retainThreadPagination(thread.tmid);
 		await loadFirstPage(5, 'R1');
 		const releaseReload = deferPage();
 		const reload = loadThreadMessages(thread);
 		await flushPromises();
 
-		clearThreadPagination(thread.tmid);
+		closeView();
 		mockedGetThreadMessages.mockResolvedValueOnce(page(5, 'R1'));
 		const reopen = loadThreadMessages(thread);
 		releaseReload(5, 'R1');

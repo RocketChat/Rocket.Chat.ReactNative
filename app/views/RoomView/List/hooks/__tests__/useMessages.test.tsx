@@ -9,7 +9,7 @@ import database from '~/lib/database';
 import { getMessageById } from '~/lib/database/services/Message';
 import { getThreadById } from '~/lib/database/services/Thread';
 import { MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
-import { areOlderThreadMessagesMissing, clearThreadPagination, loadOlderThreadMessages } from '~/lib/methods/loadThreadMessages';
+import { areOlderThreadMessagesMissing, loadOlderThreadMessages, retainThreadPagination } from '~/lib/methods/loadThreadMessages';
 import { readThreads } from '~/lib/services/restApi';
 import { mockedStore } from '~/reducers/mockedStore';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '~/views/RoomView/List/constants';
@@ -35,6 +35,7 @@ jest.mock('~/lib/database/services/Thread', () => ({
 }));
 
 let notifyThreadPagination: (() => void) | null = null;
+const mockReleaseThreadPagination = jest.fn();
 
 jest.mock('~/lib/methods/loadThreadMessages', () => ({
 	subscribeThreadLoaded: jest.fn((listener: () => void) => {
@@ -44,8 +45,8 @@ jest.mock('~/lib/methods/loadThreadMessages', () => ({
 		};
 	}),
 	areOlderThreadMessagesMissing: jest.fn(() => false),
-	clearThreadPagination: jest.fn(),
-	loadOlderThreadMessages: jest.fn()
+	loadOlderThreadMessages: jest.fn(),
+	retainThreadPagination: jest.fn(() => mockReleaseThreadPagination)
 }));
 
 jest.mock('~/lib/services/restApi', () => ({
@@ -66,7 +67,7 @@ const mockGetMessageById = jest.mocked(getMessageById);
 const mockReadThreads = jest.mocked(readThreads);
 const mockAreOlderThreadMessagesMissing = jest.mocked(areOlderThreadMessagesMissing);
 const mockLoadOlderThreadMessages = jest.mocked(loadOlderThreadMessages);
-const mockClearThreadPagination = jest.mocked(clearThreadPagination);
+const mockRetainThreadPagination = jest.mocked(retainThreadPagination);
 
 const baseArgs = {
 	rid: 'ROOM_ID',
@@ -444,17 +445,18 @@ describe('useMessages', () => {
 		expect(result.current[0]).toHaveLength(QUERY_SIZE + 1);
 	});
 
-	it('forgets the thread pagination when the thread view unmounts', async () => {
+	it('releases the thread pagination when the thread view unmounts', async () => {
 		emittedRows = [msg({ id: 'tm1', tmid: 'THREAD_ID' })];
 		const { unmount } = renderUseMessages({ tmid: 'THREAD_ID' });
 		await waitFor(() => {
 			expect(queryCalls.length).toBeGreaterThan(0);
 		});
-		expect(mockClearThreadPagination).not.toHaveBeenCalled();
+		expect(mockRetainThreadPagination).toHaveBeenCalledWith('THREAD_ID');
+		expect(mockReleaseThreadPagination).not.toHaveBeenCalled();
 
 		unmount();
 
-		expect(mockClearThreadPagination).toHaveBeenCalledWith('THREAD_ID');
+		expect(mockReleaseThreadPagination).toHaveBeenCalledTimes(1);
 	});
 
 	it('loads older thread messages along with the window when the end of a thread is reached', async () => {

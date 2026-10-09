@@ -36,6 +36,7 @@ interface IThreadPager {
 }
 
 const pagination = new Map<string, IThreadPager>();
+const viewCount = new Map<string, number>();
 const inFlight = new Map<string, Promise<boolean>>();
 const loadedListeners = new Set<() => void>();
 
@@ -46,8 +47,17 @@ export const subscribeThreadLoaded = (listener: () => void) => {
 	};
 };
 
-export const clearThreadPagination = (tmid: string): void => {
-	pagination.delete(tmid);
+export const retainThreadPagination = (tmid: string): (() => void) => {
+	viewCount.set(tmid, (viewCount.get(tmid) ?? 0) + 1);
+	return () => {
+		const remaining = (viewCount.get(tmid) ?? 1) - 1;
+		if (remaining > 0) {
+			viewCount.set(tmid, remaining);
+			return;
+		}
+		viewCount.delete(tmid);
+		pagination.delete(tmid);
+	};
 };
 
 const pagerFor = (tmid: string): IThreadPager => {

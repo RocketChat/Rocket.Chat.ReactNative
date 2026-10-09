@@ -12,8 +12,8 @@ import { compareServerVersion, useDebounce } from '~/lib/methods/helpers';
 import {
 	subscribeThreadLoaded,
 	areOlderThreadMessagesMissing,
-	clearThreadPagination,
-	loadOlderThreadMessages
+	loadOlderThreadMessages,
+	retainThreadPagination
 } from '~/lib/methods/loadThreadMessages';
 import { readThreads } from '~/lib/services/restApi';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
@@ -234,7 +234,7 @@ export const useMessages = ({
 		if (!tmid) {
 			return;
 		}
-		return () => clearThreadPagination(tmid);
+		return retainThreadPagination(tmid);
 	}, [tmid]);
 
 	const loadOlderMessages = useCallback(() => {
