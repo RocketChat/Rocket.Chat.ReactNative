@@ -54,6 +54,14 @@ jest.mock('~/containers/ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet, hideActionSheet: mockHideActionSheet })
 }));
 
+let mockIsIOS26OrLater = true;
+jest.mock('~/lib/methods/helpers/deviceInfo', () =>
+	Object.defineProperties(
+		{ ...jest.requireActual('~/lib/methods/helpers/deviceInfo') },
+		{ isIOS26OrLater: { get: () => mockIsIOS26OrLater, configurable: true } }
+	)
+);
+
 const mockPicker = jest.fn();
 jest.mock('~/containers/List/components/ListPicker', () => {
 	const { View } = require('react-native');
@@ -309,6 +317,24 @@ describe('StatusView', () => {
 
 			expect(mockShowActionSheet).toHaveBeenCalledTimes(1);
 			expect(latestPicker().selection).toBe('');
+		});
+
+		it('should open the full clear after sheet instead of the picker below iOS 26', () => {
+			mockIsIOS26OrLater = false;
+			try {
+				mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+				mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
+				mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+				mockPicker.mockClear();
+
+				renderStatusView();
+				fireEvent.press(screen.getByTestId('status-view-clear-after'));
+
+				expect(mockPicker).not.toHaveBeenCalled();
+				expect(mockShowActionSheet).toHaveBeenCalledTimes(1);
+			} finally {
+				mockIsIOS26OrLater = true;
+			}
 		});
 	});
 });

@@ -6,6 +6,7 @@ import * as List from '~/containers/List';
 import { useIsNativeList } from '~/containers/List/native/context';
 import I18n from '~/i18n';
 import dayjs from '~/lib/dayjs';
+import { isIOS26OrLater } from '~/lib/methods/helpers/deviceInfo';
 import { useTheme } from '~/theme';
 import ClearAfterRow from './ClearAfterRow';
 import ClearAfterSheetContent from './ClearAfterSheetContent';
@@ -44,17 +45,23 @@ const ClearAfterPicker = ({ value, customDate, onChange }: IClearAfterPickerProp
 		});
 	};
 
-	const row = (
+	const item = (
+		<List.Item
+			title='Status_clear_after'
+			testID='status-view-clear-after'
+			onPress={handlePress}
+			right={() => <Text style={[styles.pickerText, { color: colors.fontInfo }]}>{getDisplayLabel()}</Text>}
+			additionalAccessibilityLabel={getDisplayLabel()}
+			style={styles.listItem}
+		/>
+	);
+
+	const row = isIOS26OrLater ? (
 		<ClearAfterRow value={value} customDate={customDate} customDateLabel={customDateLabel} onChange={onChange}>
-			<List.Item
-				title='Status_clear_after'
-				testID='status-view-clear-after'
-				onPress={handlePress}
-				right={() => <Text style={[styles.pickerText, { color: colors.fontInfo }]}>{getDisplayLabel()}</Text>}
-				additionalAccessibilityLabel={getDisplayLabel()}
-				style={styles.listItem}
-			/>
+			{item}
 		</ClearAfterRow>
+	) : (
+		item
 	);
 
 	if (isNativeList) {
