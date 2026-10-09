@@ -1,5 +1,0 @@
-import { test } from '@e2e-dev/mobile';
-
-test('mentions another shard outside its tags', { tags: ['test-4'] }, async ({ screen }) => {
-	await screen.getByText('test-9').tap();
-});

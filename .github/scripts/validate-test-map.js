@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Validates the sniffler test-map against the repo so it cannot silently rot.
 // Five checks:
-//   Orphan test    ERROR   — a `test-N`-tagged test under e2e/tests/ with no
-//                            test-map entry (sniffler never selects it).
+//   Orphan test    ERROR   — a test under e2e/tests/ with no test-map entry
+//                            (sniffler never selects it).
 //   Dangling glob  ERROR   — a dependsOn glob that matches zero files on disk.
 //   Uncovered view WARNING — an app/views/ directory no dependsOn glob anchors
 //                            (a nudge; not every view needs a flow). `__*` dirs
@@ -35,16 +35,15 @@ let warnCount = 0;
 const testMap = JSON.parse(fs.readFileSync(TEST_MAP_PATH, 'utf8'));
 const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
 
-// Orphan tests: test-N-tagged e2e test with no test-map entry.
-const taggedTests = fg
+// Orphan tests: e2e test with no test-map entry.
+const tests = fg
 	.sync(['**/*.e2e.ts'], { cwd: TESTS_DIR, absolute: true })
-	.filter(f => /tags:\s*\[[^\]]*['"]test-\d+['"]/.test(fs.readFileSync(f, 'utf8')))
 	.map(f => path.relative(ROOT, f).replace(/\\/g, '/'));
 
 const mappedTests = new Set(testMap.map(e => e.test));
-const orphans = taggedTests.filter(f => !mappedTests.has(f));
+const orphans = tests.filter(f => !mappedTests.has(f));
 for (const f of orphans) {
-	ann('error', f, `Orphan test: "${f}" has a test-N tag but no test-map entry — sniffler will never select it.`);
+	ann('error', f, `Orphan test: "${f}" has no test-map entry — sniffler will never select it.`);
 	errorCount++;
 }
 
@@ -101,7 +100,7 @@ for (const f of uncoveredDecoupled) {
 }
 
 console.log('\n── test-map freshness ──');
-console.log(`  Tests scanned:    ${taggedTests.length}`);
+console.log(`  Tests scanned:    ${tests.length}`);
 console.log(`  Test-map entries: ${testMap.length}`);
 console.log(`  Orphans:          ${orphans.length}`);
 console.log(`  Dangling globs:   ${dangling.length}`);

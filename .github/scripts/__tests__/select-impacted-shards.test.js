@@ -5,12 +5,14 @@
 // lockstep with the canonical matrix (rows F1, F2, F3, F4, F5, F5b, F6, F7, Z1).
 'use strict';
 
+const { execSync } = require('child_process');
 const path = require('path');
 const { runScript } = require('../testlib/runScript');
 const catalog = require('./fixtures/scenario-catalog.json');
 
 const REPO_ROOT = path.resolve(__dirname, '../../..');
 const SCRIPT = path.join(__dirname, '..', 'select-impacted-shards.sh');
+const REAL_PNPM = execSync('command -v pnpm', { encoding: 'utf8', shell: '/bin/bash' }).trim();
 
 const BASE_ENV = {
 	BASE_REF: 'develop',
@@ -41,17 +43,22 @@ esac
 `;
 }
 
-// pnpm stub: only "exec sniffler" is intercepted (matches the script's real
-// invocation shape); anything else exits 0 untouched.
-function pnpmStub(json, exitCode = 0) {
+// pnpm stub: "exec sniffler" is intercepted; "exec e2e" prints `listing` when
+// given, otherwise runs the real e2e CLI against the repo's test tree.
+function pnpmStub(json, exitCode = 0, listing = null) {
 	return `
 if [ "$1 $2" = "exec sniffler" ]; then
 	${json === null ? '' : `echo '${json}'`}
 	exit ${exitCode}
 fi
+if [ "$1 $2" = "exec e2e" ]; then
+	${listing === null ? `exec "${REAL_PNPM}" "$@"` : `echo '${JSON.stringify(listing)}'`}
+fi
 exit 0
 `;
 }
+
+const pair = (file, tags) => ({ file, title: file, kind: 'test', tags, target: 'ios', disposition: 'run' });
 
 function expectScenario(result, scenario) {
 	expect(result.status).toBe(0);
@@ -127,17 +134,88 @@ describe('select-impacted-shards.sh', () => {
 			expectScenario(result, scenario);
 		});
 
-		test('F7: impacted flow with no derivable test-N tag falls to full', () => {
+		test('F7: impacted test with no test-N tag falls to full', () => {
 			const scenario = findScenario('F7');
-			const flowPath = path.join(REPO_ROOT, '.github/scripts/__tests__/fixtures/flows/no-tag.yaml');
 			const result = runScript(SCRIPT, {
 				env: BASE_ENV,
 				stubs: {
 					git: gitStub(),
-					pnpm: pnpmStub(`{"recommendedTests":[{"test":"${flowPath}"}]}`)
+					pnpm: pnpmStub('{"recommendedTests":[{"test":"e2e/tests/assorted/i18n.e2e.ts"}]}', 0, {
+						pairs: [pair('e2e/tests/assorted/i18n.e2e.ts', ['smoke'])]
+					})
 				}
 			});
 			expectScenario(result, scenario);
+		});
+
+		test('a partially tagged impacted set falls to full', () => {
+			const result = runScript(SCRIPT, {
+				env: BASE_ENV,
+				stubs: {
+					git: gitStub(),
+					pnpm: pnpmStub(
+						'{"recommendedTests":[{"test":"e2e/tests/assorted/i18n.e2e.ts"},{"test":"e2e/support/api.ts"}]}',
+						0,
+						{ pairs: [pair('e2e/tests/assorted/i18n.e2e.ts', ['test-6']), pair('e2e/support/api.ts', [])] }
+					)
+				}
+			});
+			expect(result.status).toBe(0);
+			expect(JSON.parse(result.shards)).toEqual(catalog.fullShards);
+		});
+
+		test('an unlisted impacted test falls to full even when another path lists extra files', () => {
+			const result = runScript(SCRIPT, {
+				env: BASE_ENV,
+				stubs: {
+					git: gitStub(),
+					pnpm: pnpmStub(
+						`{"recommendedTests":[{"test":"${path.join(REPO_ROOT, 'e2e/tests/room')}"},{"test":"./e2e/tests/gone.e2e.ts"}]}`,
+						0,
+						{
+							pairs: [
+								pair('e2e/tests/room/search.e2e.ts', ['test-13']),
+								pair('e2e/tests/room/unread-badge.e2e.ts', ['test-12'])
+							]
+						}
+					)
+				}
+			});
+			expect(result.status).toBe(0);
+			expect(JSON.parse(result.shards)).toEqual(catalog.fullShards);
+		});
+
+		test('absolute and ./-prefixed impacted paths match the listing', () => {
+			const result = runScript(SCRIPT, {
+				env: BASE_ENV,
+				stubs: {
+					git: gitStub(),
+					pnpm: pnpmStub(
+						`{"recommendedTests":[{"test":"${path.join(REPO_ROOT, 'e2e/tests/assorted/i18n.e2e.ts')}"},{"test":"./e2e/tests/room/search.e2e.ts"}]}`,
+						0,
+						{
+							pairs: [
+								pair('e2e/tests/assorted/i18n.e2e.ts', ['test-6']),
+								pair('e2e/tests/room/search.e2e.ts', ['test-13'])
+							]
+						}
+					)
+				}
+			});
+			expect(result.status).toBe(0);
+			expect(JSON.parse(result.shards)).toEqual([6, 13]);
+		});
+
+		test('an impacted test the runner does not list falls to full', () => {
+			const result = runScript(SCRIPT, {
+				env: BASE_ENV,
+				stubs: {
+					git: gitStub(),
+					pnpm: pnpmStub('{"recommendedTests":[{"test":"e2e/tests/assorted/i18n.e2e.ts"},{"test":"e2e/tests/gone.e2e.ts"}]}')
+				}
+			});
+			expect(result.status).toBe(0);
+			expect(JSON.parse(result.shards)).toEqual(catalog.fullShards);
 		});
 	});
 
@@ -183,18 +261,5 @@ describe('select-impacted-shards.sh', () => {
 			expect(result.should_run).toBe('true');
 		});
 
-		test('a test-N literal outside the tags option is not a shard', () => {
-			const testPath = path.join(REPO_ROOT, '.github/scripts/__tests__/fixtures/flows/stray-tag-literal.txt');
-			const result = runScript(SCRIPT, {
-				env: BASE_ENV,
-				stubs: {
-					git: gitStub(),
-					pnpm: pnpmStub(`{"recommendedTests":[{"test":"${testPath}"}]}`)
-				}
-			});
-			expect(result.status).toBe(0);
-			expect(JSON.parse(result.shards)).toEqual([4]);
-			expect(result.should_run).toBe('true');
-		});
 	});
 });

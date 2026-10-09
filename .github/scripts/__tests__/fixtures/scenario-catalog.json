@@ -72,9 +72,9 @@
     },
     {
       "id": "F7",
-      "name": "impacted flow with no derivable test-N tag falls to full (defensive)",
+      "name": "impacted test with no test-N tag in the e2e list output falls to full",
       "category": "fall-to-full",
-      "input": { "stub": { "sniffler": "stdout:recommends a flow file with no `- test-N` tag" } },
+      "input": { "stub": { "sniffler": "stdout:recommends a test the e2e list output shows without a test-N tag" } },
       "expectedShards": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
       "expectedShouldRun": true,
       "assertableIn": ["script"]

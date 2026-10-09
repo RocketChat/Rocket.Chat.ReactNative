@@ -61,11 +61,13 @@ if [ -z "$paths" ]; then
 	exit 0
 fi
 
-shards="$(for f in $paths; do
-	grep -hoE "tags:[[:space:]]*\[[^]]*\]" "$f" 2>/dev/null | grep -oE 'test-[0-9]+' | grep -oE '[0-9]+'
-done | sort -n -u | jq -R . | jq -cs 'map(tonumber)')"
-
-# Defensive: impacted tests with no derivable tag -> full rather than under-select.
-[ "$shards" = "[]" ] && full
+listing="$(pnpm exec e2e list --reporter json $paths)" || full
+shards="$(echo "$listing" | jq -c --arg impacted "$paths" --arg root "$PWD/" '
+	def relative: ltrimstr($root) | ltrimstr("./");
+	if ($impacted | split("\n") | map(select(length > 0) | relative) | unique) != ([.pairs[].file | relative] | unique) then null
+	elif any(.pairs[]; all(.tags[]; test("^test-[0-9]+$") | not)) then null
+	else [.pairs[].tags[] | capture("^test-(?<n>[0-9]+)$").n | tonumber] | unique
+	end')" || full
+[ "$shards" = "null" ] && full
 
 emit "$shards" "true"
