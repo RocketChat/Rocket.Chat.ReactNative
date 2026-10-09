@@ -145,6 +145,7 @@ export default class EncryptionRoom {
 				this.algorithm = algorithm;
 				try {
 					await e2eAcceptSuggestedGroupKey(this.roomId);
+					this.readyPromise.resolve();
 					this.encryption.deleteRoomInstance(this.roomId);
 					return;
 				} catch (error) {
@@ -181,6 +182,7 @@ export default class EncryptionRoom {
 			try {
 				this.establishing = true;
 				await this.createRoomKey();
+				this.readyPromise.resolve();
 				this.encryption.deleteRoomInstance(this.roomId);
 				return;
 			} catch (error) {
