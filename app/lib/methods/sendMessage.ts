@@ -4,13 +4,26 @@ import { type Model } from '@nozbe/watermelondb';
 import database from '../database';
 import log from './helpers/log';
 import { random } from './helpers';
+import normalizeMessage from './helpers/normalizeMessage';
 import { Encryption } from '../encryption';
-import type { E2EType, IMessage, IUser, MessageType, TMessageModel } from '~/definitions';
+import type { E2EType, IMessage, IUser, MessageType, TMessageModel, TThreadMessageModel } from '~/definitions';
 import sdk from '../services/sdk';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
 import { messagesStatus } from '../constants/messagesStatus';
 
-const changeMessageStatus = async (id: string, status: number, tmid?: string, message?: IMessage) => {
+const applyServerMessage = (record: TMessageModel | TThreadMessageModel, message: IMessage) => {
+	record.mentions = message.mentions;
+	record.channels = message.channels;
+	if (message.t === E2E_MESSAGE_TYPE) {
+		return;
+	}
+	record.attachments = message.attachments;
+	record.urls = message.urls;
+	record.md = message.md;
+};
+
+const changeMessageStatus = async (id: string, status: number, tmid?: string, serverMessage?: IMessage) => {
+	const message = serverMessage && (normalizeMessage(serverMessage) as IMessage);
 	const db = database.active;
 	const msgCollection = db.get('messages');
 	const threadMessagesCollection = db.get('thread_messages');
@@ -23,8 +36,7 @@ const changeMessageStatus = async (id: string, status: number, tmid?: string, me
 				messageRecord.prepareUpdate(m => {
 					m.status = status;
 					if (message) {
-						m.mentions = message.mentions;
-						m.channels = message.channels;
+						applyServerMessage(m, message);
 					}
 				})
 			);
@@ -35,8 +47,7 @@ const changeMessageStatus = async (id: string, status: number, tmid?: string, me
 					threadMessageRecord.prepareUpdate(tm => {
 						tm.status = status;
 						if (message) {
-							tm.mentions = message.mentions;
-							tm.channels = message.channels;
+							applyServerMessage(tm, message);
 						}
 					})
 				);

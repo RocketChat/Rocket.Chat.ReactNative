@@ -305,6 +305,31 @@ describe('sendMessage', () => {
 			expect(record.channels).toBe(message.channels);
 		});
 
+		it('applies the quote attachments, urls and markdown the server returns', async () => {
+			const quote = { text: 'original', message_link: 'https://open.rocket.chat/group/room?msg=original-id' };
+			const md = [{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'quoted' }] }];
+			const message = { mentions: [], channels: [], attachments: [quote], urls: [{ url: quote.message_link, meta: {} }], md };
+			mockPost.mockImplementation(() => Promise.resolve({ success: true, message }));
+
+			await sendMessage(rid, 'quoted', undefined, user);
+
+			const record = createdRecord('messages');
+			expect(record.attachments).toEqual([expect.objectContaining(quote)]);
+			expect(record.urls).toEqual([expect.objectContaining({ url: quote.message_link })]);
+			expect(record.md).toBe(md);
+		});
+
+		it('keeps the local attachments and markdown of an encrypted message', async () => {
+			const message = { t: E2E_MESSAGE_TYPE, mentions: [], channels: [], attachments: [{ text: 'cipher' }], md: [] };
+			mockPost.mockImplementation(() => Promise.resolve({ success: true, message }));
+
+			await sendMessage(rid, 'hello', undefined, user);
+
+			const record = createdRecord('messages');
+			expect(record.attachments).toBeUndefined();
+			expect(record.md).toBeUndefined();
+		});
+
 		it('marks the message as errored when the server answers success: false', async () => {
 			mockPost.mockImplementation(() => Promise.resolve({ success: false }));
 
