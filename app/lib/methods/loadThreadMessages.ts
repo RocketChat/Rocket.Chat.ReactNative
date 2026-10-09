@@ -33,6 +33,7 @@ interface IPaginationState {
 interface IThreadPager {
 	state?: IPaginationState;
 	firstPage?: Promise<boolean>;
+	parentMissing?: boolean;
 }
 
 const THREAD_PAGE_SIZE = 50;
@@ -173,12 +174,14 @@ const requestPage = async (tmid: string, offset: number, previous?: IPaginationS
 	return { ...(await getThreadMessages({ tmid, offset: rewound, count: THREAD_PAGE_SIZE })), offset: rewound };
 };
 
-const fetchThreadParent = async (tmid: string): Promise<IMessage | null> => {
+const fetchThreadParent = async (tmid: string, pager: IThreadPager): Promise<IMessage | null> => {
 	try {
 		const result = await getSingleMessage(tmid);
+		pager.parentMissing = false;
 		return result.success ? result.message : null;
 	} catch (e) {
 		log(e);
+		pager.parentMissing = true;
 		return null;
 	}
 };
@@ -187,7 +190,8 @@ const fetchPage = async (thread: IThreadLocation, pager: IThreadPager, requested
 	const previous = pager.state;
 	try {
 		const { messages, total, threadParent: pageParent, offset } = await requestPage(thread.tmid, requestedOffset, previous);
-		const threadParent = requestedOffset === 0 ? (pageParent ?? (await fetchThreadParent(thread.tmid))) : null;
+		const wantsParent = requestedOffset === 0 || pager.parentMissing;
+		const threadParent = wantsParent ? (pageParent ?? (await fetchThreadParent(thread.tmid, pager))) : null;
 		if (pagination.get(thread.tmid) !== pager) {
 			return false;
 		}
@@ -244,7 +248,13 @@ const loadNextPage = (thread: IThreadLocation): Promise<boolean> => {
 	}
 	return track(thread.tmid, () => {
 		const { state } = pager;
-		return state && !state.fullyPaged ? fetchPage(thread, pager, state.loaded) : Promise.resolve(false);
+		if (!state) {
+			return Promise.resolve(false);
+		}
+		if (!state.fullyPaged) {
+			return fetchPage(thread, pager, state.loaded);
+		}
+		return pager.parentMissing ? fetchPage(thread, pager, 0) : Promise.resolve(false);
 	});
 };
 

@@ -621,6 +621,47 @@ describe('thread message pagination', () => {
 		expect(mockedGetSingleMessage).toHaveBeenCalledTimes(1);
 	});
 
+	it('requests the thread parent again with the next page when it could not be fetched with the first', async () => {
+		mockedGetThreadMessages
+			.mockResolvedValueOnce(page(4, 'R1'))
+			.mockResolvedValueOnce(page(4, 'R2'))
+			.mockResolvedValueOnce(page(4, 'R3'));
+		mockedGetSingleMessage
+			.mockRejectedValueOnce(new Error('429'))
+			.mockResolvedValueOnce({ success: true, message: { ...buildParent(new Date('2026-01-02'), []), _id: thread.tmid } });
+		await loadThreadMessages(thread);
+		expect(threadsCreated).toHaveLength(0);
+
+		await loadOlderThreadMessages(thread);
+		await loadOlderThreadMessages(thread);
+
+		expect(mockedGetSingleMessage).toHaveBeenCalledTimes(2);
+		expect(threadsCreated.map((r: any) => r._id)).toEqual([thread.tmid]);
+	});
+
+	it('reloads the first page for a fully paged thread whose parent could not be fetched', async () => {
+		mockedGetThreadMessages.mockResolvedValueOnce(page(1, 'R1')).mockResolvedValueOnce(page(1, 'R1'));
+		mockedGetSingleMessage
+			.mockRejectedValueOnce(new Error('429'))
+			.mockResolvedValueOnce({ success: true, message: { ...buildParent(new Date('2026-01-02'), []), _id: thread.tmid } });
+		await loadThreadMessages(thread);
+
+		await loadOlderThreadMessages(thread);
+
+		expect(mockedGetThreadMessages).toHaveBeenLastCalledWith({ tmid: thread.tmid, offset: 0, count: 50 });
+		expect(threadsCreated.map((r: any) => r._id)).toEqual([thread.tmid]);
+	});
+
+	it('does not request the thread parent again once the first page found it missing on the server', async () => {
+		mockedGetThreadMessages.mockResolvedValueOnce(page(1, 'R1'));
+		await loadThreadMessages(thread);
+
+		await loadOlderThreadMessages(thread);
+
+		expect(mockedGetSingleMessage).toHaveBeenCalledTimes(1);
+		expect(mockedGetThreadMessages).toHaveBeenCalledTimes(1);
+	});
+
 	it('saves the replies and logs when the thread parent cannot be fetched', async () => {
 		const error = new Error('429');
 		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R1'));
