@@ -25,7 +25,6 @@ import { showErrorAlertWithEMessage, compareServerVersion, isIOS } from '~/lib/m
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { useTheme } from '~/theme';
 import { USER_STATUS_TEXT_MAX_LENGTH } from '~/lib/constants/maxLength';
-import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import ClearAfterPicker, { type ClearAfterValue, computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
 import FooterComponent from './FooterComponent';
 
@@ -109,7 +108,6 @@ const StatusView = (): ReactElement => {
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
 	const { colors } = useTheme();
-	const listBackgroundColor = useListBackgroundColor(colors.surfaceTint);
 	const { bottom } = useSafeAreaInsets();
 
 	const submit = async () => {
@@ -236,7 +234,7 @@ const StatusView = (): ReactElement => {
 
 	if (isIOS) {
 		return (
-			<SafeAreaView testID='status-view' style={{ backgroundColor: listBackgroundColor, paddingTop: 16, paddingBottom: bottom }}>
+			<SafeAreaView testID='status-view' style={{ backgroundColor: colors.surfaceTint, paddingTop: 16, paddingBottom: bottom }}>
 				<List.Container backgroundHidden>
 					<List.Section title='Status'>{statusRowInput}</List.Section>
 					<List.Section>

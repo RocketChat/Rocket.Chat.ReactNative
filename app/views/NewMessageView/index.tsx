@@ -21,7 +21,6 @@ import { search as runSearch } from '~/lib/methods/search';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
-import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import Item from './Item';
 import HeaderNewMessage from './HeaderNewMessage';
 import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
@@ -39,7 +38,6 @@ const NewMessageView = () => {
 	const searchId = useRef(0);
 
 	const { colors } = useTheme();
-	const listBackgroundColor = useListBackgroundColor(colors.surfaceTint);
 
 	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
 	const { bottom } = useSafeAreaInsets();
@@ -137,7 +135,7 @@ const NewMessageView = () => {
 				}}
 				ItemSeparatorComponent={RowSeparator}
 				ListFooterComponent={searching ? () => <ActivityIndicator /> : List.Separator}
-				style={{ backgroundColor: listBackgroundColor }}
+				style={{ backgroundColor: colors.surfaceTint }}
 				contentContainerStyle={{ paddingBottom: bottom }}
 				keyboardShouldPersistTaps='always'
 			/>
