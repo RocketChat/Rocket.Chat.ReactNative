@@ -61,13 +61,24 @@ const ListPicker = ({
 	const label = option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label;
 
 	return (
-		<List.Item
-			title={title}
+		<List.Picker
+			title={I18n.t(title)}
 			testID={testID}
-			onPress={() => showActionSheet({ children: getOptions() })}
-			right={() => <Text style={[styles.pickerText, { color: colors.fontInfo }]}>{label}</Text>}
-			additionalAccessibilityLabel={label}
-		/>
+			options={OPTIONS[preference].map(i => ({
+				label: I18n.t(i.label, { defaultValue: i.label }),
+				value: i.value.toString(),
+				testID: `notification-preferences-${preference}-${i.value}`
+			}))}
+			selection={option?.value.toString() ?? ''}
+			onSelectionChange={selected => onChangeValue({ [preference]: selected })}>
+			<List.Item
+				title={title}
+				testID={testID}
+				onPress={() => showActionSheet({ children: getOptions() })}
+				right={() => <Text style={[styles.pickerText, { color: colors.fontInfo }]}>{label}</Text>}
+				additionalAccessibilityLabel={label}
+			/>
+		</List.Picker>
 	);
 };
 

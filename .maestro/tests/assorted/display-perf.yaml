@@ -30,18 +30,44 @@ tags:
     label: 'Should have room item'
 
 # should have create channel button
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-create-channel'
-    timeout: 60000
-    label: 'Should have create channel button'
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-view-create-channel'
+          timeout: 60000
+          label: 'Should have create channel button'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: 'Create new channel, team, direct message or discussion'
+          timeout: 60000
+          label: 'Should have create channel button'
 
 # should have sidebar button
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-sidebar'
-    timeout: 60000
-    label: 'Should have sidebar button'
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-view-sidebar'
+          timeout: 60000
+          label: 'Should have sidebar button'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: 'Menu'
+          timeout: 60000
+          label: 'Should have sidebar button'
 
 # should go to Display Preferences
 - runFlow:
@@ -143,13 +169,28 @@ tags:
 - runFlow:
     file: './utils/go-to-display-pref.yaml'
     label: 'Should go to Display Preferences'
-- extendedWaitUntil:
-    visible:
-      id: 'display-pref-view-avatar-switch'
-    timeout: 60000
-- tapOn:
-    id: 'display-pref-view-avatar-switch'
-    label: 'Should tap on avatar switch'
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'display-pref-view-avatar-switch'
+          timeout: 60000
+      - tapOn:
+          id: 'display-pref-view-avatar-switch'
+          label: 'Should tap on avatar switch'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'display-pref-view-avatars'
+          timeout: 60000
+      - tapOn:
+          id: 'display-pref-view-avatars'
+          label: 'Should tap on avatars row'
 - runFlow:
     file: './utils/go-to-room-list.yaml'
     label: 'Should go to Room List'

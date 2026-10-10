@@ -2617,14 +2617,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     "marginVertical": undefined,
                   },
                   {
-                    "backgroundColor": "#0d0d0d",
+                    "backgroundColor": "#161717",
                     "borderRadius": undefined,
                   },
                 ],
                 undefined,
               ]
             }
-            underlayColor="#16181a"
+            underlayColor="#161717"
           >
             <View
               accessibilityActions={
@@ -2719,7 +2719,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                           "textAlign": "left",
                         },
                         {
-                          "color": "#F2F3F5",
+                          "color": "#FAFAFA",
                         },
                       ]
                     }
@@ -2741,7 +2741,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                           "textAlign": "left",
                         },
                         {
-                          "color": "#9EA2A8",
+                          "color": "#949393",
                         },
                       ]
                     }

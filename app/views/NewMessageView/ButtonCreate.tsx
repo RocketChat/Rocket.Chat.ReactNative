@@ -3,11 +3,13 @@ import { themes } from '~/lib/constants/colors';
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import { useTheme } from '~/theme';
 
-interface IButton {
+export interface IButton {
 	onPress: () => void;
 	testID: string;
 	title: string;
 	icon: TIconsName;
+	isFirst?: boolean;
+	isLast?: boolean;
 }
 
 const ButtonCreate = ({ onPress, testID, title, icon }: IButton) => {

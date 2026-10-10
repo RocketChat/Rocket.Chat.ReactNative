@@ -23,7 +23,7 @@ import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
 import { type TSupportedThemes, withTheme } from '~/theme';
 import { getUserSelector } from '~/selectors/login';
 import SafeAreaView from '~/containers/SafeAreaView';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import database from '~/lib/database';
 import { sanitizeLikeString } from '~/lib/database/utils';
 import getThreadName from '~/lib/methods/getThreadName';
@@ -82,7 +82,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		};
 		const showCloseModal = route.params?.showCloseModal;
 		if (showCloseModal) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+			Object.assign(options, headerLeftCloseModal(navigation));
 		}
 		return options;
 	};

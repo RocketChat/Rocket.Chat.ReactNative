@@ -1,0 +1,39 @@
+import { View } from 'react-native';
+import { type ReactElement } from 'react';
+
+import NativeListRow from '~/containers/NativeListRow';
+import * as List from '~/containers/List';
+import Disclosure from '~/containers/NativeListRow/components/Disclosure';
+import RowSeparator from '~/containers/NativeListRow/components/Separator';
+import i18n from '~/i18n';
+import { type IActionsSection, useMemberActions } from './useMemberActions';
+
+export default function ActionsSection(props: IActionsSection): ReactElement | null {
+	const actions = useMemberActions(props);
+
+	if (!actions.length) {
+		return null;
+	}
+
+	return (
+		<View style={{ paddingTop: 16, paddingBottom: 24 }}>
+			{actions.map((action, index) => (
+				<View key={action.testID}>
+					{index > 0 ? <RowSeparator /> : null}
+					<NativeListRow
+						title={i18n.t(action.title)}
+						onPress={action.onPress}
+						testID={action.testID}
+						accessibilityLabel={i18n.t(action.title)}
+						disabled={action.disabled}
+						disabledReason={action.disabledReason}
+						isFirst={index === 0}
+						isLast={index === actions.length - 1}
+						leading={<List.Icon name={action.icon} />}
+						trailing={<Disclosure />}
+					/>
+				</View>
+			))}
+		</View>
+	);
+}

@@ -84,8 +84,7 @@ tags:
 - pressKey: enter
 
 # open Toasts and Dialogs action sheet and navigate through options
-- tapOn:
-    id: 'custom-header-back'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'accessibility-view-list'

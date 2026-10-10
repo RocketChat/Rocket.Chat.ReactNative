@@ -1,0 +1,284 @@
+import { memo, type ReactElement } from 'react';
+import {
+	I18nManager,
+	PixelRatio,
+	type StyleProp,
+	StyleSheet,
+	Text,
+	type TextStyle,
+	View,
+	type AccessibilityRole,
+	type ViewStyle
+} from 'react-native';
+
+import Touch from '~/containers/Touch';
+import sharedStyles from '~/views/Styles';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
+import Icon from './ListIcon';
+import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from '../constants';
+import { useIsNativeList } from '../native/context';
+import NativeListItem from '../native/components/Item';
+import { nativeListItemAccessibilityLabel, pressNativeListItem } from '../native/utils/itemProps';
+import { CustomIcon } from '~/containers/CustomIcon';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { isIOS } from '~/lib/methods/helpers';
+
+// Maestro fail to click on child component when we enable accessibility in parent component on iOS
+const shouldDisableAccessibility = process.env.RUNNING_E2E_TESTS === 'true' && isIOS;
+
+const styles = StyleSheet.create({
+	container: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		paddingHorizontal: PADDING_HORIZONTAL
+	},
+	leftContainer: {
+		paddingRight: PADDING_HORIZONTAL
+	},
+	rightContainer: {
+		paddingLeft: PADDING_HORIZONTAL
+	},
+	disabled: {
+		opacity: 0.3
+	},
+	textContainer: {
+		flex: 1,
+		justifyContent: 'center'
+	},
+	textAlertContainer: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	alertIcon: {
+		paddingLeft: 4
+	},
+	title: {
+		flex: 1,
+		flexShrink: 1,
+		fontSize: 16,
+		...sharedStyles.textMedium
+	},
+	subtitle: {
+		fontSize: 14,
+		...sharedStyles.textRegular
+	},
+	actionIndicator: {
+		...(I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {})
+	}
+});
+
+interface IListTitle extends Pick<IListItemContent, 'title' | 'color' | 'translateTitle' | 'styleTitle' | 'numberOfLines'> {}
+
+const ListTitle = ({ title, color, styleTitle, translateTitle, numberOfLines }: IListTitle) => {
+	const { colors } = useTheme();
+	switch (typeof title) {
+		case 'string':
+			return (
+				<Text numberOfLines={numberOfLines} style={[styles.title, styleTitle, { color: color || colors.fontDefault }]}>
+					{translateTitle && title ? I18n.t(title) : title}
+				</Text>
+			);
+		case 'function':
+			return title();
+
+		default:
+			return null;
+	}
+};
+
+interface IListItemContent {
+	accessibilityLabel?: string;
+	title: string | (() => ReactElement | null);
+	subtitle?: string;
+	left?: () => ReactElement | null;
+	right?: () => ReactElement | null;
+	disabled?: boolean;
+	disabledReason?: string;
+	testID?: string;
+	color?: string;
+	translateTitle?: boolean;
+	translateSubtitle?: boolean;
+	showActionIndicator?: boolean;
+	alert?: boolean;
+	heightContainer?: number;
+	rightContainerStyle?: StyleProp<ViewStyle>;
+	styleTitle?: StyleProp<TextStyle>;
+	additionalAccessibilityLabel?: string | boolean;
+	accessibilityRole?: AccessibilityRole;
+	additionalAccessibilityLabelCheck?: boolean;
+	numberOfLines?: number;
+}
+
+const Content = memo(
+	({
+		title,
+		subtitle,
+		disabled,
+		testID,
+		left,
+		right,
+		color,
+		alert,
+		translateTitle = true,
+		translateSubtitle = true,
+		showActionIndicator = false,
+		heightContainer,
+		rightContainerStyle = {},
+		styleTitle,
+		additionalAccessibilityLabel,
+		additionalAccessibilityLabelCheck,
+		accessibilityRole,
+		accessibilityLabel,
+		numberOfLines
+	}: IListItemContent) => {
+		const { fontScale } = useResponsiveLayout();
+		const { colors } = useTheme();
+
+		const accessibilityLabelText = nativeListItemAccessibilityLabel({
+			title,
+			subtitle,
+			translateTitle,
+			translateSubtitle,
+			accessibilityLabel,
+			additionalAccessibilityLabel,
+			additionalAccessibilityLabelCheck
+		});
+
+		return (
+			<View
+				style={[
+					styles.container,
+					disabled && styles.disabled,
+					{ height: PixelRatio.roundToNearestPixel((heightContainer || BASE_HEIGHT) * fontScale) }
+				]}
+				testID={testID}
+				accessible={!shouldDisableAccessibility}
+				accessibilityLabel={accessibilityLabelText}
+				accessibilityRole={accessibilityRole ?? 'button'}>
+				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
+				{title || subtitle ? (
+					<View style={styles.textContainer}>
+						<View style={styles.textAlertContainer}>
+							{title ? (
+								<ListTitle
+									title={title}
+									color={color}
+									styleTitle={styleTitle}
+									translateTitle={translateTitle}
+									numberOfLines={numberOfLines}
+								/>
+							) : null}
+							{alert ? (
+								<CustomIcon name='info' size={ICON_SIZE} color={colors.buttonBackgroundDangerDefault} style={styles.alertIcon} />
+							) : null}
+						</View>
+						{subtitle ? (
+							<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+								{translateSubtitle ? I18n.t(subtitle) : subtitle}
+							</Text>
+						) : null}
+					</View>
+				) : null}
+				{right || showActionIndicator ? (
+					<View style={[styles.rightContainer, rightContainerStyle]}>
+						{right ? right() : null}
+						{showActionIndicator ? <Icon name='chevron-right' style={styles.actionIndicator} /> : null}
+					</View>
+				) : null}
+			</View>
+		);
+	}
+);
+
+interface IListButtonPress extends IListItemButton {
+	onPress: Function;
+	style?: ViewStyle;
+	children: ReactElement;
+}
+
+interface IListItemButton {
+	title: string | (() => ReactElement | null);
+	disabled?: boolean;
+	disabledReason?: string;
+	backgroundColor?: string;
+	underlayColor?: string;
+}
+
+const Button = memo(
+	({ onPress, title, disabled, disabledReason, backgroundColor, underlayColor, style, children }: IListButtonPress) => {
+		const { colors } = useTheme();
+
+		return (
+			<Touch
+				onPress={() => pressNativeListItem({ title, disabled, disabledReason, onPress })}
+				style={[{ backgroundColor: backgroundColor || colors.surfaceRoom }, style]}
+				underlayColor={underlayColor}
+				disabled={disabled && !disabledReason}>
+				{children}
+			</Touch>
+		);
+	}
+);
+
+export interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListItemButton, 'theme'> {
+	backgroundColor?: string;
+	onPress?: Function;
+	style?: ViewStyle;
+	selected?: boolean;
+}
+
+const ListItem = memo((props: IListItem) => {
+	const { colors } = useTheme();
+	const isNativeList = useIsNativeList();
+	const backgroundColor = props.backgroundColor || colors.surfaceRoom;
+
+	if (isNativeList) {
+		return <NativeListItem item={props} />;
+	}
+
+	const content = (
+		<Content
+			accessibilityLabel={props.accessibilityLabel}
+			title={props.title}
+			subtitle={props.subtitle}
+			left={props.left}
+			right={props.right}
+			disabled={props.disabled}
+			testID={props.testID}
+			color={props.color}
+			translateTitle={props.translateTitle}
+			translateSubtitle={props.translateSubtitle}
+			showActionIndicator={props.showActionIndicator}
+			alert={props.alert}
+			heightContainer={props.heightContainer}
+			rightContainerStyle={props.rightContainerStyle}
+			styleTitle={props.styleTitle}
+			additionalAccessibilityLabel={props.additionalAccessibilityLabel}
+			accessibilityRole={props.accessibilityRole}
+			additionalAccessibilityLabelCheck={props.additionalAccessibilityLabelCheck}
+			numberOfLines={props.numberOfLines}
+		/>
+	);
+
+	if (props.onPress) {
+		return (
+			<Button
+				onPress={props.onPress}
+				title={props.title}
+				disabled={props.disabled}
+				disabledReason={props.disabledReason}
+				backgroundColor={backgroundColor}
+				underlayColor={props.underlayColor}
+				style={props.style}>
+				{content}
+			</Button>
+		);
+	}
+	return <View style={{ backgroundColor }}>{content}</View>;
+});
+
+ListItem.displayName = 'List.Item';
+
+export default ListItem;

@@ -1,0 +1,25 @@
+appId: ${APP_ID}
+name: Tap header item
+tags:
+  - 'util'
+
+---
+- runFlow:
+    file: 'wait-header-item.yaml'
+    env:
+      ANDROID_ID: ${ANDROID_ID}
+      IOS_LABEL: ${IOS_LABEL}
+
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          id: ${ANDROID_ID}
+
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          text: ${IOS_LABEL}

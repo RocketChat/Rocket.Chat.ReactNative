@@ -74,7 +74,7 @@ jest.mock('~/containers/MessageComposer', () => ({ MessageComposerContainer: 'Me
 jest.mock('../components/RoomMessageActions', () => ({ RoomMessageActions: 'RoomMessageActions' }));
 jest.mock('../components/UploadProgress', () => ({ __esModule: true, default: 'UploadProgress' }));
 jest.mock('../hooks/useRoomMessageHandlers', () => ({ useRoomMessageHandlers: () => ({}) }));
-jest.mock('../hooks/useHeader', () => ({ useHeader: jest.fn() }));
+jest.mock('../components/RoomViewHeader/RoomViewHeader', () => ({ RoomViewHeader: () => null }));
 jest.mock('../hooks/useRoomSubscription', () => ({ useRoomSubscription: jest.fn() }));
 jest.mock('../hooks/useRoomAudioLifecycle', () => ({ useRoomAudioLifecycle: jest.fn() }));
 jest.mock('../hooks/useRoomRemoved', () => ({ useRoomRemoved: jest.fn() }));

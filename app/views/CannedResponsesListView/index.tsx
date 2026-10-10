@@ -3,17 +3,17 @@ import { FlatList } from 'react-native';
 import { type RouteProp } from '@react-navigation/native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { type SearchBarCommands } from 'react-native-screens';
 
 import database from '~/lib/database';
 import I18n from '~/i18n';
+import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import { hideActionSheetRef, showActionSheetRef } from '~/containers/ActionSheet';
 import SafeAreaView from '~/containers/SafeAreaView';
 import ActivityIndicator from '~/containers/ActivityIndicator';
-import SearchHeader from '~/containers/SearchHeader';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { useTheme } from '~/theme';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import * as List from '~/containers/List';
 import { themes } from '~/lib/constants/colors';
 import log from '~/lib/methods/helpers/log';
@@ -67,6 +67,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	const { theme } = useTheme();
 	const isMasterDetail = useMasterDetail();
 	const { bottom } = useSafeAreaInsets();
+	const searchBarRef = useRef<SearchBarCommands>(null);
 
 	const getRoomFromDb = async () => {
 		const { rid } = route.params;
@@ -207,48 +208,6 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		});
 	};
 
-	const getHeader = () => {
-		if (isSearching) {
-			return {
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item
-							iconName='close'
-							onPress={() => {
-								onChangeText('');
-								setIsSearching(false);
-							}}
-						/>
-					</HeaderButton.Container>
-				),
-				headerTitle: () => <SearchHeader onSearchChangeText={onChangeText} testID='team-channels-view-search-header' />,
-				headerRight: () => null
-			};
-		}
-
-		const options: NativeStackNavigationOptions = {
-			headerLeft: () => null,
-			headerTitle: I18n.t('Canned_Responses'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item iconName='filter' onPress={showFilters} />
-					<HeaderButton.Item iconName='search' onPress={() => setIsSearching(true)} />
-				</HeaderButton.Container>
-			)
-		};
-
-		return options;
-	};
-
-	const setHeader = () => {
-		const options = getHeader();
-		navigation.setOptions(options);
-	};
-
-	useEffect(() => {
-		setHeader();
-	}, [isSearching, departments, currentDepartment]);
-
 	const showFilters = () => {
 		showActionSheetRef({
 			children: (
@@ -261,6 +220,32 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			enableContentPanningGesture: false
 		});
 	};
+
+	const onCancelSearch = () => {
+		onChangeText('');
+		setIsSearching(false);
+	};
+
+	const getHeader = (): NativeStackNavigationOptions =>
+		searchHeaderOptions({
+			isSearching,
+			searchBarRef,
+			onSearchPress: () => setIsSearching(true),
+			onChangeText,
+			onCancel: onCancelSearch,
+			testIDPrefix: 'canned-responses-view',
+			options: { headerLeft: () => null, headerTitle: I18n.t('Canned_Responses') },
+			rightActions: [{ label: I18n.t('Filter'), icon: 'filter', onPress: showFilters }]
+		});
+
+	const setHeader = () => {
+		const options = getHeader();
+		navigation.setOptions(options);
+	};
+
+	useEffect(() => {
+		setHeader();
+	}, [isSearching, departments, currentDepartment]);
 
 	const renderContent = () => {
 		if (!cannedResponsesScopeName.length && !loading) {

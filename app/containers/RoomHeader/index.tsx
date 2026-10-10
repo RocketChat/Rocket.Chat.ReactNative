@@ -2,9 +2,8 @@ import { memo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import type { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor, ISubscription } from '~/definitions';
-import { STATUS_I18N_KEYS } from '~/definitions';
-import I18n from '~/i18n';
 import RoomHeader from './RoomHeader';
+import { getConnectionSubtitle, getPresenceLabel } from './subtitle';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IRoomHeaderContainerProps {
@@ -43,7 +42,6 @@ const RoomHeaderContainer = memo(
 		disabled,
 		abacAttributes
 	}: IRoomHeaderContainerProps) => {
-		let subtitle: string | undefined;
 		let statusVisitor: TUserStatus | undefined;
 		let statusText: string | undefined;
 		let statusExpiresAt: string | undefined;
@@ -57,25 +55,12 @@ const RoomHeaderContainer = memo(
 			shallowEqual
 		);
 
-		if (connecting) {
-			subtitle = I18n.t('Connecting');
-		} else if (!connected) {
-			subtitle = I18n.t('Waiting_for_network');
-		} else {
-			subtitle = subtitleProp;
-		}
+		const connectionSubtitle = getConnectionSubtitle({ connecting, connected });
 
 		if (connected) {
 			if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
-				const {
-					statusText: statusTextActiveUser,
-					statusExpiresAt: statusExpiresAtActiveUser,
-					status: statusActiveUser
-				} = activeUser;
-				const presenceKey = statusActiveUser ? STATUS_I18N_KEYS[statusActiveUser] : undefined;
-				const presenceLabel = presenceKey ? I18n.t(presenceKey) : undefined;
-				statusText = statusTextActiveUser || presenceLabel;
-				statusExpiresAt = statusExpiresAtActiveUser;
+				statusText = getPresenceLabel(activeUser);
+				statusExpiresAt = activeUser.statusExpiresAt;
 			} else if (type === 'l' && visitor?.status) {
 				({ status: statusVisitor } = visitor);
 			}
@@ -87,7 +72,7 @@ const RoomHeaderContainer = memo(
 				prid={prid}
 				tmid={tmid}
 				title={title}
-				subtitle={type === 'd' ? statusText : subtitle}
+				subtitle={connectionSubtitle ?? (type === 'd' ? statusText : subtitleProp)}
 				statusExpiresAt={type === 'd' ? statusExpiresAt : undefined}
 				type={type}
 				teamMain={teamMain}

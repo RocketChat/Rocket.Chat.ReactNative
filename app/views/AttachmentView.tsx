@@ -9,7 +9,7 @@ import * as FileSystem from 'expo-file-system/legacy';
 import { isImageBase64 } from '../lib/methods/isImageBase64';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import AltTextLabel from '../containers/AltTextLabel';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
+import { headerLeftCloseModal, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import { ImageViewer } from '../containers/ImageViewer';
 import VideoPlayer from '../containers/VideoPlayer';
 import { LISTENER } from '../containers/Toast';
@@ -152,20 +152,14 @@ const AttachmentView = (): ReactElement => {
 		const title = getTitle();
 		navigation.setOptions({
 			title: title || '',
-			headerLeft: () => (
-				<HeaderButton.CloseModal
-					testID='close-attachment-view'
-					navigation={navigation}
-					color={colors.fontDefault}
-					style={{ marginRight: -12 }}
-				/>
-			),
-			headerRight:
+			...headerLeftCloseModal(navigation, 'close-attachment-view'),
+			...headerRightActions(
 				Allow_Save_Media_to_Gallery && !isImageBase64(attachment.image_url)
-					? () => <HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.fontDefault} />
-					: undefined
+					? [{ label: I18n.t('Save'), icon: 'download', testID: 'save-image', onPress: handleSave }]
+					: []
+			)
 		});
-	}, [Allow_Save_Media_to_Gallery, attachment.image_url, colors.fontDefault, getTitle, handleSave, navigation]);
+	}, [Allow_Save_Media_to_Gallery, attachment.image_url, getTitle, handleSave, navigation]);
 
 	return (
 		<View style={{ backgroundColor: colors.surfaceRoom, flex: 1 }}>

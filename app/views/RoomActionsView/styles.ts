@@ -1,12 +1,13 @@
-import { I18nManager, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { PADDING_HORIZONTAL } from '~/containers/List/constants';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	roomInfoContainer: {
 		paddingHorizontal: PADDING_HORIZONTAL,
-		paddingVertical: 4,
+		paddingVertical: isIOS ? 12 : 4,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
@@ -28,8 +29,5 @@ export default StyleSheet.create({
 		paddingRight: 16,
 		flexDirection: 'row',
 		alignItems: 'center'
-	},
-	actionIndicator: {
-		...(I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {})
 	}
 });

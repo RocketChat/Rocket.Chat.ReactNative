@@ -1,0 +1,884 @@
+diff --git a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfigViewManager.kt b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfigViewManager.kt
+index fa1b77317f609983ae2434764174072e51130550..8fe75d77bf343ff69ef0a782c8cfc602c6bfb0ba 100644
+--- a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfigViewManager.kt
++++ b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfigViewManager.kt
+@@ -3,6 +3,7 @@ package com.swmansion.rnscreens
+ import android.view.View
+ import com.facebook.react.bridge.JSApplicationCausedNativeException
+ import com.facebook.react.bridge.ReadableArray
++import com.facebook.react.bridge.ReadableMap
+ import com.facebook.react.module.annotations.ReactModule
+ import com.facebook.react.uimanager.ReactStylesDiffMap
+ import com.facebook.react.uimanager.StateWrapper
+@@ -236,6 +237,36 @@ class ScreenStackHeaderConfigViewManager :
+         value: String?,
+     ) = Unit
+ 
++    override fun setSubtitle(
++        view: ScreenStackHeaderConfig?,
++        value: String?,
++    ) = Unit
++
++    override fun setTitleImageSource(
++        view: ScreenStackHeaderConfig?,
++        value: ReadableMap?,
++    ) = Unit
++
++    override fun setSubtitleImageSource(
++        view: ScreenStackHeaderConfig?,
++        value: ReadableMap?,
++    ) = Unit
++
++    override fun setSubtitleColor(
++        view: ScreenStackHeaderConfig?,
++        value: Int?,
++    ) = Unit
++
++    override fun setTitlePressEnabled(
++        view: ScreenStackHeaderConfig?,
++        value: Boolean,
++    ) = Unit
++
++    override fun setTitleTestID(
++        view: ScreenStackHeaderConfig?,
++        value: String?,
++    ) = Unit
++
+     override fun setBackTitleFontFamily(
+         view: ScreenStackHeaderConfig?,
+         value: String?,
+diff --git a/node_modules/react-native-screens/ios/RNSBarButtonItem.mm b/node_modules/react-native-screens/ios/RNSBarButtonItem.mm
+index 76a39d4df4a4482d6447f4ead1ae4de544132831..160a3730161d1c123737eac4b18b2aa4d79b8a88 100644
+--- a/node_modules/react-native-screens/ios/RNSBarButtonItem.mm
++++ b/node_modules/react-native-screens/ios/RNSBarButtonItem.mm
+@@ -126,10 +126,34 @@ static UIMenuOptions RNSMakeUIMenuOptionsFromConfig(NSDictionary *config);
+     self.action = @selector(handleBarButtonItemPress:);
+     _itemAction = action;
+     _buttonId = buttonId;
++    if ([dict[@"showsLabelWithIcon"] boolValue] && self.image != nil && self.title.length > 0) {
++      [self useImageAndTitleButton];
++    }
+   }
+   return self;
+ }
+ 
++- (void)useImageAndTitleButton
++{
++  UIButtonConfiguration *configuration = [UIButtonConfiguration plainButtonConfiguration];
++  configuration.image = self.image;
++  configuration.title = self.title;
++  configuration.imagePadding = 6;
++  if (self.tintColor != nil) {
++    configuration.baseForegroundColor = self.tintColor;
++  }
++  configuration.preferredSymbolConfigurationForImage = [[UIImageSymbolConfiguration
++      configurationWithTextStyle:UIFontTextStyleBody
++                           scale:UIImageSymbolScaleLarge]
++      configurationByApplyingConfiguration:[UIImageSymbolConfiguration configurationWithWeight:UIImageSymbolWeightSemibold]];
++  UIButton *button = [UIButton buttonWithConfiguration:configuration primaryAction:nil];
++  button.automaticallyUpdatesConfiguration = NO;
++  [button addTarget:self action:@selector(handleBarButtonItemPress:) forControlEvents:UIControlEventPrimaryActionTriggered];
++  button.accessibilityLabel = self.accessibilityLabel;
++  [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
++  self.customView = button;
++}
++
+ + (void)resolveImageFromConfig:(NSDictionary *)dict
+                    imageLoader:(RCTImageLoader *)imageLoader
+                completionBlock:(void (^)(UIImage *_Nullable))completionBlock
+diff --git a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
+index 8a41697223f6c4b5cb2dd6d450fc58cbb3b27536..35fa3a619a288f9c9fcada43518ff0a510927aeb 100644
+--- a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
++++ b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.h
+@@ -8,10 +8,14 @@
+ #import "RNSScreenStackHeaderSubview.h"
+ #import "RNSSearchBar.h"
+ 
++@class RCTImageSource;
++
+ @interface NSString (RNSStringUtil)
+ 
+ + (BOOL)rnscreens_isBlankOrNull:(nullable NSString *)string;
+ 
+++ (nullable NSString *)rnscreens_stringByStrippingTitleGlyph:(nullable NSString *)string;
++
+ @end
+ 
+ @interface RNSScreenStackHeaderConfig : RNSReactBaseView
+@@ -23,10 +27,16 @@
+ NS_ASSUME_NONNULL_BEGIN
+ 
+ @property (nonatomic, retain) NSString *title;
++@property (nonatomic, retain) NSString *subtitle;
+ @property (nonatomic, retain) NSString *titleFontFamily;
+ @property (nonatomic, retain) NSNumber *titleFontSize;
+ @property (nonatomic, retain) NSString *titleFontWeight;
+ @property (nonatomic, retain) UIColor *titleColor;
++@property (nonatomic, retain, nullable) UIColor *subtitleColor;
++@property (nonatomic, retain, nullable) RCTImageSource *titleImageSource;
++@property (nonatomic, retain, nullable) RCTImageSource *subtitleImageSource;
++@property (nonatomic) BOOL titlePressEnabled;
++@property (nonatomic, retain, nullable) NSString *titleTestID;
+ @property (nonatomic, retain) NSString *backTitle;
+ @property (nonatomic, retain) NSString *backTitleFontFamily;
+ @property (nonatomic, retain) NSNumber *backTitleFontSize;
+@@ -50,6 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
+ @property (nonatomic) RNSBlurEffectStyle blurEffect;
+ @property (nonatomic, copy, nullable) NSArray<NSDictionary<NSString *, id> *> *headerRightBarButtonItems;
+ @property (nonatomic, copy, nullable) NSArray<NSDictionary<NSString *, id> *> *headerLeftBarButtonItems;
++@property (nonatomic, copy, nullable) NSArray<NSDictionary<NSString *, id> *> *toolbarBarButtonItems;
+ @property (nonatomic, readwrite) BOOL synchronousShadowStateUpdatesEnabled;
+ 
+ NS_ASSUME_NONNULL_END
+diff --git a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
+index a54cb632e7c3387b65b02246e6d9f326e49a3362..24f8967035adcbca5bbc5ffe9076eab28a207f5d 100644
+--- a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
++++ b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
+@@ -13,6 +13,7 @@
+ #import <react/renderer/components/rnscreens/EventEmitters.h>
+ #import <react/renderer/components/rnscreens/Props.h>
+ #import <react/renderer/components/rnscreens/RCTComponentViewHelpers.h>
++#import <react/renderer/imagemanager/RCTImagePrimitivesConversions.h>
+ #import <react/utils/ManagedObjectWrapper.h>
+ #import <rnscreens/RNSScreenStackHeaderConfigComponentDescriptor.h>
+ #import "RCTImageComponentView+RNSScreenStackHeaderConfig.h"
+@@ -20,6 +21,7 @@
+ #import "RNSBarButtonItem.h"
+ #import "RNSConvert.h"
+ #import "RNSDefines.h"
++#import "RNSImageLoadingHelper.h"
+ #import "RNSScreen.h"
+ #import "RNSSearchBar.h"
+ #import "UINavigationBar+RNSUtility.h"
+@@ -28,11 +30,19 @@ namespace react = facebook::react;
+ 
+ static const NSNumber *const DEFAULT_TITLE_FONT_SIZE = @17;
+ static const NSNumber *const DEFAULT_TITLE_LARGE_FONT_SIZE = @34;
++static const NSNumber *const DEFAULT_SUBTITLE_FONT_SIZE = @12;
++
++#define RNS_TITLE_GLYPH_PLACEHOLDER @"\uFFFC"
++#define RNS_TITLE_GLYPH_SPACING_EM 0.2
+ 
+ @interface RCTImageLoader (Private)
+ - (id<RCTImageCache>)imageCache;
+ @end
+ 
++@interface RNSScreenStackHeaderConfig ()
++- (void)emitTitlePress;
++@end
++
+ @implementation NSString (RNSStringUtil)
+ 
+ + (BOOL)rnscreens_isBlankOrNull:(NSString *)string
+@@ -43,6 +53,105 @@ static const NSNumber *const DEFAULT_TITLE_LARGE_FONT_SIZE = @34;
+   return [[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0;
+ }
+ 
+++ (nullable NSString *)rnscreens_stringByStrippingTitleGlyph:(nullable NSString *)string
++{
++  if (string == nil) {
++    return nil;
++  }
++  NSCharacterSet *glyphCharacters =
++      [NSCharacterSet characterSetWithCharactersInString:RNS_TITLE_GLYPH_PLACEHOLDER];
++  return [[string componentsSeparatedByCharactersInSet:glyphCharacters] componentsJoinedByString:@""];
++}
++
++@end
++
++@interface RNSHeaderImageSlot : NSObject
++
++- (nullable UIImage *)resolveImageFromSource:(nullable RCTImageSource *)source
++                             withImageLoader:(nullable RCTImageLoader *)imageLoader
++                                    onLoaded:(nonnull dispatch_block_t)onLoaded;
++
++- (void)reset;
++
++@end
++
++@implementation RNSHeaderImageSlot {
++  NSString *_Nullable _requestedUri;
++  NSUInteger _generation;
++}
++
+++ (NSCache<NSString *, UIImage *> *)sharedImageCache
++{
++  static NSCache<NSString *, UIImage *> *cache;
++  static dispatch_once_t onceToken;
++  dispatch_once(&onceToken, ^{
++    cache = [NSCache new];
++  });
++  return cache;
++}
++
++- (nullable UIImage *)resolveImageFromSource:(nullable RCTImageSource *)source
++                             withImageLoader:(nullable RCTImageLoader *)imageLoader
++                                    onLoaded:(nonnull dispatch_block_t)onLoaded
++{
++  if (source == nil) {
++    [self reset];
++    return nil;
++  }
++
++  NSString *uri = source.request.URL.absoluteString;
++  if (uri == nil) {
++    [self reset];
++    return nil;
++  }
++
++  const BOOL isNewSource = ![uri isEqualToString:_requestedUri];
++  if (isNewSource) {
++    _requestedUri = uri;
++    _generation += 1;
++  }
++
++  UIImage *cachedImage = [[RNSHeaderImageSlot sharedImageCache] objectForKey:uri];
++  if (cachedImage != nil) {
++    return cachedImage;
++  }
++
++  if (!isNewSource || imageLoader == nil) {
++    return nil;
++  }
++
++  const NSUInteger generation = _generation;
++
++  __weak RNSHeaderImageSlot *weakSelf = self;
++  [RNSImageLoadingHelper
++      loadImageFromSource:source
++          withImageLoader:imageLoader
++               asTemplate:NO
++          completionBlock:^(UIImage *image) {
++            RNSHeaderImageSlot *strongSelf = weakSelf;
++            if (strongSelf == nil || generation != strongSelf->_generation) {
++              return;
++            }
++            if (image == nil) {
++#if !defined(NDEBUG)
++              RCTLogWarn(
++                  @"[RNScreens] Failed to load header image source \"%@\", falling back to text-only header.", uri);
++#endif // !defined(NDEBUG)
++              return;
++            }
++            [[RNSHeaderImageSlot sharedImageCache] setObject:image forKey:uri];
++            dispatch_async(dispatch_get_main_queue(), onLoaded);
++          }];
++
++  return [[RNSHeaderImageSlot sharedImageCache] objectForKey:uri];
++}
++
++- (void)reset
++{
++  _requestedUri = nil;
++  _generation += 1;
++}
++
+ @end
+ 
+ @interface RNSScreenStackHeaderConfig () <RCTMountingTransactionObserving>
+@@ -59,6 +168,11 @@ static const NSNumber *const DEFAULT_TITLE_LARGE_FONT_SIZE = @34;
+   /// transaction via RCTMountingTransactionObserving protocol.
+   bool _addedReactSubviewsInCurrentTransaction;
+   RCTImageLoader *_imageLoader;
++  RNSHeaderImageSlot *_titleImageSlot;
++  RNSHeaderImageSlot *_subtitleImageSlot;
++  UIButton *_titleButton;
++  UILabel *_titleButtonTitleLabel;
++  UILabel *_titleButtonSubtitleLabel;
+ }
+ 
+ - (instancetype)initWithFrame:(CGRect)frame
+@@ -69,6 +183,8 @@ static const NSNumber *const DEFAULT_TITLE_LARGE_FONT_SIZE = @34;
+     _show = YES;
+     _translucent = NO;
+     _addedReactSubviewsInCurrentTransaction = false;
++    _titleImageSlot = [RNSHeaderImageSlot new];
++    _subtitleImageSlot = [RNSHeaderImageSlot new];
+     _lastSendState = react::RNSScreenStackHeaderConfigState(react::Size{}, react::EdgeInsets{}, react::Point{});
+     [self initProps];
+   }
+@@ -131,6 +247,110 @@ RNS_IGNORE_SUPER_CALL_END
+   return nil;
+ }
+ 
++- (nullable UIImage *)resolvedTitleImage
++{
++  __weak RNSScreenStackHeaderConfig *weakSelf = self;
++  return [_titleImageSlot resolveImageFromSource:_titleImageSource
++                                 withImageLoader:_imageLoader
++                                        onLoaded:^{
++                                          [weakSelf updateViewControllerIfNeeded];
++                                        }];
++}
++
++- (nullable UIImage *)resolvedSubtitleImage
++{
++  __weak RNSScreenStackHeaderConfig *weakSelf = self;
++  return [_subtitleImageSlot resolveImageFromSource:_subtitleImageSource
++                                    withImageLoader:_imageLoader
++                                           onLoaded:^{
++                                             [weakSelf updateViewControllerIfNeeded];
++                                           }];
++}
++
++- (nullable NSAttributedString *)attributedTitle
++{
++  UIImage *glyph = [self resolvedTitleImage];
++  if (glyph == nil || _title == nil) {
++    return nil;
++  }
++
++  return [RNSScreenStackHeaderConfig
++      attributedStringWithLeadingGlyph:glyph
++                                  text:_title
++                        textAttributes:[RNSScreenStackHeaderConfig titleTextAttributesForConfig:self]];
++}
++
++- (nullable NSAttributedString *)attributedSubtitle
++{
++  UIImage *glyph = [self resolvedSubtitleImage];
++  if (_subtitle == nil || (glyph == nil && _subtitleColor == nil)) {
++    return nil;
++  }
++  if (glyph == nil) {
++    return [[NSAttributedString alloc] initWithString:_subtitle
++                                           attributes:[RNSScreenStackHeaderConfig subtitleTextAttributesForConfig:self]];
++  }
++
++  return [RNSScreenStackHeaderConfig
++      attributedStringWithLeadingGlyph:glyph
++                                  text:_subtitle
++                        textAttributes:[RNSScreenStackHeaderConfig subtitleTextAttributesForConfig:self]];
++}
++
++- (UIButton *)titleButton API_AVAILABLE(ios(26.0))
++{
++  if (_titleButton == nil) {
++    _titleButtonTitleLabel = [UILabel new];
++    _titleButtonSubtitleLabel = [UILabel new];
++    UIStackView *labels =
++        [[UIStackView alloc] initWithArrangedSubviews:@[ _titleButtonTitleLabel, _titleButtonSubtitleLabel ]];
++    labels.axis = UILayoutConstraintAxisVertical;
++    labels.alignment = UIStackViewAlignmentCenter;
++    labels.userInteractionEnabled = NO;
++    labels.accessibilityElementsHidden = YES;
++    labels.translatesAutoresizingMaskIntoConstraints = NO;
++    for (UILabel *label in labels.arrangedSubviews) {
++      label.lineBreakMode = NSLineBreakByTruncatingTail;
++    }
++
++    __weak RNSScreenStackHeaderConfig *weakSelf = self;
++    UIButtonConfiguration *configuration = [UIButtonConfiguration plainButtonConfiguration];
++    configuration.contentInsets = NSDirectionalEdgeInsetsZero;
++    _titleButton = [UIButton buttonWithConfiguration:configuration
++                                       primaryAction:[UIAction actionWithHandler:^(__kindof UIAction *action) {
++                                         [weakSelf emitTitlePress];
++                                       }]];
++    _titleButton.configurationUpdateHandler = ^(UIButton *button) {
++      labels.alpha = button.isHighlighted ? 0.35 : 1;
++    };
++    _titleButton.showsLargeContentViewer = YES;
++    [_titleButton addSubview:labels];
++    [NSLayoutConstraint activateConstraints:@[
++      [labels.topAnchor constraintEqualToAnchor:_titleButton.topAnchor],
++      [labels.bottomAnchor constraintEqualToAnchor:_titleButton.bottomAnchor],
++      [labels.leadingAnchor constraintEqualToAnchor:_titleButton.leadingAnchor],
++      [labels.trailingAnchor constraintEqualToAnchor:_titleButton.trailingAnchor],
++    ]];
++  }
++
++  _titleButtonTitleLabel.attributedText = [self attributedTitle]
++      ?: [[NSAttributedString alloc] initWithString:_title ?: @""
++                                         attributes:[RNSScreenStackHeaderConfig titleTextAttributesForConfig:self]];
++  _titleButtonSubtitleLabel.hidden = _subtitle == nil;
++  if (_subtitle != nil) {
++    NSMutableDictionary<NSAttributedStringKey, id> *subtitleAttributes =
++        [[RNSScreenStackHeaderConfig subtitleTextAttributesForConfig:self] mutableCopy];
++    subtitleAttributes[NSForegroundColorAttributeName] = _subtitleColor ?: UIColor.secondaryLabelColor;
++    _titleButtonSubtitleLabel.attributedText = [self attributedSubtitle]
++        ?: [[NSAttributedString alloc] initWithString:_subtitle attributes:subtitleAttributes];
++  }
++  _titleButton.accessibilityLabel = _title;
++  _titleButton.accessibilityValue = _subtitle;
++  _titleButton.largeContentTitle = _title;
++  _titleButton.accessibilityIdentifier = _titleTestID;
++  return _titleButton;
++}
++
+ - (void)updateViewControllerIfNeeded
+ {
+   UIViewController *vc = _screenView.controller;
+@@ -365,6 +585,89 @@ RNS_IGNORE_SUPER_CALL_END
+   }
+ }
+ 
+++ (NSDictionary<NSAttributedStringKey, id> *)resolvedTitleTextAttributesWithFontFamily:(NSString *)fontFamily
++                                                                              fontSize:(NSNumber *)fontSize
++                                                                            fontWeight:(NSString *)fontWeight
++                                                                                 color:(UIColor *)color
++                                                                      boldFallbackFont:(UIFont *)boldFallbackFont
++{
++  NSMutableDictionary<NSAttributedStringKey, id> *attrs = [NSMutableDictionary new];
++
++  // Ignore changing header title color on visionOS
++#if !TARGET_OS_VISION
++  if (color) {
++    attrs[NSForegroundColorAttributeName] = color;
++  }
++#endif
++
++  if (fontFamily || fontWeight) {
++    attrs[NSFontAttributeName] = [RCTFont updateFont:nil
++                                          withFamily:fontFamily
++                                                size:fontSize
++                                              weight:fontWeight
++                                               style:nil
++                                             variant:nil
++                                     scaleMultiplier:1.0];
++  } else {
++    attrs[NSFontAttributeName] = boldFallbackFont;
++  }
++
++  return attrs;
++}
++
+++ (NSDictionary<NSAttributedStringKey, id> *)titleTextAttributesForConfig:(RNSScreenStackHeaderConfig *)config
++{
++  NSNumber *size = config.titleFontSize ?: [DEFAULT_TITLE_FONT_SIZE copy];
++  return [self resolvedTitleTextAttributesWithFontFamily:config.titleFontFamily
++                                                fontSize:size
++                                              fontWeight:config.titleFontWeight
++                                                   color:config.titleColor
++                                        boldFallbackFont:[UIFont boldSystemFontOfSize:[size floatValue]]];
++}
++
+++ (NSDictionary<NSAttributedStringKey, id> *)subtitleTextAttributesForConfig:(RNSScreenStackHeaderConfig *)config
++{
++  NSNumber *size = [DEFAULT_SUBTITLE_FONT_SIZE copy];
++  return [self resolvedTitleTextAttributesWithFontFamily:config.titleFontFamily
++                                                fontSize:size
++                                              fontWeight:nil
++                                                   color:config.subtitleColor ?: config.titleColor
++                                        boldFallbackFont:[UIFont systemFontOfSize:[size floatValue]]];
++}
++
+++ (NSAttributedString *)attributedStringWithLeadingGlyph:(UIImage *)glyph
++                                                    text:(NSString *)text
++                                          textAttributes:(NSDictionary<NSAttributedStringKey, id> *)textAttributes
++{
++  UIFont *font =
++      textAttributes[NSFontAttributeName] ?: [UIFont boldSystemFontOfSize:[DEFAULT_TITLE_FONT_SIZE floatValue]];
++
++  CGFloat glyphHeight = font.pointSize;
++  CGSize intrinsicSize = glyph.size;
++  CGFloat aspectRatio = intrinsicSize.height > 0 ? intrinsicSize.width / intrinsicSize.height : 1;
++
++  CGFloat glyphWidth = glyphHeight * aspectRatio;
++  CGFloat spacing = font.pointSize * RNS_TITLE_GLYPH_SPACING_EM;
++  UIGraphicsImageRendererFormat *format = [UIGraphicsImageRendererFormat preferredFormat];
++  format.opaque = NO;
++  UIImage *paddedGlyph = [[[UIGraphicsImageRenderer alloc] initWithSize:CGSizeMake(glyphWidth + spacing, glyphHeight)
++                                                                  format:format]
++      imageWithActions:^(UIGraphicsImageRendererContext *context) {
++        [glyph drawInRect:CGRectMake(0, 0, glyphWidth, glyphHeight)];
++      }];
++
++  NSTextAttachment *attachment = [NSTextAttachment new];
++  attachment.image = [paddedGlyph imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
++  attachment.bounds = CGRectMake(0, (font.capHeight - glyphHeight) / 2, glyphWidth + spacing, glyphHeight);
++
++  NSMutableAttributedString *composed = [[NSMutableAttributedString alloc]
++      initWithAttributedString:[NSAttributedString attributedStringWithAttachment:attachment]];
++  [composed appendAttributedString:[[NSAttributedString alloc] initWithString:text]];
++  [composed addAttributes:textAttributes range:NSMakeRange(0, composed.length)];
++
++  return composed;
++}
++
+ + (UINavigationBarAppearance *)buildAppearance:(UIViewController *)vc withConfig:(RNSScreenStackHeaderConfig *)config
+ {
+   UINavigationBarAppearance *appearance = [UINavigationBarAppearance new];
+@@ -380,8 +683,10 @@ RNS_IGNORE_SUPER_CALL_END
+       appearance.shadowColor = shadowColor;
+       appearance.shadowImage = shadowImage;
+     }
+-  } else {
++  } else if (config.backgroundColor) {
+     [appearance configureWithOpaqueBackground];
++  } else {
++    [appearance configureWithDefaultBackground];
+   }
+ 
+   // set background color if specified
+@@ -408,59 +713,20 @@ RNS_IGNORE_SUPER_CALL_END
+   }
+ 
+   if (config.titleFontFamily || config.titleFontSize || config.titleFontWeight || config.titleColor) {
+-    NSMutableDictionary *attrs = [NSMutableDictionary new];
+-
+-    // Ignore changing header title color on visionOS
+-#if !TARGET_OS_VISION
+-    if (config.titleColor) {
+-      attrs[NSForegroundColorAttributeName] = config.titleColor;
+-    }
+-#endif
+-
+-    NSString *family = config.titleFontFamily ?: nil;
+-    NSNumber *size = config.titleFontSize ?: [DEFAULT_TITLE_FONT_SIZE copy];
+-    NSString *weight = config.titleFontWeight ?: nil;
+-    if (family || weight) {
+-      attrs[NSFontAttributeName] = [RCTFont updateFont:nil
+-                                            withFamily:config.titleFontFamily
+-                                                  size:size
+-                                                weight:weight
+-                                                 style:nil
+-                                               variant:nil
+-                                       scaleMultiplier:1.0];
+-    } else {
+-      attrs[NSFontAttributeName] = [UIFont boldSystemFontOfSize:[size floatValue]];
+-    }
+-    appearance.titleTextAttributes = attrs;
++    appearance.titleTextAttributes = [self titleTextAttributesForConfig:config];
+   }
+ 
+   if (config.largeTitleFontFamily || config.largeTitleFontSize || config.largeTitleFontWeight ||
+       config.largeTitleColor || config.titleColor) {
+-    NSMutableDictionary *largeAttrs = [NSMutableDictionary new];
+-
+-    // Ignore changing header title color on visionOS
+-#if !TARGET_OS_VISION
+-    if (config.largeTitleColor || config.titleColor) {
+-      largeAttrs[NSForegroundColorAttributeName] = config.largeTitleColor ? config.largeTitleColor : config.titleColor;
+-    }
+-#endif
+-
+-    NSString *largeFamily = config.largeTitleFontFamily ?: nil;
+     NSNumber *largeSize = config.largeTitleFontSize ?: [DEFAULT_TITLE_LARGE_FONT_SIZE copy];
+-    NSString *largeWeight = config.largeTitleFontWeight ?: nil;
+-    if (largeFamily || largeWeight) {
+-      largeAttrs[NSFontAttributeName] = [RCTFont updateFont:nil
+-                                                 withFamily:largeFamily
+-                                                       size:largeSize
+-                                                     weight:largeWeight
+-                                                      style:nil
+-                                                    variant:nil
+-                                            scaleMultiplier:1.0];
+-    } else {
+-      largeAttrs[NSFontAttributeName] = [UIFont systemFontOfSize:[largeSize floatValue] weight:UIFontWeightBold];
+-    }
+-
+-    appearance.largeTitleTextAttributes = largeAttrs;
++    UIColor *largeColor = config.largeTitleColor ? config.largeTitleColor : config.titleColor;
++    appearance.largeTitleTextAttributes =
++        [self resolvedTitleTextAttributesWithFontFamily:config.largeTitleFontFamily
++                                               fontSize:largeSize
++                                             fontWeight:config.largeTitleFontWeight
++                                                  color:largeColor
++                                       boldFallbackFont:[UIFont systemFontOfSize:[largeSize floatValue]
++                                                                          weight:UIFontWeightBold]];
+   }
+ 
+   UIImage *backButtonImage = [config loadBackButtonImageInViewController:vc];
+@@ -507,14 +773,19 @@ RNS_IGNORE_SUPER_CALL_END
+ 
+   if (shouldHide) {
+     navitem.title = config.title;
++#if RNS_IPHONE_OS_VERSION_AVAILABLE(26_0)
++    if (@available(iOS 26.0, *)) {
++      navitem.subtitle = config.subtitle;
++    }
++#endif // RNS_IPHONE_OS_VERSION_AVAILABLE(26_0)
+ 
+     // Setting navigation bar visibility is split to mitigate iOS 26 bug with bar button items.
+     [navctr setNavigationBarHidden:YES animated:animated];
++    [navctr setToolbarHidden:YES animated:animated];
+     return;
+   }
+ 
+   navctr.navigationBar.overrideUserInterfaceStyle = config.userInterfaceStyle;
+-
+ #if !TARGET_OS_TV
+   [config configureBackItem:prevItem withPrevVC:prevVC];
+ 
+@@ -648,10 +919,34 @@ RNS_IGNORE_SUPER_CALL_END
+   // This assignment should be done after `navitem.titleView = ...` assignment (iOS 16.0 bug).
+   // See: https://github.com/software-mansion/react-native-screens/issues/1570 (comments)
+   navitem.title = config.title;
++#if RNS_IPHONE_OS_VERSION_AVAILABLE(26_0)
++  if (@available(iOS 26.0, *)) {
++    navitem.subtitle = config.subtitle;
++
++    NSAttributedString *attributedTitle = [config attributedTitle];
++    navitem.attributedTitle = attributedTitle;
++    if (attributedTitle == nil) {
++      navitem.title = config.title;
++    }
++
++    NSAttributedString *attributedSubtitle = [config attributedSubtitle];
++    navitem.attributedSubtitle = attributedSubtitle;
++    if (attributedSubtitle == nil) {
++      navitem.subtitle = config.subtitle;
++    }
++
++    if (navitem.titleView == nil && config.titlePressEnabled) {
++      navitem.titleView = [config titleButton];
++      navitem.subtitle = nil;
++      navitem.attributedSubtitle = nil;
++    }
++  }
++#endif // RNS_IPHONE_OS_VERSION_AVAILABLE(26_0)
+   navitem.leftBarButtonItems = [config barButtonItemsFromConfigs:config.headerLeftBarButtonItems
+                                                 withCurrentItems:navitem.leftBarButtonItems];
+   navitem.rightBarButtonItems = [config barButtonItemsFromConfigs:config.headerRightBarButtonItems
+                                                  withCurrentItems:navitem.rightBarButtonItems];
++  [config updateToolbarOfViewController:vc navigationController:navctr animated:animated];
+ 
+   // Setting navigation bar visibility is split to mitigate iOS 26 bug with bar button items
+   // (setting nav bar visibility should be done after `navitem.*BarButtonItems`).
+@@ -700,7 +995,8 @@ RNS_IGNORE_SUPER_CALL_END
+   const auto *config = self;
+ 
+   const auto isBackTitleBlank = [NSString rnscreens_isBlankOrNull:config.backTitle] == YES;
+-  NSString *resolvedBackTitle = isBackTitleBlank ? prevItem.title : config.backTitle;
++  NSString *resolvedBackTitle =
++      isBackTitleBlank ? [NSString rnscreens_stringByStrippingTitleGlyph:prevItem.title] : config.backTitle;
+ 
+   // If previous screen controller was recreated (e.g. when you go back to tab with stack that has multiple screens),
+   // its navigationItem may not have any information from screen's headerConfig, including the title.
+@@ -714,6 +1010,7 @@ RNS_IGNORE_SUPER_CALL_END
+   // This has any effect only in case the `backBarButtonItem` is not set.
+   // We apply it before we configure the back item, because it might get overriden.
+   prevItem.backButtonDisplayMode = config.backButtonDisplayMode;
++  UIBarButtonItem *customBackBarButtonItem = nil;
+ 
+   if (config.isBackTitleVisible) {
+     RNSBackBarButtonItem *backBarButtonItem = [[RNSBackBarButtonItem alloc] initWithTitle:resolvedBackTitle
+@@ -753,12 +1050,31 @@ RNS_IGNORE_SUPER_CALL_END
+     // See: https://github.com/software-mansion/react-native-screens/issues/1589
+     if (shouldUseCustomBackBarButtonItem) {
+       prevItem.backBarButtonItem = backBarButtonItem;
++      customBackBarButtonItem = backBarButtonItem;
+     }
+   } else {
+     // back button title should be not visible next to back button,
+     // but it should still appear in back menu
+     prevItem.backButtonDisplayMode = UINavigationItemBackButtonDisplayModeMinimal;
+   }
++
++  if (@available(iOS 26.0, *)) {
++    if (config.color != nil) {
++      UIBarButtonItem *tintedBackBarButtonItem = customBackBarButtonItem;
++      if (tintedBackBarButtonItem == nil) {
++        NSString *backBarButtonTitle =
++            prevItem.backButtonDisplayMode == UINavigationItemBackButtonDisplayModeMinimal ? @"" : resolvedBackTitle;
++        RNSBackBarButtonItem *backBarButtonItem = [[RNSBackBarButtonItem alloc] initWithTitle:backBarButtonTitle
++                                                                                        style:UIBarButtonItemStylePlain
++                                                                                       target:nil
++                                                                                       action:nil];
++        [backBarButtonItem setMenuHidden:config.disableBackButtonMenu];
++        tintedBackBarButtonItem = backBarButtonItem;
++      }
++      tintedBackBarButtonItem.tintColor = config.color;
++      prevItem.backBarButtonItem = tintedBackBarButtonItem;
++    }
++  }
+ #endif
+ }
+ 
+@@ -782,6 +1098,32 @@ RNS_IGNORE_SUPER_CALL_END
+   }
+ }
+ 
++- (void)updateToolbarOfViewController:(UIViewController *)vc
++                navigationController:(UINavigationController *)navctr
++                            animated:(BOOL)animated
++{
++#if !TARGET_OS_TV && RNS_IPHONE_OS_VERSION_AVAILABLE(26_0)
++  if (@available(iOS 26.0, *)) {
++    if (self.toolbarBarButtonItems.count == 0) {
++      vc.toolbarItems = nil;
++      [navctr setToolbarHidden:YES animated:animated];
++      return;
++    }
++    UINavigationItem *navitem = vc.navigationItem;
++    NSMutableArray<UIBarButtonItem *> *items = [NSMutableArray array];
++    if (navitem.searchController != nil && navitem.searchBarPlacementAllowsToolbarIntegration) {
++      [items addObject:navitem.searchBarPlacementBarButtonItem];
++    }
++    [items addObject:[UIBarButtonItem flexibleSpaceItem]];
++    [items addObjectsFromArray:[self barButtonItemsFromConfigs:self.toolbarBarButtonItems withCurrentItems:@[]]];
++    [vc setToolbarItems:items animated:animated];
++    [navctr setToolbarHidden:NO animated:animated];
++    return;
++  }
++#endif
++  [navctr setToolbarHidden:YES animated:animated];
++}
++
+ - (NSArray<UIBarButtonItem *> *)barButtonItemsFromConfigs:(NSArray<NSDictionary<NSString *, id> *> *)dicts
+                                          withCurrentItems:(NSArray<UIBarButtonItem *> *)currentItems
+ {
+@@ -968,6 +1310,16 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+ }
+ #endif // !NDEBUG
+ 
++static RCTImageSource *_Nullable imageSourceFromCppEquiv(const react::ImageSource &source)
++{
++  if (source.uri.empty()) {
++    return nil;
++  }
++  return [[RCTImageSource alloc] initWithURLRequest:NSURLRequestFromImageSource(source)
++                                               size:CGSizeMake(source.size.width, source.size.height)
++                                              scale:source.scale];
++}
++
+ + (RCTImageSource *)imageSourceFromImageView:(RCTImageComponentView *)view
+ {
+   const auto &imageProps = *std::static_pointer_cast<const react::ImageProps>(view.props);
+@@ -987,6 +1339,11 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+ {
+   [super prepareForRecycle];
+   _initialPropsSet = NO;
++  [_titleImageSlot reset];
++  [_subtitleImageSlot reset];
++  _titleButton = nil;
++  _titleButtonTitleLabel = nil;
++  _titleButtonSubtitleLabel = nil;
+ 
+   _lastSendState = react::RNSScreenStackHeaderConfigState(react::Size{}, react::EdgeInsets{}, react::Point{});
+ }
+@@ -1003,6 +1360,14 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+   return react::concreteComponentDescriptorProvider<react::RNSScreenStackHeaderConfigComponentDescriptor>();
+ }
+ 
++- (void)emitTitlePress
++{
++  auto eventEmitter = std::static_pointer_cast<const facebook::react::RNSScreenStackHeaderConfigEventEmitter>(_eventEmitter);
++  if (eventEmitter) {
++    eventEmitter->onTitlePress(facebook::react::RNSScreenStackHeaderConfigEventEmitter::OnTitlePress{});
++  }
++}
++
+ - (void)updateProps:(react::Props::Shared const &)props oldProps:(react::Props::Shared const &)oldProps
+ {
+   const auto &oldScreenProps = *std::static_pointer_cast<const react::RNSScreenStackHeaderConfigProps>(_props);
+@@ -1025,6 +1390,7 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+   }
+ 
+   _title = RCTNSStringFromStringNilIfEmpty(newScreenProps.title);
++  _subtitle = RCTNSStringFromStringNilIfEmpty(newScreenProps.subtitle);
+   if (newScreenProps.titleFontFamily != oldScreenProps.titleFontFamily) {
+     _titleFontFamily = RCTNSStringFromStringNilIfEmpty(newScreenProps.titleFontFamily);
+   }
+@@ -1064,6 +1430,15 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+   // We cannot compare SharedColor because it is shared value.
+   // We could compare color value, but it is more performant to just assign new value
+   _titleColor = RCTUIColorFromSharedColor(newScreenProps.titleColor);
++  _subtitleColor = RCTUIColorFromSharedColor(newScreenProps.subtitleColor);
++  _titlePressEnabled = newScreenProps.titlePressEnabled;
++  _titleTestID = RCTNSStringFromStringNilIfEmpty(newScreenProps.titleTestID);
++  if (newScreenProps.titleImageSource != oldScreenProps.titleImageSource) {
++    _titleImageSource = imageSourceFromCppEquiv(newScreenProps.titleImageSource);
++  }
++  if (newScreenProps.subtitleImageSource != oldScreenProps.subtitleImageSource) {
++    _subtitleImageSource = imageSourceFromCppEquiv(newScreenProps.subtitleImageSource);
++  }
+   _largeTitleColor = RCTUIColorFromSharedColor(newScreenProps.largeTitleColor);
+   _color = RCTUIColorFromSharedColor(newScreenProps.color);
+   _backgroundColor = RCTUIColorFromSharedColor(newScreenProps.backgroundColor);
+@@ -1087,13 +1462,20 @@ static RCTResizeMode resizeModeFromCppEquiv(react::ImageResizeMode resizeMode)
+   if (newScreenProps.headerRightBarButtonItems != oldScreenProps.headerRightBarButtonItems) {
+     const auto &vec = newScreenProps.headerRightBarButtonItems;
+     NSMutableArray<NSDictionary<NSString *, id> *> *array = [NSMutableArray arrayWithCapacity:vec.size()];
++    NSMutableArray<NSDictionary<NSString *, id> *> *toolbarArray = [NSMutableArray array];
+     for (const auto &item : vec) {
+       NSDictionary *dict = [RNSConvert idFromFollyDynamic:item];
+-      if ([dict isKindOfClass:[NSDictionary class]]) {
++      if (![dict isKindOfClass:[NSDictionary class]]) {
++        continue;
++      }
++      if ([dict[@"placement"] isEqual:@"toolbar"]) {
++        [toolbarArray addObject:dict];
++      } else {
+         [array addObject:dict];
+       }
+     }
+     _headerRightBarButtonItems = array;
++    _toolbarBarButtonItems = toolbarArray;
+   }
+ 
+   [self updateViewControllerIfNeeded];
+diff --git a/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm b/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
+index 64beb499a6d661cb1bf02a1d88d6dd422081138d..14bb54aa48c5d857f4edbaab7df27455cc18fa66 100644
+--- a/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
++++ b/node_modules/react-native-screens/ios/helpers/image/RNSImageLoadingHelper.mm
+@@ -13,6 +13,15 @@
+   RCTImageSource *imageSource = [RCTConvert RCTImageSource:jsonImageSource];
+   RCTAssert(imageSource != nil, @"[RNScreens] Expected nonnil image source");
+ 
++  NSNumber *alignmentInset = jsonImageSource[@"alignmentInset"];
++  if (alignmentInset != nil) {
++    CGFloat inset = alignmentInset.doubleValue;
++    void (^loadingCompletionBlock)(UIImage *_Nullable) = imageLoadingCompletionBlock;
++    imageLoadingCompletionBlock = ^(UIImage *_Nullable image) {
++      loadingCompletionBlock([image imageWithAlignmentRectInsets:UIEdgeInsetsMake(inset, inset, inset, inset)]);
++    };
++  }
++
+ #if !defined(NDEBUG) // We're in debug mode here
+   if (imageSource.packagerAsset) {
+     // We use `+ [RCTConvert UIImage:]` only in debug mode, because it is deprecated, however
+@@ -38,6 +47,15 @@
+   RCTAssert(imageSource != nil, @"[RNScreens] imageSource must not be nil");
+   RCTAssert(imageLoader != nil, @"[RNScreens] imageLoader must not be nil");
+ 
++  if (imageSource.request.URL.isFileURL) {
++    UIImage *image = [UIImage imageWithContentsOfFile:imageSource.request.URL.path];
++    if (image != nil) {
++      image = [UIImage imageWithCGImage:image.CGImage scale:imageSource.scale orientation:image.imageOrientation];
++    }
++    imageLoadingCompletionBlock([RNSImageLoadingHelper handleRenderingModeForImage:image isTemplate:isTemplate]);
++    return;
++  }
++
+   [imageLoader loadImageWithURLRequest:imageSource.request
+       size:imageSource.size
+       scale:imageSource.scale
+diff --git a/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts b/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts
+index da28c51c6ffd29b996c876742a11cfdf322db969..017ca65f488fe4550fb3c2f40a69dd9fc5c591df 100644
+--- a/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts
+@@ -4,6 +4,7 @@ import { codegenNativeComponent } from 'react-native';
+ import type {
+   CodegenTypes as CT,
+   HostComponent,
++  ImageSource,
+   ViewProps,
+   ColorValue,
+ } from 'react-native';
+@@ -12,6 +13,7 @@ type DirectionType = 'rtl' | 'ltr';
+ 
+ // eslint-disable-next-line @typescript-eslint/ban-types
+ type OnAttachedEvent = Readonly<{}>;
++type OnTitlePressEvent = Readonly<{}>;
+ // eslint-disable-next-line @typescript-eslint/ban-types
+ type OnDetachedEvent = Readonly<{}>;
+ 
+@@ -66,10 +68,17 @@ export interface NativeProps extends ViewProps {
+   largeTitleColor?: ColorValue | undefined;
+   translucent?: boolean | undefined;
+   title?: string | undefined;
++  subtitle?: string | undefined;
+   titleFontFamily?: string | undefined;
+   titleFontSize?: CT.Int32 | undefined;
+   titleFontWeight?: string | undefined;
+   titleColor?: ColorValue | undefined;
++  subtitleColor?: ColorValue | undefined;
++  titleImageSource?: ImageSource | undefined;
++  subtitleImageSource?: ImageSource | undefined;
++  titlePressEnabled?: boolean | undefined;
++  titleTestID?: string | undefined;
++  onTitlePress?: CT.DirectEventHandler<OnTitlePressEvent> | undefined;
+   disableBackButtonMenu?: boolean | undefined;
+   backButtonDisplayMode?: CT.WithDefault<BackButtonDisplayMode, 'default'>;
+   hideBackButton?: boolean | undefined;

@@ -7,6 +7,7 @@ import { initTroubleshootingNotification } from '~/actions/troubleshootingNotifi
 import * as List from '~/containers/List';
 import SafeAreaView from '~/containers/SafeAreaView';
 import I18n from '~/i18n';
+import { isIOS } from '~/lib/methods/helpers';
 import { type SettingsStackParamList } from '~/stacks/types';
 // import CommunityEditionPushQuota from './components/CommunityEditionPushQuota';
 import DeviceNotificationSettings from './components/DeviceNotificationSettings';
@@ -33,7 +34,7 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps) => {
 	}, [navigation]);
 
 	return (
-		<SafeAreaView testID='push-troubleshoot-view'>
+		<SafeAreaView testID='push-troubleshoot-view' style={isIOS ? { paddingTop: 16 } : undefined}>
 			<List.Container testID='push-troubleshoot-view-list'>
 				<DeviceNotificationSettings />
 				{/* <CommunityEditionPushQuota /> */}

@@ -14,12 +14,11 @@ tags:
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-sidebar'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-view-sidebar'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-sidebar'
+      IOS_LABEL: 'Menu'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
@@ -83,8 +82,17 @@ tags:
 - tapOn:
     id: 'status-view-input'
 - inputText: 'status-text-new'
-- tapOn:
-    id: 'status-view'
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - tapOn:
+          id: 'status-view'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - pressKey: enter
 - tapOn:
     id: 'status-view-submit'
 - extendedWaitUntil:

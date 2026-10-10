@@ -3,7 +3,8 @@ import { type NativeStackNavigationOptions } from '@react-navigation/native-stac
 import { Alert, FlatList, Keyboard, PixelRatio } from 'react-native';
 import { connect } from 'react-redux';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
-import { Component } from 'react';
+import { type SearchBarCommands } from 'react-native-screens';
+import { Component, createRef } from 'react';
 
 import { deleteRoom } from '../actions/room';
 import { DisplayMode } from '../lib/constants/constantDisplayMode';
@@ -12,16 +13,17 @@ import { themes } from '../lib/constants/colors';
 import { type TActionSheetOptions, type TActionSheetOptionsItem, withActionSheet } from '../containers/ActionSheet';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import BackgroundContainer from '../containers/BackgroundContainer';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import RoomHeader from '../containers/RoomHeader';
 import SafeAreaView from '../containers/SafeAreaView';
-import SearchHeader from '../containers/SearchHeader';
 import { type IApplicationState, type IBaseScreen, type TSubscriptionModel } from '../definitions';
 import { ERoomType } from '../definitions/ERoomType';
 import { withDimensions } from '../lib/hooks/withDimensions';
 import { withMasterDetail } from '../lib/hooks/useMasterDetail';
 import { BASE_ROW_HEIGHT, BASE_ROW_HEIGHT_CONDENSED } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import I18n from '../i18n';
+import { type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
+import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
+import { nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpers/navigation';
 import database from '../lib/database';
 import { CustomIcon } from '../containers/CustomIcon';
 import RoomItem from '../containers/RoomItem';
@@ -30,7 +32,15 @@ import { withTheme } from '../theme';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
-import { getRoomAvatar, getRoomTitle, hasPermission, debounce, isIOS, compareServerVersion } from '../lib/methods/helpers';
+import {
+	getRoomAvatar,
+	getRoomTitle,
+	hasPermission,
+	debounce,
+	hasNativeHeaderBar,
+	isIOS,
+	compareServerVersion
+} from '../lib/methods/helpers';
 import { getRoomInfo, getTeamListRoom, updateTeamRoom, removeTeamRoom } from '../lib/services/restApi';
 
 const API_FETCH_COUNT = 25;
@@ -95,6 +105,8 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 	private joined: boolean;
 	private teamChannels: TSubscriptionModel[];
 	private team: TSubscriptionModel;
+
+	private searchBarRef = createRef<SearchBarCommands>();
 
 	constructor(props: ITeamChannelsViewProps) {
 		super(props);
@@ -170,10 +182,16 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 		}
 	};
 
-	load = debounce(async () => {
-		const { loadingMore, data, search, isSearching, searchText, end } = this.state;
+	get isFiltering() {
+		const { isSearching, searchText } = this.state;
+		return isSearching && !!searchText;
+	}
 
-		const length = isSearching ? search.length : data.length;
+	load = debounce(async () => {
+		const { loadingMore, data, search, searchText, end } = this.state;
+		const { isFiltering } = this;
+
+		const length = isFiltering ? search.length : data.length;
 		if (loadingMore || end) {
 			return;
 		}
@@ -195,7 +213,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 					end: result.rooms.length < API_FETCH_COUNT
 				} as ITeamChannelsViewState;
 
-				if (isSearching) {
+				if (isFiltering) {
 					newState.search = [...search, ...result.rooms] as IItem[];
 				} else {
 					newState.data = [...data, ...result.rooms] as IItem[];
@@ -220,48 +238,52 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 			return;
 		}
 
-		if (isSearching) {
-			const options: NativeStackNavigationOptions = {
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
-					</HeaderButton.Container>
-				),
-				headerTitle: () => (
-					<SearchHeader onSearchChangeText={this.onSearchChangeText} testID='team-channels-view-search-header' />
-				),
-				headerRight: undefined
-			};
-			return navigation.setOptions(options);
-		}
-
-		const options: NativeStackNavigationOptions = {
-			headerLeft: undefined,
-			headerTitle: () => (
-				<RoomHeader title={getRoomTitle(team)} subtitle={team.topic} type={team.t} onPress={this.goRoomActionsView} teamMain />
-			),
-			headerRight: () => (
-				<HeaderButton.Container>
-					{showCreate ? (
-						<HeaderButton.Item
-							iconName='create'
-							testID='team-channels-view-create'
-							onPress={() =>
-								navigation.navigate('AddChannelTeamView', { teamId: this.teamId, rid: this.team.rid, t: this.team.t as any })
-							}
-						/>
-					) : null}
-					<HeaderButton.Item iconName='search' testID='team-channels-view-search' onPress={this.onSearchPress} />
-				</HeaderButton.Container>
-			)
+		const createAction: IHeaderAction = {
+			label: I18n.t('Add_Channel_to_Team'),
+			icon: 'create',
+			testID: 'team-channels-view-create',
+			onPress: () => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, rid: this.team.rid, t: this.team.t as any })
 		};
+		const titleOptions: NativeStackNavigationOptions = hasNativeHeaderBar
+			? {
+					...translucentHeader,
+					headerTitle: getRoomTitle(team),
+					headerSubtitle: team.topic,
+					onHeaderTitlePress: () => this.goRoomActionsView()
+				}
+			: {
+					headerTitle: () => (
+						<RoomHeader
+							title={getRoomTitle(team)}
+							subtitle={team.topic}
+							type={team.t}
+							onPress={this.goRoomActionsView}
+							teamMain
+						/>
+					)
+				};
 
-		navigation.setOptions(options);
+		navigation.setOptions(
+			searchHeaderOptions({
+				isSearching,
+				searchBarRef: this.searchBarRef,
+				onSearchPress: this.onSearchPress,
+				onChangeText: this.onSearchChangeText,
+				onCancel: this.onCancelSearchPress,
+				testIDPrefix: 'team-channels-view',
+				options: { headerLeft: undefined, ...titleOptions },
+				rightActions: showCreate ? [createAction] : []
+			})
+		);
 	};
 
 	onSearchPress = () => {
 		logEvent(events.TC_SEARCH);
-		this.setState({ isSearching: true }, () => this.setHeader());
+		this.setState({ isSearching: true }, () => {
+			if (!hasNativeHeaderBar) {
+				this.setHeader();
+			}
+		});
 	};
 
 	onSearchChangeText = debounce((searchText: string) => {
@@ -297,7 +319,9 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 				end: false
 			},
 			() => {
-				this.setHeader();
+				if (!hasNativeHeaderBar) {
+					this.setHeader();
+				}
 			}
 		);
 	};
@@ -550,30 +574,32 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 	};
 
 	renderScroll = () => {
-		const { loading, data, search, isSearching, searchText } = this.state;
+		const { loading, data, search } = this.state;
 		const { insets } = this.props;
+		const { isFiltering } = this;
 		if (loading) {
 			return <BackgroundContainer loading />;
 		}
-		if (isSearching && !search.length) {
-			return <BackgroundContainer text={searchText ? I18n.t('No_channels_in_team') : ''} />;
+		if (isFiltering && !search.length) {
+			return <BackgroundContainer text={I18n.t('No_channels_in_team')} />;
 		}
-		if (!isSearching && !data.length) {
+		if (!isFiltering && !data.length) {
 			return <BackgroundContainer text={I18n.t('No_channels_in_team')} />;
 		}
 
 		return (
 			<FlatList
-				data={isSearching ? search : data}
-				extraData={isSearching ? search : data}
+				data={isFiltering ? search : data}
+				extraData={isFiltering ? search : data}
 				keyExtractor={keyExtractor}
 				renderItem={this.renderItem}
 				getItemLayout={this.getItemLayout}
 				removeClippedSubviews={isIOS}
+				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				keyboardShouldPersistTaps='always'
 				onEndReached={() => this.load()}
 				onEndReachedThreshold={0.5}
-				contentContainerStyle={{ paddingBottom: insets.bottom }}
+				contentContainerStyle={{ paddingBottom: hasNativeHeaderBar ? 0 : insets.bottom }}
 				ListFooterComponent={this.renderFooter}
 			/>
 		);

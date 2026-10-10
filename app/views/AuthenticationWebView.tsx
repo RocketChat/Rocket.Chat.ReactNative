@@ -6,7 +6,7 @@ import { type WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
 import parse from 'url-parse';
 
 import ActivityIndicator from '../containers/ActivityIndicator';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import { type ILoginCredentials } from '../definitions';
 import { userAgent } from '../lib/constants/userAgent';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
@@ -167,7 +167,7 @@ const AuthenticationWebView = ({ route }: AuthenticationWebViewProps) => {
 		const staticFallback = isSSOType ? 'SSO' : 'OAuth';
 
 		navigation.setOptions({
-			headerLeft: () => <HeaderButton.CloseModal />,
+			...headerLeftCloseModal(navigation),
 			title: urlTitle || staticFallback
 		});
 	}, [authType, navigation, headerTitle, url]);

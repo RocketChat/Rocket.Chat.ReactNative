@@ -1,0 +1,24 @@
+appId: ${APP_ID}
+name: Assert room title
+tags:
+  - 'util'
+
+---
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'room-view-title-${ROOM}'
+          timeout: 60000
+
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'room-header'
+            text: '.*${ROOM}'
+          timeout: 60000

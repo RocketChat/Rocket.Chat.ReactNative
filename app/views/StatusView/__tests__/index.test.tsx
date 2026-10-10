@@ -1,0 +1,340 @@
+import { type ReactNode } from 'react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { Provider } from 'react-redux';
+
+import { mockedStore } from '~/reducers/mockedStore';
+import { setUser } from '~/actions/login';
+import { addSettings } from '~/actions/settings';
+import { selectServerSuccess } from '~/actions/server';
+import { initStore } from '~/lib/store/auxStore';
+import { type IListPicker } from '~/containers/List/components/ListPicker';
+import StatusView from '..';
+
+const mockNavigationSetOptions = jest.fn();
+const mockNavigationGoBack = jest.fn();
+jest.mock('@react-navigation/native', () => {
+	const actualNav = jest.requireActual('@react-navigation/native');
+	const { useEffect } = require('react');
+	return {
+		...actualNav,
+		useFocusEffect: useEffect,
+		isFocused: () => true,
+		useIsFocused: () => true,
+		useRoute: () => jest.fn(),
+		useNavigation: jest.fn(() => ({
+			navigate: jest.fn(),
+			addListener: () => jest.fn(),
+			setOptions: mockNavigationSetOptions,
+			goBack: mockNavigationGoBack
+		})),
+		createNavigationContainerRef: jest.fn(),
+		navigate: jest.fn(),
+		addListener: jest.fn(() => jest.fn())
+	};
+});
+
+const mockSetUserStatus = jest.fn();
+jest.mock('~/lib/services/restApi', () => ({
+	setUserStatus: (...args: unknown[]) => mockSetUserStatus(...args)
+}));
+
+const mockShowToast = jest.fn();
+jest.mock('~/lib/methods/helpers/showToast', () => ({
+	showToast: (...args: unknown[]) => mockShowToast(...args)
+}));
+
+const mockShowErrorAlertWithEMessage = jest.fn();
+jest.mock('~/lib/methods/helpers/info', () => ({
+	showErrorAlertWithEMessage: (...args: unknown[]) => mockShowErrorAlertWithEMessage(...args)
+}));
+
+const mockShowActionSheet = jest.fn();
+const mockHideActionSheet = jest.fn();
+jest.mock('~/containers/ActionSheet', () => ({
+	useActionSheet: () => ({ showActionSheet: mockShowActionSheet, hideActionSheet: mockHideActionSheet })
+}));
+
+let mockIsIOS26OrLater = true;
+jest.mock('~/lib/methods/helpers/deviceInfo', () =>
+	Object.defineProperties(
+		{ ...jest.requireActual('~/lib/methods/helpers/deviceInfo') },
+		{ isIOS26OrLater: { get: () => mockIsIOS26OrLater, configurable: true } }
+	)
+);
+
+const mockPicker = jest.fn();
+jest.mock('~/containers/List/components/ListPicker', () => {
+	const { View } = require('react-native');
+	return {
+		__esModule: true,
+		default: (props: IListPicker) => {
+			mockPicker(props);
+			return <View testID={props.testID} />;
+		}
+	};
+});
+
+const latestPicker = (): IListPicker => mockPicker.mock.calls[mockPicker.mock.calls.length - 1][0];
+
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+
+const renderStatusView = () => render(<StatusView />, { wrapper: Wrapper });
+
+const waitForSubmitEnabled = () => waitFor(() => expect(screen.getByTestId('status-view-submit')).not.toBeDisabled());
+
+describe('StatusView', () => {
+	beforeAll(() => {
+		initStore(mockedStore);
+	});
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	describe('rendering', () => {
+		it('should render all status options for legacy server', () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+
+			renderStatusView();
+
+			expect(screen.getByTestId('status-view-online')).toBeOnTheScreen();
+			expect(screen.getByTestId('status-view-busy')).toBeOnTheScreen();
+			expect(screen.getByTestId('status-view-away')).toBeOnTheScreen();
+			expect(screen.getByTestId('status-view-offline')).toBeOnTheScreen();
+		});
+
+		it('should hide offline when Accounts_AllowInvisibleStatusOption is false', () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: false }));
+
+			renderStatusView();
+
+			expect(screen.getByTestId('status-view-online')).toBeOnTheScreen();
+			expect(screen.getByTestId('status-view-busy')).toBeOnTheScreen();
+			expect(screen.getByTestId('status-view-away')).toBeOnTheScreen();
+			expect(screen.queryByTestId('status-view-offline')).toBeNull();
+		});
+
+		it('should show ClearAfterPicker when server >= 8.6.0', () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+
+			renderStatusView();
+
+			expect(screen.getByTestId('status-view-clear-after')).toBeOnTheScreen();
+		});
+
+		it('should hide ClearAfterPicker when server < 8.6.0', () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+
+			renderStatusView();
+
+			expect(screen.queryByTestId('status-view-clear-after')).toBeNull();
+		});
+
+		it('should render status text input', () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+
+			renderStatusView();
+
+			expect(screen.getByTestId('status-view-input')).toBeOnTheScreen();
+		});
+	});
+
+	describe('submit button', () => {
+		it('should be disabled when no changes are made', () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+
+			renderStatusView();
+
+			expect(screen.getByTestId('status-view-submit')).toBeDisabled();
+		});
+
+		it('should be enabled when status is changed', async () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+
+			renderStatusView();
+
+			fireEvent.press(screen.getByTestId('status-view-busy'));
+
+			await waitForSubmitEnabled();
+		});
+
+		it('should be enabled when status text is changed', async () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+
+			renderStatusView();
+
+			fireEvent.changeText(screen.getByTestId('status-view-input'), 'New status');
+
+			await waitForSubmitEnabled();
+		});
+	});
+
+	describe('submit action', () => {
+		it('should call setUserStatus with status and statusText', async () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+			mockSetUserStatus.mockResolvedValue(undefined);
+
+			renderStatusView();
+
+			fireEvent.press(screen.getByTestId('status-view-busy'));
+			await waitForSubmitEnabled();
+			fireEvent.press(screen.getByTestId('status-view-submit'));
+
+			expect(mockSetUserStatus).toHaveBeenCalledWith('busy', '', undefined);
+		});
+
+		it('should call setUserStatus on modern server with status change', async () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+			mockSetUserStatus.mockResolvedValue(undefined);
+
+			renderStatusView();
+
+			fireEvent.press(screen.getByTestId('status-view-busy'));
+
+			await waitForSubmitEnabled();
+			fireEvent.press(screen.getByTestId('status-view-submit'));
+
+			expect(mockSetUserStatus).toHaveBeenCalledWith('busy', '', undefined);
+		});
+
+		it('should not submit if nothing has changed', () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+			mockSetUserStatus.mockResolvedValue(undefined);
+
+			renderStatusView();
+
+			fireEvent.press(screen.getByTestId('status-view-submit'));
+
+			expect(mockSetUserStatus).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('error handling', () => {
+		it('should show error alert when setUserStatus fails', async () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+			const error = new Error('Network error');
+			mockSetUserStatus.mockRejectedValue(error);
+
+			renderStatusView();
+
+			fireEvent.press(screen.getByTestId('status-view-busy'));
+			await waitForSubmitEnabled();
+			fireEvent.press(screen.getByTestId('status-view-submit'));
+
+			await waitFor(() => expect(mockShowErrorAlertWithEMessage).toHaveBeenCalledWith(error));
+		});
+	});
+
+	describe('ClearAfterPicker', () => {
+		it('should show initial clear after state when user has no statusExpiresAt', () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+
+			renderStatusView();
+
+			expect(screen.getByTestId('status-view-clear-after')).toBeOnTheScreen();
+		});
+
+		it('should not pass statusExpiresAt on submit when picker was not touched', async () => {
+			mockedStore.dispatch(
+				setUser({
+					id: 'user-id',
+					username: 'user',
+					status: 'away',
+					statusText: '',
+					statusExpiresAt: '2026-06-20T15:00:00.000Z'
+				})
+			);
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+			mockSetUserStatus.mockResolvedValue(undefined);
+
+			renderStatusView();
+
+			fireEvent.press(screen.getByTestId('status-view-online'));
+			await waitForSubmitEnabled();
+			fireEvent.press(screen.getByTestId('status-view-submit'));
+
+			expect(mockSetUserStatus).toHaveBeenCalledWith('online', '', undefined);
+		});
+
+		it('should pass expiresAt on submit when picker is interacted with', async () => {
+			jest.useFakeTimers();
+			jest.setSystemTime(new Date('2026-06-22T12:00:00.000Z'));
+			try {
+				mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+				mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
+				mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+				mockSetUserStatus.mockResolvedValue(undefined);
+
+				renderStatusView();
+
+				act(() => latestPicker().onSelectionChange('30'));
+
+				await act(async () => {});
+				expect(screen.getByTestId('status-view-submit')).not.toBeDisabled();
+				fireEvent.press(screen.getByTestId('status-view-submit'));
+
+				expect(mockSetUserStatus).toHaveBeenCalledWith('online', '', '2026-06-22T12:30:00.000Z');
+			} finally {
+				jest.useRealTimers();
+			}
+		});
+
+		it('should open the date picker sheet when custom is selected', () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+
+			renderStatusView();
+
+			act(() => latestPicker().onSelectionChange('custom'));
+
+			expect(mockShowActionSheet).toHaveBeenCalledTimes(1);
+			expect(latestPicker().selection).toBe('');
+		});
+
+		it('should open the full clear after sheet instead of the picker below iOS 26', () => {
+			mockIsIOS26OrLater = false;
+			try {
+				mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+				mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
+				mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+				mockPicker.mockClear();
+
+				renderStatusView();
+				fireEvent.press(screen.getByTestId('status-view-clear-after'));
+
+				expect(mockPicker).not.toHaveBeenCalled();
+				expect(mockShowActionSheet).toHaveBeenCalledTimes(1);
+			} finally {
+				mockIsIOS26OrLater = true;
+			}
+		});
+	});
+});

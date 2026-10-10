@@ -9,6 +9,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import ServersList from './ServersList';
+import { useRoomsListSubtitle } from '../hooks/useRoomsListSubtitle';
 
 const styles = StyleSheet.create({
 	container: {
@@ -32,13 +33,10 @@ const styles = StyleSheet.create({
 
 // search and searchEnabled need to be props because Header is used on react-navigation, which does not support context
 const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string) => void; searchEnabled: boolean }) => {
-	const connecting = useAppSelector(state => state.meteor.connecting || state.server.loading);
-	const connected = useAppSelector(state => state.meteor.connected);
-	const isLoggingIn = useAppSelector(state => state.login.isFetching);
-	const isFetching = useAppSelector(state => state.rooms.isFetching);
 	const serverName = useAppSelector(state => state.settings.Site_Name as string);
-	const server = useAppSelector(state => state.server.server);
-	const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
+	const supportedVersionsExpired = useAppSelector(state => state.supportedVersions.status === 'expired');
+	const connectionSubtitle = useRoomsListSubtitle();
+	const subtitle = supportedVersionsExpired ? I18n.t('Cannot_connect') : connectionSubtitle;
 	const { colors } = useTheme();
 	const { fontScale } = useWindowDimensions();
 
@@ -50,18 +48,6 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 		// This value is necessary to keep the alignment in MasterDetail.
 		const height = 37 * fontScale;
 		return <SearchHeader onSearchChangeText={search} testID='rooms-list-view-search-input' style={{ height }} />;
-	}
-	let subtitle;
-	if (supportedVersionsStatus === 'expired') {
-		subtitle = 'Cannot connect';
-	} else if (connecting || isLoggingIn) {
-		subtitle = I18n.t('Connecting');
-	} else if (isFetching) {
-		subtitle = I18n.t('Updating');
-	} else if (!connected) {
-		subtitle = I18n.t('Waiting_for_network');
-	} else {
-		subtitle = server?.replace(/(^\w+:|^)\/\//, '');
 	}
 	return (
 		<View style={styles.container}>

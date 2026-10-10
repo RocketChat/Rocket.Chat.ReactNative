@@ -3,20 +3,22 @@ import { FlatList, StyleSheet } from 'react-native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { type SearchBarCommands } from 'react-native-screens';
 
 import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
 import { type IMessageFromServer, type TThreadModel } from '~/definitions';
 import { type ChatsStackParamList } from '~/stacks/types';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';
+import { nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpers/navigation';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
+import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import log from '~/lib/methods/helpers/log';
-import { isIOS, useDebounce } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar, isIOS, useDebounce } from '~/lib/methods/helpers';
 import SafeAreaView from '~/containers/SafeAreaView';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import * as List from '~/containers/List';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { useTheme } from '~/theme';
-import SearchHeader from '~/containers/SearchHeader';
 import Item from './Item';
 import { getDiscussions } from '~/lib/services/restApi';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -49,6 +51,7 @@ const DiscussionsView = () => {
 	const total = useRef(0);
 	const searchText = useRef('');
 	const offset = useRef(0);
+	const searchBarRef = useRef<SearchBarCommands>(null);
 
 	const { colors } = useTheme();
 
@@ -86,7 +89,6 @@ const DiscussionsView = () => {
 	};
 
 	const onSearchChangeText = useDebounce((text: string) => {
-		setIsSearching(true);
 		setSearch([]);
 		searchText.current = text;
 		offset.current = 0;
@@ -104,38 +106,20 @@ const DiscussionsView = () => {
 		setIsSearching(true);
 	};
 
-	const setHeader = () => {
-		let options: Partial<NativeStackNavigationOptions>;
-		if (isSearching) {
-			options = {
-				headerLeft: () => (
-					<HeaderButton.Container style={{ marginLeft: 1 }} left>
-						<HeaderButton.Item iconName='close' onPress={onCancelSearchPress} />
-					</HeaderButton.Container>
-				),
-				headerTitle: () => (
-					<SearchHeader onSearchChangeText={onSearchChangeText} testID='discussion-messages-view-search-header' />
-				),
-				headerRight: () => null
-			};
-			return options;
-		}
-
-		options = {
-			headerLeft: undefined,
-			headerTitle: I18n.t('Discussions'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item iconName='search' onPress={onSearchPress} />
-				</HeaderButton.Container>
-			)
-		};
-
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		}
-		return options;
-	};
+	const setHeader = (): NativeStackNavigationOptions =>
+		searchHeaderOptions({
+			isSearching,
+			searchBarRef,
+			onSearchPress,
+			onChangeText: onSearchChangeText,
+			onCancel: onCancelSearchPress,
+			testIDPrefix: 'discussion-messages-view',
+			options: {
+				headerTitle: I18n.t('Discussions'),
+				...translucentHeader,
+				...(isMasterDetail ? headerLeftCloseModal(navigation) : { headerLeft: undefined })
+			}
+		});
 
 	useEffect(() => {
 		fetchDiscussions();
@@ -181,9 +165,10 @@ const DiscussionsView = () => {
 				renderItem={renderItem}
 				keyExtractor={(item: any) => item._id}
 				style={{ backgroundColor: colors.surfaceRoom }}
-				contentContainerStyle={[styles.contentContainer, { paddingBottom: bottom }]}
+				contentContainerStyle={[styles.contentContainer, { paddingBottom: hasNativeHeaderBar ? 0 : bottom }]}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}
+				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				onEndReached={() => isSearching && offset.current < total.current && load()}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}

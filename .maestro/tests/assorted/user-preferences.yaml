@@ -30,10 +30,22 @@ tags:
     timeout: 60000
 
 # should have convert ascii to emoji switch
-- extendedWaitUntil:
-    visible:
-      id: 'preferences-view-convert-ascii-to-emoji'
-    timeout: 60000
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'preferences-view-convert-ascii-to-emoji'
+          timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: 'Convert ASCII to Emoji.*'
+          timeout: 60000
 
 # Test Notification Preference
 - tapOn:
@@ -46,16 +58,38 @@ tags:
     id: user-notification-preference-view-alert
 
 # check options in in-app-notification alert
-- assertVisible:
-    id: notification-preferences-desktopNotifications-default
-- assertVisible:
-    id: notification-preferences-desktopNotifications-all
-- assertVisible:
-    id: notification-preferences-desktopNotifications-mentions
-- assertVisible:
-    id: notification-preferences-desktopNotifications-nothing
-- tapOn:
-    id: action-sheet-handle
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - assertVisible:
+          id: notification-preferences-desktopNotifications-default
+      - assertVisible:
+          id: notification-preferences-desktopNotifications-all
+      - assertVisible:
+          id: notification-preferences-desktopNotifications-mentions
+      - assertVisible:
+          id: notification-preferences-desktopNotifications-nothing
+      - tapOn:
+          id: action-sheet-handle
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: 'Nothing'
+          timeout: 60000
+      - assertVisible:
+          text: 'Default'
+      - assertVisible:
+          text: 'All messages'
+      - assertVisible:
+          text: 'Mentions'
+      - runFlow:
+          file: '../../helpers/dismiss-menu.yaml'
+          env:
+            MENU_ITEM: 'Nothing'
 # should have "Vibrate for new messages"
 - assertVisible:
     id: user-notification-preference-view-in-app-vibration
@@ -67,16 +101,38 @@ tags:
     id: user-notification-preference-view-push-notification
 
 # check options in push-notification alert
-- assertVisible:
-    id: notification-preferences-pushNotifications-default
-- assertVisible:
-    id: notification-preferences-pushNotifications-all
-- assertVisible:
-    id: notification-preferences-pushNotifications-mentions
-- assertVisible:
-    id: notification-preferences-pushNotifications-nothing
-- tapOn:
-    id: action-sheet-handle
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - assertVisible:
+          id: notification-preferences-pushNotifications-default
+      - assertVisible:
+          id: notification-preferences-pushNotifications-all
+      - assertVisible:
+          id: notification-preferences-pushNotifications-mentions
+      - assertVisible:
+          id: notification-preferences-pushNotifications-nothing
+      - tapOn:
+          id: action-sheet-handle
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: 'Nothing'
+          timeout: 60000
+      - assertVisible:
+          text: 'Default'
+      - assertVisible:
+          text: 'All messages'
+      - assertVisible:
+          text: 'Mentions'
+      - runFlow:
+          file: '../../helpers/dismiss-menu.yaml'
+          env:
+            MENU_ITEM: 'Nothing'
 
 # should have troubleshooting
 - assertVisible:
@@ -89,8 +145,7 @@ tags:
     id: push-troubleshoot-view-push-gateway-connection
 - assertVisible:
     id: push-troubleshoot-view-notification-delay
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # should have alert in Email
 - assertVisible:
@@ -99,14 +154,31 @@ tags:
     id: user-notification-preference-view-email-alert
 
 # check options in email alert
-- assertVisible:
-    id: notification-preferences-emailNotificationMode-mentions
-- assertVisible:
-    id: notification-preferences-emailNotificationMode-nothing
-- tapOn:
-    id: action-sheet-handle
-- tapOn:
-    id: custom-header-back
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - assertVisible:
+          id: notification-preferences-emailNotificationMode-mentions
+      - assertVisible:
+          id: notification-preferences-emailNotificationMode-nothing
+      - tapOn:
+          id: action-sheet-handle
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: 'Disabled'
+          timeout: 60000
+      - assertVisible:
+          text: 'Every mention/DM'
+      - runFlow:
+          file: '../../helpers/dismiss-menu.yaml'
+          env:
+            MENU_ITEM: 'Disabled'
+- runFlow: '../../helpers/go-back.yaml'
 
 # ASCII should not be converted to emoji (Android only)
 - runFlow:
@@ -114,8 +186,7 @@ tags:
     when:
       platform: Android
     commands:
-      - tapOn:
-          id: 'custom-header-back'
+      - runFlow: '../../helpers/go-back.yaml'
       - extendedWaitUntil:
           visible:
             id: 'profile-view'
@@ -162,8 +233,7 @@ tags:
     when:
       platform: Android
     commands:
-      - tapOn:
-          id: 'header-back'
+      - runFlow: '../../helpers/go-back.yaml'
       - runFlow:
           file: './utils/go-to-user-preference.yaml'
       - extendedWaitUntil:
@@ -172,8 +242,7 @@ tags:
           timeout: 60000
       - tapOn:
           id: 'preferences-view-convert-ascii-to-emoji'
-      - tapOn:
-          id: 'custom-header-back'
+      - runFlow: '../../helpers/go-back.yaml'
       - extendedWaitUntil:
           visible:
             id: 'profile-view'

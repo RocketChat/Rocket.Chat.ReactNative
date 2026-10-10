@@ -13,12 +13,13 @@ import { getGroupOrder } from './sidebarGroupOrder';
 
 const CUSTOM_CATEGORIES_LICENSE_MODULE = 'experimental-enterprise-features';
 const NO_CATEGORIES: ISidebarCategory[] = [];
+const NO_ROWS: TSubscriptionModel[] = [];
+const SECTION_BADGE_COLUMNS = ['unread', 'user_mentions', 'group_mentions', 'tunread', 'tunread_user', 'tunread_group'];
 
-export const useSubscriptions = () => {
+export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const server = useAppSelector(state => state.server);
-	const [rows, setRows] = useState<TSubscriptionModel[]>([]);
-	const [loading, setLoading] = useState(true);
+	const [loaded, setLoaded] = useState<{ server: typeof server; rows: TSubscriptionModel[] }>();
 	const roles = useAppSelector(state => getUserSelector(state).roles, shallowEqual);
 	const { sortBy, showUnread, showFavorites, groupByType } = useAppSelector(state => state.sortPreferences, shallowEqual);
 	const hasCustomCategoriesLicense = useAppSelector(state => state.enterpriseModules.includes(CUSTOM_CATEGORIES_LICENSE_MODULE));
@@ -31,13 +32,13 @@ export const useSubscriptions = () => {
 	const groupOrder = useMemo(() => getGroupOrder(categories), [categories]);
 	const isGrouping = showUnread || showFavorites || groupByType;
 	const isOmnichannelAgent = roles?.includes('livechat-agent') ?? false;
+	const hasCollapsedGroup = collapsedGroups.size > 0;
 
 	useEffect(() => {
 		let cancelled = false;
 		let subscription: Subscription | undefined;
 
 		const getSubscriptions = async () => {
-			setLoading(true);
 			const db = database.active;
 			const whereClause = [Q.where('archived', false), Q.where('open', true)] as (Q.WhereDescription | Q.SortBy)[];
 
@@ -47,7 +48,11 @@ export const useSubscriptions = () => {
 				whereClause.push(Q.sortBy('room_updated_at', Q.desc));
 			}
 
-			const observeWithColumns = isGrouping ? ['alert', 'on_hold', 'f', 'category'] : ['on_hold'];
+			const observeWithColumns = [
+				'on_hold',
+				...(isGrouping ? ['alert', 'f', 'category'] : []),
+				...(hasCollapsedGroup ? SECTION_BADGE_COLUMNS : [])
+			];
 
 			const observable = await db
 				.get('subscriptions')
@@ -59,8 +64,7 @@ export const useSubscriptions = () => {
 			}
 
 			subscription = observable.subscribe(data => {
-				setRows(data);
-				setLoading(false);
+				setLoaded({ server, rows: data });
 			});
 		};
 
@@ -70,7 +74,10 @@ export const useSubscriptions = () => {
 			cancelled = true;
 			subscription?.unsubscribe();
 		};
-	}, [isGrouping, sortBy, useRealName, server]);
+	}, [isGrouping, hasCollapsedGroup, sortBy, useRealName, server]);
+
+	const rows = loaded?.rows ?? NO_ROWS;
+	const loading = loaded?.server !== server;
 
 	const subscriptions = useMemo(
 		() =>
@@ -80,9 +87,10 @@ export const useSubscriptions = () => {
 				showUnread,
 				showFavorites,
 				groupByType,
-				isOmnichannelAgent
+				isOmnichannelAgent,
+				collapsedGroups
 			}),
-		[rows, groupOrder, customCategoryNames, showUnread, showFavorites, groupByType, isOmnichannelAgent]
+		[rows, groupOrder, customCategoryNames, showUnread, showFavorites, groupByType, isOmnichannelAgent, collapsedGroups]
 	);
 
 	return {

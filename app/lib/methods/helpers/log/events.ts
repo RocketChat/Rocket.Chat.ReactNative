@@ -59,6 +59,7 @@ export default {
 	RL_GO_E2E_SAVE_PASSWORD: 'rl_go_e2e_save_password',
 	RL_SEARCH: 'rl_search',
 	RL_GO_DIRECTORY: 'rl_go_directory',
+	RL_GO_DISPLAY_PREFS: 'rl_go_display_prefs',
 	RL_GO_QUEUE: 'rl_go_queue',
 	RL_GO_ROOM: 'rl_go_room',
 	RL_FAVORITE_CHANNEL: 'rl_favorite_channel',

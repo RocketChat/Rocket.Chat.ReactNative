@@ -18,13 +18,11 @@ tags:
       visible: 'Enter E2EE password'
     commands:
       - assertVisible: Enter E2EE password
-- extendedWaitUntil:
-    visible:
-      id: rooms-list-view-sidebar
-      enabled: true
-    timeout: 60000
-- tapOn:
-    id: rooms-list-view-sidebar
+- runFlow:
+    file: '../../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-sidebar'
+      IOS_LABEL: 'Menu'
 - extendedWaitUntil:
     visible:
       id: sidebar-view

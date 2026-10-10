@@ -6,9 +6,9 @@ import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { isIOS, showErrorAlert } from '~/lib/methods/helpers';
 import { useTheme } from '~/theme';
-import CustomListSection from './CustomListSection';
+import StatusDot from './StatusDot';
 
-export default function DeviceNotificationSettings(): ReactElement {
+function DeviceNotificationSettings(): ReactElement {
 	const { colors } = useTheme();
 	const { deviceNotificationEnabled } = useAppSelector(state => ({
 		deviceNotificationEnabled: state.troubleshootingNotification.deviceNotificationEnabled
@@ -32,9 +32,9 @@ export default function DeviceNotificationSettings(): ReactElement {
 	};
 
 	return (
-		<CustomListSection
+		<List.Section
 			title='Device_notification_settings'
-			statusColor={!deviceNotificationEnabled ? colors.userPresenceBusy : colors.userPresenceOnline}>
+			headerTrailing={<StatusDot color={!deviceNotificationEnabled ? colors.userPresenceBusy : colors.userPresenceOnline} />}>
 			<List.Separator />
 			<List.Item
 				title={!deviceNotificationEnabled ? 'Allow_push_notifications_for_rocket_chat' : 'No_further_action_is_needed'}
@@ -43,6 +43,8 @@ export default function DeviceNotificationSettings(): ReactElement {
 				disabled={deviceNotificationEnabled}
 			/>
 			<List.Separator />
-		</CustomListSection>
+		</List.Section>
 	);
 }
+
+export default DeviceNotificationSettings;

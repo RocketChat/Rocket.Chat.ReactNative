@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ActivityIndicator from '~/containers/ActivityIndicator';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import * as List from '~/containers/List';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { type ISearch, type TSubscriptionModel } from '~/definitions';
@@ -20,6 +20,7 @@ import { type NewMessageStackParamList } from '~/stacks/types';
 import { search as runSearch } from '~/lib/methods/search';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import Item from './Item';
 import HeaderNewMessage from './HeaderNewMessage';
 import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
@@ -52,7 +53,7 @@ const NewMessageView = () => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='new-message-view-close' />,
+			...headerLeftCloseModal(navigation, 'new-message-view-close'),
 			title: I18n.t('Create_New')
 		});
 	}, [navigation]);
@@ -107,13 +108,15 @@ const NewMessageView = () => {
 		[isMasterDetail, navigation]
 	);
 
+	const listedChats = search.length > 0 ? search : chats;
+
 	return (
 		<SafeAreaView testID='new-message-view'>
 			<FlatList
-				data={search.length > 0 ? search : chats}
+				data={listedChats}
 				keyExtractor={item => item._id || item.rid}
 				ListHeaderComponent={<HeaderNewMessage maxUsers={maxUsers} onChangeText={handleSearch} />}
-				renderItem={({ item }) => {
+				renderItem={({ item, index }) => {
 					const itemSearch = item as ISearch;
 					const itemModel = item as TSubscriptionModel;
 					const userId = itemSearch.search ? itemSearch._id : getUidDirectMessage(itemModel);
@@ -125,10 +128,12 @@ const NewMessageView = () => {
 							username={itemSearch.search ? itemSearch.username : itemModel.name}
 							onPress={() => goRoom(itemModel)}
 							testID={`new-message-view-item-${item.name}`}
+							isFirst={index === 0}
+							isLast={index === listedChats.length - 1}
 						/>
 					);
 				}}
-				ItemSeparatorComponent={List.Separator}
+				ItemSeparatorComponent={RowSeparator}
 				ListFooterComponent={searching ? () => <ActivityIndicator /> : List.Separator}
 				style={{ backgroundColor: colors.surfaceTint }}
 				contentContainerStyle={{ paddingBottom: bottom }}

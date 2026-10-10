@@ -1,6 +1,6 @@
-import { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
+import { useLayoutEffect, useReducer, useRef, useState } from 'react';
 import { AccessibilityInfo, ScrollView, View } from 'react-native';
-import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type RouteProp, useNavigation, usePreventRemove, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -120,28 +120,21 @@ const ChangeAvatarView = () => {
 		});
 	}, [titleHeader, navigation]);
 
-	useEffect(() => {
-		if (!isDirty) {
+	usePreventRemove(isDirty, ({ data }) => {
+		if (hasSaved.current) {
+			navigation.dispatch(data.action);
 			return;
 		}
 
-		return navigation.addListener('beforeRemove', e => {
-			if (hasSaved.current) {
-				return;
+		showConfirmationAlert({
+			title: I18n.t('Discard_changes'),
+			message: I18n.t('Discard_changes_description'),
+			confirmationText: I18n.t('Discard'),
+			onPress: () => {
+				navigation.dispatch(data.action);
 			}
-
-			e.preventDefault();
-
-			showConfirmationAlert({
-				title: I18n.t('Discard_changes'),
-				message: I18n.t('Discard_changes_description'),
-				confirmationText: I18n.t('Discard'),
-				onPress: () => {
-					navigation.dispatch(e.data.action);
-				}
-			});
 		});
-	}, [navigation, isDirty]);
+	});
 
 	const dispatchAvatar = (action: IReducerAction) => {
 		setIsDirty(true);

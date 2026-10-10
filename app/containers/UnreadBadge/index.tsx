@@ -1,30 +1,10 @@
 import { memo } from 'react';
-import { type StyleProp, StyleSheet, Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
+import { type StyleProp, type ViewStyle } from 'react-native';
 
-import sharedStyles from '~/views/Styles';
+import { formatUnreadCount } from '~/lib/methods/helpers/formatUnreadCount';
 import { getUnreadStyle } from './getUnreadStyle';
 import { useTheme } from '~/theme';
-
-const styles = StyleSheet.create({
-	unreadNumberContainerNormal: {
-		paddingVertical: 3,
-		paddingHorizontal: 5,
-		alignItems: 'center',
-		justifyContent: 'center',
-		marginLeft: 10
-	},
-	unreadNumberContainerSmall: {
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	unreadText: {
-		fontSize: 13,
-		...sharedStyles.textSemibold
-	},
-	textSmall: {
-		fontSize: 10
-	}
-});
+import CountBadge from './CountBadge';
 
 export interface IUnreadBadge {
 	unread?: number;
@@ -39,7 +19,7 @@ export interface IUnreadBadge {
 	hideMentionStatus?: boolean;
 }
 
-function getTestId(userMentions: number | undefined, groupMentions: number | undefined, unread: number | undefined) {
+function getTestId(userMentions: number | undefined, groupMentions: number | undefined, unread: string) {
 	if (userMentions) {
 		return `mention-badge-${unread}`;
 	}
@@ -66,7 +46,6 @@ const UnreadBadge = memo(
 		hideUnreadStatus
 	}: IUnreadBadge) => {
 		const { theme } = useTheme();
-		const { fontScale } = useWindowDimensions();
 
 		if ((!unread || unread <= 0) && !tunread?.length) {
 			return null;
@@ -94,34 +73,17 @@ const UnreadBadge = memo(
 		if (!backgroundColor) {
 			return null;
 		}
-		let text: any = unread || tunread?.length;
-		if (small && text >= 100) {
-			text = '+99';
-		}
-		if (!small && text >= 1000) {
-			text = '+999';
-		}
-		text = text.toString();
-
-		let minWidth = 21;
-		if (small) {
-			minWidth = 11 + text.length * 5;
-		}
-		const borderRadius = 10.5 * fontScale;
-		const testId = getTestId(userMentions, groupMentions, text);
+		const text = formatUnreadCount(unread || tunread?.length || 0, small ? 99 : 999);
 
 		return (
-			<View
-				style={[
-					small ? styles.unreadNumberContainerSmall : styles.unreadNumberContainerNormal,
-					{ backgroundColor, minWidth: minWidth * fontScale, borderRadius },
-					style
-				]}
-				testID={testId}>
-				<Text style={[styles.unreadText, small && styles.textSmall, { color }]} numberOfLines={1}>
-					{text}
-				</Text>
-			</View>
+			<CountBadge
+				text={text}
+				backgroundColor={backgroundColor}
+				color={color}
+				small={small}
+				style={style}
+				testID={getTestId(userMentions, groupMentions, text)}
+			/>
 		);
 	}
 );

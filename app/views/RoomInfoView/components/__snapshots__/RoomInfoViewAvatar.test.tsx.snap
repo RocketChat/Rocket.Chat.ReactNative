@@ -17,7 +17,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 120,
           "width": 120,
         },
@@ -29,7 +29,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     testID="avatar"
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -59,7 +59,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 120,
           "width": 120,
         }
@@ -90,7 +90,7 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 120,
           "width": 120,
         },
@@ -102,7 +102,7 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
     testID="avatar"
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -132,7 +132,7 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 120,
           "width": 120,
         }
