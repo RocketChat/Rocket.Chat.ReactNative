@@ -175,12 +175,6 @@ describe('RoomHeaderActions', () => {
 	});
 
 	describe('routing', () => {
-		it('renders nothing without a rid', () => {
-			const { toJSON } = renderActions(<RoomHeaderActions roomStore={createRoomStore({ t: 'c' })} />);
-
-			expect(toJSON()).toBeNull();
-		});
-
 		it.each([
 			['an invited room', { t: 'c' }, 'invited'],
 			['a queued omnichannel room', { t: 'l', status: 'queued' }, 'subscribed'],

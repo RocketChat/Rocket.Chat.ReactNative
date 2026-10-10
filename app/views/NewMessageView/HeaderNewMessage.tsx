@@ -15,7 +15,6 @@ import { type NewMessageStackParamList } from '~/stacks/types';
 import { compareServerVersion } from '~/lib/methods/helpers';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { usePermissions } from '~/lib/hooks/usePermissions';
-import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import { useIsCustomCategoriesAvailable } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import ButtonCreate from './ButtonCreate';
 import sharedStyles from '~/views/Styles';
@@ -52,7 +51,6 @@ const HeaderNewMessage = ({ maxUsers, onChangeText, categoryId, categoryName }: 
 	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
-	const listBackgroundColor = useListBackgroundColor(colors.surfaceTint);
 	const isCustomCategoriesAvailable = useIsCustomCategoriesAvailable();
 
 	const serverVersion = useAppSelector(state => state.server.version as string);
@@ -138,7 +136,7 @@ const HeaderNewMessage = ({ maxUsers, onChangeText, categoryId, categoryName }: 
 	].filter((button): button is IButtonConfig => Boolean(button.visible));
 
 	return (
-		<View style={[styles.container, { backgroundColor: listBackgroundColor }]}>
+		<View style={[styles.container, { backgroundColor: colors.surfaceTint }]}>
 			{categoryName ? (
 				<Text style={[styles.categoryDescription, { color: colors.fontSecondaryInfo }]}>
 					{I18n.t('Create_New_Room_Inside_Category', { name: categoryName })}

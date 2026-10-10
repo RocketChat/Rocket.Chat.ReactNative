@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 
 import * as List from '~/containers/List';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -6,32 +6,10 @@ import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useTheme } from '~/theme';
 import { sidebarNavigate } from '../methods/sidebarNavigate';
 
-export const useIsAdmin = () => {
-	const [
-		viewStatisticsPermission,
-		viewRoomAdministrationPermission,
-		viewUserAdministrationPermission,
-		viewPrivilegedSettingPermission
-	] = usePermissions(['view-statistics', 'view-room-administration', 'view-user-administration', 'view-privileged-setting']);
-
-	const isAdmin = useMemo(
-		() =>
-			[
-				viewStatisticsPermission,
-				viewRoomAdministrationPermission,
-				viewUserAdministrationPermission,
-				viewPrivilegedSettingPermission
-			].some(permission => permission),
-		[
-			viewStatisticsPermission,
-			viewRoomAdministrationPermission,
-			viewUserAdministrationPermission,
-			viewPrivilegedSettingPermission
-		]
+export const useIsAdmin = () =>
+	usePermissions(['view-statistics', 'view-room-administration', 'view-user-administration', 'view-privileged-setting']).some(
+		Boolean
 	);
-
-	return isAdmin;
-};
 
 export const useAdminRoute = () => (useMasterDetail() ? 'AdminPanelView' : 'AdminPanelStackNavigator');
 

@@ -2,15 +2,13 @@ import { View } from 'react-native';
 import { type ReactElement } from 'react';
 
 import NativeListRow from '~/containers/NativeListRow';
-import { CustomIcon } from '~/containers/CustomIcon';
+import * as List from '~/containers/List';
 import Disclosure from '~/containers/NativeListRow/components/Disclosure';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import i18n from '~/i18n';
-import { useTheme } from '~/theme';
 import { type IActionsSection, useMemberActions } from './useMemberActions';
 
 export default function ActionsSection(props: IActionsSection): ReactElement | null {
-	const { colors } = useTheme();
 	const actions = useMemberActions(props);
 
 	if (!actions.length) {
@@ -31,7 +29,7 @@ export default function ActionsSection(props: IActionsSection): ReactElement | n
 						disabledReason={action.disabledReason}
 						isFirst={index === 0}
 						isLast={index === actions.length - 1}
-						leading={<CustomIcon name={action.icon} size={24} color={colors.fontDefault} />}
+						leading={<List.Icon name={action.icon} />}
 						trailing={<Disclosure />}
 					/>
 				</View>

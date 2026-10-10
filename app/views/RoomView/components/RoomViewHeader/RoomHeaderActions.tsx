@@ -36,16 +36,16 @@ const RoomActions = ({ rid, roomStore }: { rid: string; roomStore: RoomStore }) 
 	return <HeaderRightActions actions={actions} />;
 };
 
-export const RoomHeaderActions = ({ rid, tmid, roomStore }: { rid?: string; tmid?: string; roomStore: RoomStore }) => {
-	const mode = useRoomHeaderMode(rid, tmid, roomStore);
+export const RoomHeaderActions = ({ rid, tmid, roomStore }: { rid: string; tmid?: string; roomStore: RoomStore }) => {
+	const mode = useRoomHeaderMode(tmid, roomStore);
 
-	if (rid && mode === 'omnichannel') {
+	if (mode === 'omnichannel') {
 		return <OmnichannelActions rid={rid} roomStore={roomStore} />;
 	}
 	if (tmid && mode === 'thread') {
 		return <ThreadActions tmid={tmid} />;
 	}
-	if (rid && mode === 'room') {
+	if (mode === 'room') {
 		return <RoomActions rid={rid} roomStore={roomStore} />;
 	}
 	return <HeaderRightActions actions={EMPTY_ACTIONS} />;

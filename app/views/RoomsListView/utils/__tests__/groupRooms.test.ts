@@ -127,7 +127,7 @@ describe('groupRooms', () => {
 		]);
 	});
 
-	it('marks a collapsed header with the badge totals of its rooms, skipping rooms that hide unread status', () => {
+	it('gives a collapsed header the badge totals of its rooms, skipping rooms that hide unread status', () => {
 		const chats = [
 			room({ rid: 'general', category: 'work', unread: 3, userMentions: 1 }),
 			room({ rid: 'random', category: 'work', unread: 4, groupMentions: 2 }),
@@ -138,7 +138,6 @@ describe('groupRooms', () => {
 		const [header] = buildRoomList(chats, { ...options, collapsedGroups: new Set(['work']) });
 
 		expect(header).toMatchObject({
-			collapsed: true,
 			unread: 8,
 			userMentions: 1,
 			groupMentions: 2,
@@ -168,7 +167,7 @@ describe('groupRooms', () => {
 		const roomList = buildRoomList(chats, { ...options, categoryUnreadOptions, collapsedGroups: new Set(['work']) });
 
 		expect(layout(roomList)).toEqual(['# Work', 'unread']);
-		expect(roomList[0]).toMatchObject({ collapsed: true, unread: 0, userMentions: 0, groupMentions: 1 });
+		expect(roomList[0]).toMatchObject({ unread: 0, userMentions: 0, groupMentions: 1 });
 	});
 
 	it('treats a room with only unread threads as unread', () => {
@@ -187,7 +186,7 @@ describe('groupRooms', () => {
 
 		const [header] = buildRoomList(chats, { ...options, collapsedGroups: new Set(['work']) });
 
-		expect(header).toMatchObject({ collapsed: true, unread: 1 });
+		expect(header).toMatchObject({ unread: 1 });
 	});
 	it('applies the unread toggles of a system category, as web stores them', () => {
 		const chats = [room({ rid: 'read', f: true }), room({ rid: 'unread', f: true, unread: 1 })];

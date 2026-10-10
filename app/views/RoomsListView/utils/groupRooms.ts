@@ -51,16 +51,14 @@ type SectionHeaderOptions = {
 	badgeSourceRooms: TSubscriptionModel[];
 	header: string;
 	title: string | undefined;
-	collapsed: boolean;
 };
 
-const sectionHeader = ({ rooms, badgeSourceRooms, header, title, collapsed }: SectionHeaderOptions) => {
+const sectionHeader = ({ rooms, badgeSourceRooms, header, title }: SectionHeaderOptions) => {
 	const badgedRooms = badgeSourceRooms.filter(room => !room.hideUnreadStatus);
 	return {
 		rid: header,
 		separator: true,
 		name: title,
-		collapsed,
 		empty: !rooms.length,
 		unread: sumOf(badgedRooms, room => room.unread || room.tunread?.length || (room.alert ? 1 : 0)),
 		userMentions: sumOf(badgedRooms, room => room.userMentions),
@@ -94,11 +92,11 @@ const roomsGroup = (
 	}
 	const collapsed = collapsedGroups.has(header);
 	if (!collapsed) {
-		return [sectionHeader({ rooms, badgeSourceRooms: rooms, header, title, collapsed }), ...orderedRooms];
+		return [sectionHeader({ rooms, badgeSourceRooms: rooms, header, title }), ...orderedRooms];
 	}
 	const visibleRooms = showUnreads ? unreadRooms : [];
 	const hiddenRooms = showUnreads ? readRooms : orderedRooms;
-	return [sectionHeader({ rooms, badgeSourceRooms: hiddenRooms, header, title, collapsed }), ...visibleRooms];
+	return [sectionHeader({ rooms, badgeSourceRooms: hiddenRooms, header, title }), ...visibleRooms];
 };
 
 const getRoomGroup = (subscription: TSubscriptionModel, groups: Map<string, TSubscriptionModel[]>) => {

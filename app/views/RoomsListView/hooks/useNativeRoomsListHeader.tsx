@@ -6,18 +6,19 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { isTablet } from '~/lib/methods/helpers';
 import { headerLeftActions, headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import { stackedSearchBarOptions, translucentHeader } from '~/lib/methods/helpers/navigation';
+import { useTheme } from '~/theme';
 import ServersList from '../components/ServersList';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
 import { useNewMessage } from './useNewMessage';
-import { getRoomsListRightActions, useRoomsListHeaderState } from './useRoomsListHeaderState';
+import { useRoomsListHeaderState } from './useRoomsListHeaderState';
 import { useRoomsListSubtitle } from './useRoomsListSubtitle';
 
 const openServersList = () => showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false });
 
 export const useNativeRoomsListHeader = () => {
 	const { searchEnabled, search, startSearch, stopSearch, resetSearch, searchBarRef } = useContext(RoomsSearchContext);
-	const { navigation, colors, disabled, badgeColor, showTroubleshoot, navigateToScreen, onDrawerPress } =
-		useRoomsListHeaderState();
+	const { navigation, disabled, badgeColor, troubleshootActions, browseActions, onDrawerPress } = useRoomsListHeaderState();
+	const { colors } = useTheme();
 	const serverName = useAppSelector(state => state.settings.Site_Name as string | undefined);
 	const subtitle = useRoomsListSubtitle();
 	const { canCreateRoom, goToNewMessage } = useNewMessage();
@@ -40,12 +41,6 @@ export const useNativeRoomsListHeader = () => {
 			disabled,
 			onPress: goToNewMessage
 		};
-		const { troubleshootActions, browseActions } = getRoomsListRightActions({
-			showTroubleshoot,
-			disabled,
-			dangerColor: colors.fontDanger,
-			navigateToScreen
-		});
 		const cancelSearchAction: IHeaderAction = { label: i18n.t('Cancel'), onPress: stopSearch };
 
 		navigation.setOptions({
@@ -74,11 +69,11 @@ export const useNativeRoomsListHeader = () => {
 		});
 	}, [
 		navigation,
-		colors,
+		colors.buttonBackgroundPrimaryDefault,
 		disabled,
 		badgeColor,
-		showTroubleshoot,
-		navigateToScreen,
+		troubleshootActions,
+		browseActions,
 		onDrawerPress,
 		canCreateRoom,
 		goToNewMessage,
