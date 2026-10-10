@@ -25,10 +25,9 @@ describe('closeUnclosedCodeBlock', () => {
 
 	it('does not append when the backtick run is longer than a fence', () => {
 		expect(closeUnclosedCodeBlock('````\ntest')).toBe('````\ntest');
-		expect(closeUnclosedCodeBlock('`````\ntest')).toBe('`````\ntest');
 	});
 
-	it('still closes an open fence when a longer backtick run appears elsewhere', () => {
-		expect(closeUnclosedCodeBlock('```\n````')).toBe('```\n````\n```');
+	it('treats a longer backtick run as the closing fence of an open block', () => {
+		expect(closeUnclosedCodeBlock('```\ntest\n````')).toBe('```\ntest\n````');
 	});
 });

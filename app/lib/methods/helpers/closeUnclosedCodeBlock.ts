@@ -1,4 +1,9 @@
 export const closeUnclosedCodeBlock = (text: string): string => {
-	const fences = (text.match(/`+/g) || []).filter(run => run.length === 3).length;
-	return fences % 2 ? `${text}\n\`\`\`` : text;
+	let isOpen = false;
+	for (const run of text.match(/`+/g) || []) {
+		if (isOpen ? run.length >= 3 : run.length === 3) {
+			isOpen = !isOpen;
+		}
+	}
+	return isOpen ? `${text}\n\`\`\`` : text;
 };
