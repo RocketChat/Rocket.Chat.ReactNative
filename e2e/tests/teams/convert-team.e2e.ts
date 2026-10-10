@@ -62,7 +62,7 @@ const convertTeamToChannel = async (fixtures: Fixtures, team: string, channelToD
 	await expect(screen.getByTestId(`rooms-list-view-item-${channelToDelete}`)).toBeHidden({ timeout: LONG_TIMEOUT });
 };
 
-test('converts channels and teams', { tags: ['test-4'] }, async fixtures => {
+test('converts channels and teams', { tags: ['test-6'] }, async fixtures => {
 	const user = await createUser();
 	const toBeConverted = `to-be-converted-${random()}`;
 	const toBeMoved = `to-be-moved-${random()}`;

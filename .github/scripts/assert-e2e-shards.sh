@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SHARD_COUNT=14
+SHARD_COUNT=10
 
 listing="$(pnpm exec e2e list --reporter json)"
 

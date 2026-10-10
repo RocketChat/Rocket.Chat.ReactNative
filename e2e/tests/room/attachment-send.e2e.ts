@@ -22,7 +22,7 @@ const hasImageMessageFrom = async (credentials: Credentials, roomId: string) => 
 	return (messages as HistoryMessage[]).some(message => message.u?.username === credentials.username && isImageMessage(message));
 };
 
-test('sends an image picked from the library', { tags: ['test-9'] }, async fixtures => {
+test('sends an image picked from the library', { tags: ['test-3'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const room = await createRandomRoom(user);

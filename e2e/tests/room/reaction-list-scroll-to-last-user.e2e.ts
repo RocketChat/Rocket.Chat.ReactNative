@@ -9,7 +9,7 @@ afterEach(deleteCreatedUsers);
 
 const REACTOR_COUNT = 15;
 
-test('scrolls the reaction list to the last user', { tags: ['test-6'], timeout: 300_000 }, async fixtures => {
+test('scrolls the reaction list to the last user', { tags: ['test-4'], timeout: 300_000 }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const room = await createRandomRoom(user);

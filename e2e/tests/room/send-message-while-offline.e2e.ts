@@ -12,7 +12,7 @@ afterEach(deleteCreatedUsers);
 
 test(
 	'opens a stored room offline and marks an unsent message',
-	{ tags: ['test-3'], platforms: ['android'], timeout: 600_000 },
+	{ tags: ['test-4'], platforms: ['android'], timeout: 600_000 },
 	async fixtures => {
 		const { screen, device, app } = fixtures;
 		const user = await createUser();

@@ -27,7 +27,7 @@ const forwardMessageTo = async (fixtures: Fixtures, username: string) => {
 	await tapWhenVisible(fixtures, 'forward-message-view-send');
 };
 
-test('forwards a message to a direct message', { tags: ['test-9'], timeout: 300_000 }, async fixtures => {
+test('forwards a message to a direct message', { tags: ['test-2'], timeout: 300_000 }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const otherUser = await createUser();

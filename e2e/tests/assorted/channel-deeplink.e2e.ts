@@ -13,7 +13,7 @@ const coldStartRoomLink = async (fixtures: Fixtures, path: string, expectedName:
 	await expect(fixtures.screen.getByTestId(`room-view-title-${expectedName}`)).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
-test('opens groups and channels from deep links', { tags: ['test-12'] }, async fixtures => {
+test('opens groups and channels from deep links', { tags: ['test-8'] }, async fixtures => {
 	const user = await createUser();
 	const group = await createRandomRoom(user, 'p');
 	const channel = await createRandomRoom(user, 'c');

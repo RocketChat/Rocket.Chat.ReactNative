@@ -46,7 +46,7 @@ const expectRoomCreated = async (fixtures: Fixtures, name: string) => {
 	await expectVisible(fixtures, `rooms-list-view-item-${name}`);
 };
 
-test('creates rooms', { tags: ['test-10'] }, async fixtures => {
+test('creates rooms', { tags: ['test-7'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	await loginWithDeepLink(fixtures, user);

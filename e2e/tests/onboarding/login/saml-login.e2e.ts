@@ -34,7 +34,7 @@ const fillSamlField = async (fixtures: Fixtures, label: string, text: string) =>
 	await fillWhenUncovered(field, text);
 };
 
-test('logs in with SAML', { tags: ['test-2'] }, async fixtures => {
+test('logs in with SAML', { tags: ['test-4'] }, async fixtures => {
 	const { device, screen } = fixtures;
 	const isIOS = fixtures.platform === 'ios';
 	await launchApp(fixtures);

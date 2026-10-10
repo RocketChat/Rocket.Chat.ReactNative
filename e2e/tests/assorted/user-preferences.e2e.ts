@@ -30,7 +30,7 @@ const openAsciiEmojiRoomFromProfile = async (fixtures: Fixtures, lastMessage: st
 	await expect(screen.getByText(messageText)).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
-test('shows notification preferences', { tags: ['test-8'] }, async fixtures => {
+test('shows notification preferences', { tags: ['test-4'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 

@@ -3,7 +3,7 @@ import { expect } from 'e2e';
 
 import { launchApp, navigateToLogin, submitLoginForm } from '~e2e/support/flows';
 
-test('rejects invalid credentials', { tags: ['test-2'] }, async fixtures => {
+test('rejects invalid credentials', { tags: ['test-6'] }, async fixtures => {
 	await launchApp(fixtures);
 	await navigateToLogin(fixtures);
 	await submitLoginForm(fixtures, { username: 'someusername', password: 'NotMyActualPassword' });

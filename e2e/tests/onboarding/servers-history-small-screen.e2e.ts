@@ -10,7 +10,7 @@ afterEach(deleteCreatedUsers);
 
 test(
 	'fully renders the servers history sheet on a small screen',
-	{ tags: ['test-14'], platforms: ['ios'], timeout: 300_000 },
+	{ tags: ['test-10'], platforms: ['ios'], timeout: 300_000 },
 	async fixtures => {
 		const { screen } = fixtures;
 		const user = await createUser();

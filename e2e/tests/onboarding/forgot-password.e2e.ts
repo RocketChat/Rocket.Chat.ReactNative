@@ -6,7 +6,7 @@ import { launchApp, navigateToLogin, LONG_TIMEOUT, fillWhenUncovered } from '~e2
 
 afterEach(deleteCreatedUsers);
 
-test('requests a password reset email', { tags: ['test-1'] }, async fixtures => {
+test('requests a password reset email', { tags: ['test-2'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 

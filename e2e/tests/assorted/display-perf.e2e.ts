@@ -36,7 +36,7 @@ const switchRow = async ({ screen }: Fixtures, testId: string, title: string, en
 	await expect(wanted).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
-test('changes the rooms list display preferences', { tags: ['test-8'] }, async fixtures => {
+test('changes the rooms list display preferences', { tags: ['test-2'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const lastMessages = screen.getByTestId('room-item-last-message-container', { visible: true });

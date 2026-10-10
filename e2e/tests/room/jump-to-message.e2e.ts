@@ -109,7 +109,7 @@ const tapCenterUntilVisible = async ({ screen }: Fixtures, target: Locator, expe
 const scrollUntilLoaded = ({ screen }: Fixtures, target: Locator, direction: 'up' | 'down', timeout = LONG_TIMEOUT) =>
 	screen.scrollUntilVisible(target, { direction, timeout });
 
-test('jumps to messages', { tags: ['test-5'], timeout: 900_000 }, async fixtures => {
+test('jumps to messages', { tags: ['test-3'], timeout: 900_000 }, async fixtures => {
 	const { screen } = fixtures;
 	await loginWithDeepLink(fixtures, adminCredentials());
 

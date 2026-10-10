@@ -32,7 +32,7 @@ const saveStatus = async (fixtures: Fixtures, status: 'online' | 'offline') => {
 
 afterEach(deleteCreatedUsers);
 
-test('shows alerts as toasts or dialogs', { tags: ['test-13'] }, async fixtures => {
+test('shows alerts as toasts or dialogs', { tags: ['test-5'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	await loginWithDeepLink(fixtures, user);

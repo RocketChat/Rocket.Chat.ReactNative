@@ -6,7 +6,7 @@ import { loginWithDeepLink, navigateToRoom, LONG_TIMEOUT, expectVisible, scrollA
 
 afterEach(deleteCreatedUsers);
 
-test('marks a message as unread', { tags: ['test-11'] }, async fixtures => {
+test('marks a message as unread', { tags: ['test-5'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const otherUser = await createUser();

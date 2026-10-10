@@ -197,7 +197,7 @@ const saveQuoteDraft = async (fixtures: Fixtures) => {
 	await expectVisible(fixtures, `reply-${author.name}-${original}`);
 };
 
-test('sends, reacts to and manages messages in a room', { tags: ['test-12'], timeout: 900_000 }, async fixtures => {
+test('sends, reacts to and manages messages in a room', { tags: ['test-2'], timeout: 900_000 }, async fixtures => {
 	const user = await createUser();
 	const room = await createRandomRoom(user);
 

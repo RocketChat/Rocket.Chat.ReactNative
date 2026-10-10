@@ -5,7 +5,7 @@ import { launchApp, loginWithForm, navigateToLogin } from '~e2e/support/flows';
 
 afterEach(deleteCreatedUsers);
 
-test('logs in with username and password', { tags: ['test-2'] }, async fixtures => {
+test('logs in with username and password', { tags: ['test-8'] }, async fixtures => {
 	const user = await createUser();
 	await launchApp(fixtures);
 	await navigateToLogin(fixtures);

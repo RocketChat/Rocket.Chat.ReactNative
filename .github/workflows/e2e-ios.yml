@@ -44,12 +44,12 @@ jobs:
           defaults write com.apple.iphonesimulator ShowChrome -bool false
           defaults write com.apple.iphonesimulator DeviceFramebufferOnly -bool true
 
-      - name: Start Simulator Boot (async; resolved by device family, smallest iPhone for shard 14)
+      - name: Start Simulator Boot (async; resolved by device family, smallest iPhone for shard 10)
         env:
           SHARD: ${{ inputs.shard }}
         run: |
           DEVICES_JSON=$(xcrun simctl list devices available --json)
-          if [[ "$SHARD" == "14" ]]; then
+          if [[ "$SHARD" == "10" ]]; then
             SIM_NAME=$(jq -r '[.devices | to_entries[] | .value[] | select(.name | test("^iPhone SE"))] | first | .name' <<< "$DEVICES_JSON")
             if [[ -z "$SIM_NAME" || "$SIM_NAME" == "null" ]]; then
               SIM_NAME=$(jq -r '[.devices | to_entries[] | .value[] | select(.name | test("^iPhone [0-9]+( mini)?$"))] | sort_by(.name | capture("(?<n>[0-9]+)").n | tonumber) | first | .name' <<< "$DEVICES_JSON")
@@ -76,6 +76,8 @@ jobs:
 
       - name: Setup Node
         uses: ./.github/actions/setup-node
+        with:
+          node-version: '22'
 
       - name: Download App
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0

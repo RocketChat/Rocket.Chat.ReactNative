@@ -15,7 +15,7 @@ import { replyInThread, sendThreadReply, typeThreadReply } from '~e2e/support/th
 
 afterEach(deleteCreatedUsers);
 
-test('quotes a message inside a thread', { tags: ['test-13'] }, async fixtures => {
+test('quotes a message inside a thread', { tags: ['test-8'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const room = await createRandomRoom(user);

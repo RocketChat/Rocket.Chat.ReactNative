@@ -85,7 +85,7 @@ const createDeepLinkTargets = async () => {
 
 const shareLink = (text: string) => `rocketchat://shareextension?text=${text}`;
 
-test('handles auth deep links', { tags: ['test-6'] }, async fixtures => {
+test('handles auth deep links', { tags: ['test-3'] }, async fixtures => {
 	const { screen } = fixtures;
 	const { room, authLink } = await createDeepLinkTargets();
 	const roomItem = screen.getByTestId(`rooms-list-view-item-${room.name}`);
@@ -102,7 +102,7 @@ test('handles auth deep links', { tags: ['test-6'] }, async fixtures => {
 	await expect(roomItem).toBeVisible({ timeout: LONG_TIMEOUT });
 });
 
-test('handles room, thread and share deep links with two workspaces', { tags: ['test-6'], timeout: 900_000 }, async fixtures => {
+test('handles room, thread and share deep links with two workspaces', { tags: ['test-7'], timeout: 900_000 }, async fixtures => {
 	const { screen } = fixtures;
 	const { room, roomPath, threadMessage, thread, authLink, roomLink } = await createDeepLinkTargets();
 	const roomItem = screen.getByTestId(`rooms-list-view-item-${room.name}`);
@@ -159,7 +159,7 @@ test('handles room, thread and share deep links with two workspaces', { tags: ['
 	await shareTextTo(fixtures, room.name, secondShare);
 });
 
-test('handles share and login prompt deep links without a workspace', { tags: ['test-6'] }, async fixtures => {
+test('handles share and login prompt deep links without a workspace', { tags: ['test-7'] }, async fixtures => {
 	const { screen } = fixtures;
 	const { room, authLink } = await createDeepLinkTargets();
 

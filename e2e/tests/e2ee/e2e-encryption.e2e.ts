@@ -21,7 +21,7 @@ import { random } from '~e2e/support/random';
 
 afterEach(deleteCreatedUsers);
 
-test('encrypts, decrypts, quotes, resets keys and edits messages', { tags: ['test-3'], timeout: 1_200_000 }, async fixtures => {
+test('encrypts, decrypts, quotes, resets keys and edits messages', { tags: ['test-1'], timeout: 1_200_000 }, async fixtures => {
 	const { screen } = fixtures;
 	const room = `encrypted${random()}`;
 	const userA = await createUser();

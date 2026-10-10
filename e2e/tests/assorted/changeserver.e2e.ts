@@ -16,7 +16,7 @@ import {
 
 afterEach(deleteCreatedUsers);
 
-test('switches between servers and keeps the last one on relaunch', { tags: ['test-5'] }, async fixtures => {
+test('switches between servers and keeps the last one on relaunch', { tags: ['test-6'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const room = await createRandomRoom(user);

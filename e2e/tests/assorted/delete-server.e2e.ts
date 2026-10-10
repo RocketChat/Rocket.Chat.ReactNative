@@ -9,7 +9,7 @@ import { addServerFromServersList, checkServer, deleteServer, openServersList } 
 
 afterEach(deleteCreatedUsers);
 
-test('deletes a server from the servers list', { tags: ['test-7'] }, async fixtures => {
+test('deletes a server from the servers list', { tags: ['test-8'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 

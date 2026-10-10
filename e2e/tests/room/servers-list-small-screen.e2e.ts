@@ -5,7 +5,7 @@ import { loginWithDeepLink, tapUntilVisible, tapWhenVisible, expectVisible } fro
 
 afterEach(deleteCreatedUsers);
 
-test('fully renders the workspaces action sheet on small screens', { tags: ['test-14'], platforms: ['ios'] }, async fixtures => {
+test('fully renders the workspaces action sheet on small screens', { tags: ['test-10'], platforms: ['ios'] }, async fixtures => {
 	const user = await createUser();
 	await loginWithDeepLink(fixtures, user);
 

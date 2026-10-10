@@ -8,7 +8,7 @@ const NORMAL_MESSAGE = 'message-mark-as-unread';
 
 afterEach(deleteCreatedUsers);
 
-test('shows unread and mention badges', { tags: ['test-13'], platforms: ['android'], timeout: 600_000 }, async fixtures => {
+test('shows unread and mention badges', { tags: ['test-8'], platforms: ['android'], timeout: 600_000 }, async fixtures => {
 	const user = await createUser();
 	const otherUser = await createUser();
 	const userHandle = `@${user.username}`;

@@ -8,7 +8,7 @@ import { randomUser } from '~e2e/support/random';
 
 afterEach(deleteCreatedUsers);
 
-test('creates an account', { tags: ['test-2'] }, async fixtures => {
+test('creates an account', { tags: ['test-6'] }, async fixtures => {
 	const user = randomUser();
 	trackUserForCleanup(user);
 	await launchApp(fixtures);

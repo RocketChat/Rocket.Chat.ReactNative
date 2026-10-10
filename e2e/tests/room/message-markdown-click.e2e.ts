@@ -48,7 +48,7 @@ const inlineTarget = ({ screen, platform }: Fixtures, messageTestId: string, nam
 		? screen.getByRole('button', { name: new RegExp(`^${escapeRegExp(name)}$`) })
 		: screen.getByTestId(messageTestId);
 
-test('opens markdown mentions, links and threads', { tags: ['test-9'] }, async fixtures => {
+test('opens markdown mentions, links and threads', { tags: ['test-7'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	await loginWithDeepLink(fixtures, user);

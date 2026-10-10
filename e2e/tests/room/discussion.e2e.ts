@@ -90,7 +90,7 @@ const checkRoomActions = async (fixtures: Fixtures) => {
 	await expectVisible(fixtures, 'rooms-list-view');
 };
 
-test('creates and navigates discussions', { tags: ['test-10'] }, async fixtures => {
+test('creates and navigates discussions', { tags: ['test-2'] }, async fixtures => {
 	const user = await createUser();
 	const room = await createRandomRoom(user);
 	const discussionFromNewMessage = `${random()} Discussion NewMessageView`;

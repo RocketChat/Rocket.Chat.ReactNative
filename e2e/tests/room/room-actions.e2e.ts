@@ -238,7 +238,7 @@ const openDirectMessageWithMember = async (fixtures: Fixtures, username: string)
 	await backToRoomsList(fixtures);
 };
 
-test('manages a room through its actions', { tags: ['test-11'], timeout: 900_000 }, async fixtures => {
+test('manages a room through its actions', { tags: ['test-5'], timeout: 900_000 }, async fixtures => {
 	const user = await createUser();
 	const otherUser = await createUser();
 	const room = await createRandomRoom(user);
