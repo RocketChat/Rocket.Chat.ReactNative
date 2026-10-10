@@ -108,7 +108,8 @@ const resetApp = async ({ app, device, platform, screen }: Fixtures) => {
 		if (await isVisibleNow(screen.getByText(LEFTOVER_OPEN_PROMPT))) {
 			await tapIfVisible(screen.getByRole('button', 'Cancel'));
 		}
-		await device.installApp(undefined, { reinstall: true });
+		await device.clearKeychain();
+		await app.clearState();
 		return;
 	}
 	if (!androidAppInstalled) {
@@ -121,9 +122,6 @@ const resetApp = async ({ app, device, platform, screen }: Fixtures) => {
 
 export const launchApp = async (fixtures: Fixtures) => {
 	await resetApp(fixtures);
-	if (fixtures.platform === 'ios') {
-		await fixtures.app.open();
-	}
 	await dismissAndroidSystemDialogs(fixtures);
 	await expect(fixtures.screen.getByText('Add workspace')).toBeVisible({ timeout: LONG_TIMEOUT });
 };
@@ -461,12 +459,7 @@ export const openDeepLink = async ({ device, screen, platform }: Fixtures, link:
 
 export const loginWithDeepLink = async (fixtures: Fixtures, credentials: Credentials, server = data.server) => {
 	await resetApp(fixtures);
-	if (fixtures.platform === 'android') {
-		await fixtures.device.closeApp();
-	} else {
-		await fixtures.app.open();
-		await expect(fixtures.screen.getByText('Add workspace')).toBeVisible({ timeout: LONG_TIMEOUT });
-	}
+	await fixtures.device.closeApp();
 	const session = await login(credentials);
 	await openDeepLink(
 		fixtures,
