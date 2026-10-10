@@ -61,6 +61,11 @@ export type RoomsEndpoints = {
 		GET: (params: { roomId: IServerRoom['_id']; next?: string; count?: number; showThreadMessages?: boolean }) => {
 			messages: IMessageFromServer[];
 			cursor: { next: string | null; previous: string | null };
+    };
+  };
+	'rooms.join': {
+		POST: (params: { roomId: string; joinCode: string | null }) => {
+			room: IServerRoom;
 		};
 	};
 };

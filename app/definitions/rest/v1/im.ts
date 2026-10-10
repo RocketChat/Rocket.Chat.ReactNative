@@ -62,6 +62,9 @@ export type ImEndpoints = {
 	'im.leave': {
 		POST: (params: { roomId: string }) => {};
 	};
+	'im.blockUser': {
+		POST: (params: { roomId: string; block: boolean }) => void;
+	};
 	'im.messages': {
 		GET: (params: {
 			roomId: IServerRoom['_id'];
