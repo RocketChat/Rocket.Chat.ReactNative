@@ -49,7 +49,6 @@ export const useJsRoomsListHeader = () => {
 					headerLeft: () => (
 						<HeaderButton.Drawer
 							ref={drawerButtonRef}
-							navigation={navigation}
 							testID='rooms-list-view-sidebar'
 							onPress={onDrawerPress}
 							badge={() => (badgeColor ? <HeaderButton.BadgeWarn color={badgeColor} /> : null)}

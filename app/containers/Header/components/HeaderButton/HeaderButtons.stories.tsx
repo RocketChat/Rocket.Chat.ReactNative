@@ -158,7 +158,5 @@ export const Themes = () => (
 export const Common = () => (
 	<>
 		<HeaderExample left={() => <HeaderButton.Drawer />} />
-		<HeaderExample left={() => <HeaderButton.CancelModal />} />
-		<HeaderExample right={() => <HeaderButton.More />} />
 	</>
 );
