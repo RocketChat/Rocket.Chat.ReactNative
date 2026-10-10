@@ -18,7 +18,7 @@ const renderBackItem = (unreads: number | null) => {
 	renderHook(() => useNativeBackButton('rid'));
 	const options = mockSetOptions.mock.lastCall[0];
 	expect(options.headerBackVisible).toBe(false);
-	const [backItem] = options.unstable_headerLeftItems();
+	const [backItem] = options.unstable_headerLeftItems({ tintColor: 'header-tint' });
 	return backItem;
 };
 
@@ -34,7 +34,8 @@ it('replaces the back button with a chevron labelled with the unread count', () 
 	expect(backItem).toMatchObject({
 		label: '7',
 		icon: { type: 'sfSymbol', name: 'chevron.backward' },
-		showsLabelWithIcon: true
+		showsLabelWithIcon: true,
+		tintColor: 'header-tint'
 	});
 });
 

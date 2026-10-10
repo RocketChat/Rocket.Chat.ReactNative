@@ -139,10 +139,8 @@ export const useNativeRoomHeader = (
 			headerSubtitle: subtitle || undefined,
 			headerTitleImageSource: tmid ? undefined : roomImage,
 			headerSubtitleImageSource: subtitleImage,
-			headerTitleStyle: { color: colors.fontTitlesLabels },
-			headerSubtitleColor: colors.fontSecondaryInfo,
 			headerTitleTestID: 'room-header',
 			onHeaderTitlePress: fields.disabled ? undefined : () => onTitlePress()
 		});
-	}, [navigation, title, subtitle, tmid, roomImage, subtitleImage, colors, onTitlePress, fields.disabled]);
+	}, [navigation, title, subtitle, tmid, roomImage, subtitleImage, onTitlePress, fields.disabled]);
 };
