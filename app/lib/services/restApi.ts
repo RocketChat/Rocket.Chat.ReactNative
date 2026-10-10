@@ -12,6 +12,7 @@ import {
 	type IRoom,
 	type IRoomNotifications,
 	type IServerRoom,
+	type ISidebarCategory,
 	type RoomType,
 	type SubscriptionType
 } from '~/definitions';
@@ -692,6 +693,28 @@ export const saveUserProfile = (
 export const saveUserPreferences = (data: Partial<INotificationPreferences & IMessagePreferences>) =>
 	// RC 0.62.0
 	sdk.post('users.setPreferences', { data });
+
+export const saveSidebarCategories = (sidebarCategories: ISidebarCategory[]) =>
+	sdk.post('users.setPreferences', { data: { sidebarCategories } });
+
+export const setRoomsCategory = async (roomIds: string[], category: string | null) => {
+	const { login, server } = reduxStore.getState();
+	const { user } = login;
+	const response = await fetch(`${server.server}/api/experimental/rooms.setCategory`, {
+		method: 'POST',
+		headers: {
+			...RocketChatSettings.customHeaders,
+			'Content-Type': 'application/json',
+			'X-Auth-Token': user.token,
+			'X-User-Id': user.id
+		},
+		body: JSON.stringify({ roomIds, category })
+	});
+	if (!response.ok) {
+		const errorBody = await response.json().catch(() => undefined);
+		throw new Error(errorBody?.error || `${response.status} ${response.statusText}`);
+	}
+};
 
 export const saveNotificationSettings = (roomId: string, notifications: IRoomNotifications) =>
 	// RC 0.63.0

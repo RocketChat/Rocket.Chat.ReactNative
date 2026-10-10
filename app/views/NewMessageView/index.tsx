@@ -3,7 +3,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList } from 'react-native';
 import { shallowEqual } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { type StaticScreenProps, useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ActivityIndicator from '~/containers/ActivityIndicator';
@@ -24,14 +24,25 @@ import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import Item from './Item';
 import HeaderNewMessage from './HeaderNewMessage';
 import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
+import { useSidebarCategories } from '~/views/RoomsListView/hooks/useSidebarCategories';
 
 const QUERY_SIZE = 50;
 
 type TItem = ISearch | TSubscriptionModel;
 
-const NewMessageView = () => {
+export type NewMessageViewParams = { categoryId?: string } | undefined;
+
+const filterChatsByName = (chats: TSubscriptionModel[], text: string) => {
+	const lowerCaseText = text.toLowerCase();
+	return chats.filter(chat => [chat.name, chat.fname].some(name => name?.toLowerCase().includes(lowerCaseText)));
+};
+
+const NewMessageView = ({ route }: StaticScreenProps<NewMessageViewParams>) => {
+	const categoryId = route.params?.categoryId;
+	const categoryName = useSidebarCategories().customCategoryNames.get(categoryId ?? '');
 	const [chats, setChats] = useState<TSubscriptionModel[]>([]);
 	const [search, setSearch] = useState<TItem[]>([]);
+	const [categorySearchText, setCategorySearchText] = useState('');
 	// True while the remote (spotlight) request is in flight, after local results are already painted
 	const [searching, setSearching] = useState(false);
 	// Guards against an older (slower) search overwriting the results of a newer one
@@ -54,18 +65,16 @@ const NewMessageView = () => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			...headerLeftCloseModal(navigation, 'new-message-view-close'),
-			title: I18n.t('Create_New')
+			title: categoryName ? I18n.t('Create_New_In_Category', { name: categoryName }) : I18n.t('Create_New')
 		});
-	}, [navigation]);
+	}, [navigation, categoryName]);
 
 	useEffect(() => {
 		const init = async () => {
 			try {
 				const db = database.active;
-				const c = await db
-					.get('subscriptions')
-					.query(Q.where('t', 'd'), Q.take(QUERY_SIZE), Q.sortBy('room_updated_at', Q.desc))
-					.fetch();
+				const scope = categoryId ? Q.where('category', categoryId) : Q.take(QUERY_SIZE);
+				const c = await db.get('subscriptions').query(Q.where('t', 'd'), scope, Q.sortBy('room_updated_at', Q.desc)).fetch();
 				setChats(c);
 			} catch (e) {
 				log(e);
@@ -73,7 +82,7 @@ const NewMessageView = () => {
 		};
 
 		init();
-	}, []);
+	}, [categoryId]);
 
 	const handleSearch = useCallback(async (text: string) => {
 		searchId.current += 1;
@@ -108,14 +117,22 @@ const NewMessageView = () => {
 		[isMasterDetail, navigation]
 	);
 
-	const listedChats = search.length > 0 ? search : chats;
+	const globalChats = search.length > 0 ? search : chats;
+	const listedChats = categoryId ? filterChatsByName(chats, categorySearchText) : globalChats;
 
 	return (
 		<SafeAreaView testID='new-message-view'>
 			<FlatList
 				data={listedChats}
 				keyExtractor={item => item._id || item.rid}
-				ListHeaderComponent={<HeaderNewMessage maxUsers={maxUsers} onChangeText={handleSearch} />}
+				ListHeaderComponent={
+					<HeaderNewMessage
+						maxUsers={maxUsers}
+						onChangeText={categoryId ? setCategorySearchText : handleSearch}
+						categoryId={categoryId}
+						categoryName={categoryName}
+					/>
+				}
 				renderItem={({ item, index }) => {
 					const itemSearch = item as ISearch;
 					const itemModel = item as TSubscriptionModel;

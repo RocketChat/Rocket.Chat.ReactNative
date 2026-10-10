@@ -16,6 +16,11 @@ import { createSplitNavigator } from './SplitNavigator';
 import { type MasterDetailChatsStackParamList, type MasterDetailInsideStackParamList, type ModalStackParamList } from './types';
 import RoomView from '~/views/RoomView';
 import RoomsListView from '~/views/RoomsListView';
+import CategoryView from '~/views/CategoryView';
+import CategorySettingsView from '~/views/CategorySettingsView';
+import ManageCategoryRoomsView from '~/views/CategorySettingsView/ManageCategoryRoomsView';
+import ConfirmCategoryRoomsView from '~/views/CategorySettingsView/ConfirmCategoryRoomsView';
+import RenameCategoryView from '~/views/CategorySettingsView/RenameCategoryView';
 import RoomActionsView from '~/views/RoomActionsView';
 import RoomInfoView from '~/views/RoomInfoView';
 import ReportUserView from '~/views/ReportUserView';
@@ -46,6 +51,7 @@ import ReadReceiptsView from '~/views/ReadReceiptView';
 import ProfileView from '~/views/ProfileView';
 import ChangePasswordView from '~/views/ChangePasswordView';
 import DisplayPrefsView from '~/views/DisplayPrefsView';
+import CategoryOrderView from '~/views/CategoryOrderView';
 import SettingsView from '~/views/SettingsView';
 import LanguageView from '~/views/LanguageView';
 import ThemeView from '~/views/ThemeView';
@@ -54,6 +60,9 @@ import ScreenLockConfigView from '~/views/ScreenLockConfigView';
 import AdminPanelView from '~/views/AdminPanelView';
 import NewMessageView from '~/views/NewMessageView';
 import CreateChannelView from '~/views/CreateChannelView';
+import CreateCategoryView from '~/views/CreateCategoryView';
+import CategoryRoomsView from '~/views/CreateCategoryView/CategoryRoomsView';
+import ConfirmCategoryView from '~/views/CreateCategoryView/ConfirmCategoryView';
 import UserPreferencesView from '~/views/UserPreferencesView';
 import UserNotificationPrefView from '~/views/UserNotificationPreferencesView';
 import LegalView from '~/views/LegalView';
@@ -174,6 +183,10 @@ const RoomsListStack = createNativeStackNavigator({
 	screens: {
 		RoomsListView: createNativeStackScreen({
 			screen: RoomsListView
+		}),
+		CategoryView: createNativeStackScreen({
+			screen: CategoryView,
+			options: ({ route }) => ({ title: route.params.title })
 		})
 	}
 }).with(({ Navigator }) => {
@@ -244,8 +257,16 @@ const ModalStack = createNativeStackNavigator({
 		ProfileView: ProfileViewScreen,
 		ChangePasswordView: ChangePasswordViewScreen,
 		DisplayPrefsView,
+		CategoryOrderView,
+		CategorySettingsView,
+		ManageCategoryRoomsView,
+		ConfirmCategoryRoomsView,
+		RenameCategoryView,
 		AdminPanelView,
 		NewMessageView,
+		CreateCategoryView,
+		CategoryRoomsView,
+		ConfirmCategoryView,
 		CreateChannelView,
 		CreateDiscussionView: CreateDiscussionViewScreen,
 		E2ESaveYourPasswordView,

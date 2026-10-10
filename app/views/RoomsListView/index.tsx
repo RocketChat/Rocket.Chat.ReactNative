@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { memo, useContext, useEffect } from 'react';
 import { BackHandler, Platform, RefreshControl } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -15,6 +16,7 @@ import { type IApplicationState } from '~/definitions';
 import { SupportedVersionsExpired } from '~/containers/SupportedVersions';
 import i18n from '~/i18n';
 import { MAX_SIDEBAR_WIDTH } from '~/lib/constants/tablet';
+import { DRAWER_SWIPE_EDGE_WIDTH } from '~/lib/constants/gestures';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import {
@@ -29,6 +31,7 @@ import {
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
+import { type ChatsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
 import Container from './components/Container';
 import ListHeader from './components/ListHeader';
@@ -59,7 +62,7 @@ const RoomsListView = memo(function RoomsListView() {
 	const showLastMessage = useAppSelector(state => state.settings.Store_Last_Message) as boolean;
 	const { displayMode, showAvatar } = useAppSelector(state => state.sortPreferences, shallowEqual);
 	const isMasterDetail = useMasterDetail();
-	const navigation = useNavigation();
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList>>();
 	const { width } = useSafeAreaFrame();
 	const { bottom } = useSafeAreaInsets();
 	const getItemLayout = useGetItemLayout();
@@ -100,6 +103,11 @@ const RoomsListView = memo(function RoomsListView() {
 		goRoom({ item, isMasterDetail });
 	};
 
+	const onOpenSection = (header: string, title: string) => {
+		stopSearch();
+		navigation.navigate('CategoryView', { header, title });
+	};
+
 	const renderItem = ({ item }: { item: IRoomItem }) => {
 		if (item.separator) {
 			return (
@@ -107,6 +115,7 @@ const RoomsListView = memo(function RoomsListView() {
 					header={item.rid}
 					title={item.name}
 					collapsed={collapsedGroups.has(item.rid)}
+					empty={item.empty}
 					unread={item.unread}
 					userMentions={item.userMentions}
 					groupMentions={item.groupMentions}
@@ -114,6 +123,7 @@ const RoomsListView = memo(function RoomsListView() {
 					tunreadUser={item.tunreadUser}
 					tunreadGroup={item.tunreadGroup}
 					onToggle={onToggle}
+					onOpen={onOpenSection}
 					badgeEntering={badgeEntering}
 					badgeExiting={badgeExiting}
 				/>
@@ -140,6 +150,7 @@ const RoomsListView = memo(function RoomsListView() {
 					getIsRead={isRead}
 					isFocused={focusedRoom === item.rid}
 					swipeEnabled={swipeEnabled}
+					navigationSwipeEdgeWidth={isMasterDetail ? 0 : DRAWER_SWIPE_EDGE_WIDTH}
 					showAvatar={showAvatar}
 					displayMode={displayMode}
 				/>
@@ -177,6 +188,7 @@ const RoomsListView = memo(function RoomsListView() {
 						Platform.select({ ios: 0, default: bottom }) + (showNewMessageButton ? FLOATING_ACTION_BUTTON_CLEARANCE : 0)
 				}}
 				renderItem={renderItem}
+				strictMode
 				itemLayoutAnimation={SECTION_REFLOW}
 				ListHeaderComponent={ListHeader}
 				ListFooterComponent={

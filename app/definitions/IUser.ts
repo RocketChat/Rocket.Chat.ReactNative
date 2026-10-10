@@ -109,6 +109,8 @@ export interface ISidebarCategory {
 	_id: string;
 	name: string;
 	default?: boolean;
+	showUnreads?: boolean;
+	keepUnreadsOnTop?: boolean;
 }
 
 export interface INotificationPreferences {

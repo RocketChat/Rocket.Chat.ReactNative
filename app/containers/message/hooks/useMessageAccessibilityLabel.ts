@@ -13,8 +13,10 @@ import {
 	useThreadData,
 	useThreadPosition
 } from '../stores/MessageStore';
-import { useAutoTranslate, useIsReadReceiptEnabled } from '../stores/MessageRoomStore';
+import { useIsReadReceiptEnabled, useRoomTranslateLanguage } from '../stores/MessageRoomStore';
 import { useSetting } from '~/lib/hooks/useSetting';
+
+const timeFormat = new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: 'numeric', second: 'numeric' });
 
 const stripMentions = (label: string, mentions: IUserMention[] = [], channels: IUserChannel[] = []) => {
 	let result = label;
@@ -33,7 +35,7 @@ const stripMentions = (label: string, mentions: IUserMention[] = [], channels: I
 
 export const useMessageAccessibilityLabel = (): string => {
 	const useRealName = useSetting('UI_Use_Real_Name') as boolean;
-	const { autoTranslateLanguage } = useAutoTranslate();
+	const roomTranslateLanguage = useRoomTranslateLanguage();
 	const { attachments, mentions, channels, comment, t: type } = useContentData();
 	const { u: author, role } = useMessageAuthor();
 	const { messageText, isTranslated } = useMessageText();
@@ -62,12 +64,12 @@ export const useMessageAccessibilityLabel = (): string => {
 	}
 	label = stripMentions(label, mentions, channels);
 
-	const hour = ts ? new Date(ts).toLocaleTimeString() : '';
+	const hour = ts ? timeFormat.format(new Date(ts)) : '';
 	const user = useRealName ? author?.name : author?.username || '';
 	const readOrUnreadLabel = !unread && unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
 	const readReceipt = isReadReceiptEnabled && !isInfo ? readOrUnreadLabel : '';
 	const encryptedMessageLabel = isEncrypted ? i18n.t('E2E_Key_Error') : '';
-	const translatedLanguage = translationLanguages[autoTranslateLanguage || 'en'];
+	const translatedLanguage = translationLanguages[roomTranslateLanguage || 'en'];
 	const translated = isTranslated ? i18n.t('Message_translated_into_idiom', { idiom: translatedLanguage }) : '';
 	// For translated messages, the translated body is announced by the inner A11y.Index node, so the outer label
 	// only carries the metadata (user, hour, translated marker) and the suffix (image description, encryption, read receipt).

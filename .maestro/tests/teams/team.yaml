@@ -32,17 +32,19 @@ tags:
       - assertVisible:
           id: room-header
       - assertVisible:
-          id: room-view-search
+          id: room-view-header-threads
+      - tapOn:
+          id: room-view-header-kebab
       - assertVisible:
           id: room-view-header-call
       - assertVisible:
-          id: room-view-header-threads
+          id: room-view-search
+      - tapOn:
+          id: 'action-sheet-handle'
 - runFlow:
     when:
       platform: iOS
     commands:
-      - assertVisible:
-          text: '.*Call.*'
       - assertVisible:
           text: 'Threads'
       - tapOn:
@@ -51,6 +53,8 @@ tags:
           visible:
             text: 'Search messages'
           timeout: 60000
+      - assertVisible:
+          text: '.*Call.*'
       - runFlow:
           file: '../../helpers/dismiss-menu.yaml'
           env:
@@ -215,17 +219,19 @@ tags:
       platform: android
     commands:
       - assertVisible:
+          id: room-view-header-threads
+      - tapOn:
+          id: room-view-header-kebab
+      - assertVisible:
           id: room-view-header-call
       - assertVisible:
-          id: room-view-header-threads
-      - assertVisible:
           id: room-view-search
+      - tapOn:
+          id: 'action-sheet-handle'
 - runFlow:
     when:
       platform: iOS
     commands:
-      - assertVisible:
-          text: '.*Call.*'
       - assertVisible:
           text: 'Threads'
       - tapOn:
@@ -234,6 +240,8 @@ tags:
           visible:
             text: 'Search messages'
           timeout: 60000
+      - assertVisible:
+          text: '.*Call.*'
       - runFlow:
           file: '../../helpers/dismiss-menu.yaml'
           env:

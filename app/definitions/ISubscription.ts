@@ -105,6 +105,7 @@ export interface ISubscription {
 	teamMain?: boolean;
 	unsubscribe: () => Promise<any>;
 	separator?: boolean;
+	empty?: boolean;
 	onHold?: boolean;
 	source?: IOmnichannelSource;
 	hideMentionStatus?: boolean;

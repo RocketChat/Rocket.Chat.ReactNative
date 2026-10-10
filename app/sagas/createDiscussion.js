@@ -6,6 +6,7 @@ import { createDiscussionFailure, createDiscussionSuccess } from '../actions/cre
 import database from '../lib/database';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { createDiscussion } from '../lib/services/restApi';
+import { assignRoomToCategory } from '../lib/methods/assignRoomToCategory';
 
 const handleRequest = function* handleRequest({ data }) {
 	logEvent(events.CD_CREATE);
@@ -31,6 +32,7 @@ const handleRequest = function* handleRequest({ data }) {
 			} catch {
 				// do nothing
 			}
+			yield call(assignRoomToCategory, sub.rid, data.category);
 			yield put(createDiscussionSuccess(sub));
 		} else {
 			logEvent(events.CD_CREATE_F);

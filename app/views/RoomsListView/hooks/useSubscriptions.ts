@@ -3,18 +3,24 @@ import { useEffect, useMemo, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import type { Subscription } from 'rxjs';
 
-import { type ISidebarCategory, type TSubscriptionModel } from '~/definitions';
+import { type TSubscriptionModel } from '~/definitions';
 import { SortBy } from '~/lib/constants/constantDisplayMode';
 import database from '~/lib/database';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { getUserSelector } from '~/selectors/login';
-import { buildRoomList } from './groupRooms';
-import { getGroupOrder } from './sidebarGroupOrder';
+import { buildRoomList } from '../utils/groupRooms';
+import { useSidebarCategories } from './useSidebarCategories';
 
-const CUSTOM_CATEGORIES_LICENSE_MODULE = 'experimental-enterprise-features';
-const NO_CATEGORIES: ISidebarCategory[] = [];
 const NO_ROWS: TSubscriptionModel[] = [];
-const SECTION_BADGE_COLUMNS = ['unread', 'user_mentions', 'group_mentions', 'tunread', 'tunread_user', 'tunread_group'];
+const SECTION_BADGE_COLUMNS = [
+	'unread',
+	'hide_unread_status',
+	'user_mentions',
+	'group_mentions',
+	'tunread',
+	'tunread_user',
+	'tunread_group'
+];
 
 export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
@@ -22,14 +28,7 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 	const [loaded, setLoaded] = useState<{ server: typeof server; rows: TSubscriptionModel[] }>();
 	const roles = useAppSelector(state => getUserSelector(state).roles, shallowEqual);
 	const { sortBy, showUnread, showFavorites, groupByType } = useAppSelector(state => state.sortPreferences, shallowEqual);
-	const hasCustomCategoriesLicense = useAppSelector(state => state.enterpriseModules.includes(CUSTOM_CATEGORIES_LICENSE_MODULE));
-	const sidebarCategories = useAppSelector(state => getUserSelector(state).sidebarCategories ?? NO_CATEGORIES);
-	const categories = hasCustomCategoriesLicense ? sidebarCategories : NO_CATEGORIES;
-	const customCategoryNames = useMemo(
-		() => new Map(categories.filter(category => !category.default).map(category => [category._id, category.name])),
-		[categories]
-	);
-	const groupOrder = useMemo(() => getGroupOrder(categories), [categories]);
+	const { customCategoryNames, categoryUnreadOptions, sectionsOrder, groupOrder } = useSidebarCategories();
 	const isGrouping = showUnread || showFavorites || groupByType;
 	const isOmnichannelAgent = roles?.includes('livechat-agent') ?? false;
 	const hasCollapsedGroup = collapsedGroups.size > 0;
@@ -84,13 +83,26 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 			buildRoomList(rows, {
 				groupOrder,
 				customCategoryNames,
+				categoryUnreadOptions,
+				sectionsOrder,
 				showUnread,
 				showFavorites,
 				groupByType,
 				isOmnichannelAgent,
 				collapsedGroups
 			}),
-		[rows, groupOrder, customCategoryNames, showUnread, showFavorites, groupByType, isOmnichannelAgent, collapsedGroups]
+		[
+			rows,
+			groupOrder,
+			customCategoryNames,
+			categoryUnreadOptions,
+			sectionsOrder,
+			showUnread,
+			showFavorites,
+			groupByType,
+			isOmnichannelAgent,
+			collapsedGroups
+		]
 	);
 
 	return {

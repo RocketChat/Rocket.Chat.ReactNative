@@ -6,16 +6,22 @@ import {
 	type NativeStackNavigationOptions
 } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { type StaticScreenProps } from '@react-navigation/native';
+import { getFocusedRouteNameFromRoute, type StaticScreenProps } from '@react-navigation/native';
 
 import { ThemeContext } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import withNavigation from '../lib/navigation/withNavigation';
 import Sidebar from '../views/SidebarView';
 import { isIOS } from '../lib/methods/helpers';
+import { DRAWER_SWIPE_EDGE_WIDTH } from '../lib/constants/gestures';
 import { type TNavigation } from './stackType';
 import RoomView from '../views/RoomView';
 import RoomsListView from '../views/RoomsListView';
+import CategoryView from '../views/CategoryView';
+import CategorySettingsView from '../views/CategorySettingsView';
+import ManageCategoryRoomsView from '../views/CategorySettingsView/ManageCategoryRoomsView';
+import ConfirmCategoryRoomsView from '../views/CategorySettingsView/ConfirmCategoryRoomsView';
+import RenameCategoryView from '../views/CategorySettingsView/RenameCategoryView';
 import RoomActionsView from '../views/RoomActionsView';
 import RoomInfoView from '../views/RoomInfoView';
 import ReportUserView from '../views/ReportUserView';
@@ -62,10 +68,14 @@ import MediaAutoDownloadView from '../views/MediaAutoDownloadView';
 import LegalView from '../views/LegalView';
 import AccessibilityAndAppearanceView from '../views/AccessibilityAndAppearanceView';
 import DisplayPrefsView from '../views/DisplayPrefsView';
+import CategoryOrderView from '../views/CategoryOrderView';
 import ThemeView from '../views/ThemeView';
 import AdminPanelView from '../views/AdminPanelView';
-import NewMessageView from '../views/NewMessageView';
+import NewMessageView, { type NewMessageViewParams } from '../views/NewMessageView';
 import CreateChannelView from '../views/CreateChannelView';
+import CreateCategoryView from '../views/CreateCategoryView';
+import CategoryRoomsView from '../views/CreateCategoryView/CategoryRoomsView';
+import ConfirmCategoryView from '../views/CreateCategoryView/ConfirmCategoryView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
 import ForwardMessageView from '../views/ForwardMessageView';
 import E2ESaveYourPasswordView from '../views/E2ESaveYourPasswordView';
@@ -135,7 +145,7 @@ const AccessibilityAndAppearanceViewScreen: ComponentType<StaticScreenProps<unde
 const DisplayPrefsViewScreen: ComponentType<StaticScreenProps<undefined>> = DisplayPrefsView as any;
 const ThemeViewScreen: ComponentType<StaticScreenProps<undefined>> = ThemeView as any;
 const AdminPanelViewScreen: ComponentType<StaticScreenProps<undefined>> = AdminPanelView as any;
-const NewMessageViewScreen: ComponentType<StaticScreenProps<undefined>> = NewMessageView as any;
+const NewMessageViewScreen: ComponentType<StaticScreenProps<NewMessageViewParams>> = NewMessageView as any;
 const ForwardMessageViewScreen = ForwardMessageView as any;
 const E2ESaveYourPasswordViewScreen: ComponentType<StaticScreenProps<undefined>> = E2ESaveYourPasswordView as any;
 const E2EHowItWorksViewScreen = E2EHowItWorksView as any;
@@ -156,6 +166,14 @@ const ChatsStack = createNativeStackNavigator({
 			screen: RoomsListView,
 			options: { freezeOnBlur: true }
 		}),
+		CategoryView: createNativeStackScreen({
+			screen: CategoryView,
+			options: ({ route }) => ({ title: route.params.title })
+		}),
+		CategorySettingsView,
+		ManageCategoryRoomsView,
+		ConfirmCategoryRoomsView,
+		RenameCategoryView,
 		RoomView: RoomViewScreen,
 		RoomActionsView: createNativeStackScreen({
 			screen: RoomActionsViewScreen,
@@ -179,6 +197,7 @@ const ChatsStack = createNativeStackNavigator({
 		AutoTranslateView: AutoTranslateViewScreen,
 		DirectoryView: DirectoryViewScreen,
 		DisplayPrefsView: DisplayPrefsViewScreen,
+		CategoryOrderView,
 		NotificationPrefView: NotificationPrefViewScreen,
 		E2EEToggleRoomView: E2EEToggleRoomViewScreen,
 		PushTroubleshootView: PushTroubleshootViewScreen,
@@ -261,6 +280,7 @@ const AccessibilityStack = createNativeStackNavigator({
 	screens: {
 		AccessibilityAndAppearanceView: AccessibilityAndAppearanceViewScreen,
 		DisplayPrefsView: DisplayPrefsViewScreen,
+		CategoryOrderView,
 		ThemeView: ThemeViewScreen
 	}
 }).with(({ Navigator }) => {
@@ -268,14 +288,28 @@ const AccessibilityStack = createNativeStackNavigator({
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
+const DRAWER_STACK_ROOT_SCREENS = [
+	'RoomsListView',
+	'ProfileView',
+	'SettingsView',
+	'AdminPanelView',
+	'AccessibilityAndAppearanceView'
+];
+
+const isNestedStackAtRoot = (route: Parameters<typeof getFocusedRouteNameFromRoute>[0]) => {
+	const focusedScreen = getFocusedRouteNameFromRoute(route);
+	return !focusedScreen || DRAWER_STACK_ROOT_SCREENS.includes(focusedScreen);
+};
+
 const DrawerStack = createDrawerNavigator({
-	screenOptions: {
-		swipeEnabled: false,
+	screenOptions: ({ route }) => ({
+		swipeEnabled: isNestedStackAtRoot(route),
+		swipeEdgeWidth: DRAWER_SWIPE_EDGE_WIDTH,
 		headerShown: false,
 		drawerPosition: I18nManager.isRTL ? 'right' : 'left',
 		drawerType: 'slide',
 		freezeOnBlur: true
-	},
+	}),
 	screens: {
 		ChatsStackNavigator: ChatsStack,
 		ProfileStackNavigator: ProfileStack,
@@ -300,7 +334,10 @@ const NewMessageStack = createNativeStackNavigator({
 		SelectedUsersView: SelectedUsersViewScreen,
 		CreateChannelView: CreateChannelViewScreen,
 		CreateDiscussionView: CreateDiscussionViewScreen,
-		ForwardMessageView: ForwardMessageViewScreen
+		ForwardMessageView: ForwardMessageViewScreen,
+		CreateCategoryView,
+		CategoryRoomsView,
+		ConfirmCategoryView
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);

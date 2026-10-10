@@ -11,6 +11,8 @@ import { getRoomActionsOptions } from './getRoomActionsOptions';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
 import { useRoomSnapshot } from './hooks/useRoomSnapshot';
+import MoveToCategorySheet from '../MoveToCategorySheet';
+import { useIsCustomCategoriesAvailable } from '~/views/RoomsListView/hooks/useSidebarCategories';
 
 const RoomItemContainer = memo(
 	({
@@ -29,11 +31,13 @@ const RoomItemContainer = memo(
 		getRoomTitle = () => 'title',
 		getRoomAvatar = () => '',
 		getIsRead = () => false,
-		swipeEnabled = true
+		swipeEnabled = true,
+		navigationSwipeEdgeWidth
 	}: IRoomItemContainerProps) => {
 		const room = useRoomSnapshot(item);
 		const { showActionSheet } = useActionSheet();
 		const serverVersion = useAppSelector(state => state.server.version);
+		const isCustomCategoriesAvailable = useIsCustomCategoriesAvailable();
 		const name = getRoomTitle(room);
 		const testID = `rooms-list-view-item-${name}`;
 		const avatar = getRoomAvatar(room);
@@ -45,6 +49,13 @@ const RoomItemContainer = memo(
 		const accessibilityDate = formatDateAccessibility(room.roomUpdatedAt);
 
 		const handleOnPress = () => onPress(item);
+
+		const showMoveToCategory = () =>
+			showActionSheet({
+				children: <MoveToCategorySheet room={room} category={room.category} favorite={room.f} />,
+				fullContainer: true
+			});
+		const onMoveToCategoryPress = isCustomCategoriesAvailable && room.t !== 'l' ? showMoveToCategory : undefined;
 
 		const handleOnLongPress = async () => {
 			if (onLongPress) {
@@ -77,6 +88,7 @@ const RoomItemContainer = memo(
 				isRead={isRead}
 				onPress={handleOnPress}
 				onLongPress={handleOnLongPress}
+				onMoveToCategoryPress={onMoveToCategoryPress}
 				date={date}
 				accessibilityDate={accessibilityDate}
 				width={width}
@@ -101,6 +113,7 @@ const RoomItemContainer = memo(
 				tunreadUser={room.tunreadUser}
 				tunreadGroup={room.tunreadGroup}
 				swipeEnabled={swipeEnabled}
+				navigationSwipeEdgeWidth={navigationSwipeEdgeWidth}
 				teamMain={room.teamMain}
 				autoJoin={autoJoin}
 				showAvatar={showAvatar}
