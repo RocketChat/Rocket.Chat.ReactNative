@@ -8,7 +8,7 @@ const MAX_BACK_PRESSES = 2;
 
 afterEach(deleteCreatedUsers);
 
-test('closes the rooms search with the back key', { tags: ['test-5'], platforms: ['android'] }, async fixtures => {
+test('closes the rooms search with the back key', { tags: ['test-7'], platforms: ['android'] }, async fixtures => {
 	const { screen, device } = fixtures;
 	const user = await createUser();
 	await loginWithDeepLink(fixtures, user);

@@ -86,7 +86,7 @@ const changePassword = async (fixtures: Fixtures, user: RandomUser, profileSaved
 	throw new Error(`Password change was still rate limited after ${PASSWORD_CHANGE_ATTEMPTS} attempts`);
 };
 
-test('edits profile info and changes password', { tags: ['test-4'] }, async fixtures => {
+test('edits profile info and changes password', { tags: ['test-2'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 

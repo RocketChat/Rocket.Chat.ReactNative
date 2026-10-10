@@ -36,8 +36,8 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Restore Android AVD (seeded on develop; shard 10 builds its own)
-        if: ${{ inputs.shard != '10' }}
+      - name: Restore Android AVD (seeded on develop; shard 9 builds its own)
+        if: ${{ inputs.shard != '9' }}
         id: avd-cache
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
@@ -81,8 +81,8 @@ jobs:
           sudo systemctl stop docker || true
           sudo systemctl stop snapd || true
 
-      - name: Create Keyboard-enabled AVD (shard 10)
-        if: ${{ inputs.shard == '10' }}
+      - name: Create Keyboard-enabled AVD (shard 9)
+        if: ${{ inputs.shard == '9' }}
         run: |
           set -eux
 
@@ -140,7 +140,7 @@ jobs:
         run: echo "E2E_DEADLINE=$(( $(date +%s) + (E2E_STEP_TIMEOUT_MINUTES - 7) * 60 ))" >> "$GITHUB_ENV"
 
       - name: Start Android Emulator and Run E2E Tests (keyboard AVD)
-        if: ${{ inputs.shard == '10' }}
+        if: ${{ inputs.shard == '9' }}
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
         timeout-minutes: ${{ fromJSON(env.E2E_STEP_TIMEOUT_MINUTES) }}
         env:
@@ -162,7 +162,7 @@ jobs:
           script: bash .github/scripts/run-e2e.sh android "$SHARD"
 
       - name: Start Android Emulator and Run E2E Tests (default, snapshot stays restore-only)
-        if: ${{ inputs.shard != '10' }}
+        if: ${{ inputs.shard != '9' }}
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
         timeout-minutes: ${{ fromJSON(env.E2E_STEP_TIMEOUT_MINUTES) }}
         env:

@@ -24,7 +24,7 @@ const scrollPickerUntilVisible = async ({ screen }: Fixtures, testId: string) =>
 
 test(
 	'reaches the last emoji of the people category on small screens',
-	{ tags: ['test-10'], platforms: ['ios'] },
+	{ tags: ['test-9'], platforms: ['ios'] },
 	async fixtures => {
 		const message = 'random-message';
 		const user = await createUser();

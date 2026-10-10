@@ -1,5 +1,5 @@
 // Tests for select-impacted-shards.sh: proves every uncertainty falls back to
-// the full 10-shard suite (under-selection impossible) and that the
+// the full 9-shard suite (under-selection impossible) and that the
 // confident-zero skip fires only on a genuinely empty impacted set.
 // Expected values are read from scenario-catalog.json so this file stays in
 // lockstep with the canonical matrix (rows F1, F2, F3, F4, F5, F5b, F6, F7, Z1).
@@ -232,7 +232,7 @@ describe('select-impacted-shards.sh', () => {
 
 	describe('happy path', () => {
 		test('single impacted flow maps to its shard', () => {
-			const flowPath = path.join(REPO_ROOT, 'e2e/tests/assorted/i18n.e2e.ts'); // tags: test-3
+			const flowPath = path.join(REPO_ROOT, 'e2e/tests/assorted/i18n.e2e.ts'); // tags: test-5
 			const result = runScript(SCRIPT, {
 				env: BASE_ENV,
 				stubs: {
@@ -241,15 +241,15 @@ describe('select-impacted-shards.sh', () => {
 				}
 			});
 			expect(result.status).toBe(0);
-			expect(JSON.parse(result.shards)).toEqual([3]);
+			expect(JSON.parse(result.shards)).toEqual([5]);
 			expect(result.should_run).toBe('true');
 		});
 
 		test('multiple impacted flows map to the sorted unique shard union', () => {
 			const flows = [
-				path.join(REPO_ROOT, 'e2e/tests/assorted/i18n.e2e.ts'), // test-3
-				path.join(REPO_ROOT, 'e2e/tests/onboarding/login/login.e2e.ts'), // test-8
-				path.join(REPO_ROOT, 'e2e/tests/room/search-member.e2e.ts') // test-1
+				path.join(REPO_ROOT, 'e2e/tests/assorted/i18n.e2e.ts'), // test-5
+				path.join(REPO_ROOT, 'e2e/tests/onboarding/login/login.e2e.ts'), // test-6
+				path.join(REPO_ROOT, 'e2e/tests/room/search-member.e2e.ts') // test-5
 			];
 			const json = JSON.stringify({ recommendedTests: flows.map(test => ({ test })) });
 			const result = runScript(SCRIPT, {
@@ -257,7 +257,7 @@ describe('select-impacted-shards.sh', () => {
 				stubs: { git: gitStub(), pnpm: pnpmStub(json) }
 			});
 			expect(result.status).toBe(0);
-			expect(JSON.parse(result.shards)).toEqual([1, 3, 8]);
+			expect(JSON.parse(result.shards)).toEqual([5, 6]);
 			expect(result.should_run).toBe('true');
 		});
 

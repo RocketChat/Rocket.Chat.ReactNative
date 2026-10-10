@@ -19,7 +19,7 @@ afterEach(restoreKeyboardSettings);
 
 test(
 	'logs in from onboarding with a hardware keyboard',
-	{ tags: ['test-10'], platforms: ['android'], timeout: 600_000 },
+	{ tags: ['test-9'], platforms: ['android'], timeout: 600_000 },
 	async fixtures => {
 		const { screen } = fixtures;
 		const user = await createUser();

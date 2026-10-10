@@ -57,7 +57,7 @@ const returnToRoom = async (fixtures: Fixtures, room: string) => {
 	await expect(fixtures.screen.getByTestId(`room-view-title-${room}`)).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
-test('creates a broadcast room and replies to its message', { tags: ['test-9'] }, async fixtures => {
+test('creates a broadcast room and replies to its message', { tags: ['test-7'] }, async fixtures => {
 	const { screen } = fixtures;
 	const room = `broadcast${random()}`;
 	const owner = await createUser();

@@ -7,7 +7,7 @@ import { fillRegisterForm } from '~e2e/support/onboarding';
 
 afterEach(deleteCreatedUsers);
 
-test('rejects an email already in use', { tags: ['test-1'] }, async fixtures => {
+test('rejects an email already in use', { tags: ['test-7'] }, async fixtures => {
 	const user = await createUser();
 	await launchApp(fixtures);
 	await navigateToRegister(fixtures);

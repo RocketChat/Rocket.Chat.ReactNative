@@ -24,7 +24,7 @@ const checkMediaAutoDownloadOptions = async (fixtures: Fixtures, mediaType: (typ
 	await fixtures.screen.getByTestId('action-sheet-handle').tap();
 };
 
-test('shows settings, clears cache and opens legal', { tags: ['test-9'] }, async fixtures => {
+test('shows settings, clears cache and opens legal', { tags: ['test-2'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const room = await createRandomRoom(user);

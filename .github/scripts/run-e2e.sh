@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PLATFORM="${1:?usage: run-e2e.sh <android|ios> <shard>}"
-SHARD="${2:?usage: run-e2e.sh <android|ios> <shard>}"
+PLATFORM="${1:?usage: run-e2e.sh <android|ios> <shard[,shard...]>}"
+SHARD="${2:?usage: run-e2e.sh <android|ios> <shard[,shard...]>}"
 TESTS_DIR="e2e/tests"
 OUTPUT_DIR=".e2e"
 RUN_TIMEOUT_SECONDS="${RUN_TIMEOUT_SECONDS:-2400}"
@@ -11,6 +11,7 @@ E2E_DEADLINE="${E2E_DEADLINE:-}"
 MIN_PASS_SECONDS="${MIN_PASS_SECONDS:-300}"
 RETRIES="${RETRIES:-2}"
 ANDROID_DEVICE="${E2E_ANDROID_DEVICE:-emulator-5554}"
+TAGS="test-${SHARD//,/,test-}"
 NODE_TS=(node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON)
 
 TIMEOUT_BIN="$(command -v timeout || command -v gtimeout || true)"
@@ -26,7 +27,7 @@ case "$PLATFORM" in
     command -v xcrun >/dev/null 2>&1 || { echo "ERROR: xcrun not found"; exit 2; }
     ;;
   *)
-    echo "usage: run-e2e.sh <android|ios> <shard>"
+    echo "usage: run-e2e.sh <android|ios> <shard[,shard...]>"
     exit 2
     ;;
 esac
@@ -115,7 +116,7 @@ if [ "$PLATFORM" = "android" ]; then
   android_shell settings put system show_touches 1 || true
   android_shell settings put secure autofill_service null || true
 
-  if pnpm exec e2e list --target "$PLATFORM" --tag "test-${SHARD}" --reporter json --pass-with-no-tests "$TESTS_DIR/share-extension" \
+  if pnpm exec e2e list --target "$PLATFORM" --tag "$TAGS" --reporter json --pass-with-no-tests "$TESTS_DIR/share-extension" \
     | jq -e '[.pairs[] | select(.disposition == "run")] | length > 0' >/dev/null; then
     if ! E2E_ANDROID_DEVICE="$ANDROID_DEVICE" pnpm run --silent e2e:push-downloads; then
       echo "::warning title=Share fixture push failed::scripts/push-downloads-to-sim.js could not download or push the share-extension fixtures to the emulator's Downloads. A share-extension test that runs on Android will fail on the missing files; that is an environment failure, not an app or test regression."
@@ -123,7 +124,7 @@ if [ "$PLATFORM" = "android" ]; then
   fi
 fi
 
-E2E_COMMAND=(pnpm exec e2e run --target "$PLATFORM" --tag "test-${SHARD}" --reporter list,junit)
+E2E_COMMAND=(pnpm exec e2e run --target "$PLATFORM" --tag "$TAGS" --reporter list,junit)
 
 DEVICE_EVIDENCE_DIR="$OUTPUT_DIR/artifacts/device"
 DEVICE_CAPTURE_DIR=""

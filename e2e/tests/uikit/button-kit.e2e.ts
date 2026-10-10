@@ -6,7 +6,7 @@ import { expectBotReply, runSlashCommand, tapBotMessageButton } from '~e2e/suppo
 
 afterEach(deleteCreatedUsers);
 
-test('replies to a UIKit button tap', { tags: ['test-10'] }, async fixtures => {
+test('replies to a UIKit button tap', { tags: ['test-9'] }, async fixtures => {
 	const user = await createUser();
 	const room = await createRandomRoom(user);
 

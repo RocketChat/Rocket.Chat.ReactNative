@@ -30,7 +30,7 @@ const searchAndOpen = async (fixtures: Fixtures, name: string) => {
 	await expect(screen.getByTestId(`room-view-title-${name}`)).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
-test('joins a channel, user and team from the directory', { tags: ['test-6'] }, async fixtures => {
+test('joins a channel, user and team from the directory', { tags: ['test-7'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const otherUser = await createUser();

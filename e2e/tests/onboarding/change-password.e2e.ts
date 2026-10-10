@@ -16,7 +16,7 @@ afterEach(deleteCreatedUsers);
 
 const NEW_PASSWORD = '123456';
 
-test('requires a password change on first login', { tags: ['test-7'] }, async fixtures => {
+test('requires a password change on first login', { tags: ['test-5'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUserWithPasswordChange();
 

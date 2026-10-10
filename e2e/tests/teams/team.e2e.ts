@@ -127,7 +127,7 @@ const leaveTeam = async (fixtures: Fixtures, team: string, channels: { existing:
 	await expect(screen.getByTestId(`rooms-list-view-item-${team}`)).toBeHidden({ timeout: LONG_TIMEOUT });
 };
 
-test('manages a team', { tags: ['test-5'] }, async fixtures => {
+test('manages a team', { tags: ['test-3'] }, async fixtures => {
 	const { screen } = fixtures;
 	const owner = await createUser();
 	const member = await createUser();

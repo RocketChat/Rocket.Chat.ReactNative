@@ -124,7 +124,7 @@ const expectFormReset = async (fixtures: Fixtures, roomName: string) => {
 	await expect(screen.getByTestId(editViewTestId('react-when-ro'))).toBeHidden();
 };
 
-test('shows and edits room info', { tags: ['test-9'], timeout: 600_000 }, async fixtures => {
+test('shows and edits room info', { tags: ['test-8'], timeout: 600_000 }, async fixtures => {
 	const user = await createUser();
 	const room = await createRandomRoom(user, 'p');
 	const newRoomName = `${room.name}new`;

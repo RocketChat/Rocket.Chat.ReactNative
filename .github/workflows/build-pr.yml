@@ -81,6 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       shards: ${{ steps.select.outputs.shards }}
+      ios_shards: ${{ steps.ios.outputs.shards }}
       should_run: ${{ steps.select.outputs.should_run }}
     steps:
       - name: Checkout Repository
@@ -119,6 +120,15 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           FULL_SHARDS: ${{ steps.full.outputs.shards }}
         run: bash .github/scripts/select-impacted-shards.sh
+
+      # macOS runs at most 5 jobs at once, so iOS pairs shards into one job each and
+      # keeps the small-screen shard 9 alone on its own simulator.
+      - name: Pair iOS shards
+        id: ios
+        if: steps.select.outputs.should_run == 'true'
+        env:
+          SHARDS: ${{ steps.select.outputs.shards }}
+        run: echo "shards=$(jq -c 'map(tostring) | (map(select(. != "9")) as $paired | [range(0; $paired | length; 2) as $i | $paired[$i:$i + 2] | join(",")]) + map(select(. == "9"))' <<< "$SHARDS")" >> "$GITHUB_OUTPUT"
 
   e2e-hold:
     name: E2E Hold
@@ -173,7 +183,7 @@ jobs:
     secrets: inherit
     strategy:
       matrix:
-        shard: ${{ fromJSON(needs.e2e-shards.outputs.shards) }}
+        shard: ${{ fromJSON(needs.e2e-shards.outputs.ios_shards) }}
       fail-fast: false
     with:
       shard: ${{ matrix.shard }}

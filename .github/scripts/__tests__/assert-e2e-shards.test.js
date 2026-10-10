@@ -7,7 +7,7 @@ const SCRIPT = path.join(__dirname, '..', 'assert-e2e-shards.sh');
 
 const pair = (file, tags) => ({ file, title: file, kind: 'test', tags, target: 'ios', disposition: 'run' });
 
-const fullyTaggedPairs = Array.from({ length: 10 }, (_, index) => pair(`e2e/tests/shard-${index + 1}.e2e.ts`, [`test-${index + 1}`]));
+const fullyTaggedPairs = Array.from({ length: 9 }, (_, index) => pair(`e2e/tests/shard-${index + 1}.e2e.ts`, [`test-${index + 1}`]));
 
 function runWithListing(pairs) {
 	return runScript(SCRIPT, { stubs: { pnpm: `echo '${JSON.stringify({ pairs })}'` } });
@@ -22,9 +22,9 @@ describe('assert-e2e-shards.sh', () => {
 		expect(result.shards).toBeUndefined();
 	});
 
-	test('passes and emits 1..10 when every test is tagged and every shard is covered', () => {
+	test('passes and emits 1..9 when every test is tagged and every shard is covered', () => {
 		const result = runWithListing(fullyTaggedPairs);
 		expect(result.status).toBe(0);
-		expect(JSON.parse(result.shards)).toEqual(Array.from({ length: 10 }, (_, index) => index + 1));
+		expect(JSON.parse(result.shards)).toEqual(Array.from({ length: 9 }, (_, index) => index + 1));
 	});
 });

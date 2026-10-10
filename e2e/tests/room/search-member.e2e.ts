@@ -24,7 +24,7 @@ const filterByStatus = async (fixtures: Fixtures, status: 'online' | 'all') => {
 	await tapWhenVisible(fixtures, `room-members-view-toggle-status-${status}`);
 };
 
-test('searches members of a room', { tags: ['test-1'] }, async fixtures => {
+test('searches members of a room', { tags: ['test-5'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const noMembersFound = screen.getByText('No members found');

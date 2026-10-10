@@ -22,7 +22,7 @@ const expectSidebarLabels = async (fixtures: Fixtures, labels: string[]) => {
 	await screen.getByTestId('sidebar-close-drawer').tap();
 };
 
-test('translates the app and falls back to English', { tags: ['test-3'] }, async fixtures => {
+test('translates the app and falls back to English', { tags: ['test-5'] }, async fixtures => {
 	const user = await createUser();
 	await createRandomRoom(user);
 

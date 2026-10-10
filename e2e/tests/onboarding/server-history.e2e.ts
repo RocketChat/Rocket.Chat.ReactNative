@@ -7,7 +7,7 @@ import { goBackUntil, loginWithDeepLink, logout, LONG_TIMEOUT } from '~e2e/suppo
 
 afterEach(deleteCreatedUsers);
 
-test('remembers and deletes a server from history', { tags: ['test-5'] }, async fixtures => {
+test('remembers and deletes a server from history', { tags: ['test-4'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const historyItem = screen.getByTestId(`servers-history-${data.server}`);

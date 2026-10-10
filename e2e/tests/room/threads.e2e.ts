@@ -21,7 +21,7 @@ const threadReplyPlaceholder = ({ screen }: Fixtures) => screen.getByRole('textb
 
 afterEach(deleteCreatedUsers);
 
-test('creates, follows, drafts and navigates threads', { tags: ['test-6'], timeout: 600_000 }, async fixtures => {
+test('creates, follows, drafts and navigates threads', { tags: ['test-4'], timeout: 600_000 }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const room = await createRandomRoom(user);

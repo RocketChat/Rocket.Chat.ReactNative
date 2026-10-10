@@ -19,10 +19,11 @@ jobs:
     runs-on: macos-26
     permissions:
       contents: read
-    timeout-minutes: 95
+    timeout-minutes: 125
     env:
       E2E_TELEMETRY_DISABLED: '1'
-      E2E_STEP_TIMEOUT_MINUTES: '70'
+      E2E_STEP_TIMEOUT_MINUTES: '100'
+      RUN_TIMEOUT_SECONDS: '4800'
 
     steps:
       - name: Checkout Repo
@@ -44,12 +45,12 @@ jobs:
           defaults write com.apple.iphonesimulator ShowChrome -bool false
           defaults write com.apple.iphonesimulator DeviceFramebufferOnly -bool true
 
-      - name: Start Simulator Boot (async; resolved by device family, smallest iPhone for shard 10)
+      - name: Start Simulator Boot (async; resolved by device family, smallest iPhone for shard 9)
         env:
           SHARD: ${{ inputs.shard }}
         run: |
           DEVICES_JSON=$(xcrun simctl list devices available --json)
-          if [[ "$SHARD" == "10" ]]; then
+          if [[ "$SHARD" == "9" ]]; then
             SIM_NAME=$(jq -r '[.devices | to_entries[] | .value[] | select(.name | test("^iPhone SE"))] | first | .name' <<< "$DEVICES_JSON")
             if [[ -z "$SIM_NAME" || "$SIM_NAME" == "null" ]]; then
               SIM_NAME=$(jq -r '[.devices | to_entries[] | .value[] | select(.name | test("^iPhone [0-9]+( mini)?$"))] | sort_by(.name | capture("(?<n>[0-9]+)").n | tonumber) | first | .name' <<< "$DEVICES_JSON")

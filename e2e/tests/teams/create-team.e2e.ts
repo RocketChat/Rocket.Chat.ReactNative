@@ -8,7 +8,7 @@ import { createTeam } from '~e2e/support/teams';
 
 afterEach(deleteCreatedUsers);
 
-test('creates and deletes a team', { tags: ['test-5'] }, async fixtures => {
+test('creates and deletes a team', { tags: ['test-7'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const teamName = randomTeamName();

@@ -15,7 +15,7 @@ import { random } from '~e2e/support/random';
 
 afterEach(deleteCreatedUsers);
 
-test('joins a protected room with a join code', { tags: ['test-1'] }, async fixtures => {
+test('joins a protected room with a join code', { tags: ['test-8'] }, async fixtures => {
 	const { screen } = fixtures;
 	const { name, joinCode } = data.channels.detoxpublicprotected;
 	const joinCodeSheet = screen.getByTestId('join-code');

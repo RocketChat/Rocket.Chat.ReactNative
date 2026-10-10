@@ -15,7 +15,7 @@ import { casField, dismissPasswordManagerPrompt } from '~e2e/support/onboarding'
 
 const closeKeyboard = (fixtures: Fixtures) => hideKeyboard(fixtures, fixtures.screen.getByRole('button', /^(Done|selected)$/));
 
-test('logs in with CAS', { tags: ['test-8'] }, async fixtures => {
+test('logs in with CAS', { tags: ['test-1'] }, async fixtures => {
 	const { screen } = fixtures;
 	await launchApp(fixtures);
 	await navigateToLogin(fixtures, data.candidateServer);

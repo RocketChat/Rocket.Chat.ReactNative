@@ -12,7 +12,7 @@ const tapNotification = async ({ screen }: Fixtures, message: string) => {
 	await notification.tap();
 };
 
-test('opens the DM from an in-app notification', { tags: ['test-2'] }, async fixtures => {
+test('opens the DM from an in-app notification', { tags: ['test-6'] }, async fixtures => {
 	const { screen } = fixtures;
 	const sender = await createUser();
 	const receiver = await createUser();

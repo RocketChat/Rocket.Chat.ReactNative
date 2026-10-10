@@ -7,7 +7,7 @@ import { fillRegisterForm } from '~e2e/support/onboarding';
 
 afterEach(deleteCreatedUsers);
 
-test('rejects a username already in use', { tags: ['test-8'] }, async fixtures => {
+test('rejects a username already in use', { tags: ['test-6'] }, async fixtures => {
 	const user = await createUser();
 	await launchApp(fixtures);
 	await navigateToRegister(fixtures);
