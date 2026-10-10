@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-import type * as SdkIntegration from '../../testUtils/sdkIntegration';
+import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
 import { mediaCallsStateSignals } from '../restApi';
 
 const mockSdkGet = jest.fn();
@@ -9,7 +9,7 @@ const mockSdkDel = jest.fn();
 let mockSdk!: SdkIntegration.IMockSdk;
 
 jest.mock('../sdk', () => {
-	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('~/lib/testUtils/sdkIntegration');
 	mockSdk =
 		mockSdk ??
 		makeSdkMock({
@@ -22,11 +22,11 @@ jest.mock('../sdk', () => {
 
 const SDK_HOST = 'https://open.rocket.chat';
 
-jest.mock('../../notifications/deviceToken', () => ({
+jest.mock('~/lib/notifications/deviceToken', () => ({
 	getDeviceToken: jest.fn()
 }));
 
-jest.mock('../../native/NativeVoip', () => ({
+jest.mock('~/lib/native/NativeVoip', () => ({
 	__esModule: true,
 	default: {
 		getLastVoipToken: jest.fn()
@@ -51,7 +51,7 @@ function loadPushTokenApi(platform: 'ios' | 'android' = 'android', mockServerVer
 	jest.resetModules();
 	Object.defineProperty(Platform, 'OS', { configurable: true, writable: true, value: platform });
 
-	jest.doMock('../../store/auxStore', () => ({
+	jest.doMock('~/lib/store/auxStore', () => ({
 		store: {
 			getState: () => ({
 				server: { version: mockServerVersion }
@@ -60,9 +60,9 @@ function loadPushTokenApi(platform: 'ios' | 'android' = 'android', mockServerVer
 	}));
 
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
-	const notifications = require('../../notifications/deviceToken');
+	const notifications = require('~/lib/notifications/deviceToken');
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
-	const voipNative = require('../../native/NativeVoip').default;
+	const voipNative = require('~/lib/native/NativeVoip').default;
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
 	const { registerPushToken, removePushToken } = require('../restApi');
 	return {

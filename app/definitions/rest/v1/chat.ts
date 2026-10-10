@@ -98,4 +98,7 @@ export type ChatEndpoints = {
 			messages: IMessageFromServer[];
 		};
 	};
+	'chat.readThread': {
+		POST: (params: { tmid: IMessage['_id'] }) => void;
+	};
 };

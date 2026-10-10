@@ -10,16 +10,18 @@ export const showErrorAlertWithEMessage = (e: any, title?: string): void => {
 	if (isTwoFactorCancelled(e)) {
 		return;
 	}
-	let errorMessage: string = e?.data?.error;
-
-	if (errorMessage?.includes('[error-too-many-requests]')) {
-		const seconds = errorMessage.replace(/\D/g, '');
-		errorMessage = I18n.t('error-too-many-requests', { seconds });
-	} else {
-		errorMessage = I18n.isTranslated(errorMessage) ? I18n.t(errorMessage) : errorMessage;
+	const rateLimitMessage: string | undefined = [e?.data?.error, e?.message].find(text =>
+		/\[(error-)?too-many-requests\]/.test(text)
+	);
+	if (rateLimitMessage) {
+		showErrorAlert(I18n.t('error-too-many-requests', { seconds: rateLimitMessage.replace(/\D/g, '') }), title);
+		return;
 	}
 
-	showErrorAlert(errorMessage, title);
+	const ddpErrorKey = typeof e?.error === 'string' ? e.error : undefined;
+	const errorMessage: string = e?.data?.error || ddpErrorKey || e?.reason || e?.message;
+
+	showErrorAlert(I18n.isTranslated(errorMessage) ? I18n.t(errorMessage) : errorMessage, title);
 };
 
 interface IShowConfirmationAlert {
