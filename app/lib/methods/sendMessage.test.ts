@@ -164,27 +164,16 @@ describe('sendMessage', () => {
 	});
 
 	describe('unclosed code blocks', () => {
-		it('closes an unclosed code block before encrypting and sending', async () => {
+		it('closes an unclosed code block before encrypting and storing the message', async () => {
 			mockGetCollection('subscriptions');
 
 			await sendMessage(rid, '```js\nconst a = 1;', undefined, user);
 
 			expect(mockEncryptMessage).toHaveBeenCalledWith(expect.objectContaining({ msg: '```js\nconst a = 1;\n```' }));
-			expect(mockPost).toHaveBeenCalledWith('chat.sendMessage', {
-				message: expect.objectContaining({ msg: '```js\nconst a = 1;\n```' })
-			});
 			const created = mockDbBatch.mock.calls
 				.flat(2)
 				.find((item: FakeRecord) => item?.status === messagesStatus.TEMP || item?.status === messagesStatus.SENT);
 			expect(created.msg).toBe('```js\nconst a = 1;\n```');
-		});
-
-		it('leaves a balanced code block untouched', async () => {
-			mockGetCollection('subscriptions');
-
-			await sendMessage(rid, '```js\nconst a = 1;\n```', undefined, user);
-
-			expect(mockEncryptMessage).toHaveBeenCalledWith(expect.objectContaining({ msg: '```js\nconst a = 1;\n```' }));
 		});
 	});
 

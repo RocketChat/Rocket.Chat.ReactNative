@@ -3,9 +3,9 @@ import { closeUnclosedCodeBlock } from './helpers/closeUnclosedCodeBlock';
 import { Encryption } from '../encryption';
 import sdk from '../services/sdk';
 
-export const editMessage = async (original: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'>) => {
-	const message = { ...original, msg: closeUnclosedCodeBlock(original.msg || '') };
-	const result = await Encryption.encryptMessage(message as IMessage);
+export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'>) => {
+	const msg = closeUnclosedCodeBlock(message.msg || '');
+	const result = await Encryption.encryptMessage({ ...message, msg } as IMessage);
 	if (!result) {
 		throw new Error('Failed to encrypt message');
 	}
@@ -21,6 +21,6 @@ export const editMessage = async (original: Pick<IMessage, 'id' | 'msg' | 'rid' 
 	return sdk.post('chat.update', {
 		roomId: message.rid,
 		msgId: message.id,
-		text: message.msg || ''
+		text: msg
 	});
 };
