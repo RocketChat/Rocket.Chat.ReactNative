@@ -3,7 +3,7 @@
 const ensureSecureProtocol = (url: string): string => {
 	// Check if URL has a protocol by looking for a valid URI scheme (RFC 3986)
 	if (!url.match(/^[a-zA-Z][a-zA-Z0-9+.-]*:/)) {
-		return `https://${url.replace('//', '')}`;
+		return `https://${url.replace(/^\/\//, '')}`;
 	}
 	return url;
 };
