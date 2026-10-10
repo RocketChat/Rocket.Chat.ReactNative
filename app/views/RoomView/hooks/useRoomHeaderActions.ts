@@ -210,7 +210,7 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 	];
 };
 
-export const useRoomHeaderMode = (rid: string | undefined, tmid: string | undefined, roomStore: RoomStore): TRoomHeaderMode => {
+export const useRoomHeaderMode = (tmid: string | undefined, roomStore: RoomStore): TRoomHeaderMode => {
 	const { t, status, membership } = useStore(
 		roomStore,
 		useShallow(s => ({
@@ -220,5 +220,5 @@ export const useRoomHeaderMode = (rid: string | undefined, tmid: string | undefi
 		}))
 	);
 
-	return getRoomHeaderMode({ rid, tmid, t, status, membership });
+	return getRoomHeaderMode({ tmid, t, status, membership });
 };

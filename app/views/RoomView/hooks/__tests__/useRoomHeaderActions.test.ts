@@ -130,29 +130,26 @@ describe('useRoomHeaderActions', () => {
 	});
 
 	it.each([
-		['none without a rid', undefined, undefined, { room: { t: 'c' }, membership: 'subscribed' }, 'none'],
-		['none for an invited room', 'rid-1', undefined, { room: { t: 'c' }, membership: 'invited' }, 'none'],
+		['none for an invited room', undefined, { room: { t: 'c' }, membership: 'invited' }, 'none'],
 		[
 			'none for a queued omnichannel room',
-			'rid-1',
 			undefined,
 			{ room: { id: 'sub-1', t: 'l', status: 'queued' }, membership: 'subscribed' },
 			'none'
 		],
-		['none for an omnichannel room in preview', 'rid-1', undefined, { room: { t: 'l' }, membership: 'preview' }, 'none'],
+		['none for an omnichannel room in preview', undefined, { room: { t: 'l' }, membership: 'preview' }, 'none'],
 		[
 			'omnichannel for an active omnichannel room, even inside a thread',
-			'rid-1',
 			'tmid-1',
 			{ room: { id: 'sub-1', t: 'l' }, membership: 'subscribed' },
 			'omnichannel'
 		],
-		['thread when a tmid is given', 'rid-1', 'tmid-1', { room: { t: 'c' }, membership: 'subscribed' }, 'thread'],
-		['room for a regular channel', 'rid-1', undefined, { room: { t: 'c' }, membership: 'subscribed' }, 'room']
-	])('picks the %s', (_case, rid, tmid, state, mode) => {
+		['thread when a tmid is given', 'tmid-1', { room: { t: 'c' }, membership: 'subscribed' }, 'thread'],
+		['room for a regular channel', undefined, { room: { t: 'c' }, membership: 'subscribed' }, 'room']
+	])('picks the %s', (_case, tmid, state, mode) => {
 		mockRoomState = { ...state, canForwardGuest: false };
 
-		const { result } = renderHook(() => useRoomHeaderMode(rid, tmid, roomStore));
+		const { result } = renderHook(() => useRoomHeaderMode(tmid, roomStore));
 
 		expect(result.current).toBe(mode);
 	});
