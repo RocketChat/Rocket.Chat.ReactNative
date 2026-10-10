@@ -32,7 +32,7 @@ interface IUseBlockContext {
 	blockId?: string;
 	actionId: string;
 	appId?: string;
-	initialValue?: string;
+	initialValue?: unknown;
 	url?: string;
 }
 

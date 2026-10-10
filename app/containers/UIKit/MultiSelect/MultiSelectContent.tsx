@@ -1,8 +1,9 @@
-import { useState, memo, type Dispatch, type SetStateAction } from 'react';
+import { useEffect, useRef, useState, memo, type Dispatch, type SetStateAction } from 'react';
 import { View } from 'react-native';
 
 import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
 import { FormTextInput } from '~/containers/TextInput/FormTextInput';
+import ActivityIndicator from '~/containers/ActivityIndicator';
 import { textParser } from '../utils';
 import I18n from '~/i18n';
 import Items from './Items';
@@ -28,7 +29,39 @@ export const MultiSelectContent = memo(
 		const { colors } = useTheme();
 		const [selected, setSelected] = useState<IItemData[]>(Array.isArray(selectedItems) ? selectedItems : []);
 		const [items, setItems] = useState<IItemData[] | undefined>(options);
+		const needsInitialSearch = (!options || options.length === 0) && !!onSearch;
+		const [searching, setSearching] = useState(needsInitialSearch);
+		const lastQuery = useRef('');
 		const { hideActionSheet } = useActionSheet();
+
+		useEffect(() => {
+			if (needsInitialSearch) {
+				let cancelled = false;
+				Promise.resolve((onSearch as NonNullable<typeof onSearch>)('')).then(
+					initialItems => {
+						if (cancelled) {
+							return;
+						}
+						setSearching(false);
+						if (!lastQuery.current) {
+							setItems(initialItems || []);
+						}
+					},
+					() => {
+						if (cancelled) {
+							return;
+						}
+						setSearching(false);
+						if (!lastQuery.current) {
+							setItems([]);
+						}
+					}
+				);
+				return () => {
+					cancelled = true;
+				};
+			}
+		}, [needsInitialSearch, onSearch]);
 
 		const onSelect = (item: IItemData) => {
 			const {
@@ -55,8 +88,11 @@ export const MultiSelectContent = memo(
 		const handleSearch = debounce(
 			async (text: string) => {
 				if (onSearch) {
-					const res = await onSearch(text);
-					setItems(res);
+					lastQuery.current = text;
+					const res = await Promise.resolve(onSearch(text)).catch(() => undefined);
+					if (lastQuery.current === text) {
+						setItems(res || []);
+					}
 				} else {
 					setItems(options?.filter((option: any) => textParser([option.text]).toLowerCase().includes(text.toLowerCase())));
 				}
@@ -79,6 +115,11 @@ export const MultiSelectContent = memo(
 						}}
 					/>
 				</View>
+				{searching && !items?.length ? (
+					<View style={styles.loading}>
+						<ActivityIndicator />
+					</View>
+				) : null}
 				<Items items={items || []} selected={selected} onSelect={onSelect} />
 			</View>
 		);

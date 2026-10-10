@@ -487,6 +487,8 @@ export const usersAutoComplete = (selector: any) =>
 	// RC 2.4.0
 	sdk.get('users.autocomplete', { selector });
 
+export const roomsAutoComplete = (selector: any) => sdk.get('rooms.autocomplete.channelAndPrivate', { selector });
+
 export const getRoutingConfig = async (): Promise<{
 	previewRoom: boolean;
 	showConnecting: boolean;

@@ -1,11 +1,10 @@
 import { type ReactElement } from 'react';
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
 import { CustomIcon } from '~/containers/CustomIcon';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import styles from './styles';
 import { useTheme } from '~/theme';
-import Touch from '~/containers/Touch';
 
 interface IInput {
 	children?: ReactElement;
@@ -21,11 +20,17 @@ interface IInput {
 const Input = ({ children, onPress, loading, inputStyle, placeholder, disabled, innerInputStyle, testID }: IInput) => {
 	const { colors } = useTheme();
 	return (
-		<Touch
+		<Pressable
 			onPress={onPress}
 			testID={testID}
-			style={[{ backgroundColor: colors.surfaceRoom }, styles.inputBorder, inputStyle]}
-			disabled={disabled}>
+			disabled={disabled}
+			accessibilityRole='button'
+			style={({ pressed }) => [
+				{ backgroundColor: colors.surfaceRoom },
+				styles.inputBorder,
+				inputStyle,
+				pressed && styles.pressed
+			]}>
 			<View style={[styles.input, styles.inputBorder, { borderColor: colors.strokeMedium }, innerInputStyle]}>
 				{placeholder ? <Text style={[styles.pickerText, { color: colors.fontSecondaryInfo }]}>{placeholder}</Text> : children}
 				{loading ? (
@@ -34,7 +39,7 @@ const Input = ({ children, onPress, loading, inputStyle, placeholder, disabled, 
 					<CustomIcon name='chevron-down' size={22} color={colors.fontSecondaryInfo} style={styles.icon} />
 				)}
 			</View>
-		</Touch>
+		</Pressable>
 	);
 };
 export default Input;

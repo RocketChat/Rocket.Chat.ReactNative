@@ -4,7 +4,7 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 import { MultiSelect } from './index';
 
 jest.mock('~/theme', () => ({
-	useTheme: () => ({ colors: { fontTitlesLabels: 'black', fontSecondaryInfo: 'gray' } })
+	useTheme: () => ({ theme: 'light', colors: { fontTitlesLabels: 'black', fontSecondaryInfo: 'gray' } })
 }));
 
 jest.mock('@rocket.chat/ui-kit', () => ({
@@ -94,5 +94,24 @@ describe('MultiSelect', () => {
 		instance.onSelect?.(options[0]);
 
 		expect(onChange).not.toHaveBeenCalled();
+	});
+
+	it('searches default items when opened without static options', async () => {
+		const onSearch = jest.fn().mockResolvedValue([{ value: 'u1', text: { text: 'User 1' } }]);
+		const { getByText } = render(<MultiSelect onChange={jest.fn()} onSearch={onSearch} />);
+		fireEvent.press(getByText('Search'));
+		const content = mockShowActionSheet.mock.calls[0][0].children;
+		const { findByText } = render(content);
+		expect(onSearch).toHaveBeenCalledWith('');
+		expect(await findByText('User 1')).toBeTruthy();
+	});
+
+	it('does not search on open when static options are provided', () => {
+		const onSearch = jest.fn();
+		const { getByText } = render(<MultiSelect options={options} onChange={jest.fn()} onSearch={onSearch} />);
+		fireEvent.press(getByText('Search'));
+		const content = mockShowActionSheet.mock.calls[0][0].children;
+		render(content);
+		expect(onSearch).not.toHaveBeenCalled();
 	});
 });

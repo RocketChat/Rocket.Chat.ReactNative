@@ -84,6 +84,8 @@ export interface Option {
 	text: IText;
 	value: string;
 	imageUrl?: string;
+	url?: string;
+	description?: IText;
 }
 export interface IButton extends IElement {
 	type: 'button';
@@ -91,7 +93,8 @@ export interface IButton extends IElement {
 	actionId: string;
 	blockId: string;
 	appId: string;
-	style?: any;
+	style?: 'primary' | 'secondary' | 'danger' | 'warning' | 'success';
+	secondary?: boolean;
 }
 
 export interface IContainer {
@@ -229,6 +232,71 @@ export interface IImage {
 	context?: BlockContext;
 }
 
+export interface IPreviewImage {
+	url: string;
+	dimensions?: {
+		width: number;
+		height: number;
+	};
+}
+
+export interface IPreview {
+	title?: IText[];
+	description?: IText[];
+	thumb?: IPreviewImage;
+	preview?: IPreviewImage;
+	externalUrl?: string;
+	oembedUrl?: string;
+	footer?: {
+		elements?: IElement[];
+	};
+	parser: IParser;
+}
+
+export type TCalloutVariant = 'info' | 'danger' | 'warning' | 'success';
+
+export interface ICallout {
+	title?: IText;
+	text: IText;
+	variant?: TCalloutVariant;
+	accessory?: IElement;
+	appId?: string;
+	blockId?: string;
+	parser: IParser;
+}
+
+export interface IChoice {
+	element: IElement;
+	value: unknown;
+	action: (params: { value: unknown }) => Promise<void>;
+	loading: boolean;
+}
+
+export interface ILinearScale {
+	element: IElement & {
+		minValue?: number;
+		maxValue?: number;
+		initialValue?: number;
+		preLabel?: IText;
+		postLabel?: IText;
+	};
+	value: number;
+	action: (params: { value: unknown }) => Promise<void>;
+	loading: boolean;
+}
+
+export interface ITimePicker {
+	element: IElement & {
+		initialTime?: string;
+	};
+	language: string;
+	action: (params: { value: unknown }) => Promise<void>;
+	context: BlockContext;
+	loading: boolean;
+	value: string;
+	error: string;
+}
+
 export interface IOverflow {
 	element: IElement;
 	action: (params: { value: unknown }) => Promise<void>;
@@ -238,7 +306,7 @@ export interface IOverflow {
 }
 
 interface PropsOption {
-	onOptionPress: (params: { value: Option['value'] }) => void;
+	onOptionPress: (params: { value: Option['value']; url?: Option['url'] }) => void;
 	parser: IParser;
 	theme: TSupportedThemes;
 }
