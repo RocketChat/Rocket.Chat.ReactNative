@@ -106,7 +106,7 @@ const RoomsListView = memo(function RoomsListView() {
 				<SectionHeader
 					header={item.rid}
 					title={item.name}
-					collapsed={item.collapsed ?? false}
+					collapsed={collapsedGroups.has(item.rid)}
 					unread={item.unread}
 					userMentions={item.userMentions}
 					groupMentions={item.groupMentions}

@@ -113,7 +113,7 @@ describe('groupRooms', () => {
 		]);
 	});
 
-	it('marks a collapsed header with the badge totals of its rooms, skipping rooms that hide unread status', () => {
+	it('gives a collapsed header the badge totals of its rooms, skipping rooms that hide unread status', () => {
 		const chats = [
 			room({ rid: 'general', category: 'work', unread: 3, userMentions: 1 }),
 			room({ rid: 'random', category: 'work', unread: 4, groupMentions: 2 }),
@@ -124,7 +124,6 @@ describe('groupRooms', () => {
 		const [header] = buildRoomList(chats, { ...options, collapsedGroups: new Set(['work']) });
 
 		expect(header).toMatchObject({
-			collapsed: true,
 			unread: 8,
 			userMentions: 1,
 			groupMentions: 2,

@@ -24,13 +24,12 @@ const sumOf = (rooms: TSubscriptionModel[], count: (room: TSubscriptionModel) =>
 const threadsOf = (rooms: TSubscriptionModel[], threads: (room: TSubscriptionModel) => string[] | undefined) =>
 	rooms.flatMap(room => threads(room) ?? []);
 
-const sectionHeader = (rooms: TSubscriptionModel[], header: string, title: string | undefined, collapsed: boolean) => {
+const sectionHeader = (rooms: TSubscriptionModel[], header: string, title: string | undefined) => {
 	const badgedRooms = rooms.filter(room => !room.hideUnreadStatus);
 	return {
 		rid: header,
 		separator: true,
 		name: title,
-		collapsed,
 		unread: sumOf(badgedRooms, room => room.unread || room.tunread?.length),
 		userMentions: sumOf(badgedRooms, room => room.userMentions),
 		groupMentions: sumOf(badgedRooms, room => room.groupMentions),
@@ -48,7 +47,7 @@ const roomsGroup = (rooms: TSubscriptionModel[], header: string, collapsedGroups
 		return rooms;
 	}
 	const collapsed = collapsedGroups.has(header);
-	return [sectionHeader(rooms, header, title, collapsed), ...(collapsed ? [] : rooms)];
+	return [sectionHeader(rooms, header, title), ...(collapsed ? [] : rooms)];
 };
 
 const getRoomGroup = (subscription: TSubscriptionModel, groups: Map<string, TSubscriptionModel[]>) => {
