@@ -69,6 +69,11 @@ export type RoomsEndpoints = {
 			cursor: { next: string | null; previous: string | null };
 		};
 	};
+	'rooms.join': {
+		POST: (params: { roomId: string; joinCode: string | null }) => {
+			room: IServerRoom;
+		};
+	};
 };
 
 export type TRoomsMediaResponse = {

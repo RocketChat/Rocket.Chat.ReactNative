@@ -72,7 +72,7 @@ const AutoTranslateView = (): ReactElement => {
 			await saveAutoTranslate({
 				rid,
 				field: 'autoTranslate',
-				value: enableAutoTranslate ? '0' : '1',
+				value: !enableAutoTranslate,
 				options: { defaultLanguage: 'en' }
 			});
 		} catch (error) {
