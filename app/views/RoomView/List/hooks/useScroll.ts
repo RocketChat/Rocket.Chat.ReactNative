@@ -2,22 +2,18 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '~/views/RoomView/definitions';
 import { type TAnyMessageModel } from '~/definitions';
+import { MAX_SCROLL_TO_INDEX_RETRIES } from '../constants';
 
 // Abort a jump whose target never re-observes within this window: release the anchor, drop to the Live
 // Tail, resolve the jump. Does not cancel an in-flight scroll — completion is reactive on re-observe.
 const JUMP_SAFETY_TIMEOUT = 5000;
 const HIGHLIGHT_TIMEOUT = 5000;
 
-// A target deeper than the Anchored Window's initial QUERY_SIZE rows needs the window grown by QUERY_SIZE per retry to pull it in.
-// Capped so a target that never materialises aborts via the safety net instead of looping.
 const MAX_JUMP_GROWTH_RETRIES = 5;
 
 // VirtualizedList re-fires onScrollToIndexFailed synchronously, so defer each retry one frame to break
 // the recursion.
 const SCROLL_TO_INDEX_RETRY_DELAY = 50;
-// A deep target can sit ~30 rows past the measured frontier; each retry climbs ~one render batch, so the
-// cap must cover the distance (5 stalled short). Bounded so an unreachable target aborts, not loops.
-const MAX_SCROLL_TO_INDEX_RETRIES = 20;
 
 // animated:false snaps straight to the target instead of smooth-scrolling through every row between here
 // and a deep index — the latter reads as the list "hunting" for the message across several visible scrolls.
@@ -42,7 +38,8 @@ export const useScroll = ({
 	messagesIds,
 	highTs,
 	setHighTs,
-	fetchMessages
+	fetchMessages,
+	tmid
 }: {
 	flatListRef: TListRef;
 	messages: TAnyMessageModel[];
@@ -50,6 +47,7 @@ export const useScroll = ({
 	highTs: number | null;
 	setHighTs: (next: number | null) => void;
 	fetchMessages: () => Promise<void>;
+	tmid?: string;
 }) => {
 	const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null);
 	const highlightTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -59,7 +57,6 @@ export const useScroll = ({
 	const lastJumpTargetId = useRef<string | null>(null);
 	// Bounds the onScrollToIndexFailed retry chain per jump (reset when a new jump starts).
 	const scrollFailRetries = useRef(0);
-	// Bounds the window-growth retries while waiting for a deep Anchored target to re-observe (reset per jump).
 	const jumpGrowthRetries = useRef(0);
 	// A jump-to-bottom deferred until the released live window emits (set when releasing an Anchored Window).
 	const pendingBottom = useRef(false);
@@ -194,9 +191,8 @@ export const useScroll = ({
 		}
 		const index = indexOfMessage(jump.messageId);
 		if (index === -1) {
-			// Anchored target deeper than the window: grow it by QUERY_SIZE (bounded) to pull it in; the safety
-			// net aborts if it never materialises.
-			if (jump.anchored && jumpGrowthRetries.current < MAX_JUMP_GROWTH_RETRIES) {
+			const growsWindowTowardTarget = jump.anchored || !!tmid;
+			if (growsWindowTowardTarget && jumpGrowthRetries.current < MAX_JUMP_GROWTH_RETRIES) {
 				jumpGrowthRetries.current += 1;
 				armJumpSafety(jump); // productive growth → grant the next growth step its own arrival window
 				// A grow failure leaves the jump pending; the safety net aborts it, so swallow here.
@@ -287,17 +283,10 @@ export const useScroll = ({
 			armJumpSafety(jump);
 
 			// Non-contiguous target → set the Anchored Window (re-seeds a QUERY_SIZE window onto the target's Chunk).
-			// Contiguous / thread / local targets keep their current window.
 			if (anchored) {
 				setHighTs(highTsMs as number);
-			}
-
-			// Target may already be present (contiguous / local): resolve synchronously, still one scroll.
-			const index = indexOfMessage(messageId);
-			if (index !== -1 && !anchored) {
-				jump.scrolled = true;
-				scrollToTarget(messageId, index);
-				completeJump(jump);
+			} else {
+				onReObserve();
 			}
 		});
 

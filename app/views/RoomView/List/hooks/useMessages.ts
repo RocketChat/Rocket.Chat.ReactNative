@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { type Subscription } from 'rxjs';
 import { useDispatch, useStore } from 'react-redux';
@@ -9,6 +9,12 @@ import { getMessageById } from '~/lib/database/services/Message';
 import { getThreadById } from '~/lib/database/services/Thread';
 import { tsToMs } from '~/lib/dayjs';
 import { compareServerVersion, useDebounce } from '~/lib/methods/helpers';
+import {
+	subscribeThreadLoaded,
+	areOlderThreadMessagesMissing,
+	loadOlderThreadMessages,
+	retainThreadPagination
+} from '~/lib/methods/loadThreadMessages';
 import { readThreads } from '~/lib/services/restApi';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
 import { buildVisibleSystemTypesClause, isHiddenSystemMessage, isLoaderMessage } from '../visibleSystemMessages';
@@ -17,6 +23,14 @@ import { isNewerLoader, raiseOrRelease } from '~/views/RoomView/services/anchorR
 import { findNewerLoaderAbove } from '~/views/RoomView/services/getLocalAnchor';
 
 const findFirstLoaderId = (messages: TAnyMessageModel[]): string | null => messages.find(isLoaderMessage)?.id ?? null;
+
+interface IObservedWindow {
+	rows: TAnyMessageModel[];
+	threadParent: TAnyMessageModel | null;
+	hasOlderRows: boolean;
+}
+
+const EMPTY_WINDOW: IObservedWindow = { rows: [], threadParent: null, hasOlderRows: false };
 
 export const useMessages = ({
 	rid,
@@ -33,7 +47,15 @@ export const useMessages = ({
 	hideSystemMessages: string[];
 	t: RoomType;
 }) => {
-	const [messages, setMessages] = useState<TAnyMessageModel[]>([]);
+	const [observedWindow, setObservedWindow] = useState<IObservedWindow>(EMPTY_WINDOW);
+	const olderThreadMessagesMissing = useSyncExternalStore(
+		subscribeThreadLoaded,
+		() => !!tmid && areOlderThreadMessagesMissing(tmid)
+	);
+	const messages = useMemo(() => {
+		const { rows, threadParent, hasOlderRows } = observedWindow;
+		return threadParent && !hasOlderRows && !olderThreadMessagesMissing ? [...rows, threadParent] : rows;
+	}, [observedWindow, olderThreadMessagesMissing]);
 	// Optional UPPER ts bound for the Message Window. null => Live Window (newest-first, follows the
 	// Live Tail). A finite number (ms since epoch) => Anchored Window pinned below the Live Tail.
 	const [highTs, setHighTsState] = useState<number | null>(null);
@@ -149,6 +171,8 @@ export const useMessages = ({
 			}
 		}
 
+		const windowSize = count.current;
+		const queriedRows = tmid ? windowSize + 1 : windowSize;
 		const clauses: Q.Clause[] = [
 			Q.where('rid', tmid ?? rid),
 			...(visibleSystemClause ? [visibleSystemClause] : []),
@@ -156,7 +180,7 @@ export const useMessages = ({
 			...(highTs != null ? [Q.where('ts', Q.lte(highTs))] : []),
 			...(!tmid && !showMessageInMainThread ? [Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true)))] : []),
 			Q.sortBy('ts', Q.desc),
-			Q.take(count.current)
+			Q.take(queriedRows)
 		];
 
 		const observable = db
@@ -165,9 +189,9 @@ export const useMessages = ({
 			.observe();
 
 		subscription.current = observable.subscribe(result => {
-			const visibleThreadParent =
+			const hasOlderRows = !!tmid && result.length > windowSize;
+			const threadParent =
 				tmid && thread.current && !isHiddenSystemMessage(thread.current, hideSystemMessages) ? thread.current : null;
-			const newMessages: TAnyMessageModel[] = visibleThreadParent ? [...result, visibleThreadParent] : result;
 
 			// Thread / local windows are never anchored, so rejoin only applies to the bounded main room.
 			if (!tmid && highTs != null) {
@@ -177,7 +201,7 @@ export const useMessages = ({
 			if (tmid) {
 				readThread();
 			}
-			setMessages(newMessages);
+			setObservedWindow({ rows: hasOlderRows ? result.slice(0, windowSize) : result, threadParent, hasOlderRows });
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps -- readThread is omitted intentionally: useDebouncedCallback stores func in a ref so changes propagate without recreating fetchMessages; hideSystemMessages must stay so the DB re-queries for proper pagination
 	}, [rid, tmid, showMessageInMainThread, hideSystemMessages, highTs, unsubscribe, raiseOrReleaseAnchor]);
@@ -198,6 +222,20 @@ export const useMessages = ({
 		fetchMessages();
 		return unsubscribe;
 	}, [fetchMessages, unsubscribe]);
+
+	useEffect(() => {
+		if (!tmid) {
+			return;
+		}
+		return retainThreadPagination(tmid);
+	}, [tmid]);
+
+	const loadOlderMessages = useCallback(() => {
+		fetchMessages();
+		if (tmid) {
+			loadOlderThreadMessages({ tmid, rid });
+		}
+	}, [fetchMessages, tmid, rid]);
 
 	useLayoutEffect(() => {
 		messagesIds.current = messages.map(m => m.id);
@@ -243,5 +281,5 @@ export const useMessages = ({
 		}
 	}, [highTs, serverVersion, rid, t, hideSystemMessages, messages, dispatch, store]);
 
-	return [messages, messagesIds, fetchMessages, { highTs, setHighTs }] as const;
+	return [messages, messagesIds, fetchMessages, { highTs, setHighTs, loadOlderMessages }] as const;
 };
