@@ -2,7 +2,7 @@ import { useEffect, useState, memo } from 'react';
 import { Text, type TextStyle } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
-import Button from '~/containers/Button';
+import Button from '../Button';
 import { useTheme } from '~/theme';
 import { type IText } from '../interfaces';
 import Chips from './Chips';
@@ -41,6 +41,27 @@ interface IMultiSelect {
 	testID?: string;
 }
 
+const getItemDisplayText = (item: unknown): string => {
+	if (typeof item === 'string') {
+		return item;
+	}
+	const text = (item as IItemData)?.text;
+	if (typeof text === 'string') {
+		return text;
+	}
+	return text?.text ?? '';
+};
+
+export const toItemArray = (value: unknown): IItemData[] => {
+	if (Array.isArray(value)) {
+		return value.map(item => (typeof item === 'string' ? { value: item, text: { text: item } } : (item as IItemData)));
+	}
+	if (typeof value === 'string' && value) {
+		return [{ value, text: { text: value } }];
+	}
+	return [];
+};
+
 export const MultiSelect = memo(
 	({
 		options = [],
@@ -67,13 +88,15 @@ export const MultiSelect = memo(
 			if (Array.isArray(values)) {
 				select(values);
 			}
-		}, []);
+		}, [values]);
 
 		useEffect(() => {
 			if (values && values.length && !multiselect) {
-				setCurrentValue(values[0].text);
+				setCurrentValue(getItemDisplayText(values[0]));
+			} else if (!multiselect) {
+				setCurrentValue('');
 			}
-		}, []);
+		}, [values, multiselect]);
 
 		const onShow = () => {
 			showActionSheet({

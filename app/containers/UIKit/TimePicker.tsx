@@ -12,7 +12,7 @@ import { CustomIcon } from '../CustomIcon';
 import { isAndroid } from '~/lib/methods/helpers';
 import { useTheme } from '~/theme';
 import ActivityIndicator from '../ActivityIndicator';
-import { type IDatePicker, type IText } from './interfaces';
+import { type IText, type ITimePicker } from './interfaces';
 import Touch from '../Touch';
 
 const styles = StyleSheet.create({
@@ -37,19 +37,25 @@ const styles = StyleSheet.create({
 	}
 });
 
-const parseInitialDate = (value?: string, initialDate?: string): Date | undefined => {
-	const parsed = new Date(value || initialDate || '');
-	return Number.isNaN(parsed.getTime()) ? undefined : parsed;
+const parseInitialTime = (value?: string, initialTime?: string): Date | undefined => {
+	const source = value || initialTime || '';
+	const match = /^(\d{1,2}):(\d{2})(?::\d{2})?$/.exec(source);
+	if (!match || Number(match[1]) > 23 || Number(match[2]) > 59) {
+		return undefined;
+	}
+	const parsed = new Date();
+	parsed.setHours(Number(match[1]), Number(match[2]), 0, 0);
+	return parsed;
 };
 
 const resolveDisplayText = (
-	currentDate: Date | undefined,
+	currentTime: Date | undefined,
 	hasPicked: boolean,
 	placeholder: IText | undefined,
 	language: string
 ): string => {
-	if (currentDate || hasPicked) {
-		return (currentDate ?? new Date()).toLocaleDateString(language);
+	if (currentTime || hasPicked) {
+		return (currentTime ?? new Date()).toLocaleTimeString(language, { hour: '2-digit', minute: '2-digit' });
 	}
 	if (placeholder) {
 		return textParser([placeholder]);
@@ -67,44 +73,44 @@ const resolveDisplayColor = (hasValue: boolean, hasError: boolean, theme: Return
 	return themes[theme].fontTitlesLabels;
 };
 
-export const DatePicker = ({ element, language, action, context, loading, value, error }: IDatePicker) => {
+export const TimePicker = ({ element, language, action, context, loading, value, error }: ITimePicker) => {
 	const { theme } = useTheme();
 	const [show, onShow] = useState(false);
-	const initialDate = parseInitialDate(value, element?.initialDate);
+	const initialTime = parseInitialTime(value, element?.initialTime);
 	const placeholder = element?.placeholder;
 
-	const [currentDate, onChangeDate] = useState<Date | undefined>(initialDate);
+	const [currentTime, onChangeTime] = useState<Date | undefined>(initialTime);
 	const [hasPicked, onHasPicked] = useState(false);
-	const initialDateProp = element?.initialDate;
+	const initialTimeProp = element?.initialTime;
 
 	useEffect(() => {
 		if (value) {
-			onChangeDate(parseInitialDate(value));
+			onChangeTime(parseInitialTime(value));
 		} else {
-			onChangeDate(parseInitialDate(initialDateProp));
+			onChangeTime(parseInitialTime(initialTimeProp));
 		}
-		if (!value && !initialDateProp) {
+		if (!value && !initialTimeProp) {
 			onHasPicked(false);
 		}
-	}, [value, initialDateProp]);
+	}, [value, initialTimeProp]);
 
 	const onChange: BaseProps['onChange'] = ({ nativeEvent: { timestamp } }, date?) => {
 		if (date || timestamp) {
-			const newDate = date || new Date(timestamp);
+			const newTime = date || new Date(timestamp);
 			unstable_batchedUpdates(() => {
-				onChangeDate(newDate);
+				onChangeTime(newTime);
 				onHasPicked(true);
 				if (isAndroid) {
 					onShow(false);
 				}
 			});
-			action({ value: dayjs(newDate).format('YYYY-MM-DD') });
+			action({ value: dayjs(newTime).format('HH:mm') });
 		}
 	};
 
-	const displayDate = currentDate ?? new Date();
-	const hasValue = Boolean(currentDate || hasPicked);
-	const displayText = resolveDisplayText(currentDate, hasPicked, placeholder, language);
+	const displayDate = currentTime ?? new Date();
+	const hasValue = Boolean(currentTime || hasPicked);
+	const displayText = resolveDisplayText(currentTime, hasPicked, placeholder, language);
 	const displayColor = resolveDisplayColor(hasValue, Boolean(error), theme);
 
 	let button = placeholder ? <Button title={textParser([placeholder])} onPress={() => onShow(!show)} loading={loading} /> : null;
@@ -122,7 +128,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 						<ActivityIndicator style={[styles.loading, styles.icon]} />
 					) : (
 						<CustomIcon
-							name='calendar'
+							name='clock'
 							size={20}
 							color={error ? themes[theme].buttonBackgroundDangerDefault : themes[theme].fontSecondaryInfo}
 							style={styles.icon}
@@ -135,8 +141,8 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 
 	const content = show ? (
 		<DateTimePicker
-			mode='date'
-			display={isAndroid ? 'default' : 'inline'}
+			mode='time'
+			display={isAndroid ? 'default' : 'spinner'}
 			value={displayDate}
 			onChange={onChange}
 			textColor={themes[theme].fontTitlesLabels}

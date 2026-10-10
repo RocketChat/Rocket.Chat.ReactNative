@@ -114,14 +114,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
   </View>,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "justifyContent": "center",
+      }
     }
   >
     <View
@@ -197,14 +192,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
   </View>,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "flexDirection": "row",
+      }
     }
   >
     <View
@@ -220,7 +210,6 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
             "borderWidth": 1,
             "height": 48,
             "justifyContent": "center",
-            "marginBottom": 16,
             "paddingHorizontal": 16,
           },
         ]
@@ -327,14 +316,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
   </View>,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "flexDirection": "row",
+      }
     }
   >
     <View
@@ -350,7 +334,6 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
             "borderWidth": 1,
             "height": 48,
             "justifyContent": "center",
-            "marginBottom": 16,
             "paddingHorizontal": 16,
           },
         ]
@@ -457,14 +440,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
   </View>,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "flexDirection": "row",
+      }
     }
   >
     <View
@@ -480,7 +458,6 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
             "borderWidth": 1,
             "height": 48,
             "justifyContent": "center",
-            "marginBottom": 16,
             "paddingHorizontal": 16,
           },
         ]
@@ -587,14 +564,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
   </View>,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "flexDirection": "row",
+      }
     }
   >
     <View
@@ -610,7 +582,6 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
             "borderWidth": 1,
             "height": 48,
             "justifyContent": "center",
-            "marginBottom": 16,
             "paddingHorizontal": 16,
           },
         ]
@@ -835,14 +806,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
 [
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "justifyContent": "center",
+      }
     }
   >
     <View
@@ -1061,7 +1027,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
         },
         {
           "alignSelf": "center",
-          "marginBottom": 16,
+          "marginVertical": 8,
           "width": "100%",
         },
         {
@@ -1070,387 +1036,607 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       ]
     }
   />,
-  <View>
-    <View
-      accessibilityLabel="Primary Action"
-      accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
-      collapsable={false}
-      focusable={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        [
-          {
-            "borderRadius": 4,
-            "justifyContent": "center",
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "backgroundColor": "#156FF5",
-          },
-          {
-            "marginBottom": 16,
-          },
-          false,
-        ]
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        Primary Action
-      </Text>
-    </View>
-  </View>,
-  <View>
-    <View
-      accessibilityLabel="Secondary"
-      accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
-      collapsable={false}
-      focusable={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        [
-          {
-            "borderRadius": 4,
-            "justifyContent": "center",
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "backgroundColor": "#156FF5",
-          },
-          {
-            "marginBottom": 16,
-          },
-          false,
-        ]
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        Secondary
-      </Text>
-    </View>
-  </View>,
-  <View>
-    <View
-      accessibilityLabel="Danger Action"
-      accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
-      collapsable={false}
-      focusable={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        [
-          {
-            "borderRadius": 4,
-            "justifyContent": "center",
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "backgroundColor": "#E4E7EA",
-          },
-          {
-            "marginBottom": 16,
-          },
-          false,
-        ]
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        Danger Action
-      </Text>
-    </View>
-  </View>,
-  <View>
-    <View
-      accessibilityLabel="Button 4"
-      accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
-      collapsable={false}
-      focusable={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        [
-          {
-            "borderRadius": 4,
-            "justifyContent": "center",
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "backgroundColor": "#156FF5",
-          },
-          {
-            "marginBottom": 16,
-          },
-          false,
-        ]
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        Button 4
-      </Text>
-    </View>
-  </View>,
-  <View>
-    <View
-      accessibilityLabel="Button 5"
-      accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
-      collapsable={false}
-      focusable={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        [
-          {
-            "borderRadius": 4,
-            "justifyContent": "center",
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "backgroundColor": "#156FF5",
-          },
-          {
-            "marginBottom": 16,
-          },
-          false,
-        ]
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        Button 5
-      </Text>
-    </View>
-  </View>,
   <View
     style={
       {
-        "height": 0,
-        "overflow": "hidden",
+        "gap": 16,
       }
     }
   >
+    <View>
+      <View
+        accessibilityLabel="Primary Action"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            undefined,
+            false,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+            ]
+          }
+        >
+          Primary Action
+        </Text>
+      </View>
+    </View>
+    <View>
+      <View
+        accessibilityLabel="Secondary"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            undefined,
+            false,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+            ]
+          }
+        >
+          Secondary
+        </Text>
+      </View>
+    </View>
+    <View>
+      <View
+        accessibilityLabel="Danger Action"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "backgroundColor": "#EC0D2A",
+            },
+            undefined,
+            false,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+            ]
+          }
+        >
+          Danger Action
+        </Text>
+      </View>
+    </View>
+    <View>
+      <View
+        accessibilityLabel="Button 4"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            undefined,
+            false,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+            ]
+          }
+        >
+          Button 4
+        </Text>
+      </View>
+    </View>
+    <View>
+      <View
+        accessibilityLabel="Button 5"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            undefined,
+            false,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+            ]
+          }
+        >
+          Button 5
+        </Text>
+      </View>
+    </View>
     <View
-      accessibilityLabel="Button 6 - Hidden"
+      style={
+        {
+          "display": "none",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="Button 6 - Hidden"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            undefined,
+            false,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+            ]
+          }
+        >
+          Button 6 - Hidden
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "display": "none",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="Button 7 - Hidden"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            undefined,
+            false,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+            ]
+          }
+        >
+          Button 7 - Hidden
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "display": "none",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="Button 8 - Hidden"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            undefined,
+            false,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+            ]
+          }
+        >
+          Button 8 - Hidden
+        </Text>
+      </View>
+    </View>
+    <View
+      accessibilityLabel="Show more"
       accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
-          "disabled": false,
+          "disabled": undefined,
           "expanded": undefined,
           "selected": undefined,
         }
@@ -1464,6 +1650,8 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
         }
       }
       accessible={true}
+      activeUnderlayOpacity={0.105}
+      animationDuration={0}
       collapsable={false}
       focusable={true}
       onBlur={[Function]}
@@ -1478,290 +1666,52 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       style={
         [
           {
-            "borderRadius": 4,
             "justifyContent": "center",
             "paddingHorizontal": 16,
             "paddingVertical": 14,
           },
           {
-            "backgroundColor": "#156FF5",
-          },
-          {
-            "marginBottom": 16,
-          },
-          false,
-        ]
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        Button 6 - Hidden
-      </Text>
-    </View>
-  </View>,
-  <View
-    style={
-      {
-        "height": 0,
-        "overflow": "hidden",
-      }
-    }
-  >
-    <View
-      accessibilityLabel="Button 7 - Hidden"
-      accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
-      collapsable={false}
-      focusable={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        [
-          {
             "borderRadius": 4,
-            "justifyContent": "center",
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
+            "marginBottom": 12,
           },
           {
             "backgroundColor": "#156FF5",
           },
-          {
-            "marginBottom": 16,
-          },
-          false,
-        ]
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        Button 7 - Hidden
-      </Text>
-    </View>
-  </View>,
-  <View
-    style={
-      {
-        "height": 0,
-        "overflow": "hidden",
-      }
-    }
-  >
-    <View
-      accessibilityLabel="Button 8 - Hidden"
-      accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
-      collapsable={false}
-      focusable={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        [
-          {
-            "borderRadius": 4,
-            "justifyContent": "center",
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "backgroundColor": "#156FF5",
-          },
-          {
-            "marginBottom": 16,
-          },
-          false,
-        ]
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        Button 8 - Hidden
-      </Text>
-    </View>
-  </View>,
-  <View
-    accessibilityLabel="Show more"
-    accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": undefined,
-        "expanded": undefined,
-        "selected": undefined,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    activeUnderlayOpacity={0.105}
-    animationDuration={0}
-    collapsable={false}
-    focusable={true}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "justifyContent": "center",
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
-        },
-        {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "#156FF5",
-        },
-        {},
-        undefined,
-      ]
-    }
-    underlayColor="black"
-  >
-    <Text
-      style={
-        [
-          {
-            "color": "#FFFFFF",
-            "fontSize": 16,
-          },
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontVariant": [
-              "tabular-nums",
-            ],
-            "fontWeight": "500",
-            "textAlign": "center",
-          },
+          {},
           undefined,
         ]
       }
+      underlayColor="black"
     >
-      Show more
-    </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#FFFFFF",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Show more
+      </Text>
+    </View>
   </View>,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "justifyContent": "center",
+      }
     }
   >
     <View
@@ -1982,6 +1932,1435 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
 ]
 `;
 
+exports[`Story Snapshots: ModalChoiceInputs should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "600",
+            "marginVertical": 10,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Checkbox
+    </Text>
+    <View>
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
+        style={
+          [
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          accessibilityRole="checkbox"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          activeUnderlayOpacity={1}
+          animationDuration={0}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              [
+                undefined,
+                {
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                },
+              ],
+              undefined,
+            ]
+          }
+          underlayColor="#E4E7EA"
+        >
+          <View
+            accessibilityLabel="Check me. unchecked"
+            accessibilityRole="checkbox"
+            accessible={true}
+            style={{}}
+            testID="checkbox-check-1"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingVertical": 8,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#9EA2A8",
+                      "fontSize": 22,
+                    },
+                    [
+                      {
+                        "lineHeight": 22,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <View
+                style={
+                  {
+                    "flex": 1,
+                    "marginLeft": 8,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Check me
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </ExternalKeyboardView>
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
+        style={
+          [
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          accessibilityRole="checkbox"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          activeUnderlayOpacity={1}
+          animationDuration={0}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              [
+                undefined,
+                {
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                },
+              ],
+              undefined,
+            ]
+          }
+          underlayColor="#E4E7EA"
+        >
+          <View
+            accessibilityLabel="Me too. unchecked"
+            accessibilityRole="checkbox"
+            accessible={true}
+            style={{}}
+            testID="checkbox-check-2"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingVertical": 8,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#9EA2A8",
+                      "fontSize": 22,
+                    },
+                    [
+                      {
+                        "lineHeight": 22,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <View
+                style={
+                  {
+                    "flex": 1,
+                    "marginLeft": 8,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Me too
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </ExternalKeyboardView>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "600",
+            "marginVertical": 10,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Radio button
+    </Text>
+    <View>
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
+        style={
+          [
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          activeUnderlayOpacity={1}
+          animationDuration={0}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              [
+                undefined,
+                {
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                },
+              ],
+              undefined,
+            ]
+          }
+          underlayColor="#E4E7EA"
+        >
+          <View
+            accessibilityLabel="Pick me. unchecked"
+            accessibilityRole="radio"
+            accessible={true}
+            style={{}}
+            testID="radio-radio-1"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingVertical": 8,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#9EA2A8",
+                      "fontSize": 22,
+                    },
+                    [
+                      {
+                        "lineHeight": 22,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <View
+                style={
+                  {
+                    "flex": 1,
+                    "marginLeft": 8,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Pick me
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </ExternalKeyboardView>
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
+        style={
+          [
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          activeUnderlayOpacity={1}
+          animationDuration={0}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              [
+                undefined,
+                {
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                },
+              ],
+              undefined,
+            ]
+          }
+          underlayColor="#E4E7EA"
+        >
+          <View
+            accessibilityLabel="No, me. unchecked"
+            accessibilityRole="radio"
+            accessible={true}
+            style={{}}
+            testID="radio-radio-2"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingVertical": 8,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#9EA2A8",
+                      "fontSize": 22,
+                    },
+                    [
+                      {
+                        "lineHeight": 22,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <View
+                style={
+                  {
+                    "flex": 1,
+                    "marginLeft": 8,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  No, me
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </ExternalKeyboardView>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "600",
+            "marginVertical": 10,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Toggle switch
+    </Text>
+    <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "paddingVertical": 8,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "flex": 1,
+              "marginRight": 8,
+            }
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                },
+              ]
+            }
+          >
+            Toggle me
+          </Text>
+        </View>
+        <RCTSwitch
+          accessibilityLabel="Toggle me"
+          accessibilityRole="switch"
+          disabled={false}
+          onChange={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          onTintColor="#156FF5"
+          style={
+            {
+              "alignSelf": "flex-start",
+            }
+          }
+          testID="toggle-toggle-1"
+          thumbTintColor="#FFFFFF"
+          tintColor="#9EA2A8"
+          value={false}
+        />
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "600",
+            "marginVertical": 10,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Linear scale
+    </Text>
+    <View
+      style={
+        {
+          "gap": 8,
+          "paddingVertical": 8,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 8,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="1"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "flex": 1,
+              },
+              false,
+            ]
+          }
+          testID="linear-scale-1"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "flex": 1,
+                  "height": 44,
+                  "justifyContent": "center",
+                },
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "#CBCED1",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              1
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="2"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "flex": 1,
+              },
+              false,
+            ]
+          }
+          testID="linear-scale-2"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "flex": 1,
+                  "height": 44,
+                  "justifyContent": "center",
+                },
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "#CBCED1",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              2
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="3"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "flex": 1,
+              },
+              false,
+            ]
+          }
+          testID="linear-scale-3"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "flex": 1,
+                  "height": 44,
+                  "justifyContent": "center",
+                },
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "#CBCED1",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              3
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="4"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "flex": 1,
+              },
+              false,
+            ]
+          }
+          testID="linear-scale-4"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "flex": 1,
+                  "height": 44,
+                  "justifyContent": "center",
+                },
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "#CBCED1",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              4
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="5"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "flex": 1,
+              },
+              false,
+            ]
+          }
+          testID="linear-scale-5"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "flex": 1,
+                  "height": 44,
+                  "justifyContent": "center",
+                },
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "#CBCED1",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              5
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "600",
+            "marginVertical": 10,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Time picker
+    </Text>
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
+      style={
+        [
+          undefined,
+          undefined,
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        activeUnderlayOpacity={1}
+        animationDuration={0}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": undefined,
+              },
+            ],
+            undefined,
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          style={{}}
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "flexDirection": "row",
+                  "height": 48,
+                  "paddingLeft": 16,
+                },
+                {
+                  "borderColor": "#CBCED1",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              Pick a time
+            </Text>
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    {
+                      "position": "absolute",
+                      "right": 16,
+                    },
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </View>
+    </ExternalKeyboardView>
+  </View>,
+]
+`;
+
 exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
 [
   <View
@@ -2028,7 +3407,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
         },
         {
           "alignSelf": "center",
-          "marginBottom": 16,
+          "marginVertical": 8,
           "width": "100%",
         },
         {
@@ -2039,14 +3418,9 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
   />,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "flexDirection": "row",
-        },
-      ]
+      {
+        "flexDirection": "row",
+      }
     }
   >
     <View
@@ -2245,14 +3619,9 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
   </View>,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "flexDirection": "row",
-        },
-      ]
+      {
+        "flexDirection": "row",
+      }
     }
   >
     <View
@@ -2451,14 +3820,9 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
   </View>,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "flexDirection": "row",
-        },
-      ]
+      {
+        "flexDirection": "row",
+      }
     }
   >
     <View
@@ -2801,12 +4165,12 @@ exports[`Story Snapshots: ModalDatePickerWithError should match snapshot 1`] = `
                   "textAlign": "left",
                 },
                 {
-                  "color": "#D40C26",
+                  "color": "#6C727A",
                 },
               ]
             }
           >
-            Invalid Date
+            Select a date
           </Text>
           <Text
             allowFontScaling={false}
@@ -3229,12 +4593,12 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
                     "textAlign": "left",
                   },
                   {
-                    "color": "#1F2329",
+                    "color": "#6C727A",
                   },
                 ]
               }
             >
-              Invalid Date
+              Select a date
             </Text>
             <Text
               allowFontScaling={false}
@@ -3313,14 +4677,9 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
   </View>,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "flexDirection": "row",
+      }
     }
   >
     <View
@@ -3436,9 +4795,7 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
           {
             "backgroundColor": "#156FF5",
           },
-          {
-            "marginBottom": 16,
-          },
+          undefined,
           false,
         ]
       }
@@ -3473,7 +4830,7 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
         },
         {
           "alignSelf": "center",
-          "marginBottom": 16,
+          "marginVertical": 8,
           "width": "100%",
         },
         {
@@ -3806,14 +5163,9 @@ exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
   </View>,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "justifyContent": "center",
+      }
     }
   >
     <View
@@ -3970,14 +5322,9 @@ exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
   </View>,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "justifyContent": "center",
+      }
     }
   >
     <View
@@ -4594,164 +5941,124 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
     >
       Share with...
     </Text>
-    <ExternalKeyboardView
-      canBeFocused={true}
-      enableA11yFocus={false}
-      enableContextMenu={false}
-      group={false}
-      haloEffect={true}
-      hasKeyDownPress={false}
-      hasKeyUpPress={true}
-      hasOnFocusChanged={true}
-      lockFocus={0}
-      onContextMenuPress={[Function]}
-      onFocusChange={[Function]}
-      onKeyUpPress={[Function]}
-      orderIndex={-1}
-      screenAutoA11yFocusDelay={300}
+    <View
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+          {
+            "borderRadius": 4,
+          },
           undefined,
-          undefined,
+          false,
         ]
       }
     >
       <View
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        activeUnderlayOpacity={1}
-        animationDuration={0}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
           [
-            [
-              undefined,
-              {
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "backgroundColor": "#FFFFFF",
-                "borderRadius": 4,
-              },
-            ],
+            {
+              "alignItems": "center",
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "minHeight": 48,
+              "paddingBottom": 0,
+              "paddingHorizontal": 8,
+            },
+            {
+              "borderRadius": 4,
+            },
+            {
+              "borderColor": "#9EA2A8",
+            },
             undefined,
           ]
         }
-        underlayColor="#E4E7EA"
       >
-        <View
-          style={{}}
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "paddingLeft": 6,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
         >
-          <View
-            style={
+          Search
+        </Text>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 22,
+              },
               [
                 {
-                  "alignItems": "center",
-                  "borderWidth": 1,
-                  "flexDirection": "row",
-                  "minHeight": 48,
-                  "paddingBottom": 0,
-                  "paddingHorizontal": 8,
+                  "lineHeight": 22,
                 },
                 {
-                  "borderRadius": 4,
+                  "position": "absolute",
+                  "right": 16,
                 },
-                {
-                  "borderColor": "#9EA2A8",
-                },
-                undefined,
-              ]
-            }
-          >
-            <Text
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontVariant": [
-                      "tabular-nums",
-                    ],
-                    "fontWeight": "400",
-                    "paddingLeft": 6,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#6C727A",
-                  },
-                ]
-              }
-            >
-              Search
-            </Text>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#6C727A",
-                    "fontSize": 22,
-                  },
-                  [
-                    {
-                      "lineHeight": 22,
-                    },
-                    {
-                      "position": "absolute",
-                      "right": 16,
-                    },
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </View>
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
       </View>
-    </ExternalKeyboardView>
+    </View>
     <Text
       style={
         [
@@ -4803,263 +6110,156 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
     >
       Share with...
     </Text>
-    <ExternalKeyboardView
-      canBeFocused={true}
-      enableA11yFocus={false}
-      enableContextMenu={false}
-      group={false}
-      haloEffect={true}
-      hasKeyDownPress={false}
-      hasKeyUpPress={true}
-      hasOnFocusChanged={true}
-      lockFocus={0}
-      onContextMenuPress={[Function]}
-      onFocusChange={[Function]}
-      onKeyUpPress={[Function]}
-      orderIndex={-1}
-      screenAutoA11yFocusDelay={300}
+    <View
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+          {
+            "borderRadius": 4,
+          },
           undefined,
-          undefined,
+          false,
         ]
       }
     >
       <View
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        activeUnderlayOpacity={1}
-        animationDuration={0}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
           [
-            [
-              undefined,
-              {
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "backgroundColor": "#FFFFFF",
-                "borderRadius": 4,
-              },
-            ],
+            {
+              "alignItems": "center",
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "minHeight": 48,
+              "paddingBottom": 0,
+              "paddingHorizontal": 8,
+            },
+            {
+              "borderRadius": 4,
+            },
+            {
+              "borderColor": "#9EA2A8",
+            },
             undefined,
           ]
         }
-        underlayColor="#E4E7EA"
       >
         <View
-          style={{}}
+          style={
+            {
+              "flexDirection": "row",
+              "flexWrap": "wrap",
+              "marginRight": 50,
+              "paddingTop": 8,
+            }
+          }
         >
           <View
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
               [
                 {
                   "alignItems": "center",
-                  "borderWidth": 1,
+                  "borderRadius": 2,
                   "flexDirection": "row",
-                  "minHeight": 48,
-                  "paddingBottom": 0,
-                  "paddingHorizontal": 8,
+                  "height": 28,
+                  "marginBottom": 8,
+                  "marginRight": 8,
+                  "paddingHorizontal": 4,
                 },
                 {
-                  "borderRadius": 4,
-                },
-                {
-                  "borderColor": "#9EA2A8",
+                  "backgroundColor": "#F2F3F5",
                 },
                 undefined,
+                false,
               ]
             }
+            testID="multi-select-chip-1"
           >
-            <View
+            <Text
+              numberOfLines={1}
               style={
-                {
-                  "flexDirection": "row",
-                  "flexWrap": "wrap",
-                  "marginRight": 50,
-                  "paddingTop": 8,
-                }
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "500",
+                    "paddingHorizontal": 8,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
               }
             >
-              <ExternalKeyboardView
-                canBeFocused={true}
-                enableA11yFocus={false}
-                enableContextMenu={false}
-                group={false}
-                haloEffect={true}
-                hasKeyDownPress={false}
-                hasKeyUpPress={true}
-                hasOnFocusChanged={true}
-                lockFocus={0}
-                onContextMenuPress={[Function]}
-                onFocusChange={[Function]}
-                onKeyUpPress={[Function]}
-                orderIndex={-1}
-                screenAutoA11yFocusDelay={300}
-                style={
-                  [
-                    undefined,
-                    undefined,
-                  ]
-                }
-              >
-                <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  activeUnderlayOpacity={1}
-                  animationDuration={0}
-                  collapsable={false}
-                  focusable={true}
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onFocus={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
-                  style={
-                    [
-                      [
-                        undefined,
-                        {
-                          "margin": undefined,
-                          "marginBottom": 8,
-                          "marginEnd": undefined,
-                          "marginHorizontal": undefined,
-                          "marginLeft": undefined,
-                          "marginRight": 8,
-                          "marginStart": undefined,
-                          "marginTop": undefined,
-                          "marginVertical": undefined,
-                        },
-                        {
-                          "backgroundColor": "#F2F3F5",
-                          "borderRadius": 2,
-                        },
-                      ],
-                      undefined,
-                    ]
-                  }
-                  underlayColor="#E4E7EA"
-                >
-                  <View
-                    style={
-                      {
-                        "alignItems": "center",
-                        "flexDirection": "row",
-                        "height": 28,
-                        "paddingHorizontal": 4,
-                      }
-                    }
-                    testID="multi-select-chip-1"
-                  >
-                    <Text
-                      numberOfLines={1}
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontSize": 14,
-                            "fontVariant": [
-                              "tabular-nums",
-                            ],
-                            "fontWeight": "500",
-                            "paddingHorizontal": 8,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#1F2329",
-                          },
-                        ]
-                      }
-                    >
-                      John
-                    </Text>
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#6C727A",
-                            "fontSize": 16,
-                          },
-                          [
-                            {
-                              "lineHeight": 16,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </View>
-                </View>
-              </ExternalKeyboardView>
-            </View>
+              John
+            </Text>
             <Text
               allowFontScaling={false}
               selectable={false}
@@ -5067,16 +6267,13 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
                 [
                   {
                     "color": "#6C727A",
-                    "fontSize": 22,
+                    "fontSize": 16,
                   },
                   [
                     {
-                      "lineHeight": 22,
+                      "lineHeight": 16,
                     },
-                    {
-                      "position": "absolute",
-                      "right": 16,
-                    },
+                    undefined,
                   ],
                   {
                     "fontFamily": "custom",
@@ -5087,12 +6284,41 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
         </View>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 22,
+              },
+              [
+                {
+                  "lineHeight": 22,
+                },
+                {
+                  "position": "absolute",
+                  "right": 16,
+                },
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
       </View>
-    </ExternalKeyboardView>
+    </View>
     <Text
       style={
         [
@@ -5256,18 +6482,96 @@ exports[`Story Snapshots: ModalMultilneWithError should match snapshot 1`] = `
 </View>
 `;
 
+exports[`Story Snapshots: ModalPreviewCallout should match snapshot 1`] = `
+<View
+  style={
+    [
+      {
+        "borderLeftWidth": 4,
+        "borderRadius": 4,
+        "gap": 8,
+        "padding": 12,
+      },
+      {
+        "backgroundColor": "#FFECAD",
+        "borderLeftColor": "#8E6300",
+      },
+    ]
+  }
+>
+  <View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            accessibilityLabel="Warning callout inside a modal."
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Warning callout inside a modal.
+          </Text>
+        </Text>
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
 exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
 [
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "flexDirection": "row",
-        },
-      ]
+      {
+        "flexDirection": "row",
+      }
     }
   >
     <View
@@ -5691,7 +6995,7 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
         },
         {
           "alignSelf": "center",
-          "marginBottom": 16,
+          "marginVertical": 8,
           "width": "100%",
         },
         {
@@ -5702,14 +7006,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
   />,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "justifyContent": "center",
+      }
     }
   >
     <View
@@ -5876,14 +7175,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
   </View>,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "justifyContent": "center",
+      }
     }
   >
     <View
@@ -6050,14 +7344,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
   </View>,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "justifyContent": "center",
+      }
     }
   >
     <View
@@ -6224,14 +7513,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
   </View>,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "justifyContent": "center",
+      }
     }
   >
     <View
@@ -6403,14 +7687,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
 [
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "justifyContent": "center",
+      }
     }
   >
     <View
@@ -6644,7 +7923,7 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
         },
         {
           "alignSelf": "center",
-          "marginBottom": 16,
+          "marginVertical": 8,
           "width": "100%",
         },
         {
@@ -6655,14 +7934,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
   />,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "justifyContent": "center",
+      }
     }
   >
     <Text
@@ -7006,14 +8280,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
   </View>,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "justifyContent": "center",
+      }
     }
   >
     <Text
