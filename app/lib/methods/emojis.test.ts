@@ -1,5 +1,7 @@
 import database from '../database';
 import { DEFAULT_EMOJIS } from '../constants/emojis/emojis';
+import migrations from '../database/model/migrations';
+import appSchema from '../database/schema/app';
 import { addFrequentlyUsed, getFrequentlyUsedEmojis, searchEmojis } from './emojis';
 
 jest.mock('../database', () => ({
@@ -147,5 +149,19 @@ describe('searchEmojis', () => {
 		mockFetch.mockResolvedValue([{ name: 'rocketchat', extension: 'png' }]);
 
 		await expect(searchEmojis('notanemoji')).resolves.toEqual([{ name: 'rocketchat', extension: 'png' }]);
+	});
+});
+
+describe('frequently_used_emojis migration', () => {
+	it('bumps the schema to v31 with a matching migration', () => {
+		expect(appSchema.version).toBe(31);
+		expect((migrations as any).maxVersion).toBe(31);
+	});
+
+	it('v29 deletes only legacy rows whose id contains a non-printable-ASCII character', () => {
+		const v29 = (migrations as any).sortedMigrations.find((m: any) => m.toVersion === 29);
+		expect(v29).toBeDefined();
+		const sqls = (v29.steps as any[]).filter(s => s.type === 'sql').map(s => s.sql);
+		expect(sqls.some(sql => /DELETE FROM frequently_used_emojis/i.test(sql) && /\[\^ -~\]/.test(sql))).toBe(true);
 	});
 });

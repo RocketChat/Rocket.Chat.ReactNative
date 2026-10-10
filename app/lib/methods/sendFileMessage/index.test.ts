@@ -12,8 +12,7 @@ const args: Parameters<typeof sendFileMessage> = [
 	{ name: 'a.jpg' } as any,
 	undefined,
 	'https://open.rocket.chat',
-	{ id: 'u1', token: 't1' },
-	undefined
+	{ id: 'u1', token: 't1' }
 ];
 
 describe('sendFileMessage selector', () => {
@@ -22,11 +21,9 @@ describe('sendFileMessage selector', () => {
 	it('server < 6.10.0 dispatches sendFileMessageV1, forwarding all args', async () => {
 		(store.getState as jest.Mock).mockReturnValue({ server: { version: '6.9.0' } });
 		(sendFileMessageV1 as jest.Mock).mockResolvedValue(undefined);
-		const fullArgs: Parameters<typeof sendFileMessage> = [...args];
-		fullArgs[5] = true;
 
-		await expect(sendFileMessage(...fullArgs)).resolves.toBeUndefined();
-		expect(sendFileMessageV1).toHaveBeenCalledWith(...fullArgs);
+		await expect(sendFileMessage(...args)).resolves.toBeUndefined();
+		expect(sendFileMessageV1).toHaveBeenCalledWith(...args);
 		expect(sendFileMessageV2).not.toHaveBeenCalled();
 	});
 

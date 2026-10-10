@@ -1,7 +1,7 @@
 import * as FileSystem from 'expo-file-system/legacy';
 
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
-import { type IFormData } from './definitions';
+import { type IFormData, UploadHttpError, getRetryAfterFromHeaders, parseUploadErrorBody } from './definitions';
 
 export class Upload {
 	private uploadUrl: string;
@@ -45,11 +45,12 @@ export class Upload {
 	}
 
 	public send(): Promise<TRoomsMediaResponse> {
-		return new Promise(async (resolve, reject) => {
+		return new Promise((resolve, reject) => {
+			if (!this.file) {
+				reject(new Error('No file to upload'));
+				return;
+			}
 			try {
-				if (!this.file) {
-					return reject();
-				}
 				this.uploadTask = FileSystem.createUploadTask(
 					this.uploadUrl,
 					this.file.uri,
@@ -68,18 +69,34 @@ export class Upload {
 					}
 				);
 
-				const response = await this.uploadTask.uploadAsync();
-				if (response && response.status >= 200 && response.status < 400) {
-					resolve(JSON.parse(response.body));
-				} else {
-					reject(new Error(`Error: ${response?.status}`));
-				}
+				this.uploadTask
+					.uploadAsync()
+					.then(response => {
+						if (!response || response.status === undefined || response.status === null) {
+							reject(new Error('Upload failed: no response'));
+							return;
+						}
+						if (response.status >= 200 && response.status < 300) {
+							try {
+								resolve(JSON.parse(response.body));
+							} catch {
+								reject(new Error('Upload failed: invalid server response'));
+							}
+							return;
+						}
+						const { serverMessage, body } = parseUploadErrorBody(response.body);
+						const retryAfterSeconds = getRetryAfterFromHeaders(response.headers);
+						reject(new UploadHttpError(response.status, { serverMessage, body, retryAfterSeconds }));
+					})
+					.catch((error: unknown) => {
+						if (this.isCancelled) {
+							reject(new Error('Upload cancelled'));
+						} else {
+							reject(error);
+						}
+					});
 			} catch (error) {
-				if (this.isCancelled) {
-					reject(new Error('Upload cancelled'));
-				} else {
-					reject(error);
-				}
+				reject(error);
 			}
 		});
 	}

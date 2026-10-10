@@ -365,6 +365,18 @@ export default schemaMigrations({
 				}),
 				unsafeExecuteSql(`INSERT OR REPLACE INTO local_storage (key, value) VALUES ('${FULL_ROOMS_SYNC_KEY}', 'true');`)
 			]
+		},
+		{
+			toVersion: 31,
+			steps: [
+				addColumns({
+					table: 'uploads',
+					columns: [
+						{ name: 'error_status', type: 'number', isOptional: true },
+						{ name: 'error_message', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

@@ -1,5 +1,5 @@
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
-import { type IFormData } from './definitions';
+import { type IFormData, UploadHttpError, parseRetryAfter, parseUploadErrorBody } from './definitions';
 
 export class Upload {
 	private xhr: XMLHttpRequest;
@@ -60,10 +60,16 @@ export class Upload {
 	public send(): Promise<TRoomsMediaResponse> {
 		return new Promise((resolve, reject) => {
 			this.xhr.onload = () => {
-				if (this.xhr.status >= 200 && this.xhr.status < 400) {
-					resolve(JSON.parse(this.xhr.responseText));
+				if (this.xhr.status >= 200 && this.xhr.status < 300) {
+					try {
+						resolve(JSON.parse(this.xhr.responseText));
+					} catch {
+						reject(new Error('Upload failed: invalid server response'));
+					}
 				} else {
-					reject(new Error(`Error: ${this.xhr.statusText}`));
+					const { serverMessage, body } = parseUploadErrorBody(this.xhr.responseText);
+					const retryAfterSeconds = parseRetryAfter(this.xhr.getResponseHeader('Retry-After'));
+					reject(new UploadHttpError(this.xhr.status, { serverMessage, body, retryAfterSeconds }));
 				}
 			};
 
