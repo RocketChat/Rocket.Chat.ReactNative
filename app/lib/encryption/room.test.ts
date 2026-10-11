@@ -1152,7 +1152,7 @@ describe('handshake', () => {
 		expect(mockE2eRequestRoomKey).not.toHaveBeenCalled();
 	});
 
-	it('imports and accepts a suggested group key, discarding the cached room instance (without resolving readiness)', async () => {
+	it('imports and accepts a suggested group key, discarding the cached room instance once it is ready', async () => {
 		const room = createRoom({ privateKey: 'priv' });
 		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true, E2ESuggestedKey: 'suggested-key' });
 		jest
@@ -1166,7 +1166,7 @@ describe('handshake', () => {
 		expect(mockE2eAcceptSuggestedGroupKey).toHaveBeenCalledWith('room1');
 		expect(mockE2eRejectSuggestedGroupKey).not.toHaveBeenCalled();
 		expect(room.encryption.deleteRoomInstance).toHaveBeenCalledWith('room1');
-		expect(room.ready).toBe(false);
+		expect(room.ready).toBe(true);
 	});
 
 	it('rejects the suggested group key and falls through to the E2EKey when accepting it fails', async () => {
@@ -1236,6 +1236,31 @@ describe('handshake', () => {
 		expect(createRoomKeySpy).toHaveBeenCalled();
 		expect(room.encryption.deleteRoomInstance).toHaveBeenCalledWith('room1');
 		expect(mockE2eRequestRoomKey).not.toHaveBeenCalled();
+		expect(room.ready).toBe(true);
+	});
+
+	it('releases a concurrent handshake once the brand new room key is created', async () => {
+		const room = createRoom({ privateKey: 'priv' });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+		let finishCreatingKey = () => {};
+		let markCreatingStarted = () => {};
+		const creatingStarted = new Promise<void>(resolve => {
+			markCreatingStarted = resolve;
+		});
+		jest.spyOn(room, 'createRoomKey').mockImplementation(() => {
+			markCreatingStarted();
+			return new Promise<void>(resolve => {
+				finishCreatingKey = resolve;
+			});
+		});
+
+		const creating = room.handshake();
+		await creatingStarted;
+		const waiting = room.handshake();
+		finishCreatingKey();
+
+		await Promise.all([creating, waiting]);
+		expect(room.ready).toBe(true);
 	});
 
 	it('requests the room key from other participants when a keyId exists but no key material does', async () => {

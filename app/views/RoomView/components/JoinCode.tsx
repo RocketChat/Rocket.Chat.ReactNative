@@ -1,5 +1,5 @@
-import { memo, useImperativeHandle, useState } from 'react';
-import { InteractionManager, StyleSheet, Text, type TextInput, View } from 'react-native';
+import { memo, useImperativeHandle, useRef, useState } from 'react';
+import { StyleSheet, Text, type TextInput, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -48,6 +48,7 @@ const JoinCode = memo(({ rid, t, onJoin, ref }: IJoinCodeProps) => {
 	const [visible, setVisible] = useState(false);
 	const [error, setError] = useState(false);
 	const [code, setCode] = useState('');
+	const inputRef = useRef<TextInput | null>(null);
 
 	const show = () => setVisible(true);
 
@@ -66,7 +67,12 @@ const JoinCode = memo(({ rid, t, onJoin, ref }: IJoinCodeProps) => {
 	useImperativeHandle(ref, () => ({ show }));
 
 	return (
-		<Modal avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
+		<Modal
+			avoidKeyboard
+			useNativeDriver
+			isVisible={visible}
+			hideModalContentWhileAnimating
+			onModalShow={() => inputRef.current?.focus()}>
 			<GestureHandlerRootView style={styles.container} testID='join-code'>
 				<View
 					style={[
@@ -77,13 +83,7 @@ const JoinCode = memo(({ rid, t, onJoin, ref }: IJoinCodeProps) => {
 					<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('Insert_Join_Code')}</Text>
 					<FormTextInput
 						value={code}
-						inputRef={(e: TextInput | null) => {
-							if (e) {
-								InteractionManager.runAfterInteractions(() => {
-									e.focus();
-								});
-							}
-						}}
+						inputRef={inputRef}
 						returnKeyType='send'
 						autoCapitalize='none'
 						onChangeText={setCode}

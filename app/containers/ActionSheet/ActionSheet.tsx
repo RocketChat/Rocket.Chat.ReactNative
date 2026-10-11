@@ -1,6 +1,6 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
-import { forwardRef, isValidElement, useImperativeHandle, useRef, useState, memo, type ReactElement } from 'react';
+import { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState, memo, type ReactElement } from 'react';
 import {
 	AccessibilityInfo,
 	findNodeHandle,
@@ -38,20 +38,55 @@ const ActionSheet = memo(
 
 		const itemHeight = useActionSheetItemHeight();
 
+		const dismissingRef = useRef(false);
+		const pendingOptionsRef = useRef<TActionSheetOptions | null>(null);
+		const presentedRef = useRef(false);
+		const pendingPresentTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+		useEffect(() => () => clearTimeout(pendingPresentTimeoutRef.current), []);
+
 		const hide = () => {
-			if (!isVisible) return;
-			sheetRef.current?.dismiss();
+			pendingOptionsRef.current = null;
+			clearTimeout(pendingPresentTimeoutRef.current);
+			if (!isVisible || dismissingRef.current) return;
+			dismissingRef.current = true;
+			if (presentedRef.current) {
+				sheetRef.current?.dismiss();
+			}
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		};
 
-		const show = (options: TActionSheetOptions) => {
+		const onDidDismiss = () => {
+			dismissingRef.current = false;
+			presentedRef.current = false;
+			setIsVisible(false);
+			// Keep contentHeight to avoid flickering on next show
+			const snapshotOnClose = onCloseSnapshotRef.current;
+			onCloseSnapshotRef.current = undefined;
+			snapshotOnClose?.();
+			const pendingOptions = pendingOptionsRef.current;
+			pendingOptionsRef.current = null;
+			if (pendingOptions) {
+				pendingPresentTimeoutRef.current = setTimeout(() => present(pendingOptions));
+			}
+		};
+
+		const present = (options: TActionSheetOptions) => {
 			setData(options);
 			setIsVisible(true);
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 			onCloseSnapshotRef.current = options.onClose;
-			sheetRef.current?.present();
+			sheetRef.current?.present().catch(onDidDismiss);
+		};
+
+		const show = (options: TActionSheetOptions) => {
+			if (dismissingRef.current) {
+				pendingOptionsRef.current = options;
+				return;
+			}
+			present(options);
 		};
 
 		useBackHandler(() => {
@@ -72,6 +107,11 @@ const ActionSheet = memo(
 		};
 
 		const onDidPresent = () => {
+			presentedRef.current = true;
+			if (dismissingRef.current) {
+				sheetRef.current?.dismiss();
+				return;
+			}
 			// On Android the bottom sheet is hosted in a separate window; TalkBack
 			// needs a moment after the present animation before it can target nodes
 			// inside it, so defer the focus call slightly.
@@ -88,14 +128,6 @@ const ActionSheet = memo(
 				{isValidElement(data?.customHeader) ? data.customHeader : null}
 			</GestureHandlerRootView>
 		);
-
-		const onDidDismiss = () => {
-			setIsVisible(false);
-			// Keep contentHeight to avoid flickering on next show
-			const snapshotOnClose = onCloseSnapshotRef.current;
-			onCloseSnapshotRef.current = undefined;
-			snapshotOnClose?.();
-		};
 
 		const isPortrait = windowHeight > windowWidth;
 		const effectiveSnaps = (isPortrait ? data?.portraitSnaps : data?.landscapeSnaps) || data?.snaps;

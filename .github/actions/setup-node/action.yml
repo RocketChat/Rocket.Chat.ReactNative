@@ -1,5 +1,10 @@
 name: Setup Node
 description: Setup node and pnpm via corepack, with pnpm store cache
+inputs:
+  node-version:
+    description: Node version to use instead of the one pinned in package.json, such as a major the runner image already has
+    required: false
+    default: ''
 runs:
   using: "composite"
   steps:
@@ -9,7 +14,8 @@ runs:
 
     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
       with:
-        node-version-file: 'package.json'
+        node-version: ${{ inputs.node-version }}
+        node-version-file: ${{ inputs.node-version == '' && 'package.json' || '' }}
         cache: 'pnpm'
 
     - name: Install JS dependencies
