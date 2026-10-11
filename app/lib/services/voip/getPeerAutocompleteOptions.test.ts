@@ -39,7 +39,7 @@ const mockUsersAutoCompleteResponse = (
 describe('getPeerAutocompleteOptions', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		setServerVersion('8.10.0');
+		setServerVersion('8.9.0');
 	});
 
 	it('returns empty array and skips API call when filter is empty', async () => {
@@ -353,7 +353,6 @@ describe('getPeerAutocompleteOptions', () => {
 	});
 
 	it('server < 9.0.0: maps callerId from freeSwitchExtension', async () => {
-		setServerVersion('8.9.0');
 		mockedUsersAutoComplete.mockResolvedValue(
 			mockUsersAutoCompleteResponse([{ _id: 'u1', name: 'Alice', username: 'alice', freeSwitchExtension: '1001' }])
 		);
