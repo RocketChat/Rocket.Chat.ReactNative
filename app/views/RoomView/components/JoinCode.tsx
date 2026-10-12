@@ -1,6 +1,7 @@
 import { memo, useImperativeHandle, useState } from 'react';
 import { InteractionManager, StyleSheet, Text, type TextInput, View } from 'react-native';
 import Modal from 'react-native-modal';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import I18n from '~/i18n';
@@ -13,6 +14,9 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { type IJoinCodeProps } from '../definitions';
 
 const styles = StyleSheet.create({
+	keyboardAvoiding: {
+		flex: 1
+	},
 	container: {
 		flex: 1,
 		justifyContent: 'center',
@@ -66,52 +70,54 @@ const JoinCode = memo(({ rid, t, onJoin, ref }: IJoinCodeProps) => {
 	useImperativeHandle(ref, () => ({ show }));
 
 	return (
-		<Modal avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
-			<GestureHandlerRootView style={styles.container} testID='join-code'>
-				<View
-					style={[
-						styles.content,
-						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
-						{ backgroundColor: colors.surfaceRoom }
-					]}>
-					<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('Insert_Join_Code')}</Text>
-					<FormTextInput
-						value={code}
-						inputRef={(e: TextInput | null) => {
-							if (e) {
-								InteractionManager.runAfterInteractions(() => {
-									e.focus();
-								});
-							}
-						}}
-						returnKeyType='send'
-						autoCapitalize='none'
-						onChangeText={setCode}
-						onSubmitEditing={handleJoinRoom}
-						placeholder={I18n.t('Join_Code')}
-						secureTextEntry
-						error={error ? { error: 'error-code-invalid', reason: I18n.t('Code_or_password_invalid') } : undefined}
-						testID='join-code-input'
-					/>
-					<View style={styles.buttonContainer}>
-						<Button
-							title={I18n.t('Cancel')}
-							type='secondary'
-							style={styles.button}
-							backgroundColor={colors.surfaceTint}
-							testID='join-code-cancel'
-							onPress={hide}
+		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
+			<KeyboardAvoidingView behavior='padding' style={styles.keyboardAvoiding}>
+				<GestureHandlerRootView style={styles.container} testID='join-code'>
+					<View
+						style={[
+							styles.content,
+							isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
+							{ backgroundColor: colors.surfaceRoom }
+						]}>
+						<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('Insert_Join_Code')}</Text>
+						<FormTextInput
+							value={code}
+							inputRef={(e: TextInput | null) => {
+								if (e) {
+									InteractionManager.runAfterInteractions(() => {
+										e.focus();
+									});
+								}
+							}}
+							returnKeyType='send'
+							autoCapitalize='none'
+							onChangeText={setCode}
+							onSubmitEditing={handleJoinRoom}
+							placeholder={I18n.t('Join_Code')}
+							secureTextEntry
+							error={error ? { error: 'error-code-invalid', reason: I18n.t('Code_or_password_invalid') } : undefined}
+							testID='join-code-input'
 						/>
-						<Button
-							title={I18n.t('Join')}
-							type='primary'
-							style={styles.button}
-							testID='join-code-submit'
-							onPress={handleJoinRoom}
-						/>
+						<View style={styles.buttonContainer}>
+							<Button
+								title={I18n.t('Cancel')}
+								type='secondary'
+								style={styles.button}
+								backgroundColor={colors.surfaceTint}
+								testID='join-code-cancel'
+								onPress={hide}
+							/>
+							<Button
+								title={I18n.t('Join')}
+								type='primary'
+								style={styles.button}
+								testID='join-code-submit'
+								onPress={handleJoinRoom}
+							/>
+						</View>
 					</View>
-				</View>
-			</GestureHandlerRootView>
+				</GestureHandlerRootView>
+			</KeyboardAvoidingView>
 		</Modal>
 	);
 });
