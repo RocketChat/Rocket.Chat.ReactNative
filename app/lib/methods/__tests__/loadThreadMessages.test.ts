@@ -674,6 +674,63 @@ describe('thread message pagination', () => {
 		expect(threadsCreated.map((r: any) => r._id)).toEqual([thread.tmid]);
 	});
 
+	it('requests the thread parent again when the page failed after the parent was fetched', async () => {
+		const parentMessage = { ...buildParent(new Date('2026-01-02'), []), _id: thread.tmid };
+		[1, 2, 3].forEach(() => mockedGetState.mockReturnValueOnce({ server: { version: '8.8.0' } }));
+		mockedGetThreadMessages
+			.mockResolvedValueOnce(page(4, 'R1'))
+			.mockRejectedValueOnce(new Error('500'))
+			.mockResolvedValueOnce(page(4, 'R2'));
+		mockedGetSingleMessage
+			.mockRejectedValueOnce(new Error('429'))
+			.mockResolvedValueOnce({ success: true, message: parentMessage })
+			.mockResolvedValueOnce({ success: true, message: parentMessage });
+		await loadThreadMessages(thread);
+		await loadOlderThreadMessages(thread);
+		expect(threadsCreated).toHaveLength(0);
+
+		await loadOlderThreadMessages(thread);
+
+		expect(mockedGetSingleMessage).toHaveBeenCalledTimes(3);
+		expect(threadsCreated.map((r: any) => r._id)).toEqual([thread.tmid]);
+	});
+
+	it('requests the thread parent again when the page failed before the parent request finished', async () => {
+		const parentMessage = { ...buildParent(new Date('2026-01-02'), []), _id: thread.tmid };
+		[1, 2, 3].forEach(() => mockedGetState.mockReturnValueOnce({ server: { version: '8.8.0' } }));
+		let releaseParent!: (result: unknown) => void;
+		mockedGetThreadMessages
+			.mockResolvedValueOnce(page(4, 'R1'))
+			.mockRejectedValueOnce(new Error('500'))
+			.mockResolvedValueOnce(page(4, 'R2'));
+		mockedGetSingleMessage
+			.mockRejectedValueOnce(new Error('429'))
+			.mockReturnValueOnce(new Promise(resolve => (releaseParent = resolve)))
+			.mockResolvedValueOnce({ success: true, message: parentMessage });
+		await loadThreadMessages(thread);
+		const failed = loadOlderThreadMessages(thread);
+		await flushPromises();
+		releaseParent({ success: true, message: parentMessage });
+		await failed;
+		expect(threadsCreated).toHaveLength(0);
+
+		await loadOlderThreadMessages(thread);
+
+		expect(mockedGetSingleMessage).toHaveBeenCalledTimes(3);
+		expect(threadsCreated.map((r: any) => r._id)).toEqual([thread.tmid]);
+	});
+
+	it('does not reload the first page once a retry brought the thread parent with the page', async () => {
+		mockedGetThreadMessages.mockRejectedValueOnce(new Error('500'));
+		await loadThreadMessages(thread);
+		await loadFirstPage(1, 'R1');
+		mockedGetThreadMessages.mockClear();
+
+		await loadOlderThreadMessages(thread);
+
+		expect(mockedGetThreadMessages).not.toHaveBeenCalled();
+	});
+
 	it('reloads the first page for a fully paged thread whose parent could not be fetched', async () => {
 		mockedGetThreadMessages.mockResolvedValueOnce(page(1, 'R1')).mockResolvedValueOnce(page(1, 'R1'));
 		mockedGetSingleMessage

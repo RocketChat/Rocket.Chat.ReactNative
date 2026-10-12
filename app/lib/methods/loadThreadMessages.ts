@@ -196,14 +196,17 @@ const fetchThreadParent = async (tmid: string, pager: IThreadPager): Promise<IMe
 
 const fetchPage = async (thread: IThreadLocation, pager: IThreadPager, requestedOffset: number): Promise<boolean> => {
 	const previous = pager.state;
+	const wantsParent = requestedOffset === 0 || pager.parentMissing;
+	const parentRequest =
+		wantsParent && compareServerVersion(reduxStore.getState().server.version, 'greaterThanOrEqualTo', '8.8.0')
+			? fetchThreadParent(thread.tmid, pager)
+			: null;
 	try {
-		const wantsParent = requestedOffset === 0 || pager.parentMissing;
-		const parentRequest =
-			wantsParent && compareServerVersion(reduxStore.getState().server.version, 'greaterThanOrEqualTo', '8.8.0')
-				? fetchThreadParent(thread.tmid, pager)
-				: null;
 		const { messages, total, threadParent: pageParent, offset } = await requestPage(thread.tmid, requestedOffset, previous);
 		const threadParent = wantsParent ? (pageParent ?? (await (parentRequest ?? fetchThreadParent(thread.tmid, pager)))) : null;
+		if (pageParent) {
+			pager.parentMissing = false;
+		}
 		if (pagination.get(thread.tmid) !== pager) {
 			return false;
 		}
@@ -223,6 +226,10 @@ const fetchPage = async (thread: IThreadLocation, pager: IThreadPager, requested
 	} catch (e) {
 		log(e);
 		pager.state = previous;
+		if (wantsParent) {
+			await parentRequest;
+			pager.parentMissing = true;
+		}
 		return false;
 	}
 };
