@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '~/views/RoomView/definitions';
 import { type TAnyMessageModel } from '~/definitions';
-import { MAX_SCROLL_TO_INDEX_RETRIES } from '../constants';
+import { MAX_SCROLL_TO_INDEX_RETRIES, MAX_THREAD_SCROLL_TO_INDEX_RETRIES } from '../constants';
 
 // Abort a jump whose target never re-observes within this window: release the anchor, drop to the Live
 // Tail, resolve the jump. Does not cancel an in-flight scroll — completion is reactive on re-observe.
@@ -222,7 +222,7 @@ export const useScroll = ({
 	// unmeasurable target gives up.
 	const handleScrollToIndexFailed: IListProps['onScrollToIndexFailed'] = params => {
 		// Per-jump cap, reset only at jump start; resetting here would let a later failure defeat it.
-		if (scrollFailRetries.current >= MAX_SCROLL_TO_INDEX_RETRIES) {
+		if (scrollFailRetries.current >= (tmid ? MAX_THREAD_SCROLL_TO_INDEX_RETRIES : MAX_SCROLL_TO_INDEX_RETRIES)) {
 			return;
 		}
 		scrollFailRetries.current += 1;
