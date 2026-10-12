@@ -1,33 +1,27 @@
-import { loadSurroundingMessages } from './loadSurroundingMessages';
-import sdk from '../services/sdk';
-import { getMessageById } from '../database/services/Message';
-import updateMessages from './updateMessages';
-import log from './helpers/log';
-import dayjs from '../dayjs';
-import { MessageTypeLoad } from '../constants/messageTypeLoad';
+import { loadSurroundingMessages } from '../loadSurroundingMessages';
+import { getSurroundingMessages } from '../../services/restApi';
+import { getMessageById } from '../../database/services/Message';
+import updateMessages from '../updateMessages';
+import log from '../helpers/log';
+import dayjs from '../../dayjs';
+import { MessageTypeLoad } from '../../constants/messageTypeLoad';
 
-jest.mock('../services/sdk', () => ({
-	__esModule: true,
-	default: { methodCallWrapper: jest.fn() }
+jest.mock('../../services/restApi', () => ({
+	getSurroundingMessages: jest.fn()
 }));
 
-jest.mock('../database/services/Message', () => ({
+jest.mock('../../database/services/Message', () => ({
 	getMessageById: jest.fn()
 }));
 
-jest.mock('./updateMessages', () => jest.fn());
+jest.mock('../updateMessages', () => jest.fn());
 
-jest.mock('./helpers/log', () => ({
+jest.mock('../helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));
 
-jest.mock('ejson', () => ({
-	__esModule: true,
-	default: { fromJSONValue: (value: any) => value }
-}));
-
-const mockedMethodCall = sdk.methodCallWrapper as jest.MockedFunction<typeof sdk.methodCallWrapper>;
+const mockedGetSurroundingMessages = getSurroundingMessages as jest.MockedFunction<typeof getSurroundingMessages>;
 const mockedGetMessageById = getMessageById as jest.MockedFunction<typeof getMessageById>;
 const mockedUpdateMessages = updateMessages as jest.MockedFunction<typeof updateMessages>;
 const mockedLog = log as jest.MockedFunction<typeof log>;
@@ -41,6 +35,9 @@ const buildMessage = (id: string, seconds: number) =>
 
 const buildMessages = () => [buildMessage('msg-1', 1), buildMessage('msg-2', 2), buildMessage('msg-3', 3)];
 
+const serve = (messages: any[], moreBefore: boolean, moreAfter: boolean) =>
+	mockedGetSurroundingMessages.mockResolvedValue({ messages, moreBefore, moreAfter });
+
 describe('loadSurroundingMessages', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -48,18 +45,25 @@ describe('loadSurroundingMessages', () => {
 		mockedUpdateMessages.mockResolvedValue(0 as never);
 	});
 
+	it('asks for the window around the message', async () => {
+		serve([], false, false);
+
+		await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID });
+
+		expect(mockedGetSurroundingMessages).toHaveBeenCalledWith({ rid: RID, messageId: MESSAGE_ID, count: COUNT });
+	});
+
 	it('resolves [] without delegating when the server returns no messages', async () => {
-		mockedMethodCall.mockResolvedValue({ messages: [] } as never);
+		serve([], false, false);
 
 		await expect(loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID })).resolves.toEqual([]);
 
-		expect(mockedMethodCall).toHaveBeenCalledWith('loadSurroundingMessages', { _id: MESSAGE_ID, rid: RID }, COUNT);
 		expect(mockedUpdateMessages).not.toHaveBeenCalled();
 	});
 
-	it('delegates with no markers when moreBefore and moreAfter are both falsy', async () => {
+	it('delegates with no markers when moreBefore and moreAfter are both false', async () => {
 		const messages = buildMessages();
-		mockedMethodCall.mockResolvedValue({ messages, moreBefore: false, moreAfter: false } as never);
+		serve(messages, false, false);
 
 		const result = await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID });
 
@@ -70,11 +74,11 @@ describe('loadSurroundingMessages', () => {
 		expect(mockedUpdateMessages.mock.calls[0][0]).not.toHaveProperty('loaderItem');
 	});
 
-	it('prepends a load_previous_chunk marker when moreBefore is true and the first message is not local', async () => {
+	it('prepends an Older Loader when moreBefore is true and the first message is not local', async () => {
 		const messages = buildMessages();
-		mockedMethodCall.mockResolvedValue({ messages, moreBefore: true, moreAfter: false } as never);
+		serve(messages, true, false);
 
-		const result = (await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID })) as any[];
+		const result = await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID });
 
 		const firstMessage = messages[0];
 		expect(mockedGetMessageById).toHaveBeenCalledWith(firstMessage._id);
@@ -88,22 +92,22 @@ describe('loadSurroundingMessages', () => {
 		expect(mockedUpdateMessages).toHaveBeenCalledWith({ rid: RID, update: result });
 	});
 
-	it('prepends no marker when moreBefore is true but the first message is already local', async () => {
+	it('prepends no Older Loader when moreBefore is true but the first message is already local', async () => {
 		const messages = buildMessages();
-		mockedMethodCall.mockResolvedValue({ messages, moreBefore: true, moreAfter: false } as never);
+		serve(messages, true, false);
 		mockedGetMessageById.mockResolvedValue({ id: messages[0]._id } as never);
 
-		const result = (await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID })) as any[];
+		const result = await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID });
 
 		expect(result).toHaveLength(messages.length);
 		expect(result.find(m => m.t === MessageTypeLoad.PREVIOUS_CHUNK)).toBeUndefined();
 	});
 
-	it('appends a load_next_chunk marker when moreAfter is true and the last message is not local', async () => {
+	it('appends a Newer Loader when moreAfter is true and the last message is not local', async () => {
 		const messages = buildMessages();
-		mockedMethodCall.mockResolvedValue({ messages, moreBefore: false, moreAfter: true } as never);
+		serve(messages, false, true);
 
-		const result = (await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID })) as any[];
+		const result = await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID });
 
 		const lastMessage = messages[messages.length - 1];
 		expect(mockedGetMessageById).toHaveBeenCalledWith(lastMessage._id);
@@ -116,22 +120,22 @@ describe('loadSurroundingMessages', () => {
 		expect(dayjs(marker.ts).valueOf()).toBe(dayjs(lastMessage.ts).add(1, 'millisecond').valueOf());
 	});
 
-	it('appends no marker when moreAfter is true but the last message is already local', async () => {
+	it('appends no Newer Loader when moreAfter is true but the last message is already local', async () => {
 		const messages = buildMessages();
-		mockedMethodCall.mockResolvedValue({ messages, moreBefore: false, moreAfter: true } as never);
+		serve(messages, false, true);
 		mockedGetMessageById.mockResolvedValue({ id: messages[messages.length - 1]._id } as never);
 
-		const result = (await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID })) as any[];
+		const result = await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID });
 
 		expect(result).toHaveLength(messages.length);
 		expect(result.find(m => m.t === MessageTypeLoad.NEXT_CHUNK)).toBeUndefined();
 	});
 
-	it('adds both markers when moreBefore and moreAfter are true and neither endpoint is local', async () => {
+	it('adds both Loader Rows when moreBefore and moreAfter are true and neither endpoint is local', async () => {
 		const messages = buildMessages();
-		mockedMethodCall.mockResolvedValue({ messages, moreBefore: true, moreAfter: true } as never);
+		serve(messages, true, true);
 
-		const result = (await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID })) as any[];
+		const result = await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID });
 
 		expect(result).toHaveLength(messages.length + 2);
 		expect(result[0].t).toBe(MessageTypeLoad.PREVIOUS_CHUNK);
@@ -141,12 +145,12 @@ describe('loadSurroundingMessages', () => {
 		expect(mockedUpdateMessages).toHaveBeenCalledWith({ rid: RID, update: result });
 	});
 
-	it('orders decoded messages by ts ascending before selecting the endpoints', async () => {
+	it('orders a newest-first response by ts ascending before selecting the endpoints', async () => {
 		const ordered = buildMessages();
-		const unordered = [...ordered].reverse();
-		mockedMethodCall.mockResolvedValue({ messages: unordered, moreBefore: true, moreAfter: true } as never);
+		const newestFirst = [...ordered].reverse().map(message => ({ ...message, ts: message.ts.toISOString() }));
+		serve(newestFirst, true, true);
 
-		const result = (await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID })) as any[];
+		const result = await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID });
 
 		expect(mockedGetMessageById).toHaveBeenCalledWith(ordered[0]._id);
 		expect(mockedGetMessageById).toHaveBeenCalledWith(ordered[ordered.length - 1]._id);
@@ -161,9 +165,9 @@ describe('loadSurroundingMessages', () => {
 		);
 	});
 
-	it('logs and rejects with the same error when the SDK call fails', async () => {
+	it('logs and rejects with the same error when loading fails', async () => {
 		const error = new Error('boom');
-		mockedMethodCall.mockRejectedValue(error);
+		mockedGetSurroundingMessages.mockRejectedValue(error);
 
 		await expect(loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID })).rejects.toBe(error);
 
