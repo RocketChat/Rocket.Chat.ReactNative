@@ -962,19 +962,7 @@ export const getNextMessages = async ({ rid, after, count }: { rid: string; afte
 	return { messages, hasMore: messages.length === count };
 };
 
-export const runSlashCommand = ({
-	command,
-	roomId,
-	params,
-	triggerId,
-	tmid
-}: {
-	command: string;
-	roomId: string;
-	params: string;
-	triggerId?: string;
-	tmid?: string;
-}) =>
+export const runSlashCommand = (command: string, roomId: string, params: string, triggerId?: string, tmid?: string) =>
 	// RC 0.60.2
 	sdk.post('commands.run', {
 		command,
