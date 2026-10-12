@@ -646,7 +646,13 @@ describe('MessageComposer', () => {
 			await screen.findByTestId('autocomplete');
 			await user.press(screen.getByTestId('message-composer-send'));
 			await waitFor(() => expect(screen.queryByTestId('autocomplete')).not.toBeOnTheScreen());
-			expect(runSlashCommand).toHaveBeenCalledWith('hello', 'rid', '', expect.any(String), undefined);
+			expect(runSlashCommand).toHaveBeenCalledWith({
+				command: 'hello',
+				roomId: 'rid',
+				params: '',
+				triggerId: expect.any(String),
+				tmid: undefined
+			});
 			expect(onSendMessage).not.toHaveBeenCalled();
 		});
 

@@ -174,7 +174,7 @@ export const MessageComposer = ({
 					const messageWithoutCommand = textFromInput.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
 					const triggerId = generateTriggerId(appId);
-					await runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid);
+					await runSlashCommand({ command, roomId: rid, params: messageWithoutCommand, triggerId, tmid });
 				} catch (e) {
 					log(e);
 				}
