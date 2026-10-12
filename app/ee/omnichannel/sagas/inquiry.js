@@ -1,10 +1,9 @@
-import { put, select, takeEvery, takeLatest } from 'redux-saga/effects';
+import { put, select, takeLatest } from 'redux-saga/effects';
 
 import * as types from '~/actions/actionsTypes';
 import { getRoutingConfig } from '~/lib/services/restApi';
-import { isOmnichannelModuleAvailable } from '~/lib/methods/enterpriseModules';
 import EventEmitter from '~/lib/methods/helpers/events';
-import { inquiryFailure, inquiryRequest, inquiryReset, inquirySetEnabled, inquirySuccess } from '../actions/inquiry';
+import { inquiryFailure, inquirySetEnabled, inquirySuccess } from '../actions/inquiry';
 import { getInquiriesQueued, isOmnichannelStatusAvailable } from '../lib';
 
 const handleRequest = function* handleRequest() {
@@ -37,23 +36,7 @@ const handleRequest = function* handleRequest() {
 	}
 };
 
-const isLivechatEnabledUpdate = action => action.type === types.SETTINGS.UPDATE && action.payload.id === 'Livechat_enabled';
-
-const handleLivechatEnabledUpdate = function* handleLivechatEnabledUpdate({ payload }) {
-	if (payload.value === false) {
-		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
-		yield put(inquiryReset());
-		return;
-	}
-
-	const statusLivechat = yield select(state => state.login.user.statusLivechat);
-	if (isOmnichannelStatusAvailable(statusLivechat) && isOmnichannelModuleAvailable()) {
-		yield put(inquiryRequest());
-	}
-};
-
 const root = function* root() {
 	yield takeLatest(types.INQUIRY.REQUEST, handleRequest);
-	yield takeEvery(isLivechatEnabledUpdate, handleLivechatEnabledUpdate);
 };
 export default root;
