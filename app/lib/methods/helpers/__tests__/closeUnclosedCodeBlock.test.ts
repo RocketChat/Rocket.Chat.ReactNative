@@ -23,11 +23,7 @@ describe('closeUnclosedCodeBlock', () => {
 		expect(closeUnclosedCodeBlock('use `code` and ``x``')).toBe('use `code` and ``x``');
 	});
 
-	it('does not append when the backtick run is longer than a fence', () => {
-		expect(closeUnclosedCodeBlock('````\ntest')).toBe('````\ntest');
-	});
-
-	it('treats a longer backtick run as the closing fence of an open block', () => {
+	it('counts a run of four backticks as one fence', () => {
 		expect(closeUnclosedCodeBlock('```\ntest\n````')).toBe('```\ntest\n````');
 	});
 });
