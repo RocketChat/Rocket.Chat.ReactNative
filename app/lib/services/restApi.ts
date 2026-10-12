@@ -28,7 +28,6 @@ import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar'
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 import { getDeviceToken } from '../notifications/deviceToken';
 import NativeVoipModule from '../native/NativeVoip';
-import { tsToMs } from '../dayjs';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import fetch from '../methods/helpers/fetch';
@@ -930,7 +929,7 @@ export const getNextMessages = async ({ rid, after, count }: { rid: string; afte
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
 		const history = await sdk.get('rooms.history', {
 			roomId: rid,
-			next: String(tsToMs(after)),
+			next: String(after.getTime()),
 			count,
 			showThreadMessages: false
 		});
