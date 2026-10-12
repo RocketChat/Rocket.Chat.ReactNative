@@ -58,7 +58,13 @@ export type RoomsEndpoints = {
 		POST: (params: { roomId: string; action: 'accept' | 'reject' }) => void;
 	};
 	'rooms.history': {
-		GET: (params: { roomId: IServerRoom['_id']; next?: string; count?: number; showThreadMessages?: boolean }) => {
+		GET: (params: {
+			roomId: IServerRoom['_id'];
+			next?: string;
+			aroundId?: IMessage['_id'];
+			count?: number;
+			showThreadMessages?: boolean;
+		}) => {
 			messages: IMessageFromServer[];
 			cursor: { next: string | null; previous: string | null };
 		};

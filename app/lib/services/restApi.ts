@@ -963,6 +963,33 @@ export const getNextMessages = async ({ rid, after, count }: { rid: string; afte
 	return { messages, hasMore: messages.length === count };
 };
 
+export const getSurroundingMessages = async ({ rid, messageId, count }: { rid: string; messageId: string; count: number }) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
+		const history = await sdk.get('rooms.history', {
+			roomId: rid,
+			aroundId: messageId,
+			count,
+			showThreadMessages: false
+		});
+		if (!history.success) {
+			throw new Error('Unable to load surrounding messages');
+		}
+		const messages = history.messages.map(message => ({ ...message, _updatedAt: new Date(message._updatedAt) }));
+		return {
+			messages: messages as IMessage[],
+			moreBefore: history.cursor.previous !== null,
+			moreAfter: history.cursor.next !== null
+		};
+	}
+	const result = await sdk.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid }, count);
+	if (!result?.messages) {
+		return { messages: [] as IMessage[], moreBefore: false, moreAfter: false };
+	}
+	const messages: IMessage[] = EJSON.fromJSONValue(result.messages);
+	return { messages, moreBefore: !!result.moreBefore, moreAfter: !!result.moreAfter };
+};
+
 export const runSlashCommand = (command: string, roomId: string, params: string, triggerId?: string, tmid?: string) =>
 	// RC 0.60.2
 	sdk.post('commands.run', {
