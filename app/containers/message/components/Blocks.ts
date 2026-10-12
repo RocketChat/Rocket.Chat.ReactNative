@@ -10,15 +10,25 @@ const Blocks = () => {
 	const { blocks, id: mid } = useBlocks();
 
 	if (blocks && blocks.length > 0) {
-		const appId = blocks[0]?.appId || '';
+		const defaultAppId = blocks.find(b => b?.appId)?.appId || blocks[0]?.appId || '';
 		return createElement(MessageBlock, {
 			blocks,
 			context: {
-				action: async ({ actionId, value, blockId }: { actionId: string; value: string; blockId: string }) => {
+				action: async ({
+					actionId,
+					value,
+					blockId,
+					appId: actionAppId
+				}: {
+					actionId: string;
+					value: string;
+					blockId: string;
+					appId?: string;
+				}) => {
 					if (blockAction) {
 						await blockAction({
 							actionId,
-							appId,
+							appId: actionAppId || defaultAppId,
 							value,
 							blockId,
 							rid: rid ?? '',
@@ -26,7 +36,7 @@ const Blocks = () => {
 						});
 					}
 				},
-				appId,
+				appId: defaultAppId,
 				rid
 			}
 		});

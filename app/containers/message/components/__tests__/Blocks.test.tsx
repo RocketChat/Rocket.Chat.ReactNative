@@ -56,9 +56,31 @@ describe('Blocks', () => {
 		expect(lastContext()).toEqual(expect.objectContaining({ appId: 'app-1', rid: 'room-1' }));
 	});
 
-	it('falls back appId to an empty string when the first block has none', () => {
+	it('falls back appId to an empty string when no blocks have an appId', () => {
 		renderBlocks([{}] as TAnyMessageModel['blocks']);
 		expect(lastContext()).toEqual(expect.objectContaining({ appId: '' }));
+	});
+
+	it('wires appId from subsequent block if the first block does not have appId', () => {
+		const blocks = [{ type: 'section' }, { type: 'actions', appId: 'app-2' }] as TAnyMessageModel['blocks'];
+		renderBlocks(blocks, { rid: 'room-1' });
+		expect(lastContext()).toEqual(expect.objectContaining({ appId: 'app-2', rid: 'room-1' }));
+	});
+
+	it('prefers action appId over block appId when provided', async () => {
+		const blockAction = jest.fn();
+		renderBlocks([{ appId: 'app-1' }] as TAnyMessageModel['blocks'], { handlers: { blockAction } as any });
+
+		await lastContext().action({ actionId: 'submit', value: 'v', blockId: 'block-1', appId: 'override-app' });
+
+		expect(blockAction).toHaveBeenCalledWith({
+			actionId: 'submit',
+			appId: 'override-app',
+			value: 'v',
+			blockId: 'block-1',
+			rid: '',
+			mid: 'msg-1'
+		});
 	});
 
 	it("calls blockAction with the wired params and rid defaulted to '' when absent", async () => {
