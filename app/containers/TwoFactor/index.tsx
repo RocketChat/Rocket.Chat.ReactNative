@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, memo } from 'react';
 import { AccessibilityInfo, Text, View } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
 import Modal from 'react-native-modal';
@@ -157,52 +158,53 @@ const TwoFactor = memo(() => {
 	return (
 		<Modal
 			customBackdrop={<View aria-hidden style={[styles.overlay, { backgroundColor: colors.overlayBackground }]} />}
-			avoidKeyboard
-			useNativeDriver={false}
+			useNativeDriver
 			isVisible={visible}
 			hideModalContentWhileAnimating>
-			<GestureHandlerRootView style={styles.container} testID='two-factor'>
-				<View
-					style={[
-						styles.content,
-						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
-						{ backgroundColor: colors.surfaceTint }
-					]}>
-					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
-					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
-					<ControlledFormTextInput
-						name='code'
-						control={control}
-						autoFocus
-						returnKeyType='send'
-						autoCapitalize='none'
-						testID='two-factor-input'
-						accessibilityLabel={I18n.t(
-							data?.method === 'password' ? 'Label_Input_Two_Factor_Password' : 'Label_Input_Two_Factor_Code'
-						)}
-						onSubmitEditing={onSubmit}
-						keyboardType={method?.keyboardType}
-						secureTextEntry={method?.secureTextEntry}
-						error={errors.code?.message}
-						containerStyle={styles.containerInput}
-					/>
-
-					{isEmail ? (
-						<Button
-							small
-							title={I18n.t('Resend_email')}
-							style={[styles.button, { marginTop: 12 }]}
-							type='secondary'
-							onPress={sendEmail}
+			<KeyboardAvoidingView behavior='padding' style={styles.keyboardAvoiding}>
+				<GestureHandlerRootView style={styles.container} testID='two-factor'>
+					<View
+						style={[
+							styles.content,
+							isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
+							{ backgroundColor: colors.surfaceTint }
+						]}>
+						<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
+						{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
+						<ControlledFormTextInput
+							name='code'
+							control={control}
+							autoFocus
+							returnKeyType='send'
+							autoCapitalize='none'
+							testID='two-factor-input'
+							accessibilityLabel={I18n.t(
+								data?.method === 'password' ? 'Label_Input_Two_Factor_Password' : 'Label_Input_Two_Factor_Code'
+							)}
+							onSubmitEditing={onSubmit}
+							keyboardType={method?.keyboardType}
+							secureTextEntry={method?.secureTextEntry}
+							error={errors.code?.message}
+							containerStyle={styles.containerInput}
 						/>
-					) : null}
-					<View style={styles.buttonContainer}>
-						<Button title={I18n.t('Cancel')} type='secondary' style={styles.button} onPress={onCancel} />
-						<Button title={I18n.t('Verify')} type='primary' style={styles.button} onPress={onSubmit} testID='two-factor-send' />
+
+						{isEmail ? (
+							<Button
+								small
+								title={I18n.t('Resend_email')}
+								style={[styles.button, { marginTop: 12 }]}
+								type='secondary'
+								onPress={sendEmail}
+							/>
+						) : null}
+						<View style={styles.buttonContainer}>
+							<Button title={I18n.t('Cancel')} type='secondary' style={styles.button} onPress={onCancel} />
+							<Button title={I18n.t('Verify')} type='primary' style={styles.button} onPress={onSubmit} testID='two-factor-send' />
+						</View>
 					</View>
-				</View>
-				<Toast />
-			</GestureHandlerRootView>
+					<Toast />
+				</GestureHandlerRootView>
+			</KeyboardAvoidingView>
 		</Modal>
 	);
 });
