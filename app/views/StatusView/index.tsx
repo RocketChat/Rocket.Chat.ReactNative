@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import { type ReactElement, useEffect, useMemo, useRef, useState } from 'react';
+import { type ReactElement, useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -112,11 +112,10 @@ const StatusView = (): ReactElement => {
 	const serverVersion = useSelector((state: IApplicationState) => state.server.version);
 	const supportsStatusExpiry = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0');
 
-	const defaultFormValues = useMemo(() => ({ statusText: user.statusText || '', status: user.status }), []);
+	const [defaultFormValues] = useState(() => ({ statusText: user.statusText || '', status: user.status }));
 
 	const {
 		control,
-		watch,
 		setValue,
 		formState: { errors, isValid }
 	} = useForm({
@@ -124,13 +123,12 @@ const StatusView = (): ReactElement => {
 		defaultValues: defaultFormValues,
 		resolver: yupResolver(validationSchema)
 	});
-	const inputValues = watch();
-	const { statusText } = inputValues;
+	const [statusText, status] = useWatch({ control, name: ['statusText', 'status'] });
 
-	const initialClearAfterState = useMemo(() => getInitialClearAfterState(user.statusExpiresAt), []);
+	const [initialClearAfterState] = useState(() => getInitialClearAfterState(user.statusExpiresAt));
 	const [clearAfter, setClearAfter] = useState<ClearAfterValue>(initialClearAfterState.value);
 	const [clearAfterDate, setClearAfterDate] = useState<Date | null>(initialClearAfterState.customDate);
-	const clearAfterTouched = useRef(false);
+	const [clearAfterTouched, setClearAfterTouched] = useState(false);
 
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
@@ -138,17 +136,15 @@ const StatusView = (): ReactElement => {
 	const { bottom } = useSafeAreaInsets();
 
 	const submit = async () => {
-		const { status } = inputValues;
 		logEvent(events.STATUS_DONE);
-		if (statusText !== user.statusText || status !== user.status || clearAfterTouched.current) {
-			const expiresAt =
-				clearAfterTouched.current && supportsStatusExpiry ? computeExpiresAt(clearAfter, clearAfterDate) : undefined;
+		if (statusText !== user.statusText || status !== user.status || clearAfterTouched) {
+			const expiresAt = clearAfterTouched && supportsStatusExpiry ? computeExpiresAt(clearAfter, clearAfterDate) : undefined;
 			await setCustomStatus(status, statusText, expiresAt);
 		}
 		goBack();
 	};
 
-	useA11yErrorAnnouncement({ errors, inputValues });
+	useA11yErrorAnnouncement({ errors, inputValues: { statusText, status } });
 
 	useEffect(() => {
 		const setHeader = () => {
@@ -166,13 +162,14 @@ const StatusView = (): ReactElement => {
 
 	const setCustomStatus = async (status: TUserStatus, statusText: string, expiresAt?: string | null) => {
 		sendLoadingEvent({ visible: true });
+		const statusExpiry = expiresAt !== undefined ? { statusExpiresAt: expiresAt ?? undefined } : {};
 		try {
 			await setUserStatus(status, statusText, expiresAt);
 			dispatch(
 				setUser({
 					statusText,
 					status,
-					...(expiresAt !== undefined && { statusExpiresAt: expiresAt ?? undefined })
+					...statusExpiry
 				})
 			);
 			logEvent(events.STATUS_CUSTOM);
@@ -191,11 +188,10 @@ const StatusView = (): ReactElement => {
 	});
 
 	const isStatusChanged = () => {
-		const { status } = inputValues;
 		if (!isValid) {
 			return true;
 		}
-		if (supportsStatusExpiry && clearAfterTouched.current) {
+		if (supportsStatusExpiry && clearAfterTouched) {
 			return false;
 		}
 		const isStatusEqual = status === user.status;
@@ -204,7 +200,7 @@ const StatusView = (): ReactElement => {
 	};
 
 	const handleClearAfterChange = (value: ClearAfterValue, date: Date | null) => {
-		clearAfterTouched.current = true;
+		setClearAfterTouched(true);
 		setClearAfter(value);
 		if (date) setClearAfterDate(date);
 	};
@@ -214,7 +210,7 @@ const StatusView = (): ReactElement => {
 			<FlatList
 				data={statusType}
 				keyExtractor={item => item.id}
-				renderItem={({ item }) => <Status statusType={item} status={inputValues.status} setStatus={setStatus} />}
+				renderItem={({ item }) => <Status statusType={item} status={status} setStatus={setStatus} />}
 				ListHeaderComponent={
 					<>
 						<ControlledFormTextInput
