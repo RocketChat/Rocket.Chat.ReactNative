@@ -339,6 +339,16 @@
 		]
 	},
 	{
+		"test": ".maestro/tests/room/thread-link-jump.yaml",
+		"dependsOn": [
+			"app/views/RoomView/**",
+			"app/views/ThreadMessagesView/**",
+			"app/lib/methods/helpers/goRoom.ts",
+			"app/sagas/deepLinking.js",
+			"app/sagas/room.js"
+		]
+	},
+	{
 		"test": ".maestro/tests/room/attachment-send.yaml",
 		"dependsOn": [
 			"app/views/RoomView/**",
