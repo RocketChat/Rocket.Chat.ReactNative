@@ -944,7 +944,7 @@ export const getNextMessages = async ({ rid, after, count }: { rid: string; afte
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
 		const history = await sdk.get('rooms.history', {
 			roomId: rid,
-			next: String(after.getTime()),
+			next: String(after.getTime() - 1),
 			count,
 			showThreadMessages: false
 		});

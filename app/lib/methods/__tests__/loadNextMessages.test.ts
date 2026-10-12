@@ -45,12 +45,12 @@ describe('loadNextMessages', () => {
 		mockedUpdateMessages.mockResolvedValue(0 as never);
 	});
 
-	it('asks for the messages after the last loaded message, one millisecond before the loader', async () => {
+	it('asks for the messages newer than the loader', async () => {
 		serve([], false);
 
 		await loadNextMessages({ rid: RID, ts: TS, loaderItem: LOADER_ITEM });
 
-		expect(mockedGetNextMessages).toHaveBeenCalledWith({ rid: RID, after: new Date(TS.getTime() - 1), count: COUNT });
+		expect(mockedGetNextMessages).toHaveBeenCalledWith({ rid: RID, after: TS, count: COUNT });
 	});
 
 	it('removes the Newer Loader when the server returns nothing newer', async () => {

@@ -19,8 +19,7 @@ interface ILoadNextMessages {
 
 export async function loadNextMessages(args: ILoadNextMessages): Promise<void> {
 	try {
-		const after = dayjs(args.ts).subtract(1, 'millisecond').toDate();
-		const { messages: fetched, hasMore } = await getNextMessages({ rid: args.rid, after, count: COUNT });
+		const { messages: fetched, hasMore } = await getNextMessages({ rid: args.rid, after: args.ts, count: COUNT });
 		const messages = orderBy(fetched, 'ts');
 		if (!messages.length) {
 			await updateMessages({ rid: args.rid, update: [], remove: [{ _id: args.loaderItem.id }] });

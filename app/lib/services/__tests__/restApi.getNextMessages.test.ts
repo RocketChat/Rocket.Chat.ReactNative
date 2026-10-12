@@ -57,12 +57,12 @@ describe('getNextMessages', () => {
 		expect(mockedGet).toHaveBeenCalledTimes(restCalls);
 	});
 
-	it('requests the messages after the given timestamp without thread replies', async () => {
+	it('requests the messages from one millisecond before the loader without thread replies', async () => {
 		await getNextMessages({ rid: RID, after: AFTER, count: COUNT });
 
 		expect(mockedGet).toHaveBeenCalledWith('rooms.history', {
 			roomId: RID,
-			next: String(AFTER_MS),
+			next: String(AFTER_MS - 1),
 			count: COUNT,
 			showThreadMessages: false
 		});
@@ -108,7 +108,7 @@ describe('getNextMessages', () => {
 	describe('below 8.9.0', () => {
 		beforeEach(() => setServerVersion('8.8.9'));
 
-		it('asks the DDP method for the messages after the given timestamp', async () => {
+		it('passes the loader timestamp to the DDP method unchanged', async () => {
 			await getNextMessages({ rid: RID, after: AFTER, count: COUNT });
 
 			expect(mockedMethodCallWrapper).toHaveBeenCalledWith('loadNextMessages', RID, AFTER, COUNT);
