@@ -4,6 +4,7 @@ import {
 	loadOlderThreadMessages,
 	loadThreadMessages,
 	loadThreadMessagesUntil,
+	releaseUnretainedThreadPagination,
 	retainThreadPagination
 } from '../loadThreadMessages';
 import { type IReaction } from '~/definitions';
@@ -1025,6 +1026,29 @@ describe('thread message pagination', () => {
 		await loadFirstPage(2, 'R1');
 
 		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
+	});
+
+	it('forgets the reached oldest page of a thread no view retained once it is released', async () => {
+		await loadFirstPage(2, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(2, 'R2'));
+		await loadOlderThreadMessages(thread);
+
+		releaseUnretainedThreadPagination(thread.tmid);
+		await loadFirstPage(2, 'R1');
+
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(true);
+	});
+
+	it('keeps the reached oldest page of a retained thread when the release is requested', async () => {
+		retainThreadPagination(thread.tmid);
+		await loadFirstPage(2, 'R1');
+		mockedGetThreadMessages.mockResolvedValueOnce(page(2, 'R2'));
+		await loadOlderThreadMessages(thread);
+
+		releaseUnretainedThreadPagination(thread.tmid);
+		await loadFirstPage(2, 'R1');
+
+		expect(areOlderThreadMessagesMissing(thread.tmid)).toBe(false);
 	});
 
 	it('keeps the reached oldest page until the last view of the thread closes', async () => {

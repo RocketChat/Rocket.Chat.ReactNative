@@ -63,6 +63,12 @@ export const retainThreadPagination = (tmid: string): (() => void) => {
 	};
 };
 
+export const releaseUnretainedThreadPagination = (tmid: string) => {
+	if (!viewCount.has(tmid)) {
+		pagination.delete(tmid);
+	}
+};
+
 const pagerFor = (tmid: string): IThreadPager => {
 	const pager = pagination.get(tmid) ?? {};
 	pagination.set(tmid, pager);
