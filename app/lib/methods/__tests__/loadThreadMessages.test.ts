@@ -13,12 +13,17 @@ import { getThreadById } from '../../database/services/Thread';
 import { getThreadMessageById } from '../../database/services/ThreadMessage';
 import { Encryption } from '../../encryption';
 import { getSingleMessage, getThreadMessages } from '../../services/restApi';
+import { store as reduxStore } from '../../store/auxStore';
 import buildMessage from '../helpers/buildMessage';
 import log from '../helpers/log';
 
 jest.mock('../../services/restApi', () => ({
 	getSingleMessage: jest.fn(),
 	getThreadMessages: jest.fn()
+}));
+
+jest.mock('../../store/auxStore', () => ({
+	store: { getState: jest.fn(() => ({ server: { version: '8.7.0' } })) }
 }));
 
 jest.mock('../../database', () => ({
@@ -62,6 +67,7 @@ jest.mock('@nozbe/watermelondb/RawRecord', () => ({
 
 const mockedGetThreadMessages = getThreadMessages as jest.Mock;
 const mockedGetSingleMessage = getSingleMessage as jest.Mock;
+const mockedGetState = reduxStore.getState as jest.Mock;
 const mockedGetThreadById = getThreadById as jest.MockedFunction<typeof getThreadById>;
 const mockedGetThreadMessageById = getThreadMessageById as jest.Mock;
 const mockedBuildMessage = buildMessage as jest.MockedFunction<typeof buildMessage>;
@@ -593,6 +599,34 @@ describe('thread message pagination', () => {
 		expect(mockedGetSingleMessage).toHaveBeenCalledWith(thread.tmid);
 		expect(threadsCreated.map((r: any) => r._id)).toEqual([thread.tmid]);
 		expect(batched.map((r: any) => r._id)).toContain('R1');
+	});
+
+	it('requests the thread parent while the first page is still loading on servers with the REST endpoint', async () => {
+		mockedGetState.mockReturnValueOnce({ server: { version: '8.8.0' } });
+		const releaseFirst = deferPage();
+		mockedGetSingleMessage.mockResolvedValueOnce({
+			success: true,
+			message: { ...buildParent(new Date('2026-01-02'), []), _id: thread.tmid }
+		});
+
+		const first = loadThreadMessages(thread);
+		await flushPromises();
+		expect(mockedGetSingleMessage).toHaveBeenCalledWith(thread.tmid);
+		releaseFirst(3, 'R1');
+		await first;
+
+		expect(threadsCreated.map((r: any) => r._id)).toEqual([thread.tmid]);
+		expect(batched.map((r: any) => r._id)).toContain('R1');
+	});
+
+	it('does not request the thread parent with a later page on servers with the REST endpoint', async () => {
+		mockedGetThreadMessages.mockResolvedValueOnce(page(3, 'R1')).mockResolvedValueOnce(page(3, 'R2'));
+		mockedGetState.mockReturnValueOnce({ server: { version: '8.8.0' } });
+		await loadThreadMessages(thread);
+
+		await loadOlderThreadMessages(thread);
+
+		expect(mockedGetSingleMessage).toHaveBeenCalledTimes(1);
 	});
 
 	it('does not fetch the thread parent when the page already carries it', async () => {

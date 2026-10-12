@@ -11,6 +11,8 @@ import { getThreadById } from '../database/services/Thread';
 import { getThreadMessageById } from '../database/services/ThreadMessage';
 import { tsToMs } from '../dayjs';
 import { getSingleMessage, getThreadMessages } from '../services/restApi';
+import { store as reduxStore } from '../store/auxStore';
+import { compareServerVersion } from './helpers';
 
 interface IThreadLocation {
 	tmid: string;
@@ -125,7 +127,7 @@ async function saveThreadMessages({
 		(i1: TThreadMessageModel) => !allThreadMessagesRecords.find(i2 => i1._id === i2.id)
 	);
 	const filterThreadMessagesToUpdate = allThreadMessagesRecords.filter(i1 =>
-		data.find((i2: TThreadMessageModel) => i1.id === i2._id && tsToMs(i1._updatedAt) < tsToMs(i2?._updatedAt))
+		data.find((i2: TThreadMessageModel) => i1.id === i2._id && tsToMs(i1._updatedAt) < tsToMs(i2._updatedAt))
 	);
 
 	const threadMessagesToCreate = filterThreadMessagesToCreate.map((threadMessage: TThreadMessageModel) =>
@@ -195,9 +197,13 @@ const fetchThreadParent = async (tmid: string, pager: IThreadPager): Promise<IMe
 const fetchPage = async (thread: IThreadLocation, pager: IThreadPager, requestedOffset: number): Promise<boolean> => {
 	const previous = pager.state;
 	try {
-		const { messages, total, threadParent: pageParent, offset } = await requestPage(thread.tmid, requestedOffset, previous);
 		const wantsParent = requestedOffset === 0 || pager.parentMissing;
-		const threadParent = wantsParent ? (pageParent ?? (await fetchThreadParent(thread.tmid, pager))) : null;
+		const parentRequest =
+			wantsParent && compareServerVersion(reduxStore.getState().server.version, 'greaterThanOrEqualTo', '8.8.0')
+				? fetchThreadParent(thread.tmid, pager)
+				: null;
+		const { messages, total, threadParent: pageParent, offset } = await requestPage(thread.tmid, requestedOffset, previous);
+		const threadParent = wantsParent ? (pageParent ?? (await (parentRequest ?? fetchThreadParent(thread.tmid, pager)))) : null;
 		if (pagination.get(thread.tmid) !== pager) {
 			return false;
 		}
