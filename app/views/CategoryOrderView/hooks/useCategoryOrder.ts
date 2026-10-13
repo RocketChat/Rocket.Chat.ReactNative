@@ -2,7 +2,6 @@ import { shallowEqual } from 'react-redux';
 
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
-import log from '~/lib/methods/helpers/log';
 import {
 	CONVERSATIONS_GROUP,
 	isVisibleGroup,
@@ -11,6 +10,7 @@ import {
 } from '~/views/RoomsListView/utils/sidebarGroupOrder';
 import { useSidebarCategories } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import { useSaveSidebarCategories } from '~/views/RoomsListView/hooks/useSaveSidebarCategories';
+import { alertCategoryError } from '~/views/CategorySettingsView/utils/alertCategoryError';
 
 export interface ICategoryOrderGroup {
 	id: string;
@@ -34,11 +34,7 @@ export const useCategoryOrder = () => {
 	const saveOrder = async (orderedIds: string[]) => {
 		const reorderedGroups = showsConversations ? [...orderedIds, CONVERSATIONS_GROUP] : orderedIds;
 		const sidebarCategories = toSidebarCategories(storedCategories, reorderGroups(groupOrder, reorderedGroups), sectionsOrder);
-		try {
-			await saveOptimistically(sidebarCategories, storedCategories);
-		} catch (error) {
-			log(error);
-		}
+		await saveOptimistically(sidebarCategories, storedCategories).catch(alertCategoryError);
 	};
 
 	return { movableGroups, pinnedGroup, saveOrder };

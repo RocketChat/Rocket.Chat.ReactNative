@@ -45,7 +45,7 @@ it('restores the previous categories when the save fails', async () => {
 	expect(storedCategories()).toBe(original);
 });
 
-it('keeps a newer update when an older save fails after it', async () => {
+it('keeps a newer update quietly when an older save fails after it', async () => {
 	const firstSave = deferredRejection();
 	mockSaveSidebarCategories.mockReturnValueOnce(firstSave.promise as any).mockResolvedValueOnce(undefined as any);
 	const { save, storedCategories } = renderSave();
@@ -53,7 +53,7 @@ it('keeps a newer update when an older save fails after it', async () => {
 	const first = save(renamed, original);
 	await act(() => save(renamedWithUnreads, renamed));
 	firstSave.reject(new Error('offline'));
-	await act(() => expect(first).rejects.toThrow('offline'));
+	await act(() => expect(first).resolves.toBeUndefined());
 
 	expect(storedCategories()).toBe(renamedWithUnreads);
 });

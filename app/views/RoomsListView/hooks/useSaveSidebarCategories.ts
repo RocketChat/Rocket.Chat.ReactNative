@@ -14,10 +14,11 @@ export const useSaveSidebarCategories = () => {
 		try {
 			await saveSidebarCategories(sidebarCategories);
 		} catch (error) {
-			const isStillCurrent = getUserSelector(store.getState()).sidebarCategories === sidebarCategories;
-			if (isStillCurrent) {
-				dispatch(setUser({ sidebarCategories: previousCategories }));
+			const isSuperseded = getUserSelector(store.getState()).sidebarCategories !== sidebarCategories;
+			if (isSuperseded) {
+				return;
 			}
+			dispatch(setUser({ sidebarCategories: previousCategories }));
 			throw error;
 		}
 	};
