@@ -3,7 +3,6 @@ import type Model from '@nozbe/watermelondb/Model';
 
 import { getDeviceToken } from '../notifications';
 import { isSsl } from './helpers';
-import { BASIC_AUTH_KEY } from './helpers/fetch';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
 import { disconnect } from '../services/connect';
@@ -13,6 +12,7 @@ import {
 	E2E_PRIVATE_KEY,
 	E2E_PUBLIC_KEY,
 	E2E_RANDOM_PASSWORD_KEY,
+	getBasicAuthKey,
 	getLegacyUserTokenKey,
 	getServerUserIdKey,
 	getUserTokenKey
@@ -29,7 +29,7 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 		// A logout before the migration ran leaves a token the native fallbacks would still read.
 		UserPreferences.removeItem(getLegacyUserTokenKey(userId));
 	}
-	UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${server}`);
+	UserPreferences.removeItem(getBasicAuthKey(server));
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_PRIVATE_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);

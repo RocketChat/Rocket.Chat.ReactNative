@@ -29,8 +29,7 @@ export const useSubscriptions = () => {
 		[categories]
 	);
 	const groupOrder = useMemo(() => getGroupOrder(categories), [categories]);
-	const hasCustomCategories = customCategoryNames.size > 0;
-	const isGrouping = showUnread || showFavorites || groupByType || hasCustomCategories;
+	const isGrouping = showUnread || showFavorites || groupByType;
 	const isOmnichannelAgent = roles?.includes('livechat-agent') ?? false;
 
 	useEffect(() => {

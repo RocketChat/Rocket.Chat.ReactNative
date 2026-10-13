@@ -98,7 +98,8 @@ type BuildRoomListOptions = Omit<GroupRoomsOptions, 'hasChatsHeader'> & {
 };
 
 export const buildRoomList = (subscriptions: TSubscriptionModel[], options: BuildRoomListOptions) => {
-	const { groupOrder, customCategoryNames, showUnread, showFavorites, groupByType, isOmnichannelAgent } = options;
+	const { groupOrder, showUnread, showFavorites, groupByType, isOmnichannelAgent } = options;
+	const customCategoryNames = groupByType ? options.customCategoryNames : new Map<string, string>();
 	let remainingSubscriptions = subscriptions;
 	const roomList: TSubscriptionModel[] = [];
 
