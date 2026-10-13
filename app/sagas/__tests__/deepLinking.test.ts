@@ -878,6 +878,9 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
 		await flushSagaMicrotasks();
 
