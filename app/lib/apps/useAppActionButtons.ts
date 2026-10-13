@@ -45,7 +45,7 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 	const userRoles = useAppSelector(state => getUserSelector(state).roles || [], shallowEqual);
 	const language = useAppSelector(state => getUserSelector(state).language);
 
-	const permissionIds = useMemo(() => collectPermissions(buttons), [buttons]);
+	const permissionKey = collectPermissions(buttons).join(',');
 	const hasButtons = buttons.length > 0;
 
 	const context$ = useMemo(() => {
@@ -54,6 +54,7 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 		}
 
 		const db = database.active;
+		const permissionIds = permissionKey ? permissionKey.split(',') : [];
 		const subscription$ = rid
 			? db.get('subscriptions').query(Q.where('id', rid)).observeWithColumns(['t', 'roles', 'team_main', 'prid', 'uids'])
 			: of([]);
@@ -81,7 +82,7 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 				return EMPTY;
 			})
 		);
-	}, [hasButtons, rid, permissionIds]);
+	}, [hasButtons, rid, permissionKey]);
 	const filterContext = useObservable(context$);
 
 	return useMemo(() => {
