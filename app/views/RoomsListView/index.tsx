@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { memo, useContext, useEffect } from 'react';
-import { BackHandler, FlatList, RefreshControl } from 'react-native';
+import { LegendList } from '@legendapp/list/react-native';
+import { BackHandler, RefreshControl } from 'react-native';
 import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual, useStore } from 'react-redux';
 
@@ -15,7 +16,7 @@ import i18n from '~/i18n';
 import { MAX_SIDEBAR_WIDTH } from '~/lib/constants/tablet';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isRead, isTablet } from '~/lib/methods/helpers';
+import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isRead } from '~/lib/methods/helpers';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
@@ -24,14 +25,12 @@ import Container from './components/Container';
 import ListHeader from './components/ListHeader';
 import SectionHeader from './components/SectionHeader';
 import RoomsSearchProvider, { RoomsSearchContext } from './contexts/RoomsSearchProvider';
-import { useGetItemLayout } from './hooks/useGetItemLayout';
+import { useGetFixedItemSize } from './hooks/useGetFixedItemSize';
 import { useHeader } from './hooks/useHeader';
 import { useRefresh } from './hooks/useRefresh';
 import { useSubscriptions } from './hooks/useSubscriptions';
 import { useWarmUpMessageBlocks } from './hooks/useWarmUpMessageBlocks';
 import styles from './styles';
-
-const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const RoomsListView = memo(function RoomsListView() {
 	useHeader();
@@ -47,7 +46,7 @@ const RoomsListView = memo(function RoomsListView() {
 	const navigation = useNavigation();
 	const { width } = useSafeAreaFrame();
 	const { bottom } = useSafeAreaInsets();
-	const getItemLayout = useGetItemLayout();
+	const getFixedItemSize = useGetFixedItemSize();
 	const { subscriptions, loading } = useSubscriptions();
 	const store = useStore<IApplicationState>();
 	const focusedRoom = useAppSelector(state => (isMasterDetail ? state.room.subscribedRoom : undefined));
@@ -129,22 +128,32 @@ const RoomsListView = memo(function RoomsListView() {
 		return <ChangePasswordRequired navigation={navigation} />;
 	}
 
+	const rooms = searchEnabled ? searchResults : subscriptions;
+
 	return (
-		<FlatList
-			data={searchEnabled ? searchResults : subscriptions}
-			extraData={searchEnabled ? searchResults : subscriptions}
+		<LegendList
+			data={rooms}
+			extraData={{
+				rooms,
+				username,
+				useRealName,
+				showLastMessage,
+				displayMode,
+				showAvatar,
+				subscribedRoom,
+				isMasterDetail,
+				width
+			}}
 			keyExtractor={item => `${item.rid}-${searchEnabled}`}
+			getItemType={item => (item.separator ? 'separator' : 'room')}
+			getFixedItemSize={getFixedItemSize}
 			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
 			contentContainerStyle={{ paddingBottom: bottom }}
 			renderItem={renderItem}
 			ListHeaderComponent={ListHeader}
-			ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}
-			getItemLayout={getItemLayout}
+			ListFooterComponent={searching ? <ActivityIndicator /> : undefined}
 			keyboardShouldPersistTaps='always'
-			initialNumToRender={INITIAL_NUM_TO_RENDER}
 			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}
-			windowSize={9}
-			onEndReachedThreshold={0.5}
 			keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
 		/>
 	);
