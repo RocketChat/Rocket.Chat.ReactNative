@@ -197,13 +197,17 @@ const saveQuoteDraft = async (fixtures: Fixtures) => {
 	await expectVisible(fixtures, `reply-${author.name}-${original}`);
 };
 
-test('sends, reacts to and manages messages in a room', { tags: ['test-2'], timeout: 900_000 }, async fixtures => {
+const openRoomWithOwnMessage = async (fixtures: Fixtures) => {
 	const user = await createUser();
 	const room = await createRandomRoom(user);
-
 	await loginWithDeepLink(fixtures, user);
 	await navigateToRoom(fixtures, room.name);
 	await sendMessage(fixtures, MESSAGE);
+	return { user, room };
+};
+
+test('autocompletes and reacts to messages in a room', { tags: ['test-2'] }, async fixtures => {
+	const { user } = await openRoomWithOwnMessage(fixtures);
 
 	await expectAutocomplete(fixtures, ':joy', ':joy:', { selected: 'joy', alsoListed: ['joystick'] });
 	await expectAutocomplete(fixtures, `@${user.username}`, `@${user.username}`, { selected: user.username });
@@ -225,6 +229,10 @@ test('sends, reacts to and manages messages in a room', { tags: ['test-2'], time
 	await expectVisible(fixtures, 'message-reaction-:wink:');
 
 	await toggleReactionsList(fixtures, 'laughing');
+});
+
+test('opens profiles and edits, quotes and deletes messages in a room', { tags: ['test-2'] }, async fixtures => {
+	const { user, room } = await openRoomWithOwnMessage(fixtures);
 
 	const otherUser = await createUser();
 	await sendMessageAsUser(otherUser, room._id, 'new message');
@@ -240,9 +248,17 @@ test('sends, reacts to and manages messages in a room', { tags: ['test-2'], time
 
 	await sendMessage(fixtures, 'message to delete');
 	await deleteMessage(fixtures, 'message to delete');
-	await backToRoomsList(fixtures);
+});
 
+test('replies to a room message in a direct message', { tags: ['test-2'] }, async fixtures => {
+	await loginWithDeepLink(fixtures, await createUser());
 	await replyInDirectMessage(fixtures);
+});
+
+test('keeps composer drafts, with and without a quote', { tags: ['test-2'] }, async fixtures => {
+	const user = await createUser();
+	const room = await createRandomRoom(user);
+	await loginWithDeepLink(fixtures, user);
 	await sendSavedDraft(fixtures, room.name);
 	await saveQuoteDraft(fixtures);
 });

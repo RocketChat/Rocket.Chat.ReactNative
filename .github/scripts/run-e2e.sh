@@ -263,7 +263,8 @@ elif [ "$rc" -ne 0 ]; then
   save_automation_logs first-pass
   pnpm exec agent-device daemon stop --clean || true
   FIRST_PASS_RC="$rc"
-  FIRST_PASS_REPORT_DIR="$(mktemp -d)"
+  FIRST_PASS_REPORT_DIR="$OUTPUT_DIR/artifacts/first-pass"
+  mkdir -p "$FIRST_PASS_REPORT_DIR"
   cp "$OUTPUT_DIR/junit.xml" "$OUTPUT_DIR/report.json" "$FIRST_PASS_REPORT_DIR/" 2>/dev/null || true
   run_e2e_pass "$RERUN_TIMEOUT_SECONDS" --last-failed --retries 0
   if pass_timed_out; then
