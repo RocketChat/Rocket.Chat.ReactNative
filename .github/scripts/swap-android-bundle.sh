@@ -15,7 +15,7 @@ cp "$bundle" "$work_dir/assets/index.android.bundle"
 cp "$source_apk" "$work_dir/unaligned.apk"
 (cd "$work_dir" && zip -q -0 unaligned.apk assets/index.android.bundle)
 
-"$build_tools/zipalign" -p -f 4 "$work_dir/unaligned.apk" "$work_dir/aligned.apk"
+"$build_tools/zipalign" -P 16 -f 4 "$work_dir/unaligned.apk" "$work_dir/aligned.apk"
 "$build_tools/apksigner" sign \
 	--ks "$KEYSTORE_PATH" \
 	--ks-key-alias "$KEY_ALIAS" \
