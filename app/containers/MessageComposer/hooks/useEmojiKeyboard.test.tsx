@@ -1,6 +1,7 @@
 import { type ReactElement } from 'react';
 import { renderHook, act } from '@testing-library/react-native';
 import { useSharedValue } from 'react-native-reanimated';
+import * as KeyboardController from 'react-native-keyboard-controller';
 
 import { EmojiKeyboardProvider, useEmojiKeyboard } from './useEmojiKeyboard';
 import { MessageInnerContext } from '../context';
@@ -214,6 +215,51 @@ describe('useEmojiKeyboard', () => {
 			act(() => {
 				result.current.openEmojiKeyboard();
 			});
+			expect(mockSharedValue.value).toBe(true);
+		});
+	});
+
+	describe('system keyboard shown while the emoji picker is open', () => {
+		afterEach(() => {
+			jest.mocked(KeyboardController.useKeyboardHandler).mockRestore();
+		});
+
+		const renderAndCaptureKeyboardHandlers = () => {
+			const keyboardHandlers: Parameters<typeof KeyboardController.useKeyboardHandler>[0][] = [];
+			jest.spyOn(KeyboardController, 'useKeyboardHandler').mockImplementation(handler => {
+				keyboardHandlers.push(handler);
+			});
+			renderHook(() => useEmojiKeyboard(), { wrapper: createWrapper() });
+			const keyboardStartsShowing = (height: number) =>
+				keyboardHandlers.forEach(handler => handler.onStart?.({ height, duration: 250, progress: 1, target: 1 }));
+			return { keyboardStartsShowing };
+		};
+
+		test('closes the emoji picker', () => {
+			const { keyboardStartsShowing } = renderAndCaptureKeyboardHandlers();
+			mockSharedValue.value = true;
+
+			keyboardStartsShowing(336);
+
+			expect(mockSharedValue.value).toBe(false);
+		});
+
+		test('keeps the emoji picker while the emoji search bar owns the keyboard', () => {
+			const { keyboardStartsShowing } = renderAndCaptureKeyboardHandlers();
+			mockSharedValue.value = true;
+			mockSearchbarSharedValue.value = true;
+
+			keyboardStartsShowing(336);
+
+			expect(mockSharedValue.value).toBe(true);
+		});
+
+		test('keeps the emoji picker when only a hardware keyboard toolbar shows', () => {
+			const { keyboardStartsShowing } = renderAndCaptureKeyboardHandlers();
+			mockSharedValue.value = true;
+
+			keyboardStartsShowing(50);
+
 			expect(mockSharedValue.value).toBe(true);
 		});
 	});
