@@ -4,12 +4,23 @@ import { Provider } from 'react-redux';
 
 import { setUser } from '~/actions/login';
 import { selectServerSuccess } from '~/actions/server';
+import { LISTENER } from '~/containers/Toast';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import Navigation from '~/lib/navigation/appNavigation';
 import { saveSidebarCategories, setRoomsCategory } from '~/lib/services/restApi';
 import { createMockedStore } from '~/reducers/mockedStore';
+import { alertCategoryError } from '~/views/CategorySettingsView/utils/alertCategoryError';
 import { useCreateCategory } from '../useCreateCategory';
 
-jest.mock('~/lib/services/restApi', () => ({ saveSidebarCategories: jest.fn(), setRoomsCategory: jest.fn() }));
+jest.mock('~/lib/services/restApi', () => ({
+	saveSidebarCategories: jest.fn(),
+	setRoomsCategory: jest.fn(() => Promise.resolve())
+}));
 jest.mock('~/lib/navigation/appNavigation', () => ({ __esModule: true, default: { popTo: jest.fn() } }));
+jest.mock('~/lib/methods/helpers/info', () => ({ showErrorAlert: jest.fn() }));
+jest.mock('~/lib/methods/helpers/log', () => jest.fn());
+jest.mock('~/views/CategorySettingsView/utils/alertCategoryError', () => ({ alertCategoryError: jest.fn() }));
 
 const mockSaveSidebarCategories = saveSidebarCategories as jest.MockedFunction<typeof saveSidebarCategories>;
 const mockSetRoomsCategory = setRoomsCategory as jest.MockedFunction<typeof setRoomsCategory>;
@@ -63,4 +74,31 @@ it('leaves another server alone when the user switches servers while saving', as
 
 	expect(store.getState().login.user.sidebarCategories).toBe(otherServerCategories);
 	expect(mockSetRoomsCategory).not.toHaveBeenCalled();
+});
+
+it('finishes the flow with the created category when assigning its rooms fails', async () => {
+	mockSaveSidebarCategories.mockResolvedValueOnce(undefined as any);
+	mockSetRoomsCategory.mockRejectedValueOnce(new Error('error-invalid-param'));
+	const emit = jest.spyOn(EventEmitter, 'emit');
+	const { store, createCategory } = renderCreate();
+
+	await act(() => createCategory('Work', ['general']));
+
+	expect(store.getState().login.user.sidebarCategories).toContainEqual(expect.objectContaining({ name: 'Work' }));
+	expect(showErrorAlert).toHaveBeenCalledWith('Category created, but its rooms could not be added', 'Oops!');
+	expect(emit).toHaveBeenCalledWith(LISTENER, { message: 'Category created' });
+	expect(Navigation.popTo).toHaveBeenCalledWith('DrawerNavigator');
+});
+
+it('stays on the flow when saving the category fails', async () => {
+	const saveError = new Error('error-invalid-param');
+	mockSaveSidebarCategories.mockRejectedValueOnce(saveError);
+	const { store, createCategory } = renderCreate();
+
+	await act(() => createCategory('Work', ['general']));
+
+	expect(store.getState().login.user.sidebarCategories).toEqual([]);
+	expect(alertCategoryError).toHaveBeenCalledWith(saveError);
+	expect(mockSetRoomsCategory).not.toHaveBeenCalled();
+	expect(Navigation.popTo).not.toHaveBeenCalled();
 });

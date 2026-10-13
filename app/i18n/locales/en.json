@@ -146,6 +146,7 @@
   "Categories_are_private_custom_groupings_of_rooms": "Categories are private custom groupings of rooms",
   "Category": "Category",
   "Category_created": "Category created",
+  "Category_created_rooms_not_added": "Category created, but its rooms could not be added",
   "Category_deleted": "Category {{name}} deleted",
   "Category_name_conflicts_with_system_group": "This name is reserved for a system group",
   "Category_name_is_too_long": "Category name is too long (max {{maxLength}} characters)",

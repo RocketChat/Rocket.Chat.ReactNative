@@ -7,6 +7,8 @@ import { type ISidebarCategory } from '~/definitions';
 import I18n from '~/i18n';
 import { useCaptureSession } from '~/lib/hooks/useCaptureSession';
 import EventEmitter from '~/lib/methods/helpers/events';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import log from '~/lib/methods/helpers/log';
 import { random } from '~/lib/methods/helpers/random';
 import Navigation from '~/lib/navigation/appNavigation';
 import { saveSidebarCategories, setRoomsCategory } from '~/lib/services/restApi';
@@ -26,6 +28,11 @@ export const prependCategory = (
 		sectionsOrder
 	);
 
+const alertRoomsNotAdded = (error: unknown) => {
+	log(error);
+	showErrorAlert(I18n.t('Category_created_rooms_not_added'), I18n.t('Oops'));
+};
+
 export const useCreateCategory = () => {
 	const dispatch = useDispatch();
 	const captureSession = useCaptureSession();
@@ -40,19 +47,20 @@ export const useCreateCategory = () => {
 		setCreating(true);
 		try {
 			await saveSidebarCategories(sidebarCategories);
-			if (isSameSession()) {
-				dispatch(setUser({ sidebarCategories }));
-				if (roomIds.length > 0) {
-					await setRoomsCategory(roomIds, category._id);
-				}
-			}
-			EventEmitter.emit(LISTENER, { message: I18n.t('Category_created') });
-			Navigation.popTo('DrawerNavigator');
 		} catch (error) {
 			alertCategoryError(error);
-		} finally {
 			setCreating(false);
+			return;
 		}
+		if (isSameSession()) {
+			dispatch(setUser({ sidebarCategories }));
+			if (roomIds.length > 0) {
+				await setRoomsCategory(roomIds, category._id).catch(alertRoomsNotAdded);
+			}
+		}
+		setCreating(false);
+		EventEmitter.emit(LISTENER, { message: I18n.t('Category_created') });
+		Navigation.popTo('DrawerNavigator');
 	};
 
 	return { createCategory, creating };
