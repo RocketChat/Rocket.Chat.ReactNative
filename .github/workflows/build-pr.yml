@@ -121,14 +121,14 @@ jobs:
           FULL_SHARDS: ${{ steps.full.outputs.shards }}
         run: bash .github/scripts/select-impacted-shards.sh
 
-      # macOS runs at most 5 jobs at once, so iOS pairs shards into one job each and
-      # keeps the small-screen shard 9 alone on its own simulator.
-      - name: Pair iOS shards
+      # macOS runs at most 5 jobs at once, so iOS groups shards into five jobs balanced by
+      # measured iOS run time. Only shard 9 alone boots the smallest iPhone.
+      - name: Group iOS shards
         id: ios
         if: steps.select.outputs.should_run == 'true'
         env:
           SHARDS: ${{ steps.select.outputs.shards }}
-        run: echo "shards=$(jq -c 'map(tostring) | (map(select(. != "9")) as $paired | [range(0; $paired | length; 2) as $i | $paired[$i:$i + 2] | join(",")]) + map(select(. == "9"))' <<< "$SHARDS")" >> "$GITHUB_OUTPUT"
+        run: echo "shards=$(jq -c 'map(tostring) as $selected | [["3","9"],["1","8"],["2","5"],["4","6"],["7"]] | map(map(select(. as $shard | $selected | index($shard))) | join(",")) | map(select(. != ""))' <<< "$SHARDS")" >> "$GITHUB_OUTPUT"
 
   e2e-hold:
     name: E2E Hold
