@@ -106,5 +106,5 @@ tags:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'Hello room'
+      id: 'reply-${output.user.username}-Hello room'
     timeout: 60000

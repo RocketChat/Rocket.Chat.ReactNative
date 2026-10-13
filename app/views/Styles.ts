@@ -76,51 +76,23 @@ export default StyleSheet.create({
 	},
 	textRegular: {
 		...defaultTextStyle,
-		...Platform.select({
-			ios: {
-				fontFamily: 'Inter',
-				fontWeight: '400'
-			},
-			android: {
-				fontFamily: 'Inter-Regular'
-			}
-		})
+		fontFamily: 'Inter',
+		fontWeight: '400'
 	},
 	textMedium: {
 		...defaultTextStyle,
-		...Platform.select({
-			ios: {
-				fontFamily: 'Inter',
-				fontWeight: '500'
-			},
-			android: {
-				fontFamily: 'Inter-Medium'
-			}
-		})
+		fontFamily: 'Inter',
+		fontWeight: '500'
 	},
 	textSemibold: {
 		...defaultTextStyle,
-		...Platform.select({
-			ios: {
-				fontFamily: 'Inter',
-				fontWeight: '600'
-			},
-			android: {
-				fontFamily: 'Inter-SemiBold'
-			}
-		})
+		fontFamily: 'Inter',
+		fontWeight: '600'
 	},
 	textBold: {
 		...defaultTextStyle,
-		...Platform.select({
-			ios: {
-				fontFamily: 'Inter',
-				fontWeight: '700'
-			},
-			android: {
-				fontFamily: 'Inter-Bold'
-			}
-		})
+		fontFamily: 'Inter',
+		fontWeight: '700'
 	},
 	inputLastChild: {
 		marginBottom: 15

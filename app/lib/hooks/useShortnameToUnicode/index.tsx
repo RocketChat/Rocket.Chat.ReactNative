@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import ascii, { asciiRegexp } from './ascii';
 import { useAppSelector } from '../useAppSelector';
 import { useCustomEmoji } from '../useCustomEmoji';
@@ -34,31 +36,37 @@ const useShortnameToUnicode = (isEmojiPicker?: boolean) => {
 	const convertAsciiEmoji = useAppSelector(state => getUserSelector(state)?.settings?.preferences?.convertAsciiEmoji);
 	const customEmojis = useCustomEmoji();
 
-	const replaceShortnameWithUnicode = (shortname: string) => {
-		const name = shortname.replace(/:/g, '');
-		// a custom emoji sharing a built-in shortcode/alias must win
-		if (customEmojis(name)) {
-			return shortname;
-		}
-		return shortnameToUnicodeMap[shortname] || legacyShortnameToUnicodeMap[shortname] || shortname;
-	};
-	const formatShortnameToUnicode = (str: string) => {
-		str = str.replace(shortnamePattern, replaceShortnameWithUnicode);
-		str = str.replace(regAscii, (entire, _m1, m2, m3) => {
-			if (!m3 || !(unescapeHTML(m3) in ascii)) {
-				// if the ascii doesnt exist just return the entire match
-				return entire;
+	const replaceShortnameWithUnicode = useCallback(
+		(shortname: string) => {
+			const name = shortname.replace(/:/g, '');
+			// a custom emoji sharing a built-in shortcode/alias must win
+			if (customEmojis(name)) {
+				return shortname;
 			}
+			return shortnameToUnicodeMap[shortname] || legacyShortnameToUnicodeMap[shortname] || shortname;
+		},
+		[customEmojis]
+	);
+	const formatShortnameToUnicode = useCallback(
+		(str: string) => {
+			str = str.replace(shortnamePattern, replaceShortnameWithUnicode);
+			str = str.replace(regAscii, (entire, _m1, m2, m3) => {
+				if (!m3 || !(unescapeHTML(m3) in ascii)) {
+					// if the ascii doesnt exist just return the entire match
+					return entire;
+				}
 
-			m3 = unescapeHTML(m3);
+				m3 = unescapeHTML(m3);
 
-			if (!convertAsciiEmoji && !isEmojiPicker) {
-				return m2 + m3;
-			}
-			return m2 + ascii[m3];
-		});
-		return str;
-	};
+				if (!convertAsciiEmoji && !isEmojiPicker) {
+					return m2 + m3;
+				}
+				return m2 + ascii[m3];
+			});
+			return str;
+		},
+		[replaceShortnameWithUnicode, convertAsciiEmoji, isEmojiPicker]
+	);
 
 	return {
 		formatShortnameToUnicode

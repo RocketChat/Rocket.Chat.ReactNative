@@ -1,0 +1,35 @@
+appId: ${APP_ID}
+name: Scroll room to top
+env:
+  ROOM: message-variations-tester
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+tags:
+  - 'performance'
+  - 'util'
+---
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.account.adminUser}
+      PASSWORD: ${output.account.adminPassword}
+      CLEAR_STATE: true
+- startRecording: scroll-room-to-top
+- runFlow:
+    file: '../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${ROOM}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view'
+    timeout: 60000
+- repeat:
+    while:
+      notVisible:
+        text: '.*SYSTEM MESSAGES.*'
+    commands:
+      - swipe:
+          start: 50%, 20%
+          end: 50%, 95%
+          duration: 40
+- stopRecording
