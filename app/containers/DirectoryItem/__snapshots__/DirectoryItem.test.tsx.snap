@@ -893,31 +893,42 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
             Long name test
           </Text>
         </View>
-        <Text
+        <View
+          pointerEvents="none"
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 14,
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "400",
-                "paddingLeft": 10,
-                "textAlign": "left",
-              },
-              {
-                "marginTop": 0.5,
-              },
-              {
-                "color": "#6C727A",
-              },
-            ]
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 12,
+            }
           }
         >
-          9999 members
-        </Text>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "400",
+                  "paddingLeft": 10,
+                  "textAlign": "left",
+                },
+                {
+                  "marginTop": 0.5,
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            9999 members
+          </Text>
+        </View>
       </View>
     </View>
   </View>
@@ -1545,31 +1556,42 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
             Room with label
           </Text>
         </View>
-        <Text
+        <View
+          pointerEvents="none"
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 14,
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "400",
-                "paddingLeft": 10,
-                "textAlign": "left",
-              },
-              {
-                "marginTop": 0.5,
-              },
-              {
-                "color": "#6C727A",
-              },
-            ]
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 12,
+            }
           }
         >
-          123 members
-        </Text>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "400",
+                  "paddingLeft": 10,
+                  "textAlign": "left",
+                },
+                {
+                  "marginTop": 0.5,
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            123 members
+          </Text>
+        </View>
       </View>
     </View>
   </View>
