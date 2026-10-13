@@ -165,7 +165,9 @@ jobs:
           overwrite: true
 
       - name: Upload E2E Report
+        id: upload-report
         if: always() && steps.redact.outcome == 'success'
+        continue-on-error: true
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: iOS E2E Report - Shard ${{ inputs.shard }}
@@ -174,3 +176,19 @@ jobs:
             .e2e/junit.xml
             .e2e/artifacts
           retention-days: 7
+
+      - name: Wait Before Retrying the E2E Report Upload
+        if: always() && steps.upload-report.outcome == 'failure'
+        run: sleep 30
+
+      - name: Retry Upload E2E Report
+        if: always() && steps.upload-report.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: iOS E2E Report - Shard ${{ inputs.shard }}
+          path: |
+            .e2e/report.json
+            .e2e/junit.xml
+            .e2e/artifacts
+          retention-days: 7
+          overwrite: true
