@@ -99,6 +99,7 @@ export const useSectionToggleAnimation = (
 	const isToggling = useSharedValue(false);
 	const toggleAnimatedAt = useSharedValue(0);
 	const coverOffset = useSharedValue(0);
+	const coverShownAt = useSharedValue(0);
 	const { cover, setHeaderBottom } = useSectionReveal(collapsedGroups, rowCount);
 
 	useEffect(() => {
@@ -141,7 +142,10 @@ export const useSectionToggleAnimation = (
 			return { initialValues: {}, animations: {} };
 		}
 		const { distance, travel } = cover;
-		const onScreenOffset = coverOffset.get() - distance;
+		const now = Date.now();
+		const visibleCoverOffset = now - coverShownAt.get() < TOGGLE_SETTLE_MS ? coverOffset.get() : 0;
+		coverShownAt.set(now);
+		const onScreenOffset = visibleCoverOffset - distance;
 		const startOffset = distance > 0 ? onScreenOffset : Math.min(onScreenOffset, travel);
 		const settledOffset = distance > 0 ? travel - distance : 0;
 		coverOffset.set(startOffset);
