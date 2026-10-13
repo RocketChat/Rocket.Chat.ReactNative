@@ -1,12 +1,12 @@
 import { Appearance } from 'react-native';
-import * as NavigationBar from 'expo-navigation-bar';
 import * as SystemUI from 'expo-system-ui';
+import { NavigationBar } from '@zoontek/react-native-navigation-bar';
 
-import { type IThemePreference, type TThemeMode } from '../../../definitions/ITheme';
-import { themes } from '../../constants/colors';
-import { THEME_PREFERENCES_KEY } from '../../constants/keys';
+import { type IThemePreference, type TThemeMode } from '~/definitions/ITheme';
+import { themes } from '~/lib/constants/colors';
+import { THEME_PREFERENCES_KEY } from '~/lib/constants/keys';
 import UserPreferences from '../userPreferences';
-import { type TSupportedThemes } from '../../../theme';
+import { type TSupportedThemes } from '~/theme';
 import { isAndroid } from './deviceInfo';
 
 let themeListener: { remove: () => void } | null;
@@ -22,7 +22,7 @@ export const initialTheme = (): IThemePreference => {
 
 export const defaultTheme = (): TThemeMode => {
 	const systemTheme = Appearance.getColorScheme();
-	if (systemTheme) {
+	if (systemTheme === 'light' || systemTheme === 'dark') {
 		return systemTheme;
 	}
 	return 'light';
@@ -53,7 +53,7 @@ export const setNativeTheme = (themePreferences: IThemePreference) => {
 	const isLightTheme = theme === 'light';
 	if (isAndroid) {
 		try {
-			NavigationBar.setStyle(isLightTheme ? 'dark' : 'light');
+			NavigationBar.setBarStyle(isLightTheme ? 'dark-content' : 'light-content');
 		} catch (error) {
 			// Do nothing
 		}

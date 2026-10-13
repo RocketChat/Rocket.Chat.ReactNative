@@ -1,10 +1,10 @@
-import React from 'react';
+import { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants/colors';
-import I18n from '../../i18n';
-import { useTheme } from '../../theme';
+import sharedStyles from '~/views/Styles';
+import { themes } from '~/lib/constants/colors';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
 import { PADDING_HORIZONTAL } from './constants';
 
 const styles = StyleSheet.create({
@@ -24,9 +24,7 @@ interface IListHeader {
 	numberOfLines?: number;
 }
 
-const ListHeader = React.memo(({ title, translateTitle = true, numberOfLines }: IListHeader) => {
-	'use memo';
-
+const ListHeader = memo(({ title, translateTitle = true, numberOfLines }: IListHeader) => {
 	const { theme } = useTheme();
 
 	return (

@@ -1,0 +1,49 @@
+appId: ${APP_ID}
+name: Admin Panel
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-3
+
+---
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.account.adminUser}
+      PASSWORD: ${output.account.adminPassword}
+
+# should open the admin panel from the sidebar
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-sidebar'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-admin'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-admin'
+- extendedWaitUntil:
+    visible:
+      id: 'admin-panel-view'
+    timeout: 60000
+
+# should log in to the embedded admin panel automatically
+- extendedWaitUntil:
+    visible:
+      text: '.*Deployment.*'
+    timeout: 120000
+- assertVisible:
+    text: '.*Deployment ID.*'
+
+# should not fall back to the workspace login form
+- assertNotVisible:
+    text: '.*Email or username.*'

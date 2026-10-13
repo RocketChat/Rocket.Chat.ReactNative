@@ -1,11 +1,10 @@
-import React from 'react';
 import { Text } from 'react-native';
 
-import i18n from '../../i18n';
+import i18n from '~/i18n';
 import styles from './styles';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from './constants';
-import { useUserPreferences } from '../../lib/methods/userPreferences';
+import { useUserPreferences } from '~/lib/methods/userPreferences';
 import NativeButton from '../NativeButton';
 
 const PlaybackSpeed = () => {
@@ -20,6 +19,7 @@ const PlaybackSpeed = () => {
 
 	return (
 		<NativeButton
+			testID='playback-speed'
 			accessible
 			accessibilityLabel={i18n.t('Playback_speed', { playbackSpeed: `${playbackSpeed} x` })}
 			onPress={onPress}

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, type TextInputProps, View } from 'react-native';
 
-import { useTheme } from '../../theme';
-import I18n from '../../i18n';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
 import { FormTextInput } from '../TextInput';
 
 const styles = StyleSheet.create({
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): JSX.Element => {
+const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps) => {
 	const [text, setText] = useState('');
 
 	const { colors } = useTheme();

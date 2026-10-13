@@ -1,24 +1,24 @@
-import React, { useEffect } from 'react';
+import { useEffect, type ReactElement } from 'react';
 import { ScrollView, Share, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import dayjs from '../../lib/dayjs';
-import { inviteLinksClear, inviteLinksCreate } from '../../actions/inviteLinks';
-import Button from '../../containers/Button';
-import Markdown from '../../containers/markdown';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { FormTextInput } from '../../containers/TextInput';
-import { type IApplicationState, type IBaseScreen } from '../../definitions';
-import I18n from '../../i18n';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { useTheme } from '../../theme';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
+import dayjs from '~/lib/dayjs';
+import { inviteLinksClear, inviteLinksCreate } from '~/actions/inviteLinks';
+import Button from '~/containers/Button';
+import Markdown from '~/containers/markdown';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { FormTextInput } from '~/containers/TextInput';
+import { type IApplicationState, type IBaseScreen } from '~/definitions';
+import I18n from '~/i18n';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { useTheme } from '~/theme';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 import styles from './styles';
 
 type IInviteUsersViewProps = IBaseScreen<ChatsStackParamList, 'InviteUsersView'>;
 
-const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.ReactElement => {
+const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): ReactElement => {
 	const rid = route.params?.rid;
 	const timeDateFormat = useSelector((state: IApplicationState) => state.settings.Message_TimeAndDateFormat as string);
 	const invite = useSelector((state: IApplicationState) => state.inviteLinks.invite);

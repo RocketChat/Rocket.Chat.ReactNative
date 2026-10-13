@@ -1,34 +1,36 @@
 import { type CompositeNavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { uniq } from 'lodash';
+import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { type ReactElement, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { type Subscription } from 'rxjs';
 import UAParser from 'ua-parser-js';
+import { shallowEqual } from 'react-redux';
 
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { type ISubscription, type IUser, SubscriptionType } from '../../definitions';
-import I18n from '../../i18n';
-import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { getRoomInfo, getUserInfo, getVisitorInfo, toggleBlockUser } from '../../lib/services/restApi';
-import { createDirectMessage } from '../../lib/methods/createDirectMessage';
-import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { useTheme } from '../../theme';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { type ISubscription, type IUser, SubscriptionType } from '~/definitions';
+import I18n from '~/i18n';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { getRoomTitle, getUidDirectMessage, hasPermission } from '~/lib/methods/helpers';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
+import { handleIgnore } from '~/lib/methods/helpers/handleIgnore';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { getRoomInfo, getUserInfo, getVisitorInfo, toggleBlockUser } from '~/lib/services/restApi';
+import { createDirectMessage } from '~/lib/methods/createDirectMessage';
+import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { useTheme } from '~/theme';
 import RoomInfoButtons from './components/RoomInfoButtons';
 import RoomInfoViewAvatar from './components/RoomInfoViewAvatar';
 import RoomInfoViewBody from './components/RoomInfoViewBody';
 import RoomInfoViewTitle from './components/RoomInfoViewTitle';
 import styles from './styles';
-import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';
-import Navigation from '../../lib/navigation/appNavigation';
+import { emitErrorCreateDirectMessage } from '~/lib/methods/helpers/emitErrorCreateDirectMessage';
+import Navigation from '~/lib/navigation/appNavigation';
 
 type TRoomInfoViewNavigationProp = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
@@ -37,7 +39,21 @@ type TRoomInfoViewNavigationProp = CompositeNavigationProp<
 
 type TRoomInfoViewRouteProp = RouteProp<ChatsStackParamList, 'RoomInfoView'>;
 
-const RoomInfoView = (): React.ReactElement => {
+const fetchVisitorWithUserAgent = async (visitorId: string) => {
+	const result = await getVisitorInfo(visitorId);
+	if (!result.success) return;
+	const { visitor } = result;
+	const params: { os?: string; browser?: string } = {};
+	if (visitor.userAgent) {
+		const ua = new UAParser();
+		ua.setUA(visitor.userAgent);
+		params.os = `${ua.getOS().name} ${ua.getOS().version}`;
+		params.browser = `${ua.getBrowser().name} ${ua.getBrowser().version}`;
+	}
+	return { ...visitor, ...params };
+};
+
+const RoomInfoView = (): ReactElement => {
 	const {
 		params: { rid, t, fromRid, member, room: roomParam, showCloseModal, itsMe }
 	} = useRoute<TRoomInfoViewRouteProp>();
@@ -45,7 +61,7 @@ const RoomInfoView = (): React.ReactElement => {
 
 	const [room, setRoom] = useState(roomParam || ({ rid, t } as ISubscription));
 	const [roomFromRid, setRoomFromRid] = useState<ISubscription | undefined>();
-	const [roomUser, setRoomUser] = useState(member || {});
+	const [roomUserData, setRoomUserData] = useState(member || {});
 	const [showEdit, setShowEdit] = useState(false);
 
 	const roomType = room?.t || t;
@@ -55,7 +71,6 @@ const RoomInfoView = (): React.ReactElement => {
 	const subscription = useRef<Subscription | undefined>(undefined);
 
 	const {
-		isMasterDetail,
 		subscribedRoom,
 		usersRoles,
 		roles,
@@ -64,82 +79,60 @@ const RoomInfoView = (): React.ReactElement => {
 		editRoomPermission,
 		editOmnichannelContact,
 		editLivechatRoomCustomfields
-	} = useAppSelector(state => ({
-		subscribedRoom: state.room.subscribedRoom,
-		isMasterDetail: state.app.isMasterDetail,
-		roles: state.roles,
-		usersRoles: state.usersRoles,
-		serverVersion: state.server.version,
-		// permissions
-		editRoomPermission: state.permissions['edit-room'],
-		editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
-		editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields']
-	}));
+	} = useAppSelector(
+		state => ({
+			subscribedRoom: state.room.subscribedRoom,
+			roles: state.roles,
+			usersRoles: state.usersRoles,
+			serverVersion: state.server.version,
+			// permissions
+			editRoomPermission: state.permissions['edit-room'],
+			editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
+			editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields']
+		}),
+		shallowEqual
+	);
+	const isMasterDetail = useMasterDetail();
+
+	const roomUserId = isDirect ? getUidDirectMessage({ ...(room || { rid, t }), itsMe }) : undefined;
+	const activeUserStatus = useAppSelector(state => (roomUserId ? state.activeUsers[roomUserId] : undefined), shallowEqual);
+	const userStatus = activeUserStatus || roomUserData;
 
 	const { colors } = useTheme();
 
-	// Prevents from flashing RoomInfoView on the header title before fetching actual room data
-	useLayoutEffect(() => {
-		setHeader(false);
-	}, []);
-
-	useEffect(() => {
-		const listener = addListener('focus', () => (isLivechat ? loadVisitor() : null));
-		return () => listener();
-	}, []);
-
-	useEffect(
-		() => () => {
-			subscription.current?.unsubscribe();
-		},
-		[]
-	);
-
-	useEffect(() => {
-		loadRoom();
-		if (isDirect) loadUser();
-	}, []);
-
 	const setHeader = (canEdit?: boolean) => {
-		const HeaderRight = () => (
-			<HeaderButton.Container>
-				<HeaderButton.Item
-					accessibilityLabel={I18n.t('Room_Info_Edit')}
-					iconName='edit'
-					onPress={() => {
-						if (!room) return;
-						logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
-						const navigationProps = { room, roomUser };
-						if (isLivechat) navigate('LivechatEditView', navigationProps);
-						else navigate('RoomInfoEditView', { rid, ...navigationProps });
-					}}
-					testID='room-info-view-edit-button'
-				/>
-			</HeaderButton.Container>
-		);
 		setOptions({
 			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal /> : undefined,
 			title: isDirect ? I18n.t('User_Info') : I18n.t('Room_Info'),
-			headerRight: canEdit ? () => <HeaderRight /> : undefined
+			headerRight: canEdit
+				? () => (
+						<HeaderButton.Container>
+							<HeaderButton.Item
+								accessibilityLabel={I18n.t('Room_Info_Edit')}
+								iconName='edit'
+								onPress={() => {
+									if (!room) return;
+									logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
+									const navigationProps = { room, roomUser };
+									if (isLivechat) navigate('LivechatEditView', navigationProps);
+									else navigate('RoomInfoEditView', { rid, ...navigationProps });
+								}}
+								testID='room-info-view-edit-button'
+							/>
+						</HeaderButton.Container>
+					)
+				: undefined
 		});
 	};
 
 	const loadVisitor = async () => {
+		const visitorId = room?.visitor?._id;
+		if (!visitorId) return;
 		try {
-			if (room?.visitor?._id) {
-				const result = await getVisitorInfo(room.visitor._id);
-				if (result.success) {
-					const { visitor } = result;
-					const params: { os?: string; browser?: string } = {};
-					if (visitor.userAgent) {
-						const ua = new UAParser();
-						ua.setUA(visitor.userAgent);
-						params.os = `${ua.getOS().name} ${ua.getOS().version}`;
-						params.browser = `${ua.getBrowser().name} ${ua.getBrowser().version}`;
-					}
-					setRoomUser({ ...visitor, ...params });
-					setHeader();
-				}
+			const visitor = await fetchVisitorWithUserAgent(visitorId);
+			if (visitor) {
+				setRoomUserData(visitor);
+				setHeader();
 			}
 		} catch (error) {
 			// Do nothing
@@ -162,22 +155,28 @@ const RoomInfoView = (): React.ReactElement => {
 		}
 	};
 
+	const roomUser = isDirect ? { ...roomUserData, roles: handleRoles(roomUserData) } : roomUserData;
+
+	// member may arrive without _id (RoomActionsView forwards it before its own fetch resolves)
+	const resolveRoomUserId = (r?: ISubscription) => {
+		if (roomUser._id) return roomUser._id;
+		const derived = getUidDirectMessage({ ...(r || { rid, t }), itsMe });
+		return derived && derived !== r?.rid ? derived : undefined;
+	};
+
 	const loadUser = async () => {
-		if (isEmpty(roomUser)) {
-			try {
-				const roomUserId = getUidDirectMessage({ ...(room || { rid, t }), itsMe });
-				const result = await getUserInfo(roomUserId);
-				if (result.success) {
-					const { user } = result;
-					const r = handleRoles(user);
-					setRoomUser({ ...user, roles: r });
-				}
-			} catch {
-				// do nothing
+		if (roomUserData._id) {
+			return;
+		}
+		const roomOrParams = room || { rid, t };
+		try {
+			const roomUserId = getUidDirectMessage({ ...roomOrParams, itsMe });
+			const result = await getUserInfo(roomUserId);
+			if (result.success) {
+				setRoomUserData({ ...roomUserData, ...result.user });
 			}
-		} else {
-			const r = handleRoles(roomUser);
-			if (r) setRoomUser({ ...roomUser, roles: r });
+		} catch {
+			// do nothing
 		}
 	};
 
@@ -214,17 +213,36 @@ const RoomInfoView = (): React.ReactElement => {
 		setHeader(roomType === SubscriptionType.DIRECT ? false : canEdit);
 	};
 
-	const createDirect = () =>
-		new Promise<void | ISubscription>(async (resolve, reject) => {
-			// We don't need to create a direct
-			if (!isEmpty(member)) return resolve();
-			try {
-				const result = await createDirectMessage(roomUser.username);
-				if (result.success) return resolve({ ...roomUser, rid: result.room.rid });
-			} catch (e) {
-				reject(e);
-			}
-		});
+	// Prevents from flashing RoomInfoView on the header title before fetching actual room data
+	useLayoutEffect(() => {
+		setHeader(false);
+	}, []);
+
+	useEffect(() => {
+		const listener = addListener('focus', () => (isLivechat ? loadVisitor() : null));
+		return () => listener();
+	}, []);
+
+	useEffect(
+		() => () => {
+			subscription.current?.unsubscribe();
+		},
+		[]
+	);
+
+	useEffect(() => {
+		loadRoom();
+		if (isDirect) loadUser();
+	}, []);
+
+	const createDirect = async (): Promise<void | ISubscription> => {
+		if (!isEmpty(member)) return;
+		const result = await createDirectMessage(roomUser.username);
+		if (!result?.success || !result.room?._id) {
+			throw new Error('Failed to create direct message');
+		}
+		return { ...roomUser, rid: result.room._id };
+	};
 
 	const handleGoRoom = (r?: ISubscription) => {
 		logEvent(events.RI_GO_ROOM_USER);
@@ -253,27 +271,46 @@ const RoomInfoView = (): React.ReactElement => {
 			}
 			handleGoRoom(r);
 		} catch (e: any) {
-			emitErrorCreateDirectMessage(e?.data);
+			emitErrorCreateDirectMessage(e?.data ?? e);
 		}
 	};
 
 	const handleBlockUser = async () => {
 		const r = roomFromRid || room;
-		const userBlocked = roomUser._id;
+		const userBlocked = resolveRoomUserId(r);
 		const blocker = r?.blocker;
-		if (!r?.rid) return;
+		if (!r?.rid || !userBlocked) return;
 		logEvent(events.RI_TOGGLE_BLOCK_USER);
 		try {
 			await toggleBlockUser(r.rid, userBlocked, !blocker);
+			const updatedRoom = { ...r, blocker: !blocker };
+			if (roomFromRid) {
+				setRoomFromRid(updatedRoom);
+			} else {
+				setRoom(updatedRoom);
+			}
 		} catch (e) {
 			log(e);
 		}
 	};
 
-	const handleIgnoreUser = () => {
+	const handleIgnoreUser = async () => {
 		const r = roomFromRid || room;
-		const isIgnored = r?.ignored?.includes?.(roomUser._id);
-		if (r?.rid) handleIgnore(roomUser._id, !isIgnored, r?.rid);
+		const userId = resolveRoomUserId(r);
+		if (!r?.rid || !userId) return;
+		const isIgnored = r?.ignored?.includes?.(userId);
+		const shouldIgnore = !isIgnored;
+		const success = await handleIgnore(userId, shouldIgnore, r?.rid);
+		if (success) {
+			const currentIgnored = r?.ignored || [];
+			const updatedIgnored = shouldIgnore ? [...currentIgnored, userId] : currentIgnored.filter((id: string) => id !== userId);
+			const updatedRoom = { ...r, ignored: updatedIgnored };
+			if (roomFromRid) {
+				setRoomFromRid(updatedRoom);
+			} else {
+				setRoom(updatedRoom);
+			}
+		}
 	};
 
 	const handleReportUser = () => {
@@ -291,7 +328,6 @@ const RoomInfoView = (): React.ReactElement => {
 					<RoomInfoViewAvatar
 						username={room?.name || roomUser.username}
 						rid={room?.rid}
-						userId={roomUser?._id}
 						handleEditAvatar={() => navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t, context: 'room' })}
 						showEdit={showEdit}
 						type={t}
@@ -301,7 +337,10 @@ const RoomInfoView = (): React.ReactElement => {
 						room={room || roomUser}
 						name={roomUser?.name}
 						username={roomUser?.username}
-						statusText={roomUser?.statusText}
+						userId={roomUser?._id}
+						status={userStatus?.status}
+						statusText={userStatus?.statusText}
+						statusExpiresAt={userStatus?.statusExpiresAt}
 					/>
 					<RoomInfoButtons
 						rid={room?.rid || rid}
@@ -312,7 +351,7 @@ const RoomInfoView = (): React.ReactElement => {
 						handleReportUser={handleReportUser}
 						isDirect={isDirect}
 						room={room || roomUser}
-						roomUserId={roomUser?._id}
+						roomUserId={roomUser?._id || roomUserId}
 						roomFromRid={roomFromRid}
 						serverVersion={serverVersion}
 						itsMe={itsMe}

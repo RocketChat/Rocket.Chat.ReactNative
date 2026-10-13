@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component, type ComponentType, createRef, type MutableRefObject } from 'react';
 import { Platform, StyleSheet, findNodeHandle, type LayoutChangeEvent, type ScrollViewProps, processColor } from 'react-native';
 import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 
@@ -9,7 +9,7 @@ import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativ
 // shadow tree boundary and drops all interaction events. newArchEnabled=true exposes this.
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const NativeComponentRegistry = require('react-native/Libraries/NativeComponent/NativeComponentRegistry') as {
-	get: (name: string, viewConfigProvider: () => object) => React.ComponentType<any>;
+	get: (name: string, viewConfigProvider: () => object) => ComponentType<any>;
 };
 
 const pointsDiffer = require('react-native/Libraries/Utilities/differ/pointsDiffer').default as (
@@ -95,8 +95,8 @@ const Commands = codegenNativeCommands<InvertedScrollViewCommands>({
 	supportedCommands: ['scrollTo', 'scrollToEnd', 'flashScrollIndicators']
 });
 
-export default class InvertedScrollView extends React.Component<Props> {
-	private scrollRef = React.createRef<any>();
+export default class InvertedScrollView extends Component<Props> {
+	private scrollRef = createRef<any>();
 
 	private handleLayout = (e: LayoutChangeEvent) => {
 		this.props.onLayout?.(e);
@@ -108,7 +108,7 @@ export default class InvertedScrollView extends React.Component<Props> {
 	};
 
 	private setNativeRef = (instance: any) => {
-		(this.scrollRef as React.MutableRefObject<any>).current = instance;
+		(this.scrollRef as MutableRefObject<any>).current = instance;
 	};
 
 	scrollTo = (options?: { x?: number; y?: number; animated?: boolean } | number) => {

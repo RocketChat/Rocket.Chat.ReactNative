@@ -1,0 +1,28 @@
+name: Pre-install Android SDK packages
+description: >-
+  Retried install of the Android emulator + api-34 system image; clears partial
+  downloads between attempts so a corrupt archive self-heals.
+
+runs:
+  using: composite
+  steps:
+    - name: Install emulator + system image
+      shell: bash
+      run: |
+        set -u
+        SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+        SDKMANAGER="$SDK/cmdline-tools/latest/bin/sdkmanager"
+        IMAGE="system-images;android-34;google_apis;x86_64"
+        yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
+        for attempt in 1 2 3; do
+          echo "sdkmanager install attempt $attempt"
+          if "$SDKMANAGER" --install "emulator" "$IMAGE" --channel=0; then
+            echo "SDK packages installed on attempt $attempt"
+            exit 0
+          fi
+          echo "Install failed (attempt $attempt); clearing partial downloads and retrying"
+          rm -rf "$SDK/emulator" "$SDK/system-images/android-34/google_apis/x86_64"
+          sleep 10
+        done
+        echo "sdkmanager failed to install emulator + system image after 3 attempts"
+        exit 1

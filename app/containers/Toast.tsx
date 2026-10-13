@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, type ReactElement } from 'react';
 import { Alert, StyleSheet } from 'react-native';
 import EasyToast from 'react-native-easy-toast';
 
@@ -26,16 +26,9 @@ export const LISTENER = 'Toast';
 let listener: Function;
 let toast: EasyToast | null | undefined;
 
-const Toast = (): React.ReactElement => {
+const Toast = (): ReactElement => {
 	const { colors, theme } = useTheme();
 	const [alertDisplayType] = useUserPreferences<TAlertDisplayType>(ALERT_DISPLAY_TYPE_PREFERENCES_KEY, 'TOAST');
-
-	useEffect(() => {
-		listener = EventEmitter.addEventListener(LISTENER, showToast);
-		return () => {
-			EventEmitter.removeListener(LISTENER, listener);
-		};
-	}, [alertDisplayType]);
 
 	const getToastRef = (newToast: EasyToast | null) => {
 		toast = newToast;
@@ -50,6 +43,13 @@ const Toast = (): React.ReactElement => {
 			toast.show(message, process.env.RUNNING_E2E_TESTS === 'true' ? 5000 : 1000);
 		}
 	};
+
+	useEffect(() => {
+		listener = EventEmitter.addEventListener(LISTENER, showToast);
+		return () => {
+			EventEmitter.removeListener(LISTENER, listener);
+		};
+	}, [alertDisplayType]);
 
 	return (
 		<EasyToast

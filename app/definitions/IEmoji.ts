@@ -22,6 +22,8 @@ export interface ICustomEmojis {
 
 export type TGetCustomEmoji = (name: string) => ICustomEmoji | null;
 
+export const resolveCustomEmoji = (customEmojis: ICustomEmojis, name: string): ICustomEmoji | null => customEmojis[name] ?? null;
+
 export type TFrequentlyUsedEmojiModel = IFrequentlyUsedEmoji & Model;
 
 export interface ICustomEmojiModel {

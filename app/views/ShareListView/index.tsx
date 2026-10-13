@@ -1,31 +1,34 @@
-import React from 'react';
 import { type Dispatch } from 'redux';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { BackHandler, FlatList, Keyboard, type NativeEventSubscription, Text, View } from 'react-native';
+import { BackHandler, FlatList, Keyboard, type NativeEventSubscription, PixelRatio, StyleSheet, Text, View } from 'react-native';
 import * as FileSystem from 'expo-file-system/legacy';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
 import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
+import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
+import { Component } from 'react';
 
-import database from '../../lib/database';
-import I18n from '../../i18n';
-import DirectoryItem, { ROW_HEIGHT } from '../../containers/DirectoryItem';
-import ServerItem from '../../containers/ServerItem';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import * as List from '../../containers/List';
-import SearchHeader from '../../containers/SearchHeader';
-import { themes } from '../../lib/constants/colors';
-import { type TSupportedThemes, withTheme } from '../../theme';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { sanitizeLikeString } from '../../lib/database/utils';
+import database from '~/lib/database';
+import I18n from '~/i18n';
+import DirectoryItem, { ROW_HEIGHT } from '~/containers/DirectoryItem';
+import ServerItem from '~/containers/ServerItem';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import * as List from '~/containers/List';
+import SearchHeader from '~/containers/SearchHeader';
+import { themes } from '~/lib/constants/colors';
+import { type TSupportedThemes, withTheme } from '~/theme';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { getSubscriptionSearchClause } from '~/lib/database/utils';
 import styles from './styles';
-import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '../../definitions';
-import { type ShareInsideStackParamList } from '../../definitions/navigationTypes';
-import { getRoomAvatar, isAndroid, isIOS } from '../../lib/methods/helpers';
-import { shareSetParams } from '../../actions/share';
-import { appStart } from '../../actions/app';
+import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '~/definitions';
+import { type ShareInsideStackParamList } from '~/definitions/navigationTypes';
+import { getRoomAvatar, isAndroid, isIOS } from '~/lib/methods/helpers';
+import { getFilenameFromUri } from '~/lib/methods/helpers/getFilenameFromUri';
+import { showToast } from '~/lib/methods/helpers/showToast';
+import { shareSetParams } from '~/actions/share';
+import { appStart } from '~/actions/app';
 
 interface IFileToShare {
 	filename: string;
@@ -61,12 +64,16 @@ interface IShareListViewProps extends INavigationOption {
 	airGappedRestrictionRemainingDays: number | undefined;
 	shareExtensionParams: Record<string, any>;
 	dispatch: Dispatch;
+	insets: EdgeInsets;
 }
 
-const getItemLayout = (data: any, index: number) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
+const getItemLayout = (_data: any, index: number) => {
+	const rowHeight = PixelRatio.roundToNearestPixel(ROW_HEIGHT * PixelRatio.getFontScale());
+	return { length: rowHeight, offset: (rowHeight + StyleSheet.hairlineWidth) * index, index };
+};
 const keyExtractor = (item: TSubscriptionModel) => item.rid;
 
-class ShareListView extends React.Component<IShareListViewProps, IState> {
+class ShareListView extends Component<IShareListViewProps, IState> {
 	private unsubscribeFocus: (() => void) | undefined;
 
 	private unsubscribeBlur: (() => void) | undefined;
@@ -102,25 +109,45 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		if (mediaUris) {
 			try {
 				const info = await Promise.all(mediaUris.split(',').map((uri: string) => FileSystem.getInfoAsync(uri)));
-				const attachments = info.map(file => {
-					if (!file.exists) {
-						return null;
-					}
+				const attachments = (
+					await Promise.all(
+						info.map(async file => {
+							if (!file.exists) {
+								return null;
+							}
+							try {
+								await FileSystem.readAsStringAsync(file.uri, {
+									encoding: FileSystem.EncodingType.Base64,
+									position: 0,
+									length: 1
+								});
+							} catch {
+								return null;
+							}
 
-					return {
-						filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
-						description: '',
-						size: file.size,
-						mime: mime.lookup(file.uri),
-						path: file.uri
-					};
-				}) as IFileToShare[];
+							return {
+								filename: getFilenameFromUri(file.uri) ?? file.uri.substring(file.uri.lastIndexOf('/') + 1),
+								description: '',
+								size: file.size,
+								mime: mime.lookup(file.uri) || '',
+								path: file.uri
+							};
+						})
+					)
+				).filter((file): file is IFileToShare => !!file);
 				this.setState({
 					// text,
 					attachments
 				});
+				if (!attachments.length) {
+					showToast(I18n.t('Share_no_valid_attachments'));
+					this.closeShareExtension();
+					return;
+				}
 			} catch {
-				// Do nothing
+				showToast(I18n.t('Share_no_valid_attachments'));
+				this.closeShareExtension();
+				return;
 			}
 		}
 
@@ -227,8 +254,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			Q.sortBy('room_updated_at', Q.desc)
 		] as (Q.WhereDescription | Q.Skip | Q.Take | Q.SortBy | Q.Or)[];
 		if (text) {
-			const likeString = sanitizeLikeString(text);
-			defaultWhereClause.push(Q.or(Q.where('name', Q.like(`%${likeString}%`)), Q.where('fname', Q.like(`%${likeString}%`))));
+			defaultWhereClause.push(getSubscriptionSearchClause(text));
 		}
 		const data = (await db
 			.get('subscriptions')
@@ -306,7 +332,12 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 	shareMessage = (room: TSubscriptionModel) => {
 		const { attachments, text, serverInfo } = this.state;
-		const { navigation } = this.props;
+		const { navigation, shareExtensionParams } = this.props;
+
+		if (shareExtensionParams?.mediaUris && !attachments.length) {
+			showToast(I18n.t('Share_no_valid_attachments'));
+			return;
+		}
 
 		navigation.navigate('ShareView', {
 			room,
@@ -446,7 +477,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 	render = () => {
 		const { chats, loading, searchResults, searching, serversCount } = this.state;
-		const { theme } = this.props;
+		const { theme, insets } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator />;
@@ -487,6 +518,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 					data={searching ? searchResults : chats}
 					keyExtractor={keyExtractor}
 					style={[styles.flatlist, { backgroundColor: themes[theme].surfaceHover }]}
+					contentContainerStyle={{ paddingBottom: insets.bottom }}
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
 					ItemSeparatorComponent={List.Separator}
@@ -514,4 +546,5 @@ const mapStateToProps = ({ login, server, share, settings }: IApplicationState) 
 			: undefined
 });
 
-export default connect(mapStateToProps)(withTheme(ShareListView));
+export { ShareListView };
+export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(ShareListView)));

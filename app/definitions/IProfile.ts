@@ -1,9 +1,9 @@
-import type React from 'react';
+import { type ReactNode } from 'react';
 
 export interface IProfileParams {
 	realname?: string;
 	name?: string;
-	username: string;
+	username?: string;
 	email: string | null;
 	newPassword: string;
 	currentPassword: string;
@@ -13,7 +13,7 @@ export interface IProfileParams {
 
 export interface IAvatarButton {
 	key: string;
-	child: React.ReactNode;
+	child: ReactNode;
 	onPress: () => void;
 	disabled: boolean;
 }

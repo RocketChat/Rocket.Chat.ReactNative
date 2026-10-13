@@ -1,8 +1,8 @@
-import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { type ReactElement } from 'react';
 
-import { useTheme } from '../../../../theme';
-import Button from '../../../../containers/Button';
+import { useTheme } from '~/theme';
+import Button from '~/containers/Button';
 
 const styles = StyleSheet.create({
 	buttonSeparator: {
@@ -35,7 +35,7 @@ const FooterButtons = ({
 	cancelBackgroundColor = '',
 	confirmBackgroundColor = '',
 	testID = ''
-}: IFooterButtons): React.ReactElement => {
+}: IFooterButtons): ReactElement => {
 	const { colors } = useTheme();
 	return (
 		<View style={styles.footerButtonsContainer}>

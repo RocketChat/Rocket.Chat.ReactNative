@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 
-import { useCallStore } from '../../../lib/services/voip/useCallStore';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
 
 const formatDuration = (seconds: number): string => {
 	const hours = Math.floor(seconds / 3600);
@@ -12,8 +12,6 @@ const formatDuration = (seconds: number): string => {
 };
 
 const Timer = () => {
-	'use memo';
-
 	const callStartTime = useCallStore(state => state.callStartTime);
 	const [duration, setDuration] = useState(callStartTime ? Math.floor((new Date().getTime() - callStartTime) / 1000) : 0);
 

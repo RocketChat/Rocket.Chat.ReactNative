@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { type StyleProp, type ViewStyle } from 'react-native';
 
@@ -6,7 +6,7 @@ import { useTheme } from '../theme';
 
 interface IKeyboardViewProps {
 	backgroundColor?: string;
-	children: React.ReactElement[] | React.ReactElement;
+	children: ReactElement[] | ReactElement;
 	style?: StyleProp<ViewStyle>;
 }
 

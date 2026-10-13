@@ -93,7 +93,14 @@ tags:
     visible:
       id: 'room-view-title-${output.discussionFromNewMessage}'
     timeout: 60000
-- tapOn: 'Back'
+- runFlow: '../../helpers/hide-keyboard.yaml'
+- runFlow:
+    when:
+      visible:
+        id: 'room-view'
+    commands:
+      - tapOn:
+          id: 'header-back'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-item-${output.discussionFromNewMessage}'

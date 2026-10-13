@@ -1,21 +1,20 @@
-import React from 'react';
+import { memo } from 'react';
 import { Text, type StyleProp, type ViewStyle } from 'react-native';
 
 import styles from './styles';
-import Touch from '../../Touch';
-import { CustomIcon, type TIconsName } from '../../CustomIcon';
-import { useTheme } from '../../../theme';
+import Touch from '~/containers/Touch';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import { useTheme } from '~/theme';
 
 interface IPasscodeButton {
 	text?: string;
 	icon?: TIconsName;
-	disabled?: boolean;
 	onPress?: Function;
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
 }
 
-const Button = React.memo(({ style, text, disabled, onPress, icon, testID }: IPasscodeButton) => {
+const Button = memo(({ style, text, onPress, icon, testID }: IPasscodeButton) => {
 	const { colors } = useTheme();
 
 	const press = () => onPress && onPress(text);
@@ -26,7 +25,6 @@ const Button = React.memo(({ style, text, disabled, onPress, icon, testID }: IPa
 			style={[styles.buttonView, { backgroundColor: 'transparent' }, style]}
 			underlayColor={colors.buttonBackgroundSecondaryDefault}
 			rippleColor={colors.buttonBackgroundSecondaryPress}
-			enabled={!disabled}
 			onPress={press}>
 			{icon ? (
 				<CustomIcon name={icon} size={36} />

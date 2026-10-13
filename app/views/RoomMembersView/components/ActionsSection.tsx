@@ -1,18 +1,19 @@
 import { type CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { type ReactElement } from 'react';
 
-import { setLoading } from '../../../actions/selectedUsers';
-import * as List from '../../../containers/List';
-import { type TSubscriptionModel } from '../../../definitions';
-import i18n from '../../../i18n';
-import { usePermissions } from '../../../lib/hooks/usePermissions';
-import log, { events, logEvent } from '../../../lib/methods/helpers/log';
-import { addUsersToRoom } from '../../../lib/services/restApi';
-import { type MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
-import { type ChatsStackParamList } from '../../../stacks/types';
+import { setLoading } from '~/actions/selectedUsers';
+import * as List from '~/containers/List';
+import { type TSubscriptionModel } from '~/definitions';
+import i18n from '~/i18n';
+import { usePermissions } from '~/lib/hooks/usePermissions';
+import { showErrorAlertWithEMessage } from '~/lib/methods/helpers';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { addUsersToRoom } from '~/lib/services/restApi';
+import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
+import { type ChatsStackParamList } from '~/stacks/types';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
@@ -26,7 +27,7 @@ interface IActionsSection {
 	abacAttributes: TSubscriptionModel['abacAttributes'];
 }
 
-export default function ActionsSection({ rid, t, joined, abacAttributes }: IActionsSection): React.ReactElement {
+export default function ActionsSection({ rid, t, joined, abacAttributes }: IActionsSection): ReactElement {
 	const { navigate, pop } = useNavigation<TNavigation>();
 	const dispatch = useDispatch();
 	const [addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission, createInviteLinksPermission] =
@@ -39,6 +40,8 @@ export default function ActionsSection({ rid, t, joined, abacAttributes }: IActi
 		false;
 
 	const canInviteUser = createInviteLinksPermission;
+	const isChannelOrGroup = ['c', 'p'].includes(t);
+	const verticalPadding = canAddUser || canInviteUser ? 16 : 0;
 
 	const handleOnPress = ({
 		route,
@@ -54,20 +57,20 @@ export default function ActionsSection({ rid, t, joined, abacAttributes }: IActi
 	};
 
 	const addUser = async () => {
+		dispatch(setLoading(true));
 		try {
-			dispatch(setLoading(true));
-			await addUsersToRoom(rid);
+			await addUsersToRoom(rid, t as 'c' | 'p');
 			pop();
 		} catch (e) {
 			log(e);
-		} finally {
-			dispatch(setLoading(false));
+			showErrorAlertWithEMessage(e);
 		}
+		dispatch(setLoading(false));
 	};
 
 	return (
-		<View style={{ paddingTop: canAddUser || canInviteUser ? 16 : 0, paddingBottom: canAddUser || canInviteUser ? 16 : 0 }}>
-			{['c', 'p'].includes(t) && canAddUser ? (
+		<View style={{ paddingTop: verticalPadding, paddingBottom: verticalPadding }}>
+			{isChannelOrGroup && canAddUser ? (
 				<>
 					<List.Separator />
 					<List.Item
@@ -90,7 +93,7 @@ export default function ActionsSection({ rid, t, joined, abacAttributes }: IActi
 				</>
 			) : null}
 
-			{['c', 'p'].includes(t) && canInviteUser ? (
+			{isChannelOrGroup && canInviteUser ? (
 				<>
 					<List.Item
 						title='Invite_users'

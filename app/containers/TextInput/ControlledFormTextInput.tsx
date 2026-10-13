@@ -1,4 +1,3 @@
-import React from 'react';
 import { type Control, Controller } from 'react-hook-form';
 
 import { FormTextInput, type IRCTextInputProps } from './FormTextInput';

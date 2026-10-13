@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
@@ -13,7 +13,7 @@ import Markdown from '../containers/markdown';
 import { type ICannedResponse } from '../definitions/ICannedResponse';
 import { type ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
-import { useAppSelector } from '../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../lib/hooks/useMasterDetail';
 
 const styles = StyleSheet.create({
 	scroll: {
@@ -81,13 +81,13 @@ const Item = ({ label, content, theme, testID }: IItem) =>
 		</View>
 	) : null;
 
-const CannedResponseDetail = (): JSX.Element => {
+const CannedResponseDetail = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CannedResponseDetail'>>();
 	const route = useRoute<RouteProp<ChatsStackParamList, 'CannedResponseDetail'>>();
 
 	const { cannedResponse } = route?.params;
 	const { theme } = useTheme();
-	const { isMasterDetail } = useAppSelector(state => state.app);
+	const isMasterDetail = useMasterDetail();
 
 	useEffect(() => {
 		navigation.setOptions({

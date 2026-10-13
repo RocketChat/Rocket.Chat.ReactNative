@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { Text, type TextStyle } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
-import Button from '../../Button';
-import { useTheme } from '../../../theme';
+import Button from '~/containers/Button';
+import { useTheme } from '~/theme';
 import { type IText } from '../interfaces';
 import Chips from './Chips';
 import Input from './Input';
 import styles from './styles';
-import { useActionSheet } from '../../ActionSheet';
+import { useActionSheet } from '~/containers/ActionSheet';
 import { MultiSelectContent } from './MultiSelectContent';
 
 export interface IItemData {
@@ -41,7 +41,7 @@ interface IMultiSelect {
 	testID?: string;
 }
 
-export const MultiSelect = React.memo(
+export const MultiSelect = memo(
 	({
 		options = [],
 		onChange,

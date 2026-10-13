@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
@@ -10,14 +10,14 @@ import Title from './Title';
 import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
 import Tag from './Tag';
-import I18n from '../../i18n';
-import { DisplayMode } from '../../lib/constants/constantDisplayMode';
+import I18n from '~/i18n';
+import { DisplayMode } from '~/lib/constants/constantDisplayMode';
 import { type IRoomItemProps } from './interfaces';
-import { formatLastMessage } from '../../lib/methods/formatLastMessage';
-import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { formatLastMessage } from '~/lib/methods/formatLastMessage';
+import useStatusAccessibilityLabel from '~/lib/hooks/useStatusAccessibilityLabel';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { CustomIcon } from '../CustomIcon';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 
 const RoomItem = ({
 	rid,
@@ -59,8 +59,6 @@ const RoomItem = ({
 	abacAttributes,
 	isInvited
 }: IRoomItemProps) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
 	const memoizedMessage = useMemo(
@@ -86,12 +84,12 @@ const RoomItem = ({
 			favorite={favorite}
 			isRead={isRead}
 			rid={rid}
-			testID={testID}
 			type={type}
 			isFocused={!!isFocused}
 			swipeEnabled={swipeEnabled}
 			displayMode={displayMode}>
 			<Wrapper
+				testID={testID}
 				accessibilityLabel={accessibilityLabel}
 				accessibilityHint={I18n.t('Long_press_for_more_actions')}
 				avatar={avatar}

@@ -8,6 +8,7 @@ import database from '../lib/database';
 import I18n from '../i18n';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { goRoom } from '../lib/methods/helpers/goRoom';
+import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { createTeam, createGroupChat, createChannel, addRoomsToTeam } from '../lib/services/restApi';
 import { Encryption } from '../lib/encryption';
 
@@ -81,7 +82,7 @@ const handleRequest = function* handleRequest({ data }) {
 };
 
 const handleSuccess = function* handleSuccess({ data }) {
-	const isMasterDetail = yield select(state => state.app.isMasterDetail);
+	const isMasterDetail = getIsMasterDetail();
 	goRoom({ item: data, isMasterDetail });
 };
 

@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View, Text, Linking } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import I18n from '../../i18n';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { getServerById } from '../../lib/database/services/Server';
-import log from '../../lib/methods/helpers/log';
-import database from '../../lib/database';
-import { useTheme } from '../../theme';
+import I18n from '~/i18n';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { getServerById } from '~/lib/database/services/Server';
+import log from '~/lib/methods/helpers/log';
+import database from '~/lib/database';
+import { useTheme } from '~/theme';
 import { CustomIcon } from '../CustomIcon';
 import Button from '../Button';
 import { styles } from './styles';
 import { LEARN_MORE_URL } from './constants';
-import { selectServerRequest } from '../../actions/server';
+import { selectServerRequest } from '~/actions/server';
 
 const checkAgainTimeout = 3000;
 
@@ -23,8 +23,8 @@ export const SupportedVersionsExpired = () => {
 	const dispatch = useDispatch();
 
 	const checkAgain = async () => {
+		setChecking(true);
 		try {
-			setChecking(true);
 			const serversDB = database.servers;
 			const serverRecord = await getServerById(server);
 			if (serverRecord) {
@@ -40,9 +40,8 @@ export const SupportedVersionsExpired = () => {
 			}
 		} catch (e) {
 			log(e);
-		} finally {
-			setChecking(false);
 		}
+		setChecking(false);
 	};
 
 	return (

@@ -1,13 +1,13 @@
-import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
 import { RoomInfoButtons } from './RoomInfoButtons';
-import { mockedStore } from '../../../reducers/mockedStore';
+import { mockedStore } from '~/reducers/mockedStore';
 import * as stories from './RoomInfoButtons.stories';
-import { generateSnapshots } from '../../../../.rnstorybook/generateSnapshots';
-import type { ISubscription } from '../../../definitions';
-import { SubscriptionType } from '../../../definitions';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
+import type { ISubscription } from '~/definitions';
+import { SubscriptionType } from '~/definitions';
 
 const mockShowInitCallActionSheet = jest.fn();
 const mockShowActionSheet = jest.fn();
@@ -17,11 +17,11 @@ const noopOpenNewMediaCall = () => undefined;
 const mockUseVideoConf = jest.fn();
 const mockUseNewMediaCall = jest.fn();
 
-jest.mock('../../../lib/hooks/useVideoConf', () => ({
+jest.mock('~/lib/hooks/useVideoConf', () => ({
 	useVideoConf: (...args: unknown[]) => mockUseVideoConf(...args)
 }));
 
-jest.mock('../../../lib/hooks/useNewMediaCall', () => ({
+jest.mock('~/lib/hooks/useNewMediaCall', () => ({
 	useNewMediaCall: (...args: unknown[]) => mockUseNewMediaCall(...args)
 }));
 
@@ -29,12 +29,12 @@ jest.mock('../hooks', () => ({
 	useE2EEWarning: () => false
 }));
 
-jest.mock('../../../containers/ActionSheet', () => ({
-	...jest.requireActual('../../../containers/ActionSheet'),
+jest.mock('~/containers/ActionSheet', () => ({
+	...jest.requireActual('~/containers/ActionSheet'),
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet })
 }));
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 const createMockRoom = (overrides: Partial<ISubscription> = {}): ISubscription =>
 	({
@@ -60,7 +60,7 @@ const createMockRoom = (overrides: Partial<ISubscription> = {}): ISubscription =
 		roomUpdatedAt: new Date(),
 		ro: false,
 		...overrides
-	} as ISubscription);
+	}) as ISubscription;
 
 const defaultProps = {
 	rid: 'room1',

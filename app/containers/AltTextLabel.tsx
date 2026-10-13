@@ -1,4 +1,3 @@
-import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { useActionSheet } from './ActionSheet';
@@ -39,8 +38,6 @@ const styles = StyleSheet.create({
 });
 
 const AltTextActionSheetContent = ({ altText }: { altText: string }) => {
-	'use memo';
-
 	const { colors } = useTheme();
 
 	return (
@@ -57,8 +54,6 @@ type TAltTextLabelProps = {
 };
 
 const AltTextLabel = ({ altText, testID }: TAltTextLabelProps) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const { showActionSheet } = useActionSheet();
 

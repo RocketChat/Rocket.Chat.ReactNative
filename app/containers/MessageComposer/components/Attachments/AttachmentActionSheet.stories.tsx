@@ -1,10 +1,10 @@
-import React from 'react';
+import { type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AttachmentActionSheet } from './AttachmentActionSheet';
-import { selectServerRequest } from '../../../../actions/server';
-import { mockedStore as store } from '../../../../reducers/mockedStore';
-import { type IShareAttachment } from '../../../../definitions';
+import { selectServerRequest } from '~/actions/server';
+import { mockedStore as store } from '~/reducers/mockedStore';
+import { type IShareAttachment } from '~/definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -40,7 +40,7 @@ const fileAttachment: IShareAttachment = {
 	path: 'file:///tmp/requirements.pdf'
 };
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <View style={styles.container}>{children}</View>;
+const Wrapper = ({ children }: { children: ReactNode }) => <View style={styles.container}>{children}</View>;
 
 export default {
 	title: 'MessageComposer/AttachmentActionSheet',

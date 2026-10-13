@@ -1,23 +1,25 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { memo, useContext, useEffect } from 'react';
+import { memo, useContext, useEffect } from 'react';
 import { BackHandler, FlatList, RefreshControl } from 'react-native';
-import { useSafeAreaFrame } from 'react-native-safe-area-context';
-import { shallowEqual } from 'react-redux';
+import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { shallowEqual, useStore } from 'react-redux';
 
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import BackgroundContainer from '../../containers/BackgroundContainer';
-import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
-import RoomItem from '../../containers/RoomItem';
-import { type IRoomItem } from '../../containers/RoomItem/interfaces';
-import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
-import i18n from '../../i18n';
-import { MAX_SIDEBAR_WIDTH } from '../../lib/constants/tablet';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isRead, isTablet } from '../../lib/methods/helpers';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import { getUserSelector } from '../../selectors/login';
-import { useTheme } from '../../theme';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import BackgroundContainer from '~/containers/BackgroundContainer';
+import { ChangePasswordRequired } from '~/containers/ChangePasswordRequired';
+import RoomItem from '~/containers/RoomItem';
+import { type IRoomItem } from '~/containers/RoomItem/interfaces';
+import { type IApplicationState } from '~/definitions';
+import { SupportedVersionsExpired } from '~/containers/SupportedVersions';
+import i18n from '~/i18n';
+import { MAX_SIDEBAR_WIDTH } from '~/lib/constants/tablet';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isRead, isTablet } from '~/lib/methods/helpers';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { getUserSelector } from '~/selectors/login';
+import { useTheme } from '~/theme';
 import Container from './components/Container';
 import ListHeader from './components/ListHeader';
 import SectionHeader from './components/SectionHeader';
@@ -26,14 +28,14 @@ import { useGetItemLayout } from './hooks/useGetItemLayout';
 import { useHeader } from './hooks/useHeader';
 import { useRefresh } from './hooks/useRefresh';
 import { useSubscriptions } from './hooks/useSubscriptions';
+import { useWarmUpMessageBlocks } from './hooks/useWarmUpMessageBlocks';
 import styles from './styles';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const RoomsListView = memo(function RoomsListView() {
-	'use memo';
-
 	useHeader();
+	useWarmUpMessageBlocks();
 	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsSearchContext);
 	const { colors } = useTheme();
 	const username = useAppSelector(state => getUserSelector(state).username);
@@ -41,12 +43,14 @@ const RoomsListView = memo(function RoomsListView() {
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name) as boolean;
 	const showLastMessage = useAppSelector(state => state.settings.Store_Last_Message) as boolean;
 	const { displayMode, showAvatar } = useAppSelector(state => state.sortPreferences, shallowEqual);
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	const navigation = useNavigation();
 	const { width } = useSafeAreaFrame();
+	const { bottom } = useSafeAreaInsets();
 	const getItemLayout = useGetItemLayout();
 	const { subscriptions, loading } = useSubscriptions();
-	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
+	const store = useStore<IApplicationState>();
+	const focusedRoom = useAppSelector(state => (isMasterDetail ? state.room.subscribedRoom : undefined));
 	const changingServer = useAppSelector(state => state.server.changingServer);
 	const { refreshing, onRefresh } = useRefresh({ searching });
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
@@ -67,7 +71,7 @@ const RoomsListView = memo(function RoomsListView() {
 		if (!navigation.isFocused()) {
 			return;
 		}
-		if (item.rid === subscribedRoom) {
+		if (item.rid === store.getState().room.subscribedRoom) {
 			return;
 		}
 
@@ -78,7 +82,7 @@ const RoomsListView = memo(function RoomsListView() {
 
 	const renderItem = ({ item }: { item: IRoomItem }) => {
 		if (item.separator) {
-			return <SectionHeader header={item.rid} />;
+			return <SectionHeader header={item.rid} title={item.name} />;
 		}
 
 		const id = item.search && item.t === 'd' ? item._id : getUidDirectMessage(item);
@@ -98,7 +102,7 @@ const RoomsListView = memo(function RoomsListView() {
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}
 				getIsRead={isRead}
-				isFocused={subscribedRoom === item.rid}
+				isFocused={focusedRoom === item.rid}
 				swipeEnabled={swipeEnabled}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
@@ -106,13 +110,11 @@ const RoomsListView = memo(function RoomsListView() {
 		);
 	};
 
-	if (searchEnabled) {
+	if (searchEnabled && searchResults.length === 0) {
 		if (searching) {
 			return <ActivityIndicator />;
 		}
-		if (searchResults.length === 0) {
-			return <BackgroundContainer text={i18n.t('No_rooms_found')} />;
-		}
+		return <BackgroundContainer text={i18n.t('No_rooms_found')} />;
 	}
 
 	if (loading || changingServer) {
@@ -133,10 +135,11 @@ const RoomsListView = memo(function RoomsListView() {
 			extraData={searchEnabled ? searchResults : subscriptions}
 			keyExtractor={item => `${item.rid}-${searchEnabled}`}
 			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
+			contentContainerStyle={{ paddingBottom: bottom }}
 			renderItem={renderItem}
 			ListHeaderComponent={ListHeader}
+			ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}
 			getItemLayout={getItemLayout}
-			removeClippedSubviews={isIOS}
 			keyboardShouldPersistTaps='always'
 			initialNumToRender={INITIAL_NUM_TO_RENDER}
 			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}

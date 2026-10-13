@@ -1,14 +1,14 @@
-import React from 'react';
+import { type ReactNode } from 'react';
 
-import { ThemeContext, type TSupportedThemes } from '../../theme';
-import { themes } from '../../lib/constants/colors';
+import { ThemeContext, type TSupportedThemes } from '~/theme';
+import { themes } from '~/lib/constants/colors';
 import NotifierComponent from './NotifierComponent';
-import { SubscriptionType } from '../../definitions';
+import { SubscriptionType } from '~/definitions';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,
 	ResponsiveLayoutContext
-} from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+} from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const responsiveLayoutProviderValue = {
 	fontScale: 1,
@@ -33,7 +33,7 @@ const baseNotification = {
 	avatar: 'rocket.cat'
 };
 
-const Wrapper = ({ children, theme = 'light' }: { children: React.ReactNode; theme?: TSupportedThemes }) => (
+const Wrapper = ({ children, theme = 'light' }: { children: ReactNode; theme?: TSupportedThemes }) => (
 	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
 		<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderValue}>{children}</ResponsiveLayoutContext.Provider>
 	</ThemeContext.Provider>

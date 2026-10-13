@@ -1,16 +1,16 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
-import { inviteLinksCreate } from '../../actions/inviteLinks';
-import Button from '../../containers/Button';
-import * as List from '../../containers/List';
-import SafeAreaView from '../../containers/SafeAreaView';
-import I18n from '../../i18n';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { events, logEvent } from '../../lib/methods/helpers/log';
+import { inviteLinksCreate } from '~/actions/inviteLinks';
+import Button from '~/containers/Button';
+import * as List from '~/containers/List';
+import SafeAreaView from '~/containers/SafeAreaView';
+import I18n from '~/i18n';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { events, logEvent } from '~/lib/methods/helpers/log';
 import styles from './styles';
 import Picker from './Picker';
 

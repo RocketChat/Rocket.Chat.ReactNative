@@ -1,15 +1,15 @@
-import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
 import CallSection from './CallSection';
-import { mockedStore } from '../../../reducers/mockedStore';
+import { mockedStore } from '~/reducers/mockedStore';
 import * as stories from './CallSection.stories';
-import { generateSnapshots } from '../../../../.rnstorybook/generateSnapshots';
-import type { ISubscription, TSubscriptionModel } from '../../../definitions';
-import { SubscriptionType } from '../../../definitions';
-import i18n from '../../../i18n';
-import * as restApi from '../../../lib/services/restApi';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
+import type { ISubscription, TSubscriptionModel } from '~/definitions';
+import { SubscriptionType } from '~/definitions';
+import i18n from '~/i18n';
+import * as restApi from '~/lib/services/restApi';
 
 const mockShowInitCallActionSheet = jest.fn();
 const mockOpenNewMediaCall = jest.fn();
@@ -31,26 +31,26 @@ mockUseNewMediaCall.mockReturnValue({
 });
 mockUseIsInActiveVoipCall.mockReturnValue(false);
 
-jest.mock('../../../lib/hooks/useVideoConf', () => ({
+jest.mock('~/lib/hooks/useVideoConf', () => ({
 	useVideoConf: (...args: unknown[]) => mockUseVideoConf(...args)
 }));
 
-jest.mock('../../../lib/hooks/useNewMediaCall', () => ({
+jest.mock('~/lib/hooks/useNewMediaCall', () => ({
 	useNewMediaCall: (...args: unknown[]) => mockUseNewMediaCall(...args)
 }));
 
-jest.mock('../../../lib/services/voip/isInActiveVoipCall', () => ({
+jest.mock('~/lib/services/voip/isInActiveVoipCall', () => ({
 	useIsInActiveVoipCall: () => mockUseIsInActiveVoipCall()
 }));
 
-jest.mock('../../../lib/services/restApi', () => ({
-	...jest.requireActual('../../../lib/services/restApi'),
+jest.mock('~/lib/services/restApi', () => ({
+	...jest.requireActual('~/lib/services/restApi'),
 	videoConferenceGetCapabilities: jest.fn()
 }));
 
 const mockVideoConferenceGetCapabilities = jest.mocked(restApi.videoConferenceGetCapabilities);
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 const createMockRoom = (overrides: Partial<ISubscription> = {}): TSubscriptionModel =>
 	({
@@ -76,7 +76,7 @@ const createMockRoom = (overrides: Partial<ISubscription> = {}): TSubscriptionMo
 		roomUpdatedAt: new Date(),
 		ro: false,
 		...overrides
-	} as TSubscriptionModel);
+	}) as TSubscriptionModel;
 
 describe('CallSection', () => {
 	beforeEach(() => {

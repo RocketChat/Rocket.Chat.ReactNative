@@ -1,30 +1,30 @@
-import React, { useCallback, useEffect, useLayoutEffect } from 'react';
+import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { usePermissions } from '../../lib/hooks/usePermissions';
-import { sendLoadingEvent } from '../../containers/Loading';
-import { createChannelRequest } from '../../actions/createChannel';
-import { removeUser as removeUserAction } from '../../actions/selectedUsers';
-import KeyboardView from '../../containers/KeyboardView';
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import I18n from '../../i18n';
-import { useTheme } from '../../theme';
-import { Review } from '../../lib/methods/helpers/review';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { type ChatsStackParamList } from '../../stacks/types';
-import Button from '../../containers/Button';
-import { ControlledFormTextInput } from '../../containers/TextInput';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { usePermissions } from '~/lib/hooks/usePermissions';
+import { sendLoadingEvent } from '~/containers/Loading';
+import { createChannelRequest } from '~/actions/createChannel';
+import { removeUser as removeUserAction } from '~/actions/selectedUsers';
+import KeyboardView from '~/containers/KeyboardView';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
+import { Review } from '~/lib/methods/helpers/review';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { type ChatsStackParamList } from '~/stacks/types';
+import Button from '~/containers/Button';
+import { ControlledFormTextInput } from '~/containers/TextInput';
 import { RoomSettings } from './RoomSettings';
-import { type ISelectedUser } from '../../reducers/selectedUsers';
-import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
-import SelectedUsers from '../../containers/SelectedUsers';
+import { type ISelectedUser } from '~/reducers/selectedUsers';
+import useA11yErrorAnnouncement from '~/lib/hooks/useA11yErrorAnnouncement';
+import SelectedUsers from '~/containers/SelectedUsers';
 
 const styles = StyleSheet.create({
 	containerTextInput: {
@@ -69,7 +69,6 @@ const CreateChannelView = () => {
 		control,
 		handleSubmit,
 		setValue,
-		watch,
 		formState: { errors }
 	} = useForm<IFormData>({
 		defaultValues: {
@@ -89,7 +88,7 @@ const CreateChannelView = () => {
 	const teamId = params?.teamId;
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
-	const inputValues = watch();
+	const inputValues = useWatch({ control });
 
 	useA11yErrorAnnouncement({ errors, inputValues });
 

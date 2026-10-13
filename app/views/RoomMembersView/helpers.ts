@@ -1,14 +1,14 @@
 import { Q } from '@nozbe/watermelondb';
 import { Alert } from 'react-native';
 
-import { LISTENER } from '../../containers/Toast';
-import { type IGetRoomRoles, type IUser, SubscriptionType, type TSubscriptionModel, type TUserModel } from '../../definitions';
-import I18n from '../../i18n';
-import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import log from '../../lib/methods/helpers/log';
-import Navigation from '../../lib/navigation/appNavigation';
+import { LISTENER } from '~/containers/Toast';
+import { type IGetRoomRoles, type IUser, SubscriptionType, type TSubscriptionModel, type TUserModel } from '~/definitions';
+import I18n from '~/i18n';
+import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { goRoom, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
+import log from '~/lib/methods/helpers/log';
+import Navigation from '~/lib/navigation/appNavigation';
 import {
 	toggleRoomOwner,
 	toggleRoomLeader,
@@ -18,11 +18,11 @@ import {
 	getRoomRoles,
 	removeTeamMember,
 	teamListRoomsOfUser
-} from '../../lib/services/restApi';
-import { createDirectMessage } from '../../lib/methods/createDirectMessage';
-import database from '../../lib/database';
-import { type RoomTypes } from '../../lib/methods/roomTypeToApiType';
-import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';
+} from '~/lib/services/restApi';
+import { createDirectMessage } from '~/lib/methods/createDirectMessage';
+import database from '~/lib/database';
+import { type RoomTypes } from '~/lib/methods/roomTypeToApiType';
+import { emitErrorCreateDirectMessage } from '~/lib/methods/helpers/emitErrorCreateDirectMessage';
 
 export type TRoomType = SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
 
@@ -49,7 +49,7 @@ export const fetchRoomMembersRoles = async (roomType: TRoomType, rid: string, up
 
 export const handleMute = async (user: TUserModel, rid: string) => {
 	try {
-		await toggleMuteUserInRoom(rid, user?.username, user?._id, !user.muted);
+		await toggleMuteUserInRoom(rid, user.username, user._id, !user.muted);
 		EventEmitter.emit(LISTENER, {
 			message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') })
 		});
@@ -88,6 +88,9 @@ export const handleModerator = async (
 };
 
 export const navToDirectMessage = async (item: IUser, isMasterDetail: boolean): Promise<void> => {
+	if (!item.username) {
+		return;
+	}
 	try {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');

@@ -1,37 +1,39 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, Keyboard, Text, type TextInput, View } from 'react-native';
 import parse from 'url-parse';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { loginRequest } from '../../actions/login';
-import Button from '../../containers/Button';
-import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import LoginServices from '../../containers/LoginServices';
-import { ControlledFormTextInput } from '../../containers/TextInput';
-import { type IBaseScreen } from '../../definitions';
-import I18n from '../../i18n';
-import { getShowLoginButton } from '../../selectors/login';
-import { type OutsideParamList } from '../../stacks/types';
-import { useTheme } from '../../theme';
-import { showErrorAlert, isValidEmail, isAndroid } from '../../lib/methods/helpers';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import { register } from '../../lib/services/restApi';
-import UGCRules from '../../containers/UserGeneratedContentRules';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import PasswordPolicies from '../../containers/PasswordPolicies';
-import getCustomFields from '../../lib/methods/getCustomFields';
-import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
-import CustomFields from '../../containers/CustomFields';
-import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
+import { loginRequest } from '~/actions/login';
+import Button from '~/containers/Button';
+import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import LoginServices from '~/containers/LoginServices';
+import { ControlledFormTextInput } from '~/containers/TextInput';
+import I18n from '~/i18n';
+import { getShowLoginButton } from '~/selectors/login';
+import { type OutsideParamList } from '~/stacks/types';
+import { useTheme } from '~/theme';
+import { showErrorAlert, isValidEmail, isAndroid } from '~/lib/methods/helpers';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { register } from '~/lib/services/restApi';
+import UGCRules from '~/containers/UserGeneratedContentRules';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import PasswordPolicies from '~/containers/PasswordPolicies';
+import getCustomFields from '~/lib/methods/getCustomFields';
+import useVerifyPassword from '~/lib/hooks/useVerifyPassword';
+import CustomFields from '~/containers/CustomFields';
+import useParsedCustomFields from '~/lib/hooks/useParsedCustomFields';
 import styles from './styles';
 
-interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
+type RegisterViewProps = StaticScreenProps<{ title: string; username?: string }>;
 
-const RegisterView = ({ navigation, route }: IProps) => {
+const RegisterView = ({ route }: RegisterViewProps) => {
+	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'RegisterView'>>();
 	const validationSchema = yup.object().shape({
 		name: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Full_name') })}`),
 		email: yup
@@ -60,8 +62,6 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		handleSubmit,
 		setFocus,
 		setError,
-		getValues,
-		watch,
 		formState: { isValid, dirtyFields, errors }
 	} = useForm({
 		mode: 'onChange',
@@ -74,10 +74,10 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
-	const inputValues = watch();
-	const { password, confirmPassword } = inputValues;
+	const inputValues = useWatch({ control });
+	const { password = '', confirmPassword = '' } = inputValues;
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
-	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
+	const [customFields, setCustomFields] = useState(() => getCustomFields(parsedCustomFields));
 	const [saving, setSaving] = useState(false);
 	const { passwordPolicies, isPasswordValid } = useVerifyPassword(password, confirmPassword);
 	const customFieldsRef = useRef<{ [key: string]: TextInput | undefined }>({});
@@ -94,7 +94,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 	};
 
 	const validateDefaultFormInfo = () => {
-		const isValid = validationSchema.isValidSync(getValues());
+		const isValid = validationSchema.isValidSync(inputValues);
 		if (!parsedCustomFields) {
 			return isValid;
 		}
@@ -145,22 +145,16 @@ const RegisterView = ({ navigation, route }: IProps) => {
 			}
 		} catch (error: any) {
 			if (error.data?.errorType === 'username-invalid') {
-				return dispatch(loginRequest({ user: email, password }));
-			}
-
-			if (error.data.error === 'Username is already in use') {
+				dispatch(loginRequest({ user: email, password }));
+			} else if (error.data?.error === 'Username is already in use') {
 				setError('username', { message: `${I18n.t('Username_is_already_in_use')}`, type: 'validate' });
 				AccessibilityInfo.announceForAccessibility(I18n.t('Username_is_already_in_use'));
-				return;
-			}
-
-			if (error.data?.error) {
+			} else if (error.data?.error) {
 				logEvent(events.REGISTER_DEFAULT_SIGN_UP_F);
 				showErrorAlert(error.data.error, I18n.t('Oops'));
 			}
-		} finally {
-			setSaving(false);
 		}
+		setSaving(false);
 	};
 
 	useLayoutEffect(() => {

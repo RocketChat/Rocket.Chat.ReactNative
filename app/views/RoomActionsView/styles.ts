@@ -1,11 +1,12 @@
 import { I18nManager, StyleSheet } from 'react-native';
 
-import { PADDING_HORIZONTAL } from '../../containers/List/constants';
+import { PADDING_HORIZONTAL } from '~/containers/List/constants';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	roomInfoContainer: {
 		paddingHorizontal: PADDING_HORIZONTAL,
+		paddingVertical: 4,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},

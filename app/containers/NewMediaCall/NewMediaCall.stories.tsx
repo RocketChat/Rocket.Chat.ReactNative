@@ -1,7 +1,7 @@
-import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { type ComponentType } from 'react';
 
-import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
+import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
 import { NewMediaCall } from './NewMediaCall';
 
 const styles = StyleSheet.create({
@@ -74,7 +74,7 @@ export default {
 	title: 'NewMediaCall/NewMediaCall',
 	component: NewMediaCall,
 	decorators: [
-		(Story: React.ComponentType) => (
+		(Story: ComponentType) => (
 			<View style={styles.root}>
 				<Story />
 			</View>

@@ -1,26 +1,25 @@
-import React from 'react';
-import { Text, useWindowDimensions, View } from 'react-native';
+import { memo } from 'react';
+import { Text, View } from 'react-native';
 
 import { CustomIcon } from '../CustomIcon';
-import { useTheme } from '../../theme';
-import EventEmitter from '../../lib/methods/helpers/events';
-import I18n from '../../i18n';
+import { useTheme } from '~/theme';
+import EventEmitter from '~/lib/methods/helpers/events';
+import I18n from '~/i18n';
 import { type TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import { LISTENER } from '../Toast';
 import Touch from '../Touch';
+import { useActionSheetItemHeight } from './useActionSheetItemHeight';
 
 export interface IActionSheetItem {
 	item: TActionSheetOptionsItem;
 	hide(): void;
 }
 
-export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
-	'use memo';
-
+export const Item = memo(({ item, hide }: IActionSheetItem) => {
 	const enabled = item?.enabled ?? true;
 	const { colors } = useTheme();
-	const { fontScale } = useWindowDimensions();
+	const height = useActionSheetItemHeight();
 	const onPress = () => {
 		if (enabled) {
 			hide();
@@ -37,7 +36,6 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 	if (!enabled) {
 		color = colors.fontDisabled;
 	}
-	const height = 48 * fontScale;
 	const accessibilityLabel = item?.accessibilityLabel || (item?.subtitle ? `${item.title}. ${item.subtitle}` : item.title);
 
 	return (

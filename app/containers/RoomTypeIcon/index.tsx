@@ -1,13 +1,13 @@
-import React from 'react';
+import { memo } from 'react';
 import { StyleSheet, type ViewStyle } from 'react-native';
 import { type ImageStyle } from 'expo-image';
 
 import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
 import { CustomIcon, type TIconsName } from '../CustomIcon';
-import { themes } from '../../lib/constants/colors';
+import { themes } from '~/lib/constants/colors';
 import Status from '../Status';
-import { useTheme } from '../../theme';
-import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '../../definitions';
+import { useTheme } from '~/theme';
+import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '~/definitions';
 
 const styles = StyleSheet.create({
 	icon: {
@@ -27,7 +27,7 @@ interface IRoomTypeIcon {
 	abacAttributes?: ISubscription['abacAttributes'];
 }
 
-const RoomTypeIcon = React.memo(
+const RoomTypeIcon = memo(
 	({ userId, type, isGroupChat, status, style, teamMain, size = 16, sourceType, abacAttributes }: IRoomTypeIcon) => {
 		const { theme } = useTheme();
 

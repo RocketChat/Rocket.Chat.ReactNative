@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component, Fragment } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp } from '@react-navigation/native';
@@ -14,8 +14,11 @@ import Navigation from '../lib/navigation/appNavigation';
 import { type MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions, type TModalAction } from '../containers/UIKit/interfaces';
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods/triggerActions';
-import { type IApplicationState } from '../definitions';
+import { type IApplicationState, type TAnyMessageModel } from '../definitions';
 import KeyboardView from '../containers/KeyboardView';
+import { MessageRoomProvider } from '../containers/message/stores/MessageRoomStore';
+import { A11yGateProvider } from '../containers/message/stores/A11yGate';
+import { MessageProvider } from '../containers/message/stores/MessageStore';
 
 const styles = StyleSheet.create({
 	content: {
@@ -51,10 +54,6 @@ interface IModalBlockViewProps {
 	route: RouteProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
 	theme: TSupportedThemes;
 	language: string;
-	user: {
-		id: string;
-		token: string;
-	};
 }
 
 // eslint-disable-next-line no-sequences
@@ -93,7 +92,14 @@ const LoadingIndicator = ({ loading }: { loading: boolean }) => {
 	return null;
 };
 
-class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockViewState> {
+// A UIKit modal is not a message, but the shared media components it can render
+// (ImageContainer -> Button -> Touchable) assume a per-message context. Provide an
+// empty one: no long-press target, no id-scoped cache. Images still load via the
+// user/baseUrl the media hooks now read from redux. Routed through `unknown` (the repo's convention for
+// fake TAnyMessageModel fixtures) so the cast reads as intentional, not a real message.
+const EMPTY_MESSAGE = {} as unknown as TAnyMessageModel;
+
+class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewState> {
 	private submitting: boolean;
 
 	private values: IValues;
@@ -152,14 +158,14 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 						<HeaderButton.Container>
 							<HeaderButton.Item title={textParser([close.text])} onPress={this.cancel} testID='close-modal-uikit' />
 						</HeaderButton.Container>
-				  )
+					)
 				: undefined,
 			headerRight: submit
 				? () => (
 						<HeaderButton.Container>
 							<HeaderButton.Item title={textParser([submit.text])} onPress={this.submit} testID='submit-modal-uikit' />
 						</HeaderButton.Container>
-				  )
+					)
 				: undefined
 		});
 	};
@@ -264,17 +270,23 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 		return (
 			<KeyboardView>
 				<ScrollView style={styles.content}>
-					<React.Fragment key={modalKey}>
-						<ModalBlockWithContext
-							action={this.action}
-							state={this.changeState}
-							{...data}
-							blocks={blocks}
-							errors={errors}
-							language={language}
-							values={values}
-						/>
-					</React.Fragment>
+					<Fragment key={modalKey}>
+						<A11yGateProvider>
+							<MessageRoomProvider>
+								<MessageProvider item={EMPTY_MESSAGE}>
+									<ModalBlockWithContext
+										action={this.action}
+										state={this.changeState}
+										{...data}
+										blocks={blocks}
+										errors={errors}
+										language={language}
+										values={values}
+									/>
+								</MessageProvider>
+							</MessageRoomProvider>
+						</A11yGateProvider>
+					</Fragment>
 				</ScrollView>
 				<LoadingIndicator loading={loading} />
 			</KeyboardView>

@@ -33,9 +33,3 @@ onFlowStart:
     visible:
       id: rooms-list-view
     timeout: 60000
-- runFlow:
-    when:
-      platform: iOS
-      visible: 'Not Now'
-    commands:
-      - tapOn: 'Not Now'

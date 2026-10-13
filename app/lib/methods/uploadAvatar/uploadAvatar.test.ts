@@ -1,9 +1,9 @@
 import FileUpload from '../helpers/fileUpload';
 import { copyFileToCacheDirectoryIfNeeded } from '../sendFileMessage/utils';
-import { store as reduxStore } from '../../store/auxStore';
+import { store as reduxStore } from '~/lib/store/auxStore';
 import { uploadUserAvatarMultipart } from './uploadAvatar';
 
-jest.mock('../../store/auxStore', () => ({
+jest.mock('~/lib/store/auxStore', () => ({
 	store: {
 		getState: jest.fn()
 	}

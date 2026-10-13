@@ -1,15 +1,15 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { type ReactElement } from 'react';
 
-import { useTheme } from '../../theme';
-import Avatar from '../../containers/Avatar';
+import { useTheme } from '~/theme';
+import Avatar from '~/containers/Avatar';
 import sharedStyles from '../Styles';
-import { themes } from '../../lib/constants/colors';
-import { MarkdownPreview } from '../../containers/markdown';
-import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
-import ThreadDetails from '../../containers/ThreadDetails';
-import { type TThreadModel } from '../../definitions';
-import Touch from '../../containers/Touch';
+import { themes } from '~/lib/constants/colors';
+import { MarkdownPreview } from '~/containers/markdown';
+import { formatDateThreads, makeThreadName } from '~/lib/methods/helpers/room';
+import ThreadDetails from '~/containers/ThreadDetails';
+import { type TThreadModel } from '~/definitions';
+import Touch from '~/containers/Touch';
 
 const styles = StyleSheet.create({
 	container: {
@@ -65,7 +65,7 @@ export interface IItem {
 	toggleFollowThread: (isFollowing: boolean, id: string) => void;
 }
 
-const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem): React.ReactElement => {
+const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem): ReactElement => {
 	const { theme } = useTheme();
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;

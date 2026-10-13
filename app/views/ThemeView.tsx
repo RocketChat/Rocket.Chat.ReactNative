@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import { type ReactElement, useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import * as List from '../containers/List';
@@ -69,7 +69,7 @@ const Item = ({ onPress, item, isSelected }: { onPress: () => void; item: ITheme
 	</>
 );
 
-const ThemeView = (): React.ReactElement => {
+const ThemeView = (): ReactElement => {
 	const { themePreferences, setTheme } = useTheme();
 	const { setOptions } = useNavigation();
 

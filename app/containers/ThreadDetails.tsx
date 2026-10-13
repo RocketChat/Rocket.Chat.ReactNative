@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
 
 import Touch from './Touch';
@@ -47,11 +46,11 @@ interface IThreadDetails {
 		id: string;
 	};
 	badgeColor?: string;
-	toggleFollowThread: Function;
+	toggleFollowThread?: (isFollowingThread: boolean, tmid: string) => Promise<void> | void;
 	style: ViewStyle;
 }
 
-const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails): JSX.Element => {
+const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails) => {
 	const { theme } = useTheme();
 	let count: string | number | undefined | null = item.tcount;
 	if (count && count >= 1000) {
@@ -63,7 +62,7 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 		replies = '+999';
 	}
 
-	const isFollowing = item.replies?.find((u: string) => u === user?.id);
+	const isFollowing = !!item.replies?.find((u: string) => u === user?.id);
 
 	return (
 		<View style={[styles.container, style]}>

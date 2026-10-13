@@ -229,6 +229,7 @@ export default {
 	ROOM_TOGGLE_FOLLOW_THREADS: 'room_toggle_follow_threads',
 	ROOM_GO_TEAM_CHANNELS: 'room_go_team_channels',
 	ROOM_GO_SEARCH: 'room_go_search',
+	ROOM_GO_E2EE: 'room_go_e2ee',
 	ROOM_GO_THREADS: 'room_go_threads',
 	ROOM_GO_ROOM_INFO: 'room_go_room_info',
 	ROOM_GO_USER_INFO: 'room_go_user_info',

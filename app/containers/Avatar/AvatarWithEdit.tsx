@@ -1,15 +1,15 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
 
 import Button from '../Button';
 import AvatarContainer from './AvatarContainer';
 import { type IAvatar } from './interfaces';
-import I18n from '../../i18n';
-import { useTheme } from '../../theme';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
-import sharedStyles from '../../views/Styles';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
+import sharedStyles from '~/views/Styles';
 
 const styles = StyleSheet.create({
 	editAvatarButton: {
@@ -39,12 +39,11 @@ const AvatarWithEdit = ({
 	type,
 	children,
 	onPress,
-	getCustomEmoji,
 	isStatic,
 	rid,
 	handleEdit,
 	editAccessibilityLabel
-}: IAvatarContainer): React.ReactElement => {
+}: IAvatarContainer): ReactElement => {
 	const { colors } = useTheme();
 
 	const { serverVersion } = useAppSelector(state => ({
@@ -62,7 +61,6 @@ const AvatarWithEdit = ({
 				borderRadius={borderRadius}
 				type={type}
 				onPress={onPress}
-				getCustomEmoji={getCustomEmoji}
 				isStatic={isStatic}
 				rid={rid}>
 				{children}

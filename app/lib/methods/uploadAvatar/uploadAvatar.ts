@@ -3,7 +3,7 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import FileUpload from '../helpers/fileUpload';
 import { type IFormData } from '../helpers/fileUpload/definitions';
 import { copyFileToCacheDirectoryIfNeeded } from '../sendFileMessage/utils';
-import { store as reduxStore } from '../../store/auxStore';
+import { store as reduxStore } from '~/lib/store/auxStore';
 
 export const uploadUserAvatarMultipart = async (localUri: string, mimeType: string, filename: string): Promise<void> => {
 	const { server } = reduxStore.getState().server;

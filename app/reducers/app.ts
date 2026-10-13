@@ -6,7 +6,6 @@ import { APP, APP_STATE } from '../actions/actionsTypes';
 
 export interface IApp {
 	root?: RootEnum;
-	isMasterDetail: boolean;
 	text?: string;
 	ready: boolean;
 	foreground: boolean;
@@ -17,7 +16,6 @@ export interface IApp {
 
 export const initialState: IApp = {
 	root: undefined,
-	isMasterDetail: false,
 	text: undefined,
 	ready: false,
 	foreground: true,
@@ -55,11 +53,6 @@ export default function app(state = initialState, action: TActionApp): IApp {
 			return {
 				...state,
 				ready: true
-			};
-		case APP.SET_MASTER_DETAIL:
-			return {
-				...state,
-				isMasterDetail: action.isMasterDetail
 			};
 		case APP.SET_NOTIFICATION_PRESENCE_CAP:
 			return {

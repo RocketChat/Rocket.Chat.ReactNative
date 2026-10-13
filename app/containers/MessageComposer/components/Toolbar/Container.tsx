@@ -1,9 +1,7 @@
-import React, { type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
 export const Container = ({ children }: { children: (ReactElement | null)[] }): ReactElement => {
-	'use memo';
-
 	return (
 		<View
 			style={{

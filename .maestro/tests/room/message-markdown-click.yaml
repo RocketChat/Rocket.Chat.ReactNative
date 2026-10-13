@@ -6,7 +6,7 @@ onFlowStart:
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 tags:
-  - test-12
+  - test-9
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}
@@ -78,7 +78,7 @@ tags:
       platform: iOS
     commands:
       - tapOn:
-          point: 66%,66%
+          point: 66%,63%
 
 # Verify alert is shown with the link
 - extendedWaitUntil:
@@ -106,7 +106,7 @@ tags:
       platform: iOS
     commands:
       - longPressOn:
-          point: 66%,66%
+          point: 66%,63%
 
 # Verify clipboard has the link alert
 - extendedWaitUntil:

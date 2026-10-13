@@ -1,13 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef, type ReactElement } from 'react';
 import { FlatList } from 'react-native';
 
 import { Quote } from './Quote';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { useQuotedMessageIds } from '~/containers/message/stores/MessageActionStore';
 
-export const Quotes = (): React.ReactElement | null => {
-	'use memo';
-
-	const { selectedMessages, action } = useRoomContext();
+export const Quotes = (): ReactElement | null => {
+	const selectedMessages = useQuotedMessageIds();
 	const nQuotesRef = useRef(0);
 	const listRef = useRef<FlatList>(null);
 
@@ -20,7 +18,7 @@ export const Quotes = (): React.ReactElement | null => {
 		nQuotesRef.current = selectedMessages.length;
 	}, [selectedMessages.length]);
 
-	if (action !== 'quote') {
+	if (!selectedMessages.length) {
 		return null;
 	}
 

@@ -1,5 +1,6 @@
-import React, { useLayoutEffect, useState } from 'react';
+import { type ReactElement, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, Text, type TextInputProps } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { textInputDebounceTime } from '../lib/constants/debounceConfig';
 import * as List from '../containers/List';
@@ -49,7 +50,7 @@ const RenderSearch = ({ onChangeText }: TextInputProps) => (
 	</>
 );
 
-const PickerView = (): React.ReactElement => {
+const PickerView = (): ReactElement => {
 	const navigation = useAppNavigation();
 	const {
 		params: { title, data: paramData, value: paramValue, total: paramTotal, onSearch, onChangeValue, onEndReached }
@@ -57,9 +58,10 @@ const PickerView = (): React.ReactElement => {
 
 	const { colors } = useTheme();
 
+	const { bottom } = useSafeAreaInsets();
 	const [data, setData] = useState(paramData);
-	const [total, setTotal] = useState(paramTotal ?? 0);
-	const [searchText, setSearchText] = useState('');
+	const totalRef = useRef(paramTotal ?? 0);
+	const searchTextRef = useRef('');
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -75,17 +77,17 @@ const PickerView = (): React.ReactElement => {
 	const onChangeText = useDebounce(async (text: string) => {
 		const search = await onSearch(text);
 		if (search?.data) {
-			setSearchText(text);
+			searchTextRef.current = text;
 			setData(search?.data);
 		}
 	}, textInputDebounceTime);
 
 	const handleOnEndReached = async () => {
-		if (onEndReached && total && data.length < total) {
-			const end = await onEndReached(searchText, data.length);
+		if (onEndReached && totalRef.current && data.length < totalRef.current) {
+			const end = await onEndReached(searchTextRef.current, data.length);
 			if (end?.data) {
 				setData([...data, ...end.data]);
-				setTotal(end.total);
+				totalRef.current = end.total;
 			}
 		}
 	};
@@ -106,6 +108,7 @@ const PickerView = (): React.ReactElement => {
 				onEndReachedThreshold={0.5}
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={<RenderSearch onChangeText={onChangeText} />}
+				contentContainerStyle={{ paddingBottom: bottom }}
 				ListFooterComponent={List.Separator}
 				ListEmptyComponent={() => (
 					<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>

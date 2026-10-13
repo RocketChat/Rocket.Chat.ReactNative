@@ -1,34 +1,35 @@
-import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
 import { AccessibilityInfo, ScrollView, View } from 'react-native';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
-import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
-import KeyboardView from '../../containers/KeyboardView';
+import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
+import KeyboardView from '~/containers/KeyboardView';
 import sharedStyles from '../Styles';
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
-import { useTheme } from '../../theme';
-import SafeAreaView from '../../containers/SafeAreaView';
-import * as List from '../../containers/List';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
+import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/info';
+import { useTheme } from '~/theme';
+import SafeAreaView from '~/containers/SafeAreaView';
+import * as List from '~/containers/List';
 import styles from './styles';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { getUserSelector } from '../../selectors/login';
-import Avatar from '../../containers/Avatar';
-import AvatarPresentational from '../../containers/Avatar/Avatar';
-import Button from '../../containers/Button';
-import I18n from '../../i18n';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { type IAvatar } from '../../definitions';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { getUserSelector } from '~/selectors/login';
+import Avatar from '~/containers/Avatar';
+import AvatarPresentational from '~/containers/Avatar/Avatar';
+import Button from '~/containers/Button';
+import I18n from '~/i18n';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { type IAvatar } from '~/definitions';
 import AvatarSuggestion from './AvatarSuggestion';
-import log from '../../lib/methods/helpers/log';
+import log from '~/lib/methods/helpers/log';
 import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';
-import ImagePicker, { type Image } from '../../lib/methods/helpers/ImagePicker/ImagePicker';
-import { compareServerVersion, isImageURL, useDebounce } from '../../lib/methods/helpers';
-import { ControlledFormTextInput } from '../../containers/TextInput';
-import { HeaderBackButton } from '../../containers/Header/components/HeaderBackButton';
+import ImagePicker, { type Image } from '~/lib/methods/helpers/ImagePicker/ImagePicker';
+import { compareServerVersion, isImageURL, useDebounce } from '~/lib/methods/helpers';
+import { ControlledFormTextInput } from '~/containers/TextInput';
+import { HeaderBackButton } from '~/containers/Header/components/HeaderBackButton';
+import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
 
 enum AvatarStateActions {
 	CHANGE_AVATAR = 'CHANGE_AVATAR',
@@ -64,6 +65,23 @@ function reducer(state: IState, action: IReducerAction) {
 	return state;
 }
 
+const pickAvatarImage = async (fromCamera: boolean, includeBase64: boolean) => {
+	const options = {
+		cropping: true,
+		compressImageQuality: 0.8,
+		freeStyleCropEnabled: true,
+		cropperAvoidEmptySpaceAroundImage: false,
+		cropperChooseText: I18n.t('Choose'),
+		cropperCancelText: I18n.t('Cancel'),
+		includeBase64
+	};
+	const response: Image = fromCamera
+		? await ImagePicker.openCamera({ ...options, useFrontCamera: true })
+		: await ImagePicker.openPicker(options);
+	const dataUri = includeBase64 && response.data ? `data:image/jpeg;base64,${response.data}` : '';
+	return { url: response.path, data: dataUri };
+};
+
 const ChangeAvatarView = () => {
 	const {
 		control,
@@ -89,7 +107,8 @@ const ChangeAvatarView = () => {
 		shallowEqual
 	);
 	const includeBase64ForAvatar = compareServerVersion(serverVersion, 'lowerThan', '8.0.0');
-	const isDirty = useRef<boolean>(false);
+	const [isDirty, setIsDirty] = useState(false);
+	const hasSaved = useRef(false);
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'ChangeAvatarView'>>();
 	const { context, titleHeader, room, t } = useRoute<RouteProp<ChatsStackParamList, 'ChangeAvatarView'>>().params;
 	const includeBase64InImagePicker = context === 'room' || includeBase64ForAvatar;
@@ -102,8 +121,12 @@ const ChangeAvatarView = () => {
 	}, [titleHeader, navigation]);
 
 	useEffect(() => {
-		navigation.addListener('beforeRemove', e => {
-			if (!isDirty.current) {
+		if (!isDirty) {
+			return;
+		}
+
+		return navigation.addListener('beforeRemove', e => {
+			if (hasSaved.current) {
 				return;
 			}
 
@@ -118,10 +141,10 @@ const ChangeAvatarView = () => {
 				}
 			});
 		});
-	}, [navigation]);
+	}, [navigation, isDirty]);
 
 	const dispatchAvatar = (action: IReducerAction) => {
-		isDirty.current = true;
+		setIsDirty(true);
 		dispatch(action);
 	};
 
@@ -157,48 +180,42 @@ const ChangeAvatarView = () => {
 		setError('rawImageUrl', { message: I18n.t('Invalid_URL'), type: 'validate' });
 	};
 
-	const submit = async () => {
+	const saveAvatar = async () => {
+		const roomId = context === 'room' ? room?.rid : undefined;
 		try {
-			setSaving(true);
-			if (context === 'room' && room?.rid) {
-				// Change Rooms Avatar
-				await changeRoomsAvatar(room.rid, state?.data);
-			} else if (state?.url) {
-				// Change User's Avatar
+			if (roomId) {
+				await changeRoomsAvatar(roomId, state.data);
+			} else if (state.url) {
 				await changeUserAvatar(state);
 			} else if (state.resetUserAvatar) {
-				// Change User's Avatar
 				await resetUserAvatar(userId);
 			}
-			isDirty.current = false;
+			hasSaved.current = true;
+			return true;
 		} catch (e: any) {
-			log(e);
-			return showErrorAlert(e.message, I18n.t('Oops'));
-		} finally {
-			setSaving(false);
+			if (!isTwoFactorCancelled(e)) {
+				log(e);
+				showErrorAlert(e.message, I18n.t('Oops'));
+			}
+			return false;
 		}
-		return navigation.goBack();
+	};
+
+	const submit = async () => {
+		setSaving(true);
+		const saved = await saveAvatar();
+		setSaving(false);
+		if (saved) {
+			navigation.goBack();
+		}
 	};
 
 	const pickImage = async (isCam = false) => {
-		const options = {
-			cropping: true,
-			compressImageQuality: 0.8,
-			freeStyleCropEnabled: true,
-			cropperAvoidEmptySpaceAroundImage: false,
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: includeBase64InImagePicker
-		};
 		try {
-			const response: Image =
-				isCam === true
-					? await ImagePicker.openCamera({ ...options, useFrontCamera: true })
-					: await ImagePicker.openPicker(options);
-			const dataUri = includeBase64InImagePicker && response.data ? `data:image/jpeg;base64,${response.data}` : '';
+			const { url, data } = await pickAvatarImage(isCam === true, includeBase64InImagePicker);
 			dispatchAvatar({
 				type: AvatarStateActions.CHANGE_AVATAR,
-				payload: { url: response.path, data: dataUri, service: 'upload' }
+				payload: { url, data, service: 'upload' }
 			});
 		} catch (error: any) {
 			if (error?.code !== 'E_PICKER_CANCELLED') {
@@ -310,7 +327,7 @@ const ChangeAvatarView = () => {
 						) : null}
 						<Button
 							title={I18n.t('Save')}
-							disabled={!isDirty.current || saving}
+							disabled={!isDirty || saving}
 							type='primary'
 							loading={saving}
 							onPress={submit}

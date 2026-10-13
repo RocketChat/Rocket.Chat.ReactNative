@@ -1,20 +1,22 @@
-import React, { useLayoutEffect } from 'react';
-import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useLayoutEffect } from 'react';
+import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import LoginServices from '../../containers/LoginServices';
-import { type OutsideParamList } from '../../stacks/types';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import LoginServices from '~/containers/LoginServices';
+import { type OutsideParamList } from '~/stacks/types';
 import UserForm from './UserForm';
 
-const LoginView = () => {
+type LoginViewProps = StaticScreenProps<{ title: string; username?: string }>;
+
+const LoginView = ({ route }: LoginViewProps) => {
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'LoginView'>>();
 
 	const {
 		params: { title }
-	} = useRoute<RouteProp<OutsideParamList, 'LoginView'>>();
+	} = route;
 
 	const { Accounts_ShowFormLogin } = useAppSelector(state => ({
 		Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin as boolean

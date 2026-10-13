@@ -1,19 +1,19 @@
-import React from 'react';
 import { Platform } from 'react-native';
 import { fireEvent, render, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
 import CallView from '.';
-import { navigateToCallRoom } from '../../lib/services/voip/navigateToCallRoom';
-import { useCallStore } from '../../lib/services/voip/useCallStore';
-import { mockedStore } from '../../reducers/mockedStore';
+import { navigateToCallRoom } from '~/lib/services/voip/navigateToCallRoom';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
+import { mockedStore } from '~/reducers/mockedStore';
 import * as stories from './CallView.stories';
-import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 
 const mockStartRingback = jest.fn(() => Promise.resolve());
 const mockStopRingback = jest.fn(() => Promise.resolve());
 
-jest.mock('../../containers/Ringer', () => {
+jest.mock('~/containers/Ringer', () => {
 	const ReactMod = require('react');
 	const RingerMock = (props: { ringer: string }) => ReactMod.createElement('view', { testID: `ringer-${props.ringer}` });
 	return {
@@ -23,7 +23,7 @@ jest.mock('../../containers/Ringer', () => {
 	};
 });
 
-jest.mock('../../lib/native/NativeVoip', () => ({
+jest.mock('~/lib/native/NativeVoip', () => ({
 	__esModule: true,
 	default: {
 		registerVoipToken: jest.fn(),
@@ -43,8 +43,8 @@ jest.mock('../../lib/native/NativeVoip', () => ({
 }));
 
 // Re-evaluate `isIOS` per-test from Platform.OS (the helper computes it once at import time).
-jest.mock('../../lib/methods/helpers', () => {
-	const actual = jest.requireActual('../../lib/methods/helpers');
+jest.mock('~/lib/methods/helpers', () => {
+	const actual = jest.requireActual('~/lib/methods/helpers');
 	const { Platform: RNPlatform } = jest.requireActual('react-native');
 	const proxy: Record<string, unknown> = { ...actual };
 	Object.defineProperty(proxy, 'isIOS', {
@@ -73,20 +73,21 @@ jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
 
 const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
 
-jest.mock('../../lib/services/voip/navigateToCallRoom', () => ({
+jest.mock('~/lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
 }));
 
 // Mock useResponsiveLayout so its width tracks mockWindowWidth dynamically.
 // Honors an explicit ResponsiveLayoutContext.Provider (e.g. TabletCallView story
 // forcing width=800) so stories can drive layoutMode without a prop.
-jest.mock('../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
-	const actual = jest.requireActual('../../lib/hooks/useResponsiveLayout/useResponsiveLayout');
+jest.mock('~/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
+	const actual = jest.requireActual('~/lib/hooks/useResponsiveLayout/useResponsiveLayout');
 	const React = require('react');
 	const { useWindowDimensions } = require('react-native');
 	return {
 		...actual,
 		useResponsiveLayout: () => {
+			// eslint-disable-next-line no-restricted-syntax
 			const ctx = React.useContext(actual.ResponsiveLayoutContext);
 			const { width: winWidth, height: winHeight, fontScale: winFontScale } = useWindowDimensions();
 			const width = ctx && ctx.width ? ctx.width : winWidth;
@@ -108,10 +109,10 @@ jest.mock('../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
 });
 
 const mockShowActionSheetRef = jest.fn();
-jest.mock('../../containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet', () => ({
 	showActionSheetRef: (options: any) => mockShowActionSheetRef(options),
 	hideActionSheetRef: jest.fn(),
-	ActionSheetProvider: ({ children }: { children: React.ReactNode }) => children
+	ActionSheetProvider: ({ children }: { children: ReactNode }) => children
 }));
 
 // Helper to create a mock call
@@ -156,7 +157,7 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 	});
 };
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 describe('CallView/CallView', () => {
 	beforeEach(() => {

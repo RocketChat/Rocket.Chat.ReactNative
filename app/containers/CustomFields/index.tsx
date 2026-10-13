@@ -1,15 +1,15 @@
-import React from 'react';
+import { type MutableRefObject } from 'react';
 import { type TextInput } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 import { FormTextInput } from '../TextInput';
-import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
+import useParsedCustomFields from '~/lib/hooks/useParsedCustomFields';
 
 interface ICustomFields {
 	Accounts_CustomFields: string;
 	customFields: any;
 	onCustomFieldChange: (value: any) => void;
-	customFieldsRef: React.MutableRefObject<{
+	customFieldsRef: MutableRefObject<{
 		[key: string]: TextInput | undefined;
 	}>;
 	onSubmit?: () => void;

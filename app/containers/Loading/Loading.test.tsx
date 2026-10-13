@@ -1,5 +1,4 @@
 import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
-import React from 'react';
 
 import Loading, { sendLoadingEvent, LOADING_BUTTON_TEST_ID, LOADING_IMAGE_TEST_ID, LOADING_TEST_ID } from '.';
 

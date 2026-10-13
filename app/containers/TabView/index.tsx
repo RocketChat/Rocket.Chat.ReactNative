@@ -1,15 +1,15 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState, type ReactNode } from 'react';
 import { View } from 'react-native';
 import { TabView as ReanimatedTabView, type Route, type NavigationState } from 'reanimated-tab-view';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Touchable } from 'react-native-gesture-handler';
 
 import styles from './styles';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 
 interface TabViewProps {
 	routes: Route[];
-	renderTabItem: (tab: Route, color: string) => React.ReactNode;
-	renderScene: (props: { route: Route }) => React.ReactNode;
+	renderTabItem: (tab: Route, color: string) => ReactNode;
+	renderScene: (props: { route: Route }) => ReactNode;
 }
 
 export const TabView = ({ routes, renderTabItem, renderScene }: TabViewProps) => {
@@ -28,9 +28,9 @@ export const TabView = ({ routes, renderTabItem, renderScene }: TabViewProps) =>
 			<View style={styles.tabsContainer}>
 				{routes.map((tab: Route, index: number) => (
 					<View key={tab.key} style={styles.tab}>
-						<TouchableOpacity onPress={() => jumpTo(tab.key)} hitSlop={10}>
+						<Touchable onPress={() => jumpTo(tab.key)} hitSlop={10} activeOpacity={0.2} animationDuration={{ in: 0, out: 150 }}>
 							{renderTabItem(tab, routeIndex === index ? colors.strokeHighlight : colors.fontSecondaryInfo)}
-						</TouchableOpacity>
+						</Touchable>
 						<View
 							style={[
 								styles.tabLine,

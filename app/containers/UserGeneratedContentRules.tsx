@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, StyleSheet, Text, type ViewStyle } from 'react-native';
 
 import sharedStyles from '../views/Styles';

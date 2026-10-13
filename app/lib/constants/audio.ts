@@ -1,48 +1,41 @@
-import { Audio, type AudioMode, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
-import { type RecordingOptions } from 'expo-av/build/Audio';
+import { isIOS } from '../methods/helpers';
+import { AudioQuality, IOSOutputFormat, type RecordingOptions, type AudioMode } from 'expo-audio';
 
 export const RECORDING_EXTENSION = '.aac';
+
 export const RECORDING_SETTINGS: RecordingOptions = {
+	extension: RECORDING_EXTENSION,
+	sampleRate: 44100,
+	numberOfChannels: 2,
+	bitRate: isIOS ? 64000 : 128000,
 	android: {
-		// Settings related to audio encoding.
-		extension: RECORDING_EXTENSION,
-		outputFormat: Audio.AndroidOutputFormat.AAC_ADTS,
-		audioEncoder: Audio.AndroidAudioEncoder.AAC,
-		// Settings related to audio quality.
-		sampleRate: Audio.RecordingOptionsPresets.LOW_QUALITY.android.sampleRate,
-		numberOfChannels: Audio.RecordingOptionsPresets.LOW_QUALITY.android.numberOfChannels,
-		bitRate: Audio.RecordingOptionsPresets.LOW_QUALITY.android.bitRate
+		outputFormat: 'aac_adts',
+		audioEncoder: 'aac'
 	},
 	ios: {
-		// Settings related to audio encoding.
-		extension: RECORDING_EXTENSION,
-		audioQuality: Audio.IOSAudioQuality.MEDIUM,
-		outputFormat: Audio.IOSOutputFormat.MPEG4AAC,
-		// Settings related to audio quality.
-		sampleRate: Audio.RecordingOptionsPresets.LOW_QUALITY.ios.sampleRate,
-		numberOfChannels: Audio.RecordingOptionsPresets.LOW_QUALITY.ios.numberOfChannels,
-		bitRate: Audio.RecordingOptionsPresets.LOW_QUALITY.ios.bitRate
+		audioQuality: AudioQuality.MEDIUM,
+		outputFormat: IOSOutputFormat.MPEG4AAC,
+		linearPCMBitDepth: 16,
+		linearPCMIsBigEndian: false,
+		linearPCMIsFloat: false
 	},
-	web: {},
-	keepAudioActiveHint: true
+	web: {}
 };
 
 export const RECORDING_MODE: AudioMode = {
-	allowsRecordingIOS: true,
-	playsInSilentModeIOS: true,
-	staysActiveInBackground: true,
-	shouldDuckAndroid: true,
-	playThroughEarpieceAndroid: false,
-	interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-	interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
+	playsInSilentMode: true,
+	shouldPlayInBackground: true,
+	allowsRecording: true,
+	shouldRouteThroughEarpiece: false,
+	interruptionMode: 'doNotMix',
+	interruptionModeAndroid: 'doNotMix'
 };
 
 export const AUDIO_MODE: AudioMode = {
-	allowsRecordingIOS: false,
-	playsInSilentModeIOS: true,
-	staysActiveInBackground: true,
-	shouldDuckAndroid: true,
-	playThroughEarpieceAndroid: false,
-	interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-	interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
+	playsInSilentMode: true,
+	shouldPlayInBackground: true,
+	allowsRecording: false,
+	shouldRouteThroughEarpiece: false,
+	interruptionMode: 'doNotMix',
+	interruptionModeAndroid: 'doNotMix'
 };

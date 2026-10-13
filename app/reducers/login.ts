@@ -103,7 +103,7 @@ export default function login(state = initialState, action: TActionsLogin): ILog
 								preferences: state.user?.settings?.preferences
 									? { ...state.user.settings.preferences, ...action.preference }
 									: { ...action.preference }
-						  }
+							}
 						: { profile: {}, preferences: {} }
 				}
 			};

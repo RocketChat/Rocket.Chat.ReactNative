@@ -1,11 +1,11 @@
-import * as React from 'react';
+import { createRef, type MutableRefObject } from 'react';
 import { CommonActions, type NavigationContainerRef, StackActions } from '@react-navigation/native';
 
 import { emitter } from '../methods/helpers';
 
 // TODO: we need change this any to the correctly types from our stacks
-const navigationRef = React.createRef<NavigationContainerRef<any>>();
-const routeNameRef: React.MutableRefObject<NavigationContainerRef<any> | null> = React.createRef();
+const navigationRef = createRef<NavigationContainerRef<any>>();
+const routeNameRef: MutableRefObject<NavigationContainerRef<any> | null> = createRef();
 
 function navigate(name: string, params?: any) {
 	navigationRef.current?.navigate(name, params);
@@ -24,8 +24,8 @@ function replace(name: string, params: any) {
 }
 
 // Pops to the first occurrence of the given route name, usually RoomView
-function popTo(name: string) {
-	navigationRef.current?.dispatch(StackActions.popTo(name));
+function popTo(name: string, params?: any, options?: { merge?: boolean }) {
+	navigationRef.current?.dispatch(StackActions.popTo(name, params, options));
 }
 
 // Removes RoomView from the stack and leaves only RoomsListView open
@@ -47,7 +47,8 @@ function popToRoom(isMasterDetail: boolean) {
 	if (isMasterDetail) {
 		popTo('DrawerNavigator');
 	} else {
-		popTo('RoomView');
+		// merge keeps the retained RoomView's existing params instead of replacing them with undefined
+		popTo('RoomView', undefined, { merge: true });
 	}
 }
 

@@ -1,21 +1,27 @@
 import { Alert } from 'react-native';
 
-import I18n from '../../../i18n';
+import I18n from '~/i18n';
+import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
 
 export const showErrorAlert = (message: string, title?: string, onPress = () => {}): void =>
 	Alert.alert(title || '', message, [{ text: 'OK', onPress }], { cancelable: true });
 
 export const showErrorAlertWithEMessage = (e: any, title?: string): void => {
-	let errorMessage: string = e?.data?.error;
-
-	if (errorMessage?.includes('[error-too-many-requests]')) {
-		const seconds = errorMessage.replace(/\D/g, '');
-		errorMessage = I18n.t('error-too-many-requests', { seconds });
-	} else {
-		errorMessage = I18n.isTranslated(errorMessage) ? I18n.t(errorMessage) : errorMessage;
+	if (isTwoFactorCancelled(e)) {
+		return;
+	}
+	const rateLimitMessage: string | undefined = [e?.data?.error, e?.message].find(text =>
+		/\[(error-)?too-many-requests\]/.test(text)
+	);
+	if (rateLimitMessage) {
+		showErrorAlert(I18n.t('error-too-many-requests', { seconds: rateLimitMessage.replace(/\D/g, '') }), title);
+		return;
 	}
 
-	showErrorAlert(errorMessage, title);
+	const ddpErrorKey = typeof e?.error === 'string' ? e.error : undefined;
+	const errorMessage: string = e?.data?.error || ddpErrorKey || e?.reason || e?.message;
+
+	showErrorAlert(I18n.isTranslated(errorMessage) ? I18n.t(errorMessage) : errorMessage, title);
 };
 
 interface IShowConfirmationAlert {

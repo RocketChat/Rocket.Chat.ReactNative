@@ -1,14 +1,14 @@
-import { useCameraPermissions } from 'expo-camera';
-import React, { useMemo } from 'react';
+import { Camera } from 'expo-camera';
+import { useMemo } from 'react';
 
-import { useActionSheet } from '../../../containers/ActionSheet';
-import i18n from '../../../i18n';
-import { getUserSelector } from '../../../selectors/login';
-import { compareServerVersion } from '../../methods/helpers/compareServerVersion';
-import { showErrorAlert } from '../../methods/helpers/info';
-import log from '../../methods/helpers/log';
-import { handleAndroidBltPermission } from '../../methods/videoConf';
-import { videoConferenceGetCapabilities } from '../../services/restApi';
+import { useActionSheet } from '~/containers/ActionSheet';
+import i18n from '~/i18n';
+import { getUserSelector } from '~/selectors/login';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import log from '~/lib/methods/helpers/log';
+import { handleAndroidBltPermission } from '~/lib/methods/videoConf';
+import { videoConferenceGetCapabilities } from '~/lib/services/restApi';
 import { useAppSelector } from '../useAppSelector';
 import StartACallActionSheet from './StartACallActionSheet';
 import { useVideoConfCall } from './useVideoConfCall';
@@ -33,7 +33,6 @@ export const useVideoConf = (
 	const serverVersion = useAppSelector(state => state.server.version);
 	const { callEnabled, disabledTooltip, roomType } = useVideoConfCall(rid);
 
-	const [permission, requestPermission] = useCameraPermissions();
 	const { showActionSheet } = useActionSheet();
 
 	const isServer5OrNewer = useMemo(() => compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0'), [serverVersion]);
@@ -66,9 +65,10 @@ export const useVideoConf = (
 					fullContainer: true
 				});
 
+				const permission = await Camera.getCameraPermissionsAsync();
 				if (!permission?.granted) {
 					try {
-						await requestPermission();
+						await Camera.requestCameraPermissionsAsync();
 						handleAndroidBltPermission();
 					} catch (error) {
 						log(error);

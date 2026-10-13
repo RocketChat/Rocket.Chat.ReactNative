@@ -14,7 +14,7 @@ tags:
 
 # should open a room where the last message is a thread containing more than 50 messages.
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: 'maestro_test_load_threads'
 - extendedWaitUntil:

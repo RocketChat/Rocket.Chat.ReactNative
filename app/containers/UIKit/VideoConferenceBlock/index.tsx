@@ -1,13 +1,13 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 
-import { useEndpointData } from '../../../lib/hooks/useEndpointData';
+import { useEndpointData } from '~/lib/hooks/useEndpointData';
 import VideoConferenceDirect from './components/VideoConferenceDirect';
 import VideoConferenceEnded from './components/VideoConferenceEnded';
 import VideoConferenceOutgoing from './components/VideoConferenceOutgoing';
 import VideoConferenceSkeletonLoading from './components/VideoConferenceSkeletonLoading';
 import VideoConferenceIssue from './components/VideoConferenceIssue';
 
-export default function VideoConferenceBlock({ callId, blockId }: { callId: string; blockId: string }): React.ReactElement {
+export default function VideoConferenceBlock({ callId, blockId }: { callId: string; blockId: string }): ReactElement {
 	const { result, error } = useEndpointData('video-conference.info', { callId });
 
 	if (result?.success) {

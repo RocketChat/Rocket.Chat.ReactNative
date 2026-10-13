@@ -1,10 +1,9 @@
-import React from 'react';
 import type { ViewStyle } from 'react-native';
 
-import i18n from '../../i18n';
+import i18n from '~/i18n';
 import ListItem, { type IListItem } from './ListItem';
 import ListIcon from './ListIcon';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 
 interface IListRadio extends IListItem {
 	value: any;

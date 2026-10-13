@@ -1,7 +1,7 @@
-import React from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import { type ReactElement } from 'react';
 
-import { Header } from '../../../containers/List';
+import { Header } from '~/containers/List';
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 });
 
 interface ICustomListSection {
-	children: (React.ReactElement | null)[] | React.ReactElement | null;
+	children: (ReactElement | null)[] | ReactElement | null;
 	title: string;
 	translateTitle?: boolean;
 	statusColor?: string;

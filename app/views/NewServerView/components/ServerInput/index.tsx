@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, type TextInputProps, View } from 'react-native';
 import { type Control } from 'react-hook-form';
 
-import { useTheme } from '../../../../theme';
-import { ControlledFormTextInput } from '../../../../containers/TextInput';
-import { type TServerHistoryModel } from '../../../../definitions';
-import I18n from '../../../../i18n';
-import { CustomIcon } from '../../../../containers/CustomIcon';
-import { showActionSheetRef, hideActionSheetRef } from '../../../../containers/ActionSheet';
-import Touch from '../../../../containers/Touch';
+import { useTheme } from '~/theme';
+import { ControlledFormTextInput } from '~/containers/TextInput';
+import { type TServerHistoryModel } from '~/definitions';
+import I18n from '~/i18n';
+import { CustomIcon } from '~/containers/CustomIcon';
+import { showActionSheetRef, hideActionSheetRef } from '~/containers/ActionSheet';
+import Touch from '~/containers/Touch';
 import { ServersHistoryActionSheetContent } from '../ServersHistoryActionSheetContent';
 
 const styles = StyleSheet.create({
@@ -44,7 +44,7 @@ const ServerInput = ({
 	onSubmit,
 	onDelete,
 	onPressServerHistory
-}: IServerInput): JSX.Element => {
+}: IServerInput) => {
 	const [focused, setFocused] = useState(false);
 	const { colors } = useTheme();
 

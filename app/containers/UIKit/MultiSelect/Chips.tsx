@@ -1,13 +1,12 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import { textParser } from '../utils';
-import { CustomIcon } from '../../CustomIcon';
+import { CustomIcon } from '~/containers/CustomIcon';
 import styles from './styles';
 import { type IItemData } from '.';
-import { useTheme } from '../../../theme';
-import Touch from '../../Touch';
+import { useTheme } from '~/theme';
+import Touch from '~/containers/Touch';
 
 interface IChip {
 	item: IItemData;

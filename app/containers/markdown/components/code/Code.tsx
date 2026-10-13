@@ -1,16 +1,16 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { View } from 'react-native';
 import { type Code as CodeProps } from '@rocket.chat/message-parser';
 
-import styles from '../../styles';
-import { useTheme } from '../../../../theme';
+import styles from '~/containers/markdown/styles';
+import { useTheme } from '~/theme';
 import CodeLine from './CodeLine';
 
 interface ICodeProps {
 	value: CodeProps['value'];
 }
 
-const Code = ({ value }: ICodeProps): React.ReactElement => {
+const Code = ({ value }: ICodeProps): ReactElement => {
 	const { colors } = useTheme();
 
 	return (

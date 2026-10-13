@@ -19,4 +19,10 @@ tags:
             platform: Android
           commands:
             - tapOn: 'Close App'
+      - runFlow:
+          when:
+            visible: ".*isn't responding.*"
+            platform: Android
+          commands:
+            - tapOn: 'Wait'
       - assertVisible: 'Add workspace'

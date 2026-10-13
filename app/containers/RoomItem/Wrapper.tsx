@@ -1,20 +1,21 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
-import { DisplayMode } from '../../lib/constants/constantDisplayMode';
-import { useTheme } from '../../theme';
+import { DisplayMode } from '~/lib/constants/constantDisplayMode';
+import { useTheme } from '~/theme';
 import IconOrAvatar from './IconOrAvatar';
 import { type IWrapperProps } from './interfaces';
 import styles from './styles';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const Wrapper = ({
 	accessibilityLabel,
 	accessibilityHint,
 	children,
 	displayMode,
+	testID,
 	...props
-}: IWrapperProps): React.ReactElement => {
+}: IWrapperProps): ReactElement => {
 	const { colors } = useTheme();
 	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 	return (
@@ -22,6 +23,7 @@ const Wrapper = ({
 			style={[styles.container, { height: displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight }]}
 			accessibilityLabel={accessibilityLabel}
 			accessibilityHint={accessibilityHint}
+			testID={testID}
 			accessible
 			accessibilityRole='button'>
 			<IconOrAvatar displayMode={displayMode} {...props} />
