@@ -72,14 +72,13 @@ describe('actions', () => {
 			});
 		});
 
-		it('emits modal.close to the view', async () => {
+		it('returns modal.close for a stream close, which carries no view id', async () => {
 			let result;
 			await withTriggerId('app-id', async triggerId => {
-				result = handlePayloadUserInteraction(ModalActions.CLOSE, { triggerId, viewId: 'view-id' });
+				result = handlePayloadUserInteraction(ModalActions.CLOSE, { triggerId, appId: 'app-id' });
 			});
 
 			expect(result).toBe(ModalActions.CLOSE);
-			expect(mockedEmit).toHaveBeenCalledWith('view-id', expect.objectContaining({ type: ModalActions.CLOSE }));
 		});
 
 		it('accepts a stream reply that arrives after the request settled', async () => {
@@ -231,6 +230,15 @@ describe('actions', () => {
 			const result = await triggerAction(actionInput);
 
 			expect(result).toBe(ModalActions.CLOSE);
+		});
+
+		it('closes the modal when the stream closes it before the request settles', async () => {
+			mockedFetch.mockImplementationOnce(async () => {
+				handlePayloadUserInteraction(ModalActions.CLOSE, { triggerId: 'trigger-fixed-id', appId: 'app-id' });
+				return { ok: true, text: () => Promise.resolve('') } as Response;
+			});
+
+			await expect(triggerAction(actionInput)).resolves.toBe(ModalActions.CLOSE);
 		});
 
 		it('keeps the modal open for empty response body with ok status', async () => {

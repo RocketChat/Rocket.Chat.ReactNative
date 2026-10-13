@@ -50,6 +50,10 @@ export const handlePayloadUserInteraction = (
 		showToast(I18n.t('App_action_unsupported'));
 		return;
 	}
+	if (modalType === ModalActions.CLOSE) {
+		trigger.handled = modalType;
+		return modalType;
+	}
 	const payloadAppId = data.appId ?? trigger.appId;
 	if (!payloadAppId) {
 		return;
@@ -62,26 +66,26 @@ export const handlePayloadUserInteraction = (
 
 	trigger.handled = modalType;
 
-	if (modalType === ModalActions.ERRORS || modalType === ModalActions.UPDATE || modalType === ModalActions.CLOSE) {
-		EventEmitter.emit(viewId, {
-			...data,
-			appId: payloadAppId,
-			type: modalType,
-			triggerId,
-			viewId
-		} as IEmitUserInteraction);
+	if (modalType === ModalActions.OPEN) {
+		Navigation.navigate('ModalBlockView', {
+			data: {
+				...data,
+				appId: payloadAppId,
+				triggerId,
+				viewId
+			}
+		});
 		return modalType;
 	}
 
-	Navigation.navigate('ModalBlockView', {
-		data: {
-			...data,
-			appId: payloadAppId,
-			triggerId,
-			viewId
-		}
-	});
-	return ModalActions.OPEN;
+	EventEmitter.emit(viewId, {
+		...data,
+		appId: payloadAppId,
+		type: modalType,
+		triggerId,
+		viewId
+	} as IEmitUserInteraction);
+	return modalType;
 };
 
 type TTriggerResult = TModalAction | typeof ACKNOWLEDGED | undefined;

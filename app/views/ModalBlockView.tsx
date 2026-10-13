@@ -136,7 +136,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 		const { navigation, route } = this.props;
 		const oldData = prevProps.route.params?.data ?? {};
 		const newData = route.params?.data ?? {};
-		if (oldData.viewId !== newData.viewId) {
+		if (oldData.triggerId !== newData.triggerId) {
 			navigation.replace('ModalBlockView', { data: newData });
 		}
 	}
@@ -180,9 +180,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 	};
 
 	handleUpdate = ({ type, ...data }: { type: TModalAction }) => {
-		if (type === ModalActions.CLOSE) {
-			this.close();
-		} else if (type === ModalActions.ERRORS) {
+		if (type === ModalActions.ERRORS) {
 			const { errors }: any = data;
 			this.setState({ errors });
 		} else {
