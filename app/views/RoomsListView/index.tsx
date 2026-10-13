@@ -147,13 +147,6 @@ const RoomsListView = memo(function RoomsListView() {
 		);
 	};
 
-	if (searchEnabled && searchResults.length === 0) {
-		if (searching) {
-			return <ActivityIndicator />;
-		}
-		return <BackgroundContainer text={i18n.t('No_rooms_found')} />;
-	}
-
 	if (loading || changingServer) {
 		return <ActivityIndicator />;
 	}
@@ -164,6 +157,13 @@ const RoomsListView = memo(function RoomsListView() {
 
 	if (requirePasswordChange) {
 		return <ChangePasswordRequired navigation={navigation} />;
+	}
+
+	if (searchEnabled && searchResults.length === 0) {
+		if (searching) {
+			return <ActivityIndicator />;
+		}
+		return <BackgroundContainer text={i18n.t('No_rooms_found')} />;
 	}
 
 	return (
