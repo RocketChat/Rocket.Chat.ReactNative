@@ -44,7 +44,14 @@ const CategoryOrderView = () => {
 			<ScrollView contentInsetAdjustmentBehavior={isIOS ? 'automatic' : undefined}>
 				<Text style={[styles.hint, { color: colors.fontSecondaryInfo }]}>{i18n.t('Drag_to_reorder')}</Text>
 				<View style={styles.card}>
-					<SortableList key={movableGroups.map(group => group.id).join()} groups={movableGroups} onReorder={saveOrder} />
+					<SortableList
+						key={movableGroups
+							.map(group => group.id)
+							.sort()
+							.join()}
+						groups={movableGroups}
+						onReorder={saveOrder}
+					/>
 					{pinnedGroup ? <CategoryOrderRow title={pinnedGroup.title} disabled /> : null}
 				</View>
 			</ScrollView>

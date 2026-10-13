@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 
@@ -17,6 +18,13 @@ const SortableList = ({ groups, onReorder }: ISortableList) => {
 	const ids = groups.map(group => group.id);
 	const positions = useSharedValue(toPositions(ids));
 	const activeId = useSharedValue<string | null>(null);
+	const order = JSON.stringify(ids);
+
+	useEffect(() => {
+		if (activeId.get() === null) {
+			positions.set(toPositions(JSON.parse(order)));
+		}
+	}, [order, positions, activeId]);
 
 	const onDrop = (droppedIds: string[]) => {
 		if (droppedIds.join() !== ids.join()) {
