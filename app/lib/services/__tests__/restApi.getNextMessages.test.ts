@@ -95,7 +95,7 @@ describe('getNextMessages', () => {
 	it('rejects instead of returning no messages when the response is not successful', async () => {
 		mockedGet.mockResolvedValue({ success: false, error: 'error-invalid-room' });
 
-		await expect(getNextMessages({ rid: RID, after: AFTER, count: COUNT })).rejects.toThrow('Unable to load newer messages');
+		await expect(getNextMessages({ rid: RID, after: AFTER, count: COUNT })).rejects.toThrow('Unable to load room history');
 	});
 
 	it('does not turn a failed REST call into an empty response', async () => {

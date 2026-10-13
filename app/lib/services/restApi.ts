@@ -939,20 +939,20 @@ export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updated
 		updatedSince
 	});
 
+const getRoomHistory = async (roomId: string, position: { next: string } | { aroundId: string }, count: number) => {
+	const history = await sdk.get('rooms.history', { roomId, ...position, count, showThreadMessages: false });
+	if (!history.success) {
+		throw new Error('Unable to load room history');
+	}
+	const messages = history.messages.map(message => ({ ...message, _updatedAt: new Date(message._updatedAt) }));
+	return { messages: messages as IMessage[], cursor: history.cursor };
+};
+
 export const getNextMessages = async ({ rid, after, count }: { rid: string; after: Date; count: number }) => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
-		const history = await sdk.get('rooms.history', {
-			roomId: rid,
-			next: String(after.getTime() - 1),
-			count,
-			showThreadMessages: false
-		});
-		if (!history.success) {
-			throw new Error('Unable to load newer messages');
-		}
-		const messages = history.messages.map(message => ({ ...message, _updatedAt: new Date(message._updatedAt) }));
-		return { messages: messages as IMessage[], hasMore: history.cursor.next !== null };
+		const { messages, cursor } = await getRoomHistory(rid, { next: String(after.getTime() - 1) }, count);
+		return { messages, hasMore: cursor.next !== null };
 	}
 	const result = await sdk.methodCallWrapper('loadNextMessages', rid, after, count);
 	if (!result?.messages) {
@@ -965,25 +965,12 @@ export const getNextMessages = async ({ rid, after, count }: { rid: string; afte
 export const getSurroundingMessages = async ({ rid, messageId, count }: { rid: string; messageId: string; count: number }) => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
-		const history = await sdk.get('rooms.history', {
-			roomId: rid,
-			aroundId: messageId,
-			count,
-			showThreadMessages: false
-		});
-		if (!history.success) {
-			throw new Error('Unable to load surrounding messages');
-		}
-		const messages = history.messages.map(message => ({ ...message, _updatedAt: new Date(message._updatedAt) }));
-		return {
-			messages: messages as IMessage[],
-			moreBefore: history.cursor.previous !== null,
-			moreAfter: history.cursor.next !== null
-		};
+		const { messages, cursor } = await getRoomHistory(rid, { aroundId: messageId }, count);
+		return { messages, moreBefore: cursor.previous !== null, moreAfter: cursor.next !== null };
 	}
 	const result = await sdk.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid }, count);
 	if (!result?.messages) {
-		return { messages: [] as IMessage[], moreBefore: false, moreAfter: false };
+		throw new Error('Unable to load surrounding messages');
 	}
 	const messages: IMessage[] = EJSON.fromJSONValue(result.messages);
 	return { messages, moreBefore: !!result.moreBefore, moreAfter: !!result.moreAfter };

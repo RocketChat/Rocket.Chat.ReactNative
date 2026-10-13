@@ -103,7 +103,7 @@ describe('getSurroundingMessages', () => {
 		mockedGet.mockResolvedValue({ success: false, error: 'error-invalid-room' });
 
 		await expect(getSurroundingMessages({ rid: RID, messageId: MESSAGE_ID, count: COUNT })).rejects.toThrow(
-			'Unable to load surrounding messages'
+			'Unable to load room history'
 		);
 	});
 
@@ -133,14 +133,12 @@ describe('getSurroundingMessages', () => {
 			expect(result.messages[0].ts).toEqual(new Date(TARGET_MS));
 		});
 
-		it('returns no messages when the DDP method refuses with false', async () => {
+		it('rejects when the DDP method refuses with false', async () => {
 			mockedMethodCallWrapper.mockResolvedValue(false);
 
-			await expect(getSurroundingMessages({ rid: RID, messageId: MESSAGE_ID, count: COUNT })).resolves.toEqual({
-				messages: [],
-				moreBefore: false,
-				moreAfter: false
-			});
+			await expect(getSurroundingMessages({ rid: RID, messageId: MESSAGE_ID, count: COUNT })).rejects.toThrow(
+				'Unable to load surrounding messages'
+			);
 		});
 	});
 });
