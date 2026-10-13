@@ -1,7 +1,6 @@
 import { ActionTypes, ModalActions } from '~/containers/UIKit/interfaces';
 import { ACKNOWLEDGED, postUserInteraction, triggerAction } from '../actions';
 import { triggerAppActionButton, triggerBlockAction, triggerCancel, triggerSubmitView } from '../triggerActions';
-import type { TUIActionButtonContext } from '../definitions';
 
 jest.mock('../actions', () => ({
 	ACKNOWLEDGED: 'acknowledged',
@@ -154,12 +153,6 @@ describe('triggerActions wrappers', () => {
 				triggerId: 'trigger-id',
 				payload: { context: 'roomAction' }
 			});
-		});
-
-		it('rejects an unsupported context', async () => {
-			await triggerAppActionButton({ button: { ...button, context: 'messageAction' as TUIActionButtonContext }, rid: 'room-id' });
-
-			expect(() => buildInteraction()).toThrow('Unsupported actionButton context: messageAction');
 		});
 	});
 });

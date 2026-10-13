@@ -1,6 +1,6 @@
 import type { UserInteraction } from '@rocket.chat/ui-kit';
 
-import { type ITriggerAction, ModalActions, type TModalAction } from '~/containers/UIKit/interfaces';
+import { type IEmitUserInteraction, type ITriggerAction, ModalActions, type TModalAction } from '~/containers/UIKit/interfaces';
 import { toServerModalInteractionType, toUserInteraction } from '~/containers/UIKit/interactionAdapters';
 import I18n from '~/i18n';
 import EventEmitter from '~/lib/methods/helpers/events';
@@ -69,7 +69,7 @@ export const handlePayloadUserInteraction = (
 			type: modalType,
 			triggerId,
 			viewId
-		} as any);
+		} as IEmitUserInteraction);
 		return modalType;
 	}
 

@@ -12,6 +12,7 @@ tags:
 - evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
 - evalScript: ${output.pollButton = output.utils.findAppActionButton(output.user.username, output.user.password, 'messageBoxAction', 'message-box-create-poll')}
 - evalScript: ${output.pollLabel = output.utils.getServerAppTranslation(output.user.username, output.user.password, output.pollButton.appId, 'create_poll_button')}
+- evalScript: ${output.voteLabel = output.utils.getServerAppTranslation(output.user.username, output.user.password, output.pollButton.appId, 'poll_vote')}
 - evalScript: ${output.pollAction = 'message-composer-app-action-' + output.pollButton.appId + '/' + output.pollButton.actionId}
 - evalScript: ${output.question = 'Poll ' + output.random()}
 
@@ -97,20 +98,10 @@ tags:
 - assertVisible:
     text: '.*0.00% \(0\).*'
 
-# should vote and see the results
+# should vote and see the results update in place
 - tapOn:
-    text: '(poll_vote|Vote)'
+    text: '${output.voteLabel}'
     index: 0
-- tapOn:
-    id: 'header-back'
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view'
-    timeout: 60000
-- runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
-    env:
-      ROOM: ${output.room.name}
 - extendedWaitUntil:
     visible:
       text: '.*100.00% \(1\).*'

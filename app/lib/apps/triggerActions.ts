@@ -43,10 +43,7 @@ export async function triggerAppActionButton({ button, rid, tmid, message }: ITr
 			if (context === UIActionButtonContext.ROOM_ACTION) {
 				return { type: 'actionButton', actionId, rid, triggerId, payload: { context } };
 			}
-			if (context === UIActionButtonContext.MESSAGE_BOX_ACTION) {
-				return { type: 'actionButton', actionId, rid, tmid, triggerId, payload: { context, message: message ?? '' } };
-			}
-			throw new Error(`Unsupported actionButton context: ${context}`);
+			return { type: 'actionButton', actionId, rid, tmid, triggerId, payload: { context, message: message ?? '' } };
 		});
 	} catch (e) {
 		log(e);

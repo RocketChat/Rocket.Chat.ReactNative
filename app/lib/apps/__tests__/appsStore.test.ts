@@ -9,7 +9,7 @@ const mockGetAppActionButtons = jest.fn(() =>
 const mockGetAppsLanguages = jest.fn(() =>
 	Promise.resolve({ apps: [{ id: 'app-id', languages: { en: { summarize: 'Summarize' }, pt_BR: { summarize: 'Resumir' } } }] })
 );
-jest.mock('~/lib/services/restApi', () => ({
+jest.mock('~/lib/services/appsApiFetch', () => ({
 	getAppActionButtons: () => mockGetAppActionButtons(),
 	getAppsLanguages: () => mockGetAppsLanguages()
 }));

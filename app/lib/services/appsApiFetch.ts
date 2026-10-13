@@ -1,3 +1,4 @@
+import type { IAppActionButton, IAppLanguages } from '../apps/definitions';
 import fetch from '../methods/helpers/fetch';
 import sdk from './sdk';
 
@@ -36,3 +37,7 @@ export const appsApiFetch = async (
 
 	return response;
 };
+
+export const getAppActionButtons = async (): Promise<IAppActionButton[]> => (await appsApiFetch('actionButtons')).json();
+
+export const getAppsLanguages = async (): Promise<IAppLanguages> => (await appsApiFetch('languages')).json();

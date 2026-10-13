@@ -213,11 +213,8 @@ describe('actions', () => {
 				} as Response;
 			});
 
-			try {
-				await expect(triggerAction(actionInput)).resolves.toBe(ModalActions.OPEN);
-				expect(mockedNavigate).toHaveBeenCalledTimes(1);
-			} finally {
-			}
+			await expect(triggerAction(actionInput)).resolves.toBe(ModalActions.OPEN);
+			expect(mockedNavigate).toHaveBeenCalledTimes(1);
 		});
 
 		it('returns modal.close for explicit close response', async () => {
@@ -312,7 +309,7 @@ describe('actions', () => {
 			await expect(triggerAction(actionInput)).resolves.toBe(ModalActions.UPDATE);
 		});
 
-		it('invalidates trigger id after processing', async () => {
+		it('ignores a repeated reply for an already-handled trigger', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
 				text: () =>

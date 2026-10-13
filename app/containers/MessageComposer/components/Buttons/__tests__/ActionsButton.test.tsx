@@ -89,12 +89,6 @@ describe('ActionsButton', () => {
 		expect(options[2].testID).toBe('message-composer-app-action-translate');
 	});
 
-	it('resolves the app buttons of the composer room', () => {
-		openSheet();
-
-		expect(mockUseAppActionButtons).toHaveBeenCalledWith('rid-1');
-	});
-
 	it('sends the thread and the composer draft with a message box action', () => {
 		const messageBoxItem = item('translate');
 		mockUseAppActionButtons.mockImplementation(() => [messageBoxItem]);

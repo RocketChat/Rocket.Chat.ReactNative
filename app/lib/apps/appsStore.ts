@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { type IAppActionButton, type TAppTranslations } from './definitions';
 import { normalizeLanguage } from './translations';
 import log from '~/lib/methods/helpers/log';
-import { getAppActionButtons, getAppsLanguages } from '~/lib/services/restApi';
+import { getAppActionButtons, getAppsLanguages } from '~/lib/services/appsApiFetch';
 import { AppsApiError } from '~/lib/services/appsApiFetch';
 
 type TAppsState = {

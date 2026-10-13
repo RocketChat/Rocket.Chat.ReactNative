@@ -26,15 +26,8 @@ export const applyRoomFilter = (button: IAppActionButton, room: IAppActionButton
 	return !roomTypes || roomTypes.some(filter => roomTypeMatchers[filter]?.(room));
 };
 
-export const applyCategoryFilter = (button: IAppActionButton, category: TAppActionButtonCategory): boolean => {
-	const { category: buttonCategory } = button;
-
-	if (category === 'default') {
-		return !buttonCategory || buttonCategory === 'default';
-	}
-
-	return buttonCategory === category;
-};
+export const applyCategoryFilter = (button: IAppActionButton, category: TAppActionButtonCategory): boolean =>
+	(button.category ?? 'default') === category;
 
 export interface IAppActionButtonAuth {
 	roles: string[];
