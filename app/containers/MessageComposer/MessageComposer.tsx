@@ -20,7 +20,7 @@ import { EventTypes } from '../EmojiPicker/interfaces';
 import { type IEmoji } from '~/definitions';
 import database from '~/lib/database';
 import { sanitizeLikeString } from '~/lib/database/utils';
-import { generateTriggerId } from '~/lib/methods/actions';
+import { generateTriggerId } from '~/lib/apps/actions';
 import { runSlashCommand } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
 import { prepareQuoteMessage, insertEmojiAtCursor, lastGlyphLength } from './helpers';

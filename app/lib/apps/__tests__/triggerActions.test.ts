@@ -1,13 +1,18 @@
 import { ActionTypes, ModalActions } from '~/containers/UIKit/interfaces';
-import Navigation from '../navigation/appNavigation';
-import { triggerAction } from './actions';
-import { triggerBlockAction, triggerCancel, triggerSubmitView } from './triggerActions';
+import Navigation from '~/lib/navigation/appNavigation';
+import { triggerAction } from '../actions';
+import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../triggerActions';
 
-jest.mock('../navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	back: jest.fn()
 }));
 
-jest.mock('./actions', () => ({
+const mockShowToast = jest.fn();
+jest.mock('~/lib/methods/helpers/showToast', () => ({
+	showToast: (message: string) => mockShowToast(message)
+}));
+
+jest.mock('../actions', () => ({
 	triggerAction: jest.fn()
 }));
 
@@ -66,6 +71,15 @@ describe('triggerActions wrappers', () => {
 			expect(mockedBack).not.toHaveBeenCalled();
 		});
 
+		it('keeps the modal open and shows a toast for an unsupported response', async () => {
+			mockedTriggerAction.mockResolvedValueOnce(ModalActions.UNSUPPORTED);
+
+			await triggerSubmitView(submitInput as any);
+
+			expect(mockedBack).not.toHaveBeenCalled();
+			expect(mockShowToast).toHaveBeenCalledTimes(1);
+		});
+
 		it('does not go back for modal.open', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(ModalActions.OPEN);
 
@@ -108,5 +122,13 @@ describe('triggerActions wrappers', () => {
 			type: ActionTypes.ACTION,
 			...input
 		});
+	});
+
+	it('shows a toast when a block action gets an unsupported response', async () => {
+		mockedTriggerAction.mockResolvedValueOnce(ModalActions.UNSUPPORTED);
+
+		await expect(triggerBlockAction({ actionId: 'a', appId: 'app-id' } as any)).resolves.toBe(ModalActions.UNSUPPORTED);
+
+		expect(mockShowToast).toHaveBeenCalledTimes(1);
 	});
 });

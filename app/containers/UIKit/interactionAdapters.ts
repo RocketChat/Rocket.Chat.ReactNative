@@ -24,12 +24,29 @@ export const toUserInteraction = ({
 	container,
 	mid,
 	rid,
+	tmid,
 	triggerId,
 	viewId,
 	payload,
 	view,
 	isCleared
 }: ITriggerAction & { triggerId: string }): UserInteraction => {
+	if (type === ActionTypes.ACTION_BUTTON) {
+		if (!actionId || !payload?.context) {
+			throw new Error('actionId and payload.context are required for actionButton interaction');
+		}
+
+		return {
+			type: 'actionButton',
+			actionId,
+			payload,
+			mid,
+			tmid,
+			rid,
+			triggerId
+		} as UserInteraction;
+	}
+
 	if (type === ActionTypes.ACTION) {
 		if (!actionId || !container) {
 			throw new Error('actionId and container are required for blockAction interaction');

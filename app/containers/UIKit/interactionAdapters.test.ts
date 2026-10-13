@@ -76,6 +76,60 @@ describe('interactionAdapters', () => {
 				} as any)
 			).toThrow('viewId is required for view interactions');
 		});
+
+		it('maps a message box action button and keeps the composer text', () => {
+			const interaction = toUserInteraction({
+				type: ActionTypes.ACTION_BUTTON,
+				actionId: 'action-id',
+				appId: 'app-id',
+				rid: 'room-id',
+				tmid: 'thread-id',
+				payload: { context: 'messageBoxAction', message: 'draft' },
+				triggerId: 'trigger-id'
+			});
+
+			expect(interaction).toEqual({
+				type: 'actionButton',
+				actionId: 'action-id',
+				payload: { context: 'messageBoxAction', message: 'draft' },
+				mid: undefined,
+				tmid: 'thread-id',
+				rid: 'room-id',
+				triggerId: 'trigger-id'
+			});
+		});
+
+		it('maps a room action button', () => {
+			const interaction = toUserInteraction({
+				type: ActionTypes.ACTION_BUTTON,
+				actionId: 'action-id',
+				appId: 'app-id',
+				rid: 'room-id',
+				payload: { context: 'roomAction' },
+				triggerId: 'trigger-id'
+			});
+
+			expect(interaction).toEqual({
+				type: 'actionButton',
+				actionId: 'action-id',
+				payload: { context: 'roomAction' },
+				mid: undefined,
+				tmid: undefined,
+				rid: 'room-id',
+				triggerId: 'trigger-id'
+			});
+		});
+
+		it('throws when an action button has no context', () => {
+			expect(() =>
+				toUserInteraction({
+					type: ActionTypes.ACTION_BUTTON,
+					actionId: 'action-id',
+					rid: 'room-id',
+					triggerId: 'trigger-id'
+				})
+			).toThrow('actionId and payload.context are required for actionButton interaction');
+		});
 	});
 
 	describe('toServerModalInteractionType', () => {

@@ -2,11 +2,10 @@ import { type ServerInteraction } from '@rocket.chat/ui-kit';
 
 import { type ITriggerAction, ModalActions, type TModalAction } from '~/containers/UIKit/interfaces';
 import { toServerModalInteractionType, toUserInteraction } from '~/containers/UIKit/interactionAdapters';
-import EventEmitter from './helpers/events';
-import fetch from './helpers/fetch';
-import { random } from './helpers';
-import Navigation from '../navigation/appNavigation';
-import sdk from '../services/sdk';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { random } from '~/lib/methods/helpers';
+import Navigation from '~/lib/navigation/appNavigation';
+import { fetchAppsApi } from '~/lib/services/restApi';
 
 const triggersId = new Map();
 
@@ -100,6 +99,7 @@ export async function triggerAction({
 	appId,
 	rid,
 	mid,
+	tmid,
 	viewId,
 	container,
 	...rest
@@ -108,17 +108,13 @@ export async function triggerAction({
 	const payload = rest.payload ?? rest.value;
 
 	try {
-		const { host, currentLogin } = sdk;
-		if (!host || !currentLogin) {
-			throw new Error('triggerAction requires an initialized, authenticated session');
-		}
-		const { userId, authToken } = currentLogin;
 		const interaction = toUserInteraction({
 			type,
 			actionId,
 			appId,
 			rid,
 			mid,
+			tmid,
 			viewId,
 			container,
 			payload,
@@ -129,20 +125,7 @@ export async function triggerAction({
 			triggerId
 		});
 
-		// we need to use fetch because this.sdk.post add /v1 to url
-		const result = await fetch(`${host}/api/apps/ui.interaction/${appId}/`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-Auth-Token': authToken,
-				'X-User-Id': userId
-			},
-			body: JSON.stringify(interaction)
-		});
-
-		if (!result.ok) {
-			throw new Error(`Failed to trigger action: ${result.status}`);
-		}
+		const result = await fetchAppsApi(`ui.interaction/${appId}/`, { method: 'POST', body: JSON.stringify(interaction) });
 
 		const text = await result.text();
 		if (!text || text.trim() === '') {
@@ -160,7 +143,10 @@ export async function triggerAction({
 		const { type: interactionType, ...data } = parsed;
 		const modalType = toServerModalInteractionType(interactionType ?? '');
 		if (!modalType) {
-			throw new Error(`Unknown modal interaction type: ${interactionType ?? 'undefined'}`);
+			if (interactionType) {
+				return ModalActions.UNSUPPORTED;
+			}
+			return;
 		}
 		if (modalType === ModalActions.CLOSE) {
 			return ModalActions.CLOSE;
