@@ -24,6 +24,7 @@ jobs:
       E2E_TELEMETRY_DISABLED: '1'
       E2E_STEP_TIMEOUT_MINUTES: '100'
       RUN_TIMEOUT_SECONDS: '4800'
+      RECORD_VIDEO: 'false'
 
     steps:
       - name: Checkout Repo

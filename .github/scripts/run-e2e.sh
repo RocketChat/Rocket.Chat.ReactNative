@@ -10,6 +10,7 @@ RERUN_TIMEOUT_SECONDS="${RERUN_TIMEOUT_SECONDS:-1500}"
 E2E_DEADLINE="${E2E_DEADLINE:-}"
 MIN_PASS_SECONDS="${MIN_PASS_SECONDS:-300}"
 RETRIES="${RETRIES:-2}"
+RECORD_VIDEO="${RECORD_VIDEO:-true}"
 ANDROID_DEVICE="${E2E_ANDROID_DEVICE:-emulator-5554}"
 TAGS="test-${SHARD//,/,test-}"
 NODE_TS=(node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON)
@@ -157,8 +158,10 @@ start_device_capture() {
   fi
   [ -n "${E2E_IOS_DEVICE:-}" ] || return 0
   touch "$DEVICE_CAPTURE_DIR/.capture-started"
-  xcrun simctl io "$E2E_IOS_DEVICE" recordVideo --codec h264 --force "$DEVICE_CAPTURE_DIR/screen.mp4" >/dev/null 2>&1 &
-  DEVICE_CAPTURE_PIDS+=($!)
+  if [ "$RECORD_VIDEO" = true ]; then
+    xcrun simctl io "$E2E_IOS_DEVICE" recordVideo --codec h264 --force "$DEVICE_CAPTURE_DIR/screen.mp4" >/dev/null 2>&1 &
+    DEVICE_CAPTURE_PIDS+=($!)
+  fi
   xcrun simctl spawn "$E2E_IOS_DEVICE" log stream --style compact --level debug --predicate 'process == "Rocket.Chat" AND (subsystem == "com.facebook.react.log" OR messageType == error OR messageType == fault)' >"$DEVICE_CAPTURE_DIR/app.log" 2>&1 &
   DEVICE_CAPTURE_PIDS+=($!)
   xcrun simctl spawn "$E2E_IOS_DEVICE" log stream --style compact --level default --predicate 'process IN {"SpringBoard", "testmanagerd", "runningboardd", "AgentDeviceRunnerUITests-Runner"}' >"$DEVICE_CAPTURE_DIR/system.log" 2>&1 &
