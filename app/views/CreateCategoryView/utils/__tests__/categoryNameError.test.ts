@@ -20,6 +20,10 @@ describe('getCategoryNameError', () => {
 		expect(getCategoryNameError('Chats', [])).toBe('This name is reserved for a system group');
 	});
 
+	it('rejects the label of the omnichannel on hold section', () => {
+		expect(getCategoryNameError('Omnichannel chats on hold', [])).toBe('This name is reserved for a system group');
+	});
+
 	it('rejects a name already used by another category regardless of case and spaces', () => {
 		expect(getCategoryNameError(' design ', ['Design'])).toBe('A category with this name already exists');
 	});

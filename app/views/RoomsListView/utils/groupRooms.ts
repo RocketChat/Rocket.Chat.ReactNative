@@ -14,8 +14,8 @@ import {
 	UNREAD_GROUP
 } from './sidebarGroupOrder';
 
-const CHATS_HEADER = 'Chats';
-const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
+export const CHATS_HEADER = 'Chats';
+export const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
 
 const CATEGORY_ID_BY_HEADER: Record<string, string> = {
 	[CHATS_HEADER]: CONVERSATIONS_GROUP,

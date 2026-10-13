@@ -1,9 +1,10 @@
 import I18n from '~/i18n';
+import { CHATS_HEADER, OMNICHANNEL_HEADER_ON_HOLD } from '~/views/RoomsListView/utils/groupRooms';
 import { SYSTEM_GROUPS } from '~/views/RoomsListView/utils/sidebarGroupOrder';
 
 export const MAX_CATEGORY_NAME_LENGTH = 30;
 
-const RESERVED_LABEL_KEYS = [...SYSTEM_GROUPS, 'Chats'];
+const RESERVED_LABEL_KEYS = [...SYSTEM_GROUPS, CHATS_HEADER, OMNICHANNEL_HEADER_ON_HOLD];
 
 const normalize = (name: string) => name.trim().toLowerCase();
 
