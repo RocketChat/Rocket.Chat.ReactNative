@@ -951,7 +951,8 @@ const getRoomHistory = async (roomId: string, position: { next: string } | { aro
 export const getNextMessages = async ({ rid, after, count }: { rid: string; after: Date; count: number }) => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
-		const { messages, cursor } = await getRoomHistory(rid, { next: String(after.getTime() - 1) }, count);
+		const newestLoadedTs = after.getTime() - 1;
+		const { messages, cursor } = await getRoomHistory(rid, { next: String(newestLoadedTs) }, count);
 		return { messages, hasMore: cursor.next !== null };
 	}
 	const result = await sdk.methodCallWrapper('loadNextMessages', rid, after, count);
