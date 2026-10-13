@@ -12,9 +12,15 @@ const SectionPills = ({ sections, selectedHeader, onSelect }: ISectionPills) => 
 	const { colors } = useTheme();
 	const scrollViewRef = useRef<ScrollView>(null);
 	const [initialHeader] = useState(selectedHeader);
+	const hasScrolledToInitialSelection = useRef(false);
 
-	const scrollToInitialSelection = (event: LayoutChangeEvent) =>
+	const scrollToInitialSelection = (event: LayoutChangeEvent) => {
+		if (hasScrolledToInitialSelection.current) {
+			return;
+		}
+		hasScrolledToInitialSelection.current = true;
 		scrollViewRef.current?.scrollTo({ x: event.nativeEvent.layout.x - HORIZONTAL_PADDING, animated: false });
+	};
 
 	const selectWithHaptic = (header: string, title: string) => {
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
