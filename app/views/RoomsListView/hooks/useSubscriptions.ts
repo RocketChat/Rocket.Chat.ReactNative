@@ -12,6 +12,8 @@ import { buildRoomList } from '../utils/groupRooms';
 import { useSidebarCategories } from './useSidebarCategories';
 
 const NO_ROWS: TSubscriptionModel[] = [];
+const GROUPING_COLUMNS = ['f', 'category'];
+const UNREAD_STATE_COLUMNS = ['alert', 'unread', 'tunread', 'hide_unread_status'];
 const SECTION_BADGE_COLUMNS = [
 	'unread',
 	'hide_unread_status',
@@ -48,9 +50,12 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 			}
 
 			const observeWithColumns = [
-				'on_hold',
-				...(isGrouping ? ['alert', 'f', 'category'] : []),
-				...(hasCollapsedGroup ? SECTION_BADGE_COLUMNS : [])
+				...new Set([
+					'on_hold',
+					...(isGrouping ? GROUPING_COLUMNS : []),
+					...(isGrouping || isOmnichannelAgent ? UNREAD_STATE_COLUMNS : []),
+					...(hasCollapsedGroup ? SECTION_BADGE_COLUMNS : [])
+				])
 			];
 
 			const observable = await db
@@ -73,7 +78,7 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 			cancelled = true;
 			subscription?.unsubscribe();
 		};
-	}, [isGrouping, hasCollapsedGroup, sortBy, useRealName, server]);
+	}, [isGrouping, isOmnichannelAgent, hasCollapsedGroup, sortBy, useRealName, server]);
 
 	const rows = loaded?.rows ?? NO_ROWS;
 	const loading = loaded?.server !== server;
