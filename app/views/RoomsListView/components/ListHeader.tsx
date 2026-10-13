@@ -10,7 +10,6 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { useTheme } from '~/theme';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
-import LargeTitleBackdrop from './LargeTitleBackdrop';
 
 export type TEncryptionBanner = 'REQUEST_PASSWORD' | 'SAVE_PASSWORD';
 
@@ -39,7 +38,6 @@ const ListHeader = () => {
 
 	return (
 		<>
-			<LargeTitleBackdrop />
 			{encryptionBanner ? (
 				<>
 					<List.Item

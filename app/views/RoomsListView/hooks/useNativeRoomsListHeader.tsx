@@ -49,17 +49,19 @@ export const useNativeRoomsListHeader = () => {
 			headerSubtitle: subtitle,
 			headerTitleTestID: 'rooms-list-header-servers-list-button',
 			onHeaderTitlePress: openServersList,
-			headerSearchBarOptions: {
-				...stackedSearchBarOptions({
-					ref: searchBarRef,
-					onFocus: searchEnabled ? undefined : startSearch,
-					onChangeText: search,
-					onCancel: resetSearch
-				}),
-				placement: isTablet ? 'stacked' : 'automatic',
-				hideWhenScrolling: true,
-				hideNavigationBar: !isTablet
-			},
+			headerSearchBarOptions: disabled
+				? undefined
+				: {
+						...stackedSearchBarOptions({
+							ref: searchBarRef,
+							onFocus: searchEnabled ? undefined : startSearch,
+							onChangeText: search,
+							onCancel: resetSearch
+						}),
+						placement: isTablet ? 'stacked' : 'automatic',
+						hideWhenScrolling: true,
+						hideNavigationBar: !isTablet
+					},
 			...headerLeftActions([drawerAction]),
 			...headerRightActions(
 				showsCancelSearch

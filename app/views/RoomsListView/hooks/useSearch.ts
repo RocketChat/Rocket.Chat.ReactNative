@@ -1,7 +1,8 @@
-import { useCallback, useReducer, useRef } from 'react';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
 import { type SearchBarCommands } from 'react-native-screens';
 
 import { type IRoomItem } from '~/containers/RoomItem/interfaces';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { searchLocal, searchRemote } from '~/lib/methods/search';
 import { useDebounce } from '~/lib/methods/helpers/debounce';
 import { announceSearchResultsForAccessibility } from '~/lib/methods/helpers/announceSearchResultsForAccessibility';
@@ -111,6 +112,9 @@ export const useSearch = () => {
 		searchBarRef.current?.cancelSearch();
 		resetSearch();
 	}, [resetSearch]);
+
+	const server = useAppSelector(state => state.server.server);
+	useEffect(() => stopSearch, [server, stopSearch]);
 
 	return {
 		searching: state.searching,

@@ -156,6 +156,9 @@ export const defaultSettings = {
 	LDAP_Enable: {
 		type: 'valueAsBoolean'
 	},
+	Livechat_enabled: {
+		type: 'valueAsBoolean'
+	},
 	Livechat_request_comment_when_closing_conversation: {
 		type: 'valueAsBoolean'
 	},

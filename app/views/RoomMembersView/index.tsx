@@ -261,7 +261,7 @@ const RoomMembersView = (): ReactElement => {
 			title: I18n.t('Members'),
 			...(hasNativeHeaderBar && {
 				...translucentHeader,
-				headerSearchBarOptions: stackedSearchBarOptions({ onChangeText: debounceFilterChange })
+				headerSearchBarOptions: { ...stackedSearchBarOptions({ onChangeText: debounceFilterChange }), hideNavigationBar: false }
 			}),
 			...headerRightActions([
 				{

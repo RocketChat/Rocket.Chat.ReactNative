@@ -158,13 +158,6 @@ const RoomsListView = memo(function RoomsListView() {
 		);
 	};
 
-	if (searchEnabled && searchResults.length === 0) {
-		if (searching) {
-			return <ActivityIndicator />;
-		}
-		return <BackgroundContainer text={i18n.t('No_rooms_found')} />;
-	}
-
 	if (loading || changingServer) {
 		return <ActivityIndicator />;
 	}
@@ -177,16 +170,26 @@ const RoomsListView = memo(function RoomsListView() {
 		return <ChangePasswordRequired navigation={navigation} />;
 	}
 
+	if (searchEnabled && searchResults.length === 0) {
+		if (searching) {
+			return <ActivityIndicator />;
+		}
+		return <BackgroundContainer text={i18n.t('No_rooms_found')} />;
+	}
+
 	return (
 		<>
 			<Animated.FlatList
 				data={searchEnabled ? searchResults : subscriptions}
 				keyExtractor={item => `${item.rid}-${searchEnabled}`}
-				style={[styles.list, { backgroundColor: colors.surfaceTint }]}
-				contentContainerStyle={{
-					paddingBottom:
-						Platform.select({ ios: 0, default: bottom }) + (showNewMessageButton ? FLOATING_ACTION_BUTTON_CLEARANCE : 0)
-				}}
+				style={[styles.list, { backgroundColor: hasNativeHeaderBar ? colors.surfaceNeutral : colors.surfaceTint }]}
+				contentContainerStyle={[
+					hasNativeHeaderBar && [styles.listContent, { backgroundColor: colors.surfaceTint }],
+					{
+						paddingBottom:
+							Platform.select({ ios: 0, default: bottom }) + (showNewMessageButton ? FLOATING_ACTION_BUTTON_CLEARANCE : 0)
+					}
+				]}
 				renderItem={renderItem}
 				strictMode
 				itemLayoutAnimation={SECTION_REFLOW}

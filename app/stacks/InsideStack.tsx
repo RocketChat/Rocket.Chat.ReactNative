@@ -45,6 +45,7 @@ import TeamChannelsView from '../views/TeamChannelsView';
 import ReadReceiptsView from '../views/ReadReceiptView';
 import CannedResponsesListView from '../views/CannedResponsesListView';
 import CannedResponseDetail from '../views/CannedResponseDetail';
+import ConferenceView from '../views/ConferenceView';
 import JitsiMeetView from '../views/JitsiMeetView';
 import DiscussionsView from '../views/DiscussionsView';
 import ChangeAvatarView from '../views/ChangeAvatarView';
@@ -132,6 +133,7 @@ const AddChannelTeamViewScreen = AddChannelTeamView as any;
 const AddExistingChannelViewScreen = AddExistingChannelView as any;
 const CannedResponseDetailScreen = CannedResponseDetail as any;
 const JitsiMeetViewScreen = JitsiMeetView as any;
+const ConferenceViewScreen = ConferenceView as any;
 const ChangeAvatarViewScreen = ChangeAvatarView as any;
 const UserNotificationPrefViewScreen: ComponentType<StaticScreenProps<undefined>> = UserNotificationPrefView as any;
 const SettingsViewScreen: ComponentType<StaticScreenProps<undefined>> = SettingsView as any;
@@ -366,10 +368,8 @@ const E2EEnterYourPasswordStack = createNativeStackNavigator({
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
-const fullScreenPresentation = isIOS ? 'fullScreenModal' : 'containedModal';
-
 const InsideStack = createNativeStackNavigator({
-	screenOptions: { ...defaultHeader, presentation: isIOS ? 'modal' : 'containedModal' },
+	screenOptions: { ...defaultHeader, presentation: 'containedModal' },
 	screens: {
 		DrawerNavigator: createNativeStackScreen({
 			screen: DrawerStack,
@@ -387,22 +387,22 @@ const InsideStack = createNativeStackNavigator({
 			screen: E2EEnterYourPasswordStack,
 			options: { headerShown: false }
 		}),
-		AttachmentView: createNativeStackScreen({
-			screen: AttachmentViewScreen,
-			options: { presentation: fullScreenPresentation }
-		}),
+		AttachmentView: AttachmentViewScreen,
 		StatusView: StatusViewScreen,
-		ShareView: createNativeStackScreen({
-			screen: ShareViewScreen,
-			options: { presentation: fullScreenPresentation }
-		}),
+		ShareView: ShareViewScreen,
 		ModalBlockView: createNativeStackScreen({
 			screen: ModalBlockViewScreen,
 			options: (args: any): NativeStackNavigationOptions => (ModalBlockView as any).navigationOptions(args)
 		}),
 		CallView: createNativeStackScreen({
 			screen: CallViewScreen,
-			options: { headerShown: false, presentation: fullScreenPresentation }
+			options: { headerShown: false }
+		}),
+		// Lives at the root, not in ChatsStack: the conference header is mounted app-wide, so
+		// "return to call" has to resolve from Settings, Profile and Admin too.
+		ConferenceView: createNativeStackScreen({
+			screen: ConferenceViewScreen,
+			options: { headerShown: false, animation: isIOS ? 'default' : 'none' }
 		})
 	}
 }).with(({ Navigator }) => {

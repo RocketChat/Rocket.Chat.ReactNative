@@ -82,6 +82,7 @@ import AccessibilityAndAppearanceView from '~/views/AccessibilityAndAppearanceVi
 import { SupportedVersionsWarning } from '~/containers/SupportedVersions';
 import AttachmentView from '~/views/AttachmentView';
 import ModalBlockView from '~/views/ModalBlockView';
+import ConferenceView from '~/views/ConferenceView';
 import JitsiMeetView from '~/views/JitsiMeetView';
 import ShareView from '~/views/ShareView';
 import CallView from '~/views/CallView';
@@ -284,9 +285,6 @@ const ModalStack = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
 	const navigation = useNavigation<NativeStackNavigationProp<any>>();
-	if (isIOS) {
-		return <Navigator screenOptions={themedHeader(theme)} />;
-	}
 	return (
 		<ModalContainer navigation={navigation} theme={theme}>
 			<Navigator screenOptions={themedHeader(theme)} />
@@ -307,9 +305,7 @@ const InsideStack = createNativeStackNavigator({
 		}),
 		ModalStackNavigator: createNativeStackScreen({
 			screen: ModalStack as any,
-			options: isIOS
-				? { headerShown: false, presentation: 'formSheet', sheetAllowedDetents: [1.0], sheetGrabberVisible: false }
-				: { headerShown: false }
+			options: { headerShown: false }
 		}),
 		AttachmentView,
 		ModalBlockView: createNativeStackScreen({
@@ -318,6 +314,13 @@ const InsideStack = createNativeStackNavigator({
 		}),
 		JitsiMeetView: createNativeStackScreen({
 			screen: JitsiMeetView,
+			options: {
+				headerShown: false,
+				animation: isIOS ? 'default' : 'none'
+			}
+		}),
+		ConferenceView: createNativeStackScreen({
+			screen: ConferenceView,
 			options: {
 				headerShown: false,
 				animation: isIOS ? 'default' : 'none'

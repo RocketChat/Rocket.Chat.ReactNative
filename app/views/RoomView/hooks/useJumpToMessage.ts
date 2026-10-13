@@ -10,6 +10,7 @@ import { useLiveRef } from '~/lib/hooks/useLiveRef';
 import log from '~/lib/methods/helpers/log';
 import { type TAnyMessageModel } from '~/definitions';
 import { loadSurroundingMessages } from '~/lib/methods/loadSurroundingMessages';
+import { loadThreadMessagesUntil } from '~/lib/methods/loadThreadMessages';
 import {
 	type IRoomViewProps,
 	type IUseJumpToMessageParams,
@@ -105,6 +106,14 @@ export function useJumpToMessage({
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const route = useRoute<IRoomViewProps['route']>();
 	const jumpGenerationRef = useRef(0);
+	const mountedRef = useRef(true);
+
+	useEffect(() => {
+		mountedRef.current = true;
+		return () => {
+			mountedRef.current = false;
+		};
+	}, []);
 
 	const isCurrentJump = (generation: number): boolean => jumpGenerationRef.current === generation;
 
@@ -116,6 +125,25 @@ export function useJumpToMessage({
 
 	const openThreadFromHere = (message: TOpenThreadTarget) =>
 		openThread(message, { navigation, rid, roomUserId: roomUserIdRef.current, cancelJumpToMessage });
+
+	const ensureThreadTargetLoaded = async (
+		message: TGetMessageInfoResult,
+		inWindow: boolean,
+		generation: number
+	): Promise<boolean> => {
+		if (!tmid || !rid || inWindow) {
+			return true;
+		}
+		const reachable = await loadThreadMessagesUntil(
+			{ tmid, rid },
+			message,
+			() => mountedRef.current && isCurrentJump(generation)
+		);
+		if (!reachable && isCurrentJump(generation)) {
+			cancelJumpToMessage();
+		}
+		return reachable;
+	};
 
 	const executeJump = async (message: TGetMessageInfoResult, generation: number): Promise<boolean> => {
 		const inThisThread = !!message.tmid && message.tmid === tmid;
@@ -133,7 +161,10 @@ export function useJumpToMessage({
 			return false;
 		}
 		const inWindow = listContainerRef.current?.isMessageInWindow(message.id) ?? false;
-		const highTsMs = await resolveJumpAnchor(rid, message, inWindow, { loadSurroundingMessages, getLocalAnchorTs });
+		if (!(await ensureThreadTargetLoaded(message, inWindow, generation))) {
+			return false;
+		}
+		const highTsMs = tmid ? null : await resolveJumpAnchor(rid, message, inWindow, { loadSurroundingMessages, getLocalAnchorTs });
 		if (!isCurrentJump(generation)) return false;
 		await waitForFabricCommit();
 		if (!isCurrentJump(generation)) return false;
