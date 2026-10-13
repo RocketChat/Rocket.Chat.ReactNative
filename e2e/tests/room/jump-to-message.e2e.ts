@@ -99,17 +99,18 @@ const tapCenterUntilVisible = async ({ screen }: Fixtures, target: Locator, expe
 		if (box) {
 			await screen.tapAt({ x: box.x + box.width / 2, y: box.y + box.height / 2 });
 		}
-		if (await succeeds(expect(expected).toBeVisible({ timeout: LOAD_RESPONSE_TIMEOUT }))) {
+		if (attempt === LOAD_TAP_ATTEMPTS) {
+			await expect(expected).toBeVisible({ timeout: LOAD_RESPONSE_TIMEOUT });
+		} else if (await succeeds(expect(expected).toBeVisible({ timeout: LOAD_RESPONSE_TIMEOUT }))) {
 			return;
 		}
 	}
-	await expect(expected).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
 const scrollUntilLoaded = ({ screen }: Fixtures, target: Locator, direction: 'up' | 'down', timeout = LONG_TIMEOUT) =>
 	screen.scrollUntilVisible(target, { direction, timeout });
 
-test('jumps to messages', { tags: ['test-3'], timeout: 900_000 }, async fixtures => {
+test('jumps to messages', { tags: ['test-3'], retries: 0, timeout: 900_000 }, async fixtures => {
 	const { screen } = fixtures;
 	await loginWithDeepLink(fixtures, adminCredentials());
 
