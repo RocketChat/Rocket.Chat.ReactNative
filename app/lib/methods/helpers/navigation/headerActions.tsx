@@ -129,12 +129,12 @@ export const HeaderActions = ({ actions, left = false }: { actions: IHeaderActio
 export const headerRightActions = (actions: IHeaderAction[]): NativeStackNavigationOptions =>
 	hasNativeHeaderBar
 		? { headerRight: undefined, unstable_headerRightItems: ({ tintColor }) => nativeHeaderItems(actions, tintColor) }
-		: { headerRight: () => <HeaderActions actions={actions} /> };
+		: { headerRight: actions.length ? () => <HeaderActions actions={actions} /> : undefined };
 
 export const headerLeftActions = (actions: IHeaderAction[]): NativeStackNavigationOptions =>
 	hasNativeHeaderBar
 		? { headerLeft: undefined, unstable_headerLeftItems: ({ tintColor }) => nativeHeaderItems(actions, tintColor) }
-		: { headerLeft: () => <HeaderActions actions={actions} left /> };
+		: { headerLeft: actions.length ? () => <HeaderActions actions={actions} left /> : undefined };
 
 export const headerLeftDrawer = (
 	navigation: Pick<NavigationProp<ParamListBase>, 'dispatch'>,

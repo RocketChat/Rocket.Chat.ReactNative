@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react-native';
 import { type NativeStackHeaderItemButton, type NativeStackHeaderItemMenu } from '@react-navigation/native-stack';
 
 import { showActionSheetRef, type TActionSheetOptionsItem } from '~/containers/ActionSheet';
-import { HeaderActions, type IHeaderAction, nativeHeaderItems } from '../headerActions';
+import { HeaderActions, headerLeftActions, headerRightActions, type IHeaderAction, nativeHeaderItems } from '../headerActions';
 
 jest.mock('../headerIcon', () => ({ headerIcon: (name: string) => ({ type: 'image', source: name }) }));
 jest.mock('~/containers/ActionSheet', () => ({ showActionSheetRef: jest.fn() }));
@@ -101,5 +101,18 @@ describe('HeaderActions', () => {
 		);
 
 		expect(screen.getByText('+99')).toBeOnTheScreen();
+	});
+});
+
+describe('JS header action options', () => {
+	it('leaves the header slots unset without actions so the default back button shows', () => {
+		expect(headerLeftActions([]).headerLeft).toBeUndefined();
+		expect(headerRightActions([]).headerRight).toBeUndefined();
+	});
+
+	it('renders the actions in the header slots', () => {
+		render(<>{headerLeftActions([searchAction]).headerLeft?.({ canGoBack: false })}</>);
+
+		expect(screen.getByTestId('search')).toBeOnTheScreen();
 	});
 });
