@@ -17,7 +17,10 @@ export const useDeleteCategory = (category: ISidebarCategory, roomIds: string[])
 
 	const deleteAndLeave = async () => {
 		try {
-			await deleteCategory(roomIds);
+			const isDeleted = await deleteCategory(roomIds);
+			if (!isDeleted) {
+				return;
+			}
 			EventEmitter.emit(LISTENER, { message: I18n.t('Category_deleted', { name: category.name }) });
 			if (isMasterDetail) {
 				Navigation.popTo('DrawerNavigator');

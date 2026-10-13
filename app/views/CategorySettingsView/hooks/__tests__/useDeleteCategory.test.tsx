@@ -4,13 +4,14 @@ import { Provider } from 'react-redux';
 
 import { setUser } from '~/actions/login';
 import { selectServerSuccess } from '~/actions/server';
-import { showConfirmationAlert } from '~/lib/methods/helpers/info';
+import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/info';
 import { saveSidebarCategories, setRoomsCategory } from '~/lib/services/restApi';
 import { createMockedStore } from '~/reducers/mockedStore';
 import { useDeleteCategory } from '../useDeleteCategory';
 
 jest.mock('~/lib/services/restApi', () => ({ saveSidebarCategories: jest.fn(), setRoomsCategory: jest.fn() }));
-jest.mock('~/lib/methods/helpers/info', () => ({ showConfirmationAlert: jest.fn() }));
+jest.mock('~/lib/methods/helpers/info', () => ({ showConfirmationAlert: jest.fn(), showErrorAlert: jest.fn() }));
+jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/lib/navigation/appNavigation', () => ({ __esModule: true, default: { popTo: jest.fn() } }));
 jest.mock('@react-navigation/native', () => ({
 	...jest.requireActual('@react-navigation/native'),
@@ -24,7 +25,7 @@ const mockShowConfirmationAlert = showConfirmationAlert as jest.MockedFunction<t
 const work = { _id: 'work', name: 'Work' };
 const otherServerCategories = [{ _id: 'home', name: 'Home' }];
 
-const deferredSave = () => {
+const deferredRequest = () => {
 	let resolve: () => void = () => {};
 	const promise = new Promise<void>(resolvePromise => {
 		resolve = resolvePromise;
@@ -58,11 +59,12 @@ it('removes the category and clears it from its rooms', async () => {
 
 	expect(store.getState().login.user.sidebarCategories).toEqual([]);
 	expect(mockSetRoomsCategory).toHaveBeenCalledWith(['general'], null);
+	expect(mockSetRoomsCategory.mock.invocationCallOrder[0]).toBeLessThan(mockSaveSidebarCategories.mock.invocationCallOrder[0]);
 });
 
 it('leaves another server alone when the user switches servers while deleting', async () => {
-	const save = deferredSave();
-	mockSaveSidebarCategories.mockReturnValueOnce(save.promise as any);
+	const clearRooms = deferredRequest();
+	mockSetRoomsCategory.mockReturnValueOnce(clearRooms.promise as any);
 	const { store, confirmDelete } = renderDelete();
 
 	let deleting: Promise<void> = Promise.resolve();
@@ -71,9 +73,20 @@ it('leaves another server alone when the user switches servers while deleting', 
 		store.dispatch(selectServerSuccess({ server: 'https://b.rocket.chat', version: '8.9.0', name: 'B' }));
 		store.dispatch(setUser({ id: 'user-b', sidebarCategories: otherServerCategories }));
 	});
-	save.resolve();
+	clearRooms.resolve();
 	await act(() => deleting);
 
 	expect(store.getState().login.user.sidebarCategories).toBe(otherServerCategories);
-	expect(mockSetRoomsCategory).not.toHaveBeenCalled();
+	expect(mockSaveSidebarCategories).not.toHaveBeenCalled();
+});
+
+it('keeps the category when its rooms cannot be cleared', async () => {
+	mockSetRoomsCategory.mockRejectedValueOnce(new Error('network'));
+	const { store, confirmDelete } = renderDelete();
+
+	await act(() => confirmDelete());
+
+	expect(store.getState().login.user.sidebarCategories).toEqual([work]);
+	expect(mockSaveSidebarCategories).not.toHaveBeenCalled();
+	expect(showErrorAlert).toHaveBeenCalledWith('network', expect.any(String));
 });
