@@ -129,13 +129,142 @@ type AppState = {
 	tmid: string | null;
 };
 
+type WaitCondition = 'connected' | 'rooms_synced' | 'route';
+
+type GetAppStateInput = { until?: WaitCondition; screen?: string; rid?: string; timeoutMs?: number };
+
 const stringOrNull = (value: unknown) => (typeof value === 'string' && value ? value : null);
+
+const readAppState = (): AppState => {
+	const { app, server, meteor, login, rooms } = store.getState();
+	const route = Navigation.getCurrentRoute();
+	const params = (route?.params ?? {}) as Record<string, unknown>;
+	return {
+		root: app.root ?? null,
+		server: stringOrNull(server.server),
+		connected: meteor.connected,
+		authenticated: login.isAuthenticated,
+		username: stringOrNull(login.user.username),
+		roomsSyncing: rooms.isFetching,
+		route: route?.name ?? null,
+		rid: stringOrNull(params.rid),
+		tmid: stringOrNull(params.tmid)
+	};
+};
+
+const findRoute = (screen: string, rid: string | undefined) => {
+	const route = Navigation.getCurrentRoute();
+	const params = (route?.params ?? {}) as Record<string, unknown>;
+	return route?.name === screen && (!rid || params.rid === rid) ? { route: route.name, rid: stringOrNull(params.rid) } : null;
+};
+
+const waitForRoute = (screen: string, rid: string | undefined, signal: AbortSignal) =>
+	new Promise<{ route: string; rid: string | null }>((resolve, reject) => {
+		const navigation = Navigation.navigationRef.current!;
+		const resolveIfFocused = () => {
+			const focused = findRoute(screen, rid);
+			if (focused) {
+				unsubscribe();
+				resolve(focused);
+			}
+		};
+		const unsubscribe = navigation.addListener('state', resolveIfFocused);
+		signal.addEventListener('abort', () => {
+			unsubscribe();
+			reject(signal.reason);
+		});
+		resolveIfFocused();
+	});
+
+const isConnected = (state: IApplicationState) =>
+	state.meteor.connected && state.login.isAuthenticated && state.app.root === RootEnum.ROOT_INSIDE;
+
+const isRoomsSynced = (state: IApplicationState) => isConnected(state) && !state.rooms.isFetching && !state.rooms.failure;
+
+const waitForSettledState = (isDone: (state: IApplicationState) => boolean, signal: AbortSignal) =>
+	new Promise<void>((resolve, reject) => {
+		let pendingCheck: ReturnType<typeof setTimeout> | undefined;
+		const stop = () => {
+			clearTimeout(pendingCheck);
+			unsubscribe();
+		};
+		const check = () => {
+			if (isDone(store.getState())) {
+				stop();
+				resolve();
+			}
+		};
+		const unsubscribe = store.subscribe(() => {
+			clearTimeout(pendingCheck);
+			pendingCheck = setTimeout(check);
+		});
+		signal.addEventListener('abort', () => {
+			stop();
+			reject(signal.reason);
+		});
+		check();
+	});
+
+const waitForCondition = async ({ until, screen, rid }: GetAppStateInput, signal: AbortSignal) => {
+	if (until === 'connected') {
+		await waitForSettledState(isConnected, signal);
+	} else if (until === 'rooms_synced') {
+		await waitForSettledState(isRoomsSynced, signal);
+	} else if (until === 'route' && screen) {
+		await waitForRoute(screen, rid, signal);
+	}
+};
+
+const withDeadline = async (
+	description: string,
+	timeoutMs: number,
+	signal: AbortSignal,
+	wait: (signal: AbortSignal) => Promise<void>
+) => {
+	const controller = new AbortController();
+	const abort = () => controller.abort();
+	signal.addEventListener('abort', abort);
+	let timer: ReturnType<typeof setTimeout> | undefined;
+	const timedOut = new Promise<never>((_resolve, reject) => {
+		timer = setTimeout(
+			() =>
+				reject(
+					new Error(
+						`Timed out after ${timeoutMs}ms waiting for ${description}. App state: ${JSON.stringify({ ...readAppState(), roomsSyncFailed: store.getState().rooms.failure })}`
+					)
+				),
+			timeoutMs
+		);
+	});
+	try {
+		await Promise.race([wait(controller.signal), timedOut]);
+	} finally {
+		clearTimeout(timer);
+		signal.removeEventListener('abort', abort);
+		abort();
+	}
+};
+
+const waitForReadableState = async (signal: AbortSignal) => {
+	await waitUntil(hasRoot, signal);
+	await waitForNavigatorReady(signal);
+};
 
 registerTool({
 	name: 'get_app_state',
 	description:
-		'Read where the app is: root (outside, inside, loading...), workspace, connection, whether the session is authenticated, the stored user, whether the rooms list is syncing, and the current screen with its room (rid) and thread (tmid).',
-	inputSchema: jsonSchema<Record<string, never>>({ type: 'object', properties: {}, additionalProperties: false }),
+		'Read where the app is: root (outside, inside, loading...), workspace, connection, whether the session is authenticated, the stored user, whether the rooms list is syncing, and the current screen with its room (rid) and thread (tmid). Pass until to block first: connected (connected and authenticated), rooms_synced (rooms list synced for the current workspace) or route (screen focused, optionally with rid). On timeout it fails with the current state.',
+	timeoutMs: 120_000,
+	inputSchema: jsonSchema<GetAppStateInput>({
+		type: 'object',
+		properties: {
+			until: { type: 'string', enum: ['connected', 'rooms_synced', 'route'], description: 'Condition to wait for' },
+			screen: { type: 'string', description: 'Route name for until route, e.g. RoomView' },
+			rid: { type: 'string', description: 'Room id the route must have, for until route' },
+			timeoutMs: { type: 'number', minimum: 1, maximum: 110_000, description: 'How long to wait, 10000 by default' }
+		},
+		additionalProperties: false
+	}),
 	outputSchema: jsonSchema<AppState>({
 		type: 'object',
 		properties: {
@@ -151,23 +280,24 @@ registerTool({
 		},
 		required: ['root', 'server', 'connected', 'authenticated', 'username', 'roomsSyncing', 'route', 'rid', 'tmid']
 	}),
-	handler: async (_input, { signal }) => {
-		await waitUntil(hasRoot, signal);
-		await waitForNavigatorReady(signal);
-		const { app, server, meteor, login, rooms } = store.getState();
-		const route = Navigation.getCurrentRoute();
-		const params = (route?.params ?? {}) as Record<string, unknown>;
-		return {
-			root: app.root ?? null,
-			server: stringOrNull(server.server),
-			connected: meteor.connected,
-			authenticated: login.isAuthenticated,
-			username: stringOrNull(login.user.username),
-			roomsSyncing: rooms.isFetching,
-			route: route?.name ?? null,
-			rid: stringOrNull(params.rid),
-			tmid: stringOrNull(params.tmid)
-		};
+	handler: async (input, { signal }) => {
+		if (input.until === 'route' ? !input.screen : input.screen || input.rid) {
+			throw new Error('screen is required with until route, and screen and rid are only allowed with it');
+		}
+		if (!input.until) {
+			await waitForReadableState(signal);
+			return readAppState();
+		}
+		await withDeadline(
+			input.until === 'route' ? `route ${input.screen}` : input.until,
+			input.timeoutMs ?? 10_000,
+			signal,
+			async deadline => {
+				await waitForReadableState(deadline);
+				await waitForCondition(input, deadline);
+			}
+		);
+		return readAppState();
 	}
 });
 
@@ -254,30 +384,6 @@ const roomScreenParams: Record<string, (room: TSubscriptionModel, isMasterDetail
 };
 
 const supportedScreens = [...Object.keys(phoneStackByScreen), ...Object.keys(roomScreenParams)];
-
-const findRoute = (screen: string, rid: string | undefined) => {
-	const route = Navigation.getCurrentRoute();
-	const params = (route?.params ?? {}) as Record<string, unknown>;
-	return route?.name === screen && (!rid || params.rid === rid) ? { route: route.name, rid: stringOrNull(params.rid) } : null;
-};
-
-const waitForRoute = (screen: string, rid: string | undefined, signal: AbortSignal) =>
-	new Promise<{ route: string; rid: string | null }>((resolve, reject) => {
-		const navigation = Navigation.navigationRef.current!;
-		const resolveIfFocused = () => {
-			const focused = findRoute(screen, rid);
-			if (focused) {
-				unsubscribe();
-				resolve(focused);
-			}
-		};
-		const unsubscribe = navigation.addListener('state', resolveIfFocused);
-		signal.addEventListener('abort', () => {
-			unsubscribe();
-			reject(signal.reason);
-		});
-		resolveIfFocused();
-	});
 
 const openRoomScreen = async (screen: string, rid: string | undefined, isMasterDetail: boolean) => {
 	if (!rid) {
