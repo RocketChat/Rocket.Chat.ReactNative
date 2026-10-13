@@ -90,9 +90,8 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 			return [];
 		}
 		const { room, roomRoles, permissions } = filterContext;
-		const roles = [...new Set([...roomRoles, ...userRoles])];
 		return buttons
-			.filter(button => applyRoomFilter(button, room) && applyAuthFilter(button, { roles, permissions }))
+			.filter(button => applyRoomFilter(button, room) && applyAuthFilter(button, { userRoles, roomRoles, permissions }))
 			.map(button => ({
 				id: getIdForActionButton(button),
 				label: translateAppKey({ appId: button.appId, key: button.labelI18n, translations, locale: language }),

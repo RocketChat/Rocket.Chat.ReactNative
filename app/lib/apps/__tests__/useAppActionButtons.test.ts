@@ -139,17 +139,25 @@ describe('useAppActionButtons', () => {
 		expect(result.current[0].button.actionId).toBe('channel-only');
 	});
 
-	it('resolves a permission against the roles the subscription and the user hold', async () => {
+	it('grants a permission through the workspace roles only, as on web', async () => {
 		mockActionButtons = [button({ when: { hasOnePermission: ['pin-message'] } })];
-		mockPermissionRecords = [{ id: 'pin-message', roles: ['owner'] }];
+		mockPermissionRecords = [{ id: 'pin-message', roles: ['user'] }];
 
 		const { result } = renderHook(() => useAppActionButtons('rid'));
 
 		await waitFor(() => expect(result.current).toHaveLength(1));
 
-		mockPermissionRecords = [{ id: 'pin-message', roles: ['admin'] }];
+		mockPermissionRecords = [{ id: 'pin-message', roles: ['owner'] }];
 		const second = renderHook(() => useAppActionButtons('rid-2'));
 
 		await waitFor(() => expect(second.result.current).toEqual([]));
+	});
+
+	it('matches a role the user holds in the room', async () => {
+		mockActionButtons = [button({ when: { hasOneRole: ['owner'] } })];
+
+		const { result } = renderHook(() => useAppActionButtons('rid'));
+
+		await waitFor(() => expect(result.current).toHaveLength(1));
 	});
 });

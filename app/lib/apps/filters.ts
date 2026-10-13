@@ -30,15 +30,19 @@ export const applyCategoryFilter = (button: IAppActionButton, category: TAppActi
 	(button.category ?? 'default') === category;
 
 export interface IAppActionButtonAuth {
-	roles: string[];
+	userRoles: string[];
+	roomRoles: string[];
 	permissions: { [permission: string]: string[] };
 }
 
-export const applyAuthFilter = (button: IAppActionButton, { roles, permissions }: IAppActionButtonAuth): boolean => {
+export const applyAuthFilter = (
+	button: IAppActionButton,
+	{ userRoles, roomRoles, permissions }: IAppActionButtonAuth
+): boolean => {
 	const { hasAllPermissions, hasOnePermission, hasAllRoles, hasOneRole } = button.when || {};
 
-	const grants = (permission: string): boolean => (permissions[permission] ?? []).some(role => roles.includes(role));
-	const holds = (role: string): boolean => roles.includes(role);
+	const grants = (permission: string): boolean => (permissions[permission] ?? []).some(role => userRoles.includes(role));
+	const holds = (role: string): boolean => userRoles.includes(role) || roomRoles.includes(role);
 
 	return (
 		(!hasAllPermissions || hasAllPermissions.every(grants)) &&
