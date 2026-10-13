@@ -63,5 +63,5 @@ export const useCreateCategory = () => {
 		Navigation.popTo('DrawerNavigator');
 	};
 
-	return { createCategory, creating };
+	return { createCategory, creating, categoryId };
 };

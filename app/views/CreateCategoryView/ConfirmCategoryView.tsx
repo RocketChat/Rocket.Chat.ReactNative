@@ -33,9 +33,9 @@ export type ConfirmCategoryViewParams = {
 const ConfirmCategoryView = ({ route }: StaticScreenProps<ConfirmCategoryViewParams>) => {
 	const { colors } = useTheme();
 	const navigation = useNavigation();
-	const { name, setName, error, isValid } = useCategoryName(route.params.name);
+	const { createCategory, creating, categoryId } = useCreateCategory();
+	const { name, setName, error, isValid } = useCategoryName(route.params.name, categoryId);
 	const { selectedRooms, toggleRoom } = useRoomSelection(route.params.rooms);
-	const { createCategory, creating } = useCreateCategory();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({ title: I18n.t('Create_category') });
