@@ -1,5 +1,5 @@
 import { useCallback, useLayoutEffect, type ReactElement } from 'react';
-import { FlashList, type ListRenderItem } from '@shopify/flash-list';
+import { FlatList, type ListRenderItem } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
@@ -216,7 +216,7 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 				<SearchBox onChangeText={onSearchChangeText} onSubmitEditing={search} testID='directory-view-search' />
 			)}
 
-			<FlashList
+			<FlatList
 				data={data}
 				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				style={styles.list}
