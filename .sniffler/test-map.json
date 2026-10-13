@@ -462,7 +462,8 @@
 			"app/containers/UIKit/**",
 			"app/lib/apps/**",
 			"app/containers/MessageComposer/**",
-			"app/views/ModalBlockView.tsx"
+			"app/views/ModalBlockView.tsx",
+			"app/views/RoomView/services/blockAction.ts"
 		]
 	}
 ]

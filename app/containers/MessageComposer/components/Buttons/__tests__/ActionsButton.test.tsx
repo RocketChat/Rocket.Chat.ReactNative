@@ -102,13 +102,4 @@ describe('ActionsButton', () => {
 			message: 'draft text'
 		});
 	});
-
-	it('sends neither the thread nor the composer draft with an ai action', () => {
-		const aiItem = item('summarize', { context: 'roomAction', category: 'ai' });
-		mockUseAppActionButtons.mockImplementation(() => [aiItem]);
-
-		openSheet()[1].onPress();
-
-		expect(mockTriggerAppActionButton).toHaveBeenCalledWith({ button: aiItem.button, rid: 'rid-1' });
-	});
 });

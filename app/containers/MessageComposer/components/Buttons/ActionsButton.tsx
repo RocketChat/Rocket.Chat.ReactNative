@@ -112,13 +112,10 @@ export const ActionsButton = () => {
 			onPress: () => createDiscussion()
 		});
 
+		const triggerApp = ({ button }: IAppActionButtonItem) => triggerAppActionButton({ button, rid, tmid, message: getText() });
 		options.push(
-			...aiActions.map(toOption('stars', 'message-composer-ai-action', ({ button }) => triggerAppActionButton({ button, rid }))),
-			...appActions.map(
-				toOption('apps', 'message-composer-app-action', ({ button }) =>
-					triggerAppActionButton({ button, rid, tmid, message: getText() })
-				)
-			)
+			...aiActions.map(toOption('stars', 'message-composer-ai-action', triggerApp)),
+			...appActions.map(toOption('apps', 'message-composer-app-action', triggerApp))
 		);
 
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
