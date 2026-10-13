@@ -8,6 +8,7 @@ import { useTheme } from '~/theme';
 import { useIsCustomCategoriesAvailable } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import sharedStyles from '~/views/Styles';
 import { useRoomCategory } from '~/containers/MoveToCategorySheet/hooks/useRoomCategory';
+import { useRoomPlacement } from '~/containers/MoveToCategorySheet/hooks/useRoomPlacement';
 import MoveToCategorySheet from '~/containers/MoveToCategorySheet';
 
 const styles = StyleSheet.create({
@@ -19,16 +20,14 @@ const styles = StyleSheet.create({
 
 interface ICategorySection {
 	room: TSubscriptionModel;
-	category?: string;
-	favorite?: boolean;
 	joined: boolean;
 }
 
-function CategorySection({ room, category, favorite, joined }: ICategorySection): ReactElement | null {
+function CategorySection({ room, joined }: ICategorySection): ReactElement | null {
 	const { colors } = useTheme();
 	const { showActionSheet } = useActionSheet();
 	const isCustomCategoriesAvailable = useIsCustomCategoriesAvailable();
-	const { currentCategoryName } = useRoomCategory({ rid: room.rid, category, f: favorite });
+	const { currentCategoryName } = useRoomCategory(useRoomPlacement(room));
 
 	if (!isCustomCategoriesAvailable || !joined || room.t === 'l') {
 		return null;
@@ -41,7 +40,7 @@ function CategorySection({ room, category, favorite, joined }: ICategorySection)
 				title='Category'
 				onPress={() =>
 					showActionSheet({
-						children: <MoveToCategorySheet room={room} category={category} favorite={favorite} />,
+						children: <MoveToCategorySheet room={room} />,
 						fullContainer: true
 					})
 				}

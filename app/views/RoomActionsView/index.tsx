@@ -1084,7 +1084,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 				<List.Container testID='room-actions-scrollview'>
 					{this.renderRoomInfo()}
 					<CallSection room={room} disabled={hasE2EEWarning} itsMe={itsMe} />
-					<CategorySection room={room} category={room.category} favorite={room.f} joined={joined} />
+					<CategorySection room={room} joined={joined} />
 					{this.renderE2EEncryption()}
 					<List.Section>
 						<List.Separator />

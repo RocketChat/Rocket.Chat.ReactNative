@@ -12,6 +12,7 @@ import { useTheme } from '~/theme';
 import { toCategoryRoom } from '~/views/CreateCategoryView/hooks/useCategoryRoomCandidates';
 import sharedStyles from '~/views/Styles';
 import { useRoomCategory } from './hooks/useRoomCategory';
+import { useRoomPlacement } from './hooks/useRoomPlacement';
 
 const styles = StyleSheet.create({
 	container: {
@@ -34,15 +35,13 @@ const styles = StyleSheet.create({
 
 interface IMoveToCategorySheet {
 	room: TSubscriptionModel;
-	category?: string;
-	favorite?: boolean;
 }
 
-const MoveToCategorySheet = ({ room, category, favorite }: IMoveToCategorySheet): ReactElement => {
+const MoveToCategorySheet = ({ room }: IMoveToCategorySheet): ReactElement => {
 	const { colors } = useTheme();
 	const { hideActionSheet } = useActionSheet();
 	const isMasterDetail = useMasterDetail();
-	const { categoryOptions, currentCategoryId, moveToCategory } = useRoomCategory({ rid: room.rid, category, f: favorite });
+	const { categoryOptions, currentCategoryId, moveToCategory } = useRoomCategory(useRoomPlacement(room));
 
 	const selectCategory = (categoryId: string) => {
 		hideActionSheet();

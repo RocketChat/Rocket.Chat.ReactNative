@@ -52,7 +52,7 @@ const RoomItemContainer = memo(
 
 		const showMoveToCategory = () =>
 			showActionSheet({
-				children: <MoveToCategorySheet room={room} category={room.category} favorite={room.f} />,
+				children: <MoveToCategorySheet room={room} />,
 				fullContainer: true
 			});
 		const onMoveToCategoryPress = isCustomCategoriesAvailable && room.t !== 'l' ? showMoveToCategory : undefined;
