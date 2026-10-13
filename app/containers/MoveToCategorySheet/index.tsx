@@ -9,6 +9,7 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { getRoomTitle } from '~/lib/methods/helpers';
 import Navigation from '~/lib/navigation/appNavigation';
 import { useTheme } from '~/theme';
+import { startCategoryDraft } from '~/views/CreateCategoryView/hooks/useCategoryDraftStore';
 import { toCategoryRoom } from '~/views/CreateCategoryView/hooks/useCategoryRoomCandidates';
 import sharedStyles from '~/views/Styles';
 import { useRoomCategory } from './hooks/useRoomCategory';
@@ -50,8 +51,8 @@ const MoveToCategorySheet = ({ room }: IMoveToCategorySheet): ReactElement => {
 
 	const createCategory = () => {
 		hideActionSheet();
-		const params = { screen: 'CreateCategoryView', params: { rooms: [toCategoryRoom(room)] } };
-		Navigation.navigate(isMasterDetail ? 'ModalStackNavigator' : 'NewMessageStackNavigator', params);
+		startCategoryDraft([toCategoryRoom(room)]);
+		Navigation.navigate(isMasterDetail ? 'ModalStackNavigator' : 'NewMessageStackNavigator', { screen: 'CreateCategoryView' });
 	};
 
 	return (

@@ -1,18 +1,14 @@
 import { useState } from 'react';
 
 import { type ICategoryRoom } from '../types';
+import { isRoomIn, toggleRoomIn } from '../utils/roomSelection';
 
 export const useRoomSelection = (initialRooms: ICategoryRoom[] = []) => {
 	const [selectedRooms, setSelectedRooms] = useState(initialRooms);
 
-	const isSelected = (rid: string) => selectedRooms.some(room => room.rid === rid);
+	const isSelected = (rid: string) => isRoomIn(selectedRooms, rid);
 
-	const toggleRoom = (room: ICategoryRoom) =>
-		setSelectedRooms(current =>
-			current.some(selected => selected.rid === room.rid)
-				? current.filter(selected => selected.rid !== room.rid)
-				: [...current, room]
-		);
+	const toggleRoom = (room: ICategoryRoom) => setSelectedRooms(current => toggleRoomIn(current, room));
 
 	return { selectedRooms, isSelected, toggleRoom };
 };

@@ -1,4 +1,4 @@
-import { type StaticScreenProps, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useLayoutEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
@@ -9,10 +9,9 @@ import { isIOS } from '~/lib/methods/helpers';
 import { useTheme } from '~/theme';
 import CategoryNameField from './components/CategoryNameField';
 import RoomChips from './components/RoomChips';
-import { useCategoryName } from './hooks/useCategoryName';
+import { useCategoryDraftStore } from './hooks/useCategoryDraftStore';
+import { useCategoryNameError } from './hooks/useCategoryName';
 import { useCreateCategory } from './hooks/useCreateCategory';
-import { useRoomSelection } from './hooks/useRoomSelection';
-import { type ICategoryRoom } from './types';
 
 const styles = StyleSheet.create({
 	content: {
@@ -25,17 +24,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-export type ConfirmCategoryViewParams = {
-	name: string;
-	rooms: ICategoryRoom[];
-};
+export type ConfirmCategoryViewParams = undefined;
 
-const ConfirmCategoryView = ({ route }: StaticScreenProps<ConfirmCategoryViewParams>) => {
+const ConfirmCategoryView = () => {
 	const { colors } = useTheme();
 	const navigation = useNavigation();
 	const { createCategory, creating, categoryId } = useCreateCategory();
-	const { name, setName, error, isValid } = useCategoryName(route.params.name, categoryId);
-	const { selectedRooms, toggleRoom } = useRoomSelection(route.params.rooms);
+	const name = useCategoryDraftStore(state => state.name);
+	const setName = useCategoryDraftStore(state => state.setName);
+	const selectedRooms = useCategoryDraftStore(state => state.rooms);
+	const toggleRoom = useCategoryDraftStore(state => state.toggleRoom);
+	const { error, isValid } = useCategoryNameError(name, categoryId);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({ title: I18n.t('Create_category') });

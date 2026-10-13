@@ -15,6 +15,7 @@ import { type NewMessageStackParamList } from '~/stacks/types';
 import { compareServerVersion } from '~/lib/methods/helpers';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { usePermissions } from '~/lib/hooks/usePermissions';
+import { startCategoryDraft } from '~/views/CreateCategoryView/hooks/useCategoryDraftStore';
 import { useIsCustomCategoriesAvailable } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import ButtonCreate from './ButtonCreate';
 import sharedStyles from '~/views/Styles';
@@ -94,6 +95,7 @@ const HeaderNewMessage = ({ maxUsers, onChangeText, categoryId, categoryName }: 
 	}, [navigation, categoryId]);
 
 	const createCategory = useCallback(() => {
+		startCategoryDraft();
 		navigation.navigate('CreateCategoryView');
 	}, [navigation]);
 

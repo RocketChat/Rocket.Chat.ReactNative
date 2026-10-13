@@ -1,4 +1,4 @@
-import { type StaticScreenProps, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useLayoutEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
@@ -10,8 +10,8 @@ import { headerLeftCloseModal, headerRightActions } from '~/lib/methods/helpers/
 import { type NewMessageStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
 import CategoryNameField from './components/CategoryNameField';
-import { useCategoryName } from './hooks/useCategoryName';
-import { type ICategoryRoom } from './types';
+import { useCategoryDraftStore } from './hooks/useCategoryDraftStore';
+import { useCategoryNameError } from './hooks/useCategoryName';
 
 const styles = StyleSheet.create({
 	content: {
@@ -20,17 +20,18 @@ const styles = StyleSheet.create({
 	}
 });
 
-export type CreateCategoryViewParams = { rooms?: ICategoryRoom[] } | undefined;
+export type CreateCategoryViewParams = undefined;
 
-const CreateCategoryView = ({ route }: StaticScreenProps<CreateCategoryViewParams>) => {
-	const rooms = route.params?.rooms;
+const CreateCategoryView = () => {
 	const { colors } = useTheme();
 	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'CreateCategoryView'>>();
-	const { name, setName, error, isValid } = useCategoryName();
+	const name = useCategoryDraftStore(state => state.name);
+	const setName = useCategoryDraftStore(state => state.setName);
+	const { error, isValid } = useCategoryNameError(name);
 
 	const goToRooms = () => {
 		if (isValid) {
-			navigation.navigate('CategoryRoomsView', { name: name.trim(), rooms });
+			navigation.navigate('CategoryRoomsView');
 		}
 	};
 
@@ -43,11 +44,11 @@ const CreateCategoryView = ({ route }: StaticScreenProps<CreateCategoryViewParam
 					label: I18n.t('Next'),
 					testID: 'create-category-view-next',
 					disabled: !isValid,
-					onPress: () => navigation.navigate('CategoryRoomsView', { name: name.trim(), rooms })
+					onPress: () => navigation.navigate('CategoryRoomsView')
 				}
 			])
 		});
-	}, [navigation, name, isValid, rooms]);
+	}, [navigation, isValid]);
 
 	return (
 		<SafeAreaView testID='create-category-view' style={{ backgroundColor: colors.surfaceTint }}>
