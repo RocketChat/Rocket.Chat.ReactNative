@@ -1861,6 +1861,29 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
+  - react-native-nano-icons (1.0.0):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-FabricComponents
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - react-native-netinfo (12.0.1):
     - hermes-engine
     - RCTRequired
@@ -3074,6 +3097,7 @@ DEPENDENCIES:
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - react-native-external-keyboard (from `../node_modules/react-native-external-keyboard`)
   - react-native-keyboard-controller (from `../node_modules/react-native-keyboard-controller`)
+  - react-native-nano-icons (from `../node_modules/react-native-nano-icons`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
@@ -3325,6 +3349,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-external-keyboard"
   react-native-keyboard-controller:
     :path: "../node_modules/react-native-keyboard-controller"
+  react-native-nano-icons:
+    :path: "../node_modules/react-native-nano-icons"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
@@ -3553,6 +3579,7 @@ SPEC CHECKSUMS:
   react-native-cookies: d648ab7025833b977c0b19e142503034f5f29411
   react-native-external-keyboard: f89ea61eb77875621a1ad086769d829da8ae3fcd
   react-native-keyboard-controller: c5ba8bf515b500ecb3692bc5ecc944c6be4b3290
+  react-native-nano-icons: d4133b775180a65a5b6f7ffa8b4993e305cb0a98
   react-native-netinfo: a05f9b897e76ad24b53f615fed1cbb731932363d
   react-native-safe-area-context: 678f254e77e69986ae9d9e62721f152e73dbc76b
   react-native-slider: b15258ac3d287a5951f76b11497d659ed20c0def

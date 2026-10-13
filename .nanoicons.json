@@ -1,0 +1,9 @@
+{
+	"iconSets": [
+		{
+			"inputDir": "./assets/icons/custom",
+			"outputDir": "./app/containers/CustomIcon/nanoicons",
+			"fontFamily": "custom"
+		}
+	]
+}

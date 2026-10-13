@@ -330,32 +330,47 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
       <View
         style={{}}
       >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
+          accessibilityLabel=""
+          accessibilityRole="image"
+          accessible={false}
           style={
             [
               {
-                "color": "#2F343D",
-                "fontSize": 20,
+                "bottom": 0,
+                "height": 20,
+                "width": 20,
               },
-              [
-                {
-                  "lineHeight": 20,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "bottom": 0,
+                  "fontFamily": "custom-c991a6a0",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                  "includeFontPadding": false,
+                  "position": "absolute",
+                },
+                {
+                  "fontSize": 20,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
   </ExternalKeyboardView>
@@ -692,32 +707,47 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
       <View
         style={{}}
       >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
+          accessibilityLabel=""
+          accessibilityRole="image"
+          accessible={false}
           style={
             [
               {
-                "color": "#2F343D",
-                "fontSize": 20,
+                "bottom": 0,
+                "height": 20,
+                "width": 20,
               },
-              [
-                {
-                  "lineHeight": 20,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "bottom": 0,
+                  "fontFamily": "custom-c991a6a0",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                  "includeFontPadding": false,
+                  "position": "absolute",
+                },
+                {
+                  "fontSize": 20,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
   </ExternalKeyboardView>
@@ -1054,32 +1084,47 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
       <View
         style={{}}
       >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
+          accessibilityLabel=""
+          accessibilityRole="image"
+          accessible={false}
           style={
             [
               {
-                "color": "#E4E7EA",
-                "fontSize": 20,
+                "bottom": 0,
+                "height": 20,
+                "width": 20,
               },
-              [
-                {
-                  "lineHeight": 20,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "bottom": 0,
+                  "fontFamily": "custom-c991a6a0",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                  "includeFontPadding": false,
+                  "position": "absolute",
+                },
+                {
+                  "fontSize": 20,
+                },
+                {
+                  "color": "#E4E7EA",
+                },
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
   </ExternalKeyboardView>
@@ -1416,32 +1461,47 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
       <View
         style={{}}
       >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
+          accessibilityLabel=""
+          accessibilityRole="image"
+          accessible={false}
           style={
             [
               {
-                "color": "#C1C7D0",
-                "fontSize": 20,
+                "bottom": 0,
+                "height": 20,
+                "width": 20,
               },
-              [
-                {
-                  "lineHeight": 20,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "bottom": 0,
+                  "fontFamily": "custom-c991a6a0",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                  "includeFontPadding": false,
+                  "position": "absolute",
+                },
+                {
+                  "fontSize": 20,
+                },
+                {
+                  "color": "#C1C7D0",
+                },
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
   </ExternalKeyboardView>

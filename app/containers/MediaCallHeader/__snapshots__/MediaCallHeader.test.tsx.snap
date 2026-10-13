@@ -102,32 +102,47 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
           }
           testID="media-call-header-collapse"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -189,40 +204,52 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
           }
           testID="call-view-header-title"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#6C727A",
-                  "fontSize": 16,
+                  "bottom": 0,
+                  "height": 16,
+                  "width": 16,
                 },
-                [
-                  {
-                    "lineHeight": 16,
-                  },
-                  [
-                    {
-                      "height": 16,
-                      "textAlign": "center",
-                      "textAlignVertical": "center",
-                      "width": 16,
-                    },
-                    undefined,
-                  ],
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 16,
+                  "textAlign": "center",
+                  "textAlignVertical": "center",
+                  "width": 16,
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 16,
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             numberOfLines={1}
             style={
@@ -324,32 +351,47 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
           }
           testID="media-call-header-end"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#D40C26",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#D40C26",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -459,32 +501,47 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
           }
           testID="media-call-header-collapse"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -546,40 +603,52 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
           }
           testID="call-view-header-title"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#6C727A",
-                  "fontSize": 16,
+                  "bottom": 0,
+                  "height": 16,
+                  "width": 16,
                 },
-                [
-                  {
-                    "lineHeight": 16,
-                  },
-                  [
-                    {
-                      "height": 16,
-                      "textAlign": "center",
-                      "textAlignVertical": "center",
-                      "width": 16,
-                    },
-                    undefined,
-                  ],
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 16,
+                  "textAlign": "center",
+                  "textAlignVertical": "center",
+                  "width": 16,
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 16,
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             numberOfLines={1}
             style={
@@ -681,32 +750,47 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
           }
           testID="media-call-header-end"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#D40C26",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#D40C26",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -816,32 +900,47 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           }
           testID="media-call-header-collapse"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -903,40 +1002,52 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           }
           testID="call-view-header-title"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#6C727A",
-                  "fontSize": 16,
+                  "bottom": 0,
+                  "height": 16,
+                  "width": 16,
                 },
-                [
-                  {
-                    "lineHeight": 16,
-                  },
-                  [
-                    {
-                      "height": 16,
-                      "textAlign": "center",
-                      "textAlignVertical": "center",
-                      "width": 16,
-                    },
-                    undefined,
-                  ],
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 16,
+                  "textAlign": "center",
+                  "textAlignVertical": "center",
+                  "width": 16,
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 16,
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             numberOfLines={1}
             style={
@@ -1058,32 +1169,47 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           }
           testID="media-call-header-end"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#D40C26",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#D40C26",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -1193,32 +1319,47 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
           }
           testID="media-call-header-collapse"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -1280,40 +1421,52 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
           }
           testID="call-view-header-title"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#6C727A",
-                  "fontSize": 16,
+                  "bottom": 0,
+                  "height": 16,
+                  "width": 16,
                 },
-                [
-                  {
-                    "lineHeight": 16,
-                  },
-                  [
-                    {
-                      "height": 16,
-                      "textAlign": "center",
-                      "textAlignVertical": "center",
-                      "width": 16,
-                    },
-                    undefined,
-                  ],
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 16,
+                  "textAlign": "center",
+                  "textAlignVertical": "center",
+                  "width": 16,
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 16,
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             numberOfLines={1}
             style={
@@ -1415,32 +1568,47 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
           }
           testID="media-call-header-end"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#D40C26",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#D40C26",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -1570,32 +1738,47 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
           }
           testID="media-call-header-collapse"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -1657,40 +1840,52 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
           }
           testID="call-view-header-title"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#6C727A",
-                  "fontSize": 16,
+                  "bottom": 0,
+                  "height": 16,
+                  "width": 16,
                 },
-                [
-                  {
-                    "lineHeight": 16,
-                  },
-                  [
-                    {
-                      "height": 16,
-                      "textAlign": "center",
-                      "textAlignVertical": "center",
-                      "width": 16,
-                    },
-                    undefined,
-                  ],
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 16,
+                  "textAlign": "center",
+                  "textAlignVertical": "center",
+                  "width": 16,
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 16,
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             numberOfLines={1}
             style={
@@ -1816,32 +2011,47 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
           }
           testID="media-call-header-end"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#D40C26",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#D40C26",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -1951,32 +2161,47 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
           }
           testID="media-call-header-collapse"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -2038,40 +2263,52 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
           }
           testID="call-view-header-title"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#6C727A",
-                  "fontSize": 16,
+                  "bottom": 0,
+                  "height": 16,
+                  "width": 16,
                 },
-                [
-                  {
-                    "lineHeight": 16,
-                  },
-                  [
-                    {
-                      "height": 16,
-                      "textAlign": "center",
-                      "textAlignVertical": "center",
-                      "width": 16,
-                    },
-                    undefined,
-                  ],
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 16,
+                  "textAlign": "center",
+                  "textAlignVertical": "center",
+                  "width": 16,
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 16,
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             numberOfLines={1}
             style={
@@ -2197,32 +2434,47 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
           }
           testID="media-call-header-end"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#D40C26",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#D40C26",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>

@@ -143,6 +143,7 @@
 		65B9A71B2AFC24190088956F /* ringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 65B9A7192AFC24190088956F /* ringtone.mp3 */; };
 		66C2701C2EBBCB570062725F /* MMKVKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */; };
 		66C2701D2EBBCB570062725F /* MMKVKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */; };
+		6F204E445C3D44699793D4F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680FA18DB475479CAD48F334 /* SceneDelegate.swift */; };
 		6FA7E2392F28A9D300A1D45E /* ExternalInputModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */; };
 		782E0520ED599FF8DDC2318F /* Pods_defaults_Rocket_Chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88ED4E003393D3A9256F4EB3 /* Pods_defaults_Rocket_Chat.framework */; };
 		79D8C97F8CE2EC1B6882826B /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B215A42CFB843397273C7EA /* SecureStorage.m */; };
@@ -157,8 +158,6 @@
 		7A1B58452F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */; };
 		7A3704572F7DB36E009085FC /* VoipPerCallDdpRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3704552F7DB36E009085FC /* VoipPerCallDdpRegistry.swift */; };
 		7A37D6FF2F896C360095EBA1 /* MediaCallsAnswerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F98EE33D91A93DF8E69F34 /* MediaCallsAnswerRequest.swift */; };
-		7A610CD427ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
-		7A610CD527ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
 		7A8B30772BCD9D3F00146A40 /* SSLPinning.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7A8B30752BCD9D3F00146A40 /* SSLPinning.mm */; };
 		7AAB3E15257E6A6E00707CF6 /* Sender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8282511304100FEF824 /* Sender.swift */; };
 		7AAB3E16257E6A6E00707CF6 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E680ED82512990700C9257A /* Request.swift */; };
@@ -211,7 +210,6 @@
 		7AC0A1E02C000011001CAA11 /* Challenge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A1E02C000002001CAA11 /* Challenge.mm */; };
 		7AC0A1E02C000012001CAA11 /* Challenge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A1E02C000002001CAA11 /* Challenge.mm */; };
 		7ACFE7D92DDE48760090D9BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */; };
-		6F204E445C3D44699793D4F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680FA18DB475479CAD48F334 /* SceneDelegate.swift */; };
 		7AE10C0828A59530003593CB /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AE10C0528A59530003593CB /* Inter.ttf */; };
 		7AVR00022F5F5900002A6BDE /* VoipRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AVR00002F5F5900002A6BDE /* VoipRegion.swift */; };
 		85160EB6C143E0493FE5F014 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194D9A8897F4A486C2C6F89A /* ExpoModulesProvider.swift */; };
@@ -429,6 +427,7 @@
 		65B9A7192AFC24190088956F /* ringtone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringtone.mp3; sourceTree = "<group>"; };
 		66C270192EBBCB570062725F /* MMKVKeyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMKVKeyManager.h; sourceTree = "<group>"; };
 		66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MMKVKeyManager.mm; sourceTree = "<group>"; };
+		680FA18DB475479CAD48F334 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		6FA7E2362F28A9D300A1D45E /* ExternalInputModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExternalInputModule.h; sourceTree = "<group>"; };
 		6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExternalInputModule.m; sourceTree = "<group>"; };
 		7A0000032F1BAFA700B6B4BD /* VoipService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipService.swift; sourceTree = "<group>"; };
@@ -440,7 +439,6 @@
 		7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipPayload.swift; sourceTree = "<group>"; };
 		7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Voip.swift"; sourceTree = "<group>"; };
 		7A3704552F7DB36E009085FC /* VoipPerCallDdpRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipPerCallDdpRegistry.swift; sourceTree = "<group>"; };
-		7A610CD127ECE38100B8ABDD /* custom.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = custom.ttf; sourceTree = "<group>"; };
 		7A8B30742BCD9D3F00146A40 /* SSLPinning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSLPinning.h; sourceTree = "<group>"; };
 		7A8B30752BCD9D3F00146A40 /* SSLPinning.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SSLPinning.mm; sourceTree = "<group>"; };
 		7AAA749C23043B1D00F1ADE9 /* RocketChatRN-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RocketChatRN-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -451,7 +449,6 @@
 		7AC0A1E02C000002001CAA11 /* Challenge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Challenge.mm; sourceTree = "<group>"; };
 		7ACD4853222860DE00442C55 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		680FA18DB475479CAD48F334 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7AE10C0528A59530003593CB /* Inter.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Inter.ttf; sourceTree = "<group>"; };
 		7AVR00002F5F5900002A6BDE /* VoipRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipRegion.swift; sourceTree = "<group>"; };
 		83F98EE33D91A93DF8E69F34 /* MediaCallsAnswerRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCallsAnswerRequest.swift; sourceTree = "<group>"; };
@@ -1020,7 +1017,6 @@
 			isa = PBXGroup;
 			children = (
 				7AE10C0528A59530003593CB /* Inter.ttf */,
-				7A610CD127ECE38100B8ABDD /* custom.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1129,6 +1125,7 @@
 				7A55BE3D2F11320C00D8744D /* Upload source maps to Bugsnag */,
 				F8FA5EB1C05179679A1B0213 /* [CP] Embed Pods Frameworks */,
 				6C507C5DC028E270B40EF89D /* [CP] Copy Pods Resources */,
+				EB20708DBDAB461AAEAEB000 /* Copy nanoicons fonts */,
 			);
 			buildRules = (
 			);
@@ -1212,7 +1209,6 @@
 			files = (
 				65AD38392BFBDF4A00271B39 /* PrivacyInfo.xcprivacy in Resources */,
 				1E6CC61F2513DBF400965591 /* GoogleService-Info.plist in Resources */,
-				7A610CD427ECE38100B8ABDD /* custom.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1230,7 +1226,6 @@
 			files = (
 				65B9A71B2AFC24190088956F /* ringtone.mp3 in Resources */,
 				7A14FCF4257FEB59005BDCD4 /* Assets.xcassets in Resources */,
-				7A610CD527ECE38100B8ABDD /* custom.ttf in Resources */,
 				7AAB3E42257E6A6E00707CF6 /* Images.xcassets in Resources */,
 				7AE10C0828A59530003593CB /* Inter.ttf in Resources */,
 				7AAB3E44257E6A6E00707CF6 /* GoogleService-Info.plist in Resources */,
@@ -1385,7 +1380,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				$TARGET_BUILD_DIR/$INFOPLIST_PATH,
+				"$TARGET_BUILD_DIR/$INFOPLIST_PATH",
 			);
 			name = "Upload source maps to Bugsnag";
 			outputFileListPaths = (
@@ -1540,6 +1535,20 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		EB20708DBDAB461AAEAEB000 /* Copy nanoicons fonts */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy nanoicons fonts";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\n        NANOICONS_DIR=\"${PROJECT_DIR}/nanoicons-fonts\"\n        if [ -d \"$NANOICONS_DIR\" ]; then\n          cp \"$NANOICONS_DIR\"/*.ttf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" 2>/dev/null || true\n        fi\n      ";
 		};
 		F8FA5EB1C05179679A1B0213 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1852,7 +1861,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
+					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
@@ -1928,7 +1937,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
+					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
@@ -2378,7 +2387,10 @@
 					"$(inherited)",
 					"-DRCT_REMOVE_LEGACY_ARCH=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				PODFILE_DIR = "$(SRCROOT)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -2466,7 +2478,10 @@
 					"$(inherited)",
 					"-DRCT_REMOVE_LEGACY_ARCH=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				PODFILE_DIR = "$(SRCROOT)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;

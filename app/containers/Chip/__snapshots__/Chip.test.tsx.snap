@@ -267,32 +267,47 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
           Rocket.Cat
         </Text>
       </View>
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#2F343D",
-              "fontSize": 16,
+              "bottom": 0,
+              "height": 16,
+              "width": 16,
             },
-            [
-              {
-                "lineHeight": 16,
-              },
-              undefined,
-            ],
-            {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            {},
+            undefined,
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-c991a6a0",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 16,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
     </View>
   </View>
 </View>
@@ -458,32 +473,47 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
           Short
         </Text>
       </View>
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#2F343D",
-              "fontSize": 16,
+              "bottom": 0,
+              "height": 16,
+              "width": 16,
             },
-            [
-              {
-                "lineHeight": 16,
-              },
-              undefined,
-            ],
-            {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            {},
+            undefined,
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-c991a6a0",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 16,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
     </View>
   </View>
 </View>
@@ -589,32 +619,47 @@ exports[`Story Snapshots: ChipWithoutAvatar should match snapshot 1`] = `
           Without Avatar
         </Text>
       </View>
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#2F343D",
-              "fontSize": 16,
+              "bottom": 0,
+              "height": 16,
+              "width": 16,
             },
-            [
-              {
-                "lineHeight": 16,
-              },
-              undefined,
-            ],
-            {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            {},
+            undefined,
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-c991a6a0",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 16,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
     </View>
   </View>
 </View>

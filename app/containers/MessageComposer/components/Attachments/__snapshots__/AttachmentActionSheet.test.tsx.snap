@@ -82,32 +82,47 @@ exports[`Story Snapshots: File should match snapshot 1`] = `
           ]
         }
       >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
+          accessibilityLabel=""
+          accessibilityRole="image"
+          accessible={false}
           style={
             [
               {
-                "color": "#1D74F5",
-                "fontSize": 40,
+                "bottom": 0,
+                "height": 40,
+                "width": 40,
               },
-              [
-                {
-                  "lineHeight": 40,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "bottom": 0,
+                  "fontFamily": "custom-c991a6a0",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                  "includeFontPadding": false,
+                  "position": "absolute",
+                },
+                {
+                  "fontSize": 40,
+                },
+                {
+                  "color": "#1D74F5",
+                },
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
     <View
@@ -764,32 +779,47 @@ exports[`Story Snapshots: Video should match snapshot 1`] = `
           ]
         }
       >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
+          accessibilityLabel=""
+          accessibilityRole="image"
+          accessible={false}
           style={
             [
               {
-                "color": "#1D74F5",
-                "fontSize": 40,
+                "bottom": 0,
+                "height": 40,
+                "width": 40,
               },
-              [
-                {
-                  "lineHeight": 40,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "bottom": 0,
+                  "fontFamily": "custom-c991a6a0",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                  "includeFontPadding": false,
+                  "position": "absolute",
+                },
+                {
+                  "fontSize": 40,
+                },
+                {
+                  "color": "#1D74F5",
+                },
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
     <View

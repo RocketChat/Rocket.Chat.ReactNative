@@ -67,32 +67,47 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 ]
               }
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
+              <View
+                accessibilityLabel=""
+                accessibilityRole="image"
+                accessible={false}
                 style={
                   [
                     {
-                      "color": "#E4E7EA",
-                      "fontSize": 16,
+                      "bottom": 0,
+                      "height": 16,
+                      "width": 16,
                     },
-                    [
-                      {
-                        "lineHeight": 16,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
+                    undefined,
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  accessible={false}
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "fontFamily": "custom-c991a6a0",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                        "includeFontPadding": false,
+                        "position": "absolute",
+                      },
+                      {
+                        "fontSize": 16,
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
               <Text
                 style={
                   [
@@ -338,32 +353,47 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                 ]
               }
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
+              <View
+                accessibilityLabel=""
+                accessibilityRole="image"
+                accessible={false}
                 style={
                   [
                     {
-                      "color": "#E4E7EA",
-                      "fontSize": 16,
+                      "bottom": 0,
+                      "height": 16,
+                      "width": 16,
                     },
-                    [
-                      {
-                        "lineHeight": 16,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
+                    undefined,
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  accessible={false}
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "fontFamily": "custom-c991a6a0",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                        "includeFontPadding": false,
+                        "position": "absolute",
+                      },
+                      {
+                        "fontSize": 16,
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
               <Text
                 style={
                   [
@@ -1054,32 +1084,47 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 ]
               }
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
+              <View
+                accessibilityLabel=""
+                accessibilityRole="image"
+                accessible={false}
                 style={
                   [
                     {
-                      "color": "#C1C7D0",
-                      "fontSize": 16,
+                      "bottom": 0,
+                      "height": 16,
+                      "width": 16,
                     },
-                    [
-                      {
-                        "lineHeight": 16,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
+                    undefined,
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  accessible={false}
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "fontFamily": "custom-c991a6a0",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                        "includeFontPadding": false,
+                        "position": "absolute",
+                      },
+                      {
+                        "fontSize": 16,
+                      },
+                      {
+                        "color": "#C1C7D0",
+                      },
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
               <Text
                 style={
                   [
@@ -1325,32 +1370,47 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                 ]
               }
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
+              <View
+                accessibilityLabel=""
+                accessibilityRole="image"
+                accessible={false}
                 style={
                   [
                     {
-                      "color": "#C1C7D0",
-                      "fontSize": 16,
+                      "bottom": 0,
+                      "height": 16,
+                      "width": 16,
                     },
-                    [
-                      {
-                        "lineHeight": 16,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
+                    undefined,
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  accessible={false}
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "fontFamily": "custom-c991a6a0",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                        "includeFontPadding": false,
+                        "position": "absolute",
+                      },
+                      {
+                        "fontSize": 16,
+                      },
+                      {
+                        "color": "#C1C7D0",
+                      },
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
               <Text
                 style={
                   [
@@ -2041,32 +2101,47 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 ]
               }
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
+              <View
+                accessibilityLabel=""
+                accessibilityRole="image"
+                accessible={false}
                 style={
                   [
                     {
-                      "color": "#2F343D",
-                      "fontSize": 16,
+                      "bottom": 0,
+                      "height": 16,
+                      "width": 16,
                     },
-                    [
-                      {
-                        "lineHeight": 16,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
+                    undefined,
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  accessible={false}
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "fontFamily": "custom-c991a6a0",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                        "includeFontPadding": false,
+                        "position": "absolute",
+                      },
+                      {
+                        "fontSize": 16,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
               <Text
                 style={
                   [
@@ -2312,32 +2387,47 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                 ]
               }
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
+              <View
+                accessibilityLabel=""
+                accessibilityRole="image"
+                accessible={false}
                 style={
                   [
                     {
-                      "color": "#2F343D",
-                      "fontSize": 16,
+                      "bottom": 0,
+                      "height": 16,
+                      "width": 16,
                     },
-                    [
-                      {
-                        "lineHeight": 16,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
+                    undefined,
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  accessible={false}
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "fontFamily": "custom-c991a6a0",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                        "includeFontPadding": false,
+                        "position": "absolute",
+                      },
+                      {
+                        "fontSize": 16,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
               <Text
                 style={
                   [

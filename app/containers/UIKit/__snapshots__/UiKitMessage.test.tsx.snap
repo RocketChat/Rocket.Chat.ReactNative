@@ -700,32 +700,47 @@ exports[`Story Snapshots: ActionSelect should match snapshot 1`] = `
             }
             testID="icon_container"
           >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
+            <View
+              accessibilityLabel=""
+              accessibilityRole="image"
+              accessible={false}
               style={
                 [
                   {
-                    "color": "#6C727A",
-                    "fontSize": 22,
+                    "bottom": 0,
+                    "height": 22,
+                    "width": 22,
                   },
-                  [
-                    {
-                      "lineHeight": 22,
-                    },
-                    false,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
+                  undefined,
                 ]
               }
             >
-              
-            </Text>
+              <Text
+                accessible={false}
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "bottom": 0,
+                      "fontFamily": "custom-c991a6a0",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                      "includeFontPadding": false,
+                      "position": "absolute",
+                    },
+                    {
+                      "fontSize": 22,
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -1024,32 +1039,47 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   ]
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
+                  accessibilityLabel=""
+                  accessibilityRole="image"
+                  accessible={false}
                   style={
                     [
                       {
-                        "color": "#6C727A",
-                        "fontSize": 20,
+                        "bottom": 0,
+                        "height": 20,
+                        "width": 20,
                       },
-                      [
-                        {
-                          "lineHeight": 20,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    accessible={false}
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "bottom": 0,
+                          "fontFamily": "custom-c991a6a0",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                          "includeFontPadding": false,
+                          "position": "absolute",
+                        },
+                        {
+                          "fontSize": 20,
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
             <View
@@ -1357,32 +1387,47 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   ]
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
+                  accessibilityLabel=""
+                  accessibilityRole="image"
+                  accessible={false}
                   style={
                     [
                       {
-                        "color": "#6C727A",
-                        "fontSize": 20,
+                        "bottom": 0,
+                        "height": 20,
+                        "width": 20,
                       },
-                      [
-                        {
-                          "lineHeight": 20,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    accessible={false}
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "bottom": 0,
+                          "fontFamily": "custom-c991a6a0",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                          "includeFontPadding": false,
+                          "position": "absolute",
+                        },
+                        {
+                          "fontSize": 20,
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
             <View
@@ -1690,32 +1735,47 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   ]
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
+                  accessibilityLabel=""
+                  accessibilityRole="image"
+                  accessible={false}
                   style={
                     [
                       {
-                        "color": "#8E6300",
-                        "fontSize": 20,
+                        "bottom": 0,
+                        "height": 20,
+                        "width": 20,
                       },
-                      [
-                        {
-                          "lineHeight": 20,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    accessible={false}
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "bottom": 0,
+                          "fontFamily": "custom-c991a6a0",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                          "includeFontPadding": false,
+                          "position": "absolute",
+                        },
+                        {
+                          "fontSize": 20,
+                        },
+                        {
+                          "color": "#8E6300",
+                        },
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
             <View
@@ -1890,32 +1950,47 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   ]
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
+                  accessibilityLabel=""
+                  accessibilityRole="image"
+                  accessible={false}
                   style={
                     [
                       {
-                        "color": "#9B1325",
-                        "fontSize": 20,
+                        "bottom": 0,
+                        "height": 20,
+                        "width": 20,
                       },
-                      [
-                        {
-                          "lineHeight": 20,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    accessible={false}
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "bottom": 0,
+                          "fontFamily": "custom-c991a6a0",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                          "includeFontPadding": false,
+                          "position": "absolute",
+                        },
+                        {
+                          "fontSize": 20,
+                        },
+                        {
+                          "color": "#9B1325",
+                        },
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
             <View
@@ -2100,32 +2175,47 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   ]
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
+                  accessibilityLabel=""
+                  accessibilityRole="image"
+                  accessible={false}
                   style={
                     [
                       {
-                        "color": "#9EA2A8",
-                        "fontSize": 20,
+                        "bottom": 0,
+                        "height": 20,
+                        "width": 20,
                       },
-                      [
-                        {
-                          "lineHeight": 20,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    accessible={false}
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "bottom": 0,
+                          "fontFamily": "custom-c991a6a0",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                          "includeFontPadding": false,
+                          "position": "absolute",
+                        },
+                        {
+                          "fontSize": 20,
+                        },
+                        {
+                          "color": "#9EA2A8",
+                        },
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
             <View
@@ -2433,32 +2523,47 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   ]
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
+                  accessibilityLabel=""
+                  accessibilityRole="image"
+                  accessible={false}
                   style={
                     [
                       {
-                        "color": "#9EA2A8",
-                        "fontSize": 20,
+                        "bottom": 0,
+                        "height": 20,
+                        "width": 20,
                       },
-                      [
-                        {
-                          "lineHeight": 20,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    accessible={false}
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "bottom": 0,
+                          "fontFamily": "custom-c991a6a0",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                          "includeFontPadding": false,
+                          "position": "absolute",
+                        },
+                        {
+                          "fontSize": 20,
+                        },
+                        {
+                          "color": "#9EA2A8",
+                        },
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
             <View
@@ -2766,32 +2871,47 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   ]
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
+                  accessibilityLabel=""
+                  accessibilityRole="image"
+                  accessible={false}
                   style={
                     [
                       {
-                        "color": "#C7AA66",
-                        "fontSize": 20,
+                        "bottom": 0,
+                        "height": 20,
+                        "width": 20,
                       },
-                      [
-                        {
-                          "lineHeight": 20,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    accessible={false}
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "bottom": 0,
+                          "fontFamily": "custom-c991a6a0",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                          "includeFontPadding": false,
+                          "position": "absolute",
+                        },
+                        {
+                          "fontSize": 20,
+                        },
+                        {
+                          "color": "#C7AA66",
+                        },
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
             <View
@@ -2966,32 +3086,47 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   ]
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
+                  accessibilityLabel=""
+                  accessibilityRole="image"
+                  accessible={false}
                   style={
                     [
                       {
-                        "color": "#D88892",
-                        "fontSize": 20,
+                        "bottom": 0,
+                        "height": 20,
+                        "width": 20,
                       },
-                      [
-                        {
-                          "lineHeight": 20,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    accessible={false}
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "bottom": 0,
+                          "fontFamily": "custom-c991a6a0",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                          "includeFontPadding": false,
+                          "position": "absolute",
+                        },
+                        {
+                          "fontSize": 20,
+                        },
+                        {
+                          "color": "#D88892",
+                        },
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
             <View
@@ -3176,32 +3311,47 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   ]
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
+                  accessibilityLabel=""
+                  accessibilityRole="image"
+                  accessible={false}
                   style={
                     [
                       {
-                        "color": "#9EA2A8",
-                        "fontSize": 20,
+                        "bottom": 0,
+                        "height": 20,
+                        "width": 20,
                       },
-                      [
-                        {
-                          "lineHeight": 20,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    accessible={false}
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "bottom": 0,
+                          "fontFamily": "custom-c991a6a0",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                          "includeFontPadding": false,
+                          "position": "absolute",
+                        },
+                        {
+                          "fontSize": 20,
+                        },
+                        {
+                          "color": "#9EA2A8",
+                        },
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
             <View
@@ -3509,32 +3659,47 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   ]
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
+                  accessibilityLabel=""
+                  accessibilityRole="image"
+                  accessible={false}
                   style={
                     [
                       {
-                        "color": "#9EA2A8",
-                        "fontSize": 20,
+                        "bottom": 0,
+                        "height": 20,
+                        "width": 20,
                       },
-                      [
-                        {
-                          "lineHeight": 20,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    accessible={false}
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "bottom": 0,
+                          "fontFamily": "custom-c991a6a0",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                          "includeFontPadding": false,
+                          "position": "absolute",
+                        },
+                        {
+                          "fontSize": 20,
+                        },
+                        {
+                          "color": "#9EA2A8",
+                        },
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
             <View
@@ -3842,32 +4007,47 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   ]
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
+                  accessibilityLabel=""
+                  accessibilityRole="image"
+                  accessible={false}
                   style={
                     [
                       {
-                        "color": "#C7AA66",
-                        "fontSize": 20,
+                        "bottom": 0,
+                        "height": 20,
+                        "width": 20,
                       },
-                      [
-                        {
-                          "lineHeight": 20,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    accessible={false}
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "bottom": 0,
+                          "fontFamily": "custom-c991a6a0",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                          "includeFontPadding": false,
+                          "position": "absolute",
+                        },
+                        {
+                          "fontSize": 20,
+                        },
+                        {
+                          "color": "#C7AA66",
+                        },
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
             <View
@@ -4042,32 +4222,47 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   ]
                 }
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
+                  accessibilityLabel=""
+                  accessibilityRole="image"
+                  accessible={false}
                   style={
                     [
                       {
-                        "color": "#D88892",
-                        "fontSize": 20,
+                        "bottom": 0,
+                        "height": 20,
+                        "width": 20,
                       },
-                      [
-                        {
-                          "lineHeight": 20,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      undefined,
                     ]
                   }
                 >
-                  
-                </Text>
+                  <Text
+                    accessible={false}
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "bottom": 0,
+                          "fontFamily": "custom-c991a6a0",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                          "includeFontPadding": false,
+                          "position": "absolute",
+                        },
+                        {
+                          "fontSize": 20,
+                        },
+                        {
+                          "color": "#D88892",
+                        },
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
             <View
@@ -4830,32 +5025,47 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
             ]
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 20,
+                  "bottom": 0,
+                  "height": 20,
+                  "width": 20,
                 },
-                [
-                  {
-                    "lineHeight": 20,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 20,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
       <View
@@ -4881,32 +5091,47 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
             ]
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#8E6300",
-                  "fontSize": 20,
+                  "bottom": 0,
+                  "height": 20,
+                  "width": 20,
                 },
-                [
-                  {
-                    "lineHeight": 20,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 20,
+                  },
+                  {
+                    "color": "#8E6300",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
       <View
@@ -4932,32 +5157,47 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
             ]
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#8E6300",
-                  "fontSize": 20,
+                  "bottom": 0,
+                  "height": 20,
+                  "width": 20,
                 },
-                [
-                  {
-                    "lineHeight": 20,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 20,
+                  },
+                  {
+                    "color": "#8E6300",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
       <View
@@ -4983,32 +5223,47 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
             ]
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#9B1325",
-                  "fontSize": 20,
+                  "bottom": 0,
+                  "height": 20,
+                  "width": 20,
                 },
-                [
-                  {
-                    "lineHeight": 20,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 20,
+                  },
+                  {
+                    "color": "#9B1325",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -5075,32 +5330,47 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
+          accessibilityLabel=""
+          accessibilityRole="image"
+          accessible={false}
           style={
             [
               {
-                "color": "#2F343D",
-                "fontSize": 20,
+                "bottom": 0,
+                "height": 20,
+                "width": 20,
               },
-              [
-                {
-                  "lineHeight": 20,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "bottom": 0,
+                  "fontFamily": "custom-c991a6a0",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                  "includeFontPadding": false,
+                  "position": "absolute",
+                },
+                {
+                  "fontSize": 20,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
       <View
         style={
@@ -5109,32 +5379,47 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
+          accessibilityLabel=""
+          accessibilityRole="image"
+          accessible={false}
           style={
             [
               {
-                "color": "#8E6300",
-                "fontSize": 20,
+                "bottom": 0,
+                "height": 20,
+                "width": 20,
               },
-              [
-                {
-                  "lineHeight": 20,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "bottom": 0,
+                  "fontFamily": "custom-c991a6a0",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                  "includeFontPadding": false,
+                  "position": "absolute",
+                },
+                {
+                  "fontSize": 20,
+                },
+                {
+                  "color": "#8E6300",
+                },
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
       <View
         style={
@@ -5143,32 +5428,47 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
+          accessibilityLabel=""
+          accessibilityRole="image"
+          accessible={false}
           style={
             [
               {
-                "color": "#8E6300",
-                "fontSize": 20,
+                "bottom": 0,
+                "height": 20,
+                "width": 20,
               },
-              [
-                {
-                  "lineHeight": 20,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "bottom": 0,
+                  "fontFamily": "custom-c991a6a0",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                  "includeFontPadding": false,
+                  "position": "absolute",
+                },
+                {
+                  "fontSize": 20,
+                },
+                {
+                  "color": "#8E6300",
+                },
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
       <View
         style={
@@ -5177,32 +5477,47 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
+          accessibilityLabel=""
+          accessibilityRole="image"
+          accessible={false}
           style={
             [
               {
-                "color": "#D40C26",
-                "fontSize": 20,
+                "bottom": 0,
+                "height": 20,
+                "width": 20,
               },
-              [
-                {
-                  "lineHeight": 20,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "bottom": 0,
+                  "fontFamily": "custom-c991a6a0",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                  "includeFontPadding": false,
+                  "position": "absolute",
+                },
+                {
+                  "fontSize": 20,
+                },
+                {
+                  "color": "#D40C26",
+                },
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
       <View
         style={
@@ -5211,32 +5526,47 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
+          accessibilityLabel=""
+          accessibilityRole="image"
+          accessible={false}
           style={
             [
               {
-                "color": "#6C727A",
-                "fontSize": 20,
+                "bottom": 0,
+                "height": 20,
+                "width": 20,
               },
-              [
-                {
-                  "lineHeight": 20,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "bottom": 0,
+                  "fontFamily": "custom-c991a6a0",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                  "includeFontPadding": false,
+                  "position": "absolute",
+                },
+                {
+                  "fontSize": 20,
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
   </View>
@@ -5290,32 +5620,47 @@ exports[`Story Snapshots: InfoCardLongText should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
+          accessibilityLabel=""
+          accessibilityRole="image"
+          accessible={false}
           style={
             [
               {
-                "color": "#8E6300",
-                "fontSize": 20,
+                "bottom": 0,
+                "height": 20,
+                "width": 20,
               },
-              [
-                {
-                  "lineHeight": 20,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "bottom": 0,
+                  "fontFamily": "custom-c991a6a0",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                  "includeFontPadding": false,
+                  "position": "absolute",
+                },
+                {
+                  "fontSize": 20,
+                },
+                {
+                  "color": "#8E6300",
+                },
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
       <View
         style={
@@ -7179,32 +7524,47 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
+          accessibilityLabel=""
+          accessibilityRole="image"
+          accessible={false}
           style={
             [
               {
-                "color": "#2F343D",
-                "fontSize": 18,
+                "bottom": 0,
+                "height": 18,
+                "width": 18,
               },
-              [
-                {
-                  "lineHeight": 18,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "bottom": 0,
+                  "fontFamily": "custom-c991a6a0",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                  "includeFontPadding": false,
+                  "position": "absolute",
+                },
+                {
+                  "fontSize": 18,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
   </ExternalKeyboardView>
@@ -7381,32 +7741,47 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
           }
           testID="icon_container"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#6C727A",
-                  "fontSize": 22,
+                  "bottom": 0,
+                  "height": 22,
+                  "width": 22,
                 },
-                [
-                  {
-                    "lineHeight": 22,
-                  },
-                  false,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                undefined,
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-c991a6a0",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 22,
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>

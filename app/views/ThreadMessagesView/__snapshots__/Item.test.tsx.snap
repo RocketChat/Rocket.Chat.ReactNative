@@ -313,32 +313,47 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -373,32 +388,47 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -515,32 +545,47 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                         accessibilityLabel="Follow thread"
                         style={{}}
                       >
-                        <Text
-                          allowFontScaling={false}
-                          selectable={false}
+                        <View
+                          accessibilityLabel=""
+                          accessibilityRole="image"
+                          accessible={false}
                           style={
                             [
                               {
-                                "color": "#2F343D",
-                                "fontSize": 24,
+                                "bottom": 0,
+                                "height": 24,
+                                "width": 24,
                               },
-                              [
-                                {
-                                  "lineHeight": 24,
-                                },
-                                undefined,
-                              ],
-                              {
-                                "fontFamily": "custom",
-                                "fontStyle": "normal",
-                                "fontWeight": "normal",
-                              },
-                              {},
+                              undefined,
                             ]
                           }
                         >
-                          
-                        </Text>
+                          <Text
+                            accessible={false}
+                            allowFontScaling={false}
+                            selectable={false}
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "fontFamily": "custom-c991a6a0",
+                                  "fontStyle": "normal",
+                                  "fontWeight": "normal",
+                                  "includeFontPadding": false,
+                                  "position": "absolute",
+                                },
+                                {
+                                  "fontSize": 24,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
+                            }
+                          >
+                            
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </ExternalKeyboardView>
@@ -861,32 +906,47 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -921,32 +981,47 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -1063,32 +1138,47 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                         accessibilityLabel="Follow thread"
                         style={{}}
                       >
-                        <Text
-                          allowFontScaling={false}
-                          selectable={false}
+                        <View
+                          accessibilityLabel=""
+                          accessibilityRole="image"
+                          accessible={false}
                           style={
                             [
                               {
-                                "color": "#2F343D",
-                                "fontSize": 24,
+                                "bottom": 0,
+                                "height": 24,
+                                "width": 24,
                               },
-                              [
-                                {
-                                  "lineHeight": 24,
-                                },
-                                undefined,
-                              ],
-                              {
-                                "fontFamily": "custom",
-                                "fontStyle": "normal",
-                                "fontWeight": "normal",
-                              },
-                              {},
+                              undefined,
                             ]
                           }
                         >
-                          
-                        </Text>
+                          <Text
+                            accessible={false}
+                            allowFontScaling={false}
+                            selectable={false}
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "fontFamily": "custom-c991a6a0",
+                                  "fontStyle": "normal",
+                                  "fontWeight": "normal",
+                                  "includeFontPadding": false,
+                                  "position": "absolute",
+                                },
+                                {
+                                  "fontSize": 24,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
+                            }
+                          >
+                            
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </ExternalKeyboardView>
@@ -1409,32 +1499,47 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -1469,32 +1574,47 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -1611,32 +1731,47 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                         accessibilityLabel="Follow thread"
                         style={{}}
                       >
-                        <Text
-                          allowFontScaling={false}
-                          selectable={false}
+                        <View
+                          accessibilityLabel=""
+                          accessibilityRole="image"
+                          accessible={false}
                           style={
                             [
                               {
-                                "color": "#2F343D",
-                                "fontSize": 24,
+                                "bottom": 0,
+                                "height": 24,
+                                "width": 24,
                               },
-                              [
-                                {
-                                  "lineHeight": 24,
-                                },
-                                undefined,
-                              ],
-                              {
-                                "fontFamily": "custom",
-                                "fontStyle": "normal",
-                                "fontWeight": "normal",
-                              },
-                              {},
+                              undefined,
                             ]
                           }
                         >
-                          
-                        </Text>
+                          <Text
+                            accessible={false}
+                            allowFontScaling={false}
+                            selectable={false}
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "fontFamily": "custom-c991a6a0",
+                                  "fontStyle": "normal",
+                                  "fontWeight": "normal",
+                                  "includeFontPadding": false,
+                                  "position": "absolute",
+                                },
+                                {
+                                  "fontSize": 24,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
+                            }
+                          >
+                            
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </ExternalKeyboardView>
@@ -1944,32 +2079,47 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -2004,32 +2154,47 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -2146,32 +2311,47 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                         accessibilityLabel="Follow thread"
                         style={{}}
                       >
-                        <Text
-                          allowFontScaling={false}
-                          selectable={false}
+                        <View
+                          accessibilityLabel=""
+                          accessibilityRole="image"
+                          accessible={false}
                           style={
                             [
                               {
-                                "color": "#2F343D",
-                                "fontSize": 24,
+                                "bottom": 0,
+                                "height": 24,
+                                "width": 24,
                               },
-                              [
-                                {
-                                  "lineHeight": 24,
-                                },
-                                undefined,
-                              ],
-                              {
-                                "fontFamily": "custom",
-                                "fontStyle": "normal",
-                                "fontWeight": "normal",
-                              },
-                              {},
+                              undefined,
                             ]
                           }
                         >
-                          
-                        </Text>
+                          <Text
+                            accessible={false}
+                            allowFontScaling={false}
+                            selectable={false}
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "fontFamily": "custom-c991a6a0",
+                                  "fontStyle": "normal",
+                                  "fontWeight": "normal",
+                                  "includeFontPadding": false,
+                                  "position": "absolute",
+                                },
+                                {
+                                  "fontSize": 24,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
+                            }
+                          >
+                            
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </ExternalKeyboardView>
@@ -2496,32 +2676,47 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -2556,32 +2751,47 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -2698,32 +2908,47 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         accessibilityLabel="Follow thread"
                         style={{}}
                       >
-                        <Text
-                          allowFontScaling={false}
-                          selectable={false}
+                        <View
+                          accessibilityLabel=""
+                          accessibilityRole="image"
+                          accessible={false}
                           style={
                             [
                               {
-                                "color": "#2F343D",
-                                "fontSize": 24,
+                                "bottom": 0,
+                                "height": 24,
+                                "width": 24,
                               },
-                              [
-                                {
-                                  "lineHeight": 24,
-                                },
-                                undefined,
-                              ],
-                              {
-                                "fontFamily": "custom",
-                                "fontStyle": "normal",
-                                "fontWeight": "normal",
-                              },
-                              {},
+                              undefined,
                             ]
                           }
                         >
-                          
-                        </Text>
+                          <Text
+                            accessible={false}
+                            allowFontScaling={false}
+                            selectable={false}
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "fontFamily": "custom-c991a6a0",
+                                  "fontStyle": "normal",
+                                  "fontWeight": "normal",
+                                  "includeFontPadding": false,
+                                  "position": "absolute",
+                                },
+                                {
+                                  "fontSize": 24,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
+                            }
+                          >
+                            
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </ExternalKeyboardView>
@@ -3028,32 +3253,47 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -3088,32 +3328,47 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -3230,32 +3485,47 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         accessibilityLabel="Follow thread"
                         style={{}}
                       >
-                        <Text
-                          allowFontScaling={false}
-                          selectable={false}
+                        <View
+                          accessibilityLabel=""
+                          accessibilityRole="image"
+                          accessible={false}
                           style={
                             [
                               {
-                                "color": "#2F343D",
-                                "fontSize": 24,
+                                "bottom": 0,
+                                "height": 24,
+                                "width": 24,
                               },
-                              [
-                                {
-                                  "lineHeight": 24,
-                                },
-                                undefined,
-                              ],
-                              {
-                                "fontFamily": "custom",
-                                "fontStyle": "normal",
-                                "fontWeight": "normal",
-                              },
-                              {},
+                              undefined,
                             ]
                           }
                         >
-                          
-                        </Text>
+                          <Text
+                            accessible={false}
+                            allowFontScaling={false}
+                            selectable={false}
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "fontFamily": "custom-c991a6a0",
+                                  "fontStyle": "normal",
+                                  "fontWeight": "normal",
+                                  "includeFontPadding": false,
+                                  "position": "absolute",
+                                },
+                                {
+                                  "fontSize": 24,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
+                            }
+                          >
+                            
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </ExternalKeyboardView>
@@ -3560,32 +3830,47 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -3620,32 +3905,47 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -3762,32 +4062,47 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         accessibilityLabel="Follow thread"
                         style={{}}
                       >
-                        <Text
-                          allowFontScaling={false}
-                          selectable={false}
+                        <View
+                          accessibilityLabel=""
+                          accessibilityRole="image"
+                          accessible={false}
                           style={
                             [
                               {
-                                "color": "#2F343D",
-                                "fontSize": 24,
+                                "bottom": 0,
+                                "height": 24,
+                                "width": 24,
                               },
-                              [
-                                {
-                                  "lineHeight": 24,
-                                },
-                                undefined,
-                              ],
-                              {
-                                "fontFamily": "custom",
-                                "fontStyle": "normal",
-                                "fontWeight": "normal",
-                              },
-                              {},
+                              undefined,
                             ]
                           }
                         >
-                          
-                        </Text>
+                          <Text
+                            accessible={false}
+                            allowFontScaling={false}
+                            selectable={false}
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "fontFamily": "custom-c991a6a0",
+                                  "fontStyle": "normal",
+                                  "fontWeight": "normal",
+                                  "includeFontPadding": false,
+                                  "position": "absolute",
+                                },
+                                {
+                                  "fontSize": 24,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
+                            }
+                          >
+                            
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </ExternalKeyboardView>
@@ -4092,32 +4407,47 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -4152,32 +4482,47 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -4294,32 +4639,47 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         accessibilityLabel="Follow thread"
                         style={{}}
                       >
-                        <Text
-                          allowFontScaling={false}
-                          selectable={false}
+                        <View
+                          accessibilityLabel=""
+                          accessibilityRole="image"
+                          accessible={false}
                           style={
                             [
                               {
-                                "color": "#2F343D",
-                                "fontSize": 24,
+                                "bottom": 0,
+                                "height": 24,
+                                "width": 24,
                               },
-                              [
-                                {
-                                  "lineHeight": 24,
-                                },
-                                undefined,
-                              ],
-                              {
-                                "fontFamily": "custom",
-                                "fontStyle": "normal",
-                                "fontWeight": "normal",
-                              },
-                              {},
+                              undefined,
                             ]
                           }
                         >
-                          
-                        </Text>
+                          <Text
+                            accessible={false}
+                            allowFontScaling={false}
+                            selectable={false}
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "fontFamily": "custom-c991a6a0",
+                                  "fontStyle": "normal",
+                                  "fontWeight": "normal",
+                                  "includeFontPadding": false,
+                                  "position": "absolute",
+                                },
+                                {
+                                  "fontSize": 24,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
+                            }
+                          >
+                            
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </ExternalKeyboardView>
@@ -4624,32 +4984,47 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -4684,32 +5059,47 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -4826,32 +5216,47 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         accessibilityLabel="Follow thread"
                         style={{}}
                       >
-                        <Text
-                          allowFontScaling={false}
-                          selectable={false}
+                        <View
+                          accessibilityLabel=""
+                          accessibilityRole="image"
+                          accessible={false}
                           style={
                             [
                               {
-                                "color": "#2F343D",
-                                "fontSize": 24,
+                                "bottom": 0,
+                                "height": 24,
+                                "width": 24,
                               },
-                              [
-                                {
-                                  "lineHeight": 24,
-                                },
-                                undefined,
-                              ],
-                              {
-                                "fontFamily": "custom",
-                                "fontStyle": "normal",
-                                "fontWeight": "normal",
-                              },
-                              {},
+                              undefined,
                             ]
                           }
                         >
-                          
-                        </Text>
+                          <Text
+                            accessible={false}
+                            allowFontScaling={false}
+                            selectable={false}
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "fontFamily": "custom-c991a6a0",
+                                  "fontStyle": "normal",
+                                  "fontWeight": "normal",
+                                  "includeFontPadding": false,
+                                  "position": "absolute",
+                                },
+                                {
+                                  "fontSize": 24,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
+                            }
+                          >
+                            
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </ExternalKeyboardView>
@@ -5192,32 +5597,47 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -5252,32 +5672,47 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#2F343D",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -5394,32 +5829,47 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         accessibilityLabel="Follow thread"
                         style={{}}
                       >
-                        <Text
-                          allowFontScaling={false}
-                          selectable={false}
+                        <View
+                          accessibilityLabel=""
+                          accessibilityRole="image"
+                          accessible={false}
                           style={
                             [
                               {
-                                "color": "#2F343D",
-                                "fontSize": 24,
+                                "bottom": 0,
+                                "height": 24,
+                                "width": 24,
                               },
-                              [
-                                {
-                                  "lineHeight": 24,
-                                },
-                                undefined,
-                              ],
-                              {
-                                "fontFamily": "custom",
-                                "fontStyle": "normal",
-                                "fontWeight": "normal",
-                              },
-                              {},
+                              undefined,
                             ]
                           }
                         >
-                          
-                        </Text>
+                          <Text
+                            accessible={false}
+                            allowFontScaling={false}
+                            selectable={false}
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "fontFamily": "custom-c991a6a0",
+                                  "fontStyle": "normal",
+                                  "fontWeight": "normal",
+                                  "includeFontPadding": false,
+                                  "position": "absolute",
+                                },
+                                {
+                                  "fontSize": 24,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
+                            }
+                          >
+                            
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </ExternalKeyboardView>
@@ -5727,32 +6177,47 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#C1C7D0",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#C1C7D0",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -5787,32 +6252,47 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#C1C7D0",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#C1C7D0",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -5929,32 +6409,47 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         accessibilityLabel="Follow thread"
                         style={{}}
                       >
-                        <Text
-                          allowFontScaling={false}
-                          selectable={false}
+                        <View
+                          accessibilityLabel=""
+                          accessibilityRole="image"
+                          accessible={false}
                           style={
                             [
                               {
-                                "color": "#C1C7D0",
-                                "fontSize": 24,
+                                "bottom": 0,
+                                "height": 24,
+                                "width": 24,
                               },
-                              [
-                                {
-                                  "lineHeight": 24,
-                                },
-                                undefined,
-                              ],
-                              {
-                                "fontFamily": "custom",
-                                "fontStyle": "normal",
-                                "fontWeight": "normal",
-                              },
-                              {},
+                              undefined,
                             ]
                           }
                         >
-                          
-                        </Text>
+                          <Text
+                            accessible={false}
+                            allowFontScaling={false}
+                            selectable={false}
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "fontFamily": "custom-c991a6a0",
+                                  "fontStyle": "normal",
+                                  "fontWeight": "normal",
+                                  "includeFontPadding": false,
+                                  "position": "absolute",
+                                },
+                                {
+                                  "fontSize": 24,
+                                },
+                                {
+                                  "color": "#C1C7D0",
+                                },
+                              ]
+                            }
+                          >
+                            
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </ExternalKeyboardView>
@@ -6262,32 +6757,47 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#E4E7EA",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#E4E7EA",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -6322,32 +6832,47 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       }
                     }
                   >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#E4E7EA",
-                            "fontSize": 24,
+                            "bottom": 0,
+                            "height": 24,
+                            "width": 24,
                           },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
+                          undefined,
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-c991a6a0",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 24,
+                            },
+                            {
+                              "color": "#E4E7EA",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                     <Text
                       numberOfLines={1}
                       style={
@@ -6464,32 +6989,47 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         accessibilityLabel="Follow thread"
                         style={{}}
                       >
-                        <Text
-                          allowFontScaling={false}
-                          selectable={false}
+                        <View
+                          accessibilityLabel=""
+                          accessibilityRole="image"
+                          accessible={false}
                           style={
                             [
                               {
-                                "color": "#E4E7EA",
-                                "fontSize": 24,
+                                "bottom": 0,
+                                "height": 24,
+                                "width": 24,
                               },
-                              [
-                                {
-                                  "lineHeight": 24,
-                                },
-                                undefined,
-                              ],
-                              {
-                                "fontFamily": "custom",
-                                "fontStyle": "normal",
-                                "fontWeight": "normal",
-                              },
-                              {},
+                              undefined,
                             ]
                           }
                         >
-                          
-                        </Text>
+                          <Text
+                            accessible={false}
+                            allowFontScaling={false}
+                            selectable={false}
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "fontFamily": "custom-c991a6a0",
+                                  "fontStyle": "normal",
+                                  "fontWeight": "normal",
+                                  "includeFontPadding": false,
+                                  "position": "absolute",
+                                },
+                                {
+                                  "fontSize": 24,
+                                },
+                                {
+                                  "color": "#E4E7EA",
+                                },
+                              ]
+                            }
+                          >
+                            
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </ExternalKeyboardView>

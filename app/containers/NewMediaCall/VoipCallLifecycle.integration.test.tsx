@@ -354,20 +354,13 @@ const flushMicrotasks = async () => {
 // warnings and new bugs instead of hiding them.
 //
 // Known-noise allowlist:
-//   - '@expo/vector-icons' Icon warn: fires on CallView render because the
-//     icon font has not been loaded in the Jest environment. 3rd-party.
-//   - 'not wrapped in act(...)' warnings tied to the Icon class component's
-//     render inside <CallView /> — same root cause as above.
-//   - 'is not a valid icon name' — CallView's CustomIcon reports missing
-//     glyph entries (e.g. 'pause-shape-unfilled') in the Jest env; glyph map
-//     is not loaded. Rendering succeeds, warning is cosmetic for tests.
 //   - '[VoIP] Call not found after accept:' — deterministic expected branch output of
 //     answerCall when getCallData returns undefined (exercised by test A2).
 //     Routed through the log() helper, which in __DEV__ falls through to
 //     console.error(Error). Allowlisted on the error side, asserted via the
 //     error spy in the corresponding test.
 const CONSOLE_ERROR_ALLOWLIST: string[] = ['[VoIP] Call not found after accept:'];
-const CONSOLE_WARN_ALLOWLIST: string[] = ['@expo/vector-icons', 'not wrapped in act', 'is not a valid icon name'];
+const CONSOLE_WARN_ALLOWLIST: string[] = [];
 
 let consoleErrorSpy: jest.SpyInstance | undefined;
 let consoleWarnSpy: jest.SpyInstance | undefined;

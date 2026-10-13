@@ -61,32 +61,47 @@ exports[`renders and fires onPress 1`] = `
     accessibilityRole="button"
     accessible={true}
   >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
+    <View
+      accessibilityLabel=""
+      accessibilityRole="image"
+      accessible={false}
       style={
         [
           {
-            "color": "#000",
-            "fontSize": 24,
+            "bottom": 0,
+            "height": 24,
+            "width": 24,
           },
-          [
-            {
-              "lineHeight": 24,
-            },
-            undefined,
-          ],
-          {
-            "fontFamily": "custom",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
+          undefined,
         ]
       }
     >
-      
-    </Text>
+      <Text
+        accessible={false}
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "bottom": 0,
+              "fontFamily": "custom-c991a6a0",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+              "includeFontPadding": false,
+              "position": "absolute",
+            },
+            {
+              "fontSize": 24,
+            },
+            {
+              "color": "#000",
+            },
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
   </View>
 </View>
 `;
