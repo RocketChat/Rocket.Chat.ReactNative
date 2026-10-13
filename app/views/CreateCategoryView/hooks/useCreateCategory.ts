@@ -5,6 +5,7 @@ import { setUser } from '~/actions/login';
 import { LISTENER } from '~/containers/Toast';
 import { type ISidebarCategory } from '~/definitions';
 import I18n from '~/i18n';
+import { useCaptureSession } from '~/lib/hooks/useCaptureSession';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { random } from '~/lib/methods/helpers/random';
 import Navigation from '~/lib/navigation/appNavigation';
@@ -27,19 +28,23 @@ export const prependCategory = (
 
 export const useCreateCategory = () => {
 	const dispatch = useDispatch();
+	const captureSession = useCaptureSession();
 	const { storedCategories, sectionsOrder, groupOrder } = useSidebarCategories();
 	const [creating, setCreating] = useState(false);
 	const [categoryId] = useState(() => random(17));
 
 	const createCategory = async (name: string, roomIds: string[]) => {
+		const isSameSession = captureSession();
 		const category: ISidebarCategory = { _id: categoryId, name: name.trim() };
 		const sidebarCategories = prependCategory(storedCategories, groupOrder, sectionsOrder, category);
 		setCreating(true);
 		try {
 			await saveSidebarCategories(sidebarCategories);
-			dispatch(setUser({ sidebarCategories }));
-			if (roomIds.length > 0) {
-				await setRoomsCategory(roomIds, category._id);
+			if (isSameSession()) {
+				dispatch(setUser({ sidebarCategories }));
+				if (roomIds.length > 0) {
+					await setRoomsCategory(roomIds, category._id);
+				}
 			}
 			EventEmitter.emit(LISTENER, { message: I18n.t('Category_created') });
 			Navigation.popTo('DrawerNavigator');

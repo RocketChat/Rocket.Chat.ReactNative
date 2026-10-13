@@ -7,7 +7,6 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import Navigation from '~/lib/navigation/appNavigation';
-import { setRoomsCategory } from '~/lib/services/restApi';
 import { alertCategoryError } from '../utils/alertCategoryError';
 import { useSidebarCategoriesUpdate } from './useSidebarCategoriesUpdate';
 
@@ -18,10 +17,7 @@ export const useDeleteCategory = (category: ISidebarCategory, roomIds: string[])
 
 	const deleteAndLeave = async () => {
 		try {
-			await deleteCategory();
-			if (roomIds.length > 0) {
-				await setRoomsCategory(roomIds, null);
-			}
+			await deleteCategory(roomIds);
 			EventEmitter.emit(LISTENER, { message: I18n.t('Category_deleted', { name: category.name }) });
 			if (isMasterDetail) {
 				Navigation.popTo('DrawerNavigator');
