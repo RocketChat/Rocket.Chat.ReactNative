@@ -13,6 +13,8 @@ const TRIGGER_TIMEOUT = 5000;
 
 export const ACKNOWLEDGED = 'acknowledged';
 
+const KEEPS_VIEW_OPEN = ['errors', 'modal.update', 'contextual_bar.update'];
+
 const triggers = new Map<string, { appId?: string; consumed?: boolean; handled?: TModalAction }>();
 
 export const withTriggerId = async <T>(appId: string | undefined, request: (triggerId: string) => Promise<T>): Promise<T> => {
@@ -115,8 +117,14 @@ export function postUserInteraction(
 			return ModalActions.CLOSE;
 		}
 
-		const reply = interactionType ? handlePayloadUserInteraction(interactionType, data as THandledServerPayload) : undefined;
-		return reply ?? triggers.get(triggerId)?.handled ?? ACKNOWLEDGED;
+		if (interactionType) {
+			handlePayloadUserInteraction(interactionType, data as THandledServerPayload);
+		}
+		const handled = triggers.get(triggerId)?.handled;
+		if (interactionType && KEEPS_VIEW_OPEN.includes(interactionType)) {
+			return handled;
+		}
+		return handled ?? ACKNOWLEDGED;
 	});
 }
 

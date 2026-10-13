@@ -286,6 +286,31 @@ describe('actions', () => {
 			expect(showToast).toHaveBeenCalledTimes(1);
 		});
 
+		it('keeps the view open for a contextual bar update it cannot render', async () => {
+			mockedFetch.mockResolvedValueOnce({
+				ok: true,
+				text: () => Promise.resolve(JSON.stringify({ type: 'contextual_bar.update', triggerId: 'trigger-fixed-id' }))
+			} as Response);
+
+			await expect(triggerAction(actionInput)).resolves.toBeUndefined();
+			expect(showToast).toHaveBeenCalledTimes(1);
+		});
+
+		it('keeps the view open for errors on a trigger the stream already used', async () => {
+			mockedFetch.mockImplementationOnce(async () => {
+				handlePayloadUserInteraction('banner.open', { triggerId: 'trigger-fixed-id' });
+				return {
+					ok: true,
+					text: () =>
+						Promise.resolve(
+							JSON.stringify({ type: ModalActions.ERRORS, triggerId: 'trigger-fixed-id', viewId: 'view-id', errors: {} })
+						)
+				} as Response;
+			});
+
+			await expect(triggerAction(actionInput)).resolves.toBeUndefined();
+		});
+
 		it('reports an acknowledgement when the app replies without an interaction type', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
