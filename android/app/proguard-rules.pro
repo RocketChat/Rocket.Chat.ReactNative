@@ -10,8 +10,8 @@
 # Add any project specific keep options here:
 
 # Looked up by name from native code or reflection, which R8 cannot trace
--keep class com.nozbe.watermelondb.** { *; }
--keep class * implements com.facebook.react.module.model.ReactModuleInfoProvider { *; }
+-keep class com.nozbe.watermelondb.jsi.** { *; }
+-keep class **$$ReactModuleInfoProvider { <init>(); }
 -keep class com.android.installreferrer.api.** { *; }
 -keep class com.google.android.gms.common.GoogleApiAvailability { *; }
 -keepnames class com.google.mlkit.vision.barcode.BarcodeScanning
