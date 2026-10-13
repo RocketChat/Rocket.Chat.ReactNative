@@ -53,7 +53,7 @@ describe('getGroupOrder', () => {
 		expect(order).toEqual(['Teams', 'Discussions', 'Channels', 'work', 'Favorites', 'Direct_Messages', 'Conversations']);
 	});
 
-	it('ignores dynamic groups and system groups that no longer exist', () => {
+	it('ignores dynamic groups and keeps system groups this app does not know', () => {
 		const order = getGroupOrder(
 			[
 				{ _id: 'Unread', name: 'Unread', default: true },
@@ -63,7 +63,7 @@ describe('getGroupOrder', () => {
 			SYSTEM_GROUPS
 		);
 
-		expect(order).toEqual(['work', ...DEFAULT_GROUP_ORDER]);
+		expect(order).toEqual(['Drafts', 'work', ...DEFAULT_GROUP_ORDER]);
 	});
 
 	it('follows a system group the user moved on web, as web stores it', () => {
@@ -142,6 +142,29 @@ describe('toSidebarCategories', () => {
 			{ _id: 'On_Hold_Chats', name: 'On_Hold_Chats', default: true },
 			{ _id: 'Favorites', name: 'Favorites', default: true },
 			work
+		]);
+	});
+
+	it('keeps a stored system group this app does not know, in place, when saving', () => {
+		const channels = { _id: 'Channels', name: 'Channels', default: true };
+		const drafts = { _id: 'Drafts', name: 'Drafts', default: true };
+		const work = { _id: 'work', name: 'Work' };
+		const storedCategories = [channels, drafts, work];
+
+		expect(toSidebarCategories(storedCategories, getGroupOrder(storedCategories, SYSTEM_GROUPS), SYSTEM_GROUPS)).toEqual([
+			{ _id: 'Incoming_Calls', name: 'Incoming_Calls', default: true },
+			{ _id: 'Incoming_Livechats', name: 'Incoming_Livechats', default: true },
+			{ _id: 'Open_Livechats', name: 'Open_Livechats', default: true },
+			{ _id: 'On_Hold_Chats', name: 'On_Hold_Chats', default: true },
+			{ _id: 'Unread', name: 'Unread', default: true },
+			{ _id: 'Favorites', name: 'Favorites', default: true },
+			{ _id: 'Teams', name: 'Teams', default: true },
+			{ _id: 'Discussions', name: 'Discussions', default: true },
+			channels,
+			drafts,
+			work,
+			{ _id: 'Direct_Messages', name: 'Direct_Messages', default: true },
+			{ _id: 'Conversations', name: 'Conversations', default: true }
 		]);
 	});
 });

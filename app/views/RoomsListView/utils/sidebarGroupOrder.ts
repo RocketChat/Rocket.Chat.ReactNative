@@ -48,9 +48,7 @@ const mergeWithSectionsOrder = (storedIds: string[], staticSectionsOrder: readon
 };
 
 export const getGroupOrder = (sidebarCategories: ISidebarCategory[], sectionsOrder: readonly string[]): string[] => {
-	const storedIds = sidebarCategories
-		.filter(category => !category.default || DEFAULT_GROUP_ORDER.includes(category._id))
-		.map(category => category._id);
+	const storedIds = sidebarCategories.filter(category => !DYNAMIC_GROUPS.includes(category._id)).map(category => category._id);
 	const staticSectionsOrder = sectionsOrder.filter(key => DEFAULT_GROUP_ORDER.includes(key));
 	return mergeWithSectionsOrder([...new Set(storedIds)], staticSectionsOrder);
 };
