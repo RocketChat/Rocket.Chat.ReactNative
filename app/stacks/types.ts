@@ -304,6 +304,7 @@ export type InsideStackParamList = {
 		data: any;
 	};
 	CallView: undefined;
+	ConferenceView: undefined;
 };
 
 export type { OutsideParamList, OutsideModalParamList } from './OutsideStack';
