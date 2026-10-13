@@ -270,7 +270,7 @@ describe('actions', () => {
 			await expect(triggerAction(actionInput)).rejects.toThrow('Invalid JSON response from server');
 		});
 
-		it('shows a toast for an unsupported surface this client cannot render', async () => {
+		it('shows a toast and acknowledges an unsupported surface this client cannot render', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
 				text: () =>
@@ -282,7 +282,7 @@ describe('actions', () => {
 					)
 			} as Response);
 
-			await expect(triggerAction(actionInput)).resolves.toBeUndefined();
+			await expect(triggerAction(actionInput)).resolves.toBe(ACKNOWLEDGED);
 			expect(showToast).toHaveBeenCalledTimes(1);
 		});
 

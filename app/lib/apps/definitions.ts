@@ -51,7 +51,7 @@ export interface IAppActionButtonRoom {
 export interface IAppLanguages {
 	apps: {
 		id: string;
-		languages: { [language: string]: { [key: string]: string } };
+		languages?: { [language: string]: { [key: string]: string } };
 	}[];
 }
 

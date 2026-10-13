@@ -111,14 +111,12 @@ export function postUserInteraction(
 		}
 
 		const { type: interactionType, ...data } = parsed;
-		if (!interactionType) {
-			return triggers.get(triggerId)?.handled ?? ACKNOWLEDGED;
-		}
 		if (interactionType === ModalActions.CLOSE) {
 			return ModalActions.CLOSE;
 		}
 
-		return handlePayloadUserInteraction(interactionType, data as THandledServerPayload) ?? triggers.get(triggerId)?.handled;
+		const reply = interactionType ? handlePayloadUserInteraction(interactionType, data as THandledServerPayload) : undefined;
+		return reply ?? triggers.get(triggerId)?.handled ?? ACKNOWLEDGED;
 	});
 }
 
