@@ -6,12 +6,13 @@ import { deepLinkingOpen } from '~/actions/deepLinking';
 import database from '~/lib/database';
 import { SUBSCRIPTIONS_TABLE } from '~/lib/database/model/Subscription';
 import { getIsMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { RootEnum, type IApplicationState } from '~/definitions';
+import { RootEnum, type IApplicationState, type TSubscriptionModel } from '~/definitions';
 import { normalizeDeepLinkingServerHost } from '~/lib/methods/helpers/normalizeDeepLinkingServerHost';
 import { emitter } from '~/lib/methods/helpers';
-import { goRoom } from '~/lib/methods/helpers/goRoom';
+import { navigateToRoom } from '~/lib/methods/helpers/goRoom';
 import Navigation from '~/lib/navigation/appNavigation';
 import { clearCacheAndReconnect } from '~/lib/methods/clearCache';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { store } from '~/lib/store/auxStore';
 
 const isLoggedInto = (server: string, state: IApplicationState) =>
@@ -59,6 +60,23 @@ const waitForNavigatorReady = (signal: AbortSignal) =>
 			reject(signal.reason);
 		});
 	});
+
+const waitForInside = async (signal: AbortSignal) => {
+	await waitForAppStart(signal);
+	if (store.getState().app.root !== RootEnum.ROOT_INSIDE) {
+		throw new Error('Not logged in to a workspace');
+	}
+};
+
+const showDrawer = () => Navigation.popTo('DrawerNavigator');
+
+const openRoom = (room: TSubscriptionModel, isMasterDetail: boolean) => {
+	if (!isMasterDetail) {
+		showDrawer();
+		Navigation.navigate('ChatsStackNavigator');
+	}
+	navigateToRoom({ item: room, isMasterDetail });
+};
 
 const waitForRoomsSync = (server: string, signal: AbortSignal) => {
 	let roomsSyncStarted = false;
@@ -194,10 +212,7 @@ registerTool({
 		required: ['rid', 'name', 'type']
 	}),
 	handler: async ({ name }, { signal }) => {
-		await waitForAppStart(signal);
-		if (store.getState().app.root !== RootEnum.ROOT_INSIDE) {
-			throw new Error('Not logged in to a workspace');
-		}
+		await waitForInside(signal);
 		const [subscription] = await database.active
 			.get(SUBSCRIPTIONS_TABLE)
 			.query(Q.or(Q.where('name', name), Q.where('fname', name)), Q.take(1))
@@ -205,7 +220,117 @@ registerTool({
 		if (!subscription) {
 			throw new Error(`No subscribed room named ${name}`);
 		}
-		await goRoom({ item: subscription, isMasterDetail: getIsMasterDetail() });
+		openRoom(subscription, getIsMasterDetail());
 		return { rid: subscription.rid, name: subscription.name, type: subscription.t };
+	}
+});
+
+const phoneStackByScreen: Record<string, string> = {
+	SettingsView: 'SettingsStackNavigator',
+	LanguageView: 'SettingsStackNavigator',
+	SecurityPrivacyView: 'SettingsStackNavigator',
+	MediaAutoDownloadView: 'SettingsStackNavigator',
+	AccessibilityAndAppearanceView: 'AccessibilityStackNavigator',
+	DisplayPrefsView: 'AccessibilityStackNavigator',
+	ThemeView: 'AccessibilityStackNavigator',
+	ProfileView: 'ProfileStackNavigator',
+	UserPreferencesView: 'ProfileStackNavigator',
+	UserNotificationPrefView: 'ProfileStackNavigator',
+	DirectoryView: 'ChatsStackNavigator'
+};
+
+const roomScreenParams: Record<string, (room: TSubscriptionModel, isMasterDetail: boolean) => object> = {
+	RoomActionsView: room => ({ rid: room.rid, t: room.t, room, joined: true }),
+	RoomInfoView: (room, isMasterDetail) => ({
+		rid: room.rid,
+		t: room.t,
+		room: room.asPlain(),
+		fromRid: room.rid,
+		showCloseModal: isMasterDetail
+	}),
+	RoomMembersView: room => ({ rid: room.rid, room, joined: true }),
+	NotificationPrefView: room => ({ rid: room.rid, room }),
+	ThreadMessagesView: room => ({ rid: room.rid, t: room.t })
+};
+
+const supportedScreens = [...Object.keys(phoneStackByScreen), ...Object.keys(roomScreenParams)];
+
+const findRoute = (screen: string, rid: string | undefined) => {
+	const route = Navigation.getCurrentRoute();
+	const params = (route?.params ?? {}) as Record<string, unknown>;
+	return route?.name === screen && (!rid || params.rid === rid) ? { route: route.name, rid: stringOrNull(params.rid) } : null;
+};
+
+const waitForRoute = (screen: string, rid: string | undefined, signal: AbortSignal) =>
+	new Promise<{ route: string; rid: string | null }>((resolve, reject) => {
+		const navigation = Navigation.navigationRef.current!;
+		const resolveIfFocused = () => {
+			const focused = findRoute(screen, rid);
+			if (focused) {
+				unsubscribe();
+				resolve(focused);
+			}
+		};
+		const unsubscribe = navigation.addListener('state', resolveIfFocused);
+		signal.addEventListener('abort', () => {
+			unsubscribe();
+			reject(signal.reason);
+		});
+		resolveIfFocused();
+	});
+
+const openRoomScreen = async (screen: string, rid: string | undefined, isMasterDetail: boolean) => {
+	if (!rid) {
+		throw new Error(`${screen} needs a rid`);
+	}
+	const room = await getSubscriptionByRoomId(rid);
+	if (!room) {
+		throw new Error(`No subscribed room with rid ${rid}`);
+	}
+	openRoom(room, isMasterDetail);
+	const params = roomScreenParams[screen](room, isMasterDetail);
+	if (isMasterDetail) {
+		Navigation.navigate('ModalStackNavigator', { screen, params });
+	} else {
+		Navigation.navigate(screen, params);
+	}
+};
+
+registerTool({
+	name: 'navigate',
+	description:
+		'Open a screen by route name and resolve with the focused route. Room screens open the room first and need its rid; omnichannel rooms are not supported.',
+	inputSchema: jsonSchema<{ screen: string; rid?: string }>({
+		type: 'object',
+		properties: {
+			screen: { type: 'string', enum: supportedScreens, description: 'Route name, e.g. SettingsView or RoomInfoView' },
+			rid: { type: 'string', description: 'Room id, required by room screens' }
+		},
+		required: ['screen'],
+		additionalProperties: false
+	}),
+	outputSchema: jsonSchema<{ route: string; rid: string | null }>({
+		type: 'object',
+		properties: { route: { type: 'string' }, rid: { type: ['string', 'null'] } },
+		required: ['route', 'rid']
+	}),
+	handler: async ({ screen, rid }, { signal }) => {
+		if (!supportedScreens.includes(screen)) {
+			throw new Error(`Unsupported screen ${screen}. Supported: ${supportedScreens.join(', ')}`);
+		}
+		await waitForInside(signal);
+		await waitForNavigatorReady(signal);
+		const isMasterDetail = getIsMasterDetail();
+		const isRoomScreen = screen in roomScreenParams;
+		if (isRoomScreen) {
+			await openRoomScreen(screen, rid, isMasterDetail);
+		} else if (isMasterDetail) {
+			showDrawer();
+			Navigation.navigate('ModalStackNavigator', { screen });
+		} else {
+			showDrawer();
+			Navigation.navigate(phoneStackByScreen[screen], { screen, initial: false, pop: true });
+		}
+		return waitForRoute(screen, isRoomScreen ? rid : undefined, signal);
 	}
 });
