@@ -9,6 +9,9 @@ export default StyleSheet.create({
 	list: {
 		width: '100%'
 	},
+	listContent: {
+		flexGrow: 1
+	},
 	serversListContainerHeader: {
 		height: 41,
 		borderBottomWidth: StyleSheet.hairlineWidth,

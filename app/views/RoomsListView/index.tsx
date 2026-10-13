@@ -171,11 +171,14 @@ const RoomsListView = memo(function RoomsListView() {
 			<Animated.FlatList
 				data={searchEnabled ? searchResults : subscriptions}
 				keyExtractor={item => `${item.rid}-${searchEnabled}`}
-				style={[styles.list, { backgroundColor: colors.surfaceTint }]}
-				contentContainerStyle={{
-					paddingBottom:
-						Platform.select({ ios: 0, default: bottom }) + (showNewMessageButton ? FLOATING_ACTION_BUTTON_CLEARANCE : 0)
-				}}
+				style={[styles.list, { backgroundColor: hasNativeHeaderBar ? colors.surfaceNeutral : colors.surfaceTint }]}
+				contentContainerStyle={[
+					hasNativeHeaderBar && [styles.listContent, { backgroundColor: colors.surfaceTint }],
+					{
+						paddingBottom:
+							Platform.select({ ios: 0, default: bottom }) + (showNewMessageButton ? FLOATING_ACTION_BUTTON_CLEARANCE : 0)
+					}
+				]}
 				renderItem={renderItem}
 				itemLayoutAnimation={SECTION_REFLOW}
 				ListHeaderComponent={ListHeader}
