@@ -56,11 +56,13 @@ const SortableRow = ({
 }: ISortableRow) => {
 	const offset = useSharedValue(index * rowHeight);
 	const dragStartOffset = useSharedValue(0);
+	const isLifted = useSharedValue(false);
 
 	useAnimatedReaction(
 		() => positions.value[id],
 		(position, previousPosition) => {
 			if (previousPosition !== null && position !== previousPosition && activeId.value !== id) {
+				isLifted.set(false);
 				offset.set(withTiming(position * rowHeight));
 			}
 		}
@@ -69,11 +71,18 @@ const SortableRow = ({
 	const dragGesture = usePanGesture({
 		hitSlop: DRAG_HANDLE_HIT_SLOP,
 		onActivate: () => {
+			if (activeId.value !== null) {
+				return;
+			}
 			activeId.set(id);
+			isLifted.set(true);
 			dragStartOffset.set(offset.value);
 			scheduleOnRN(triggerPickUpHaptic);
 		},
 		onUpdate: event => {
+			if (activeId.value !== id) {
+				return;
+			}
 			const maxOffset = (rowCount - 1) * rowHeight;
 			offset.set(Math.min(Math.max(dragStartOffset.value + event.translationY, 0), maxOffset));
 			const from = positions.value[id];
@@ -83,19 +92,23 @@ const SortableRow = ({
 			}
 		},
 		onDeactivate: () => {
+			if (activeId.value !== id) {
+				return;
+			}
+			activeId.set(null);
 			offset.set(
 				withTiming(positions.value[id] * rowHeight, undefined, finished => {
-					activeId.set(null);
-					if (finished) {
-						scheduleOnRN(onDrop, orderedIds(positions.value));
+					if (finished && activeId.value !== id) {
+						isLifted.set(false);
 					}
 				})
 			);
+			scheduleOnRN(onDrop, orderedIds(positions.value));
 		}
 	});
 
 	const animatedStyle = useAnimatedStyle(() => ({
-		zIndex: activeId.value === id ? 1 : 0,
+		zIndex: isLifted.value ? 1 : 0,
 		transform: [{ translateY: offset.value }]
 	}));
 
