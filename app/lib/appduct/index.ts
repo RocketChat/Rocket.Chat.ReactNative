@@ -6,14 +6,26 @@ import { deepLinkingOpen } from '~/actions/deepLinking';
 import database from '~/lib/database';
 import { SUBSCRIPTIONS_TABLE } from '~/lib/database/model/Subscription';
 import { getIsMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { RootEnum, type IApplicationState, type TSubscriptionModel } from '~/definitions';
+import { RootEnum, type IApplicationState, type IPreferences, type TSubscriptionModel } from '~/definitions';
 import { normalizeDeepLinkingServerHost } from '~/lib/methods/helpers/normalizeDeepLinkingServerHost';
-import { emitter } from '~/lib/methods/helpers';
+import { emitter, supportSystemTheme } from '~/lib/methods/helpers';
 import { navigateToRoom } from '~/lib/methods/helpers/goRoom';
 import Navigation from '~/lib/navigation/appNavigation';
 import { clearCacheAndReconnect } from '~/lib/methods/clearCache';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { store } from '~/lib/store/auxStore';
+import { setPreference } from '~/actions/sortPreferences';
+import { saveSortPreference } from '~/lib/methods/userPreferencesMethods';
+import UserPreferences from '~/lib/methods/userPreferences';
+import { initialTheme } from '~/lib/methods/helpers/theme';
+import { DisplayMode, SortBy } from '~/lib/constants/constantDisplayMode';
+import {
+	ALERT_DISPLAY_TYPE_PREFERENCES_KEY,
+	AUTOPLAY_GIFS_PREFERENCES_KEY,
+	ROOM_MENTIONS_PREFERENCES_KEY,
+	THEME_PREFERENCES_KEY,
+	USER_MENTIONS_PREFERENCES_KEY
+} from '~/lib/constants/keys';
 
 const isLoggedInto = (server: string, state: IApplicationState) =>
 	state.server.server === server && state.login.isAuthenticated && state.app.root === RootEnum.ROOT_INSIDE;
@@ -438,5 +450,102 @@ registerTool({
 			Navigation.navigate(phoneStackByScreen[screen], { screen, initial: false, pop: true });
 		}
 		return waitForRoute(screen, isRoomScreen ? rid : undefined, signal);
+	}
+});
+
+type PreferenceValue = string | boolean;
+
+type Preference = {
+	values: PreferenceValue[];
+	read: () => PreferenceValue;
+	write: (value: PreferenceValue) => void;
+};
+
+const booleanValues = [true, false];
+
+const sortPreference = (key: keyof IPreferences, values: PreferenceValue[]): Preference => ({
+	values,
+	read: () => store.getState().sortPreferences[key],
+	write: value => {
+		const preference = { [key]: value };
+		store.dispatch(setPreference(preference));
+		saveSortPreference(preference);
+	}
+});
+
+const themePreference = (key: 'currentTheme' | 'darkLevel', values: PreferenceValue[]): Preference => ({
+	values,
+	read: () => initialTheme()[key],
+	write: value => UserPreferences.setMap(THEME_PREFERENCES_KEY, { ...initialTheme(), [key]: value })
+});
+
+const storedPreference = (key: string, defaultValue: PreferenceValue, values: PreferenceValue[]): Preference => ({
+	values,
+	read: () => {
+		const stored = UserPreferences.getString(key);
+		if (stored === null) {
+			return defaultValue;
+		}
+		return typeof defaultValue === 'boolean' ? stored === 'true' : stored;
+	},
+	write: value => UserPreferences.setString(key, String(value))
+});
+
+const preferences: Record<string, Preference> = {
+	displayMode: sortPreference('displayMode', [DisplayMode.Expanded, DisplayMode.Condensed]),
+	showAvatar: sortPreference('showAvatar', booleanValues),
+	sortBy: sortPreference('sortBy', [SortBy.Activity, SortBy.Alphabetical]),
+	showUnread: sortPreference('showUnread', booleanValues),
+	showFavorites: sortPreference('showFavorites', booleanValues),
+	groupByType: sortPreference('groupByType', booleanValues),
+	theme: themePreference('currentTheme', supportSystemTheme() ? ['automatic', 'light', 'dark'] : ['light', 'dark']),
+	darkLevel: themePreference('darkLevel', ['black', 'dark']),
+	autoplayGifs: storedPreference(AUTOPLAY_GIFS_PREFERENCES_KEY, true, booleanValues),
+	mentionsWithAtSymbol: storedPreference(USER_MENTIONS_PREFERENCES_KEY, false, booleanValues),
+	roomsWithHashSymbol: storedPreference(ROOM_MENTIONS_PREFERENCES_KEY, false, booleanValues),
+	alertDisplayType: storedPreference(ALERT_DISPLAY_TYPE_PREFERENCES_KEY, 'TOAST', ['TOAST', 'DIALOG'])
+};
+
+const preferenceNames = Object.keys(preferences);
+
+type SetPreferenceOutput = { name: string; previous: PreferenceValue; value: PreferenceValue };
+
+registerTool({
+	name: 'set_preference',
+	description: `Set one app preference the same way its settings screen does (Display, Theme, Accessibility and Appearance) and return the previous value, so calling it again with previous restores it. Omit value to only read it. Values: ${preferenceNames
+		.map(name => `${name} (${preferences[name].values.join(' | ')})`)
+		.join(', ')}.`,
+	inputSchema: jsonSchema<{ name: string; value?: PreferenceValue }>({
+		type: 'object',
+		properties: {
+			name: { type: 'string', enum: preferenceNames, description: 'Preference name, e.g. displayMode or theme' },
+			value: { type: ['string', 'boolean'], description: 'New value; omit to read the current one' }
+		},
+		required: ['name'],
+		additionalProperties: false
+	}),
+	outputSchema: jsonSchema<SetPreferenceOutput>({
+		type: 'object',
+		properties: {
+			name: { type: 'string' },
+			previous: { type: ['string', 'boolean'] },
+			value: { type: ['string', 'boolean'] }
+		},
+		required: ['name', 'previous', 'value']
+	}),
+	handler: ({ name, value }) => {
+		const preference = preferences[name];
+		if (!preference) {
+			throw new Error(`Unknown preference ${name}. Supported: ${preferenceNames.join(', ')}`);
+		}
+		const previous = preference.read();
+		if (value === undefined) {
+			return { name, previous, value: previous };
+		}
+		if (!preference.values.includes(value)) {
+			throw new Error(`Invalid value ${JSON.stringify(value)} for ${name}. Allowed: ${preference.values.join(', ')}`);
+		}
+		preference.write(value);
+		return { name, previous, value: preference.read() };
 	}
 });

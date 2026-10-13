@@ -70,7 +70,7 @@ const Item = ({ onPress, item, isSelected }: { onPress: () => void; item: ITheme
 );
 
 const ThemeView = (): ReactElement => {
-	const { themePreferences, setTheme } = useTheme();
+	const { themePreferences } = useTheme();
 	const { setOptions } = useNavigation();
 
 	useLayoutEffect(() => {
@@ -106,11 +106,7 @@ const ThemeView = (): ReactElement => {
 	};
 
 	const handleTheme = (theme: Partial<IThemePreference>) => {
-		const newTheme: IThemePreference = { ...(themePreferences as IThemePreference), ...theme };
-		if (setTheme) {
-			setTheme(newTheme);
-			UserPreferences.setMap(THEME_PREFERENCES_KEY, newTheme);
-		}
+		UserPreferences.setMap(THEME_PREFERENCES_KEY, { ...(themePreferences as IThemePreference), ...theme });
 	};
 
 	return (

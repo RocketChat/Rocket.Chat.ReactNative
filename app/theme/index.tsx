@@ -11,7 +11,6 @@ export type TColors = (typeof colors)[TSupportedThemes];
 export interface IThemeContextProps {
 	theme: TSupportedThemes;
 	themePreferences?: IThemePreference;
-	setTheme?: (newTheme?: {}) => void;
 	colors: TColors;
 }
 
