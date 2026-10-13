@@ -1,6 +1,7 @@
 import { LISTENER } from '~/containers/Toast';
 import I18n from '~/i18n';
 import EventEmitter from '~/lib/methods/helpers/events';
+import log from '~/lib/methods/helpers/log';
 import { setRoomsCategory, toggleFavorite } from '~/lib/services/restApi';
 import { alertCategoryError } from '~/views/CategorySettingsView/utils/alertCategoryError';
 import { useSidebarCategories } from '~/views/RoomsListView/hooks/useSidebarCategories';
@@ -15,8 +16,16 @@ const moveRoom = async (room: TRoomPlacement, categoryId: string, currentCategor
 	if (currentCategoryId === FAVORITES_GROUP || !room.f) {
 		await toggleFavorite(room.rid, currentCategoryId !== FAVORITES_GROUP);
 	}
-	if (room.category) {
+	if (!room.category) {
+		return;
+	}
+	try {
 		await setRoomsCategory([room.rid], null);
+	} catch (error) {
+		if (currentCategoryId === room.category && !room.f) {
+			await toggleFavorite(room.rid, false).catch(log);
+		}
+		throw error;
 	}
 };
 
