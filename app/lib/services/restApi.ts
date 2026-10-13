@@ -940,7 +940,7 @@ export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updated
 	});
 
 const getRoomHistory = async (roomId: string, position: { next: string } | { aroundId: string }, count: number) => {
-	const history = await sdk.get('rooms.history', { roomId, ...position, count, showThreadMessages: false });
+	const history = await sdk.get('rooms.history', { roomId, ...position, count, showThreadMessages: true });
 	if (!history.success) {
 		throw new Error('Unable to load room history');
 	}

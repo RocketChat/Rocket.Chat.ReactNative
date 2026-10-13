@@ -61,14 +61,14 @@ describe('getSurroundingMessages', () => {
 		expect(mockedGet).toHaveBeenCalledTimes(restCalls);
 	});
 
-	it('requests the window around the message without thread replies', async () => {
+	it('requests the window around the message with thread replies', async () => {
 		await getSurroundingMessages({ rid: RID, messageId: MESSAGE_ID, count: COUNT });
 
 		expect(mockedGet).toHaveBeenCalledWith('rooms.history', {
 			roomId: RID,
 			aroundId: MESSAGE_ID,
 			count: COUNT,
-			showThreadMessages: false
+			showThreadMessages: true
 		});
 	});
 
