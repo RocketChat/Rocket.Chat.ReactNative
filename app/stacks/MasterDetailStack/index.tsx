@@ -263,9 +263,6 @@ const ModalStack = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
 	const navigation = useNavigation<NativeStackNavigationProp<any>>();
-	if (isIOS) {
-		return <Navigator screenOptions={themedHeader(theme)} />;
-	}
 	return (
 		<ModalContainer navigation={navigation} theme={theme}>
 			<Navigator screenOptions={themedHeader(theme)} />
@@ -286,9 +283,7 @@ const InsideStack = createNativeStackNavigator({
 		}),
 		ModalStackNavigator: createNativeStackScreen({
 			screen: ModalStack as any,
-			options: isIOS
-				? { headerShown: false, presentation: 'formSheet', sheetAllowedDetents: [1.0], sheetGrabberVisible: false }
-				: { headerShown: false }
+			options: { headerShown: false }
 		}),
 		AttachmentView,
 		ModalBlockView: createNativeStackScreen({

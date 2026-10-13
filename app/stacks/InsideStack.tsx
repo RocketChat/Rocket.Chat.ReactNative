@@ -329,10 +329,8 @@ const E2EEnterYourPasswordStack = createNativeStackNavigator({
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
-const fullScreenPresentation = isIOS ? 'fullScreenModal' : 'containedModal';
-
 const InsideStack = createNativeStackNavigator({
-	screenOptions: { ...defaultHeader, presentation: isIOS ? 'modal' : 'containedModal' },
+	screenOptions: { ...defaultHeader, presentation: 'containedModal' },
 	screens: {
 		DrawerNavigator: createNativeStackScreen({
 			screen: DrawerStack,
@@ -350,22 +348,16 @@ const InsideStack = createNativeStackNavigator({
 			screen: E2EEnterYourPasswordStack,
 			options: { headerShown: false }
 		}),
-		AttachmentView: createNativeStackScreen({
-			screen: AttachmentViewScreen,
-			options: { presentation: fullScreenPresentation }
-		}),
+		AttachmentView: AttachmentViewScreen,
 		StatusView: StatusViewScreen,
-		ShareView: createNativeStackScreen({
-			screen: ShareViewScreen,
-			options: { presentation: fullScreenPresentation }
-		}),
+		ShareView: ShareViewScreen,
 		ModalBlockView: createNativeStackScreen({
 			screen: ModalBlockViewScreen,
 			options: (args: any): NativeStackNavigationOptions => (ModalBlockView as any).navigationOptions(args)
 		}),
 		CallView: createNativeStackScreen({
 			screen: CallViewScreen,
-			options: { headerShown: false, presentation: fullScreenPresentation }
+			options: { headerShown: false }
 		})
 	}
 }).with(({ Navigator }) => {
