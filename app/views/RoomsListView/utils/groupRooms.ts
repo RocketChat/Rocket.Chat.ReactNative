@@ -53,8 +53,13 @@ type SectionHeaderOptions = {
 	title: string | undefined;
 };
 
+const hasDirectMentionBadge = (room: TSubscriptionModel) =>
+	!room.hideMentionStatus && !!(room.userMentions || room.tunreadUser?.length);
+
+const showsUnreadBadge = (room: TSubscriptionModel) => !room.hideUnreadStatus || hasDirectMentionBadge(room);
+
 const sectionHeader = ({ rooms, badgeSourceRooms, header, title }: SectionHeaderOptions) => {
-	const badgedRooms = badgeSourceRooms.filter(room => !room.hideUnreadStatus);
+	const badgedRooms = badgeSourceRooms.filter(showsUnreadBadge);
 	return {
 		rid: header,
 		separator: true,

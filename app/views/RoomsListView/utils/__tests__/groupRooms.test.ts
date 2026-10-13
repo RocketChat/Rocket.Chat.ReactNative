@@ -127,7 +127,7 @@ describe('groupRooms', () => {
 		]);
 	});
 
-	it('gives a collapsed header the badge totals of its rooms, skipping rooms that hide unread status', () => {
+	it('gives a collapsed header the badge totals of its rooms, skipping rooms whose row shows no badge', () => {
 		const chats = [
 			room({ rid: 'general', category: 'work', unread: 3, userMentions: 1 }),
 			room({ rid: 'random', category: 'work', unread: 4, groupMentions: 2 }),
@@ -144,6 +144,25 @@ describe('groupRooms', () => {
 			tunread: ['thread'],
 			tunreadUser: ['thread']
 		});
+	});
+
+	it('keeps a direct mention of a room hiding unread status on its collapsed header, as its row badges it', () => {
+		const chats = [
+			room({ rid: 'muted-mention', category: 'work', unread: 2, userMentions: 1, hideUnreadStatus: true }),
+			room({
+				rid: 'muted-thread-mention',
+				category: 'work',
+				tunread: ['thread'],
+				tunreadUser: ['thread'],
+				hideUnreadStatus: true
+			}),
+			room({ rid: 'muted-all', category: 'work', unread: 5, userMentions: 1, hideUnreadStatus: true, hideMentionStatus: true }),
+			room({ rid: 'mention-hidden', category: 'work', unread: 1, userMentions: 1, hideMentionStatus: true })
+		];
+
+		const [header] = buildRoomList(chats, { ...options, collapsedGroups: new Set(['work']) });
+
+		expect(header).toMatchObject({ unread: 4, userMentions: 2, tunread: ['thread'], tunreadUser: ['thread'] });
 	});
 
 	it('lists unread rooms first in a category that keeps unread rooms on top', () => {

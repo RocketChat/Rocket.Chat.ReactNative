@@ -17,6 +17,7 @@ const UNREAD_STATE_COLUMNS = ['alert', 'unread', 'tunread', 'hide_unread_status'
 const SECTION_BADGE_COLUMNS = [
 	'unread',
 	'hide_unread_status',
+	'hide_mention_status',
 	'user_mentions',
 	'group_mentions',
 	'tunread',
