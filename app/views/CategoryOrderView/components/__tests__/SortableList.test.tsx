@@ -21,7 +21,7 @@ const groups = [
 
 const renderList = () => {
 	const onReorder = jest.fn();
-	render(<SortableList groups={groups} onReorder={onReorder} />);
+	render(<SortableList groups={groups} onReorder={onReorder} onDraggingChange={jest.fn()} />);
 	const { results } = jest.mocked(usePanGesture).mock;
 	const [a, b] = results.slice(-groups.length).map(({ value }) => createGestureController(value));
 	return { a, b, onReorder };
