@@ -88,6 +88,9 @@ export const useSectionToggleAnimation = (
 
 	const coverEntering: EntryExitAnimationFunction = () => {
 		'worklet';
+		if (!isToggling.get()) {
+			return { initialValues: {}, animations: {} };
+		}
 		const { distance, travel } = cover;
 		const onScreenOffset = coverOffset.get() - distance;
 		const startOffset = distance > 0 ? onScreenOffset : Math.min(onScreenOffset, travel);
