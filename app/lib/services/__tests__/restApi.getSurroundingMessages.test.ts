@@ -61,7 +61,7 @@ describe('getSurroundingMessages', () => {
 		expect(mockedGet).toHaveBeenCalledTimes(restCalls);
 	});
 
-	it('requests the window around the message with thread replies', async () => {
+	it('requests the surrounding Chunk with Thread Messages', async () => {
 		await getSurroundingMessages({ rid: RID, messageId: MESSAGE_ID, count: COUNT });
 
 		expect(mockedGet).toHaveBeenCalledWith('rooms.history', {
@@ -76,7 +76,7 @@ describe('getSurroundingMessages', () => {
 		['older and newer messages exist', { next: '1704110403000', previous: '1704110397000' }, true, true],
 		['only older messages exist', { next: null, previous: '1704110397000' }, true, false],
 		['only newer messages exist', { next: '1704110403000', previous: null }, false, true],
-		['the window reaches both ends of the room', NO_MORE, false, false]
+		['the Chunk reaches both ends of the room', NO_MORE, false, false]
 	])('reports moreBefore and moreAfter from the cursor when %s', async (_name, cursor, moreBefore, moreAfter) => {
 		mockedGet.mockResolvedValue(restResponse(['a', 'b', 'c'], cursor));
 
@@ -117,7 +117,7 @@ describe('getSurroundingMessages', () => {
 	describe('below 8.9.0', () => {
 		beforeEach(() => setServerVersion('8.8.9'));
 
-		it('asks the DDP method for the window around the message', async () => {
+		it('asks the DDP method for the surrounding Chunk', async () => {
 			await getSurroundingMessages({ rid: RID, messageId: MESSAGE_ID, count: COUNT });
 
 			expect(mockedMethodCallWrapper).toHaveBeenCalledWith('loadSurroundingMessages', { _id: MESSAGE_ID, rid: RID }, COUNT);

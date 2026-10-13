@@ -45,7 +45,7 @@ describe('loadSurroundingMessages', () => {
 		mockedUpdateMessages.mockResolvedValue(0 as never);
 	});
 
-	it('asks for the window around the message', async () => {
+	it('asks for the surrounding Chunk', async () => {
 		serve([], false, false);
 
 		await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID });

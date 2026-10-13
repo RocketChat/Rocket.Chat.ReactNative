@@ -57,7 +57,7 @@ describe('getNextMessages', () => {
 		expect(mockedGet).toHaveBeenCalledTimes(restCalls);
 	});
 
-	it('requests the messages from one millisecond before the loader with thread replies', async () => {
+	it('requests the messages from one millisecond before the Newer Loader with Thread Messages', async () => {
 		await getNextMessages({ rid: RID, after: AFTER, count: COUNT });
 
 		expect(mockedGet).toHaveBeenCalledWith('rooms.history', {
