@@ -9,6 +9,7 @@ import * as List from '~/containers/List';
 import { type TSubscriptionModel } from '~/definitions';
 import i18n from '~/i18n';
 import { usePermissions } from '~/lib/hooks/usePermissions';
+import { showErrorAlertWithEMessage } from '~/lib/methods/helpers';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { addUsersToRoom } from '~/lib/services/restApi';
 import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
@@ -58,10 +59,11 @@ export default function ActionsSection({ rid, t, joined, abacAttributes }: IActi
 	const addUser = async () => {
 		dispatch(setLoading(true));
 		try {
-			await addUsersToRoom(rid);
+			await addUsersToRoom(rid, t as 'c' | 'p');
 			pop();
 		} catch (e) {
 			log(e);
+			showErrorAlertWithEMessage(e);
 		}
 		dispatch(setLoading(false));
 	};
