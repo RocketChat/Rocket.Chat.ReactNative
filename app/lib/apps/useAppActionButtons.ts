@@ -69,7 +69,7 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 			map(([subscriptions, permissionRecords]): IAppActionButtonContext => {
 				const [sub] = subscriptions as TSubscriptionModel[];
 				return {
-					room: { t: sub?.t, teamMain: sub?.teamMain, prid: sub?.prid, uids: sub?.uids },
+					room: sub ?? {},
 					roomRoles: sub?.roles ?? [],
 					permissions: (permissionRecords as TPermissionModel[]).reduce<{ [permission: string]: string[] }>((acc, record) => {
 						acc[record.id] = record.roles ?? [];
