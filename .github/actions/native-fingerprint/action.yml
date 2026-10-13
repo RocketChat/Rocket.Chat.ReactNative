@@ -9,7 +9,7 @@ inputs:
     required: true
   cache-path:
     description: Path the native build is cached under; must match the path used to save it
-    required: true
+    default: .native-cache
 outputs:
   cache-key:
     description: Cache key for the native build
@@ -24,12 +24,12 @@ runs:
       id: key
       shell: bash
       env:
-        PLATFORM: ${{ inputs.platform }}
+        FINGERPRINT_PLATFORM: ${{ inputs.platform }}
         CACHE_KEY_PREFIX: ${{ inputs.cache-key-prefix }}
       run: |
-        fingerprint=$(pnpm exec fingerprint fingerprint:generate --platform "$PLATFORM" | jq -r .hash)
+        fingerprint=$(pnpm exec fingerprint fingerprint:generate --platform "$FINGERPRINT_PLATFORM" | jq -r .hash)
         echo "cache-key=$CACHE_KEY_PREFIX-$fingerprint" >> "$GITHUB_OUTPUT"
-        echo "Native fingerprint ($PLATFORM): \`$fingerprint\`" >> "$GITHUB_STEP_SUMMARY"
+        echo "Native fingerprint ($FINGERPRINT_PLATFORM): \`$fingerprint\`" >> "$GITHUB_STEP_SUMMARY"
 
     - name: Look up cached native build
       id: lookup

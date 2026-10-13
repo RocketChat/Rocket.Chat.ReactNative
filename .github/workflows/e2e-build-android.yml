@@ -42,7 +42,6 @@ jobs:
         with:
           platform: android
           cache-key-prefix: e2e-android-${{ hashFiles('.github/workflows/e2e-build-android.yml') }}
-          cache-path: .native-cache
 
   android-build:
     needs: native-fingerprint
@@ -104,23 +103,10 @@ jobs:
 
       - name: Restore cached native build
         id: native-cache
-        if: ${{ needs.native-fingerprint.outputs.cache-hit == 'true' }}
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: .native-cache
           key: ${{ needs.native-fingerprint.outputs.cache-key }}
-
-      - name: Cache Android build
-        if: ${{ needs.native-fingerprint.outputs.cache-hit != 'true' }}
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: |
-            android/.gradle
-            android/app/build
-            android/app/.cxx
-          key: android-build-${{ runner.os }}-${{ hashFiles('package.json', '**/*.gradle*', 'android/gradle.properties', 'android/settings.gradle') }}
-          restore-keys: |
-            android-build-${{ runner.os }}-
 
       - name: Set up JDK
         uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
@@ -142,18 +128,6 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE_OFFICIAL_BASE64 }}" | base64 -d > android/app/release.keystore
 
-      - name: Set gradle.properties
-        working-directory: android
-        run: |
-          printf '\n' >> ./gradle.properties
-          echo -e "reactNativeArchitectures=arm64-v8a,x86_64" >> ./gradle.properties
-          echo -e "VERSIONCODE=999999" >> ./gradle.properties
-          echo -e "KEYSTORE=release.keystore" >> ./gradle.properties
-          echo -e 'KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}' >> ./gradle.properties
-          echo -e 'KEY_ALIAS=${{ secrets.KEYSTORE_OFFICIAL_ALIAS }}' >> ./gradle.properties
-          echo -e 'KEY_PASSWORD=${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}' >> ./gradle.properties
-          echo -e 'BugsnagAPIKey=${{ secrets.BUGSNAG_KEY_OFFICIAL }}' >> ./gradle.properties
-
       - name: Swap JS bundle into cached APK
         id: swap
         if: ${{ steps.native-cache.outputs.cache-hit == 'true' }}
@@ -173,6 +147,30 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEYSTORE_OFFICIAL_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}
 
+      - name: Cache Android build
+        if: ${{ steps.swap.outputs.swapped != 'true' }}
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            android/.gradle
+            android/app/build
+            android/app/.cxx
+          key: android-build-${{ runner.os }}-${{ hashFiles('package.json', '**/*.gradle*', 'android/gradle.properties', 'android/settings.gradle') }}
+          restore-keys: |
+            android-build-${{ runner.os }}-
+
+      - name: Set gradle.properties
+        working-directory: android
+        run: |
+          printf '\n' >> ./gradle.properties
+          echo -e "reactNativeArchitectures=arm64-v8a,x86_64" >> ./gradle.properties
+          echo -e "VERSIONCODE=999999" >> ./gradle.properties
+          echo -e "KEYSTORE=release.keystore" >> ./gradle.properties
+          echo -e 'KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}' >> ./gradle.properties
+          echo -e 'KEY_ALIAS=${{ secrets.KEYSTORE_OFFICIAL_ALIAS }}' >> ./gradle.properties
+          echo -e 'KEY_PASSWORD=${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}' >> ./gradle.properties
+          echo -e 'BugsnagAPIKey=${{ secrets.BUGSNAG_KEY_OFFICIAL }}' >> ./gradle.properties
+
       - name: Build Android Release APK
         if: ${{ steps.swap.outputs.swapped != 'true' }}
         working-directory: android
@@ -181,14 +179,14 @@ jobs:
           RUNNING_E2E_TESTS: true
 
       - name: Prepare native build for cache
-        if: ${{ needs.native-fingerprint.outputs.cache-hit != 'true' }}
+        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         run: |
           mkdir -p .native-cache
           cp "$APK_PATH" .native-cache/app-release.apk
           .github/scripts/hash-dir.sh "$REACT_RES_DIR" > .native-cache/react-res.sha256
 
       - name: Save native build to cache
-        if: ${{ needs.native-fingerprint.outputs.cache-hit != 'true' }}
+        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: .native-cache
