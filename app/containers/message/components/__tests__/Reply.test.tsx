@@ -11,7 +11,7 @@ import { type IAttachment, type TAnyMessageModel } from '~/definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
 import { fileDownloadAndPreview } from '~/lib/methods/helpers/fileDownload';
 import openLink from '~/lib/methods/helpers/openLink';
-import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
+import { store } from '~/lib/store/auxStore';
 
 jest.mock('~/containers/markdown', () => {
 	const React = require('react');
@@ -32,20 +32,20 @@ jest.mock('~/lib/methods/helpers/openLink', () => ({
 	default: jest.fn()
 }));
 
-jest.mock('~/lib/methods/helpers/formatAttachmentUrl', () => ({
-	formatAttachmentUrl: jest.fn((url: string) => `formatted:${url}`)
+jest.mock('~/lib/store/auxStore', () => ({
+	store: { getState: jest.fn() }
 }));
 
 jest.mock('expo-image', () => {
 	const { View } = require('react-native');
-	const Image = () => <View testID='reply-url-image' />;
+	const Image = ({ source }: { source?: { uri?: string } }) => <View testID='reply-url-image' source={source} />;
 	Image.loadAsync = jest.fn();
 	return { Image };
 });
 
 const mockFileDownloadAndPreview = fileDownloadAndPreview as jest.Mock;
 const mockOpenLink = openLink as jest.Mock;
-const mockFormatAttachmentUrl = formatAttachmentUrl as jest.Mock;
+const mockGetState = store.getState as jest.Mock;
 
 const buildItem = (isEncrypted?: boolean) =>
 	({
@@ -84,7 +84,7 @@ mockedStore.dispatch(selectServerSuccess({ server: 'https://open.rocket.chat', v
 describe('Reply', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockFormatAttachmentUrl.mockImplementation((url: string) => `formatted:${url}`);
+		mockGetState.mockReturnValue({ settings: { FileUpload_ProtectFiles: true } });
 	});
 
 	describe('null gate', () => {
@@ -118,8 +118,11 @@ describe('Reply', () => {
 			fireEvent.press(getByTestId('reply-Alice-doc'));
 
 			await waitFor(() => expect(mockFileDownloadAndPreview).toHaveBeenCalled());
-			expect(mockFormatAttachmentUrl).toHaveBeenCalledWith('/file-upload/doc', 'user-1', 'token', 'https://open.rocket.chat');
-			expect(mockFileDownloadAndPreview).toHaveBeenCalledWith('formatted:/file-upload/doc', attachment, 'msg-1');
+			expect(mockFileDownloadAndPreview).toHaveBeenCalledWith(
+				'https://open.rocket.chat/file-upload/doc?rc_token=token&rc_uid=user-1',
+				attachment,
+				'msg-1'
+			);
 			expect(mockOpenLink).not.toHaveBeenCalled();
 		});
 
@@ -189,6 +192,25 @@ describe('Reply', () => {
 		it('does not render an image without thumb_url', () => {
 			const { queryByTestId } = renderReply({ attachment: { author_name: 'Alice', text: 'Hi' } });
 			expect(queryByTestId('reply-url-image')).toBeNull();
+		});
+
+		it('adds credentials to a relative thumb_url on the workspace', () => {
+			const { getByTestId } = renderReply({
+				attachment: { thumb_url: 'file-upload/1/thumb.png', author_name: 'Alice', text: 'Hi' }
+			});
+			const uri = getByTestId('reply-url-image').props.source.uri as string;
+			expect(uri.startsWith('https://open.rocket.chat/file-upload/1/thumb.png')).toBe(true);
+			expect(uri).toContain('rc_token=token');
+			expect(uri).toContain('rc_uid=user-1');
+		});
+
+		it('requests an absolute third-party thumb_url without credentials', () => {
+			const { getByTestId } = renderReply({
+				attachment: { thumb_url: 'https://evil.example/thumb.png', author_name: 'Alice', text: 'Hi' }
+			});
+			const uri = getByTestId('reply-url-image').props.source.uri as string;
+			expect(uri).toBe('https://evil.example/thumb.png');
+			expect(uri).not.toContain('rc_token');
 		});
 	});
 

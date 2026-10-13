@@ -13,7 +13,8 @@ import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useDebounce } from '../lib/methods/helpers';
 import { loginOAuthOrSso } from '../lib/services/connect';
 import { type OutsideModalParamList } from '../stacks/types';
-import fetch, { type TMethods } from '../lib/methods/helpers/fetch';
+import { type TMethods } from '../lib/methods/helpers/fetch';
+import { fetchForWorkspace } from '../lib/methods/serverBasicAuth';
 import { parseSamlOrCasRedirect } from '../lib/methods/helpers/parseSamlOrCasRedirect';
 
 // iframe uses a postMessage to send the token to the client
@@ -42,6 +43,14 @@ window.addEventListener('popstate', function() {
 
 const SSO_AUTH_TYPES = ['saml', 'cas', 'iframe'];
 
+const getHostOrUrl = (url: string) => {
+	try {
+		return parse(url, true).host || url;
+	} catch {
+		return url;
+	}
+};
+
 type AuthenticationWebViewProps = StaticScreenProps<{ authType: string; url: string; ssoToken?: string }>;
 
 const AuthenticationWebView = ({ route }: AuthenticationWebViewProps) => {
@@ -69,9 +78,6 @@ const AuthenticationWebView = ({ route }: AuthenticationWebViewProps) => {
 	const oauthRedirectRegex = new RegExp(`(?=.*(${server}))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
 	const iframeRedirectRegex = new RegExp(`(?=.*(${server}))(?=.*(event|loginToken|token))`, 'g');
 
-	// Force 3s delay so the server has time to evaluate the token
-	const debouncedLogin = useDebounce((params: ILoginCredentials) => login(params), 3000);
-
 	const login = async (params: ILoginCredentials) => {
 		if (loggingRef.current) {
 			return;
@@ -81,17 +87,19 @@ const AuthenticationWebView = ({ route }: AuthenticationWebViewProps) => {
 			await loginOAuthOrSso(params);
 		} catch (e) {
 			console.warn(e);
-		} finally {
-			loggingRef.current = false;
-			navigation.pop();
 		}
+		loggingRef.current = false;
+		navigation.pop();
 	};
+
+	// Force 3s delay so the server has time to evaluate the token
+	const debouncedLogin = useDebounce((params: ILoginCredentials) => login(params), 3000);
 
 	const tryLogin = useDebounce(
 		async () => {
-			const data = await fetch(Accounts_Iframe_api_url, { method: Accounts_Iframe_api_method as TMethods }).then(response =>
-				response.json()
-			);
+			const data = await fetchForWorkspace(server, Accounts_Iframe_api_url, {
+				method: Accounts_Iframe_api_method as TMethods
+			}).then(response => response.json());
 			const resume = data?.login || data?.loginToken;
 			if (resume) {
 				login({ resume });
@@ -118,12 +126,7 @@ const AuthenticationWebView = ({ route }: AuthenticationWebViewProps) => {
 		const url = decodeURIComponent(webViewState.url);
 
 		if (SSO_AUTH_TYPES.includes(authType)) {
-			try {
-				const parsed = parse(url, true);
-				setHeaderTitle(parsed.host || url);
-			} catch {
-				setHeaderTitle(url);
-			}
+			setHeaderTitle(getHostOrUrl(url));
 		}
 		if (authType === 'saml' || authType === 'cas') {
 			handleSamlOrCasRedirect(url);

@@ -1,6 +1,6 @@
 import * as FileSystem from 'expo-file-system/legacy';
 import * as mime from 'react-native-mime-types';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { type Model } from '@nozbe/watermelondb';
 
 import { type IAttachment, type TAttachmentEncryption, type TMessageModel } from '~/definitions';

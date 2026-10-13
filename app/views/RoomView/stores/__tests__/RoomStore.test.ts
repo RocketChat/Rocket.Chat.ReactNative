@@ -1,5 +1,5 @@
 import database from '~/lib/database';
-import { loadThreadMessages } from '~/lib/methods/loadThreadMessages';
+import { loadThreadMessages, releaseUnretainedThreadPagination } from '~/lib/methods/loadThreadMessages';
 import { readMessages } from '~/lib/methods/readMessages';
 import { getUserInfo } from '~/lib/services/restApi';
 import { isGroupChat } from '~/lib/methods/helpers';
@@ -18,7 +18,8 @@ jest.mock('~/views/RoomView/services/getMessages', () => ({
 	default: jest.fn(() => Promise.resolve())
 }));
 jest.mock('~/lib/methods/loadThreadMessages', () => ({
-	loadThreadMessages: jest.fn(() => Promise.resolve())
+	loadThreadMessages: jest.fn(() => Promise.resolve()),
+	releaseUnretainedThreadPagination: jest.fn()
 }));
 jest.mock('~/lib/methods/readMessages', () => ({
 	readMessages: jest.fn(() => Promise.resolve())
@@ -39,6 +40,7 @@ jest.mock('~/lib/methods/helpers/log', () => jest.fn());
 const mockGet = database.active.get as jest.Mock;
 const mockGetMessages = getMessages as unknown as jest.Mock;
 const mockLoadThreadMessages = loadThreadMessages as jest.Mock;
+const mockReleaseUnretainedThreadPagination = releaseUnretainedThreadPagination as jest.Mock;
 const mockReadMessages = readMessages as jest.Mock;
 const mockGetUserInfo = getUserInfo as jest.Mock;
 const mockIsGroupChat = isGroupChat as jest.Mock;
@@ -346,6 +348,19 @@ describe('RoomStore', () => {
 
 		expect(store.getState().canAutoTranslate).toBe(false);
 		expect(mockReadMessages).not.toHaveBeenCalled();
+	});
+
+	it('releases the thread pagination nobody retained when the run is aborted while the thread loads', async () => {
+		const controller = new AbortController();
+		mockLoadThreadMessages.mockImplementation(() => {
+			controller.abort();
+			return Promise.resolve();
+		});
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
+
+		await expect(store.getState().init({ tmid: 'tmid-1', signal: controller.signal })).resolves.toEqual({ status: 'skipped' });
+
+		expect(mockReleaseUnretainedThreadPagination).toHaveBeenCalledWith('tmid-1');
 	});
 
 	describe('init retry', () => {

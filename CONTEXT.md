@@ -1,299 +1,192 @@
 # Ubiquitous Language
 
+Each entry: **Term**: definition. _Avoid:_ words not to use for it.
+
 ## Rooms & Conversations
 
-| Term                | Definition                                                                                                                                                                                               | Aliases to avoid              |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| **Room**            | A server-side conversation container with shared state (name, type, settings)                                                                                                                            | Chat, conversation            |
-| **Subscription**    | A user's personal relationship to a Room, holding per-user state (unread count, favorite, muted, open), never a **DDP Subscription**                                                                     | Membership, room entry        |
-| **Subscribed Room** | A Room the user has joined, backed by a persisted Subscription model. Detected by a Subscription record whose status is not `invited`.                                                                   | Joined room                   |
-| **Preview Mode**    | Viewing a Room without joining: no Subscription record exists and the Room data comes from navigation params or a REST lookup. Persists until the user joins. Detected by the absence of a Subscription. | —                             |
-| **Invited**         | A Room where a Subscription exists but its status is `invited` and not yet accepted. Detected by a Subscription whose status is `invited`.                                                               | —                             |
-| **Room Membership** | The user's standing in a Room: exactly one of **Preview Mode**, **Invited**, or **Subscribed Room**. Derived from whether a Subscription exists and, if so, its status.                                  | Joined flag, membership       |
-| **Channel**         | A public Room (type `'c'`) visible to all Workspace users                                                                                                                                                | Public room                   |
-| **Group**           | A private Room (type `'p'`) visible only to invited members                                                                                                                                              | Private room, private channel |
-| **Direct Message**  | A 1-on-1 private Room (type `'d'`) between two users                                                                                                                                                     | DM, PM, private message       |
-| **Thread**          | A branched conversation spawned from a single Message, identified by `tmid` (thread message id)                                                                                                          | Reply chain                   |
-| **Discussion**      | A separate Room spawned from a parent Room, identified by `prid` (parent room id) — unlike Threads, Discussions are full Rooms                                                                           | Sub-room, sub-channel         |
-| **Team**            | An organizational container that groups multiple Channels and users under a single entity                                                                                                                | Workspace (a different thing) |
-| **Broadcast Room**  | A Room where only authorized users can send Messages; other users can only Reply Broadcast to existing Messages                                                                                          | Broadcast channel             |
-| **Reply Broadcast** | The action of replying to a Message in a Broadcast Room when the current user cannot send regular Messages                                                                                               | Broadcast reply               |
+- **Room**: server-side conversation container with shared state (name, type, settings). _Avoid:_ Chat, conversation
+- **Subscription**: a user's relationship to a Room, holding per-user state (unread count, favorite, muted, open); never a **DDP Subscription**. _Avoid:_ Membership, room entry
+- **Room Membership**: exactly one of:
+  - **Subscribed Room**: Subscription exists, status not `invited`. _Avoid:_ Joined room
+  - **Invited**: Subscription exists, status `invited`, not yet accepted
+  - **Preview Mode**: no Subscription; Room data comes from navigation params or a REST lookup; lasts until the user joins
+  - _Avoid:_ Joined flag, membership
+- **Channel**: public Room (type `'c'`). _Avoid:_ Public room
+- **Group**: private Room (type `'p'`), invited members only. _Avoid:_ Private room, private channel
+- **Direct Message**: 1-on-1 private Room (type `'d'`). _Avoid:_ DM, PM, private message
+- **Thread**: branched conversation spawned from one Message, identified by `tmid`. _Avoid:_ Reply chain
+- **Discussion**: a full Room spawned from a parent Room, identified by `prid`. _Avoid:_ Sub-room, sub-channel
+- **Team**: groups Channels and users; has one main Room. _Avoid:_ Workspace (a different thing)
+- **Broadcast Room**: only authorized users send; others can only **Reply Broadcast** (reply to an existing Message). _Avoid:_ Broadcast channel / Broadcast reply
 
 ## Messages
 
-### Core
-
-| Term               | Definition                                                                                                   | Aliases to avoid            |
-| ------------------ | ------------------------------------------------------------------------------------------------------------ | --------------------------- |
-| **Message**        | A unit of communication within a Room, identified by `_id` with content in `msg` and parsed markdown in `md` | Chat message, text          |
-| **Thread Message** | A Message that belongs to a Thread, identified by presence of `tmid`                                         | Reply, thread reply         |
-| **Thread Parent**  | The Message a Thread is spawned from; the target of its Thread Messages' `tmid`                              | Thread root, parent message |
-| **Attachment**     | Rich media or structured data embedded in a Message (image, video, audio, file, or action buttons)           | File, media                 |
-| **Reaction**       | An emoji response to a Message, tracking which usernames reacted                                             | Emoji reaction              |
-| **Mention**        | An `@username` reference within a Message that triggers notifications                                        | Tag, ping                   |
-| **Draft Message**  | A user's unsent composition stored on a Subscription or Thread (`draftMessage` field)                        | Unsent message              |
-| **Snippet**        | A saved excerpt from a Message                                                                               | —                           |
+- **Message**: unit of communication in a Room (`rid`); `_id`, content in `msg`, parsed markdown in `md`. _Avoid:_ Chat message, text
+- **Thread Message**: Message with `tmid`. _Avoid:_ Reply, thread reply
+- **Thread Parent**: the Message its Thread Messages' `tmid` points at. _Avoid:_ Thread root, parent message
+- **Attachment**: media or structured data in a Message (image, video, audio, file, action buttons). _Avoid:_ File, media
+- **Reaction**: emoji response tracking which usernames reacted. _Avoid:_ Emoji reaction
+- **Mention**: `@username` reference that triggers notifications. _Avoid:_ Tag, ping
+- **Draft Message**: unsent composition on a Subscription or Thread (`draftMessage`). _Avoid:_ Unsent message
+- **Snippet**: saved excerpt from a Message
 
 ### System Messages
 
-A **System Message** is any server-generated Message (carrying a `t` type field) rather than a user-typed one. The code draws a hard boundary between room-event system messages and typed-event system messages — keep them apart.
+Server-generated Messages carrying a `t` type field. Room-event and typed-event System Messages are separate rendering branches.
 
-| Term                           | Definition                                                                                                                                                                                                       | Aliases to avoid            |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
-| **System Message**             | A server-generated Message identified by a `t` type field; umbrella term covering Info Messages and the typed events below                                                                                       | Event, notification         |
-| **Info Message**               | A System Message that records a room event (user joined, room archived, role changed, muted) — rendered compact and non-interactive. Excludes `e2e`, `discussion-created`, `jitsi_call_started`, and `videoconf` | System event, event message |
-| **Discussion-Created Message** | A System Message (`t = 'discussion-created'`) recording that a Discussion was spawned from this Message; rendered with a link to the new Room                                                                    | —                           |
-| **Call Message**               | A System Message (`t = 'jitsi_call_started'` or `t = 'videoconf'`) recording a Video Conference and offering a join affordance                                                                                   | Video call message          |
-| **Encrypted Message**          | A System Message (`t = 'e2e'`) whose content is pending E2E decryption (`e2e !== 'done'`); shown as an "Encrypted message" placeholder until decrypted                                                           | Pending E2E message         |
+- **System Message**: umbrella for any `t`-bearing Message. _Avoid:_ Event, notification
+- **Info Message**: room event (joined, archived, role changed, muted), compact and non-interactive. Excludes the typed events below. _Avoid:_ System event, event message
+- **Discussion-Created Message**: `t = 'discussion-created'`; links to the new Discussion Room
+- **Call Message**: `t = 'jitsi_call_started'` or `t = 'videoconf'`; records a Video Conference with a join affordance. _Avoid:_ Video call message
+- **Encrypted Message**: `t = 'e2e'`, pending decryption (`e2e !== 'done'`); "Encrypted message" placeholder. _Avoid:_ Pending E2E message
 
 ### Content & Visibility States
 
-| Term                   | Definition                                                                                                                                  | Aliases to avoid        |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| **Ignored Message**    | A Message whose author is an Ignored User in this Room; shown as a "Message ignored" placeholder until tapped to reveal                     | Muted message           |
-| **Ignored User**       | A User the current user has hidden in a specific Room (`room.ignored` list); their Messages render as Ignored Messages                      | Muted user              |
-| **Auto-Translate**     | A per-Room setting that replaces other users' Message bodies with translations in the user's chosen language                                | Live translate          |
-| **Translated Message** | A Message whose body is shown via its auto-translated text, because Auto-Translate is on for the Room and the author is another user        | Auto-translated message |
-| **Blocks Message**     | A Message whose body is structured Blocks from a Rocket.Chat App, rendered instead of markdown                                              | App message             |
-| **Message Preview**    | A Message rendered outside its Room context (search, pinned, share extension, notifications); no interactions, reactions, or thread context | Preview row             |
+- **Ignored User**: User the current user hid in one Room (`room.ignored`). _Avoid:_ Muted user
+- **Ignored Message**: Message by an Ignored User; "Message ignored" placeholder, revealed per-Message and ephemerally on tap. _Avoid:_ Muted message
+- **Auto-Translate**: per-Room setting translating other users' Messages. _Avoid:_ Live translate
+- **Translated Message**: Message shown via its auto-translated text. _Avoid:_ Auto-translated message
+- **Blocks Message**: body is Blocks from a Rocket.Chat App, rendered instead of markdown. _Avoid:_ App message
+- **Message Preview**: Message rendered outside its Room (search, pinned, share extension, notifications); no interactions, reactions, or thread context. _Avoid:_ Preview row
 
 ## Message Grouping
 
-| Term                 | Definition                                                                                                                                                   | Aliases to avoid        |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------- |
-| **Message Header**   | The author block (avatar, name, timestamp) shown on the first Message of a grouped run; a Message either shows a Header or is grouped under the one above it | Title, byline           |
-| **Grouped Message**  | A Message rendered without its own Header because it continues a run from the same author within the Grouping Period, visually attached to the Message above | Sequential, collapsed   |
-| **Grouping Period**  | The maximum time gap between consecutive same-author Messages for them to share one Header (server setting `Message_GroupingPeriod`)                         | —                       |
-| **Previous Message** | Relative to a given Message, the adjacent older Message; whether that Message shows a Header is derived from it (author, time, status, thread)               | Prior message, neighbor |
+- **Message Header**: author block (avatar, name, timestamp) on the first Message of a run. _Avoid:_ Title, byline
+- **Grouped Message**: continues a same-author run within the Grouping Period, no Header. _Avoid:_ Sequential, collapsed
+- **Grouping Period**: max gap for same-author Messages to share a Header (`Message_GroupingPeriod`)
+- **Previous Message**: the adjacent older Message; a Message's Header is derived from it (author, time, status, thread). _Avoid:_ Prior message, neighbor
 
-## Message Status
+## Message Status & Flags
 
-The delivery lifecycle of a Message (`status` field). Exactly one status at a time; not to be confused with Message Flags.
+**Status** (`status`) is the delivery lifecycle, exactly one at a time: **Sent** (`0`, _avoid_ Delivered), **Temp** (`1`, local, unconfirmed; _avoid_ Pending, sending), **Error** (`2`; _avoid_ Failed).
 
-| Term      | Definition                                                           | Aliases to avoid |
-| --------- | -------------------------------------------------------------------- | ---------------- |
-| **Sent**  | Message successfully delivered to server (status `0`)                | Delivered        |
-| **Temp**  | Message created locally but not yet confirmed by server (status `1`) | Pending, sending |
-| **Error** | Message that failed to send (status `2`)                             | Failed           |
+**Message Flags** are independent of Status and of each other:
 
-## Message Flags
-
-Independent boolean markers on a Message, orthogonal to its Status — a Message can be both Pinned and Starred, and either regardless of delivery state.
-
-| Term        | Definition                                                                                    | Aliases to avoid |
-| ----------- | --------------------------------------------------------------------------------------------- | ---------------- |
-| **Pinned**  | A Message flagged as important for the whole Room; visible to all Members via the pinned list | Bookmarked       |
-| **Starred** | A Message bookmarked by the current user for personal reference; visible only to that user    | Saved            |
+- **Pinned**: important for the whole Room, in the pinned list. _Avoid:_ Bookmarked
+- **Starred**: personal bookmark, visible only to that user. _Avoid:_ Saved
 
 ## Message Separators
 
-| Term                        | Definition                                                                                                                | Aliases to avoid |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| **Date Separator**          | A divider rendered inline between two Messages on different days, showing the date of the newer Message                   | Date divider     |
-| **Floating Date Separator** | An overlay showing the date of the topmost visible Message; fades in while the user scrolls and out once the list settles | Sticky date      |
-| **Unread Separator**        | A divider rendered between the last read Message and the first unread Message in a Room                                   | Unread divider   |
+- **Date Separator**: inline divider between Messages on different days. _Avoid:_ Date divider
+- **Floating Date Separator**: overlay with the topmost visible Message's date while scrolling. _Avoid:_ Sticky date
+- **Unread Separator**: between last read and first unread Message, anchored by **Last Seen**. _Avoid:_ Unread divider
 
 ## Message Loading
 
-| Term                | Definition                                                                                                                         | Aliases to avoid       |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| **Message Window**  | The contiguous range of Messages the Room view currently observes and renders (distinct from what is synced to the database)       | Page, feed             |
-| **Live Tail**       | The newest end of a Room's Messages; a Message Window at the Live Tail receives new Messages automatically                         | Bottom, latest         |
-| **Live Window**     | A Message Window whose newest edge is the Live Tail — grows older as you scroll up and follows new Messages at the bottom          | —                      |
-| **Anchored Window** | A Message Window pinned around a Jump to Message target instead of the Live Tail; deliberately does not follow new Messages        | —                      |
-| **Chunk**           | A contiguous run of Messages synced from the server into the local database, bracketed by Loader Rows where more exists            | Batch, page            |
-| **Gap**             | A region between two Chunks where Messages exist on the server but not yet locally; represented by a Loader Row                    | Hole                   |
-| **Loader Row**      | A placeholder Message record marking a Gap; becoming visible triggers a server fetch                                               | Load-more, spinner row |
-| **Older Loader**    | A Loader Row marking older Messages (types `MORE`, `PREVIOUS_CHUNK`) — resolving it fetches Messages before it                     | Load previous          |
-| **Newer Loader**    | A Loader Row marking newer Messages (type `NEXT_CHUNK`) — resolving it fetches Messages after it                                   | Load next              |
-| **Room History**    | Older Messages of a Room fetched on demand from the server (distinct from **Workspace History**)                                   | Message history        |
-| **Jump to Message** | Re-position the Room view onto a target Message that may be far from the Live Tail or not yet synced — fetches a surrounding Chunk | Scroll to message      |
+- **Message Window**: the range of Messages the Room view observes and renders (not what is synced). _Avoid:_ Page, feed
+- **Live Tail**: newest end of a Room's Messages. _Avoid:_ Bottom, latest
+- **Live Window**: Message Window ending at the Live Tail; the default; follows new Messages
+- **Anchored Window**: Message Window around a Jump to Message target; does not follow new Messages
+- **Chunk**: contiguous run of Messages synced locally, bracketed by Loader Rows where more exists. _Avoid:_ Batch, page
+- **Gap**: Messages on the server but not local, between Chunks; marked by a Loader Row. _Avoid:_ Hole
+- **Loader Row**: placeholder Message record marking a Gap; visible → server fetch. _Avoid:_ Load-more, spinner row
+- **Older Loader**: types `MORE`, `PREVIOUS_CHUNK`. _Avoid:_ Load previous
+- **Newer Loader**: type `NEXT_CHUNK`. _Avoid:_ Load next
+- **Room History**: older Messages fetched on demand (`roomHistoryRequest`, `ROOM.HISTORY_REQUEST`). _Avoid:_ Message history
+- **Jump to Message**: re-position the Room view onto a target Message, fetching a surrounding Chunk (`loadSurroundingMessages`) bracketed by Older/Newer Loaders. _Avoid:_ Scroll to message
 
 ## Timestamp Trust Boundary
 
-Not every `_updatedAt` is worth the same. A Message's `_updatedAt` read out of a **server response** is server truth, and is the only legitimate source for the sync cursor. The same field read off of a **WatermelonDB row** is device-tainted: offline sends, Temp and Error sends, push-inserted rows, and `normalizeMessage`'s `_updatedAt || new Date()` fallback all stamp the device clock.
+- **Server Timestamp**: `_updatedAt` from a server response. _Avoid:_ Timestamp (ambiguous)
+- **Device Timestamp**: `_updatedAt` on a WatermelonDB row written by the device clock (offline/Temp/Error sends, push-inserted rows, `normalizeMessage`'s `_updatedAt || new Date()` fallback). Never a cursor. _Avoid:_ Timestamp (ambiguous)
+- **Last Open**: Subscription fetch cursor (`lastOpen` column), the newest Server Timestamp received for the Room. Take it from the raw payload before `normalizeMessage` / `buildMessage`; never from a database row or `Date.now()`. _Avoid:_ last open, last update
+- **Last Seen**: read receipt (`ls`). _Avoid:_ last read
 
-Therefore the **Last Open** must be taken from the raw payload _before_ `normalizeMessage` / `buildMessage` runs — never from a database row, and never from `Date.now()`.
-
-| Term                 | Definition                                                                                                                   | Aliases to avoid       |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| **Last Open**        | The fetch cursor for a Subscription (`lastOpen` column): the newest server `_updatedAt` actually received for that Room      | last open, last update |
-| **Last Seen**        | The Subscription's read receipt (`ls`): the newest Message the user has read, which anchors the Unread Separator             | last read              |
-| **Server Timestamp** | An `_updatedAt` taken from a server response — the only value the server can meaningfully compare a cursor against           | Timestamp (ambiguous)  |
-| **Device Timestamp** | An `_updatedAt` present on a local row but written by the device clock; unusable as a cursor because the server never saw it | Timestamp (ambiguous)  |
-
-A **Last Open** below a change's **Server Timestamp** only costs a re-fetch; one above it makes the server stay silent, and the change is never delivered. When in doubt, the lower cursor is the safe one.
-
-A **Last Open** and a **Last Seen** are not interchangeable — conflating them (one column serving as both fetch cursor and unread anchor) is what produced permanently invisible Messages.
+A Last Open too low costs a re-fetch; too high and the server never delivers the change. Prefer the lower cursor. Using one column as both Last Open and Last Seen produced permanently invisible Messages.
 
 ## Message Action & Position State
 
-Two distinct kinds of transient per-Room state drive how the Room view renders Messages. Keep them apart.
-
-| Term                               | Definition                                                                                                        | Owner                         | Scope                                |
-| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------- | ------------------------------------ |
-| **Message Action State**           | The active Message Action in the Room (Quote, Edit, or React) and its target Message(s); null when none is active | A per-Room MessageActionStore | One Room's Message rows and composer |
-| **Positional State**               | Umbrella for which Message is highlighted and the jump or scroll position. Splits across two owners (below).      | —                             | —                                    |
-| **Jump orchestration**             | Deciding to jump to a Message, resolving its anchor, and requesting the jump                                      | RoomView (`useJumpToMessage`) | The Room screen                      |
-| **Scroll and highlight execution** | Performing the scroll onto the target Message and rendering its highlight                                         | The List component            | The rendered Message list            |
-
-### Message Actions
-
-A **Message Action** is the active mode on a Message in the Room view. The three actions are **Quote**, **Edit**, and **React** — there is no "reply" action; replying in a Thread is a separate navigation, not a Message Action.
-
-| Term      | Definition                                                                              | Aliases to avoid |
-| --------- | --------------------------------------------------------------------------------------- | ---------------- |
-| **Quote** | A Message Action where one or more Messages are selected to be quoted into the composer | Multi-quote      |
-| **Edit**  | A Message Action where a single Message is being edited by the current user             | Editing          |
-| **React** | A Message Action where a single Message is the target of a reaction picker              | Reacting         |
+- **Message Action State**: the active Message Action and its target Message(s), or null. Owner: per-Room MessageActionStore; scope: that Room's Message rows and composer
+- **Message Action**: exactly **Quote** (one or more Messages into the composer; _avoid_ Multi-quote), **Edit** (one own Message; _avoid_ Editing), or **React** (one Message, reaction picker; _avoid_ Reacting). Selection lives inside it. Replying is not a Message Action
+- **Positional State**: highlighted Message plus jump/scroll position, split across:
+  - **Jump orchestration**: decide, resolve anchor, request. Owner: RoomView (`useJumpToMessage`)
+  - **Scroll and highlight execution**: scroll and render highlight. Owner: the List component
 
 ## Emojis
 
-A **Reaction** and the frequently used emojis table store an emoji by _name_, never as a glyph. A name that stops resolving does not degrade to the old picture — it renders as literal `:shortname:` text — which is why names are only ever added to the resolvable set, not removed. The name travels in two forms, colon-wrapped and bare; see the ambiguity flagged below. The dataset is generated; see [emojis](docs/emojis.md) for how.
+Reactions and the frequently used table store emoji by name, never glyph. An unresolvable name renders as literal `:shortname:`, so names are only ever added to the resolvable set. Dataset generation: [emojis](docs/emojis.md).
 
-| Term                 | Definition                                                                                                                                   | Aliases to avoid          |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
-| **Shortname**        | The colon-wrapped `:name:` token Message text and a Reaction's `emoji` field hold; the only form `useShortnameToUnicode` resolves            | Emoji code, emoji id      |
-| **Listed Name**      | The single Shortname per listed emoji that the picker shows (`emojisByCategory`) and that search returns; unlisted emoji have none           | Canonical name, primary   |
-| **Alias**            | Any other Shortname resolving to the same emoji; searchable, but search answers with the Listed Name (`water_wave` finds `ocean`)            | Synonym, alternate name   |
-| **Legacy Shortname** | A hand-maintained Shortname the generated dataset does not carry, kept resolvable by fallback because an older client could have stored it   | Deprecated name, old name |
-| **Pinned Shortname** | A Shortname held at the glyph a previous release resolved, applied at generation time, for when upstream reassigns the name to another emoji | Override, frozen name     |
-| **Custom Emoji**     | A Workspace-uploaded image emoji, stored by name plus file extension rather than resolving to unicode                                        | Custom reaction, sticker  |
+- **Shortname**: colon-wrapped `:name:` in Message text and a Reaction's `emoji`; the only form `useShortnameToUnicode` resolves. _Avoid:_ Emoji code, emoji id
+- **Listed Name**: the one Shortname per listed emoji the picker shows (`emojisByCategory`) and search returns. _Avoid:_ Canonical name, primary
+- **Alias**: another Shortname for the same emoji; searchable, answered with the Listed Name (`water_wave` finds `ocean`). _Avoid:_ Synonym, alternate name
+- **Legacy Shortname**: hand-maintained, absent from the dataset, resolved by fallback for older clients. _Avoid:_ Deprecated name, old name
+- **Pinned Shortname**: held at a previous release's glyph at generation time (`scripts/pinned-shortnames.js`) when upstream reassigns it. _Avoid:_ Override, frozen name
+- **Custom Emoji**: Workspace-uploaded image, stored by name plus extension. _Avoid:_ Custom reaction, sticker
 
 ## Users & Roles
 
-| Term            | Definition                                                                         | Aliases to avoid        |
-| --------------- | ---------------------------------------------------------------------------------- | ----------------------- |
-| **User**        | An authenticated identity on the server with username, status, and roles           | Account, profile        |
-| **Logged User** | The currently authenticated User session, holding auth token and preferences       | Current user, session   |
-| **Role**        | A named permission group assigned to Users (e.g., owner, moderator, leader, guest) | Permission group        |
-| **Permission**  | A named capability mapped to one or more Roles                                     | Privilege, access right |
-| **Active User** | A User currently tracked as online/away/busy via real-time presence                | Online user             |
-| **Member**      | A User viewed in the context of a specific Room's membership list                  | Participant             |
-
-## User Status
-
-| Term        | Definition                       | Aliases to avoid |
-| ----------- | -------------------------------- | ---------------- |
-| **Online**  | User is actively connected       | Active           |
-| **Away**    | User idle past timeout threshold | Idle             |
-| **Busy**    | User has set do-not-disturb      | DND              |
-| **Offline** | User is not connected            | Disconnected     |
+- **User**: server identity with username, status, roles. _Avoid:_ Account, profile
+- **Logged User**: current session, auth token, preferences. _Avoid:_ Current user, session
+- **Role**: named permission group (owner, moderator, leader, guest). _Avoid:_ Permission group
+- **Permission**: named capability mapped to Roles. _Avoid:_ Privilege, access right
+- **Active User**: tracked via real-time presence. _Avoid:_ Online user
+- **Member**: User in a Room's membership list. _Avoid:_ Participant
+- **User Status**: **Online** (_avoid_ Active), **Away** (idle; _avoid_ Idle), **Busy** (do-not-disturb; _avoid_ DND), **Offline** (_avoid_ Disconnected)
 
 ## Omnichannel / Livechat
 
-| Term                   | Definition                                                                                                    | Aliases to avoid                  |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| **Omnichannel Room**   | A customer-service Room (type `'l'`) connecting a Visitor to an Agent                                         | Livechat room, support chat       |
-| **Visitor**            | An external customer who initiates an Omnichannel conversation, identified by a unique token                  | Client, customer, end-user        |
-| **Agent**              | A User designated to handle Omnichannel conversations, with `statusLivechat` (available/unavailable)          | Support agent, operator, rep      |
-| **Inquiry**            | A queued Omnichannel request waiting to be picked up or routed to an Agent                                    | Queue item, ticket                |
-| **Department**         | An organizational unit that groups Agents for Omnichannel routing                                             | Team (ambiguous), group           |
-| **Omnichannel Source** | How an Omnichannel conversation was initiated (widget, email, sms, app, api)                                  | Channel origin                    |
-| **Served By**          | The Agent currently assigned to handle an Omnichannel Room                                                    | Assigned agent, handler           |
-| **On Hold**            | An Omnichannel Room temporarily paused by the Agent                                                           | Paused, suspended                 |
-| **Transfer**           | Moving an Omnichannel Room to a different Agent or Department                                                 | Forward, reassign, handoff        |
-| **Routing Config**     | Per-server Omnichannel routing settings that say whether Agents may Return to Queue and see the Inquiry queue | Livechat config, routing settings |
-| **Return to Queue**    | An Agent handing an Omnichannel Room back so it becomes an Inquiry again                                      | Return inquiry, release chat      |
+- **Omnichannel Room**: type `'l'`, one Visitor with zero or one Agent. _Avoid:_ Livechat room, support chat
+- **Visitor**: external customer, identified by token. _Avoid:_ Client, customer, end-user
+- **Agent**: User handling Omnichannel, with `statusLivechat`; belongs to Departments. _Avoid:_ Support agent, operator, rep
+- **Inquiry**: queued request; becomes an Omnichannel Room when picked up. _Avoid:_ Queue item, ticket
+- **Department**: groups Agents for routing. _Avoid:_ Team (ambiguous), group
+- **Omnichannel Source**: widget, email, sms, app, api. _Avoid:_ Channel origin
+- **Served By**: the assigned Agent. _Avoid:_ Assigned agent, handler
+- **On Hold**: paused by the Agent. _Avoid:_ Paused, suspended
+- **Transfer**: move to another Agent or Department (code also says `forwardRoom`). _Avoid:_ Forward, reassign, handoff
+- **Routing Config**: per-server settings for Return to Queue and Inquiry visibility. _Avoid:_ Livechat config, routing settings
+- **Return to Queue**: Agent hands the Room back as an Inquiry. _Avoid:_ Return inquiry, release chat
 
 ## Encryption
 
-| Term               | Definition                                                                                                             | Aliases to avoid |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| **E2E Encryption** | End-to-end encryption for Room content using AES-SHA2, with two protocol versions (`rc.v1.aes-sha2`, `rc.v2.aes-sha2`) | Encryption, E2EE |
-| **E2E Key**        | A user's asymmetric key pair (public + private) for E2E Encryption                                                     | Crypto key       |
-| **OTR**            | Off-The-Record messaging — ephemeral encrypted conversation mode between two users                                     | —                |
+- **E2E Encryption**: AES-SHA2, versions `rc.v1.aes-sha2`, `rc.v2.aes-sha2`. _Avoid:_ Encryption, E2EE
+- **E2E Key**: user's public/private key pair. _Avoid:_ Crypto key
+- **OTR**: Off-The-Record ephemeral two-user mode
 
 ## Video & Voice
 
-| Term                        | Definition                                                                                                                                                                                                | Aliases to avoid               |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| **Video Conference**        | A video/voice call session with status lifecycle (calling, started, expired, ended, declined)                                                                                                             | Video call, meeting            |
-| **Direct Video Conference** | A 1-on-1 Video Conference                                                                                                                                                                                 | —                              |
-| **Group Video Conference**  | A multi-participant Video Conference with title and anonymous user support                                                                                                                                | —                              |
-| **VOIP**                    | Voice-over-IP phone-style call, separate from Video Conference — uses ICE servers and media streams                                                                                                       | Phone call, voice call         |
-| **Native Accept**           | An incoming VOIP call answered by native code (CallKit on iOS, Telecom on Android) before the JS runtime is available; native issues the REST accept and JS reconciles state on launch via initial events | JS accept, app accept          |
-| **Per-call DDP**            | A short-lived DDP client opened by native code per incoming VOIP call so accept and signaling land before JS boots; separate from the main app DDP session                                                | Native socket, side socket     |
-| **Media Signal**            | A typed event on the `@rocket.chat/media-signaling` wire protocol (offer, answer, ICE candidate, state update) carried over DDP `stream-notify-user` and replayable via REST `media-calls.stateSignals`   | Signal, RTC event              |
-| **Pending Hangup**          | A VOIP call id recorded in-memory when the user taps End while the WebSocket is unhealthy, so the hangup Media Signal can be replayed through the lib's transporter on the next post-login reconnect      | Hangup intent, deferred hangup |
+- **Video Conference**: call with status calling/started/expired/ended/declined; **Direct Video Conference** (1-on-1) or **Group Video Conference** (title, anonymous users). _Avoid:_ Video call, meeting
+- **VOIP**: phone-style call, separate from Video Conference (ICE servers, media streams). _Avoid:_ Phone call, voice call
+- **Native Accept**: incoming VOIP answered by CallKit (iOS) / Telecom (Android) before JS; native sends the REST accept, JS reconciles on launch via initial events. _Avoid:_ JS accept, app accept
+- **Per-call DDP**: short-lived native DDP client per incoming VOIP call, separate from the app DDP session. _Avoid:_ Native socket, side socket
+- **Media Signal**: typed event of `@rocket.chat/media-signaling` (offer, answer, ICE candidate, state update) over DDP `stream-notify-user`, replayable via REST `media-calls.stateSignals`. _Avoid:_ Signal, RTC event
+- **Pending Hangup**: in-memory call id recorded when End is tapped on an unhealthy WebSocket; the hangup Media Signal replays through the lib's transporter on the next post-login reconnect. _Avoid:_ Hangup intent, deferred hangup
 
 ## Workspace & Connection
 
-| Term                  | Definition                                                                                                                                                                                                                                                                                | Aliases to avoid                           |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| **Workspace**         | A Rocket.Chat deployment the app connects to, with version, settings, and enterprise modules                                                                                                                                                                                              | Server (legacy), instance                  |
-| **Workspace History** | List of previously connected Workspaces for quick reconnection                                                                                                                                                                                                                            | Recent servers                             |
-| **Meteor Connect**    | The WebSocket connection to the Workspace's DDP (Distributed Data Protocol) endpoint                                                                                                                                                                                                      | Socket, connection                         |
-| **Socket Health**     | Whether the Meteor Connect socket is genuinely alive — confirmed by a round trip when in doubt, reopened when known dead                                                                                                                                                                  | Staleness (stale/gray/fresh), socket probe |
-| **DDP Subscription**  | A live server-push feed on Meteor Connect, opened by name and parameters (`stream-room-messages`, `stream-notify-user`); the SDK derives its id from those parameters, so two callers asking for the same feed share one — distinct from a **Subscription**, which is a membership record | Stream, DDP stream, sub                    |
+- **Workspace**: a Rocket.Chat deployment (version, settings, enterprise modules). _Avoid:_ Server (legacy), instance
+- **Workspace History**: previously connected Workspaces. _Avoid:_ Recent servers
+- **Meteor Connect**: WebSocket to the Workspace's DDP endpoint. _Avoid:_ Socket, connection
+- **Socket Health**: whether that socket is alive; round trip when in doubt, reopen when dead. _Avoid:_ Staleness (stale/gray/fresh), socket probe
+- **DDP Subscription**: server-push feed opened by name and params (`stream-room-messages`, `stream-notify-user`); the SDK derives its id from them, so identical requests share one. _Avoid:_ Stream, DDP stream, sub
 
 ## Navigation & Layout
 
-| Term                 | Definition                                                                                | Aliases to avoid       |
-| -------------------- | ----------------------------------------------------------------------------------------- | ---------------------- |
-| **Outside Stack**    | Navigation screens shown when unauthenticated (server selection, login, register)         | Auth stack, login flow |
-| **Inside Stack**     | Navigation screens shown when authenticated (rooms, settings, profile)                    | Main stack, app stack  |
-| **Master-Detail**    | Tablet layout with room list (master pane) and room content (detail pane) side by side    | Split view, two-pane   |
-| **Chats Stack**      | The primary messaging navigation within Inside Stack (room list, room view, room actions) | —                      |
-| **Drawer Navigator** | Side navigation containing tabs: Chats, Profile, Settings, Admin, Accessibility           | Sidebar, menu          |
+- **Outside Stack**: unauthenticated screens. _Avoid:_ Auth stack, login flow
+- **Inside Stack**: authenticated screens. _Avoid:_ Main stack, app stack
+- **Chats Stack**: room list, room view, room actions within Inside Stack
+- **Master-Detail**: tablet two-pane layout. _Avoid:_ Split view, two-pane
+- **Drawer Navigator**: tabs Chats, Profile, Settings, Admin, Accessibility. _Avoid:_ Sidebar, menu
 
 ## Unread & Notification Indicators
 
-| Term               | Definition                                                                                               | Aliases to avoid  |
-| ------------------ | -------------------------------------------------------------------------------------------------------- | ----------------- |
-| **Unread**         | Count of unread regular Messages in a Subscription                                                       | Badge count       |
-| **User Mentions**  | Count of Messages that `@mentioned` the current user in a Subscription                                   | Personal mentions |
-| **Group Mentions** | Count of `@all` or `@here` mentions in a Subscription                                                    | Channel mentions  |
-| **Tunread**        | Array of Thread IDs with unread replies                                                                  | Thread unread     |
-| **Alert**          | Boolean flag on a Subscription indicating it has unread mentions or special activity requiring attention | Notification flag |
-
-## Relationships
-
-- A **Room** can be of type **Channel**, **Group**, **Direct Message**, or **Omnichannel Room**
-- A **Subscription** belongs to exactly one **Room** and one **User**
-- A **Message** belongs to exactly one **Room** (via `rid`)
-- A **Thread** is spawned from exactly one **Thread Parent** and contains one or more **Thread Messages** that reference it via `tmid`
-- A **Discussion** creates a new **Room** linked to a parent **Room** (via `prid`); a **Discussion-Created Message** in the parent records the spawning
-- A **Team** has exactly one main **Room** and can contain multiple **Channels**
-- An **Omnichannel Room** connects exactly one **Visitor** with zero or one **Agents** (via **Served By**)
-- An **Agent** belongs to one or more **Departments**
-- An **Inquiry** becomes an **Omnichannel Room** when picked up by an **Agent**
-- A **Broadcast Room** restricts sending to authorized users; others interact via **Reply Broadcast**
-- An **Ignored Message** is a **Message** whose author is an **Ignored User** in the current **Room**; revealing it is per-Message and ephemeral
-- A **Call Message** records a **Video Conference** and offers a join affordance
-- A **Room** view shows a **Live Window** by default; a **Jump to Message** replaces it with an **Anchored Window**
-- A **Gap** is bracketed by **Loader Rows**; resolving a Loader Row fetches a **Chunk** and may shrink or close the Gap
-- **Jump to Message** fetches a **Chunk** centered on the target (`loadSurroundingMessages`), bracketed by an **Older Loader** and a **Newer Loader** when more Messages exist on either side
-
-## Example dialogue
-
-> **Dev:** "When a user opens the app, do they see their **Subscriptions** or their **Rooms**?"
-> **Domain expert:** "**Subscriptions**. The sidebar shows the user's Subscriptions — each one points to a Room, but carries user-specific state like **Unread** count and **Alert** flag. A Room exists independently; a Subscription is the user's window into it."
-> **Dev:** "So if someone starts a **Thread** in a **Channel**, does that create a new **Subscription**?"
-> **Domain expert:** "No. A **Thread** lives inside the parent Room's **Subscription**. Thread unreads are tracked via **Tunread** on the Subscription. A **Discussion**, on the other hand, creates an entirely new Room with its own Subscription."
-> **Dev:** "And for **Omnichannel** — when a **Visitor** sends a message from the widget, what happens?"
-> **Domain expert:** "An **Inquiry** is created and queued. Once an **Agent** picks it up or routing assigns it, the Inquiry becomes an **Omnichannel Room** with the Agent recorded in **Served By**. If the Agent needs to escalate, they do a **Transfer** to another Agent or **Department**."
+Subscription fields: **Unread** (count; _avoid_ Badge count), **User Mentions** (`@mentioned` me; _avoid_ Personal mentions), **Group Mentions** (`@all`/`@here`; _avoid_ Channel mentions), **Tunread** (Thread IDs with unread replies; _avoid_ Thread unread), **Alert** (unread mentions or activity; _avoid_ Notification flag).
 
 ## Flagged ambiguities
 
-- **"Server"** is the legacy name for **Workspace** and still dominates the mobile code (`server`, `serversHistory`, `selectServer`). **Workspace** is the canonical term across Rocket.Chat — use it in prose, names for new code, and user-facing copy; read existing `server*` identifiers as **Workspace**. Renaming them is a migration, not a prerequisite.
-
-- **"Server" as backend counterparty** is a separate, still-valid use: _server response_, _server truth_, _server-generated_, _server clock_ all mean "the remote side, as opposed to this device". That sense is not being renamed — only the entity a user connects to is a **Workspace**.
-- **"Room type `'e2e'`"** and **"Room type `'thread'`"** appear in `SubscriptionType` enum but are marked with FIXME in code — these are not true room types but flags. Do not treat them as room types in new code.
-- **"Account"** is sometimes used loosely to mean either **User** (the identity) or **Workspace** (the connected deployment). These are distinct: a **User** authenticates on a **Workspace**.
-- **"Channel"** in everyday speech can mean any Room, but in domain terms it strictly means a public Room (type `'c'`). A private Room is a **Group** (type `'p'`).
-- **"Forward"** in omnichannel context means **Transfer** (reassigning a room to another agent/department). The codebase uses both `forwardRoom` and "transfer" — prefer **Transfer** as the domain term.
-- **"History"** is overloaded: **Workspace History** is the recent-Workspaces reconnection list; **Room History** is older Messages fetched on demand. The action `roomHistoryRequest` and saga `ROOM.HISTORY_REQUEST` refer to **Room History**.
-- **"Window"** is used metaphorically in the Subscriptions dialogue ("a Subscription is the user's window into it"); a **Message Window** is the concrete observed Message range in the Room view. Disambiguate when both could be meant.
-- **"`lastOpen`"** names a database column, not a concept: it stores the **Last Open**, a server-clock fetch cursor. It has never meant "when the user last opened the room". The Unread Separator anchor is **Last Seen** (`ls`). Do not read `lastOpen` as a read receipt or write a device clock into it.
-- **"Load more"** is directional: older Messages are an **Older Loader** (`MORE`/`PREVIOUS_CHUNK`), newer Messages are a **Newer Loader** (`NEXT_CHUNK`). Avoid bare "load more".
-- **"System message" vs "Info message"** — **System Message** is the umbrella (any `t`-bearing server Message); **Info Message** is the narrower set of room-event System Messages. The typed events `e2e`, `discussion-created`, `jitsi_call_started`, and `videoconf` are System Messages but NOT Info Messages — each gets its own rendering branch.
-- **"Thread reply"** is overloaded. The glossary's **Thread Message** is the data concept (any Message with `tmid`); the code's `isThreadReply` is a _rendering position_ — the first Thread Message in a run shown in the parent Room, which gets the "in reply to" header. Do not use "thread reply" for the data concept.
-- **"Preview"** is overloaded. **Message Preview** (`isPreview`) is a Message rendered outside its Room (search, pinned, share, notifications). `PreviewContent` is a different concept: the compact body of a Thread Message shown in the parent Room. Disambiguate when either could be meant.
-- **"Muted"** is overloaded: a User can be muted in a Room (a moderator action that removes send permission, recorded by `user-muted`/`mute_unmute` System Messages) OR be an **Ignored User** (a per-viewer filter that hides their Messages behind an Ignored Message placeholder, stored in `room.ignored`). Muting is a room permission; ignoring is a personal filter. Different concepts — keep them apart.
-- **"Reply"** is overloaded: **Reply Broadcast** is the action available to non-authorized users in a Broadcast Room; replying in a **Thread** is navigation into the Thread view. Neither is a **Message Action** — there is no "reply" Message Action.
-- **"Shortname"** travels in two forms and only one resolves. In-app APIs pass the **bare** name — `IEmoji`, the `emojisByCategory` and `aliasesByEmojiName` keys, `DEFAULT_EMOJIS`, `searchEmojiNames`, the frequently used table's `content`, and the name `setReaction` sends. Message text, a Reaction's `emoji` field, and the `shortnameToUnicodeMap` keys are **colon-wrapped**. `formatShortnameToUnicode` matches only the colon-wrapped form, so a bare name must be wrapped before resolving and a stored one stripped before it is looked up by name.
-- **"Pinned"** is overloaded: **Pinned** is a Message Flag (a Message pinned in a Room); a **Pinned Shortname** is an emoji name held at an older glyph by `scripts/pinned-shortnames.js`. Nothing connects them — say which one you mean.
-- **"Alias"** is overloaded. Every glossary table here has an _Aliases to avoid_ column: words **not** to use. An emoji **Alias** is the opposite — a first-class Shortname that resolves and is searchable, just not the **Listed Name** search answers with. Do not read the emoji sense as a term to avoid.
-- **"Status" vs "flags"** — a Message has exactly one delivery **Status** (Sent, Temp, Error). **Pinned** and **Starred** are independent **Message Flags**, not statuses; do not group them with delivery states.
-- **"Interaction" retired** — the selection-plus-action state was once an "interaction" concept; the canonical term is now **Message Action State**. Use **Message Action**, not "interaction", for which Message is selected and how. (Selection is not separate — it lives inside the active Message Action.)
+- **Server**: legacy name for Workspace, still in code (`server`, `serversHistory`, `selectServer`). Use Workspace in prose, new names, and copy; renaming is a migration. "Server" as the remote side (_server response_, _server clock_) stays valid.
+- **Room types `'e2e'` and `'thread'`** in the `SubscriptionType` enum are FIXME-marked flags, not room types.
+- **Account**: means a User, which authenticates on a Workspace.
+- **Channel** strictly means type `'c'`.
+- **History**: Workspace History vs Room History.
+- **Window**: Message Window is the concrete Message range.
+- **`lastOpen`**: the Last Open cursor, never "when the user last opened the room" and never a read receipt.
+- **Load more**: say Older Loader or Newer Loader.
+- **Thread reply**: `isThreadReply` is a rendering position (first Thread Message of a run shown in the parent Room, with the "in reply to" header); the data concept is Thread Message.
+- **Preview**: Message Preview (`isPreview`) vs `PreviewContent` (compact Thread Message body in the parent Room).
+- **Muted**: a moderator mute removes send permission (`user-muted`/`mute_unmute` System Messages); an Ignored User is a personal filter.
+- **Reply**: Reply Broadcast or Thread navigation; neither is a Message Action.
+- **Shortname forms**: in-app APIs pass the bare name (`IEmoji`, `emojisByCategory` and `aliasesByEmojiName` keys, `DEFAULT_EMOJIS`, `searchEmojiNames`, the frequently used table's `content`, the name `setReaction` sends). Message text, a Reaction's `emoji`, and `shortnameToUnicodeMap` keys are colon-wrapped. `formatShortnameToUnicode` matches only colon-wrapped: wrap bare names before resolving, strip stored ones before name lookup.
+- **Pinned**: Message Flag vs Pinned Shortname; unrelated.
+- **Alias**: an emoji Alias is a valid term, unlike the _Avoid_ lists.
+- **Interaction**: retired; say Message Action State.
