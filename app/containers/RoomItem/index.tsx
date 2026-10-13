@@ -55,7 +55,8 @@ const RoomItemContainer = memo(
 				children: <MoveToCategorySheet room={room} />,
 				fullContainer: true
 			});
-		const onMoveToCategoryPress = isCustomCategoriesAvailable && room.t !== 'l' ? showMoveToCategory : undefined;
+		const canMoveToCategory = isCustomCategoriesAvailable && room.t !== 'l';
+		const onMoveToCategoryPress = canMoveToCategory ? showMoveToCategory : undefined;
 
 		const handleOnLongPress = async () => {
 			if (onLongPress) {
@@ -68,14 +69,24 @@ const RoomItemContainer = memo(
 			if (item.separator || !swipeEnabled || (!isScreenReaderEnabled && !hasExternalKeyboard)) {
 				return;
 			}
+			let isMoveToCategoryPicked = false;
+			const pickMoveToCategory = () => {
+				isMoveToCategoryPicked = true;
+			};
 			showActionSheet({
 				options: getRoomActionsOptions({
 					rid: room.rid,
 					type: room.t,
 					isRead,
 					favorite: !!room.f,
-					serverVersion
-				})
+					serverVersion,
+					onMoveToCategoryPress: canMoveToCategory ? pickMoveToCategory : undefined
+				}),
+				onClose: () => {
+					if (isMoveToCategoryPicked) {
+						showMoveToCategory();
+					}
+				}
 			});
 		};
 
