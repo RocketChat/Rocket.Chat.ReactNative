@@ -37,7 +37,10 @@ jest.mock('~/lib/services/sdk', () => {
 	return { __esModule: true, default: makeSdkMock({ logout: () => mockSdkLogout() }) };
 });
 
+import CookieManager from '@react-native-cookies/cookies';
+
 import { logout, removeServerData } from '../logout';
+import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
 import sdk from '~/lib/services/sdk';
 import { disconnect } from '~/lib/services/connect';
 import database from '~/lib/database';
@@ -186,5 +189,28 @@ describe('logout', () => {
 
 		expect(mockSdkLogout).toHaveBeenCalled();
 		expect(disconnect).toHaveBeenCalled();
+	});
+
+	it('drops an ongoing conference call so it cannot outlive the session', async () => {
+		seedServer(SERVER, USER_ID);
+		useConferenceCallStore.getState().open({ callId: 'call1', url: `${SERVER}/conference/call1` });
+
+		await logout({ server: SERVER });
+
+		expect(useConferenceCallStore.getState().callId).toBeUndefined();
+		expect(useConferenceCallStore.getState().expanded).toBe(false);
+	});
+
+	it('expires the cookies the conference webview was seeded with', async () => {
+		seedServer(SERVER, USER_ID);
+
+		await logout({ server: SERVER });
+
+		const written = (CookieManager.setFromResponse as jest.Mock).mock.calls;
+		expect(written.map(([, cookie]) => cookie)).toEqual([
+			expect.stringContaining('rc_uid=;'),
+			expect.stringContaining('rc_token=;')
+		]);
+		written.forEach(([url]) => expect(url).toEqual(SERVER));
 	});
 });
