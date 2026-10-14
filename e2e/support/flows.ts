@@ -49,6 +49,34 @@ export const tapIfVisible = async (target: Locator) => {
 
 export const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
+const exactName = (label: string | RegExp) => (typeof label === 'string' ? new RegExp(`^${escapeRegExp(label)}$`) : label);
+
+export const headerItem = ({ screen, platform }: Fixtures, testId: string, iosLabel: string | RegExp) =>
+	platform === 'ios' ? screen.getByRole('button', { name: exactName(iosLabel) }).first() : screen.getByTestId(testId).first();
+
+export const headerSearchInput = ({ screen, platform }: Fixtures, testId: string) =>
+	platform === 'ios' ? screen.getByRole('textbox', { name: 'Search' }).first() : screen.getByTestId(testId);
+
+const roomTitleTestId = (title: string | RegExp) =>
+	typeof title === 'string'
+		? `room-view-title-${title}`
+		: new RegExp(`^room-view-title-${title.source.replace(/^\^/, '')}`, title.flags);
+
+export const roomTitle = ({ screen, platform }: Fixtures, title: string | RegExp) =>
+	platform === 'ios'
+		? screen
+				.getByTestId('room-header', { visible: true })
+				.filter({ hasText: exactName(title) })
+				.first()
+		: screen.getByTestId(roomTitleTestId(title));
+
+const CONNECTED_SERVER_HOST = /^[\w-]+(\.[\w-]+)+$/;
+
+export const expectServerConnected = ({ screen, platform }: Fixtures, host: string | RegExp = CONNECTED_SERVER_HOST) =>
+	platform === 'ios'
+		? expect(screen.getByTestId('rooms-list-header-servers-list-button').getByText(host)).toBeVisible({ timeout: LONG_TIMEOUT })
+		: expect(screen.getByTestId('rooms-list-header-server-subtitle')).toHaveText(host, { timeout: LONG_TIMEOUT });
+
 export const expectVisible = ({ screen }: Fixtures, testId: string) =>
 	expect(screen.getByTestId(testId)).toBeVisible({ timeout: LONG_TIMEOUT });
 
@@ -96,12 +124,13 @@ export const hideKeyboard = async ({ platform, device, screen }: Fixtures, iosTa
 let androidAppInstalled = false;
 
 const LEFTOVER_OPEN_PROMPT = /^Open in .Rocket\.Chat.\?$/;
+const NO_APP_SESSION_ERRORS = ['APP_NOT_OPEN', 'ENGINE_FAILURE'];
 
 const isLeftoverOpenPromptVisible = async (screen: Fixtures['screen']) => {
 	try {
 		return await isVisibleNow(screen.getByText(LEFTOVER_OPEN_PROMPT));
 	} catch (error) {
-		if (errorCode(error) !== 'APP_NOT_OPEN') throw error;
+		if (!NO_APP_SESSION_ERRORS.includes(errorCode(error) ?? '')) throw error;
 		return false;
 	}
 };
@@ -160,9 +189,14 @@ const NO_INPUT_AT_POINT_ERROR = 'no text input found at the provided coordinates
 const BEHIND_KEYBOARD_ERROR = 'is behind the visible keyboard';
 const RETRYABLE_ACTION_ERRORS = [COVERED_ERROR, OFF_SCREEN_ERROR, NO_INPUT_AT_POINT_ERROR, BEHIND_KEYBOARD_ERROR];
 
+const REFUSED_ACTION_CODES = ['NOT_ACTIONABLE', 'ENGINE_FAILURE'];
+
 const isActionRefused = (error: unknown) => {
 	const cause = (error as { cause?: unknown } | null)?.cause;
-	return errorCode(error) === 'NOT_ACTIONABLE' || (errorCode(error) === 'ACTION_FAILED' && errorCode(cause) === 'NOT_ACTIONABLE');
+	return (
+		REFUSED_ACTION_CODES.includes(errorCode(error) ?? '') ||
+		(errorCode(error) === 'ACTION_FAILED' && errorCode(cause) === 'NOT_ACTIONABLE')
+	);
 };
 
 const retryWhileUnreachable = async (action: () => Promise<unknown>, timeout: number) => {
@@ -231,10 +265,11 @@ const TAP_RESPONSE_TIMEOUT = 5_000;
 export const tapUntilVisible = async (
 	fixtures: Fixtures,
 	target: Locator,
-	expectedTestId: string,
+	expectedTestIdOrTarget: string | Locator,
 	gesture: 'tap' | 'longPress' = 'tap'
 ) => {
-	const expected = fixtures.screen.getByTestId(expectedTestId);
+	const expected =
+		typeof expectedTestIdOrTarget === 'string' ? fixtures.screen.getByTestId(expectedTestIdOrTarget) : expectedTestIdOrTarget;
 	const press = () => (gesture === 'tap' ? tapWhenUncovered(target) : target.longPress());
 	await press();
 	for (let attempt = 2; attempt <= TAP_ATTEMPTS; attempt += 1) {
@@ -341,7 +376,9 @@ const acceptSystemAlert = async (device: Fixtures['device']) => {
 		return true;
 	} catch (error) {
 		const details = (error as { cause?: { details?: { runnerErrorCode?: string; reason?: string } } } | null)?.cause?.details;
-		if (details?.runnerErrorCode !== 'ALERT_NOT_FOUND' && details?.reason !== 'alert-not-found') throw error;
+		const alertMissing = details?.runnerErrorCode === 'ALERT_NOT_FOUND' || details?.reason === 'alert-not-found';
+		const noOpenPrompt = /alert not found|alert accept button not found|overran its watchdog/.test(String(error));
+		if (!alertMissing && !noOpenPrompt) throw error;
 		return false;
 	}
 };
@@ -448,9 +485,7 @@ export const loginWithDeepLink = async (fixtures: Fixtures, credentials: Credent
 	);
 	await dismissAndroidSystemDialogs(fixtures);
 	await expect(fixtures.screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
-	await expect(fixtures.screen.getByTestId('rooms-list-header-server-subtitle')).toHaveText(CONNECTED_SERVER_HOST, {
-		timeout: LONG_TIMEOUT
-	});
+	await expectServerConnected(fixtures);
 	await firstVisible([
 		fixtures.screen.getByTestId(/^rooms-list-view-item-/).first(),
 		fixtures.screen.getByTestId('change-password-required-button')
@@ -465,17 +500,26 @@ export const navigateToRegister = async ({ screen }: Fixtures, server = data.ser
 	await expect(screen.getByTestId('register-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
-const BACK_BUTTON_TEST_IDS = ['custom-header-back', 'header-back'];
+const BACK_BUTTON_TEST_IDS = ['custom-header-back', 'header-back', 'BackButton'];
 const BACK_ATTEMPTS = 4;
 const BACK_STEP_TIMEOUT = 10_000;
 
-export const goBack = async ({ screen }: Fixtures) => {
+const IOS_BACK_LABEL = /^Back(, .*)?$/;
+
+export const goBack = async ({ screen, platform }: Fixtures) => {
 	const backButtons = BACK_BUTTON_TEST_IDS.map(testId => screen.getByTestId(testId, { visible: true }));
+	if (platform === 'ios') {
+		backButtons.push(screen.getByRole('button', { name: IOS_BACK_LABEL }).first());
+	}
 	await (await firstVisible(backButtons, BACK_STEP_TIMEOUT)).tap();
 };
 
-export const goBackUntil = async (fixtures: Fixtures, testId: string, state: 'visible' | 'hidden' = 'visible') => {
-	const target = fixtures.screen.getByTestId(testId);
+export const goBackUntil = async (
+	fixtures: Fixtures,
+	testIdOrTarget: string | Locator,
+	state: 'visible' | 'hidden' = 'visible'
+) => {
+	const target = typeof testIdOrTarget === 'string' ? fixtures.screen.getByTestId(testIdOrTarget) : testIdOrTarget;
 	const reached = (timeout: number) =>
 		state === 'visible' ? expect(target).toBeVisible({ timeout }) : expect(target).toBeHidden({ timeout });
 	for (let attempt = 0; attempt < BACK_ATTEMPTS; attempt += 1) {
@@ -497,8 +541,8 @@ export const goBackThrough = async (fixtures: Fixtures, testIds: readonly string
 
 export const logout = async (fixtures: Fixtures) => {
 	const { screen, platform } = fixtures;
-	await tapIfVisible(screen.getByTestId('profile-view-open-sidebar', { visible: true }));
-	await tapIfVisible(screen.getByTestId('rooms-list-view-sidebar', { visible: true }));
+	await tapIfVisible(headerItem(fixtures, 'profile-view-open-sidebar', 'Menu'));
+	await tapIfVisible(headerItem(fixtures, 'rooms-list-view-sidebar', 'Menu'));
 	if (platform === 'android') {
 		await tapIfVisible(screen.getByTestId('android:id/autofill_save_no', { visible: true }));
 	}
@@ -509,19 +553,20 @@ export const logout = async (fixtures: Fixtures) => {
 	await expect(screen.getByTestId('new-server-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
-const CONNECTED_SERVER_HOST = /^[\w-]+(\.[\w-]+)+$/;
-
 export const searchRoom = async (fixtures: Fixtures, room: string) => {
 	const { screen } = fixtures;
 	await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expect(screen.getByTestId(/^rooms-list-view-item-/).first()).toBeVisible({ timeout: LONG_TIMEOUT });
-	await expect(screen.getByTestId('rooms-list-header-server-subtitle')).toHaveText(CONNECTED_SERVER_HOST, {
-		timeout: LONG_TIMEOUT
-	});
-	const searchButton = screen.getByTestId('rooms-list-view-search').first();
-	await expect(searchButton).toBeVisible({ timeout: LONG_TIMEOUT });
-	await tapUntilVisible(fixtures, searchButton, 'rooms-list-view-search-input');
-	await fillWhenUncovered(screen.getByTestId('rooms-list-view-search-input'), room);
+	await expectServerConnected(fixtures);
+	const searchInput = headerSearchInput(fixtures, 'rooms-list-view-search-input');
+	if (fixtures.platform === 'ios') {
+		await tapWhenVisible(fixtures, searchInput);
+	} else {
+		const searchButton = screen.getByTestId('rooms-list-view-search').first();
+		await expect(searchButton).toBeVisible({ timeout: LONG_TIMEOUT });
+		await tapUntilVisible(fixtures, searchButton, 'rooms-list-view-search-input');
+	}
+	await fillWhenUncovered(searchInput, room);
 	await expect(screen.getByTestId(`rooms-list-view-item-${room}`).first()).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
@@ -529,28 +574,29 @@ const ROOM_OPEN_ATTEMPTS = 2;
 const ROOM_OPEN_RESPONSE_TIMEOUT = 10_000;
 const E2E_PASSWORD_CLOSE_BUTTON_TEST_IDS = ['e2e-save-your-password-view-close', 'e2e-enter-your-password-view-close'];
 
-export const navigateToRoom = async ({ screen }: Fixtures, room: string) => {
+export const navigateToRoom = async (fixtures: Fixtures, room: string) => {
+	const { screen } = fixtures;
 	const roomItem = screen.getByTestId(`rooms-list-view-item-${room}`).first();
-	const roomTitle = screen.getByTestId(`room-view-title-${room}`);
+	const title = roomTitle(fixtures, room);
 	const e2ePasswordCloseButtons = E2E_PASSWORD_CLOSE_BUTTON_TEST_IDS.map(testId => screen.getByTestId(testId));
 	await expect(screen.getByTestId(/^rooms-list-view-item-/).first()).toBeVisible({ timeout: LONG_TIMEOUT });
 	for (let attempt = 1; attempt < ROOM_OPEN_ATTEMPTS; attempt += 1) {
 		await screen.scrollUntilVisible(roomItem);
 		await roomItem.tap();
-		const opened = await firstVisible([roomTitle, ...e2ePasswordCloseButtons], ROOM_OPEN_RESPONSE_TIMEOUT).catch(error => {
+		const opened = await firstVisible([title, ...e2ePasswordCloseButtons], ROOM_OPEN_RESPONSE_TIMEOUT).catch(error => {
 			if (errorCode(error) !== 'ASSERTION_FAILED') throw error;
 			return undefined;
 		});
-		if (opened === roomTitle) {
+		if (opened === title) {
 			return;
 		}
 		await opened?.tap();
 	}
-	if (!(await isVisibleNow(roomTitle))) {
+	if (!(await isVisibleNow(title))) {
 		await screen.scrollUntilVisible(roomItem);
 		await roomItem.tap();
 	}
-	await expect(roomTitle).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expect(title).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
 export const searchAndNavigateRoom = async (fixtures: Fixtures, room: string) => {

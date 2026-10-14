@@ -2,7 +2,7 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { loginWithDeepLink, type Fixtures, LONG_TIMEOUT } from '~e2e/support/flows';
+import { loginWithDeepLink, type Fixtures, LONG_TIMEOUT, goBack } from '~e2e/support/flows';
 import {
 	expectLabel,
 	expectText,
@@ -20,6 +20,13 @@ const ANIMATION_MS = 1_000;
 
 const expectAlertOptionsClosed = ({ screen }: Fixtures) =>
 	expect(screen.getByTestId('action-sheet')).toBeHidden({ timeout: LONG_TIMEOUT });
+
+const FOCUS_SWEEP_KEYS = 15;
+
+const focusLastAccessibilityItem = async () => {
+	await pressKeyTimes('up', FOCUS_SWEEP_KEYS);
+	await pressKeyTimes('down', FOCUS_SWEEP_KEYS);
+};
 
 afterEach(deleteCreatedUsers);
 afterEach(restoreKeyboardSettings);
@@ -44,7 +51,7 @@ test(
 
 		await expect(screen.getByText('Theme')).toBeVisible({ timeout: LONG_TIMEOUT });
 		await pressKeyTimes('down', 7);
-		await pressKeys('up');
+		await pressKeyTimes('up', 2);
 		await expectLabel(fixtures, 'Mentions with @ symbol unchecked');
 		await pressKeys('enter');
 		await expectLabel(fixtures, 'Mentions with @ symbol checked');
@@ -59,10 +66,10 @@ test(
 		await delay(ANIMATION_MS);
 		await pressKeys('enter');
 
-		await screen.getByTestId('custom-header-back').tap();
+		await goBack(fixtures);
 		await expect(screen.getByTestId('accessibility-view-list')).toBeVisible({ timeout: LONG_TIMEOUT });
 		await expectText(fixtures, 'Show alerts as');
-		await pressKeyTimes('down', 6);
+		await focusLastAccessibilityItem();
 		await pressKeys('enter');
 		await expectLabel(fixtures, 'Toasts. Dismissed automatically. Checked');
 		await expectLabel(fixtures, 'Dialogs. Require manual dismissal. Unchecked');
@@ -72,7 +79,7 @@ test(
 		await expectText(fixtures, 'Dialogs');
 		await expectText(fixtures, 'Show alerts as');
 
-		await pressKeyTimes('down', 5);
+		await focusLastAccessibilityItem();
 		await pressKeys('enter');
 		await expectLabel(fixtures, 'Toasts. Dismissed automatically. Unchecked');
 		await expectLabel(fixtures, 'Dialogs. Require manual dismissal. Checked');

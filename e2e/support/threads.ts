@@ -7,8 +7,10 @@ import {
 	openMessageActions,
 	succeeds,
 	tapWhenVisible,
-	fillWhenUncovered
+	fillWhenUncovered,
+	roomTitle
 } from './flows';
+import { expectRoomTitle } from './header';
 
 const SHORT_TIMEOUT = 5_000;
 
@@ -19,13 +21,13 @@ export const replyInThread = async (fixtures: Fixtures, message: string) => {
 	await openMessageActions(fixtures, message);
 	await expect(screen.getByText('Reply in thread')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByText('Reply in thread').tap();
-	await expect(screen.getByTestId(`room-view-title-${message}`)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expectRoomTitle(fixtures, message);
 	await expect(screen.getByTestId(THREAD_INPUT)).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
 export const openThreadFromButton = async (fixtures: Fixtures, thread: string) => {
 	await tapWhenVisible(fixtures, `message-thread-button-${thread}`);
-	await expect(fixtures.screen.getByTestId(`room-view-title-${thread}`)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expectRoomTitle(fixtures, thread);
 };
 
 export const typeThreadReply = async ({ screen }: Fixtures, text: string) => {
@@ -48,9 +50,8 @@ export const sendThreadReply = async (fixtures: Fixtures, text: string) => {
 };
 
 export const leaveThread = async (fixtures: Fixtures, thread: string, room: string) => {
-	const { screen } = fixtures;
-	await goBackUntil(fixtures, `room-view-title-${thread}`, 'hidden');
-	await expect(screen.getByTestId(`room-view-title-${room}`)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await goBackUntil(fixtures, roomTitle(fixtures, thread), 'hidden');
+	await expectRoomTitle(fixtures, room);
 };
 
 export const expectHiddenSoon = async ({ screen }: Fixtures, testId: string) => {

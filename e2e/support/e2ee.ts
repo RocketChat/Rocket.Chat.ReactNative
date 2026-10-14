@@ -13,19 +13,28 @@ import {
 	navigateToRoom,
 	LONG_TIMEOUT,
 	openMessageActions,
+	succeeds,
 	tapSend,
 	tapUntilVisible,
 	tapWhenVisible
 } from './flows';
+import { tapHeaderItem } from './header';
 import { openSidebar } from './settings';
 import { createAndOpenChannel } from './teams';
 
 const tapTextWhenVisible = (fixtures: Fixtures, text: string | RegExp) =>
 	tapWhenVisible(fixtures, fixtures.screen.getByText(text));
 
-export const expectMessages = async ({ screen }: Fixtures, messages: readonly string[]) => {
+const MESSAGE_SETTLE_TIMEOUT = 5_000;
+
+export const expectMessages = async (fixtures: Fixtures, messages: readonly string[]) => {
+	const { screen } = fixtures;
 	for (const message of messages) {
-		await expect(screen.getByText(new RegExp(`\\b${message}\\b`)).first()).toBeVisible({ timeout: LONG_TIMEOUT });
+		const messageText = screen.getByText(new RegExp(`\\b${message}\\b`)).first();
+		if (!(await succeeds(expect(messageText).toBeVisible({ timeout: MESSAGE_SETTLE_TIMEOUT })))) {
+			await hideKeyboard(fixtures);
+			await screen.scrollUntilVisible(messageText, { direction: 'up', timeout: LONG_TIMEOUT });
+		}
 	}
 };
 
@@ -160,7 +169,7 @@ export const resetRoomKey = async (fixtures: Fixtures) => {
 	const { screen } = fixtures;
 	await expect(screen.getByText(/Check back in a few moments/)).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expect(screen.getByText(/The encryption keys for the room need to be updated/)).toBeVisible({ timeout: LONG_TIMEOUT });
-	await tapWhenVisible(fixtures, 'room-view-header-encryption');
+	await tapHeaderItem(fixtures, 'room-view-header-encryption', 'Encrypted');
 	await expect(screen.getByTestId('e2ee-toggle-room-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await tapWhenVisible(fixtures, 'e2ee-toggle-room-reset-key');
 	await expect(screen.getByText(/Reset encryption key/).first()).toBeVisible({ timeout: LONG_TIMEOUT });

@@ -9,12 +9,13 @@ import {
 	loginWithDeepLink,
 	type Fixtures,
 	LONG_TIMEOUT,
-	tapWhenVisible,
 	confirmAlert,
 	expectVisible,
 	goBackUntil,
-	succeeds
+	succeeds,
+	headerItem
 } from '~e2e/support/flows';
+import { tapHeaderItem } from '~e2e/support/header';
 import { navigateToRoomInfo } from '~e2e/support/room';
 
 afterEach(deleteCreatedUsers);
@@ -30,8 +31,8 @@ const scrollToEditControl = async ({ screen }: Fixtures, field: string, directio
 	await screen.scrollUntilVisible(screen.getByTestId(editViewTestId(field)), { direction, timeout: LONG_TIMEOUT });
 };
 
-const fillEditField = async (fixtures: Fixtures, field: string, value: string) => {
-	await scrollToEditControl(fixtures, field);
+const fillEditField = async (fixtures: Fixtures, field: string, value: string, direction: 'up' | 'down' = 'down') => {
+	await scrollToEditControl(fixtures, field, direction);
 	const input = fixtures.screen.getByTestId(editViewTestId(field));
 	if (field === 'password') {
 		await fillWhenUncovered(input, value);
@@ -42,6 +43,18 @@ const fillEditField = async (fixtures: Fixtures, field: string, value: string) =
 		await input.pressSequentially(value);
 	}
 	await hideKeyboard(fixtures);
+};
+
+const fillEditFields = async (fixtures: Fixtures, fieldValues: readonly (readonly [string, string])[]) => {
+	if (fixtures.platform === 'android') {
+		for (const [field, value] of fieldValues) {
+			await fillEditField(fixtures, field, value);
+		}
+		return;
+	}
+	for (const [field, value] of [...fieldValues].reverse()) {
+		await fillEditField(fixtures, field, value, 'up');
+	}
 };
 
 const tapEditControl = async (fixtures: Fixtures, field: string) => {
@@ -59,7 +72,7 @@ const makeRoomPublic = async (fixtures: Fixtures) => {
 };
 
 const openEditView = async (fixtures: Fixtures) => {
-	await tapWhenVisible(fixtures, 'room-info-view-edit-button');
+	await tapHeaderItem(fixtures, 'room-info-view-edit-button', 'Room info edit');
 	await expectVisible(fixtures, 'room-info-edit-view');
 };
 
@@ -91,7 +104,7 @@ const expectInfoView = async (fixtures: Fixtures) => {
 	for (const label of ['Description', 'Topic', 'Announcement']) {
 		await expect(fixtures.screen.getByText(label)).toBeVisible({ timeout: LONG_TIMEOUT });
 	}
-	await expectVisible(fixtures, 'room-info-view-edit-button');
+	await expect(headerItem(fixtures, 'room-info-view-edit-button', 'Room info edit')).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
 const expectEditView = async (fixtures: Fixtures) => {
@@ -104,10 +117,10 @@ const expectEditView = async (fixtures: Fixtures) => {
 };
 
 const fillAndResetForm = async (fixtures: Fixtures) => {
-	await fillEditField(fixtures, 'name', 'abc');
-	for (const field of CLEARABLE_FIELDS) {
-		await fillEditField(fixtures, field, 'abc');
-	}
+	await fillEditFields(
+		fixtures,
+		['name', ...CLEARABLE_FIELDS].map(field => [field, 'abc'] as const)
+	);
 	for (const control of ['t', 'ro', 'react-when-ro', 'reset']) {
 		await tapEditControl(fixtures, control);
 	}
@@ -155,9 +168,11 @@ test('shows and edits room info', { tags: ['test-8'], timeout: 600_000 }, async 
 	await expectInfoText(fixtures, newRoomName);
 
 	await openEditView(fixtures);
-	await fillEditField(fixtures, 'topic', 'new topic');
-	await fillEditField(fixtures, 'announcement', 'new announcement');
-	await fillEditField(fixtures, 'description', 'new description');
+	await fillEditFields(fixtures, [
+		['topic', 'new topic'],
+		['announcement', 'new announcement'],
+		['description', 'new description']
+	]);
 	await submitAndReturnToInfo(fixtures);
 	for (const text of ['new description', 'new topic', 'new announcement']) {
 		await expectInfoText(fixtures, text);

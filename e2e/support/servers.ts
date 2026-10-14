@@ -1,7 +1,7 @@
 import { expect } from 'e2e';
 
 import { serverHost } from './api';
-import { type Fixtures, LONG_TIMEOUT, tapUntilVisible, tapWhenVisible, fillWhenUncovered } from './flows';
+import { type Fixtures, LONG_TIMEOUT, tapUntilVisible, tapWhenVisible, fillWhenUncovered, expectServerConnected } from './flows';
 import { openSidebar } from './settings';
 
 export const checkServer = async (fixtures: Fixtures, server: string) => {
@@ -20,8 +20,7 @@ export const openServersList = async (fixtures: Fixtures) => {
 	);
 };
 
-export const expectConnectedTo = ({ screen }: Fixtures, server: string) =>
-	expect(screen.getByTestId('rooms-list-header-server-subtitle')).toHaveText(serverHost(server), { timeout: LONG_TIMEOUT });
+export const expectConnectedTo = (fixtures: Fixtures, server: string) => expectServerConnected(fixtures, serverHost(server));
 
 export const selectServer = async (fixtures: Fixtures, server: string) => {
 	await openServersList(fixtures);

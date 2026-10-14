@@ -2,7 +2,7 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers, getProfileInfo, login } from '~e2e/support/api';
-import { hideKeyboard, loginWithDeepLink, type Fixtures, LONG_TIMEOUT, fillWhenUncovered } from '~e2e/support/flows';
+import { hideKeyboard, loginWithDeepLink, type Fixtures, LONG_TIMEOUT, fillWhenUncovered, goBack } from '~e2e/support/flows';
 import { openSidebar } from '~e2e/support/settings';
 
 afterEach(deleteCreatedUsers);
@@ -18,11 +18,11 @@ const openChangeAvatar = async ({ screen }: Fixtures) => {
 		throw new Error('The avatar edit button has no bounds to tap');
 	}
 	await screen.tapAt({ x: editButtonBox.x + editButtonBox.width / 2, y: editButtonBox.y + editButtonBox.height / 2 });
-	await expect(screen.getByTestId('change-avatar-view-submit')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expect(screen.getByTestId('change-avatar-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
 const saveAvatar = async ({ screen }: Fixtures) => {
-	await expect(screen.getByTestId('change-avatar-view-submit')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await screen.scrollUntilVisible(screen.getByTestId('change-avatar-view-submit'));
 	await screen.getByTestId('change-avatar-view-submit').tap();
 	await expect(screen.getByTestId('profile-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 };
@@ -41,8 +41,9 @@ const changeAvatarWith = async (fixtures: Fixtures, userId: string, pickAvatar: 
 	await expectAvatarChanged(userId, previousETag);
 };
 
-const tapDiscardAlertButton = async ({ screen }: Fixtures, name: RegExp) => {
-	await screen.getByTestId('header-back').tap();
+const tapDiscardAlertButton = async (fixtures: Fixtures, name: RegExp) => {
+	const { screen } = fixtures;
+	await goBack(fixtures);
 	await expect(screen.getByText(/Discard changes\?/)).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByRole('button', { name }).last().tap();
 };

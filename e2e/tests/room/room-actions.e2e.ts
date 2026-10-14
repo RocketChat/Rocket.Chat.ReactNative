@@ -19,8 +19,10 @@ import {
 	openMessageActions,
 	openRoomActions,
 	succeeds,
-	tapUntilVisible
+	tapUntilVisible,
+	headerSearchInput
 } from '~e2e/support/flows';
+import { expectRoomTitle, selectHeaderMenuOption, submitSelectedUsers } from '~e2e/support/header';
 import { expandActionSheet, selectUser } from '~e2e/support/room';
 
 afterEach(deleteCreatedUsers);
@@ -125,7 +127,7 @@ const addUsersToRoom = async (fixtures: Fixtures, user: { username: string; pass
 	await tapWhenVisible(fixtures, 'select-users-view-item-rocket.cat');
 	await expectVisible(fixtures, 'selected-user-rocket.cat');
 	await selectUser(fixtures, otherUsername);
-	await tapWhenVisible(fixtures, 'selected-users-view-submit');
+	await submitSelectedUsers(fixtures);
 	await expectVisible(fixtures, 'room-members-view');
 	await goBackUntil(fixtures, 'room-actions-view');
 	await expectText(fixtures, /3 members/);
@@ -137,33 +139,32 @@ const openMembers = (fixtures: Fixtures) => openRoomAction(fixtures, 'members', 
 
 const showAllMembers = async (fixtures: Fixtures, otherUsername: string) => {
 	await openMembers(fixtures);
-	await tapWhenVisible(fixtures, 'room-members-view-filter');
-	await tapWhenVisible(fixtures, 'room-members-view-toggle-status-all');
-	await expectHidden(fixtures, 'room-members-view-toggle-status-all');
+	await selectHeaderMenuOption(
+		fixtures,
+		{ testId: 'room-members-view-filter', iosLabel: 'Filter' },
+		{ testId: 'room-members-view-toggle-status-all', iosLabel: 'All' }
+	);
 	await expectVisible(fixtures, memberTestId(otherUsername));
 	await backToRoomActions(fixtures);
 };
-
-const CLEAR_BUTTON_INSET = 34;
 
 const clearMemberSearch = async (fixtures: Fixtures) => {
 	if (fixtures.platform === 'android') {
 		await tapWhenVisible(fixtures, 'clear-text-input');
 		return;
 	}
-	const searchbox = fixtures.screen.getByTestId('searchbox');
-	const box = await searchbox.boundingBox();
-	if (!box) {
-		throw new Error('searchbox has no bounding box');
-	}
-	await searchbox.tap({ position: { x: box.width - CLEAR_BUTTON_INSET, y: box.height / 2 } });
+	await fixtures.screen
+		.getByRole('button', { name: /^Close$/ })
+		.first()
+		.tap();
 };
 
 const filterMembers = async (fixtures: Fixtures, otherUsername: string) => {
 	await openMembers(fixtures);
 	await expectVisible(fixtures, memberTestId(otherUsername));
-	await expectVisible(fixtures, 'room-members-view-search');
-	await fixtures.screen.getByTestId('room-members-view-search').pressSequentially('rocket');
+	const memberSearch = headerSearchInput(fixtures, 'room-members-view-search');
+	await expect(memberSearch).toBeVisible({ timeout: LONG_TIMEOUT });
+	await memberSearch.pressSequentially('rocket');
 	await hideKeyboard(fixtures, fixtures.screen.getByTestId('room-members-view'));
 	await expectVisible(fixtures, memberTestId('rocket.cat'));
 	await expectHidden(fixtures, memberTestId(otherUsername));
@@ -240,7 +241,7 @@ const openDirectMessageWithMember = async (fixtures: Fixtures, username: string)
 	await openMemberActions(fixtures, username);
 	await expectText(fixtures, 'Direct message');
 	await fixtures.screen.getByText('Direct message').tap();
-	await expectVisible(fixtures, `room-view-title-${username}`);
+	await expectRoomTitle(fixtures, username);
 	await backToRoomsList(fixtures);
 };
 
@@ -252,8 +253,9 @@ test('manages a room through its actions', { tags: ['test-5'], timeout: 900_000 
 	await loginWithDeepLink(fixtures, user);
 	await navigateToRoomActions(fixtures, room.name);
 	for (const action of ROOM_ACTIONS) {
-		await expectVisible(fixtures, `room-actions-${action}`);
+		await fixtures.screen.scrollUntilVisible(fixtures.screen.getByTestId(`room-actions-${action}`));
 	}
+	await fixtures.screen.scrollUntilVisible(fixtures.screen.getByTestId('room-actions-info'), { direction: 'up' });
 	await expectText(fixtures, /1 members/);
 
 	await openRoomAction(fixtures, 'mentioned', 'mentioned-messages-view');

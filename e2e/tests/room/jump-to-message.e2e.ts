@@ -13,8 +13,11 @@ import {
 	escapeRegExp,
 	expectVisible,
 	succeeds,
-	tapUntilVisible
+	tapUntilVisible,
+	goBack,
+	roomTitle
 } from '~e2e/support/flows';
+import { expectRoomTitle, openRoomSearch } from '~e2e/support/header';
 
 const ROOM = 'jumping';
 const THREAD_ROOM = 'jumping-thread';
@@ -39,23 +42,24 @@ const jumpToMessageFrom = (fixtures: Fixtures, text: string) =>
 	jumpToMessageWithLongPress(fixtures, testIdContaining(fixtures, text));
 
 const expectThreadMessage = async (fixtures: Fixtures, text: string) => {
-	await expectVisible(fixtures, 'room-view-title-thread 1');
+	await expectRoomTitle(fixtures, 'thread 1');
 	const message = testIdContaining(fixtures, `message-content-${text}`);
 	await expect(message).toBeVisible({ timeout: LONG_TIMEOUT });
 	await message.tap();
 };
 
 const leaveThread = async (fixtures: Fixtures) => {
-	await fixtures.screen.getByTestId('header-back').tap();
-	await expectVisible(fixtures, `room-view-title-${THREAD_ROOM}`);
+	await goBack(fixtures);
+	await expectRoomTitle(fixtures, THREAD_ROOM);
 };
 
 const clearCache = async (fixtures: Fixtures) => {
 	const { screen } = fixtures;
 	await expectVisible(fixtures, 'room-view');
-	await screen.getByTestId('header-back').tap();
+	await goBack(fixtures);
 	await openSidebar(fixtures);
 	await tapWhenVisible(fixtures, 'sidebar-settings');
+	await fixtures.screen.scrollUntilVisible(fixtures.screen.getByTestId('settings-view-clear-cache'));
 	await tapWhenVisible(fixtures, 'settings-view-clear-cache');
 	await expect(screen.getByText(/This will clear all your offline data/)).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByRole('button', { name: /^Clear$/i }).tap();
@@ -64,7 +68,7 @@ const clearCache = async (fixtures: Fixtures) => {
 
 const searchMessage = async (fixtures: Fixtures, text: string) => {
 	const { screen } = fixtures;
-	await tapWhenVisible(fixtures, 'room-view-search');
+	await openRoomSearch(fixtures);
 	await expectVisible(fixtures, 'search-messages-view');
 	await tapWhenVisible(fixtures, 'search-message-view-input');
 	await screen.getByTestId('search-message-view-input').pressSequentially(text);
@@ -115,7 +119,7 @@ test('jumps to messages', { tags: ['test-3'], retries: 0, timeout: 900_000 }, as
 	await loginWithDeepLink(fixtures, adminCredentials());
 
 	await searchAndNavigateRoom(fixtures, ROOM);
-	await expectVisible(fixtures, 'message-content-300');
+	await expect(testIdContaining(fixtures, 'Quote first message')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await jumpToMessageFrom(fixtures, 'Quote first message');
 	await expectMessages(fixtures, [1, 2]);
 	await tapWhenVisible(fixtures, 'nav-jump-to-bottom');
@@ -124,7 +128,7 @@ test('jumps to messages', { tags: ['test-3'], retries: 0, timeout: 900_000 }, as
 
 	await searchAndNavigateRoom(fixtures, ROOM);
 	await expectVisible(fixtures, 'room-view-messages');
-	await expectVisible(fixtures, 'message-content-300');
+	await expect(testIdContaining(fixtures, 'Quote first message')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await scrollUntilLoaded(fixtures, screen.getByTestId('message-content-249'), 'up');
 	await clearCache(fixtures);
 
@@ -143,7 +147,7 @@ test('jumps to messages', { tags: ['test-3'], retries: 0, timeout: 900_000 }, as
 		await scrollUntilLoaded(fixtures, loadNewer, 'down');
 		await tapCenterUntilVisible(fixtures, loadNewer, `message-content-${lastLoaded}`, 'down');
 	}
-	await screen.getByTestId('header-back').tap();
+	await goBack(fixtures);
 
 	await searchAndNavigateRoom(fixtures, ROOM);
 	await jumpToMessageFrom(fixtures, "Go to jumping-thread's thread");
@@ -152,7 +156,7 @@ test('jumps to messages', { tags: ['test-3'], retries: 0, timeout: 900_000 }, as
 
 	const threadMessageInRoom = testIdContaining(fixtures, 'thread message sent to main room');
 	await expect(threadMessageInRoom).toBeVisible({ timeout: LONG_TIMEOUT });
-	await tapUntilVisible(fixtures, threadMessageInRoom, 'room-view-title-thread 1');
+	await tapUntilVisible(fixtures, threadMessageInRoom, roomTitle(fixtures, 'thread 1'));
 	await expectThreadMessage(fixtures, 'thread message sent to main room');
 	await leaveThread(fixtures);
 

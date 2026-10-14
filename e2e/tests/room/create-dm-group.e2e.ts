@@ -2,6 +2,7 @@ import { afterEach, test } from '@e2e-dev/mobile';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { loginWithDeepLink, tapWhenVisible, expectVisible } from '~e2e/support/flows';
+import { expectRoomTitle, submitSelectedUsers } from '~e2e/support/header';
 import { openNewMessage, selectUser } from '~e2e/support/room';
 
 afterEach(deleteCreatedUsers);
@@ -20,7 +21,7 @@ test('creates a group DM', { tags: ['test-2'] }, async fixtures => {
 	if (fixtures.platform === 'android') {
 		await fixtures.device.dismissKeyboard();
 	}
-	await tapWhenVisible(fixtures, 'selected-users-view-submit');
+	await submitSelectedUsers(fixtures);
 
-	await expectVisible(fixtures, `room-view-title-rocket.cat, ${otherUser.username}`);
+	await expectRoomTitle(fixtures, `rocket.cat, ${otherUser.username}`);
 });

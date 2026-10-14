@@ -10,11 +10,14 @@ import {
 	hideKeyboard,
 	loginWithDeepLink,
 	navigateToRoom,
-	tapWhenUncovered,
 	type Fixtures,
 	LONG_TIMEOUT,
-	fillWhenUncovered
+	fillWhenUncovered,
+	headerItem,
+	roomTitle,
+	headerSearchInput
 } from '~e2e/support/flows';
+import { expectRoomTitle, selectHeaderMenuOption, tapHeaderItem, threadsButton, submitSelectedUsers } from '~e2e/support/header';
 import { random } from '~e2e/support/random';
 import { selectUser } from '~e2e/support/room';
 import { closeActionSheet, openMemberActionSheet } from '~e2e/support/teams';
@@ -22,8 +25,12 @@ import { closeActionSheet, openMemberActionSheet } from '~e2e/support/teams';
 afterEach(deleteCreatedUsers);
 
 const expectRoomHeaderButtons = async (fixtures: Fixtures) => {
-	for (const testId of ['room-view-header-call', 'room-view-header-threads', 'room-view-search']) {
-		await expectVisible(fixtures, testId);
+	for (const button of [
+		headerItem(fixtures, 'room-view-header-call', /^Call /),
+		threadsButton(fixtures),
+		headerItem(fixtures, 'room-view-search', 'More')
+	]) {
+		await expect(button).toBeVisible({ timeout: LONG_TIMEOUT });
 	}
 };
 
@@ -36,13 +43,13 @@ const openTeamChannels = async (fixtures: Fixtures) => {
 
 const createTeamChannel = async (fixtures: Fixtures, channel: string) => {
 	const { screen } = fixtures;
-	await screen.getByTestId('team-channels-view-create').tap();
+	await tapHeaderItem(fixtures, 'team-channels-view-create', 'Add channel to team');
 	await expectVisible(fixtures, 'add-channel-team-view');
 	await expectVisible(fixtures, 'add-channel-team-view-add-existing');
 	await screen.getByTestId('add-channel-team-view-create-channel').tap();
 	await selectUser(fixtures, 'rocket.cat');
 	await hideKeyboard(fixtures);
-	await screen.getByTestId('selected-users-view-submit').tap();
+	await submitSelectedUsers(fixtures);
 	await expectVisible(fixtures, 'create-channel-view');
 	await fillWhenUncovered(screen.getByTestId('create-channel-name'), channel);
 	await hideKeyboard(fixtures);
@@ -53,13 +60,13 @@ const createTeamChannel = async (fixtures: Fixtures, channel: string) => {
 
 const addExistingChannel = async (fixtures: Fixtures, team: string, channel: string) => {
 	const { screen } = fixtures;
-	await screen.getByTestId('team-channels-view-create').tap();
+	await tapHeaderItem(fixtures, 'team-channels-view-create', 'Add channel to team');
 	await expectVisible(fixtures, 'add-channel-team-view');
 	await screen.getByTestId('add-channel-team-view-add-existing').tap();
 	await expectVisible(fixtures, 'add-existing-channel-view');
 	await screen.getByTestId(`add-existing-channel-view-item-${channel}`).tap();
-	await screen.getByTestId('add-existing-channel-view-submit').tap();
-	await expectVisible(fixtures, `room-view-title-${team}`);
+	await tapHeaderItem(fixtures, 'add-existing-channel-view-submit', 'Next');
+	await expectRoomTitle(fixtures, team);
 };
 
 const toggleAutoJoin = async (fixtures: Fixtures, channel: string) => {
@@ -87,21 +94,27 @@ const addMembers = async (fixtures: Fixtures, usernames: string[]) => {
 		await selectUser(fixtures, username);
 	}
 	await hideKeyboard(fixtures);
-	await tapWhenUncovered(screen.getByTestId('selected-users-view-submit'));
-	await tapWhenUncovered(screen.getByTestId('room-members-view-filter'));
-	await tapWhenUncovered(screen.getByTestId('room-members-view-toggle-status-all'));
+	await submitSelectedUsers(fixtures);
+	await selectHeaderMenuOption(
+		fixtures,
+		{ testId: 'room-members-view-filter', iosLabel: 'Filter' },
+		{ testId: 'room-members-view-toggle-status-all', iosLabel: 'All' }
+	);
 	await expectVisible(fixtures, `room-members-view-item-${usernames[usernames.length - 1]}`);
 };
+
+const checkedIndicator = ({ screen, platform }: Fixtures, channel: string) =>
+	platform === 'ios' ? screen.getByRole('button', { name: `${channel} Checked` }) : screen.getByTestId(`${channel}-checked`);
 
 const removeMemberKeepingChannel = async (fixtures: Fixtures, username: string, channel: string) => {
 	const { screen } = fixtures;
 	await openMemberActionSheet(fixtures, username);
 	await screen.getByTestId('action-sheet-remove-from-team').tap();
 	await screen.getByTestId(`select-list-view-item-${channel}`).tap();
-	await expectVisible(fixtures, `${channel}-checked`);
+	await expect(checkedIndicator(fixtures, channel)).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByTestId(`select-list-view-item-${channel}`).tap();
-	await expect(screen.getByTestId(`${channel}-checked`)).toBeHidden({ timeout: LONG_TIMEOUT });
-	await tapWhenUncovered(screen.getByTestId('select-list-view-submit'));
+	await expect(checkedIndicator(fixtures, channel)).toBeHidden({ timeout: LONG_TIMEOUT });
+	await tapHeaderItem(fixtures, 'select-list-view-submit', 'Next');
 	await expect(screen.getByTestId(`room-members-view-item-${username}`)).toBeHidden({ timeout: LONG_TIMEOUT });
 };
 
@@ -122,7 +135,7 @@ const leaveTeam = async (fixtures: Fixtures, team: string, channels: { existing:
 	await expectVisible(fixtures, `select-list-view-item-${channels.existing}`);
 	await screen.getByTestId(`select-list-view-item-${channels.created}`).tap();
 	await confirmAlert(fixtures, /You are the last owner of this channel/, /^OK$/i);
-	await tapWhenUncovered(screen.getByTestId('select-list-view-submit'));
+	await tapHeaderItem(fixtures, 'select-list-view-submit', 'Next');
 	await expectVisible(fixtures, 'rooms-list-view');
 	await expect(screen.getByTestId(`rooms-list-view-item-${team}`)).toBeHidden({ timeout: LONG_TIMEOUT });
 };
@@ -140,11 +153,11 @@ test('manages a team', { tags: ['test-3'] }, async fixtures => {
 	await expectRoomHeaderButtons(fixtures);
 
 	await openTeamChannels(fixtures);
-	await expectVisible(fixtures, 'team-channels-view-search');
+	await expect(headerSearchInput(fixtures, 'team-channels-view-search')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await createTeamChannel(fixtures, privateChannel);
 	await openTeamChannels(fixtures);
 	await screen.getByTestId(`rooms-list-view-item-${privateChannel}`).tap();
-	await expectVisible(fixtures, `room-view-title-${privateChannel}`);
+	await expectRoomTitle(fixtures, privateChannel);
 	await expectRoomHeaderButtons(fixtures);
 	await backToRoomsList(fixtures);
 
@@ -156,7 +169,7 @@ test('manages a team', { tags: ['test-3'] }, async fixtures => {
 
 	await toggleAutoJoin(fixtures, privateChannel);
 	await goBackUntil(fixtures, 'room-actions-view');
-	await goBackUntil(fixtures, `room-view-title-${team}`);
+	await goBackUntil(fixtures, roomTitle(fixtures, team));
 	await screen.getByTestId('room-header').first().tap();
 	await expectVisible(fixtures, 'room-actions-view');
 

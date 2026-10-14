@@ -3,6 +3,7 @@ import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers, get } from '~e2e/support/api';
 import { expectHidden, expectVisible, loginWithDeepLink } from '~e2e/support/flows';
+import { tapHeaderItem } from '~e2e/support/header';
 import { randomTeamName } from '~e2e/support/random';
 import { createTeam } from '~e2e/support/teams';
 
@@ -19,7 +20,7 @@ test('creates and deletes a team', { tags: ['test-7'] }, async fixtures => {
 
 	await screen.getByTestId('room-header').first().tap();
 	await screen.getByTestId('room-actions-info').tap();
-	await screen.getByTestId('room-info-view-edit-button').tap();
+	await tapHeaderItem(fixtures, 'room-info-view-edit-button', 'Room info edit');
 	await screen.scrollUntilVisible(screen.getByTestId('room-info-edit-view-delete'));
 	await screen.getByTestId('room-info-edit-view-delete').tap();
 	await screen.getByRole('button', { name: /^Yes, delete it!$/i }).tap();

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "trace-1",
-  "createdAt": "2026-10-09T22:27:46.745Z",
+  "createdAt": "2026-10-14T19:03:16.984Z",
   "payload": {
     "actions": [
       {
@@ -37,18 +37,22 @@
       "callIndex": 0,
       "agent": "default"
     },
-    "summary": "Entered https://mobile.qa.rocket.chat and tapped Connect; app navigated to the workspace view showing \"Mobile!\" workspace with Login and Create an account options.",
+    "summary": "After connecting, the app navigated to the workspace view showing \"Mobile!\" and \"https://mobile.qa.rocket.chat\" with Login/Create an account buttons, confirming successful connection to the workspace.",
     "startPath": "chat.rocket.ios",
-    "endPath": "chat.rocket.ios",
+    "endPath": "chat.rocket.ios / mobile.qa.rocket.chat",
     "endAnchors": [
       {
         "role": "button",
-        "name": "Back",
-        "testId": "custom-header-back"
+        "name": "NewServerView",
+        "testId": "BackButton"
       },
       {
         "role": "text",
         "name": "mobile.qa.rocket.chat"
+      },
+      {
+        "role": "navigation",
+        "testId": "mobile.qa.rocket.chat"
       },
       {
         "role": "other",
@@ -69,10 +73,6 @@
       {
         "role": "text",
         "name": "Login"
-      },
-      {
-        "role": "button",
-        "name": "Create an account"
       }
     ],
     "goneAnchors": [
@@ -110,6 +110,6 @@
         "name": "Apply certificate"
       }
     ],
-    "endWaitMs": 16873
+    "endWaitMs": 34339
   }
 }

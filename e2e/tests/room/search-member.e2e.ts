@@ -10,18 +10,26 @@ import {
 	LONG_TIMEOUT,
 	tapWhenVisible,
 	expectVisible,
-	openRoomActions
+	openRoomActions,
+	headerSearchInput
 } from '~e2e/support/flows';
+import { selectHeaderMenuOption } from '~e2e/support/header';
 
 afterEach(deleteCreatedUsers);
 
-const searchMember = async ({ screen }: Fixtures, text: string) => {
-	await fillSettled(screen.getByTestId('room-members-view-search'), text);
+const searchMember = async (fixtures: Fixtures, text: string) => {
+	await fillSettled(headerSearchInput(fixtures, 'room-members-view-search'), text);
 };
 
 const filterByStatus = async (fixtures: Fixtures, status: 'online' | 'all') => {
-	await tapWhenVisible(fixtures, 'room-members-view-filter');
-	await tapWhenVisible(fixtures, `room-members-view-toggle-status-${status}`);
+	await selectHeaderMenuOption(
+		fixtures,
+		{ testId: 'room-members-view-filter', iosLabel: 'Filter' },
+		{
+			testId: `room-members-view-toggle-status-${status}`,
+			iosLabel: status === 'all' ? 'All' : 'Online'
+		}
+	);
 };
 
 test('searches members of a room', { tags: ['test-5'] }, async fixtures => {
@@ -33,7 +41,7 @@ test('searches members of a room', { tags: ['test-5'] }, async fixtures => {
 	await navigateToRoom(fixtures, 'general');
 	await openRoomActions(fixtures);
 	await tapWhenVisible(fixtures, 'room-actions-members');
-	await expectVisible(fixtures, 'room-members-view-search');
+	await expect(headerSearchInput(fixtures, 'room-members-view-search')).toBeVisible({ timeout: LONG_TIMEOUT });
 
 	await searchMember(fixtures, 'rohit.bansal');
 	await expectVisible(fixtures, 'room-members-view-item-rohit.bansal');
@@ -43,7 +51,9 @@ test('searches members of a room', { tags: ['test-5'] }, async fixtures => {
 
 	await filterByStatus(fixtures, 'all');
 	await expectVisible(fixtures, 'room-members-view-item-rohit.bansal');
-	await screen.getByTestId('clear-text-input').tap();
+	await (
+		fixtures.platform === 'ios' ? screen.getByRole('button', { name: 'Clear text' }) : screen.getByTestId('clear-text-input')
+	).tap();
 
 	const secondUser = await createUser();
 	await searchMember(fixtures, secondUser.username);

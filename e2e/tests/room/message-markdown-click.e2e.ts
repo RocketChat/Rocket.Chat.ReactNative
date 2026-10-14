@@ -9,14 +9,15 @@ import {
 	LONG_TIMEOUT,
 	tapWhenVisible,
 	escapeRegExp,
-	expectVisible
+	expectVisible,
+	goBack
 } from '~e2e/support/flows';
+import { expectRoomTitle } from '~e2e/support/header';
 
 afterEach(deleteCreatedUsers);
 
 const ROOM = 'maestro-message-clickable-test';
 const LINK = 'https://www.rocket.chat';
-const THREAD_TITLE = /^room-view-title-message with thread$/i;
 
 const linkMessage = `message-content-Link with text ${LINK}`;
 const channelMentionMessage = 'message-content-channel: #detox-public';
@@ -26,7 +27,7 @@ const threadReply = 'message-content-a message in thread';
 const threadButton = /^message-thread-button-message with thread$/i;
 
 const expectBackInRoom = async (fixtures: Fixtures) => {
-	await expectVisible(fixtures, `room-view-title-${ROOM}`);
+	await expectRoomTitle(fixtures, ROOM);
 };
 
 const expectLinkAlert = async ({ screen }: Fixtures, title: string) => {
@@ -37,9 +38,8 @@ const expectLinkAlert = async ({ screen }: Fixtures, title: string) => {
 };
 
 const expectThreadOpened = async (fixtures: Fixtures) => {
-	const { screen } = fixtures;
-	await expect(screen.getByTestId(THREAD_TITLE)).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByTestId('header-back').tap();
+	await expectRoomTitle(fixtures, /^message with thread$/i);
+	await goBack(fixtures);
 	await expectBackInRoom(fixtures);
 };
 
@@ -61,7 +61,7 @@ test('opens markdown mentions, links and threads', { tags: ['test-2'] }, async f
 	await inlineTarget(fixtures, channelMentionMessage, 'detox-public').tap();
 	await expectVisible(fixtures, 'room-info-view');
 	await expect(screen.getByText('detox-public', { exact: false }).first()).toBeVisible();
-	await screen.getByTestId('custom-header-back').tap();
+	await goBack(fixtures);
 	await expectBackInRoom(fixtures);
 
 	await inlineTarget(fixtures, linkMessage, LINK).tap();
@@ -72,7 +72,7 @@ test('opens markdown mentions, links and threads', { tags: ['test-2'] }, async f
 	await inlineTarget(fixtures, userMentionMessage, 'e2e_admin').tap();
 	await expect(screen.getByText('User info', { exact: false }).first()).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expect(screen.getByText('e2e_admin', { exact: false }).first()).toBeVisible();
-	await screen.getByTestId('custom-header-back').tap();
+	await goBack(fixtures);
 	await expectBackInRoom(fixtures);
 
 	await screen.getByTestId(threadMessage).tap();
@@ -82,5 +82,5 @@ test('opens markdown mentions, links and threads', { tags: ['test-2'] }, async f
 	await expectThreadOpened(fixtures);
 
 	await tapWhenVisible(fixtures, threadReply);
-	await expect(screen.getByTestId(THREAD_TITLE)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expectRoomTitle(fixtures, /^message with thread$/i);
 });

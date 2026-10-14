@@ -16,6 +16,7 @@ import {
 	tapUntilVisible,
 	fillWhenUncovered
 } from '~e2e/support/flows';
+import { expectRoomTitle } from '~e2e/support/header';
 import { navigateToInfoView } from '~e2e/support/room';
 
 afterEach(deleteCreatedUsers);
@@ -44,7 +45,7 @@ const reportUser = async (fixtures: Fixtures, roomTitle: string) => {
 	await fillWhenUncovered(fixtures.screen.getByTestId('report-user-view-input'), 'e2e test');
 	await hideKeyboard(fixtures);
 	await tapWhenVisible(fixtures, 'report-user-view-submit');
-	await expectVisible(fixtures, `room-view-title-${roomTitle}`);
+	await expectRoomTitle(fixtures, roomTitle);
 };
 
 test('blocks, ignores and reports a user', { tags: ['test-4'] }, async fixtures => {

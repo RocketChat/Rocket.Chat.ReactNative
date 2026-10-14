@@ -1,11 +1,12 @@
 import { expect } from 'e2e';
 
-import { type Fixtures, searchAndNavigateRoom, LONG_TIMEOUT, tapUntilVisible, tapWhenVisible } from './flows';
+import { tapHeaderItem } from './header';
+import { goBack, type Fixtures, searchAndNavigateRoom, LONG_TIMEOUT, tapUntilVisible, tapWhenVisible, headerItem } from './flows';
 
 const ACCESSIBILITY_ROOM = 'maestro-accessibility-test';
 
 export const openSidebar = async (fixtures: Fixtures) => {
-	const drawerButton = fixtures.screen.getByTestId('rooms-list-view-sidebar').first();
+	const drawerButton = headerItem(fixtures, 'rooms-list-view-sidebar', 'Menu');
 	await expect(drawerButton).toBeVisible({ timeout: LONG_TIMEOUT });
 	await tapUntilVisible(fixtures, drawerButton, 'sidebar-view');
 };
@@ -24,7 +25,7 @@ export const openProfile = async (fixtures: Fixtures) => {
 
 export const goToUserPreferences = async (fixtures: Fixtures) => {
 	await openProfile(fixtures);
-	await tapWhenVisible(fixtures, 'preferences-view-open');
+	await tapHeaderItem(fixtures, 'preferences-view-open', 'Preferences');
 	await expect(fixtures.screen.getByTestId('preferences-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
@@ -51,7 +52,7 @@ export const goToAccessibilityAndAppearance = async (fixtures: Fixtures) => {
 
 export const toggleAccessibilitySwitchAndOpenRoom = async (fixtures: Fixtures, switchTestId: string) => {
 	await tapWhenVisible(fixtures, switchTestId);
-	await tapWhenVisible(fixtures, 'accessibility-view-drawer');
+	await tapHeaderItem(fixtures, 'accessibility-view-drawer', 'Menu');
 	await tapWhenVisible(fixtures, 'sidebar-chats');
 	await expect(fixtures.screen.getByTestId('sidebar-view')).toBeHidden({ timeout: LONG_TIMEOUT });
 	await searchAndNavigateRoom(fixtures, ACCESSIBILITY_ROOM);
@@ -64,8 +65,8 @@ export const goToDisplayPreferences = async (fixtures: Fixtures) => {
 };
 
 export const goToRoomListFromDisplayPreferences = async (fixtures: Fixtures) => {
-	await tapWhenVisible(fixtures, 'custom-header-back');
-	await tapWhenVisible(fixtures, 'accessibility-view-drawer');
+	await goBack(fixtures);
+	await tapHeaderItem(fixtures, 'accessibility-view-drawer', 'Menu');
 	await tapWhenVisible(fixtures, 'sidebar-chats');
 	await expect(fixtures.screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 };

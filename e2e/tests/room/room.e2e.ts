@@ -21,6 +21,7 @@ import {
 	tapSend,
 	typeUntilListed
 } from '~e2e/support/flows';
+import { expectRoomTitle } from '~e2e/support/header';
 import { deleteMessage } from '~e2e/support/room';
 
 afterEach(deleteCreatedUsers);
@@ -141,7 +142,7 @@ const replyInDirectMessage = async (fixtures: Fixtures) => {
 	const reply = 'replied in dm';
 	const { author } = await openRoomWithOthersMessage(fixtures, original);
 	await startMessageAction(fixtures, original, 'reply-in-dm');
-	await expectVisible(fixtures, `room-view-title-${author.username}`);
+	await expectRoomTitle(fixtures, author.username);
 	await fillWhenUncovered(composer(fixtures), reply);
 	await hideKeyboard(fixtures);
 	await tapSend(fixtures);
@@ -243,7 +244,7 @@ test('opens profiles and edits, quotes and deletes messages in a room', { tags: 
 
 	await backToRoomsList(fixtures);
 	await tapWhenVisible(fixtures, 'markdown-preview-You: quoted');
-	await expectVisible(fixtures, `room-view-title-${room.name}`);
+	await expectRoomTitle(fixtures, room.name);
 
 	await sendMessage(fixtures, 'message to delete');
 	await deleteMessage(fixtures, 'message to delete');

@@ -13,6 +13,7 @@ import {
 	openMessageActions,
 	fillWhenUncovered
 } from '~e2e/support/flows';
+import { expectRoomTitle, tapHeaderItem } from '~e2e/support/header';
 
 afterEach(deleteCreatedUsers);
 
@@ -24,7 +25,7 @@ const forwardMessageTo = async (fixtures: Fixtures, username: string) => {
 	await tapWhenVisible(fixtures, `multi-select-item-${username.toLowerCase()}`);
 	await tapWhenVisible(fixtures, 'action-sheet-handle');
 	await expectHidden(fixtures, 'multi-select-search');
-	await tapWhenVisible(fixtures, 'forward-message-view-send');
+	await tapHeaderItem(fixtures, 'forward-message-view-send', 'Send');
 };
 
 test('forwards a message to a direct message', { tags: ['test-3'], timeout: 300_000 }, async fixtures => {
@@ -43,7 +44,7 @@ test('forwards a message to a direct message', { tags: ['test-3'], timeout: 300_
 	await openMessageActions(fixtures, 'Hello room');
 	await screen.getByText('Forward').tap();
 	await forwardMessageTo(fixtures, otherUser.username);
-	await expectVisible(fixtures, `room-view-title-${room.name}`);
+	await expectRoomTitle(fixtures, room.name);
 
 	await backToRoomsList(fixtures);
 	await searchAndNavigateRoom(fixtures, otherUser.username);

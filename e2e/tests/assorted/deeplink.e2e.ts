@@ -13,8 +13,10 @@ import {
 	openDeepLink,
 	type Fixtures,
 	LONG_TIMEOUT,
-	tapWhenVisible
+	tapWhenVisible,
+	roomTitle
 } from '~e2e/support/flows';
+import { expectRoomTitle } from '~e2e/support/header';
 import { registerAccount } from '~e2e/support/onboarding';
 import { random } from '~e2e/support/random';
 import { delay } from '~e2e/support/timing';
@@ -28,9 +30,6 @@ const coldStartLink = async (fixtures: Fixtures, link: string) => {
 	await fixtures.device.closeApp();
 	await openDeepLink(fixtures, link);
 };
-
-const expectRoomTitle = ({ screen }: Fixtures, title: string) =>
-	expect(screen.getByTestId(`room-view-title-${title}`)).toBeVisible({ timeout: LONG_TIMEOUT });
 
 const sendAppToBackground = async (fixtures: Fixtures) => {
 	const { device, platform } = fixtures;
@@ -54,9 +53,9 @@ const shareTextTo = async (fixtures: Fixtures, room: string, message: string) =>
 	await expectVisible(fixtures, `message-content-${message}`);
 };
 
-const expectRoomTitleToleratingSnapshotFailures = async ({ screen }: Fixtures, title: string) => {
-	const roomTitle = screen.getByTestId(`room-view-title-${title}`);
-	await expect.poll(() => isVisibleNow(roomTitle), { timeout: LONG_TIMEOUT }).toBe(true);
+const expectRoomTitleToleratingSnapshotFailures = async (fixtures: Fixtures, roomName: string) => {
+	const title = roomTitle(fixtures, roomName);
+	await expect.poll(() => isVisibleNow(title), { timeout: LONG_TIMEOUT }).toBe(true);
 };
 
 const answerLoginPrompt = async (fixtures: Fixtures, link: string, answer: RegExp) => {
@@ -128,7 +127,7 @@ test('handles room, thread and share deep links with two workspaces', { tags: ['
 	await backToRoomsList(fixtures);
 
 	await sendAppToBackground(fixtures);
-	await openDeepLink(fixtures, roomLink, screen.getByTestId(`room-view-title-${room.name}`));
+	await openDeepLink(fixtures, roomLink, roomTitle(fixtures, room.name));
 	await expectRoomTitle(fixtures, room.name);
 
 	await relaunchApp(fixtures, data.server);
@@ -160,7 +159,6 @@ test('handles room, thread and share deep links with two workspaces', { tags: ['
 });
 
 test('handles share and login prompt deep links without a workspace', { tags: ['test-4'] }, async fixtures => {
-	const { screen } = fixtures;
 	const { room, authLink } = await createDeepLinkTargets();
 
 	await launchApp(fixtures);
@@ -169,7 +167,7 @@ test('handles share and login prompt deep links without a workspace', { tags: ['
 
 	await answerLoginPrompt(fixtures, authLink({ forceLoginPrompt: 'true' }), /^Cancel$/i);
 	await expectVisible(fixtures, 'new-server-view');
-	await expect(screen.getByTestId(`room-view-title-${room.name}`)).toBeHidden();
+	await expect(roomTitle(fixtures, room.name)).toBeHidden();
 
 	await answerLoginPrompt(fixtures, authLink({ forceLoginPrompt: 'true' }), /^Login$/i);
 	await expectRoomTitleToleratingSnapshotFailures(fixtures, room.name);

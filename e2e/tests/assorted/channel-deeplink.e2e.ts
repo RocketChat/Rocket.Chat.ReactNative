@@ -1,16 +1,16 @@
 import { afterEach, test } from '@e2e-dev/mobile';
-import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers, getDeepLink } from '~e2e/support/api';
 import { data } from '~e2e/support/data';
-import { loginWithDeepLink, openDeepLink, type Fixtures, LONG_TIMEOUT } from '~e2e/support/flows';
+import { loginWithDeepLink, openDeepLink, type Fixtures } from '~e2e/support/flows';
+import { expectRoomTitle } from '~e2e/support/header';
 
 afterEach(deleteCreatedUsers);
 
 const coldStartRoomLink = async (fixtures: Fixtures, path: string, expectedName: string) => {
 	await fixtures.device.closeApp();
 	await openDeepLink(fixtures, getDeepLink('room', data.server, { path }));
-	await expect(fixtures.screen.getByTestId(`room-view-title-${expectedName}`)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expectRoomTitle(fixtures, expectedName);
 };
 
 test('opens groups and channels from deep links', { tags: ['test-6'] }, async fixtures => {

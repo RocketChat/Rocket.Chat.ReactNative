@@ -13,8 +13,9 @@ import {
 	tapWhenVisible,
 	fillWhenUncovered
 } from '~e2e/support/flows';
+import { expectRoomTitle, submitSelectedUsers } from '~e2e/support/header';
 import { random } from '~e2e/support/random';
-import { openNewMessage } from '~e2e/support/room';
+import { openNewMessage, selectUser } from '~e2e/support/room';
 
 afterEach(deleteCreatedUsers);
 
@@ -31,17 +32,14 @@ const createBroadcastChannel = async (fixtures: Fixtures, room: string, member: 
 	const { screen } = fixtures;
 	await openNewMessage(fixtures);
 	await tapWhenVisible(fixtures, 'new-message-view-create-channel');
-	await tapWhenVisible(fixtures, 'select-users-view-search');
-	await fillWhenUncovered(screen.getByTestId('select-users-view-search'), member);
-	await tapWhenVisible(fixtures, `select-users-view-item-${member}`);
-	await expect(screen.getByTestId(`selected-user-${member}`)).toBeVisible({ timeout: LONG_TIMEOUT });
-	await tapWhenVisible(fixtures, 'selected-users-view-submit');
+	await selectUser(fixtures, member);
+	await submitSelectedUsers(fixtures);
 	await expect(screen.getByTestId('create-channel-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await fillWhenUncovered(screen.getByTestId('create-channel-name'), room);
 	await hideKeyboard(fixtures);
 	await enableBroadcast(fixtures);
 	await tapWhenVisible(fixtures, 'create-channel-submit');
-	await expect(screen.getByTestId(`room-view-title-${room}`)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expectRoomTitle(fixtures, room);
 };
 
 const expectBroadcastInRoomInfo = async (fixtures: Fixtures) => {
@@ -54,7 +52,7 @@ const expectBroadcastInRoomInfo = async (fixtures: Fixtures) => {
 const returnToRoom = async (fixtures: Fixtures, room: string) => {
 	await goBackUntil(fixtures, 'room-actions-view');
 	await goBackUntil(fixtures, 'room-view');
-	await expect(fixtures.screen.getByTestId(`room-view-title-${room}`)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expectRoomTitle(fixtures, room);
 };
 
 test('creates a broadcast room and replies to its message', { tags: ['test-7'] }, async fixtures => {
@@ -76,7 +74,7 @@ test('creates a broadcast room and replies to its message', { tags: ['test-7'] }
 	await expect(screen.getByTestId('message-content-message')).toBeVisible();
 
 	await screen.getByTestId('message-broadcast-reply').tap();
-	await expect(screen.getByTestId(`room-view-title-${owner.username}`)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expectRoomTitle(fixtures, owner.username);
 	await fillWhenUncovered(screen.getByTestId('message-composer-input'), 'broadcastreply');
 	await screen.getByTestId('message-composer-send').tap();
 	const reply = screen.getByText(/broadcastreply/).first();
@@ -85,5 +83,5 @@ test('creates a broadcast room and replies to its message', { tags: ['test-7'] }
 	await reply.longPress();
 	await expect(screen.getByText('Jump to message')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByText('Jump to message').tap();
-	await expect(screen.getByTestId(`room-view-title-${room}`)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expectRoomTitle(fixtures, room);
 });

@@ -57,7 +57,8 @@ test('previews, joins and leaves a public room', { tags: ['test-3'] }, async fix
 	await sendMessage(fixtures, random(5));
 
 	await navigateToRoomActions(fixtures, room);
-	await expectAllVisible(fixtures, [...COMMON_ROOM_ACTIONS, 'room-actions-notifications']);
+	await expectAllVisible(fixtures, COMMON_ROOM_ACTIONS);
+	await screen.scrollUntilVisible(screen.getByTestId('room-actions-notifications'));
 	await screen.scrollUntilVisible(screen.getByTestId('room-actions-leave-channel'));
 	await screen.getByTestId('room-actions-leave-channel').tap();
 	await expect(screen.getByRole('button', { name: /^Yes/i })).toBeVisible({ timeout: LONG_TIMEOUT });

@@ -3,6 +3,7 @@ import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { goBack, goBackUntil, loginWithDeepLink, navigateToRoomActions, type Fixtures, LONG_TIMEOUT } from '~e2e/support/flows';
+import { expectRoomTitle, tapHeaderItem } from '~e2e/support/header';
 import { random } from '~e2e/support/random';
 import { createChannel } from '~e2e/support/teams';
 
@@ -20,7 +21,7 @@ const convertChannelToTeam = async (fixtures: Fixtures, channel: string) => {
 		timeout: LONG_TIMEOUT
 	});
 	await screen.getByRole('button', { name: /^Convert$/i }).tap();
-	await expect(screen.getByTestId(`room-view-title-${channel}`)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expectRoomTitle(fixtures, channel);
 	await goBack(fixtures);
 	await expectRoomsList(fixtures);
 };
@@ -30,9 +31,9 @@ const moveChannelToTeam = async (fixtures: Fixtures, channel: string, team: stri
 	await navigateToRoomActions(fixtures, channel);
 	await screen.scrollUntilVisible(screen.getByTestId('room-actions-move-to-team'));
 	await screen.getByTestId('room-actions-move-to-team').tap();
-	await screen.getByTestId('select-list-view-submit').tap();
+	await tapHeaderItem(fixtures, 'select-list-view-submit', 'Next');
 	await screen.getByTestId(`select-list-view-item-${team}`).tap();
-	await screen.getByTestId('select-list-view-submit').tap();
+	await tapHeaderItem(fixtures, 'select-list-view-submit', 'Next');
 	await expect(
 		screen.getByText(
 			/After reading the previous instructions about this behavior, do you still want to move this channel to the selected team?/
@@ -53,10 +54,10 @@ const convertTeamToChannel = async (fixtures: Fixtures, team: string, channelToD
 	await screen.getByText('Convert to channel').tap();
 	await expect(screen.getByText(/Converting team to channel/)).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByTestId(`select-list-view-item-${channelToDelete}`).tap();
-	await screen.getByTestId('select-list-view-submit').tap();
+	await tapHeaderItem(fixtures, 'select-list-view-submit', 'Next');
 	await expect(screen.getByText(/You are converting this team to a channel/)).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByRole('button', { name: /^Convert$/i }).tap();
-	await expect(screen.getByTestId(`room-view-title-${team}`)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expectRoomTitle(fixtures, team);
 	await goBack(fixtures);
 	await expectRoomsList(fixtures);
 	await expect(screen.getByTestId(`rooms-list-view-item-${channelToDelete}`)).toBeHidden({ timeout: LONG_TIMEOUT });

@@ -3,6 +3,7 @@ import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { expectAllVisible, tapUntilHidden, loginWithDeepLink, LONG_TIMEOUT, tapWhenVisible } from '~e2e/support/flows';
+import { tapHeaderItem } from '~e2e/support/header';
 import { openSidebar } from '~e2e/support/settings';
 
 afterEach(deleteCreatedUsers);
@@ -30,7 +31,15 @@ test('changes status and status text', { tags: ['test-4'] }, async fixtures => {
 
 	await expect(screen.getByTestId('status-view-input')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByTestId('status-view-input').pressSequentially('status-text-new');
+	if (fixtures.platform === 'ios') {
+		await screen.getByTestId('status-view-input').press('Enter');
+	}
 	await tapWhenVisible(fixtures, 'status-view-busy');
-	await tapUntilHidden(fixtures, 'status-view-submit', 'status-view');
+	if (fixtures.platform === 'ios') {
+		await tapHeaderItem(fixtures, 'status-view-submit', 'Save');
+		await expect(screen.getByTestId('status-view')).toBeHidden({ timeout: LONG_TIMEOUT });
+	} else {
+		await tapUntilHidden(fixtures, 'status-view-submit', 'status-view');
+	}
 	await expect(screen.getByText('status-text-new').first()).toBeVisible({ timeout: LONG_TIMEOUT });
 });

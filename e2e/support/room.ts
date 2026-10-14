@@ -7,6 +7,7 @@ import {
 	expectVisible,
 	fillSettled,
 	type Fixtures,
+	headerSearchInput,
 	isVisibleNow,
 	LONG_TIMEOUT,
 	openMessageActions,
@@ -15,18 +16,24 @@ import {
 	succeeds,
 	tapUntilVisible,
 	tapWhenVisible,
-	typeUntilListed
+	typeUntilListed,
+	headerItem
 } from './flows';
+import { expectRoomTitle } from './header';
 
 export const openNewMessage = async (fixtures: Fixtures) => {
-	const createButton = fixtures.screen.getByTestId('rooms-list-view-create-channel').first();
+	const createButton = headerItem(
+		fixtures,
+		'rooms-list-view-create-channel',
+		'Create new channel, team, direct message or discussion'
+	);
 	await expect(createButton).toBeVisible({ timeout: LONG_TIMEOUT });
 	await tapUntilVisible(fixtures, createButton, 'new-message-view');
 };
 
 export const selectUser = async (fixtures: Fixtures, username: string) => {
-	await tapWhenVisible(fixtures, 'select-users-view-search');
-	const search = fixtures.screen.getByTestId('select-users-view-search');
+	const search = headerSearchInput(fixtures, 'select-users-view-search');
+	await tapWhenVisible(fixtures, search);
 	const listedUser = fixtures.screen.getByTestId(`select-users-view-item-${username}`).first();
 	await typeUntilListed(
 		() => fillSettled(search, username),
@@ -35,6 +42,9 @@ export const selectUser = async (fixtures: Fixtures, username: string) => {
 	);
 	await tapWhenVisible(fixtures, listedUser);
 	await expectVisible(fixtures, `selected-user-${username}`);
+	if (fixtures.platform === 'ios') {
+		await tapWhenVisible(fixtures, fixtures.screen.getByRole('button', { name: /^Close$/ }).first());
+	}
 };
 
 export const navigateToInfoView = async (fixtures: Fixtures) => {
@@ -85,7 +95,7 @@ export const expectBadgeClearsAfterOpeningRoom = async (fixtures: Fixtures, room
 	await expect(row).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expect(row.getByTestId(badgeTestId)).toBeVisible({ timeout: LONG_TIMEOUT });
 	await row.tap();
-	await expect(screen.getByTestId(`room-view-title-${roomName}`)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expectRoomTitle(fixtures, roomName);
 	await backToRoomsList(fixtures);
 	await expect(row.getByTestId(badgeTestId)).toBeHidden({ timeout: LONG_TIMEOUT });
 };

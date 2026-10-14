@@ -14,8 +14,10 @@ import {
 	tapUntilVisible,
 	tapWhenVisible,
 	expectVisible,
-	fillWhenUncovered
+	fillWhenUncovered,
+	headerItem
 } from '~e2e/support/flows';
+import { expectRoomTitle, submitSelectedUsers } from '~e2e/support/header';
 import { random } from '~e2e/support/random';
 import { openNewMessage, selectUser } from '~e2e/support/room';
 
@@ -26,9 +28,12 @@ const scrolledRoomActions = ['pinned', 'notifications', 'leave-channel'].map(act
 
 const submitDiscussion = async (fixtures: Fixtures, name: string) => {
 	await fillWhenUncovered(fixtures.screen.getByTestId('multi-select-discussion-name'), name);
+	if (fixtures.platform === 'ios') {
+		await fixtures.screen.getByTestId('multi-select-discussion-name').press('Enter');
+	}
 	await tapWhenVisible(fixtures, 'create-discussion-submit');
 	await expectVisible(fixtures, 'room-view');
-	await expectVisible(fixtures, `room-view-title-${name}`);
+	await expectRoomTitle(fixtures, name);
 };
 
 const createDiscussionFromNewMessage = async (fixtures: Fixtures, roomName: string, name: string) => {
@@ -37,7 +42,7 @@ const createDiscussionFromNewMessage = async (fixtures: Fixtures, roomName: stri
 	await expectVisible(fixtures, 'select-users-view');
 	await selectUser(fixtures, 'rocket.cat');
 	await expectVisible(fixtures, 'selected-user-rocket.cat');
-	await tapWhenVisible(fixtures, 'selected-users-view-submit');
+	await submitSelectedUsers(fixtures);
 	await expectVisible(fixtures, 'create-discussion-view');
 	await tapWhenVisible(fixtures, 'create-discussion-select-channel');
 	await expectVisible(fixtures, 'action-sheet');
@@ -65,7 +70,7 @@ const createDiscussionFromMessage = async (fixtures: Fixtures) => {
 	await expectVisible(fixtures, 'create-discussion-view');
 	await tapUntilHidden(fixtures, 'create-discussion-submit', 'create-discussion-view');
 	await expectVisible(fixtures, 'room-view');
-	await expectVisible(fixtures, 'room-view-title-message');
+	await expectRoomTitle(fixtures, 'message');
 };
 
 const checkRoomActions = async (fixtures: Fixtures) => {
@@ -81,12 +86,12 @@ const checkRoomActions = async (fixtures: Fixtures) => {
 	await screen.scrollUntilVisible(screen.getByTestId('room-actions-info'), { direction: 'up' });
 	await screen.getByTestId('room-actions-info').tap();
 	await expectVisible(fixtures, 'room-info-view');
-	await expect(screen.getByTestId('room-info-view-edit-button')).toBeVisible();
-	await screen.getByTestId('custom-header-back').tap();
+	await expect(headerItem(fixtures, 'room-info-view-edit-button', 'Room info edit')).toBeVisible();
+	await goBack(fixtures);
 	await expectVisible(fixtures, 'room-actions-view');
-	await screen.getByTestId('custom-header-back').tap();
+	await goBack(fixtures);
 	await expectVisible(fixtures, 'room-view-messages');
-	await screen.getByTestId('header-back').tap();
+	await goBack(fixtures);
 	await expectVisible(fixtures, 'rooms-list-view');
 };
 
@@ -112,5 +117,5 @@ test('creates and navigates discussions', { tags: ['test-5'] }, async fixtures =
 	await tapWhenVisible(fixtures, 'room-actions-discussions');
 	await expectVisible(fixtures, 'discussions-view');
 	await tapWhenVisible(fixtures, `discussions-view-${discussionFromNewMessage}`);
-	await expectVisible(fixtures, `room-view-title-${discussionFromNewMessage}`);
+	await expectRoomTitle(fixtures, discussionFromNewMessage);
 });

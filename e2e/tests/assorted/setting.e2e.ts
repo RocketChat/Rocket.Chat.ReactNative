@@ -20,6 +20,13 @@ const MEDIA_TYPES = ['image', 'video', 'audio'] as const;
 const checkMediaAutoDownloadOptions = async (fixtures: Fixtures, mediaType: (typeof MEDIA_TYPES)[number]) => {
 	const prefix = `media-auto-download-${mediaType}`;
 	await tapWhenUncovered(fixtures.screen.getByTestId(prefix));
+	if (fixtures.platform === 'ios') {
+		for (const option of ['Wi-Fi and mobile data', 'Wi-Fi', 'Never']) {
+			await expect(fixtures.screen.getByText(option, { exact: true }).last()).toBeVisible({ timeout: LONG_TIMEOUT });
+		}
+		await fixtures.screen.getByTestId('checkmark').tap();
+		return;
+	}
 	await expectAllVisible(fixtures, [`${prefix}-wifi_mobile_data`, `${prefix}-wifi`, `${prefix}-never`]);
 	await fixtures.screen.getByTestId('action-sheet-handle').tap();
 };
@@ -62,6 +69,7 @@ test('shows settings, clears cache and opens legal', { tags: ['test-2'] }, async
 	await goBack(fixtures);
 
 	await expect(settingsView).toBeVisible({ timeout: LONG_TIMEOUT });
+	await fixtures.screen.scrollUntilVisible(fixtures.screen.getByTestId('settings-view-clear-cache'));
 	await tapWhenVisible(fixtures, 'settings-view-clear-cache');
 	await expect(screen.getByText(/This will clear all your offline data/)).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByRole('button', { name: /^Clear$/i }).tap();

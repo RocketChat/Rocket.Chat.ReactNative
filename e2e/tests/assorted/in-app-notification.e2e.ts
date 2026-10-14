@@ -2,23 +2,33 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createDM, createRandomRoom, createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
-import { goBackUntil, loginWithDeepLink, searchAndNavigateRoom, type Fixtures, LONG_TIMEOUT } from '~e2e/support/flows';
+import {
+	goBackUntil,
+	loginWithDeepLink,
+	searchAndNavigateRoom,
+	type Fixtures,
+	LONG_TIMEOUT,
+	roomTitle
+} from '~e2e/support/flows';
 
 afterEach(deleteCreatedUsers);
 
 const tapNotification = async ({ screen }: Fixtures, message: string) => {
 	const notification = screen.getByTestId(`in-app-notification-${message}`).first();
 	await expect(notification).toBeVisible({ timeout: LONG_TIMEOUT });
-	await notification.tap();
+	const box = await notification.boundingBox();
+	if (!box) {
+		throw new Error('in-app notification has no bounding box');
+	}
+	await notification.tap({ position: { x: box.width / 2, y: box.height / 2 } });
 };
 
 test('opens the DM from an in-app notification', { tags: ['test-6'] }, async fixtures => {
-	const { screen } = fixtures;
 	const sender = await createUser();
 	const receiver = await createUser();
 	const room = await createRandomRoom(sender);
 	const directMessage = await createDM(receiver, sender.username);
-	const senderRoomTitle = screen.getByTestId(`room-view-title-${sender.username}`);
+	const senderRoomTitle = roomTitle(fixtures, sender.username);
 
 	await loginWithDeepLink(fixtures, receiver);
 

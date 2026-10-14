@@ -12,6 +12,7 @@ import {
 	fillWhenUncovered,
 	hideKeyboard
 } from '~e2e/support/flows';
+import { expectRoomTitle, tapHeaderItem, submitSelectedUsers } from '~e2e/support/header';
 import { random } from '~e2e/support/random';
 import { openNewMessage, selectUser } from '~e2e/support/room';
 
@@ -39,7 +40,7 @@ const submitChannelName = async (fixtures: Fixtures, name: string) => {
 
 const expectRoomCreated = async (fixtures: Fixtures, name: string) => {
 	await expectVisible(fixtures, 'room-view');
-	await expectVisible(fixtures, `room-view-title-${name}`);
+	await expectRoomTitle(fixtures, name);
 	await goBack(fixtures);
 	await expectVisible(fixtures, 'rooms-list-view');
 	await expectVisible(fixtures, `rooms-list-view-item-${name}`);
@@ -52,7 +53,7 @@ test('creates rooms', { tags: ['test-4'] }, async fixtures => {
 
 	await openNewMessage(fixtures);
 	await expectVisible(fixtures, 'new-message-view-search');
-	await tapWhenVisible(fixtures, 'new-message-view-close');
+	await tapHeaderItem(fixtures, 'new-message-view-close', 'Close');
 	await expectVisible(fixtures, 'rooms-list-view');
 
 	await openNewMessage(fixtures);
@@ -60,7 +61,7 @@ test('creates rooms', { tags: ['test-4'] }, async fixtures => {
 	await fillWhenUncovered(screen.getByTestId('new-message-view-search'), 'rocket.cat');
 	await tapWhenVisible(fixtures, 'new-message-view-item-rocket.cat');
 	await expectVisible(fixtures, 'room-view');
-	await expectVisible(fixtures, 'room-view-title-rocket.cat');
+	await expectRoomTitle(fixtures, 'rocket.cat');
 	await goBack(fixtures);
 	await expectVisible(fixtures, 'rooms-list-view');
 
@@ -70,7 +71,7 @@ test('creates rooms', { tags: ['test-4'] }, async fixtures => {
 	await expect(screen.getByTestId('selected-user-rocket.cat')).toBeHidden({ timeout: LONG_TIMEOUT });
 	await tapWhenVisible(fixtures, 'select-users-view-item-rocket.cat');
 	await expectVisible(fixtures, 'selected-user-rocket.cat');
-	await tapWhenVisible(fixtures, 'selected-users-view-submit');
+	await submitSelectedUsers(fixtures);
 	await expectVisible(fixtures, 'create-channel-view');
 	for (const field of ['create-channel-name', 'create-channel-type', 'create-channel-readonly', 'create-channel-broadcast']) {
 		await expectVisible(fixtures, field);
@@ -90,14 +91,14 @@ test('creates rooms', { tags: ['test-4'] }, async fixtures => {
 	await openSelectUsers(fixtures);
 	await tapWhenVisible(fixtures, 'select-users-view-item-rocket.cat');
 	await expectVisible(fixtures, 'selected-user-rocket.cat');
-	await tapWhenVisible(fixtures, 'selected-users-view-submit');
+	await submitSelectedUsers(fixtures);
 	await expectVisible(fixtures, 'create-channel-view');
 	await submitChannelName(fixtures, privateRoomName);
 	await expectRoomCreated(fixtures, privateRoomName);
 
 	const emptyRoomName = `empty${random()}`;
 	await openSelectUsers(fixtures);
-	await tapWhenVisible(fixtures, 'selected-users-view-submit');
+	await submitSelectedUsers(fixtures);
 	await expectVisible(fixtures, 'create-channel-view');
 	await submitChannelName(fixtures, emptyRoomName);
 	await expectRoomCreated(fixtures, emptyRoomName);
