@@ -14,6 +14,10 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { type IJoinCodeProps } from '../definitions';
 
 const styles = StyleSheet.create({
+	modal: {
+		margin: 0,
+		padding: '5%'
+	},
 	container: {
 		flex: 1,
 		justifyContent: 'center',
@@ -67,7 +71,7 @@ const JoinCode = memo(({ rid, t, onJoin, ref }: IJoinCodeProps) => {
 	useImperativeHandle(ref, () => ({ show }));
 
 	return (
-		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
+		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating style={styles.modal}>
 			<KeyboardView backgroundColor='transparent'>
 				<GestureHandlerRootView style={styles.container} testID='join-code'>
 					<View

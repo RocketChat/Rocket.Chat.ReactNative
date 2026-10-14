@@ -160,7 +160,8 @@ const TwoFactor = memo(() => {
 			customBackdrop={<View aria-hidden style={[styles.overlay, { backgroundColor: colors.overlayBackground }]} />}
 			useNativeDriver
 			isVisible={visible}
-			hideModalContentWhileAnimating>
+			hideModalContentWhileAnimating
+			style={styles.modal}>
 			<KeyboardView backgroundColor='transparent'>
 				<GestureHandlerRootView style={styles.container} testID='two-factor'>
 					<View
