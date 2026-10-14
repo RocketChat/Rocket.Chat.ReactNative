@@ -5,5 +5,12 @@
 			"outputDir": "./app/containers/CustomIcon/nanoicons",
 			"fontFamily": "custom"
 		}
+	],
+	"symbolSets": [
+		{
+			"inputDir": "./assets/icons/custom",
+			"outputDir": "./app/containers/CustomIcon/nanoicons",
+			"name": "custom"
+		}
 	]
 }

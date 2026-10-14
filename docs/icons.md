@@ -6,13 +6,13 @@ The SVGs come from the [Iconography Figma file](https://www.figma.com/design/W1f
 ## Adding or changing an icon
 
 1. Export the icon from Figma as a single-color SVG into `assets/icons/custom/<icon-name>.svg`.
-2. Regenerate the font and glyph map, and link them into the native projects:
+2. Regenerate the font, glyph map and native symbols, and link them into the native projects:
 
 ```sh
 pnpm build-icon-set
 ```
 
-3. Commit the SVG together with the generated `app/containers/CustomIcon/nanoicons/custom.ttf`, `app/containers/CustomIcon/nanoicons/custom.glyphmap.json` and the native font changes under `android/` and `ios/`.
+3. Commit the SVG together with the generated files under `app/containers/CustomIcon/nanoicons/` and the native font and symbol changes under `android/` and `ios/`.
 4. Rebuild the native app (run `pnpm pod-install` first on iOS).
 
 `TIconsName` is typed from the glyph map, so TypeScript autocompletes existing icons and flags unknown ones.

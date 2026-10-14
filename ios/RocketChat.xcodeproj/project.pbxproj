@@ -145,6 +145,7 @@
 		66C2701D2EBBCB570062725F /* MMKVKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */; };
 		6F204E445C3D44699793D4F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680FA18DB475479CAD48F334 /* SceneDelegate.swift */; };
 		6FA7E2392F28A9D300A1D45E /* ExternalInputModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */; };
+		74B36FEF18614B4EAD713471 /* NanoIconsSymbols.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71CEF2EA50814DA2B706A06B /* NanoIconsSymbols.xcassets */; };
 		782E0520ED599FF8DDC2318F /* Pods_defaults_Rocket_Chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88ED4E003393D3A9256F4EB3 /* Pods_defaults_Rocket_Chat.framework */; };
 		79D8C97F8CE2EC1B6882826B /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B215A42CFB843397273C7EA /* SecureStorage.m */; };
 		7A0000052F1BAFA700B6B4BD /* VoipService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0000032F1BAFA700B6B4BD /* VoipService.swift */; };
@@ -432,6 +433,7 @@
 		680FA18DB475479CAD48F334 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		6FA7E2362F28A9D300A1D45E /* ExternalInputModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExternalInputModule.h; sourceTree = "<group>"; };
 		6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExternalInputModule.m; sourceTree = "<group>"; };
+		71CEF2EA50814DA2B706A06B /* NanoIconsSymbols.xcassets */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = folder.assetcatalog; name = NanoIconsSymbols.xcassets; path = NanoIconsSymbols.xcassets; sourceTree = "<group>"; };
 		7A0000032F1BAFA700B6B4BD /* VoipService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipService.swift; sourceTree = "<group>"; };
 		7A0000042F1BAFA700B6B4BD /* VoipModule.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VoipModule.mm; sourceTree = "<group>"; };
 		7A006F13229C83B600803143 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -1021,6 +1023,7 @@
 			isa = PBXGroup;
 			children = (
 				7AE10C0528A59530003593CB /* Inter.ttf */,
+				71CEF2EA50814DA2B706A06B /* NanoIconsSymbols.xcassets */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1237,6 +1240,7 @@
 				7AAB3E44257E6A6E00707CF6 /* GoogleService-Info.plist in Resources */,
 				65AD383A2BFBDF4A00271B39 /* PrivacyInfo.xcprivacy in Resources */,
 				7AAB3E45257E6A6E00707CF6 /* LaunchScreen.storyboard in Resources */,
+				74B36FEF18614B4EAD713471 /* NanoIconsSymbols.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

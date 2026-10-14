@@ -21,9 +21,7 @@ import TwoFactor from './containers/TwoFactor';
 import { type IThemePreference } from './definitions/ITheme';
 import { themes } from './lib/constants/colors';
 import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods/crashReport';
-import { hasNativeHeaderBar } from './lib/methods/helpers/deviceInfo';
-import log, { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
-import { preloadHeaderIcons } from './lib/methods/helpers/navigation/headerIcon';
+import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
 import parseDeepLinking from './lib/methods/helpers/parseDeepLinking';
 import {
 	getTheme,
@@ -102,10 +100,6 @@ export default class Root extends Component<{}, IState> {
 
 	init = async () => {
 		store.dispatch(appInitLocalSettings());
-
-		if (hasNativeHeaderBar) {
-			await preloadHeaderIcons().catch(log);
-		}
 
 		// Open app from push notification
 		const notification = await initializePushNotifications();

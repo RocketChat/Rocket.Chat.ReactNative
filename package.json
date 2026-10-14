@@ -71,7 +71,6 @@
 		"expo-device": "^57.0.2",
 		"expo-document-picker": "~57.0.2",
 		"expo-file-system": "~57.0.7",
-		"expo-font": "~57.0.4",
 		"expo-haptics": "~57.0.3",
 		"expo-image": "~57.0.5",
 		"expo-keep-awake": "~57.0.2",

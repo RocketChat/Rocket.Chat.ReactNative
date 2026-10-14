@@ -1,5 +1,5 @@
 diff --git a/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js b/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
-index a56cb12fc83995973fad7d9e851d6fdbaf999a17..3b65c3a1a0d63c92788acb6b3c4d3fee7138b0c3 100644
+index a56cb12fc83995973fad7d9e851d6fdbaf999a17..162c3cb5d4e61a82996699c66c96ca85bf3c06d6 100644
 --- a/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
 +++ b/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
 @@ -149,7 +149,13 @@ export function useHeaderConfigProps({
@@ -7,10 +7,10 @@ index a56cb12fc83995973fad7d9e851d6fdbaf999a17..3b65c3a1a0d63c92788acb6b3c4d3fee
    headerBlurEffect,
    headerTintColor,
 +  headerSubtitle,
-+  headerSubtitleImageSource,
++  headerSubtitleIcon,
 +  headerSubtitleColor,
    headerTitle,
-+  headerTitleImageSource,
++  headerTitleIcon,
 +  onHeaderTitlePress,
 +  headerTitleTestID,
    headerTitleAlign,
@@ -26,21 +26,25 @@ index a56cb12fc83995973fad7d9e851d6fdbaf999a17..3b65c3a1a0d63c92788acb6b3c4d3fee
 +    }
 +  }
 +  const subtitleText = headerTitleElement != null ? undefined : headerSubtitle;
-+  const titleImageSource = headerTitleElement != null ? undefined : headerTitleImageSource;
-+  const subtitleImageSource = headerTitleElement != null ? undefined : headerSubtitleImageSource;
++  const titleIcon = headerTitleElement != null ? undefined : headerTitleIcon;
++  const subtitleIcon = headerTitleElement != null ? undefined : headerSubtitleIcon;
 +  const titlePress = headerTitleElement != null ? undefined : onHeaderTitlePress;
    const supportsHeaderSearchBar = typeof isSearchBarAvailableForCurrentPlatform === 'boolean' ? isSearchBarAvailableForCurrentPlatform :
    // Fallback for older versions of react-native-screens
    Platform.OS === 'ios' && SearchBar != null;
-@@ -356,7 +371,14 @@ export function useHeaderConfigProps({
+@@ -356,7 +371,18 @@ export function useHeaderConfigProps({
      largeTitleFontSize,
      largeTitleFontWeight,
      largeTitleHideShadow: headerLargeTitleShadowVisible === false,
 +    subtitle: subtitleText,
-+    subtitleImageSource,
++    subtitleImageSource: subtitleIcon?.type === 'image' ? subtitleIcon.source : undefined,
++    subtitleImageName: subtitleIcon?.type === 'xcasset' ? subtitleIcon.name : undefined,
++    subtitleImageTintColor: subtitleIcon?.type === 'xcasset' ? subtitleIcon.tintColor : undefined,
 +    subtitleColor: headerSubtitleColor,
      title: titleText,
-+    titleImageSource,
++    titleImageSource: titleIcon?.type === 'image' ? titleIcon.source : undefined,
++    titleImageName: titleIcon?.type === 'xcasset' ? titleIcon.name : undefined,
++    titleImageTintColor: titleIcon?.type === 'xcasset' ? titleIcon.tintColor : undefined,
 +    titlePressEnabled: titlePress != null,
 +    onTitlePress: titlePress,
 +    titleTestID: headerTitleTestID,
@@ -48,7 +52,7 @@ index a56cb12fc83995973fad7d9e851d6fdbaf999a17..3b65c3a1a0d63c92788acb6b3c4d3fee
      titleFontFamily,
      titleFontSize,
 diff --git a/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts b/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
-index c32d1da73d44f5820fbd3272551e5f42c3e6c1dc..55d9210725faf7d14e57fb0f399cf74137488596 100644
+index c32d1da73d44f5820fbd3272551e5f42c3e6c1dc..9fbfb9ceb11f79b1feb15c25905921cc084d92af 100644
 --- a/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
 +++ b/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
 @@ -321,6 +321,74 @@ export type NativeStackNavigationOptions = {
@@ -56,7 +60,7 @@ index c32d1da73d44f5820fbd3272551e5f42c3e6c1dc..55d9210725faf7d14e57fb0f399cf741
          tintColor?: string;
      }) => React.ReactNode);
 +    /**
-+     * Image rendered as a leading glyph before the header title.
++     * Icon rendered as a leading glyph before the header title.
 +     *
 +     * Ignored when `headerTitle` renders a custom element.
 +     *
@@ -66,7 +70,7 @@ index c32d1da73d44f5820fbd3272551e5f42c3e6c1dc..55d9210725faf7d14e57fb0f399cf741
 +     *
 +     * @supported iOS 26 or higher
 +     */
-+    headerTitleImageSource?: ImageSourcePropType;
++    headerTitleIcon?: HeaderTextIcon;
 +    /**
 +     * String to display in the header underneath the title.
 +     *
@@ -80,7 +84,7 @@ index c32d1da73d44f5820fbd3272551e5f42c3e6c1dc..55d9210725faf7d14e57fb0f399cf741
 +     */
 +    headerSubtitle?: string;
 +    /**
-+     * Image rendered as a leading glyph before the header subtitle.
++     * Icon rendered as a leading glyph before the header subtitle.
 +     *
 +     * Ignored when `headerTitle` renders a custom element.
 +     *
@@ -90,7 +94,7 @@ index c32d1da73d44f5820fbd3272551e5f42c3e6c1dc..55d9210725faf7d14e57fb0f399cf741
 +     *
 +     * @supported iOS 26 or higher
 +     */
-+    headerSubtitleImageSource?: ImageSourcePropType;
++    headerSubtitleIcon?: HeaderTextIcon;
 +    /**
 +     * Color of the header subtitle text. Defaults to the title color.
 +     *
@@ -126,7 +130,32 @@ index c32d1da73d44f5820fbd3272551e5f42c3e6c1dc..55d9210725faf7d14e57fb0f399cf741
      /**
       * How to align the the header title.
       * Defaults to `left` on platforms other than iOS.
-@@ -937,6 +1005,15 @@ export type NativeStackHeaderItemButton = SharedHeaderItem & {
+@@ -825,7 +893,23 @@ type PlatformIconIOSSfSymbol = {
+      */
+     name: SFSymbol;
+ };
+-type PlatformIconIOS = PlatformIconIOSSfSymbol | PlatformIconShared;
++type PlatformIconIOSXcasset = {
++    /**
++     * - `xcasset` - Use an image from the app's asset catalog as the icon on iOS.
++     */
++    type: 'xcasset';
++    /**
++     * Name of the image in the asset catalog.
++     */
++    name: string;
++};
++type PlatformIconIOS = PlatformIconIOSSfSymbol | PlatformIconIOSXcasset | PlatformIconShared;
++export type HeaderTextIcon = {
++    type: 'image';
++    source: ImageSourcePropType;
++} | (PlatformIconIOSXcasset & {
++    tintColor?: ColorValue;
++});
+ type SharedHeaderItem = {
+     /**
+      * Label of the item.
+@@ -937,6 +1021,15 @@ export type NativeStackHeaderItemButton = SharedHeaderItem & {
       * Read more: https://developer.apple.com/documentation/uikit/uibarbuttonitem/isselected
       */
      selected?: boolean;
