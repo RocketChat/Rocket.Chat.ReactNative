@@ -37,7 +37,6 @@ interface ISortableRow {
 	rowHeight: number;
 	positions: SharedValue<SortablePositions>;
 	activeId: SharedValue<string | null>;
-	onPickUp: () => void;
 	onDrop: (ids: string[]) => void;
 	onMoveBy: (index: number, offset: -1 | 1) => void;
 	children: (dragGesture: PanGesture) => ReactElement;
@@ -51,7 +50,6 @@ const SortableRow = ({
 	rowHeight,
 	positions,
 	activeId,
-	onPickUp,
 	onDrop,
 	onMoveBy,
 	children
@@ -80,7 +78,6 @@ const SortableRow = ({
 			isLifted.set(true);
 			dragStartOffset.set(offset.value);
 			scheduleOnRN(triggerPickUpHaptic);
-			scheduleOnRN(onPickUp);
 		},
 		onUpdate: event => {
 			if (activeId.value !== id) {

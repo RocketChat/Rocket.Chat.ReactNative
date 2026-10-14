@@ -1,8 +1,5 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { useState } from 'react';
-import { ScrollView } from 'react-native';
-import { usePanGesture } from 'react-native-gesture-handler';
-import { createGestureController } from 'react-native-gesture-handler/jest-utils';
 
 import CategoryOrderView from '..';
 import { useCategoryOrder } from '../hooks/useCategoryOrder';
@@ -13,10 +10,6 @@ jest.mock('@react-navigation/native', () => ({
 }));
 jest.mock('~/containers/SafeAreaView', () => ({ __esModule: true, default: ({ children }: { children: unknown }) => children }));
 jest.mock('../hooks/useCategoryOrder', () => ({ useCategoryOrder: jest.fn() }));
-jest.mock('react-native-gesture-handler', () => {
-	const actual = jest.requireActual('react-native-gesture-handler');
-	return { ...actual, usePanGesture: jest.fn(actual.usePanGesture) };
-});
 
 const groups = [
 	{ id: 'a', title: 'A' },
@@ -35,14 +28,8 @@ const useReorderableGroups = () => {
 	return { movableGroups, pinnedGroup: undefined, saveOrder };
 };
 
-const isScrollEnabled = () => screen.UNSAFE_getByType(ScrollView).props.scrollEnabled !== false;
-
 beforeEach(() => {
 	jest.mocked(useCategoryOrder).mockImplementation(useReorderableGroups);
-});
-
-afterEach(() => {
-	jest.clearAllMocks();
 });
 
 it('keeps the moved row mounted so the screen reader keeps its focus', async () => {
@@ -55,35 +42,4 @@ it('keeps the moved row mounted so the screen reader keeps its focus', async () 
 
 	expect(mockSaveOrder).toHaveBeenCalledWith(['b', 'a', 'c']);
 	expect(screen.getByTestId('category-order-row-a')).toBe(movedRow);
-});
-
-it('stops the list from scrolling while a row is held', async () => {
-	render(<CategoryOrderView />);
-	const { results } = jest.mocked(usePanGesture).mock;
-	const firstRowDrag = createGestureController(results[results.length - groups.length].value);
-
-	await act(async () => {
-		firstRowDrag.begin();
-		firstRowDrag.activate();
-	});
-	expect(isScrollEnabled()).toBe(false);
-
-	await act(async () => {
-		firstRowDrag.end();
-	});
-	expect(isScrollEnabled()).toBe(true);
-});
-
-it('lets the list scroll again when the held row is cancelled', async () => {
-	render(<CategoryOrderView />);
-	const { results } = jest.mocked(usePanGesture).mock;
-	const firstRowDrag = createGestureController(results[results.length - groups.length].value);
-
-	await act(async () => {
-		firstRowDrag.begin();
-		firstRowDrag.activate();
-		firstRowDrag.cancel();
-	});
-
-	expect(isScrollEnabled()).toBe(true);
 });

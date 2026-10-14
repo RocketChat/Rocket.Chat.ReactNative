@@ -11,10 +11,9 @@ import SortableRow from './SortableRow';
 interface ISortableList {
 	groups: ICategoryOrderGroup[];
 	onReorder: (ids: string[]) => void;
-	onDraggingChange: (isDragging: boolean) => void;
 }
 
-const SortableList = ({ groups, onReorder, onDraggingChange }: ISortableList) => {
+const SortableList = ({ groups, onReorder }: ISortableList) => {
 	const rowHeight = useNativeListRowHeight();
 	const ids = groups.map(group => group.id);
 	const positions = useSharedValue(toPositions(ids));
@@ -27,10 +26,7 @@ const SortableList = ({ groups, onReorder, onDraggingChange }: ISortableList) =>
 		}
 	}, [order, positions, activeId]);
 
-	const onPickUp = () => onDraggingChange(true);
-
 	const onDrop = (droppedIds: string[]) => {
-		onDraggingChange(false);
 		if (droppedIds.join() !== ids.join()) {
 			onReorder(droppedIds);
 		}
@@ -55,7 +51,6 @@ const SortableList = ({ groups, onReorder, onDraggingChange }: ISortableList) =>
 					rowHeight={rowHeight}
 					positions={positions}
 					activeId={activeId}
-					onPickUp={onPickUp}
 					onDrop={onDrop}
 					onMoveBy={onMoveBy}>
 					{dragGesture => <CategoryOrderRow title={group.title} dragGesture={dragGesture} showSeparator />}

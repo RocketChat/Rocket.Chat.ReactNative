@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { ROW_MARGIN_HORIZONTAL, ROW_PADDING_HORIZONTAL, ROW_RADIUS } from '~/containers/NativeListRow/constants';
@@ -34,14 +34,6 @@ const CategoryOrderView = () => {
 	const { colors } = useTheme();
 	const backgroundColor = useListBackgroundColor(colors.surfaceRoom);
 	const { movableGroups, pinnedGroup, saveOrder } = useCategoryOrder();
-	const [draggedListKey, setDraggedListKey] = useState<string | null>(null);
-	const listKey = movableGroups
-		.map(group => group.id)
-		.sort()
-		.join();
-	if (draggedListKey !== null && draggedListKey !== listKey) {
-		setDraggedListKey(null);
-	}
 
 	useLayoutEffect(() => {
 		navigation.setOptions({ title: i18n.t('Category_order') });
@@ -49,14 +41,16 @@ const CategoryOrderView = () => {
 
 	return (
 		<SafeAreaView testID='category-order-view' style={{ backgroundColor }}>
-			<ScrollView contentInsetAdjustmentBehavior={isIOS ? 'automatic' : undefined} scrollEnabled={draggedListKey !== listKey}>
+			<ScrollView contentInsetAdjustmentBehavior={isIOS ? 'automatic' : undefined}>
 				<Text style={[styles.hint, { color: colors.fontSecondaryInfo }]}>{i18n.t('Drag_to_reorder')}</Text>
 				<View style={styles.card}>
 					<SortableList
-						key={listKey}
+						key={movableGroups
+							.map(group => group.id)
+							.sort()
+							.join()}
 						groups={movableGroups}
 						onReorder={saveOrder}
-						onDraggingChange={isDragging => setDraggedListKey(isDragging ? listKey : null)}
 					/>
 					{pinnedGroup ? <CategoryOrderRow title={pinnedGroup.title} disabled /> : null}
 				</View>
