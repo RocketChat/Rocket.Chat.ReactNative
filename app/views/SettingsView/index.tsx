@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { logout } from '~/actions/login';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import NewWindowIcon from '~/containers/NewWindowIcon';
 import * as List from '~/containers/List';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -18,13 +17,14 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { clearCacheAndReconnect } from '~/lib/methods/clearCache';
 import { getDeviceModel, getReadableVersion, isAndroid } from '~/lib/methods/helpers';
 import EventEmitter from '~/lib/methods/helpers/events';
+import { headerLeftCloseModal, headerLeftDrawer } from '~/lib/methods/helpers/navigation/headerActions';
 import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/info';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import openLink from '~/lib/methods/helpers/openLink';
 import { onReviewPress } from '~/lib/methods/helpers/review';
 import { type SettingsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
-import SidebarView from '../SidebarView';
+import SidebarSections from '../SidebarView/SidebarSections';
 
 type TLogScreenName = 'SE_GO_LANGUAGE' | 'SE_GO_DEFAULTBROWSER' | 'SE_GO_THEME' | 'SE_GO_PROFILE' | 'SE_GO_SECURITYPRIVACY';
 
@@ -37,12 +37,9 @@ const SettingsView = (): ReactElement => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			headerLeft: () =>
-				isMasterDetail ? (
-					<HeaderButton.CloseModal navigation={navigation} testID='settings-view-close' />
-				) : (
-					<HeaderButton.Drawer navigation={navigation} testID='settings-view-drawer' />
-				),
+			...(isMasterDetail
+				? headerLeftCloseModal(navigation, 'settings-view-close')
+				: headerLeftDrawer(navigation, 'settings-view-drawer')),
 			title: I18n.t('Settings')
 		});
 	}, [navigation, isMasterDetail]);
@@ -123,9 +120,7 @@ const SettingsView = (): ReactElement => {
 			<List.Container>
 				{isMasterDetail ? (
 					<>
-						<List.Section>
-							<SidebarView navigation={navigation as any} />
-						</List.Section>
+						<SidebarSections navigation={navigation as any} />
 						<List.Section>
 							<List.Separator />
 							<List.Item

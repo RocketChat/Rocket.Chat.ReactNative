@@ -23,11 +23,13 @@
 		"e2e:changed": "bash .github/scripts/e2e-changed.sh",
 		"storybook:start": "USE_STORYBOOK=true react-native start --reset-cache",
 		"storybook-generate": "sb-rn-get-stories",
-		"bugsnag:upload-android": "bugsnag-cli upload react-native-android"
+		"bugsnag:upload-android": "bugsnag-cli upload react-native-android",
+		"doctor": "npx react-doctor@latest"
 	},
 	"dependencies": {
 		"@appduct/react-native": "^0.13.0",
 		"@bugsnag/react-native": "8.4.0",
+		"@expo/ui": "~57.0.19",
 		"@expo/vector-icons": "^15.0.3",
 		"@hookform/resolvers": "^2.9.10",
 		"@lodev09/react-native-true-sheet": "~3.7.0",
@@ -219,6 +221,9 @@
 	"expo": {
 		"autolinking": {
 			"android": {
+				"exclude": [
+					"@expo/ui"
+				],
 				"buildFromSource": [
 					"expo-asset",
 					"expo-audio",

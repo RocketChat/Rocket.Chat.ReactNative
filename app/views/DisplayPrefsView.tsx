@@ -13,25 +13,28 @@ import Radio from '../containers/Radio';
 import { type IPreferences } from '../definitions';
 import I18n from '../i18n';
 import { type SettingsStackParamList } from '../stacks/types';
-import { useTheme } from '../theme';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { saveSortPreference } from '../lib/methods/userPreferencesMethods';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../lib/hooks/useMasterDetail';
+import { headerLeftCloseModal } from '../lib/methods/helpers/navigation/headerActions';
 
 const DisplayPrefsView = (): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
-	const { colors } = useTheme();
 
 	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useAppSelector(
 		state => state.sortPreferences
 	);
 	const dispatch = useDispatch();
+	const isMasterDetail = useMasterDetail();
 
 	useLayoutEffect(() => {
+		const isModalRoot = navigation.getState().index === 0;
 		navigation.setOptions({
-			title: I18n.t('Display')
+			title: I18n.t('Display'),
+			...(isMasterDetail && isModalRoot ? headerLeftCloseModal(navigation, 'display-view-close') : {})
 		});
-	}, []);
+	}, [navigation, isMasterDetail]);
 
 	const setSortPreference = (param: Partial<IPreferences>) => {
 		dispatch(setPreference(param));
@@ -48,7 +51,7 @@ const DisplayPrefsView = (): ReactElement => {
 		setSortPreference({ sortBy: SortBy.Activity });
 	};
 
-	const toggleGroupByType = () => {
+	const toggleCategories = () => {
 		logEvent(events.DP_GROUP_CHANNELS_BY_TYPE);
 		setSortPreference({ groupByType: !groupByType });
 	};
@@ -78,8 +81,8 @@ const DisplayPrefsView = (): ReactElement => {
 		setSortPreference({ displayMode: DisplayMode.Condensed });
 	};
 
-	const renderCheckBox = (value: boolean) => (
-		<List.Icon name={value ? 'checkbox-checked' : 'checkbox-unchecked'} color={value ? colors.strokeHighlight : ''} />
+	const renderCheckBox = (value: boolean, onValueChange: () => void) => (
+		<List.Checkbox value={value} onValueChange={onValueChange} />
 	);
 
 	const renderAvatarSwitch = (value: boolean) => (
@@ -156,7 +159,7 @@ const DisplayPrefsView = (): ReactElement => {
 						testID='display-pref-view-unread'
 						left={() => <List.Icon name='flag' />}
 						onPress={toggleUnread}
-						right={() => renderCheckBox(showUnread)}
+						right={() => renderCheckBox(showUnread, toggleUnread)}
 						additionalAccessibilityLabel={showUnread}
 						accessibilityRole='checkbox'
 					/>
@@ -166,17 +169,17 @@ const DisplayPrefsView = (): ReactElement => {
 						testID='display-pref-view-favorites'
 						left={() => <List.Icon name='star' />}
 						onPress={toggleGroupByFavorites}
-						right={() => renderCheckBox(showFavorites)}
+						right={() => renderCheckBox(showFavorites, toggleGroupByFavorites)}
 						additionalAccessibilityLabel={showFavorites}
 						accessibilityRole='checkbox'
 					/>
 					<List.Separator />
 					<List.Item
-						title='Types'
-						testID='display-pref-view-types'
+						title='Categories'
+						testID='display-pref-view-categories'
 						left={() => <List.Icon name='group-by-type' />}
-						onPress={toggleGroupByType}
-						right={() => renderCheckBox(groupByType)}
+						onPress={toggleCategories}
+						right={() => renderCheckBox(groupByType, toggleCategories)}
 						additionalAccessibilityLabel={groupByType}
 						accessibilityRole='checkbox'
 					/>

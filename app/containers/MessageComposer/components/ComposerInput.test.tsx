@@ -44,7 +44,7 @@ jest.mock('../hooks/useIOSBackSwipeHandler', () => ({
 	__esModule: true,
 	default: jest.fn(() => ({ iOSBackSwipe: { current: false } }))
 }));
-jest.mock('../hooks/useAutoSaveDraft', () => ({ useAutoSaveDraft: jest.fn(() => ({ saveMessageDraft: jest.fn() })) }));
+jest.mock('../hooks/useAutoSaveDraft', () => ({ useAutoSaveDraft: jest.fn(() => ({ saveDraft: jest.fn() })) }));
 jest.mock('~/lib/methods/draftMessage', () => ({ loadDraftMessage: jest.fn(() => Promise.resolve(undefined)) }));
 
 const mockLoadDraftMessage = loadDraftMessage as jest.Mock;
@@ -119,6 +119,16 @@ describe('ComposerInput', () => {
 		expect(inputRef.current?.setNativeProps).toHaveBeenCalledWith({ text: '  programmatic text  ' });
 	});
 
+	it('resets the native text prop when clearing so the same text can be set again', () => {
+		const { composerRef, inputRef } = renderInput();
+
+		act(() => composerRef.current?.setInput('edit'));
+		act(() => composerRef.current?.setInput(''));
+
+		expect(inputRef.current?.setNativeProps).toHaveBeenLastCalledWith({ text: '' });
+		expect(inputRef.current?.clear).toHaveBeenCalledTimes(1);
+	});
+
 	it('passes the typed raw value to debounced autocomplete before the input text is trimmed', () => {
 		const { composerRef } = renderInput();
 		const input = screen.getByTestId('message-composer-input');
@@ -178,5 +188,18 @@ describe('ComposerInput', () => {
 
 		expect(room.messageActionStore.getState().action).toEqual({ kind: 'quote', messageIds: ['room-quote'] });
 		expect(room.composerRef.current?.getText()).toBe('room draft');
+	});
+
+	it('shows the room placeholder only while the raw input text is empty', () => {
+		const { composerRef } = renderInput();
+		const input = screen.getByTestId('message-composer-input');
+
+		expect(screen.getByText('Message #Room', { includeHiddenElements: true })).toBeOnTheScreen();
+
+		fireEvent.changeText(input, ' ');
+		expect(screen.queryByText('Message #Room', { includeHiddenElements: true })).not.toBeOnTheScreen();
+
+		act(() => composerRef.current?.setInput(''));
+		expect(screen.getByText('Message #Room', { includeHiddenElements: true })).toBeOnTheScreen();
 	});
 });

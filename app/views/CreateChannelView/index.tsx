@@ -3,7 +3,7 @@ import { shallowEqual, useDispatch } from 'react-redux';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -69,7 +69,6 @@ const CreateChannelView = () => {
 		control,
 		handleSubmit,
 		setValue,
-		watch,
 		formState: { errors }
 	} = useForm<IFormData>({
 		defaultValues: {
@@ -89,7 +88,7 @@ const CreateChannelView = () => {
 	const teamId = params?.teamId;
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
-	const inputValues = watch();
+	const inputValues = useWatch({ control });
 
 	useA11yErrorAnnouncement({ errors, inputValues });
 

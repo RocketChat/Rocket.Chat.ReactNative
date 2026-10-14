@@ -4,7 +4,7 @@ import { createStore } from 'zustand';
 
 import database from '~/lib/database';
 import { SUBSCRIPTIONS_TABLE } from '~/lib/database/model/Subscription';
-import { loadThreadMessages } from '~/lib/methods/loadThreadMessages';
+import { loadThreadMessages, releaseUnretainedThreadPagination } from '~/lib/methods/loadThreadMessages';
 import { readMessages } from '~/lib/methods/readMessages';
 import { getUserInfo } from '~/lib/services/restApi';
 import { isGroupChat, getUidDirectMessage, canAutoTranslate as canAutoTranslateMethod } from '~/lib/methods/helpers';
@@ -78,6 +78,7 @@ const loadRoom = async (
 		if (tmid) {
 			await loadThreadMessages({ tmid, rid });
 			if (isAborted()) {
+				releaseUnretainedThreadPagination(tmid);
 				return { status: 'skipped' };
 			}
 			onThreadMessagesLoaded?.();
