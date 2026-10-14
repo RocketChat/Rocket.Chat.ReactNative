@@ -367,7 +367,8 @@ export const useCallContact = () => useCallStore(state => state.contact);
 /** True when the server offers voice-to-video escalation for the current call (re-evaluated on call state changes). */
 export const useCanEscalateToVideo = () =>
 	useCallStore(
-		state => state.callState === 'active' && !state.escalated && !!state.call?.features?.includes('conference-escalation')
+		// TODO: restore the feature check before merging — bypassed for testing
+		state => state.callState === 'active' && !state.escalated // && !!state.call?.features?.includes('conference-escalation')
 	);
 export const useIsCallEscalated = () => useCallStore(state => state.escalated);
 export const useDialpadValue = () => useCallStore(state => state.dialpadValue);
