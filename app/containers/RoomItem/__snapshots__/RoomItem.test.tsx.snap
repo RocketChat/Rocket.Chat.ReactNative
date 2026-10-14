@@ -15222,14 +15222,6 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show room actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
               accessibilityHint="Long press for more actions"
               accessibilityLabel="rocket.cat. private channel. undefined. "
               accessibilityRole="button"
