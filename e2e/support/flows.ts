@@ -97,9 +97,18 @@ let androidAppInstalled = false;
 
 const LEFTOVER_OPEN_PROMPT = /^Open in .Rocket\.Chat.\?$/;
 
+const isLeftoverOpenPromptVisible = async (screen: Fixtures['screen']) => {
+	try {
+		return await isVisibleNow(screen.getByText(LEFTOVER_OPEN_PROMPT));
+	} catch (error) {
+		if (errorCode(error) !== 'APP_NOT_OPEN') throw error;
+		return false;
+	}
+};
+
 const resetApp = async ({ app, device, platform, screen }: Fixtures) => {
 	if (platform === 'ios') {
-		if (await isVisibleNow(screen.getByText(LEFTOVER_OPEN_PROMPT))) {
+		if (await isLeftoverOpenPromptVisible(screen)) {
 			await tapIfVisible(screen.getByRole('button', 'Cancel'));
 		}
 		await device.installApp(undefined, { reinstall: true });

@@ -3,6 +3,7 @@ import type { Locator } from 'e2e';
 import {
 	firstVisible,
 	isVisibleNow,
+	launchApp,
 	openDeepLink,
 	scrollAndTap,
 	succeeds,
@@ -165,5 +166,18 @@ describe('deep-link completion', () => {
 		);
 		await openDeepLink(fixtures, 'rocketchat://auth', asLocator(destination));
 		expect(device.alert).toHaveBeenCalledTimes(1);
+	});
+
+	it('launches iOS when no app session exists yet to show a leftover prompt', async () => {
+		const target = locator();
+		target.isVisible.mockRejectedValue(failure('APP_NOT_OPEN'));
+		const device = { installApp: jest.fn(() => Promise.resolve()) };
+		const app = { open: jest.fn(() => Promise.resolve()) };
+		const screen = { getByText: () => asLocator(target), getByRole: () => asLocator(target) };
+		const fixtures = { platform: 'ios', app, device, screen } as unknown as Fixtures;
+
+		await launchApp(fixtures);
+		expect(device.installApp).toHaveBeenCalledWith(undefined, { reinstall: true });
+		expect(app.open).toHaveBeenCalled();
 	});
 });
