@@ -107,8 +107,8 @@ const tapCenterUntilVisible = async ({ screen }: Fixtures, target: Locator, expe
 	}
 };
 
-const scrollUntilLoaded = ({ screen }: Fixtures, target: Locator, direction: 'up' | 'down', timeout = LONG_TIMEOUT) =>
-	screen.scrollUntilVisible(target, { direction, timeout });
+const scrollUntilLoaded = ({ screen }: Fixtures, target: Locator, direction: 'up' | 'down') =>
+	screen.getByTestId('room-view-messages').scrollUntilVisible(target, { direction, timeout: PAGINATION_TIMEOUT });
 
 test('jumps to messages', { tags: ['test-3'], retries: 0, timeout: 900_000 }, async fixtures => {
 	const { screen } = fixtures;
@@ -125,7 +125,7 @@ test('jumps to messages', { tags: ['test-3'], retries: 0, timeout: 900_000 }, as
 	await searchAndNavigateRoom(fixtures, ROOM);
 	await expectVisible(fixtures, 'room-view-messages');
 	await expectVisible(fixtures, 'message-content-300');
-	await scrollUntilLoaded(fixtures, screen.getByTestId('message-content-249'), 'up', PAGINATION_TIMEOUT);
+	await scrollUntilLoaded(fixtures, screen.getByTestId('message-content-249'), 'up');
 	await clearCache(fixtures);
 
 	await searchAndNavigateRoom(fixtures, ROOM);
