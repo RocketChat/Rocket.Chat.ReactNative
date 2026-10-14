@@ -1,4 +1,26 @@
 PODS:
+  - Appduct (0.13.0):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - BugsnagReactNative (8.4.0):
     - hermes-engine
     - RCTRequired
@@ -131,6 +153,10 @@ PODS:
     - ExpoModulesCore
   - ExpoSystemUI (57.0.4):
     - ExpoModulesCore
+  - ExpoUI (57.0.19):
+    - ExpoModulesCore
+    - ExpoModulesWorklets
+    - React-RCTFabric
   - ExpoVideo (57.0.4):
     - ExpoModulesCore
   - ExpoVideoThumbnails (57.0.2):
@@ -2994,6 +3020,7 @@ PODS:
     - ZXingObjC/Core
 
 DEPENDENCIES:
+  - "Appduct (from `../node_modules/@appduct/react-native`)"
   - "BugsnagReactNative (from `../node_modules/@bugsnag/react-native`)"
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - EXApplication (from `../node_modules/expo-application/ios`)
@@ -3021,6 +3048,7 @@ DEPENDENCIES:
   - ExpoNotifications (from `../node_modules/expo-notifications/ios`)
   - "ExpoQuickLook (from `../node_modules/@magrinj/expo-quick-look/ios`)"
   - ExpoSystemUI (from `../node_modules/expo-system-ui/ios`)
+  - "ExpoUI (from `../node_modules/@expo/ui/ios`)"
   - ExpoVideo (from `../node_modules/expo-video/ios`)
   - ExpoVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
   - ExpoWebBrowser (from `../node_modules/expo-web-browser/ios`)
@@ -3170,6 +3198,8 @@ SPEC REPOS:
     - ZXingObjC
 
 EXTERNAL SOURCES:
+  Appduct:
+    :path: "../node_modules/@appduct/react-native"
   BugsnagReactNative:
     :path: "../node_modules/@bugsnag/react-native"
   BVLinearGradient:
@@ -3224,6 +3254,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@magrinj/expo-quick-look/ios"
   ExpoSystemUI:
     :path: "../node_modules/expo-system-ui/ios"
+  ExpoUI:
+    :path: "../node_modules/@expo/ui/ios"
   ExpoVideo:
     :path: "../node_modules/expo-video/ios"
   ExpoVideoThumbnails:
@@ -3455,6 +3487,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  Appduct: 9c3971867c5ae6f9f7937ff73cfb3de38219365a
   BugsnagReactNative: 33c924422b4d4fac76459ac818500586dd53debf
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   EXApplication: a727f05eb8592f0bc764f6ab8d51eacc158652ec
@@ -3482,6 +3515,7 @@ SPEC CHECKSUMS:
   ExpoNotifications: 098f80e610228da37ee98c0828931337cf5b1106
   ExpoQuickLook: 7ac65cd559a74619ea41e13df20e9d7a61e79ea6
   ExpoSystemUI: 05ee8d4aaba1b6af330f3621e19b39ff9f21e718
+  ExpoUI: 98d4650d9d32daaf772597adc76525c645b1ff76
   ExpoVideo: 56ed2863b981dd5ae946d8ef23ecfcae855863a0
   ExpoVideoThumbnails: da5d471c170bf4110f681b6649524eace9c95b5b
   ExpoWebBrowser: a4d7c382116fbe33c1ec7f60293f02b7e97042e4

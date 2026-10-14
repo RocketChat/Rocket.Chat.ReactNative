@@ -1,9 +1,11 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { getUniqueId } from 'react-native-device-info';
+import EJSON from 'ejson';
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 
 import {
 	type IAvatarSuggestion,
+	type IMessage,
 	type IMessagePreferences,
 	type INotificationPreferences,
 	type IPreviewItem,
@@ -913,6 +915,21 @@ export const getThreadsList = ({ rid, count, offset, text }: { rid: string; coun
 
 	// RC 1.0
 	return sdk.get('chat.getThreadsList', params);
+};
+
+export const getThreadMessages = async ({ tmid, offset, count }: { tmid: string; offset: number; count: number }) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.8.0')) {
+		const result = await sdk.get('chat.getThreadMessages', { tmid, count, offset, sort: { ts: -1 } });
+		if (!result.success) {
+			throw new Error('Unable to load thread messages');
+		}
+		return { messages: result.messages, total: result.total, threadParent: null };
+	}
+	const result = await sdk.methodCallWrapper('getThreadMessages', { tmid });
+	const thread: IMessage[] = result ? EJSON.fromJSONValue(result) : [];
+	const messages = thread.filter(m => m._id !== tmid);
+	return { messages, total: messages.length, threadParent: thread.find(m => m._id === tmid) ?? null };
 };
 
 export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }) =>
