@@ -25,10 +25,11 @@ tags:
     timeout: 60000
 
 # should have menu button
-- extendedWaitUntil:
-    visible:
-      id: 'accessibility-view-drawer'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/wait-header-item.yaml'
+    env:
+      ANDROID_ID: 'accessibility-view-drawer'
+      IOS_LABEL: 'Menu'
 
 # should have theme button
 - extendedWaitUntil:
@@ -68,12 +69,11 @@ tags:
 - tapOn:
     id: 'accessibility-mentions-with-at-symbol-switch'
 
-- extendedWaitUntil:
-    visible:
-      id: 'accessibility-view-drawer'
-    timeout: 60000
-- tapOn:
-    id: 'accessibility-view-drawer'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'accessibility-view-drawer'
+      IOS_LABEL: 'Menu'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-chats'
@@ -95,8 +95,7 @@ tags:
     timeout: 60000
 
 # should disable mentions with @ symbol
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: './utils/go-to-accessibility-appearance.yaml'
 
@@ -107,12 +106,11 @@ tags:
 - tapOn:
     id: 'accessibility-mentions-with-at-symbol-switch'
 
-- extendedWaitUntil:
-    visible:
-      id: 'accessibility-view-drawer'
-    timeout: 60000
-- tapOn:
-    id: 'accessibility-view-drawer'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'accessibility-view-drawer'
+      IOS_LABEL: 'Menu'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-chats'
@@ -134,8 +132,7 @@ tags:
     timeout: 60000
 
 # should enable rooms with # symbol
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: './utils/go-to-accessibility-appearance.yaml'
 
@@ -146,12 +143,11 @@ tags:
 - tapOn:
     id: 'accessibility-rooms-with-hashtag-symbol-switch'
 
-- extendedWaitUntil:
-    visible:
-      id: 'accessibility-view-drawer'
-    timeout: 60000
-- tapOn:
-    id: 'accessibility-view-drawer'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'accessibility-view-drawer'
+      IOS_LABEL: 'Menu'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-chats'
@@ -169,8 +165,7 @@ tags:
     timeout: 60000
 
 # should disable mentions with # symbol
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: './utils/go-to-accessibility-appearance.yaml'
 
@@ -181,12 +176,11 @@ tags:
 - tapOn:
     id: 'accessibility-rooms-with-hashtag-symbol-switch'
 
-- extendedWaitUntil:
-    visible:
-      id: 'accessibility-view-drawer'
-    timeout: 60000
-- tapOn:
-    id: 'accessibility-view-drawer'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'accessibility-view-drawer'
+      IOS_LABEL: 'Menu'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-chats'

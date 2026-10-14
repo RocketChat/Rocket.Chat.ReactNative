@@ -1,23 +1,11 @@
 import { useState } from 'react';
 import { Image, type ImageStyle } from 'expo-image';
 
-import { OmnichannelSourceType, type IOmnichannelSource, type TUserStatus } from '~/definitions';
+import { type IOmnichannelSource, type TUserStatus } from '~/definitions';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
-import { CustomIcon, type TIconsName } from '../CustomIcon';
+import { CustomIcon } from '../CustomIcon';
+import { getOmnichannelIconName, getOmnichannelSidebarIconUri } from './roomTypeIconName';
 import { useUserStatusColor } from '~/lib/hooks/useUserStatusColor';
-
-interface IIconMap {
-	[key: string]: TIconsName;
-}
-
-const iconMap: IIconMap = {
-	widget: 'livechat-monochromatic',
-	email: 'mail',
-	sms: 'sms',
-	app: 'omnichannel',
-	api: 'omnichannel',
-	other: 'omnichannel'
-};
 
 interface IOmnichannelRoomIconProps {
 	size: number;
@@ -34,15 +22,15 @@ export const OmnichannelRoomIcon = ({ size, style, sourceType, status }: IOmnich
 	const connected = useAppSelector(state => state.meteor?.connected);
 	const userStatusColor = useUserStatusColor(status || 'offline');
 
-	// @ts-ignore
-	const customIcon = <CustomIcon name={iconMap[sourceType?.type || 'other']} size={size} style={style} color={userStatusColor} />;
+	const customIcon = <CustomIcon name={getOmnichannelIconName(sourceType)} size={size} style={style} color={userStatusColor} />;
+	const sidebarIconUri = connected ? getOmnichannelSidebarIconUri(baseUrl, sourceType) : undefined;
 
-	if (!svgError && sourceType?.type === OmnichannelSourceType.APP && sourceType.id && sourceType.sidebarIcon && connected) {
+	if (!svgError && sidebarIconUri) {
 		return (
 			<>
 				<Image
 					tintColor={userStatusColor}
-					source={{ uri: `${baseUrl}/api/apps/public/${sourceType.id}/get-sidebar-icon?icon=${sourceType.sidebarIcon}` }}
+					source={{ uri: sidebarIconUri }}
 					style={[{ width: size, height: size }, style]}
 					onError={() => setSvgError(true)}
 					onLoad={() => setLoading(false)}

@@ -123,6 +123,7 @@ export type ChatsStackParamList = {
 		room: TSubscriptionModel;
 	};
 	DirectoryView: undefined;
+	DisplayPrefsView: undefined;
 	E2EEToggleRoomView: {
 		rid: string;
 	};
@@ -303,6 +304,7 @@ export type InsideStackParamList = {
 		data: any;
 	};
 	CallView: undefined;
+	ConferenceView: undefined;
 };
 
 export type { OutsideParamList, OutsideModalParamList } from './OutsideStack';

@@ -26,7 +26,7 @@ export default function VideoConferenceOutgoing({
 			<Touch
 				style={[style.callToActionButton, isInPexipCall && { opacity: 0.5 }]}
 				disabled={isInPexipCall}
-				onPress={() => videoConfJoin(blockId, { rid })}>
+				onPress={() => videoConfJoin(blockId, undefined, undefined, { rid })}>
 				<Text style={style.callToActionButtonText}>{i18n.t('Join')}</Text>
 			</Touch>
 			{users.length ? <CallParticipants users={users} /> : null}

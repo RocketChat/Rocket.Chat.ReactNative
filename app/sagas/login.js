@@ -234,7 +234,8 @@ const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
 	try {
 		yield getEnterpriseModules();
 
-		if (isOmnichannelStatusAvailable(user.statusLivechat) && isOmnichannelModuleAvailable()) {
+		const livechatDisabled = yield select(state => state.settings.Livechat_enabled === false);
+		if (!livechatDisabled && isOmnichannelStatusAvailable(user.statusLivechat) && isOmnichannelModuleAvailable()) {
 			yield put(inquiryRequest());
 		}
 	} catch (e) {
@@ -446,7 +447,8 @@ const handleSetUser = function* handleSetUser({ user }) {
 
 	setLanguage(user?.language);
 
-	if (user?.statusLivechat && isOmnichannelModuleAvailable()) {
+	const livechatDisabled = yield select(state => state.settings.Livechat_enabled === false);
+	if (!livechatDisabled && user?.statusLivechat && isOmnichannelModuleAvailable()) {
 		if (isOmnichannelStatusAvailable(user.statusLivechat)) {
 			yield put(inquiryRequest());
 		} else {
