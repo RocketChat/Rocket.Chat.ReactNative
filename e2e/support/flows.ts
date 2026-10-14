@@ -459,13 +459,24 @@ export const openDeepLink = async ({ device, screen, platform }: Fixtures, link:
 	}
 };
 
+export const PHOTOS_NOTIFICATIONS_PROMPT = '“Photos” Would Like to Send You Notifications';
+
+const expectAddWorkspaceOverPhotosPrompt = async ({ device, screen }: Fixtures) => {
+	const addWorkspace = screen.getByText('Add workspace');
+	const photosPrompt = screen.getByText(PHOTOS_NOTIFICATIONS_PROMPT).first();
+	if ((await succeeds(firstVisible([addWorkspace, photosPrompt]))) && (await isVisibleNow(photosPrompt))) {
+		await device.alert('dismiss');
+	}
+	await expect(addWorkspace).toBeVisible({ timeout: LONG_TIMEOUT });
+};
+
 export const loginWithDeepLink = async (fixtures: Fixtures, credentials: Credentials, server = data.server) => {
 	await resetApp(fixtures);
 	if (fixtures.platform === 'android') {
 		await fixtures.device.closeApp();
 	} else {
 		await fixtures.app.open();
-		await expect(fixtures.screen.getByText('Add workspace')).toBeVisible({ timeout: LONG_TIMEOUT });
+		await expectAddWorkspaceOverPhotosPrompt(fixtures);
 	}
 	const session = await login(credentials);
 	await openDeepLink(

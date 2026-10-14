@@ -2,7 +2,7 @@ import { expect } from 'e2e';
 
 import { groupMessageCount, type Credentials } from './api';
 import type { Fixtures } from './flows';
-import { firstVisible, LONG_TIMEOUT, succeeds, tapIfVisible, tapUntilVisible } from './flows';
+import { firstVisible, LONG_TIMEOUT, PHOTOS_NOTIFICATIONS_PROMPT, succeeds, tapIfVisible, tapUntilVisible } from './flows';
 
 const PHOTOS_APP = 'com.apple.mobileslideshow';
 const ANDROID_FILES_APP = 'com.google.android.documentsui';
@@ -11,7 +11,6 @@ const SHARE_TARGET_RESPONSE_TIMEOUT = 15_000;
 const SHORT_TIMEOUT = 15_000;
 
 const PHOTO_SELECTED = '1 Photo Selected';
-const PHOTOS_NOTIFICATIONS_PROMPT = '“Photos” Would Like to Send You Notifications';
 
 const shareFromLibraryGrid = async ({ screen }: Fixtures) => {
 	await screen.getByTestId('PXGGridLayout-Info').first().longPress();
