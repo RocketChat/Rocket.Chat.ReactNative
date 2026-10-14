@@ -46,15 +46,9 @@ const RoomItemContainer = memo(
 
 		const handleOnPress = () => onPress(item);
 
-		const handleOnLongPress = async () => {
+		const showRoomActions = () => {
 			if (onLongPress) {
 				onLongPress(item);
-				return;
-			}
-			const isScreenReaderEnabled = await AccessibilityInfo.isScreenReaderEnabled();
-			const hasExternalKeyboard = isExternalKeyboardConnected();
-
-			if (!isScreenReaderEnabled && !hasExternalKeyboard) {
 				return;
 			}
 			showActionSheet({
@@ -68,7 +62,14 @@ const RoomItemContainer = memo(
 			});
 		};
 
-		const supportsLongPress = !!onLongPress || (!item.separator && swipeEnabled);
+		const handleOnLongPress = async () => {
+			if (!onLongPress && !(await AccessibilityInfo.isScreenReaderEnabled()) && !isExternalKeyboardConnected()) {
+				return;
+			}
+			showRoomActions();
+		};
+
+		const hasRoomActions = !!onLongPress || swipeEnabled;
 
 		return (
 			<RoomItem
@@ -78,7 +79,8 @@ const RoomItemContainer = memo(
 				isInvited={isInvited}
 				isRead={isRead}
 				onPress={handleOnPress}
-				onLongPress={supportsLongPress ? handleOnLongPress : undefined}
+				onLongPress={hasRoomActions ? handleOnLongPress : undefined}
+				onShowActions={hasRoomActions ? showRoomActions : undefined}
 				date={date}
 				accessibilityDate={accessibilityDate}
 				width={width}

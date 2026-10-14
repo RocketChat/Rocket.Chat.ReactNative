@@ -11,7 +11,7 @@ import I18n from '~/i18n';
 const Wrapper = ({
 	accessibilityLabel,
 	accessibilityHint,
-	onLongPress,
+	onShowActions,
 	children,
 	displayMode,
 	testID,
@@ -31,9 +31,9 @@ const Wrapper = ({
 			testID={testID}
 			accessible
 			accessibilityRole='button'
-			accessibilityActions={onLongPress ? [{ name: 'showActions', label: I18n.t('Show_room_actions') }] : undefined}
+			accessibilityActions={onShowActions ? [{ name: 'showActions', label: I18n.t('Show_room_actions') }] : undefined}
 			onAccessibilityAction={event => {
-				if (event.nativeEvent.actionName === 'showActions') onLongPress?.();
+				if (event.nativeEvent.actionName === 'showActions') onShowActions?.();
 			}}>
 			<IconOrAvatar displayMode={displayMode} {...props} />
 			<View style={styles.centerContainer}>{children}</View>

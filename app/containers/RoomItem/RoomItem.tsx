@@ -49,6 +49,7 @@ const RoomItem = ({
 	swipeEnabled = true,
 	onPress,
 	onLongPress,
+	onShowActions,
 	teamMain,
 	autoJoin,
 	showAvatar,
@@ -92,7 +93,7 @@ const RoomItem = ({
 				testID={testID}
 				accessibilityLabel={accessibilityLabel}
 				accessibilityHint={I18n.t('Long_press_for_more_actions')}
-				onLongPress={onLongPress}
+				onShowActions={onShowActions}
 				avatar={avatar}
 				type={type}
 				userId={userId}

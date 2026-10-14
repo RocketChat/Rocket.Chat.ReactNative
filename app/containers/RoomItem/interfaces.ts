@@ -43,7 +43,7 @@ export interface IWrapperProps {
 	accessibilityLabel: string;
 	testID?: string;
 	accessibilityHint?: string;
-	onLongPress?: () => void;
+	onShowActions?: () => void;
 	avatar: string;
 	type: string;
 	userId: string | null;
@@ -130,6 +130,7 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	hideMentionStatus?: boolean;
 	accessibilityDate: string;
 	abacAttributes?: ISubscription['abacAttributes'];
+	onShowActions?: () => void;
 }
 
 export interface ILastMessageProps {
