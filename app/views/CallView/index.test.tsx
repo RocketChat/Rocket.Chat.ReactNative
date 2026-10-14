@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
 import CallView from '.';
-import { navigateToCallRoom } from '~/lib/services/voip/navigateToCallRoom';
+// import { navigateToCallRoom } from '~/lib/services/voip/navigateToCallRoom';
 import { useCallStore } from '~/lib/services/voip/useCallStore';
 import { mockedStore } from '~/reducers/mockedStore';
 import * as stories from './CallView.stories';
@@ -71,7 +71,7 @@ jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
 	default: () => ({ width: mockWindowWidth, height: mockWindowHeight, scale: 1, fontScale: 1 })
 }));
 
-const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
+// const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
 
 jest.mock('~/lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
