@@ -3,9 +3,6 @@ import { StyleSheet } from 'react-native';
 import sharedStyles from '~/views/Styles';
 
 export default StyleSheet.create({
-	keyboardAvoiding: {
-		flex: 1
-	},
 	container: {
 		flex: 1,
 		justifyContent: 'center',

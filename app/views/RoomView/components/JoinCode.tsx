@@ -1,11 +1,11 @@
 import { memo, useImperativeHandle, useState } from 'react';
 import { InteractionManager, StyleSheet, Text, type TextInput, View } from 'react-native';
 import Modal from 'react-native-modal';
-import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import I18n from '~/i18n';
 import Button from '~/containers/Button';
+import KeyboardView from '~/containers/KeyboardView';
 import { FormTextInput } from '~/containers/TextInput';
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
@@ -14,9 +14,6 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { type IJoinCodeProps } from '../definitions';
 
 const styles = StyleSheet.create({
-	keyboardAvoiding: {
-		flex: 1
-	},
 	container: {
 		flex: 1,
 		justifyContent: 'center',
@@ -71,7 +68,7 @@ const JoinCode = memo(({ rid, t, onJoin, ref }: IJoinCodeProps) => {
 
 	return (
 		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
-			<KeyboardAvoidingView behavior='padding' style={styles.keyboardAvoiding}>
+			<KeyboardView backgroundColor='transparent'>
 				<GestureHandlerRootView style={styles.container} testID='join-code'>
 					<View
 						style={[
@@ -117,7 +114,7 @@ const JoinCode = memo(({ rid, t, onJoin, ref }: IJoinCodeProps) => {
 						</View>
 					</View>
 				</GestureHandlerRootView>
-			</KeyboardAvoidingView>
+			</KeyboardView>
 		</Modal>
 	);
 });

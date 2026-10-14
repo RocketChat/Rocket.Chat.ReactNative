@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, memo } from 'react';
 import { AccessibilityInfo, Text, View } from 'react-native';
-import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
 import Modal from 'react-native-modal';
@@ -21,6 +20,7 @@ import { type ILoginCredentials } from '~/definitions';
 import { sendEmailCode } from '~/lib/services/restApi';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import Toast from '../Toast';
+import KeyboardView from '../KeyboardView';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import log from '~/lib/methods/helpers/log';
 import { TWO_FACTOR } from '~/lib/constants/twoFactor';
@@ -161,7 +161,7 @@ const TwoFactor = memo(() => {
 			useNativeDriver
 			isVisible={visible}
 			hideModalContentWhileAnimating>
-			<KeyboardAvoidingView behavior='padding' style={styles.keyboardAvoiding}>
+			<KeyboardView backgroundColor='transparent'>
 				<GestureHandlerRootView style={styles.container} testID='two-factor'>
 					<View
 						style={[
@@ -204,7 +204,7 @@ const TwoFactor = memo(() => {
 					</View>
 					<Toast />
 				</GestureHandlerRootView>
-			</KeyboardAvoidingView>
+			</KeyboardView>
 		</Modal>
 	);
 });
