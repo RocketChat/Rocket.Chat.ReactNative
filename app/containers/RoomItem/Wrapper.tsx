@@ -1,5 +1,5 @@
 import { type ReactElement } from 'react';
-import { View, type AccessibilityActionEvent } from 'react-native';
+import { View } from 'react-native';
 
 import { DisplayMode } from '~/lib/constants/constantDisplayMode';
 import { useTheme } from '~/theme';
@@ -7,7 +7,7 @@ import IconOrAvatar from './IconOrAvatar';
 import { type IWrapperProps } from './interfaces';
 import styles from './styles';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { useRoomItemAccessibilityActions } from './useRoomItemAccessibilityActions';
+import I18n from '~/i18n';
 
 const Wrapper = ({
 	accessibilityLabel,
@@ -20,13 +20,6 @@ const Wrapper = ({
 }: IWrapperProps): ReactElement => {
 	const { colors } = useTheme();
 	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
-	const accessibilityActions = useRoomItemAccessibilityActions(!!onLongPress);
-
-	const onAccessibilityAction = (event: AccessibilityActionEvent) => {
-		if (event.nativeEvent.actionName === 'showActions') {
-			onLongPress?.();
-		}
-	};
 	return (
 		<View
 			style={[styles.container, { height: displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight }]}
@@ -35,8 +28,10 @@ const Wrapper = ({
 			testID={testID}
 			accessible
 			accessibilityRole='button'
-			accessibilityActions={accessibilityActions}
-			onAccessibilityAction={accessibilityActions ? onAccessibilityAction : undefined}>
+			accessibilityActions={onLongPress ? [{ name: 'showActions', label: I18n.t('Show_room_actions') }] : undefined}
+			onAccessibilityAction={event => {
+				if (event.nativeEvent.actionName === 'showActions') onLongPress?.();
+			}}>
 			<IconOrAvatar displayMode={displayMode} {...props} />
 			<View
 				style={[

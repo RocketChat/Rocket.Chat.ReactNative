@@ -451,6 +451,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -1123,6 +1124,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 accessibilityLabel="unread. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -1839,6 +1841,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 accessibilityLabel="unread. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -2555,6 +2558,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 accessibilityLabel="user mentions. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -3271,6 +3275,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 accessibilityLabel="group mentions. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -3987,6 +3992,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 accessibilityLabel="thread unread. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -4703,6 +4709,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 accessibilityLabel="thread unread user. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -5419,6 +5426,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 accessibilityLabel="thread unread group. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -6135,6 +6143,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 accessibilityLabel="user mentions priority 1. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -6851,6 +6860,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 accessibilityLabel="group mentions priority 2. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -7567,6 +7577,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 accessibilityLabel="thread unread priority 3. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -8287,6 +8298,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
               accessibilityLabel="rocket.cat. private channel. undefined. "
               accessibilityRole="button"
               accessible={true}
+              onAccessibilityAction={[Function]}
               style={
                 [
                   {
@@ -8942,6 +8954,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private channel. undefined. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -9658,6 +9671,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                 accessibilityLabel="unread. private channel. undefined. No message"
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -10374,6 +10388,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. public channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -11069,6 +11084,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                 accessibilityLabel="rocket.cat. private channel. undefined. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -11726,6 +11742,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                 accessibilityLabel="rocket.cat. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -12318,6 +12335,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                 accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -12954,6 +12972,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                 accessibilityLabel="rocket.cat. private channel. undefined. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -13663,6 +13682,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                 accessibilityLabel="rocket.cat. private channel. undefined. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -14372,6 +14392,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                 accessibilityLabel="rocket.cat. private channel. undefined. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -15042,6 +15063,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -15721,6 +15743,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -16405,6 +16428,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private channel. undefined. No message"
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -17093,6 +17117,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private channel. undefined. 2"
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -17781,6 +17806,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private channel. undefined. You: 1"
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -18469,6 +18495,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private channel. undefined. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -19157,6 +19184,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private channel. undefined. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -19910,6 +19938,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private channel. undefined. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -20663,6 +20692,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private channel. undefined. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -21421,6 +21451,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. Omnichannel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -22072,6 +22103,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. Omnichannel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -22723,6 +22755,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. Omnichannel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -23374,6 +23407,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. Omnichannel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -24025,6 +24059,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. Omnichannel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -24676,6 +24711,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. Omnichannel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -25327,6 +25363,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. Omnichannel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -25978,6 +26015,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. Omnichannel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -26629,6 +26667,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. Omnichannel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -27280,6 +27319,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. Omnichannel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -27936,6 +27976,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -28626,6 +28667,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private channel. undefined. No message"
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -29354,6 +29396,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                 accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -30044,6 +30087,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                 accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries. private channel. undefined. No message"
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -30772,10 +30816,19 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
             style={{}}
           >
             <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show room actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
               accessibilityHint="Long press for more actions"
               accessibilityLabel="rocket.cat. private channel. undefined. "
               accessibilityRole="button"
               accessible={true}
+              onAccessibilityAction={[Function]}
               style={
                 [
                   {
@@ -31431,6 +31484,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. Offline. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -32090,6 +32144,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. public channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -32741,6 +32796,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -33392,6 +33448,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. Omnichannel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -34043,6 +34100,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. Discussion. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -34694,6 +34752,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. Message. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -35345,6 +35404,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -35996,6 +36056,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private team. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -36647,6 +36708,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 accessibilityLabel="rocket.cat. private channel. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -37303,6 +37365,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                 accessibilityLabel="diego.mello. Offline. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
@@ -37962,6 +38025,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                 accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries. Offline. undefined. "
                 accessibilityRole="button"
                 accessible={true}
+                onAccessibilityAction={[Function]}
                 style={
                   [
                     {
