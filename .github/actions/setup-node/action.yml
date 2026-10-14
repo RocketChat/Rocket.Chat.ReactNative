@@ -13,6 +13,8 @@ runs:
       run: corepack enable
 
     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      env:
+        SEGMENT_DOWNLOAD_TIMEOUT_MINS: 4
       with:
         node-version: ${{ inputs.node-version }}
         node-version-file: ${{ inputs.node-version == '' && 'package.json' || '' }}
