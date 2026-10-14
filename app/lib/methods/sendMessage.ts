@@ -4,6 +4,7 @@ import { type Model } from '@nozbe/watermelondb';
 import database from '../database';
 import log from './helpers/log';
 import { random } from './helpers';
+import { closeUnclosedCodeBlock } from './helpers/closeUnclosedCodeBlock';
 import { Encryption } from '../encryption';
 import type { E2EType, IMessage, IUser, MessageType, TMessageModel } from '~/definitions';
 import sdk from '../services/sdk';
@@ -88,12 +89,13 @@ export async function resendMessage(message: TMessageModel, tmid?: string) {
 
 export async function sendMessage(
 	rid: string,
-	msg: string,
+	text: string,
 	tmid: string | undefined,
 	user: Partial<Pick<IUser, 'id' | 'username' | 'name'>>,
 	tshow?: boolean
 ): Promise<void> {
 	try {
+		const msg = closeUnclosedCodeBlock(text);
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');
 		const msgCollection = db.get('messages');
