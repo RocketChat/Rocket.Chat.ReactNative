@@ -95,16 +95,21 @@ const retryDelay = (method: Method, error: unknown, attempt: number) => {
 
 const request = async (method: Method, endpoint: string, body?: unknown, session?: Session) => {
 	const connectionDeadline = Date.now() + CONNECTION_RETRY_BUDGET;
-	for (let attempt = 1; ; attempt += 1) {
+	let responseFailures = 0;
+	for (;;) {
 		try {
 			return await fetchOnce(method, endpoint, body, session);
 		} catch (error) {
-			if (failedToConnect(error) && Date.now() < connectionDeadline) {
+			if (failedToConnect(error)) {
+				if (Date.now() >= connectionDeadline) {
+					throw error;
+				}
 				await delay(CONNECTION_RETRY_DELAY);
 				continue;
 			}
-			const wait = retryDelay(method, error, attempt);
-			if (wait === undefined || attempt === REQUEST_ATTEMPTS) {
+			responseFailures += 1;
+			const wait = retryDelay(method, error, responseFailures);
+			if (wait === undefined || responseFailures >= REQUEST_ATTEMPTS) {
 				throw error;
 			}
 			await delay(wait);

@@ -18,7 +18,6 @@ import {
 	openMessageActions,
 	tapUntilVisible,
 	fillWhenUncovered,
-	clearSettled,
 	tapSend,
 	typeUntilListed
 } from '~e2e/support/flows';
@@ -39,7 +38,7 @@ const expectAutocomplete = async (
 	const selectedItem = fixtures.screen.getByTestId(`autocomplete-item-${selected}`).first();
 	await typeUntilListed(
 		() => composer(fixtures).pressSequentially(typed, { delay: 50 }),
-		() => clearSettled(composer(fixtures)),
+		() => composer(fixtures).clear(),
 		selectedItem
 	);
 	for (const listedItemId of alsoListed) {
@@ -48,7 +47,7 @@ const expectAutocomplete = async (
 	await tapWhenVisible(fixtures, selectedItem);
 	await expect(composer(fixtures)).toHaveValue(new RegExp(`^${completed} ?$`), { timeout: LONG_TIMEOUT });
 	await expectHidden(fixtures, `autocomplete-item-${selected}`);
-	await clearSettled(composer(fixtures));
+	await composer(fixtures).clear();
 };
 
 const reactFromPicker = async (fixtures: Fixtures, emoji: string) => {
@@ -175,7 +174,7 @@ const sendSavedDraft = async (fixtures: Fixtures, roomName: string) => {
 const replaceDraftKeepingQuote = async (fixtures: Fixtures, roomName: string, original: string, text: string) => {
 	await leaveAndReopenRoom(fixtures, roomName);
 	await expectVisible(fixtures, `markdown-preview-${original}`);
-	await clearSettled(composer(fixtures));
+	await composer(fixtures).clear();
 	await fillWhenUncovered(composer(fixtures), text);
 	await expect(composer(fixtures)).toHaveValue(text, { timeout: LONG_TIMEOUT });
 };

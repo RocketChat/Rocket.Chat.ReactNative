@@ -66,6 +66,49 @@ describe('ActionSheet', () => {
 		expect(screen.getByText('second sheet')).toBeOnTheScreen();
 	});
 
+	it('keeps a newer request when an older queued presentation has not fired', () => {
+		act(() => showActionSheetRef({ children: <Text>first sheet</Text> }));
+		finishPresent();
+		act(() => hideActionSheetRef());
+		act(() => showActionSheetRef({ children: <Text>queued sheet</Text> }));
+		finishDismiss();
+		act(() => showActionSheetRef({ children: <Text>newest sheet</Text> }));
+		act(() => jest.runAllTimers());
+
+		expect(screen.getByText('newest sheet')).toBeOnTheScreen();
+		expect(screen.queryByText('queued sheet')).toBeNull();
+		expect(mockPresent).toHaveBeenCalledTimes(2);
+	});
+
+	it('lets an onClose request supersede a queued sheet', () => {
+		act(() =>
+			showActionSheetRef({
+				children: <Text>first sheet</Text>,
+				onClose: () => showActionSheetRef({ children: <Text>newest sheet</Text> })
+			})
+		);
+		finishPresent();
+		act(() => hideActionSheetRef());
+		act(() => showActionSheetRef({ children: <Text>queued sheet</Text> }));
+		finishDismiss();
+		act(() => jest.runAllTimers());
+
+		expect(screen.getByText('newest sheet')).toBeOnTheScreen();
+		expect(mockPresent).toHaveBeenCalledTimes(2);
+	});
+
+	it('cancels a queued presentation hidden after dismissal', () => {
+		act(() => showActionSheetRef({ children: <Text>first sheet</Text> }));
+		finishPresent();
+		act(() => hideActionSheetRef());
+		act(() => showActionSheetRef({ children: <Text>queued sheet</Text> }));
+		finishDismiss();
+		act(() => hideActionSheetRef());
+		act(() => jest.runAllTimers());
+
+		expect(mockPresent).toHaveBeenCalledTimes(1);
+	});
+
 	it('dismisses a sheet hidden before it finished presenting once the presentation ends', () => {
 		act(() => showActionSheetRef({ children: <Text>first sheet</Text> }));
 		act(() => hideActionSheetRef());

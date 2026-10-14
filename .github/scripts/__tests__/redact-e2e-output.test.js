@@ -47,15 +47,58 @@ describe('redact-e2e-output.sh', () => {
 
 	it('replaces the token query parameter of auth deep links', () => {
 		const outputDir = makeOutputDir({
-			'report.json':
-				'{"url":"rocketchat://auth?host=open.rocket.chat&userId=abc&token=Xy_9-Zq.w"}\nopen rocketchat://auth?token=Xy_9-Zq.w&userId=abc'
+			'report.json': '{"url":"rocketchat://auth?host=open.rocket.chat&userId=abc&token=Xy_9-Zq.w"}',
+			'log.txt': 'open rocketchat://auth?token=Xy_9-Zq.w&userId=abc'
 		});
 
 		runScript(SCRIPT, { args: [outputDir], env: credentials });
 
 		expect(read(outputDir, 'report.json')).toBe(
-			'{"url":"rocketchat://auth?host=open.rocket.chat&userId=abc&token=***REDACTED***"}\nopen rocketchat://auth?token=***REDACTED***&userId=abc'
+			'{"url":"rocketchat://auth?host=open.rocket.chat&userId=abc&token=***REDACTED***"}'
 		);
+		expect(read(outputDir, 'log.txt')).toBe('open rocketchat://auth?token=***REDACTED***&userId=abc');
+	});
+
+	it('redacts decoded JSON strings and keys, including escaped credentials', () => {
+		const password = 'quote"slash\\secret\nnext';
+		const outputDir = makeOutputDir({
+			'report.json': JSON.stringify({ nested: [{ password, message: `login ${password}` }], [password]: 'key' }),
+			'events.jsonl': `${JSON.stringify({ password })}\n${JSON.stringify({ password })}\n`
+		});
+		const { status } = runScript(SCRIPT, { args: [outputDir], env: { ...credentials, E2E_ADMIN_PASSWORD: password } });
+
+		expect(status).toBe(0);
+		expect(JSON.parse(read(outputDir, 'report.json'))).toEqual({
+			nested: [{ password: '***REDACTED***', message: 'login ***REDACTED***' }],
+			'***REDACTED***': 'key'
+		});
+		expect(read(outputDir, 'events.jsonl').trim().split('\n').map(JSON.parse)).toEqual([
+			{ password: '***REDACTED***' },
+			{ password: '***REDACTED***' }
+		]);
+	});
+
+	it('redacts XML-escaped credentials without altering binary evidence', () => {
+		const binary = Buffer.from([0, 255, 137, 80, 78, 71]);
+		const outputDir = makeOutputDir({
+			'junit.xml': '<failure message="quote&quot;&amp;&lt;secret"/>',
+			'artifacts/screen.png': binary,
+			'artifacts/video.mp4': binary
+		});
+		const { status } = runScript(SCRIPT, { args: [outputDir], env: { ...credentials, E2E_ADMIN_PASSWORD: 'quote"&<secret' } });
+
+		expect(status).toBe(0);
+		expect(read(outputDir, 'junit.xml')).toBe('<failure message="***REDACTED***"/>');
+		expect(fs.readFileSync(path.join(outputDir, 'artifacts/screen.png'))).toEqual(binary);
+		expect(fs.readFileSync(path.join(outputDir, 'artifacts/video.mp4'))).toEqual(binary);
+	});
+
+	it('fails before modifying output when a JSON report cannot be parsed', () => {
+		const outputDir = makeOutputDir({ 'a.log': 'admin.user', 'report.json': '{broken' });
+		const { status } = runScript(SCRIPT, { args: [outputDir], env: credentials });
+
+		expect(status).not.toBe(0);
+		expect(read(outputDir, 'a.log')).toBe('admin.user');
 	});
 
 	it('fails without touching any file when compressed output is present', () => {

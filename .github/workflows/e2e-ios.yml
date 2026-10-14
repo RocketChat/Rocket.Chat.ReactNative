@@ -6,6 +6,9 @@ on:
       shard:
         required: true
         type: string
+      device-profile:
+        required: true
+        type: string
     secrets:
       E2E_ACCOUNT:
         required: true
@@ -45,20 +48,23 @@ jobs:
           defaults write com.apple.iphonesimulator ShowChrome -bool false
           defaults write com.apple.iphonesimulator DeviceFramebufferOnly -bool true
 
-      - name: Start Simulator Boot (async; resolved by device family, smallest iPhone for shard 9)
+      - name: Start Simulator Boot
         env:
-          SHARD: ${{ inputs.shard }}
+          DEVICE_PROFILE: ${{ inputs.device-profile }}
         run: |
           DEVICES_JSON=$(xcrun simctl list devices available --json)
-          if [[ "$SHARD" == "9" ]]; then
+          if [[ "$DEVICE_PROFILE" == "small" ]]; then
             SIM_NAME=$(jq -r '[.devices | to_entries[] | .value[] | select(.name | test("^iPhone SE"))] | first | .name' <<< "$DEVICES_JSON")
             if [[ -z "$SIM_NAME" || "$SIM_NAME" == "null" ]]; then
               SIM_NAME=$(jq -r '[.devices | to_entries[] | .value[] | select(.name | test("^iPhone [0-9]+( mini)?$"))] | sort_by(.name | capture("(?<n>[0-9]+)").n | tonumber) | first | .name' <<< "$DEVICES_JSON")
             fi
             SIM_CRITERION="smallest iPhone (small-screen shard)"
-          else
+          elif [[ "$DEVICE_PROFILE" == "large" ]]; then
             SIM_NAME=$(jq -r '[.devices | to_entries[] | .value[] | select(.name | test("^iPhone [0-9]+ Pro$"))] | sort_by(.name | capture("(?<n>[0-9]+)").n | tonumber) | last | .name' <<< "$DEVICES_JSON")
             SIM_CRITERION="largest iPhone N Pro"
+          else
+            echo "::error::Unknown device profile: $DEVICE_PROFILE"
+            exit 1
           fi
 
           if [[ -z "$SIM_NAME" || "$SIM_NAME" == "null" ]]; then

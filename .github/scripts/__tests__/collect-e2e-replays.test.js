@@ -26,9 +26,9 @@ const writeReplay = (repo, name, content) => fs.writeFileSync(path.join(repo, '.
 
 describe('collect-e2e-replays.sh', () => {
 	it('copies recorded and re-recorded replays, skipping unchanged and evicted ones', () => {
-		const repo = makeRepoWithCommittedReplays({ 'unchanged.json': 'a', 'rerecorded.json': 'b', 'evicted.json': 'c' });
-		writeReplay(repo, 'rerecorded.json', 'b2');
-		writeReplay(repo, 'recorded.json', 'd');
+		const repo = makeRepoWithCommittedReplays({ 'unchanged.json': '"a"', 'rerecorded.json': '"b"', 'evicted.json': '"c"' });
+		writeReplay(repo, 'rerecorded.json', '"b2"');
+		writeReplay(repo, 'recorded.json', '"d"');
 		fs.rmSync(path.join(repo, '.e2e/cache/evicted.json'));
 
 		const { status, output } = runScript(SCRIPT, { args: ['replays'], cwd: repo });
@@ -36,7 +36,7 @@ describe('collect-e2e-replays.sh', () => {
 		expect(status).toBe(0);
 		expect(output).toBe('count=2\n');
 		expect(fs.readdirSync(path.join(repo, 'replays')).sort()).toEqual(['recorded.json', 'rerecorded.json']);
-		expect(fs.readFileSync(path.join(repo, 'replays/rerecorded.json'), 'utf8')).toBe('b2');
+		expect(JSON.parse(fs.readFileSync(path.join(repo, 'replays/rerecorded.json'), 'utf8'))).toBe('b2');
 	});
 
 	it('redacts credentials from the collected replays', () => {
@@ -49,7 +49,7 @@ describe('collect-e2e-replays.sh', () => {
 	});
 
 	it('reports zero when the run recorded nothing', () => {
-		const repo = makeRepoWithCommittedReplays({ 'unchanged.json': 'a' });
+		const repo = makeRepoWithCommittedReplays({ 'unchanged.json': '"a"' });
 
 		const { status, output } = runScript(SCRIPT, { args: ['replays'], cwd: repo });
 

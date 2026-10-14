@@ -38,19 +38,19 @@ const ActionSheet = memo(
 
 		const itemHeight = useActionSheetItemHeight();
 
-		const dismissingRef = useRef(false);
-		const pendingOptionsRef = useRef<TActionSheetOptions | null>(null);
-		const presentedRef = useRef(false);
+		const phaseRef = useRef<'idle' | 'presenting' | 'presented' | 'dismissing'>('idle');
+		const desiredOptionsRef = useRef<TActionSheetOptions | null>(null);
 		const pendingPresentTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
 		useEffect(() => () => clearTimeout(pendingPresentTimeoutRef.current), []);
 
 		const hide = () => {
-			pendingOptionsRef.current = null;
+			desiredOptionsRef.current = null;
 			clearTimeout(pendingPresentTimeoutRef.current);
-			if (!isVisible || dismissingRef.current) return;
-			dismissingRef.current = true;
-			if (presentedRef.current) {
+			const phase = phaseRef.current;
+			if (phase === 'idle' || phase === 'dismissing') return;
+			phaseRef.current = 'dismissing';
+			if (phase === 'presented') {
 				sheetRef.current?.dismiss();
 			}
 			Keyboard.dismiss();
@@ -58,35 +58,34 @@ const ActionSheet = memo(
 		};
 
 		const onDidDismiss = () => {
-			dismissingRef.current = false;
-			presentedRef.current = false;
+			phaseRef.current = 'idle';
 			setIsVisible(false);
-			// Keep contentHeight to avoid flickering on next show
 			const snapshotOnClose = onCloseSnapshotRef.current;
 			onCloseSnapshotRef.current = undefined;
 			snapshotOnClose?.();
-			const pendingOptions = pendingOptionsRef.current;
-			pendingOptionsRef.current = null;
-			if (pendingOptions) {
-				pendingPresentTimeoutRef.current = setTimeout(() => present(pendingOptions));
+			if (desiredOptionsRef.current && phaseRef.current === 'idle') {
+				pendingPresentTimeoutRef.current = setTimeout(presentDesiredSheet);
 			}
 		};
 
-		const present = (options: TActionSheetOptions) => {
+		const presentDesiredSheet = () => {
+			const options = desiredOptionsRef.current;
+			if (!options || phaseRef.current === 'dismissing') return;
+			desiredOptionsRef.current = null;
 			setData(options);
+			onCloseSnapshotRef.current = options.onClose;
+			if (phaseRef.current !== 'idle') return;
+			phaseRef.current = 'presenting';
 			setIsVisible(true);
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-			onCloseSnapshotRef.current = options.onClose;
 			sheetRef.current?.present().catch(onDidDismiss);
 		};
 
 		const show = (options: TActionSheetOptions) => {
-			if (dismissingRef.current) {
-				pendingOptionsRef.current = options;
-				return;
-			}
-			present(options);
+			clearTimeout(pendingPresentTimeoutRef.current);
+			desiredOptionsRef.current = options;
+			presentDesiredSheet();
 		};
 
 		useBackHandler(() => {
@@ -107,11 +106,11 @@ const ActionSheet = memo(
 		};
 
 		const onDidPresent = () => {
-			presentedRef.current = true;
-			if (dismissingRef.current) {
+			if (phaseRef.current === 'dismissing') {
 				sheetRef.current?.dismiss();
 				return;
 			}
+			phaseRef.current = 'presented';
 			// On Android the bottom sheet is hosted in a separate window; TalkBack
 			// needs a moment after the present animation before it can target nodes
 			// inside it, so defer the focus call slightly.

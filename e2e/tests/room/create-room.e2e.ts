@@ -10,7 +10,6 @@ import {
 	tapWhenVisible,
 	expectVisible,
 	fillWhenUncovered,
-	clearSettled,
 	hideKeyboard
 } from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
@@ -28,7 +27,7 @@ const fillChannelName = async (fixtures: Fixtures, name: string) => {
 	const { screen } = fixtures;
 	const nameInput = screen.getByTestId('create-channel-name');
 	await screen.scrollUntilVisible(nameInput, { direction: 'up' });
-	await clearSettled(nameInput);
+	await nameInput.clear();
 	await nameInput.pressSequentially(name);
 	await hideKeyboard(fixtures, screen.getByTestId('create-channel-readonly-hint'));
 };

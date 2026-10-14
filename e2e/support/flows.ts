@@ -1,6 +1,7 @@
 import type { Locator, TestFixtures } from 'e2e';
 import type { Device } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
+import { TestError } from 'e2e/engine';
 
 import { getDeepLink, login, type Credentials } from './api';
 import { data } from './data';
@@ -10,26 +11,19 @@ export type Fixtures = TestFixtures & { device: Device };
 
 export const LONG_TIMEOUT = 60_000;
 
-const isCancelled = (error: unknown) => (error as { code?: string } | null)?.code === 'CANCELLED';
+const errorCode = (error: unknown) => (error as { code?: string } | null)?.code;
 
-export const unlessCancelled =
-	<Fallback>(fallback: Fallback) =>
-	(error: unknown) => {
-		if (isCancelled(error)) {
-			throw error;
-		}
-		return fallback;
-	};
-
-export const succeeds = (assertion: Promise<unknown>) => assertion.then(() => true, unlessCancelled(false));
-
-export const isVisibleNow = async (locator: Locator) => {
+export const succeeds = async (assertion: Promise<unknown>) => {
 	try {
-		return await locator.isVisible();
+		await assertion;
+		return true;
 	} catch (error) {
-		return unlessCancelled(false)(error);
+		if (errorCode(error) !== 'ASSERTION_FAILED') throw error;
+		return false;
 	}
 };
+
+export const isVisibleNow = (locator: Locator) => locator.isVisible();
 
 const NONE_VISIBLE_ERROR = 'None of the expected elements became visible';
 const FIRST_VISIBLE_POLL_INTERVAL = 250;
@@ -44,7 +38,7 @@ export const firstVisible = async (candidates: readonly Locator[], timeout = LON
 		}
 		await delay(FIRST_VISIBLE_POLL_INTERVAL);
 	}
-	throw new Error(NONE_VISIBLE_ERROR);
+	throw new TestError('ASSERTION_FAILED', NONE_VISIBLE_ERROR);
 };
 
 export const tapIfVisible = async (target: Locator) => {
@@ -155,13 +149,12 @@ const COVERED_ERROR = 'is covered by another visible element';
 const OFF_SCREEN_ERROR = 'is off-screen and not safe to press';
 const NO_INPUT_AT_POINT_ERROR = 'no text input found at the provided coordinates';
 const BEHIND_KEYBOARD_ERROR = 'is behind the visible keyboard';
-const UNCONFIRMED_FILL_ERRORS = [
-	'could not confirm the typed text reached the field',
-	'Android fill verification failed',
-	'text entry verification failed'
-];
 const RETRYABLE_ACTION_ERRORS = [COVERED_ERROR, OFF_SCREEN_ERROR, NO_INPUT_AT_POINT_ERROR, BEHIND_KEYBOARD_ERROR];
-const UNCONFIRMED_FILL_ATTEMPTS = 3;
+
+const isActionRefused = (error: unknown) => {
+	const cause = (error as { cause?: unknown } | null)?.cause;
+	return errorCode(error) === 'NOT_ACTIONABLE' || (errorCode(error) === 'ACTION_FAILED' && errorCode(cause) === 'NOT_ACTIONABLE');
+};
 
 const retryWhileUnreachable = async (action: () => Promise<unknown>, timeout: number) => {
 	const deadline = Date.now() + timeout;
@@ -171,7 +164,11 @@ const retryWhileUnreachable = async (action: () => Promise<unknown>, timeout: nu
 			return;
 		} catch (error) {
 			const message = String(error);
-			if (Date.now() > deadline || !RETRYABLE_ACTION_ERRORS.some(retryable => message.includes(retryable))) {
+			if (
+				!isActionRefused(error) ||
+				Date.now() > deadline ||
+				!RETRYABLE_ACTION_ERRORS.some(retryable => message.includes(retryable))
+			) {
 				throw error;
 			}
 			await delay(500);
@@ -181,35 +178,8 @@ const retryWhileUnreachable = async (action: () => Promise<unknown>, timeout: nu
 
 export const tapWhenUncovered = (locator: Locator, timeout = LONG_TIMEOUT) => retryWhileUnreachable(() => locator.tap(), timeout);
 
-const holdsValue = async (locator: Locator, text: string) => {
-	try {
-		return (await locator.inputValue()) === text;
-	} catch (error) {
-		return unlessCancelled(false)(error);
-	}
-};
-
-const fillConfirmed = async (locator: Locator, text: string) => {
-	for (let attempt = 1; attempt < UNCONFIRMED_FILL_ATTEMPTS; attempt++) {
-		try {
-			await locator.fill(text);
-			return;
-		} catch (error) {
-			const message = String(error);
-			if (!UNCONFIRMED_FILL_ERRORS.some(unconfirmed => message.includes(unconfirmed))) {
-				throw error;
-			}
-			if (await holdsValue(locator, text)) {
-				return;
-			}
-			await clearSettled(locator);
-		}
-	}
-	await locator.pressSequentially(text);
-};
-
 export const fillWhenUncovered = (locator: Locator, text: string, timeout = LONG_TIMEOUT) =>
-	retryWhileUnreachable(() => fillConfirmed(locator, text), timeout);
+	retryWhileUnreachable(() => locator.fill(text), timeout);
 
 export const tapWhenVisible = async ({ screen }: Fixtures, testIdOrTarget: string | Locator) => {
 	const target = typeof testIdOrTarget === 'string' ? screen.getByTestId(testIdOrTarget).first() : testIdOrTarget;
@@ -263,7 +233,7 @@ export const tapUntilVisible = async (
 			return;
 		}
 		if (await isVisibleNow(target)) {
-			await succeeds(press());
+			await press();
 		}
 	}
 	await expect(expected).toBeVisible({ timeout: LONG_TIMEOUT });
@@ -272,14 +242,8 @@ export const tapUntilVisible = async (
 const TAP_UNTIL_HIDDEN_TIMEOUT = 3_000;
 
 export const scrollAndTap = async (container: Locator, target: Locator) => {
-	for (let attempt = 1; attempt < TAP_ATTEMPTS; attempt += 1) {
-		await container.scrollUntilVisible(target, { timeout: LONG_TIMEOUT });
-		if (await succeeds(target.tap({ timeout: TAP_RESPONSE_TIMEOUT }))) {
-			return;
-		}
-	}
 	await container.scrollUntilVisible(target, { timeout: LONG_TIMEOUT });
-	await target.tap();
+	await tapWhenUncovered(target);
 };
 
 const tapRegistered = async (loading: Locator, gone: Locator) => {
@@ -305,18 +269,6 @@ export const tapUntilHidden = async ({ screen }: Fixtures, testId: string, goneT
 	await expect(gone).toBeHidden({ timeout: LONG_TIMEOUT });
 };
 
-const isEngineFailure = (error: unknown) => (error as { code?: string } | null)?.code === 'ENGINE_FAILURE';
-
-const tapToleratingRunnerFailure = async (target: Locator) => {
-	try {
-		await target.tap();
-	} catch (error) {
-		if (!isEngineFailure(error)) {
-			throw error;
-		}
-	}
-};
-
 const nearestTo = async (anchor: Locator, candidates: Locator) => {
 	const anchorTop = (await anchor.boundingBox())?.y ?? 0;
 	const distances = await Promise.all(
@@ -340,7 +292,7 @@ export const confirmAlert = async ({ screen }: Fixtures, message: RegExp, button
 	};
 	for (let attempt = 1; attempt < TAP_ATTEMPTS; attempt += 1) {
 		await tapConfirmButton();
-		if (await succeeds(alertMessage.waitFor({ state: 'hidden', timeout: TAP_UNTIL_HIDDEN_TIMEOUT }))) {
+		if (await succeeds(expect(alertMessage).toBeHidden({ timeout: TAP_UNTIL_HIDDEN_TIMEOUT }))) {
 			return;
 		}
 	}
@@ -350,26 +302,8 @@ export const confirmAlert = async ({ screen }: Fixtures, message: RegExp, button
 
 const VALUE_SETTLE_TIMEOUT = 3_000;
 
-const UNSETTLED_CLEAR_ERROR = 'text entry verification failed';
-const CLEAR_ATTEMPTS = 3;
-const CLEAR_RETRY_DELAY = 1_000;
-
-export const clearSettled = async (input: Locator) => {
-	for (let attempt = 1; ; attempt++) {
-		try {
-			await input.clear();
-			return;
-		} catch (error) {
-			if (!String(error).includes(UNSETTLED_CLEAR_ERROR) || attempt >= CLEAR_ATTEMPTS) {
-				throw error;
-			}
-			await delay(CLEAR_RETRY_DELAY);
-		}
-	}
-};
-
 const typeValue = async (input: Locator, value: string) => {
-	await clearSettled(input);
+	await input.clear();
 	await input.pressSequentially(value);
 };
 
@@ -378,7 +312,7 @@ export const fillSettled = async (input: Locator, value: string) => {
 	try {
 		await expect(input).toHaveValue(value, { timeout: VALUE_SETTLE_TIMEOUT });
 	} catch (error) {
-		unlessCancelled(undefined)(error);
+		if (errorCode(error) !== 'ASSERTION_FAILED') throw error;
 		await typeValue(input, value);
 		await expect(input).toHaveValue(value);
 	}
@@ -397,12 +331,11 @@ const acceptSystemAlert = async (device: Fixtures['device']) => {
 		await device.alert('accept');
 		return true;
 	} catch (error) {
-		return unlessCancelled(false)(error);
+		const details = (error as { cause?: { details?: { runnerErrorCode?: string; reason?: string } } } | null)?.cause?.details;
+		if (details?.runnerErrorCode !== 'ALERT_NOT_FOUND' && details?.reason !== 'alert-not-found') throw error;
+		return false;
 	}
 };
-
-const waitUntilAppReads = (locator: Locator) =>
-	expect.poll(() => succeeds(locator.isVisible()), { timeout: LONG_TIMEOUT }).toBe(true);
 
 const URL_SCHEME_REGISTRATION_TIMEOUT = 30_000;
 const OPEN_LINK_RETRY_DELAY = 2_000;
@@ -432,31 +365,51 @@ const openLinkWithRetry = async (device: Fixtures['device'], link: string, arriv
 	}
 };
 
-export const openDeepLink = async ({ device, screen, platform }: Fixtures, link: string, destination?: Locator) => {
-	const openPrompt = screen.getByRole('button', 'Open');
-	await openLinkWithRetry(device, link, destination ? [destination, openPrompt] : []);
-	if (platform !== 'ios') {
+const acceptOpenPrompt = async ({ device, screen }: Fixtures) => {
+	const prompt = screen.getByRole('button', 'Open');
+	if (await prompt.isVisible()) {
+		await tapWhenUncovered(prompt);
+		return true;
+	}
+	return acceptSystemAlert(device);
+};
+
+const waitForDeepLinkDestination = async (fixtures: Fixtures, destination: Locator) => {
+	if (fixtures.platform !== 'ios') {
+		await expect(destination).toBeVisible({ timeout: LONG_TIMEOUT });
 		return;
 	}
-	const deadline = Date.now() + (destination ? LONG_TIMEOUT : OPEN_PROMPT_WAIT);
+	await expect
+		.poll(
+			async () => {
+				if (await destination.isVisible()) return true;
+				await acceptOpenPrompt(fixtures);
+				return destination.isVisible();
+			},
+			{ timeout: LONG_TIMEOUT }
+		)
+		.toBe(true);
+};
+
+const dismissDeepLinkPrompt = async (fixtures: Fixtures) => {
+	const deadline = Date.now() + OPEN_PROMPT_WAIT;
 	while (Date.now() < deadline) {
-		if (await isVisibleNow(openPrompt)) {
-			await tapIfVisible(openPrompt);
-			if (!destination && (await succeeds(expect(openPrompt).toBeHidden({ timeout: OPEN_PROMPT_WAIT })))) {
-				return;
-			}
-		} else if (destination && (await isVisibleNow(destination))) {
-			return;
-		} else if ((await acceptSystemAlert(device)) && !destination) {
-			await waitUntilAppReads(openPrompt);
+		if (await acceptOpenPrompt(fixtures)) {
+			await expect(fixtures.screen.getByRole('button', 'Open')).toBeHidden({ timeout: OPEN_PROMPT_WAIT });
 			return;
 		}
 		await delay(OPEN_PROMPT_POLL_INTERVAL);
 	}
-	if (!destination && (await isVisibleNow(openPrompt))) {
-		await tapIfVisible(openPrompt);
-		await expect(openPrompt).toBeHidden({ timeout: OPEN_PROMPT_WAIT });
+};
+
+export const openDeepLink = async (fixtures: Fixtures, link: string, destination?: Locator) => {
+	const openPrompt = fixtures.screen.getByRole('button', 'Open');
+	await openLinkWithRetry(fixtures.device, link, destination ? [destination, openPrompt] : []);
+	if (destination) {
+		await waitForDeepLinkDestination(fixtures, destination);
+		return;
 	}
+	if (fixtures.platform === 'ios') await dismissDeepLinkPrompt(fixtures);
 };
 
 export const PHOTOS_NOTIFICATIONS_PROMPT = '“Photos” Would Like to Send You Notifications';
@@ -509,7 +462,7 @@ const BACK_STEP_TIMEOUT = 10_000;
 
 export const goBack = async ({ screen }: Fixtures) => {
 	const backButtons = BACK_BUTTON_TEST_IDS.map(testId => screen.getByTestId(testId, { visible: true }));
-	await tapToleratingRunnerFailure(await firstVisible(backButtons, BACK_STEP_TIMEOUT));
+	await (await firstVisible(backButtons, BACK_STEP_TIMEOUT)).tap();
 };
 
 export const goBackUntil = async (fixtures: Fixtures, testId: string, state: 'visible' | 'hidden' = 'visible') => {
@@ -517,7 +470,7 @@ export const goBackUntil = async (fixtures: Fixtures, testId: string, state: 'vi
 	const reached = (timeout: number) =>
 		state === 'visible' ? expect(target).toBeVisible({ timeout }) : expect(target).toBeHidden({ timeout });
 	for (let attempt = 0; attempt < BACK_ATTEMPTS; attempt += 1) {
-		await succeeds(goBack(fixtures));
+		await goBack(fixtures);
 		if (await succeeds(reached(BACK_STEP_TIMEOUT))) {
 			return;
 		}
@@ -575,9 +528,10 @@ export const navigateToRoom = async ({ screen }: Fixtures, room: string) => {
 	for (let attempt = 1; attempt < ROOM_OPEN_ATTEMPTS; attempt += 1) {
 		await screen.scrollUntilVisible(roomItem);
 		await roomItem.tap();
-		const opened = await firstVisible([roomTitle, ...e2ePasswordCloseButtons], ROOM_OPEN_RESPONSE_TIMEOUT).catch(
-			unlessCancelled(undefined)
-		);
+		const opened = await firstVisible([roomTitle, ...e2ePasswordCloseButtons], ROOM_OPEN_RESPONSE_TIMEOUT).catch(error => {
+			if (errorCode(error) !== 'ASSERTION_FAILED') throw error;
+			return undefined;
+		});
 		if (opened === roomTitle) {
 			return;
 		}
@@ -616,7 +570,7 @@ export const tapSend = async ({ screen }: Fixtures) => {
 	await expect(send).toBeVisible({ timeout: LONG_TIMEOUT });
 	for (let attempt = 1; attempt < TAP_ATTEMPTS; attempt += 1) {
 		await tapWhenUncovered(send);
-		if (await succeeds(send.waitFor({ state: 'hidden', timeout: SEND_RESPONSE_TIMEOUT }))) {
+		if (await succeeds(expect(send).toBeHidden({ timeout: SEND_RESPONSE_TIMEOUT }))) {
 			return;
 		}
 	}

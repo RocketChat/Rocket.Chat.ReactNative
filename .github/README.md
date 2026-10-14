@@ -31,4 +31,4 @@ The shard jobs in [e2e-android.yml](workflows/e2e-android.yml) and [e2e-ios.yml]
 
 ## E2E native build cache
 
-The E2E build workflows hash each platform's native inputs with `@expo/fingerprint` (configured in `fingerprint.config.js`). When a native build is cached under that fingerprint, the job rebuilds only the JS bundle and swaps it into the cached APK or simulator app. Otherwise it does a full native build and caches it. Android also does a full build when the images the JS bundle requires differ from the cached build's.
+The E2E build workflows hash each platform's native inputs with `@expo/fingerprint` (configured in `fingerprint.config.js`). Android bundles JS and assets first, then includes the generated resource hash in its cache key. Changes to image contents or imports therefore create a new cache entry. When a matching build is cached, the job swaps the JS bundle into the cached APK or simulator app. Otherwise it does a full native build and caches it.

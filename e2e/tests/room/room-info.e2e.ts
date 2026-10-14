@@ -4,7 +4,6 @@ import { expect } from 'e2e';
 import { createRandomRoom, createUser, deleteCreatedUsers, get } from '~e2e/support/api';
 import {
 	fillSettled,
-	clearSettled,
 	fillWhenUncovered,
 	hideKeyboard,
 	loginWithDeepLink,
@@ -39,7 +38,7 @@ const fillEditField = async (fixtures: Fixtures, field: string, value: string) =
 	} else if (fixtures.platform === 'android') {
 		await fillSettled(input, value);
 	} else {
-		await clearSettled(input);
+		await input.clear();
 		await input.pressSequentially(value);
 	}
 	await hideKeyboard(fixtures);

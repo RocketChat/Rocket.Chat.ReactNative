@@ -11,8 +11,7 @@ import {
 	LONG_TIMEOUT,
 	tapIfVisible,
 	tapUntilVisible,
-	tapWhenVisible,
-	unlessCancelled
+	tapWhenVisible
 } from './flows';
 import { randomUser, type RandomUser } from './random';
 
@@ -102,8 +101,6 @@ export const casField = ({ screen, platform }: Fixtures, field: 'username' | 'pa
 		? screen.getByTestId(field)
 		: screen.getByRole('textbox', field === 'username' ? 'Username' : 'Password');
 
-const DEEP_LINK_ATTEMPTS = 3;
-
 export const loginWithDeepLinkIntoRunningApp = async (fixtures: Fixtures, credentials: Credentials) => {
 	const roomsList = fixtures.screen.getByTestId('rooms-list-view');
 	await fixtures.device.installApp(undefined, { reinstall: true });
@@ -111,9 +108,6 @@ export const loginWithDeepLinkIntoRunningApp = async (fixtures: Fixtures, creden
 	await expect(fixtures.screen.getByText('Add workspace')).toBeVisible({ timeout: LONG_TIMEOUT });
 	const session = await login(credentials);
 	const link = getDeepLink('auth', data.server, { userId: session.userId, token: session.authToken });
-	for (let attempt = 1; attempt <= DEEP_LINK_ATTEMPTS && !(await roomsList.isVisible()); attempt += 1) {
-		await openDeepLink(fixtures, link, roomsList);
-		await roomsList.waitFor({ timeout: 20_000 }).catch(unlessCancelled(undefined));
-	}
+	await openDeepLink(fixtures, link, roomsList);
 	await expect(roomsList).toBeVisible({ timeout: LONG_TIMEOUT });
 };

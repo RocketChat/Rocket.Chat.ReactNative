@@ -2,7 +2,6 @@ import { expect } from 'e2e';
 
 import {
 	backToRoomsList,
-	clearSettled,
 	confirmAlert,
 	expectHidden,
 	expectVisible,
@@ -31,7 +30,7 @@ export const selectUser = async (fixtures: Fixtures, username: string) => {
 	const listedUser = fixtures.screen.getByTestId(`select-users-view-item-${username}`).first();
 	await typeUntilListed(
 		() => fillSettled(search, username),
-		() => clearSettled(search),
+		() => search.clear(),
 		listedUser
 	);
 	await tapWhenVisible(fixtures, listedUser);
