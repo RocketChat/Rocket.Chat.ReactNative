@@ -28,6 +28,7 @@
 		"doctor": "npx react-doctor@latest"
 	},
 	"dependencies": {
+		"@appduct/react-native": "^0.13.0",
 		"@bugsnag/react-native": "8.4.0",
 		"@expo/ui": "~57.0.19",
 		"@expo/vector-icons": "^15.0.3",

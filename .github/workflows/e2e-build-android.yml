@@ -20,7 +20,32 @@ on:
 permissions: {}
 
 jobs:
+  native-fingerprint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    outputs:
+      cache-key: ${{ steps.fingerprint.outputs.cache-key }}
+      cache-hit: ${{ steps.fingerprint.outputs.cache-hit }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Native fingerprint
+        id: fingerprint
+        uses: ./.github/actions/native-fingerprint
+        with:
+          platform: android
+          cache-key-prefix: e2e-android-${{ hashFiles('.github/workflows/e2e-build-android.yml') }}
+
   android-build:
+    needs: native-fingerprint
+    if: ${{ !(inputs.seed-only && needs.native-fingerprint.outputs.cache-hit == 'true') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -48,6 +73,13 @@ jobs:
           restore-keys: |
             gradle-${{ runner.os }}-
 
+      - name: Restore cached native build
+        id: native-cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: .native-cache
+          key: ${{ needs.native-fingerprint.outputs.cache-key }}
+
       - name: Set up JDK
         uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
         with:
@@ -68,6 +100,37 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE_OFFICIAL_BASE64 }}" | base64 -d > android/app/release.keystore
 
+      - name: Swap JS bundle into cached APK
+        id: swap
+        if: ${{ steps.native-cache.outputs.cache-hit == 'true' }}
+        run: |
+          (cd android && ./gradlew :app:createBundleReleaseJsAndAssets --no-daemon --stacktrace)
+          if [ "$(cat .native-cache/react-res.sha256)" != "$(.github/scripts/hash-dir.sh "$REACT_RES_DIR")" ]; then
+            echo "JS-required images differ from the cached build: full native build." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          mkdir -p "$(dirname "$APK_PATH")"
+          .github/scripts/swap-android-bundle.sh .native-cache/app-release.apk android/app/build/generated/assets/react/release/index.android.bundle "$APK_PATH"
+          echo "swapped=true" >> "$GITHUB_OUTPUT"
+        env:
+          RUNNING_E2E_TESTS: true
+          KEYSTORE_PATH: android/app/release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEYSTORE_OFFICIAL_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}
+
+      - name: Cache Android build
+        if: ${{ steps.swap.outputs.swapped != 'true' }}
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            android/.gradle
+            android/app/build
+            android/app/.cxx
+          key: android-build-${{ runner.os }}-${{ hashFiles('package.json', '**/*.gradle*', 'android/gradle.properties', 'android/settings.gradle') }}
+          restore-keys: |
+            android-build-${{ runner.os }}-
+
       - name: Set gradle.properties
         working-directory: android
         run: |
@@ -80,61 +143,26 @@ jobs:
           echo -e 'KEY_PASSWORD=${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}' >> ./gradle.properties
           echo -e 'BugsnagAPIKey=${{ secrets.BUGSNAG_KEY_OFFICIAL }}' >> ./gradle.properties
 
-      - name: Bundle JS and assets
-        id: resources
-        run: |
-          (cd android && ./gradlew :app:createBundleReleaseJsAndAssets --no-daemon --stacktrace)
-          echo "hash=$(.github/scripts/hash-dir.sh "$REACT_RES_DIR")" >> "$GITHUB_OUTPUT"
-        env:
-          RUNNING_E2E_TESTS: true
-
-      - name: Native fingerprint
-        id: fingerprint
-        uses: ./.github/actions/native-fingerprint
-        with:
-          platform: android
-          cache-key-prefix: e2e-android-${{ hashFiles('.github/workflows/e2e-build-android.yml') }}-${{ steps.resources.outputs.hash }}
-          cache-path: .native-cache
-
-      - name: Restore cached native build
-        id: native-cache
-        if: ${{ steps.fingerprint.outputs.cache-hit == 'true' && !inputs.seed-only }}
-        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: .native-cache
-          key: ${{ steps.fingerprint.outputs.cache-key }}
-
-      - name: Swap JS bundle into cached APK
-        if: ${{ steps.native-cache.outputs.cache-hit == 'true' }}
-        run: |
-          mkdir -p "$(dirname "$APK_PATH")"
-          .github/scripts/swap-android-bundle.sh .native-cache/app-release.apk android/app/build/generated/assets/react/release/index.android.bundle "$APK_PATH"
-        env:
-          RUNNING_E2E_TESTS: true
-          KEYSTORE_PATH: android/app/release.keystore
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEYSTORE_OFFICIAL_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}
-
       - name: Build Android Release APK
-        if: ${{ steps.fingerprint.outputs.cache-hit != 'true' }}
+        if: ${{ steps.swap.outputs.swapped != 'true' }}
         working-directory: android
         run: ./gradlew assembleRelease --build-cache --parallel --max-workers=4 --no-daemon --stacktrace
         env:
           RUNNING_E2E_TESTS: true
 
       - name: Prepare native build for cache
-        if: ${{ steps.fingerprint.outputs.cache-hit != 'true' }}
+        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         run: |
           mkdir -p .native-cache
           cp "$APK_PATH" .native-cache/app-release.apk
+          .github/scripts/hash-dir.sh "$REACT_RES_DIR" > .native-cache/react-res.sha256
 
       - name: Save native build to cache
-        if: ${{ steps.fingerprint.outputs.cache-hit != 'true' }}
+        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: .native-cache
-          key: ${{ steps.fingerprint.outputs.cache-key }}
+          key: ${{ needs.native-fingerprint.outputs.cache-key }}
 
       - name: Upload APK
         if: ${{ !inputs.seed-only }}

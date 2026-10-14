@@ -29,7 +29,7 @@ permissions: {}
 
 jobs:
   native-fingerprint:
-    runs-on: macos-26
+    runs-on: ubuntu-latest
     permissions:
       contents: read
 
@@ -50,7 +50,6 @@ jobs:
         with:
           platform: ios
           cache-key-prefix: e2e-ios-${{ hashFiles('.github/workflows/e2e-build-ios.yml', 'ios/fastlane/Fastfile') }}
-          cache-path: .native-cache
 
   ios-build:
     needs: native-fingerprint
@@ -71,7 +70,6 @@ jobs:
 
       - name: Restore cached native build
         id: native-cache
-        if: ${{ needs.native-fingerprint.outputs.cache-hit == 'true' }}
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: .native-cache
@@ -168,7 +166,7 @@ jobs:
           ditto "${{ steps.find_xcarchive.outputs.archive_path }}/Products/Applications/Rocket.Chat.app" "$APP_PATH"
 
       - name: Save native build to cache
-        if: ${{ needs.native-fingerprint.outputs.cache-hit != 'true' }}
+        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: .native-cache

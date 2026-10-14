@@ -331,14 +331,14 @@ const signInWithDeepLinkToken = function* signInWithDeepLinkToken({ params, host
 	return !!signedIn;
 };
 
-const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, user, serverRecord }) {
+const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, user, serverRecord, skipLoginConsent }) {
 	const { host } = params;
 	// search if deep link's server already exists
 	if (user && serverRecord) {
 		yield* handleKnownServerDeepLink({ params, host, version: serverRecord.version });
 		return;
 	}
-	if (requiresDeepLinkConsent(params, serverRecord) && !(yield ensureDeepLinkConsent(host, params))) {
+	if (!skipLoginConsent && requiresDeepLinkConsent(params, serverRecord) && !(yield ensureDeepLinkConsent(host, params))) {
 		if (params.voipAcceptFailed) {
 			endVoipCall(params.callId);
 		}
@@ -376,7 +376,7 @@ const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, 
 	yield completeDeepLinkNavigation(params);
 };
 
-const handleOpen = function* handleOpen({ params }) {
+const handleOpen = function* handleOpen({ params, skipLoginConsent }) {
 	if (params.type === 'shareextension') {
 		yield handleShareExtension({ params });
 		return;
@@ -421,7 +421,7 @@ const handleOpen = function* handleOpen({ params }) {
 		}
 		yield completeDeepLinkNavigation(params);
 	} else {
-		yield handleOpenDifferentServer({ params, server, user, serverRecord });
+		yield handleOpenDifferentServer({ params, server, user, serverRecord, skipLoginConsent });
 	}
 };
 
