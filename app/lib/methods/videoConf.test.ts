@@ -57,6 +57,16 @@ describe('videoConfJoin', () => {
 			expect(openLink).toHaveBeenCalledWith('https://bbb.example.com/x');
 		});
 
+		test('opens a pexip call in the video conference webview', async () => {
+			mockedCapabilities.mockResolvedValue({ success: true, providerName: 'core.pexip' });
+			mockedJoin.mockResolvedValue({ success: true, url: 'https://pexip.example/call', providerName: 'core.pexip' });
+
+			await videoConfJoin('call1', true, true);
+
+			expect(navigation.navigate).toHaveBeenCalledWith('VideoConfWebView', { url: 'https://pexip.example/call' });
+			expect(openLink).not.toHaveBeenCalled();
+		});
+
 		test('joins through the regular endpoint', async () => {
 			await videoConfJoin('call1', true, true);
 
