@@ -81,26 +81,27 @@ tags:
     timeout: 60000
 
 # should have leave channel
-- extendedWaitUntil:
-    visible:
+- scrollUntilVisible:
+    element:
       id: 'room-actions-leave-channel'
-    timeout: 60000
 
 # should show mentioned messages
+- scrollUntilVisible:
+    element:
+      id: 'room-actions-mentioned'
+    direction: UP
 - tapOn:
     id: 'room-actions-mentioned'
 - extendedWaitUntil:
     visible:
       id: 'mentioned-messages-view'
     timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
     timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # should star and show in starred message
 - runFlow:
@@ -131,12 +132,7 @@ tags:
     notVisible:
       text: '.*Message Starred.*'
     timeout: 60000
-- tapOn:
-    id: 'room-header'
-- extendedWaitUntil:
-    visible:
-      id: 'room-actions-view'
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 - tapOn:
     id: 'room-actions-starred'
     retryTapIfNoChange: true
@@ -149,14 +145,12 @@ tags:
       id: 'message-content-messageToStar'
     timeout: 60000
 # should unstar
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
     timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: message-content-messageToStar
@@ -181,12 +175,7 @@ tags:
     notVisible:
       text: '.*Message Unstarred.*'
     timeout: 60000
-- tapOn:
-    id: 'room-header'
-- extendedWaitUntil:
-    visible:
-      id: 'room-actions-view'
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 - tapOn:
     id: 'room-actions-starred'
     retryTapIfNoChange: true
@@ -198,14 +187,12 @@ tags:
     notVisible:
       id: 'message-content-messageToStar'
     timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
     timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # should pin a message and show in pinned
 - runFlow:
@@ -236,12 +223,7 @@ tags:
     visible:
       text: '.*Pinned a message:.*'
     timeout: 60000
-- tapOn:
-    id: 'room-header'
-- extendedWaitUntil:
-    visible:
-      id: 'room-actions-view'
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 - tapOn: Pinned
 - extendedWaitUntil:
     visible:
@@ -261,8 +243,7 @@ tags:
     notVisible:
       id: 'message-content-messageToPin'
     timeout: 60000
-- tapOn:
-    id: 'custom-header-back'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
@@ -324,8 +305,7 @@ tags:
       id: 'notification-preference-view-email-alert'
     timeout: 60000
 
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
@@ -387,12 +367,10 @@ tags:
     visible:
       id: 'selected-user-rocket.cat'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'select-users-view-search'
-    timeout: 60000
-- tapOn:
-    id: select-users-view-search
+- runFlow:
+    file: '../../helpers/tap-search-field.yaml'
+    env:
+      SEARCH_ID: 'select-users-view-search'
 - inputText: ${output.otherUser.username}
 - extendedWaitUntil:
     visible:
@@ -404,10 +382,13 @@ tags:
     visible:
       id: 'selected-user-${output.otherUser.username}'
     timeout: 60000
-- tapOn:
-    id: selected-users-view-submit
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/close-search.yaml'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'selected-users-view-submit'
+      IOS_LABEL: 'Next'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       text: '.*3 members.*'
@@ -420,18 +401,12 @@ tags:
     visible:
       id: 'room-members-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'room-members-view-filter'
-    timeout: 60000
-- tapOn:
-    id: 'room-members-view-filter'
-- extendedWaitUntil:
-    visible:
-      id: 'room-members-view-toggle-status-all'
-    timeout: 60000
-- tapOn:
-    id: 'room-members-view-toggle-status-all'
+- runFlow:
+    file: '../../helpers/select-header-filter.yaml'
+    env:
+      ANDROID_FILTER_ID: 'room-members-view-filter'
+      ANDROID_OPTION_ID: 'room-members-view-toggle-status-all'
+      IOS_OPTION: 'All'
 - extendedWaitUntil:
     notVisible:
       id: 'room-members-view-toggle-status-all'
@@ -440,8 +415,7 @@ tags:
     visible:
       id: 'room-members-view-item-${output.otherUser.username}'
     timeout: 60000
-- tapOn:
-    id: 'custom-header-back'
+- runFlow: '../../helpers/go-back.yaml'
 
 # should filter user
 - tapOn:
@@ -450,12 +424,10 @@ tags:
     visible:
       id: 'room-members-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'room-members-view-search'
-    timeout: 60000
-- tapOn:
-    id: room-members-view-search
+- runFlow:
+    file: '../../helpers/tap-search-field.yaml'
+    env:
+      SEARCH_ID: 'room-members-view-search'
 - inputText: 'rocket'
 - tapOn:
     id: room-members-view
@@ -467,8 +439,7 @@ tags:
     notVisible:
       id: 'room-members-view-item-${output.otherUser.username}'
     timeout: 60000
-- tapOn:
-    id: clear-text-input
+- runFlow: '../../helpers/clear-search-field.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-members-view-item-rocket.cat'
@@ -636,20 +607,30 @@ tags:
     timeout: 60000
 - tapOn: 'DISABLE WRITING IN ROOM'
 
-- extendedWaitUntil:
-    visible:
-      id: 'room-members-view-item-${output.otherUser.username}'
-    timeout: 60000
-- tapOn:
-    id: 'room-members-view-item-${output.otherUser.username}'
-- extendedWaitUntil:
-    visible:
-      id: 'action-sheet-mute-user'
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
-      text: 'Enable writing in room'
-    timeout: 60000
+- retry:
+    maxRetries: 3
+    commands:
+      - runFlow:
+          when:
+            visible:
+              id: 'action-sheet-mute-user'
+          commands:
+            - tapOn:
+                text: 'Cancel'
+      - extendedWaitUntil:
+          visible:
+            id: 'room-members-view-item-${output.otherUser.username}'
+          timeout: 60000
+      - tapOn:
+          id: 'room-members-view-item-${output.otherUser.username}'
+      - extendedWaitUntil:
+          visible:
+            id: 'action-sheet-mute-user'
+          timeout: 60000
+      - extendedWaitUntil:
+          visible:
+            text: 'Enable writing in room'
+          timeout: 10000
 - tapOn:
     id: action-sheet-mute-user
 - extendedWaitUntil:
@@ -662,20 +643,30 @@ tags:
     timeout: 60000
 - tapOn: 'ENABLE WRITING IN ROOM'
 
-- extendedWaitUntil:
-    visible:
-      id: 'room-members-view-item-${output.otherUser.username}'
-    timeout: 60000
-- tapOn:
-    id: 'room-members-view-item-${output.otherUser.username}'
-- extendedWaitUntil:
-    visible:
-      id: 'action-sheet-mute-user'
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
-      text: 'Disable writing in room'
-    timeout: 60000
+- retry:
+    maxRetries: 3
+    commands:
+      - runFlow:
+          when:
+            visible:
+              id: 'action-sheet-mute-user'
+          commands:
+            - tapOn:
+                text: 'Cancel'
+      - extendedWaitUntil:
+          visible:
+            id: 'room-members-view-item-${output.otherUser.username}'
+          timeout: 60000
+      - tapOn:
+          id: 'room-members-view-item-${output.otherUser.username}'
+      - extendedWaitUntil:
+          visible:
+            id: 'action-sheet-mute-user'
+          timeout: 60000
+      - extendedWaitUntil:
+          visible:
+            text: 'Disable writing in room'
+          timeout: 10000
 - tapOn:
     text: 'Cancel'
 
@@ -697,14 +688,12 @@ tags:
     visible:
       text: 'User has been ignored'
     timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
     timeout: 60000
-- tapOn:
-    id: custom-header-back
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       text: '.*Message ignored. Tap to display it.*'
@@ -717,12 +706,7 @@ tags:
     timeout: 60000
 
 # should navigate to direct message
-- tapOn:
-    id: 'room-header'
-- extendedWaitUntil:
-    visible:
-      id: 'room-actions-view'
-    timeout: 60000
+- runFlow: '../../helpers/open-room-actions.yaml'
 - tapOn:
     id: 'room-actions-members'
 - extendedWaitUntil:
@@ -745,11 +729,20 @@ tags:
     visible:
       id: 'room-view'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.otherUser.username}'
-    timeout: 60000
-- tapOn: Back
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.otherUser.username}
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - tapOn: Back
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'

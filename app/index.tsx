@@ -11,6 +11,7 @@ import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
 import { ActionSheetProvider } from './containers/ActionSheet';
+import ConferenceCall from './containers/ConferenceCall';
 import InAppNotification from './containers/InAppNotification';
 import Loading from './containers/Loading';
 import StatusBar from './containers/StatusBar';
@@ -20,7 +21,9 @@ import TwoFactor from './containers/TwoFactor';
 import { type IThemePreference } from './definitions/ITheme';
 import { themes } from './lib/constants/colors';
 import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods/crashReport';
-import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
+import { hasNativeHeaderBar } from './lib/methods/helpers/deviceInfo';
+import log, { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
+import { preloadHeaderIcons } from './lib/methods/helpers/navigation/headerIcon';
 import parseDeepLinking from './lib/methods/helpers/parseDeepLinking';
 import {
 	getTheme,
@@ -100,6 +103,10 @@ export default class Root extends Component<{}, IState> {
 	init = async () => {
 		store.dispatch(appInitLocalSettings());
 
+		if (hasNativeHeaderBar) {
+			await preloadHeaderIcons().catch(log);
+		}
+
 		// Open app from push notification
 		const notification = await initializePushNotifications();
 		if (notification) {
@@ -170,6 +177,7 @@ export default class Root extends Component<{}, IState> {
 										<ScreenLockedView />
 										<ChangePasscodeView />
 										<InAppNotification />
+										<ConferenceCall />
 										<Toast />
 										<Loading />
 									</ActionSheetProvider>

@@ -10,7 +10,7 @@ import sharedStyles from '~/views/Styles';
 const WARNING_MINIMUM_VALUE = 70;
 const WARNING_MAXIMUM_VALUE = 90;
 
-export default function CommunityEditionPushQuota(): ReactElement | null {
+function CommunityEditionPushQuota(): ReactElement | null {
 	const { colors } = useTheme();
 	const { consumptionPercentage, isCommunityEdition } = useAppSelector(state => ({
 		isCommunityEdition: state.troubleshootingNotification.isCommunityEdition,
@@ -55,3 +55,5 @@ const styles = StyleSheet.create({
 		fontSize: 16
 	}
 });
+
+export default CommunityEditionPushQuota;
