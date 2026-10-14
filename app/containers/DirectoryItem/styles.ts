@@ -31,6 +31,12 @@ export default StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textRegular
 	},
+	titleIcon: {
+		marginRight: 0
+	},
+	nativeRowLabel: {
+		marginTop: StyleSheet.hairlineWidth
+	},
 	directoryItemLabel: {
 		fontSize: 14,
 		paddingLeft: 10,

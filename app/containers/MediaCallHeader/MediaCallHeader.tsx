@@ -11,6 +11,7 @@ import { useConferenceCallStore } from '~/lib/services/conference/useConferenceC
 import { useCallStore, useControlsVisible } from '~/lib/services/voip/useCallStore';
 import { Content } from './components/Content';
 import { CONTROLS_ANIMATION_DURATION } from '~/views/CallView/styles';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 
 const HEADER_TOP_PADDING = 12;
 
@@ -62,6 +63,10 @@ const MediaCallHeader = () => {
 					<ConferenceCallRow />
 				</View>
 			);
+		}
+
+		if (hasNativeHeaderBar) {
+			return null;
 		}
 
 		return <View style={defaultHeaderStyle} testID='media-call-header-empty' />;

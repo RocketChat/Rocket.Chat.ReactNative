@@ -13,7 +13,6 @@ import { setUser } from '~/actions/login';
 import { useActionSheet } from '~/containers/ActionSheet';
 import { AvatarWithEdit } from '~/containers/Avatar';
 import Button from '~/containers/Button';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import KeyboardView from '~/containers/KeyboardView';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { ControlledFormTextInput } from '~/containers/TextInput';
@@ -22,6 +21,7 @@ import { type IProfileParams } from '~/definitions';
 import { TwoFactorMethods } from '~/definitions/ITotp';
 import I18n from '~/i18n';
 import { compareServerVersion } from '~/lib/methods/helpers';
+import { headerLeftDrawer, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
@@ -38,7 +38,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import useParsedCustomFields from '~/lib/hooks/useParsedCustomFields';
 import CustomFields from '~/containers/CustomFields';
-import ListSeparator from '~/containers/List/ListSeparator';
+import ListSeparator from '~/containers/List/components/ListSeparator';
 import handleSaveUserProfileError from '~/lib/methods/helpers/handleSaveUserProfileError';
 import logoutOtherLocations from './methods/logoutOtherLocations';
 import buildProfileParams from './methods/buildProfileParams';
@@ -267,24 +267,19 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 
 	useLayoutEffect(() => {
 		const options: NativeStackNavigationOptions = {
-			title: I18n.t('Profile')
+			title: I18n.t('Profile'),
+			...headerRightActions([
+				{
+					label: I18n.t('Preferences'),
+					icon: 'settings',
+					testID: 'preferences-view-open',
+					onPress: () => navigation.navigate('UserPreferencesView')
+				}
+			])
 		};
 		if (!isMasterDetail) {
-			options.headerLeft = () => (
-				<HeaderButton.Drawer
-					testID='profile-view-open-sidebar'
-					accessibilityLabel={I18n.t('Open_sidebar')}
-					navigation={navigation}
-				/>
-			);
+			Object.assign(options, headerLeftDrawer(navigation, 'profile-view-open-sidebar'));
 		}
-		options.headerRight = () => (
-			<HeaderButton.Preferences
-				accessibilityLabel={I18n.t('Preferences')}
-				onPress={() => navigation?.navigate('UserPreferencesView')}
-				testID='preferences-view-open'
-			/>
-		);
 
 		navigation.setOptions(options);
 	}, [navigation, isMasterDetail]);
