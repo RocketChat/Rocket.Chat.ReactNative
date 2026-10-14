@@ -1,4 +1,4 @@
-import { StatusBar as StatusBarRN } from 'expo-status-bar';
+import { StatusBar as StatusBarRN } from 'react-native';
 
 import { useTheme } from '../theme';
 
@@ -14,7 +14,7 @@ const StatusBar = ({ barStyle }: IStatusBar) => {
 			barStyle = 'dark';
 		}
 	}
-	return <StatusBarRN animated style={barStyle} />;
+	return <StatusBarRN animated translucent backgroundColor='transparent' barStyle={`${barStyle}-content`} />;
 };
 
 export default StatusBar;

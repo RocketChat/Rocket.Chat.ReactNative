@@ -14,7 +14,7 @@ import {
 	aesGcmDecrypt,
 	aesGcmEncrypt
 } from '@rocket.chat/mobile-crypto';
-import { sampleSize } from 'lodash';
+import sampleSize from 'lodash/sampleSize';
 
 import {
 	type IMessage,

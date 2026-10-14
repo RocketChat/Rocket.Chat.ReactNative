@@ -1,14 +1,14 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import KeyboardView from '~/containers/KeyboardView';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 import I18n from '~/i18n';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import { getUserSelector } from '~/selectors/login';
 import { ControlledFormTextInput } from '~/containers/TextInput';
 import { createDiscussionRequest, type ICreateDiscussionRequestData } from '~/actions/createDiscussion';
@@ -71,7 +71,6 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	const {
 		control,
 		handleSubmit,
-		watch,
 		formState: { errors }
 	} = useForm({
 		defaultValues: {
@@ -80,7 +79,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		resolver: yupResolver(schema)
 	});
 
-	const inputValues = watch();
+	const inputValues = useWatch({ control });
 	const prevLoading = useRef<boolean>(loading);
 	const isEncryptionEnabled = encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 
@@ -137,7 +136,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		const showCloseModal = route.params?.showCloseModal;
 		navigation.setOptions({
 			title: I18n.t('Create_Discussion'),
-			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
+			...(showCloseModal ? headerLeftCloseModal(navigation) : { headerLeft: undefined })
 		});
 	}, [navigation, route]);
 

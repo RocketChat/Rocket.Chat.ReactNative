@@ -2,10 +2,6 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '~/views/Styles';
 
-export const ACTION_WIDTH = 80;
-export const SMALL_SWIPE = ACTION_WIDTH / 2;
-export const LONG_SWIPE = ACTION_WIDTH * 2.5;
-
 export default StyleSheet.create({
 	flex: {
 		flex: 1
@@ -13,21 +9,20 @@ export default StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingLeft: 14
+		gap: 8,
+		paddingHorizontal: 16
 	},
 	centerContainer: {
-		flex: 1,
-		paddingVertical: 10,
-		paddingRight: 14,
-		borderBottomWidth: StyleSheet.hairlineWidth
+		flex: 1
 	},
 	title: {
 		flex: 1,
-		fontSize: 17,
+		fontSize: 16,
+		lineHeight: 20,
 		...sharedStyles.textMedium
 	},
 	alert: {
-		...sharedStyles.textSemibold
+		...sharedStyles.textBold
 	},
 	row: {
 		flex: 1,
@@ -44,12 +39,13 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	date: {
-		fontSize: 13,
+		fontSize: 12,
+		lineHeight: 18,
 		marginLeft: 4,
 		...sharedStyles.textRegular
 	},
 	updateAlert: {
-		...sharedStyles.textSemibold
+		...sharedStyles.textBold
 	},
 	status: {
 		marginRight: 2
@@ -57,10 +53,12 @@ export default StyleSheet.create({
 	markdownText: {
 		flex: 1,
 		fontSize: 14,
+		lineHeight: 20,
 		...sharedStyles.textRegular
 	},
-	avatar: {
-		marginRight: 10
+	containerTopAligned: {
+		alignItems: 'flex-start',
+		paddingTop: 8
 	},
 	upperContainer: {
 		overflow: 'hidden'
@@ -80,7 +78,7 @@ export default StyleSheet.create({
 		position: 'absolute',
 		justifyContent: 'center',
 		top: 0,
-		right: 0
+		left: 0
 	},
 	actionRightButtonContainer: {
 		position: 'absolute',
@@ -88,7 +86,15 @@ export default StyleSheet.create({
 		top: 0
 	},
 	actionButton: {
-		width: ACTION_WIDTH,
+		width: '100%',
+		height: '100%',
+		flexDirection: 'row',
+		overflow: 'hidden'
+	},
+	actionButtonContentEnd: {
+		justifyContent: 'flex-end'
+	},
+	actionIconSlot: {
 		height: '100%',
 		alignItems: 'center',
 		justifyContent: 'center'
@@ -103,8 +109,5 @@ export default StyleSheet.create({
 		fontSize: 13,
 		paddingHorizontal: 4,
 		...sharedStyles.textSemibold
-	},
-	typeIcon: {
-		justifyContent: 'center'
 	}
 });

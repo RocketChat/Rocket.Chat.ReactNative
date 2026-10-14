@@ -9,7 +9,25 @@ export class Upload {
 	constructor() {
 		this.xhr = new XMLHttpRequest();
 		this.formData = new FormData();
+		this.keepRawFilenames();
 		this.isCancelled = false;
+	}
+
+	// React Native's FormData runs filenames through encodeURIComponent, which the server never decodes
+	private keepRawFilenames(): void {
+		const formData = this.formData as any;
+		const getParts = formData.getParts.bind(formData);
+		formData.getParts = () =>
+			getParts().map((part: any) => {
+				if (typeof part.name !== 'string') {
+					return part;
+				}
+				const filename = part.name.replace(/[/\r\n]/g, '_').replace(/"/g, '%22');
+				return {
+					...part,
+					headers: { ...part.headers, 'content-disposition': `form-data; name="${part.fieldName}"; filename="${filename}"` }
+				};
+			});
 	}
 
 	public setupRequest(

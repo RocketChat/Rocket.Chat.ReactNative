@@ -27,7 +27,11 @@ describe('RepliedThread', () => {
 		const item = buildItem({ t: E2E_MESSAGE_TYPE, e2e: E2E_STATUS.PENDING, tmsg: 'plaintext should not show' });
 		const { getByTestId, queryByTestId } = renderRepliedThread(item);
 
-		expect(getByTestId('message-thread-replied-on-Encrypted message')).toBeTruthy();
+		expect(
+			getByTestId(
+				'message-thread-replied-on-This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key'
+			)
+		).toBeTruthy();
 		expect(queryByTestId('message-thread-replied-on-plaintext should not show')).toBeNull();
 	});
 

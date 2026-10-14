@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import I18n from '~/i18n';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerLeftDrawer } from '~/lib/methods/helpers/navigation/headerActions';
 import { getUserSelector } from '~/selectors/login';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { type AdminPanelStackParamList } from '~/stacks/types';
@@ -23,7 +23,7 @@ const AdminPanelView = () => {
 
 	useEffect(() => {
 		navigation.setOptions({
-			headerLeft: isMasterDetail ? undefined : () => <HeaderButton.Drawer navigation={navigation} />,
+			...(isMasterDetail ? { headerLeft: undefined } : headerLeftDrawer(navigation)),
 			title: I18n.t('Admin_Panel')
 		});
 	}, [isMasterDetail, navigation]);
