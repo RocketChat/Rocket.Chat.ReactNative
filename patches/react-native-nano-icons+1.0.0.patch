@@ -1,0 +1,50 @@
+diff --git a/node_modules/react-native-nano-icons/lib/commonjs/src/core/pipeline/prepareSymbol.js b/node_modules/react-native-nano-icons/lib/commonjs/src/core/pipeline/prepareSymbol.js
+index 30fab86609f49fe03be4826f1eb8e6fbc7c97803..ea9bb0d281dc9c16a46e7434d98b05b83c57b83b 100644
+--- a/node_modules/react-native-nano-icons/lib/commonjs/src/core/pipeline/prepareSymbol.js
++++ b/node_modules/react-native-nano-icons/lib/commonjs/src/core/pipeline/prepareSymbol.js
+@@ -51,7 +51,6 @@ async function prepareSymbol(task, pathkit) {
+     const { layers, monochrome } = (0, layers_1.resolveSymbolLayers)(pathkit, drawable, {
+         onKnockoutLayer: () => logger.info(`    ⊖ Knockout layer: hole in monochrome, own fill in original`),
+     });
+-    const bounds = (0, layers_1.contentBounds)(pathkit, layers.map((l) => l.d)) ?? undefined;
+     result.asset = {
+         assetName,
+         assetDirName: `${assetName}.symbolset`,
+@@ -59,7 +58,6 @@ async function prepareSymbol(task, pathkit) {
+         svg: (0, template_1.buildSymbolTemplate)({
+             layers,
+             viewBox: prepared.viewBox,
+-            contentBounds: bounds,
+             descriptiveName: assetName,
+             logger,
+         }),
+@@ -67,12 +65,10 @@ async function prepareSymbol(task, pathkit) {
+         vdXml: (0, vectorDrawable_1.buildVectorDrawableXml)({
+             layers: [{ d: monochrome, fill: null }],
+             viewBox: prepared.viewBox,
+-            contentBounds: bounds,
+         }),
+         vdOriginalXml: (0, vectorDrawable_1.buildVectorDrawableXml)({
+             layers,
+             viewBox: prepared.viewBox,
+-            contentBounds: bounds,
+         }),
+     };
+     return result;
+diff --git a/node_modules/react-native-nano-icons/lib/commonjs/src/core/symbols/template.js b/node_modules/react-native-nano-icons/lib/commonjs/src/core/symbols/template.js
+index 8d7056da6299952735746b5dbc6ad979101bbf10..22635243179c85a6df9a660f0ecb342e234a9147 100644
+--- a/node_modules/react-native-nano-icons/lib/commonjs/src/core/symbols/template.js
++++ b/node_modules/react-native-nano-icons/lib/commonjs/src/core/symbols/template.js
+@@ -17,9 +17,9 @@ const CAPLINE_Y = 76;
+ const BASELINE_Y = 146;
+ const CAP_BAND = BASELINE_Y - CAPLINE_Y; // 70
+ const CAP_CENTER = (CAPLINE_Y + BASELINE_Y) / 2; // 111
+-// Content box is scaled to this height (= cap band) and centered, so symbols
+-// fill their optical box instead of rendering small inside a padded viewBox.
+-const GLYPH_HEIGHT = CAP_BAND;
++// The icon viewBox is scaled to this height and centered, so every icon keeps its
++// place on the shared design grid and renders like the 30pt icon font.
++const GLYPH_HEIGHT = 107;
+ const VARIANT_CENTERS = [
+     ['Ultralight', 265],
+     ['Regular', 465],

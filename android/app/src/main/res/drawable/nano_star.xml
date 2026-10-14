@@ -1,9 +1,9 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24.551dp"
+    android:width="24dp"
     android:height="24dp"
-    android:viewportWidth="26.239"
-    android:viewportHeight="25.65">
-  <group android:translateX="-3.299" android:translateY="-3.52">
+    android:viewportWidth="32"
+    android:viewportHeight="32">
+  <group android:translateX="0" android:translateY="0">
     <path android:fillColor="#000000" android:pathData="M14.769,5.41 C15.337,3.58 17.908,3.52 18.561,5.32 L20.743,11.36 L26.85,11.36 C28.659,11.36 29.538,13.57 28.225,14.81 L23.603,19.18 L25.272,25.98 C25.714,27.79 23.67,29.17 22.161,28.08 L16.607,24.09 L11.052,28.08 C9.543,29.17 7.499,27.79 7.942,25.98 L9.605,19.21 L4.68,14.86 C3.299,13.64 4.162,11.36 6.004,11.36 L12.926,11.36 L14.769,5.41 Z M18.862,12.04 L16.68,6 L14.837,11.95 C14.577,12.79 13.803,13.36 12.926,13.36 L6.004,13.36 L10.929,17.71 C11.486,18.2 11.724,18.96 11.547,19.68 L9.884,26.46 L15.439,22.46 C16.136,21.96 17.077,21.96 17.775,22.46 L23.329,26.46 L21.661,19.66 C21.49,18.96 21.706,18.22 22.228,17.73 L26.85,13.36 L20.743,13.36 C19.9,13.36 19.148,12.83 18.862,12.04 Z"/>
   </group>
 </vector>

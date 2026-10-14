@@ -24,25 +24,25 @@
     <path id="Capline-S" d="M18,76 l800,0" />
     <path id="H-reference" d="M85,145.755 L87.685,145.755 L113.369,79.287 L114.052002,79.287 L114.052002,76 L112.148,76 L85,145.755 Z M95.693,121.536 L130.996,121.536 L130.263,119.313 L96.474,119.313 L95.693,121.536 Z M139.14999,145.755 L141.787,145.755 L114.638,76 L113.466,76 L113.466,79.287 L139.14999,145.755 Z" stroke="none" />
     <path id="Baseline-S" d="M18,146 l800,0" />
-    <path id="left-margin-Ultralight-S" d="M224.76,56 l0,110" />
-    <path id="right-margin-Ultralight-S" d="M305.24,56 l0,110" />
-    <path id="left-margin-Regular-S" d="M424.76,56 l0,110" />
-    <path id="right-margin-Regular-S" d="M505.24,56 l0,110" />
-    <path id="left-margin-Black-S" d="M624.76,56 l0,110" />
-    <path id="right-margin-Black-S" d="M705.24,56 l0,110" />
+    <path id="left-margin-Ultralight-S" d="M211.5,56 l0,110" />
+    <path id="right-margin-Ultralight-S" d="M318.5,56 l0,110" />
+    <path id="left-margin-Regular-S" d="M411.5,56 l0,110" />
+    <path id="right-margin-Regular-S" d="M518.5,56 l0,110" />
+    <path id="left-margin-Black-S" d="M611.5,56 l0,110" />
+    <path id="right-margin-Black-S" d="M718.5,56 l0,110" />
     <path id="Capline-M" d="M18,276 l800,0" />
     <path id="Baseline-M" d="M18,346 l800,0" />
     <path id="Capline-L" d="M18,476 l800,0" />
     <path id="Baseline-L" d="M18,546 l800,0" />
   </g>
   <g id="Symbols">
-    <g id="Ultralight-S" transform="matrix(3.281,0,0,3.281,213.319,58.502)">
+    <g id="Ultralight-S" transform="matrix(3.344,0,0,3.344,211.5,57.5)">
       <path class="monochrome-0 multicolor-0:custom" d="M19.753,5.333 L11.75,5.333 L3.487,19.733 L7.393,26.667 L24.109,26.667 L28.015,19.733 L19.753,5.333 Z M11.41,19.733 L15.751,12.24 L20.093,19.733 L11.41,19.733 Z"/>
     </g>
-    <g id="Regular-S" transform="matrix(3.281,0,0,3.281,413.319,58.502)">
+    <g id="Regular-S" transform="matrix(3.344,0,0,3.344,411.5,57.5)">
       <path class="monochrome-0 multicolor-0:custom" d="M19.753,5.333 L11.75,5.333 L3.487,19.733 L7.393,26.667 L24.109,26.667 L28.015,19.733 L19.753,5.333 Z M11.41,19.733 L15.751,12.24 L20.093,19.733 L11.41,19.733 Z"/>
     </g>
-    <g id="Black-S" transform="matrix(3.281,0,0,3.281,613.319,58.502)">
+    <g id="Black-S" transform="matrix(3.344,0,0,3.344,611.5,57.5)">
       <path class="monochrome-0 multicolor-0:custom" d="M19.753,5.333 L11.75,5.333 L3.487,19.733 L7.393,26.667 L24.109,26.667 L28.015,19.733 L19.753,5.333 Z M11.41,19.733 L15.751,12.24 L20.093,19.733 L11.41,19.733 Z"/>
     </g>
   </g>

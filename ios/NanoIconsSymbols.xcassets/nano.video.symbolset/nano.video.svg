@@ -24,25 +24,25 @@
     <path id="Capline-S" d="M18,76 l800,0" />
     <path id="H-reference" d="M85,145.755 L87.685,145.755 L113.369,79.287 L114.052002,79.287 L114.052002,76 L112.148,76 L85,145.755 Z M95.693,121.536 L130.996,121.536 L130.263,119.313 L96.474,119.313 L95.693,121.536 Z M139.14999,145.755 L141.787,145.755 L114.638,76 L113.466,76 L113.466,79.287 L139.14999,145.755 Z" stroke="none" />
     <path id="Baseline-S" d="M18,146 l800,0" />
-    <path id="left-margin-Ultralight-S" d="M210.556,56 l0,110" />
-    <path id="right-margin-Ultralight-S" d="M319.444,56 l0,110" />
-    <path id="left-margin-Regular-S" d="M410.556,56 l0,110" />
-    <path id="right-margin-Regular-S" d="M519.444,56 l0,110" />
-    <path id="left-margin-Black-S" d="M610.556,56 l0,110" />
-    <path id="right-margin-Black-S" d="M719.444,56 l0,110" />
+    <path id="left-margin-Ultralight-S" d="M211.5,56 l0,110" />
+    <path id="right-margin-Ultralight-S" d="M318.5,56 l0,110" />
+    <path id="left-margin-Regular-S" d="M411.5,56 l0,110" />
+    <path id="right-margin-Regular-S" d="M518.5,56 l0,110" />
+    <path id="left-margin-Black-S" d="M611.5,56 l0,110" />
+    <path id="right-margin-Black-S" d="M718.5,56 l0,110" />
     <path id="Capline-M" d="M18,276 l800,0" />
     <path id="Baseline-M" d="M18,346 l800,0" />
     <path id="Capline-L" d="M18,476 l800,0" />
     <path id="Baseline-L" d="M18,546 l800,0" />
   </g>
   <g id="Symbols">
-    <g id="Ultralight-S" transform="matrix(3.889,0,0,3.889,202.778,48.778)">
+    <g id="Ultralight-S" transform="matrix(3.344,0,0,3.344,211.5,57.5)">
       <path class="monochrome-0 multicolor-0:custom" d="M22,7 C23.105,7 24,7.9 24,9 L24,12.5 L26.992,10.75 C28.326,9.98 30,10.94 30,12.48 L30,19.52 C30,21.01 28.429,21.96 27.118,21.31 L26.992,21.25 L24,19.5 L24,23 C24,24.04 23.213,24.89 22.204,24.99 L22,25 L4,25 L3.796,24.99 C2.854,24.89 2.106,24.15 2.011,23.2 L2,23 L2,9 C2,7.9 2.895,7 4,7 L22,7 Z M4,23 L22,23 L22,9 L4,9 L4,23 Z M24,14.82 L24,17.18 L28,19.52 L28,12.48 L24,14.82 Z"/>
     </g>
-    <g id="Regular-S" transform="matrix(3.889,0,0,3.889,402.778,48.778)">
+    <g id="Regular-S" transform="matrix(3.344,0,0,3.344,411.5,57.5)">
       <path class="monochrome-0 multicolor-0:custom" d="M22,7 C23.105,7 24,7.9 24,9 L24,12.5 L26.992,10.75 C28.326,9.98 30,10.94 30,12.48 L30,19.52 C30,21.01 28.429,21.96 27.118,21.31 L26.992,21.25 L24,19.5 L24,23 C24,24.04 23.213,24.89 22.204,24.99 L22,25 L4,25 L3.796,24.99 C2.854,24.89 2.106,24.15 2.011,23.2 L2,23 L2,9 C2,7.9 2.895,7 4,7 L22,7 Z M4,23 L22,23 L22,9 L4,9 L4,23 Z M24,14.82 L24,17.18 L28,19.52 L28,12.48 L24,14.82 Z"/>
     </g>
-    <g id="Black-S" transform="matrix(3.889,0,0,3.889,602.778,48.778)">
+    <g id="Black-S" transform="matrix(3.344,0,0,3.344,611.5,57.5)">
       <path class="monochrome-0 multicolor-0:custom" d="M22,7 C23.105,7 24,7.9 24,9 L24,12.5 L26.992,10.75 C28.326,9.98 30,10.94 30,12.48 L30,19.52 C30,21.01 28.429,21.96 27.118,21.31 L26.992,21.25 L24,19.5 L24,23 C24,24.04 23.213,24.89 22.204,24.99 L22,25 L4,25 L3.796,24.99 C2.854,24.89 2.106,24.15 2.011,23.2 L2,23 L2,9 C2,7.9 2.895,7 4,7 L22,7 Z M4,23 L22,23 L22,9 L4,9 L4,23 Z M24,14.82 L24,17.18 L28,19.52 L28,12.48 L24,14.82 Z"/>
     </g>
   </g>
