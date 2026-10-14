@@ -22,7 +22,7 @@ public class AppDelegate: ExpoAppDelegate {
     // This reads existing encryption key or generates a new one for fresh installs
     // Must run before Firebase, Bugsnag, and React Native start
     MMKVKeyManager.initialize()
-
+    
     FirebaseApp.configure()
     Bugsnag.start()
     migrateLegacyExperimentalDatabases()
@@ -70,7 +70,6 @@ public class AppDelegate: ExpoAppDelegate {
     return result
   }
 
-  // Renames <=4.72.0 `-experimental.db` files; a 0-byte target is one NotificationService created.
   private func migrateLegacyExperimentalDatabases() {
     let fileManager = FileManager.default
     guard let suite = Bundle.main.object(forInfoDictionaryKey: "AppGroupIdentifier") as? String,
@@ -90,14 +89,10 @@ public class AppDelegate: ExpoAppDelegate {
       for suffix in ["-wal", "-shm", "-journal", ""] {
         let from = URL(fileURLWithPath: legacy.path + suffix)
         let to = URL(fileURLWithPath: target.path + suffix)
-        guard fileManager.fileExists(atPath: from.path) else {
-          try? fileManager.removeItem(at: to)
-          continue
-        }
+        guard fileManager.fileExists(atPath: from.path) else { continue }
         do {
           _ = try fileManager.replaceItemAt(to, withItemAt: from)
         } catch {
-          // Starting with a fresh DB at `target` would strand the legacy data, since later launches skip a non-empty target.
           Bugsnag.notifyError(error)
           fatalError("Failed to migrate \(from.lastPathComponent) to \(to.lastPathComponent): \(error)")
         }

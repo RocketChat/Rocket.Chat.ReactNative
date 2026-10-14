@@ -66,9 +66,8 @@ open class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
-
     Bugsnag.start(this)
-
+    
     migrateLegacyExperimentalDatabases()
 
     // Initialize MMKV encryption - reads existing key or generates new one
@@ -77,7 +76,7 @@ open class MainApplication : Application(), ReactApplication {
 
     // Load the native entry point for the New Architecture
     loadReactNative(this)
-
+    
 		ApplicationLifecycleDispatcher.onApplicationCreate(this)
   }
 
@@ -86,7 +85,6 @@ open class MainApplication : Application(), ReactApplication {
     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
   }
 
-  // Renames <=4.72.0 `-experimental.db.db` files.
   private fun migrateLegacyExperimentalDatabases() {
     val dir = java.io.File(applicationInfo.dataDir)
     val legacySuffix = "-experimental.db.db"
@@ -103,9 +101,7 @@ open class MainApplication : Application(), ReactApplication {
       for (suffix in listOf("-wal", "-shm", "-journal", "")) {
         val from = java.io.File(dir, legacy.name + suffix)
         val to = java.io.File(dir, target.name + suffix)
-        to.delete()
         if (from.exists() && !from.renameTo(to)) {
-          // Starting with a fresh DB at `target` would strand the legacy data, since later launches skip a non-empty target.
           throw IllegalStateException("Failed to migrate ${from.name} to ${to.name}")
         }
       }
