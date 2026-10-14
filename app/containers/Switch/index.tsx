@@ -4,9 +4,24 @@ import { type ReactElement } from 'react';
 import { useTheme } from '~/theme';
 import { isIOS } from '~/lib/methods/helpers';
 import I18n from '~/i18n';
+import { useIsNativeList } from '~/containers/List/native/context';
+import NativeListToggle from '~/containers/List/native/components/Toggle';
 
 const Switch = (props: SwitchProps): ReactElement => {
 	const { colors } = useTheme();
+	const isNativeList = useIsNativeList();
+
+	if (isNativeList) {
+		return (
+			<NativeListToggle
+				value={Boolean(props.value)}
+				onValueChange={props.onValueChange ?? undefined}
+				disabled={Boolean(props.disabled)}
+				testID={props.testID}
+				tintColor={colors.buttonBackgroundPrimaryDefault}
+			/>
+		);
+	}
 
 	const trackColor = {
 		false: colors.strokeDark,

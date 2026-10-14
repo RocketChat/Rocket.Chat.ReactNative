@@ -1,5 +1,6 @@
 import { memo, type ReactElement } from 'react';
-import { StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
+import { StyleSheet, type ImageURISource, type StyleProp, type ViewStyle } from 'react-native';
+import { renderToImageAsync } from 'expo-font';
 import { createNanoIconSet } from 'react-native-nano-icons';
 
 import { useTheme } from '~/theme';
@@ -11,6 +12,12 @@ export const IconSet = createNanoIconSet(glyphMap);
 export type TIconsName = keyof typeof glyphMap.i;
 
 export const hasIcon = (name: string): name is TIconsName => Object.hasOwn(glyphMap.i, name);
+
+export const getIconImageSource = async (name: TIconsName, size: number, color: string): Promise<ImageURISource> => {
+	const [, [[codepoint]]] = glyphMap.i[name] as [number, [number, string][]];
+	const { uri, scale } = await renderToImageAsync(String.fromCodePoint(codepoint), { fontFamily: glyphMap.m.f, size, color });
+	return { uri, scale };
+};
 
 export interface ICustomIcon {
 	name: TIconsName;
