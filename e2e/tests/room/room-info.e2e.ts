@@ -13,7 +13,8 @@ import {
 	tapWhenVisible,
 	confirmAlert,
 	expectVisible,
-	goBackUntil
+	goBackUntil,
+	succeeds
 } from '~e2e/support/flows';
 import { navigateToRoomInfo } from '~e2e/support/room';
 
@@ -47,6 +48,15 @@ const fillEditField = async (fixtures: Fixtures, field: string, value: string) =
 const tapEditControl = async (fixtures: Fixtures, field: string) => {
 	await scrollToEditControl(fixtures, field);
 	await fixtures.screen.getByTestId(editViewTestId(field)).tap();
+};
+
+const makeRoomPublic = async (fixtures: Fixtures) => {
+	const roomTypeSwitch = fixtures.screen.getByTestId(editViewTestId('t'));
+	await tapEditControl(fixtures, 't');
+	if (!(await succeeds(expect(roomTypeSwitch).toBeChecked({ timeout: 5_000 })))) {
+		await roomTypeSwitch.tap();
+	}
+	await expect(roomTypeSwitch).toBeChecked({ timeout: LONG_TIMEOUT });
 };
 
 const openEditView = async (fixtures: Fixtures) => {
@@ -155,7 +165,7 @@ test('shows and edits room info', { tags: ['test-8'], timeout: 600_000 }, async 
 	}
 
 	await openEditView(fixtures);
-	await tapEditControl(fixtures, 't');
+	await makeRoomPublic(fixtures);
 	await submitEdit(fixtures);
 	await expect.poll(async () => (await get(`rooms.info?roomId=${room._id}`, user)).room.t, { timeout: LONG_TIMEOUT }).toBe('c');
 

@@ -15,6 +15,7 @@ import {
 	expectVisible,
 	goBackUntil,
 	hideKeyboard,
+	isVisibleNow,
 	openMessageActions,
 	openRoomActions,
 	succeeds,
@@ -44,8 +45,13 @@ const tapMessageActionText = async (fixtures: Fixtures, message: string, actionT
 	const { screen } = fixtures;
 	await openMessageActions(fixtures, message);
 	await expandActionSheet(fixtures);
-	await screen.scrollUntilVisible(screen.getByText(actionText), { timeout: LONG_TIMEOUT });
-	await screen.getByText(actionText).tap();
+	const action = screen.getByText(actionText);
+	await screen.scrollUntilVisible(action, { timeout: LONG_TIMEOUT });
+	await action.tap();
+	const sheetClosed = await succeeds(expect(screen.getByTestId('action-sheet')).toBeHidden({ timeout: 5_000 }));
+	if (!sheetClosed && (await isVisibleNow(action))) {
+		await action.tap();
+	}
 };
 
 const expectStarredMessage = async (fixtures: Fixtures, message: string, starred: boolean) => {
