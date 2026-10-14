@@ -20,7 +20,7 @@ class DDPClient {
     companion object {
         private const val TAG = "RocketChat.DDPClient"
         private val sharedClient: OkHttpClient by lazy {
-            SSLPinningTurboModule.getSharedOkHttpClient() ?: OkHttpClient.Builder()
+            SSLPinningTurboModule.getSharedOkHttpClient() ?: SSLPinningTurboModule.getOkHttpClientBuilder()
                 .pingInterval(30, TimeUnit.SECONDS)
                 .build()
         }
