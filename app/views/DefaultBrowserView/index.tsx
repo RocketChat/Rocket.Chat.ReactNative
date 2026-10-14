@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { FlatList, Linking } from 'react-native';
+import { Fragment, useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '~/i18n';
 import * as List from '~/containers/List';
@@ -49,9 +48,6 @@ const DefaultBrowserView = () => {
 	const [supported, setSupported] = useState<IBrowsersValues[]>([]);
 
 	const navigation = useNavigation();
-	const { bottom } = useSafeAreaInsets();
-
-	const paddingBottom = useMemo(() => Math.max(16, bottom), [bottom]);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -82,32 +78,32 @@ const DefaultBrowserView = () => {
 			logEvent(events.DB_CHANGE_DEFAULT_BROWSER_F);
 		}
 	}, []);
+	const browsers = DEFAULT_BROWSERS.concat(supported);
+	const renderBrowser = (item: IBrowsersValues) => (
+		<List.Radio
+			isSelected={(!browser && item.value === 'systemDefault:') || item.title === browser}
+			title={item.title}
+			value={item.value}
+			translateTitle={['In_app', 'System_default'].includes(item.title)}
+			translateSubtitle={false}
+			onPress={changeDefaultBrowser}
+			testID={`default-browser-view-${item.value}`}
+		/>
+	);
+
 	return (
 		<SafeAreaView testID='default-browser-view'>
-			<FlatList
-				data={DEFAULT_BROWSERS.concat(supported)}
-				keyExtractor={item => item.value}
-				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom }]}
-				renderItem={({ item }) => (
-					<List.Radio
-						isSelected={(!browser && item.value === 'systemDefault:') || item.title === browser}
-						title={item.title}
-						value={item.value}
-						translateTitle={['In_app', 'System_default'].includes(item.title)}
-						translateSubtitle={false}
-						onPress={changeDefaultBrowser}
-						testID={`default-browser-view-${item.value}`}
-					/>
-				)}
-				ListHeaderComponent={
-					<>
-						<List.Header title='Choose_where_you_want_links_be_opened' numberOfLines={2} />
-						<List.Separator />
-					</>
-				}
-				ListFooterComponent={List.Separator}
-				ItemSeparatorComponent={List.Separator}
-			/>
+			<List.Container>
+				<List.Section title='Choose_where_you_want_links_be_opened'>
+					<List.Separator />
+					{browsers.map(item => (
+						<Fragment key={item.value}>
+							{renderBrowser(item)}
+							<List.Separator />
+						</Fragment>
+					))}
+				</List.Section>
+			</List.Container>
 		</SafeAreaView>
 	);
 };

@@ -1241,7 +1241,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             "paddingVertical": 3,
           },
           {
-            "backgroundColor": "#9EA2A8",
+            "backgroundColor": "#949393",
             "borderRadius": 10.5,
             "minWidth": 21,
           },
@@ -1373,7 +1373,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             "paddingVertical": 3,
           },
           {
-            "backgroundColor": "#245399",
+            "backgroundColor": "#10529E",
             "borderRadius": 10.5,
             "minWidth": 21,
           },
