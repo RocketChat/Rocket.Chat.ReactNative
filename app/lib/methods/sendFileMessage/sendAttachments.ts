@@ -1,4 +1,5 @@
 import { type IShareAttachment, type IUser } from '~/definitions';
+import { closeUnclosedCodeBlock } from '../helpers/closeUnclosedCodeBlock';
 import { sendFileMessage } from './index';
 
 const ROTATED_ORIENTATIONS = ['5', '6', '7', '8'];
@@ -33,6 +34,8 @@ export const sendAttachments = ({
 				[width, height] = [height, width];
 			}
 
+			const msg = getMsg(attachment, index);
+
 			return sendFileMessage(
 				rid,
 				{
@@ -42,7 +45,7 @@ export const sendAttachments = ({
 					size,
 					type,
 					path,
-					msg: getMsg(attachment, index),
+					msg: msg && closeUnclosedCodeBlock(msg),
 					height,
 					width
 				},

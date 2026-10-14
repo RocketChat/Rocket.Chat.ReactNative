@@ -14,6 +14,9 @@ importers:
 
   .:
     dependencies:
+      '@appduct/react-native':
+        specifier: ^0.13.0
+        version: 0.13.0(expo@57.0.23)(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
       '@bugsnag/react-native':
         specifier: 8.4.0
         version: 8.4.0
@@ -390,6 +393,9 @@ importers:
       '@bugsnag/source-maps':
         specifier: ^2.3.3
         version: 2.3.3
+      '@expo/fingerprint':
+        specifier: 0.20.13
+        version: 0.20.13
       '@gorhom/bottom-sheet':
         specifier: ^5
         version: 5.2.8(6a38a83ca283ae4d61e53fcd24ae5b68)
@@ -531,6 +537,19 @@ packages:
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
+
+  '@appduct/react-native@0.13.0':
+    resolution: {integrity: sha512-pn4F8A6Q3p7Tt/mja2+yqGKdtifY1SmQmvCy5YGxD/1Ac9ScWJLJ9xM5bmvB+mTeTypOVG2gAQPeUZ9bNsz3Xg==}
+    peerDependencies:
+      expo: '>=54.0.0'
+      react: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      expo:
+        optional: true
+
+  '@appduct/shared@0.13.0':
+    resolution: {integrity: sha512-N7hIlF04nW10zjSbirNmDp2/3MCfPSzMBpDzUB6UqMxvR2cIHvR1yt055rvtLQky/Y3+n94jkoMzwK5UnHyQlw==}
 
   '@babel/code-frame@7.10.4':
     resolution: {integrity: sha512-vG6SvB6oYEhvgisZNFRmRCUkLz11c7rp+tbNTynGqc6mS1d5ATd/sGyV6W0KZZnXRKMTzZDRgQT3Ou9jhpAfUg==}
@@ -2019,14 +2038,6 @@ packages:
     peerDependenciesMeta:
       '@types/node':
         optional: true
-
-  '@isaacs/balanced-match@4.0.1':
-    resolution: {integrity: sha512-yzMTt9lEb8Gv7zRioUilSglI0c0smZ9k5D65677DLWLtWJaXIS3CqcGyUFByYKlnUj6TkjLVs54fBl6+TiGQDQ==}
-    engines: {node: 20 || >=22}
-
-  '@isaacs/brace-expansion@5.0.0':
-    resolution: {integrity: sha512-ZT55BDLV0yv0RBm2czMiZ+SqCGO7AvmOM3G/w2xhVPH+te0aKgFjmBvGlL1dH+ql2tgGO3MVrbb3jCKyvpgnxA==}
-    engines: {node: 20 || >=22}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -6253,10 +6264,6 @@ packages:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
     engines: {node: '>=4'}
 
-  minimatch@10.1.1:
-    resolution: {integrity: sha512-enIvLvRAFZYXJzkCYG5RKmPfrFArdLv+R+lbQ53BmIMLIry74bjKzX6iHAm8WYamJkhSSEabrWN5D97XnKObjQ==}
-    engines: {node: 20 || >=22}
-
   minimatch@10.2.6:
     resolution: {integrity: sha512-vpLQEs+VLCr1nU0BXS07maYoFwlDAH0gngQuuttxIwutDFEMHq2blX+8vpgxDdK3J1PwjCJiep77OitTZ4Ll1A==}
     engines: {node: 18 || 20 || >=22}
@@ -8318,6 +8325,16 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
 
+  '@appduct/react-native@0.13.0(expo@57.0.23)(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      '@appduct/shared': 0.13.0
+      react: 19.2.3
+      react-native: 0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
+    optionalDependencies:
+      expo: 57.0.23(8132ea204d39ca81423aaa5e2384dd28)
+
+  '@appduct/shared@0.13.0': {}
+
   '@babel/code-frame@7.10.4':
     dependencies:
       '@babel/highlight': 7.25.9
@@ -10359,12 +10376,6 @@ snapshots:
       iconv-lite: 0.7.2
     optionalDependencies:
       '@types/node': 25.0.3
-
-  '@isaacs/balanced-match@4.0.1': {}
-
-  '@isaacs/brace-expansion@5.0.0':
-    dependencies:
-      '@isaacs/balanced-match': 4.0.1
 
   '@isaacs/cliui@8.0.2':
     dependencies:
@@ -13893,7 +13904,7 @@ snapshots:
 
   glob@13.0.0:
     dependencies:
-      minimatch: 10.1.1
+      minimatch: 10.2.6
       minipass: 7.1.2
       path-scurry: 2.0.1
 
@@ -15403,10 +15414,6 @@ snapshots:
   mimic-response@3.1.0: {}
 
   min-indent@1.0.1: {}
-
-  minimatch@10.1.1:
-    dependencies:
-      '@isaacs/brace-expansion': 5.0.0
 
   minimatch@10.2.6:
     dependencies:
