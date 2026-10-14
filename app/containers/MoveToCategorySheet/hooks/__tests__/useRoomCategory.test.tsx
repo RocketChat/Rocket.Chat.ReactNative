@@ -15,7 +15,6 @@ jest.mock('~/lib/services/restApi', () => ({
 	setRoomsCategory: jest.fn(() => Promise.resolve()),
 	toggleFavorite: jest.fn(() => Promise.resolve())
 }));
-jest.mock('~/lib/methods/helpers/log', () => jest.fn());
 jest.mock('~/views/CategorySettingsView/utils/alertCategoryError', () => ({ alertCategoryError: jest.fn() }));
 
 const mockSetRoomsCategory = setRoomsCategory as jest.MockedFunction<typeof setRoomsCategory>;
@@ -34,44 +33,30 @@ afterEach(() => {
 	jest.clearAllMocks();
 });
 
-it('unfavorites the room again when leaving its category fails', async () => {
-	mockSetRoomsCategory.mockRejectedValueOnce(new Error('forbidden'));
+it('moves a categorized room to favorites with only the favorite call', async () => {
 	const result = renderRoomCategory({ rid: 'room1', category: 'work', f: false });
-
-	await act(() => result.current.moveToCategory(FAVORITES_GROUP));
-
-	expect(mockToggleFavorite.mock.calls).toEqual([
-		['room1', true],
-		['room1', false]
-	]);
-	expect(alertCategoryError).toHaveBeenCalledWith(expect.objectContaining({ message: 'forbidden' }));
-});
-
-it('reports the category error when undoing the favorite also fails', async () => {
-	mockSetRoomsCategory.mockRejectedValueOnce(new Error('forbidden'));
-	mockToggleFavorite.mockResolvedValueOnce(undefined as any).mockRejectedValueOnce(new Error('offline'));
-	const result = renderRoomCategory({ rid: 'room1', category: 'work', f: false });
-
-	await act(() => result.current.moveToCategory(FAVORITES_GROUP));
-
-	expect(alertCategoryError).toHaveBeenCalledWith(expect.objectContaining({ message: 'forbidden' }));
-});
-
-it('keeps the favorite when clearing a deleted category fails', async () => {
-	mockSetRoomsCategory.mockRejectedValueOnce(new Error('forbidden'));
-	const result = renderRoomCategory({ rid: 'room1', category: 'deleted', f: false });
 
 	await act(() => result.current.moveToCategory(FAVORITES_GROUP));
 
 	expect(mockToggleFavorite.mock.calls).toEqual([['room1', true]]);
+	expect(mockSetRoomsCategory).not.toHaveBeenCalled();
 });
 
-it('moves a categorized room to favorites without leaving it uncategorized in between', async () => {
+it('takes a favorited room out of favorites with only the unfavorite call', async () => {
+	const result = renderRoomCategory({ rid: 'room1', f: true });
+
+	await act(() => result.current.moveToCategory(FAVORITES_GROUP));
+
+	expect(mockToggleFavorite.mock.calls).toEqual([['room1', false]]);
+	expect(mockSetRoomsCategory).not.toHaveBeenCalled();
+});
+
+it('reports the error and leaves the category alone when favoriting fails', async () => {
+	mockToggleFavorite.mockRejectedValueOnce(new Error('forbidden'));
 	const result = renderRoomCategory({ rid: 'room1', category: 'work', f: false });
 
 	await act(() => result.current.moveToCategory(FAVORITES_GROUP));
 
-	expect(mockToggleFavorite).toHaveBeenCalledWith('room1', true);
-	expect(mockSetRoomsCategory).toHaveBeenCalledWith(['room1'], null);
-	expect(mockToggleFavorite.mock.invocationCallOrder[0]).toBeLessThan(mockSetRoomsCategory.mock.invocationCallOrder[0]);
+	expect(alertCategoryError).toHaveBeenCalledWith(expect.objectContaining({ message: 'forbidden' }));
+	expect(mockSetRoomsCategory).not.toHaveBeenCalled();
 });
