@@ -1,6 +1,6 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
-import { forwardRef, isValidElement, useImperativeHandle, useRef, useState, memo, type ReactElement } from 'react';
+import { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState, memo, type ReactElement } from 'react';
 import {
 	AccessibilityInfo,
 	findNodeHandle,
@@ -89,13 +89,15 @@ const ActionSheet = memo(
 			</GestureHandlerRootView>
 		);
 
-		const onDidDismiss = () => {
-			setIsVisible(false);
-			// Keep contentHeight to avoid flickering on next show
+		useEffect(() => {
+			if (isVisible) return;
 			const snapshotOnClose = onCloseSnapshotRef.current;
 			onCloseSnapshotRef.current = undefined;
 			snapshotOnClose?.();
-		};
+		}, [isVisible]);
+
+		// Keep contentHeight to avoid flickering on next show
+		const onDidDismiss = () => setIsVisible(false);
 
 		const isPortrait = windowHeight > windowWidth;
 		const effectiveSnaps = (isPortrait ? data?.portraitSnaps : data?.landscapeSnaps) || data?.snaps;
