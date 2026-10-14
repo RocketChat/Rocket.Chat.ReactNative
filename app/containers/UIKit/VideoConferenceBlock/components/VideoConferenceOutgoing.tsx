@@ -24,7 +24,7 @@ export default function VideoConferenceOutgoing({
 			<Touch style={style.callToActionButton} onPress={() => videoConfJoin(blockId)}>
 				<Text style={style.callToActionButtonText}>{i18n.t('Join')}</Text>
 			</Touch>
-			<CallParticipants users={users} />
+			<CallParticipants users={users.filter(user => user.joined !== false)} />
 		</VideoConferenceBaseContainer>
 	);
 }

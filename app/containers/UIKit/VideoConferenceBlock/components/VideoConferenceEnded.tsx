@@ -2,7 +2,7 @@ import { type ReactElement } from 'react';
 import { Text } from 'react-native';
 
 import { type IUser } from '~/definitions';
-import { type VideoConferenceStatus, type VideoConferenceType } from '~/definitions/IVideoConference';
+import { VideoConferenceStatus, type VideoConferenceType } from '~/definitions/IVideoConference';
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useVideoConf } from '~/lib/hooks/useVideoConf';
@@ -11,10 +11,6 @@ import { CallParticipants, type TCallUsers } from './CallParticipants';
 import useStyle from './styles';
 import { VideoConferenceBaseContainer } from './VideoConferenceBaseContainer';
 import Touch from '~/containers/Touch';
-
-// VideoConferenceStatus is a declare enum, so its values aren't available at runtime
-const EXPIRED: VideoConferenceStatus = 2;
-const DECLINED: VideoConferenceStatus = 4;
 
 export default function VideoConferenceEnded({
 	users,
@@ -36,8 +32,10 @@ export default function VideoConferenceEnded({
 	const { showInitCallActionSheet } = useVideoConf(rid);
 	const isInActiveVoipCall = useIsInActiveVoipCall();
 
-	const onlyAuthorOnCall = users.length === 1 && users.some(user => user.username === createdBy.username);
-	const notAnswered = status === EXPIRED || status === DECLINED;
+	const joinedUsers = users.filter(user => user.joined !== false);
+	const onlyAuthorOnCall = joinedUsers.length === 1 && joinedUsers[0].username === createdBy.username;
+	const showParticipants = joinedUsers.length > 0 && !onlyAuthorOnCall;
+	const notAnswered = status === VideoConferenceStatus.EXPIRED || status === VideoConferenceStatus.DECLINED;
 
 	return (
 		<VideoConferenceBaseContainer variant='ended' discussionRid={discussionRid}>
@@ -52,8 +50,8 @@ export default function VideoConferenceEnded({
 				</>
 			) : (
 				<>
-					{users.length && !onlyAuthorOnCall ? (
-						<CallParticipants users={users} />
+					{showParticipants ? (
+						<CallParticipants users={joinedUsers} />
 					) : (
 						<Text style={style.notAnswered}>{i18n.t('Call_was_not_answered')}</Text>
 					)}

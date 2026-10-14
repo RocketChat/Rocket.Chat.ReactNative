@@ -4,7 +4,7 @@ import type { IRoom } from './IRoom';
 import type { IUser } from './IUser';
 import type { IMessage } from './IMessage';
 
-export declare enum VideoConferenceStatus {
+export enum VideoConferenceStatus {
 	CALLING = 0,
 	STARTED = 1,
 	EXPIRED = 2,
@@ -31,6 +31,7 @@ export declare type VideoConferenceType =
 	| LivechatInstructions['type'];
 export interface IVideoConferenceUser extends Pick<Required<IUser>, '_id' | 'username' | 'name' | 'avatarETag'> {
 	ts: Date;
+	joined?: boolean;
 }
 export interface IVideoConference extends IRocketChatRecord {
 	type: VideoConferenceType;
@@ -50,12 +51,6 @@ export interface IVideoConference extends IRocketChatRecord {
 	providerData?: Record<string, any>;
 	ringing?: boolean;
 	discussionRid?: IRoom['_id'];
-	mediaCallIds?: string[];
-	sipAlias?: string;
-	sipParticipantCount?: number;
-	webrtcParticipantCount?: number;
-	discussionTitle?: string;
-	discussionLastMessage?: IMessage;
 }
 export interface IDirectVideoConference extends IVideoConference {
 	type: 'direct';

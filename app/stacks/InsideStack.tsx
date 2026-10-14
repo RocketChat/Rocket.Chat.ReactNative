@@ -355,7 +355,6 @@ const InsideStack = createNativeStackNavigator({
 			screen: CallViewScreen,
 			options: { headerShown: false }
 		}),
-		// Siblings of CallView so they can be reached (and rendered above it) while a VoIP call is open.
 		JitsiMeetView: createNativeStackScreen({
 			screen: JitsiMeetViewScreen,
 			options: { headerShown: false, animation: isIOS ? 'default' : 'none' }

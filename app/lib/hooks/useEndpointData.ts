@@ -37,12 +37,16 @@ export const useEndpointData = <TPath extends PathFor<'GET'>>(
 		paramsRef.current = params;
 	}
 
+	const requestIdRef = useRef(0);
+
 	const fetchData = useCallback(() => {
 		if (!endpoint) return;
+		const requestId = ++requestIdRef.current;
 		setLoading(true);
 		sdk
 			.get(endpoint, params as any)
 			.then(e => {
+				if (requestId !== requestIdRef.current) return;
 				setLoading(false);
 				if (e.success) {
 					setResult(e);
@@ -51,6 +55,7 @@ export const useEndpointData = <TPath extends PathFor<'GET'>>(
 				}
 			})
 			.catch((e: ErrorResult) => {
+				if (requestId !== requestIdRef.current) return;
 				setLoading(false);
 				setError(e);
 			});

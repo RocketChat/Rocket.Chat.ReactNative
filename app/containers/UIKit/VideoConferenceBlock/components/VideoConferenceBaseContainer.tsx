@@ -1,15 +1,11 @@
-import { type ReactElement, useRef } from 'react';
+import { type ReactElement } from 'react';
 import { View, Text } from 'react-native';
 
 import i18n from '~/i18n';
 import { useTheme } from '~/theme';
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import Touch from '~/containers/Touch';
-import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import getRoomInfo from '~/lib/methods/getRoomInfo';
-import { goRoom, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
-import log from '~/lib/methods/helpers/log';
-import { showToast } from '~/lib/methods/helpers/showToast';
+import { useOnDiscussionPress } from '~/containers/message/stores/MessageRoomStore';
 import useStyle from './styles';
 
 type VideoConfMessageIconProps = {
@@ -21,26 +17,7 @@ type VideoConfMessageIconProps = {
 export const VideoConferenceBaseContainer = ({ variant, children, discussionRid }: VideoConfMessageIconProps): ReactElement => {
 	const { colors } = useTheme();
 	const style = useStyle();
-	const isMasterDetail = useMasterDetail();
-	const opening = useRef(false);
-
-	const openDiscussion = async () => {
-		if (!discussionRid || opening.current) return;
-		opening.current = true;
-		try {
-			const discussion = await getRoomInfo(discussionRid);
-			if (discussion) {
-				goRoom({ item: discussion as TGoRoomItem, isMasterDetail });
-			} else {
-				showToast(i18n.t('Room_not_found'));
-			}
-		} catch (e) {
-			log(e);
-			showToast(i18n.t('Room_not_found'));
-		} finally {
-			opening.current = false;
-		}
-	};
+	const onDiscussionPress = useOnDiscussionPress();
 
 	const iconStyle: { [key: string]: { icon: TIconsName; color: string; backgroundColor: string; label: string } } = {
 		ended: {
@@ -82,11 +59,11 @@ export const VideoConferenceBaseContainer = ({ variant, children, discussionRid 
 					</View>
 					<Text style={style.infoContainerText}>{iconStyle[variant].label}</Text>
 				</View>
-				{discussionRid ? (
+				{discussionRid && onDiscussionPress ? (
 					<View style={style.actionsContainer}>
 						<Touch
 							style={style.actionButton}
-							onPress={openDiscussion}
+							onPress={() => onDiscussionPress(discussionRid)}
 							accessibilityLabel={i18n.t('Join_discussion')}
 							accessibilityRole='button'
 							testID='video-conf-join-discussion'>

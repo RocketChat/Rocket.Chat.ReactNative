@@ -1,13 +1,13 @@
-import navigation from '../navigation/appNavigation';
-import { videoConferenceJoin } from '../services/restApi';
-import openLink from './helpers/openLink';
-import { videoConfJoin } from './videoConf';
+import navigation from '../../navigation/appNavigation';
+import { videoConferenceJoin } from '../../services/restApi';
+import openLink from '../helpers/openLink';
+import { videoConfJoin } from '../videoConf';
 
-jest.mock('../navigation/appNavigation', () => ({ __esModule: true, default: { navigate: jest.fn() } }));
-jest.mock('../services/restApi', () => ({ videoConferenceJoin: jest.fn() }));
-jest.mock('./helpers', () => ({ isAndroid: false, showErrorAlert: jest.fn() }));
-jest.mock('./helpers/log', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('./helpers/openLink', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../../navigation/appNavigation', () => ({ __esModule: true, default: { navigate: jest.fn() } }));
+jest.mock('../../services/restApi', () => ({ videoConferenceJoin: jest.fn() }));
+jest.mock('../helpers', () => ({ isAndroid: false, showErrorAlert: jest.fn() }));
+jest.mock('../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../helpers/openLink', () => ({ __esModule: true, default: jest.fn() }));
 
 const mockedJoin = videoConferenceJoin as jest.Mock;
 

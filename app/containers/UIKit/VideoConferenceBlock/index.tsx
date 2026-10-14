@@ -1,5 +1,6 @@
 import { useEffect, type ReactElement } from 'react';
 
+import { VideoConferenceStatus } from '~/definitions/IVideoConference';
 import { useEndpointData } from '~/lib/hooks/useEndpointData';
 import { emitter } from '~/lib/methods/helpers/emitter';
 import VideoConferenceDirect from './components/VideoConferenceDirect';
@@ -37,7 +38,8 @@ export default function VideoConferenceBlock({ callId, blockId }: { callId: stri
 			);
 		}
 
-		if (type === 'direct' && status === 0) return <VideoConferenceDirect discussionRid={discussionRid} />;
+		if (type === 'direct' && status === VideoConferenceStatus.CALLING)
+			return <VideoConferenceDirect discussionRid={discussionRid} />;
 
 		return <VideoConferenceOutgoing blockId={blockId} users={users} discussionRid={discussionRid} />;
 	}
