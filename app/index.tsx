@@ -33,6 +33,8 @@ import {
 	subscribeTheme,
 	unsubscribeTheme
 } from './lib/methods/helpers/theme';
+import { initializeStorage } from './lib/methods/userPreferences';
+import { THEME_PREFERENCES_KEY } from './lib/constants/keys';
 import { initializePushNotifications, onNotification } from './lib/notifications';
 import { getInitialNotification, setupVideoConfActionListener } from './lib/notifications/videoConf/getInitialNotification';
 import {
@@ -58,6 +60,7 @@ export default class Root extends Component<{}, IState> {
 	private deepLinkSubscription?: EmitterSubscription;
 	private videoConfActionCleanup?: () => void;
 	private mediaCallEventCleanup?: () => void;
+	private themePreferencesListener?: { remove: () => void };
 
 	constructor(props: any) {
 		super(props);
@@ -90,12 +93,18 @@ export default class Root extends Component<{}, IState> {
 		this.videoConfActionCleanup = setupVideoConfActionListener();
 		// Set up media call event listeners for incoming calls
 		this.mediaCallEventCleanup = setupMediaCallEvents(this.getMediaCallEventsAdapters());
+		this.themePreferencesListener = initializeStorage.addOnValueChangedListener(key => {
+			if (key === THEME_PREFERENCES_KEY) {
+				this.setTheme(initialTheme());
+			}
+		});
 	}
 
 	componentWillUnmount() {
 		this.deepLinkSubscription?.remove();
 		this.videoConfActionCleanup?.();
 		this.mediaCallEventCleanup?.();
+		this.themePreferencesListener?.remove();
 
 		unsubscribeTheme();
 	}
@@ -166,7 +175,7 @@ export default class Root extends Component<{}, IState> {
 		return (
 			<SafeAreaProvider style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
 				<Provider store={store}>
-					<ThemeContextProvider theme={theme} themePreferences={themePreferences} setTheme={this.setTheme}>
+					<ThemeContextProvider theme={theme} themePreferences={themePreferences}>
 						<ResponsiveLayoutProvider>
 							<GestureHandlerRootView>
 								<KeyboardProvider>

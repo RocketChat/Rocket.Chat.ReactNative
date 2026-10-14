@@ -14,6 +14,9 @@ importers:
 
   .:
     dependencies:
+      '@appduct/react-native':
+        specifier: ^0.13.0
+        version: 0.13.0(expo@57.0.23)(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
       '@bugsnag/react-native':
         specifier: 8.4.0
         version: 8.4.0
@@ -534,6 +537,19 @@ packages:
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
+
+  '@appduct/react-native@0.13.0':
+    resolution: {integrity: sha512-pn4F8A6Q3p7Tt/mja2+yqGKdtifY1SmQmvCy5YGxD/1Ac9ScWJLJ9xM5bmvB+mTeTypOVG2gAQPeUZ9bNsz3Xg==}
+    peerDependencies:
+      expo: '>=54.0.0'
+      react: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      expo:
+        optional: true
+
+  '@appduct/shared@0.13.0':
+    resolution: {integrity: sha512-N7hIlF04nW10zjSbirNmDp2/3MCfPSzMBpDzUB6UqMxvR2cIHvR1yt055rvtLQky/Y3+n94jkoMzwK5UnHyQlw==}
 
   '@babel/code-frame@7.10.4':
     resolution: {integrity: sha512-vG6SvB6oYEhvgisZNFRmRCUkLz11c7rp+tbNTynGqc6mS1d5ATd/sGyV6W0KZZnXRKMTzZDRgQT3Ou9jhpAfUg==}
@@ -8308,6 +8324,16 @@ snapshots:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
+
+  '@appduct/react-native@0.13.0(expo@57.0.23)(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      '@appduct/shared': 0.13.0
+      react: 19.2.3
+      react-native: 0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
+    optionalDependencies:
+      expo: 57.0.23(8132ea204d39ca81423aaa5e2384dd28)
+
+  '@appduct/shared@0.13.0': {}
 
   '@babel/code-frame@7.10.4':
     dependencies:
