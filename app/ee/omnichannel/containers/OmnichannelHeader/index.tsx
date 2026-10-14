@@ -22,11 +22,12 @@ const OmnichannelStatus = memo(() => {
 	const { colors } = useTheme();
 	const { roles, statusLivechat } = useAppSelector(state => getUserSelector(state), shallowEqual);
 	const inquiryEnabled = useAppSelector(state => state.inquiry.enabled);
+	const livechatDisabled = useAppSelector(state => state.settings.Livechat_enabled === false);
 	const queueSize = useAppSelector(state => getInquiryQueueSelector(state).length);
 	const isMasterDetail = useMasterDetail();
 	const navigation = useNavigation<any>();
 
-	if (!(isOmnichannelModuleAvailable() && roles?.includes('livechat-agent'))) {
+	if (livechatDisabled || !(isOmnichannelModuleAvailable() && roles?.includes('livechat-agent'))) {
 		return null;
 	}
 

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { type TSupportedThemes } from '../theme';
 import EventEmitter from '../lib/methods/helpers/events';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
+import { headerLeftActions, headerRightActions } from '../lib/methods/helpers/navigation/headerActions';
 import { ModalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { textParser } from '../containers/UIKit/utils';
@@ -109,7 +109,8 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 		const { view } = data;
 		const { title } = view;
 		return {
-			title: textParser([title])
+			title: textParser([title]),
+			gestureEnabled: false
 		};
 	};
 
@@ -153,20 +154,10 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 		const { title, close, submit } = view;
 		navigation.setOptions({
 			title: textParser([title]),
-			headerLeft: close
-				? () => (
-						<HeaderButton.Container>
-							<HeaderButton.Item title={textParser([close.text])} onPress={this.cancel} testID='close-modal-uikit' />
-						</HeaderButton.Container>
-					)
-				: undefined,
-			headerRight: submit
-				? () => (
-						<HeaderButton.Container>
-							<HeaderButton.Item title={textParser([submit.text])} onPress={this.submit} testID='submit-modal-uikit' />
-						</HeaderButton.Container>
-					)
-				: undefined
+			...headerLeftActions(close ? [{ label: textParser([close.text]), testID: 'close-modal-uikit', onPress: this.cancel }] : []),
+			...headerRightActions(
+				submit ? [{ label: textParser([submit.text]), testID: 'submit-modal-uikit', onPress: this.submit }] : []
+			)
 		});
 	};
 

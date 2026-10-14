@@ -129,7 +129,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
           style={
             [
               {
-                "borderRadius": 4,
+                "borderRadius": 8,
                 "height": 48,
                 "width": 48,
               },
@@ -141,7 +141,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
-            borderRadius={4}
+            borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
             contentPosition={
@@ -171,7 +171,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
             }
             style={
               {
-                "borderRadius": 4,
+                "borderRadius": 8,
                 "height": 48,
                 "width": 48,
               }
@@ -491,7 +491,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
           style={
             [
               {
-                "borderRadius": 4,
+                "borderRadius": 8,
                 "height": 48,
                 "width": 48,
               },
@@ -503,7 +503,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
-            borderRadius={4}
+            borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
             contentPosition={
@@ -533,7 +533,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
             }
             style={
               {
-                "borderRadius": 4,
+                "borderRadius": 8,
                 "height": 48,
                 "width": 48,
               }
@@ -739,8 +739,8 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
       },
       false,
       {
-        "backgroundColor": "#0d0d0d",
-        "borderColor": "#1f2329",
+        "backgroundColor": "#161717",
+        "borderColor": "#2D2E2E",
         "height": 75,
         "marginTop": 0,
       },
@@ -836,7 +836,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           undefined,
         ]
       }
-      underlayColor="#16181a"
+      underlayColor="#161717"
     >
       <View
         style={
@@ -853,7 +853,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           style={
             [
               {
-                "borderRadius": 4,
+                "borderRadius": 8,
                 "height": 48,
                 "width": 48,
               },
@@ -865,7 +865,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
-            borderRadius={4}
+            borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
             contentPosition={
@@ -895,7 +895,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             }
             style={
               {
-                "borderRadius": 4,
+                "borderRadius": 8,
                 "height": 48,
                 "width": 48,
               }
@@ -930,7 +930,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   "textAlign": "left",
                 },
                 {
-                  "color": "#F2F3F5",
+                  "color": "#FAFAFA",
                 },
               ]
             }
@@ -953,7 +953,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   "textAlign": "left",
                 },
                 {
-                  "color": "#F2F3F5",
+                  "color": "#FAFAFA",
                 },
               ]
             }
@@ -1049,7 +1049,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           undefined,
         ]
       }
-      underlayColor="#16181a"
+      underlayColor="#161717"
     >
       <View
         style={{}}
@@ -1060,7 +1060,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           style={
             [
               {
-                "color": "#E4E7EA",
+                "color": "#E4E4E4",
                 "fontSize": 20,
               },
               [
@@ -1215,7 +1215,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           style={
             [
               {
-                "borderRadius": 4,
+                "borderRadius": 8,
                 "height": 48,
                 "width": 48,
               },
@@ -1227,7 +1227,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
-            borderRadius={4}
+            borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
             contentPosition={
@@ -1257,7 +1257,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             }
             style={
               {
-                "borderRadius": 4,
+                "borderRadius": 8,
                 "height": 48,
                 "width": 48,
               }
