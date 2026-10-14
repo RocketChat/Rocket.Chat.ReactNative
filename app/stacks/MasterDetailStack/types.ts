@@ -219,6 +219,7 @@ export type MasterDetailInsideStackParamList = {
 	VideoConfWebView: {
 		url: string;
 	};
+	ConferenceView: undefined;
 	ShareView: {
 		attachments: IAttachment[];
 		isShareView?: boolean;

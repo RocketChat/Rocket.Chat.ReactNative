@@ -81,12 +81,12 @@ const Touchable = ({
 	};
 
 	const guardTouch = (action?: () => void) => () => {
-		if (rowOffSet.value !== 0) {
+		if (rowOffSet.get() !== 0) {
 			close();
 			return;
 		}
-		if (touchClosedOtherRow.value || runOnUISync(closeOpenSwipeItem, rid)) {
-			touchClosedOtherRow.value = false;
+		if (touchClosedOtherRow.get() || runOnUISync(closeOpenSwipeItem, rid)) {
+			touchClosedOtherRow.set(false);
 			return;
 		}
 		action?.();
@@ -101,27 +101,27 @@ const Touchable = ({
 		failOffsetY: [-20, 20], // Fail on vertical movement to distinguish scrolling
 		enabled: swipeEnabled,
 		onBegin: () => {
-			crossedFullSwipe.value = false;
-			touchClosedOtherRow.value = closeOpenSwipeItem(rid);
+			crossedFullSwipe.set(false);
+			touchClosedOtherRow.set(closeOpenSwipeItem(rid));
 		},
 		onActivate: () => {
 			scheduleOnRN(setActionsMounted, true);
 		},
 		onUpdate: event => {
-			const next = rowOffSet.value + direction * event.translationX;
+			const next = rowOffSet.get() + direction * event.translationX;
 			const threshold = getFullSwipeThreshold(width);
 			const overshoot = Math.abs(next) - threshold;
-			transX.value = overshoot > 0 ? Math.sign(next) * (threshold + rubberband(overshoot, width)) : next;
+			transX.set(overshoot > 0 ? Math.sign(next) * (threshold + rubberband(overshoot, width)) : next);
 			const crossed = overshoot >= 0;
-			if (crossed !== crossedFullSwipe.value) {
-				crossedFullSwipe.value = crossed;
+			if (crossed !== crossedFullSwipe.get()) {
+				crossedFullSwipe.set(crossed);
 				scheduleOnRN(triggerThresholdHaptic);
 			}
 		},
 		onDeactivate: event => {
 			const release = getSwipeRelease({
-				restingOffset: rowOffSet.value,
-				offset: rowOffSet.value + direction * event.translationX,
+				restingOffset: rowOffSet.get(),
+				offset: rowOffSet.get() + direction * event.translationX,
 				width
 			});
 			settleSwipeRow(row, release.restingOffset, direction * event.velocityX);

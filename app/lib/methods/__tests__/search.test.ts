@@ -1,18 +1,18 @@
-import { search, searchLocal, searchRemote, type TSearch } from './search';
-import { spotlight } from '../services/restApi';
-import database from '../database/index';
-import { store as reduxStore } from '../store/auxStore';
+import { search, searchLocal, searchRemote, type TSearch } from '../search';
+import { spotlight } from '../../services/restApi';
+import database from '../../database/index';
+import { store as reduxStore } from '../../store/auxStore';
 import { type ISearch, type ISearchLocal, type IUserMessage } from '~/definitions';
 import { type ISpotlightRoom, type TSpotlightUser } from '~/definitions/ISpotlight';
 
 // jest.setup.js globally mocks this module - exercise the real implementation here
-jest.unmock('./search');
+jest.unmock('../search');
 
-jest.mock('../services/restApi', () => ({
+jest.mock('../../services/restApi', () => ({
 	spotlight: jest.fn()
 }));
 
-jest.mock('../database/index', () => ({
+jest.mock('../../database/index', () => ({
 	__esModule: true,
 	default: {
 		active: {
@@ -21,24 +21,24 @@ jest.mock('../database/index', () => ({
 	}
 }));
 
-jest.mock('../store/auxStore', () => ({
+jest.mock('../../store/auxStore', () => ({
 	store: {
 		getState: jest.fn()
 	}
 }));
 
 // Keep the watermelon query clauses out of the unit under test - we only assert on routing/merging
-jest.mock('../database/utils', () => ({
+jest.mock('../../database/utils', () => ({
 	getSubscriptionSearchClause: jest.fn((text: string) => ({ clause: 'subscriptions', text })),
 	sanitizeLikeString: jest.fn((str?: string) => str)
 }));
 
-jest.mock('./helpers', () => ({
+jest.mock('../helpers', () => ({
 	isGroupChat: jest.fn(() => false),
 	isReadOnly: jest.fn(() => Promise.resolve(false))
 }));
 
-jest.mock('../encryption/utils', () => ({
+jest.mock('../../encryption/utils', () => ({
 	isE2EEDisabledEncryptedRoom: jest.fn(() => false),
 	isMissingRoomE2EEKey: jest.fn(() => false)
 }));

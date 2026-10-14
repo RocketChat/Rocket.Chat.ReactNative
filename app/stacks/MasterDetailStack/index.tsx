@@ -72,6 +72,7 @@ import AccessibilityAndAppearanceView from '~/views/AccessibilityAndAppearanceVi
 import { SupportedVersionsWarning } from '~/containers/SupportedVersions';
 import AttachmentView from '~/views/AttachmentView';
 import ModalBlockView from '~/views/ModalBlockView';
+import ConferenceView from '~/views/ConferenceView';
 import JitsiMeetView from '~/views/JitsiMeetView';
 import VideoConfWebView from '~/views/VideoConfWebView';
 import ShareView from '~/views/ShareView';
@@ -287,6 +288,13 @@ const InsideStack = createNativeStackNavigator({
 		VideoConfWebView: createNativeStackScreen({
 			screen: VideoConfWebView,
 			options: { animation: isIOS ? 'default' : 'none' }
+		}),
+		ConferenceView: createNativeStackScreen({
+			screen: ConferenceView,
+			options: {
+				headerShown: false,
+				animation: isIOS ? 'default' : 'none'
+			}
 		}),
 		ShareView: ShareViewScreen,
 		CallView: createNativeStackScreen({

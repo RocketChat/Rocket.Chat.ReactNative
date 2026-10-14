@@ -306,6 +306,7 @@ export type InsideStackParamList = {
 	VideoConfWebView: {
 		url: string;
 	};
+	ConferenceView: undefined;
 };
 
 export type { OutsideParamList, OutsideModalParamList } from './OutsideStack';

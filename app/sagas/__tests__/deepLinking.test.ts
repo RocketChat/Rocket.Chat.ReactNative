@@ -102,6 +102,8 @@ jest.mock('~/lib/methods/helpers', () => ({
 
 // ─── Real imports (after mocks) ───────────────────────────────────────────────
 
+import RNCallKeep from 'react-native-callkeep';
+
 import { deepLinkingOpen, deepLinkingClickCallPush } from '~/actions/deepLinking';
 import { loginFailure, loginSuccess } from '~/actions/login';
 import { selectServerFailure, selectServerSuccess } from '~/actions/server';
@@ -114,10 +116,12 @@ import UserPreferences from '~/lib/methods/userPreferences';
 import { getServerUserIdKey } from '~/lib/constants/keys';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import { getServerById } from '~/lib/database/services/Server';
+import { resetVoipState } from '~/lib/services/voip/resetVoipState';
 import { localAuthenticate, logUnlessUserCanceled, UserCanceledError } from '~/lib/methods/helpers/localAuthentication';
 import { canOpenRoom } from '~/lib/methods/canOpenRoom';
 import { getServerInfo } from '~/lib/methods/getServerInfo';
 import { goRoom, navigateToRoom } from '~/lib/methods/helpers/goRoom';
+import { videoConfJoin } from '~/lib/methods/videoConf';
 import { waitForNavigationReady } from '~/lib/navigation/appNavigation';
 import { loginOAuthOrSso } from '~/lib/services/connect';
 import sdk from '~/lib/services/sdk';
@@ -758,6 +762,70 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 
 		expect(jest.mocked(navigateToRoom)).toHaveBeenCalledTimes(1);
 	});
+
+	it('joins an accepted call with the push context, so a failure reads as a missed call', async () => {
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingClickCallPush(makeCallParams({ event: 'accept', callId: 'call-1', caller: { _id: 'caller-1' } })));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		await flushSagaMicrotasks();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(videoConfJoin)).toHaveBeenCalledWith('call-1', true, false, { fromPush: true, rid: 'room-1' });
+	});
+});
+
+describe('deepLinking saga — handleClickCallPush (no token)', () => {
+	beforeEach(() => {
+		jest.useFakeTimers();
+
+		jest.mocked(UserPreferences.getString).mockReset();
+		jest.mocked(getServerById).mockReset();
+		jest.mocked(getServerInfo).mockReset();
+		jest.mocked(showConfirmationAlert).mockClear();
+
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === 'currentServer') return 'https://other.server.com';
+			return null;
+		});
+		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '6.0.0' } as any);
+	});
+
+	afterEach(() => {
+		jest.useRealTimers();
+	});
+
+	it('does not contact an unknown host when the confirmation is declined', async () => {
+		jest.mocked(getServerById).mockResolvedValue(null);
+		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());
+		const { store, dispatchedActions } = setupStore();
+
+		store.dispatch(deepLinkingClickCallPush(makeParams({ rid: 'room-1' }) as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
+		expect(dispatchedActions.some(a => a.type === SERVER.INIT_ADD)).toBe(false);
+	});
+
+	it('does not ask for confirmation for a host with a server record and no signed-in user', async () => {
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingClickCallPush(makeParams({ rid: 'room-1' }) as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).not.toHaveBeenCalled();
+		expect(jest.mocked(getServerInfo)).toHaveBeenCalledWith(HOST);
+	});
 });
 
 // ─── handleOAuth — single-use credentialToken dedup guard ────────────────────
@@ -866,6 +934,124 @@ describe('deepLinking saga — unknown host hands off to the add-server flow', (
 
 		expect(emit).toHaveBeenCalledWith('NewServer', { server: HOST });
 		emit.mockRestore();
+	});
+
+	it('asks for confirmation before the first request to a new host without a token', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' }) as any));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(getServerInfo)).toHaveBeenCalledWith(HOST);
+	});
+
+	it('does not contact a new host when the confirmation is declined', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());
+		jest.mocked(resetVoipState).mockClear();
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
+		const { store, dispatchedActions } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' }) as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
+		expect(emitSpy).not.toHaveBeenCalledWith('NewServer', expect.anything());
+		expect(dispatchedActions.some(a => a.type === SERVER.INIT_ADD)).toBe(false);
+		expect(jest.mocked(resetVoipState)).not.toHaveBeenCalled();
+		emitSpy.mockRestore();
+	});
+
+	it('still ends the call and resets VoIP state when the confirmation is declined after a failed VoIP accept', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());
+		jest.mocked(resetVoipState).mockClear();
+		jest.mocked(RNCallKeep.endCall).mockClear();
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParams({ callId: 'call-1', username: 'bob', voipAcceptFailed: true }) as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
+		expect(jest.mocked(resetVoipState)).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(RNCallKeep.endCall)).toHaveBeenCalledWith('call-1');
+	});
+
+	it('does not try to open the caller on the active workspace when the confirmation is declined after a failed VoIP accept', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());
+		jest.mocked(canOpenRoom).mockClear();
+		const { store, dispatchedActions } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParams({ callId: 'call-1', username: 'bob', voipAcceptFailed: true }) as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(canOpenRoom)).not.toHaveBeenCalled();
+		expect(dispatchedActions.some(action => action.type === APP.START && action.root === RootEnum.ROOT_INSIDE)).toBe(false);
+	});
+
+	it('does not ask for confirmation for a host with a server record and no signed-in user, without a token', async () => {
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		jest.mocked(showConfirmationAlert).mockClear();
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' }) as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).not.toHaveBeenCalled();
+		expect(jest.mocked(getServerInfo)).toHaveBeenCalledWith(HOST);
+	});
+
+	it('asks with neutral wording when the link carries no token', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' }) as any));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(showConfirmationAlert).mock.calls[0][0]).toMatchObject({
+			title: 'Deep_link_open_title',
+			confirmationText: 'Continue'
+		});
+	});
+
+	it('keeps the sign-in wording when the link carries a token', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(showConfirmationAlert).mock.calls[0][0]).toMatchObject({
+			title: 'Deep_link_login_title',
+			confirmationText: 'Login'
+		});
+	});
+
+	it('shows a neutral toast when a tokenless confirmation is declined in a running app', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
+		const { store, dispatchedActions } = setupStore({ app: { root: RootEnum.ROOT_INSIDE } } as PreloadedState);
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' }) as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
+		expect(dispatchedActions.some(a => a.type === SERVER.INIT_ADD)).toBe(false);
+		expect(toastedMessages(emitSpy)).toContain('Deep_link_open_declined');
+		expect(toastedMessages(emitSpy)).not.toContain('Deep_link_login_declined');
+		emitSpy.mockRestore();
 	});
 });
 
