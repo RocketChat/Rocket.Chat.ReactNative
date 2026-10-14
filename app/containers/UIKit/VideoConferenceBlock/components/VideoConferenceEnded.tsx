@@ -32,9 +32,7 @@ export default function VideoConferenceEnded({
 	const { showInitCallActionSheet } = useVideoConf(rid);
 	const isInActiveVoipCall = useIsInActiveVoipCall();
 
-	const joinedUsers = users.filter(user => user.joined !== false);
-	const onlyAuthorOnCall = joinedUsers.length === 1 && joinedUsers[0].username === createdBy.username;
-	const showParticipants = joinedUsers.length > 0 && !onlyAuthorOnCall;
+	const showParticipants = users.some(user => user.username !== createdBy.username);
 	const notAnswered = status === VideoConferenceStatus.EXPIRED || status === VideoConferenceStatus.DECLINED;
 
 	return (
@@ -51,7 +49,7 @@ export default function VideoConferenceEnded({
 			) : (
 				<>
 					{showParticipants ? (
-						<CallParticipants users={joinedUsers} />
+						<CallParticipants users={users} />
 					) : (
 						<Text style={style.notAnswered}>{i18n.t('Call_was_not_answered')}</Text>
 					)}

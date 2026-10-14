@@ -73,6 +73,7 @@ import { getMessageById } from '~/lib/database/services/Message';
 import buildMessage from '~/lib/methods/helpers/buildMessage';
 import { subscribeRoom, unsubscribeRoom } from '~/actions/room';
 import { clearUserTyping } from '~/actions/usersTyping';
+import { emitter } from '~/lib/methods/helpers/emitter';
 import {
 	flushMicrotasksAndTimers,
 	framesOn,
@@ -172,6 +173,28 @@ describe('RoomSubscription over the real SDK', () => {
 		expect(database.active.write).toHaveBeenCalled();
 		const record = database.active.batch.mock.calls[0][0];
 		expect(record).toMatchObject({ _id: 'msg-1', rid: 'room-rid', msg: 'hello' });
+	});
+
+	it('forwards a videoconf frame for this room to the emitter', async () => {
+		await connectDriver();
+		await subscribeToRoom('room-rid');
+		const onUpdate = jest.fn();
+		emitter.on('videoConfUpdated', onUpdate);
+
+		receiveFrame(mockConnections[0], {
+			msg: 'changed',
+			collection: 'stream-notify-room',
+			fields: { eventName: 'other-rid/videoconf', args: ['call-0'] }
+		});
+		receiveFrame(mockConnections[0], {
+			msg: 'changed',
+			collection: 'stream-notify-room',
+			fields: { eventName: 'room-rid/videoconf', args: ['call-1'] }
+		});
+		await flushMicrotasksAndTimers();
+		emitter.off('videoConfUpdated', onUpdate);
+
+		expect(onUpdate.mock.calls).toEqual([['call-1']]);
 	});
 
 	it('stops its listeners and unsubscribes all six subscriptions', async () => {

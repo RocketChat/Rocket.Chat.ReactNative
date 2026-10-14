@@ -1,7 +1,7 @@
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
-import { useEffect, useState, type ReactElement } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { useKeepAwake } from 'expo-keep-awake';
+import { useLayoutEffect, type ReactElement } from 'react';
+import { StyleSheet } from 'react-native';
 import WebView from 'react-native-webview';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -18,48 +18,35 @@ const VideoConfWebView = (): ReactElement => {
 	} = useRoute<RouteProp<InsideStackParamList, 'VideoConfWebView'>>();
 	const navigation = useNavigation();
 	const { bottom } = useSafeAreaInsets();
-	const [loading, setLoading] = useState(true);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Video_call'),
-			headerLeft: () => <HeaderButton.CloseModal testID='video-conf-webview-close' onPress={() => navigation.goBack()} />
+			headerLeft: () => <HeaderButton.CloseModal testID='video-conf-webview-close' />
 		});
 	}, [navigation]);
 
-	useEffect(() => {
-		activateKeepAwake();
-		return () => {
-			deactivateKeepAwake();
-		};
-	}, []);
+	useKeepAwake();
 
 	return (
 		<SafeAreaView style={styles.container} testID='video-conf-webview'>
 			<WebView
 				source={{ uri: url }}
-				onLoadEnd={() => setLoading(false)}
+				startInLoadingState
 				style={[styles.webview, { marginBottom: bottom }]}
 				userAgent={userAgent}
-				javaScriptEnabled
 				domStorageEnabled
 				allowsInlineMediaPlayback
 				mediaCapturePermissionGrantType='grantIfSameHostElseDeny'
 				mediaPlaybackRequiresUserAction={isIOS}
 			/>
-			{loading ? (
-				<View style={styles.loading}>
-					<ActivityIndicator />
-				</View>
-			) : null}
 		</SafeAreaView>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: { flex: 1 },
-	webview: { flex: 1 },
-	loading: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' }
+	webview: { flex: 1 }
 });
 
 export default VideoConfWebView;

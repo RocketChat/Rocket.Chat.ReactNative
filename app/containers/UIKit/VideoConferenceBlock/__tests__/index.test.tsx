@@ -62,7 +62,7 @@ describe('VideoConferenceBlock', () => {
 		expect(mockedGet).toHaveBeenCalledTimes(1);
 	});
 
-	it('shows the join discussion button only when the call has a discussion', async () => {
+	it('hides the join discussion button when the call has no discussion', async () => {
 		mockedGet.mockResolvedValue(calling);
 		renderBlock();
 		await screen.findByText('Waiting for answer');
@@ -87,6 +87,17 @@ describe('VideoConferenceBlock', () => {
 		);
 		await screen.findByText('Waiting for answer');
 		expect(screen.queryByTestId('video-conf-join-discussion')).toBeNull();
+	});
+
+	it('hides the participants of an ongoing call when nobody has joined', async () => {
+		mockedGet.mockResolvedValue({
+			...started,
+			type: 'videoconference',
+			users: [{ _id: 'u2', username: 'bob', name: 'Bob', joined: false }]
+		});
+		renderBlock();
+		await screen.findByText('Join');
+		expect(screen.queryByText('Joined')).toBeNull();
 	});
 
 	it.each([VideoConferenceStatus.EXPIRED, VideoConferenceStatus.DECLINED])(

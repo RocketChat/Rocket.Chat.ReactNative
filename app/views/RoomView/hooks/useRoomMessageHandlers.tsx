@@ -49,14 +49,11 @@ export function useRoomMessageHandlers({
 		openingDiscussion.current = true;
 		try {
 			const discussion = await getRoomInfo(drid);
-			if (discussion) {
-				goRoom({
-					item: discussion as TGoRoomItem,
-					isMasterDetail
-				});
-			} else {
+			if (!discussion) {
 				showToast(I18n.t('Room_not_found'));
+				return;
 			}
+			await goRoom({ item: discussion as TGoRoomItem, isMasterDetail });
 		} catch (e) {
 			log(e);
 			showToast(I18n.t('Room_not_found'));

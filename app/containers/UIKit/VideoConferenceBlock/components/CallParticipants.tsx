@@ -7,7 +7,7 @@ import AvatarContainer from '~/containers/Avatar';
 
 const MAX_USERS = 3;
 
-export type TCallUsers = { _id: string; username: string; name: string; avatarETag: string; joined?: boolean }[];
+export type TCallUsers = { _id: string; username: string; name: string; avatarETag: string }[];
 
 export const CallParticipants = ({ users }: { users: TCallUsers }): ReactElement => {
 	const style = useStyle();
@@ -21,7 +21,7 @@ export const CallParticipants = ({ users }: { users: TCallUsers }): ReactElement
 					<Text style={style.plusUsersText}>{users.length > 9 ? '+9' : `+${users.length}`}</Text>
 				</View>
 			) : null}
-			<Text style={style.joined}>{i18n.t('Joined')}</Text>
+			{users.length ? <Text style={style.joined}>{i18n.t('Joined')}</Text> : null}
 		</>
 	);
 };

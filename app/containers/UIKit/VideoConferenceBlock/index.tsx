@@ -24,6 +24,7 @@ export default function VideoConferenceBlock({ callId, blockId }: { callId: stri
 
 	if (result?.success) {
 		const { users, type, status, createdBy, rid, discussionRid } = result;
+		const participants = users.filter(user => user.joined !== false);
 
 		if ('endedAt' in result) {
 			return (
@@ -32,7 +33,7 @@ export default function VideoConferenceBlock({ callId, blockId }: { callId: stri
 					rid={rid}
 					type={type}
 					status={status}
-					users={users}
+					users={participants}
 					discussionRid={discussionRid}
 				/>
 			);
@@ -41,7 +42,7 @@ export default function VideoConferenceBlock({ callId, blockId }: { callId: stri
 		if (type === 'direct' && status === VideoConferenceStatus.CALLING)
 			return <VideoConferenceDirect discussionRid={discussionRid} />;
 
-		return <VideoConferenceOutgoing blockId={blockId} users={users} discussionRid={discussionRid} />;
+		return <VideoConferenceOutgoing blockId={blockId} users={participants} discussionRid={discussionRid} />;
 	}
 
 	if (result?.error || error) return <VideoConferenceIssue />;

@@ -60,16 +60,14 @@ export const VideoConferenceBaseContainer = ({ variant, children, discussionRid 
 					<Text style={style.infoContainerText}>{iconStyle[variant].label}</Text>
 				</View>
 				{discussionRid && onDiscussionPress ? (
-					<View style={style.actionsContainer}>
-						<Touch
-							style={style.actionButton}
-							onPress={() => onDiscussionPress(discussionRid)}
-							accessibilityLabel={i18n.t('Join_discussion')}
-							accessibilityRole='button'
-							testID='video-conf-join-discussion'>
-							<CustomIcon name='discussions' size={20} color={colors.fontDefault} />
-						</Touch>
-					</View>
+					<Touch
+						style={style.actionButton}
+						onPress={() => onDiscussionPress(discussionRid)}
+						accessibilityLabel={i18n.t('Join_discussion')}
+						accessibilityRole='button'
+						testID='video-conf-join-discussion'>
+						<CustomIcon name='discussions' size={20} color={colors.fontDefault} />
+					</Touch>
 				) : null}
 			</View>
 			<View style={style.callToActionContainer}>{children}</View>
