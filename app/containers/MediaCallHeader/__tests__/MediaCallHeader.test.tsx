@@ -287,8 +287,8 @@ describe('MediaCallHeader', () => {
 });
 
 describe('MediaCallHeader with a conference call', () => {
-	const openConference = () =>
-		useConferenceCallStore.getState().open({ callId: 'call1', url: 'https://open.rocket.chat/conference/call1' });
+	const openConference = () => useConferenceCallStore.getState().open({ callId: 'call1' });
+	const minimizeConference = () => useConferenceCallStore.getState().minimize();
 
 	beforeEach(() => {
 		useCallStore.getState().reset();
@@ -299,6 +299,7 @@ describe('MediaCallHeader with a conference call', () => {
 	it('should render the call header for a conference call', () => {
 		useCallStore.setState({ call: null });
 		openConference();
+		minimizeConference();
 
 		const { getByTestId, queryByTestId } = render(
 			<Wrapper>
@@ -312,9 +313,23 @@ describe('MediaCallHeader with a conference call', () => {
 		expect(queryByTestId('media-call-header-empty')).toBeNull();
 	});
 
+	it('should not show the return-to-call row while the conference screen is open', () => {
+		useCallStore.setState({ call: null });
+		openConference();
+
+		const { queryByTestId } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		expect(queryByTestId('conference-call-header')).toBeNull();
+	});
+
 	it('should return to the call when the header is pressed', () => {
 		useCallStore.setState({ call: null });
 		openConference();
+		minimizeConference();
 
 		const { getByTestId } = render(
 			<Wrapper>
@@ -329,6 +344,7 @@ describe('MediaCallHeader with a conference call', () => {
 	it('should end the conference call from the header', () => {
 		useCallStore.setState({ call: null });
 		openConference();
+		minimizeConference();
 
 		const { getByTestId } = render(
 			<Wrapper>

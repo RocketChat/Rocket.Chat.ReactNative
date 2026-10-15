@@ -1301,9 +1301,27 @@ export const videoConferenceJoin = (callId: string, cam?: boolean, mic?: boolean
 
 export const videoConferenceGetCapabilities = () => sdk.get('video-conference.capabilities');
 
-export const videoConferenceStart = (roomId: string) => sdk.post('video-conference.start', { roomId, allowRinging: true });
+export const videoConferenceStart = (
+	roomId: string,
+	{ title, allowRinging = true }: { title?: string; allowRinging?: boolean } = {}
+) => sdk.post('video-conference.start', { roomId, title, allowRinging });
 
 export const videoConferenceCancel = (callId: string) => sdk.post('video-conference.cancel', { callId });
+
+export const videoConferenceCallConfig = (callId: string) => sdk.get('video-conference.callConfig', { callId });
+
+export const videoConferenceHeartbeat = (callId: string) => sdk.post('video-conference.heartbeat', { callId });
+
+export const videoConferenceLeave = (callId: string) => sdk.post('video-conference.leave', { callId });
+
+export const videoConferenceDecline = (callId: string) => sdk.post('video-conference.decline', { callId });
+
+export const videoConferenceInfo = (callId: string) => sdk.get('video-conference.info', { callId });
+
+export const videoConferenceAddParticipants = (callId: string, users: string[], ring: boolean) =>
+	sdk.post('video-conference.add-participants', { callId, users, ring });
+
+export const videoConferenceRing = (callId: string, userId: string) => sdk.post('video-conference.ring', { callId, userId });
 
 export const deleteOwnAccount = (password: string, confirmRelinquish = false): any =>
 	// RC 0.67.0

@@ -4,6 +4,10 @@
 <dict>
 	<key>AppGroupIdentifier</key>
 	<string>group.ios.chat.rocket</string>
+	<key>RTCAppGroupIdentifier</key>
+	<string>group.ios.chat.rocket</string>
+	<key>RTCScreenSharingExtension</key>
+	<string>chat.rocket.ios.BroadcastUpload</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

@@ -1,3 +1,4 @@
+import { type ElementType } from 'react';
 import { type Action } from 'redux';
 import { delay, put, takeEvery } from 'redux-saga/effects';
 import { call } from 'typed-redux-saga';
@@ -8,6 +9,7 @@ import { removeVideoConfCall, setCalling, setVideoConfCall, type TCallProps } fr
 import { hideActionSheetRef } from '../containers/ActionSheet';
 import { INAPP_NOTIFICATION_EMITTER } from '../lib/constants/notifications';
 import IncomingCallNotification from '../containers/InAppNotification/IncomingCallNotification';
+import EmbeddedCallNotification from '../containers/InAppNotification/IncomingCallNotification/EmbeddedCallNotification';
 import i18n from '../i18n';
 import { getSubscriptionByRoomId } from '../lib/database/services/Subscription';
 import { appSelector } from '../lib/hooks/useAppSelector';
@@ -21,6 +23,7 @@ import { videoConfJoin } from '../lib/methods/videoConf';
 import { videoConferenceCancel, notifyUser, videoConferenceStart } from '../lib/services/restApi';
 import { type ICallInfo } from '../reducers/videoConf';
 import { isInActiveVoipCall } from '../lib/services/voip/isInActiveVoipCall';
+import { isInConferenceCall } from '../lib/services/conference/useConferenceCallStore';
 
 interface IGenericAction extends Action {
 	type: string;
@@ -47,6 +50,18 @@ const CALL_INTERVAL = 3000;
 // How many attempts to call we're gonna make
 const CALL_ATTEMPT_LIMIT = 10;
 
+const showCallNotification = (customComponent: ElementType, payload: ICallInfo): void => {
+	EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, {
+		// @ts-ignore - Component props do not match Event emitter props
+		customComponent,
+		customTime: 30000,
+		customNotification: true,
+		hideOnPress: false,
+		swipeEnabled: false,
+		...payload
+	});
+};
+
 function* onDirectCall(payload: ICallInfo) {
 	if (isInActiveVoipCall()) return;
 
@@ -57,16 +72,22 @@ function* onDirectCall(payload: ICallInfo) {
 	const foreground = yield* appSelector(state => state.app.foreground);
 	if (!currentCall && foreground) {
 		yield put(setVideoConfCall(payload));
-		EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, {
-			// @ts-ignore - Component props do not match Event emitter props
-			customComponent: IncomingCallNotification,
-			customTime: 30000,
-			customNotification: true,
-			hideOnPress: false,
-			swipeEnabled: false,
-			...payload
-		});
+		showCallNotification(IncomingCallNotification, payload);
 	}
+}
+
+function* onEmbeddedRing(payload: ICallInfo) {
+	const userId = yield* appSelector(state => state.login.user.id);
+	if (isInActiveVoipCall() || isInConferenceCall() || payload.uid === userId) {
+		return;
+	}
+	const calls = yield* appSelector(state => state.videoConf.calls);
+	const foreground = yield* appSelector(state => state.app.foreground);
+	if (!foreground || calls.some(({ callId, action }) => callId === payload.callId || action === 'call')) {
+		return;
+	}
+	yield put(setVideoConfCall({ ...payload, action: 'call' }));
+	showCallNotification(EmbeddedCallNotification, payload);
 }
 
 function* onDirectCallCanceled(payload: ICallInfo) {
@@ -149,6 +170,9 @@ function* handleVideoConfIncomingWebsocketMessages({ data }: { data: any }) {
 	switch (action) {
 		case 'call':
 			yield call(onDirectCall, prop);
+			break;
+		case 'ring':
+			yield call(onEmbeddedRing, prop);
 			break;
 		case 'canceled':
 			yield call(onDirectCallCanceled, prop);

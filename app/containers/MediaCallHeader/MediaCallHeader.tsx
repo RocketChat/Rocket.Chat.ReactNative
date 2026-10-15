@@ -31,6 +31,7 @@ const MediaCallHeader = () => {
 	const insets = useSafeAreaInsets();
 	const call = useCallStore(useShallow(state => state.call));
 	const conferenceCallId = useConferenceCallStore(state => state.callId);
+	const conferenceExpanded = useConferenceCallStore(state => state.expanded);
 	const focused = useCallStore(state => state.focused);
 	const controlsVisible = useControlsVisible();
 
@@ -57,7 +58,7 @@ const MediaCallHeader = () => {
 	const rowStyle = { ...defaultHeaderStyle, borderBottomColor: colors.strokeLight, paddingTop: insets.top + HEADER_TOP_PADDING };
 
 	if (!call) {
-		if (conferenceCallId) {
+		if (conferenceCallId && !conferenceExpanded) {
 			return (
 				<View style={[styles.header, rowStyle]} testID='conference-call-header'>
 					<ConferenceCallRow />

@@ -8,7 +8,7 @@ VoIP is a peer-to-peer audio call subsystem spanning three runtimes: **TypeScrip
 
 - **Native UX layer** — Swift and Kotlin own the system call UI (CallKit on iOS, Telecom on Android), wake the app on incoming calls, and answer calls before JS exists.
 - **Signaling layer** — TypeScript drives the `@rocket.chat/media-signaling` session, which exchanges typed Media Signals over DDP (`stream-notify-user`) with the Rocket.Chat server.
-- **Media layer** — `react-native-webrtc` carries the audio streams; ICE servers come from server settings.
+- **Media layer** — `@livekit/react-native-webrtc` carries the audio streams; ICE servers come from server settings.
 
 VoIP is not VideoConf. VideoConf (`app/sagas/videoConf.ts`, `app/lib/methods/videoConf.ts`) is a Jitsi-based group meeting feature using **Redux** for state and a different wire protocol. VoIP uses **Zustand** stores (`useCallStore`, `usePeerAutocompleteStore`), a singleton `MediaSessionInstance`, and the `@rocket.chat/media-signaling` protocol. The two features must not share Redux keys, sagas, selectors, or call objects.
 
@@ -72,7 +72,7 @@ ICE servers and gathering timeout are sourced from Redux settings (`VoIP_TeamCol
 
 ### Roles
 
-The RN app is a **client** of `@rocket.chat/media-signaling`. It does not implement the protocol — it wires the package to a transport (DDP), a media stack (`react-native-webrtc`), and an identity (`mobileDeviceId` from `react-native-device-info`).
+The RN app is a **client** of `@rocket.chat/media-signaling`. It does not implement the protocol — it wires the package to a transport (DDP), a media stack (`@livekit/react-native-webrtc`), and an identity (`mobileDeviceId` from `react-native-device-info`).
 
 A call has two **participants**: a `caller` (initiates `startCall`) and a `callee` (receives a `newCall` event with `localParticipant.role === 'callee'`). The package surfaces calls as `IClientMediaCall` objects with an `emitter` and lifecycle methods (`accept`, `reject`, `hangup`, `sendDTMF`, `localParticipant.setMuted`, `localParticipant.setHeld`).
 
@@ -99,7 +99,7 @@ The RN app does not reach into the package's internals. It:
 
 - Provides `MediaCallWebRTCProcessor` factory (configured with the live ICE servers and gathering timeout).
 - Provides the DDP signal transport (out) and forwards DDP messages (in) to `processSignal`.
-- Provides `randomStringFactory`, `mediaStreamFactory` (camera/mic via `react-native-webrtc`), and `mobileDeviceId`.
+- Provides `randomStringFactory`, `mediaStreamFactory` (camera/mic via `@livekit/react-native-webrtc`), and `mobileDeviceId`.
 - Listens on `instance.on('newCall', …)` to bind outgoing calls into `useCallStore`.
 
 Everything below the wire (offer/answer SDP, ICE candidate exchange, call state machine) is the package's responsibility. The package's own protocol spec is canonical.

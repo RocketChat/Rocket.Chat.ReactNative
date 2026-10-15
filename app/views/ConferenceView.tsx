@@ -1,15 +1,43 @@
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback, type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import I18n from '~/i18n';
+import ConferenceEndedMessage from '~/containers/ConferenceCall/ConferenceEndedMessage';
+import ConferenceMessage from '~/containers/ConferenceCall/ConferenceMessage';
+import ConferencePreflight from '~/containers/ConferenceCall/ConferencePreflight';
+import LazyConferenceInCall from '~/containers/ConferenceCall/LazyConferenceInCall';
+import StatusBar from '~/containers/StatusBar';
+import { hasNativeHeaderBar } from '../lib/methods/helpers/deviceInfo';
 import Navigation from '../lib/navigation/appNavigation';
-import { useConferenceCallStore } from '../lib/services/conference/useConferenceCallStore';
+import { closeConferenceCall } from '../lib/services/conference/conferenceCallNavigation';
+import { type TConferenceError, useConferenceCallStore } from '../lib/services/conference/useConferenceCallStore';
 import { useTheme } from '../theme';
+
+const ERROR_KEYS: Record<TConferenceError, string> = {
+	'not-licensed': 'Conference_error_not_licensed',
+	'not-configured': 'Conference_error_not_configured',
+	'token-failed': 'Conference_error_token_failed',
+	'join-failed': 'error-init-video-conf',
+	unsupported: 'Conference_error_unsupported',
+	ended: 'Call_ended'
+};
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1
+	}
+});
 
 const ConferenceView = (): ReactElement => {
 	const { colors } = useTheme();
+	const { top, bottom } = useSafeAreaInsets();
+	const phase = useConferenceCallStore(state => state.phase);
+	const error = useConferenceCallStore(state => state.error);
 	const expand = useConferenceCallStore(state => state.expand);
 	const minimize = useConferenceCallStore(state => state.minimize);
+	const setPhase = useConferenceCallStore(state => state.setPhase);
 
 	useFocusEffect(
 		useCallback(() => {
@@ -25,13 +53,50 @@ const ConferenceView = (): ReactElement => {
 		}, [expand, minimize])
 	);
 
-	return <View style={[styles.container, { backgroundColor: colors.backdropColor }]} />;
-};
+	const renderContent = () => {
+		switch (phase) {
+			case 'preflight':
+				return <ConferencePreflight />;
+			case 'joining':
+			case 'connecting':
+				return (
+					<ConferenceMessage
+						loading
+						title={I18n.t('Connecting')}
+						actions={[
+							{ title: I18n.t('Cancel'), type: 'secondary', onPress: closeConferenceCall, testID: 'conference-connecting-cancel' }
+						]}
+					/>
+				);
+			case 'connected':
+			case 'reconnecting':
+				return <LazyConferenceInCall />;
+			case 'ended':
+				return <ConferenceEndedMessage onRejoin={() => setPhase('preflight')} />;
+			default:
+				return (
+					<ConferenceMessage
+						icon='warning'
+						title={I18n.t(ERROR_KEYS[error ?? 'join-failed'])}
+						actions={[
+							{ title: I18n.t('Try_again'), onPress: () => setPhase('preflight'), testID: 'conference-error-retry' },
+							{ title: I18n.t('Close'), type: 'secondary', onPress: closeConferenceCall, testID: 'conference-error-close' }
+						]}
+					/>
+				);
+		}
+	};
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	}
-});
+	return (
+		<View
+			style={[
+				styles.container,
+				{ paddingTop: hasNativeHeaderBar ? top : 0, paddingBottom: bottom, backgroundColor: colors.surfaceRoom }
+			]}>
+			<StatusBar />
+			{renderContent()}
+		</View>
+	);
+};
 
 export default ConferenceView;

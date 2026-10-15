@@ -6,7 +6,7 @@ import type {
 	WebRTCProcessorConfig,
 	MediaCallWebRTCProcessor
 } from '@rocket.chat/media-signaling';
-import { mediaDevices } from 'react-native-webrtc';
+import { mediaDevices } from '@livekit/react-native-webrtc';
 import { getUniqueIdSync } from 'react-native-device-info';
 
 import { MediaCallLogger } from './MediaCallLogger';

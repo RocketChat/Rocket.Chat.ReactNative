@@ -1,12 +1,16 @@
 import {
+	type VideoConfAddParticipantsProps,
 	type VideoConfCall,
+	type VideoConfCallIdProps,
 	type VideoConfCancelProps,
 	type VideoConference,
+	type VideoConferenceCallConfig,
 	type VideoConferenceCapabilities,
 	type VideoConferenceInstructions,
 	type VideoConfInfoProps,
 	type VideoConfJoinProps,
 	type VideoConfListProps,
+	type VideoConfRingProps,
 	type VideoConfStartProps
 } from '~/definitions/IVideoConference';
 import { type PaginatedResult } from '../helpers/PaginatedResult';
@@ -17,15 +21,39 @@ export type VideoConferenceEndpoints = {
 	};
 
 	'video-conference.join': {
-		POST: (params: VideoConfJoinProps) => { url: string; providerName: string };
+		POST: (params: VideoConfJoinProps) => { url: string; providerName: string; callId?: string; rid?: string };
 	};
 
 	'video-conference.cancel': {
 		POST: (params: VideoConfCancelProps) => void;
 	};
 
+	'video-conference.leave': {
+		POST: (params: VideoConfCallIdProps) => void;
+	};
+
+	'video-conference.heartbeat': {
+		POST: (params: VideoConfCallIdProps) => void;
+	};
+
+	'video-conference.decline': {
+		POST: (params: VideoConfCallIdProps) => void;
+	};
+
+	'video-conference.callConfig': {
+		GET: (params: VideoConfCallIdProps) => VideoConferenceCallConfig;
+	};
+
 	'video-conference.info': {
 		GET: (params: VideoConfInfoProps) => VideoConfCall;
+	};
+
+	'video-conference.add-participants': {
+		POST: (params: VideoConfAddParticipantsProps) => { added: string[] };
+	};
+
+	'video-conference.ring': {
+		POST: (params: VideoConfRingProps) => { rang: boolean };
 	};
 
 	'video-conference.list': {

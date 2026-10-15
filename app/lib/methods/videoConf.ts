@@ -1,11 +1,19 @@
 import i18n from '~/i18n';
 import navigation from '../navigation/appNavigation';
-import { videoConferenceGetCapabilities, videoConferenceJoin } from '../services/restApi';
+import { videoConferenceInfo, videoConferenceJoin } from '../services/restApi';
 import { showErrorAlert } from './helpers';
 import log from './helpers/log';
 import openLink from './helpers/openLink';
 import { openConferenceCall } from './openConferenceCall';
 import { requestVoipCallPermissions } from './voipCallPermissions';
+
+const getCallProvider = async (callId: string): Promise<string> => {
+	const info = await videoConferenceInfo(callId);
+	if (!info.success) {
+		throw new Error(`Could not look up video conference ${callId}`);
+	}
+	return info.providerName;
+};
 
 export const videoConfJoin = async (
 	callId: string,
@@ -14,10 +22,7 @@ export const videoConfJoin = async (
 	{ fromPush, rid }: { fromPush?: boolean; rid?: string } = {}
 ): Promise<void> => {
 	try {
-		// Read-only: checking here doesn't post a join, which the embedded page does itself once it loads.
-		const capabilities = await videoConferenceGetCapabilities();
-
-		if (capabilities.success && capabilities.providerName === 'livekit') {
+		if ((await getCallProvider(callId)) === 'livekit') {
 			await openConferenceCall({ callId, rid });
 			return;
 		}

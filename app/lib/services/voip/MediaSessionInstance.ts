@@ -10,7 +10,7 @@ import {
 } from '@rocket.chat/media-signaling';
 import { Platform } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
-import { registerGlobals } from 'react-native-webrtc';
+import { registerGlobals } from '@livekit/react-native-webrtc';
 import { getUniqueIdSync } from 'react-native-device-info';
 import { dequal } from 'dequal';
 
@@ -32,6 +32,7 @@ import type { ISubscription, TSubscriptionModel } from '~/definitions';
 import { getDMSubscriptionByUsername } from '~/lib/database/services/Subscription';
 import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
 import log from '~/lib/methods/helpers/log';
+import { isInConferenceCall } from '../conference/useConferenceCallStore';
 import { isInActiveVoipCall } from './isInActiveVoipCall';
 import { requestVoipCallPermissions } from '~/lib/methods/voipCallPermissions';
 import I18n from '~/i18n';
@@ -198,6 +199,10 @@ class MediaSessionInstance {
 		if (existingCall != null && existingCall.callId === callId) {
 			return;
 		}
+		if (this.isBlockedByConference()) {
+			this.endCall(callId);
+			return;
+		}
 
 		const mainCall = this.instance?.getCallData(callId);
 
@@ -232,8 +237,16 @@ class MediaSessionInstance {
 		}
 	};
 
+	private isBlockedByConference = (): boolean => {
+		if (!isInConferenceCall()) {
+			return false;
+		}
+		showErrorAlert(I18n.t('VoIP_Already_In_Call'), I18n.t('Oops'));
+		return true;
+	};
+
 	public startCallByRoom = (room: TSubscriptionModel | ISubscription) => {
-		if (isInActiveVoipCall()) return;
+		if (isInActiveVoipCall() || this.isBlockedByConference()) return;
 		useCallStore.getState().setRoomId(room.rid ?? null);
 		const otherUserId = getUidDirectMessage(room);
 		if (otherUserId) {
@@ -248,6 +261,9 @@ class MediaSessionInstance {
 	public startCall = async (userId: string, actor: CallActorType): Promise<void> => {
 		if (isInActiveVoipCall()) {
 			throw new Error(I18n.t('VoIP_Already_In_Call'));
+		}
+		if (this.isBlockedByConference()) {
+			return;
 		}
 		if (isSelfUserId(userId)) {
 			mediaCallLogger.debug('[VoIP] startCall blocked: target userId matches logged-in user');

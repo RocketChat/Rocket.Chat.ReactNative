@@ -1,4 +1,6 @@
+import log from '~/lib/methods/helpers/log';
 import Navigation from '~/lib/navigation/appNavigation';
+import { conferenceSession } from './ConferenceSession';
 import { useConferenceCallStore } from './useConferenceCallStore';
 
 export const CONFERENCE_ROUTE = 'ConferenceView';
@@ -30,6 +32,7 @@ export const expandConferenceCall = (): void => {
 
 export const closeConferenceCall = (): void => {
 	invalidatePendingConferenceCallOpen();
+	conferenceSession.end().catch(log);
 	useConferenceCallStore.getState().close();
 	if (isShowingConference()) {
 		Navigation.back();
