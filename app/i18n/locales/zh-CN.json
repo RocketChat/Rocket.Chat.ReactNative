@@ -408,6 +408,7 @@
   "New_Message": "新信息",
   "New_Password": "新密码",
   "Next": "下一步",
+  "No_actions_available": "没有可用的操作",
   "No_available_agents_to_transfer": "没有可用的代理进行传输",
   "No_files": "没有文件",
   "No_label_provided": "没有提供 {{label}}",
