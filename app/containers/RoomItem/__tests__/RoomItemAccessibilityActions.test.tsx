@@ -39,7 +39,10 @@ const fireShowActions = () =>
 
 describe('RoomItem accessibility actions', () => {
 	beforeEach(() => mockShowActionSheet.mockClear());
-	afterEach(() => jest.restoreAllMocks());
+	afterEach(() => {
+		jest.restoreAllMocks();
+		openSwipeItem.value = null;
+	});
 
 	it('does not expose showActions when the row has no long press', () => {
 		renderRoomItem({ swipeEnabled: false });

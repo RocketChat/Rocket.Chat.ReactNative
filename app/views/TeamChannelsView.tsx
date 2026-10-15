@@ -529,7 +529,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 		}
 
 		if (options.length === 0) {
-			AccessibilityInfo.announceForAccessibility(I18n.t('No_actions_available'));
+			AccessibilityInfo.announceForAccessibilityWithOptions(I18n.t('No_actions_available'), { queue: true });
 			return;
 		}
 		showActionSheet({ options });
