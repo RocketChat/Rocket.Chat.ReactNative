@@ -12,7 +12,7 @@ jest.unmock('~/lib/hooks/useResponsiveLayout/useResponsiveLayout');
 const item = { rid: 'rid', t: 'c', name: 'general' };
 const testID = 'rooms-list-view-item-general';
 
-const renderRoomItem = (props: { swipeEnabled: boolean; onLongPress?: (item: unknown) => void }) =>
+const renderRoomItem = ({ swipeEnabled, onLongPress }: { swipeEnabled: boolean; onLongPress?: (item: unknown) => void }) =>
 	render(
 		<Provider store={mockedStore}>
 			<RoomItemContainer
@@ -24,7 +24,8 @@ const renderRoomItem = (props: { swipeEnabled: boolean; onLongPress?: (item: unk
 				displayMode={DisplayMode.Expanded}
 				getRoomTitle={() => 'general'}
 				getRoomAvatar={() => ''}
-				{...props}
+				swipeEnabled={swipeEnabled}
+				onLongPress={onLongPress}
 			/>
 		</Provider>
 	);

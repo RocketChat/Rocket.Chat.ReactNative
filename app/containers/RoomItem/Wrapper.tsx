@@ -32,9 +32,13 @@ const Wrapper = ({
 			accessible
 			accessibilityRole='button'
 			accessibilityActions={onShowActions ? [{ name: 'showActions', label: I18n.t('Show_room_actions') }] : undefined}
-			onAccessibilityAction={event => {
-				if (event.nativeEvent.actionName === 'showActions') onShowActions?.();
-			}}>
+			onAccessibilityAction={
+				onShowActions
+					? event => {
+							if (event.nativeEvent.actionName === 'showActions') onShowActions();
+						}
+					: undefined
+			}>
 			<IconOrAvatar displayMode={displayMode} {...props} />
 			<View style={styles.centerContainer}>{children}</View>
 		</View>
