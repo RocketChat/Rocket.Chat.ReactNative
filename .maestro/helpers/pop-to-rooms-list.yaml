@@ -12,6 +12,13 @@ tags:
     commands:
       - runFlow:
           when:
+            visible:
+              id: 'sidebar-view'
+          commands:
+            - tapOn:
+                id: 'tab-chats'
+      - runFlow:
+          when:
             platform: Android
             visible:
               id: '(custom-)?header-back'

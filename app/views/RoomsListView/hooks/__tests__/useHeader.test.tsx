@@ -7,7 +7,7 @@ import { useJsRoomsListHeader } from '../useJsRoomsListHeader';
 import { useNativeRoomsListHeader } from '../useNativeRoomsListHeader';
 
 const mockSetOptions = jest.fn();
-const mockNavigation = { setOptions: mockSetOptions, navigate: jest.fn(), toggleDrawer: jest.fn(), getParent: jest.fn() };
+const mockNavigation = { setOptions: mockSetOptions, navigate: jest.fn(), getParent: jest.fn() };
 
 jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => mockNavigation
@@ -214,13 +214,24 @@ describe('RoomsListView useHeader', () => {
 		expect(rightItems.every((item: { type: string }) => item.type === 'button')).toBe(true);
 	});
 
-	it('exposes only the drawer as a native left item', () => {
+	it('has no native left item on phones, where the menu lives in a tab', () => {
+		renderUseHeader();
+
+		const options = mockSetOptions.mock.calls[0][0];
+		expect(options.unstable_headerLeftItems({})).toEqual([]);
+	});
+
+	it('opens Settings from the native left item on master detail', () => {
+		mockIsMasterDetail = true;
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
 		const leftItems = options.unstable_headerLeftItems({});
 		expect(leftItems).toHaveLength(1);
 		expect(leftItems[0].icon).toEqual({ type: 'image', source: { uri: 'hamburguer' } });
+
+		leftItems[0].onPress();
+		expect(mockNavigation.navigate).toHaveBeenCalledWith('ModalStackNavigator', { screen: 'SettingsView' });
 	});
 
 	it('opens the server switcher when the header title is pressed', () => {

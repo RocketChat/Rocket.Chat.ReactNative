@@ -7,9 +7,7 @@ import * as List from '~/containers/List';
 import SafeAreaView from '~/containers/SafeAreaView';
 import I18n from '~/i18n';
 import { type AccessibilityStackParamList } from '~/stacks/types';
-import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useUserPreferences } from '~/lib/methods/userPreferences';
-import { headerLeftDrawer } from '~/lib/methods/helpers/navigation/headerActions';
 import {
 	USER_MENTIONS_PREFERENCES_KEY,
 	ROOM_MENTIONS_PREFERENCES_KEY,
@@ -22,7 +20,6 @@ export type TAlertDisplayType = 'TOAST' | 'DIALOG';
 
 const AccessibilityAndAppearanceView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<AccessibilityStackParamList>>();
-	const isMasterDetail = useMasterDetail();
 	const [mentionsWithAtSymbol, setMentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY, false);
 	const [roomsWithHashTagSymbol, setRoomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
 	const [autoplayGifs, setAutoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
@@ -52,10 +49,9 @@ const AccessibilityAndAppearanceView = () => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: I18n.t('Accessibility_and_Appearance'),
-			...(isMasterDetail ? { headerLeft: undefined } : headerLeftDrawer(navigation, 'accessibility-view-drawer'))
+			title: I18n.t('Accessibility_and_Appearance')
 		});
-	}, [navigation, isMasterDetail]);
+	}, [navigation]);
 	return (
 		<SafeAreaView>
 			<List.Container testID='accessibility-view-list'>

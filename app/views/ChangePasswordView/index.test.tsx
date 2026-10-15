@@ -53,7 +53,7 @@ const buildState = () => ({
 const navigation = {
 	setOptions: jest.fn(),
 	goBack: jest.fn(),
-	getState: () => ({ routes: [{ name: 'ProfileView' }] })
+	getState: () => ({ index: 2, routes: [{ name: 'MenuView' }, { name: 'ProfileView' }, { name: 'ChangePasswordView' }] })
 } as any;
 
 const totpInvalid = { error: 'totp-invalid', details: { method: TwoFactorMethods.TOTP } };

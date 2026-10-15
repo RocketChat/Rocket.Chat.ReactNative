@@ -4,11 +4,12 @@ tags:
   - 'util'
 
 ---
-- runFlow:
-    file: '../../../helpers/tap-header-item.yaml'
-    env:
-      ANDROID_ID: 'rooms-list-view-sidebar'
-      IOS_LABEL: 'Menu'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- tapOn:
+    id: 'tab-menu'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
@@ -19,16 +20,11 @@ tags:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      id: 'sidebar-close-drawer'
+      id: 'sidebar-user-info'
     timeout: 60000
 - tapOn:
-    id: 'sidebar-close-drawer'
-
-- runFlow:
-    when:
-      platform: iOS
-    commands:
-      - extendedWaitUntil:
-          notVisible:
-            id: 'sidebar-close-drawer'
-          timeout: 60000
+    id: 'tab-chats'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000

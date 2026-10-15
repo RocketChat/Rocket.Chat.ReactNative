@@ -6,27 +6,23 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import I18n from '~/i18n';
-import { headerLeftDrawer } from '~/lib/methods/helpers/navigation/headerActions';
 import { getUserSelector } from '~/selectors/login';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { type AdminPanelStackParamList } from '~/stacks/types';
 import { type IApplicationState } from '~/definitions';
-import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { buildLoginScript } from './buildLoginScript';
 
 const AdminPanelView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<AdminPanelStackParamList, 'AdminPanelView'>>();
 	const baseUrl = useSelector((state: IApplicationState) => state.server.server);
 	const token = useSelector((state: IApplicationState) => getUserSelector(state).token);
-	const isMasterDetail = useMasterDetail();
 	const insets = useSafeAreaInsets();
 
 	useEffect(() => {
 		navigation.setOptions({
-			...(isMasterDetail ? { headerLeft: undefined } : headerLeftDrawer(navigation)),
 			title: I18n.t('Admin_Panel')
 		});
-	}, [isMasterDetail, navigation]);
+	}, [navigation]);
 
 	if (!baseUrl) {
 		return null;

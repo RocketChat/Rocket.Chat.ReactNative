@@ -62,7 +62,7 @@ export const useOmnichannelActions = (rid: string, roomStore: RoomStore): IHeade
 
 	const menu: IHeaderMenuItem[] = [
 		...(canPlaceLivechatOnHold
-			? [{ label: i18n.t('Place_chat_on_hold'), icon: 'pause' as const, onPress: () => placeLivechatOnHold({ rid, navigation }) }]
+			? [{ label: i18n.t('Place_chat_on_hold'), icon: 'pause' as const, onPress: () => placeLivechatOnHold({ rid }) }]
 			: []),
 		...(canForwardGuest
 			? [

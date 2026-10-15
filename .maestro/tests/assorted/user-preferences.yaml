@@ -191,18 +191,13 @@ tags:
           visible:
             id: 'profile-view'
           timeout: 60000
-      - tapOn:
-          id: 'profile-view-open-sidebar'
+      - runFlow: '../../helpers/go-back.yaml'
       - extendedWaitUntil:
           visible:
             id: 'sidebar-view'
           timeout: 60000
-      - extendedWaitUntil:
-          visible:
-            id: 'sidebar-chats'
-          timeout: 60000
       - tapOn:
-          id: 'sidebar-chats'
+          id: 'tab-chats'
       - runFlow:
           file: '../../helpers/search-room.yaml'
           env:
@@ -247,18 +242,13 @@ tags:
           visible:
             id: 'profile-view'
           timeout: 60000
-      - tapOn:
-          id: 'profile-view-open-sidebar'
+      - runFlow: '../../helpers/go-back.yaml'
       - extendedWaitUntil:
           visible:
             id: 'sidebar-view'
           timeout: 60000
-      - extendedWaitUntil:
-          visible:
-            id: 'sidebar-chats'
-          timeout: 60000
       - tapOn:
-          id: 'sidebar-chats'
+          id: 'tab-chats'
       - runFlow:
           file: '../../helpers/search-room.yaml'
           env:

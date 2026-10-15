@@ -25,7 +25,7 @@ const handleRequest = function* handleRequest({ token }) {
 
 		if (result.room && result.room.rid) {
 			yield delay(1000);
-			yield Navigation.navigate('RoomsListView');
+			yield Navigation.navigateToRoomsList();
 			const { room } = result;
 			Navigation.navigate('RoomView', {
 				rid: room.rid,

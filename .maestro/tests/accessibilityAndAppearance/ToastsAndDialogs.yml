@@ -16,7 +16,8 @@ tags:
       PASSWORD: ${output.user.password}
 
 # Show alerts as Toasts
-- tapOn: 'Menu'
+- tapOn:
+    id: 'tab-menu'
 - tapOn: 'Accessibility & appearance'
 - runFlow:
     when:
@@ -41,7 +42,7 @@ tags:
           id: 'action-sheet-handle'
 - waitForAnimationToEnd:
     timeout: 5000
-- tapOn: 'Menu'
+- runFlow: '../../helpers/go-back.yaml'
 - tapOn: 'Edit status'
 - tapOn:
     id: 'status-view-offline'
@@ -70,7 +71,7 @@ tags:
       - tapOn: '.*Show alerts as.*'
       - assertVisible: 'Toasts. Dismissed automatically. Checked'
       - tapOn: 'Dialogs. Require manual dismissal. Unchecked'
-- tapOn: 'Menu'
+- runFlow: '../../helpers/go-back.yaml'
 - tapOn: 'Edit status'
 - tapOn:
     id: 'status-view-online'

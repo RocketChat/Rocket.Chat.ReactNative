@@ -430,7 +430,7 @@ describe('useRoomHeaderActions', () => {
 
 			menuOf()[0].onPress();
 
-			expect(placeLivechatOnHold).toHaveBeenCalledWith({ rid: 'rid-1', navigation: mockNavigation });
+			expect(placeLivechatOnHold).toHaveBeenCalledWith({ rid: 'rid-1' });
 		});
 
 		it.each([

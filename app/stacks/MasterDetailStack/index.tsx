@@ -278,7 +278,7 @@ const InsideStack = createNativeStackNavigator({
 		presentation: isIOS ? 'containedTransparentModal' : 'containedModal'
 	},
 	screens: {
-		DrawerNavigator: createNativeStackScreen({
+		MainNavigator: createNativeStackScreen({
 			screen: SplitNav as any,
 			options: { headerShown: false }
 		}),

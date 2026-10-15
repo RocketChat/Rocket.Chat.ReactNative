@@ -411,7 +411,6 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 	};
 
 	placeOnHoldLivechat = () => {
-		const { navigation } = this.props;
 		const { room } = this.state;
 		showConfirmationAlert({
 			title: I18n.t('Are_you_sure_question_mark'),
@@ -420,7 +419,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 			onPress: async () => {
 				try {
 					await onHoldLivechat(room.rid);
-					navigation.navigate('RoomsListView');
+					Navigation.navigateToRoomsList();
 				} catch (e: any) {
 					showErrorAlert(e.data?.error, I18n.t('Oops'));
 				}

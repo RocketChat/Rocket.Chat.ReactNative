@@ -1,18 +1,17 @@
 import { type TIconsName } from '~/containers/CustomIcon';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall';
-import { sidebarNavigate } from '../methods/sidebarNavigate';
+import { menuNavigate } from '../methods/menuNavigate';
 
 export interface IStackItem {
 	title: string;
 	icon: TIconsName;
 	testID: string;
 	onPress: () => void;
-	selected: boolean;
 	disabled?: boolean;
 }
 
-export const useStackItems = (currentScreen: string): IStackItem[] => {
+export const useStackItems = (): IStackItem[] => {
 	const isMasterDetail = useMasterDetail();
 	const { openNewMediaCall, hasMediaCallPermission, isInActiveCall } = useNewMediaCall();
 
@@ -24,8 +23,7 @@ export const useStackItems = (currentScreen: string): IStackItem[] => {
 		title,
 		icon,
 		testID,
-		onPress: () => sidebarNavigate(route),
-		selected: currentScreen === route
+		onPress: () => menuNavigate(route)
 	});
 
 	const mediaCallItems: IStackItem[] = hasMediaCallPermission
@@ -35,17 +33,15 @@ export const useStackItems = (currentScreen: string): IStackItem[] => {
 					icon: 'phone',
 					testID: 'sidebar-media-call',
 					onPress: openNewMediaCall,
-					selected: false,
 					disabled: isInActiveCall
 				}
 			]
 		: [];
 
 	return [
-		routeItem('Chats', 'message', 'sidebar-chats', 'ChatsStackNavigator'),
 		...mediaCallItems,
-		routeItem('Profile', 'user', 'sidebar-profile', 'ProfileStackNavigator'),
-		routeItem('Accessibility_and_Appearance', 'accessibility', 'sidebar-accessibility', 'AccessibilityStackNavigator'),
-		routeItem('Settings', 'administration', 'sidebar-settings', 'SettingsStackNavigator')
+		routeItem('Profile', 'user', 'sidebar-profile', 'ProfileView'),
+		routeItem('Accessibility_and_Appearance', 'accessibility', 'sidebar-accessibility', 'AccessibilityAndAppearanceView'),
+		routeItem('Settings', 'administration', 'sidebar-settings', 'SettingsView')
 	];
 };

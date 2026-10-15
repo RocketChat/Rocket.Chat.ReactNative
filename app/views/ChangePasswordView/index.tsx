@@ -52,8 +52,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-const isFromRoute = (navigation: NativeStackNavigationProp<ProfileStackParamList, 'ChangePasswordView'>, routeName: string) =>
-	navigation.getState()?.routes?.[0]?.name === routeName;
+const isPushedFrom = (navigation: NativeStackNavigationProp<ProfileStackParamList, 'ChangePasswordView'>, routeName: string) => {
+	const state = navigation.getState();
+	return state?.routes?.[state.index - 1]?.name === routeName;
+};
 
 interface IChangePasswordViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'ChangePasswordView'>;
@@ -62,7 +64,7 @@ interface IChangePasswordViewProps {
 const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
-	const fromProfileView = isFromRoute(navigation, 'ProfileView');
+	const fromProfileView = isPushedFrom(navigation, 'ProfileView');
 
 	const validationSchema = yup.object().shape({
 		currentPassword: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Current_password') })}`),

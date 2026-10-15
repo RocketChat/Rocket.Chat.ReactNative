@@ -17,7 +17,8 @@ const openServersList = () => showActionSheetRef({ children: <ServersList />, en
 
 export const useNativeRoomsListHeader = () => {
 	const { searchEnabled, search, startSearch, stopSearch, resetSearch, searchBarRef } = useContext(RoomsSearchContext);
-	const { navigation, disabled, badgeColor, troubleshootActions, browseActions, onDrawerPress } = useRoomsListHeaderState();
+	const { navigation, isMasterDetail, disabled, badgeColor, troubleshootActions, browseActions, onSettingsPress } =
+		useRoomsListHeaderState();
 	const { colors } = useTheme();
 	const serverName = useAppSelector(state => state.settings.Site_Name as string | undefined);
 	const subtitle = useRoomsListSubtitle();
@@ -25,12 +26,12 @@ export const useNativeRoomsListHeader = () => {
 	const showsCancelSearch = isTablet && searchEnabled;
 
 	useLayoutEffect(() => {
-		const drawerAction: IHeaderAction = {
+		const settingsAction: IHeaderAction = {
 			label: i18n.t('Menu'),
 			icon: 'hamburguer',
 			disabled,
 			badge: badgeColor ? { color: badgeColor } : undefined,
-			onPress: onDrawerPress
+			onPress: onSettingsPress
 		};
 		const newMessageAction: IHeaderAction = {
 			label: i18n.t('Create_new_channel_team_dm_discussion'),
@@ -62,7 +63,7 @@ export const useNativeRoomsListHeader = () => {
 						hideWhenScrolling: true,
 						hideNavigationBar: !isTablet
 					},
-			...headerLeftActions([drawerAction]),
+			...headerLeftActions(isMasterDetail ? [settingsAction] : []),
 			...headerRightActions(
 				showsCancelSearch
 					? [cancelSearchAction]
@@ -72,11 +73,12 @@ export const useNativeRoomsListHeader = () => {
 	}, [
 		navigation,
 		colors.buttonBackgroundPrimaryDefault,
+		isMasterDetail,
 		disabled,
 		badgeColor,
 		troubleshootActions,
 		browseActions,
-		onDrawerPress,
+		onSettingsPress,
 		canCreateRoom,
 		goToNewMessage,
 		showsCancelSearch,

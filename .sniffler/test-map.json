@@ -1,7 +1,7 @@
 [
 	{
 		"test": ".maestro/tests/accessibilityAndAppearance/ToastsAndDialogs.yml",
-		"dependsOn": ["app/views/StatusView/**", "app/views/SidebarView/**"]
+		"dependsOn": ["app/views/StatusView/**", "app/views/MenuView/**"]
 	},
 	{
 		"test": ".maestro/tests/assorted/accessibility-and-appearance.yaml",
@@ -9,7 +9,7 @@
 	},
 	{
 		"test": ".maestro/tests/assorted/admin-panel.yaml",
-		"dependsOn": ["app/views/AdminPanelView/**", "app/views/SidebarView/**"]
+		"dependsOn": ["app/views/AdminPanelView/**", "app/views/MenuView/**"]
 	},
 	{
 		"test": ".maestro/tests/assorted/broadcast.yaml",
@@ -136,7 +136,7 @@
 	},
 	{
 		"test": ".maestro/tests/assorted/status.yaml",
-		"dependsOn": ["app/views/StatusView/**", "app/views/SidebarView/**"]
+		"dependsOn": ["app/views/StatusView/**", "app/views/MenuView/**"]
 	},
 	{
 		"test": ".maestro/tests/assorted/user-preferences.yaml",

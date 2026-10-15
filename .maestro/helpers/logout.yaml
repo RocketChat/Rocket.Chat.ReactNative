@@ -7,28 +7,17 @@ tags:
 - runFlow:
     when:
       visible:
-        id: 'profile-view-open-sidebar'
+        id: 'profile-view'
     commands:
-      - tapOn:
-          id: 'profile-view-open-sidebar'
+      - runFlow: 'go-back.yaml'
 
 - runFlow:
     when:
-      platform: Android
       visible:
-        id: 'rooms-list-view-sidebar'
+        id: 'tab-menu'
     commands:
       - tapOn:
-          id: 'rooms-list-view-sidebar'
-
-- runFlow:
-    when:
-      platform: iOS
-      visible:
-        text: 'Menu'
-    commands:
-      - tapOn:
-          text: 'Menu'
+          id: 'tab-menu'
 
 - runFlow:
     when:

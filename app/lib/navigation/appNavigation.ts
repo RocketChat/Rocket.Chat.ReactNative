@@ -31,7 +31,7 @@ function popTo(name: string, params?: any, options?: { merge?: boolean }) {
 // Removes RoomView from the stack and leaves only RoomsListView open
 function popToTop(isMasterDetail: boolean) {
 	if (isMasterDetail) {
-		popTo('DrawerNavigator');
+		popTo('MainNavigator');
 		dispatch(
 			CommonActions.reset({
 				index: 0,
@@ -45,11 +45,18 @@ function popToTop(isMasterDetail: boolean) {
 
 function popToRoom(isMasterDetail: boolean) {
 	if (isMasterDetail) {
-		popTo('DrawerNavigator');
+		popTo('MainNavigator');
 	} else {
 		// merge keeps the retained RoomView's existing params instead of replacing them with undefined
 		popTo('RoomView', undefined, { merge: true });
 	}
+}
+
+function navigateToRoomsList() {
+	popTo('MainNavigator');
+	navigationRef.current?.dispatch(
+		CommonActions.navigate({ name: 'HomeTabs', params: { screen: 'RoomsListStackNavigator' }, pop: true })
+	);
 }
 
 function dispatch(params: any) {
@@ -100,6 +107,7 @@ export default {
 	popTo,
 	popToTop,
 	popToRoom,
+	navigateToRoomsList,
 	dispatch,
 	resetTo,
 	getCurrentRoute,

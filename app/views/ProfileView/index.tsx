@@ -1,4 +1,4 @@
-import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type ReactElement, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Keyboard, ScrollView, View, type TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -21,7 +21,7 @@ import { type IProfileParams } from '~/definitions';
 import { TwoFactorMethods } from '~/definitions/ITotp';
 import I18n from '~/i18n';
 import { compareServerVersion } from '~/lib/methods/helpers';
-import { headerLeftDrawer, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
+import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
@@ -35,7 +35,6 @@ import sharedStyles from '../Styles';
 import DeleteAccountActionSheetContent from './components/DeleteAccountActionSheetContent';
 import styles from './styles';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
-import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import useParsedCustomFields from '~/lib/hooks/useParsedCustomFields';
 import CustomFields from '~/containers/CustomFields';
 import ListSeparator from '~/containers/List/components/ListSeparator';
@@ -85,7 +84,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		serverVersion: state.server.version,
 		Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean
 	}));
-	const isMasterDetail = useMasterDetail();
 	const {
 		control,
 		handleSubmit,
@@ -266,7 +264,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useLayoutEffect(() => {
-		const options: NativeStackNavigationOptions = {
+		navigation.setOptions({
 			title: I18n.t('Profile'),
 			...headerRightActions([
 				{
@@ -276,13 +274,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 					onPress: () => navigation.navigate('UserPreferencesView')
 				}
 			])
-		};
-		if (!isMasterDetail) {
-			Object.assign(options, headerLeftDrawer(navigation, 'profile-view-open-sidebar'));
-		}
-
-		navigation.setOptions(options);
-	}, [navigation, isMasterDetail]);
+		});
+	}, [navigation]);
 
 	useFocusEffect(
 		useCallback(() => {

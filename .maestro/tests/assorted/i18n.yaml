@@ -25,11 +25,8 @@ tags:
     visible:
       id: 'rooms-list-view'
     timeout: 60000
-- runFlow:
-    file: '../../helpers/tap-header-item.yaml'
-    env:
-      ANDROID_ID: 'rooms-list-view-sidebar'
-      IOS_LABEL: 'Menu'
+- tapOn:
+    id: 'tab-menu'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
@@ -47,7 +44,7 @@ tags:
       text: 'Settings'
     timeout: 60000
 - tapOn:
-    id: 'sidebar-close-drawer'
+    id: 'tab-chats'
 
 # should select 'nl' and fallback to 'en'
 - runFlow: './utils/nav-to-language.yaml'
@@ -57,11 +54,8 @@ tags:
     visible:
       id: 'rooms-list-view'
     timeout: 60000
-- runFlow:
-    file: '../../helpers/tap-header-item.yaml'
-    env:
-      ANDROID_ID: 'rooms-list-view-sidebar'
-      IOS_LABEL: 'Menu'
+- tapOn:
+    id: 'tab-menu'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
@@ -79,4 +73,4 @@ tags:
       text: 'Instellingen'
     timeout: 60000
 - tapOn:
-    id: 'sidebar-close-drawer'
+    id: 'tab-chats'

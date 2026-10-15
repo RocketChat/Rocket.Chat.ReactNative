@@ -1,17 +1,20 @@
 import { useContext, type ComponentType } from 'react';
-import { I18nManager } from 'react-native';
 import {
 	createNativeStackNavigator,
 	createNativeStackScreen,
 	type NativeStackNavigationOptions
 } from '@react-navigation/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator, createBottomTabScreen } from '@react-navigation/bottom-tabs';
 import { type StaticScreenProps } from '@react-navigation/native';
 
-import { ThemeContext } from '../theme';
+import I18n from '../i18n';
+import { ThemeContext, useTheme } from '../theme';
+import { CustomIcon } from '../containers/CustomIcon';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import withNavigation from '../lib/navigation/withNavigation';
-import Sidebar from '../views/SidebarView';
+import MenuView from '../views/MenuView';
+import MenuTabIcon from '../views/MenuView/components/MenuTabIcon';
+import { useMenuButtonState } from '../views/MenuView/hooks/useMenuButtonState';
 import { isIOS } from '../lib/methods/helpers';
 import { type TNavigation } from './stackType';
 import RoomView from '../views/RoomView';
@@ -151,12 +154,84 @@ const ForwardLivechatViewScreen: ComponentType<StaticScreenProps<TNavigation['Fo
 	ForwardLivechatView as any;
 const AttachmentViewScreen: ComponentType<StaticScreenProps<TNavigation['AttachmentView']>> = AttachmentView as any;
 
-const ChatsStack = createNativeStackNavigator({
+const RoomsListStack = createNativeStackNavigator({
 	screenOptions: defaultHeader,
 	screens: {
 		RoomsListView: createNativeStackScreen({
 			screen: RoomsListView,
 			options: { freezeOnBlur: true }
+		})
+	}
+}).with(({ Navigator }) => {
+	const { theme } = useContext(ThemeContext);
+	return <Navigator screenOptions={themedHeader(theme)} />;
+});
+
+const MenuStack = createNativeStackNavigator({
+	screenOptions: defaultHeader,
+	screens: {
+		MenuView: createNativeStackScreen({
+			screen: MenuView,
+			options: () => ({ title: I18n.t('Menu') })
+		})
+	}
+}).with(({ Navigator }) => {
+	const { theme } = useContext(ThemeContext);
+	return <Navigator screenOptions={themedHeader(theme)} />;
+});
+
+const HomeTabs = createBottomTabNavigator({
+	screenOptions: {
+		headerShown: false,
+		freezeOnBlur: true
+	},
+	screens: {
+		RoomsListStackNavigator: createBottomTabScreen({
+			screen: RoomsListStack,
+			options: () => ({
+				title: I18n.t('Chats'),
+				tabBarButtonTestID: 'tab-chats',
+				tabBarIcon: ({ color, size }) => <CustomIcon name='message' color={color} size={size} />
+			})
+		}),
+		MenuStackNavigator: createBottomTabScreen({
+			screen: MenuStack,
+			options: () => ({
+				title: I18n.t('Menu'),
+				tabBarButtonTestID: 'tab-menu'
+			})
+		})
+	}
+}).with(({ Navigator }) => {
+	const { colors } = useTheme();
+	const { disabled, badgeColor } = useMenuButtonState();
+	return (
+		<Navigator
+			screenOptions={({ route }) => ({
+				tabBarActiveTintColor: colors.buttonBackgroundPrimaryDefault,
+				tabBarInactiveTintColor: colors.fontSecondaryInfo,
+				tabBarStyle: { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight },
+				...(route.name === 'MenuStackNavigator' && {
+					tabBarIcon: ({ color, size }) => <MenuTabIcon color={color} size={size} badgeColor={badgeColor} />
+				})
+			})}
+			screenListeners={({ route }) => ({
+				tabPress: event => {
+					if (disabled && route.name === 'MenuStackNavigator') {
+						event.preventDefault();
+					}
+				}
+			})}
+		/>
+	);
+});
+
+const MainStack = createNativeStackNavigator({
+	screenOptions: defaultHeader,
+	screens: {
+		HomeTabs: createNativeStackScreen({
+			screen: HomeTabs,
+			options: { headerShown: false }
 		}),
 		RoomView: RoomViewScreen,
 		RoomActionsView: createNativeStackScreen({
@@ -203,35 +278,13 @@ const ChatsStack = createNativeStackNavigator({
 		JitsiMeetView: createNativeStackScreen({
 			screen: JitsiMeetViewScreen,
 			options: { headerShown: false, animation: isIOS ? 'default' : 'none' }
-		})
-	}
-}).with(({ Navigator }) => {
-	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
-});
-
-const ProfileStack = createNativeStackNavigator({
-	screenOptions: defaultHeader,
-	screens: {
+		}),
 		ProfileView: ProfileViewScreen,
 		ChangePasswordView: ChangePasswordViewScreen,
 		UserPreferencesView: UserPreferencesViewScreen,
-		ChangeAvatarView: ChangeAvatarViewScreen,
 		UserNotificationPrefView: UserNotificationPrefViewScreen,
-		PushTroubleshootView: PushTroubleshootViewScreen,
-		PickerView: PickerViewScreen
-	}
-}).with(({ Navigator }) => {
-	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
-});
-
-const SettingsStack = createNativeStackNavigator({
-	screenOptions: defaultHeader,
-	screens: {
 		SettingsView: SettingsViewScreen,
 		SecurityPrivacyView: SecurityPrivacyViewScreen,
-		PushTroubleshootView: PushTroubleshootViewScreen,
 		E2EEncryptionSecurityView: E2EEncryptionSecurityViewScreen,
 		LanguageView: LanguageViewScreen,
 		DefaultBrowserView: DefaultBrowserViewScreen,
@@ -241,58 +294,14 @@ const SettingsStack = createNativeStackNavigator({
 		ScreenLockConfigView: createNativeStackScreen({
 			screen: ScreenLockConfigViewScreen,
 			options: (): NativeStackNavigationOptions => (ScreenLockConfigView as any).navigationOptions()
-		})
-	}
-}).with(({ Navigator }) => {
-	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
-});
-
-const AdminPanelStack = createNativeStackNavigator({
-	screenOptions: defaultHeader,
-	screens: {
-		AdminPanelView: AdminPanelViewScreen
-	}
-}).with(({ Navigator }) => {
-	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={themedHeader(theme)} />;
-});
-
-const AccessibilityStack = createNativeStackNavigator({
-	screenOptions: defaultHeader,
-	screens: {
+		}),
+		AdminPanelView: AdminPanelViewScreen,
 		AccessibilityAndAppearanceView: AccessibilityAndAppearanceViewScreen,
-		DisplayPrefsView: DisplayPrefsViewScreen,
 		ThemeView: ThemeViewScreen
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
-});
-
-const DrawerStack = createDrawerNavigator({
-	screenOptions: {
-		swipeEnabled: false,
-		headerShown: false,
-		drawerPosition: I18nManager.isRTL ? 'right' : 'left',
-		drawerType: 'slide',
-		freezeOnBlur: true
-	},
-	screens: {
-		ChatsStackNavigator: ChatsStack,
-		ProfileStackNavigator: ProfileStack,
-		SettingsStackNavigator: SettingsStack,
-		AdminPanelStackNavigator: AdminPanelStack,
-		AccessibilityStackNavigator: AccessibilityStack
-	}
-}).with(({ Navigator }) => {
-	const { colors } = useContext(ThemeContext);
-	return (
-		<Navigator
-			drawerContent={({ navigation }) => <Sidebar navigation={navigation as any} />}
-			screenOptions={{ overlayColor: `rgba(0,0,0,${colors.backdropOpacity})` }}
-		/>
-	);
 });
 
 const NewMessageStack = createNativeStackNavigator({
@@ -334,8 +343,8 @@ const E2EEnterYourPasswordStack = createNativeStackNavigator({
 const InsideStack = createNativeStackNavigator({
 	screenOptions: { ...defaultHeader, presentation: 'containedModal' },
 	screens: {
-		DrawerNavigator: createNativeStackScreen({
-			screen: DrawerStack,
+		MainNavigator: createNativeStackScreen({
+			screen: MainStack,
 			options: { headerShown: false }
 		}),
 		NewMessageStackNavigator: createNativeStackScreen({
