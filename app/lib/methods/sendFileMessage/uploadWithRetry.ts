@@ -2,7 +2,7 @@ import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
 import { type IFileUpload, UploadHttpError, parseRetryAfterFromMessage } from '../helpers/fileUpload/definitions';
 import { UploadSupersededError, uploadQueue } from './utils';
 
-export const MAX_UPLOAD_ATTEMPTS = 4;
+const MAX_UPLOAD_ATTEMPTS = 4;
 
 const BASE_RETRY_DELAY = 2000;
 const MAX_RETRY_DELAY = 120000;

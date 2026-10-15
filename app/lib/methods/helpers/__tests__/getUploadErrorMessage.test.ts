@@ -26,6 +26,7 @@ describe('getUploadErrorMessage', () => {
 
 	it('returns nothing when the failure has no status and no message', () => {
 		expect(getUploadErrorMessage({})).toBeUndefined();
+		expect(getUploadErrorMessage({ errorStatus: null })).toBeUndefined();
 		expect(getUploadErrorMessage({ errorStatus: 500 })).toBeUndefined();
 	});
 

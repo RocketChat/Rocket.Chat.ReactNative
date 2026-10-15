@@ -8,6 +8,7 @@ import {
 	getUploadPath,
 	isUploadActive,
 	persistUploadError,
+	releaseUploadSlot,
 	uploadQueue
 } from './utils';
 import { UploadHttpError } from '../helpers/fileUpload/definitions';
@@ -92,7 +93,14 @@ describe('createUploadRecord', () => {
 	});
 
 	it('reuses a stale record left by a crashed/failed upload instead of blocking', async () => {
-		const stale: any = { id: uploadPath, update: jest.fn((cb: (u: any) => void) => cb(stale)) };
+		const stale: any = {
+			id: uploadPath,
+			error: true,
+			errorStatus: 413,
+			errorMessage: 'File is too large',
+			progress: 40,
+			update: jest.fn((cb: (u: any) => void) => cb(stale))
+		};
 		mockFind.mockResolvedValue(stale);
 		// uploadQueue is empty -> no live upload -> record is stale
 
@@ -101,6 +109,7 @@ describe('createUploadRecord', () => {
 		expect(Alert.alert).not.toHaveBeenCalled();
 		expect(path).toBe(uploadPath);
 		expect(record).toBe(stale);
+		expect(stale).toMatchObject({ error: false, errorStatus: undefined, errorMessage: undefined, progress: 0 });
 	});
 
 	it('blocks a retry too when the record is genuinely still active, not just stale', async () => {
@@ -267,6 +276,35 @@ describe('finalizeFailedUpload', () => {
 
 		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
 		expect(uploadQueue[uploadPath]).toBeUndefined();
+	});
+});
+
+describe('releaseUploadSlot', () => {
+	it('frees the slot of the attempt that finished', () => {
+		const attempt = {} as any;
+		uploadQueue[uploadPath] = attempt;
+
+		releaseUploadSlot(uploadPath, attempt);
+
+		expect(isUploadActive(fileInfo.path, 'GENERAL')).toBe(false);
+	});
+
+	it('leaves a newer attempt alone', () => {
+		const newerAttempt = {} as any;
+		uploadQueue[uploadPath] = newerAttempt;
+
+		releaseUploadSlot(uploadPath, {} as any);
+
+		expect(uploadQueue[uploadPath]).toBe(newerAttempt);
+	});
+
+	it('leaves the slot alone when no attempt was ever started', () => {
+		const other = {} as any;
+		uploadQueue[uploadPath] = other;
+
+		releaseUploadSlot(uploadPath, null);
+
+		expect(uploadQueue[uploadPath]).toBe(other);
 	});
 });
 

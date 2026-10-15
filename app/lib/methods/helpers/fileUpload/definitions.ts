@@ -26,12 +26,8 @@ export class UploadHttpError extends Error {
 		super(`Error: ${status}`);
 		this.name = 'UploadHttpError';
 		this.status = status;
-		if (options?.serverMessage) {
-			this.serverMessage = options.serverMessage;
-		}
-		if (options?.retryAfterSeconds) {
-			this.retryAfterSeconds = options.retryAfterSeconds;
-		}
+		this.serverMessage = options?.serverMessage;
+		this.retryAfterSeconds = options?.retryAfterSeconds;
 	}
 }
 

@@ -6,7 +6,7 @@ export const getUploadErrorMessage = ({
 	errorStatus,
 	errorMessage
 }: {
-	errorStatus?: number;
+	errorStatus?: number | null;
 	errorMessage?: string;
 }): string | undefined => {
 	if (errorStatus === 413 || errorMessage?.includes('error-file-too-large')) {

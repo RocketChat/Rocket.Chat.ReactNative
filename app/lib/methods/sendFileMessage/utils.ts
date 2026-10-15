@@ -29,6 +29,12 @@ export function isUploadActive(path: string, rid: string): boolean {
 	return !!uploadQueue[getUploadPath(path, rid)];
 }
 
+export const releaseUploadSlot = (queueKey: string, upload: IFileUpload | null) => {
+	if (upload && uploadQueue[queueKey] === upload) {
+		delete uploadQueue[queueKey];
+	}
+};
+
 export async function cancelUpload(item: TUploadModel, rid: string): Promise<void> {
 	const uploadPath = getUploadPath(item.path, rid);
 	if (!isEmpty(uploadQueue[uploadPath])) {
@@ -89,12 +95,10 @@ export const finalizeFailedUpload = async ({
 	error: unknown;
 	upload: IFileUpload | null;
 }): Promise<void> => {
-	if (upload) {
-		if (uploadQueue[queueKey] !== upload) {
-			return;
-		}
-		delete uploadQueue[queueKey];
+	if (upload && uploadQueue[queueKey] !== upload) {
+		return;
 	}
+	releaseUploadSlot(queueKey, upload);
 	await persistUploadError(filePath, rid, error);
 	throw error;
 };

@@ -70,6 +70,25 @@ describe('Upload (android)', () => {
 		await expect(send()).rejects.toMatchObject({ name: 'UploadHttpError', status: 302 });
 	});
 
+	it('rejects with a cancellation when the native upload fails after cancel()', async () => {
+		let failNativeUpload: (error: Error) => void = () => {};
+		const cancelAsync = jest.fn();
+		(FileSystem.createUploadTask as jest.Mock).mockReturnValue({
+			uploadAsync: jest.fn(() => new Promise((_resolve, reject) => (failNativeUpload = reject))),
+			cancelAsync
+		});
+		const upload = new Upload();
+		upload.setupRequest('https://open.rocket.chat/api/v1/rooms.media/rid', {});
+		upload.appendFile({ name: 'file', uri: 'file://image.jpg', type: 'image/jpeg', filename: 'image.jpg' });
+
+		const pending = upload.send();
+		upload.cancel();
+		failNativeUpload(new Error('native upload aborted'));
+
+		await expect(pending).rejects.toThrow('Upload cancelled');
+		expect(cancelAsync).toHaveBeenCalledTimes(1);
+	});
+
 	it('rejects with an Error, not undefined, when no file was appended', async () => {
 		const upload = new Upload();
 		upload.setupRequest('https://open.rocket.chat/api/v1/rooms.media/rid', {});

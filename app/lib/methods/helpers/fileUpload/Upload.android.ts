@@ -50,54 +50,50 @@ export class Upload {
 				reject(new Error('No file to upload'));
 				return;
 			}
-			try {
-				this.uploadTask = FileSystem.createUploadTask(
-					this.uploadUrl,
-					this.file.uri,
-					{
-						headers: this.headers,
-						httpMethod: 'POST',
-						uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-						fieldName: this.file.fieldName || 'file',
-						mimeType: this.file.type,
-						parameters: this.formData
-					},
-					data => {
-						if (data.totalBytesSent && data.totalBytesExpectedToSend && this.progressCallback) {
-							this.progressCallback(data.totalBytesSent, data.totalBytesExpectedToSend);
-						}
+			this.uploadTask = FileSystem.createUploadTask(
+				this.uploadUrl,
+				this.file.uri,
+				{
+					headers: this.headers,
+					httpMethod: 'POST',
+					uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+					fieldName: this.file.fieldName || 'file',
+					mimeType: this.file.type,
+					parameters: this.formData
+				},
+				data => {
+					if (data.totalBytesSent && data.totalBytesExpectedToSend && this.progressCallback) {
+						this.progressCallback(data.totalBytesSent, data.totalBytesExpectedToSend);
 					}
-				);
+				}
+			);
 
-				this.uploadTask
-					.uploadAsync()
-					.then(response => {
-						if (!response || response.status === undefined || response.status === null) {
-							reject(new Error('Upload failed: no response'));
-							return;
+			this.uploadTask
+				.uploadAsync()
+				.then(response => {
+					if (!response) {
+						reject(new Error('Upload failed: no response'));
+						return;
+					}
+					if (response.status >= 200 && response.status < 300) {
+						try {
+							resolve(JSON.parse(response.body));
+						} catch {
+							reject(new Error('Upload failed: invalid server response'));
 						}
-						if (response.status >= 200 && response.status < 300) {
-							try {
-								resolve(JSON.parse(response.body));
-							} catch {
-								reject(new Error('Upload failed: invalid server response'));
-							}
-							return;
-						}
-						const serverMessage = parseServerMessage(response.body);
-						const retryAfterSeconds = getRetryAfterFromHeaders(response.headers);
-						reject(new UploadHttpError(response.status, { serverMessage, retryAfterSeconds }));
-					})
-					.catch((error: unknown) => {
-						if (this.isCancelled) {
-							reject(new Error('Upload cancelled'));
-						} else {
-							reject(error);
-						}
-					});
-			} catch (error) {
-				reject(error);
-			}
+						return;
+					}
+					const serverMessage = parseServerMessage(response.body);
+					const retryAfterSeconds = getRetryAfterFromHeaders(response.headers);
+					reject(new UploadHttpError(response.status, { serverMessage, retryAfterSeconds }));
+				})
+				.catch((error: unknown) => {
+					if (this.isCancelled) {
+						reject(new Error('Upload cancelled'));
+					} else {
+						reject(error);
+					}
+				});
 		});
 	}
 

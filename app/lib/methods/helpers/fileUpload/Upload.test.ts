@@ -24,12 +24,11 @@ class MockXHR {
 	}
 }
 
+const RealFormData = jest.requireActual('react-native/Libraries/Network/FormData').default;
+
 beforeEach(() => {
 	(global as any).XMLHttpRequest = MockXHR;
-	(global as any).FormData = class {
-		append = jest.fn();
-		getParts = jest.fn(() => []);
-	};
+	(global as any).FormData = RealFormData;
 });
 
 const send = ({
@@ -123,8 +122,6 @@ describe('Upload', () => {
 	});
 });
 
-const RealFormData = jest.requireActual('react-native/Libraries/Network/FormData').default;
-
 const getDisposition = (filename: string) => {
 	const upload = new Upload();
 	upload.appendFile({ name: 'file', uri: 'file:///cache/a.pdf', type: 'application/pdf', filename });
@@ -132,10 +129,6 @@ const getDisposition = (filename: string) => {
 };
 
 describe('Upload multipart filename', () => {
-	beforeEach(() => {
-		(global as any).FormData = RealFormData;
-	});
-
 	it('keeps a Cyrillic filename as raw UTF-8 instead of percent-encoding it', () => {
 		expect(getDisposition('Пример.pdf')).toBe('form-data; name="file"; filename="Пример.pdf"');
 	});

@@ -7,7 +7,8 @@ import {
 	copyFileToCacheDirectoryIfNeeded,
 	createUploadProgressCallback,
 	createUploadRecord,
-	finalizeFailedUpload
+	finalizeFailedUpload,
+	releaseUploadSlot
 } from './utils';
 import { uploadWithRetry } from './uploadWithRetry';
 import { type IFileUpload, type IFormData } from '../helpers/fileUpload/definitions';
@@ -80,6 +81,7 @@ export async function sendFileMessage(
 		await db.write(async () => {
 			await uploadRecord?.destroyPermanently();
 		});
+		releaseUploadSlot(uploadPath, upload);
 	} catch (e) {
 		await finalizeFailedUpload({ queueKey: uploadPath ?? '', filePath: originalFilePath, rid, error: e, upload });
 	}
