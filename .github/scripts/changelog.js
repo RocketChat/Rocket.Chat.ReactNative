@@ -17,7 +17,7 @@ function capGraphemes(str, limit, { ellipsis = false } = {}) {
   return chars.slice(0, limit).join("");
 }
 
-const PR_BUILD_PREFIX = "⚙️ PR BUILD";
+const PR_BUILD_PREFIX = "PR BUILD";
 
 function formatPrChangelog({ title, number, commits }) {
   const header = `${PR_BUILD_PREFIX}\n\n${title} (#${number})`;
