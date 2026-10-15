@@ -2,6 +2,10 @@ package chat.rocket.reactnative
 
 import android.app.Application
 import android.content.res.Configuration
+import android.database.DatabaseErrorHandler
+import android.database.DatabaseUtils
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
 import java.io.File
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
@@ -86,26 +90,55 @@ open class MainApplication : Application(), ReactApplication {
     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
   }
 
+  private val sidecarSuffixesThenMain = listOf("-wal", "-shm", "-journal", "")
+
   private fun migrateLegacyExperimentalDatabases() {
-    val dir = File(applicationInfo.dataDir)
+    val dataDir = File(applicationInfo.dataDir)
     val legacySuffix = "-experimental.db.db"
-    val sidecarSuffixesThenMain = listOf("-wal", "-shm", "-journal", "")
-    val files = dir.listFiles() ?: return
-    for (legacy in files) {
-      if (!legacy.isFile || !legacy.name.endsWith(legacySuffix)) {
-        continue
-      }
-      val baseName = legacy.name.removeSuffix(legacySuffix)
-      val target = File(dir, "$baseName.db.db")
+    val serversLegacyName = "default$legacySuffix"
+    if (!File(dataDir, serversLegacyName).exists()) {
+      return
+    }
+    val dataDirFiles = dataDir.listFiles() ?: return
+    val legacyNames = dataDirFiles
+        .filter { it.isFile && it.name.endsWith(legacySuffix) }
+        .map { it.name }
+        .sortedBy { it == serversLegacyName }
+    for (name in legacyNames) {
+      val target = File(dataDir, "${name.removeSuffix(legacySuffix)}.db.db")
       if (target.length() > 0) {
-        continue
+        if (name != serversLegacyName || !isServersTableEmpty(target)) {
+          continue
+        }
+        discardDatabase(dataDir, target.name)
       }
       for (suffix in sidecarSuffixesThenMain) {
-        val from = File(dir, legacy.name + suffix)
-        val to = File(dir, target.name + suffix)
+        val from = File(dataDir, name + suffix)
+        val to = File(dataDir, target.name + suffix)
         if (from.exists() && !from.renameTo(to)) {
           throw IllegalStateException("Failed to migrate ${from.name} to ${to.name}")
         }
+      }
+    }
+  }
+
+  private fun isServersTableEmpty(database: File): Boolean {
+    val keepFileOnCorruption = DatabaseErrorHandler { }
+    val flags = SQLiteDatabase.OPEN_READWRITE or SQLiteDatabase.ENABLE_WRITE_AHEAD_LOGGING
+    return try {
+      SQLiteDatabase.openDatabase(database.path, null, flags, keepFileOnCorruption).use {
+        DatabaseUtils.queryNumEntries(it, "servers") == 0L
+      }
+    } catch (e: SQLiteException) {
+      false
+    }
+  }
+
+  private fun discardDatabase(dir: File, name: String) {
+    for (suffix in sidecarSuffixesThenMain) {
+      val file = File(dir, name + suffix)
+      if (file.exists() && !file.delete()) {
+        throw IllegalStateException("Failed to discard ${file.name}")
       }
     }
   }

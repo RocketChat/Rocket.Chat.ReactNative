@@ -5,6 +5,7 @@ import Firebase
 import Bugsnag
 import WatchConnectivity
 import PushKit
+import SQLite3
 
 @UIApplicationMain
 public class AppDelegate: ExpoAppDelegate {
@@ -70,21 +71,58 @@ public class AppDelegate: ExpoAppDelegate {
     return result
   }
 
+  private let sidecarSuffixesThenMain = ["-wal", "-shm", "-journal", ""]
+
   private func migrateLegacyExperimentalDatabases() {
     let fileManager = FileManager.default
     let groupDir = fileManager.groupDir()
     let legacySuffix = "-experimental.db"
-    let sidecarSuffixesThenMain = ["-wal", "-shm", "-journal", ""]
-    for name in (try? fileManager.contentsOfDirectory(atPath: groupDir)) ?? [] where name.hasSuffix(legacySuffix) {
+    let serversLegacyName = "default\(legacySuffix)"
+    guard fileManager.fileExists(atPath: "\(groupDir)/\(serversLegacyName)") else {
+      return
+    }
+    let legacyNames = ((try? fileManager.contentsOfDirectory(atPath: groupDir)) ?? []).filter { $0.hasSuffix(legacySuffix) }
+    for name in legacyNames.filter({ $0 != serversLegacyName }) + [serversLegacyName] {
       let from = "\(groupDir)/\(name)"
-      let to = "\(groupDir)/\(name.dropLast(legacySuffix.count)).db"
+      let targetName = "\(name.dropLast(legacySuffix.count)).db"
+      let to = "\(groupDir)/\(targetName)"
       if let size = (try? fileManager.attributesOfItem(atPath: to))?[.size] as? Int, size > 0 {
-        continue
+        guard name == serversLegacyName, isServersTableEmpty(atPath: to) else {
+          continue
+        }
+        discardDatabase(named: targetName, inDirectory: groupDir)
       }
       for suffix in sidecarSuffixesThenMain where fileManager.fileExists(atPath: from + suffix) {
         guard Darwin.rename(from + suffix, to + suffix) == 0 else {
-          fatalError("Failed to migrate \(name + suffix): errno \(errno)")
+          let code = errno
+          fatalError("Failed to migrate \(name + suffix): errno \(code)")
         }
+      }
+    }
+  }
+
+  private func isServersTableEmpty(atPath path: String) -> Bool {
+    var database: OpaquePointer?
+    defer { sqlite3_close(database) }
+    guard sqlite3_open_v2(path, &database, SQLITE_OPEN_READWRITE, nil) == SQLITE_OK else {
+      return false
+    }
+    var statement: OpaquePointer?
+    defer { sqlite3_finalize(statement) }
+    guard sqlite3_prepare_v2(database, "SELECT COUNT(*) FROM servers", -1, &statement, nil) == SQLITE_OK,
+          sqlite3_step(statement) == SQLITE_ROW else {
+      return false
+    }
+    return sqlite3_column_int64(statement, 0) == 0
+  }
+
+  private func discardDatabase(named name: String, inDirectory directory: String) {
+    let fileManager = FileManager.default
+    for suffix in sidecarSuffixesThenMain where fileManager.fileExists(atPath: "\(directory)/\(name)\(suffix)") {
+      do {
+        try fileManager.removeItem(atPath: "\(directory)/\(name)\(suffix)")
+      } catch {
+        fatalError("Failed to discard \(name + suffix): \(error.localizedDescription)")
       }
     }
   }
