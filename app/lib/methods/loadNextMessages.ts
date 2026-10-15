@@ -24,6 +24,7 @@ export function loadNextMessages(args: ILoadNextMessages): Promise<void> {
 			const data = await sdk.methodCallWrapper('loadNextMessages', args.rid, args.ts, COUNT);
 			let messages = EJSON.fromJSONValue(data?.messages);
 			messages = orderBy(messages, 'ts');
+			console.log(`[history] loadNextMessages returned ${messages?.length ?? 0} messages`);
 			if (messages?.length) {
 				const lastMessage = messages[messages.length - 1];
 				const lastMessageRecord = await getMessageById(lastMessage._id);

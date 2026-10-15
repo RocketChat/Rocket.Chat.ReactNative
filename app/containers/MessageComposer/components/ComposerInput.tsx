@@ -71,11 +71,18 @@ export const ComposerInput = memo(
 		// workaround to handle issues with iOS back swipe navigation
 		const { iOSBackSwipe } = useIOSBackSwipeHandler();
 
-		const setInput: TSetInput = useCallback(
-			(text, selection, forceUpdateDraftMessage) => {
+		const syncTextState = useCallback(
+			(text: string) => {
 				const message = text.trim();
 				textRef.current = message;
+				setMicOrSend(message.length === 0 ? 'mic' : 'send');
+				setIsEmpty(text.length === 0);
+			},
+			[setMicOrSend]
+		);
 
+		const setInput: TSetInput = useCallback(
+			(text, selection, forceUpdateDraftMessage) => {
 				if (forceUpdateDraftMessage) {
 					saveDraft();
 				}
@@ -92,10 +99,9 @@ export const ComposerInput = memo(
 						selectionRef.current = selection;
 					}, 50);
 				}
-				setMicOrSend(message.length === 0 ? 'mic' : 'send');
-				setIsEmpty(text.length === 0);
+				syncTextState(text);
 			},
-			[saveDraft, inputRef, setMicOrSend]
+			[saveDraft, inputRef, syncTextState]
 		);
 
 		const focus = () => {
@@ -174,9 +180,8 @@ export const ComposerInput = memo(
 		}, textInputDebounceTime);
 
 		const onChangeText: TextInputProps['onChangeText'] = text => {
-			textRef.current = text;
 			debouncedOnChangeText(text);
-			setInput(text);
+			syncTextState(text);
 		};
 
 		const onSelectionChange: TextInputProps['onSelectionChange'] = e => {
