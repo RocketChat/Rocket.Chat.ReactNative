@@ -89,5 +89,5 @@ Once your app is running, you can execute Maestro tests:
 maestro test .maestro
 
 # Test a specific file
-maestro test .maestro/tests-folder-1/login.yaml
+maestro test .maestro/tests/onboarding/legal.yaml
 ```
