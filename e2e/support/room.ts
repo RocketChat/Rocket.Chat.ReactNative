@@ -43,7 +43,9 @@ export const selectUser = async (fixtures: Fixtures, username: string) => {
 	await tapWhenVisible(fixtures, listedUser);
 	await expectVisible(fixtures, `selected-user-${username}`);
 	if (fixtures.platform === 'ios') {
-		await tapWhenVisible(fixtures, fixtures.screen.getByRole('button', { name: /^Close$/ }).first());
+		const closeSearch = fixtures.screen.getByRole('button', { name: /^Close$/ }).first();
+		await expect(closeSearch).toBeVisible({ timeout: LONG_TIMEOUT });
+		await tapUntilVisible(fixtures, closeSearch, headerItem(fixtures, 'selected-users-view-submit', /^(Next|Skip|Create)$/));
 	}
 };
 
