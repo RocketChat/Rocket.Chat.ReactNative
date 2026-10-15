@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
 import CallView from '.';
-// import { navigateToCallRoom } from '~/lib/services/voip/navigateToCallRoom';
+import { navigateToCallRoom } from '~/lib/services/voip/navigateToCallRoom';
 import { useCallStore } from '~/lib/services/voip/useCallStore';
 import { mockedStore } from '~/reducers/mockedStore';
 import * as stories from './CallView.stories';
@@ -68,10 +68,15 @@ let mockWindowWidth = 350;
 let mockWindowHeight = 800;
 jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
 	__esModule: true,
-	default: () => ({ width: mockWindowWidth, height: mockWindowHeight, scale: 1, fontScale: 1 })
+	default: () => ({
+		width: mockWindowWidth,
+		height: mockWindowHeight,
+		scale: 1,
+		fontScale: 1
+	})
 }));
 
-// const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
+const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
 
 jest.mock('~/lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
@@ -324,24 +329,40 @@ describe('CallView/CallView', () => {
 		expect(endCall).toHaveBeenCalledTimes(1);
 	});
 
-	// TODO: restore with the conference-escalation check in useCanEscalateToVideo — bypassed for testing
-	// it('should call navigateToCallRoom from the More action sheet', () => {
-	// 	setStoreState({ callState: 'active' });
-	// 	const { getByTestId } = render(
-	// 		<Wrapper>
-	// 			<CallView />
-	// 		</Wrapper>
-	// 	);
-	//
-	// 	fireEvent.press(getByTestId('call-view-more'));
-	// 	const { options } = mockShowActionSheetRef.mock.calls[0][0];
-	// 	expect(options.map((o: any) => o.testID)).toEqual(['call-view-more-message']);
-	// 	options[0].onPress();
-	// 	expect(mockNavigateToCallRoom).toHaveBeenCalledTimes(1);
-	// });
+	it('should call navigateToCallRoom from the More action sheet', () => {
+		setStoreState({ callState: 'active' });
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		fireEvent.press(getByTestId('call-view-more'));
+		const { options } = mockShowActionSheetRef.mock.calls[0][0];
+		expect(options.map((o: any) => o.testID)).toEqual(['call-view-more-video', 'call-view-more-message']);
+		options[1].onPress();
+		expect(mockNavigateToCallRoom).toHaveBeenCalledTimes(1);
+	});
+
+	it('should not offer video when the call has no DM and no server escalation', () => {
+		setStoreState({ callState: 'active', roomId: null });
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		expect(getByTestId('call-view-more').props.accessibilityState?.disabled).toBe(true);
+	});
 
 	it('should offer video escalation when the call supports it', () => {
-		setStoreState({ callState: 'active', call: { ...createMockCall(), features: ['audio', 'conference-escalation'] } as any });
+		setStoreState({
+			callState: 'active',
+			call: {
+				...createMockCall(),
+				features: ['audio', 'conference-escalation']
+			} as any
+		});
 		const { getByTestId } = render(
 			<Wrapper>
 				<CallView />
@@ -357,7 +378,10 @@ describe('CallView/CallView', () => {
 		setStoreState({
 			callState: 'active',
 			escalated: true,
-			call: { ...createMockCall(), features: ['audio', 'conference-escalation'] } as any
+			call: {
+				...createMockCall(),
+				features: ['audio', 'conference-escalation']
+			} as any
 		});
 		const { getByTestId } = render(
 			<Wrapper>
