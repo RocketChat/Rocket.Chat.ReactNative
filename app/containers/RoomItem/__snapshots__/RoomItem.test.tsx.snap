@@ -15142,7 +15142,6 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityHint="Long press for more actions"
               accessibilityLabel="rocket.cat. private channel. undefined. "
               accessibilityRole="button"
               accessible={true}

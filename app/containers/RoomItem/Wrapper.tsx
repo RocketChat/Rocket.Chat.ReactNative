@@ -19,7 +19,6 @@ const Wrapper = ({ accessibilityLabel, onShowActions, children, displayMode, tes
 				{ height: displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight }
 			]}
 			accessibilityLabel={accessibilityLabel}
-			accessibilityHint={onShowActions ? I18n.t('Long_press_for_more_actions') : undefined}
 			testID={testID}
 			accessible
 			accessibilityRole='button'

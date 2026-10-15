@@ -48,7 +48,6 @@ describe('RoomItem accessibility actions', () => {
 		renderRoomItem({ swipeEnabled: false });
 		const { props } = screen.getByTestId(testID);
 		expect(props.accessibilityActions).toBeUndefined();
-		expect(props.accessibilityHint).toBeUndefined();
 	});
 
 	it('exposes showActions and calls a custom onShowActions', () => {
@@ -56,7 +55,6 @@ describe('RoomItem accessibility actions', () => {
 		renderRoomItem({ swipeEnabled: false, onShowActions });
 		const { props } = screen.getByTestId(testID);
 		expect(props.accessibilityActions).toEqual([expect.objectContaining({ name: 'showActions' })]);
-		expect(props.accessibilityHint).toBe('Long press for more actions');
 		fireShowActions();
 		expect(onShowActions).toHaveBeenCalledWith(item);
 	});
