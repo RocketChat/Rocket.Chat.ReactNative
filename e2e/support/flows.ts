@@ -246,6 +246,14 @@ const UNCONFIRMED_FILL_ERRORS = [
 ];
 const UNCONFIRMED_FILL_ATTEMPTS = 3;
 
+const holdsValue = async (locator: Locator, text: string) => {
+	try {
+		return (await locator.inputValue()) === text;
+	} catch {
+		return false;
+	}
+};
+
 const fillConfirmed = async (locator: Locator, text: string) => {
 	for (let attempt = 1; attempt < UNCONFIRMED_FILL_ATTEMPTS; attempt++) {
 		try {
@@ -254,6 +262,9 @@ const fillConfirmed = async (locator: Locator, text: string) => {
 		} catch (error) {
 			if (!UNCONFIRMED_FILL_ERRORS.some(unconfirmed => String(error).includes(unconfirmed))) {
 				throw error;
+			}
+			if (await holdsValue(locator, text)) {
+				return;
 			}
 			await clearSettled(locator);
 		}
