@@ -511,7 +511,7 @@ export const goBack = async ({ screen, platform }: Fixtures) => {
 	if (platform === 'ios') {
 		backButtons.push(screen.getByRole('button', { name: IOS_BACK_LABEL }).first());
 	}
-	await (await firstVisible(backButtons, BACK_STEP_TIMEOUT)).tap();
+	await tapWhenUncovered(await firstVisible(backButtons, BACK_STEP_TIMEOUT));
 };
 
 export const goBackUntil = async (
