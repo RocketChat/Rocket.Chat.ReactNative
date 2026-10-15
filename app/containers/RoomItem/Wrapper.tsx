@@ -8,15 +8,7 @@ import styles from './styles';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import I18n from '~/i18n';
 
-const Wrapper = ({
-	accessibilityLabel,
-	accessibilityHint,
-	onShowActions,
-	children,
-	displayMode,
-	testID,
-	...props
-}: IWrapperProps): ReactElement => {
+const Wrapper = ({ accessibilityLabel, onShowActions, children, displayMode, testID, ...props }: IWrapperProps): ReactElement => {
 	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 	const isExpandedWithLastMessage = displayMode === DisplayMode.Expanded && props.showLastMessage;
 	return (
@@ -27,7 +19,7 @@ const Wrapper = ({
 				{ height: displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight }
 			]}
 			accessibilityLabel={accessibilityLabel}
-			accessibilityHint={accessibilityHint}
+			accessibilityHint={onShowActions ? I18n.t('Long_press_for_more_actions') : undefined}
 			testID={testID}
 			accessible
 			accessibilityRole='button'

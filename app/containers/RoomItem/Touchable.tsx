@@ -94,7 +94,7 @@ const Touchable = ({
 
 	const handlePress = guardTouch(onPress);
 
-	const handleLongPress = guardTouch(onLongPress);
+	const handleLongPress = onLongPress ? guardTouch(onLongPress) : undefined;
 
 	const panGesture = usePanGesture({
 		activeOffsetX: [-10, 10], // More sensitive horizontal detection

@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { AccessibilityInfo } from 'react-native';
+import { runOnUISync } from 'react-native-worklets';
 
 import { useActionSheet } from '../ActionSheet';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -11,6 +12,7 @@ import { getRoomActionsOptions } from './getRoomActionsOptions';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
 import { useRoomSnapshot } from './hooks/useRoomSnapshot';
+import { closeOpenSwipeItem } from './utils/openSwipeItem';
 
 const RoomItemContainer = memo(
 	({
@@ -47,6 +49,7 @@ const RoomItemContainer = memo(
 		const handleOnPress = () => onPress(item);
 
 		const showRoomActions = () => {
+			runOnUISync(closeOpenSwipeItem);
 			if (onLongPress) {
 				onLongPress(item);
 				return;
@@ -63,10 +66,9 @@ const RoomItemContainer = memo(
 		};
 
 		const handleOnLongPress = async () => {
-			if (!onLongPress && !(await AccessibilityInfo.isScreenReaderEnabled()) && !isExternalKeyboardConnected()) {
-				return;
+			if (onLongPress || isExternalKeyboardConnected() || (await AccessibilityInfo.isScreenReaderEnabled())) {
+				showRoomActions();
 			}
-			showRoomActions();
 		};
 
 		const hasRoomActions = !!onLongPress || swipeEnabled;

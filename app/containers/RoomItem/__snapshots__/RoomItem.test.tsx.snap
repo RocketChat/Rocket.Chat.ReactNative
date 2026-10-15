@@ -26,7 +26,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -350,7 +350,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -718,7 +718,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -1086,7 +1086,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -1454,7 +1454,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -1822,7 +1822,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -2190,7 +2190,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -2558,7 +2558,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -2926,7 +2926,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -3294,7 +3294,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -3662,7 +3662,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -4034,7 +4034,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
       <ExternalKeyboardView
         canBeFocused={true}
         enableA11yFocus={false}
-        enableContextMenu={true}
+        enableContextMenu={false}
         group={false}
         haloEffect={true}
         hasKeyDownPress={false}
@@ -4341,7 +4341,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -4709,7 +4709,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -5077,7 +5077,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -5424,7 +5424,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -5735,7 +5735,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -5981,7 +5981,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -6271,7 +6271,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -6623,7 +6623,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -6975,7 +6975,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -7288,7 +7288,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -7619,7 +7619,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -7955,7 +7955,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -8299,7 +8299,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -8643,7 +8643,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -8987,7 +8987,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -9331,7 +9331,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -9740,7 +9740,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -10149,7 +10149,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -10563,7 +10563,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -10866,7 +10866,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -11169,7 +11169,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -11472,7 +11472,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -11775,7 +11775,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -12078,7 +12078,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -12381,7 +12381,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -12684,7 +12684,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -12987,7 +12987,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -13290,7 +13290,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -13598,7 +13598,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -13940,7 +13940,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -14324,7 +14324,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -14666,7 +14666,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -15361,7 +15361,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -15672,7 +15672,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -15975,7 +15975,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -16278,7 +16278,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -16581,7 +16581,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -16884,7 +16884,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -17187,7 +17187,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -17490,7 +17490,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -17793,7 +17793,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -18101,7 +18101,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -18412,7 +18412,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
-          enableContextMenu={true}
+          enableContextMenu={false}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}

@@ -1,6 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Alert, FlatList, Keyboard, PixelRatio } from 'react-native';
+import { AccessibilityInfo, Alert, FlatList, Keyboard, PixelRatio } from 'react-native';
 import { connect } from 'react-redux';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { type SearchBarCommands } from 'react-native-screens';
@@ -529,6 +529,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 		}
 
 		if (options.length === 0) {
+			AccessibilityInfo.announceForAccessibility(I18n.t('No_actions_available'));
 			return;
 		}
 		showActionSheet({ options });

@@ -1,10 +1,12 @@
 import { AccessibilityInfo } from 'react-native';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { makeMutable } from 'react-native-reanimated';
 
 import { DisplayMode } from '~/lib/constants/constantDisplayMode';
 import { mockedStore } from '~/reducers/mockedStore';
 import RoomItemContainer from '..';
+import { openSwipeItem, settleSwipeRow } from '../utils/openSwipeItem';
 
 const mockShowActionSheet = jest.fn();
 jest.mock('../../ActionSheet', () => ({ useActionSheet: () => ({ showActionSheet: mockShowActionSheet }) }));
@@ -37,16 +39,21 @@ const fireShowActions = () =>
 
 describe('RoomItem accessibility actions', () => {
 	beforeEach(() => mockShowActionSheet.mockClear());
+	afterEach(() => jest.restoreAllMocks());
 
 	it('does not expose showActions when the row has no long press', () => {
 		renderRoomItem({ swipeEnabled: false });
-		expect(screen.getByTestId(testID).props.accessibilityActions).toBeUndefined();
+		const { props } = screen.getByTestId(testID);
+		expect(props.accessibilityActions).toBeUndefined();
+		expect(props.accessibilityHint).toBeUndefined();
 	});
 
 	it('exposes showActions and calls a custom onLongPress', () => {
 		const onLongPress = jest.fn();
 		renderRoomItem({ swipeEnabled: false, onLongPress });
-		expect(screen.getByTestId(testID).props.accessibilityActions).toEqual([expect.objectContaining({ name: 'showActions' })]);
+		const { props } = screen.getByTestId(testID);
+		expect(props.accessibilityActions).toEqual([expect.objectContaining({ name: 'showActions' })]);
+		expect(props.accessibilityHint).toBe('Long press for more actions');
 		fireShowActions();
 		expect(onLongPress).toHaveBeenCalledWith(item);
 	});
@@ -55,6 +62,16 @@ describe('RoomItem accessibility actions', () => {
 		renderRoomItem({ swipeEnabled: true });
 		expect(screen.getByTestId(testID).props.accessibilityActions).toEqual([expect.objectContaining({ name: 'showActions' })]);
 		fireShowActions();
+		expect(mockShowActionSheet).toHaveBeenCalledTimes(1);
+	});
+
+	it('closes a swiped-open row before opening the room actions sheet', () => {
+		const row = { rid: 'rid', transX: makeMutable(0), rowOffSet: makeMutable(0) };
+		settleSwipeRow(row, 80);
+		renderRoomItem({ swipeEnabled: true });
+		fireShowActions();
+		expect(row.rowOffSet.value).toBe(0);
+		expect(openSwipeItem.value).toBeNull();
 		expect(mockShowActionSheet).toHaveBeenCalledTimes(1);
 	});
 
