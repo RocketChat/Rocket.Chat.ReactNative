@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import { AccessibilityInfo } from 'react-native';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { DisplayMode } from '~/lib/constants/constantDisplayMode';
@@ -8,6 +9,7 @@ import RoomItemContainer from '..';
 const mockShowActionSheet = jest.fn();
 jest.mock('../../ActionSheet', () => ({ useActionSheet: () => ({ showActionSheet: mockShowActionSheet }) }));
 jest.unmock('~/lib/hooks/useResponsiveLayout/useResponsiveLayout');
+jest.mock('~/lib/methods/helpers/externalInput', () => ({ isExternalKeyboardConnected: () => false }));
 
 const item = { rid: 'rid', t: 'c', name: 'general' };
 const testID = 'rooms-list-view-item-general';
@@ -53,6 +55,24 @@ describe('RoomItem accessibility actions', () => {
 		renderRoomItem({ swipeEnabled: true });
 		expect(screen.getByTestId(testID).props.accessibilityActions).toEqual([expect.objectContaining({ name: 'showActions' })]);
 		fireShowActions();
+		expect(mockShowActionSheet).toHaveBeenCalledTimes(1);
+	});
+
+	it('ignores a plain long press without a screen reader or external keyboard', async () => {
+		jest.spyOn(AccessibilityInfo, 'isScreenReaderEnabled').mockResolvedValue(false);
+		renderRoomItem({ swipeEnabled: true });
+		await act(async () => {
+			fireEvent(screen.getByTestId(testID), 'longPress');
+		});
+		expect(mockShowActionSheet).not.toHaveBeenCalled();
+	});
+
+	it('opens the room actions sheet on long press with a screen reader', async () => {
+		jest.spyOn(AccessibilityInfo, 'isScreenReaderEnabled').mockResolvedValue(true);
+		renderRoomItem({ swipeEnabled: true });
+		await act(async () => {
+			fireEvent(screen.getByTestId(testID), 'longPress');
+		});
 		expect(mockShowActionSheet).toHaveBeenCalledTimes(1);
 	});
 });

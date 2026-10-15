@@ -92,7 +92,7 @@ const RoomItem = ({
 			<Wrapper
 				testID={testID}
 				accessibilityLabel={accessibilityLabel}
-				accessibilityHint={I18n.t('Long_press_for_more_actions')}
+				accessibilityHint={onShowActions ? I18n.t('Long_press_for_more_actions') : undefined}
 				onShowActions={onShowActions}
 				avatar={avatar}
 				type={type}
