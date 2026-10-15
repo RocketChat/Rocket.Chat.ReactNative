@@ -44,7 +44,7 @@ describe('RoomItem accessibility actions', () => {
 		openSwipeItem.value = null;
 	});
 
-	it('does not expose showActions when the row has no long press', () => {
+	it('does not expose showActions when the row has no actions', () => {
 		renderRoomItem({ swipeEnabled: false });
 		const { props } = screen.getByTestId(testID);
 		expect(props.accessibilityActions).toBeUndefined();
