@@ -123,12 +123,11 @@ export const useNativeRoomHeader = (
 	const remoteUri =
 		connected && fields.type === 'l' && !isSvgSidebarIcon ? getOmnichannelSidebarIconUri(server, fields.sourceType) : undefined;
 	const remoteImage = useHeaderRemoteImage(remoteUri);
-	const clockColor = colors.fontSecondaryInfo;
 
 	useLayoutEffect(() => {
 		const roomGlyph = fields.type ? headerTextIcon(roomIcon, roomIconColor) : undefined;
 		const roomTitleIcon = remoteImage ? { type: 'image' as const, source: remoteImage } : roomGlyph;
-		const clockIcon = showClock ? headerTextIcon('clock', clockColor) : undefined;
+		const clockIcon = showClock ? headerTextIcon('clock', colors.fontSecondaryInfo) : undefined;
 		navigation.setOptions({
 			headerTitle: title,
 			headerSubtitle: subtitle || undefined,
@@ -147,7 +146,7 @@ export const useNativeRoomHeader = (
 		roomIconColor,
 		remoteImage,
 		showClock,
-		clockColor,
+		colors.fontSecondaryInfo,
 		showParentIcon,
 		onTitlePress,
 		fields.disabled

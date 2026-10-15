@@ -46,46 +46,38 @@ beforeEach(() => {
 	};
 });
 
-it('sets the title together with the room icon', async () => {
+it('sets the title together with the room icon', () => {
 	renderHook(() => useNativeRoomHeader({ ...fields, type: 'p', title: 'Shown' }, undefined, undefined, jest.fn()));
-	expect(mockSetOptions.mock.calls[0][0]).toMatchObject({ headerTitle: 'Shown', headerSubtitle: 'Topic' });
-	await waitFor(() =>
-		expect(latestOptions().headerTitleIcon).toEqual({ type: 'xcasset', name: 'nano.channel-private', tintColor: 'title' })
-	);
-	expect(latestOptions().headerTitle).toBe('Shown');
+	expect(mockSetOptions.mock.calls[0][0]).toMatchObject({
+		headerTitle: 'Shown',
+		headerSubtitle: 'Topic',
+		headerTitleIcon: { type: 'xcasset', name: 'nano.channel-private', tintColor: 'title' }
+	});
 });
 
-it('shows plain topic text and the room icon', async () => {
+it('shows plain topic text and the room icon', () => {
 	renderHook(() => useNativeRoomHeader(fields, undefined, undefined, jest.fn()));
-	await waitFor(() =>
-		expect(latestOptions().headerTitleIcon).toEqual({ type: 'xcasset', name: 'nano.channel-public', tintColor: 'title' })
-	);
+	expect(latestOptions().headerTitleIcon).toEqual({ type: 'xcasset', name: 'nano.channel-public', tintColor: 'title' });
 	expect(latestOptions()).toMatchObject({ headerTitle: 'Room', headerSubtitle: 'Topic', headerSubtitleIcon: undefined });
 });
 
-it('keeps the parent subtitle and moves its icon below the Thread title while users type', async () => {
+it('keeps the parent subtitle and moves its icon below the Thread title while users type', () => {
 	mockState.usersTyping = ['Alice'];
 	renderHook(() =>
 		useNativeRoomHeader({ ...fields, title: '*Thread*', parentTitle: '*Parent*' }, 'thread', undefined, jest.fn())
 	);
-	await waitFor(() =>
-		expect(latestOptions().headerSubtitleIcon).toEqual({ type: 'xcasset', name: 'nano.channel-public', tintColor: 'title' })
-	);
+	expect(latestOptions().headerSubtitleIcon).toEqual({ type: 'xcasset', name: 'nano.channel-public', tintColor: 'title' });
 	expect(latestOptions()).toMatchObject({ headerTitle: 'Thread', headerSubtitle: '*Parent*', headerTitleIcon: undefined });
 });
 
-it('clears the expiry clock during typing and updates the colored presence image', async () => {
+it('clears the expiry clock during typing and updates the colored presence image', () => {
 	mockState.activeUsers.user = { status: 'online', statusText: 'Working', statusExpiresAt: 'future' };
 	const { rerender } = renderHook(() => useNativeRoomHeader({ ...fields, type: 'd' }, undefined, 'user', jest.fn()));
-	await waitFor(() =>
-		expect(latestOptions().headerSubtitleIcon).toEqual({ type: 'xcasset', name: 'nano.clock', tintColor: 'subtitle' })
-	);
+	expect(latestOptions().headerSubtitleIcon).toEqual({ type: 'xcasset', name: 'nano.clock', tintColor: 'subtitle' });
 	expect(latestOptions().headerTitleIcon).toEqual({ type: 'xcasset', name: 'nano.status-online', tintColor: 'online' });
 	mockState = { ...mockState, usersTyping: ['Alice', 'Bob'], activeUsers: { user: { status: 'busy' } } };
 	rerender({});
-	await waitFor(() =>
-		expect(latestOptions().headerTitleIcon).toEqual({ type: 'xcasset', name: 'nano.status-busy', tintColor: 'busy' })
-	);
+	expect(latestOptions().headerTitleIcon).toEqual({ type: 'xcasset', name: 'nano.status-busy', tintColor: 'busy' });
 	expect(latestOptions().headerSubtitle).toBe('Alice and Bob are_typing...');
 	expect(latestOptions().headerSubtitleIcon).toBeUndefined();
 });
@@ -119,19 +111,16 @@ it('uses supported Omnichannel app images and falls back to the glyph for SVG ic
 	getSize.mockRestore();
 });
 
-it('opens room actions when the title is pressed', async () => {
+it('opens room actions when the title is pressed', () => {
 	const onTitlePress = jest.fn();
 	renderHook(() => useNativeRoomHeader(fields, undefined, undefined, onTitlePress));
-	await waitFor(() => expect(latestOptions().onHeaderTitlePress).toBeInstanceOf(Function));
 	latestOptions().onHeaderTitlePress({ nativeEvent: {} });
 	expect(onTitlePress).toHaveBeenCalledWith();
 });
 
-it('does not make the title pressable for invite subscriptions', async () => {
+it('does not make the title pressable for invite subscriptions', () => {
 	renderHook(() => useNativeRoomHeader({ ...fields, disabled: true }, undefined, undefined, jest.fn()));
-	await waitFor(() =>
-		expect(latestOptions().headerTitleIcon).toEqual({ type: 'xcasset', name: 'nano.channel-public', tintColor: 'title' })
-	);
+	expect(latestOptions().headerTitleIcon).toEqual({ type: 'xcasset', name: 'nano.channel-public', tintColor: 'title' });
 	expect(latestOptions().onHeaderTitlePress).toBeUndefined();
 });
 

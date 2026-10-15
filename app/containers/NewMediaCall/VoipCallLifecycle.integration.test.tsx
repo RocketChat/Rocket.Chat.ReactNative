@@ -360,7 +360,6 @@ const flushMicrotasks = async () => {
 //     console.error(Error). Allowlisted on the error side, asserted via the
 //     error spy in the corresponding test.
 const CONSOLE_ERROR_ALLOWLIST: string[] = ['[VoIP] Call not found after accept:'];
-const CONSOLE_WARN_ALLOWLIST: string[] = [];
 
 let consoleErrorSpy: jest.SpyInstance | undefined;
 let consoleWarnSpy: jest.SpyInstance | undefined;
@@ -398,9 +397,7 @@ describe('VoIP call lifecycle (integration)', () => {
 			unexpectedConsoleErrors.push(`[error] ${message}`);
 		});
 		consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation((...args: unknown[]) => {
-			const message = formatConsoleArgs(args);
-			if (CONSOLE_WARN_ALLOWLIST.some(allowed => message.includes(allowed))) return;
-			unexpectedConsoleErrors.push(`[warn] ${message}`);
+			unexpectedConsoleErrors.push(`[warn] ${formatConsoleArgs(args)}`);
 		});
 
 		mediaSessionInstance.init('me');

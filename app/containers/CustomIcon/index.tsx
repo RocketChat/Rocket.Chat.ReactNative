@@ -7,7 +7,7 @@ import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsi
 import glyphMap from './nanoicons/custom.glyphmap.json';
 import symbolMap from './nanoicons/custom.symbolmap.json';
 
-export const IconSet = createNanoIconSet(glyphMap);
+const IconSet = createNanoIconSet(glyphMap);
 
 export type TIconsName = keyof typeof glyphMap.i;
 

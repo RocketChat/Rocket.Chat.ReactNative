@@ -34,6 +34,7 @@
 		"yarn-error.log",
 		"pnpm-lock.yaml",
 		".storybook/",
-		"app/i18n/locales/"
+		"app/i18n/locales/",
+		"app/containers/CustomIcon/nanoicons/"
 	]
 }
