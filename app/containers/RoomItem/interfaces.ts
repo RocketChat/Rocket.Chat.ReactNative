@@ -77,7 +77,6 @@ interface IRoomItemTouchables {
 	toggleRead?: (rid: string, tIsRead: boolean) => Promise<void>;
 	hideChannel?: (rid: string, type: SubscriptionType) => Promise<void>;
 	onPress: (item?: any) => void;
-	onLongPress?: (item?: any) => void;
 }
 
 interface IBaseRoomItem extends IRoomItemTouchables {
@@ -130,6 +129,7 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	hideMentionStatus?: boolean;
 	accessibilityDate: string;
 	abacAttributes?: ISubscription['abacAttributes'];
+	onLongPress?: () => void;
 	onShowActions?: () => void;
 }
 
@@ -144,6 +144,7 @@ export interface ILastMessageProps {
 
 export interface ITouchableProps extends IRoomItemTouchables {
 	children: ReactElement;
+	onLongPress?: () => void;
 	type: SubscriptionType;
 	width: number;
 	favorite: boolean;
