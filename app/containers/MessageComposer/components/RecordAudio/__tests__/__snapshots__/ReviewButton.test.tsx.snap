@@ -84,7 +84,7 @@ exports[`renders and fires onPress 1`] = `
           [
             {
               "bottom": 0,
-              "fontFamily": "custom-c991a6a0",
+              "fontFamily": "custom-24242538",
               "fontStyle": "normal",
               "fontWeight": "normal",
               "includeFontPadding": false,

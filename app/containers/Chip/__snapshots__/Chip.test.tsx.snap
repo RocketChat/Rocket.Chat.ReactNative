@@ -290,7 +290,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
             [
               {
                 "bottom": 0,
-                "fontFamily": "custom-c991a6a0",
+                "fontFamily": "custom-24242538",
                 "fontStyle": "normal",
                 "fontWeight": "normal",
                 "includeFontPadding": false,
@@ -496,7 +496,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
             [
               {
                 "bottom": 0,
-                "fontFamily": "custom-c991a6a0",
+                "fontFamily": "custom-24242538",
                 "fontStyle": "normal",
                 "fontWeight": "normal",
                 "includeFontPadding": false,
@@ -642,7 +642,7 @@ exports[`Story Snapshots: ChipWithoutAvatar should match snapshot 1`] = `
             [
               {
                 "bottom": 0,
-                "fontFamily": "custom-c991a6a0",
+                "fontFamily": "custom-24242538",
                 "fontStyle": "normal",
                 "fontWeight": "normal",
                 "includeFontPadding": false,

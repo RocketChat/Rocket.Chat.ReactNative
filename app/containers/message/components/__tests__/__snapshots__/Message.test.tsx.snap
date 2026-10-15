@@ -1687,7 +1687,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
                                   {
                                     "bottom": 0,
                                     "height": 54,
-                                    "width": 54,
+                                    "width": 55.6875,
                                   },
                                   undefined,
                                 ]
@@ -1701,7 +1701,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -2511,7 +2511,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
                                   {
                                     "bottom": 0,
                                     "height": 70.2,
-                                    "width": 70.2,
+                                    "width": 72.39375,
                                   },
                                   undefined,
                                 ]
@@ -2525,7 +2525,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -9357,7 +9357,7 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
                                 [
                                   {
                                     "bottom": 0,
-                                    "fontFamily": "custom-c991a6a0",
+                                    "fontFamily": "custom-24242538",
                                     "fontStyle": "normal",
                                     "fontWeight": "normal",
                                     "includeFontPadding": false,
@@ -9964,7 +9964,7 @@ exports[`Story Snapshots: BroadcastLargeFont should match snapshot 1`] = `
                                 [
                                   {
                                     "bottom": 0,
-                                    "fontFamily": "custom-c991a6a0",
+                                    "fontFamily": "custom-24242538",
                                     "fontStyle": "normal",
                                     "fontWeight": "normal",
                                     "includeFontPadding": false,
@@ -10624,7 +10624,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -12100,7 +12100,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -13578,7 +13578,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -15212,7 +15212,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -27760,7 +27760,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                                 [
                                   {
                                     "bottom": 0,
-                                    "fontFamily": "custom-c991a6a0",
+                                    "fontFamily": "custom-24242538",
                                     "fontStyle": "normal",
                                     "fontWeight": "normal",
                                     "includeFontPadding": false,
@@ -28357,7 +28357,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                                 [
                                   {
                                     "bottom": 0,
-                                    "fontFamily": "custom-c991a6a0",
+                                    "fontFamily": "custom-24242538",
                                     "fontStyle": "normal",
                                     "fontWeight": "normal",
                                     "includeFontPadding": false,
@@ -28956,7 +28956,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                                 [
                                   {
                                     "bottom": 0,
-                                    "fontFamily": "custom-c991a6a0",
+                                    "fontFamily": "custom-24242538",
                                     "fontStyle": "normal",
                                     "fontWeight": "normal",
                                     "includeFontPadding": false,
@@ -29555,7 +29555,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                                 [
                                   {
                                     "bottom": 0,
-                                    "fontFamily": "custom-c991a6a0",
+                                    "fontFamily": "custom-24242538",
                                     "fontStyle": "normal",
                                     "fontWeight": "normal",
                                     "includeFontPadding": false,
@@ -30167,7 +30167,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                                 [
                                   {
                                     "bottom": 0,
-                                    "fontFamily": "custom-c991a6a0",
+                                    "fontFamily": "custom-24242538",
                                     "fontStyle": "normal",
                                     "fontWeight": "normal",
                                     "includeFontPadding": false,
@@ -30764,7 +30764,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                                 [
                                   {
                                     "bottom": 0,
-                                    "fontFamily": "custom-c991a6a0",
+                                    "fontFamily": "custom-24242538",
                                     "fontStyle": "normal",
                                     "fontWeight": "normal",
                                     "includeFontPadding": false,
@@ -31363,7 +31363,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                                 [
                                   {
                                     "bottom": 0,
-                                    "fontFamily": "custom-c991a6a0",
+                                    "fontFamily": "custom-24242538",
                                     "fontStyle": "normal",
                                     "fontWeight": "normal",
                                     "includeFontPadding": false,
@@ -31962,7 +31962,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                                 [
                                   {
                                     "bottom": 0,
-                                    "fontFamily": "custom-c991a6a0",
+                                    "fontFamily": "custom-24242538",
                                     "fontStyle": "normal",
                                     "fontWeight": "normal",
                                     "includeFontPadding": false,
@@ -32439,7 +32439,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 16,
-                                "width": 16,
+                                "width": 16.5,
                               },
                               undefined,
                             ]
@@ -32453,7 +32453,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -32779,7 +32779,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -32793,7 +32793,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -33200,7 +33200,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 20.8,
-                                "width": 20.8,
+                                "width": 21.45,
                               },
                               undefined,
                             ]
@@ -33214,7 +33214,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -33562,7 +33562,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 20.8,
-                          "width": 20.8,
+                          "width": 21.45,
                         },
                         undefined,
                       ]
@@ -33576,7 +33576,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -40807,7 +40807,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 16,
-                                "width": 16,
+                                "width": 16.5,
                               },
                               undefined,
                             ]
@@ -40821,7 +40821,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -41107,7 +41107,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -41121,7 +41121,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -41573,7 +41573,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 16,
-                                "width": 16,
+                                "width": 16.5,
                               },
                               undefined,
                             ]
@@ -41587,7 +41587,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -42090,7 +42090,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                                 [
                                   {
                                     "bottom": 0,
-                                    "fontFamily": "custom-c991a6a0",
+                                    "fontFamily": "custom-24242538",
                                     "fontStyle": "normal",
                                     "fontWeight": "normal",
                                     "includeFontPadding": false,
@@ -42257,7 +42257,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -42349,7 +42349,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -43000,7 +43000,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 16,
-                                "width": 16,
+                                "width": 16.5,
                               },
                               undefined,
                             ]
@@ -43014,7 +43014,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -43509,7 +43509,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 16,
-                                "width": 16,
+                                "width": 16.5,
                               },
                               undefined,
                             ]
@@ -43523,7 +43523,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -43933,7 +43933,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -43947,7 +43947,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -44034,7 +44034,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -44526,7 +44526,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 16,
-                                "width": 16,
+                                "width": 16.5,
                               },
                               undefined,
                             ]
@@ -44540,7 +44540,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -44586,7 +44586,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                             [
                               {
                                 "bottom": 0,
-                                "fontFamily": "custom-c991a6a0",
+                                "fontFamily": "custom-24242538",
                                 "fontStyle": "normal",
                                 "fontWeight": "normal",
                                 "includeFontPadding": false,
@@ -44871,7 +44871,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -44885,7 +44885,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -44931,7 +44931,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -45373,7 +45373,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 20.8,
-                                "width": 20.8,
+                                "width": 21.45,
                               },
                               undefined,
                             ]
@@ -45387,7 +45387,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -45695,7 +45695,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 20.8,
-                          "width": 20.8,
+                          "width": 21.45,
                         },
                         undefined,
                       ]
@@ -45709,7 +45709,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -46139,7 +46139,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 20.8,
-                                "width": 20.8,
+                                "width": 21.45,
                               },
                               undefined,
                             ]
@@ -46153,7 +46153,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -46678,7 +46678,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                                 [
                                   {
                                     "bottom": 0,
-                                    "fontFamily": "custom-c991a6a0",
+                                    "fontFamily": "custom-24242538",
                                     "fontStyle": "normal",
                                     "fontWeight": "normal",
                                     "includeFontPadding": false,
@@ -46845,7 +46845,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -46937,7 +46937,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -47566,7 +47566,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 20.8,
-                                "width": 20.8,
+                                "width": 21.45,
                               },
                               undefined,
                             ]
@@ -47580,7 +47580,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -48075,7 +48075,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 20.8,
-                                "width": 20.8,
+                                "width": 21.45,
                               },
                               undefined,
                             ]
@@ -48089,7 +48089,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -48499,7 +48499,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 20.8,
-                          "width": 20.8,
+                          "width": 21.45,
                         },
                         undefined,
                       ]
@@ -48513,7 +48513,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -48600,7 +48600,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -49092,7 +49092,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 20.8,
-                                "width": 20.8,
+                                "width": 21.45,
                               },
                               undefined,
                             ]
@@ -49106,7 +49106,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -49152,7 +49152,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                             [
                               {
                                 "bottom": 0,
-                                "fontFamily": "custom-c991a6a0",
+                                "fontFamily": "custom-24242538",
                                 "fontStyle": "normal",
                                 "fontWeight": "normal",
                                 "includeFontPadding": false,
@@ -49459,7 +49459,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 20.8,
-                          "width": 20.8,
+                          "width": 21.45,
                         },
                         undefined,
                       ]
@@ -49473,7 +49473,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -49519,7 +49519,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -49917,7 +49917,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -50381,7 +50381,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -50836,7 +50836,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -51300,7 +51300,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -64687,7 +64687,7 @@ exports[`Story Snapshots: JitsiCall should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -65211,7 +65211,7 @@ exports[`Story Snapshots: JitsiCallLargeFont should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -71889,7 +71889,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 16,
-                                "width": 16,
+                                "width": 16.5,
                               },
                               undefined,
                             ]
@@ -71903,7 +71903,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -72395,7 +72395,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 16,
-                                "width": 16,
+                                "width": 16.5,
                               },
                               undefined,
                             ]
@@ -72409,7 +72409,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -72938,7 +72938,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 16,
-                                "width": 16,
+                                "width": 16.5,
                               },
                               undefined,
                             ]
@@ -72952,7 +72952,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -73377,7 +73377,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -73881,7 +73881,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                             [
                               {
                                 "bottom": 0,
-                                "fontFamily": "custom-c991a6a0",
+                                "fontFamily": "custom-24242538",
                                 "fontStyle": "normal",
                                 "fontWeight": "normal",
                                 "includeFontPadding": false,
@@ -74409,7 +74409,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 16,
-                                "width": 16,
+                                "width": 16.5,
                               },
                               undefined,
                             ]
@@ -74423,7 +74423,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -74469,7 +74469,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                             [
                               {
                                 "bottom": 0,
-                                "fontFamily": "custom-c991a6a0",
+                                "fontFamily": "custom-24242538",
                                 "fontStyle": "normal",
                                 "fontWeight": "normal",
                                 "includeFontPadding": false,
@@ -74878,7 +74878,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -74892,7 +74892,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -74928,7 +74928,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -74942,7 +74942,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -75029,7 +75029,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -75064,7 +75064,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -75078,7 +75078,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -75124,7 +75124,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -75534,7 +75534,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -75548,7 +75548,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -75584,7 +75584,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -75598,7 +75598,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -75685,7 +75685,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -75720,7 +75720,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -75734,7 +75734,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -75780,7 +75780,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -76190,7 +76190,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -76204,7 +76204,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -76240,7 +76240,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -76254,7 +76254,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -76341,7 +76341,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -76376,7 +76376,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -76390,7 +76390,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -76436,7 +76436,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -77338,7 +77338,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 20.8,
-                                "width": 20.8,
+                                "width": 21.45,
                               },
                               undefined,
                             ]
@@ -77352,7 +77352,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -77844,7 +77844,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 20.8,
-                                "width": 20.8,
+                                "width": 21.45,
                               },
                               undefined,
                             ]
@@ -77858,7 +77858,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -78387,7 +78387,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 20.8,
-                                "width": 20.8,
+                                "width": 21.45,
                               },
                               undefined,
                             ]
@@ -78401,7 +78401,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -78826,7 +78826,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -79330,7 +79330,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                             [
                               {
                                 "bottom": 0,
-                                "fontFamily": "custom-c991a6a0",
+                                "fontFamily": "custom-24242538",
                                 "fontStyle": "normal",
                                 "fontWeight": "normal",
                                 "includeFontPadding": false,
@@ -79858,7 +79858,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 20.8,
-                                "width": 20.8,
+                                "width": 21.45,
                               },
                               undefined,
                             ]
@@ -79872,7 +79872,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -79918,7 +79918,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                             [
                               {
                                 "bottom": 0,
-                                "fontFamily": "custom-c991a6a0",
+                                "fontFamily": "custom-24242538",
                                 "fontStyle": "normal",
                                 "fontWeight": "normal",
                                 "includeFontPadding": false,
@@ -80327,7 +80327,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 20.8,
-                          "width": 20.8,
+                          "width": 21.45,
                         },
                         undefined,
                       ]
@@ -80341,7 +80341,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -80377,7 +80377,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 20.8,
-                          "width": 20.8,
+                          "width": 21.45,
                         },
                         undefined,
                       ]
@@ -80391,7 +80391,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -80478,7 +80478,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -80513,7 +80513,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 20.8,
-                          "width": 20.8,
+                          "width": 21.45,
                         },
                         undefined,
                       ]
@@ -80527,7 +80527,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -80573,7 +80573,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -80983,7 +80983,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 20.8,
-                          "width": 20.8,
+                          "width": 21.45,
                         },
                         undefined,
                       ]
@@ -80997,7 +80997,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -81033,7 +81033,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 20.8,
-                          "width": 20.8,
+                          "width": 21.45,
                         },
                         undefined,
                       ]
@@ -81047,7 +81047,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -81134,7 +81134,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -81169,7 +81169,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 20.8,
-                          "width": 20.8,
+                          "width": 21.45,
                         },
                         undefined,
                       ]
@@ -81183,7 +81183,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -81229,7 +81229,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -81639,7 +81639,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 20.8,
-                          "width": 20.8,
+                          "width": 21.45,
                         },
                         undefined,
                       ]
@@ -81653,7 +81653,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -81689,7 +81689,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 20.8,
-                          "width": 20.8,
+                          "width": 21.45,
                         },
                         undefined,
                       ]
@@ -81703,7 +81703,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -81790,7 +81790,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -81825,7 +81825,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 20.8,
-                          "width": 20.8,
+                          "width": 21.45,
                         },
                         undefined,
                       ]
@@ -81839,7 +81839,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -81885,7 +81885,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -86516,7 +86516,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                               {
                                                 "bottom": 0,
                                                 "height": 54,
-                                                "width": 54,
+                                                "width": 55.6875,
                                               },
                                               undefined,
                                             ]
@@ -86530,7 +86530,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                               [
                                                 {
                                                   "bottom": 0,
-                                                  "fontFamily": "custom-c991a6a0",
+                                                  "fontFamily": "custom-24242538",
                                                   "fontStyle": "normal",
                                                   "fontWeight": "normal",
                                                   "includeFontPadding": false,
@@ -87246,7 +87246,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                             [
                                               {
                                                 "bottom": 0,
-                                                "fontFamily": "custom-c991a6a0",
+                                                "fontFamily": "custom-24242538",
                                                 "fontStyle": "normal",
                                                 "fontWeight": "normal",
                                                 "includeFontPadding": false,
@@ -88106,7 +88106,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                             {
                                               "bottom": 0,
                                               "height": 54,
-                                              "width": 54,
+                                              "width": 55.6875,
                                             },
                                             undefined,
                                           ]
@@ -88120,7 +88120,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                             [
                                               {
                                                 "bottom": 0,
-                                                "fontFamily": "custom-c991a6a0",
+                                                "fontFamily": "custom-24242538",
                                                 "fontStyle": "normal",
                                                 "fontWeight": "normal",
                                                 "includeFontPadding": false,
@@ -89477,7 +89477,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                             [
                               {
                                 "bottom": 0,
-                                "fontFamily": "custom-c991a6a0",
+                                "fontFamily": "custom-24242538",
                                 "fontStyle": "normal",
                                 "fontWeight": "normal",
                                 "includeFontPadding": false,
@@ -89812,7 +89812,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -90237,7 +90237,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                             [
                               {
                                 "bottom": 0,
-                                "fontFamily": "custom-c991a6a0",
+                                "fontFamily": "custom-24242538",
                                 "fontStyle": "normal",
                                 "fontWeight": "normal",
                                 "includeFontPadding": false,
@@ -90572,7 +90572,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -90988,7 +90988,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                             [
                               {
                                 "bottom": 0,
-                                "fontFamily": "custom-c991a6a0",
+                                "fontFamily": "custom-24242538",
                                 "fontStyle": "normal",
                                 "fontWeight": "normal",
                                 "includeFontPadding": false,
@@ -91345,7 +91345,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -91748,7 +91748,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                             [
                               {
                                 "bottom": 0,
-                                "fontFamily": "custom-c991a6a0",
+                                "fontFamily": "custom-24242538",
                                 "fontStyle": "normal",
                                 "fontWeight": "normal",
                                 "includeFontPadding": false,
@@ -92105,7 +92105,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -94512,7 +94512,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                               {
                                                 "bottom": 0,
                                                 "height": 54,
-                                                "width": 54,
+                                                "width": 55.6875,
                                               },
                                               undefined,
                                             ]
@@ -94526,7 +94526,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                               [
                                                 {
                                                   "bottom": 0,
-                                                  "fontFamily": "custom-c991a6a0",
+                                                  "fontFamily": "custom-24242538",
                                                   "fontStyle": "normal",
                                                   "fontWeight": "normal",
                                                   "includeFontPadding": false,
@@ -95405,7 +95405,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                               {
                                                 "bottom": 0,
                                                 "height": 54,
-                                                "width": 54,
+                                                "width": 55.6875,
                                               },
                                               undefined,
                                             ]
@@ -95419,7 +95419,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                               [
                                                 {
                                                   "bottom": 0,
-                                                  "fontFamily": "custom-c991a6a0",
+                                                  "fontFamily": "custom-24242538",
                                                   "fontStyle": "normal",
                                                   "fontWeight": "normal",
                                                   "includeFontPadding": false,
@@ -100439,7 +100439,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                             [
                                               {
                                                 "bottom": 0,
-                                                "fontFamily": "custom-c991a6a0",
+                                                "fontFamily": "custom-24242538",
                                                 "fontStyle": "normal",
                                                 "fontWeight": "normal",
                                                 "includeFontPadding": false,
@@ -101299,7 +101299,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                             {
                                               "bottom": 0,
                                               "height": 70.2,
-                                              "width": 70.2,
+                                              "width": 72.39375,
                                             },
                                             undefined,
                                           ]
@@ -101313,7 +101313,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                             [
                                               {
                                                 "bottom": 0,
-                                                "fontFamily": "custom-c991a6a0",
+                                                "fontFamily": "custom-24242538",
                                                 "fontStyle": "normal",
                                                 "fontWeight": "normal",
                                                 "includeFontPadding": false,
@@ -104358,7 +104358,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                               {
                                                 "bottom": 0,
                                                 "height": 70.2,
-                                                "width": 70.2,
+                                                "width": 72.39375,
                                               },
                                               undefined,
                                             ]
@@ -104372,7 +104372,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                               [
                                                 {
                                                   "bottom": 0,
-                                                  "fontFamily": "custom-c991a6a0",
+                                                  "fontFamily": "custom-24242538",
                                                   "fontStyle": "normal",
                                                   "fontWeight": "normal",
                                                   "includeFontPadding": false,
@@ -105251,7 +105251,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                               {
                                                 "bottom": 0,
                                                 "height": 70.2,
-                                                "width": 70.2,
+                                                "width": 72.39375,
                                               },
                                               undefined,
                                             ]
@@ -105265,7 +105265,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                               [
                                                 {
                                                   "bottom": 0,
-                                                  "fontFamily": "custom-c991a6a0",
+                                                  "fontFamily": "custom-24242538",
                                                   "fontStyle": "normal",
                                                   "fontWeight": "normal",
                                                   "includeFontPadding": false,
@@ -105909,7 +105909,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -105970,7 +105970,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                                   {
                                     "bottom": 0,
                                     "height": 24,
-                                    "width": 24,
+                                    "width": 24.75,
                                   },
                                   undefined,
                                 ]
@@ -105984,7 +105984,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -106156,7 +106156,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                                       [
                                         {
                                           "bottom": 0,
-                                          "fontFamily": "custom-c991a6a0",
+                                          "fontFamily": "custom-24242538",
                                           "fontStyle": "normal",
                                           "fontWeight": "normal",
                                           "includeFontPadding": false,
@@ -106326,7 +106326,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -106418,7 +106418,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -106791,7 +106791,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -106883,7 +106883,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -107256,7 +107256,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -107348,7 +107348,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -107721,7 +107721,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -107813,7 +107813,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -108186,7 +108186,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -108278,7 +108278,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -108651,7 +108651,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -108743,7 +108743,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -109116,7 +109116,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -109208,7 +109208,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -109581,7 +109581,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -109673,7 +109673,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -110046,7 +110046,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -110138,7 +110138,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -110970,7 +110970,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -111031,7 +111031,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                                   {
                                     "bottom": 0,
                                     "height": 31.200000000000003,
-                                    "width": 31.200000000000003,
+                                    "width": 32.175000000000004,
                                   },
                                   undefined,
                                 ]
@@ -111045,7 +111045,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -111217,7 +111217,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                                       [
                                         {
                                           "bottom": 0,
-                                          "fontFamily": "custom-c991a6a0",
+                                          "fontFamily": "custom-24242538",
                                           "fontStyle": "normal",
                                           "fontWeight": "normal",
                                           "includeFontPadding": false,
@@ -111387,7 +111387,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -111479,7 +111479,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -111852,7 +111852,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -111944,7 +111944,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -112317,7 +112317,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -112409,7 +112409,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -112782,7 +112782,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -112874,7 +112874,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -113247,7 +113247,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -113339,7 +113339,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -113712,7 +113712,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -113804,7 +113804,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -114177,7 +114177,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -114269,7 +114269,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -114642,7 +114642,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -114734,7 +114734,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -115107,7 +115107,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -115199,7 +115199,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -116205,7 +116205,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       {
                         "bottom": 0,
                         "height": 16,
-                        "width": 16,
+                        "width": 16.5,
                       },
                       {
                         "marginLeft": 5,
@@ -116222,7 +116222,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -116293,7 +116293,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -116307,7 +116307,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -116343,7 +116343,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -116357,7 +116357,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -116444,7 +116444,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -116479,7 +116479,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -116493,7 +116493,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -116539,7 +116539,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -117361,7 +117361,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       {
                         "bottom": 0,
                         "height": 16,
-                        "width": 16,
+                        "width": 16.5,
                       },
                       {
                         "marginLeft": 5,
@@ -117378,7 +117378,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -117449,7 +117449,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -117463,7 +117463,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -117499,7 +117499,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -117513,7 +117513,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -117600,7 +117600,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -117635,7 +117635,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -117649,7 +117649,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -117695,7 +117695,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -118517,7 +118517,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       {
                         "bottom": 0,
                         "height": 16,
-                        "width": 16,
+                        "width": 16.5,
                       },
                       {
                         "marginLeft": 5,
@@ -118534,7 +118534,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -118605,7 +118605,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -118619,7 +118619,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -118655,7 +118655,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -118669,7 +118669,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -118756,7 +118756,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -118791,7 +118791,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -118805,7 +118805,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -118851,7 +118851,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -119311,7 +119311,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                             {
                               "bottom": 0,
                               "height": 16,
-                              "width": 16,
+                              "width": 16.5,
                             },
                             {
                               "marginLeft": 5,
@@ -119328,7 +119328,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                             [
                               {
                                 "bottom": 0,
-                                "fontFamily": "custom-c991a6a0",
+                                "fontFamily": "custom-24242538",
                                 "fontStyle": "normal",
                                 "fontWeight": "normal",
                                 "includeFontPadding": false,
@@ -119645,7 +119645,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                       {
                         "bottom": 0,
                         "height": 16,
-                        "width": 16,
+                        "width": 16.5,
                       },
                       {
                         "marginLeft": 5,
@@ -119662,7 +119662,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -120060,7 +120060,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                             {
                               "bottom": 0,
                               "height": 20.8,
-                              "width": 20.8,
+                              "width": 21.45,
                             },
                             {
                               "marginLeft": 5,
@@ -120077,7 +120077,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                             [
                               {
                                 "bottom": 0,
-                                "fontFamily": "custom-c991a6a0",
+                                "fontFamily": "custom-24242538",
                                 "fontStyle": "normal",
                                 "fontWeight": "normal",
                                 "includeFontPadding": false,
@@ -120416,7 +120416,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                       {
                         "bottom": 0,
                         "height": 20.8,
-                        "width": 20.8,
+                        "width": 21.45,
                       },
                       {
                         "marginLeft": 5,
@@ -120433,7 +120433,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -121471,7 +121471,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                                 [
                                   {
                                     "bottom": 0,
-                                    "fontFamily": "custom-c991a6a0",
+                                    "fontFamily": "custom-24242538",
                                     "fontStyle": "normal",
                                     "fontWeight": "normal",
                                     "includeFontPadding": false,
@@ -122975,7 +122975,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                                 [
                                   {
                                     "bottom": 0,
-                                    "fontFamily": "custom-c991a6a0",
+                                    "fontFamily": "custom-24242538",
                                     "fontStyle": "normal",
                                     "fontWeight": "normal",
                                     "includeFontPadding": false,
@@ -124018,7 +124018,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                                 [
                                   {
                                     "bottom": 0,
-                                    "fontFamily": "custom-c991a6a0",
+                                    "fontFamily": "custom-24242538",
                                     "fontStyle": "normal",
                                     "fontWeight": "normal",
                                     "includeFontPadding": false,
@@ -125522,7 +125522,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                                 [
                                   {
                                     "bottom": 0,
-                                    "fontFamily": "custom-c991a6a0",
+                                    "fontFamily": "custom-24242538",
                                     "fontStyle": "normal",
                                     "fontWeight": "normal",
                                     "includeFontPadding": false,
@@ -126148,7 +126148,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -126209,7 +126209,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                                   {
                                     "bottom": 0,
                                     "height": 24,
-                                    "width": 24,
+                                    "width": 24.75,
                                   },
                                   undefined,
                                 ]
@@ -126223,7 +126223,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -126395,7 +126395,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                                       [
                                         {
                                           "bottom": 0,
-                                          "fontFamily": "custom-c991a6a0",
+                                          "fontFamily": "custom-24242538",
                                           "fontStyle": "normal",
                                           "fontWeight": "normal",
                                           "includeFontPadding": false,
@@ -127960,7 +127960,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -128021,7 +128021,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                                   {
                                     "bottom": 0,
                                     "height": 31.200000000000003,
-                                    "width": 31.200000000000003,
+                                    "width": 32.175000000000004,
                                   },
                                   undefined,
                                 ]
@@ -128035,7 +128035,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -128207,7 +128207,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                                       [
                                         {
                                           "bottom": 0,
-                                          "fontFamily": "custom-c991a6a0",
+                                          "fontFamily": "custom-24242538",
                                           "fontStyle": "normal",
                                           "fontWeight": "normal",
                                           "includeFontPadding": false,
@@ -129326,7 +129326,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -129418,7 +129418,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -130740,7 +130740,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -130832,7 +130832,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -151990,7 +151990,7 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 16,
-                                "width": 16,
+                                "width": 16.5,
                               },
                               undefined,
                             ]
@@ -152004,7 +152004,7 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -152487,7 +152487,7 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
                               {
                                 "bottom": 0,
                                 "height": 20.8,
-                                "width": 20.8,
+                                "width": 21.45,
                               },
                               undefined,
                             ]
@@ -152501,7 +152501,7 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
                               [
                                 {
                                   "bottom": 0,
-                                  "fontFamily": "custom-c991a6a0",
+                                  "fontFamily": "custom-24242538",
                                   "fontStyle": "normal",
                                   "fontWeight": "normal",
                                   "includeFontPadding": false,
@@ -160898,7 +160898,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       {
                         "bottom": 0,
                         "height": 16,
-                        "width": 16,
+                        "width": 16.5,
                       },
                       {
                         "marginLeft": 5,
@@ -160915,7 +160915,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -160986,7 +160986,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -161000,7 +161000,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -161036,7 +161036,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -161050,7 +161050,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -161137,7 +161137,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -161172,7 +161172,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -161186,7 +161186,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -161232,7 +161232,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -162054,7 +162054,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       {
                         "bottom": 0,
                         "height": 16,
-                        "width": 16,
+                        "width": 16.5,
                       },
                       {
                         "marginLeft": 5,
@@ -162071,7 +162071,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -162142,7 +162142,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -162156,7 +162156,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -162192,7 +162192,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -162206,7 +162206,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -162293,7 +162293,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -162328,7 +162328,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -162342,7 +162342,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -162388,7 +162388,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -163210,7 +163210,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       {
                         "bottom": 0,
                         "height": 16,
-                        "width": 16,
+                        "width": 16.5,
                       },
                       {
                         "marginLeft": 5,
@@ -163227,7 +163227,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -163298,7 +163298,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -163312,7 +163312,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -163348,7 +163348,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -163362,7 +163362,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -163449,7 +163449,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -163484,7 +163484,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         {
                           "bottom": 0,
                           "height": 16,
-                          "width": 16,
+                          "width": 16.5,
                         },
                         undefined,
                       ]
@@ -163498,7 +163498,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -163544,7 +163544,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -166155,7 +166155,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -166631,7 +166631,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -167119,7 +167119,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -167387,7 +167387,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -167809,7 +167809,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -168185,7 +168185,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -168453,7 +168453,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -169247,7 +169247,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -169935,7 +169935,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -170357,7 +170357,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -170845,7 +170845,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -171221,7 +171221,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -171489,7 +171489,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -174736,7 +174736,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                     {
                                       "bottom": 0,
                                       "height": 54,
-                                      "width": 54,
+                                      "width": 55.6875,
                                     },
                                     undefined,
                                   ]
@@ -174750,7 +174750,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                     [
                                       {
                                         "bottom": 0,
-                                        "fontFamily": "custom-c991a6a0",
+                                        "fontFamily": "custom-24242538",
                                         "fontStyle": "normal",
                                         "fontWeight": "normal",
                                         "includeFontPadding": false,
@@ -175492,7 +175492,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                     {
                                       "bottom": 0,
                                       "height": 54,
-                                      "width": 54,
+                                      "width": 55.6875,
                                     },
                                     undefined,
                                   ]
@@ -175506,7 +175506,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                     [
                                       {
                                         "bottom": 0,
-                                        "fontFamily": "custom-c991a6a0",
+                                        "fontFamily": "custom-24242538",
                                         "fontStyle": "normal",
                                         "fontWeight": "normal",
                                         "includeFontPadding": false,
@@ -175784,7 +175784,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                     {
                                       "bottom": 0,
                                       "height": 54,
-                                      "width": 54,
+                                      "width": 55.6875,
                                     },
                                     undefined,
                                   ]
@@ -175798,7 +175798,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                     [
                                       {
                                         "bottom": 0,
-                                        "fontFamily": "custom-c991a6a0",
+                                        "fontFamily": "custom-24242538",
                                         "fontStyle": "normal",
                                         "fontWeight": "normal",
                                         "includeFontPadding": false,
@@ -175961,7 +175961,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                   {
                                     "bottom": 0,
                                     "height": 54,
-                                    "width": 54,
+                                    "width": 55.6875,
                                   },
                                   undefined,
                                 ]
@@ -175975,7 +175975,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -176601,7 +176601,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                   {
                                     "bottom": 0,
                                     "height": 54,
-                                    "width": 54,
+                                    "width": 55.6875,
                                   },
                                   undefined,
                                 ]
@@ -176615,7 +176615,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -176777,7 +176777,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                   {
                                     "bottom": 0,
                                     "height": 54,
-                                    "width": 54,
+                                    "width": 55.6875,
                                   },
                                   undefined,
                                 ]
@@ -176791,7 +176791,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -178094,7 +178094,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                     {
                                       "bottom": 0,
                                       "height": 70.2,
-                                      "width": 70.2,
+                                      "width": 72.39375,
                                     },
                                     undefined,
                                   ]
@@ -178108,7 +178108,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                     [
                                       {
                                         "bottom": 0,
-                                        "fontFamily": "custom-c991a6a0",
+                                        "fontFamily": "custom-24242538",
                                         "fontStyle": "normal",
                                         "fontWeight": "normal",
                                         "includeFontPadding": false,
@@ -178486,7 +178486,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                     {
                                       "bottom": 0,
                                       "height": 70.2,
-                                      "width": 70.2,
+                                      "width": 72.39375,
                                     },
                                     undefined,
                                   ]
@@ -178500,7 +178500,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                     [
                                       {
                                         "bottom": 0,
-                                        "fontFamily": "custom-c991a6a0",
+                                        "fontFamily": "custom-24242538",
                                         "fontStyle": "normal",
                                         "fontWeight": "normal",
                                         "includeFontPadding": false,
@@ -179134,7 +179134,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                   {
                                     "bottom": 0,
                                     "height": 54,
-                                    "width": 54,
+                                    "width": 55.6875,
                                   },
                                   undefined,
                                 ]
@@ -179148,7 +179148,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -179310,7 +179310,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                   {
                                     "bottom": 0,
                                     "height": 54,
-                                    "width": 54,
+                                    "width": 55.6875,
                                   },
                                   undefined,
                                 ]
@@ -179324,7 +179324,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -180644,7 +180644,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                                   {
                                     "bottom": 0,
                                     "height": 54,
-                                    "width": 54,
+                                    "width": 55.6875,
                                   },
                                   undefined,
                                 ]
@@ -180658,7 +180658,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -180994,7 +180994,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                                   {
                                     "bottom": 0,
                                     "height": 54,
-                                    "width": 54,
+                                    "width": 55.6875,
                                   },
                                   undefined,
                                 ]
@@ -181008,7 +181008,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -181607,7 +181607,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                                   {
                                     "bottom": 0,
                                     "height": 54,
-                                    "width": 54,
+                                    "width": 55.6875,
                                   },
                                   undefined,
                                 ]
@@ -181621,7 +181621,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -181749,7 +181749,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                                   {
                                     "bottom": 0,
                                     "height": 54,
-                                    "width": 54,
+                                    "width": 55.6875,
                                   },
                                   undefined,
                                 ]
@@ -181763,7 +181763,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -182410,7 +182410,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                                   {
                                     "bottom": 0,
                                     "height": 70.2,
-                                    "width": 70.2,
+                                    "width": 72.39375,
                                   },
                                   undefined,
                                 ]
@@ -182424,7 +182424,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -182950,7 +182950,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                                   {
                                     "bottom": 0,
                                     "height": 70.2,
-                                    "width": 70.2,
+                                    "width": 72.39375,
                                   },
                                   undefined,
                                 ]
@@ -182964,7 +182964,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -183556,7 +183556,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                                   {
                                     "bottom": 0,
                                     "height": 70.2,
-                                    "width": 70.2,
+                                    "width": 72.39375,
                                   },
                                   undefined,
                                 ]
@@ -183570,7 +183570,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,
@@ -183698,7 +183698,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                                   {
                                     "bottom": 0,
                                     "height": 70.2,
-                                    "width": 70.2,
+                                    "width": 72.39375,
                                   },
                                   undefined,
                                 ]
@@ -183712,7 +183712,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                                   [
                                     {
                                       "bottom": 0,
-                                      "fontFamily": "custom-c991a6a0",
+                                      "fontFamily": "custom-24242538",
                                       "fontStyle": "normal",
                                       "fontWeight": "normal",
                                       "includeFontPadding": false,

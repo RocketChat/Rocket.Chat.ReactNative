@@ -303,7 +303,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -428,7 +428,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -553,7 +553,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -689,7 +689,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -814,7 +814,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -925,7 +925,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
                   {
                     "bottom": 0,
                     "height": 32,
-                    "width": 32,
+                    "width": 33,
                   },
                   undefined,
                 ]
@@ -939,7 +939,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -1291,7 +1291,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -1418,7 +1418,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -1545,7 +1545,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -1681,7 +1681,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -1806,7 +1806,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -1919,7 +1919,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                   {
                     "bottom": 0,
                     "height": 32,
-                    "width": 32,
+                    "width": 33,
                   },
                   undefined,
                 ]
@@ -1933,7 +1933,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -2285,7 +2285,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -2410,7 +2410,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -2535,7 +2535,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -2671,7 +2671,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -2796,7 +2796,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -2907,7 +2907,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
                   {
                     "bottom": 0,
                     "height": 32,
-                    "width": 32,
+                    "width": 33,
                   },
                   undefined,
                 ]
@@ -2921,7 +2921,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -3273,7 +3273,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -3398,7 +3398,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -3523,7 +3523,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -3659,7 +3659,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -3784,7 +3784,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -3895,7 +3895,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
                   {
                     "bottom": 0,
                     "height": 32,
-                    "width": 32,
+                    "width": 33,
                   },
                   undefined,
                 ]
@@ -3909,7 +3909,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -4261,7 +4261,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -4386,7 +4386,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -4511,7 +4511,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -4647,7 +4647,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -4772,7 +4772,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -4883,7 +4883,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
                   {
                     "bottom": 0,
                     "height": 32,
-                    "width": 32,
+                    "width": 33,
                   },
                   undefined,
                 ]
@@ -4897,7 +4897,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -5249,7 +5249,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -5374,7 +5374,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -5499,7 +5499,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -5635,7 +5635,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -5760,7 +5760,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -5871,7 +5871,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
                   {
                     "bottom": 0,
                     "height": 32,
-                    "width": 32,
+                    "width": 33,
                   },
                   undefined,
                 ]
@@ -5885,7 +5885,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -6220,7 +6220,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -6345,7 +6345,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -6470,7 +6470,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -6595,7 +6595,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -6720,7 +6720,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -6831,7 +6831,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
                   {
                     "bottom": 0,
                     "height": 32,
-                    "width": 32,
+                    "width": 33,
                   },
                   undefined,
                 ]
@@ -6845,7 +6845,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -7180,7 +7180,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -7307,7 +7307,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -7434,7 +7434,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -7559,7 +7559,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -7684,7 +7684,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -7797,7 +7797,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
                   {
                     "bottom": 0,
                     "height": 32,
-                    "width": 32,
+                    "width": 33,
                   },
                   undefined,
                 ]
@@ -7811,7 +7811,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -8146,7 +8146,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -8271,7 +8271,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -8396,7 +8396,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -8521,7 +8521,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -8646,7 +8646,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -8757,7 +8757,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
                   {
                     "bottom": 0,
                     "height": 32,
-                    "width": 32,
+                    "width": 33,
                   },
                   undefined,
                 ]
@@ -8771,7 +8771,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -9106,7 +9106,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -9231,7 +9231,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -9356,7 +9356,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -9481,7 +9481,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -9606,7 +9606,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -9717,7 +9717,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
                   {
                     "bottom": 0,
                     "height": 32,
-                    "width": 32,
+                    "width": 33,
                   },
                   undefined,
                 ]
@@ -9731,7 +9731,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -10066,7 +10066,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -10191,7 +10191,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -10316,7 +10316,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -10441,7 +10441,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -10566,7 +10566,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -10677,7 +10677,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
                   {
                     "bottom": 0,
                     "height": 32,
-                    "width": 32,
+                    "width": 33,
                   },
                   undefined,
                 ]
@@ -10691,7 +10691,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -11026,7 +11026,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -11151,7 +11151,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -11276,7 +11276,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -11401,7 +11401,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -11526,7 +11526,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -11637,7 +11637,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
                   {
                     "bottom": 0,
                     "height": 32,
-                    "width": 32,
+                    "width": 33,
                   },
                   undefined,
                 ]
@@ -11651,7 +11651,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -11986,7 +11986,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -12111,7 +12111,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -12236,7 +12236,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -12361,7 +12361,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -12486,7 +12486,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -12597,7 +12597,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
                   {
                     "bottom": 0,
                     "height": 32,
-                    "width": 32,
+                    "width": 33,
                   },
                   undefined,
                 ]
@@ -12611,7 +12611,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -12963,7 +12963,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -13088,7 +13088,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -13213,7 +13213,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -13349,7 +13349,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -13474,7 +13474,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -13585,7 +13585,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
                   {
                     "bottom": 0,
                     "height": 32,
-                    "width": 32,
+                    "width": 33,
                   },
                   undefined,
                 ]
@@ -13599,7 +13599,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,

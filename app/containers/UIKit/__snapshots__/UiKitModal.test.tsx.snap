@@ -317,7 +317,7 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -462,7 +462,7 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -607,7 +607,7 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -752,7 +752,7 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -2296,7 +2296,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -2517,7 +2517,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -2738,7 +2738,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -2922,7 +2922,7 @@ exports[`Story Snapshots: ModalDatePickerWithError should match snapshot 1`] = `
                 {
                   "bottom": 0,
                   "height": 20,
-                  "width": 20,
+                  "width": 20.625,
                 },
                 {
                   "position": "absolute",
@@ -2939,7 +2939,7 @@ exports[`Story Snapshots: ModalDatePickerWithError should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -3365,7 +3365,7 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
                   {
                     "bottom": 0,
                     "height": 20,
-                    "width": 20,
+                    "width": 20.625,
                   },
                   {
                     "position": "absolute",
@@ -3382,7 +3382,7 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -3908,7 +3908,7 @@ exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
               {
                 "bottom": 0,
                 "height": 54,
-                "width": 54,
+                "width": 55.6875,
               },
               undefined,
             ]
@@ -3922,7 +3922,7 @@ exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
               [
                 {
                   "bottom": 0,
-                  "fontFamily": "custom-c991a6a0",
+                  "fontFamily": "custom-24242538",
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                   "includeFontPadding": false,
@@ -4895,7 +4895,7 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -5218,7 +5218,7 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
                           [
                             {
                               "bottom": 0,
-                              "fontFamily": "custom-c991a6a0",
+                              "fontFamily": "custom-24242538",
                               "fontStyle": "normal",
                               "fontWeight": "normal",
                               "includeFontPadding": false,
@@ -5266,7 +5266,7 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,

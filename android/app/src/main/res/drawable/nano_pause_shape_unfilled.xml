@@ -1,9 +1,9 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
-    android:viewportWidth="32"
-    android:viewportHeight="32">
+    android:viewportWidth="1024"
+    android:viewportHeight="1024">
   <group android:translateX="0" android:translateY="0">
-    <path android:fillColor="#000000" android:pathData="M7,6 L13,6 C13.552,6 14,6.448 14,7 L14,25 C14,25.552 13.552,26 13,26 L7,26 C6.448,26 6,25.552 6,25 L6,7 C6,6.448 6.448,6 7,6 Z M8,24 L12,24 L12,8 L8,8 L8,24 Z M19,6 L25,6 C25.552,6 26,6.448 26,7 L26,25 C26,25.552 25.552,26 25,26 L19,26 C18.448,26 18,25.552 18,25 L18,7 C18,6.448 18.448,6 19,6 Z M20,24 L24,24 L24,8 L20,8 L20,24 Z"/>
+    <path android:fillColor="#000000" android:pathData="M224,192 C206.327,192 192,206.327 192,224 L192,800 C192,817.674 206.327,832 224,832 L416,832 C433.674,832 448,817.674 448,800 L448,224 C448,206.327 433.674,192 416,192 L224,192 Z M256,768 L256,256 L384,256 L384,768 L256,768 Z M608,192 C590.326,192 576,206.327 576,224 L576,800 C576,817.674 590.326,832 608,832 L800,832 C817.674,832 832,817.674 832,800 L832,224 C832,206.327 817.674,192 800,192 L608,192 Z M640,768 L640,256 L768,256 L768,768 L640,768 Z"/>
   </group>
 </vector>

@@ -99,7 +99,7 @@ exports[`Story Snapshots: ActiveButton should match snapshot 1`] = `
               [
                 {
                   "bottom": 0,
-                  "fontFamily": "custom-c991a6a0",
+                  "fontFamily": "custom-24242538",
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                   "includeFontPadding": false,
@@ -253,7 +253,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -378,7 +378,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -503,7 +503,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -642,7 +642,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -767,7 +767,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -892,7 +892,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -1039,7 +1039,7 @@ exports[`Story Snapshots: DangerButton should match snapshot 1`] = `
               [
                 {
                   "bottom": 0,
-                  "fontFamily": "custom-c991a6a0",
+                  "fontFamily": "custom-24242538",
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                   "includeFontPadding": false,
@@ -1185,7 +1185,7 @@ exports[`Story Snapshots: DefaultButton should match snapshot 1`] = `
               [
                 {
                   "bottom": 0,
-                  "fontFamily": "custom-c991a6a0",
+                  "fontFamily": "custom-24242538",
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                   "includeFontPadding": false,
@@ -1333,7 +1333,7 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
               [
                 {
                   "bottom": 0,
-                  "fontFamily": "custom-c991a6a0",
+                  "fontFamily": "custom-24242538",
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                   "includeFontPadding": false,
@@ -1488,7 +1488,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -1613,7 +1613,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -1738,7 +1738,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -1863,7 +1863,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -1988,7 +1988,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -2099,7 +2099,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 {
                   "bottom": 0,
                   "height": 32,
-                  "width": 32,
+                  "width": 33,
                 },
                 undefined,
               ]
@@ -2113,7 +2113,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,

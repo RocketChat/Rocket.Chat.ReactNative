@@ -46,7 +46,7 @@ exports[`MessageComposer Audio tap record 1`] = `
             [
               {
                 "bottom": 0,
-                "fontFamily": "custom-c991a6a0",
+                "fontFamily": "custom-24242538",
                 "fontStyle": "normal",
                 "fontWeight": "normal",
                 "includeFontPadding": false,
@@ -162,7 +162,7 @@ exports[`MessageComposer Audio tap record 1`] = `
                 {
                   "bottom": 0,
                   "height": 24,
-                  "width": 24,
+                  "width": 24.75,
                 },
                 undefined,
               ]
@@ -176,7 +176,7 @@ exports[`MessageComposer Audio tap record 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -308,7 +308,7 @@ exports[`MessageComposer Audio tap record 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -463,7 +463,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -654,7 +654,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -867,7 +867,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -1064,7 +1064,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -1255,7 +1255,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -1469,7 +1469,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -1697,7 +1697,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -1894,7 +1894,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -2085,7 +2085,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                   [
                     {
                       "bottom": 0,
-                      "fontFamily": "custom-c991a6a0",
+                      "fontFamily": "custom-24242538",
                       "fontStyle": "normal",
                       "fontWeight": "normal",
                       "includeFontPadding": false,
@@ -2299,7 +2299,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -2527,7 +2527,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-c991a6a0",
+                            "fontFamily": "custom-24242538",
                             "fontStyle": "normal",
                             "fontWeight": "normal",
                             "includeFontPadding": false,
@@ -2800,7 +2800,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -2911,7 +2911,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -3022,7 +3022,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -3133,7 +3133,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -3244,7 +3244,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -3355,7 +3355,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -3466,7 +3466,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -3697,7 +3697,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -3808,7 +3808,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -3919,7 +3919,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -4030,7 +4030,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -4141,7 +4141,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -4252,7 +4252,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -4363,7 +4363,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -4594,7 +4594,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -4705,7 +4705,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -4816,7 +4816,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -4927,7 +4927,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -5038,7 +5038,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -5149,7 +5149,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -5260,7 +5260,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -5491,7 +5491,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -5602,7 +5602,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -5713,7 +5713,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -5824,7 +5824,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -5935,7 +5935,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -6046,7 +6046,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -6157,7 +6157,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -6388,7 +6388,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -6499,7 +6499,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -6610,7 +6610,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -6721,7 +6721,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -6832,7 +6832,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -6943,7 +6943,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -7054,7 +7054,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -7285,7 +7285,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -7396,7 +7396,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -7507,7 +7507,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -7618,7 +7618,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -7729,7 +7729,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -7840,7 +7840,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -7951,7 +7951,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -8182,7 +8182,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -8293,7 +8293,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -8404,7 +8404,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -8515,7 +8515,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -8626,7 +8626,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -8737,7 +8737,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -8848,7 +8848,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -9079,7 +9079,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -9190,7 +9190,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -9301,7 +9301,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -9412,7 +9412,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -9523,7 +9523,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -9634,7 +9634,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -9745,7 +9745,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -9976,7 +9976,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -10087,7 +10087,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -10198,7 +10198,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -10309,7 +10309,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -10420,7 +10420,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -10531,7 +10531,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -10642,7 +10642,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -10873,7 +10873,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -10984,7 +10984,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -11095,7 +11095,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -11206,7 +11206,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -11317,7 +11317,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -11428,7 +11428,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -11539,7 +11539,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -11770,7 +11770,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -11881,7 +11881,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -11992,7 +11992,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -12103,7 +12103,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -12214,7 +12214,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -12325,7 +12325,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -12436,7 +12436,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -12667,7 +12667,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -12778,7 +12778,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -12889,7 +12889,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -13000,7 +13000,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -13111,7 +13111,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -13342,7 +13342,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -13453,7 +13453,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -13564,7 +13564,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -13675,7 +13675,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -13786,7 +13786,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -13931,7 +13931,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -14043,7 +14043,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -14155,7 +14155,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -14267,7 +14267,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -14379,7 +14379,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -14491,7 +14491,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -14603,7 +14603,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -14715,7 +14715,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -14827,7 +14827,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -14939,7 +14939,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-c991a6a0",
+                          "fontFamily": "custom-24242538",
                           "fontStyle": "normal",
                           "fontWeight": "normal",
                           "includeFontPadding": false,
@@ -15350,7 +15350,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 {
                   "bottom": 0,
                   "height": 24,
-                  "width": 24,
+                  "width": 24.75,
                 },
                 undefined,
               ]
@@ -15364,7 +15364,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -15451,7 +15451,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -15672,7 +15672,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -15783,7 +15783,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -15894,7 +15894,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -16005,7 +16005,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -16116,7 +16116,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,

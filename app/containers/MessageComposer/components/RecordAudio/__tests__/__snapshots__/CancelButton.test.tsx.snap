@@ -71,7 +71,7 @@ exports[`a11y label is cancel when cancelAndDelete 1`] = `
           {
             "bottom": 0,
             "height": 24,
-            "width": 24,
+            "width": 24.75,
           },
           undefined,
         ]
@@ -85,7 +85,7 @@ exports[`a11y label is cancel when cancelAndDelete 1`] = `
           [
             {
               "bottom": 0,
-              "fontFamily": "custom-c991a6a0",
+              "fontFamily": "custom-24242538",
               "fontStyle": "normal",
               "fontWeight": "normal",
               "includeFontPadding": false,
@@ -178,7 +178,7 @@ exports[`a11y label is delete otherwise and fires onPress 1`] = `
           {
             "bottom": 0,
             "height": 24,
-            "width": 24,
+            "width": 24.75,
           },
           undefined,
         ]
@@ -192,7 +192,7 @@ exports[`a11y label is delete otherwise and fires onPress 1`] = `
           [
             {
               "bottom": 0,
-              "fontFamily": "custom-c991a6a0",
+              "fontFamily": "custom-24242538",
               "fontStyle": "normal",
               "fontWeight": "normal",
               "includeFontPadding": false,

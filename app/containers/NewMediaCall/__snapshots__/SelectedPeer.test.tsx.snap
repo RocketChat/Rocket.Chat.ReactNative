@@ -155,7 +155,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -264,7 +264,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
               [
                 {
                   "bottom": 0,
-                  "fontFamily": "custom-c991a6a0",
+                  "fontFamily": "custom-24242538",
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                   "includeFontPadding": false,
@@ -362,7 +362,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -482,7 +482,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
               [
                 {
                   "bottom": 0,
-                  "fontFamily": "custom-c991a6a0",
+                  "fontFamily": "custom-24242538",
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                   "includeFontPadding": false,
@@ -648,7 +648,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -757,7 +757,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
               [
                 {
                   "bottom": 0,
-                  "fontFamily": "custom-c991a6a0",
+                  "fontFamily": "custom-24242538",
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                   "includeFontPadding": false,
@@ -936,7 +936,7 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -1045,7 +1045,7 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
               [
                 {
                   "bottom": 0,
-                  "fontFamily": "custom-c991a6a0",
+                  "fontFamily": "custom-24242538",
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                   "includeFontPadding": false,
@@ -1156,7 +1156,7 @@ exports[`Story Snapshots: Sip should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -1276,7 +1276,7 @@ exports[`Story Snapshots: Sip should match snapshot 1`] = `
               [
                 {
                   "bottom": 0,
-                  "fontFamily": "custom-c991a6a0",
+                  "fontFamily": "custom-24242538",
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                   "includeFontPadding": false,
@@ -1455,7 +1455,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                 [
                   {
                     "bottom": 0,
-                    "fontFamily": "custom-c991a6a0",
+                    "fontFamily": "custom-24242538",
                     "fontStyle": "normal",
                     "fontWeight": "normal",
                     "includeFontPadding": false,
@@ -1564,7 +1564,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
               [
                 {
                   "bottom": 0,
-                  "fontFamily": "custom-c991a6a0",
+                  "fontFamily": "custom-24242538",
                   "fontStyle": "normal",
                   "fontWeight": "normal",
                   "includeFontPadding": false,
