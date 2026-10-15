@@ -31,8 +31,8 @@ class UploadForegroundService : Service() {
             getSystemService(NotificationManager::class.java)
                 .createNotificationChannel(NotificationChannel(CHANNEL_ID, title, NotificationManager.IMPORTANCE_LOW))
         }
-        val percent = intent?.getIntExtra(EXTRA_PERCENT, -1) ?: -1
-        ServiceCompat.startForeground(this, NOTIFICATION_ID, buildNotification(this, percent.takeIf { it >= 0 }), type)
+        val percent = intent?.getIntExtra(EXTRA_PERCENT, 0) ?: 0
+        ServiceCompat.startForeground(this, NOTIFICATION_ID, buildNotification(this, percent), type)
         running = true
         return START_NOT_STICKY
     }
@@ -59,8 +59,10 @@ class UploadForegroundService : Service() {
         @Volatile private var title = ""
         @Volatile private var cancelLabel = ""
 
-        fun intent(context: Context, title: String? = null, cancelLabel: String? = null, percent: Int = -1): Intent =
-            Intent(context, UploadForegroundService::class.java)
+        private fun serviceIntent(context: Context) = Intent(context, UploadForegroundService::class.java)
+
+        fun intent(context: Context, title: String, cancelLabel: String, percent: Int): Intent =
+            serviceIntent(context)
                 .putExtra(EXTRA_TITLE, title)
                 .putExtra(EXTRA_CANCEL_LABEL, cancelLabel)
                 .putExtra(EXTRA_PERCENT, percent)
@@ -70,11 +72,16 @@ class UploadForegroundService : Service() {
             context.getSystemService(NotificationManager::class.java).notify(NOTIFICATION_ID, buildNotification(context, percent))
         }
 
-        private fun buildNotification(context: Context, percent: Int?): Notification {
+        fun stop(context: Context) {
+            context.stopService(serviceIntent(context))
+        }
+
+        private fun buildNotification(context: Context, percent: Int): Notification {
+            val clamped = percent.coerceIn(0, 100)
             val cancelIntent = PendingIntent.getService(
                 context,
                 0,
-                Intent(context, UploadForegroundService::class.java).setAction(ACTION_CANCEL),
+                serviceIntent(context).setAction(ACTION_CANCEL),
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )
             return NotificationCompat.Builder(context, CHANNEL_ID)
@@ -83,8 +90,8 @@ class UploadForegroundService : Service() {
                 .addAction(0, cancelLabel, cancelIntent)
                 .setOngoing(true)
                 .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
-                .setProgress(100, percent ?: 0, percent == null)
-                .setContentText(percent?.let { "$it%" })
+                .setProgress(100, clamped, false)
+                .setContentText("$clamped%")
                 .build()
         }
     }

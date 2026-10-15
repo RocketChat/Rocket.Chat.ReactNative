@@ -2,17 +2,11 @@ import * as LegacyFileSystem from 'expo-file-system/legacy';
 import { File, UploadType } from 'expo-file-system';
 
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
+import { getFilenameFromUri } from '../getFilenameFromUri';
+import { random } from '../random';
 import { type IFormData } from './definitions';
 
 const sanitizeFilename = (name: string) => name.replace(/[/\r\n]/g, '_').replace(/"/g, '%22');
-
-const hasFilename = (uri: string, name: string) => {
-	try {
-		return decodeURIComponent(uri.split('/').pop() || '') === sanitizeFilename(name);
-	} catch {
-		return false;
-	}
-};
 
 const STAGING_DIR = `${LegacyFileSystem.cacheDirectory}upload-staging/`;
 const STALE_AFTER_MS = 24 * 60 * 60 * 1000;
@@ -63,10 +57,10 @@ export class Upload {
 			throw new Error('No file to upload');
 		}
 		const { uri, filename, name: fieldName, type: mimeType } = this.file;
-		const stagingDir = `${STAGING_DIR}${Date.now()}-${Math.random().toString(36).slice(2)}/`;
+		const stagingDir = `${STAGING_DIR}${Date.now()}-${random(10)}/`;
 		try {
 			let stagedUri = uri;
-			if (filename && !hasFilename(uri, filename)) {
+			if (filename && getFilenameFromUri(uri) !== sanitizeFilename(filename)) {
 				await assertEnoughStorage(uri);
 				removeStaleStaging();
 				stagedUri = `${stagingDir}${encodeURIComponent(sanitizeFilename(filename))}`;

@@ -44,8 +44,8 @@ export async function cancelAllUploads(): Promise<void> {
 	await Promise.all(
 		Object.keys(uploadQueue).map(async uploadPath => {
 			const item = await getUploadByPath(uploadPath);
-			if (item?.rid) {
-				await cancelUpload(item, item.rid);
+			if (item && !item.error && item.subscription?.id) {
+				await cancelUpload(item, item.subscription.id);
 			}
 		})
 	);

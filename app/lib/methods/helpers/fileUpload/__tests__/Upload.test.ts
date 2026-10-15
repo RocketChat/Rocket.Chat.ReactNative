@@ -1,7 +1,7 @@
 import * as LegacyFileSystem from 'expo-file-system/legacy';
 import { File } from 'expo-file-system';
 
-import { Upload } from './Upload';
+import { Upload } from '../Upload';
 
 const mockUpload = jest.fn();
 
@@ -43,7 +43,8 @@ describe('Upload', () => {
 				fieldName: 'file',
 				mimeType: 'video/mp4',
 				headers: { 'X-Auth-Token': 'token' },
-				parameters: { description: 'Описание' }
+				parameters: { description: 'Описание' },
+				signal: expect.any(AbortSignal)
 			})
 		);
 	});
@@ -51,6 +52,7 @@ describe('Upload', () => {
 	it('uploads the original file when it already carries the right name', async () => {
 		await createUpload('file:///cache/video.mp4', 'video.mp4').send();
 		expect(LegacyFileSystem.copyAsync).not.toHaveBeenCalled();
+		expect(File).toHaveBeenCalledWith('file:///cache/video.mp4');
 	});
 
 	it.each([
@@ -61,6 +63,7 @@ describe('Upload', () => {
 	])('stages the file so the server receives %j as %j', async (filename, expected) => {
 		await createUpload('file:///cache/ph-1.mov', filename).send();
 		expect(stagedName()).toBe(expected);
+		expect(File).toHaveBeenCalledWith((LegacyFileSystem.copyAsync as jest.Mock).mock.calls[0][0].to);
 	});
 
 	it('removes the staged copy whether the upload succeeds or fails', async () => {
@@ -93,13 +96,19 @@ describe('Upload', () => {
 		await expect(createUpload('file:///cache/video.mp4', 'video.mp4').send()).rejects.toThrow('Error: 413');
 	});
 
-	it('rejects with Upload Cancelled after cancel()', async () => {
+	it('aborts the signal handed to the native upload and rejects with Upload Cancelled after cancel()', async () => {
 		const upload = createUpload('file:///cache/video.mp4', 'video.mp4');
-		mockUpload.mockImplementation(() => {
-			upload.cancel();
-			return Promise.reject(new Error('AbortError'));
+		let nativeSignal: AbortSignal | undefined;
+		mockUpload.mockImplementation((_url: string, options: { signal: AbortSignal }) => {
+			nativeSignal = options.signal;
+			return new Promise((_resolve, reject) => {
+				options.signal.addEventListener('abort', () => reject(new Error('AbortError')));
+			});
 		});
-		await expect(upload.send()).rejects.toThrow('Upload Cancelled');
+		const sending = upload.send();
+		upload.cancel();
+		await expect(sending).rejects.toThrow('Upload Cancelled');
+		expect(nativeSignal?.aborted).toBe(true);
 	});
 
 	it('reports progress and refuses to send without a file', async () => {

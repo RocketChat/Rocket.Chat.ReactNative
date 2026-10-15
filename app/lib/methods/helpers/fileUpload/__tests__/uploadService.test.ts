@@ -1,7 +1,7 @@
 import { AppState, DeviceEventEmitter, NativeModules } from 'react-native';
 
 import { cancelAllUploads } from '~/lib/methods/sendFileMessage/utils';
-import { beginUploadService, endUploadService, updateUploadService } from './uploadService';
+import { beginUploadService, endUploadService, updateUploadService } from '../uploadService';
 
 jest.mock('~/i18n', () => ({ __esModule: true, default: { t: (key: string) => key } }));
 jest.mock('~/lib/methods/sendFileMessage/utils', () => ({ cancelAllUploads: jest.fn(() => Promise.resolve()) }));

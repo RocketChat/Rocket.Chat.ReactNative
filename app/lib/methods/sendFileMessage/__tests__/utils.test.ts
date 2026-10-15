@@ -8,11 +8,11 @@ import {
 	getUploadPath,
 	isUploadActive,
 	uploadQueue
-} from './utils';
+} from '../utils';
 
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
 jest.mock('~/i18n', () => ({ t: (k: string) => k }));
-jest.mock('../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/lib/database/services/Upload', () => ({ getUploadByPath: jest.fn() }));
 jest.mock('@nozbe/watermelondb/RawRecord', () => ({ sanitizedRaw: (raw: unknown) => raw }));
 jest.mock('expo-file-system/legacy', () => ({ cacheDirectory: 'file://cache', copyAsync: jest.fn(() => Promise.resolve()) }));
@@ -138,8 +138,8 @@ describe('cancelAllUploads', () => {
 		(getUploadByPath as jest.Mock).mockImplementation((path: string) =>
 			Promise.resolve(
 				path === getUploadPath('/a.mp4', 'RID1')
-					? { id: 'a', path: '/a.mp4', rid: 'RID1', destroyPermanently: destroyA }
-					: { id: 'b', path: '/b.mp4', rid: 'RID2', destroyPermanently: destroyB }
+					? { id: 'a', path: '/a.mp4', subscription: { id: 'RID1' }, destroyPermanently: destroyA }
+					: { id: 'b', path: '/b.mp4', subscription: { id: 'RID2' }, destroyPermanently: destroyB }
 			)
 		);
 
@@ -156,5 +156,25 @@ describe('cancelAllUploads', () => {
 		(getUploadByPath as jest.Mock).mockClear();
 		await expect(cancelAllUploads()).resolves.toBeUndefined();
 		expect(getUploadByPath).not.toHaveBeenCalled();
+	});
+
+	it('keeps failed uploads so they can be retried', async () => {
+		const failedPath = getUploadPath('/c.mp4', 'RID3');
+		const cancel = jest.fn();
+		const destroy = jest.fn();
+		uploadQueue[failedPath] = { cancel, send: jest.fn() } as any;
+		(getUploadByPath as jest.Mock).mockResolvedValue({
+			id: 'c',
+			path: '/c.mp4',
+			error: true,
+			subscription: { id: 'RID3' },
+			destroyPermanently: destroy
+		});
+
+		await cancelAllUploads();
+
+		expect(cancel).not.toHaveBeenCalled();
+		expect(destroy).not.toHaveBeenCalled();
+		delete uploadQueue[failedPath];
 	});
 });

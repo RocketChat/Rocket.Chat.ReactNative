@@ -13,17 +13,15 @@ class UploadServiceModule(private val context: ReactApplicationContext) : ReactC
     @ReactMethod
     fun start(title: String, cancelLabel: String, percent: Int) {
         try {
-            ContextCompat.startForegroundService(context, UploadForegroundService.intent(context, title, cancelLabel, percent.coerceIn(0, 100)))
+            ContextCompat.startForegroundService(context, UploadForegroundService.intent(context, title, cancelLabel, percent))
         } catch (e: Exception) {
             Log.w("UploadService", "Could not start the upload foreground service", e)
         }
     }
 
     @ReactMethod
-    fun updateProgress(percent: Int) = UploadForegroundService.updateProgress(context, percent.coerceIn(0, 100))
+    fun updateProgress(percent: Int) = UploadForegroundService.updateProgress(context, percent)
 
     @ReactMethod
-    fun stop() {
-        context.stopService(UploadForegroundService.intent(context))
-    }
+    fun stop() = UploadForegroundService.stop(context)
 }
