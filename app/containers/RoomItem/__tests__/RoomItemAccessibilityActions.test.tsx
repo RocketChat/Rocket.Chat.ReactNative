@@ -85,6 +85,17 @@ describe('RoomItem accessibility actions', () => {
 		expect(mockShowActionSheet).not.toHaveBeenCalled();
 	});
 
+	it('calls a custom onShowActions on a plain long press without a screen reader', async () => {
+		jest.spyOn(AccessibilityInfo, 'isScreenReaderEnabled').mockResolvedValue(false);
+		const onShowActions = jest.fn();
+		renderRoomItem({ swipeEnabled: false, onShowActions });
+		await act(async () => {
+			fireEvent(screen.getByTestId(testID), 'longPress');
+		});
+		expect(onShowActions).toHaveBeenCalledWith(item);
+		expect(mockShowActionSheet).not.toHaveBeenCalled();
+	});
+
 	it('opens the room actions sheet on long press with a screen reader', async () => {
 		jest.spyOn(AccessibilityInfo, 'isScreenReaderEnabled').mockResolvedValue(true);
 		renderRoomItem({ swipeEnabled: true });
