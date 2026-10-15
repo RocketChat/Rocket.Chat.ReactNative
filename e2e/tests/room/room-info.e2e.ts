@@ -3,6 +3,7 @@ import { expect, type Locator } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers, get } from '~e2e/support/api';
 import {
+	clearSettled,
 	fillSettled,
 	fillWhenUncovered,
 	hideKeyboard,
@@ -48,7 +49,7 @@ const fillEditField = async (fixtures: Fixtures, field: string, value: string) =
 		await fillSettled(input, value);
 	} else {
 		await raiseAboveKeyboard(fixtures, input);
-		await input.clear();
+		await clearSettled(input);
 		await input.pressSequentially(value);
 	}
 	await hideKeyboard(fixtures);
