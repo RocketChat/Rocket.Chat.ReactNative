@@ -554,7 +554,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 				showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
 				width={width}
-				onLongPress={this.showChannelActions}
+				onShowActions={this.showChannelActions}
 				useRealName={useRealName}
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}

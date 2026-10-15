@@ -19,7 +19,7 @@ const RoomItemContainer = memo(
 		item,
 		id,
 		onPress,
-		onLongPress,
+		onShowActions,
 		width,
 		isFocused,
 		showLastMessage,
@@ -50,8 +50,8 @@ const RoomItemContainer = memo(
 
 		const showRoomActions = () => {
 			runOnUISync(closeOpenSwipeItem);
-			if (onLongPress) {
-				onLongPress(item);
+			if (onShowActions) {
+				onShowActions(item);
 				return;
 			}
 			showActionSheet({
@@ -66,12 +66,12 @@ const RoomItemContainer = memo(
 		};
 
 		const handleOnLongPress = async () => {
-			if (onLongPress || isExternalKeyboardConnected() || (await AccessibilityInfo.isScreenReaderEnabled())) {
+			if (onShowActions || isExternalKeyboardConnected() || (await AccessibilityInfo.isScreenReaderEnabled())) {
 				showRoomActions();
 			}
 		};
 
-		const hasRoomActions = !!onLongPress || swipeEnabled;
+		const roomActions = onShowActions || swipeEnabled ? showRoomActions : undefined;
 
 		return (
 			<RoomItem
@@ -81,8 +81,8 @@ const RoomItemContainer = memo(
 				isInvited={isInvited}
 				isRead={isRead}
 				onPress={handleOnPress}
-				onLongPress={hasRoomActions ? handleOnLongPress : undefined}
-				onShowActions={hasRoomActions ? showRoomActions : undefined}
+				onLongPress={roomActions && handleOnLongPress}
+				onShowActions={roomActions}
 				date={date}
 				accessibilityDate={accessibilityDate}
 				width={width}

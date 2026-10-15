@@ -16,7 +16,7 @@ jest.mock('~/lib/methods/helpers/externalInput', () => ({ isExternalKeyboardConn
 const item = { rid: 'rid', t: 'c', name: 'general' };
 const testID = 'rooms-list-view-item-general';
 
-const renderRoomItem = ({ swipeEnabled, onLongPress }: { swipeEnabled: boolean; onLongPress?: (item: unknown) => void }) =>
+const renderRoomItem = ({ swipeEnabled, onShowActions }: { swipeEnabled: boolean; onShowActions?: (item: unknown) => void }) =>
 	render(
 		<Provider store={mockedStore}>
 			<RoomItemContainer
@@ -29,7 +29,7 @@ const renderRoomItem = ({ swipeEnabled, onLongPress }: { swipeEnabled: boolean; 
 				getRoomTitle={() => 'general'}
 				getRoomAvatar={() => ''}
 				swipeEnabled={swipeEnabled}
-				onLongPress={onLongPress}
+				onShowActions={onShowActions}
 			/>
 		</Provider>
 	);
@@ -51,14 +51,14 @@ describe('RoomItem accessibility actions', () => {
 		expect(props.accessibilityHint).toBeUndefined();
 	});
 
-	it('exposes showActions and calls a custom onLongPress', () => {
-		const onLongPress = jest.fn();
-		renderRoomItem({ swipeEnabled: false, onLongPress });
+	it('exposes showActions and calls a custom onShowActions', () => {
+		const onShowActions = jest.fn();
+		renderRoomItem({ swipeEnabled: false, onShowActions });
 		const { props } = screen.getByTestId(testID);
 		expect(props.accessibilityActions).toEqual([expect.objectContaining({ name: 'showActions' })]);
 		expect(props.accessibilityHint).toBe('Long press for more actions');
 		fireShowActions();
-		expect(onLongPress).toHaveBeenCalledWith(item);
+		expect(onShowActions).toHaveBeenCalledWith(item);
 	});
 
 	it('exposes showActions and opens the room actions sheet by default', () => {

@@ -99,6 +99,7 @@ export interface IRoomItemContainerProps extends IBaseRoomItem {
 	getRoomTitle: (item: any) => string;
 	getRoomAvatar: (item: any) => string;
 	getIsRead?: (item: any) => boolean;
+	onShowActions?: (item: any) => void;
 }
 
 export interface IRoomItemProps extends IBaseRoomItem {
