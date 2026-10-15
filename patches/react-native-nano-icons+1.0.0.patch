@@ -1,3 +1,52 @@
+diff --git a/node_modules/react-native-nano-icons/lib/commonjs/cli/link.js b/node_modules/react-native-nano-icons/lib/commonjs/cli/link.js
+index ed54db758c3aa98c0d2c16c63e77d36527b2e2ad..2cececd3f81b362e41c04eb13efba9b89afb2eea 100644
+--- a/node_modules/react-native-nano-icons/lib/commonjs/cli/link.js
++++ b/node_modules/react-native-nano-icons/lib/commonjs/cli/link.js
+@@ -55,6 +55,14 @@ const IOS_RUN_SCRIPT_PHASE_NAME = 'Copy nanoicons fonts';
+ const IOS_APPLICATION_PRODUCT_TYPE = 'com.apple.product-type.application';
+ const XCODE_PROJECT_DIR_VARIABLE = /\$[({](?:SRCROOT|PROJECT_DIR)[)}]/g;
+ const SURROUNDING_QUOTES = /^["']|["']$/g;
++function fontCopyScript(fontFileNames) {
++    const lines = [
++        'NANOICONS_DIR="${PROJECT_DIR}/' + IOS_NANOICONS_FONTS_DIR + '"',
++        'DESTINATION="${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"',
++        ...fontFileNames.map((name) => `cp "$NANOICONS_DIR/${name}" "$DESTINATION/" || { echo "error: nano-icons could not copy $NANOICONS_DIR/${name} to $DESTINATION" >&2; exit 1; }`),
++    ];
++    return lines.join('\n') + '\n';
++}
+ function getAppTarget(project) {
+     const appTarget = project.getTarget(IOS_APPLICATION_PRODUCT_TYPE);
+     if (appTarget)
+@@ -167,19 +175,16 @@ async function linkIos(projectRoot, staticFonts, dynamicFonts, logger) {
+     }
+     if (!staticFonts.length)
+         return true;
+-    const hasPhase = Object.values(project.hash.project.objects['PBXShellScriptBuildPhase'] ?? {}).some((phase) => typeof phase === 'object' &&
+-        typeof phase['name'] === 'string' &&
+-        phase['name'].includes(IOS_RUN_SCRIPT_PHASE_NAME));
+-    if (!hasPhase) {
+-        const script = `
+-        NANOICONS_DIR="\\\${PROJECT_DIR}/${IOS_NANOICONS_FONTS_DIR}"
+-        if [ -d "$NANOICONS_DIR" ]; then
+-          cp "$NANOICONS_DIR"/*.ttf "\\\${BUILT_PRODUCTS_DIR}/\\\${UNLOCALIZED_RESOURCES_FOLDER_PATH}/" 2>/dev/null || true
+-        fi
+-      `;
+-        project.addBuildPhase([], 'PBXShellScriptBuildPhase', IOS_RUN_SCRIPT_PHASE_NAME, targetUuid, { shellPath: '/bin/sh', shellScript: script });
+-        node_fs_1.default.writeFileSync(pbxprojPath, project.writeSync(), 'utf8');
+-    }
++    const script = fontCopyScript(staticFonts.map((b) => node_path_1.default.basename(b.ttfPath)));
++    const phase = Object.values(project.hash.project.objects['PBXShellScriptBuildPhase'] ?? {}).find((candidate) => typeof candidate === 'object' &&
++        typeof candidate['name'] === 'string' &&
++        candidate['name'].includes(IOS_RUN_SCRIPT_PHASE_NAME)) ??
++        project.addBuildPhase([], 'PBXShellScriptBuildPhase', IOS_RUN_SCRIPT_PHASE_NAME, targetUuid, { shellPath: '/bin/sh', shellScript: script }).buildPhase;
++    const quotedScript = JSON.stringify(script);
++    if (phase['shellScript'] === quotedScript)
++        return true;
++    phase['shellScript'] = quotedScript;
++    node_fs_1.default.writeFileSync(pbxprojPath, project.writeSync(), 'utf8');
+     return true;
+ }
+ // ---------------------------------------------------------------------------
 diff --git a/node_modules/react-native-nano-icons/lib/commonjs/src/core/pipeline/prepareSymbol.js b/node_modules/react-native-nano-icons/lib/commonjs/src/core/pipeline/prepareSymbol.js
 index 30fab86609f49fe03be4826f1eb8e6fbc7c97803..ea9bb0d281dc9c16a46e7434d98b05b83c57b83b 100644
 --- a/node_modules/react-native-nano-icons/lib/commonjs/src/core/pipeline/prepareSymbol.js

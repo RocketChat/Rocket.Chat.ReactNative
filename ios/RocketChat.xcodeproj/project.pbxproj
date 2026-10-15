@@ -1558,7 +1558,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\n        NANOICONS_DIR=\"${PROJECT_DIR}/nanoicons-fonts\"\n        if [ -d \"$NANOICONS_DIR\" ]; then\n          cp \"$NANOICONS_DIR\"/*.ttf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" 2>/dev/null || true\n        fi\n      ";
+			shellScript = "NANOICONS_DIR=\"${PROJECT_DIR}/nanoicons-fonts\"\nDESTINATION=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\ncp \"$NANOICONS_DIR/custom.ttf\" \"$DESTINATION/\" || { echo \"error: nano-icons could not copy $NANOICONS_DIR/custom.ttf to $DESTINATION\" >&2; exit 1; }\n";
 		};
 		F8FA5EB1C05179679A1B0213 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
