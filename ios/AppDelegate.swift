@@ -72,29 +72,18 @@ public class AppDelegate: ExpoAppDelegate {
 
   private func migrateLegacyExperimentalDatabases() {
     let fileManager = FileManager.default
-    guard let suite = Bundle.main.object(forInfoDictionaryKey: "AppGroupIdentifier") as? String,
-      let containerURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: suite),
-      let files = try? fileManager.contentsOfDirectory(at: containerURL, includingPropertiesForKeys: nil)
-    else {
-      return
-    }
+    let groupDir = fileManager.groupDir()
     let legacySuffix = "-experimental.db"
-    for legacy in files {
-      let name = legacy.lastPathComponent
-      guard name.hasSuffix(legacySuffix) else { continue }
-      let target = containerURL.appendingPathComponent(String(name.dropLast(legacySuffix.count)) + ".db")
-      if let targetSize = (try? fileManager.attributesOfItem(atPath: target.path))?[.size] as? Int, targetSize > 0 {
+    let sidecarSuffixesThenMain = ["-wal", "-shm", "-journal", ""]
+    for name in (try? fileManager.contentsOfDirectory(atPath: groupDir)) ?? [] where name.hasSuffix(legacySuffix) {
+      let from = "\(groupDir)/\(name)"
+      let to = "\(groupDir)/\(name.dropLast(legacySuffix.count)).db"
+      if let size = (try? fileManager.attributesOfItem(atPath: to))?[.size] as? Int, size > 0 {
         continue
       }
-      for suffix in ["-wal", "-shm", "-journal", ""] {
-        let from = URL(fileURLWithPath: legacy.path + suffix)
-        let to = URL(fileURLWithPath: target.path + suffix)
-        guard fileManager.fileExists(atPath: from.path) else { continue }
-        do {
-          _ = try fileManager.replaceItemAt(to, withItemAt: from)
-        } catch {
-          Bugsnag.notifyError(error)
-          fatalError("Failed to migrate \(from.lastPathComponent) to \(to.lastPathComponent): \(error)")
+      for suffix in sidecarSuffixesThenMain where fileManager.fileExists(atPath: from + suffix) {
+        guard Darwin.rename(from + suffix, to + suffix) == 0 else {
+          fatalError("Failed to migrate \(name + suffix): errno \(errno)")
         }
       }
     }

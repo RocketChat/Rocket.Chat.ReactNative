@@ -2,6 +2,7 @@ package chat.rocket.reactnative
 
 import android.app.Application
 import android.content.res.Configuration
+import java.io.File
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
@@ -86,21 +87,22 @@ open class MainApplication : Application(), ReactApplication {
   }
 
   private fun migrateLegacyExperimentalDatabases() {
-    val dir = java.io.File(applicationInfo.dataDir)
+    val dir = File(applicationInfo.dataDir)
     val legacySuffix = "-experimental.db.db"
+    val sidecarSuffixesThenMain = listOf("-wal", "-shm", "-journal", "")
     val files = dir.listFiles() ?: return
     for (legacy in files) {
       if (!legacy.isFile || !legacy.name.endsWith(legacySuffix)) {
         continue
       }
       val baseName = legacy.name.removeSuffix(legacySuffix)
-      val target = java.io.File(dir, "$baseName.db.db")
-      if (target.exists() && target.length() > 0) {
+      val target = File(dir, "$baseName.db.db")
+      if (target.length() > 0) {
         continue
       }
-      for (suffix in listOf("-wal", "-shm", "-journal", "")) {
-        val from = java.io.File(dir, legacy.name + suffix)
-        val to = java.io.File(dir, target.name + suffix)
+      for (suffix in sidecarSuffixesThenMain) {
+        val from = File(dir, legacy.name + suffix)
+        val to = File(dir, target.name + suffix)
         if (from.exists() && !from.renameTo(to)) {
           throw IllegalStateException("Failed to migrate ${from.name} to ${to.name}")
         }
