@@ -16,4 +16,5 @@ export interface IMessageImage {
 	encrypted: boolean;
 	imagePreview?: string;
 	imageType?: string;
+	dimensions?: IAttachment['image_dimensions'];
 }

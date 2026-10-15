@@ -23,7 +23,14 @@ const ImageContainer = ({ file, showAttachment, author, msg, imagePreview, image
 	const image = (
 		<Button accessibilityLabel={accessibilityLabel} onPress={onPress}>
 			<WidthAwareView>
-				<MessageImage uri={url} status={status} encrypted={isEncrypted} imagePreview={imagePreview} imageType={imageType} />
+				<MessageImage
+					uri={url}
+					status={status}
+					encrypted={isEncrypted}
+					imagePreview={imagePreview}
+					imageType={imageType}
+					dimensions={file.image_dimensions}
+				/>
 			</WidthAwareView>
 		</Button>
 	);
