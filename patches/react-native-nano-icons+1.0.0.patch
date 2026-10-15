@@ -32,12 +32,14 @@ index 30fab86609f49fe03be4826f1eb8e6fbc7c97803..ea9bb0d281dc9c16a46e7434d98b05b8
      };
      return result;
 diff --git a/node_modules/react-native-nano-icons/lib/commonjs/src/core/symbols/template.js b/node_modules/react-native-nano-icons/lib/commonjs/src/core/symbols/template.js
-index 8d7056da6299952735746b5dbc6ad979101bbf10..82410ae34c4f8c63ccc675ac9b5886c29afc7aa4 100644
+index 8d7056da6299952735746b5dbc6ad979101bbf10..20293474789b8c459167c4836a1bec5a093ac7ce 100644
 --- a/node_modules/react-native-nano-icons/lib/commonjs/src/core/symbols/template.js
 +++ b/node_modules/react-native-nano-icons/lib/commonjs/src/core/symbols/template.js
-@@ -17,9 +17,11 @@ const CAPLINE_Y = 76;
+@@ -15,11 +15,12 @@ const parse_1 = require("../../utils/parse");
+  */
+ const CAPLINE_Y = 76;
  const BASELINE_Y = 146;
- const CAP_BAND = BASELINE_Y - CAPLINE_Y; // 70
+-const CAP_BAND = BASELINE_Y - CAPLINE_Y; // 70
  const CAP_CENTER = (CAPLINE_Y + BASELINE_Y) / 2; // 111
 -// Content box is scaled to this height (= cap band) and centered, so symbols
 -// fill their optical box instead of rendering small inside a padded viewBox.
@@ -50,7 +52,30 @@ index 8d7056da6299952735746b5dbc6ad979101bbf10..82410ae34c4f8c63ccc675ac9b5886c2
  const VARIANT_CENTERS = [
      ['Ultralight', 265],
      ['Regular', 465],
-@@ -96,8 +98,8 @@ function buildSymbolTemplate(opts) {
+@@ -68,12 +69,11 @@ function renderingModeStyles(layers) {
+  * declared in a `<style>` block.
+  */
+ function buildSymbolTemplate(opts) {
+-    const { layers, viewBox, contentBounds, descriptiveName, logger } = opts;
+-    // Fit the content box, not the padded viewBox; fall back to viewBox.
+-    const [bx, by, bw, bh] = contentBounds ?? viewBox;
++    const { layers, viewBox, descriptiveName, logger } = opts;
++    const [bx, by, bw, bh] = viewBox;
+     const safeBw = bw === 0 ? 1 : bw;
+     const safeBh = bh === 0 ? 1 : bh;
+-    // Fit to cap-band height, clamped so wide glyphs don't overlap the next column.
++    // Fit to GLYPH_HEIGHT, clamped so wide glyphs don't overlap the next column.
+     let scale = GLYPH_HEIGHT / safeBh;
+     if (safeBw * scale > MAX_GLYPH_WIDTH) {
+         scale = MAX_GLYPH_WIDTH / safeBw;
+@@ -90,14 +90,14 @@ function buildSymbolTemplate(opts) {
+     const margins = [];
+     for (const [name, cx] of VARIANT_CENTERS) {
+         const tx = cx - scaledW / 2;
+-        // Translate into the column + scale into the cap band (handles non-zero origin).
++        // Translate into the column + scale to GLYPH_HEIGHT (handles non-zero origin).
+         const e = tx - bx * scale;
+         const f = yOff - by * scale;
          groups.push(`    <g id="${name}-S" transform="matrix(${fmt(scale)},0,0,${fmt(scale)},${fmt(e)},${fmt(f)})">\n` +
              pathsMarkup('      ') +
              `\n    </g>`);

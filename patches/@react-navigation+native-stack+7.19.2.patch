@@ -52,9 +52,17 @@ index a56cb12fc83995973fad7d9e851d6fdbaf999a17..162c3cb5d4e61a82996699c66c96ca85
      titleFontFamily,
      titleFontSize,
 diff --git a/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts b/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
-index c32d1da73d44f5820fbd3272551e5f42c3e6c1dc..9fbfb9ceb11f79b1feb15c25905921cc084d92af 100644
+index c32d1da73d44f5820fbd3272551e5f42c3e6c1dc..824678a5a4a695c23c7aeaf7f1c8bf3fb6cb91a5 100644
 --- a/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
 +++ b/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
+@@ -1,6 +1,6 @@
+ import type { DefaultNavigatorOptions, Descriptor, NavigationHelpers, NavigationProp, ParamListBase, Route, RouteProp, StackActionHelpers, StackNavigationState, StackRouterOptions, Theme } from '@react-navigation/native';
+ import type { ColorValue, ImageSourcePropType, StyleProp, TextStyle, ViewStyle } from 'react-native';
+-import type { ScreenProps, ScreenStackHeaderConfigProps, ScrollEdgeEffect, SearchBarProps } from 'react-native-screens';
++import type { PlatformIconIOSXcasset, ScreenProps, ScreenStackHeaderConfigProps, ScrollEdgeEffect, SearchBarProps } from 'react-native-screens';
+ import type { SFSymbol } from 'sf-symbols-typescript';
+ export type NativeStackNavigationEventMap = {
+     /**
 @@ -321,6 +321,74 @@ export type NativeStackNavigationOptions = {
           */
          tintColor?: string;
@@ -130,21 +138,11 @@ index c32d1da73d44f5820fbd3272551e5f42c3e6c1dc..9fbfb9ceb11f79b1feb15c25905921cc
      /**
       * How to align the the header title.
       * Defaults to `left` on platforms other than iOS.
-@@ -825,7 +893,23 @@ type PlatformIconIOSSfSymbol = {
+@@ -825,7 +893,13 @@ type PlatformIconIOSSfSymbol = {
       */
      name: SFSymbol;
  };
 -type PlatformIconIOS = PlatformIconIOSSfSymbol | PlatformIconShared;
-+type PlatformIconIOSXcasset = {
-+    /**
-+     * - `xcasset` - Use an image from the app's asset catalog as the icon on iOS.
-+     */
-+    type: 'xcasset';
-+    /**
-+     * Name of the image in the asset catalog.
-+     */
-+    name: string;
-+};
 +type PlatformIconIOS = PlatformIconIOSSfSymbol | PlatformIconIOSXcasset | PlatformIconShared;
 +export type HeaderTextIcon = {
 +    type: 'image';
@@ -155,7 +153,7 @@ index c32d1da73d44f5820fbd3272551e5f42c3e6c1dc..9fbfb9ceb11f79b1feb15c25905921cc
  type SharedHeaderItem = {
      /**
       * Label of the item.
-@@ -937,6 +1021,15 @@ export type NativeStackHeaderItemButton = SharedHeaderItem & {
+@@ -937,6 +1011,15 @@ export type NativeStackHeaderItemButton = SharedHeaderItem & {
       * Read more: https://developer.apple.com/documentation/uikit/uibarbuttonitem/isselected
       */
      selected?: boolean;
