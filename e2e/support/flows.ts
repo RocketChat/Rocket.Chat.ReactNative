@@ -221,8 +221,48 @@ const retryWhileUnreachable = async (action: () => Promise<unknown>, timeout: nu
 
 export const tapWhenUncovered = (locator: Locator, timeout = LONG_TIMEOUT) => retryWhileUnreachable(() => locator.tap(), timeout);
 
+const UNSETTLED_CLEAR_ERROR = 'text entry verification failed';
+const CLEAR_ATTEMPTS = 3;
+const CLEAR_RETRY_DELAY = 1_000;
+
+export const clearSettled = async (input: Locator) => {
+	for (let attempt = 1; ; attempt++) {
+		try {
+			await input.clear();
+			return;
+		} catch (error) {
+			if (!String(error).includes(UNSETTLED_CLEAR_ERROR) || attempt >= CLEAR_ATTEMPTS) {
+				throw error;
+			}
+			await delay(CLEAR_RETRY_DELAY);
+		}
+	}
+};
+
+const UNCONFIRMED_FILL_ERRORS = [
+	'could not confirm the typed text reached the field',
+	'Android fill verification failed',
+	UNSETTLED_CLEAR_ERROR
+];
+const UNCONFIRMED_FILL_ATTEMPTS = 3;
+
+const fillConfirmed = async (locator: Locator, text: string) => {
+	for (let attempt = 1; attempt < UNCONFIRMED_FILL_ATTEMPTS; attempt++) {
+		try {
+			await locator.fill(text);
+			return;
+		} catch (error) {
+			if (!UNCONFIRMED_FILL_ERRORS.some(unconfirmed => String(error).includes(unconfirmed))) {
+				throw error;
+			}
+			await clearSettled(locator);
+		}
+	}
+	await locator.pressSequentially(text);
+};
+
 export const fillWhenUncovered = (locator: Locator, text: string, timeout = LONG_TIMEOUT) =>
-	retryWhileUnreachable(() => locator.fill(text), timeout);
+	retryWhileUnreachable(() => fillConfirmed(locator, text), timeout);
 
 export const tapWhenVisible = async ({ screen }: Fixtures, testIdOrTarget: string | Locator) => {
 	const target = typeof testIdOrTarget === 'string' ? screen.getByTestId(testIdOrTarget).first() : testIdOrTarget;
@@ -347,7 +387,7 @@ export const confirmAlert = async ({ screen }: Fixtures, message: RegExp, button
 const VALUE_SETTLE_TIMEOUT = 3_000;
 
 const typeValue = async (input: Locator, value: string) => {
-	await input.clear();
+	await clearSettled(input);
 	await input.pressSequentially(value);
 };
 
