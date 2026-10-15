@@ -14,11 +14,21 @@ tags:
 
 - runFlow:
     when:
+      platform: Android
       visible:
         id: 'rooms-list-view-sidebar'
     commands:
       - tapOn:
           id: 'rooms-list-view-sidebar'
+
+- runFlow:
+    when:
+      platform: iOS
+      visible:
+        text: 'Menu'
+    commands:
+      - tapOn:
+          text: 'Menu'
 
 - runFlow:
     when:

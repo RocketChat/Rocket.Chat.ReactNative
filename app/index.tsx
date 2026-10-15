@@ -11,6 +11,7 @@ import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
 import { ActionSheetProvider } from './containers/ActionSheet';
+import ConferenceCall from './containers/ConferenceCall';
 import InAppNotification from './containers/InAppNotification';
 import Loading from './containers/Loading';
 import StatusBar from './containers/StatusBar';
@@ -20,7 +21,9 @@ import TwoFactor from './containers/TwoFactor';
 import { type IThemePreference } from './definitions/ITheme';
 import { themes } from './lib/constants/colors';
 import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods/crashReport';
-import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
+import { hasNativeHeaderBar } from './lib/methods/helpers/deviceInfo';
+import log, { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
+import { preloadHeaderIcons } from './lib/methods/helpers/navigation/headerIcon';
 import parseDeepLinking from './lib/methods/helpers/parseDeepLinking';
 import {
 	getTheme,
@@ -30,6 +33,8 @@ import {
 	subscribeTheme,
 	unsubscribeTheme
 } from './lib/methods/helpers/theme';
+import { initializeStorage } from './lib/methods/userPreferences';
+import { THEME_PREFERENCES_KEY } from './lib/constants/keys';
 import { initializePushNotifications, onNotification } from './lib/notifications';
 import { getInitialNotification, setupVideoConfActionListener } from './lib/notifications/videoConf/getInitialNotification';
 import {
@@ -55,6 +60,7 @@ export default class Root extends Component<{}, IState> {
 	private deepLinkSubscription?: EmitterSubscription;
 	private videoConfActionCleanup?: () => void;
 	private mediaCallEventCleanup?: () => void;
+	private themePreferencesListener?: { remove: () => void };
 
 	constructor(props: any) {
 		super(props);
@@ -87,18 +93,28 @@ export default class Root extends Component<{}, IState> {
 		this.videoConfActionCleanup = setupVideoConfActionListener();
 		// Set up media call event listeners for incoming calls
 		this.mediaCallEventCleanup = setupMediaCallEvents(this.getMediaCallEventsAdapters());
+		this.themePreferencesListener = initializeStorage.addOnValueChangedListener(key => {
+			if (key === THEME_PREFERENCES_KEY) {
+				this.setTheme(initialTheme());
+			}
+		});
 	}
 
 	componentWillUnmount() {
 		this.deepLinkSubscription?.remove();
 		this.videoConfActionCleanup?.();
 		this.mediaCallEventCleanup?.();
+		this.themePreferencesListener?.remove();
 
 		unsubscribeTheme();
 	}
 
 	init = async () => {
 		store.dispatch(appInitLocalSettings());
+
+		if (hasNativeHeaderBar) {
+			await preloadHeaderIcons().catch(log);
+		}
 
 		// Open app from push notification
 		const notification = await initializePushNotifications();
@@ -159,7 +175,7 @@ export default class Root extends Component<{}, IState> {
 		return (
 			<SafeAreaProvider style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
 				<Provider store={store}>
-					<ThemeContextProvider theme={theme} themePreferences={themePreferences} setTheme={this.setTheme}>
+					<ThemeContextProvider theme={theme} themePreferences={themePreferences}>
 						<ResponsiveLayoutProvider>
 							<GestureHandlerRootView>
 								<KeyboardProvider>
@@ -170,6 +186,7 @@ export default class Root extends Component<{}, IState> {
 										<ScreenLockedView />
 										<ChangePasscodeView />
 										<InAppNotification />
+										<ConferenceCall />
 										<Toast />
 										<Loading />
 									</ActionSheetProvider>

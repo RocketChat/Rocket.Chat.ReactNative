@@ -85,12 +85,24 @@ tags:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: 'jumping'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-search'
-    timeout: 60000
-- tapOn:
-    id: 'room-view-search'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          text: 'More'
+      - tapOn:
+          text: 'Search messages'
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'room-view-search'
+          timeout: 60000
+      - tapOn:
+          id: 'room-view-search'
 - extendedWaitUntil:
     visible:
       id: 'search-messages-view'
@@ -183,8 +195,7 @@ tags:
     visible:
       id: 'message-content-202'
     timeout: 60000
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # should navigate to a thread from another room
 - runFlow:
@@ -208,14 +219,13 @@ tags:
     file: './utils/expect-thread-messages.yaml'
     env:
       message: Go to jumping-thread's thread
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # should tap on thread message from main room
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-jumping-thread'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: 'jumping-thread'
 - extendedWaitUntil:
     visible:
       text: '.*thread message sent to main room.*'
@@ -227,14 +237,13 @@ tags:
     file: './utils/expect-thread-messages.yaml'
     env:
       message: 'thread message sent to main room'
-- tapOn:
-    id: header-back
+- runFlow: '../../helpers/go-back.yaml'
 
 # should tap on quote
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-jumping-thread'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: 'jumping-thread'
 - extendedWaitUntil:
     visible:
       id: '.*reply-.*-quoted.*'
@@ -252,16 +261,27 @@ tags:
     file: './utils/expect-thread-messages.yaml'
     env:
       message: 'quoted'
-- tapOn:
-    id: 'header-back'
+- runFlow: '../../helpers/go-back.yaml'
 
 # should jump from search message
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-jumping-thread'
-    timeout: 60000
-- tapOn:
-    id: 'room-view-search'
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: 'jumping-thread'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          text: 'More'
+      - tapOn:
+          text: 'Search messages'
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - tapOn:
+          id: 'room-view-search'
 - extendedWaitUntil:
     visible:
       id: 'search-messages-view'
