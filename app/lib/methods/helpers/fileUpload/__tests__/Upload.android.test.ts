@@ -1,6 +1,6 @@
 import * as FileSystem from 'expo-file-system/legacy';
 
-import { Upload } from './Upload.android';
+import { Upload } from '../Upload.android';
 
 jest.mock('expo-file-system/legacy', () => ({
 	createUploadTask: jest.fn(),

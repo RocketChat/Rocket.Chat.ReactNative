@@ -1,11 +1,11 @@
-import { MAX_UPLOAD_ATTEMPTS, getUploadRetryDelay, uploadWithRetry } from './uploadWithRetry';
-import { UploadSupersededError, uploadQueue } from './utils';
-import { UploadHttpError } from '../helpers/fileUpload/definitions';
+import { MAX_UPLOAD_ATTEMPTS, getUploadRetryDelay, uploadWithRetry } from '../uploadWithRetry';
+import { UploadSupersededError, uploadQueue } from '../utils';
+import { UploadHttpError } from '../../helpers/fileUpload/definitions';
 
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
 jest.mock('~/i18n', () => ({ t: (k: string) => k, isTranslated: () => false }));
-jest.mock('../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('../helpers/showToast', () => ({ showToast: jest.fn() }));
+jest.mock('../../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../../helpers/showToast', () => ({ showToast: jest.fn() }));
 jest.mock('~/lib/database/services/Upload', () => ({ getUploadByPath: jest.fn() }));
 jest.mock('@nozbe/watermelondb/RawRecord', () => ({ sanitizedRaw: (raw: unknown) => raw }));
 jest.mock('expo-file-system/legacy', () => ({ cacheDirectory: 'file://cache', copyAsync: jest.fn(() => Promise.resolve()) }));
@@ -61,13 +61,9 @@ describe('getUploadRetryDelay', () => {
 		expect(getUploadRetryDelay(new UploadHttpError(429, { serverMessage, retryAfterSeconds: 5 }), 1)).toBe(5000);
 	});
 
-	it('gives up instead of retrying early when the server asks for more than 30 seconds', () => {
-		expect(getUploadRetryDelay(new UploadHttpError(429, { retryAfterSeconds: 60 }), 1)).toBeUndefined();
-		expect(getUploadRetryDelay(new UploadHttpError(429, { serverMessage: 'You must wait 60 seconds' }), 1)).toBeUndefined();
-	});
-
-	it('waits exactly 30 seconds when that is what the server asks for', () => {
-		expect(getUploadRetryDelay(new UploadHttpError(429, { retryAfterSeconds: 30 }), 1)).toBe(30000);
+	it('waits out the whole rate limit window the server asks for', () => {
+		expect(getUploadRetryDelay(new UploadHttpError(429, { retryAfterSeconds: 60 }), 1)).toBe(60000);
+		expect(getUploadRetryDelay(new UploadHttpError(429, { serverMessage: 'You must wait 60 seconds' }), 1)).toBe(60000);
 	});
 });
 
@@ -105,12 +101,18 @@ describe('uploadWithRetry', () => {
 		expect(createUpload).toHaveBeenCalledTimes(MAX_UPLOAD_ATTEMPTS);
 	});
 
-	it('does not auto-retry when the rate limit window outlasts the cap', async () => {
+	it('does not retry before the rate limit window the server asked for has passed', async () => {
 		const serverMessage = 'You must wait 60 seconds before trying this endpoint again. [error-too-many-requests]';
-		const createUpload = uploadThat(jest.fn().mockRejectedValue(new UploadHttpError(429, { serverMessage })));
+		const send = jest.fn().mockRejectedValueOnce(new UploadHttpError(429, { serverMessage })).mockResolvedValueOnce(RESPONSE);
+		const createUpload = uploadThat(send);
 
-		await expect(uploadWithRetry(PATH, createUpload)).rejects.toMatchObject({ status: 429 });
+		const pending = uploadWithRetry(PATH, createUpload);
+		await jest.advanceTimersByTimeAsync(59999);
 		expect(createUpload).toHaveBeenCalledTimes(1);
+		await jest.advanceTimersByTimeAsync(1);
+
+		await expect(pending).resolves.toBe(RESPONSE);
+		expect(createUpload).toHaveBeenCalledTimes(2);
 	});
 
 	it('does not retry a 413', async () => {
@@ -132,7 +134,7 @@ describe('uploadWithRetry', () => {
 		expect(createUpload).toHaveBeenCalledTimes(1);
 	});
 
-	it('stops when a new upload reused the path while backing off, without leaking the old error', async () => {
+	it('stops retrying when a new upload reused the path while backing off', async () => {
 		const createUpload = uploadThat(jest.fn().mockRejectedValue(new UploadHttpError(429)));
 
 		const pending = uploadWithRetry(PATH, createUpload).catch(e => e);
@@ -140,7 +142,7 @@ describe('uploadWithRetry', () => {
 		uploadQueue[PATH] = { send: jest.fn().mockResolvedValue(RESPONSE), cancel: jest.fn() };
 		await jest.advanceTimersByTimeAsync(1000);
 
-		await expect(pending).resolves.toBeInstanceOf(UploadSupersededError);
+		await expect(pending).resolves.toMatchObject({ status: 429 });
 		expect(createUpload).toHaveBeenCalledTimes(1);
 	});
 

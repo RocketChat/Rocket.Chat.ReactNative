@@ -89,20 +89,10 @@ export const finalizeFailedUpload = async ({
 	error: unknown;
 	upload: IFileUpload | null;
 }): Promise<void> => {
-	if (error instanceof UploadSupersededError) {
-		return;
-	}
-	const owner = queueKey ? uploadQueue[queueKey] : undefined;
-	// owner undefined can mean two different things: a real cancellation (the attempt was queued, then removed),
-	// or a failure that happened before this attempt was ever queued (upload is still null) - only the former is a cancellation.
-	if (queueKey && upload && !owner) {
-		console.log('Upload cancelled');
-		return;
-	}
-	if (queueKey && owner !== undefined && owner !== upload) {
-		return;
-	}
-	if (queueKey && owner) {
+	if (upload) {
+		if (uploadQueue[queueKey] !== upload) {
+			return;
+		}
 		delete uploadQueue[queueKey];
 	}
 	await persistUploadError(filePath, rid, error);
@@ -143,7 +133,7 @@ export const createUploadRecord = async ({
 				Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
 				return [null, null];
 			}
-			// Record left behind by a crashed or failed upload, or by a previous attempt the user is now retrying: reset and reuse it.
+			// Record left behind by a crashed or failed upload: reset and reuse it.
 			await db.write(async () => {
 				await uploadRecord?.update(u => {
 					u.error = false;

@@ -1,4 +1,4 @@
-import { isRetryableUploadError } from './isRetryableUploadError';
+import { isRetryableUploadError } from '../isRetryableUploadError';
 
 describe('isRetryableUploadError', () => {
 	it.each([[undefined], [0], [200], [401], [403], [408], [429], [500], [502], [503]])('allows a retry for %p', status => {

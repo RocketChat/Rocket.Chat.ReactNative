@@ -86,12 +86,11 @@ describe('Upload', () => {
 		expect(error.message).not.toContain('undefined');
 	});
 
-	it('keeps a non-JSON body without inventing a server message', async () => {
+	it('does not invent a server message for a non-JSON body', async () => {
 		const error = await send({ status: 413, responseText: '<html>413 Request Entity Too Large</html>' }).catch(e => e);
 
 		expect(error.status).toBe(413);
 		expect(error.serverMessage).toBeUndefined();
-		expect(error.body).toBe('<html>413 Request Entity Too Large</html>');
 	});
 
 	it('rejects when a 2xx response has no parseable body', async () => {

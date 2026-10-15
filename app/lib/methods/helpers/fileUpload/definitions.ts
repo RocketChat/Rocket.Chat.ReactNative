@@ -20,19 +20,14 @@ export class UploadHttpError extends Error {
 
 	readonly serverMessage?: string;
 
-	readonly body?: string;
-
 	readonly retryAfterSeconds?: number;
 
-	constructor(status: number, options?: { serverMessage?: string; body?: string; retryAfterSeconds?: number }) {
+	constructor(status: number, options?: { serverMessage?: string; retryAfterSeconds?: number }) {
 		super(`Error: ${status}`);
 		this.name = 'UploadHttpError';
 		this.status = status;
 		if (options?.serverMessage) {
 			this.serverMessage = options.serverMessage;
-		}
-		if (options?.body) {
-			this.body = options.body;
 		}
 		if (options?.retryAfterSeconds) {
 			this.retryAfterSeconds = options.retryAfterSeconds;
@@ -40,22 +35,17 @@ export class UploadHttpError extends Error {
 	}
 }
 
-export const parseUploadErrorBody = (responseText: string | undefined): { serverMessage?: string; body?: string } => {
+export const parseServerMessage = (responseText?: string): string | undefined => {
 	if (!responseText) {
-		return {};
-	}
-	const looksLikeJson = /^[[{]/.test(responseText.trimStart());
-	if (!looksLikeJson) {
-		return { body: responseText };
+		return undefined;
 	}
 	try {
 		const parsed = JSON.parse(responseText);
 		const serverMessage = parsed?.error ?? parsed?.message;
-		if (typeof serverMessage === 'string' && serverMessage.length > 0) {
-			return { serverMessage, body: responseText };
-		}
-	} catch {}
-	return { body: responseText };
+		return typeof serverMessage === 'string' && serverMessage.length > 0 ? serverMessage : undefined;
+	} catch {
+		return undefined;
+	}
 };
 
 export const parseRetryAfter = (value?: string | null): number | undefined => {

@@ -1,16 +1,16 @@
-import { sendFileMessageV2 } from './sendFileMessageV2';
-import { createUploadRecord, finalizeFailedUpload } from './utils';
-import { uploadWithRetry } from './uploadWithRetry';
+import { sendFileMessageV2 } from '../sendFileMessageV2';
+import { createUploadRecord, finalizeFailedUpload } from '../utils';
+import { uploadWithRetry } from '../uploadWithRetry';
 
-jest.mock('./utils', () => ({
+jest.mock('../utils', () => ({
 	copyFileToCacheDirectoryIfNeeded: jest.fn(),
 	createUploadProgressCallback: jest.fn(),
 	createUploadRecord: jest.fn(),
 	finalizeFailedUpload: jest.fn()
 }));
-jest.mock('./uploadWithRetry', () => ({ uploadWithRetry: jest.fn() }));
-jest.mock('../helpers/fileUpload', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('../helpers/fetch', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../uploadWithRetry', () => ({ uploadWithRetry: jest.fn() }));
+jest.mock('../../helpers/fileUpload', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../../helpers/fetch', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/lib/encryption', () => ({ Encryption: { encryptFile: jest.fn() } }));
 jest.mock('~/lib/database', () => ({
 	__esModule: true,

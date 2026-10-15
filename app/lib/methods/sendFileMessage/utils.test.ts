@@ -1,7 +1,6 @@
 import { Alert } from 'react-native';
 
 import {
-	UploadSupersededError,
 	createUploadProgressCallback,
 	createUploadRecord,
 	copyFileToCacheDirectoryIfNeeded,
@@ -158,13 +157,6 @@ describe('persistUploadError', () => {
 		expect(showToast).toHaveBeenCalledWith('error-file-too-large');
 	});
 
-	it('keeps a raw response body out of the record', async () => {
-		const updated = await persist(new UploadHttpError(413, { body: '<html>413 Request Entity Too Large</html>' }));
-
-		expect(updated).toMatchObject({ error: true, errorStatus: 413, errorMessage: undefined });
-		expect(showToast).toHaveBeenCalledWith('error-file-too-large');
-	});
-
 	it('stores only the error flag for unknown failures', async () => {
 		const updated = await persist(new Error('boom'));
 
@@ -206,23 +198,6 @@ describe('finalizeFailedUpload', () => {
 		(getUploadByPath as jest.Mock).mockReset();
 	});
 
-	it('does nothing when the upload was superseded by a newer attempt, and leaves its queue entry alone', async () => {
-		uploadQueue[uploadPath] = {} as any;
-
-		await expect(
-			finalizeFailedUpload({
-				queueKey: uploadPath,
-				filePath: fileInfo.path,
-				rid: 'GENERAL',
-				error: new UploadSupersededError(),
-				upload: null
-			})
-		).resolves.toBeUndefined();
-
-		expect(getUploadByPath).not.toHaveBeenCalled();
-		expect(uploadQueue[uploadPath]).toBeDefined();
-	});
-
 	it('does nothing when the upload was cancelled (its queue entry is already gone)', async () => {
 		const attempt = {} as any;
 
@@ -240,6 +215,18 @@ describe('finalizeFailedUpload', () => {
 	});
 
 	it('persists and rethrows a failure that happened before the upload was ever queued, instead of mistaking it for a cancellation', async () => {
+		(getUploadByPath as jest.Mock).mockResolvedValue({ update: jest.fn((cb: (u: any) => void) => cb({})) });
+		const error = new Error('encryption failed');
+
+		await expect(
+			finalizeFailedUpload({ queueKey: uploadPath, filePath: fileInfo.path, rid: 'GENERAL', error, upload: null })
+		).rejects.toBe(error);
+
+		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
+	});
+
+	it('persists and rethrows a failure before the upload was queued, even when an earlier upload left its queue entry behind', async () => {
+		uploadQueue[uploadPath] = {} as any;
 		(getUploadByPath as jest.Mock).mockResolvedValue({ update: jest.fn((cb: (u: any) => void) => cb({})) });
 		const error = new Error('encryption failed');
 
