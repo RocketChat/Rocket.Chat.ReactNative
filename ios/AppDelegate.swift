@@ -92,6 +92,7 @@ public class AppDelegate: ExpoAppDelegate {
         }
         discardDatabase(named: targetName, inDirectory: groupDir)
       }
+      foldWalIntoMainFile(atPath: from)
       for suffix in sidecarSuffixesThenMain where fileManager.fileExists(atPath: from + suffix) {
         guard Darwin.rename(from + suffix, to + suffix) == 0 else {
           let code = errno
@@ -99,6 +100,15 @@ public class AppDelegate: ExpoAppDelegate {
         }
       }
     }
+  }
+
+  private func foldWalIntoMainFile(atPath path: String) {
+    var database: OpaquePointer?
+    defer { sqlite3_close(database) }
+    guard sqlite3_open_v2(path, &database, SQLITE_OPEN_READWRITE, nil) == SQLITE_OK else {
+      return
+    }
+    sqlite3_exec(database, "PRAGMA wal_checkpoint(TRUNCATE)", nil, nil, nil)
   }
 
   private func isServersTableEmpty(atPath path: String) -> Bool {
