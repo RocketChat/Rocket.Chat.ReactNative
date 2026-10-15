@@ -73,6 +73,9 @@ export type ChannelsEndpoints = {
 	'channels.join': {
 		POST: (params: { roomId: string; joinCode: string | null }) => { channel: IServerRoom };
 	};
+	'channels.invite': {
+		POST: (params: { roomId: string; username: string }) => { channel: IServerRoom };
+	};
 	'channels.close': {
 		POST: (params: { roomId: string }) => {};
 	};

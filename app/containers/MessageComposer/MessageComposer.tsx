@@ -92,7 +92,7 @@ export const MessageComposer = ({
 
 	const handleLayout = (event: LayoutChangeEvent) => {
 		const { height } = event.nativeEvent.layout;
-		contentHeight.value = height;
+		contentHeight.set(height);
 	};
 
 	const handleSendMessage = async () => {
@@ -145,15 +145,15 @@ export const MessageComposer = ({
 					altTextSupported,
 					getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
 				});
-				clearAttachments();
-				messageActionStore.getState().actions.setQuoteMessageIds([]);
-				composerInputComponentRef.current?.setInput('');
-				return;
 			} catch (e) {
 				log(e);
 				composerInputComponentRef.current.setInput(textFromInput);
 				return;
 			}
+			clearAttachments();
+			messageActionStore.getState().actions.setQuoteMessageIds([]);
+			composerInputComponentRef.current?.setInput('');
+			return;
 		}
 
 		if (quotedMessageIds.length) {

@@ -25,8 +25,11 @@ tags:
     visible:
       id: 'rooms-list-view'
     timeout: 60000
-- tapOn:
-    id: 'rooms-list-view-sidebar'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-sidebar'
+      IOS_LABEL: 'Menu'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
@@ -54,8 +57,11 @@ tags:
     visible:
       id: 'rooms-list-view'
     timeout: 60000
-- tapOn:
-    id: 'rooms-list-view-sidebar'
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'rooms-list-view-sidebar'
+      IOS_LABEL: 'Menu'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'

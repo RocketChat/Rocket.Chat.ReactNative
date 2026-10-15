@@ -40,16 +40,31 @@ const roomTypes = {
 
 export const shouldAutoConfirmDeepLinkLogin = (isE2E, params = {}) => isE2E && params.forceLoginPrompt !== 'true';
 
-const confirmDeepLinkLogin = (host, params = {}) =>
+const consentCopy = {
+	login: {
+		title: 'Deep_link_login_title',
+		description: 'Deep_link_login_description',
+		confirmationText: 'Login',
+		declined: 'Deep_link_login_declined'
+	},
+	open: {
+		title: 'Deep_link_open_title',
+		description: 'Deep_link_open_description',
+		confirmationText: 'Continue',
+		declined: 'Deep_link_open_declined'
+	}
+};
+
+const confirmDeepLinkConsent = (host, params, copy) =>
 	new Promise(resolve => {
 		if (shouldAutoConfirmDeepLinkLogin(process.env.RUNNING_E2E_TESTS === 'true', params)) {
 			resolve(true);
 			return;
 		}
 		showConfirmationAlert({
-			title: I18n.t('Deep_link_login_title'),
-			message: I18n.t('Deep_link_login_description', { server: host }),
-			confirmationText: I18n.t('Login'),
+			title: I18n.t(copy.title),
+			message: I18n.t(copy.description, { server: host }),
+			confirmationText: I18n.t(copy.confirmationText),
 			onPress: () => resolve(true),
 			onCancel: () => resolve(false)
 		});
@@ -97,6 +112,13 @@ const navigate = function* navigate({ params }) {
 	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 };
 
+const endVoipCall = callId => {
+	resetVoipState();
+	if (callId) {
+		RNCallKeep.endCall(callId);
+	}
+};
+
 /**
  * After native VoIP accept fails: reset call state, end CallKit session, land inside root,
  * optionally open DM via same pipeline as deep links (`direct/username`), then toast/dialog per a11y.
@@ -104,10 +126,7 @@ const navigate = function* navigate({ params }) {
 const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
 	try {
 		const { callId, username } = params;
-		resetVoipState();
-		if (callId) {
-			RNCallKeep.endCall(callId);
-		}
+		endVoipCall(callId);
 
 		yield call(waitForNavigationReady);
 
@@ -146,21 +165,21 @@ const fallbackNavigation = function* fallbackNavigation() {
 	yield put(appInit());
 };
 
-const declineDeepLinkLogin = function* declineDeepLinkLogin() {
+const declineDeepLinkConsent = function* declineDeepLinkConsent(copy) {
 	const currentRoot = yield select(state => state.app.root);
 	if (currentRoot) {
-		showToast(I18n.t('Deep_link_login_declined'));
+		showToast(I18n.t(copy.declined));
 	}
 	yield fallbackNavigation();
 };
 
-const ensureDeepLinkLoginConsent = function* ensureDeepLinkLoginConsent(host, params) {
-	if (!params.token) {
-		return true;
-	}
-	const confirmed = yield call(confirmDeepLinkLogin, host, params);
+const requiresDeepLinkConsent = (params, serverRecord) => !!params.token || !serverRecord;
+
+const ensureDeepLinkConsent = function* ensureDeepLinkConsent(host, params) {
+	const copy = consentCopy[params.token ? 'login' : 'open'];
+	const confirmed = yield call(confirmDeepLinkConsent, host, params, copy);
 	if (!confirmed) {
-		yield declineDeepLinkLogin();
+		yield declineDeepLinkConsent(copy);
 		return false;
 	}
 	return true;
@@ -290,14 +309,17 @@ const loginWithDeepLinkToken = function* loginWithDeepLinkToken({ params, hostAl
 	yield completeDeepLinkNavigation(params);
 };
 
-const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, user, serverRecord }) {
+const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, user, serverRecord, skipLoginConsent }) {
 	const { host } = params;
 	// search if deep link's server already exists
 	if (user && serverRecord) {
 		yield* handleKnownServerDeepLink({ params, host, version: serverRecord.version });
 		return;
 	}
-	if (!(yield ensureDeepLinkLoginConsent(host, params))) {
+	if (!skipLoginConsent && requiresDeepLinkConsent(params, serverRecord) && !(yield ensureDeepLinkConsent(host, params))) {
+		if (params.voipAcceptFailed) {
+			endVoipCall(params.callId);
+		}
 		return;
 	}
 	const result = yield getServerInfo(host);
@@ -324,7 +346,7 @@ const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, 
 	}
 };
 
-const handleOpen = function* handleOpen({ params }) {
+const handleOpen = function* handleOpen({ params, skipLoginConsent }) {
 	if (params.type === 'shareextension') {
 		yield handleShareExtension({ params });
 		return;
@@ -369,7 +391,7 @@ const handleOpen = function* handleOpen({ params }) {
 		}
 		yield completeDeepLinkNavigation(params);
 	} else {
-		yield handleOpenDifferentServer({ params, server, user, serverRecord });
+		yield handleOpenDifferentServer({ params, server, user, serverRecord, skipLoginConsent });
 	}
 };
 
@@ -389,7 +411,7 @@ const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
 					action: 'accepted',
 					params: { uid, rid, callId }
 				});
-				yield videoConfJoin(callId, true, false, true);
+				yield videoConfJoin(callId, true, false, { fromPush: true, rid });
 			} else if (event === 'decline') {
 				yield call(notifyUser, `${uid}/video-conference`, {
 					action: 'rejected',
@@ -438,7 +460,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 		return;
 	}
 
-	if (!(yield ensureDeepLinkLoginConsent(host, params))) {
+	if (requiresDeepLinkConsent(params, serverRecord) && !(yield ensureDeepLinkConsent(host, params))) {
 		return;
 	}
 	// if deep link is from a different server

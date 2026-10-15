@@ -1,5 +1,6 @@
 import { createElement, type ComponentType } from 'react';
 import { composeStories } from '@storybook/react';
+import { type ComposedStoryFn } from 'storybook/internal/types';
 import { render } from '@testing-library/react-native';
 import preview from './preview';
 import { mockedStore } from '../app/reducers/mockedStore';
@@ -13,7 +14,8 @@ export function generateSnapshots(stories: any) {
 			decorators: preview.decorators
 		});
 		Object.entries(composedStories).forEach(([name, story]) => {
-			test(`${name} should match snapshot`, () => {
+			test(`${name} should match snapshot`, async () => {
+				await (story as ComposedStoryFn).load();
 				const rendered = render(createElement(story as ComponentType));
 				expect(rendered.toJSON()).toMatchSnapshot();
 			});
