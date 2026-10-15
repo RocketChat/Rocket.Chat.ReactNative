@@ -1,5 +1,5 @@
 import { afterEach, test } from '@e2e-dev/mobile';
-import { expect } from 'e2e';
+import { expect, type Locator } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers, get } from '~e2e/support/api';
 import {
@@ -31,14 +31,23 @@ const scrollToEditControl = async ({ screen }: Fixtures, field: string, directio
 	await screen.scrollUntilVisible(screen.getByTestId(editViewTestId(field)), { direction, timeout: LONG_TIMEOUT });
 };
 
-const fillEditField = async (fixtures: Fixtures, field: string, value: string, direction: 'up' | 'down' = 'down') => {
-	await scrollToEditControl(fixtures, field, direction);
+const KEYBOARD_SAFE_TOP = 250;
+
+const raiseAboveKeyboard = async ({ screen }: Fixtures, input: Locator) => {
+	const box = await input.boundingBox();
+	if (!box || box.y <= KEYBOARD_SAFE_TOP) return;
+	await screen.swipe({ from: { x: 4, y: box.y }, to: { x: 4, y: KEYBOARD_SAFE_TOP }, duration: 800 });
+};
+
+const fillEditField = async (fixtures: Fixtures, field: string, value: string) => {
+	await scrollToEditControl(fixtures, field);
 	const input = fixtures.screen.getByTestId(editViewTestId(field));
 	if (field === 'password') {
 		await fillWhenUncovered(input, value);
 	} else if (fixtures.platform === 'android') {
 		await fillSettled(input, value);
 	} else {
+		await raiseAboveKeyboard(fixtures, input);
 		await input.clear();
 		await input.pressSequentially(value);
 	}
@@ -46,14 +55,8 @@ const fillEditField = async (fixtures: Fixtures, field: string, value: string, d
 };
 
 const fillEditFields = async (fixtures: Fixtures, fieldValues: readonly (readonly [string, string])[]) => {
-	if (fixtures.platform === 'android') {
-		for (const [field, value] of fieldValues) {
-			await fillEditField(fixtures, field, value);
-		}
-		return;
-	}
-	for (const [field, value] of [...fieldValues].reverse()) {
-		await fillEditField(fixtures, field, value, 'up');
+	for (const [field, value] of fieldValues) {
+		await fillEditField(fixtures, field, value);
 	}
 };
 
