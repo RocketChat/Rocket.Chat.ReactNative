@@ -61,9 +61,14 @@ describe('getUploadRetryDelay', () => {
 		expect(getUploadRetryDelay(new UploadHttpError(429, { serverMessage, retryAfterSeconds: 5 }), 1)).toBe(5000);
 	});
 
-	it('waits out the whole rate limit window the server asks for', () => {
+	it('waits out the whole rate limit window the server asks for, up to two minutes', () => {
 		expect(getUploadRetryDelay(new UploadHttpError(429, { retryAfterSeconds: 60 }), 1)).toBe(60000);
-		expect(getUploadRetryDelay(new UploadHttpError(429, { serverMessage: 'You must wait 60 seconds' }), 1)).toBe(60000);
+		expect(getUploadRetryDelay(new UploadHttpError(429, { serverMessage: 'You must wait 120 seconds' }), 1)).toBe(120000);
+	});
+
+	it('gives up instead of holding the upload for longer than two minutes', () => {
+		expect(getUploadRetryDelay(new UploadHttpError(429, { retryAfterSeconds: 121 }), 1)).toBeUndefined();
+		expect(getUploadRetryDelay(new UploadHttpError(429, { serverMessage: 'You must wait 3600 seconds' }), 1)).toBeUndefined();
 	});
 });
 
@@ -113,6 +118,14 @@ describe('uploadWithRetry', () => {
 
 		await expect(pending).resolves.toBe(RESPONSE);
 		expect(createUpload).toHaveBeenCalledTimes(2);
+	});
+
+	it('stops and surfaces the failure when the rate limit wait is longer than two minutes', async () => {
+		const serverMessage = 'You must wait 3600 seconds before trying this endpoint again. [error-too-many-requests]';
+		const createUpload = uploadThat(jest.fn().mockRejectedValue(new UploadHttpError(429, { serverMessage })));
+
+		await expect(uploadWithRetry(PATH, createUpload)).rejects.toMatchObject({ status: 429 });
+		expect(createUpload).toHaveBeenCalledTimes(1);
 	});
 
 	it('does not retry a 413', async () => {

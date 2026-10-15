@@ -5,6 +5,7 @@ import { UploadSupersededError, uploadQueue } from './utils';
 export const MAX_UPLOAD_ATTEMPTS = 4;
 
 const BASE_RETRY_DELAY = 2000;
+const MAX_RETRY_DELAY = 120000;
 
 const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms));
 
@@ -13,7 +14,8 @@ export const getUploadRetryDelay = (error: unknown, attempt: number): number | u
 		return undefined;
 	}
 	const retryAfterSeconds = error.retryAfterSeconds ?? parseRetryAfterFromMessage(error.serverMessage);
-	return retryAfterSeconds ? retryAfterSeconds * 1000 : BASE_RETRY_DELAY * 2 ** (attempt - 1);
+	const delay = retryAfterSeconds ? retryAfterSeconds * 1000 : BASE_RETRY_DELAY * 2 ** (attempt - 1);
+	return delay <= MAX_RETRY_DELAY ? delay : undefined;
 };
 
 const isCurrentAttempt = (uploadPath: string, upload: IFileUpload) => uploadQueue[uploadPath] === upload;
