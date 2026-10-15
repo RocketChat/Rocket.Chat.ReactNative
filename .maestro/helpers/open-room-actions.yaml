@@ -1,0 +1,18 @@
+appId: ${APP_ID}
+name: Open room actions
+tags:
+  - 'util'
+
+---
+- extendedWaitUntil:
+    visible:
+      id: 'room-header'
+    timeout: 60000
+- tapOn:
+    id: 'room-header'
+    index: 0
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000

@@ -18,11 +18,27 @@ tags:
 # Show alerts as Toasts
 - tapOn: 'Menu'
 - tapOn: 'Accessibility & appearance'
-- tapOn: '.*Show alerts as.*'
-- assertVisible: 'Toasts. Dismissed automatically. Checked'
-- assertVisible: 'Dialogs. Require manual dismissal. Unchecked'
-- tapOn:
-    id: 'action-sheet-handle'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn: 'Toasts'
+      - assertVisible:
+          text: 'Toasts'
+          selected: true
+      - assertVisible:
+          text: 'Dialogs'
+          selected: false
+      - tapOn: 'Toasts'
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn: '.*Show alerts as.*'
+      - assertVisible: 'Toasts. Dismissed automatically. Checked'
+      - assertVisible: 'Dialogs. Require manual dismissal. Unchecked'
+      - tapOn:
+          id: 'action-sheet-handle'
 - waitForAnimationToEnd:
     timeout: 5000
 - tapOn: 'Menu'
@@ -37,9 +53,23 @@ tags:
 
 # Show alerts as Dialogs
 - tapOn: 'Accessibility & appearance'
-- tapOn: '.*Show alerts as.*'
-- assertVisible: 'Toasts. Dismissed automatically. Checked'
-- tapOn: 'Dialogs. Require manual dismissal. Unchecked'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn: 'Toasts'
+      - assertVisible:
+          text: 'Toasts'
+          selected: true
+      - tapOn: 'Dialogs'
+      - assertVisible: 'Dialogs'
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn: '.*Show alerts as.*'
+      - assertVisible: 'Toasts. Dismissed automatically. Checked'
+      - tapOn: 'Dialogs. Require manual dismissal. Unchecked'
 - tapOn: 'Menu'
 - tapOn: 'Edit status'
 - tapOn:

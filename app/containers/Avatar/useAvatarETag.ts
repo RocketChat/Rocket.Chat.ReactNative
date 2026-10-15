@@ -1,5 +1,5 @@
 import { Q } from '@nozbe/watermelondb';
-import { useCallback, useState, useSyncExternalStore } from 'react';
+import { useCallback, useMemo, useSyncExternalStore } from 'react';
 import { type Observable } from 'rxjs';
 
 import { type TLoggedUserModel, type TSubscriptionModel, type TUserModel } from '~/definitions';
@@ -30,14 +30,7 @@ const findAvatarRecord = ({ username, text, type, rid, id }: IAvatarSource): TAv
 };
 
 export const useAvatarETag = ({ username, text, type = '', rid, id }: IAvatarSource) => {
-	const sourceKey = [username, text, type, rid, id].join('\n');
-	const [lookup, setLookup] = useState(() => ({ sourceKey, record: findAvatarRecord({ username, text, type, rid, id }) }));
-
-	let { record } = lookup;
-	if (lookup.sourceKey !== sourceKey) {
-		record = findAvatarRecord({ username, text, type, rid, id });
-		setLookup({ sourceKey, record });
-	}
+	const record = useMemo(() => findAvatarRecord({ username, text, type, rid, id }), [username, text, type, rid, id]);
 
 	const subscribe = useCallback(
 		(onChange: () => void) => {

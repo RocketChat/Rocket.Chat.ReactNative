@@ -9,16 +9,6 @@ import sharedStyles from '../Styles';
 import { type MediaDownloadOption } from '~/lib/constants/mediaAutoDownload';
 
 const styles = StyleSheet.create({
-	leftTitleContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'flex-start'
-	},
-	leftTitle: {
-		...sharedStyles.textMedium,
-		fontSize: 16,
-		lineHeight: 24
-	},
 	rightContainer: {
 		flex: 1
 	},
@@ -94,22 +84,26 @@ const ListPicker = ({
 	const label = option.label === 'Never' ? I18n.t('Off') : I18n.t(option.label);
 
 	return (
-		<List.Item
+		<List.Picker
+			title={title}
 			testID={testID}
-			onPress={() => showActionSheet({ children: getOptions() })}
-			title={() => (
-				<View style={styles.leftTitleContainer}>
-					<Text style={[styles.leftTitle, { color: colors.fontDefault }]}>{title}</Text>
-				</View>
-			)}
-			right={() => (
-				<View style={styles.rightTitleContainer}>
-					<Text style={[styles.rightTitle, { color: colors.fontHint }]}>{label}</Text>
-				</View>
-			)}
-			rightContainerStyle={styles.rightContainer}
-			additionalAccessibilityLabel={label}
-		/>
+			options={OPTIONS.map(i => ({ label: I18n.t(i.label), value: i.value, testID: `${testID}-${i.value}` }))}
+			selection={option.value}
+			onSelectionChange={onChangeValue}>
+			<List.Item
+				testID={testID}
+				onPress={() => showActionSheet({ children: getOptions() })}
+				title={title}
+				translateTitle={false}
+				right={() => (
+					<View style={styles.rightTitleContainer}>
+						<Text style={[styles.rightTitle, { color: colors.fontHint }]}>{label}</Text>
+					</View>
+				)}
+				rightContainerStyle={styles.rightContainer}
+				additionalAccessibilityLabel={label}
+			/>
+		</List.Picker>
 	);
 };
 

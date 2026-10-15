@@ -339,6 +339,16 @@
 		]
 	},
 	{
+		"test": ".maestro/tests/room/attachment-send.yaml",
+		"dependsOn": [
+			"app/views/RoomView/**",
+			"app/containers/MessageComposer/**",
+			"app/lib/methods/helpers/ImagePicker/**",
+			"app/lib/methods/sendFileMessage/**",
+			"app/lib/hooks/useAltTextSupported.ts"
+		]
+	},
+	{
 		"test": ".maestro/tests/room/reaction-picker-small-screen.yaml",
 		"dependsOn": ["app/containers/EmojiPicker/**", "app/containers/ReactionsList/**"]
 	},
@@ -406,7 +416,7 @@
 		"test": ".maestro/tests/teams/convert-team.yaml",
 		"dependsOn": [
 			"app/views/RoomActionsView/**",
-			"app/views/SelectListView.tsx",
+			"app/views/SelectListView/**",
 			"app/views/CreateChannelView/**",
 			"app/views/NewMessageView/**",
 			"app/views/SelectedUsersView/**",
@@ -436,7 +446,7 @@
 			"app/views/AddExistingChannelView/**",
 			"app/views/RoomMembersView/**",
 			"app/views/SelectedUsersView/**",
-			"app/views/SelectListView.tsx",
+			"app/views/SelectListView/**",
 			"app/views/CreateChannelView/**",
 			"app/sagas/room.js",
 			"app/sagas/createChannel.js"

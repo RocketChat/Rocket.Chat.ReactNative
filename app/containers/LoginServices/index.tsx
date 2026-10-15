@@ -36,7 +36,7 @@ const LoginServices = ({ separator }: { separator: boolean }): ReactElement => {
 	}));
 
 	const onPressButtonSeparator = () => {
-		heightButtons.value = collapsed ? SERVICE_HEIGHT * totalServices : SERVICES_COLLAPSED_HEIGHT;
+		heightButtons.set(collapsed ? SERVICE_HEIGHT * totalServices : SERVICES_COLLAPSED_HEIGHT);
 		setCollapsed(prevState => !prevState);
 	};
 
