@@ -26,12 +26,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             "height": 12,
             "width": 12,
           },
-          {
-            "height": 12,
-            "textAlign": "center",
-            "textAlignVertical": "center",
-            "width": 12,
-          },
+          undefined,
         ]
       }
     >
@@ -98,12 +93,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             "height": 12,
             "width": 12,
           },
-          {
-            "height": 12,
-            "textAlign": "center",
-            "textAlignVertical": "center",
-            "width": 12,
-          },
+          undefined,
         ]
       }
     >
@@ -196,12 +186,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             "height": 12,
             "width": 12,
           },
-          {
-            "height": 12,
-            "textAlign": "center",
-            "textAlignVertical": "center",
-            "width": 12,
-          },
+          undefined,
         ]
       }
     >
@@ -268,12 +253,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             "height": 12,
             "width": 12,
           },
-          {
-            "height": 12,
-            "textAlign": "center",
-            "textAlignVertical": "center",
-            "width": 12,
-          },
+          undefined,
         ]
       }
     >
@@ -407,12 +387,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             "height": 12,
             "width": 12,
           },
-          {
-            "height": 12,
-            "textAlign": "center",
-            "textAlignVertical": "center",
-            "width": 12,
-          },
+          undefined,
         ]
       }
     >

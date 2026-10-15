@@ -111,11 +111,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
-                  "height": 16,
                   "marginRight": 4,
-                  "textAlign": "center",
-                  "textAlignVertical": "center",
-                  "width": 16,
                 },
               ]
             }
@@ -323,11 +319,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
-                  "height": 16,
                   "marginRight": 4,
-                  "textAlign": "center",
-                  "textAlignVertical": "center",
-                  "width": 16,
                 },
               ]
             }
@@ -535,11 +527,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
-                  "height": 16,
                   "marginRight": 4,
-                  "textAlign": "center",
-                  "textAlignVertical": "center",
-                  "width": 16,
                 },
               ]
             }
@@ -747,11 +735,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
-                  "height": 16,
                   "marginRight": 4,
-                  "textAlign": "center",
-                  "textAlignVertical": "center",
-                  "width": 16,
                 },
               ]
             }
@@ -959,11 +943,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
-                  "height": 16,
                   "marginRight": 4,
-                  "textAlign": "center",
-                  "textAlignVertical": "center",
-                  "width": 16,
                 },
               ]
             }
@@ -1171,11 +1151,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
-                  "height": 16,
                   "marginRight": 4,
-                  "textAlign": "center",
-                  "textAlignVertical": "center",
-                  "width": 16,
                 },
               ]
             }
@@ -1435,11 +1411,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
-                  "height": 16,
                   "marginRight": 4,
-                  "textAlign": "center",
-                  "textAlignVertical": "center",
-                  "width": 16,
                 },
               ]
             }
@@ -1699,11 +1671,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
-                  "height": 16,
                   "marginRight": 4,
-                  "textAlign": "center",
-                  "textAlignVertical": "center",
-                  "width": 16,
                 },
               ]
             }

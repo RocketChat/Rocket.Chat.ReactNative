@@ -14,11 +14,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           "width": 30,
         },
         {
-          "height": 30,
           "marginRight": 4,
-          "textAlign": "center",
-          "textAlignVertical": "center",
-          "width": 30,
         },
       ]
     }
@@ -61,11 +57,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           "width": 30,
         },
         {
-          "height": 30,
           "marginRight": 4,
-          "textAlign": "center",
-          "textAlignVertical": "center",
-          "width": 30,
         },
       ]
     }

@@ -686,7 +686,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
 <View
   style={
     {
-      "paddingLeft": 5,
+      "marginLeft": 5,
     }
   }
   testID="Edited message-edited"
@@ -828,7 +828,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
   onStartShouldSetResponder={[Function]}
   style={
     {
-      "paddingLeft": 5,
+      "marginLeft": 5,
     }
   }
 >
@@ -1504,7 +1504,7 @@ exports[`Story Snapshots: MessageError should match snapshot 1`] = `
   onStartShouldSetResponder={[Function]}
   style={
     {
-      "paddingLeft": 5,
+      "marginLeft": 5,
     }
   }
   testID="message-error-Message that failed to send"
@@ -3873,7 +3873,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
         "width": 16,
       },
       {
-        "paddingLeft": 5,
+        "marginLeft": 5,
       },
     ]
   }
@@ -4262,8 +4262,8 @@ exports[`Story Snapshots: ReadReceipt should match snapshot 1`] = `
         "width": 25,
       },
       {
+        "marginLeft": 5,
         "marginTop": -5,
-        "paddingLeft": 5,
       },
     ]
   }
@@ -4312,8 +4312,8 @@ exports[`Story Snapshots: ReadReceiptUnread should match snapshot 1`] = `
         "width": 25,
       },
       {
+        "marginLeft": 5,
         "marginTop": -5,
-        "paddingLeft": 5,
       },
     ]
   }
@@ -5664,7 +5664,7 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
 <View
   style={
     {
-      "paddingLeft": 5,
+      "marginLeft": 5,
     }
   }
 >

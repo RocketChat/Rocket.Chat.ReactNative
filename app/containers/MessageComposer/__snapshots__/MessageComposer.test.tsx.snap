@@ -13918,7 +13918,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
-                        "paddingVertical": 4,
+                        "marginVertical": 4,
                       },
                     ]
                   }
@@ -14030,7 +14030,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
-                        "paddingVertical": 4,
+                        "marginVertical": 4,
                       },
                     ]
                   }
@@ -14142,7 +14142,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
-                        "paddingVertical": 4,
+                        "marginVertical": 4,
                       },
                     ]
                   }
@@ -14254,7 +14254,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
-                        "paddingVertical": 4,
+                        "marginVertical": 4,
                       },
                     ]
                   }
@@ -14366,7 +14366,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
-                        "paddingVertical": 4,
+                        "marginVertical": 4,
                       },
                     ]
                   }
@@ -14478,7 +14478,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
-                        "paddingVertical": 4,
+                        "marginVertical": 4,
                       },
                     ]
                   }
@@ -14590,7 +14590,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
-                        "paddingVertical": 4,
+                        "marginVertical": 4,
                       },
                     ]
                   }
@@ -14702,7 +14702,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
-                        "paddingVertical": 4,
+                        "marginVertical": 4,
                       },
                     ]
                   }
@@ -14814,7 +14814,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
-                        "paddingVertical": 4,
+                        "marginVertical": 4,
                       },
                     ]
                   }
@@ -14926,7 +14926,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
-                        "paddingVertical": 4,
+                        "marginVertical": 4,
                       },
                     ]
                   }

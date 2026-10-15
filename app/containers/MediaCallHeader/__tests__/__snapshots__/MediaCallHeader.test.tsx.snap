@@ -215,12 +215,7 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                {
-                  "height": 16,
-                  "textAlign": "center",
-                  "textAlignVertical": "center",
-                  "width": 16,
-                },
+                undefined,
               ]
             }
           >
@@ -614,12 +609,7 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                {
-                  "height": 16,
-                  "textAlign": "center",
-                  "textAlignVertical": "center",
-                  "width": 16,
-                },
+                undefined,
               ]
             }
           >
@@ -1013,12 +1003,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                {
-                  "height": 16,
-                  "textAlign": "center",
-                  "textAlignVertical": "center",
-                  "width": 16,
-                },
+                undefined,
               ]
             }
           >
@@ -1432,12 +1417,7 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                {
-                  "height": 16,
-                  "textAlign": "center",
-                  "textAlignVertical": "center",
-                  "width": 16,
-                },
+                undefined,
               ]
             }
           >
@@ -1851,12 +1831,7 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                {
-                  "height": 16,
-                  "textAlign": "center",
-                  "textAlignVertical": "center",
-                  "width": 16,
-                },
+                undefined,
               ]
             }
           >
@@ -2274,12 +2249,7 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                {
-                  "height": 16,
-                  "textAlign": "center",
-                  "textAlignVertical": "center",
-                  "width": 16,
-                },
+                undefined,
               ]
             }
           >

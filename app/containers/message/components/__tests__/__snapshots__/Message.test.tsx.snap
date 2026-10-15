@@ -32425,7 +32425,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                       <View
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                         testID="Message header-edited"
@@ -32765,7 +32765,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="Message without header-edited"
@@ -33186,7 +33186,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                       <View
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                         testID="Message header-edited"
@@ -33548,7 +33548,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="Message without header-edited"
@@ -40794,7 +40794,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -41094,7 +41094,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -41560,7 +41560,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -42987,7 +42987,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -43496,7 +43496,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -43920,7 +43920,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -44006,7 +44006,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-This message has error and is encrypted"
@@ -44513,7 +44513,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -44571,8 +44571,8 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               "width": 25,
                             },
                             {
+                              "marginLeft": 5,
                               "marginTop": -5,
-                              "paddingLeft": 5,
                             },
                           ]
                         }
@@ -44858,7 +44858,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -44916,8 +44916,8 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         "width": 25,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -45360,7 +45360,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -45682,7 +45682,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -46126,7 +46126,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -47553,7 +47553,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -48062,7 +48062,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -48486,7 +48486,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -48572,7 +48572,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-This message has error and is encrypted"
@@ -49079,7 +49079,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -49137,8 +49137,8 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               "width": 32.5,
                             },
                             {
+                              "marginLeft": 5,
                               "marginTop": -5,
-                              "paddingLeft": 5,
                             },
                           ]
                         }
@@ -49446,7 +49446,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -49504,8 +49504,8 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         "width": 32.5,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -49889,7 +49889,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-This message has error"
@@ -50353,7 +50353,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-This message has error too"
@@ -50808,7 +50808,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-This message has error"
@@ -51272,7 +51272,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-This message has error too"
@@ -71875,7 +71875,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       <View
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                         testID="Edited message-edited"
@@ -72382,7 +72382,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       <View
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -72925,7 +72925,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -73349,7 +73349,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-Error message"
@@ -73866,8 +73866,8 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                               "width": 25,
                             },
                             {
+                              "marginLeft": 5,
                               "marginTop": -5,
-                              "paddingLeft": 5,
                             },
                           ]
                         }
@@ -74396,7 +74396,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -74454,8 +74454,8 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                               "width": 25,
                             },
                             {
+                              "marginLeft": 5,
                               "marginTop": -5,
-                              "paddingLeft": 5,
                             },
                           ]
                         }
@@ -74865,7 +74865,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -74914,7 +74914,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="Show all icons -edited"
@@ -75001,7 +75001,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-Untranslated message"
@@ -75051,7 +75051,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -75109,8 +75109,8 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         "width": 25,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -75521,7 +75521,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -75570,7 +75570,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.-edited"
@@ -75657,7 +75657,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-Untranslated message"
@@ -75707,7 +75707,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -75765,8 +75765,8 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         "width": 25,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -76177,7 +76177,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -76226,7 +76226,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="small message-edited"
@@ -76313,7 +76313,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-Untranslated message"
@@ -76363,7 +76363,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -76421,8 +76421,8 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         "width": 25,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -77324,7 +77324,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       <View
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                         testID="Edited message-edited"
@@ -77831,7 +77831,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       <View
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -78374,7 +78374,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -78798,7 +78798,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-Error message"
@@ -79315,8 +79315,8 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                               "width": 32.5,
                             },
                             {
+                              "marginLeft": 5,
                               "marginTop": -5,
-                              "paddingLeft": 5,
                             },
                           ]
                         }
@@ -79845,7 +79845,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -79903,8 +79903,8 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                               "width": 32.5,
                             },
                             {
+                              "marginLeft": 5,
                               "marginTop": -5,
-                              "paddingLeft": 5,
                             },
                           ]
                         }
@@ -80314,7 +80314,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -80363,7 +80363,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="Show all icons -edited"
@@ -80450,7 +80450,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-Untranslated message"
@@ -80500,7 +80500,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -80558,8 +80558,8 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         "width": 32.5,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -80970,7 +80970,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -81019,7 +81019,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.-edited"
@@ -81106,7 +81106,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-Untranslated message"
@@ -81156,7 +81156,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -81214,8 +81214,8 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         "width": 32.5,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -81626,7 +81626,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -81675,7 +81675,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="small message-edited"
@@ -81762,7 +81762,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-Untranslated message"
@@ -81812,7 +81812,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -81870,8 +81870,8 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         "width": 32.5,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -89462,8 +89462,8 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                               "width": 25,
                             },
                             {
+                              "marginLeft": 5,
                               "marginTop": -5,
-                              "paddingLeft": 5,
                             },
                           ]
                         }
@@ -89797,8 +89797,8 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                         "width": 25,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -90222,8 +90222,8 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                               "width": 25,
                             },
                             {
+                              "marginLeft": 5,
                               "marginTop": -5,
-                              "paddingLeft": 5,
                             },
                           ]
                         }
@@ -90557,8 +90557,8 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                         "width": 25,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -90973,8 +90973,8 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                               "width": 32.5,
                             },
                             {
+                              "marginLeft": 5,
                               "marginTop": -5,
-                              "paddingLeft": 5,
                             },
                           ]
                         }
@@ -91330,8 +91330,8 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                         "width": 32.5,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -91733,8 +91733,8 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                               "width": 32.5,
                             },
                             {
+                              "marginLeft": 5,
                               "marginTop": -5,
-                              "paddingLeft": 5,
                             },
                           ]
                         }
@@ -92090,8 +92090,8 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                         "width": 32.5,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -116208,7 +116208,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         "width": 16,
                       },
                       {
-                        "paddingLeft": 5,
+                        "marginLeft": 5,
                       },
                     ]
                   }
@@ -116280,7 +116280,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -116329,7 +116329,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="Small name with icons-edited"
@@ -116416,7 +116416,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-Untranslated message"
@@ -116466,7 +116466,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -116524,8 +116524,8 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         "width": 25,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -117364,7 +117364,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         "width": 16,
                       },
                       {
-                        "paddingLeft": 5,
+                        "marginLeft": 5,
                       },
                     ]
                   }
@@ -117436,7 +117436,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -117485,7 +117485,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="Medium name with icons-edited"
@@ -117572,7 +117572,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-Untranslated message"
@@ -117622,7 +117622,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -117680,8 +117680,8 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         "width": 25,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -118520,7 +118520,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         "width": 16,
                       },
                       {
-                        "paddingLeft": 5,
+                        "marginLeft": 5,
                       },
                     ]
                   }
@@ -118592,7 +118592,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -118641,7 +118641,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="Long name with icons - timestamp visible-edited"
@@ -118728,7 +118728,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-Untranslated message"
@@ -118778,7 +118778,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -118836,8 +118836,8 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         "width": 25,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -119314,7 +119314,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                               "width": 16,
                             },
                             {
-                              "paddingLeft": 5,
+                              "marginLeft": 5,
                             },
                           ]
                         }
@@ -119648,7 +119648,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                         "width": 16,
                       },
                       {
-                        "paddingLeft": 5,
+                        "marginLeft": 5,
                       },
                     ]
                   }
@@ -120063,7 +120063,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                               "width": 20.8,
                             },
                             {
-                              "paddingLeft": 5,
+                              "marginLeft": 5,
                             },
                           ]
                         }
@@ -120419,7 +120419,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                         "width": 20.8,
                       },
                       {
-                        "paddingLeft": 5,
+                        "marginLeft": 5,
                       },
                     ]
                   }
@@ -151977,7 +151977,7 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
                       <View
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -152474,7 +152474,7 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
                       <View
                         style={
                           {
-                            "paddingLeft": 5,
+                            "marginLeft": 5,
                           }
                         }
                       >
@@ -160901,7 +160901,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         "width": 16,
                       },
                       {
-                        "paddingLeft": 5,
+                        "marginLeft": 5,
                       },
                     ]
                   }
@@ -160973,7 +160973,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -161022,7 +161022,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="Small username with icons-edited"
@@ -161109,7 +161109,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-Untranslated message"
@@ -161159,7 +161159,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -161217,8 +161217,8 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         "width": 25,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -162057,7 +162057,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         "width": 16,
                       },
                       {
-                        "paddingLeft": 5,
+                        "marginLeft": 5,
                       },
                     ]
                   }
@@ -162129,7 +162129,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -162178,7 +162178,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="Medium username with icons-edited"
@@ -162265,7 +162265,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-Untranslated message"
@@ -162315,7 +162315,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -162373,8 +162373,8 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         "width": 25,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }
@@ -163213,7 +163213,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         "width": 16,
                       },
                       {
-                        "paddingLeft": 5,
+                        "marginLeft": 5,
                       },
                     ]
                   }
@@ -163285,7 +163285,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -163334,7 +163334,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="Long username with icons - timestamp visible-edited"
@@ -163421,7 +163421,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                   onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                   testID="message-error-Untranslated message"
@@ -163471,7 +163471,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                 <View
                   style={
                     {
-                      "paddingLeft": 5,
+                      "marginLeft": 5,
                     }
                   }
                 >
@@ -163529,8 +163529,8 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         "width": 25,
                       },
                       {
+                        "marginLeft": 5,
                         "marginTop": -5,
-                        "paddingLeft": 5,
                       },
                     ]
                   }

@@ -16096,11 +16096,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                             "width": 22,
                           },
                           {
-                            "height": 22,
                             "marginRight": 8,
-                            "textAlign": "center",
-                            "textAlignVertical": "center",
-                            "width": 22,
                           },
                         ]
                       }
@@ -18931,11 +18927,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                             "width": 22,
                           },
                           {
-                            "height": 22,
                             "marginRight": 8,
-                            "textAlign": "center",
-                            "textAlignVertical": "center",
-                            "width": 22,
                           },
                         ]
                       }
@@ -19249,11 +19241,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                             "width": 22,
                           },
                           {
-                            "height": 22,
                             "marginRight": 8,
-                            "textAlign": "center",
-                            "textAlignVertical": "center",
-                            "width": 22,
                           },
                         ]
                       }

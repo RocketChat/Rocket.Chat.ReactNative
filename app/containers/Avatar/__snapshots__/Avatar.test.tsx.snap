@@ -491,12 +491,8 @@ exports[`Story Snapshots: Children should match snapshot 1`] = `
         {
           "borderRadius": 10,
           "bottom": -2,
-          "height": 24,
           "position": "absolute",
           "right": -2,
-          "textAlign": "center",
-          "textAlignVertical": "center",
-          "width": 24,
         },
       ]
     }
