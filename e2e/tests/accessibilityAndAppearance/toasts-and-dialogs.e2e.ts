@@ -2,7 +2,14 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { type Fixtures, loginWithDeepLink, LONG_TIMEOUT, tapWhenVisible } from '~e2e/support/flows';
+import {
+	expectVisible,
+	type Fixtures,
+	loginWithDeepLink,
+	LONG_TIMEOUT,
+	tapUntilHidden,
+	tapWhenVisible
+} from '~e2e/support/flows';
 import { tapHeaderItem } from '~e2e/support/header';
 import { expectLabel } from '~e2e/support/keyboard';
 import { openSidebar } from '~e2e/support/settings';
@@ -13,11 +20,16 @@ const DIALOG_UNCHECKED = 'Dialogs. Require manual dismissal. Unchecked';
 const SHOW_ALERTS_AS = /^Show alerts as/;
 
 const alertDisplayRow = ({ screen, platform }: Fixtures) =>
-	platform === 'ios' ? screen.getByLabel(/^Show alerts as, /) : screen.getByRole('button', { name: SHOW_ALERTS_AS });
+	platform === 'ios'
+		? screen.getByRole('button', { name: SHOW_ALERTS_AS }).last()
+		: screen.getByRole('button', { name: SHOW_ALERTS_AS });
+
+const alertDisplayValue = ({ screen }: Fixtures, value: string) =>
+	screen.getByText(new RegExp(`^(Show alerts as, )?${value}$`)).first();
 
 const openAccessibility = async (fixtures: Fixtures) => {
-	await tapWhenVisible(fixtures, 'sidebar-accessibility');
-	await expect(fixtures.screen.getByTestId('sidebar-view')).toBeHidden({ timeout: LONG_TIMEOUT });
+	await expectVisible(fixtures, 'sidebar-accessibility');
+	await tapUntilHidden(fixtures, 'sidebar-accessibility', 'sidebar-view');
 };
 
 const openAlertDisplayPicker = async (fixtures: Fixtures) => {
@@ -28,7 +40,7 @@ const openAlertDisplayPicker = async (fixtures: Fixtures) => {
 const expectToastsSelected = async (fixtures: Fixtures) => {
 	const { screen, platform } = fixtures;
 	if (platform === 'ios') {
-		await expect(fixtures.screen.getByLabel('Show alerts as, Toasts').first()).toBeVisible({ timeout: LONG_TIMEOUT });
+		await expect(alertDisplayValue(fixtures, 'Toasts')).toBeVisible({ timeout: LONG_TIMEOUT });
 		return;
 	}
 	await openAlertDisplayPicker(fixtures);
@@ -42,7 +54,7 @@ const selectDialogs = async (fixtures: Fixtures) => {
 	if (platform === 'ios') {
 		await tapWhenVisible(fixtures, alertDisplayRow(fixtures));
 		await tapWhenVisible(fixtures, screen.getByText('Dialogs').last());
-		await expect(screen.getByLabel('Show alerts as, Dialogs').first()).toBeVisible({ timeout: LONG_TIMEOUT });
+		await expect(alertDisplayValue(fixtures, 'Dialogs')).toBeVisible({ timeout: LONG_TIMEOUT });
 		return;
 	}
 	await openAlertDisplayPicker(fixtures);

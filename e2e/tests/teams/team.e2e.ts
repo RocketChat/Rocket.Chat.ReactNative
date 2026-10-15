@@ -48,7 +48,9 @@ const createTeamChannel = async (fixtures: Fixtures, channel: string) => {
 	await expectVisible(fixtures, 'add-channel-team-view-add-existing');
 	await screen.getByTestId('add-channel-team-view-create-channel').tap();
 	await selectUser(fixtures, 'rocket.cat');
-	await hideKeyboard(fixtures);
+	if (fixtures.platform === 'android') {
+		await hideKeyboard(fixtures);
+	}
 	await submitSelectedUsers(fixtures);
 	await expectVisible(fixtures, 'create-channel-view');
 	await fillWhenUncovered(screen.getByTestId('create-channel-name'), channel);
@@ -93,7 +95,9 @@ const addMembers = async (fixtures: Fixtures, usernames: string[]) => {
 	for (const username of usernames) {
 		await selectUser(fixtures, username);
 	}
-	await hideKeyboard(fixtures);
+	if (fixtures.platform === 'android') {
+		await hideKeyboard(fixtures);
+	}
 	await submitSelectedUsers(fixtures);
 	await selectHeaderMenuOption(
 		fixtures,

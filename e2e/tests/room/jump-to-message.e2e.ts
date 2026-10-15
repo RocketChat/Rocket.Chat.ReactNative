@@ -43,7 +43,7 @@ const jumpToMessageFrom = (fixtures: Fixtures, text: string) =>
 
 const expectThreadMessage = async (fixtures: Fixtures, text: string) => {
 	await expectRoomTitle(fixtures, 'thread 1');
-	const message = testIdContaining(fixtures, `message-content-${text}`);
+	const message = fixtures.screen.getByText(new RegExp(escapeRegExp(text))).first();
 	await expect(message).toBeVisible({ timeout: LONG_TIMEOUT });
 	await message.tap();
 };
