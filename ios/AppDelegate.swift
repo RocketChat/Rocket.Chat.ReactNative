@@ -87,7 +87,7 @@ public class AppDelegate: ExpoAppDelegate {
       let from = "\(groupDir)/\(name)"
       let to = "\(groupDir)/\(name.dropLast(legacySuffix.count)).db"
       if let size = (try? fileManager.attributesOfItem(atPath: to))?[.size] as? Int, size > 0 {
-        guard name == serversLegacyName, isServersTableEmpty(atPath: to) else {
+        guard name == serversLegacyName, isReplaceableServersDatabase(atPath: to) else {
           continue
         }
         discardDatabase(atPath: to)
@@ -112,7 +112,7 @@ public class AppDelegate: ExpoAppDelegate {
     sqlite3_exec(database, "PRAGMA wal_checkpoint(TRUNCATE)", nil, nil, nil)
   }
 
-  private func isServersTableEmpty(atPath path: String) -> Bool {
+  private func isReplaceableServersDatabase(atPath path: String) -> Bool {
     var database: OpaquePointer?
     defer { sqlite3_close(database) }
     guard sqlite3_open_v2(path, &database, SQLITE_OPEN_READONLY, nil) == SQLITE_OK else {

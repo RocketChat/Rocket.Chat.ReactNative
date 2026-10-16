@@ -106,7 +106,8 @@ open class MainApplication : Application(), ReactApplication {
     val otherLegacy = dataDirFiles.filter { it.isFile && it.name.endsWith(legacySuffix) && it != serversLegacy }
     for (legacy in otherLegacy + serversLegacy) {
       val target = File(legacy.path.removeSuffix(legacySuffix) + ".db.db")
-      if (target == serversLegacy) {
+      val targetCollidesWithServersLegacy = target == serversLegacy
+      if (targetCollidesWithServersLegacy) {
         continue
       }
       if (target.length() > 0) {
