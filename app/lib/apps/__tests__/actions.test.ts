@@ -87,6 +87,22 @@ describe('actions', () => {
 			});
 		});
 
+		it('closes the open modal when the stream closes it after the request settled', async () => {
+			let triggerId = '';
+			await withTriggerId('app-id', async id => {
+				triggerId = id;
+			});
+
+			handlePayloadUserInteraction(ModalActions.CLOSE, { triggerId, viewId: 'view-id' });
+
+			expect(mockedEmit).toHaveBeenCalledWith('view-id', {
+				type: ModalActions.CLOSE,
+				triggerId,
+				appId: 'app-id',
+				viewId: 'view-id'
+			});
+		});
+
 		it('drops a stream reply once the trigger expired', async () => {
 			let triggerId = '';
 			await withTriggerId('app-id', async id => {

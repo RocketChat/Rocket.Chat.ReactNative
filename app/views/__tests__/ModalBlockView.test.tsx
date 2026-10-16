@@ -3,6 +3,8 @@ import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
 import ModalBlockView from '../ModalBlockView';
+import { ModalActions } from '~/containers/UIKit/interfaces';
+import EventEmitter from '~/lib/methods/helpers/events';
 import { mockedStore } from '~/reducers/mockedStore';
 import { triggerBlockAction, triggerSubmitView } from '~/lib/apps/triggerActions';
 
@@ -126,6 +128,15 @@ describe('ModalBlockView', () => {
 			render(renderModal(modalData('trigger-1'), navigation));
 
 			await act(() => mockBlockAction({ actionId: 'action-id', value: 'value', blockId: 'block-id' }));
+
+			expect(navigation.goBack).toHaveBeenCalledTimes(1);
+		});
+
+		it('closes when the app closes the modal over the stream', () => {
+			const navigation = mockNavigation();
+			render(renderModal(modalData('trigger-1'), navigation));
+
+			act(() => EventEmitter.emit('view-id', { type: ModalActions.CLOSE, triggerId: 'trigger-2', appId: 'app-id' }));
 
 			expect(navigation.goBack).toHaveBeenCalledTimes(1);
 		});

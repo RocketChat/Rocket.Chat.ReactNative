@@ -180,7 +180,9 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 	};
 
 	handleUpdate = ({ type, ...data }: { type: TModalAction }) => {
-		if (type === ModalActions.ERRORS) {
+		if (type === ModalActions.CLOSE) {
+			this.close();
+		} else if (type === ModalActions.ERRORS) {
 			const { errors }: any = data;
 			this.setState({ errors });
 		} else {

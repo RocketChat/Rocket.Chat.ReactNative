@@ -49,17 +49,21 @@ export const handlePayloadUserInteraction = (type: string, { triggerId, ...data 
 		showToast(I18n.t('App_action_unsupported'));
 		return;
 	}
+	const viewId = data.view?.id || data.viewId;
 	if (modalType === ModalActions.CLOSE) {
 		trigger.handled = modalType;
+		if (viewId) {
+			EventEmitter.emit(viewId, {
+				type: modalType,
+				triggerId,
+				appId: data.appId ?? trigger.appId,
+				viewId
+			} as IEmitUserInteraction);
+		}
 		return;
 	}
 	const payloadAppId = data.appId ?? trigger.appId;
-	if (!payloadAppId) {
-		return;
-	}
-
-	const viewId = data.view?.id || data.viewId;
-	if (!viewId) {
+	if (!payloadAppId || !viewId) {
 		return;
 	}
 
