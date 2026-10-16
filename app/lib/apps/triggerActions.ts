@@ -29,16 +29,13 @@ export async function triggerBlockAction(options: ITriggerBlockAction): Promise<
 
 interface ITriggerAppActionButton {
 	button: IAppActionButton;
-	rid?: string;
+	rid: string;
 	tmid?: string;
 	message?: string;
 }
 
 export async function triggerAppActionButton({ button, rid, tmid, message }: ITriggerAppActionButton) {
 	try {
-		if (!rid) {
-			throw new Error('rid is required for actionButton interaction');
-		}
 		const { actionId, appId, context } = button;
 		await postUserInteraction(appId, (triggerId): UserInteraction => {
 			if (context === UIActionButtonContext.ROOM_ACTION) {

@@ -19,8 +19,8 @@ const item = (id: string, overrides = {}): IAppActionButtonItem => ({
 	button: { appId: 'app-id', actionId: id, context: 'messageBoxAction', labelI18n: 'label', ...overrides }
 });
 
-const renderOptions = () =>
-	renderHook(() => useComposerAppActionOptions({ rid: 'rid-1', tmid: 'tmid-1', getText: () => 'draft text' })).result.current;
+const renderOptions = ({ rid }: { rid?: string } = { rid: 'rid-1' }) =>
+	renderHook(() => useComposerAppActionOptions({ rid, tmid: 'tmid-1', getText: () => 'draft text' })).result.current;
 
 describe('useComposerAppActionOptions', () => {
 	beforeEach(() => {
@@ -30,6 +30,12 @@ describe('useComposerAppActionOptions', () => {
 
 	it('returns nothing when no app registered any action', () => {
 		expect(renderOptions()).toEqual([]);
+	});
+
+	it('returns nothing outside a room', () => {
+		mockItems = [item('translate')];
+
+		expect(renderOptions({})).toEqual([]);
 	});
 
 	it('lists ai room actions then default message box actions', () => {

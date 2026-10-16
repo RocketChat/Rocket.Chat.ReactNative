@@ -13,6 +13,9 @@ interface IUseComposerAppActionOptions {
 
 export const useComposerAppActionOptions = ({ rid, tmid, getText }: IUseComposerAppActionOptions): TActionSheetOptionsItem[] => {
 	const appButtons = useAppActionButtons(rid);
+	if (!rid) {
+		return [];
+	}
 
 	const toOption = (
 		{ id, label, button }: IAppActionButtonItem,
