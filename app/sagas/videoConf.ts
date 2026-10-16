@@ -21,6 +21,7 @@ import { videoConfJoin } from '../lib/methods/videoConf';
 import { videoConferenceCancel, notifyUser, videoConferenceStart } from '../lib/services/restApi';
 import { type ICallInfo } from '../reducers/videoConf';
 import { isInActiveVoipCall } from '../lib/services/voip/isInActiveVoipCall';
+import { joinConferenceFromPeer } from '../lib/services/voip/escalateToVideo';
 
 interface IGenericAction extends Action {
 	type: string;
@@ -167,6 +168,9 @@ function* handleVideoConfIncomingWebsocketMessages({ data }: { data: any }) {
 			break;
 		case 'end':
 			yield call(onDirectCallEnded, prop);
+			break;
+		case 'escalate':
+			yield call(joinConferenceFromPeer, prop);
 			break;
 	}
 }

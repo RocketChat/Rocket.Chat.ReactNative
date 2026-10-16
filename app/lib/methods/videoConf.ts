@@ -6,6 +6,7 @@ import log from './helpers/log';
 import openLink from './helpers/openLink';
 import { openConferenceCall } from './openConferenceCall';
 import { requestVoipCallPermissions } from './voipCallPermissions';
+import { usePexipCallStore } from '../services/videoConf/usePexipCallStore';
 
 export const videoConfJoin = async (
 	callId: string,
@@ -30,6 +31,8 @@ export const videoConfJoin = async (
 				// must not block the call, the speaker still works.
 				await requestVoipCallPermissions().catch(log);
 				navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });
+			} else if (providerName.toLowerCase().includes('pexip') && url) {
+				usePexipCallStore.getState().open({ callId, url, rid });
 			} else if (url) {
 				openLink(url);
 			} else {
