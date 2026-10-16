@@ -1,0 +1,16 @@
+appId: ${APP_ID}
+name: Reset app
+tags:
+  - 'util'
+
+---
+- launchApp:
+    appId: ${APP_ID}
+    stopApp: false
+- runFlow: 'appduct-connect.yaml'
+- evalScript: ${output.utils.callAppduct('reset_app')}
+- setPermissions:
+    permissions:
+      all: allow
+- launchApp:
+    appId: ${APP_ID}

@@ -112,7 +112,7 @@ tags:
       USERNAME: ${output.otherUser.username}
       PASSWORD: ${output.otherUser.password}
 - runFlow:
-    file: '../../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room}
 - runFlow:

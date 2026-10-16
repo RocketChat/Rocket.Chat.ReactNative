@@ -81,7 +81,7 @@ tags:
 
 # should ignore user from message
 - runFlow:
-    file: '../../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 - evalScript: ${output.utils.sendMessage(output.otherUser.username, output.otherUser.password, output.room._id, 'message-01')}
@@ -123,7 +123,7 @@ tags:
 
 # should tap to display message
 - runFlow:
-    file: '../../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 - extendedWaitUntil:
@@ -183,7 +183,7 @@ tags:
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 - extendedWaitUntil:
@@ -195,7 +195,7 @@ tags:
 # should go to user info view from a DM
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.otherUser.username}
 - runFlow: './utils/navigate-to-info-view.yaml'
@@ -232,7 +232,7 @@ tags:
 # should go to user info view from a channel
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 - extendedWaitUntil:

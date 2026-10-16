@@ -4,16 +4,7 @@ tags:
   - 'util'
 
 ---
-- launchApp:
-    appId: ${APP_ID}
-    stopApp: false
-- runFlow: 'appduct-connect.yaml'
-- evalScript: ${output.utils.callAppduct('reset_app')}
-- setPermissions:
-    permissions:
-      all: allow
-- launchApp:
-    appId: ${APP_ID}
+- runFlow: 'reset-app.yaml'
 - runFlow: 'appduct-connect.yaml'
 - evalScript: ${output.utils.loginWithToken(USERNAME, PASSWORD, server || output.data.server)}
 - runFlow:
