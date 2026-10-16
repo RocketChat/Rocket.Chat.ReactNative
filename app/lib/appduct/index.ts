@@ -1,9 +1,19 @@
 import '@appduct/react-native/auto';
 import { jsonSchema, registerTool } from '@appduct/react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Q } from '@nozbe/watermelondb';
+import { Image } from 'expo-image';
+import { first, firstValueFrom, fromEvent, takeUntil } from 'rxjs';
 
+import { appStart } from '~/actions/app';
 import { deepLinkingOpen } from '~/actions/deepLinking';
+import { encryptionStop } from '~/actions/encryption';
+import { biometricTrustStore } from '~/lib/biometricTrustStore';
 import database from '~/lib/database';
+import { SERVERS_TABLE } from '~/lib/database/model/servers/Server';
+import { deleteMediaFiles } from '~/lib/methods/handleMediaDownload';
+import { removeServerDatabase } from '~/lib/methods/logout';
+import { disconnect } from '~/lib/services/connect';
 import { SUBSCRIPTIONS_TABLE } from '~/lib/database/model/Subscription';
 import { getIsMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { RootEnum, type IApplicationState, type IPreferences, type TSubscriptionModel } from '~/definitions';
@@ -262,6 +272,43 @@ const waitForReadableState = async (signal: AbortSignal) => {
 	await waitForNavigatorReady(signal);
 };
 
+const wipeServers = async () => {
+	const servers = await database.servers.get(SERVERS_TABLE).query().fetch();
+	await Promise.all(
+		servers.map(async ({ id }) => {
+			await removeServerDatabase({ server: id });
+			await deleteMediaFiles(id);
+		})
+	);
+	await database.servers.write(() => database.servers.unsafeResetDatabase());
+};
+
+registerTool({
+	name: 'reset_app',
+	description:
+		'Wipe every workspace database, stored preference, credential and media file, leaving the app as freshly installed once it restarts. The app stays on a loading screen until then: relaunch it and reconnect before the next call.',
+	timeoutMs: 30_000,
+	inputSchema: jsonSchema<Record<string, never>>({ type: 'object', properties: {}, additionalProperties: false }),
+	outputSchema: jsonSchema<{ servers: number }>({
+		type: 'object',
+		properties: { servers: { type: 'number' } },
+		required: ['servers']
+	}),
+	handler: async (_input, { signal }) => {
+		await waitForAppStart(signal);
+		store.dispatch(appStart({ root: RootEnum.ROOT_LOADING }));
+		store.dispatch(encryptionStop());
+		disconnect();
+		const servers = await database.servers.get(SERVERS_TABLE).query().fetchCount();
+		await wipeServers();
+		await biometricTrustStore.disenroll();
+		UserPreferences.clearAll();
+		await AsyncStorage.clear();
+		await Promise.all([Image.clearMemoryCache(), Image.clearDiskCache()]);
+		return { servers };
+	}
+});
+
 registerTool({
 	name: 'get_app_state',
 	description:
@@ -337,9 +384,25 @@ registerTool({
 	}
 });
 
+const waitForSubscription = async (name: string, signal: AbortSignal) => {
+	const [subscription] = await firstValueFrom(
+		database.active
+			.get(SUBSCRIPTIONS_TABLE)
+			.query(Q.or(Q.where('name', name), Q.where('fname', name)), Q.take(1))
+			.observe()
+			.pipe(
+				first(subscriptions => subscriptions.length > 0),
+				takeUntil(fromEvent(signal, 'abort'))
+			)
+	);
+	return subscription as TSubscriptionModel;
+};
+
 registerTool({
 	name: 'open_room',
-	description: 'Open a room the logged-in user is subscribed to, matched by its name or display name.',
+	description:
+		'Open a room the logged-in user is subscribed to, matched by its name or display name. Waits for the subscription to reach the local database, so a room created through the REST API just before can be opened.',
+	timeoutMs: 30_000,
 	inputSchema: jsonSchema<{ name: string }>({
 		type: 'object',
 		properties: {
@@ -355,13 +418,7 @@ registerTool({
 	}),
 	handler: async ({ name }, { signal }) => {
 		await waitForInside(signal);
-		const [subscription] = await database.active
-			.get(SUBSCRIPTIONS_TABLE)
-			.query(Q.or(Q.where('name', name), Q.where('fname', name)), Q.take(1))
-			.fetch();
-		if (!subscription) {
-			throw new Error(`No subscribed room named ${name}`);
-		}
+		const subscription = await waitForSubscription(name, signal);
 		openRoom(subscription, getIsMasterDetail());
 		return { rid: subscription.rid, name: subscription.name, type: subscription.t };
 	}

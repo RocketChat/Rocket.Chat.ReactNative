@@ -370,7 +370,44 @@ const waitForImageMessage = (roomId, username, password, timeoutMs = 60000) => {
     );
 };
 
+const APPDUCT_BRIDGE_URL = `http://127.0.0.1:${typeof APPDUCT_BRIDGE_PORT === 'undefined' ? 7701 : APPDUCT_BRIDGE_PORT}`;
+
+// Talks to .maestro/appduct-bridge, which run-maestro.sh starts next to Maestro.
+const postToAppductBridge = (route, body) => {
+    const response = http.post(`${APPDUCT_BRIDGE_URL}${route}`, {
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    });
+    const result = json(response.body);
+    if (!response.ok) {
+        throw new Error(`Appduct ${route} ${body.tool || ''} failed: ${result.error}`);
+    }
+    return result;
+};
+
+const linkAppduct = () => postToAppductBridge('/link', {});
+
+// A link the app never claimed is replaced with a new one, so callers can loop until live.
+const waitForAppduct = ({ sessionId }) => {
+    const { claimed } = postToAppductBridge('/wait', { sessionId });
+    return claimed ? { live: true } : linkAppduct();
+};
+
+const callAppduct = (tool, input) => postToAppductBridge('/call', { tool, input: input || {} });
+
+const openRoom = name => callAppduct('open_room', { name });
+
+const loginWithToken = (username, password, server) => {
+    const { authToken } = login(username, password);
+    return callAppduct('login_with_token', { host: server, token: authToken });
+};
+
 output.utils = {
+    linkAppduct,
+    waitForAppduct,
+    callAppduct,
+    loginWithToken,
+    openRoom,
     createUser,
     createUserWithPasswordChange,
     logAccounts,

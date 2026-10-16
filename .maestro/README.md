@@ -80,9 +80,20 @@ pnpm android  # for Android
 pnpm ios      # for iOS
 ```
 
+A release build only carries the Appduct tools the flows use for setup when built with `APPDUCT_ENABLED=true RUNNING_E2E_TESTS=true`. Development builds always carry them.
+
 ## Running Maestro Tests
 
-Once your app is running, you can execute Maestro tests:
+Flows reach the app's Appduct tools through a small bridge on `127.0.0.1:7701`. Start it next to Maestro (CI does this in `.github/scripts/run-maestro.sh`):
+
+```bash
+npm ci --prefix .maestro/appduct-bridge
+node .maestro/appduct-bridge/index.mjs android   # or ios
+```
+
+Set `APPDUCT_DEVICE` to the adb serial or simulator udid when more than one is running. To run a second bridge, pass its port as the second argument and to Maestro as `-e APPDUCT_BRIDGE_PORT=<port>`.
+
+Once your app and the bridge are running, you can execute Maestro tests:
 
 ```bash
 # Test the entire workflow

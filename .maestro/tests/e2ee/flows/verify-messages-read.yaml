@@ -9,7 +9,7 @@ env:
   MESSAGE_4: m3
 ---
 - runFlow:
-    file: '../../../helpers/login-with-deeplink.yaml'
+    file: '../../../helpers/login-with-token.yaml'
     env:
       USERNAME: ${USERNAME}
       PASSWORD: ${PASSWORD}

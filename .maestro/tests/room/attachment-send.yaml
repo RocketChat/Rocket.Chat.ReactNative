@@ -14,7 +14,7 @@ tags:
 - evalScript: ${output.loggedInUser = output.utils.login(output.user.username, output.user.password)}
 
 - runFlow:
-    file: '../../helpers/login-with-deeplink.yaml'
+    file: '../../helpers/login-with-token.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}

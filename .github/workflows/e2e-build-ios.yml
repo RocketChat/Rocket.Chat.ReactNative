@@ -62,6 +62,9 @@ jobs:
       # Keep in sync with maestro-ios.yml
       MAESTRO_VERSION: 2.5.1
       APP_PATH: .native-cache/Rocket.Chat.app
+      # Links Appduct into the Release build so Maestro can drive setup through it.
+      # Never set it in a job whose build can ship.
+      APPDUCT_ENABLED: true
 
     steps:
       - name: Checkout repository

@@ -1,23 +1,27 @@
 appId: ${APP_ID}
-name: Login with Deeplink
+name: Login with Token
 tags:
   - 'util'
 
 ---
-- stopApp: ${APP_ID}
-- runFlow:
-    when:
-      true: CLEAR_STATE
-    commands:
-      - clearState: ${APP_ID}
+- launchApp:
+    appId: ${APP_ID}
+    stopApp: false
+- runFlow: 'appduct-connect.yaml'
+- evalScript: ${output.utils.callAppduct('reset_app')}
 - setPermissions:
     permissions:
       all: allow
-- evalScript: ${output.login = output.utils.login(USERNAME, PASSWORD)}
+- launchApp:
+    appId: ${APP_ID}
+- runFlow: 'appduct-connect.yaml'
+- evalScript: ${output.utils.loginWithToken(USERNAME, PASSWORD, server || output.data.server)}
 - runFlow:
-    file: 'open-deeplink.yaml'
-    env:
-      link: ${output.utils.getDeepLink('auth', server || output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken)}
+    when:
+      visible: '.*Would like to send you notifications.*'
+      platform: iOS
+    commands:
+      - tapOn: 'Allow'
 - runFlow:
     when:
       platform: android

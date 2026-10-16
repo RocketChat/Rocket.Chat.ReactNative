@@ -20,6 +20,10 @@ Maps which event triggers which workflow.
 | `ios_build` | [build-ios.yml](workflows/build-ios.yml) — `build-hold` | Called with `trigger == pr` (i.e. from `build-pr.yml`) |
 | `approve_e2e_testing` | [build-pr.yml](workflows/build-pr.yml) — `e2e-hold` | A `pull_request` run whose diff impacts at least one Maestro flow (`e2e-shards` sets `should_run == true`). A confident-zero diff skips the whole e2e stage, so no approval fires. |
 
+## Appduct in E2E builds
+
+The E2E build jobs set `APPDUCT_ENABLED=true`, which links Appduct into their Release builds so Maestro flows can do setup (reset, login) through the app's Appduct tools instead of the UI. No other build sets it. The E2E APK is signed with a keystore generated for the run, so it can't install over a store build, and its artifact is kept for one day.
+
 ## E2E native build cache
 
 The E2E build workflows hash each platform's native inputs with `@expo/fingerprint` (configured in `fingerprint.config.js`). When a native build is cached under that fingerprint, the job rebuilds only the JS bundle and swaps it into the cached APK or simulator app. Otherwise it does a full native build and caches it. Patches count for both platforms unless every file they touch belongs to the other one. Android's fingerprint also hashes the images and sounds under `app/`, because they are compiled into the APK's resources; if a dependency's images differ from the cached build's, Android falls back to a full build.

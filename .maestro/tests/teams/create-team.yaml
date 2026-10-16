@@ -12,7 +12,7 @@ tags:
 - evalScript: ${output.teamname = output.randomTeamName()}
 
 - runFlow:
-    file: '../../helpers/login-with-deeplink.yaml'
+    file: '../../helpers/login-with-token.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}

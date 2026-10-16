@@ -17,11 +17,10 @@ tags:
 - evalScript: ${output.utils.sendMessage(output.sender.username, output.sender.password, '@' + output.user.username, output.tag + '-stored')}
 
 - runFlow:
-    file: '../../helpers/login-with-deeplink.yaml'
+    file: '../../helpers/login-with-token.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
-      CLEAR_STATE: true
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
     env:

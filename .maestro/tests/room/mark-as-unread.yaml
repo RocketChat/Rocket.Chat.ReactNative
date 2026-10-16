@@ -13,7 +13,7 @@ tags:
 - evalScript: ${output.message = output.utils.sendMessage(output.otherUser.username, output.otherUser.password, '@' + output.user.username, 'message-mark-as-unread')}
 
 - runFlow:
-    file: '../../helpers/login-with-deeplink.yaml'
+    file: '../../helpers/login-with-token.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}

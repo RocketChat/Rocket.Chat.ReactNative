@@ -7,7 +7,7 @@ tags:
 
 ---
 - runFlow:
-    file: '../../helpers/login-with-deeplink.yaml'
+    file: '../../helpers/login-with-token.yaml'
     env:
       USERNAME: ${output.account.adminUser}
       PASSWORD: ${output.account.adminPassword}

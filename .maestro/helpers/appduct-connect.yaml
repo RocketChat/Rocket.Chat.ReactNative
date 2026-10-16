@@ -1,0 +1,13 @@
+appId: ${APP_ID}
+name: Connect Appduct
+tags:
+  - 'util'
+---
+- evalScript: ${output.appductLink = output.utils.linkAppduct()}
+- repeat:
+    times: 8
+    while:
+      true: ${!output.appductLink.live}
+    commands:
+      - evalScript: ${output.appductLink = output.utils.waitForAppduct(output.appductLink)}
+- assertTrue: ${output.appductLink.live}

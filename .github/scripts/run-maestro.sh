@@ -27,13 +27,29 @@ run_maestro_test() {
   return 0
 }
 
-# The deeplink-login flow logs a live session token; scrub it before the logs
-# upload as a public artifact. perl -i works on both Linux and macOS.
+# The deeplink flow logs a live session token and every flow logs the source of
+# e2e_account.js; scrub both before the logs upload as a public artifact.
+# perl -i works on both Linux and macOS.
 redact_uploaded_logs() {
   local logs_dir="$HOME/.maestro/tests"
   [ -d "$logs_dir" ] || return 0
   find "$logs_dir" -type f -print0 \
-    | xargs -0 perl -pi -e 's/&token=[A-Za-z0-9_-]+/&token=***REDACTED***/g' 2>/dev/null || true
+    | xargs -0 perl -pi -e 's/&token=[A-Za-z0-9_-]+/&token=***REDACTED***/g; s/("const account = )(?:[^"\\]|\\.)*"/$1***REDACTED***"/g' 2>/dev/null || true
+}
+
+# Flows reach the app's Appduct tools through this bridge (see .maestro/appduct-bridge).
+start_appduct_bridge() {
+  node .maestro/appduct-bridge/index.mjs "$PLATFORM" > appduct-bridge.log 2>&1 &
+  BRIDGE_PID=$!
+  for _ in $(seq 1 50); do
+    if grep -q "appduct-bridge (" appduct-bridge.log; then
+      return 0
+    fi
+    sleep 0.2
+  done
+  cat appduct-bridge.log
+  echo "::error title=Appduct bridge did not start::.maestro/appduct-bridge failed to listen within 10s. This is a CI config failure, not an app or test regression."
+  exit 3
 }
 
 if [ "$PLATFORM" = "android" ]; then
@@ -76,7 +92,8 @@ echo "Preflight OK: ${E2E_SERVER}/api/info -> 200"
 
 MAPFILE="$(mktemp)"
 # Redact on every exit path, before the always() upload reads the logs
-trap 'rm -f "$MAPFILE"; redact_uploaded_logs' EXIT
+BRIDGE_PID=""
+trap 'rm -f "$MAPFILE"; [ -n "$BRIDGE_PID" ] && kill "$BRIDGE_PID" 2>/dev/null; redact_uploaded_logs' EXIT
 
 while IFS= read -r -d '' file; do
   if grep -qE "^[[:space:]]*-[[:space:]]*['\"]?test-${SHARD}['\"]?([[:space:]]*$|[[:space:]]*,|[[:space:]]*\\])" "$file"; then
@@ -144,6 +161,7 @@ run_main_suite() {
   fi
 }
 
+start_appduct_bridge
 run_main_suite
 
 # No JUnit output = startup failure; go red for a human re-run instead of

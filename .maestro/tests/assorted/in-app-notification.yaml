@@ -15,7 +15,7 @@ tags:
 - evalScript: ${output.dmCreatedRid = output.result.room.rid}
 
 - runFlow:
-    file: '../../helpers/login-with-deeplink.yaml'
+    file: '../../helpers/login-with-token.yaml'
     env:
       USERNAME: ${output.receiver.username}
       PASSWORD: ${output.receiver.password}

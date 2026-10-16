@@ -15,7 +15,7 @@ tags:
 - evalScript: ${output.keyboardMessage = 'keyboard-room-' + output.random(6)}
 
 - runFlow:
-    file: '../../helpers/login-with-deeplink.yaml'
+    file: '../../helpers/login-with-token.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
