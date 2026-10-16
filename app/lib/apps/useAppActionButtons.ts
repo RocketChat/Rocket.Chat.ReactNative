@@ -37,15 +37,16 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 	const hasButtons = buttons.length > 0;
 
 	const context$ = useMemo(() => {
-		if (!hasButtons) {
+		if (!hasButtons || !rid) {
 			return undefined;
 		}
 
 		const db = database.active;
 		const permissionIds = permissionKey ? permissionKey.split(',') : [];
-		const subscription$ = rid
-			? db.get('subscriptions').query(Q.where('id', rid)).observeWithColumns(['t', 'roles', 'team_main', 'prid', 'uids'])
-			: of([]);
+		const subscription$ = db
+			.get('subscriptions')
+			.query(Q.where('id', rid))
+			.observeWithColumns(['t', 'roles', 'team_main', 'prid', 'uids']);
 		const permissions$ = permissionIds.length
 			? db
 					.get('permissions')
