@@ -121,7 +121,11 @@ describe('RoomMembersView roles', () => {
 		});
 
 		it('refetches the member list from the first page after a role change', async () => {
-			const { getByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
+			jest
+				.mocked(getRoomMembers)
+				.mockResolvedValueOnce([owner, member] as any)
+				.mockResolvedValueOnce([owner, { ...member, roles: ['owner'] }] as any);
+			const { getByTestId, queryByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
 			const options = await openActionSheetFor(getByTestId, 'member.user');
 			expect(getRoomMembers).toHaveBeenCalledTimes(1);
 
@@ -131,6 +135,8 @@ describe('RoomMembersView roles', () => {
 			await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(2));
 			expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 0 }));
 			expect(getRoomRoles).not.toHaveBeenCalled();
+			await waitFor(() => expect(getByTestId('room-members-view-item-member.user')).toBeTruthy());
+			expect(queryByTestId('room-members-view-header-member')).toBeNull();
 		});
 	});
 
