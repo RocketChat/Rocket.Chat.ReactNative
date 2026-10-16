@@ -17,6 +17,7 @@ import { isIOS } from '../lib/methods/helpers';
 import { type TNavigation } from './stackType';
 import RoomView from '../views/RoomView';
 import RoomsListView from '../views/RoomsListView';
+import { useCanCreateRoom, useNewMessage } from '../views/RoomsListView/hooks/useNewMessage';
 import RoomActionsView from '../views/RoomActionsView';
 import RoomInfoView from '../views/RoomInfoView';
 import ReportUserView from '../views/ReportUserView';
@@ -165,6 +166,19 @@ const RoomsListStack = createNativeStackNavigator({
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
+const RoomsSearchStack = createNativeStackNavigator({
+	screenOptions: defaultHeader,
+	screens: {
+		RoomsSearchView: createNativeStackScreen({
+			screen: RoomsListView,
+			options: { freezeOnBlur: true }
+		})
+	}
+}).with(({ Navigator }) => {
+	const { theme } = useContext(ThemeContext);
+	return <Navigator screenOptions={themedHeader(theme)} />;
+});
+
 const MenuStack = createNativeStackNavigator({
 	screenOptions: defaultHeader,
 	screens: {
@@ -177,6 +191,8 @@ const MenuStack = createNativeStackNavigator({
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
+
+const EmptyScreen = () => null;
 
 const textlessBadge = isIOS ? ' ' : '';
 
@@ -196,15 +212,36 @@ const HomeTabs = createNativeBottomTabNavigator({
 		MenuStackNavigator: createNativeBottomTabScreen({
 			screen: MenuStack,
 			options: () => ({
-				title: I18n.t('Menu'),
+				title: I18n.t('More'),
 				tabBarButtonTestID: 'tab-menu',
 				tabBarIcon: { type: 'image', source: require('../static/images/tabs/menu.png') }
+			})
+		}),
+		RoomsSearchStackNavigator: createNativeBottomTabScreen({
+			screen: RoomsSearchStack,
+			options: () => ({
+				title: I18n.t('Search'),
+				tabBarSystemItem: 'search',
+				tabBarButtonTestID: 'tab-search',
+				tabBarStyle: { display: 'none' }
+			})
+		}),
+		NewMessageTab: createNativeBottomTabScreen({
+			screen: EmptyScreen,
+			if: useCanCreateRoom,
+			options: () => ({
+				title: I18n.t('Create_new_channel_team_dm_discussion'),
+				tabBarLabel: '',
+				tabBarButtonTestID: 'tab-new-message',
+				tabBarSelectionEnabled: false,
+				tabBarIcon: { type: 'sfSymbol', name: 'plus' }
 			})
 		})
 	}
 }).with(({ Navigator }) => {
 	const { colors } = useTheme();
 	const { disabled, badgeColor } = useMenuButtonState();
+	const { goToNewMessage } = useNewMessage();
 	return (
 		<Navigator
 			screenOptions={({ route }) => ({
@@ -216,6 +253,13 @@ const HomeTabs = createNativeBottomTabNavigator({
 					tabBarBadge: badgeColor ? textlessBadge : undefined,
 					tabBarBadgeStyle: { backgroundColor: badgeColor }
 				})
+			})}
+			screenListeners={({ route }) => ({
+				tabPress: () => {
+					if (route.name === 'NewMessageTab') {
+						goToNewMessage();
+					}
+				}
 			})}
 		/>
 	);

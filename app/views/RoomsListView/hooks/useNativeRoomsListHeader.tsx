@@ -1,4 +1,5 @@
-import { useContext, useLayoutEffect } from 'react';
+import { useFocusEffect, useRoute } from '@react-navigation/native';
+import { useCallback, useContext, useLayoutEffect } from 'react';
 
 import { showActionSheetRef } from '~/containers/ActionSheet';
 import i18n from '~/i18n';
@@ -23,7 +24,18 @@ export const useNativeRoomsListHeader = () => {
 	const serverName = useAppSelector(state => state.settings.Site_Name as string | undefined);
 	const subtitle = useRoomsListSubtitle();
 	const { canCreateRoom, goToNewMessage } = useNewMessage();
+	const isSearchTab = useRoute().name === 'RoomsSearchView';
+	const showsSearchBar = isMasterDetail || isSearchTab;
+	const showsNewMessageAction = showsSearchBar && canCreateRoom;
 	const showsCancelSearch = isTablet && searchEnabled;
+
+	useFocusEffect(
+		useCallback(() => {
+			if (isSearchTab) {
+				searchBarRef.current?.focus();
+			}
+		}, [isSearchTab, searchBarRef])
+	);
 
 	useLayoutEffect(() => {
 		const settingsAction: IHeaderAction = {
@@ -38,11 +50,17 @@ export const useNativeRoomsListHeader = () => {
 			icon: 'add',
 			tintColor: colors.buttonBackgroundPrimaryDefault,
 			variant: 'prominent',
-			placement: isMasterDetail ? 'toolbar' : undefined,
+			placement: 'toolbar',
 			disabled,
 			onPress: goToNewMessage
 		};
 		const cancelSearchAction: IHeaderAction = { label: i18n.t('Cancel'), onPress: stopSearch };
+		const onCancelSearch = isSearchTab
+			? () => {
+					resetSearch();
+					navigation.navigate('RoomsListStackNavigator');
+				}
+			: resetSearch;
 
 		navigation.setOptions({
 			...translucentHeader,
@@ -50,24 +68,25 @@ export const useNativeRoomsListHeader = () => {
 			headerSubtitle: subtitle,
 			headerTitleTestID: 'rooms-list-header-servers-list-button',
 			onHeaderTitlePress: openServersList,
-			headerSearchBarOptions: disabled
-				? undefined
-				: {
-						...stackedSearchBarOptions({
-							ref: searchBarRef,
-							onFocus: searchEnabled ? undefined : startSearch,
-							onChangeText: search,
-							onCancel: resetSearch
-						}),
-						placement: 'stacked',
-						hideWhenScrolling: true,
-						hideNavigationBar: !isTablet
-					},
+			headerSearchBarOptions:
+				disabled || !showsSearchBar
+					? undefined
+					: {
+							...stackedSearchBarOptions({
+								ref: searchBarRef,
+								onFocus: searchEnabled ? undefined : startSearch,
+								onChangeText: search,
+								onCancel: onCancelSearch
+							}),
+							placement: isSearchTab ? 'automatic' : 'stacked',
+							hideWhenScrolling: !isSearchTab,
+							hideNavigationBar: !isTablet
+						},
 			...headerLeftActions(isMasterDetail ? [settingsAction] : []),
 			...headerRightActions(
 				showsCancelSearch
 					? [cancelSearchAction]
-					: [...troubleshootActions, ...browseActions, ...(canCreateRoom ? [newMessageAction] : [])]
+					: [...troubleshootActions, ...browseActions, ...(showsNewMessageAction ? [newMessageAction] : [])]
 			)
 		});
 	}, [
@@ -79,7 +98,9 @@ export const useNativeRoomsListHeader = () => {
 		troubleshootActions,
 		browseActions,
 		onSettingsPress,
-		canCreateRoom,
+		showsNewMessageAction,
+		showsSearchBar,
+		isSearchTab,
 		goToNewMessage,
 		showsCancelSearch,
 		searchEnabled,
