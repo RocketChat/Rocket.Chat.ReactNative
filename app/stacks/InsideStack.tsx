@@ -4,16 +4,14 @@ import {
 	createNativeStackScreen,
 	type NativeStackNavigationOptions
 } from '@react-navigation/native-stack';
-import { createBottomTabNavigator, createBottomTabScreen } from '@react-navigation/bottom-tabs';
+import { createNativeBottomTabNavigator, createNativeBottomTabScreen } from '@react-navigation/bottom-tabs/unstable';
 import { type StaticScreenProps } from '@react-navigation/native';
 
 import I18n from '../i18n';
 import { ThemeContext, useTheme } from '../theme';
-import { CustomIcon } from '../containers/CustomIcon';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import withNavigation from '../lib/navigation/withNavigation';
 import MenuView from '../views/MenuView';
-import MenuTabIcon from '../views/MenuView/components/MenuTabIcon';
 import { useMenuButtonState } from '../views/MenuView/hooks/useMenuButtonState';
 import { isIOS } from '../lib/methods/helpers';
 import { type TNavigation } from './stackType';
@@ -180,25 +178,27 @@ const MenuStack = createNativeStackNavigator({
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
-const HomeTabs = createBottomTabNavigator({
+const textlessBadge = isIOS ? ' ' : '';
+
+const HomeTabs = createNativeBottomTabNavigator({
 	screenOptions: {
-		headerShown: false,
-		freezeOnBlur: true
+		headerShown: false
 	},
 	screens: {
-		RoomsListStackNavigator: createBottomTabScreen({
+		RoomsListStackNavigator: createNativeBottomTabScreen({
 			screen: RoomsListStack,
 			options: () => ({
 				title: I18n.t('Chats'),
 				tabBarButtonTestID: 'tab-chats',
-				tabBarIcon: ({ color, size }) => <CustomIcon name='message' color={color} size={size} />
+				tabBarIcon: { type: 'image', source: require('../static/images/tabs/chats.png') }
 			})
 		}),
-		MenuStackNavigator: createBottomTabScreen({
+		MenuStackNavigator: createNativeBottomTabScreen({
 			screen: MenuStack,
 			options: () => ({
 				title: I18n.t('Menu'),
-				tabBarButtonTestID: 'tab-menu'
+				tabBarButtonTestID: 'tab-menu',
+				tabBarIcon: { type: 'image', source: require('../static/images/tabs/menu.png') }
 			})
 		})
 	}
@@ -210,17 +210,12 @@ const HomeTabs = createBottomTabNavigator({
 			screenOptions={({ route }) => ({
 				tabBarActiveTintColor: colors.buttonBackgroundPrimaryDefault,
 				tabBarInactiveTintColor: colors.fontSecondaryInfo,
-				tabBarStyle: { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight },
+				tabBarStyle: { backgroundColor: colors.surfaceLight },
 				...(route.name === 'MenuStackNavigator' && {
-					tabBarIcon: ({ color, size }) => <MenuTabIcon color={color} size={size} badgeColor={badgeColor} />
+					tabBarSelectionEnabled: !disabled,
+					tabBarBadge: badgeColor ? textlessBadge : undefined,
+					tabBarBadgeStyle: { backgroundColor: badgeColor }
 				})
-			})}
-			screenListeners={({ route }) => ({
-				tabPress: event => {
-					if (disabled && route.name === 'MenuStackNavigator') {
-						event.preventDefault();
-					}
-				}
 			})}
 		/>
 	);

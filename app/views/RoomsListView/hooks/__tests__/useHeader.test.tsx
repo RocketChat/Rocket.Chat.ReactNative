@@ -188,7 +188,18 @@ describe('RoomsListView useHeader', () => {
 		expect(labels).not.toContain('Troubleshooting');
 	});
 
-	it('places only the create item in the toolbar, as a prominent button', () => {
+	it('keeps the toolbar free on phones, where the tab bar owns the bottom edge', () => {
+		renderUseHeader();
+
+		const options = mockSetOptions.mock.calls[0][0];
+		const toolbarItems = options
+			.unstable_headerRightItems({})
+			.filter((item: { placement?: string }) => item.placement === 'toolbar');
+		expect(toolbarItems).toEqual([]);
+	});
+
+	it('places only the create item in the toolbar on master detail, as a prominent button', () => {
+		mockIsMasterDetail = true;
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
@@ -249,7 +260,7 @@ describe('RoomsListView useHeader', () => {
 		const rightItems = options.unstable_headerRightItems({});
 		expect(rightItems.some((item: { accessibilityLabel: string }) => item.accessibilityLabel === 'Search')).toBe(false);
 
-		expect(options.headerSearchBarOptions.placement).toBe('automatic');
+		expect(options.headerSearchBarOptions.placement).toBe('stacked');
 		expect(options.headerSearchBarOptions.ref.current).toBeNull();
 
 		options.headerSearchBarOptions.onFocus();

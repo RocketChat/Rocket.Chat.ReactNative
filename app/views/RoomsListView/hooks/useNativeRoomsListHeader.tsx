@@ -38,7 +38,7 @@ export const useNativeRoomsListHeader = () => {
 			icon: 'add',
 			tintColor: colors.buttonBackgroundPrimaryDefault,
 			variant: 'prominent',
-			placement: 'toolbar',
+			placement: isMasterDetail ? 'toolbar' : undefined,
 			disabled,
 			onPress: goToNewMessage
 		};
@@ -59,7 +59,7 @@ export const useNativeRoomsListHeader = () => {
 							onChangeText: search,
 							onCancel: resetSearch
 						}),
-						placement: isTablet ? 'stacked' : 'automatic',
+						placement: 'stacked',
 						hideWhenScrolling: true,
 						hideNavigationBar: !isTablet
 					},
