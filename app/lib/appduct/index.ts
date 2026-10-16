@@ -74,11 +74,35 @@ const waitForNavigatorReady = (signal: AbortSignal) =>
 		});
 	});
 
+const insideNavigators = ['InsideStack', 'MasterDetailStack'];
+
+const isInsideNavigatorMounted = () =>
+	!!Navigation.navigationRef.current?.getRootState()?.routes.some(route => insideNavigators.includes(route.name));
+
+const waitForInsideNavigator = (signal: AbortSignal) =>
+	new Promise<void>((resolve, reject) => {
+		const navigation = Navigation.navigationRef.current!;
+		const resolveIfMounted = () => {
+			if (isInsideNavigatorMounted()) {
+				unsubscribe();
+				resolve();
+			}
+		};
+		const unsubscribe = navigation.addListener('state', resolveIfMounted);
+		signal.addEventListener('abort', () => {
+			unsubscribe();
+			reject(signal.reason);
+		});
+		resolveIfMounted();
+	});
+
 const waitForInside = async (signal: AbortSignal) => {
 	await waitForAppStart(signal);
 	if (store.getState().app.root !== RootEnum.ROOT_INSIDE) {
 		throw new Error('Not logged in to a workspace');
 	}
+	await waitForNavigatorReady(signal);
+	await waitForInsideNavigator(signal);
 };
 
 const showDrawer = () => Navigation.popTo('DrawerNavigator');
@@ -448,7 +472,6 @@ registerTool({
 			throw new Error(`Unsupported screen ${screen}. Supported: ${supportedScreens.join(', ')}`);
 		}
 		await waitForInside(signal);
-		await waitForNavigatorReady(signal);
 		const isMasterDetail = getIsMasterDetail();
 		const isRoomScreen = screen in roomScreenParams;
 		if (isRoomScreen) {
