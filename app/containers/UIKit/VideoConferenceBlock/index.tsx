@@ -1,6 +1,8 @@
-import { type ReactElement } from 'react';
+import { useEffect, type ReactElement } from 'react';
 
+import { VideoConferenceStatus } from '~/definitions/IVideoConference';
 import { useEndpointData } from '~/lib/hooks/useEndpointData';
+import { emitter } from '~/lib/methods/helpers/emitter';
 import VideoConferenceDirect from './components/VideoConferenceDirect';
 import VideoConferenceEnded from './components/VideoConferenceEnded';
 import VideoConferenceOutgoing from './components/VideoConferenceOutgoing';
@@ -8,16 +10,39 @@ import VideoConferenceSkeletonLoading from './components/VideoConferenceSkeleton
 import VideoConferenceIssue from './components/VideoConferenceIssue';
 
 export default function VideoConferenceBlock({ callId, blockId }: { callId: string; blockId: string }): ReactElement {
-	const { result, error } = useEndpointData('video-conference.info', { callId });
+	const { result, error, reload } = useEndpointData('video-conference.info', { callId });
+
+	useEffect(() => {
+		const onUpdate = (updatedCallId: string) => {
+			if (updatedCallId === callId) {
+				reload();
+			}
+		};
+		emitter.on('videoConfUpdated', onUpdate);
+		return () => emitter.off('videoConfUpdated', onUpdate);
+	}, [callId, reload]);
 
 	if (result?.success) {
-		const { users, type, status, createdBy, rid } = result;
+		const { users, type, status, createdBy, rid, discussionRid } = result;
+		const participants = users.filter(user => user.joined !== false);
 
-		if ('endedAt' in result) return <VideoConferenceEnded createdBy={createdBy} rid={rid} type={type} users={users} />;
+		if ('endedAt' in result) {
+			return (
+				<VideoConferenceEnded
+					createdBy={createdBy}
+					rid={rid}
+					type={type}
+					status={status}
+					users={participants}
+					discussionRid={discussionRid}
+				/>
+			);
+		}
 
-		if (type === 'direct' && status === 0) return <VideoConferenceDirect />;
+		if (type === 'direct' && status === VideoConferenceStatus.CALLING)
+			return <VideoConferenceDirect discussionRid={discussionRid} />;
 
-		return <VideoConferenceOutgoing blockId={blockId} users={users} />;
+		return <VideoConferenceOutgoing blockId={blockId} users={participants} discussionRid={discussionRid} />;
 	}
 
 	if (result?.error || error) return <VideoConferenceIssue />;

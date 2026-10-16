@@ -75,6 +75,7 @@ import AttachmentView from '~/views/AttachmentView';
 import ModalBlockView from '~/views/ModalBlockView';
 import ConferenceView from '~/views/ConferenceView';
 import JitsiMeetView from '~/views/JitsiMeetView';
+import VideoConfWebView from '~/views/VideoConfWebView';
 import ShareView from '~/views/ShareView';
 import CallView from '~/views/CallView';
 
@@ -297,6 +298,10 @@ const InsideStack = createNativeStackNavigator({
 				headerShown: false,
 				animation: isIOS ? 'default' : 'none'
 			}
+		}),
+		VideoConfWebView: createNativeStackScreen({
+			screen: VideoConfWebView,
+			options: { animation: isIOS ? 'default' : 'none' }
 		}),
 		ConferenceView: createNativeStackScreen({
 			screen: ConferenceView,

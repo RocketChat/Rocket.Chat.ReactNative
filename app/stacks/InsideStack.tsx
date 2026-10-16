@@ -41,6 +41,7 @@ import CannedResponsesListView from '../views/CannedResponsesListView';
 import CannedResponseDetail from '../views/CannedResponseDetail';
 import ConferenceView from '../views/ConferenceView';
 import JitsiMeetView from '../views/JitsiMeetView';
+import VideoConfWebView from '../views/VideoConfWebView';
 import DiscussionsView from '../views/DiscussionsView';
 import ChangeAvatarView from '../views/ChangeAvatarView';
 import AddChannelTeamView from '../views/AddChannelTeamView';
@@ -199,11 +200,7 @@ const ChatsStack = createNativeStackNavigator({
 		}),
 		QueueListView: QueueListViewScreen,
 		CannedResponsesListView: CannedResponsesListViewScreen,
-		CannedResponseDetail: CannedResponseDetailScreen,
-		JitsiMeetView: createNativeStackScreen({
-			screen: JitsiMeetViewScreen,
-			options: { headerShown: false, animation: isIOS ? 'default' : 'none' }
-		})
+		CannedResponseDetail: CannedResponseDetailScreen
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
@@ -360,6 +357,14 @@ const InsideStack = createNativeStackNavigator({
 		CallView: createNativeStackScreen({
 			screen: CallViewScreen,
 			options: { headerShown: false }
+		}),
+		JitsiMeetView: createNativeStackScreen({
+			screen: JitsiMeetViewScreen,
+			options: { headerShown: false, animation: isIOS ? 'default' : 'none' }
+		}),
+		VideoConfWebView: createNativeStackScreen({
+			screen: VideoConfWebView,
+			options: { animation: isIOS ? 'default' : 'none' }
 		}),
 		// Lives at the root, not in ChatsStack: the conference header is mounted app-wide, so
 		// "return to call" has to resolve from Settings, Profile and Admin too.

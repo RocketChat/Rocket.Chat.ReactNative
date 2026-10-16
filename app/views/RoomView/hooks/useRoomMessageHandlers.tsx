@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -7,7 +8,8 @@ import getRoomInfo from '~/lib/methods/getRoomInfo';
 import { callJitsi } from '~/lib/methods/callJitsi';
 import { goRoom, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
-import { events, logEvent } from '~/lib/methods/helpers/log';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { showToast } from '~/lib/methods/helpers/showToast';
 import { isInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import {
@@ -40,14 +42,23 @@ export function useRoomMessageHandlers({
 	const roomStore = useRoomStoreApi();
 	const rid = useRoomStore(s => s.room.rid);
 
+	const openingDiscussion = useRef(false);
+
 	const onDiscussionPress = async (drid: TAnyMessageModel['drid']) => {
-		if (!drid) return;
-		const discussion = await getRoomInfo(drid);
-		if (discussion) {
-			goRoom({
-				item: discussion as TGoRoomItem,
-				isMasterDetail
-			});
+		if (!drid || openingDiscussion.current) return;
+		openingDiscussion.current = true;
+		try {
+			const discussion = await getRoomInfo(drid);
+			if (!discussion) {
+				showToast(I18n.t('Room_not_found'));
+				return;
+			}
+			await goRoom({ item: discussion as TGoRoomItem, isMasterDetail });
+		} catch (e) {
+			log(e);
+			showToast(I18n.t('Room_not_found'));
+		} finally {
+			openingDiscussion.current = false;
 		}
 	};
 
