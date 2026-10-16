@@ -142,6 +142,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 	}
 
 	componentWillUnmount() {
+		this.closed = true;
 		const { data } = this.state;
 		const { viewId } = data;
 		EventEmitter.removeListener(viewId, this.handleUpdate);

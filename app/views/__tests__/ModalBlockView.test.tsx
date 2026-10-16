@@ -132,6 +132,25 @@ describe('ModalBlockView', () => {
 			expect(navigation.goBack).toHaveBeenCalledTimes(1);
 		});
 
+		it('does not go back when a submit settles after the modal was dismissed', async () => {
+			let resolveSubmit: (value: boolean) => void = () => {};
+			jest.mocked(triggerSubmitView).mockReturnValueOnce(
+				new Promise(resolve => {
+					resolveSubmit = resolve;
+				})
+			);
+			const navigation = mockNavigation();
+			const { unmount } = render(renderModal(modalData('trigger-1'), navigation));
+			const { headerRight } = navigation.setOptions.mock.calls[0][0];
+			render(headerRight());
+
+			fireEvent.press(screen.getByTestId('submit-modal-uikit'));
+			unmount();
+			await act(async () => resolveSubmit(true));
+
+			expect(navigation.goBack).not.toHaveBeenCalled();
+		});
+
 		it('closes when the app closes the modal over the stream', () => {
 			const navigation = mockNavigation();
 			render(renderModal(modalData('trigger-1'), navigation));
