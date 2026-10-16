@@ -5,14 +5,8 @@ import { combineLatest, EMPTY, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { useAppsStore } from './appsStore';
-import {
-	getIdForActionButton,
-	type IAppActionButton,
-	type IAppActionButtonRoom,
-	type TAppActionButtonCategory,
-	type TUIActionButtonContext
-} from './definitions';
-import { applyAuthFilter, applyCategoryFilter, applyRoomFilter, collectPermissions } from './filters';
+import { getIdForActionButton, type IAppActionButton, type IAppActionButtonRoom } from './definitions';
+import { applyAuthFilter, applyRoomFilter, collectPermissions } from './filters';
 import { translateAppKey } from './translations';
 import database from '~/lib/database';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -32,12 +26,6 @@ export interface IAppActionButtonItem {
 	label: string;
 	button: IAppActionButton;
 }
-
-export const selectAppActionButtons = (
-	items: IAppActionButtonItem[],
-	context: TUIActionButtonContext,
-	category: TAppActionButtonCategory = 'default'
-): IAppActionButtonItem[] => items.filter(({ button }) => button.context === context && applyCategoryFilter(button, category));
 
 export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 	const buttons = useAppsStore(state => state.actionButtons);

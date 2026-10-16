@@ -1,17 +1,11 @@
 import { render, screen } from '@testing-library/react-native';
 
-import { type IAppActionButtonItem } from '~/lib/apps/useAppActionButtons';
+import { type TActionSheetOptionsItem } from '~/containers/ActionSheet';
 import { ActionsButton } from '../ActionsButton';
 
-const mockUseAppActionButtons = jest.fn((_params: unknown): IAppActionButtonItem[] => []);
-jest.mock('~/lib/apps/useAppActionButtons', () => ({
-	...jest.requireActual('~/lib/apps/useAppActionButtons'),
-	useAppActionButtons: (params: unknown) => mockUseAppActionButtons(params)
-}));
-
-const mockTriggerAppActionButton = jest.fn();
-jest.mock('~/lib/apps/triggerActions', () => ({
-	triggerAppActionButton: (params: unknown) => mockTriggerAppActionButton(params)
+const mockUseComposerAppActionOptions = jest.fn((_params: unknown): TActionSheetOptionsItem[] => []);
+jest.mock('~/lib/apps/useComposerAppActionOptions', () => ({
+	useComposerAppActionOptions: (params: unknown) => mockUseComposerAppActionOptions(params)
 }));
 
 const mockShowActionSheet = jest.fn();
@@ -51,12 +45,6 @@ jest.mock('../BaseButton', () => {
 	};
 });
 
-const item = (id: string, overrides = {}): IAppActionButtonItem => ({
-	id,
-	label: `Label ${id}`,
-	button: { appId: 'app-id', actionId: id, context: 'messageBoxAction', labelI18n: 'label', ...overrides }
-});
-
 const openSheet = () => {
 	render(<ActionsButton />);
 	screen.getByTestId('message-composer-actions').props.onPress();
@@ -66,7 +54,7 @@ const openSheet = () => {
 describe('ActionsButton', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockUseAppActionButtons.mockImplementation(() => []);
+		mockUseComposerAppActionOptions.mockImplementation(() => []);
 	});
 
 	it('shows only the built-in actions when no app registered any', () => {
@@ -75,31 +63,22 @@ describe('ActionsButton', () => {
 		expect(options.map(option => option.title)).toEqual(['Create discussion']);
 	});
 
-	it('lists ai room actions then message box actions after the built-in ones', () => {
-		mockUseAppActionButtons.mockImplementation(() => [
-			item('translate'),
-			item('summarize', { context: 'roomAction', category: 'ai' }),
-			item('room-default', { context: 'roomAction' })
+	it('lists app actions after the built-in ones', () => {
+		mockUseComposerAppActionOptions.mockImplementation(() => [
+			{ title: 'Summarize', icon: 'stars', onPress: jest.fn() },
+			{ title: 'Translate', icon: 'apps', onPress: jest.fn() }
 		]);
 
 		const options = openSheet();
 
-		expect(options.map(option => option.title)).toEqual(['Create discussion', 'Label summarize', 'Label translate']);
-		expect(options[1].testID).toBe('message-composer-ai-action-summarize');
-		expect(options[2].testID).toBe('message-composer-app-action-translate');
+		expect(options.map(option => option.title)).toEqual(['Create discussion', 'Summarize', 'Translate']);
 	});
 
-	it('sends the thread and the composer draft with a message box action', () => {
-		const messageBoxItem = item('translate');
-		mockUseAppActionButtons.mockImplementation(() => [messageBoxItem]);
+	it('passes the room, the thread and the draft getter to the app options', () => {
+		openSheet();
 
-		openSheet()[1].onPress();
-
-		expect(mockTriggerAppActionButton).toHaveBeenCalledWith({
-			button: messageBoxItem.button,
-			rid: 'rid-1',
-			tmid: 'tmid-1',
-			message: 'draft text'
-		});
+		const [params] = mockUseComposerAppActionOptions.mock.calls[0] as [{ rid: string; tmid: string; getText: () => string }];
+		expect(params).toMatchObject({ rid: 'rid-1', tmid: 'tmid-1' });
+		expect(params.getText()).toBe('draft text');
 	});
 });

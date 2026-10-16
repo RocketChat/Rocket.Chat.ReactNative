@@ -2,7 +2,7 @@ import { act, renderHook, waitFor } from '@testing-library/react-native';
 import { BehaviorSubject } from 'rxjs';
 
 import { type IAppActionButton, UIActionButtonContext } from '../definitions';
-import { selectAppActionButtons, useAppActionButtons } from '../useAppActionButtons';
+import { useAppActionButtons } from '../useAppActionButtons';
 
 let mockActionButtons: IAppActionButton[] = [];
 const mockTranslations = { 'app-id': { en: { summarize: 'Summarize thread' }, pt: { summarize: 'Resumir thread' } } };
@@ -98,22 +98,6 @@ describe('useAppActionButtons', () => {
 
 		expect(result.current).toEqual([]);
 		await waitFor(() => expect(result.current).toHaveLength(1));
-	});
-
-	it('selects by context and category', async () => {
-		mockActionButtons = [
-			button(),
-			button({ actionId: 'ai-one', category: 'ai' }),
-			button({ actionId: 'other', context: UIActionButtonContext.ROOM_ACTION })
-		];
-
-		const { result } = renderHook(() => useAppActionButtons('rid'));
-
-		await waitFor(() => expect(result.current).toHaveLength(3));
-		const pick = (category?: 'ai') =>
-			selectAppActionButtons(result.current, UIActionButtonContext.MESSAGE_BOX_ACTION, category).map(i => i.button.actionId);
-		expect(pick()).toEqual(['summarize']);
-		expect(pick('ai')).toEqual(['ai-one']);
 	});
 
 	it('follows subscription changes while mounted', async () => {
