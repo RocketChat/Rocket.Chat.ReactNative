@@ -38,6 +38,10 @@ describe('actions', () => {
 		jest.clearAllMocks();
 	});
 
+	afterEach(() => {
+		jest.useRealTimers();
+	});
+
 	describe('handlePayloadUserInteraction', () => {
 		it('returns undefined when trigger id is unknown', () => {
 			expect(handlePayloadUserInteraction(ModalActions.OPEN, { triggerId: 'unknown', viewId: 'view-id' })).toBeUndefined();
@@ -98,7 +102,7 @@ describe('actions', () => {
 				})
 			});
 			expect(mockedFetch).toHaveBeenCalledWith(
-				'https://chat.example.com/api/apps/ui.interaction/app-id/',
+				'https://chat.example.com/api/apps/ui.interaction/app-id',
 				expect.objectContaining({
 					method: 'POST',
 					headers: expect.objectContaining({
@@ -244,6 +248,84 @@ describe('actions', () => {
 			});
 
 			expect(staleResult).toBeUndefined();
+		});
+
+		it('throws when appId is missing', async () => {
+			await expect(triggerAction({ ...actionInput, appId: '' })).rejects.toThrow('triggerAction requires appId');
+		});
+
+		it('handles success response without modal interaction type', async () => {
+			mockedFetch.mockResolvedValueOnce({
+				ok: true,
+				text: () => Promise.resolve(JSON.stringify({ success: true }))
+			} as Response);
+
+			const result = await triggerAction(actionInput);
+
+			expect(result).toBeUndefined();
+		});
+
+		it('preserves trigger id for pushed views when response has no modal interaction type', async () => {
+			mockedFetch.mockResolvedValueOnce({
+				ok: true,
+				text: () => Promise.resolve(JSON.stringify({ success: true }))
+			} as Response);
+
+			await triggerAction(actionInput);
+
+			const pushResult = handlePayloadUserInteraction(ModalActions.OPEN, {
+				triggerId: 'trigger-fixed-id',
+				view: { id: 'pushed-view-id' }
+			});
+
+			expect(pushResult).toBe(ModalActions.OPEN);
+		});
+
+		it('keeps trigger id valid while interaction request is pending even if request takes longer than timeout', async () => {
+			jest.useFakeTimers();
+			let resolveFetch: (value: Response) => void;
+			const delayedFetchPromise = new Promise<Response>(resolve => {
+				resolveFetch = resolve;
+			});
+			mockedFetch.mockReturnValueOnce(delayedFetchPromise);
+
+			const actionPromise = triggerAction(actionInput);
+
+			jest.advanceTimersByTime(6000);
+
+			resolveFetch!({
+				ok: true,
+				text: () =>
+					Promise.resolve(
+						JSON.stringify({
+							type: ModalActions.OPEN,
+							triggerId: 'trigger-fixed-id',
+							view: { id: 'delayed-view-id' }
+						})
+					)
+			} as Response);
+
+			const result = await actionPromise;
+			expect(result).toBe(ModalActions.OPEN);
+		});
+
+		it('expires trigger id for pushed views after timeout when no view is pushed', async () => {
+			jest.useFakeTimers();
+			mockedFetch.mockResolvedValueOnce({
+				ok: true,
+				text: () => Promise.resolve(JSON.stringify({ success: true }))
+			} as Response);
+
+			await triggerAction(actionInput);
+
+			jest.advanceTimersByTime(5000);
+
+			const pushResult = handlePayloadUserInteraction(ModalActions.OPEN, {
+				triggerId: 'trigger-fixed-id',
+				view: { id: 'pushed-view-id' }
+			});
+
+			expect(pushResult).toBeUndefined();
 		});
 	});
 });
